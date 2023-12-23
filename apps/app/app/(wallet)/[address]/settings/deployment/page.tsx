@@ -18,6 +18,7 @@ import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { Suspense } from "react";
 import type { Address, Hex } from "viem";
 import { SettingsDeploymentCard } from "@/app/(wallet)/[address]/settings/(components)/settings-deployment-card";
+import { SettingsSectionWrapper } from "@/components/wrapper/section/settings-section-wrapper";
 import { CHAINS, MAINNET_CHAINS } from "@/const/chains";
 import { handler } from "@/handlers/paths/[address]/settings/deployment/handler";
 import { preloader } from "@/preloaders/paths/[address]/preloader";
@@ -78,7 +79,7 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="space-y-8 lg:space-y-12">
+      <SettingsSectionWrapper>
         {wallet_chains.map(chain => (
           <Suspense key={chain.id} fallback={<Skeleton className="h-8 w-32" />}>
             <SettingsDeploymentCard
@@ -89,7 +90,7 @@ export default async function Page({ params }: PageProps) {
             />
           </Suspense>
         ))}
-      </div>
+      </SettingsSectionWrapper>
     </HydrationBoundary>
   );
 }

@@ -19,6 +19,7 @@ import { Suspense } from "react";
 import type { Address } from "viem";
 import { SettingsNameCard } from "@/app/(wallet)/[address]/settings/(components)/settings-name-card";
 import { SettingsTestnetCard } from "@/app/(wallet)/[address]/settings/(components)/settings-testnet-card";
+import { SettingsSectionWrapper } from "@/components/wrapper/section/settings-section-wrapper";
 import { handler } from "@/handlers/paths/[address]/settings/handler";
 import { preloader } from "@/preloaders/paths/[address]/settings/preloader";
 import { queries } from "@/queries";
@@ -66,14 +67,14 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="space-y-8 lg:space-y-12">
+      <SettingsSectionWrapper>
         <Suspense fallback={<Skeleton className="h-8 w-32" />}>
           <SettingsNameCard address={params.address as Address} />
         </Suspense>
         <Suspense fallback={<Skeleton className="h-8 w-32" />}>
           <SettingsTestnetCard address={params.address as Address} />
         </Suspense>
-      </div>
+      </SettingsSectionWrapper>
     </HydrationBoundary>
   );
 }
