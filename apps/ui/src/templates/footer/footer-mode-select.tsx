@@ -34,7 +34,7 @@ export const FooterModeSelect: FC = () => {
 
   return (
     <div>
-      <Select defaultValue={theme} onValueChange={setTheme}>
+      <Select value={theme} defaultValue={theme} onValueChange={setTheme}>
         <SelectTrigger className="w-24">
           <SelectValue placeholder="Select a theme" />
         </SelectTrigger>

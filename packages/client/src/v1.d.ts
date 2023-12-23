@@ -110,10 +110,17 @@ export interface paths {
   };
   "/invite_code/list": {
     /**
-     * Returns a list of paymasters.
-     * @description Returns a list of paymasters.
+     * Returns a list of invite codes.
+     * @description Returns a list of invite codes.
      */
     get: operations["v1_invite_code_list_handler"];
+  };
+  "/invite_code/list/count": {
+    /**
+     * Returns a count of list of invite codes.
+     * @description Returns a count of list of invite codes.
+     */
+    get: operations["v1_invite_code_list_count_handler"];
   };
   "/notification/get": {
     /**
@@ -128,6 +135,13 @@ export interface paths {
      * @description Returns a list of notifications.
      */
     get: operations["v1_notification_list_handler"];
+  };
+  "/notification/list/count": {
+    /**
+     * Returns a count of list of notifications.
+     * @description Returns a count of list of notifications.
+     */
+    get: operations["v1_notification_list_count_handler"];
   };
   "/notification/read": {
     /**
@@ -1012,8 +1026,10 @@ export interface operations {
         offset?: number | null;
         /** @description The maximum number of activities to return. */
         limit?: number | null;
-        /** @description The sender address to filter by. */
-        address?: string | null;
+        /** @description The user id to filter by. */
+        user_id?: string | null;
+        /** @description The wallet address to filter by. */
+        wallet_address?: string | null;
       };
     };
     responses: {
@@ -1042,8 +1058,10 @@ export interface operations {
         offset?: number | null;
         /** @description The maximum number of activities to return. */
         limit?: number | null;
-        /** @description The sender address to filter by. */
-        address?: string | null;
+        /** @description The user id to filter by. */
+        user_id?: string | null;
+        /** @description The wallet address to filter by. */
+        wallet_address?: string | null;
       };
     };
     responses: {
@@ -1320,8 +1338,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a list of paymasters.
-   * @description Returns a list of paymasters.
+   * Returns a list of invite codes.
+   * @description Returns a list of invite codes.
    */
   v1_invite_code_list_handler: {
     parameters: {
@@ -1330,6 +1348,8 @@ export interface operations {
         offset?: number | null;
         /** @description The maximum number of invite codes to return. */
         limit?: number | null;
+        /** @description The user id to filter by. */
+        user_id?: string | null;
       };
     };
     responses: {
@@ -1339,7 +1359,37 @@ export interface operations {
           "application/json": components["schemas"]["InviteCode"][];
         };
       };
-      /** @description Invite Code bad request */
+      /** @description InviteCode bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["InviteCodeError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a count of list of invite codes.
+   * @description Returns a count of list of invite codes.
+   */
+  v1_invite_code_list_count_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first invite code to return. */
+        offset?: number | null;
+        /** @description The maximum number of invite codes to return. */
+        limit?: number | null;
+        /** @description The user id to filter by. */
+        user_id?: string | null;
+      };
+    };
+    responses: {
+      /** @description Invite Codes returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["InviteCodeListCount"];
+        };
+      };
+      /** @description InviteCode bad request */
       500: {
         content: {
           "application/json": components["schemas"]["InviteCodeError"];
@@ -1384,6 +1434,10 @@ export interface operations {
         offset?: number | null;
         /** @description The maximum number of notifications to return. */
         limit?: number | null;
+        /** @description The user id to filter by. */
+        user_id?: string | null;
+        /** @description The wallet address to filter by. */
+        wallet_address?: string | null;
       };
     };
     responses: {
@@ -1391,6 +1445,38 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["Notification"][];
+        };
+      };
+      /** @description Notification bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["NotificationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a count of list of notifications.
+   * @description Returns a count of list of notifications.
+   */
+  v1_notification_list_count_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first notification to return. */
+        offset?: number | null;
+        /** @description The maximum number of notifications to return. */
+        limit?: number | null;
+        /** @description The user id to filter by. */
+        user_id?: string | null;
+        /** @description The wallet address to filter by. */
+        wallet_address?: string | null;
+      };
+    };
+    responses: {
+      /** @description Notifications returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["NotificationListCount"];
         };
       };
       /** @description Notification bad request */

@@ -13,55 +13,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  Separator,
-} from "@lightdotso/ui";
-import type { FC } from "react";
-
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type SettingsCardProps = {
-  address: string;
-  title: string;
-  subtitle: string;
+interface SettingsSectionWrapperProps {
   children: React.ReactNode;
-  footerContent?: React.ReactNode;
-};
+}
 
 // -----------------------------------------------------------------------------
-// Component
+// Layout
 // -----------------------------------------------------------------------------
 
-export const SettingsCard: FC<SettingsCardProps> = ({
-  address: _address,
-  title,
-  subtitle,
+export function SettingsSectionWrapper({
   children,
-  footerContent,
-}) => {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{subtitle}</CardDescription>
-      </CardHeader>
-      <CardContent>{children}</CardContent>
-      <Separator />
-      <CardFooter className="flex w-full items-center justify-end pt-6">
-        {footerContent}
-      </CardFooter>
-    </Card>
-  );
-};
+}: SettingsSectionWrapperProps) {
+  return <div className="mb-12 mt-6 flex flex-col space-y-6">{children}</div>;
+}

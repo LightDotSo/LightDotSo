@@ -37,7 +37,7 @@ import { useState, type FC, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";
 import * as z from "zod";
-import { SettingsCard } from "@/app/(wallet)/[address]/settings/(components)/settings-card";
+import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const/titles";
 import type { WalletSettingsData } from "@/data";
 import { useDelayedValue } from "@/hooks/useDelayedValue";
@@ -240,10 +240,10 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   }, [isSuccess]);
 
   // ---------------------------------------------------------------------------
-  // Button
+  // Submit Button
   // ---------------------------------------------------------------------------
 
-  const WalletTestnetFormSubmitButton: FC = () => {
+  const SettingsTestnetCardSubmitButton: FC = () => {
     return (
       <Button
         type="submit"
@@ -270,7 +270,6 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
 
   return (
     <SettingsCard
-      address={address}
       title={
         TITLES.Settings.subcategories["Wallet Settings"].subcategories[
           "Testnet"
@@ -281,7 +280,7 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
           "Testnet"
         ].description
       }
-      footerContent={<WalletTestnetFormSubmitButton />}
+      footerContent={<SettingsTestnetCardSubmitButton />}
     >
       <Form {...form}>
         <form

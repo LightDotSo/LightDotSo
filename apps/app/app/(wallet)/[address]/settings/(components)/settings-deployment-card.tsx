@@ -23,7 +23,7 @@ import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import type { FC } from "react";
 import type { Address, Chain, Hex } from "viem";
-import { SettingsCard } from "@/app/(wallet)/[address]/settings/(components)/settings-card";
+import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const/titles";
 import type { UserOperationData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
@@ -110,12 +110,12 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Local Variables
+  // ---------------------------------------------------------------------------
+
   // Try to extract a matching operation w/ the current chain id
   const deployed_op = ops?.find(op => op.chain_id === chain.id);
-
-  // ---------------------------------------------------------------------------
-  // Button
-  // ---------------------------------------------------------------------------
 
   let initCode = calculateInitCode(
     CONTRACT_ADDRESSES["Factory"] as Address,
@@ -123,7 +123,11 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
     salt,
   );
 
-  const WalletNameFormSubmitButton: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Submit Button
+  // ---------------------------------------------------------------------------
+
+  const SettingsDeploymentCardSubmitButton: FC = () => {
     return (
       <Button
         type="submit"
@@ -143,13 +147,12 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
 
   return (
     <SettingsCard
-      address={address}
       title={chain.name}
       subtitle={
         TITLES.Settings.subcategories["Deployment"].subcategories["Chain"]
           .description
       }
-      footerContent={<WalletNameFormSubmitButton />}
+      footerContent={<SettingsDeploymentCardSubmitButton />}
     >
       {deployed_op && (
         <Button asChild variant="link">

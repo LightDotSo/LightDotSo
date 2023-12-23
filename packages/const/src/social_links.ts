@@ -29,7 +29,7 @@ export const SOCIAL_LINKS: {
   readonly [key in Social]: string;
 } = {
   [Social.DISCORD]: "https://discord.gg/Vgfxg2Rcy8",
-  [Social.GITHUB]: "https://github.com/LightDotSo",
+  [Social.GITHUB]: "https://github.com/LightDotSo/LightDotSo",
   [Social.MIRROR]: "https://mirror.xyz/lightdotso.eth",
   [Social.NOTION]: "https://lightdotso.notion.site",
   [Social.OPENSEA]: "https://opensea.io",

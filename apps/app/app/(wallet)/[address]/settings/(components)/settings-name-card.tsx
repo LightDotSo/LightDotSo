@@ -38,7 +38,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";
 import * as z from "zod";
-import { SettingsCard } from "@/app/(wallet)/[address]/settings/(components)/settings-card";
+import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const/titles";
 import type { WalletData } from "@/data";
 import { useAuthModal } from "@/hooks/useAuthModal";
@@ -265,7 +265,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   }, [isSuccess]);
 
   // ---------------------------------------------------------------------------
-  // Button
+  // Submit Button
   // ---------------------------------------------------------------------------
 
   const WalletLoginButton: FC = () => {
@@ -280,7 +280,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
     );
   };
 
-  const WalletNameFormSubmitButton: FC = () => {
+  const SettingsNameCardSubmitButton: FC = () => {
     // ---------------------------------------------------------------------------
     // Render
     // ---------------------------------------------------------------------------
@@ -310,7 +310,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
       return <WalletLoginButton />;
     }
 
-    return <WalletNameFormSubmitButton />;
+    return <SettingsNameCardSubmitButton />;
   };
 
   // ---------------------------------------------------------------------------
@@ -319,7 +319,6 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
 
   return (
     <SettingsCard
-      address={address}
       title={
         TITLES.Settings.subcategories["Wallet Settings"].subcategories["Name"]
           .title

@@ -13,27 +13,55 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Separator } from "@lightdotso/ui";
-import { AccountForm } from "@/app/(authenticated)/settings/account/account-form";
-import { SettingsSection } from "@/components/section/settings-section";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  Separator,
+} from "@lightdotso/ui";
+import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
-// Page
+// Props
 // -----------------------------------------------------------------------------
 
-export default function SettingsProfilePage() {
+type SettingsCardProps = {
+  title: string;
+  subtitle: string;
+  children: React.ReactNode;
+  footerContent?: React.ReactNode;
+};
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const SettingsCard: FC<SettingsCardProps> = ({
+  title,
+  subtitle,
+  children,
+  footerContent,
+}) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <SettingsSection
-      title="Account"
-      description="Update your account settings. Set your preferred language and
-          timezone."
-    >
+    <Card>
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{subtitle}</CardDescription>
+      </CardHeader>
+      <CardContent>{children}</CardContent>
       <Separator />
-      <AccountForm />
-    </SettingsSection>
+      {footerContent && (
+        <CardFooter className="flex w-full items-center justify-end pt-6">
+          {footerContent}
+        </CardFooter>
+      )}
+    </Card>
   );
-}
+};
