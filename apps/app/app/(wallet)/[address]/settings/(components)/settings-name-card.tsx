@@ -280,7 +280,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
     );
   };
 
-  const WalletNameFormSubmitButton: FC = () => {
+  const SettingsNameCardSubmitButton: FC = () => {
     // ---------------------------------------------------------------------------
     // Render
     // ---------------------------------------------------------------------------
@@ -310,7 +310,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
       return <WalletLoginButton />;
     }
 
-    return <WalletNameFormSubmitButton />;
+    return <SettingsNameCardSubmitButton />;
   };
 
   // ---------------------------------------------------------------------------

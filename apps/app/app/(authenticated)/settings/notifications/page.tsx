@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { SettingsNotificationCard } from "@/app/(authenticated)/settings/notifications/(components)/settings-notification-card";
+import { SettingsNotificationCard } from "@/app/(authenticated)/settings/(components)/settings-notification-card";
 
 // -----------------------------------------------------------------------------
 // Page

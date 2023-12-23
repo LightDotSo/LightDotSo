@@ -88,6 +88,16 @@ export const SettingsNotificationCard: FC = () => {
   }
 
   // ---------------------------------------------------------------------------
+  // Button
+  // ---------------------------------------------------------------------------
+
+  const SettingsNotificationCardSubmitButton = () => (
+    <Button type="submit" disabled={!form.formState.isValid}>
+      Update profile
+    </Button>
+  );
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -98,6 +108,7 @@ export const SettingsNotificationCard: FC = () => {
         TITLES.Settings.subcategories["Deployment"].subcategories["Chain"]
           .description
       }
+      footerContent={<SettingsNotificationCardSubmitButton />}
     >
       <Form {...form}>
         <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
@@ -260,7 +271,6 @@ export const SettingsNotificationCard: FC = () => {
               </FormItem>
             )}
           />
-          <Button type="submit">Update notifications</Button>
         </form>
       </Form>
     </SettingsCard>

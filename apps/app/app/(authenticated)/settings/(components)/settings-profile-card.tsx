@@ -110,6 +110,16 @@ export const SettingsProfileCard: FC = () => {
   }
 
   // ---------------------------------------------------------------------------
+  // Button
+  // ---------------------------------------------------------------------------
+
+  const SettingsProfileCardSubmitButton = () => (
+    <Button type="submit" disabled={!form.formState.isValid}>
+      Update profile
+    </Button>
+  );
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -120,6 +130,7 @@ export const SettingsProfileCard: FC = () => {
         TITLES.Settings.subcategories["Deployment"].subcategories["Chain"]
           .description
       }
+      footerContent={<SettingsProfileCardSubmitButton />}
     >
       <Form {...form}>
         <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
@@ -222,7 +233,6 @@ export const SettingsProfileCard: FC = () => {
               Add URL
             </Button>
           </div>
-          <Button type="submit">Update profile</Button>
         </form>
       </Form>
     </SettingsCard>

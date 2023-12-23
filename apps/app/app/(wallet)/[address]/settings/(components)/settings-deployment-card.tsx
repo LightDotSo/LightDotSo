@@ -117,17 +117,17 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // Try to extract a matching operation w/ the current chain id
   const deployed_op = ops?.find(op => op.chain_id === chain.id);
 
-  // ---------------------------------------------------------------------------
-  // Button
-  // ---------------------------------------------------------------------------
-
   let initCode = calculateInitCode(
     CONTRACT_ADDRESSES["Factory"] as Address,
     image_hash,
     salt,
   );
 
-  const WalletNameFormSubmitButton: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Button
+  // ---------------------------------------------------------------------------
+
+  const SettingsDeploymentCardSubmitButton: FC = () => {
     return (
       <Button
         type="submit"
@@ -152,7 +152,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
         TITLES.Settings.subcategories["Deployment"].subcategories["Chain"]
           .description
       }
-      footerContent={<WalletNameFormSubmitButton />}
+      footerContent={<SettingsDeploymentCardSubmitButton />}
     >
       {deployed_op && (
         <Button asChild variant="link">

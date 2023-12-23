@@ -243,7 +243,7 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   // Button
   // ---------------------------------------------------------------------------
 
-  const WalletTestnetFormSubmitButton: FC = () => {
+  const SettingsTestnetCardSubmitButton: FC = () => {
     return (
       <Button
         type="submit"
@@ -280,7 +280,7 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
           "Testnet"
         ].description
       }
-      footerContent={<WalletTestnetFormSubmitButton />}
+      footerContent={<SettingsTestnetCardSubmitButton />}
     >
       <Form {...form}>
         <form
