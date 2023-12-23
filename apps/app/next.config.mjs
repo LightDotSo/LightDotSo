@@ -16,9 +16,17 @@
 import { PrismaPlugin } from "@prisma/nextjs-monorepo-workaround-plugin";
 import { withSentryConfig } from "@sentry/nextjs";
 
+// ---------------------------------------------------------------------------
+// Sentry
+// ---------------------------------------------------------------------------
+
 const sentryWebpackPluginOptions = {
   silent: false,
 };
+
+// ---------------------------------------------------------------------------
+// Next Config
+// ---------------------------------------------------------------------------
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -72,5 +80,9 @@ const nextConfig = {
     return config;
   },
 };
+
+// ---------------------------------------------------------------------------
+// Export
+// ---------------------------------------------------------------------------
 
 export default withSentryConfig(nextConfig, sentryWebpackPluginOptions);
