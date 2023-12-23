@@ -36,6 +36,7 @@ import type { Address } from "viem";
 import { TransactionCardExecuteButton } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transaction-card-execute-button";
 import { UserOperationTimeline } from "@/components/user-operation/user-operation-timeline";
 import type { ConfigurationData, UserOperationData } from "@/data";
+import { shortenName } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -90,7 +91,30 @@ export const TransactionCard: FC<TransactionCardProps> = ({
                     Get more information about this transaction.
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="p-0" />
+                <CardContent className="p-0">
+                  {[
+                    { title: "Hash", value: shortenName(userOperation.hash) },
+                    { title: "Nonce", value: userOperation.nonce },
+                    {
+                      title: "Status",
+                      value: userOperation.status.toLowerCase(),
+                    },
+                    {
+                      title: "Signatures",
+                      value: userOperation.signatures.length,
+                    },
+                  ].map((item, index) => (
+                    <div
+                      key={index}
+                      className="my-1 flex items-center justify-between"
+                    >
+                      <div>
+                        <div className="text-text-weak">{item.title}</div>
+                      </div>
+                      <div className="text-text">{item.value}</div>
+                    </div>
+                  ))}
+                </CardContent>
                 <CardFooter className="flex w-full items-center justify-end p-0">
                   <Button asChild>
                     <Link
@@ -110,16 +134,19 @@ export const TransactionCard: FC<TransactionCardProps> = ({
                 </CardHeader>
                 <CardContent className="p-0">
                   <div className="grid gap-4 md:grid-cols-2">
-                    <div className="col-span-2">
+                    <div className="col-span-2 flex items-center">
                       <Progress
+                        className="h-1"
                         value={
                           (userOperation.signatures.length /
                             configuration?.threshold!) *
                           100
                         }
                       />
-                      {/* Threshold: {configuration?.threshold!}/
-                      {configuration?.owners?.length!} */}
+                      <span className="ml-2">
+                        {userOperation.signatures.length!}/
+                        {configuration?.threshold!}
+                      </span>
                     </div>
                     <div className="col-span-2 px-4 pt-4">
                       <UserOperationTimeline userOperation={userOperation} />
