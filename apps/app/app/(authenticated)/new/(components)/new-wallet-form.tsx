@@ -152,7 +152,7 @@ export const NewWalletForm: FC = () => {
     url.searchParams.set("type", type);
     router.push(url.toString());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [name, type]);
+  }, [name, inviteCode, type]);
 
   const onSubmit = useCallback(
     (_data: NewFormValues) => {
