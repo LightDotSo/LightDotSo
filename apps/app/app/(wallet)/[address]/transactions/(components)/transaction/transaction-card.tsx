@@ -221,7 +221,10 @@ export const TransactionCard: FC<TransactionCardProps> = ({
                       </span>
                     </div>
                     <div className="col-span-2 px-4 pt-4">
-                      <UserOperationTimeline userOperation={userOperation} />
+                      <UserOperationTimeline
+                        size="xs"
+                        userOperation={userOperation}
+                      />
                     </div>
                   </div>
                 </CardContent>
