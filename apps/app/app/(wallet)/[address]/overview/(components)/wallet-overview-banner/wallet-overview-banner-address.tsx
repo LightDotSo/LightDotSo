@@ -30,7 +30,7 @@ import {
   TooltipTrigger,
   TooltipProvider,
 } from "@lightdotso/ui";
-import { splitAddress } from "@lightdotso/utils";
+import { shortenAddress } from "@lightdotso/utils";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { ChevronDown, Copy } from "lucide-react";
 import { useCallback, type FC } from "react";
@@ -137,11 +137,12 @@ export const WalletOverviewBannerAddress: FC<
             >
               {wallet
                 ? wallet.name
-                : ens ?? (typeof address === "string" && splitAddress(address))}
+                : ens ??
+                  (typeof address === "string" && shortenAddress(address))}
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Copy Address {splitAddress(address)}</p>
+            <p>Copy Address {shortenAddress(address)}</p>
           </TooltipContent>
         </Tooltip>
         <DropdownMenu>

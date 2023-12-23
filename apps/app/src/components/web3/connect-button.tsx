@@ -16,7 +16,7 @@
 "use client";
 
 import { Button } from "@lightdotso/ui";
-import { splitAddress } from "@lightdotso/utils";
+import { shortenAddress } from "@lightdotso/utils";
 import { ConnectKitButton } from "connectkit";
 import { Wallet } from "lucide-react";
 import type { Address } from "viem";
@@ -40,7 +40,7 @@ export const ConnectButton = () => {
           >
             <Wallet className="mr-2 h-4 w-4" />
             {isConnected
-              ? ensName ?? splitAddress(address as Address)
+              ? ensName ?? shortenAddress(address as Address)
               : "Connect Wallet"}
           </Button>
         );
