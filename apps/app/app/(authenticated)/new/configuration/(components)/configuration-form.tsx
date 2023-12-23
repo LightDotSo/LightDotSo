@@ -225,7 +225,7 @@ export const ConfigurationForm: FC = () => {
   });
 
   // ---------------------------------------------------------------------------
-  // Hooks
+  // Effect Hooks
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
@@ -305,6 +305,10 @@ export const ConfigurationForm: FC = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValues]);
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
 
   const navigateToStep = useCallback(() => {
     const url = new URL(steps[2].href, window.location.origin);

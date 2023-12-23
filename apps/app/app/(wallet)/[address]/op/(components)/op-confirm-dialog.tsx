@@ -83,6 +83,10 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
   config,
   userOperation,
 }) => {
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
   const [recoveredAddress, setRecoveredAddress] = useState<Address>();
 
   // ---------------------------------------------------------------------------
@@ -180,9 +184,17 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Local Variables
+  // ---------------------------------------------------------------------------
+
   const paymasterSignedMsg = `0x${userOperation.paymaster_and_data.slice(
     170,
   )}` as Hex;
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   useEffect(() => {
     const recoverAddress = async () => {
@@ -201,6 +213,10 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
 
     recoverAddress();
   }, [paymasterHash, paymasterSignedMsg]);
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
 
   // A `useCallback` handler for confirming the operation
   const handleConfirm = useCallback(() => {

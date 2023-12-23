@@ -108,7 +108,7 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
     linkSteps.find(step => step.href.includes(stepType)) ?? linkSteps[0];
 
   // ---------------------------------------------------------------------------
-  // Effect Hooks
+  // Callback Hooks
   // ---------------------------------------------------------------------------
 
   const navigateToStep = useCallback(

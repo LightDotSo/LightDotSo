@@ -74,12 +74,24 @@ type TokenImageProps = {
 // -----------------------------------------------------------------------------
 
 export const TokenImage: FC<TokenImageProps> = ({ token, size }) => {
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isImageError, setIsImageError] = useState(false);
   const [tokenChainId, tokenAddress] = parseTokenAddress(token);
 
+  // ---------------------------------------------------------------------------
+  // Local Variables
+  // ---------------------------------------------------------------------------
+
   const className = tokenImageVariants({ size });
   const imageSrc = `https://logos.covalenthq.com/tokens/${tokenChainId}/${tokenAddress}.png`;
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   useEffect(() => {
     const image = new Image();

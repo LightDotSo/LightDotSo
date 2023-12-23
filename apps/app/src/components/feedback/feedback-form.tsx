@@ -73,9 +73,17 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
 
   const { userId } = useAuth();
 
+  // ---------------------------------------------------------------------------
+  // Form
+  // ---------------------------------------------------------------------------
+
   const form = useForm<FeedbackFormValues>({
     resolver: zodResolver(feedbackFormSchema),
   });
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
 
   function onSubmit(data: FeedbackFormValues) {
     if (!userId) {

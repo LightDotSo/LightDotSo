@@ -225,6 +225,10 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
 
   const formValues = form.watch();
 
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
   function onSubmit(data: WalletNameFormValues) {
     mutate({ name: data.name });
   }

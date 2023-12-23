@@ -62,10 +62,18 @@ const defaultValues: Partial<AppearanceFormValues> = {
 // -----------------------------------------------------------------------------
 
 export const AppearanceForm: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Form
+  // ---------------------------------------------------------------------------
+
   const form = useForm<AppearanceFormValues>({
     resolver: zodResolver(appearanceFormSchema),
     defaultValues,
   });
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
 
   function onSubmit(_data: AppearanceFormValues) {
     successToast("Your preferences have been updated.");

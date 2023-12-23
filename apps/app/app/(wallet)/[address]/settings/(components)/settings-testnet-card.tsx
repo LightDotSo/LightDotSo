@@ -69,6 +69,10 @@ type SettingsTestnetCardProps = {
 export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   address,
 }) => {
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
   const [isFormChanged, setIsFormChanged] = useState(false);
   const [key, setKey] = useState(Math.random());
 
@@ -204,6 +208,10 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   });
 
   const formValues = form.watch();
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
 
   async function onSubmit(data: WalletTestnetFormValues) {
     mutate({ is_enabled_testnet: data.enabled });

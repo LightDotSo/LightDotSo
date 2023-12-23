@@ -116,6 +116,10 @@ export const ConfirmForm: FC = () => {
     };
   }, [name, type, threshold, salt, owners]);
 
+  // ---------------------------------------------------------------------------
+  // Form
+  // ---------------------------------------------------------------------------
+
   const form = useForm<NewFormValues>({
     mode: "onChange",
     // TODO: Fix this type error w/ zod

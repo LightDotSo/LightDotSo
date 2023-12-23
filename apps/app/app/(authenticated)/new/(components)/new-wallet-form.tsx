@@ -88,6 +88,10 @@ export const NewWalletForm: FC = () => {
   const [name, setName] = useNameQueryState();
   const [type, setType] = useTypeQueryState();
 
+  // ---------------------------------------------------------------------------
+  // Form
+  // ---------------------------------------------------------------------------
+
   const defaultValues: Partial<NewFormValues> = {
     name,
     type,
@@ -126,6 +130,10 @@ export const NewWalletForm: FC = () => {
     setFormValues(defaultValues);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
 
   const navigateToStep = useCallback(() => {
     const url = new URL(steps[1].href, window.location.origin);

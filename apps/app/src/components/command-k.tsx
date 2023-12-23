@@ -69,6 +69,10 @@ export const CommandK: FC = () => {
   const { wallet } = useAuth();
   const { toggleDev } = useDev();
 
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
   const onClearSearch = useCallback(() => {
     // Clear search params
     const url = new URL(window.location.href);

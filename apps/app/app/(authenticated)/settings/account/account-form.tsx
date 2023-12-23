@@ -94,10 +94,18 @@ const defaultValues: Partial<AccountFormValues> = {
 // -----------------------------------------------------------------------------
 
 export const AccountForm: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Form
+  // ---------------------------------------------------------------------------
+
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(accountFormSchema),
     defaultValues,
   });
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
 
   function onSubmit(_data: AccountFormValues) {
     successToast("Your account has been updated.");
