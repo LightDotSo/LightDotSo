@@ -78,5 +78,11 @@ export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
   // Render
   // ---------------------------------------------------------------------------
 
-  return <DataTable data={configuration?.owners ?? []} columns={columns} />;
+  return (
+    <div className="space-y-4">
+      <div className="rounded-md border border-border bg-background">
+        <DataTable data={configuration?.owners ?? []} columns={columns} />
+      </div>
+    </div>
+  );
 };

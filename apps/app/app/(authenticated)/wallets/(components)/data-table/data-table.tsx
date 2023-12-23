@@ -148,7 +148,7 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
     <>
       <DataTableToolbar table={table} />
       <div className="space-y-4">
-        <div className="rounded-md border border-border">
+        <div className="rounded-md border border-border bg-background">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map(headerGroup => (

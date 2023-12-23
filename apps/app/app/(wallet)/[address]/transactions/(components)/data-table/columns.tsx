@@ -71,7 +71,11 @@ export const columns: ColumnDef<UserOperationData>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Status" />
     ),
-    cell: ({ row }) => <UserOperationCardStatus userOperation={row.original} />,
+    cell: ({ row }) => (
+      <div className="flex items-center justify-end">
+        <UserOperationCardStatus userOperation={row.original} />
+      </div>
+    ),
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
@@ -81,9 +85,14 @@ export const columns: ColumnDef<UserOperationData>[] = [
   {
     id: "actions",
     cell: ({ row: _ }) => (
-      <Button variant="ghost" className="block rounded-full p-3">
-        <ChevronDown className="h-4 w-4 shrink-0 fill-text transition-transform duration-200" />
-      </Button>
+      <div className="flex items-center justify-end">
+        <Button
+          variant="ghost"
+          className="block rounded-md bg-background-strong p-3"
+        >
+          <ChevronDown className="h-4 w-4 shrink-0 fill-text transition-transform duration-200" />
+        </Button>
+      </div>
     ),
     enableHiding: false,
   },
