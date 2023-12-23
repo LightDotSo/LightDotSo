@@ -80,9 +80,9 @@ export const TransactionCard: FC<TransactionCardProps> = ({
         </CollapsibleTrigger>
         <CollapsibleContent asChild>
           <TableCell className="p-0" colSpan={row.getAllCells().length}>
-            <div className="my-4 grid gap-4 md:grid-cols-3">
-              <Card className="col-span-1 bg-background-stronger">
-                <CardHeader>
+            <div className="m-4 grid gap-4 md:grid-cols-2">
+              <Card className="col-span-1 space-y-4 border border-border-weak bg-background-stronger p-4">
+                <CardHeader className="p-0">
                   <CardTitle className="text-lg">
                     Transaction Information
                   </CardTitle>
@@ -90,8 +90,8 @@ export const TransactionCard: FC<TransactionCardProps> = ({
                     Get more information about this transaction.
                   </CardDescription>
                 </CardHeader>
-                <CardContent />
-                <CardFooter className="flex w-full items-center justify-end">
+                <CardContent className="p-0" />
+                <CardFooter className="flex w-full items-center justify-end p-0">
                   <Button asChild>
                     <Link
                       href={`/${userOperation.sender}/op/${userOperation.hash}`}
@@ -101,34 +101,33 @@ export const TransactionCard: FC<TransactionCardProps> = ({
                   </Button>
                 </CardFooter>
               </Card>
-              <Card className="col-span-2 bg-background-stronger">
-                <CardHeader>
+              <Card className="col-span-1 space-y-4 border border-border-weak bg-background-stronger p-4">
+                <CardHeader className="p-0">
                   <CardTitle className="text-lg">Progress</CardTitle>
                   <CardDescription>
                     View the progress of this transaction.
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-0">
                   <div className="grid gap-4 md:grid-cols-2">
-                    <Progress
-                      className="col-span-1"
-                      value={
-                        (userOperation.signatures.length /
-                          configuration?.threshold!) *
-                        100
-                      }
-                    />
-                    <div className="col-span-1">
-                      Threshold: {configuration?.threshold!}/
-                      {configuration?.owners?.length!}
+                    <div className="col-span-2">
+                      <Progress
+                        value={
+                          (userOperation.signatures.length /
+                            configuration?.threshold!) *
+                          100
+                        }
+                      />
+                      {/* Threshold: {configuration?.threshold!}/
+                      {configuration?.owners?.length!} */}
                     </div>
-                    <div className="col-span-2 px-4">
+                    <div className="col-span-2 px-4 pt-4">
                       <UserOperationTimeline userOperation={userOperation} />
                     </div>
                   </div>
                 </CardContent>
                 {userOperation.status === "PROPOSED" && (
-                  <CardFooter className="flex w-full items-center justify-end">
+                  <CardFooter className="flex w-full items-center justify-end p-0">
                     <TransactionCardExecuteButton
                       address={address}
                       config={configuration}
