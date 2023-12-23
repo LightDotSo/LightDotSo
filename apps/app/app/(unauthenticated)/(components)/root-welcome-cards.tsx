@@ -23,6 +23,7 @@ import {
 } from "@lightdotso/ui";
 import { Gamepad, Wallet } from "lucide-react";
 import type { FC } from "react";
+import { ConnectButton } from "@/components/web3/connect-button";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -48,9 +49,7 @@ export const RootWelcomeCards: FC = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Button>
-            <Wallet className="mr-2 h-4 w-4" /> Connect Wallet
-          </Button>
+          <ConnectButton />
         </CardContent>
       </Card>
       <Card className="col-span-1">
@@ -66,7 +65,7 @@ export const RootWelcomeCards: FC = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Button variant="outline">
+          <Button size="sm" variant="outline">
             <Gamepad className="mr-2 h-4 w-4" /> Start Demo
           </Button>
         </CardContent>

@@ -189,19 +189,21 @@ export function DataTable({
           {Object.entries(groupedItems).map(([date, itemsInSameDate]) => (
             <div key={date} className="mb-4 space-y-3">
               <div className="text-text-weak">{date}</div>
-              <Table className="overflow-hidden rounded-md border border-border bg-background">
-                <TableBody>
-                  {itemsInSameDate.map(({ original: userOperation, row }) => (
-                    <TransactionCard
-                      key={userOperation.hash}
-                      address={address}
-                      configuration={configuration}
-                      userOperation={userOperation}
-                      row={row}
-                    />
-                  ))}
-                </TableBody>
-              </Table>
+              <div className="rounded-md border border-border bg-background">
+                <Table>
+                  <TableBody className="overflow-hidden">
+                    {itemsInSameDate.map(({ original: userOperation, row }) => (
+                      <TransactionCard
+                        key={userOperation.hash}
+                        address={address}
+                        configuration={configuration}
+                        userOperation={userOperation}
+                        row={row}
+                      />
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </div>
           ))}
         </>

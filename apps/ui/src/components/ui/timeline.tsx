@@ -23,6 +23,8 @@
 // License: MIT
 
 import { cn } from "@lightdotso/utils";
+import type { VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 import type { ComponentProps, FC } from "react";
 
 interface TimelineProps extends ComponentProps<"ol"> {}
@@ -34,17 +36,35 @@ const Timeline: FC<TimelineProps> = ({ children, className, ...props }) => {
   );
 };
 
+const timelinePointVariants = cva("", {
+  variants: {
+    size: {
+      xs: "left-[-0.5rem] h-4 w-4",
+      sm: "-left-3 h-6 w-6",
+    },
+  },
+  defaultVariants: {
+    size: "sm",
+  },
+});
 interface TimelnePointProps extends ComponentProps<"div"> {
   children: React.ReactNode;
+  size?: VariantProps<typeof timelinePointVariants>["size"];
 }
 const TimelinePoint: FC<TimelnePointProps> = ({
   children,
   className,
+  size,
   ...props
 }) => {
   return (
     <div className={className} {...props}>
-      <span className="absolute -left-3 z-20 flex h-6 w-6 items-center justify-center rounded-full">
+      <span
+        className={cn(
+          "absolute z-20 flex items-center justify-center rounded-full",
+          timelinePointVariants({ size }),
+        )}
+      >
         {children}
       </span>
     </div>
@@ -84,33 +104,55 @@ const TimelineItem: FC<TimelineItemProps> = ({
   );
 };
 
-interface TimelineTitleProps extends ComponentProps<"h1"> {}
+const timelineTitleVariants = cva("", {
+  variants: {
+    size: {
+      xs: "text-sm font-semibold text-text",
+      sm: "text-base font-semibold text-text",
+    },
+  },
+  defaultVariants: {
+    size: "sm",
+  },
+});
+interface TimelineTitleProps extends ComponentProps<"h1"> {
+  size?: VariantProps<typeof timelineTitleVariants>["size"];
+}
 const TimelineTitle: FC<TimelineTitleProps> = ({
   children,
   className,
+  size,
   ...props
 }) => {
   return (
-    <h1
-      className={cn("text-base font-semibold text-text", className)}
-      {...props}
-    >
+    <h1 className={cn(timelineTitleVariants({ size }), className)} {...props}>
       {children}
     </h1>
   );
 };
 
-interface TimelineBodyProps extends ComponentProps<"p"> {}
+const timelineBodyVariants = cva("", {
+  variants: {
+    size: {
+      xs: "text-xs font-normal text-text-weak",
+      sm: "text-base font-normal text-text-weak",
+    },
+  },
+  defaultVariants: {
+    size: "sm",
+  },
+});
+interface TimelineBodyProps extends ComponentProps<"p"> {
+  size?: VariantProps<typeof timelineBodyVariants>["size"];
+}
 const TimelineBody: FC<TimelineBodyProps> = ({
   children,
   className,
+  size,
   ...props
 }) => {
   return (
-    <div
-      className={cn("text-base font-normal text-text-weak", className)}
-      {...props}
-    >
+    <div className={cn(timelineBodyVariants({ size }), className)} {...props}>
       {children}
     </div>
   );

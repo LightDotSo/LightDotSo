@@ -56,7 +56,10 @@ export const AddressPinPointer: FC<AddressPinPointerProps> = ({
 // Props
 // -----------------------------------------------------------------------------
 
-type UserOperationTimelineProps = { userOperation: UserOperationData };
+type UserOperationTimelineProps = {
+  userOperation: UserOperationData;
+  size?: "xs" | "sm";
+};
 
 // -----------------------------------------------------------------------------
 // Component
@@ -64,6 +67,7 @@ type UserOperationTimelineProps = { userOperation: UserOperationData };
 
 export const UserOperationTimeline: FC<UserOperationTimelineProps> = ({
   userOperation: { created_at, signatures },
+  size = "sm",
 }) => {
   // ---------------------------------------------------------------------------
   // Render
@@ -72,7 +76,7 @@ export const UserOperationTimeline: FC<UserOperationTimelineProps> = ({
   return (
     <Timeline>
       <TimelineItem>
-        <TimelinePoint>
+        <TimelinePoint size={size}>
           <AddressPinPointer
             address={"0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"}
           >
@@ -82,15 +86,15 @@ export const UserOperationTimeline: FC<UserOperationTimelineProps> = ({
           </AddressPinPointer>
         </TimelinePoint>
         <TimelineContent>
-          <TimelineTitle>Created</TimelineTitle>
-          <TimelineBody>
+          <TimelineTitle size={size}>Created</TimelineTitle>
+          <TimelineBody size={size}>
             <TimeAgo datetime={created_at} />
           </TimelineBody>
         </TimelineContent>
       </TimelineItem>
       {signatures.map(({ created_at, owner_id }) => (
         <TimelineItem key={owner_id}>
-          <TimelinePoint>
+          <TimelinePoint size={size}>
             <AddressPinPointer
               address={"0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"}
             >
@@ -100,22 +104,24 @@ export const UserOperationTimeline: FC<UserOperationTimelineProps> = ({
             </AddressPinPointer>
           </TimelinePoint>
           <TimelineContent>
-            <TimelineTitle>Signed</TimelineTitle>
-            <TimelineBody>
+            <TimelineTitle size={size}>Signed</TimelineTitle>
+            <TimelineBody size={size}>
               <TimeAgo datetime={created_at} />
             </TimelineBody>
           </TimelineContent>
         </TimelineItem>
       ))}
       <TimelineItem>
-        <TimelinePoint>
-          <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-border-warning-weak bg-background-warning p-1">
-            <Hourglass className="h-2.5 w-2.5 text-text-inverse" />
+        <TimelinePoint size={size}>
+          <span className="relative inline-block">
+            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-border-warning-weak bg-background-warning p-1">
+              <Hourglass className="h-2.5 w-2.5 text-text-inverse" />
+            </span>
           </span>
         </TimelinePoint>
         <TimelineContent>
-          <TimelineTitle>Waiting for Execution</TimelineTitle>
-          <TimelineBody>
+          <TimelineTitle size={size}>Waiting for Execution</TimelineTitle>
+          <TimelineBody size={size}>
             Can be executed once threshold is reached.
           </TimelineBody>
         </TimelineContent>

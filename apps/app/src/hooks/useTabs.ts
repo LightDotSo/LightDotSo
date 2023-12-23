@@ -150,6 +150,8 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
           params: {
             query: {
               address: walletAddress,
+              status: "proposed",
+              is_testnet: walletSettings?.is_enabled_testnet ?? false,
             },
           },
         });

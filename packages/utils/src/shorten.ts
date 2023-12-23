@@ -13,10 +13,18 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export const splitAddress = (address: string) => {
+export const shortenAddress = (address: string) => {
   return (
     address?.substring(0, 6) +
     `...` +
     address?.substring(address.length - 4, address.length)
+  );
+};
+
+export const shortenBytes32 = (bytes32: string) => {
+  return (
+    bytes32?.substring(0, 6) +
+    `...` +
+    bytes32?.substring(bytes32.length - 8, bytes32.length)
   );
 };

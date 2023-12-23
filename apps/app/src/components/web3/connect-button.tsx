@@ -15,13 +15,36 @@
 
 "use client";
 
+import { Button } from "@lightdotso/ui";
+import { shortenAddress } from "@lightdotso/utils";
 import { ConnectKitButton } from "connectkit";
-import type { FC } from "react";
+import { Wallet } from "lucide-react";
+import type { Address } from "viem";
+
+// From: https://docs.family.co/connectkit/connect-button#connect-button-example
+// Customizes the ConnectKit button to use the UI Button component.
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const ConnectButton: FC = () => {
-  return <ConnectKitButton />;
+export const ConnectButton = () => {
+  return (
+    <ConnectKitButton.Custom>
+      {({ isConnected, isConnecting, show, address, ensName }) => {
+        return (
+          <Button
+            size="sm"
+            variant={isConnecting ? "loading" : "default"}
+            onClick={show}
+          >
+            <Wallet className="mr-2 h-4 w-4" />
+            {isConnected
+              ? ensName ?? shortenAddress(address as Address)
+              : "Connect Wallet"}
+          </Button>
+        );
+      }}
+    </ConnectKitButton.Custom>
+  );
 };
