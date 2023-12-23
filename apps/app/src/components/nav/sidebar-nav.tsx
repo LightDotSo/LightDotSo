@@ -43,7 +43,15 @@ export const SidebarNav: FC<SidebarNavProps> = ({
   items,
   ...props
 }) => {
+  // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
   const pathname = usePathname();
+
+  // ---------------------------------------------------------------------------
+  // Local Variables
+  // ---------------------------------------------------------------------------
 
   // Get the 1st part of the pathname, if baseRef is true
   // This is used to highlight the current page in the sidebar

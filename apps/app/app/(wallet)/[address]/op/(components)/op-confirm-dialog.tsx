@@ -95,6 +95,10 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
 
   const { isDev } = useDev();
 
+  // ---------------------------------------------------------------------------
+  // Local Variables
+  // ---------------------------------------------------------------------------
+
   // Get the cumulative weight of all owners in the userOperation signatures array and check if it is greater than or equal to the threshold
   const isValid =
     userOperation.signatures.reduce((acc, signature) => {
