@@ -28,15 +28,16 @@ import {
   TableCell,
   TableRow,
 } from "@lightdotso/ui";
+import { shortenBytes32 } from "@lightdotso/utils";
 import type { Row } from "@tanstack/react-table";
 import { flexRender } from "@tanstack/react-table";
 import Link from "next/link";
 import type { FC } from "react";
+import { useMemo } from "react";
 import type { Address } from "viem";
 import { TransactionCardExecuteButton } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transaction-card-execute-button";
 import { UserOperationTimeline } from "@/components/user-operation/user-operation-timeline";
 import type { ConfigurationData, UserOperationData } from "@/data";
-import { shortenName } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -59,6 +60,28 @@ export const TransactionCard: FC<TransactionCardProps> = ({
   userOperation,
   row,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  const informationItems = useMemo(() => {
+    const items = [
+      { title: "Hash", value: shortenBytes32(userOperation.hash) },
+      { title: "Nonce", value: userOperation.nonce },
+      { title: "Status", value: userOperation.status.toLowerCase() },
+      { title: "Signatures", value: userOperation.signatures.length },
+    ];
+
+    if (userOperation.transaction) {
+      items.push({
+        title: "Transaction",
+        value: shortenBytes32(userOperation.transaction.hash),
+      });
+    }
+
+    return items;
+  }, [userOperation]);
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -92,18 +115,7 @@ export const TransactionCard: FC<TransactionCardProps> = ({
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="p-0">
-                  {[
-                    { title: "Hash", value: shortenName(userOperation.hash) },
-                    { title: "Nonce", value: userOperation.nonce },
-                    {
-                      title: "Status",
-                      value: userOperation.status.toLowerCase(),
-                    },
-                    {
-                      title: "Signatures",
-                      value: userOperation.signatures.length,
-                    },
-                  ].map((item, index) => (
+                  {informationItems.map((item, index) => (
                     <div
                       key={index}
                       className="my-1 flex items-center justify-between"
