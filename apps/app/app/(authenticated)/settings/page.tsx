@@ -13,9 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Separator } from "@lightdotso/ui";
-import { ProfileForm } from "@/app/(authenticated)/settings/(components)/profile-form";
-import { SettingsSection } from "@/components/section/settings-section";
+import { SettingsProfileCard } from "@/app/(authenticated)/settings/(components)/settings-profile-card";
 
 // -----------------------------------------------------------------------------
 // Page
@@ -26,13 +24,5 @@ export default function SettingsProfilePage() {
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <SettingsSection
-      title="Profile"
-      description="This is how others will see you on the site."
-    >
-      <Separator />
-      <ProfileForm />
-    </SettingsSection>
-  );
+  return <SettingsProfileCard />;
 }

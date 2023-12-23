@@ -29,7 +29,6 @@ import type { FC } from "react";
 // -----------------------------------------------------------------------------
 
 type SettingsCardProps = {
-  address: string;
   title: string;
   subtitle: string;
   children: React.ReactNode;
@@ -41,7 +40,6 @@ type SettingsCardProps = {
 // -----------------------------------------------------------------------------
 
 export const SettingsCard: FC<SettingsCardProps> = ({
-  address: _address,
   title,
   subtitle,
   children,
@@ -59,9 +57,11 @@ export const SettingsCard: FC<SettingsCardProps> = ({
       </CardHeader>
       <CardContent>{children}</CardContent>
       <Separator />
-      <CardFooter className="flex w-full items-center justify-end pt-6">
-        {footerContent}
-      </CardFooter>
+      {footerContent && (
+        <CardFooter className="flex w-full items-center justify-end pt-6">
+          {footerContent}
+        </CardFooter>
+      )}
     </Card>
   );
 };
