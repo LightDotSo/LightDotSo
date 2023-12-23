@@ -69,11 +69,28 @@ type NewFormValues = z.infer<typeof newFormSchema>;
 // -----------------------------------------------------------------------------
 
 export const NewWalletForm: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
   const router = useRouter();
+
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
   const { setFormValues } = useNewForm();
+
+  // ---------------------------------------------------------------------------
+  // Query State Hooks
+  // ---------------------------------------------------------------------------
 
   const [name, setName] = useNameQueryState();
   const [type, setType] = useTypeQueryState();
+
+  // ---------------------------------------------------------------------------
+  // Form
+  // ---------------------------------------------------------------------------
 
   const defaultValues: Partial<NewFormValues> = {
     name,
@@ -113,6 +130,10 @@ export const NewWalletForm: FC = () => {
     setFormValues(defaultValues);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
 
   const navigateToStep = useCallback(() => {
     const url = new URL(steps[1].href, window.location.origin);

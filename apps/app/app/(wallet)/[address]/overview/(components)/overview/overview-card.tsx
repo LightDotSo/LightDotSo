@@ -44,6 +44,10 @@ export const OverviewCard = ({
   title,
   value,
 }: OverviewCardProps) => {
+  // ---------------------------------------------------------------------------
+  // Operation Hooks
+  // ---------------------------------------------------------------------------
+
   const y = useMotionValue(0);
   const boxShadow = useRaisedShadow(y);
   const dragControls = useDragControls();

@@ -60,7 +60,7 @@ export function DataTable({
   pageCount,
 }: DataTableProps) {
   // ---------------------------------------------------------------------------
-  // Query States
+  // Query State Hooks
   // ---------------------------------------------------------------------------
 
   const [paginationState, setPaginationState] = usePaginationQueryState();

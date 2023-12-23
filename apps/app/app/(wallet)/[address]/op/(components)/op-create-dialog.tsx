@@ -43,6 +43,10 @@ export const OpCreateDialog: FC<OpCreateDialogProps> = ({
   config,
   userOperations,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
   const { address: userAddress } = useAuth();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

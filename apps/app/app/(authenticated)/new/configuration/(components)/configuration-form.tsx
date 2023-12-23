@@ -93,12 +93,21 @@ function timestampToBytes32(timestamp: number): string {
 // -----------------------------------------------------------------------------
 
 export const ConfigurationForm: FC = () => {
-  const { address: userAddress, ens: userEns } = useAuth();
+  // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
   const router = useRouter();
+
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { address: userAddress, ens: userEns } = useAuth();
   const { setFormValues, fetchToCreate } = useNewForm();
 
   // ---------------------------------------------------------------------------
-  // Query State
+  // Query State Hooks
   // ---------------------------------------------------------------------------
 
   const [name] = useNameQueryState();
@@ -216,7 +225,7 @@ export const ConfigurationForm: FC = () => {
   });
 
   // ---------------------------------------------------------------------------
-  // Hooks
+  // Effect Hooks
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
@@ -296,6 +305,10 @@ export const ConfigurationForm: FC = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValues]);
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
 
   const navigateToStep = useCallback(() => {
     const url = new URL(steps[2].href, window.location.origin);

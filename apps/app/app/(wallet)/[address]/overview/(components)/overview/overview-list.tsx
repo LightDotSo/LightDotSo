@@ -50,7 +50,15 @@ export type OverviewListProps = {
 // -----------------------------------------------------------------------------
 
 export const OverviewList: FC<OverviewListProps> = ({ address }) => {
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
   const [items, setItems] = useState(initialItems);
+
+  // ---------------------------------------------------------------------------
+  // Component Mapping
+  // ---------------------------------------------------------------------------
 
   const itemToComponent = (itemId: string): JSX.Element => {
     switch (itemId) {

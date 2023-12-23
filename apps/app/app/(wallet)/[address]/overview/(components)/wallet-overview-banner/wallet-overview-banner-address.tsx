@@ -57,10 +57,23 @@ interface WalletOverviewBannerAddressProps {
 export const WalletOverviewBannerAddress: FC<
   WalletOverviewBannerAddressProps
 > = ({ address }) => {
+  // ---------------------------------------------------------------------------
+  // Wagmi Hooks
+  // ---------------------------------------------------------------------------
+
   const { data: ens } = useEnsName({
     address: address,
   });
+
+  // ---------------------------------------------------------------------------
+  // Operation Hooks
+  // ---------------------------------------------------------------------------
+
   const [, copy] = useCopy();
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
 
   const handleAddressClick = useCallback(() => {
     copy(address);

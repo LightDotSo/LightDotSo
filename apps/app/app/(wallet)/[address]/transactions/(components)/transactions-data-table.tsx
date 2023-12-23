@@ -51,7 +51,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   status,
 }) => {
   // ---------------------------------------------------------------------------
-  // Query States
+  // Query State Hooks
   // ---------------------------------------------------------------------------
 
   const [paginationState] = usePaginationQueryState();

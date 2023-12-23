@@ -84,6 +84,10 @@ const defaultValues: Partial<ProfileFormValues> = {
 // -----------------------------------------------------------------------------
 
 export const ProfileForm: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Form
+  // ---------------------------------------------------------------------------
+
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues,
@@ -94,6 +98,10 @@ export const ProfileForm: FC = () => {
     name: "urls",
     control: form.control,
   });
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
 
   function onSubmit(_data: ProfileFormValues) {
     successToast("Profile updated.");

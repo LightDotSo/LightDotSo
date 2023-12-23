@@ -55,7 +55,7 @@ interface DataTableProps {
 
 export function DataTable({ columns, data }: DataTableProps) {
   // ---------------------------------------------------------------------------
-  // Query States
+  // Query State Hooks
   // ---------------------------------------------------------------------------
 
   const [paginationState, setPaginationState] = usePaginationQueryState();

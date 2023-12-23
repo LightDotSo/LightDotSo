@@ -43,7 +43,7 @@ interface TokensDataTableProps {
 
 export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
-  // Query States
+  // Query State Hooks
   // ---------------------------------------------------------------------------
 
   const [paginationState] = usePaginationQueryState();

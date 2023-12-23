@@ -47,7 +47,7 @@ export function DataTableToolbar({ status, table }: DataTableToolbarProps) {
   const { userOperationColumnFilters } = useTables();
 
   // ---------------------------------------------------------------------------
-  // Query States
+  // Query State Hooks
   // ---------------------------------------------------------------------------
 
   const [paginationState] = usePaginationQueryState();

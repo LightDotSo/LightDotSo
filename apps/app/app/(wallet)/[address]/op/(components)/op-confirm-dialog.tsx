@@ -83,8 +83,21 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
   config,
   userOperation,
 }) => {
-  const { isDev } = useDev();
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
   const [recoveredAddress, setRecoveredAddress] = useState<Address>();
+
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { isDev } = useDev();
+
+  // ---------------------------------------------------------------------------
+  // Local Variables
+  // ---------------------------------------------------------------------------
 
   // Get the cumulative weight of all owners in the userOperation signatures array and check if it is greater than or equal to the threshold
   const isValid =
@@ -175,9 +188,17 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Local Variables
+  // ---------------------------------------------------------------------------
+
   const paymasterSignedMsg = `0x${userOperation.paymaster_and_data.slice(
     170,
   )}` as Hex;
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   useEffect(() => {
     const recoverAddress = async () => {
@@ -196,6 +217,10 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
 
     recoverAddress();
   }, [paymasterHash, paymasterSignedMsg]);
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
 
   // A `useCallback` handler for confirming the operation
   const handleConfirm = useCallback(() => {

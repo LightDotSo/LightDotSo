@@ -85,10 +85,18 @@ const defaultValues: Partial<DisplayFormValues> = {
 // -----------------------------------------------------------------------------
 
 export const DisplayForm: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Form
+  // ---------------------------------------------------------------------------
+
   const form = useForm<DisplayFormValues>({
     resolver: zodResolver(displayFormSchema),
     defaultValues,
   });
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
 
   function onSubmit(_data: DisplayFormValues) {
     successToast("Display updated.");

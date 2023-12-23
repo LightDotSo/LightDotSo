@@ -76,9 +76,18 @@ type SettingsNameCardProps = {
 // -----------------------------------------------------------------------------
 
 export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
-  const { isAuthValid, openAuthModal } = useAuthModal();
+  // ---------------------------------------------------------------------------
+  // Staet Hooks
+  // ---------------------------------------------------------------------------
+
   const [isFormChanged, setIsFormChanged] = useState(false);
   const [key, setKey] = useState(Math.random());
+
+  // ---------------------------------------------------------------------------
+  // Operation Hooks
+  // ---------------------------------------------------------------------------
+
+  const { isAuthValid, openAuthModal } = useAuthModal();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -224,6 +233,10 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   });
 
   const formValues = form.watch();
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
 
   function onSubmit(data: WalletNameFormValues) {
     mutate({ name: data.name });

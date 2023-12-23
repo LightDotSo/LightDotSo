@@ -66,10 +66,18 @@ const defaultValues: Partial<NotificationsFormValues> = {
 // -----------------------------------------------------------------------------
 
 export const NotificationsForm: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Form
+  // ---------------------------------------------------------------------------
+
   const form = useForm<NotificationsFormValues>({
     resolver: zodResolver(notificationsFormSchema),
     defaultValues,
   });
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
 
   function onSubmit(_data: NotificationsFormValues) {
     successToast("Notifications updated.");

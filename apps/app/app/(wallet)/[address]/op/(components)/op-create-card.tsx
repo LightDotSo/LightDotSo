@@ -61,9 +61,22 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
   config: { owners, threshold },
   userOperation,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
+  const router = useRouter();
+
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
   const { address: userAddress } = useAuth();
   const { isDev } = useDev();
-  const router = useRouter();
+
+  // ---------------------------------------------------------------------------
+  // Local Variables
+  // ---------------------------------------------------------------------------
 
   const subdigest = subdigestOf(
     address,
@@ -72,7 +85,7 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
   );
 
   // ---------------------------------------------------------------------------
-  // Wagmi
+  // Wagmi Hooks
   // ---------------------------------------------------------------------------
 
   const { data, signMessage } = useSignMessage({

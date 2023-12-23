@@ -90,6 +90,10 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   // eslint-disable-next-line react/prop-types
   className,
 }) => {
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
   const isMounted = useIsMounted();
   const [open, setOpen] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState<{
@@ -98,11 +102,20 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
     name: string;
     salt: string;
   }>();
+  const [scrollIsAtTop, setScrollIsAtTop] = useState<boolean>(true);
+
+  // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
   const router = useRouter();
   const pathname = usePathname();
-  const { address } = useAuth();
 
-  const [scrollIsAtTop, setScrollIsAtTop] = useState<boolean>(true);
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { address } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Query
