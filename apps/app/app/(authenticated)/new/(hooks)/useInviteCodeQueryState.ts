@@ -13,17 +13,18 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { nameParser, useNameQueryState } from "./useNameQueryState";
-export {
-  inviteCodeParser,
-  useInviteCodeQueryState,
-} from "./useInviteCodeQueryState";
-export { ownerParser, useOwnersQueryState } from "./useOwnersQueryState";
-export type { Owner, Owners } from "./useOwnersQueryState";
-export { saltParser, useSaltQueryState } from "./useSaltQueryState";
-export {
-  thresholdParser,
-  useThresholdQueryState,
-} from "./useThresholdQueryState";
-export { typeParser, useTypeQueryState } from "./useTypeQueryState";
-export type { WalletType } from "./useTypeQueryState";
+import { parseAsString, useQueryState } from "next-usequerystate";
+
+// -----------------------------------------------------------------------------
+// Parser
+// -----------------------------------------------------------------------------
+
+export const inviteCodeParser = parseAsString.withDefault("");
+
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
+
+export const useInviteCodeQueryState = () => {
+  return useQueryState("inviteCode", inviteCodeParser);
+};
