@@ -6373,6 +6373,7 @@ dependencies = [
 name = "lightdotso-pusher"
 version = "0.1.0"
 dependencies = [
+ "dotenvy",
  "eyre",
  "hyper",
  "hyper-rustls 0.24.1",

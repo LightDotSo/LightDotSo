@@ -15,3 +15,6 @@
   lazy_static = { workspace = true }
   pusher = "0.4.5"
   tokio = { workspace = true }
+
+[dev-dependencies]
+  dotenvy = { workspace = true }
