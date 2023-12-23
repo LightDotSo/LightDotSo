@@ -47,7 +47,7 @@ interface HistoryDataTableProps {
 
 export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
-  // Query States
+  // Query State Hooks
   // ---------------------------------------------------------------------------
 
   const [paginationState] = usePaginationQueryState();

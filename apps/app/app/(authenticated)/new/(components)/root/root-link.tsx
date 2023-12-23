@@ -50,14 +50,14 @@ interface RootLinkProps {
 
 export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
   // ---------------------------------------------------------------------------
-  // State Hooks
+  // Next Hooks
   // ---------------------------------------------------------------------------
 
   const router = useRouter();
   const searchParams = useSearchParams();
 
   // ---------------------------------------------------------------------------
-  // Query States
+  // Query State Hooks
   // ---------------------------------------------------------------------------
 
   const [name] = useNameQueryState();

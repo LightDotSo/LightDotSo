@@ -61,9 +61,17 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
   config: { owners, threshold },
   userOperation,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
+  const router = useRouter();
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
   const { address: userAddress } = useAuth();
   const { isDev } = useDev();
-  const router = useRouter();
 
   const subdigest = subdigestOf(
     address,

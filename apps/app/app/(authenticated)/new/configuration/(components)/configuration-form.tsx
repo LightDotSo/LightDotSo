@@ -93,12 +93,21 @@ function timestampToBytes32(timestamp: number): string {
 // -----------------------------------------------------------------------------
 
 export const ConfigurationForm: FC = () => {
-  const { address: userAddress, ens: userEns } = useAuth();
+  // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
   const router = useRouter();
+
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { address: userAddress, ens: userEns } = useAuth();
   const { setFormValues, fetchToCreate } = useNewForm();
 
   // ---------------------------------------------------------------------------
-  // Query State
+  // Query State Hooks
   // ---------------------------------------------------------------------------
 
   const [name] = useNameQueryState();

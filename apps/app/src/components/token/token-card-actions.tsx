@@ -41,6 +41,10 @@ type TokenCardActionsProps = { token: TokenData };
 export const TokenCardActions: FC<TokenCardActionsProps> = ({
   token: { address: tokenAddress, chain_id, decimals, symbol },
 }) => {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
   const { address } = useAuth();
 
   // ---------------------------------------------------------------------------

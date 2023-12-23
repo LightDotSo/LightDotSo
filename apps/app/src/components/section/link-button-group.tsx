@@ -44,8 +44,16 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
   children,
   items,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
   const pathname = usePathname();
   const router = useRouter();
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   // Get the last part of the path
   // Ex) /wallets/0x1234567890abcdef/transactions -> transactions

@@ -38,7 +38,7 @@ export const WalletsDataTable: FC = () => {
   const { address } = useAuth();
 
   // ---------------------------------------------------------------------------
-  // Query States
+  // Query State Hooks
   // ---------------------------------------------------------------------------
 
   const [paginationState] = usePaginationQueryState();

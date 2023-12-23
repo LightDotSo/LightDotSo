@@ -46,8 +46,13 @@ import { ChainLogo } from "@/svgs";
 
 export const ChainPopover: FC = () => {
   const isMounted = useIsMounted();
-  const { wallet } = useAuth();
   const [open, setOpen] = useState(false);
+
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { wallet } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Query

@@ -36,6 +36,10 @@ export type TransactionsDataTableToolbarProps = Pick<
 export const TransactionsDataTableToolbar: FC<
   TransactionsDataTableToolbarProps
 > = ({ status }) => {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
   const { userOperationTable } = useTables();
 
   useEffect(() => {

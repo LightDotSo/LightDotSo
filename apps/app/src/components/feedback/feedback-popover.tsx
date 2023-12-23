@@ -34,8 +34,13 @@ import { useAuth } from "@/stores";
 
 export const FeedbackPopover: FC = () => {
   const isMounted = useIsMounted();
-  const { address } = useAuth();
   const [open, setOpen] = useState(false);
+
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { address } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Render

@@ -38,14 +38,28 @@ import { errorToast, successToast } from "@/utils";
 // -----------------------------------------------------------------------------
 
 export function AuthModal() {
-  const { address, sessionId } = useAuth();
+  // ---------------------------------------------------------------------------
+  // Wagmi Hooks
+  // ---------------------------------------------------------------------------
+
   const { signMessageAsync } = useSignMessage();
   const { chain } = useNetwork();
-  const { isAuthModalVisible, hideAuthModal } = useModals();
+
+  // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
   const router = useRouter();
 
   // ---------------------------------------------------------------------------
-  // Hooks
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { address, sessionId } = useAuth();
+  const { isAuthModalVisible, hideAuthModal } = useModals();
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
   // ---------------------------------------------------------------------------
 
   const handleSignIn = useCallback(async () => {

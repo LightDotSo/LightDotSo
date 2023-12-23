@@ -58,10 +58,14 @@ interface DataTableProps {
 // -----------------------------------------------------------------------------
 
 export function DataTable({ columns, data, pageCount }: DataTableProps) {
+  // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
   const router = useRouter();
 
   // ---------------------------------------------------------------------------
-  // Query States
+  // Query State Hooks
   // ---------------------------------------------------------------------------
 
   const [paginationState, setPaginationState] = usePaginationQueryState();

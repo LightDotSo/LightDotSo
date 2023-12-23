@@ -83,8 +83,13 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
   config,
   userOperation,
 }) => {
-  const { isDev } = useDev();
   const [recoveredAddress, setRecoveredAddress] = useState<Address>();
+
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { isDev } = useDev();
 
   // Get the cumulative weight of all owners in the userOperation signatures array and check if it is greater than or equal to the threshold
   const isValid =

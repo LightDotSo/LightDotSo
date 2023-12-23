@@ -54,13 +54,25 @@ export const Tabs: FC<TabProps> = ({
   selectedTabIndex,
   setSelectedTabIndex,
 }) => {
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
   const [anchorRefs, setAnchorRefs] = useState<Array<HTMLAnchorElement | null>>(
     [],
   );
   const [isAnimated, setIsAnimated] = useState(false);
 
+  // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
   const router = useRouter();
   const pathname = usePathname();
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   const firstSlug = useMemo(() => {
     // Split the path using '/' as delimiter and remove empty strings

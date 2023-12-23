@@ -40,6 +40,10 @@ interface DataTableToolbarProps {
 // -----------------------------------------------------------------------------
 
 export function DataTableToolbar({ table }: DataTableToolbarProps) {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
   const { wallet } = useAuth();
   const { nftColumnFilters } = useTables();
 

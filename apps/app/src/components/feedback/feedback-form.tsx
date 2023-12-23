@@ -67,6 +67,10 @@ type FeedbackFormProps = {
 // -----------------------------------------------------------------------------
 
 export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
   const { userId } = useAuth();
 
   const form = useForm<FeedbackFormValues>({

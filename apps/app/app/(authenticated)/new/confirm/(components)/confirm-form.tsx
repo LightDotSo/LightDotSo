@@ -68,14 +68,31 @@ type NewFormValues = z.infer<typeof newFormStoreSchema>;
 // -----------------------------------------------------------------------------
 
 export const ConfirmForm: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
   const router = useRouter();
+
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
   const { address, setFormValues, fetchToCreate } = useNewForm();
+
+  // ---------------------------------------------------------------------------
+  // Query State Hooks
+  // ---------------------------------------------------------------------------
 
   const [name] = useNameQueryState();
   const [type] = useTypeQueryState();
   const [threshold] = useThresholdQueryState();
   const [salt] = useSaltQueryState();
   const [owners] = useOwnersQueryState();
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   const defaultValues: NewFormValues = useMemo(() => {
     return {
@@ -105,6 +122,10 @@ export const ConfirmForm: FC = () => {
     // @ts-expect-error
     resolver: zodResolver(newFormStoreSchema, defaultValues),
   });
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
 
   // Create a function to submit the form
   const onSubmit = useCallback(
@@ -146,6 +167,10 @@ export const ConfirmForm: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [setFormValues],
   );
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   // Set the form values on mount
   useEffect(() => {
@@ -190,6 +215,10 @@ export const ConfirmForm: FC = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // ---------------------------------------------------------------------------
+  // Utils
+  // ---------------------------------------------------------------------------
 
   // Utility function to extract all error messages from the form state
   // Geneated by Chat-GPT

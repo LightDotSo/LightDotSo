@@ -42,11 +42,15 @@ interface DataTableToolbarProps {
 // -----------------------------------------------------------------------------
 
 export function DataTableToolbar({ table }: DataTableToolbarProps) {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
   const { wallet } = useAuth();
   const { transactionColumnFilters } = useTables();
 
   // ---------------------------------------------------------------------------
-  // Query States
+  // Query State Hooks
   // ---------------------------------------------------------------------------
 
   const [paginationState] = usePaginationQueryState();
