@@ -265,7 +265,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   }, [isSuccess]);
 
   // ---------------------------------------------------------------------------
-  // Button
+  // Submit Button
   // ---------------------------------------------------------------------------
 
   const WalletLoginButton: FC = () => {

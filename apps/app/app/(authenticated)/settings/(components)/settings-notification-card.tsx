@@ -88,7 +88,7 @@ export const SettingsNotificationCard: FC = () => {
   }
 
   // ---------------------------------------------------------------------------
-  // Button
+  // Submit Button
   // ---------------------------------------------------------------------------
 
   const SettingsNotificationCardSubmitButton = () => (

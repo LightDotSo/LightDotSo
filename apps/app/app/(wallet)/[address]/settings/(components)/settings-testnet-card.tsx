@@ -240,7 +240,7 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   }, [isSuccess]);
 
   // ---------------------------------------------------------------------------
-  // Button
+  // Submit Button
   // ---------------------------------------------------------------------------
 
   const SettingsTestnetCardSubmitButton: FC = () => {

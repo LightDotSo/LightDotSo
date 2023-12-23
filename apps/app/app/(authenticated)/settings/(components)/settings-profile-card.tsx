@@ -110,7 +110,7 @@ export const SettingsProfileCard: FC = () => {
   }
 
   // ---------------------------------------------------------------------------
-  // Button
+  // Submit Button
   // ---------------------------------------------------------------------------
 
   const SettingsProfileCardSubmitButton = () => (

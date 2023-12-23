@@ -124,7 +124,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   );
 
   // ---------------------------------------------------------------------------
-  // Button
+  // Submit Button
   // ---------------------------------------------------------------------------
 
   const SettingsDeploymentCardSubmitButton: FC = () => {
