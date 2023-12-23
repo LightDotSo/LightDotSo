@@ -52,6 +52,7 @@ export const useNewForm = create(
       errors: null,
       formValues: {
         type: "multi",
+        inviteCode: "",
         name: "",
       },
       setFormValues: async values => {
