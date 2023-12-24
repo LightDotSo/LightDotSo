@@ -29,4 +29,7 @@ pub(crate) enum InviteCodeError {
     /// InviteCode not found by id.
     #[schema(example = "id = 1")]
     NotFound(String),
+    /// Not Authorized.
+    #[schema(example = "Not authorized")]
+    Unauthorized(String),
 }
