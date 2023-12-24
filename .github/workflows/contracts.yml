@@ -154,13 +154,23 @@ jobs:
         run: |
           forge install
       - name: Run Fork
-        run: |
-          forge test
+        uses: nick-fields/retry@v2
+        with:
+          timeout_seconds: 30
+          max_attempts: 3
+          retry_on: error
+          command: |
+            forge test
         env:
           NETWORK_NAME: ${{ matrix.network }}
       - name: Run Script Fork
-        run: |
-          forge test
+        uses: nick-fields/retry@v2
+        with:
+          timeout_seconds: 30
+          max_attempts: 3
+          retry_on: error
+          command: |
+            forge test
         env:
           FOUNDRY_PROFILE: script
           NETWORK_NAME: ${{ matrix.network }}
