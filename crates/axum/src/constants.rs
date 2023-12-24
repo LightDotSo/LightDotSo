@@ -30,3 +30,15 @@ lazy_static! {
 lazy_static! {
     pub static ref USER_ID_KEY: &'static str = "userId";
 }
+
+lazy_static! {
+    pub static ref SESSION_COOKIE_ID: &'static str = "lightdotso.sid";
+}
+
+lazy_static! {
+    pub static ref WALLET_COOKIE_ID: &'static str = "lightdotso.wallet";
+}
+
+lazy_static! {
+    pub static ref USER_COOKIE_ID: &'static str = "lightdotso.user";
+}

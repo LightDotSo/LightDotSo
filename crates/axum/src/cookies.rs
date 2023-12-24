@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use crate::constants::{USER_COOKIE_ID, WALLET_COOKIE_ID};
 use async_trait::async_trait;
 use time::Duration;
 use tower_cookies::{cookie::SameSite, Cookie, Cookies};
@@ -23,11 +24,20 @@ pub trait CookieUtility {
     // Generic handler to add a cookie to the response.
     async fn add_cookie(&self, name: String, value: String);
 
+    // Generic handler to remove a cookie from the response.
+    async fn remove_cookie(&self, name: String);
+
     // Add a wallet cookie to the response.
     async fn add_wallet_cookie(&self, address: String);
 
     // Add a user cookie to the response.
     async fn add_user_cookie(&self, address: String);
+
+    // Remove a wallet cookie from the response.
+    async fn remove_wallet_cookie(&self);
+
+    // Remove a user cookie from the response.
+    async fn remove_user_cookie(&self);
 }
 
 #[async_trait]
@@ -55,13 +65,28 @@ impl CookieUtility for Cookies {
         self.add(cookie);
     }
 
+    // Remove a cookie from the response.
+    async fn remove_cookie(&self, name: String) {
+        self.remove(Cookie::new(name, ""));
+    }
+
     // Add a wallet cookie to the response.
     async fn add_wallet_cookie(&self, address: String) {
-        self.add_cookie("lightdotso.wallet".to_string(), address).await;
+        self.add_cookie(WALLET_COOKIE_ID.to_string(), address).await;
     }
 
     // Add a user cookie to the response.
     async fn add_user_cookie(&self, address: String) {
-        self.add_cookie("lightdotso.user".to_string(), address).await;
+        self.add_cookie(USER_COOKIE_ID.to_string(), address).await;
+    }
+
+    // Remove a wallet cookie from the response.
+    async fn remove_wallet_cookie(&self) {
+        self.remove_cookie(WALLET_COOKIE_ID.to_string()).await;
+    }
+
+    // Remove a user cookie from the response.
+    async fn remove_user_cookie(&self) {
+        self.remove_cookie(USER_COOKIE_ID.to_string()).await;
     }
 }
