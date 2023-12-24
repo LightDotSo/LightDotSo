@@ -16,7 +16,7 @@
 use lazy_static::lazy_static;
 
 lazy_static! {
-    pub static ref KAKI_USR_ID: &'static str = "clnmo4k820000og9agq9kto92";
+    pub static ref KAKI_USER_ID: &'static str = "clnmo4k820000og9agq9kto92";
 }
 
 lazy_static! {

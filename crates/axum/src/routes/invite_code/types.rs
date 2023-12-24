@@ -41,6 +41,10 @@ impl From<invite_code::Data> for InviteCode {
     }
 }
 
+// -----------------------------------------------------------------------------
+// Trait
+// -----------------------------------------------------------------------------
+
 /// Create a trait to generate the invite code in format AAA-ZZZ.
 pub(crate) trait GenerateInviteCode {
     /// Generate the invite code.
