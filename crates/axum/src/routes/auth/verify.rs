@@ -14,11 +14,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
-    constants::{EXPIRATION_TIME_KEY, NONCE_KEY, USER_ID_KEY},
+    constants::{NONCE_KEY, USER_ID_KEY},
     error::RouteError,
     result::{AppError, AppJsonResult},
     routes::auth::{error::AuthError, nonce::AuthNonce},
-    sessions::unix_timestamp,
+    sessions::update_session_expiry,
     state::AppState,
 };
 use axum::{extract::State, Json};
@@ -119,23 +119,9 @@ pub(crate) async fn v1_auth_verify_handler(
             ))))
         }
     }
-    let now = match unix_timestamp() {
-        Ok(now) => now,
-        Err(_) => {
-            return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
-                "Failed to get timestamp.".to_string(),
-            ))))
-        }
-    };
-    let expiry = now + 604800;
-    match session.insert(&EXPIRATION_TIME_KEY, expiry) {
-        Ok(_) => {}
-        Err(_) => {
-            return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
-                "Failed to get insert expiration time.".to_string(),
-            ))))
-        }
-    }
+
+    // Update the session expiry
+    update_session_expiry(&session)?;
 
     // Upsert the user
     let user = state

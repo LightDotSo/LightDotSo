@@ -24,4 +24,5 @@ export type AuthNonceData = {
 export type AuthSessionData = {
   expiration: string;
   id: string;
+  is_authenticated: boolean;
 };
