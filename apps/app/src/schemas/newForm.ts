@@ -30,8 +30,12 @@ export const newFormSchema = z.object({
     .max(30, { message: "Name should be less than 30 characters." }),
   inviteCode: z
     .string()
-    .length(6, { message: "Invite code should be 6 characters." })
-    .regex(/^[A-Z1-9]{6}$/, { message: "Should only contain A-Z or 1-9." }),
+    .length(7, {
+      message: "Invite code should be 7 characters including the dash.",
+    })
+    .regex(/^[A-Z0-9]{3}-[A-Z0-9]{3}$/, {
+      message: "Should only contain A-Z or 0-9.",
+    }),
 });
 
 const BYTES32_REGEX = /^0x[a-fA-F0-9]{64}$/;
