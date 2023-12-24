@@ -96,6 +96,7 @@ impl RouteErrorStatusCodeAndMsg for InviteCodeError {
         match self {
             InviteCodeError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
             InviteCodeError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+            InviteCodeError::Unauthorized(msg) => (StatusCode::UNAUTHORIZED, msg.to_string()),
         }
     }
 }

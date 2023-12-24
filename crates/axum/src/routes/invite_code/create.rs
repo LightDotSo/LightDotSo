@@ -14,13 +14,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use super::types::InviteCode;
+use crate::routes::invite_code::error::InviteCodeError;
 use crate::{
-    constants::KAKI_USER_ID,
-    error::RouteError,
-    result::AppJsonResult,
-    routes::{auth::error::AuthError, invite_code::types::GenerateInviteCode},
-    sessions::get_user_id,
-    state::AppState,
+    constants::KAKI_USER_ID, error::RouteError, result::AppJsonResult,
+    routes::invite_code::types::GenerateInviteCode, sessions::get_user_id, state::AppState,
 };
 use autometrics::autometrics;
 use axum::{extract::State, Json};
@@ -47,12 +44,15 @@ pub(crate) async fn v1_invite_code_post_handler(
 ) -> AppJsonResult<InviteCode> {
     // Get the authenticated user id.
     let auth_user_id = get_user_id(&mut session)?;
+    info!(?auth_user_id);
 
     // If the authenticated user id is not `KAKI_USER_ID`, return an error.
     if auth_user_id != KAKI_USER_ID.to_string() {
-        return Err(
-            RouteError::AuthError(AuthError::Unauthorized("Not authorized".to_string())).into()
-        );
+        return Err(RouteError::InviteCodeError(InviteCodeError::Unauthorized(format!(
+            "Not authorized for {}",
+            auth_user_id
+        )))
+        .into());
     }
 
     // Generate a new invite_code w/ the format AAA-ZZZ.
