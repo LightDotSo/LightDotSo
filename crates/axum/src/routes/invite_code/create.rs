@@ -48,9 +48,10 @@ pub(crate) async fn v1_invite_code_post_handler(
 
     // If the authenticated user id is not `KAKI_USER_ID`, return an error.
     if auth_user_id != KAKI_USER_ID.to_string() {
-        return Err(RouteError::InviteCodeError(InviteCodeError::Unauthorized(
-            "Not authorized".to_string(),
-        ))
+        return Err(RouteError::InviteCodeError(InviteCodeError::Unauthorized(format!(
+            "Not authorized for {}",
+            auth_user_id
+        )))
         .into());
     }
 
