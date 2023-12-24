@@ -15,7 +15,7 @@
 
 use super::types::InviteCode;
 use crate::{
-    constants::KAKI_USR_ID,
+    constants::KAKI_USER_ID,
     error::RouteError,
     result::AppJsonResult,
     routes::{auth::error::AuthError, invite_code::types::GenerateInviteCode},
@@ -23,26 +23,9 @@ use crate::{
     state::AppState,
 };
 use autometrics::autometrics;
-use axum::{
-    extract::{Query, State},
-    Json,
-};
+use axum::{extract::State, Json};
 use lightdotso_tracing::tracing::info;
-use serde::Deserialize;
 use tower_sessions_core::Session;
-use utoipa::IntoParams;
-
-// -----------------------------------------------------------------------------
-// Query
-// -----------------------------------------------------------------------------
-
-#[derive(Debug, Deserialize, Default, IntoParams)]
-#[serde(rename_all = "snake_case")]
-#[into_params(parameter_in = Query)]
-pub struct PostQuery {
-    /// The user id of the user.
-    pub user_id: String,
-}
 
 // -----------------------------------------------------------------------------
 // Handler
@@ -52,10 +35,6 @@ pub struct PostQuery {
 #[utoipa::path(
         post,
         path = "/invite_code/create",
-        params(
-            PostQuery
-        ),
-        request_body = InviteCodePostRequestParams,
         responses(
             (status = 200, description = "invite_code created successfully", body = invite_code),
             (status = 500, description = "invite_code internal error", body = invite_codeError),
@@ -63,25 +42,18 @@ pub struct PostQuery {
     )]
 #[autometrics]
 pub(crate) async fn v1_invite_code_post_handler(
-    post_query: Query<PostQuery>,
     State(state): State<AppState>,
     mut session: Session,
 ) -> AppJsonResult<InviteCode> {
-    // Get the post query.
-    let Query(query) = post_query;
-
     // Get the authenticated user id.
     let auth_user_id = get_user_id(&mut session)?;
 
     // If the authenticated user id is not `KAKI_USER_ID`, return an error.
-    if auth_user_id != KAKI_USR_ID.to_string() {
+    if auth_user_id != KAKI_USER_ID.to_string() {
         return Err(
             RouteError::AuthError(AuthError::Unauthorized("Not authorized".to_string())).into()
         );
     }
-
-    // Get the user id from the post query.
-    let user_id = query.user_id;
 
     // Generate a new invite_code w/ the format AAA-ZZZ.
     let code = InviteCode::generate_invite_code();
@@ -90,7 +62,7 @@ pub(crate) async fn v1_invite_code_post_handler(
     let invite_code = state
         .client
         .invite_code()
-        .create(code, lightdotso_prisma::user::id::equals(user_id), vec![])
+        .create(code, lightdotso_prisma::user::id::equals(auth_user_id), vec![])
         .exec()
         .await?;
     info!(?invite_code);

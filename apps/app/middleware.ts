@@ -20,7 +20,7 @@ import { isAddress } from "viem";
 export function middleware(request: NextRequest) {
   let wallet_cookie = request.cookies.get("lightdotso.wallet");
 
-  let pathArray = ["/", "/wallets"];
+  let pathArray = ["/"];
   if (
     pathArray.some(path => request.nextUrl.pathname === path) &&
     wallet_cookie
