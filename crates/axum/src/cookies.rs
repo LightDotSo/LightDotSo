@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use async_trait::async_trait;
+use time::Duration;
 use tower_cookies::{cookie::SameSite, Cookie, Cookies};
 
 /// A trait for adding cookies to the response.
@@ -31,7 +32,7 @@ impl CookieUtility for Cookies {
     // Add a cookie to the response.
     async fn add_cookie(&self, name: String, value: String) {
         // Initialize a cookie builder.
-        let mut cookie_builder = Cookie::build(name, value).path("/");
+        let mut cookie_builder = Cookie::build(name, value).path("/").max_age(Duration::weeks(3));
 
         // If deployed under fly.io, `FLY_APP_NAME` starts w/ `lightdotso-api`
         // then set the cookie domain to `.light.so` and secure to true.
