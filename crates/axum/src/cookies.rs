@@ -25,6 +25,9 @@ pub trait CookieUtility {
 
     // Add a wallet cookie to the response.
     async fn add_wallet_cookie(&self, address: String);
+
+    // Add a user cookie to the response.
+    async fn add_user_cookie(&self, address: String);
 }
 
 #[async_trait]
@@ -55,5 +58,10 @@ impl CookieUtility for Cookies {
     // Add a wallet cookie to the response.
     async fn add_wallet_cookie(&self, address: String) {
         self.add_cookie("lightdotso.wallet".to_string(), address).await;
+    }
+
+    // Add a user cookie to the response.
+    async fn add_user_cookie(&self, address: String) {
+        self.add_cookie("lightdotso.user".to_string(), address).await;
     }
 }

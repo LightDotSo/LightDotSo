@@ -15,6 +15,7 @@
 
 use crate::{
     constants::{NONCE_KEY, USER_ID_KEY},
+    cookies::CookieUtility,
     error::RouteError,
     result::{AppError, AppJsonResult},
     routes::auth::{error::AuthError, nonce::AuthNonce},
@@ -29,6 +30,7 @@ use lightdotso_tracing::tracing::{error, info};
 use serde::{Deserialize, Serialize};
 use siwe::{Message, VerificationOpts};
 use std::str::FromStr;
+use tower_cookies::Cookies;
 use tower_sessions::Session;
 use utoipa::{IntoParams, ToSchema};
 
@@ -78,6 +80,7 @@ pub struct AuthVerifyPostRequestParams {
     )]
 pub(crate) async fn v1_auth_verify_handler(
     State(state): State<AppState>,
+    cookies: Cookies,
     session: Session,
     Json(msg): Json<AuthVerifyPostRequestParams>,
 ) -> AppJsonResult<AuthNonce> {
@@ -137,7 +140,7 @@ pub(crate) async fn v1_auth_verify_handler(
     info!(?user);
 
     // Insert the user id into the session
-    match session.insert(&USER_ID_KEY, user.id) {
+    match session.insert(&USER_ID_KEY, user.clone().id) {
         Ok(_) => {}
         Err(_) => {
             return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
@@ -145,6 +148,9 @@ pub(crate) async fn v1_auth_verify_handler(
             ))))
         }
     }
+
+    // Adds the user cookie
+    cookies.add_user_cookie(user.id).await;
 
     Ok(Json::from(AuthNonce { nonce: session_nonce }))
 }
