@@ -313,6 +313,7 @@ pub async fn start_api_server() -> Result<()> {
     let mut session_manager_layer = SessionManagerLayer::new(session_store.clone());
 
     // If deployed under fly.io, `FLY_APP_NAME` starts w/ `lightdotso-api` then set the cookie domain to `.light.so` and secure to true.
+    // Also set the same site to lax.
     if let Ok(fly_app_name) = std::env::var("FLY_APP_NAME") {
         if fly_app_name.starts_with("lightdotso-api") {
             session_manager_layer = session_manager_layer
