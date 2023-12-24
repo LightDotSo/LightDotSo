@@ -28,13 +28,13 @@ use tower_sessions_core::Session;
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Create a invite_code
+/// Create an invite code
 #[utoipa::path(
         post,
         path = "/invite_code/create",
         responses(
-            (status = 200, description = "invite_code created successfully", body = invite_code),
-            (status = 500, description = "invite_code internal error", body = invite_codeError),
+            (status = 200, description = "Invite code created successfully", body = InviteCode),
+            (status = 500, description = "Invite code internal error", body = InviteCodeError),
         )
     )]
 #[autometrics]
