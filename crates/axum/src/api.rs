@@ -310,7 +310,8 @@ pub async fn start_api_server() -> Result<()> {
 
     // Create the session store
     let session_store = RedisStore::new(redis);
-    let mut session_manager_layer = SessionManagerLayer::new(session_store.clone());
+    let mut session_manager_layer =
+        SessionManagerLayer::new(session_store.clone()).with_name("lightdotso.sid");
 
     // If deployed under fly.io, `FLY_APP_NAME` starts w/ `lightdotso-api` then set the cookie domain to `.light.so` and secure to true.
     // Also set the same site to lax.
@@ -326,8 +327,10 @@ pub async fn start_api_server() -> Result<()> {
     // Create the api doc
     let mut open_api = ApiDoc::openapi();
     let components = open_api.components.get_or_insert(Components::new());
-    components
-        .add_security_scheme("sid", SecurityScheme::ApiKey(ApiKey::Cookie(ApiKeyValue::new("id"))));
+    components.add_security_scheme(
+        "sid",
+        SecurityScheme::ApiKey(ApiKey::Cookie(ApiKeyValue::new("lightdotso.sid"))),
+    );
 
     // Create the app for the server
     let app = Router::new()
