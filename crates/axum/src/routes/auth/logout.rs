@@ -13,9 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::result::AppJsonResult;
+use crate::{cookies::CookieUtility, result::AppJsonResult};
 use axum::Json;
 use lightdotso_tracing::tracing::info;
+use tower_cookies::Cookies;
 use tower_sessions::Session;
 
 // -----------------------------------------------------------------------------
@@ -31,8 +32,13 @@ use tower_sessions::Session;
             (status = 404, description = "Auth logout not succeeded", body = AuthError),
         )
     )]
-pub(crate) async fn v1_auth_logout_handler(session: Session) -> AppJsonResult<()> {
+pub(crate) async fn v1_auth_logout_handler(
+    cookies: Cookies,
+    session: Session,
+) -> AppJsonResult<()> {
     info!(?session);
+
+    cookies.remove_wallet_cookie().await;
 
     session.clear();
 

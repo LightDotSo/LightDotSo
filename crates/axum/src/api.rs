@@ -15,6 +15,7 @@
 
 #![allow(clippy::unwrap_used)]
 
+use crate::constants::SESSION_COOKIE_ID;
 use crate::{
     admin::admin,
     handle_error,
@@ -39,6 +40,7 @@ use lightdotso_redis::get_redis_client;
 use lightdotso_tracing::tracing::info;
 use std::{net::SocketAddr, sync::Arc, time::Duration};
 use tower::ServiceBuilder;
+use tower_cookies::CookieManagerLayer;
 use tower_governor::{
     governor::GovernorConfigBuilder, key_extractor::SmartIpKeyExtractor, GovernorLayer,
 };
@@ -311,7 +313,7 @@ pub async fn start_api_server() -> Result<()> {
     // Create the session store
     let session_store = RedisStore::new(redis);
     let mut session_manager_layer =
-        SessionManagerLayer::new(session_store.clone()).with_name("lightdotso.sid");
+        SessionManagerLayer::new(session_store.clone()).with_name(&SESSION_COOKIE_ID);
 
     // If deployed under fly.io, `FLY_APP_NAME` starts w/ `lightdotso-api` then set the cookie domain to `.light.so` and secure to true.
     // Also set the same site to lax.
@@ -324,12 +326,15 @@ pub async fn start_api_server() -> Result<()> {
         }
     }
 
+    // Create the cookie manager
+    let cookie_manager_layer = CookieManagerLayer::new();
+
     // Create the api doc
     let mut open_api = ApiDoc::openapi();
     let components = open_api.components.get_or_insert(Components::new());
     components.add_security_scheme(
         "sid",
-        SecurityScheme::ApiKey(ApiKey::Cookie(ApiKeyValue::new("lightdotso.sid"))),
+        SecurityScheme::ApiKey(ApiKey::Cookie(ApiKeyValue::new(&**SESSION_COOKIE_ID))),
     );
 
     // Create the app for the server
@@ -349,6 +354,7 @@ pub async fn start_api_server() -> Result<()> {
             ServiceBuilder::new()
                 .layer(HandleErrorLayer::new(handle_error))
                 .layer(GovernorLayer { config: Box::leak(governor_conf) })
+                .layer(cookie_manager_layer.clone())
                 .layer(session_manager_layer.clone())
                 // .layer(SetSensitiveRequestHeadersLayer::from_shared(Arc::clone(&headers)))
                 .layer(OtelInResponseLayer)
@@ -362,6 +368,7 @@ pub async fn start_api_server() -> Result<()> {
                 ServiceBuilder::new()
                     .layer(HandleErrorLayer::new(handle_error))
                     .layer(GovernorLayer { config: Box::leak(authenticated_governor_conf) })
+                    .layer(cookie_manager_layer.clone())
                     .layer(session_manager_layer.clone())
                     .layer(middleware::from_fn(authenticated))
                     .layer(OtelInResponseLayer)
@@ -375,6 +382,7 @@ pub async fn start_api_server() -> Result<()> {
             api.clone().layer(
                 ServiceBuilder::new()
                     .layer(HandleErrorLayer::new(handle_error))
+                    .layer(cookie_manager_layer.clone())
                     .layer(session_manager_layer.clone())
                     .layer(middleware::from_fn(admin))
                     .layer(OtelInResponseLayer)

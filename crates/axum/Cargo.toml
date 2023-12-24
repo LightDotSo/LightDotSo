@@ -51,6 +51,7 @@
     "load-shed",
     "limit",
   ] }
+  tower-cookies = { workspace = true }
   tower-http = { workspace = true, features = ["cors"] }
   tower-sessions = { workspace = true }
   tower-sessions-core = { workspace = true }
