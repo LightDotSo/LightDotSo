@@ -15,7 +15,8 @@
 
 use super::types::Wallet;
 use crate::{
-    error::RouteError, result::AppJsonResult, routes::wallet::error::WalletError, state::AppState,
+    cookies::CookieUtility, error::RouteError, result::AppJsonResult,
+    routes::wallet::error::WalletError, state::AppState,
 };
 use autometrics::autometrics;
 use axum::{
@@ -25,6 +26,7 @@ use axum::{
 use ethers_main::{types::H160, utils::to_checksum};
 use lightdotso_prisma::wallet;
 use serde::Deserialize;
+use tower_cookies::Cookies;
 use utoipa::IntoParams;
 
 // -----------------------------------------------------------------------------
@@ -61,6 +63,7 @@ pub struct GetQuery {
 pub(crate) async fn v1_wallet_get_handler(
     get_query: Query<GetQuery>,
     State(state): State<AppState>,
+    cookies: Cookies,
 ) -> AppJsonResult<Wallet> {
     // Get the get query.
     let Query(query) = get_query;
@@ -78,6 +81,9 @@ pub(crate) async fn v1_wallet_get_handler(
 
     // Change the wallet to the format that the API expects.
     let wallet: Wallet = wallet.into();
+
+    // Add the wallet cookie.
+    cookies.add_wallet_cookie(wallet.address.clone()).await;
 
     Ok(Json::from(wallet))
 }

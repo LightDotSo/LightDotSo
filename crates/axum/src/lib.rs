@@ -19,6 +19,7 @@ use std::borrow::Cow;
 pub mod admin;
 pub mod api;
 pub mod constants;
+pub mod cookies;
 pub mod error;
 pub mod internal;
 pub mod prometheus;
