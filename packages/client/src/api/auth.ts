@@ -35,22 +35,13 @@ export const getNonce = async (params?: {}, isPublic?: boolean) => {
   });
 };
 
-export const getAuthSession = async (
-  {
-    params,
-  }: {
-    params: {
-      query: { address: string };
-    };
-  },
-  isPublic?: boolean,
-) => {
+export const getAuthSession = async (params?: {}, isPublic?: boolean) => {
   const client = getClient(isPublic);
 
   return ResultAsync.fromPromise(
     client.GET("/auth/session", {
       // @ts-ignore
-      next: { revalidate: 300, tags: [params.query.address] },
+      next: { revalidate: 0 },
       params,
     }),
     () => new Error("Database error"),

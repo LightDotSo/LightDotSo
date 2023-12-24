@@ -409,6 +409,8 @@ export interface components {
       expiration: string;
       /** @description The session id. */
       id: string;
+      /** @description The authenticated status. */
+      is_authenticated: boolean;
     };
     AuthVerifyPostRequestParams: {
       message: string;

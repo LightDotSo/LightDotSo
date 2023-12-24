@@ -38,6 +38,8 @@ pub(crate) struct AuthSession {
     id: String,
     /// The session expiration.
     expiration: String,
+    /// The authenticated status.
+    is_authenticated: bool,
 }
 
 // -----------------------------------------------------------------------------
@@ -56,7 +58,7 @@ pub(crate) struct AuthSession {
 pub(crate) async fn v1_auth_session_handler(session: Session) -> AppJsonResult<AuthSession> {
     info!(?session);
 
-    verify_session(&session)?;
+    let authenticated = verify_session(&session).is_ok();
 
     // The frontend must set a session expiry
     let session_expiry = match session.get::<u64>(&EXPIRATION_TIME_KEY) {
@@ -73,5 +75,6 @@ pub(crate) async fn v1_auth_session_handler(session: Session) -> AppJsonResult<A
     Ok(Json::from(AuthSession {
         id: session.id().to_string(),
         expiration: session_expiry.to_string(),
+        is_authenticated: authenticated,
     }))
 }

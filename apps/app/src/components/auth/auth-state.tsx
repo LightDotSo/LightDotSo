@@ -100,13 +100,7 @@ export const AuthState: FC = () => {
         return null;
       }
 
-      const res = await getAuthSession({
-        params: {
-          query: {
-            address,
-          },
-        },
-      });
+      const res = await getAuthSession();
 
       // Return if the response is 200
       return res.match(
@@ -144,7 +138,9 @@ export const AuthState: FC = () => {
   // Set the session in the auth state if it exists
   useEffect(() => {
     if (sessionData) {
-      setSessionId(sessionData.id);
+      if (sessionData.is_authenticated) {
+        setSessionId(sessionData.id);
+      }
     } else {
       setSessionId(undefined);
     }
