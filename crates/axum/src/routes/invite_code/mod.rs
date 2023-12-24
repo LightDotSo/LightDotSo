@@ -21,7 +21,10 @@ pub(crate) mod types;
 
 use crate::state::AppState;
 use autometrics::autometrics;
-use axum::{routing::get, Router};
+use axum::{
+    routing::{get, post},
+    Router,
+};
 
 pub(crate) use create::{__path_v1_invite_code_post_handler, v1_invite_code_post_handler};
 pub(crate) use get::{__path_v1_invite_code_get_handler, v1_invite_code_get_handler};
@@ -37,7 +40,7 @@ pub(crate) use list::{
 #[autometrics]
 pub(crate) fn router() -> Router<AppState> {
     Router::new()
-        .route("/invite_code/create", get(v1_invite_code_post_handler))
+        .route("/invite_code/create", post(v1_invite_code_post_handler))
         .route("/invite_code/get", get(v1_invite_code_get_handler))
         .route("/invite_code/list", get(v1_invite_code_list_handler))
         .route("/invite_code/list/count", get(v1_invite_code_list_count_handler))
