@@ -140,6 +140,8 @@ export const AuthState: FC = () => {
     if (sessionData) {
       if (sessionData.is_authenticated) {
         setSessionId(sessionData.id);
+      } else {
+        setSessionId(undefined);
       }
     } else {
       setSessionId(undefined);
@@ -195,7 +197,9 @@ export const AuthState: FC = () => {
     });
 
     const unsubscribe = observer.subscribe(result => {
-      setSessionId(result.data?.id);
+      if (result.data?.is_authenticated) {
+        setSessionId(result.data?.id);
+      }
     });
 
     return () => unsubscribe();
