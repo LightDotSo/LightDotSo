@@ -36,8 +36,6 @@ pub struct ListQuery {
     pub offset: Option<i64>,
     /// The maximum number of invite codes to return.
     pub limit: Option<i64>,
-    /// The user id to filter by.
-    pub user_id: Option<String>,
 }
 
 // -----------------------------------------------------------------------------
