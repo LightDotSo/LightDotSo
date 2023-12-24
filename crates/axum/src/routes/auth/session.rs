@@ -58,9 +58,13 @@ pub(crate) struct AuthSession {
 pub(crate) async fn v1_auth_session_handler(session: Session) -> AppJsonResult<AuthSession> {
     info!(?session);
 
+    // Check if the session is authenticated
     let authenticated = verify_session(&session).is_ok();
 
-    // The frontend must set a session expiry
+    // Update the session expiration
+    update_session_expiry(&session)?;
+
+    // Get the session expiration
     let session_expiry = match session.get::<u64>(&EXPIRATION_TIME_KEY) {
         Ok(Some(expiry)) => expiry,
         Ok(None) | Err(_) => {
@@ -69,8 +73,6 @@ pub(crate) async fn v1_auth_session_handler(session: Session) -> AppJsonResult<A
             ))))
         }
     };
-
-    update_session_expiry(&session)?;
 
     Ok(Json::from(AuthSession {
         id: session.id().to_string(),
