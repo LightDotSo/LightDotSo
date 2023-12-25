@@ -15,7 +15,7 @@
 
 "use client";
 
-import { Button, Input } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { useQueryClient } from "@tanstack/react-query";
 import type { Table } from "@tanstack/react-table";
@@ -23,15 +23,16 @@ import { useMemo } from "react";
 import type { Address } from "viem";
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
-import type { ConfigurationData, ActivityData } from "@/data";
+import type { ActivityData } from "@/data";
 import { queries } from "@/queries";
+import { usePaginationQueryState } from "@/querystates";
 import { useAuth, useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface DataTableToolbarProps {
+export interface DataTableToolbarProps {
   table: Table<ActivityData>;
 }
 
@@ -40,12 +41,22 @@ interface DataTableToolbarProps {
 // -----------------------------------------------------------------------------
 
 export function DataTableToolbar({ table }: DataTableToolbarProps) {
+  const { wallet } = useAuth();
+  const { activityColumnFilters } = useTables();
+
   // ---------------------------------------------------------------------------
-  // Stores
+  // Query State Hooks
   // ---------------------------------------------------------------------------
 
-  const { wallet } = useAuth();
-  const { ownerColumnFilters } = useTables();
+  const [paginationState] = usePaginationQueryState();
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  const offsetCount = useMemo(() => {
+    return paginationState.pageSize * paginationState.pageIndex;
+  }, [paginationState.pageSize, paginationState.pageIndex]);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -53,21 +64,25 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
 
   const queryClient = useQueryClient();
 
-  const currentData: ConfigurationData | undefined = queryClient.getQueryData(
-    queries.configuration.get({ address: wallet as Address }).queryKey,
+  const currentData: ActivityData[] | undefined = queryClient.getQueryData(
+    queries.activity.list({
+      address: wallet as Address,
+      offset: offsetCount,
+      limit: paginationState.pageSize,
+    }).queryKey,
   );
 
   // ---------------------------------------------------------------------------
   // Hook
   // ---------------------------------------------------------------------------
 
-  const uniqueWeightValues = useMemo(() => {
+  const uniqueEntityValues = useMemo(() => {
     // Get all unique weight values from current data
-    const uniqueWeightValues = new Set<number>();
-    currentData?.owners.forEach(owner => {
-      uniqueWeightValues.add(owner.weight);
+    const uniqueEntityValues = new Set<string>();
+    currentData?.forEach(activity => {
+      uniqueEntityValues.add(activity.entity);
     });
-    return uniqueWeightValues;
+    return uniqueEntityValues;
   }, [currentData]);
 
   // ---------------------------------------------------------------------------
@@ -75,27 +90,21 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="flex items-center justify-between">
+    <>
       <div className="flex flex-1 items-center space-x-2">
-        <Input
-          placeholder="Filter owners..."
-          value={(table.getColumn("address")?.getFilterValue() as string) ?? ""}
-          className="h-8 w-[150px] lg:w-[250px]"
-          onChange={event =>
-            table.getColumn("address")?.setFilterValue(event.target.value)
-          }
-        />
-        {table.getColumn("weight") && (
+        {table.getColumn("entity") && (
           <DataTableFacetedFilter
-            column={table.getColumn("weight")}
-            title="Weight"
-            options={Array.from(uniqueWeightValues).map(i => ({
-              value: i.toString(),
-              label: i.toString(),
+            column={table.getColumn("entity")}
+            title="Chain"
+            options={Array.from(uniqueEntityValues).map(entity => ({
+              value: entity,
+              label: `${entity.charAt(0).toUpperCase()}${entity
+                .slice(1)
+                .toLowerCase()}`,
             }))}
           />
         )}
-        {ownerColumnFilters.length > 0 && (
+        {activityColumnFilters.length > 0 && (
           <Button
             variant="outline"
             className="h-8 px-2 lg:px-3"
@@ -109,12 +118,11 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
       <DataTableViewOptions
         table={table}
         columnMapping={{
-          select: "Select",
-          index: "Index",
-          address: "Owner",
-          weight: "Weight",
+          entity: "Entity",
+          operation: "Operation",
+          timestmap: "Timestamp",
         }}
       />
-    </div>
+    </>
   );
 }

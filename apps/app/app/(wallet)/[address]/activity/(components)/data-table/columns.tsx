@@ -15,9 +15,8 @@
 
 "use client";
 
-import { Avatar, Checkbox } from "@lightdotso/ui";
+import { Avatar } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
-import { DataTableRowActions } from "@/app/(wallet)/[address]/activity/(components)/data-table/data-table-row-actions";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import type { ActivityData } from "@/data";
@@ -27,27 +26,6 @@ import type { ActivityData } from "@/data";
 // -----------------------------------------------------------------------------
 
 export const columns: ColumnDef<ActivityData>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        aria-label="Select all"
-        className="translate-y-[2px]"
-        onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        aria-label="Select row"
-        className="translate-y-[2px]"
-        onCheckedChange={value => row.toggleSelected(!!value)}
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
   {
     accessorKey: "index",
     header: ({ column }) => (
@@ -74,21 +52,39 @@ export const columns: ColumnDef<ActivityData>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "weight",
+    accessorKey: "entity",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Weight" />
+      <DataTableColumnHeader column={column} title="Entity" />
     ),
     cell: ({ row }) => (
       <div className="flex items-center">
-        <span>{row.getValue("weight")}</span>
+        <span>{row.getValue("entity")}</span>
       </div>
     ),
-    filterFn: (row, id, value) => {
-      return value.includes((row.getValue(id) as number).toString());
-    },
   },
   {
-    id: "actions",
-    cell: ({ row }) => <DataTableRowActions row={row} />,
+    accessorKey: "operation",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Operation" />
+    ),
+    cell: ({ row }) => (
+      <div className="flex items-center">
+        <span>{row.getValue("operation")}</span>
+      </div>
+    ),
+  },
+  {
+    accessorKey: "timestamp",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Timestamp" />
+    ),
+    cell: ({ row }) => (
+      <div>{new Date(row.original.timestamp).toLocaleString()}</div>
+    ),
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+    enableSorting: true,
+    enableHiding: true,
   },
 ];
