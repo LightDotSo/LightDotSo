@@ -401,8 +401,6 @@ pub async fn rpc_proxy_handler(
                             if let Some(message) = error.get("message") {
                                 if message.as_str().map_or(false, |s| s.contains("Unknown error")) {
                                     info!("Continuing w/ next rpc url: {:?}", body_json);
-                                } else {
-                                    return resp;
                                 }
                             } else {
                                 return resp;
