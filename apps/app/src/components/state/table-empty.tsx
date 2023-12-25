@@ -20,13 +20,14 @@ import type { FC } from "react";
 // Types
 // -----------------------------------------------------------------------------
 
-type Entity = "wallet" | "token" | "transaction" | "nft";
+type Entity = "wallet" | "token" | "transaction" | "nft" | "activity";
 
 // -----------------------------------------------------------------------------
 // Const
 // -----------------------------------------------------------------------------
 
 const entityDescription: Record<Entity, string> = {
+  activity: "activity",
   wallet: "wallets",
   token: "tokens",
   transaction: "transactions",

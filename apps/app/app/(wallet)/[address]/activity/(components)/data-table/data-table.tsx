@@ -193,7 +193,7 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    <TableEmpty entity="wallet" />
+                    <TableEmpty entity="activity" />
                   </TableCell>
                 </TableRow>
               )}

@@ -28,7 +28,7 @@ export const ActivityDataTablePagination: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { userOperationTable } = useTables();
+  const { activityTable } = useTables();
 
   useEffect(() => {
     if (!useTables.persist.hasHydrated()) {
@@ -40,9 +40,9 @@ export const ActivityDataTablePagination: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!userOperationTable || !useTables.persist.hasHydrated()) {
+  if (!activityTable || !useTables.persist.hasHydrated()) {
     return null;
   }
 
-  return <DataTablePagination table={userOperationTable} />;
+  return <DataTablePagination table={activityTable} />;
 };
