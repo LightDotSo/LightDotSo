@@ -404,7 +404,11 @@ pub async fn rpc_proxy_handler(
                                 } else {
                                     return resp;
                                 }
+                            } else {
+                                return resp;
                             }
+                        } else {
+                            return resp;
                         }
                     } else {
                         return resp;
