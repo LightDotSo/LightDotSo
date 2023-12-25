@@ -13,10 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export * from "./api";
-export * from "./app";
-export * from "./client";
-export * from "./llama";
-export * from "./rpc";
-export * from "./simplehash";
-export * from "./zod";
+import { fetchWithResult } from "../fetch";
+
+// -----------------------------------------------------------------------------
+// POST
+// -----------------------------------------------------------------------------
+
+export const postQueueCovalent = ({ address }: { address: string }) =>
+  fetchWithResult({ address }, "/api/queue/covalent");
+
+export const postQueuePortfolio = ({ address }: { address: string }) =>
+  fetchWithResult({ address }, "/api/queue/portfolio");
