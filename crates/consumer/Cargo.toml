@@ -24,5 +24,7 @@
   lightdotso-prisma = { workspace = true }
   lightdotso-tracing = { workspace = true }
   opentelemetry = { workspace = true }
+  prisma-client-rust = { workspace = true }
   rdkafka = { workspace = true }
+  serde = { workspace = true }
   serde_json = { workspace = true }

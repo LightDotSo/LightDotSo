@@ -14,14 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { serve } from "inngest/next";
-import {
-  walletPortfolioCron,
-  walletPortfolioCovalentSet,
-  walletPortfolioInvoke,
-  walletRedisCron,
-  walletTransactionCovalentSet,
-  walletTransactionInvoke,
-} from "@/inngest";
+import { walletRedisCron } from "@/inngest";
 import { inngest } from "@/inngest/client";
 
 // -----------------------------------------------------------------------------
@@ -31,12 +24,5 @@ import { inngest } from "@/inngest/client";
 // Create an API that serves zero functions
 export const { GET, POST, PUT } = serve({
   client: inngest,
-  functions: [
-    walletPortfolioCron,
-    walletPortfolioCovalentSet,
-    walletPortfolioInvoke,
-    walletRedisCron,
-    walletTransactionCovalentSet,
-    walletTransactionInvoke,
-  ],
+  functions: [walletRedisCron],
 });

@@ -14,9 +14,4 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 export { prismaSchemaChore } from "./prismaSchemaChore";
-export { walletPortfolioInvoke } from "./walletPortfolioInvoke";
-export { walletPortfolioCovalentSet } from "./walletPortfolioCovalentSet";
-export { walletPortfolioCron } from "./walletPortfolioCron";
 export { walletRedisCron } from "./walletRedisCron";
-export { walletTransactionCovalentSet } from "./walletTransactionCovalentSet";
-export { walletTransactionInvoke } from "./walletTransactionInvoke";

@@ -17,5 +17,6 @@ pub mod activity;
 pub mod covalent;
 pub mod error_transaction;
 pub mod notification;
+pub mod portfolio;
 pub mod transaction;
 pub mod unknown;
