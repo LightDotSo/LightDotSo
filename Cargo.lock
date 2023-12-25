@@ -6123,6 +6123,8 @@ dependencies = [
  "clap 4.4.0",
  "ethers 2.0.8",
  "eyre",
+ "lightdotso-contracts",
+ "lightdotso-covalent",
  "lightdotso-db",
  "lightdotso-indexer",
  "lightdotso-kafka",
@@ -6131,7 +6133,9 @@ dependencies = [
  "lightdotso-prisma",
  "lightdotso-tracing",
  "opentelemetry 0.20.0",
+ "prisma-client-rust",
  "rdkafka",
+ "serde",
  "serde_json",
 ]
 

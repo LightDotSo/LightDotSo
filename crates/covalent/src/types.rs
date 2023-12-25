@@ -51,6 +51,7 @@ pub struct WalletBalanceItem {
     pub balance_type: Option<String>,
     pub balance: Option<String>,
     pub balance_24h: Option<String>,
+    pub is_spam: bool,
     pub quote_rate: Option<f64>,
     pub quote_rate_24h: Option<f64>,
     pub quote: Option<f64>,

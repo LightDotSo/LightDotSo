@@ -17,7 +17,6 @@
 
 import { redirect } from "next/navigation";
 import { handler } from "@/handlers/paths/[address]/handler";
-import { inngest } from "@/inngest/client";
 import { preloader } from "@/preloaders/paths/[address]/preloader";
 
 // -----------------------------------------------------------------------------
@@ -46,24 +45,6 @@ export default async function Page({ params }: PageProps) {
   // ---------------------------------------------------------------------------
 
   await handler(params);
-
-  // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
-
-  await inngest.send({
-    name: "wallet/portfolio.invoke",
-    data: {
-      address: params.address,
-    },
-  });
-
-  await inngest.send({
-    name: "wallet/transaction.invoke",
-    data: {
-      address: params.address,
-    },
-  });
 
   // ---------------------------------------------------------------------------
   // Redirect

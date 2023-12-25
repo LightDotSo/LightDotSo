@@ -13,33 +13,30 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Chain } from "@covalenthq/client-sdk";
+use crate::traits::ToJson;
+use ethers::{types::H160, utils::to_checksum};
+use serde::{Deserialize, Serialize};
+use serde_json::{json, Value};
 
 // -----------------------------------------------------------------------------
-// Mainnet
+// Types
 // -----------------------------------------------------------------------------
 
-export const COVALENT_MAINNET_CHAIN_ID_MAPPING: Record<number, Chain> = {
-  1: "eth-mainnet",
-  10: "optimism-mainnet",
-  100: "gnosis-mainnet",
-  137: "matic-mainnet",
-  8453: "base-mainnet",
-};
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PortfolioMessage {
+    pub address: H160,
+}
 
 // -----------------------------------------------------------------------------
-// Testnet
+// Traits
 // -----------------------------------------------------------------------------
 
-export const COVALENT_TESTNET_CHAIN_ID_MAPPING: Record<number, Chain> = {
-  11155111: "eth-sepolia",
-};
+impl ToJson for PortfolioMessage {
+    fn to_json(&self) -> String {
+        let msg_value: Value = json!({
+            "address": to_checksum(&self.address, None),
+        });
 
-// -----------------------------------------------------------------------------
-// All
-// -----------------------------------------------------------------------------
-
-export const COVALENT_CHAIN_ID_MAPPING = {
-  ...COVALENT_MAINNET_CHAIN_ID_MAPPING,
-  ...COVALENT_TESTNET_CHAIN_ID_MAPPING,
-};
+        msg_value.to_string()
+    }
+}

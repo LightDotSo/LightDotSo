@@ -17,18 +17,11 @@
 
 import { revalidateTag } from "next/cache";
 import type { Address } from "viem";
-import { inngest } from "@/inngest/client";
 
 // -----------------------------------------------------------------------------
 // Action
 // -----------------------------------------------------------------------------
 
 export default async function action(address: Address) {
-  await inngest.send({
-    name: "wallet/portfolio.invoke",
-    data: {
-      address: address,
-    },
-  });
   revalidateTag(address);
 }

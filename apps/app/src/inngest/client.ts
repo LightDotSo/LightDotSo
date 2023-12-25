@@ -22,28 +22,8 @@ import { prismaMiddleware, sentryMiddleware } from "@/inngest/middlewares";
 // -----------------------------------------------------------------------------
 
 const eventsMap = {
-  "prisma/schema.chore": {},
-  "wallet/portfolio.invoke": {
-    data: z.object({
-      address: z.string(),
-    }),
-  },
-  "wallet/portfolio.covalent.set": {
-    data: z.object({
-      address: z.string(),
-      chainIds: z.array(z.number()),
-    }),
-  },
-  "wallet/transaction.invoke": {
-    data: z.object({
-      address: z.string(),
-    }),
-  },
-  "wallet/transaction.covalent.set": {
-    data: z.object({
-      address: z.string(),
-      chainIds: z.array(z.number()),
-    }),
+  "prisma/schema.chore": {
+    data: z.object({}),
   },
 };
 
