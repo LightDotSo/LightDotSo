@@ -132,7 +132,7 @@ pub async fn covalent_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>)
                             &payload.address,
                             None,
                         ))],
-                        vec![],
+                        vec![wallet_balance::is_latest::set(false)],
                     )
                     .exec()
                     .await?;
