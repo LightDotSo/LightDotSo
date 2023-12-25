@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { PrismaClient } from "@lightdotso/prisma";
 import { InngestMiddleware } from "inngest";
+import { prisma } from "@/clients/prisma";
 
 // -----------------------------------------------------------------------------
 // Middleware
@@ -23,8 +23,6 @@ import { InngestMiddleware } from "inngest";
 export const prismaMiddleware = new InngestMiddleware({
   name: "Prisma Middleware",
   init() {
-    const prisma = new PrismaClient();
-
     return {
       onFunctionRun(_ctx) {
         return {
