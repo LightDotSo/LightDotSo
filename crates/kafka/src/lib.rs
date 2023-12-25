@@ -26,6 +26,8 @@ pub use rdkafka;
 
 pub mod namespace;
 pub mod topics;
+pub mod traits;
+pub mod types;
 
 /// Configure a Kafka client with the required settings.
 pub fn configure_client(group: &str) -> Result<ClientConfig, Box<dyn std::error::Error>> {

@@ -24,7 +24,7 @@ use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-#[derive(Default, Serialize, Deserialize)]
+#[derive(Default, Debug, Serialize, Deserialize)]
 pub struct CustomParams {
     pub user_id: Option<String>,
     pub wallet_address: Option<String>,

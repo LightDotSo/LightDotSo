@@ -14,22 +14,20 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
-    namespace::ACTIVITY, produce_message, traits::ToJson, types::activity::ActivityMessage,
+    namespace::COVALENT, produce_message, traits::ToJson, types::covalent::CovalentMessage,
 };
 use eyre::Result;
-use lightdotso_prisma::ActivityEntity;
 pub use rdkafka;
 use rdkafka::producer::FutureProducer;
 use std::sync::Arc;
 
-// Produce a message with Activity topic.
-pub async fn produce_activity_message(
+// Produce a message with Covalent topic.
+pub async fn produce_covalent_message(
     producer: Arc<FutureProducer>,
-    key: ActivityEntity,
-    msg: &ActivityMessage,
+    msg: &CovalentMessage,
 ) -> Result<()> {
     let message = msg.to_json();
 
-    produce_message(producer, ACTIVITY.as_str(), &message, Some(&key.to_string())).await?;
+    produce_message(producer, COVALENT.as_str(), &message, None).await?;
     Ok(())
 }

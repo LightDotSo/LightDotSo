@@ -30,7 +30,9 @@ use axum::{
 };
 use ethers_main::{types::H160, utils::to_checksum};
 use lightdotso_db::models::activity::CustomParams;
-use lightdotso_kafka::topics::activity::produce_activity_message;
+use lightdotso_kafka::{
+    topics::activity::produce_activity_message, types::activity::ActivityMessage,
+};
 use lightdotso_prisma::{configuration, wallet, ActivityEntity, ActivityOperation};
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
@@ -151,12 +153,14 @@ pub(crate) async fn v1_wallet_update_handler(
     produce_activity_message(
         state.producer.clone(),
         ActivityEntity::Wallet,
-        ActivityOperation::Update,
-        serde_json::to_value(&wallet)?,
-        CustomParams {
-            wallet_address: Some(wallet.address.clone()),
-            user_id: Some(user_id),
-            ..Default::default()
+        &ActivityMessage {
+            operation: ActivityOperation::Update,
+            log: serde_json::to_value(&wallet)?,
+            params: CustomParams {
+                wallet_address: Some(wallet.address.clone()),
+                user_id: Some(user_id),
+                ..Default::default()
+            },
         },
     )
     .await?;

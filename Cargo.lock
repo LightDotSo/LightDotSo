@@ -6276,12 +6276,14 @@ dependencies = [
 name = "lightdotso-kafka"
 version = "0.1.0"
 dependencies = [
+ "ethers 2.0.8",
  "eyre",
  "lazy_static",
  "lightdotso-db",
  "lightdotso-prisma",
  "lightdotso-tracing",
  "rdkafka",
+ "serde",
  "serde_json",
 ]
 
