@@ -130,7 +130,7 @@ impl Consumer {
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         topic if topic == COVALENT.to_string() => {
-                            let _ = covalent_consumer(&m).await;
+                            let _ = covalent_consumer(&m, db.clone()).await;
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         topic if topic == NOTIFICATION.to_string() => {
