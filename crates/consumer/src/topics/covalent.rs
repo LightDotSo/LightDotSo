@@ -145,6 +145,15 @@ pub async fn covalent_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>)
                             .items
                             .iter()
                             .map(|item| {
+                                // Find the token
+                                let token = tokens
+                                    .iter()
+                                    .find(|token| {
+                                        token.address.clone().to_lowercase()
+                                            == item.contract_address.clone().unwrap()
+                                    })
+                                    .unwrap();
+
                                 (
                                     item.quote.unwrap_or(0.0),
                                     payload.chain_id as i64,
@@ -159,9 +168,10 @@ pub async fn covalent_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>)
                                         wallet_balance::stable::set(Some(
                                             item.balance_type
                                                 .as_ref()
-                                                .map(|balance_type| balance_type == "stable")
+                                                .map(|balance_type| balance_type == "stablecoin")
                                                 .unwrap_or(false),
                                         )),
+                                        wallet_balance::token_id::set(Some(token.id.to_string())),
                                         wallet_balance::is_spam::set(item.is_spam),
                                         wallet_balance::is_latest::set(true),
                                         wallet_balance::is_testnet::set(
