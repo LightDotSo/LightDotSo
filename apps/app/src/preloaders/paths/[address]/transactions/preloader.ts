@@ -33,7 +33,7 @@ export const preloader = async (params: { address: string }) => {
     address: params.address as Address,
     offset: 0,
     limit: TRANSACTION_ROW_COUNT,
-    direction: "asc",
+    order: "asc",
     status: "proposed",
     is_testnet: false,
   });
@@ -46,7 +46,7 @@ export const preloader = async (params: { address: string }) => {
     address: params.address as Address,
     offset: 0,
     limit: TRANSACTION_ROW_COUNT,
-    direction: "desc",
+    order: "desc",
     status: "history",
     is_testnet: false,
   });
