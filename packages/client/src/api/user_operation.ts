@@ -102,7 +102,7 @@ export const getUserOperations = async (
             offset?: number | null | undefined;
             limit?: number | null | undefined;
             address?: string | null | undefined;
-            direction?: ("asc" | "desc") | null | undefined;
+            order?: ("asc" | "desc") | null | undefined;
             status?:
               | (
                   | "proposed"
@@ -141,10 +141,7 @@ export const getUserOperationsCount = async (
     params: {
       query?:
         | {
-            offset?: number | null | undefined;
-            limit?: number | null | undefined;
             address?: string | null | undefined;
-            direction?: ("asc" | "desc") | null | undefined;
             status?:
               | (
                   | "proposed"

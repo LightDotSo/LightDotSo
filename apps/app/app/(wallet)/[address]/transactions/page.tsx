@@ -69,7 +69,7 @@ export default async function Page({ params }: PageProps) {
     queries.user_operation.list({
       address: params.address as Address,
       status: "proposed",
-      direction: "asc",
+      order: "asc",
       limit: TRANSACTION_ROW_COUNT,
       offset: 0,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
@@ -88,7 +88,7 @@ export default async function Page({ params }: PageProps) {
     queries.user_operation.list({
       address: params.address as Address,
       status: "history",
-      direction: "desc",
+      order: "desc",
       limit: TRANSACTION_ROW_COUNT,
       offset: 0,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,

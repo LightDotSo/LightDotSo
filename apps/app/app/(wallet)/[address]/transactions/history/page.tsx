@@ -69,7 +69,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     queries.user_operation.list({
       address: params.address as Address,
       status: "history",
-      direction: "desc",
+      order: "desc",
       limit: paginationState.pageSize,
       offset: paginationState.pageIndex * paginationState.pageSize,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,

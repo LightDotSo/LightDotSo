@@ -31,7 +31,7 @@ export type UserOperationNonceParams = {
 export type UserOperationListParams = {
   address: Address;
   status: "proposed" | "history";
-  direction: "desc" | "asc";
+  order: "desc" | "asc";
   limit: number;
   offset: number;
   is_testnet: boolean;
@@ -39,5 +39,5 @@ export type UserOperationListParams = {
 
 export type UserOperationListCountParams = Omit<
   UserOperationListParams,
-  "direction" | "limit" | "offset"
+  "order" | "limit" | "offset"
 >;

@@ -77,7 +77,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
     queries.user_operation.list({
       address,
       status,
-      direction: status === "proposed" ? "asc" : "desc",
+      order: status === "proposed" ? "asc" : "desc",
       limit: paginationState.pageSize,
       offset: offsetCount,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
@@ -89,7 +89,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
     queryKey: queries.user_operation.list({
       address,
       status,
-      direction: status === "proposed" ? "asc" : "desc",
+      order: status === "proposed" ? "asc" : "desc",
       limit: paginationState.pageSize,
       offset: offsetCount,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
@@ -100,7 +100,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
           query: {
             address,
             status,
-            direction: status === "proposed" ? "asc" : "desc",
+            order: status === "proposed" ? "asc" : "desc",
             limit: paginationState.pageSize,
             offset: offsetCount,
             is_testnet: walletSettings?.is_enabled_testnet ?? false,

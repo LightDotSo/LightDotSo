@@ -32,7 +32,7 @@ export const preloader = async (params: { address: string }) => {
     address: params.address as Address,
     offset: 0,
     limit: Number.MAX_SAFE_INTEGER,
-    direction: "asc",
+    order: "asc",
     status: "history",
     is_testnet: false,
   });

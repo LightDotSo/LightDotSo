@@ -55,7 +55,7 @@ export const handler = async (
     status: "history",
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
-    direction: "desc",
+    order: "desc",
     is_testnet: walletSettings.is_enabled_testnet,
   });
 

@@ -39,7 +39,7 @@ export const handler = async (params: { address: string }) => {
   const userOperationsPromise = getUserOperations({
     address: params.address as Address,
     status: "history",
-    direction: "asc",
+    order: "asc",
     limit: Number.MAX_SAFE_INTEGER,
     offset: 0,
     is_testnet: walletSettings.is_enabled_testnet,
