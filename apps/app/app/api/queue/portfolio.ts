@@ -15,8 +15,10 @@
 
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { isAddress } from "viem";
+import type { Address } from "viem";
+import { getAddress, isAddress } from "viem";
 import { kafka } from "@/clients/kafka";
+import { prisma } from "@/clients/prisma";
 import { ratelimit } from "@/clients/redis";
 
 export async function POST(request: NextRequest) {
@@ -29,11 +31,34 @@ export async function POST(request: NextRequest) {
 
   const addr = request.nextUrl.searchParams.get("address");
 
-  if (addr && isAddress(addr)) {
-    kafka.producer().produce("covalent", {
-      address: addr,
+  if (addr && !isAddress(addr)) {
+    return Response.json({
+      revalidated: false,
+      now: Date.now(),
+      message: "Invalid address",
     });
   }
+
+  const address = getAddress(addr as Address);
+
+  // Check if the address exists in the prisma database
+  const exists = await prisma.wallet.findUnique({
+    where: {
+      address: address,
+    },
+  });
+
+  if (!exists) {
+    return Response.json({
+      revalidated: false,
+      now: Date.now(),
+      message: "Address does not exist",
+    });
+  }
+
+  kafka.producer().produce("covalent", {
+    address: addr,
+  });
 
   return Response.json({
     revalidated: false,
