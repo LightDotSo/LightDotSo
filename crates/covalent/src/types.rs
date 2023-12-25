@@ -15,6 +15,10 @@
 
 use serde::{Deserialize, Serialize};
 
+// -----------------------------------------------------------------------------
+// API Base Types
+// -----------------------------------------------------------------------------
+
 #[derive(Serialize, Deserialize, Debug, PartialEq, Clone, Default)]
 pub struct ApiError {
     pub error: bool,
@@ -29,6 +33,10 @@ pub struct ApiPagination {
     pub page_size: Option<i32>,
     pub total_count: Option<i32>,
 }
+
+// -----------------------------------------------------------------------------
+// Balance Types
+// -----------------------------------------------------------------------------
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub struct WalletBalanceItem {
@@ -66,6 +74,95 @@ pub struct Balances {
 #[derive(Serialize, Deserialize, Debug, PartialEq, Clone, Default)]
 pub struct BalancesData {
     pub data: Balances,
+    #[serde(flatten)]
+    pub error: ApiError,
+}
+
+// -----------------------------------------------------------------------------
+// Transaction Types
+// -----------------------------------------------------------------------------
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
+pub struct LogDecodedParams {
+    name: String,
+    #[serde(alias = "type")]
+    pub param_type: String,
+    pub indexed: bool,
+    pub decoded: bool,
+    // value is usually a String but can sometimes be a Vector(JS sequence/list)
+    // for now avoiding using serde on it because of the type changing
+    #[serde(skip_serializing, skip_deserializing)]
+    pub value: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
+pub struct LogDecoded {
+    pub name: String,
+    pub signature: String,
+    pub params: Option<Vec<LogDecodedParams>>,
+}
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
+pub struct LogEventItem {
+    pub block_signed_at: String,
+    pub block_height: i64,
+    pub tx_offset: i64,
+    pub log_offset: i64,
+    pub tx_hash: String,
+    pub raw_log_topics: Option<Vec<String>>,
+    pub sender_contract_decimals: i32,
+    pub sender_name: Option<String>,
+    pub sender_contract_ticker_symbol: Option<String>,
+    pub sender_address: String,
+    pub sender_address_label: Option<String>,
+    pub sender_logo_url: Option<String>,
+    pub raw_log_data: Option<String>,
+    pub decoded: Option<LogDecoded>,
+}
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
+pub struct BaseTransaction {
+    pub block_signed_at: String,
+    pub block_height: i32,
+    pub tx_hash: String,
+    pub tx_offset: i32,
+    pub successful: bool,
+    pub from_address: String,
+    pub from_address_label: Option<String>,
+    pub to_address: String,
+    pub to_address_label: Option<String>,
+    pub value: String,
+    pub value_quote: f64,
+    pub gas_offered: i64,
+    pub gas_spent: i64,
+    pub gas_price: i64,
+    pub fees_paid: Option<String>,
+    pub gas_quote: f64,
+    pub gas_quote_rate: f64,
+}
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
+pub struct BlockTransactionWithLogEvents {
+    #[serde(flatten)]
+    pub transaction: BaseTransaction,
+    pub log_events: Option<Vec<LogEventItem>>,
+}
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone, Default)]
+pub struct Transactions {
+    pub address: String,
+    pub updated_at: String,
+    pub next_update_at: String,
+    pub quote_currency: String,
+    pub chain_id: i64,
+    pub items: Vec<BlockTransactionWithLogEvents>,
+    #[serde(flatten)]
+    pub pagination: Option<ApiPagination>,
+}
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
+pub struct TransactionsData {
+    pub data: Transactions,
     #[serde(flatten)]
     pub error: ApiError,
 }

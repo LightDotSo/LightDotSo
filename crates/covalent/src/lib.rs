@@ -22,6 +22,7 @@ use eyre::WrapErr;
 use lightdotso_tracing::tracing::info;
 use reqwest::Response;
 use types::BalancesData;
+use types::TransactionsData;
 
 pub mod constants;
 pub mod types;
@@ -77,5 +78,25 @@ pub async fn get_token_balances(
 
     let resp = make_request(&endpoint).await?;
     let resource: BalancesData = resp.json().await?;
+    Ok(resource)
+}
+
+/// Get transactions for an address
+pub async fn get_transactions_for_address(
+    chain_id: &str,
+    addr: &str,
+    page_size: Option<String>,
+    page_number: Option<String>,
+) -> Result<TransactionsData> {
+    let api_key = get_api_key()?;
+
+    let mut endpoint = format!(
+        "{}/{}/address/{}/transactions_v2/?key={}",
+        *COVALENT_BASE_URL, chain_id, addr, api_key
+    );
+    endpoint = add_pagination_params(endpoint, page_size, page_number);
+
+    let resp = make_request(&endpoint).await?;
+    let resource: TransactionsData = resp.json().await?;
     Ok(resource)
 }
