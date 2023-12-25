@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
     return Response.json({
       revalidated: false,
       now: Date.now(),
-      message: "Address does not exist",
+      message: "Wallet does not exist",
     });
   }
 
