@@ -387,8 +387,30 @@ pub async fn rpc_proxy_handler(
                     Body::from(full_body_bytes.clone()),
                 )
                 .await;
-                if let Some(resp) = result {
-                    return resp;
+                if let Some(mut resp) = result {
+                    // Continue if the body includes `Unknown error`
+                    let body = resp.body_mut();
+                    // Convert the body into bytes
+                    let body_bytes = body::to_bytes(body).await;
+
+                    if let Ok(body_bytes) = body_bytes {
+                        let body_json: Value =
+                            serde_json::from_slice(&body_bytes).unwrap_or_default();
+                        // If the error code is the speficied error code return None
+                        if let Some(error) = body_json.get("error") {
+                            if let Some(message) = error.get("message") {
+                                if message.as_str().map_or(false, |s| s.contains("Unknown error")) {
+                                    info!("Continuing w/ next rpc url: {:?}", body_json);
+                                }
+                            } else {
+                                return resp;
+                            }
+                        } else {
+                            return resp;
+                        }
+                    } else {
+                        return resp;
+                    }
                 }
 
                 // Get the pimlico rpc url
