@@ -17,6 +17,7 @@
 
 use ethers::utils::to_checksum;
 use eyre::Result;
+use lightdotso_contracts::constants::MAINNET_CHAIN_IDS;
 use lightdotso_covalent::get_token_balances;
 use lightdotso_kafka::types::covalent::CovalentMessage;
 use lightdotso_prisma::token;
@@ -161,6 +162,12 @@ pub async fn covalent_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>)
                                                 .map(|balance_type| balance_type == "stable")
                                                 .unwrap_or(false),
                                         )),
+                                        wallet_balance::is_spam::set(item.is_spam),
+                                        wallet_balance::is_latest::set(true),
+                                        wallet_balance::is_testnet::set(
+                                            !MAINNET_CHAIN_IDS
+                                                .contains_key(&(payload.chain_id as u64)),
+                                        ),
                                     ],
                                 )
                             })
