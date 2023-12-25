@@ -1,0 +1,20 @@
+[package]
+  name = "lightdotso-covalent"
+
+  version.workspace = true
+  edition.workspace = true
+  rust-version.workspace = true
+  license.workspace = true
+  homepage.workspace = true
+  repository.workspace = true
+
+[dependencies]
+  eyre = { workspace = true }
+  lazy_static = { workspace = true }
+  lightdotso-tracing = { workspace = true }
+  reqwest = { workspace = true }
+  serde = { workspace = true }
+  tokio = { workspace = true }
+
+[dev-dependencies]
+  dotenvy = { workspace = true }

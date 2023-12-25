@@ -6146,6 +6146,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "lightdotso-covalent"
+version = "0.1.0"
+dependencies = [
+ "dotenvy",
+ "eyre",
+ "lazy_static",
+ "lightdotso-tracing",
+ "reqwest",
+ "serde",
+ "tokio",
+]
+
+[[package]]
 name = "lightdotso-db"
 version = "0.1.0"
 dependencies = [

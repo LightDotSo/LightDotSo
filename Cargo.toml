@@ -13,6 +13,7 @@
     "crates/consumer",
     "crates/core",
     "crates/contracts",
+    "crates/covalent",
     "crates/db",
     "crates/discord",
     "crates/gas",
@@ -106,6 +107,7 @@
   lightdotso-consumer = { path = "./crates/consumer" }
   lightdotso-constants = { path = "./crates/constants" }
   lightdotso-contracts = { path = "./crates/contracts" }
+  lightdotso-covalent = { path = "./crates/covalent" }
   lightdotso-discord = { path = "./crates/discord" }
   lightdotso-db = { path = "./crates/db" }
   lightdotso-gas = { path = "./crates/gas" }

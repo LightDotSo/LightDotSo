@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod activity;
-pub mod covalent;
-pub mod error_transaction;
-pub mod notification;
-pub mod transaction;
-pub mod unknown;
+use lazy_static::lazy_static;
+
+// The baes URL for the Covalent API
+lazy_static! {
+    pub static ref COVALENT_BASE_URL: String = "https://api.covalenthq.com/v1".to_string();
+}
