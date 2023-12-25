@@ -15,6 +15,7 @@
 
 import { mergeQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeyStore } from "@lukemorales/query-key-factory";
+import { activity } from "./activity";
 import { auth } from "./auth";
 import { configuration } from "./configuration";
 import { nft } from "./nft";
@@ -30,6 +31,7 @@ import { wallet } from "./wallet";
 
 export const queries = mergeQueryKeys(
   auth,
+  activity,
   configuration,
   nft,
   nft_valuation,

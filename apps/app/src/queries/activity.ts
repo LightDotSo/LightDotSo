@@ -13,36 +13,24 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use lightdotso_prisma::activity;
-use serde::{Deserialize, Serialize};
-use utoipa::ToSchema;
+import { createQueryKeys } from "@lukemorales/query-key-factory";
+import type { inferQueryKeys } from "@lukemorales/query-key-factory";
+import type { ActivityListParams, ActivityListCountParams } from "@/params";
+// -----------------------------------------------------------------------------
+// Keys
+// -----------------------------------------------------------------------------
+
+export const activity = createQueryKeys("activity", {
+  list: (params: ActivityListParams) => ({
+    queryKey: [{ params }],
+  }),
+  listCount: (params: ActivityListCountParams) => ({
+    queryKey: [{ params }],
+  }),
+});
 
 // -----------------------------------------------------------------------------
-// Types
+// Infer
 // -----------------------------------------------------------------------------
 
-/// Activity root type.
-#[derive(Serialize, Deserialize, ToSchema, Clone)]
-#[serde(rename_all = "snake_case")]
-pub(crate) struct Activity {
-    /// The id of the activity.
-    id: String,
-    /// The entity id of the activity.
-    entity: String,
-    /// The operation type of the activity.
-    operation: String,
-    /// The timestamp of the activity.
-    timestamp: String,
-}
-
-/// Implement From<activity::Data> for Activity.
-impl From<activity::Data> for Activity {
-    fn from(activity: activity::Data) -> Self {
-        Self {
-            id: activity.id,
-            entity: activity.entity.to_string(),
-            operation: activity.operation.to_string(),
-            timestamp: activity.timestamp.to_rfc3339(),
-        }
-    }
-}
+export type ActivityKeys = inferQueryKeys<typeof activity>;

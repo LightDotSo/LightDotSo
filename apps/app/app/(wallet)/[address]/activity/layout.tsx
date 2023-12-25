@@ -14,9 +14,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Metadata } from "next";
+import { ActivityDataTableToolbar } from "@/app/(wallet)/[address]/activity/(components)/activity-data-table-toolbar";
 import { BannerSection } from "@/components/section/banner-section";
-import { HStackFull } from "@/components/stack/h-stack-full";
 import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
+import { MiddleLayerWrapper } from "@/components/wrapper/layer/middle-layer-wrapper";
 import { BasicPageWrapper } from "@/components/wrapper/page/basic-page-wrapper";
 import { TITLES } from "@/const/titles";
 
@@ -52,12 +53,13 @@ export default function ActivityLayout({ children }: ActivityLayoutProps) {
         title={TITLES.Activity.title}
         description={TITLES.Activity.description}
       >
-        <HStackFull>
-          <BaseLayerWrapper>
-            <BasicPageWrapper>{children}</BasicPageWrapper>
-          </BaseLayerWrapper>
-        </HStackFull>
+        <MiddleLayerWrapper>
+          <ActivityDataTableToolbar />
+        </MiddleLayerWrapper>
       </BannerSection>
+      <BaseLayerWrapper>
+        <BasicPageWrapper>{children}</BasicPageWrapper>
+      </BaseLayerWrapper>
     </>
   );
 }

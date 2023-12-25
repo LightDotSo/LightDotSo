@@ -38,7 +38,7 @@ pub struct ListQuery {
     /// The user id to filter by.
     pub user_id: Option<String>,
     /// The wallet address to filter by.
-    pub wallet_address: Option<String>,
+    pub address: Option<String>,
 }
 
 // -----------------------------------------------------------------------------
@@ -132,7 +132,7 @@ pub(crate) async fn v1_activity_list_count_handler(
 
 /// Constructs a query for activities.
 fn construct_activity_list_query_params(query: &ListQuery) -> Vec<WhereParam> {
-    let mut query_exp = match &query.wallet_address {
+    let mut query_exp = match &query.address {
         Some(addr) => {
             vec![activity::wallet_address::equals(Some(addr.clone()))]
         }

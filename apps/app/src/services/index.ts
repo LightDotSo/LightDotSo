@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+export { getActivities } from "@/services/getActivities";
+export { getActivitiesCount } from "@/services/getActivitiesCount";
 export { getConfiguration } from "@/services/getConfiguration";
 export { getPortfolio } from "@/services/getPortfolio";
 export { getQueryClient } from "@/services/getQueryClient";

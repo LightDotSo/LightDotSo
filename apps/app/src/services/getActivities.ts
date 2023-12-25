@@ -13,36 +13,31 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use lightdotso_prisma::activity;
-use serde::{Deserialize, Serialize};
-use utoipa::ToSchema;
+import { getActivities as getClientActivities } from "@lightdotso/client";
+import type { ActivityListParams } from "@/params";
+import "server-only";
 
 // -----------------------------------------------------------------------------
-// Types
+// Pre
 // -----------------------------------------------------------------------------
 
-/// Activity root type.
-#[derive(Serialize, Deserialize, ToSchema, Clone)]
-#[serde(rename_all = "snake_case")]
-pub(crate) struct Activity {
-    /// The id of the activity.
-    id: String,
-    /// The entity id of the activity.
-    entity: String,
-    /// The operation type of the activity.
-    operation: String,
-    /// The timestamp of the activity.
-    timestamp: String,
-}
+export const preload = (params: ActivityListParams) => {
+  void getActivities(params);
+};
 
-/// Implement From<activity::Data> for Activity.
-impl From<activity::Data> for Activity {
-    fn from(activity: activity::Data) -> Self {
-        Self {
-            id: activity.id,
-            entity: activity.entity.to_string(),
-            operation: activity.operation.to_string(),
-            timestamp: activity.timestamp.to_rfc3339(),
-        }
-    }
-}
+// -----------------------------------------------------------------------------
+// Service
+// -----------------------------------------------------------------------------
+
+export const getActivities = async (params: ActivityListParams) => {
+  return getClientActivities(
+    {
+      params: {
+        query: {
+          address: params.address,
+        },
+      },
+    },
+    false,
+  );
+};
