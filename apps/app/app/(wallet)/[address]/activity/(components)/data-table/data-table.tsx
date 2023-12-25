@@ -36,8 +36,6 @@ import {
 import type { ColumnDef } from "@tanstack/react-table";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { DataTableToolbar } from "@/app/(wallet)/[address]/activity/(components)/data-table/data-table-toolbar";
-import { DataTablePagination } from "@/components/data-table/data-table-pagination";
 import { TableEmpty } from "@/components/state/table-empty";
 import type { ActivityData } from "@/data";
 import { usePaginationQueryState } from "@/querystates";
@@ -145,63 +143,49 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <>
-      <DataTableToolbar table={table} />
-      <div className="space-y-4">
-        <div className="rounded-md border border-border bg-background">
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map(headerGroup => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map(header => {
-                    return (
-                      <TableHead key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
-                      </TableHead>
-                    );
-                  })}
-                </TableRow>
+    <Table>
+      <TableHeader>
+        {table.getHeaderGroups().map(headerGroup => (
+          <TableRow key={headerGroup.id}>
+            {headerGroup.headers.map(header => {
+              return (
+                <TableHead key={header.id}>
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
+                </TableHead>
+              );
+            })}
+          </TableRow>
+        ))}
+      </TableHeader>
+      <TableBody>
+        {table.getRowModel().rows?.length ? (
+          table.getRowModel().rows.map(row => (
+            <TableRow
+              key={row.id}
+              className="cursor-pointer"
+              data-state={row.getIsSelected() && "selected"}
+              onClick={() => router.push(`/${row.original.id}`)}
+            >
+              {row.getVisibleCells().map(cell => (
+                <TableCell key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </TableCell>
               ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map(row => (
-                  <TableRow
-                    key={row.id}
-                    className="cursor-pointer"
-                    data-state={row.getIsSelected() && "selected"}
-                    onClick={() => router.push(`/${row.original.id}`)}
-                  >
-                    {row.getVisibleCells().map(cell => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    <TableEmpty entity="activity" />
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-      </div>
-      <DataTablePagination table={table} />
-    </>
+            </TableRow>
+          ))
+        ) : (
+          <TableRow>
+            <TableCell colSpan={columns.length} className="h-24 text-center">
+              <TableEmpty entity="activity" />
+            </TableCell>
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
   );
 }
