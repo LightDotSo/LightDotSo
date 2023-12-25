@@ -16,6 +16,7 @@
 use eyre::Result;
 use lightdotso_covalent::{get_token_balances, get_transactions};
 
+#[ignore]
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_token_test() -> Result<()> {
     let _ = dotenvy::dotenv();
@@ -27,6 +28,7 @@ async fn test_integration_token_test() -> Result<()> {
     Ok(())
 }
 
+#[ignore]
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_transactions_test() -> Result<()> {
     let _ = dotenvy::dotenv();

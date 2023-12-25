@@ -20,6 +20,16 @@ lazy_static! {
     pub static ref ACTIVITY: String = "activity".to_string();
 }
 
+// The covalent namesapce
+lazy_static! {
+    pub static ref COVALENT: String = "covalent".to_string();
+}
+
+// The notification namesapce
+lazy_static! {
+    pub static ref NOTIFICATION: String = "notification".to_string();
+}
+
 // The portfolio namesapce
 lazy_static! {
     pub static ref PORTFOLIO: String = "portfolio".to_string();
@@ -53,8 +63,4 @@ lazy_static! {
 // The error transaction namesapce
 lazy_static! {
     pub static ref ERROR_TRANSACTION: String = "error-transaction".to_string();
-}
-
-lazy_static! {
-    pub static ref NOTIFICATION: String = "notification".to_string();
 }

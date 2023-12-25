@@ -19,9 +19,9 @@
 use crate::{
     config::ConsumerArgs,
     topics::{
-        activity::activity_consumer, error_transaction::error_transaction_consumer,
-        notification::notification_consumer, transaction::transaction_consumer,
-        unknown::unknown_consumer,
+        activity::activity_consumer, covalent::covalent_consumer,
+        error_transaction::error_transaction_consumer, notification::notification_consumer,
+        transaction::transaction_consumer, unknown::unknown_consumer,
     },
 };
 use clap::Parser;
@@ -31,8 +31,8 @@ use lightdotso_indexer::config::IndexerArgs;
 use lightdotso_kafka::{
     get_consumer, get_producer,
     namespace::{
-        ACTIVITY, ERROR_TRANSACTION, NOTIFICATION, RETRY_TRANSACTION, RETRY_TRANSACTION_0,
-        RETRY_TRANSACTION_1, RETRY_TRANSACTION_2, TRANSACTION,
+        ACTIVITY, COVALENT, ERROR_TRANSACTION, NOTIFICATION, RETRY_TRANSACTION,
+        RETRY_TRANSACTION_0, RETRY_TRANSACTION_1, RETRY_TRANSACTION_2, TRANSACTION,
     },
 };
 use lightdotso_notifier::config::NotifierArgs;
@@ -127,6 +127,10 @@ impl Consumer {
                         }
                         topic if topic == ACTIVITY.to_string() => {
                             let _ = activity_consumer(&m, db.clone()).await;
+                            let _ = self.consumer.commit_message(&m, CommitMode::Async);
+                        }
+                        topic if topic == COVALENT.to_string() => {
+                            let _ = covalent_consumer(&m).await;
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         topic if topic == NOTIFICATION.to_string() => {
