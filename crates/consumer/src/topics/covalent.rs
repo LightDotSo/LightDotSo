@@ -14,24 +14,23 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use eyre::Result;
+use lightdotso_kafka::types::covalent::CovalentMessage;
 use lightdotso_tracing::tracing::info;
 use rdkafka::{message::BorrowedMessage, Message};
 
 pub async fn covalent_consumer(msg: &BorrowedMessage<'_>) -> Result<()> {
-    // Send webhook if exists
-    info!(
-        "key: '{:?}', payload: '{:?}',  topic: {}, partition: {}, offset: {}, timestamp: {:?}",
-        msg.key(),
-        msg.payload_view::<str>(),
-        msg.topic(),
-        msg.partition(),
-        msg.offset(),
-        msg.timestamp()
-    );
-
     // Convert the payload to a string
     let payload_opt = msg.payload_view::<str>();
     info!("payload_opt: {:?}", payload_opt);
+
+    // If the payload is valid
+    if let Some(Ok(payload)) = payload_opt {
+        // Parse the payload into a JSON object, `CovalentMessage`
+        let payload: CovalentMessage = serde_json::from_slice(payload.as_bytes())?;
+
+        // Log the payload
+        info!("payload: {:?}", payload);
+    }
 
     Ok(())
 }

@@ -33,7 +33,9 @@ use ethers_main::{
 use eyre::{eyre, Result};
 use lightdotso_contracts::constants::LIGHT_WALLET_FACTORY_ADDRESS;
 use lightdotso_db::models::activity::CustomParams;
-use lightdotso_kafka::topics::activity::produce_activity_message;
+use lightdotso_kafka::{
+    topics::activity::produce_activity_message, types::activity::ActivityMessage,
+};
 use lightdotso_prisma::{wallet, ActivityEntity, ActivityOperation, InviteCodeStatus};
 use lightdotso_solutions::{
     builder::rooted_node_builder,
@@ -345,9 +347,14 @@ pub(crate) async fn v1_wallet_post_handler(
     produce_activity_message(
         state.producer.clone(),
         ActivityEntity::Wallet,
-        ActivityOperation::Create,
-        serde_json::to_value(&wallet)?,
-        CustomParams { wallet_address: Some(wallet.address.clone()), ..Default::default() },
+        &ActivityMessage {
+            operation: ActivityOperation::Create,
+            log: serde_json::to_value(&wallet)?,
+            params: CustomParams {
+                wallet_address: Some(wallet.address.clone()),
+                ..Default::default()
+            },
+        },
     )
     .await?;
 
@@ -370,12 +377,14 @@ pub(crate) async fn v1_wallet_post_handler(
     produce_activity_message(
         state.producer.clone(),
         ActivityEntity::InviteCode,
-        ActivityOperation::Update,
-        serde_json::to_value(&invite_code)?,
-        CustomParams {
-            wallet_address: Some(wallet.address.clone()),
-            invite_code_id: Some(invite_code.id.clone()),
-            ..Default::default()
+        &ActivityMessage {
+            operation: ActivityOperation::Update,
+            log: serde_json::to_value(&invite_code)?,
+            params: CustomParams {
+                wallet_address: Some(wallet.address.clone()),
+                invite_code_id: Some(invite_code.id.clone()),
+                ..Default::default()
+            },
         },
     )
     .await?;
