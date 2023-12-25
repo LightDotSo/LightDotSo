@@ -11,6 +11,12 @@
       "startBlock": 78720307
     }
   },
+  "arbitrum-sepolia": {
+    "EntryPointv0.6.0": {
+      "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+      "startBlock": 623334
+    }
+  },
   "avalanche": {
     "EntryPointv0.6.0": {
       "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
@@ -23,6 +29,12 @@
       "startBlock": 1854367
     }
   },
+  "base-sepolia": {
+    "EntryPointv0.6.0": {
+      "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+      "startBlock": 1128910
+    }
+  },
   "bsc": {
     "EntryPointv0.6.0": {
       "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
@@ -33,6 +45,12 @@
     "EntryPointv0.6.0": {
       "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
       "startBlock": 21062508
+    }
+  },
+  "chapel": {
+    "EntryPointv0.6.0": {
+      "address": "0x5Ff137D4B0FDCD49DcA30c7CF57E578A026d2789",
+      "startBlock": 28789129
     }
   },
   "fantom": {
@@ -53,6 +71,12 @@
       "startBlock": 41335185
     }
   },
+  "mumbai": {
+    "EntryPointv0.6.0": {
+      "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+      "startBlock": 34166156
+    }
+  },
   "polygon-zkevm": {
     "EntryPointv0.6.0": {
       "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
@@ -65,22 +89,28 @@
       "startBlock": 88234528
     }
   },
+  "optimism-sepolia": {
+    "EntryPointv0.6.0": {
+      "address": "0x5Ff137D4B0FDCD49DcA30c7CF57E578A026d2789",
+      "startBlock": 3593614
+    }
+  },
+  "scroll": {
+    "EntryPointv0.6.0": {
+      "address": "0x5Ff137D4B0FDCD49DcA30c7CF57E578A026d2789",
+      "startBlock": 17
+    }
+  },
+  "scroll-sepolia": {
+    "EntryPointv0.6.0": {
+      "address": "0x5Ff137D4B0FDCD49DcA30c7CF57E578A026d2789",
+      "startBlock": 91
+    }
+  },
   "sepolia": {
     "EntryPointv0.6.0": {
       "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
       "startBlock": 3257815
-    }
-  },
-  "base-testnet": {
-    "EntryPointv0.6.0": {
-      "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
-      "startBlock": 3760459
-    }
-  },
-  "mumbai": {
-    "EntryPointv0.6.0": {
-      "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
-      "startBlock": 34166156
     }
   }
 }
