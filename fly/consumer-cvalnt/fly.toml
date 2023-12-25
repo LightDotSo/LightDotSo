@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for lightdotso-consumer-nfn on 2023-09-05T17:56:04-07:00
+# fly.toml app configuration file generated for lightdotso-consumer-cvalnt on 2023-12-25T11:11:52-08:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -17,12 +17,6 @@ kill_timeout = "5s"
 [deploy]
   strategy = "canary"
 
-[http_service]
-  internal_port = 0
-  auto_stop_machines = true
-  auto_start_machines = true
-  min_machines_running = 1
-
 [checks]
   [checks.health]
     port = 9091
@@ -33,6 +27,11 @@ kill_timeout = "5s"
     method = "get"
     path = "/health"
 
-[metrics]
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 1024
+
+[[metrics]]
   port = 9091
   path = "/metrics"
