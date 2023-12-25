@@ -29,6 +29,7 @@ import type {
   WalletData,
   TransactionData,
   UserOperationData,
+  ActivityData,
 } from "@/data";
 
 // -----------------------------------------------------------------------------
@@ -42,6 +43,16 @@ type OnChangeFn<T> = (value: T | ((prevState: T) => T)) => void;
 // -----------------------------------------------------------------------------
 
 type TablesStore = {
+  activityColumnFilters: ColumnFiltersState;
+  activityColumnVisibility: VisibilityState;
+  activityRowSelection: RowSelectionState;
+  activitySorting: SortingState;
+  activityTable: Table<ActivityData> | null;
+  setActivityColumnFilters: OnChangeFn<ColumnFiltersState>;
+  setActivityColumnVisibility: OnChangeFn<VisibilityState>;
+  setActivityRowSelection: OnChangeFn<RowSelectionState>;
+  setActivitySorting: OnChangeFn<SortingState>;
+  setActivityTable: (tableObject: Table<ActivityData>) => void;
   nftColumnFilters: ColumnFiltersState;
   nftColumnVisibility: VisibilityState;
   nftRowSelection: RowSelectionState;
@@ -112,6 +123,53 @@ export const useTables = create(
   devtools(
     persist<TablesStore>(
       set => ({
+        activityColumnFilters: [],
+        activityColumnVisibility: {},
+        activityRowSelection: {},
+        activitySorting: [],
+        activityTable: null,
+        setActivityColumnFilters: columnFilters =>
+          set(prevState => ({
+            ...prevState,
+            transactionColumnFilters:
+              columnFilters instanceof Function
+                ? columnFilters(prevState.transactionColumnFilters)
+                : columnFilters,
+          })),
+        setActivityColumnVisibility: columnVisibility =>
+          set(prevState => ({
+            ...prevState,
+            transactionColumnVisibility:
+              columnVisibility instanceof Function
+                ? columnVisibility(prevState.transactionColumnVisibility)
+                : columnVisibility,
+          })),
+        setActivityRowSelection: rowSelection =>
+          set(prevState => ({
+            ...prevState,
+            transactionRowSelection:
+              rowSelection instanceof Function
+                ? rowSelection(prevState.transactionRowSelection)
+                : rowSelection,
+          })),
+        setActivitySorting: sorting =>
+          set(prevState => ({
+            ...prevState,
+            transactionSorting:
+              sorting instanceof Function
+                ? sorting(prevState.transactionSorting)
+                : sorting,
+          })),
+        setActivityTable: tableObject =>
+          set({
+            activityTable: tableObject,
+            ownerTable: null,
+            nftTable: null,
+            userOperationTable: null,
+            tokenTable: null,
+            transactionTable: null,
+            walletTable: null,
+          }),
         nftColumnFilters: [
           {
             id: "spam_score",
@@ -157,6 +215,7 @@ export const useTables = create(
         setNftTable: tableObject =>
           set({
             nftTable: tableObject,
+            activityTable: null,
             ownerTable: null,
             tokenTable: null,
             userOperationTable: null,
@@ -203,6 +262,7 @@ export const useTables = create(
         setOwnerTable: tableObject =>
           set({
             ownerTable: tableObject,
+            activityTable: null,
             nftTable: null,
             userOperationTable: null,
             tokenTable: null,
@@ -249,6 +309,7 @@ export const useTables = create(
         setUserOperationTable: tableObject =>
           set({
             userOperationTable: tableObject,
+            activityTable: null,
             ownerTable: null,
             nftTable: null,
             transactionTable: null,
@@ -295,6 +356,7 @@ export const useTables = create(
         setTokenTable: tableObject =>
           set({
             tokenTable: tableObject,
+            activityTable: null,
             ownerTable: null,
             nftTable: null,
             userOperationTable: null,
@@ -341,6 +403,7 @@ export const useTables = create(
         setTransactionTable: tableObject =>
           set({
             transactionTable: tableObject,
+            activityTable: null,
             ownerTable: null,
             nftTable: null,
             userOperationTable: null,
@@ -387,6 +450,7 @@ export const useTables = create(
         setWalletTable: tableObject =>
           set({
             walletTable: tableObject,
+            activityTable: null,
             ownerTable: null,
             nftTable: null,
             userOperationTable: null,

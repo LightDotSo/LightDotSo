@@ -13,16 +13,19 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export * from "./activity";
-export * from "./auth";
-export * from "./configuration";
-export * from "./feedback";
-export * from "./invite_code";
-export * from "./paymaster_operation";
-export * from "./portfolio";
-export * from "./token_price";
-export * from "./token";
-export * from "./transaction";
-export * from "./user_operation";
-export * from "./user";
-export * from "./wallet";
+import type { Address } from "viem";
+
+// -----------------------------------------------------------------------------
+// Params
+// -----------------------------------------------------------------------------
+
+export type ActivityListParams = {
+  address: Address;
+  limit: number;
+  offset: number;
+};
+
+export type ActivityListCountParams = Omit<
+  ActivityListParams,
+  "limit" | "offset"
+>;

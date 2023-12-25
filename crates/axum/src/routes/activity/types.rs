@@ -27,11 +27,25 @@ use utoipa::ToSchema;
 pub(crate) struct Activity {
     /// The id of the activity.
     id: String,
+    /// The entity id of the activity.
+    entity: String,
+    /// The operation type of the activity.
+    operation: String,
+    /// The timestamp of the activity.
+    timestamp: String,
+    /// The actor wallet address of the activity.
+    address: Option<String>,
 }
 
 /// Implement From<activity::Data> for Activity.
 impl From<activity::Data> for Activity {
     fn from(activity: activity::Data) -> Self {
-        Self { id: activity.id }
+        Self {
+            id: activity.id,
+            entity: activity.entity.to_string(),
+            operation: activity.operation.to_string(),
+            timestamp: activity.timestamp.to_rfc3339(),
+            address: activity.wallet_address.map(|addr| addr.to_string()),
+        }
     }
 }

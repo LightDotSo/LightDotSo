@@ -96,8 +96,8 @@ export interface paths {
   };
   "/invite_code/create": {
     /**
-     * Create a invite_code
-     * @description Create a invite_code
+     * Create an invite code
+     * @description Create an invite code
      */
     post: operations["v1_invite_code_post_handler"];
   };
@@ -375,8 +375,16 @@ export interface components {
   schemas: {
     /** @description Activity root type. */
     Activity: {
+      /** @description The actor wallet address of the activity. */
+      address?: string | null;
+      /** @description The entity id of the activity. */
+      entity: string;
       /** @description The id of the activity. */
       id: string;
+      /** @description The operation type of the activity. */
+      operation: string;
+      /** @description The timestamp of the activity. */
+      timestamp: string;
     };
     /** @description Activity errors */
     ActivityError: OneOf<[{
@@ -496,6 +504,9 @@ export interface components {
     }, {
       /** @description InviteCode not found by id. */
       NotFound: string;
+    }, {
+      /** @description Not Authorized. */
+      Unauthorized: string;
     }]>;
     /** @description Notification root type. */
     Notification: {
@@ -1031,7 +1042,7 @@ export interface operations {
         /** @description The user id to filter by. */
         user_id?: string | null;
         /** @description The wallet address to filter by. */
-        wallet_address?: string | null;
+        address?: string | null;
       };
     };
     responses: {
@@ -1063,7 +1074,7 @@ export interface operations {
         /** @description The user id to filter by. */
         user_id?: string | null;
         /** @description The wallet address to filter by. */
-        wallet_address?: string | null;
+        address?: string | null;
       };
     };
     responses: {
@@ -1283,32 +1294,21 @@ export interface operations {
     };
   };
   /**
-   * Create a invite_code
-   * @description Create a invite_code
+   * Create an invite code
+   * @description Create an invite code
    */
   v1_invite_code_post_handler: {
-    parameters: {
-      query: {
-        /** @description The user id of the user. */
-        user_id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["InviteCodePostRequestParams"];
-      };
-    };
     responses: {
-      /** @description invite_code created successfully */
+      /** @description Invite code created successfully */
       200: {
         content: {
-          "application/json": components["schemas"]["invite_code"];
+          "application/json": components["schemas"]["InviteCode"];
         };
       };
-      /** @description invite_code internal error */
+      /** @description Invite code internal error */
       500: {
         content: {
-          "application/json": components["schemas"]["invite_codeError"];
+          "application/json": components["schemas"]["InviteCodeError"];
         };
       };
     };
@@ -1350,8 +1350,6 @@ export interface operations {
         offset?: number | null;
         /** @description The maximum number of invite codes to return. */
         limit?: number | null;
-        /** @description The user id to filter by. */
-        user_id?: string | null;
       };
     };
     responses: {
@@ -1380,8 +1378,6 @@ export interface operations {
         offset?: number | null;
         /** @description The maximum number of invite codes to return. */
         limit?: number | null;
-        /** @description The user id to filter by. */
-        user_id?: string | null;
       };
     };
     responses: {
