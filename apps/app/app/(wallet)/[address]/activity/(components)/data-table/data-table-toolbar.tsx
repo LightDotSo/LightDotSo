@@ -90,12 +90,12 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <>
+    <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
         {table.getColumn("entity") && (
           <DataTableFacetedFilter
             column={table.getColumn("entity")}
-            title="Chain"
+            title="Entity"
             options={Array.from(uniqueEntityValues).map(entity => ({
               value: entity,
               label: `${entity.charAt(0).toUpperCase()}${entity
@@ -123,6 +123,6 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
           timestmap: "Timestamp",
         }}
       />
-    </>
+    </div>
   );
 }

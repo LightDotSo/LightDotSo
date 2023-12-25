@@ -13,24 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Ratelimit } from "@upstash/ratelimit";
-import { Redis } from "@upstash/redis";
+import { PrismaClient } from "@lightdotso/prisma";
 
-// -----------------------------------------------------------------------------
-// Client
-// -----------------------------------------------------------------------------
-
-export const redis = new Redis({
-  url: `https://${process.env.UPSTASH_REST_API_DOMAIN!}`,
-  token: process.env.UPSTASH_REST_API_TOKEN!,
-});
-
-// -----------------------------------------------------------------------------
-// Ratelimit
-// -----------------------------------------------------------------------------
-
-export const ratelimit = new Ratelimit({
-  redis: redis,
-  analytics: true,
-  limiter: Ratelimit.slidingWindow(2, "30s"),
-});
+export const prisma = new PrismaClient();

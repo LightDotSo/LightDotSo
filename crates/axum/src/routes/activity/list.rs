@@ -20,6 +20,7 @@ use axum::extract::{Query, State};
 use axum::Json;
 use lightdotso_prisma::activity::{self, WhereParam};
 use lightdotso_tracing::tracing::info;
+use prisma_client_rust::Direction;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
@@ -87,6 +88,7 @@ pub(crate) async fn v1_activity_list_handler(
         .find_many(query_params)
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
+        .order_by(activity::timestamp::order(Direction::Desc))
         .exec()
         .await?;
 
