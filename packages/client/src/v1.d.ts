@@ -375,6 +375,8 @@ export interface components {
   schemas: {
     /** @description Activity root type. */
     Activity: {
+      /** @description The actor wallet address of the activity. */
+      address?: string | null;
       /** @description The entity id of the activity. */
       entity: string;
       /** @description The id of the activity. */

@@ -33,6 +33,8 @@ pub(crate) struct Activity {
     operation: String,
     /// The timestamp of the activity.
     timestamp: String,
+    /// The actor wallet address of the activity.
+    address: Option<String>,
 }
 
 /// Implement From<activity::Data> for Activity.
@@ -43,6 +45,7 @@ impl From<activity::Data> for Activity {
             entity: activity.entity.to_string(),
             operation: activity.operation.to_string(),
             timestamp: activity.timestamp.to_rfc3339(),
+            address: activity.wallet_address.map(|addr| addr.to_string()),
         }
     }
 }
