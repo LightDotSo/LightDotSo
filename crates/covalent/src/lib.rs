@@ -75,14 +75,16 @@ pub async fn get_token_balances(
         *COVALENT_BASE_URL, chain_id, addr, api_key
     );
     endpoint = add_pagination_params(endpoint, page_size, page_number);
+    println!("{}", endpoint);
 
     let resp = make_request(&endpoint).await?;
+    println!("{:#?}", resp);
     let resource: BalancesData = resp.json().await?;
     Ok(resource)
 }
 
 /// Get transactions for an address
-pub async fn get_transactions_for_address(
+pub async fn get_transactions(
     chain_id: &str,
     addr: &str,
     page_size: Option<String>,

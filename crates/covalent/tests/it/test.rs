@@ -13,9 +13,27 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use lazy_static::lazy_static;
+use eyre::Result;
+use lightdotso_covalent::{get_token_balances, get_transactions};
 
-// The baes URL for the Covalent API
-lazy_static! {
-    pub static ref COVALENT_BASE_URL: String = "https://api.covalenthq.com/v1".to_string();
+#[tokio::test(flavor = "multi_thread")]
+async fn test_integration_token_test() -> Result<()> {
+    let _ = dotenvy::dotenv();
+
+    let res =
+        get_token_balances("1", "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed", None, None).await?;
+    println!("{:#?}", res);
+
+    Ok(())
+}
+
+#[tokio::test(flavor = "multi_thread")]
+async fn test_integration_transactions_test() -> Result<()> {
+    let _ = dotenvy::dotenv();
+
+    let res =
+        get_transactions("1", "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed", None, None).await?;
+    println!("{:#?}", res);
+
+    Ok(())
 }

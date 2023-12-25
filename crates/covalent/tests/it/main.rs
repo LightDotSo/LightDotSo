@@ -13,9 +13,4 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use lazy_static::lazy_static;
-
-// The baes URL for the Covalent API
-lazy_static! {
-    pub static ref COVALENT_BASE_URL: String = "https://api.covalenthq.com/v1".to_string();
-}
+mod test;
