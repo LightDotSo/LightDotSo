@@ -24,6 +24,7 @@ use lightdotso_prisma::token;
 use lightdotso_prisma::wallet_balance;
 use lightdotso_prisma::PrismaClient;
 use lightdotso_tracing::tracing::info;
+use prisma_client_rust::or;
 use rdkafka::{message::BorrowedMessage, Message};
 use std::sync::Arc;
 
@@ -90,10 +91,10 @@ pub async fn covalent_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>)
                     .items
                     .iter()
                     .map(|item| {
-                        token::address_chain_id(
+                        or![token::address_chain_id(
                             item.contract_address.clone().unwrap(),
                             payload.chain_id as i64,
-                        )
+                        )]
                     })
                     .collect::<Vec<_>>(),
             )
