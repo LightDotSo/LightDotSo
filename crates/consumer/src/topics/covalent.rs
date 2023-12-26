@@ -60,6 +60,14 @@ pub async fn covalent_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>)
             }
         }
 
+        // Filter the balances to only include tokens with non-none contract addresses and non-zero decimals
+        balances.data.items = balances
+            .data
+            .items
+            .into_iter()
+            .filter(|item| item.contract_address.is_some() && item.contract_decimals.is_some())
+            .collect::<Vec<_>>();
+
         // Create the tokens
         let res = db
             .token()
