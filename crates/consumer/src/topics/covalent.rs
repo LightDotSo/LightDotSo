@@ -93,21 +93,22 @@ pub async fn covalent_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>)
         info!("tokens: {:?}", tokens);
 
         // Create token data for each token
-        let token_data_results = tokens
+        let token_data_results = balances
+            .data
+            .items
             .iter()
-            .map(|token| {
+            .map(|ite| {
                 // Find the item
-                let item_option = balances.data.items.iter().find(|item| {
-                    item.contract_address.as_ref().map(|addr| addr.to_lowercase())
-                        == Some(token.clone().address.clone().to_lowercase())
+                let token = tokens.iter().find(|token| {
+                    token.address.clone().to_lowercase()
+                        == ite.contract_address.clone().unwrap().to_lowercase()
                 });
 
                 // Convert the Option to a Result
-                let item_result =
-                    item_option.ok_or(eyre::eyre!("Item not found for token: {:?}", token));
+                let token_result = token.ok_or(eyre::eyre!("Item not found for token: {:?}", ite));
 
                 // If valid item found, build data, else propagate error
-                item_result.map(|item| (item.quote_rate.unwrap_or(0.0), token.clone().id, vec![]))
+                token_result.map(|token| (ite.quote_rate.unwrap_or(0.0), token.clone().id, vec![]))
             })
             .collect::<Vec<_>>();
 
