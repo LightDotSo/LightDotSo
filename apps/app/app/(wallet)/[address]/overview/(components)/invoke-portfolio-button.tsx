@@ -15,6 +15,7 @@
 
 "use client";
 
+import { postQueueCovalent } from "@lightdotso/client";
 import {
   Button,
   Tooltip,
@@ -58,6 +59,7 @@ export const InvokePortfolioButton: FC<InvokePortfolioButtonProps> = ({
               className="h-8 px-3 py-1"
               onClick={() => {
                 invokePortfolioAction(address as Address);
+                postQueueCovalent({ address: address as Address });
                 infoToast("Refreshing...");
               }}
             >

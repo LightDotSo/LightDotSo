@@ -20,6 +20,11 @@ import { getAddress, isAddress } from "viem";
 import { kafka } from "@/clients/kafka";
 import { prisma } from "@/clients/prisma";
 import { ratelimit } from "@/clients/redis";
+import { MAINNET_CHAINS } from "@/const/chains";
+
+// -----------------------------------------------------------------------------
+// Route
+// -----------------------------------------------------------------------------
 
 export async function POST(request: NextRequest) {
   const id = request.ip ?? "anonymous";
@@ -56,9 +61,17 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  kafka.producer().produce("portfolio", {
-    address: addr,
+  const data = MAINNET_CHAINS.map(chain => {
+    return {
+      topic: "covalent",
+      value: {
+        address: addr,
+        chain_id: chain.id,
+      },
+    };
   });
+
+  kafka.producer().produceMany(data);
 
   return Response.json({
     revalidated: false,
