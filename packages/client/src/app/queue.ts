@@ -20,7 +20,7 @@ import { fetchWithResult } from "../fetch";
 // -----------------------------------------------------------------------------
 
 export const postQueueCovalent = ({ address }: { address: string }) =>
-  fetchWithResult({ address }, "/api/queue/covalent");
+  fetchWithResult({ address }, `/api/queue/covalent?address=${address}`);
 
 export const postQueuePortfolio = ({ address }: { address: string }) =>
-  fetchWithResult({ address }, "/api/queue/portfolio");
+  fetchWithResult({ address }, `/api/queue/portfolio?address=${address}`);
