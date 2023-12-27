@@ -38,6 +38,6 @@ export const getActivities = async (params: ActivityListParams) => {
         },
       },
     },
-    false,
+    "admin",
   );
 };

@@ -43,6 +43,6 @@ export const getUserOperations = async (params: UserOperationListParams) => {
         },
       },
     },
-    false,
+    "admin",
   );
 };

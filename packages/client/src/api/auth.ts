@@ -14,14 +14,15 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { ResultAsync, err, ok } from "neverthrow";
+import type { ClientType } from "../client";
 import { getClient } from "../client";
 
 // -----------------------------------------------------------------------------
 // GET
 // -----------------------------------------------------------------------------
 
-export const getNonce = async (params?: {}, isPublic?: boolean) => {
-  const client = getClient(isPublic);
+export const getNonce = async (params?: {}, clientType?: ClientType) => {
+  const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
     client.GET("/auth/nonce", {
@@ -35,8 +36,8 @@ export const getNonce = async (params?: {}, isPublic?: boolean) => {
   });
 };
 
-export const getAuthSession = async (params?: {}, isPublic?: boolean) => {
-  const client = getClient(isPublic);
+export const getAuthSession = async (params?: {}, clientType?: ClientType) => {
+  const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
     client.GET("/auth/session", {
@@ -55,7 +56,7 @@ export const getAuthSession = async (params?: {}, isPublic?: boolean) => {
 // -----------------------------------------------------------------------------
 
 export const postAuthLogout = async (params?: {}) => {
-  const client = getClient(true);
+  const client = getClient();
 
   return ResultAsync.fromPromise(
     client.POST("/auth/logout", {
@@ -81,7 +82,7 @@ export const postAuthVerify = async ({
     signature: string;
   };
 }) => {
-  const client = getClient(true);
+  const client = getClient();
 
   return ResultAsync.fromPromise(
     client.POST("/auth/verify", {

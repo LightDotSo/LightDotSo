@@ -39,6 +39,6 @@ export const getTransactions = async (params: TransactionListParams) => {
         },
       },
     },
-    false,
+    "admin",
   );
 };

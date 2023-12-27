@@ -15,6 +15,7 @@
 
 import { ResultAsync } from "neverthrow";
 import { z } from "zod";
+import type { ClientType } from "../client";
 import { rpcClient } from "../client";
 import { zodJsonRpcFetch } from "../zod";
 
@@ -74,11 +75,11 @@ type SendUserOperationRequestType = z.infer<typeof SendUserOperationRequest>;
 export const sendUserOperation = async (
   chainId: number,
   params: SendUserOperationRequestType,
-  isPublic?: boolean,
+  clientType?: ClientType,
 ) => {
   return ResultAsync.fromPromise(
     zodJsonRpcFetch(
-      rpcClient(chainId, isPublic),
+      rpcClient(chainId, clientType),
       "eth_sendUserOperation",
       params,
       SendUserOperationResponse,
@@ -123,11 +124,11 @@ type PaymasterGasAndPaymasterAndDataRequestType = z.infer<
 export const getPaymasterGasAndPaymasterAndData = async (
   chainId: number,
   params: PaymasterGasAndPaymasterAndDataRequestType,
-  isPublic?: boolean,
+  clientType?: ClientType,
 ) => {
   return ResultAsync.fromPromise(
     zodJsonRpcFetch(
-      rpcClient(chainId, isPublic),
+      rpcClient(chainId, clientType),
       "paymaster_requestGasAndPaymasterAndData",
       params,
       PaymasterGasAndPaymasterAndDataResponse,

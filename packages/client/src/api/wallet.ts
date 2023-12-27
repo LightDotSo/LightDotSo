@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { ResultAsync, err, ok } from "neverthrow";
+import type { ClientType } from "../client";
 import { getClient } from "../client";
 
 // -----------------------------------------------------------------------------
@@ -28,9 +29,9 @@ export const getWallet = async (
       query: { address: string; chain_id?: number | null | undefined };
     };
   },
-  isPublic?: boolean,
+  clientType?: ClientType,
 ) => {
-  const client = getClient(isPublic);
+  const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/get", {
@@ -52,9 +53,9 @@ export const getWalletSettings = async (
       query: { address: string };
     };
   },
-  isPublic?: boolean,
+  clientType?: ClientType,
 ) => {
-  const client = getClient(isPublic);
+  const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/settings/get", {
@@ -82,9 +83,9 @@ export const getWallets = async (
         | undefined;
     };
   },
-  isPublic?: boolean,
+  clientType?: ClientType,
 ) => {
-  const client = getClient(isPublic);
+  const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/list", {
@@ -112,9 +113,9 @@ export const getWalletsCount = async (
         | undefined;
     };
   },
-  isPublic?: boolean,
+  clientType?: ClientType,
 ) => {
-  const client = getClient(isPublic);
+  const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/list/count", {
@@ -150,7 +151,7 @@ export const createWallet = async ({
     invite_code: string;
   };
 }) => {
-  const client = getClient(true);
+  const client = getClient();
 
   return ResultAsync.fromPromise(
     client.POST("/wallet/create", {
@@ -180,7 +181,7 @@ export const updateWallet = async ({
     name?: string | null | undefined;
   };
 }) => {
-  const client = getClient(true);
+  const client = getClient();
 
   return ResultAsync.fromPromise(
     client.PUT("/wallet/update", {
@@ -208,7 +209,7 @@ export const updateWalletSettings = async ({
     };
   };
 }) => {
-  const client = getClient(true);
+  const client = getClient();
 
   return ResultAsync.fromPromise(
     client.POST("/wallet/settings/update", {
