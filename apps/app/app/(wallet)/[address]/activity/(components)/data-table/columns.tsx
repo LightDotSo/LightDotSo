@@ -27,15 +27,6 @@ import type { ActivityData } from "@/data";
 
 export const columns: ColumnDef<ActivityData>[] = [
   {
-    accessorKey: "index",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Index" />
-    ),
-    cell: ({ row }) => <div className="w-4">{row.getValue("index")}</div>,
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
     accessorKey: "address",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Owner" />
