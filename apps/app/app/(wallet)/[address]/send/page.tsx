@@ -15,8 +15,7 @@
 
 import type { Address } from "viem";
 import { SendDialog } from "@/app/(wallet)/[address]/send/(components)/send-dialog";
-import { transferParser } from "@/app/(wallet)/[address]/send/(hooks)";
-import { handler } from "@/handlers/paths/[address]/handler";
+import { handler } from "@/handlers/paths/[address]/send/handler";
 import { preloader } from "@/preloaders/paths/[address]/preloader";
 
 // -----------------------------------------------------------------------------
@@ -42,16 +41,10 @@ export default async function Page({ params, searchParams }: PageProps) {
   preloader(params);
 
   // ---------------------------------------------------------------------------
-  // Parsers
-  // ---------------------------------------------------------------------------
-
-  const transfers = transferParser.parseServerSide(searchParams.transfers);
-
-  // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
-  await handler(params);
+  const { transfers } = await handler(params, searchParams);
 
   // ---------------------------------------------------------------------------
   // Render
