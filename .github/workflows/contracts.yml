@@ -114,9 +114,13 @@ jobs:
           retry_on: error
           command: |
             forge test
+        env:
+          FOUNDRY_PROFILE: local
       - name: Check Gas Snapshots
         run: |
           make contracts-snapshot-check
+        env:
+          FOUNDRY_PROFILE: local
       - name: Run Coverage
         run: |
           forge coverage --report lcov
