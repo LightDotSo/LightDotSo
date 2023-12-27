@@ -25,7 +25,6 @@ export function middleware(request: NextRequest) {
     pathArray.some(path => request.nextUrl.pathname === path) &&
     wallet_cookie
   ) {
-    console.info("wallet_cookie", wallet_cookie);
     const wallet = wallet_cookie.value;
 
     if (isAddress(wallet)) {
