@@ -157,6 +157,7 @@ use utoipa_swagger_ui::SwaggerUi;
         paymaster_operation::v1_paymaster_operation_get_handler,
         paymaster_operation::v1_paymaster_operation_list_handler,
         portfolio::v1_portfolio_get_handler,
+        queue::v1_queue_portfolio_handler,
         queue::v1_queue_token_handler,
         signature::v1_signature_get_handler,
         signature::v1_signature_list_handler,

@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 pub(crate) mod error;
+pub(crate) mod portfolio;
 pub(crate) mod token;
 pub(crate) mod types;
 
@@ -21,6 +22,7 @@ use crate::state::AppState;
 use autometrics::autometrics;
 use axum::{routing::post, Router};
 
+pub(crate) use portfolio::{__path_v1_queue_portfolio_handler, v1_queue_portfolio_handler};
 pub(crate) use token::{__path_v1_queue_token_handler, v1_queue_token_handler};
 
 // -----------------------------------------------------------------------------
@@ -29,5 +31,7 @@ pub(crate) use token::{__path_v1_queue_token_handler, v1_queue_token_handler};
 
 #[autometrics]
 pub(crate) fn router() -> Router<AppState> {
-    Router::new().route("/queue/token", post(v1_queue_token_handler))
+    Router::new()
+        .route("/queue/portfolio", post(v1_queue_portfolio_handler))
+        .route("/queue/token", post(v1_queue_token_handler))
 }

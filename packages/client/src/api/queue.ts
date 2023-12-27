@@ -21,6 +21,30 @@ import { getClient } from "../client";
 // POST
 // -----------------------------------------------------------------------------
 
+export const createQueuePortfolio = async (
+  {
+    params,
+  }: {
+    params: {
+      query: { address: string };
+    };
+  },
+  clientType?: ClientType,
+) => {
+  const client = getClient(clientType);
+
+  return ResultAsync.fromPromise(
+    client.POST("/queue/portfolio", {
+      // @ts-ignore
+      next: { revalidate: 0 },
+      params,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
 export const createQueueToken = async (
   {
     params,

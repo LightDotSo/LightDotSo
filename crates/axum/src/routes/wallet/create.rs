@@ -37,6 +37,7 @@ use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
 use lightdotso_prisma::{wallet, ActivityEntity, ActivityOperation, InviteCodeStatus};
+use lightdotso_redis::query::wallet::add_to_wallets;
 use lightdotso_solutions::{
     builder::rooted_node_builder,
     config::WalletConfig,
@@ -388,6 +389,10 @@ pub(crate) async fn v1_wallet_post_handler(
         },
     )
     .await?;
+
+    // Add the wallet to the redis cache.
+    let mut conn = state.redis.get_connection()?;
+    add_to_wallets(&mut conn, &wallet.address)?;
 
     Ok(Json::from(wallet))
 }

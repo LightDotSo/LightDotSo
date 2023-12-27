@@ -13,26 +13,26 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{namespace::QUEUE_TOKEN, rate_limit::RateLimiter};
+use crate::{namespace::QUEUE_PORTFOLIO, rate_limit::RateLimiter};
 use eyre::Result;
 use lightdotso_tracing::tracing::info;
 use redis::Client;
 use std::{sync::Arc, time::Duration};
 
-/// Add the token rate limit to the redis database.
-pub fn token_rate_limit(client: Arc<Client>, address: String) -> Result<()> {
+/// Add the portfolio rate limit to the redis database.
+pub fn portfolio_rate_limit(client: Arc<Client>, address: String) -> Result<()> {
     let mut rate_limit = RateLimiter::open(client)?;
     let size = Duration::from_secs(300);
 
-    let count = rate_limit.fetch_fixed_window(&QUEUE_TOKEN, &address, size)?;
+    let count = rate_limit.fetch_fixed_window(&QUEUE_PORTFOLIO, &address, size)?;
 
-    info!("token rate count: {}", count);
+    info!("portfolio rate count: {}", count);
 
     if count > 3 {
         return Err(eyre::eyre!("Rate limit exceeded by {} for {}", count, address));
     }
 
-    rate_limit.record_fixed_window(&QUEUE_TOKEN, &address, size)?;
+    rate_limit.record_fixed_window(&QUEUE_PORTFOLIO, &address, size)?;
 
     Ok(())
 }
