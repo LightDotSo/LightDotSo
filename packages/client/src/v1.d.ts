@@ -185,12 +185,12 @@ export interface paths {
      */
     get: operations["v1_portfolio_get_handler"];
   };
-  "/queue/tokens": {
+  "/queue/token": {
     /**
      * Queue token handler.
      * @description Queue token handler.
      */
-    post: operations["v1_queue_tokens_handler"];
+    post: operations["v1_queue_token_handler"];
   };
   "/signature/create": {
     /**
@@ -1671,7 +1671,7 @@ export interface operations {
    * Queue token handler.
    * @description Queue token handler.
    */
-  v1_queue_tokens_handler: {
+  v1_queue_token_handler: {
     responses: {
       /** @description Queue created successfully */
       200: {

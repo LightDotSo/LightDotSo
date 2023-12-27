@@ -34,7 +34,7 @@ export const createQueueToken = async (
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
-    client.POST("/queue/tokens", {
+    client.POST("/queue/token", {
       // @ts-ignore
       next: { revalidate: 0 },
       params,
