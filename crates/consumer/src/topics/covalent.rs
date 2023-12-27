@@ -19,15 +19,22 @@ use ethers::utils::to_checksum;
 use eyre::Result;
 use lightdotso_contracts::constants::MAINNET_CHAIN_IDS;
 use lightdotso_covalent::get_token_balances;
+use lightdotso_kafka::topics::portfolio::produce_portfolio_message;
 use lightdotso_kafka::types::covalent::CovalentMessage;
+use lightdotso_kafka::types::portfolio::PortfolioMessage;
 use lightdotso_prisma::token;
 use lightdotso_prisma::wallet_balance;
 use lightdotso_prisma::PrismaClient;
 use lightdotso_tracing::tracing::info;
+use rdkafka::producer::FutureProducer;
 use rdkafka::{message::BorrowedMessage, Message};
 use std::sync::Arc;
 
-pub async fn covalent_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>) -> Result<()> {
+pub async fn covalent_consumer(
+    producer: Arc<FutureProducer>,
+    msg: &BorrowedMessage<'_>,
+    db: Arc<PrismaClient>,
+) -> Result<()> {
     // Convert the payload to a string
     let payload_opt = msg.payload_view::<str>();
     info!("payload_opt: {:?}", payload_opt);
@@ -36,6 +43,13 @@ pub async fn covalent_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>)
     if let Some(Ok(payload)) = payload_opt {
         // Parse the payload into a JSON object, `CovalentMessage`
         let payload: CovalentMessage = serde_json::from_slice(payload.as_bytes())?;
+
+        // If the chain is 0, produce a portfolio message
+        if payload.chain_id == 0 {
+            produce_portfolio_message(producer, &PortfolioMessage { address: payload.address })
+                .await?;
+            return Ok(());
+        }
 
         // Log the payload
         let mut balances = get_token_balances(

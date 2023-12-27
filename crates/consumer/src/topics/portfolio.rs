@@ -38,7 +38,7 @@ pub async fn portfolio_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
 
     // If the payload is valid
     if let Some(Ok(payload)) = payload_opt {
-        // Parse the payload into a JSON object, `CovalentMessage`
+        // Parse the payload into a JSON object, `PortfolioMessage`
         let payload: PortfolioMessage = serde_json::from_slice(payload.as_bytes())?;
 
         // Get the latest portfolio.

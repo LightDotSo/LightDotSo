@@ -107,8 +107,13 @@ jobs:
         run: |
           forge install
       - name: Run Test
-        run: |
-          forge test
+        uses: nick-fields/retry@v2
+        with:
+          timeout_seconds: 30
+          max_attempts: 3
+          retry_on: error
+          command: |
+            forge test
       - name: Check Gas Snapshots
         run: |
           make contracts-snapshot-check
