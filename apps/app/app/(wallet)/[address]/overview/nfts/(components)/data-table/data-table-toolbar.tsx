@@ -23,7 +23,6 @@ import { useMemo } from "react";
 import type { Address } from "viem";
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
-import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
 import type { NftData, NftDataPage, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 import { useAuth, useTables } from "@/stores";
@@ -63,7 +62,6 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
     queries.nft.list({
       address: wallet as Address,
       is_testnet: walletSettings?.is_enabled_testnet,
-      limit: OVERVIEW_ROW_COUNT,
     }).queryKey,
   );
 
