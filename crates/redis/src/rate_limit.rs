@@ -30,19 +30,19 @@ pub struct RateLimiter {
 }
 
 impl RateLimiter {
-    pub  fn open(client: Arc<Client>) -> Result<Self> {
+    pub fn open(client: Arc<Client>) -> Result<Self> {
         let conn = client.get_connection()?;
         Ok(RateLimiter { conn })
     }
 
     /// Returns the count in the current time window.
-    pub  fn fetch_fixed_window(
+    pub fn fetch_fixed_window(
         &mut self,
         resource: &str,
         subject: &str,
         size: Duration,
     ) -> Result<u64> {
-        let now = SystemTime::now().duration_since(time::UNIX_EPOCH).unwrap();
+        let now = SystemTime::now().duration_since(time::UNIX_EPOCH)?;
         let window = (now.as_secs() / size.as_secs()) * size.as_secs();
         let key = format!("{}:{}:{}:{}", KEY_PREFIX, resource, subject, window);
 
@@ -58,7 +58,7 @@ impl RateLimiter {
         subject: &str,
         size: Duration,
     ) -> Result<u64> {
-        let now = SystemTime::now().duration_since(time::UNIX_EPOCH).unwrap();
+        let now = SystemTime::now().duration_since(time::UNIX_EPOCH)?;
         let window = (now.as_secs() / size.as_secs()) * size.as_secs();
         let key = format!("{}:{}:{}:{}", KEY_PREFIX, resource, subject, window);
 
@@ -87,7 +87,7 @@ impl RateLimiter {
         subject: &str,
         size: Duration,
     ) -> Result<u64> {
-        let now = SystemTime::now().duration_since(time::UNIX_EPOCH).unwrap();
+        let now = SystemTime::now().duration_since(time::UNIX_EPOCH)?;
         let key = format!("{}:{}:{}", KEY_PREFIX, resource, subject);
 
         let (count,): (u64,) = redis::pipe()
@@ -110,7 +110,7 @@ impl RateLimiter {
         subject: &str,
         size: Duration,
     ) -> Result<u64> {
-        let now = SystemTime::now().duration_since(time::UNIX_EPOCH).unwrap();
+        let now = SystemTime::now().duration_since(time::UNIX_EPOCH)?;
         let size_secs = size.as_secs();
 
         let current_window = (now.as_secs() / size_secs) * size_secs;
@@ -131,7 +131,7 @@ impl RateLimiter {
         subject: &str,
         size: Duration,
     ) -> Result<u64> {
-        let now = SystemTime::now().duration_since(time::UNIX_EPOCH).unwrap();
+        let now = SystemTime::now().duration_since(time::UNIX_EPOCH)?;
         let size_secs = size.as_secs();
 
         let current_window = (now.as_secs() / size_secs) * size_secs;

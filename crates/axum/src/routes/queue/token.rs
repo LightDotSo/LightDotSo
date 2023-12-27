@@ -49,7 +49,7 @@ pub struct PostQuery {
 /// Queue token handler.
 #[utoipa::path(
         post,
-        path = "/queue/tokens",
+        path = "/queue/token",
         responses(
             (status = 200, description = "Queue created successfully", body = i64),
 
@@ -57,7 +57,7 @@ pub struct PostQuery {
         )
     )]
 #[autometrics]
-pub(crate) async fn v1_queue_tokens_handler(
+pub(crate) async fn v1_queue_token_handler(
     post_query: Query<PostQuery>,
     State(state): State<AppState>,
 ) -> AppJsonResult<QueueSuccess> {

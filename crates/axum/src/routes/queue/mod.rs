@@ -14,14 +14,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 pub(crate) mod error;
-pub(crate) mod tokens;
+pub(crate) mod token;
 pub(crate) mod types;
 
 use crate::state::AppState;
 use autometrics::autometrics;
 use axum::{routing::post, Router};
 
-pub(crate) use tokens::{__path_v1_queue_tokens_handler, v1_queue_tokens_handler};
+pub(crate) use token::{__path_v1_queue_token_handler, v1_queue_token_handler};
 
 // -----------------------------------------------------------------------------
 // Router
@@ -29,5 +29,5 @@ pub(crate) use tokens::{__path_v1_queue_tokens_handler, v1_queue_tokens_handler}
 
 #[autometrics]
 pub(crate) fn router() -> Router<AppState> {
-    Router::new().route("/queue/tokens", post(v1_queue_tokens_handler))
+    Router::new().route("/queue/token", post(v1_queue_token_handler))
 }
