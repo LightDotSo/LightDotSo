@@ -128,13 +128,25 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table.getColumn("address")?.getFilterValue(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("name"),
+    table.getColumn("entity"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("name")?.getFacetedUniqueValues(),
+    table.getColumn("entity")?.getFacetedUniqueValues(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("name")?.getCanHide(),
+    table.getColumn("entity")?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("name")?.getIsVisible(),
+    table.getColumn("entity")?.getIsVisible(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("operation"),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("operation")?.getCanHide(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("operation")?.getIsVisible(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("timestamp"),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("timestamp")?.getCanHide(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("timestamp")?.getIsVisible(),
     setActivityTable,
   ]);
 
