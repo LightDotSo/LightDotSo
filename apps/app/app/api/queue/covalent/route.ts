@@ -20,7 +20,7 @@ import { getAddress, isAddress } from "viem";
 import { kafka } from "@/clients/kafka";
 import { prisma } from "@/clients/prisma";
 import { ratelimit } from "@/clients/redis";
-import { MAINNET_CHAINS } from "@/const/chains";
+import { CHAINS, MAINNET_CHAINS } from "@/const/chains";
 
 // -----------------------------------------------------------------------------
 // Route
@@ -30,12 +30,15 @@ export async function POST(request: NextRequest) {
   const id = request.ip ?? "anonymous";
   const limit = await ratelimit.limit(id ?? "anonymous");
 
+  // If the limit is not successful, return a 429 error
   if (!limit.success) {
     return NextResponse.json(limit, { status: 429 });
   }
 
+  // Get the address from the query
   const addr = request.nextUrl.searchParams.get("address");
 
+  // If the address is not valid, return an error
   if (addr && !isAddress(addr)) {
     return Response.json({
       revalidated: false,
@@ -44,16 +47,21 @@ export async function POST(request: NextRequest) {
     });
   }
 
+  // Convert the address to a checksum address
   const address = getAddress(addr as Address);
 
   // Check if the address exists in the prisma database
-  const exists = await prisma.wallet.findUnique({
+  const wallet = await prisma.wallet.findUnique({
     where: {
       address: address,
     },
+    include: {
+      walletSettings: true,
+    },
   });
 
-  if (!exists) {
+  // If the address does not exist, return an error
+  if (!wallet) {
     return Response.json({
       revalidated: false,
       now: Date.now(),
@@ -61,7 +69,13 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  const data = MAINNET_CHAINS.map(chain => {
+  // If the testnet is enabled in the wallet settings, include testnet chains
+  const chains = wallet.walletSettings?.isEnabledTestnet
+    ? CHAINS
+    : MAINNET_CHAINS;
+
+  // Push mainnet chains to the queue
+  const data = chains.map(chain => {
     return {
       topic: "covalent",
       value: {
@@ -71,8 +85,20 @@ export async function POST(request: NextRequest) {
     };
   });
 
+  // Add the chainId `0` to the queue for the portfolio
+  data.push({
+    topic: "covalent",
+    value: {
+      address: addr,
+      // @ts-ignore
+      chain_id: 0,
+    },
+  });
+
+  // Produce the data to the queue
   kafka.producer().produceMany(data);
 
+  // Return a success message
   return Response.json({
     revalidated: false,
     now: Date.now(),
