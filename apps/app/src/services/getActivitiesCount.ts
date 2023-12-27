@@ -38,6 +38,6 @@ export const getActivitiesCount = async (params: ActivityListCountParams) => {
         },
       },
     },
-    false,
+    "admin",
   );
 };

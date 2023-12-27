@@ -17,10 +17,16 @@ import createClient from "openapi-fetch";
 import type { paths } from "./v1";
 
 // -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type ClientType = "admin" | "authenticated" | "public";
+
+// -----------------------------------------------------------------------------
 // Light
 // -----------------------------------------------------------------------------
 
-const devApiClient: ReturnType<typeof createClient<paths>> =
+const localAdminApiClient: ReturnType<typeof createClient<paths>> =
   createClient<paths>({
     baseUrl: "http://localhost:3000/admin/v1",
     headers: {
@@ -35,6 +41,12 @@ const publicApiClient: ReturnType<typeof createClient<paths>> =
     credentials: "include",
   });
 
+const authenticatedApiClient: ReturnType<typeof createClient<paths>> =
+  createClient<paths>({
+    baseUrl: "https://api.light.so/authenticated/v1",
+    credentials: "include",
+  });
+
 const adminApiClient: ReturnType<typeof createClient<paths>> =
   createClient<paths>({
     baseUrl: "https://api.light.so/admin/v1",
@@ -44,19 +56,25 @@ const adminApiClient: ReturnType<typeof createClient<paths>> =
     credentials: "include",
   });
 
-export const rpcClient = (chainId: number, isPublic?: boolean) => {
-  if (isPublic === undefined || isPublic) {
+export const getClient: (
+  clientType?: "admin" | "authenticated" | "public",
+) => ReturnType<typeof createClient<paths>> = clientType =>
+  process.env.LOCAL_ENV === "dev" || process.env.NEXT_PUBLIC_LOCAL_ENV === "dev"
+    ? localAdminApiClient
+    : clientType === undefined || clientType === "public"
+      ? publicApiClient
+      : clientType === "authenticated"
+        ? authenticatedApiClient
+        : adminApiClient;
+
+// -----------------------------------------------------------------------------
+// RPC
+// -----------------------------------------------------------------------------
+
+export const rpcClient = (chainId: number, clientType?: ClientType) => {
+  if (clientType === undefined || clientType === "public") {
     return `https://rpc.light.so/${chainId}`;
   }
 
   return `https://rpc.light.so/protected/${process.env.LIGHT_RPC_TOKEN}/${chainId}`;
 };
-
-export const getClient: (
-  isPublic?: boolean,
-) => ReturnType<typeof createClient<paths>> = (isPublic?: boolean) =>
-  process.env.LOCAL_ENV === "dev" || process.env.NEXT_PUBLIC_LOCAL_ENV === "dev"
-    ? devApiClient
-    : isPublic === undefined || isPublic
-      ? publicApiClient
-      : adminApiClient;

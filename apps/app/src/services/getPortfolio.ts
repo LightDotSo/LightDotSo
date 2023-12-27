@@ -32,6 +32,6 @@ export const preload = (params: PortfolioParams) => {
 export const getPortfolio = async (params: PortfolioParams) => {
   return getClientPortfolio(
     { params: { query: { address: params.address } } },
-    false,
+    "admin",
   );
 };

@@ -172,7 +172,7 @@ export const handler = async (
           maxPriorityFeePerGas: toHex(op.maxPriorityFeePerGas),
         },
       ],
-      false,
+      "admin",
     );
   });
 

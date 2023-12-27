@@ -36,6 +36,6 @@ export const getTokens = async (params: TokenListParams) => {
         query: { address: params.address, is_testnet: params.is_testnet },
       },
     },
-    false,
+    "admin",
   );
 };

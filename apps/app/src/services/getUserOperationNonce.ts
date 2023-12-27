@@ -38,6 +38,6 @@ export const getUserOperationNonce = async (
         query: { address: params.address, chain_id: params.chain_id },
       },
     },
-    false,
+    "admin",
   );
 };

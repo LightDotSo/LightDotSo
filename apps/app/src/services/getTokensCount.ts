@@ -36,6 +36,6 @@ export const getTokensCount = async (params: TokenListCountParams) => {
         query: { address: params.address, is_testnet: params.is_testnet },
       },
     },
-    false,
+    "admin",
   );
 };

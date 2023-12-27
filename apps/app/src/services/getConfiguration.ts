@@ -32,6 +32,6 @@ export const preload = (params: ConfigurationParams) => {
 export const getConfiguration = async (params: ConfigurationParams) => {
   return getClientConfiguration(
     { params: { query: { address: params.address } } },
-    false,
+    "admin",
   );
 };

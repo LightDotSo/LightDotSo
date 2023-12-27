@@ -41,6 +41,6 @@ export const getTransactionsCount = async (
         },
       },
     },
-    false,
+    "admin",
   );
 };

@@ -32,6 +32,6 @@ export const preload = (params: WalletSettingsParams) => {
 export const getWalletSettings = async (params: WalletSettingsParams) => {
   return getClientWalletSettigns(
     { params: { query: { address: params.address } } },
-    false,
+    "admin",
   );
 };

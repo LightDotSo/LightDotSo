@@ -267,7 +267,7 @@ pub async fn start_api_server() -> Result<()> {
     // License: MIT
     let governor_conf = Box::new(
         GovernorConfigBuilder::default()
-            .per_millisecond(100)
+            .per_millisecond(300)
             .burst_size(300)
             .use_headers()
             .key_extractor(SmartIpKeyExtractor)

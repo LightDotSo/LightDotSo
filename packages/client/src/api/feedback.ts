@@ -34,7 +34,7 @@ export const createFeedback = async ({
     };
   };
 }) => {
-  const client = getClient(true);
+  const client = getClient();
 
   return ResultAsync.fromPromise(
     client.POST("/feedback/create", {

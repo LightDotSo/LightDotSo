@@ -42,6 +42,6 @@ export const getUserOperationsCount = async (
         },
       },
     },
-    false,
+    "admin",
   );
 };

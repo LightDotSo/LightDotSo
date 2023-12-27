@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { ResultAsync, err, ok } from "neverthrow";
+import type { ClientType } from "../client";
 import { getClient } from "../client";
 
 // -----------------------------------------------------------------------------
@@ -35,9 +36,9 @@ export const getTransactions = async (
         | undefined;
     };
   },
-  isPublic?: boolean,
+  clientType?: ClientType,
 ) => {
-  const client = getClient(isPublic);
+  const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
     client.GET("/transaction/list", {
@@ -66,9 +67,9 @@ export const getTransactionsCount = async (
         | undefined;
     };
   },
-  isPublic?: boolean,
+  clientType?: ClientType,
 ) => {
-  const client = getClient(isPublic);
+  const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
     client.GET("/transaction/list/count", {
