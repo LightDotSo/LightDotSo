@@ -133,25 +133,28 @@ export const getWalletsCount = async (
 // POST
 // -----------------------------------------------------------------------------
 
-export const createWallet = async ({
-  params,
-  body,
-}: {
-  params: {
-    query?: { simulate?: boolean | null | undefined } | undefined;
-  };
-  body: {
-    name: string;
-    owners: {
-      address: string;
-      weight: number;
-    }[];
-    salt: string;
-    threshold: number;
-    invite_code: string;
-  };
-}) => {
-  const client = getClient();
+export const createWallet = async (
+  {
+    params,
+    body,
+  }: {
+    params: {
+      query?: { simulate?: boolean | null | undefined } | undefined;
+    };
+    body: {
+      name: string;
+      owners: {
+        address: string;
+        weight: number;
+      }[];
+      salt: string;
+      threshold: number;
+      invite_code: string;
+    };
+  },
+  clientType?: ClientType,
+) => {
+  const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
     client.POST("/wallet/create", {
@@ -170,18 +173,21 @@ export const createWallet = async ({
 // PUT
 // -----------------------------------------------------------------------------
 
-export const updateWallet = async ({
-  params,
-  body,
-}: {
-  params: {
-    query: { address: string };
-  };
-  body: {
-    name?: string | null | undefined;
-  };
-}) => {
-  const client = getClient();
+export const updateWallet = async (
+  {
+    params,
+    body,
+  }: {
+    params: {
+      query: { address: string };
+    };
+    body: {
+      name?: string | null | undefined;
+    };
+  },
+  clientType?: ClientType,
+) => {
+  const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
     client.PUT("/wallet/update", {
@@ -196,20 +202,23 @@ export const updateWallet = async ({
   });
 };
 
-export const updateWalletSettings = async ({
-  params,
-  body,
-}: {
-  params: {
-    query: { address: string };
-  };
-  body: {
-    wallet_settings: {
-      is_enabled_testnet?: boolean | null | undefined;
+export const updateWalletSettings = async (
+  {
+    params,
+    body,
+  }: {
+    params: {
+      query: { address: string };
     };
-  };
-}) => {
-  const client = getClient();
+    body: {
+      wallet_settings: {
+        is_enabled_testnet?: boolean | null | undefined;
+      };
+    };
+  },
+  clientType?: ClientType,
+) => {
+  const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
     client.POST("/wallet/settings/update", {

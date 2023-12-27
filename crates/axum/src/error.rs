@@ -18,7 +18,7 @@ use crate::routes::{
     configuration::error::ConfigurationError, feedback::error::FeedbackError,
     invite_code::error::InviteCodeError, notification::error::NotificationError,
     paymaster::error::PaymasterError, paymaster_operation::error::PaymasterOperationError,
-    portfolio::error::PortfolioError, signature::error::SignatureError,
+    portfolio::error::PortfolioError, queue::error::QueueError, signature::error::SignatureError,
     support_request::error::SupportRequestError, token::error::TokenError,
     token_price::error::TokenPriceError, transaction::error::TransactionError,
     user::error::UserError, user_operation::error::UserOperationError, wallet::error::WalletError,
@@ -38,6 +38,7 @@ pub(crate) enum RouteError {
     PaymasterError(PaymasterError),
     PaymasterOperationError(PaymasterOperationError),
     PortfolioError(PortfolioError),
+    QueueError(QueueError),
     SignatureError(SignatureError),
     SupportRequestError(SupportRequestError),
     TokenPriceError(TokenPriceError),
@@ -137,6 +138,16 @@ impl RouteErrorStatusCodeAndMsg for PortfolioError {
     }
 }
 
+impl RouteErrorStatusCodeAndMsg for QueueError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            QueueError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
+            QueueError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+            QueueError::RateLimitExceeded(msg) => (StatusCode::TOO_MANY_REQUESTS, msg.to_string()),
+        }
+    }
+}
+
 impl RouteErrorStatusCodeAndMsg for SignatureError {
     fn error_status_code_and_msg(&self) -> (StatusCode, String) {
         match self {
@@ -232,6 +243,7 @@ impl RouteErrorStatusCodeAndMsg for RouteError {
             RouteError::PaymasterError(err) => err.error_status_code_and_msg(),
             RouteError::PaymasterOperationError(err) => err.error_status_code_and_msg(),
             RouteError::PortfolioError(err) => err.error_status_code_and_msg(),
+            RouteError::QueueError(err) => err.error_status_code_and_msg(),
             RouteError::SignatureError(err) => err.error_status_code_and_msg(),
             RouteError::SupportRequestError(err) => err.error_status_code_and_msg(),
             RouteError::TokenPriceError(err) => err.error_status_code_and_msg(),

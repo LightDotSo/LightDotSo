@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { ClientType } from "@lightdotso/client";
 import type { Address } from "viem";
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
@@ -24,6 +25,8 @@ import { createJSONStorage, devtools, persist } from "zustand/middleware";
 interface AuthState {
   address: Address | undefined;
   setAddress: (address: Address | undefined) => void;
+  clientType: ClientType | undefined;
+  setClientType: (clientType: ClientType | undefined) => void;
   ens: string | undefined;
   setEns: (ens: string | undefined) => void;
   userId: string | undefined;
@@ -45,12 +48,22 @@ export const useAuth = create(
       set => ({
         address: undefined,
         setAddress: (address: Address | undefined) => set({ address }),
+        clientType: undefined,
+        setClientType: (clientType: ClientType | undefined) =>
+          set({ clientType }),
         ens: undefined,
         setEns: (ens: string | undefined) => set({ ens }),
         userId: undefined,
         setUserId: (userId: string | undefined) => set({ userId }),
         sessionId: undefined,
-        setSessionId: (sessionId: string | undefined) => set({ sessionId }),
+        setSessionId: (sessionId: string | undefined) => {
+          set({ sessionId });
+          if (sessionId) {
+            set({ clientType: "authenticated" });
+          } else {
+            set({ clientType: undefined });
+          }
+        },
         wallet: undefined,
         setWallet: (wallet: Address | undefined) => set({ wallet }),
         logout: () =>

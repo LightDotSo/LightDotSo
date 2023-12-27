@@ -13,11 +13,34 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { fetchWithResult } from "../fetch";
+import { ResultAsync, err, ok } from "neverthrow";
+import type { ClientType } from "../client";
+import { getClient } from "../client";
 
 // -----------------------------------------------------------------------------
 // POST
 // -----------------------------------------------------------------------------
 
-export const postQueueCovalent = ({ address }: { address: string }) =>
-  fetchWithResult({ address }, `/api/queue/covalent?address=${address}`);
+export const createQueueToken = async (
+  {
+    params,
+  }: {
+    params: {
+      query: { address: string };
+    };
+  },
+  clientType?: ClientType,
+) => {
+  const client = getClient(clientType);
+
+  return ResultAsync.fromPromise(
+    client.POST("/queue/token", {
+      // @ts-ignore
+      next: { revalidate: 0 },
+      params,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};

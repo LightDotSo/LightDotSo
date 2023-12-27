@@ -16,6 +16,7 @@
 #![allow(clippy::unwrap_used)]
 
 use crate::constants::SESSION_COOKIE_ID;
+use crate::routes::queue;
 use crate::{
     admin::admin,
     handle_error,
@@ -90,6 +91,8 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(portfolio::error::PortfolioError),
         schemas(portfolio::types::Portfolio),
         schemas(portfolio::types::PortfolioBalanceDate),
+        schemas(queue::error::QueueError),
+        schemas(queue::types::QueueSuccess),
         schemas(signature::error::SignatureError),
         schemas(signature::post::SignaturePostRequestParams),
         schemas(signature::types::Signature),
@@ -154,6 +157,7 @@ use utoipa_swagger_ui::SwaggerUi;
         paymaster_operation::v1_paymaster_operation_get_handler,
         paymaster_operation::v1_paymaster_operation_list_handler,
         portfolio::v1_portfolio_get_handler,
+        queue::v1_queue_token_handler,
         signature::v1_signature_get_handler,
         signature::v1_signature_list_handler,
         signature::v1_signature_post_handler,
@@ -194,6 +198,7 @@ use utoipa_swagger_ui::SwaggerUi;
         (name = "paymaster", description = "Paymaster API"),
         (name = "paymaster_operation", description = "Paymaster Operation API"),
         (name = "portfolio", description = "Portfolio API"),
+        (name = "queue", description = "Queue API"),
         (name = "signature", description = "Signature API"),
         (name = "support_request", description = "Support Request API"),
         (name = "token", description = "Token API"),
@@ -222,7 +227,7 @@ pub async fn start_api_server() -> Result<()> {
     let db = Arc::new(create_client().await?);
     let producer = Arc::new(get_producer()?);
     let redis = get_redis_client()?;
-    let state = AppState { client: db, producer };
+    let state = AppState { client: db, producer, redis: Arc::new(redis.clone()) };
 
     // Allow CORS
     // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L85
@@ -300,6 +305,7 @@ pub async fn start_api_server() -> Result<()> {
         .merge(paymaster::router())
         .merge(paymaster_operation::router())
         .merge(portfolio::router())
+        .merge(queue::router())
         .merge(signature::router())
         .merge(support_request::router())
         .merge(token::router())

@@ -15,7 +15,6 @@
 
 use crate::namespace::WALLETS;
 use lightdotso_tracing::tracing::info;
-pub use redis;
 use redis::{Commands, Connection, RedisResult};
 
 /// Add a value to a set

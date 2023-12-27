@@ -56,7 +56,7 @@ export const ChainPopover: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { wallet } = useAuth();
+  const { clientType, wallet } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -76,13 +76,16 @@ export const ChainPopover: FC = () => {
         return null;
       }
 
-      const res = await getWalletSettings({
-        params: {
-          query: {
-            address: wallet,
+      const res = await getWalletSettings(
+        {
+          params: {
+            query: {
+              address: wallet,
+            },
           },
         },
-      });
+        clientType,
+      );
 
       // Return if the response is 200
       return res.match(

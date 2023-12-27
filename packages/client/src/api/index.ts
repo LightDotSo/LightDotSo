@@ -20,6 +20,7 @@ export * from "./feedback";
 export * from "./invite_code";
 export * from "./paymaster_operation";
 export * from "./portfolio";
+export * from "./queue";
 export * from "./token_price";
 export * from "./token";
 export * from "./transaction";

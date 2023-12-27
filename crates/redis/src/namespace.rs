@@ -19,3 +19,8 @@ use lazy_static::lazy_static;
 lazy_static! {
     pub static ref WALLETS: String = "wallets".to_string();
 }
+
+// The token queue namespace
+lazy_static! {
+    pub static ref QUEUE_TOKEN: String = "queue:token".to_string();
+}

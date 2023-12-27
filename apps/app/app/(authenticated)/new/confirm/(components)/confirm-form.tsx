@@ -55,7 +55,7 @@ import {
   newFormConfigurationSchema,
   newFormStoreSchema,
 } from "@/schemas/newForm";
-import { useNewForm } from "@/stores";
+import { useAuth, useNewForm } from "@/stores";
 import { errorToast, infoToast, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
@@ -79,6 +79,7 @@ export const ConfirmForm: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
+  const { clientType } = useAuth();
   const { address, setFormValues, fetchToCreate } = useNewForm();
 
   // ---------------------------------------------------------------------------
@@ -146,9 +147,10 @@ export const ConfirmForm: FC = () => {
           successToast("You can now use your wallet.");
 
           backOff(() =>
-            getWallet({ params: { query: { address: address! } } }).then(res =>
-              res._unsafeUnwrap(),
-            ),
+            getWallet(
+              { params: { query: { address: address! } } },
+              clientType,
+            ).then(res => res._unsafeUnwrap()),
           )
             .then(res => {
               if (res) {

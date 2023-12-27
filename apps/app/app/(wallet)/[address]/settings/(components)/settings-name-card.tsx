@@ -44,6 +44,7 @@ import type { WalletData } from "@/data";
 import { useAuthModal } from "@/hooks/useAuthModal";
 import { useDelayedValue } from "@/hooks/useDelayedValue";
 import { queries } from "@/queries";
+import { useAuth } from "@/stores";
 import { errorToast, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
@@ -77,6 +78,12 @@ type SettingsNameCardProps = {
 
 export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { clientType } = useAuth();
+
+  // ---------------------------------------------------------------------------
   // Staet Hooks
   // ---------------------------------------------------------------------------
 
@@ -106,13 +113,16 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
         return null;
       }
 
-      const res = await getWallet({
-        params: {
-          query: {
-            address: address,
+      const res = await getWallet(
+        {
+          params: {
+            query: {
+              address: address,
+            },
           },
         },
-      });
+        clientType,
+      );
 
       // Return if the response is 200
       return res.match(
@@ -132,16 +142,19 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
 
   const { mutate, isPending, isSuccess, isError } = useMutation({
     mutationFn: async (data: Partial<WalletData>) => {
-      const res = await updateWallet({
-        params: {
-          query: {
-            address: address,
+      const res = await updateWallet(
+        {
+          params: {
+            query: {
+              address: address,
+            },
+          },
+          body: {
+            name: data.name,
           },
         },
-        body: {
-          name: data.name,
-        },
-      });
+        clientType,
+      );
 
       // Return if the response is 200
       res.match(

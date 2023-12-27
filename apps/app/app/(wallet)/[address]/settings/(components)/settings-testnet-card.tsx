@@ -42,6 +42,7 @@ import { TITLES } from "@/const/titles";
 import type { WalletSettingsData } from "@/data";
 import { useDelayedValue } from "@/hooks/useDelayedValue";
 import { queries } from "@/queries";
+import { useAuth } from "@/stores";
 import { errorToast, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
@@ -70,6 +71,12 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   address,
 }) => {
   // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { clientType } = useAuth();
+
+  // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
 
@@ -94,13 +101,16 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
         return null;
       }
 
-      const res = await getWalletSettings({
-        params: {
-          query: {
-            address: address,
+      const res = await getWalletSettings(
+        {
+          params: {
+            query: {
+              address: address,
+            },
           },
         },
-      });
+        clientType,
+      );
 
       // Return if the response is 200
       return res.match(

@@ -24,6 +24,7 @@ import type { FC } from "react";
 import type { Address } from "viem";
 import type { TokenPortfolioData } from "@/data";
 import { queries } from "@/queries";
+import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -41,6 +42,12 @@ export const WalletOverviewBannerSparkline: FC<
   WalletOverviewBannerSparklineProps
 > = ({ address }) => {
   // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { clientType } = useAuth();
+
+  // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
@@ -57,13 +64,16 @@ export const WalletOverviewBannerSparkline: FC<
         return null;
       }
 
-      const res = await getPortfolio({
-        params: {
-          query: {
-            address: address,
+      const res = await getPortfolio(
+        {
+          params: {
+            query: {
+              address: address,
+            },
           },
         },
-      });
+        clientType,
+      );
 
       // Return if the response is 200
       return res.match(

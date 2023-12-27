@@ -115,7 +115,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address } = useAuth();
+  const { address, clientType } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -140,14 +140,17 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
         return null;
       }
 
-      const res = await getWallets({
-        params: {
-          query: {
-            owner: address,
-            limit: Number.MAX_SAFE_INTEGER,
+      const res = await getWallets(
+        {
+          params: {
+            query: {
+              owner: address,
+              limit: Number.MAX_SAFE_INTEGER,
+            },
           },
         },
-      });
+        clientType,
+      );
 
       // Return if the response is 200
       return res.match(

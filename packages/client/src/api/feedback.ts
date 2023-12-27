@@ -14,27 +14,31 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { ResultAsync, err, ok } from "neverthrow";
+import type { ClientType } from "../client";
 import { getClient } from "../client";
 
 // -----------------------------------------------------------------------------
 // POST
 // -----------------------------------------------------------------------------
 
-export const createFeedback = async ({
-  params,
-  body,
-}: {
-  params: {
-    query: { user_id: string };
-  };
-  body: {
-    feedback: {
-      emoji: string;
-      text: string;
+export const createFeedback = async (
+  {
+    params,
+    body,
+  }: {
+    params: {
+      query: { user_id: string };
     };
-  };
-}) => {
-  const client = getClient();
+    body: {
+      feedback: {
+        emoji: string;
+        text: string;
+      };
+    };
+  },
+  clientType?: ClientType,
+) => {
+  const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
     client.POST("/feedback/create", {

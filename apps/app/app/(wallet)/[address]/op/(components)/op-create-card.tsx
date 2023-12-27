@@ -71,7 +71,7 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address: userAddress } = useAuth();
+  const { address: userAddress, clientType } = useAuth();
   const { isDev } = useDev();
 
   // ---------------------------------------------------------------------------
@@ -162,36 +162,41 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
         return;
       }
 
-      const res = await createUserOperation({
-        params: {
-          query: {
-            chain_id: Number(userOperation.chainId),
+      const res = await createUserOperation(
+        {
+          params: {
+            query: {
+              chain_id: Number(userOperation.chainId),
+            },
+          },
+          body: {
+            signature: {
+              owner_id: owner.id,
+              signature: toHex(new Uint8Array([...toBytes(data), 2])),
+              signature_type: 1,
+            },
+            user_operation: {
+              chain_id: Number(userOperation.chainId),
+              hash: userOperation.hash,
+              nonce: Number(userOperation.nonce),
+              init_code: userOperation.initCode,
+              sender: userOperation.sender,
+              call_data: userOperation.callData,
+              call_gas_limit: Number(userOperation.callGasLimit),
+              verification_gas_limit: Number(
+                userOperation.verificationGasLimit,
+              ),
+              pre_verification_gas: Number(userOperation.preVerificationGas),
+              max_fee_per_gas: Number(userOperation.maxFeePerGas),
+              max_priority_fee_per_gas: Number(
+                userOperation.maxPriorityFeePerGas,
+              ),
+              paymaster_and_data: userOperation.paymasterAndData,
+            },
           },
         },
-        body: {
-          signature: {
-            owner_id: owner.id,
-            signature: toHex(new Uint8Array([...toBytes(data), 2])),
-            signature_type: 1,
-          },
-          user_operation: {
-            chain_id: Number(userOperation.chainId),
-            hash: userOperation.hash,
-            nonce: Number(userOperation.nonce),
-            init_code: userOperation.initCode,
-            sender: userOperation.sender,
-            call_data: userOperation.callData,
-            call_gas_limit: Number(userOperation.callGasLimit),
-            verification_gas_limit: Number(userOperation.verificationGasLimit),
-            pre_verification_gas: Number(userOperation.preVerificationGas),
-            max_fee_per_gas: Number(userOperation.maxFeePerGas),
-            max_priority_fee_per_gas: Number(
-              userOperation.maxPriorityFeePerGas,
-            ),
-            paymaster_and_data: userOperation.paymasterAndData,
-          },
-        },
-      });
+        clientType,
+      );
 
       res.match(
         _ => {

@@ -185,6 +185,13 @@ export interface paths {
      */
     get: operations["v1_portfolio_get_handler"];
   };
+  "/queue/token": {
+    /**
+     * Queue token handler.
+     * @description Queue token handler.
+     */
+    post: operations["v1_queue_token_handler"];
+  };
   "/signature/create": {
     /**
      * Create a signature
@@ -610,6 +617,19 @@ export interface components {
       /** @description Portfolio already exists conflict. */
       Conflict: string;
     }]>;
+    /** @description Queue operation errors */
+    QueueError: OneOf<[{
+      /** @description Queue query error. */
+      BadRequest: string;
+    }, {
+      /** @description Queue not found by id. */
+      NotFound: string;
+    }]>;
+    /** @description Queue success response. */
+    QueueSuccess: {
+      /** @description User operation queued successfully. */
+      Queued: string;
+    };
     /** @description Signature root type. */
     Signature: {
       /** @description The owner id of the signature. */
@@ -1643,6 +1663,26 @@ export interface operations {
       404: {
         content: {
           "application/json": components["schemas"]["PortfolioError"];
+        };
+      };
+    };
+  };
+  /**
+   * Queue token handler.
+   * @description Queue token handler.
+   */
+  v1_queue_token_handler: {
+    responses: {
+      /** @description Queue created successfully */
+      200: {
+        content: {
+          "text/plain": number;
+        };
+      };
+      /** @description Queue internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["QueueError"];
         };
       };
     };

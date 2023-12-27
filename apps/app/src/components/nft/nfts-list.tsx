@@ -15,9 +15,8 @@
 
 "use client";
 
-import { getNftsByOwner } from "@lightdotso/client";
 import { Table, TableBody, TableCell, TableRow } from "@lightdotso/ui";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   getCoreRowModel,
   getFacetedRowModel,
@@ -67,37 +66,12 @@ export const NftsList: FC<NftsListProps> = ({ address, limit }) => {
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(queries.wallet.settings({ address }).queryKey);
 
-  const currentData: NftDataPage | undefined = queryClient.getQueryData(
+  const data: NftDataPage | undefined = queryClient.getQueryData(
     queries.nft.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
   );
-
-  const { data } = useSuspenseQuery<NftDataPage | null>({
-    queryKey: queries.nft.list({
-      address,
-      limit: limit,
-      is_testnet: walletSettings?.is_enabled_testnet,
-    }).queryKey,
-    queryFn: async () => {
-      const res = await getNftsByOwner({
-        address: address,
-        limit: limit,
-        isTestnet: walletSettings?.is_enabled_testnet,
-      });
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
-  });
 
   // ---------------------------------------------------------------------------
   // Table

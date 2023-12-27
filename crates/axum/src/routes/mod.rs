@@ -25,6 +25,7 @@ pub(crate) mod notification;
 pub(crate) mod paymaster;
 pub(crate) mod paymaster_operation;
 pub(crate) mod portfolio;
+pub(crate) mod queue;
 pub(crate) mod signature;
 pub(crate) mod support_request;
 pub(crate) mod token;

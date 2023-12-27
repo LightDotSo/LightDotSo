@@ -13,13 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub use redis;
-
 use eyre::Result;
 
+pub use redis;
+
 pub mod lock;
-mod namespace;
-pub mod wallet;
+pub mod namespace;
+pub mod query;
+pub mod rate_limit;
 
 // From: https://github.com/upstash/redis-examples/blob/27558e2192f7f0cd5b22e1869a433bbe96bad64d/using_redis-rs/src/main.rs
 /// Get a redis client from the environment variables

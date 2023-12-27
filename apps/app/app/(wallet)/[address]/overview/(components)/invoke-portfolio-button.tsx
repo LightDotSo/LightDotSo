@@ -15,7 +15,7 @@
 
 "use client";
 
-import { postQueueCovalent } from "@lightdotso/client";
+import { createQueueToken } from "@lightdotso/client";
 import {
   Button,
   Tooltip,
@@ -27,6 +27,7 @@ import { RefreshCcw } from "lucide-react";
 import type { FC } from "react";
 import type { Address } from "viem";
 import invokePortfolioAction from "@/actions/invokePortfolioAction";
+import { useAuth } from "@/stores";
 import { infoToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
@@ -45,6 +46,12 @@ export const InvokePortfolioButton: FC<InvokePortfolioButtonProps> = ({
   address,
 }) => {
   // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { clientType } = useAuth();
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -59,7 +66,12 @@ export const InvokePortfolioButton: FC<InvokePortfolioButtonProps> = ({
               className="h-8 px-3 py-1"
               onClick={() => {
                 invokePortfolioAction(address as Address);
-                postQueueCovalent({ address: address as Address });
+                createQueueToken(
+                  {
+                    params: { query: { address: address as Address } },
+                  },
+                  clientType,
+                );
                 infoToast("Refreshing...");
               }}
             >

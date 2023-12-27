@@ -75,6 +75,7 @@ import type { NftDataPage, TokenData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 import type { Transfer, Transfers } from "@/schemas";
 import { sendFormConfigurationSchema } from "@/schemas/sendForm";
+import { useAuth } from "@/stores";
 import { debounce } from "@/utils";
 import { lightWalletABI } from "@/wagmi";
 
@@ -101,6 +102,12 @@ export const SendDialog: FC<SendDialogProps> = ({
   address,
   initialTransfers,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { clientType } = useAuth();
+
   // ---------------------------------------------------------------------------
   // Next Hooks
   // ---------------------------------------------------------------------------
@@ -140,15 +147,18 @@ export const SendDialog: FC<SendDialogProps> = ({
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
     queryFn: async () => {
-      const res = await getTokens({
-        params: {
-          query: {
-            address,
-            is_testnet: walletSettings?.is_enabled_testnet ?? false,
-            limit: Number.MAX_SAFE_INTEGER,
+      const res = await getTokens(
+        {
+          params: {
+            query: {
+              address,
+              is_testnet: walletSettings?.is_enabled_testnet ?? false,
+              limit: Number.MAX_SAFE_INTEGER,
+            },
           },
         },
-      });
+        clientType,
+      );
 
       // Return if the response is 200
       return res.match(
