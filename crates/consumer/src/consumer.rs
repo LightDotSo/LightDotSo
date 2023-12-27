@@ -21,7 +21,8 @@ use crate::{
     topics::{
         activity::activity_consumer, covalent::covalent_consumer,
         error_transaction::error_transaction_consumer, notification::notification_consumer,
-        transaction::transaction_consumer, unknown::unknown_consumer,
+        portfolio::portfolio_consumer, transaction::transaction_consumer,
+        unknown::unknown_consumer,
     },
 };
 use clap::Parser;
@@ -31,7 +32,7 @@ use lightdotso_indexer::config::IndexerArgs;
 use lightdotso_kafka::{
     get_consumer, get_producer,
     namespace::{
-        ACTIVITY, COVALENT, ERROR_TRANSACTION, NOTIFICATION, RETRY_TRANSACTION,
+        ACTIVITY, COVALENT, ERROR_TRANSACTION, NOTIFICATION, PORTFOLIO, RETRY_TRANSACTION,
         RETRY_TRANSACTION_0, RETRY_TRANSACTION_1, RETRY_TRANSACTION_2, TRANSACTION,
     },
 };
@@ -130,11 +131,21 @@ impl Consumer {
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         topic if topic == COVALENT.to_string() => {
-                            let res = covalent_consumer(&m, db.clone()).await;
+                            let res =
+                                covalent_consumer(self.producer.clone(), &m, db.clone()).await;
                             // If the consumer failed
                             if let Err(e) = res {
                                 // Log the error
                                 warn!("Covalent consumer failed with error: {:?}", e);
+                            }
+                            let _ = self.consumer.commit_message(&m, CommitMode::Async);
+                        }
+                        topic if topic == PORTFOLIO.to_string() => {
+                            let res = portfolio_consumer(&m, db.clone()).await;
+                            // If the consumer failed
+                            if let Err(e) = res {
+                                // Log the error
+                                warn!("Portfolio consumer failed with error: {:?}", e);
                             }
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }

@@ -13,7 +13,21 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod activity;
-pub mod covalent;
-pub mod portfolio;
-pub mod transaction;
+use crate::{
+    namespace::PORTFOLIO, produce_message, traits::ToJson, types::portfolio::PortfolioMessage,
+};
+use eyre::Result;
+pub use rdkafka;
+use rdkafka::producer::FutureProducer;
+use std::sync::Arc;
+
+// Produce a message with Portfolio topic.
+pub async fn produce_portfolio_message(
+    producer: Arc<FutureProducer>,
+    msg: &PortfolioMessage,
+) -> Result<()> {
+    let message = msg.to_json();
+
+    produce_message(producer, PORTFOLIO.as_str(), &message, None).await?;
+    Ok(())
+}
