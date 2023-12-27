@@ -267,7 +267,7 @@ pub async fn start_api_server() -> Result<()> {
     // License: MIT
     let governor_conf = Box::new(
         GovernorConfigBuilder::default()
-            .per_second(10)
+            .per_millisecond(100)
             .burst_size(300)
             .use_headers()
             .key_extractor(SmartIpKeyExtractor)
@@ -278,8 +278,8 @@ pub async fn start_api_server() -> Result<()> {
     // Rate limit based on IP address but only for authenticated users
     let authenticated_governor_conf = Box::new(
         GovernorConfigBuilder::default()
-            .per_second(3)
-            .burst_size(300)
+            .per_millisecond(100)
+            .burst_size(1000)
             .use_headers()
             .key_extractor(SmartIpKeyExtractor)
             .finish()
