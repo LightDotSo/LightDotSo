@@ -61,10 +61,18 @@ pub(crate) async fn v1_user_operation_update_handler(
     post_query: Query<PostQuery>,
     State(state): State<AppState>,
 ) -> AppJsonResult<UserOperationSuccess> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the get query.
     let Query(query) = post_query;
     // Get the wallet address from the nonce query.
     let address: H160 = query.address.parse()?;
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // Get the user operations from the database.
     let user_operation = state
@@ -105,6 +113,10 @@ pub(crate) async fn v1_user_operation_update_handler(
             .exec()
             .await?;
     }
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     Ok(Json::from(UserOperationSuccess::Updated("Success".to_string())))
 }

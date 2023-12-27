@@ -82,11 +82,23 @@ pub(crate) async fn v1_token_list_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
 ) -> AppJsonResult<Vec<Token>> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the list_query query.
     let Query(query) = list_query;
 
+    // -------------------------------------------------------------------------
+    // Params
+    // -------------------------------------------------------------------------
+
     // Construct the query.
     let query_params = construct_token_list_query_params(&query)?;
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // Get the tokens from the database.
     let balances = state
@@ -99,6 +111,10 @@ pub(crate) async fn v1_token_list_handler(
         .take(query.limit.unwrap_or(10))
         .exec()
         .await?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Get all of the tokens in the balances array.
     let tokens: Vec<Token> = balances.into_iter().map(|balance| balance.into()).collect();
@@ -123,14 +139,30 @@ pub(crate) async fn v1_token_list_count_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
 ) -> AppJsonResult<TokenListCount> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the list query.
     let Query(query) = list_query;
+
+    // -------------------------------------------------------------------------
+    // Params
+    // -------------------------------------------------------------------------
 
     // Construct the query.
     let query_params = construct_token_list_query_params(&query)?;
 
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
     // Get the tokens from the database.
     let count = state.client.wallet_balance().count(query_params).exec().await?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     Ok(Json::from(TokenListCount { count }))
 }

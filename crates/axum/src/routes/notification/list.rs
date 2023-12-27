@@ -76,11 +76,23 @@ pub(crate) async fn v1_notification_list_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
 ) -> AppJsonResult<Vec<Notification>> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the list query.
     let Query(query) = list_query;
 
+    // -------------------------------------------------------------------------
+    // Params
+    // -------------------------------------------------------------------------
+
     // If the address is provided, add it to the query.
     let query_params = construct_notification_list_query_params(&query);
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // Get the notifications from the database.
     let notifications = state
@@ -91,6 +103,10 @@ pub(crate) async fn v1_notification_list_handler(
         .take(query.limit.unwrap_or(10))
         .exec()
         .await?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the notifications to the format that the API expects.
     let notifications: Vec<Notification> =
@@ -116,15 +132,31 @@ pub(crate) async fn v1_notification_list_count_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
 ) -> AppJsonResult<NotificationListCount> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the list query.
     let Query(query) = list_query;
     info!(?query);
 
+    // -------------------------------------------------------------------------
+    // Params
+    // -------------------------------------------------------------------------
+
     // If the address is provided, add it to the query.
     let query_params = construct_notification_list_query_params(&query);
 
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
     // Get the notifications from the database.
     let count = state.client.notification().count(query_params).exec().await?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     Ok(Json::from(NotificationListCount { count }))
 }

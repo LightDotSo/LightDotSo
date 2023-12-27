@@ -60,12 +60,20 @@ pub(crate) async fn v1_signature_get_handler(
     get_query: Query<GetQuery>,
     State(state): State<AppState>,
 ) -> AppJsonResult<Signature> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the get query.
     let Query(query) = get_query;
 
     info!("Get signature for address: {:?}", query);
 
     let user_operation_hash = query.user_operation_hash;
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // Get the signatures from the database.
     let signature = state
@@ -80,6 +88,10 @@ pub(crate) async fn v1_signature_get_handler(
     let signature = signature.ok_or(RouteError::SignatureError(SignatureError::NotFound(
         "Signature not found".to_string(),
     )))?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the signature to the format that the API expects.
     let signature: Signature = signature.into();

@@ -21,7 +21,11 @@ pub use rdkafka;
 use rdkafka::producer::FutureProducer;
 use std::sync::Arc;
 
-// Produce a message with Portfolio topic.
+// -----------------------------------------------------------------------------
+// Producer
+// -----------------------------------------------------------------------------
+
+/// Produce a message with Portfolio topic.
 pub async fn produce_portfolio_message(
     producer: Arc<FutureProducer>,
     msg: &PortfolioMessage,

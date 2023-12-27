@@ -81,10 +81,18 @@ pub(crate) async fn v1_user_operation_signature_handler(
     get_query: Query<GetQuery>,
     State(state): State<AppState>,
 ) -> AppJsonResult<String> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the get query.
     let Query(query) = get_query;
     let user_operation_hash = query.user_operation_hash.clone();
     let signature_type = query.signature_type.unwrap_or(1);
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // Get the user operations from the database.
     let user_operation = state
@@ -221,6 +229,10 @@ pub(crate) async fn v1_user_operation_signature_handler(
     if !is_valid {
         return Err(AppError::BadRequest);
     }
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Get the encoded user operation.
     let sig = wallet_config.encode()?.to_hex_string();

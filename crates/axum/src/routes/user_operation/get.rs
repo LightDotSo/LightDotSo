@@ -60,9 +60,17 @@ pub(crate) async fn v1_user_operation_get_handler(
     get_query: Query<GetQuery>,
     State(state): State<AppState>,
 ) -> AppJsonResult<UserOperation> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the get query.
     let Query(query) = get_query;
     let user_operation_hash = query.user_operation_hash.clone();
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // Get the user operations from the database.
     let user_operation = state
@@ -79,6 +87,10 @@ pub(crate) async fn v1_user_operation_get_handler(
     let user_operation = user_operation.ok_or(RouteError::UserOperationError(
         UserOperationError::NotFound("User operation not found".to_string()),
     ))?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the user operation to the format that the API expects.
     let user_operation: UserOperation = user_operation.into();

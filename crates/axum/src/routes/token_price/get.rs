@@ -82,12 +82,20 @@ pub(crate) async fn v1_token_price_get_handler(
     get_query: Query<GetQuery>,
     State(state): State<AppState>,
 ) -> AppJsonResult<TokenPrice> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the get query.
     let Query(query) = get_query;
 
     info!("Get token for address: {:?}", query);
     let parsed_query_address: H160 = query.address.parse()?;
     let checksum_address = to_checksum(&parsed_query_address, None);
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // Get the tokens from the database.
     let token = state
@@ -114,6 +122,10 @@ pub(crate) async fn v1_token_price_get_handler(
         .exec()
         .await?;
     info!("result: {:?}", result);
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Get the price from the result array.
     let price = if !result.is_empty() { result[0].price } else { 0.0 };

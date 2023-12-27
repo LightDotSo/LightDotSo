@@ -77,12 +77,24 @@ pub(crate) async fn v1_transaction_list_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
 ) -> AppJsonResult<Vec<Transaction>> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the list query.
     let Query(query) = list_query;
     info!(?query);
 
+    // -------------------------------------------------------------------------
+    // Params
+    // -------------------------------------------------------------------------
+
     // If the address is provided, add it to the query.
     let query_params = construct_transaction_list_query_params(&query);
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // Get the transactions from the database.
     let transactions = state
@@ -94,6 +106,10 @@ pub(crate) async fn v1_transaction_list_handler(
         .take(query.limit.unwrap_or(10))
         .exec()
         .await?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the transactions to the format that the API expects.
     let transactions: Vec<Transaction> = transactions.into_iter().map(Transaction::from).collect();
@@ -118,15 +134,31 @@ pub(crate) async fn v1_transaction_list_count_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
 ) -> AppJsonResult<TransactionListCount> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the list query.
     let Query(query) = list_query;
     info!(?query);
 
+    // -------------------------------------------------------------------------
+    // Params
+    // -------------------------------------------------------------------------
+
     // If the address is provided, add it to the query.
     let query_params = construct_transaction_list_query_params(&query);
 
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
     // Get the transactions from the database.
     let count = state.client.transaction().count(query_params).exec().await?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     Ok(Json::from(TransactionListCount { count }))
 }

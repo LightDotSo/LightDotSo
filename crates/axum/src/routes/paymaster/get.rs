@@ -60,10 +60,18 @@ pub(crate) async fn v1_paymaster_get_handler(
     get_query: Query<GetQuery>,
     State(state): State<AppState>,
 ) -> AppJsonResult<Paymaster> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the get query.
     let Query(query) = get_query;
 
     info!("Get paymaster for address: {:?}", query);
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // Get the paymasters from the database.
     let paymaster =
@@ -73,6 +81,10 @@ pub(crate) async fn v1_paymaster_get_handler(
     let paymaster = paymaster.ok_or(RouteError::PaymasterError(PaymasterError::NotFound(
         "Paymaster not found".to_string(),
     )))?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the paymaster to the format that the API expects.
     let paymaster: Paymaster = paymaster.into();

@@ -112,6 +112,10 @@ pub(crate) async fn v1_wallet_post_handler(
     State(state): State<AppState>,
     Json(params): Json<WalletPostRequestParams>,
 ) -> AppJsonResult<Wallet> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the post query.
     let Query(query) = post_query;
 
@@ -120,6 +124,10 @@ pub(crate) async fn v1_wallet_post_handler(
     let owners = &params.owners;
     let threshold = params.threshold;
     let name = params.name;
+
+    // -------------------------------------------------------------------------
+    // Validate
+    // -------------------------------------------------------------------------
 
     // Check if all of the owner address can be parsed to H160.
     let owners_addresses = owners
@@ -207,6 +215,10 @@ pub(crate) async fn v1_wallet_post_handler(
             factory_address: to_checksum(&factory_address, None),
         }));
     }
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // If the simulate flag is not set, check if the invite code is valid.
     let invite_code = params.invite_code;
@@ -344,6 +356,10 @@ pub(crate) async fn v1_wallet_post_handler(
     let wallet = wallet.map_err(|_| AppError::InternalError)?;
     info!(?wallet);
 
+    // -------------------------------------------------------------------------
+    // Kafka
+    // -------------------------------------------------------------------------
+
     // Produce an activity message.
     produce_activity_message(
         state.producer.clone(),
@@ -359,9 +375,6 @@ pub(crate) async fn v1_wallet_post_handler(
     )
     .await?;
 
-    // Change the wallet to the format that the API expects.
-    let wallet: Wallet = wallet.into();
-
     // Invalidate the invite code.
     let invite_code = state
         .client
@@ -373,6 +386,10 @@ pub(crate) async fn v1_wallet_post_handler(
         .exec()
         .await?;
     info!(?invite_code);
+
+    // -------------------------------------------------------------------------
+    // Kafka
+    // -------------------------------------------------------------------------
 
     // Produce an activity message.
     produce_activity_message(
@@ -390,9 +407,20 @@ pub(crate) async fn v1_wallet_post_handler(
     )
     .await?;
 
+    // -------------------------------------------------------------------------
+    // Redis
+    // -------------------------------------------------------------------------
+
     // Add the wallet to the redis cache.
     let mut conn = state.redis.get_connection()?;
     add_to_wallets(&mut conn, &wallet.address)?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
+
+    // Change the wallet to the format that the API expects.
+    let wallet: Wallet = wallet.into();
 
     Ok(Json::from(wallet))
 }

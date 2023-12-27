@@ -74,6 +74,10 @@ pub(crate) async fn v1_user_operation_nonce_handler(
     get_query: Query<GetQuery>,
     State(state): State<AppState>,
 ) -> AppJsonResult<UserOperationNonce> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the get query.
     let Query(query) = get_query;
     let chain_id = query.chain_id;
@@ -96,6 +100,10 @@ pub(crate) async fn v1_user_operation_nonce_handler(
         .exec()
         .await?;
     info!(?user_operation);
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // If the user operation is not found, return 0 as Ok.
     match user_operation {

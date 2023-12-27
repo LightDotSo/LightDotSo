@@ -60,8 +60,16 @@ pub(crate) async fn v1_activity_get_handler(
     get_query: Query<GetQuery>,
     State(state): State<AppState>,
 ) -> AppJsonResult<Activity> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the get query.
     let Query(query) = get_query;
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // Get the activitys from the database.
     let activity =
@@ -71,6 +79,10 @@ pub(crate) async fn v1_activity_get_handler(
     let activity = activity.ok_or(RouteError::ActivityError(ActivityError::NotFound(
         "Activity not found".to_string(),
     )))?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the activity to the format that the API expects.
     let activity: Activity = activity.into();

@@ -65,11 +65,19 @@ pub(crate) async fn v1_queue_token_handler(
     post_query: Query<PostQuery>,
     State(state): State<AppState>,
 ) -> AppJsonResult<QueueSuccess> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the post query.
     let Query(query) = post_query;
 
     let parsed_query_address: H160 = query.address.parse()?;
     let checksum_address = to_checksum(&parsed_query_address, None);
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // Get the wallet from the database.
     let wallet = state
@@ -98,6 +106,10 @@ pub(crate) async fn v1_queue_token_handler(
     // Define the chains.
     let chains = if testnet_enabled { ALL_CHAIN_IDS.clone() } else { MAINNET_CHAIN_IDS.clone() };
 
+    // -------------------------------------------------------------------------
+    // Kafka
+    // -------------------------------------------------------------------------
+
     // For each chain, run the kafka producer.
     for chain in chains.iter() {
         produce_covalent_message(
@@ -106,6 +118,10 @@ pub(crate) async fn v1_queue_token_handler(
         )
         .await?;
     }
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     Ok(Json::from(QueueSuccess::Queued("Queue Success".to_string())))
 }

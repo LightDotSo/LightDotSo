@@ -56,8 +56,16 @@ pub(crate) async fn v1_paymaster_operation_list_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
 ) -> AppJsonResult<Vec<PaymasterOperation>> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the list query.
     let Query(query) = list_query;
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // Get the paymasters from the database.
     let paymasters = state
@@ -68,6 +76,10 @@ pub(crate) async fn v1_paymaster_operation_list_handler(
         .take(query.limit.unwrap_or(10))
         .exec()
         .await?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the paymasters to the format that the API expects.
     let paymasters: Vec<PaymasterOperation> =

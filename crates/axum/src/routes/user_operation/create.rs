@@ -161,6 +161,10 @@ pub(crate) async fn v1_user_operation_post_handler(
     State(state): State<AppState>,
     Json(params): Json<UserOperationPostRequestParams>,
 ) -> AppJsonResult<UserOperation> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the post query.
     let Query(query) = post_query;
     info!(?query);
@@ -211,6 +215,10 @@ pub(crate) async fn v1_user_operation_post_handler(
 
     let recovered_sig = recover_ecdsa_signature(&sig_bytes, &subdigest, 0)?;
     info!(?recovered_sig);
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // Get the owner from the database.
     let owner =
@@ -365,6 +373,10 @@ pub(crate) async fn v1_user_operation_post_handler(
     // If the user_operation is not created, return a 500.
     let user_operation = user_operation.map_err(|_| AppError::InternalError)?;
     info!(?user_operation);
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the user operation to the format that the API expects.
     let user_operation: UserOperation = user_operation.into();
