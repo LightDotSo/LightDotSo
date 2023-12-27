@@ -70,6 +70,7 @@ export const NftsList: FC<NftsListProps> = ({ address, limit }) => {
     queries.nft.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet,
+      limit: limit,
     }).queryKey,
   );
 

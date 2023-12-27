@@ -18,6 +18,8 @@ import { SendDialog } from "@/app/(wallet)/[address]/send/(components)/send-dial
 import { Modal } from "@/components/modal";
 import { handler } from "@/handlers/paths/[address]/send/handler";
 import { preloader } from "@/preloaders/paths/[address]/send/preloader";
+import { queries } from "@/queries";
+import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -45,8 +47,38 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { transfers } = await handler(params, searchParams);
+  const { transfers, tokens, nfts, walletSettings } = await handler(
+    params,
+    searchParams,
+  );
 
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const queryClient = getQueryClient();
+
+  queryClient.setQueryData(
+    queries.wallet.settings({ address: params.address as Address }).queryKey,
+    walletSettings,
+  );
+  queryClient.setQueryData(
+    queries.token.list({
+      address: params.address as Address,
+      limit: Number.MAX_SAFE_INTEGER,
+      offset: 0,
+      is_testnet: walletSettings?.is_enabled_testnet,
+    }).queryKey,
+    tokens,
+  );
+  queryClient.setQueryData(
+    queries.nft.list({
+      address: params.address as Address,
+      is_testnet: walletSettings?.is_enabled_testnet,
+      limit: Number.MAX_SAFE_INTEGER,
+    }).queryKey,
+    nfts,
+  );
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------

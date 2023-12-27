@@ -136,6 +136,7 @@ export const SendDialog: FC<SendDialogProps> = ({
     queries.nft.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
+      limit: Number.MAX_SAFE_INTEGER,
     }).queryKey,
   );
 
