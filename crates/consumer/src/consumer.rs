@@ -130,7 +130,12 @@ impl Consumer {
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         topic if topic == COVALENT.to_string() => {
-                            let _ = covalent_consumer(&m, db.clone()).await;
+                            let res = covalent_consumer(&m, db.clone()).await;
+                            // If the consumer failed
+                            if let Err(e) = res {
+                                // Log the error
+                                warn!("Covalent consumer failed with error: {:?}", e);
+                            }
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         topic if topic == NOTIFICATION.to_string() => {

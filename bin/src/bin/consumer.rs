@@ -40,8 +40,15 @@ pub async fn main() {
     let mut handles = Vec::new();
 
     // Multiply the number of CPUs by the multiplier
-    let consumer_count = num_cpus::get() * args.cpu_multiplier;
+    let mut consumer_count = num_cpus::get() * args.cpu_multiplier;
     info!("Starting {} consumers", consumer_count);
+
+    // If env var `ENVIRONMENT` is set to `development`, then set the counter to 1
+    // so that we can debug the consumer.
+    if std::env::var("ENVIRONMENT") == Ok("development".to_string()) {
+        info!("Overriding consumer count to 1 for development");
+        consumer_count = 1;
+    }
 
     for _ in 0..consumer_count {
         let args_clone = args.clone();

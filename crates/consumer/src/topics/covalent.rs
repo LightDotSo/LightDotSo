@@ -45,6 +45,7 @@ pub async fn covalent_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>)
             None,
         )
         .await?;
+        info!(?balances);
 
         // Replace the addresses of `0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee` with `0x0000000000000000000000000000000000000000`
         // This is because Covalent uses the former for ETH, but we use the latter.
@@ -59,8 +60,17 @@ pub async fn covalent_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>)
             }
         }
 
+        // Filter the balances to only include tokens with non-none contract addresses and non-zero decimals
+        balances.data.items = balances
+            .data
+            .items
+            .into_iter()
+            .filter(|item| item.contract_address.is_some() && item.contract_decimals.is_some())
+            .collect::<Vec<_>>();
+
         // Create the tokens
-        db.token()
+        let res = db
+            .token()
             .create_many(
                 balances
                     .data
@@ -68,7 +78,7 @@ pub async fn covalent_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>)
                     .iter()
                     .map(|item| {
                         (
-                            item.contract_ticker_symbol.clone().unwrap(),
+                            item.contract_ticker_symbol.clone().unwrap_or("".to_string()),
                             item.contract_address.clone().unwrap(),
                             payload.chain_id as i64,
                             item.contract_decimals.unwrap(),
@@ -79,48 +89,45 @@ pub async fn covalent_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>)
             )
             .skip_duplicates()
             .exec()
-            .await?;
+            .await;
+        info!("res: {:?}", res);
 
         // Find the tokens
         let tokens = db
             .token()
-            .find_many(
-                balances
-                    .data
-                    .items
-                    .iter()
-                    .map(|item| {
-                        token::address_chain_id(
-                            item.contract_address.clone().unwrap(),
-                            payload.chain_id as i64,
-                        )
-                    })
-                    .collect::<Vec<_>>(),
-            )
+            .find_many(vec![token::chain_id::equals(payload.chain_id as i64)])
             .exec()
             .await?;
+        info!("tokens: {:?}", tokens);
+
+        // Create token data for each token
+        let token_data_results = balances
+            .data
+            .items
+            .iter()
+            .map(|ite| {
+                // Find the item
+                let token = tokens.iter().find(|token| {
+                    token.address.clone().to_lowercase()
+                        == ite.contract_address.clone().unwrap().to_lowercase()
+                });
+
+                // Convert the Option to a Result
+                let token_result = token.ok_or(eyre::eyre!("Item not found for token: {:?}", ite));
+
+                // If valid item found, build data, else propagate error
+                token_result.map(|token| (ite.quote_rate.unwrap_or(0.0), token.clone().id, vec![]))
+            })
+            .collect::<Vec<_>>();
+
+        // Flatten results and return early if there were any errors
+        let token_data: Result<Vec<_>, _> = token_data_results.into_iter().collect();
+
+        // If there was any error during creating token data, return early
+        let token_data = token_data?;
 
         // Create a token price for each token
-        db.token_price()
-            .create_many(
-                tokens
-                    .iter()
-                    .map(|token| {
-                        let data = balances
-                            .data
-                            .items
-                            .iter()
-                            .find(|item| {
-                                item.contract_address.as_ref().map(|addr| addr.to_lowercase())
-                                    == Some(token.clone().address.clone().to_lowercase())
-                            })
-                            .unwrap();
-                        (data.quote_rate.unwrap_or(0.0), token.clone().id, vec![])
-                    })
-                    .collect::<Vec<_>>(),
-            )
-            .exec()
-            .await?;
+        db.token_price().create_many(token_data).exec().await?;
 
         let _: Result<()> = db
             ._transaction()

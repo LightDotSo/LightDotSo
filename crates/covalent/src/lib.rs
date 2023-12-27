@@ -19,7 +19,6 @@
 use constants::COVALENT_BASE_URL;
 use eyre::Result;
 use eyre::WrapErr;
-use lightdotso_tracing::tracing::info;
 use reqwest::Response;
 use types::BalancesData;
 use types::TransactionsData;
@@ -31,7 +30,6 @@ pub mod types;
 // License: MIT
 /// Makes a request to the Covalent API
 async fn make_request(url: &str) -> Result<Response> {
-    info!("Sending API request to: {}", url);
     let resp = reqwest::get(url).await?;
     Ok(resp)
 }
@@ -75,10 +73,8 @@ pub async fn get_token_balances(
         *COVALENT_BASE_URL, chain_id, addr, api_key
     );
     endpoint = add_pagination_params(endpoint, page_size, page_number);
-    println!("{}", endpoint);
-
     let resp = make_request(&endpoint).await?;
-    println!("{:#?}", resp);
+
     let resource: BalancesData = resp.json().await?;
     Ok(resource)
 }
