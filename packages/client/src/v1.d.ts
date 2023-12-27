@@ -185,6 +185,13 @@ export interface paths {
      */
     get: operations["v1_portfolio_get_handler"];
   };
+  "/queue/portfolio": {
+    /**
+     * Queue portfolio handler.
+     * @description Queue portfolio handler.
+     */
+    post: operations["v1_queue_portfolio_handler"];
+  };
   "/queue/token": {
     /**
      * Queue token handler.
@@ -624,6 +631,9 @@ export interface components {
     }, {
       /** @description Queue not found by id. */
       NotFound: string;
+    }, {
+      /** @description Queue rate limit exceeded. */
+      RateLimitExceeded: string;
     }]>;
     /** @description Queue success response. */
     QueueSuccess: {
@@ -1668,10 +1678,42 @@ export interface operations {
     };
   };
   /**
+   * Queue portfolio handler.
+   * @description Queue portfolio handler.
+   */
+  v1_queue_portfolio_handler: {
+    parameters: {
+      query: {
+        /** @description The address of the target queue. */
+        address: string;
+      };
+    };
+    responses: {
+      /** @description Queue created successfully */
+      200: {
+        content: {
+          "text/plain": number;
+        };
+      };
+      /** @description Queue internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["QueueError"];
+        };
+      };
+    };
+  };
+  /**
    * Queue token handler.
    * @description Queue token handler.
    */
   v1_queue_token_handler: {
+    parameters: {
+      query: {
+        /** @description The address of the target queue. */
+        address: string;
+      };
+    };
     responses: {
       /** @description Queue created successfully */
       200: {

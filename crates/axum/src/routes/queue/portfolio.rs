@@ -20,12 +20,11 @@ use axum::{
     Json,
 };
 use ethers_main::{types::H160, utils::to_checksum};
-use lightdotso_contracts::constants::{ALL_CHAIN_IDS, MAINNET_CHAIN_IDS};
 use lightdotso_kafka::{
-    topics::covalent::produce_covalent_message, types::covalent::CovalentMessage,
+    topics::portfolio::produce_portfolio_message, types::portfolio::PortfolioMessage,
 };
 use lightdotso_prisma::wallet;
-use lightdotso_redis::query::token::token_rate_limit;
+use lightdotso_redis::query::portfolio::portfolio_rate_limit;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -47,10 +46,10 @@ pub struct PostQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Queue token handler.
+/// Queue portfolio handler.
 #[utoipa::path(
         post,
-        path = "/queue/token",
+        path = "/queue/portfolio",
         params(
             PostQuery
         ),
@@ -61,7 +60,7 @@ pub struct PostQuery {
         )
     )]
 #[autometrics]
-pub(crate) async fn v1_queue_token_handler(
+pub(crate) async fn v1_queue_portfolio_handler(
     post_query: Query<PostQuery>,
     State(state): State<AppState>,
 ) -> AppJsonResult<QueueSuccess> {
@@ -81,31 +80,18 @@ pub(crate) async fn v1_queue_token_handler(
         .await?;
 
     // If the wallet is not found, return a 404.
-    let wallet =
-        wallet.ok_or(RouteError::QueueError(QueueError::NotFound(checksum_address.clone())))?;
+    wallet.ok_or(RouteError::QueueError(QueueError::NotFound(checksum_address.clone())))?;
 
     // Rate limit the queue.
-    token_rate_limit(state.redis, checksum_address)
+    portfolio_rate_limit(state.redis, checksum_address)
         .map_err(|err| RouteError::QueueError(QueueError::RateLimitExceeded(err.to_string())))?;
 
-    // Get whether testnet is enabled.
-    let testnet_enabled = if let Some(Some(wallet_settings)) = wallet.wallet_settings {
-        wallet_settings.is_enabled_testnet
-    } else {
-        false
-    };
-
-    // Define the chains.
-    let chains = if testnet_enabled { ALL_CHAIN_IDS.clone() } else { MAINNET_CHAIN_IDS.clone() };
-
     // For each chain, run the kafka producer.
-    for chain in chains.iter() {
-        produce_covalent_message(
-            state.producer.clone(),
-            &CovalentMessage { address: parsed_query_address, chain_id: *chain.0 },
-        )
-        .await?;
-    }
+    produce_portfolio_message(
+        state.producer.clone(),
+        &PortfolioMessage { address: parsed_query_address },
+    )
+    .await?;
 
     Ok(Json::from(QueueSuccess::Queued("Queue Success".to_string())))
 }
