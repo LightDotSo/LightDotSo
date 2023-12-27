@@ -151,11 +151,11 @@ contracts-wagmi: ## Copies over certain directory for wagmi generation
 
 .PHONY: contracts-snapshot
 contracts-snapshot: ## Runs the snapshot generation script
-	FOUNDRY_PROFILE=local forge snapshot
+	forge snapshot
 
 .PHONY: contracts-snapshot-check
 contracts-snapshot-check: ## Runs the snapshot generation script w/ check
-	FOUNDRY_PROFILE=local forge snapshot --check
+	forge snapshot --check
 
 .PHONY: contracts-slither
 contracts-slither: ## Runs slither on the contracts
