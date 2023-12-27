@@ -55,7 +55,7 @@ export function AuthModal() {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address, sessionId } = useAuth();
+  const { address, clientType, sessionId } = useAuth();
   const { isAuthModalVisible, hideAuthModal } = useModals();
 
   // ---------------------------------------------------------------------------
@@ -85,10 +85,13 @@ export function AuthModal() {
         signMessageAsync({
           message: message.prepareMessage(),
         }).then(signature => {
-          postAuthVerify({
-            params: { query: { user_address: address } },
-            body: { message: messageToSign, signature },
-          }).then(res => {
+          postAuthVerify(
+            {
+              params: { query: { user_address: address } },
+              body: { message: messageToSign, signature },
+            },
+            clientType,
+          ).then(res => {
             res.match(
               _ => {
                 successToast("Successfully signed in!");

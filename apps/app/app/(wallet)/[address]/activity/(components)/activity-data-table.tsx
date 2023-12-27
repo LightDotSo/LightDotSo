@@ -28,6 +28,7 @@ import { DataTable } from "@/app/(wallet)/[address]/activity/(components)/data-t
 import type { ActivityData, ActivityCountData } from "@/data";
 import { queries } from "@/queries";
 import { usePaginationQueryState } from "@/querystates";
+import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -42,6 +43,12 @@ interface ActivityDataTableProps {
 // -----------------------------------------------------------------------------
 
 export const ActivityDataTable: FC<ActivityDataTableProps> = ({ address }) => {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { clientType } = useAuth();
+
   // ---------------------------------------------------------------------------
   // Query State Hooks
   // ---------------------------------------------------------------------------
@@ -78,15 +85,18 @@ export const ActivityDataTable: FC<ActivityDataTableProps> = ({ address }) => {
       offset: offsetCount,
     }).queryKey,
     queryFn: async () => {
-      const res = await getActivities({
-        params: {
-          query: {
-            address,
-            limit: paginationState.pageSize,
-            offset: offsetCount,
+      const res = await getActivities(
+        {
+          params: {
+            query: {
+              address,
+              limit: paginationState.pageSize,
+              offset: offsetCount,
+            },
           },
         },
-      });
+        clientType,
+      );
 
       // Return if the response is 200
       return res.match(

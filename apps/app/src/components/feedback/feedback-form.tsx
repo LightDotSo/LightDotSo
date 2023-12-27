@@ -71,7 +71,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { userId } = useAuth();
+  const { clientType, userId } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Form
@@ -89,16 +89,19 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
     if (!userId) {
       return errorToast("Sorry, something went wrong.");
     }
-    createFeedback({
-      params: {
-        query: {
-          user_id: userId,
+    createFeedback(
+      {
+        params: {
+          query: {
+            user_id: userId,
+          },
+        },
+        body: {
+          feedback: data,
         },
       },
-      body: {
-        feedback: data,
-      },
-    }).then(res => {
+      clientType,
+    ).then(res => {
       if (res.isOk()) {
         successToast("Thanks for your feedback!");
         form.reset();

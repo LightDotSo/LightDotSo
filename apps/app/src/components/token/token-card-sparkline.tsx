@@ -22,6 +22,7 @@ import type { FC } from "react";
 import type { Address } from "viem";
 import type { TokenData, TokenPriceData } from "@/data";
 import { queries } from "@/queries";
+import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -36,6 +37,12 @@ type TokenCardSparklineProps = { token: TokenData };
 export const TokenCardSparkline: FC<TokenCardSparklineProps> = ({
   token: { address, chain_id },
 }) => {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { clientType } = useAuth();
+
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -54,14 +61,17 @@ export const TokenCardSparkline: FC<TokenCardSparklineProps> = ({
         return null;
       }
 
-      const res = await getTokenPrice({
-        params: {
-          query: {
-            address: address,
-            chain_id: chain_id,
+      const res = await getTokenPrice(
+        {
+          params: {
+            query: {
+              address: address,
+              chain_id: chain_id,
+            },
           },
         },
-      });
+        clientType,
+      );
 
       // Return if the response is 200
       return res.match(

@@ -23,6 +23,7 @@ import { columns } from "@/app/(wallet)/[address]/owners/(components)/data-table
 import { DataTable } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table";
 import type { ConfigurationData } from "@/data";
 import { queries } from "@/queries";
+import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -37,6 +38,12 @@ interface OwnersDataTableProps {
 // -----------------------------------------------------------------------------
 
 export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { clientType } = useAuth();
+
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -54,13 +61,16 @@ export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
         return null;
       }
 
-      const res = await getConfiguration({
-        params: {
-          query: {
-            address: address,
+      const res = await getConfiguration(
+        {
+          params: {
+            query: {
+              address: address,
+            },
           },
         },
-      });
+        clientType,
+      );
 
       // Return if the response is 200
       return res.match(

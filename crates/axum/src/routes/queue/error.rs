@@ -13,9 +13,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export * from "./api";
-export * from "./client";
-export * from "./llama";
-export * from "./rpc";
-export * from "./simplehash";
-export * from "./zod";
+use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+/// Queue operation errors
+#[derive(Serialize, Deserialize, ToSchema)]
+pub(crate) enum QueueError {
+    /// Queue query error.
+    #[schema(example = "Bad request")]
+    BadRequest(String),
+    /// Queue not found by id.
+    #[schema(example = "id = 1")]
+    NotFound(String),
+}

@@ -26,6 +26,7 @@ import {
 import { RefreshCcw } from "lucide-react";
 import type { FC } from "react";
 import type { Address } from "viem";
+import { useAuth } from "@/stores";
 import { errorToast, infoToast, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
@@ -44,6 +45,12 @@ export const InvokeUserOperationButton: FC<InvokeUserOperationProps> = ({
   address,
 }) => {
   // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { clientType } = useAuth();
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -57,9 +64,12 @@ export const InvokeUserOperationButton: FC<InvokeUserOperationProps> = ({
               variant="shadow"
               className="h-8 px-3 py-1"
               onClick={() => {
-                updateUserOperation({
-                  params: { query: { address: address } },
-                }).then(res => {
+                updateUserOperation(
+                  {
+                    params: { query: { address: address } },
+                  },
+                  clientType,
+                ).then(res => {
                   infoToast("Updating operation...");
                   res.match(
                     _success => {

@@ -27,6 +27,7 @@ import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const/titles";
 import type { UserOperationData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
+import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -49,7 +50,17 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   image_hash,
   salt,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Parse
+  // ---------------------------------------------------------------------------
+
   const chain = JSON.parse(chain_JSON) as Chain;
+
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { clientType } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -85,18 +96,21 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
         return null;
       }
 
-      const res = await getUserOperations({
-        params: {
-          query: {
-            address: address,
-            status: "history",
-            order: "desc",
-            limit: Number.MAX_SAFE_INTEGER,
-            offset: 0,
-            is_testnet: walletSettings?.is_enabled_testnet ?? false,
+      const res = await getUserOperations(
+        {
+          params: {
+            query: {
+              address: address,
+              status: "history",
+              order: "desc",
+              limit: Number.MAX_SAFE_INTEGER,
+              offset: 0,
+              is_testnet: walletSettings?.is_enabled_testnet ?? false,
+            },
           },
         },
-      });
+        clientType,
+      );
 
       // Return if the response is 200
       return res.match(

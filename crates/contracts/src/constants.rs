@@ -88,6 +88,29 @@ lazy_static! {
     };
 }
 
+// The testnet chain ids
+lazy_static! {
+    pub static ref TESTNET_CHAIN_IDS: HashMap<u64, &'static str> = {
+        let mut m = HashMap::new();
+
+        m.insert(80001, "Mumbai Testnet");
+        m.insert(11155111, "Sepolia Testnet");
+
+        m
+    };
+}
+
+// All chain ids
+lazy_static! {
+    pub static ref ALL_CHAIN_IDS: HashMap<u64, &'static str> = {
+        let mut m = MAINNET_CHAIN_IDS.clone();
+        for (k, v) in TESTNET_CHAIN_IDS.iter() {
+            m.insert(*k, *v);
+        }
+        m
+    };
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

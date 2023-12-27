@@ -54,7 +54,8 @@ export const AuthState: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { setAddress, setWallet, setEns, setUserId, setSessionId } = useAuth();
+  const { clientType, setAddress, setWallet, setEns, setUserId, setSessionId } =
+    useAuth();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -73,13 +74,16 @@ export const AuthState: FC = () => {
         return null;
       }
 
-      const res = await getUser({
-        params: {
-          query: {
-            address,
+      const res = await getUser(
+        {
+          params: {
+            query: {
+              address,
+            },
           },
         },
-      });
+        clientType,
+      );
 
       // Return if the response is 200
       return res.match(
@@ -100,7 +104,7 @@ export const AuthState: FC = () => {
         return null;
       }
 
-      const res = await getAuthSession();
+      const res = await getAuthSession({}, clientType);
 
       // Return if the response is 200
       return res.match(

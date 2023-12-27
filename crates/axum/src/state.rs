@@ -15,10 +15,12 @@
 
 use lightdotso_kafka::rdkafka::producer::FutureProducer;
 use lightdotso_prisma::PrismaClient;
+use lightdotso_redis::redis::Client;
 use std::sync::Arc;
 
 #[derive(Clone)]
 pub struct AppState {
     pub client: Arc<PrismaClient>,
     pub producer: Arc<FutureProducer>,
+    pub redis: Arc<Client>,
 }

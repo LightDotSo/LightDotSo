@@ -178,43 +178,46 @@ export const getUserOperationsCount = async (
 // POST
 // -----------------------------------------------------------------------------
 
-export const createUserOperation = async ({
-  params,
-  body,
-}: {
-  params: {
-    query: {
-      chain_id: number;
+export const createUserOperation = async (
+  {
+    params,
+    body,
+  }: {
+    params: {
+      query: {
+        chain_id: number;
+      };
     };
-  };
-  body: {
-    paymaster?: {
-      address: string;
-      sender: string;
-      sender_nonce: number;
+    body: {
+      paymaster?: {
+        address: string;
+        sender: string;
+        sender_nonce: number;
+      };
+      signature: {
+        owner_id: string;
+        signature: string;
+        signature_type: number;
+      };
+      user_operation: {
+        chain_id: number;
+        call_data: string;
+        call_gas_limit: number;
+        hash: string;
+        init_code: string;
+        max_fee_per_gas: number;
+        max_priority_fee_per_gas: number;
+        nonce: number;
+        paymaster_and_data: string;
+        pre_verification_gas: number;
+        sender: string;
+        verification_gas_limit: number;
+      };
     };
-    signature: {
-      owner_id: string;
-      signature: string;
-      signature_type: number;
-    };
-    user_operation: {
-      chain_id: number;
-      call_data: string;
-      call_gas_limit: number;
-      hash: string;
-      init_code: string;
-      max_fee_per_gas: number;
-      max_priority_fee_per_gas: number;
-      nonce: number;
-      paymaster_and_data: string;
-      pre_verification_gas: number;
-      sender: string;
-      verification_gas_limit: number;
-    };
-  };
-}) => {
-  const client = getClient();
+  },
+  clientType?: ClientType,
+) => {
+  const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
     client.POST("/user_operation/create", {
@@ -231,14 +234,17 @@ export const createUserOperation = async ({
 // PUT
 // -----------------------------------------------------------------------------
 
-export const updateUserOperation = async ({
-  params,
-}: {
-  params: {
-    query: { address: string };
-  };
-}) => {
-  const client = getClient();
+export const updateUserOperation = async (
+  {
+    params,
+  }: {
+    params: {
+      query: { address: string };
+    };
+  },
+  clientType?: ClientType,
+) => {
+  const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
     client.POST("/user_operation/update", {

@@ -13,9 +13,21 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export * from "./api";
-export * from "./client";
-export * from "./llama";
-export * from "./rpc";
-export * from "./simplehash";
-export * from "./zod";
+pub(crate) mod error;
+pub(crate) mod tokens;
+pub(crate) mod types;
+
+use crate::state::AppState;
+use autometrics::autometrics;
+use axum::{routing::post, Router};
+
+pub(crate) use tokens::{__path_v1_queue_tokens_handler, v1_queue_tokens_handler};
+
+// -----------------------------------------------------------------------------
+// Router
+// -----------------------------------------------------------------------------
+
+#[autometrics]
+pub(crate) fn router() -> Router<AppState> {
+    Router::new().route("/queue/tokens", post(v1_queue_tokens_handler))
+}

@@ -28,6 +28,7 @@ import { DataTable } from "@/app/(wallet)/[address]/overview/tokens/(components)
 import type { TokenCountData, TokenData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 import { usePaginationQueryState } from "@/querystates";
+import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -42,6 +43,12 @@ interface TokensDataTableProps {
 // -----------------------------------------------------------------------------
 
 export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { clientType } = useAuth();
+
   // ---------------------------------------------------------------------------
   // Query State Hooks
   // ---------------------------------------------------------------------------
@@ -83,16 +90,19 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
       offset: offsetCount,
     }).queryKey,
     queryFn: async () => {
-      const res = await getTokens({
-        params: {
-          query: {
-            address,
-            is_testnet: walletSettings?.is_enabled_testnet ?? false,
-            limit: paginationState.pageSize,
-            offset: offsetCount,
+      const res = await getTokens(
+        {
+          params: {
+            query: {
+              address,
+              is_testnet: walletSettings?.is_enabled_testnet ?? false,
+              limit: paginationState.pageSize,
+              offset: offsetCount,
+            },
           },
         },
-      });
+        clientType,
+      );
 
       // Return if the response is 200
       return res.match(
@@ -123,14 +133,17 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
         return null;
       }
 
-      const res = await getTokensCount({
-        params: {
-          query: {
-            address: address,
-            is_testnet: walletSettings?.is_enabled_testnet ?? false,
+      const res = await getTokensCount(
+        {
+          params: {
+            query: {
+              address: address,
+              is_testnet: walletSettings?.is_enabled_testnet ?? false,
+            },
           },
         },
-      });
+        clientType,
+      );
 
       // Return if the response is 200
       return res.match(

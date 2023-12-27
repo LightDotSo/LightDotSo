@@ -35,7 +35,7 @@ export const WalletsDataTable: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address } = useAuth();
+  const { address, clientType } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Query State Hooks
@@ -76,15 +76,18 @@ export const WalletsDataTable: FC = () => {
         return null;
       }
 
-      const res = await getWallets({
-        params: {
-          query: {
-            owner: address,
-            limit: paginationState.pageSize,
-            offset: offsetCount,
+      const res = await getWallets(
+        {
+          params: {
+            query: {
+              owner: address,
+              limit: paginationState.pageSize,
+              offset: offsetCount,
+            },
           },
         },
-      });
+        clientType,
+      );
 
       // Return if the response is 200
       return res.match(
@@ -111,13 +114,16 @@ export const WalletsDataTable: FC = () => {
         return null;
       }
 
-      const res = await getWalletsCount({
-        params: {
-          query: {
-            owner: address,
+      const res = await getWalletsCount(
+        {
+          params: {
+            query: {
+              owner: address,
+            },
           },
         },
-      });
+        clientType,
+      );
 
       // Return if the response is 200
       return res.match(

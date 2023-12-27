@@ -41,7 +41,7 @@ import { columns } from "@/app/(wallet)/[address]/overview/history/(components)/
 import { TableEmpty } from "@/components/state/table-empty";
 import type { TransactionData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
-import { useTables } from "@/stores";
+import { useAuth, useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -64,6 +64,7 @@ export const TransactionsList: FC<TransactionsListProps> = ({
   // Stores
   // ---------------------------------------------------------------------------
 
+  const { clientType } = useAuth();
   const {
     transactionColumnFilters,
     transactionColumnVisibility,
@@ -99,14 +100,17 @@ export const TransactionsList: FC<TransactionsListProps> = ({
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
     queryFn: async () => {
-      const res = await getTransactions({
-        params: {
-          query: {
-            address,
-            is_testnet: walletSettings?.is_enabled_testnet ?? false,
+      const res = await getTransactions(
+        {
+          params: {
+            query: {
+              address,
+              is_testnet: walletSettings?.is_enabled_testnet ?? false,
+            },
           },
         },
-      });
+        clientType,
+      );
 
       // Return if the response is 200
       return res.match(

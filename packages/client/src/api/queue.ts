@@ -21,19 +21,12 @@ import { getClient } from "../client";
 // POST
 // -----------------------------------------------------------------------------
 
-export const createFeedback = async (
+export const createQueueToken = async (
   {
     params,
-    body,
   }: {
     params: {
-      query: { user_id: string };
-    };
-    body: {
-      feedback: {
-        emoji: string;
-        text: string;
-      };
+      query: { address: string };
     };
   },
   clientType?: ClientType,
@@ -41,11 +34,10 @@ export const createFeedback = async (
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
-    client.POST("/feedback/create", {
+    client.POST("/queue/tokens", {
       // @ts-ignore
       next: { revalidate: 0 },
       params,
-      body,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

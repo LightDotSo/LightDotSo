@@ -52,7 +52,7 @@ use lightdotso_kafka::{
 };
 use lightdotso_opentelemetry::polling::PollingMetrics;
 use lightdotso_prisma::PrismaClient;
-use lightdotso_redis::{get_redis_client, redis::Client, wallet::add_to_wallets};
+use lightdotso_redis::{get_redis_client, query::wallet::add_to_wallets, redis::Client};
 use lightdotso_solutions::init::get_image_hash_salt_from_init_code;
 use lightdotso_tracing::tracing::{error, info, trace, warn};
 use std::{sync::Arc, time::Duration};

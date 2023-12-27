@@ -41,7 +41,7 @@ import { columns } from "@/app/(wallet)/[address]/overview/tokens/(components)/d
 import { TableEmpty } from "@/components/state/table-empty";
 import type { TokenData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
-import { useTables } from "@/stores";
+import { useAuth, useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -61,6 +61,7 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
   // Stores
   // ---------------------------------------------------------------------------
 
+  const { clientType } = useAuth();
   const {
     tokenColumnFilters,
     tokenColumnVisibility,
@@ -94,14 +95,17 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
     queryFn: async () => {
-      const res = await getTokens({
-        params: {
-          query: {
-            address,
-            is_testnet: walletSettings?.is_enabled_testnet ?? false,
+      const res = await getTokens(
+        {
+          params: {
+            query: {
+              address,
+              is_testnet: walletSettings?.is_enabled_testnet ?? false,
+            },
           },
         },
-      });
+        clientType,
+      );
 
       // Return if the response is 200
       return res.match(

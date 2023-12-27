@@ -13,11 +13,26 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { fetchWithResult } from "../fetch";
+use crate::{namespace::QUEUE_TOKEN, rate_limit::RateLimiter};
+use eyre::Result;
+use lightdotso_tracing::tracing::info;
+use redis::Client;
+use std::{sync::Arc, time::Duration};
 
-// -----------------------------------------------------------------------------
-// POST
-// -----------------------------------------------------------------------------
+/// Add the token rate limit to the redis database.
+pub fn token_rate_limit(client: Arc<Client>, address: String) -> Result<()> {
+    let mut rate_limit = RateLimiter::open(client)?;
+    let size = Duration::from_secs(1);
 
-export const postQueueCovalent = ({ address }: { address: string }) =>
-  fetchWithResult({ address }, `/api/queue/covalent?address=${address}`);
+    rate_limit.record_fixed_window(&QUEUE_TOKEN, &address, size)?;
+
+    let count = rate_limit.fetch_fixed_window(&QUEUE_TOKEN, &address, size)?;
+
+    info!("token rate count: {}", count);
+
+    if count > 1 {
+        return Err(eyre::eyre!("rate limit exceeded"));
+    }
+
+    Ok(())
+}

@@ -35,7 +35,7 @@ import { TableEmpty } from "@/components/state/table-empty";
 import type { ConfigurationData, UserOperationData } from "@/data";
 import { queries } from "@/queries";
 import { usePaginationQueryState } from "@/querystates";
-import { useTables } from "@/stores";
+import { useAuth, useTables } from "@/stores";
 import { groupByDate } from "@/utils/group";
 
 // -----------------------------------------------------------------------------
@@ -59,6 +59,12 @@ export function DataTable({
   data,
   pageCount,
 }: DataTableProps) {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { clientType } = useAuth();
+
   // ---------------------------------------------------------------------------
   // Query State Hooks
   // ---------------------------------------------------------------------------
@@ -152,13 +158,16 @@ export function DataTable({
         return null;
       }
 
-      const res = await getConfiguration({
-        params: {
-          query: {
-            address: address,
+      const res = await getConfiguration(
+        {
+          params: {
+            query: {
+              address: address,
+            },
           },
         },
-      });
+        clientType,
+      );
 
       // Return if the response is 200
       return res.match(

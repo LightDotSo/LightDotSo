@@ -40,6 +40,7 @@ import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import type { WalletData } from "@/data";
 import { useCopy } from "@/hooks/useCopy";
 import { queries } from "@/queries";
+import { useAuth } from "@/stores";
 import { successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
@@ -57,6 +58,12 @@ interface WalletOverviewBannerAddressProps {
 export const WalletOverviewBannerAddress: FC<
   WalletOverviewBannerAddressProps
 > = ({ address }) => {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { clientType } = useAuth();
+
   // ---------------------------------------------------------------------------
   // Wagmi Hooks
   // ---------------------------------------------------------------------------
@@ -97,13 +104,16 @@ export const WalletOverviewBannerAddress: FC<
         return null;
       }
 
-      const res = await getWallet({
-        params: {
-          query: {
-            address: address,
+      const res = await getWallet(
+        {
+          params: {
+            query: {
+              address: address,
+            },
           },
         },
-      });
+        clientType,
+      );
 
       // Return if the response is 200
       return res.match(

@@ -32,6 +32,7 @@ import type {
 } from "@/data";
 import { queries } from "@/queries";
 import { usePaginationQueryState } from "@/querystates";
+import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -50,6 +51,12 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   address,
   status,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { clientType } = useAuth();
+
   // ---------------------------------------------------------------------------
   // Query State Hooks
   // ---------------------------------------------------------------------------
@@ -95,18 +102,21 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
     queryFn: async () => {
-      const res = await getUserOperations({
-        params: {
-          query: {
-            address,
-            status,
-            order: status === "proposed" ? "asc" : "desc",
-            limit: paginationState.pageSize,
-            offset: offsetCount,
-            is_testnet: walletSettings?.is_enabled_testnet ?? false,
+      const res = await getUserOperations(
+        {
+          params: {
+            query: {
+              address,
+              status,
+              order: status === "proposed" ? "asc" : "desc",
+              limit: paginationState.pageSize,
+              offset: offsetCount,
+              is_testnet: walletSettings?.is_enabled_testnet ?? false,
+            },
           },
         },
-      });
+        clientType,
+      );
 
       // Return if the response is 200
       return res.match(
@@ -141,15 +151,18 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
           return null;
         }
 
-        const res = await getUserOperationsCount({
-          params: {
-            query: {
-              address: address,
-              status: status,
-              is_testnet: walletSettings?.is_enabled_testnet ?? false,
+        const res = await getUserOperationsCount(
+          {
+            params: {
+              query: {
+                address: address,
+                status: status,
+                is_testnet: walletSettings?.is_enabled_testnet ?? false,
+              },
             },
           },
-        });
+          clientType,
+        );
 
         // Return if the response is 200
         return res.match(
