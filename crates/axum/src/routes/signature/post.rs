@@ -108,6 +108,10 @@ pub(crate) async fn v1_signature_post_handler(
     // Get the signature from the post body.
     let sig = params.signature;
 
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
     // Create the signature the database.
     let signature = state
         .client
@@ -123,6 +127,10 @@ pub(crate) async fn v1_signature_post_handler(
         .exec()
         .await?;
     info!(?signature);
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the signatures to the format that the API expects.
     let signature: Signature = signature.into();

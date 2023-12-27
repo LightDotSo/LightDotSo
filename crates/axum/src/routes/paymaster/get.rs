@@ -69,6 +69,10 @@ pub(crate) async fn v1_paymaster_get_handler(
 
     info!("Get paymaster for address: {:?}", query);
 
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
     // Get the paymasters from the database.
     let paymaster =
         state.client.paymaster().find_unique(paymaster::id::equals(query.id)).exec().await?;
@@ -77,6 +81,10 @@ pub(crate) async fn v1_paymaster_get_handler(
     let paymaster = paymaster.ok_or(RouteError::PaymasterError(PaymasterError::NotFound(
         "Paymaster not found".to_string(),
     )))?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the paymaster to the format that the API expects.
     let paymaster: Paymaster = paymaster.into();

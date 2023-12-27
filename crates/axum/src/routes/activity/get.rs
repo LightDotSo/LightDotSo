@@ -67,6 +67,10 @@ pub(crate) async fn v1_activity_get_handler(
     // Get the get query.
     let Query(query) = get_query;
 
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
     // Get the activitys from the database.
     let activity =
         state.client.activity().find_unique(activity::id::equals(query.id)).exec().await?;
@@ -75,6 +79,10 @@ pub(crate) async fn v1_activity_get_handler(
     let activity = activity.ok_or(RouteError::ActivityError(ActivityError::NotFound(
         "Activity not found".to_string(),
     )))?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the activity to the format that the API expects.
     let activity: Activity = activity.into();

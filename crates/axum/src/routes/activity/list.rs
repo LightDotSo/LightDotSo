@@ -82,8 +82,16 @@ pub(crate) async fn v1_activity_list_handler(
     // Get the list query.
     let Query(query) = list_query;
 
+    // -------------------------------------------------------------------------
+    // Params
+    // -------------------------------------------------------------------------
+
     // If the address is provided, add it to the query.
     let query_params = construct_activity_list_query_params(&query);
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // Get the activities from the database.
     let activities = state
@@ -95,6 +103,10 @@ pub(crate) async fn v1_activity_list_handler(
         .order_by(activity::timestamp::order(Direction::Desc))
         .exec()
         .await?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the activities to the format that the API expects.
     let activities: Vec<Activity> = activities.into_iter().map(Activity::from).collect();
@@ -127,11 +139,23 @@ pub(crate) async fn v1_activity_list_count_handler(
     let Query(query) = list_query;
     info!(?query);
 
+    // -------------------------------------------------------------------------
+    // Params
+    // -------------------------------------------------------------------------
+
     // If the address is provided, add it to the query.
     let query_params = construct_activity_list_query_params(&query);
 
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
     // Get the activities from the database.
     let count = state.client.activity().count(query_params).exec().await?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     Ok(Json::from(ActivityListCount { count }))
 }

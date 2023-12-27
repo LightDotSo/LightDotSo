@@ -83,6 +83,10 @@ pub(crate) async fn v1_feedback_post_handler(
     // Get the feedback from the post body.
     let feedback = params.feedback;
 
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
     // Create the feedback the database.
     let feedback = state
         .client
@@ -91,6 +95,10 @@ pub(crate) async fn v1_feedback_post_handler(
         .exec()
         .await?;
     info!(?feedback);
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the feedbacks to the format that the API expects.
     let feedback: Feedback = feedback.into();

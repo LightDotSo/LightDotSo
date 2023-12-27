@@ -96,6 +96,10 @@ pub(crate) async fn v1_wallet_list_handler(
         .exec()
         .await?;
 
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
+
     // Change the wallets to the format that the API expects.
     let wallets: Vec<Wallet> = wallets.into_iter().map(Wallet::from).collect();
 
@@ -131,6 +135,10 @@ pub(crate) async fn v1_wallet_list_count_handler(
 
     // Get the wallets from the database.
     let count = state.client.wallet().count(query_params).exec().await?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     Ok(Json::from(WalletListCount { count }))
 }

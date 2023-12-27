@@ -90,6 +90,10 @@ pub(crate) async fn v1_wallet_settings_post_handler(
     // Get the wallet_settings from the post body.
     let wallet_settings = params.wallet_settings;
 
+    // -------------------------------------------------------------------------
+    // Params
+    // -------------------------------------------------------------------------
+
     // For each wallet_settings, create the params update.
     let mut params = vec![];
 
@@ -99,6 +103,10 @@ pub(crate) async fn v1_wallet_settings_post_handler(
         let is_enabled_testnet = wallet_settings.is_enabled_testnet.unwrap();
         params.push(wallet_settings::is_enabled_testnet::set(is_enabled_testnet));
     }
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // Create the wallet_settings the database.
     let wallet_settings = state
@@ -115,6 +123,10 @@ pub(crate) async fn v1_wallet_settings_post_handler(
         .exec()
         .await?;
     info!(?wallet_settings);
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the signatures to the format that the API expects.
     let wallet_settings: WalletSettings = wallet_settings.into();

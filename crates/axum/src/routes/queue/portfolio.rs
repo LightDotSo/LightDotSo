@@ -74,6 +74,10 @@ pub(crate) async fn v1_queue_portfolio_handler(
     let parsed_query_address: H160 = query.address.parse()?;
     let checksum_address = to_checksum(&parsed_query_address, None);
 
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
     // Get the wallet from the database.
     let wallet = state
         .client
@@ -90,12 +94,20 @@ pub(crate) async fn v1_queue_portfolio_handler(
     portfolio_rate_limit(state.redis, checksum_address)
         .map_err(|err| RouteError::QueueError(QueueError::RateLimitExceeded(err.to_string())))?;
 
+    // -------------------------------------------------------------------------
+    // Kafka
+    // -------------------------------------------------------------------------
+
     // For each chain, run the kafka producer.
     produce_portfolio_message(
         state.producer.clone(),
         &PortfolioMessage { address: parsed_query_address },
     )
     .await?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     Ok(Json::from(QueueSuccess::Queued("Queue Success".to_string())))
 }

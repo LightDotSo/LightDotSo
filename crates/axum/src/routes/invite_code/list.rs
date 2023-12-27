@@ -79,11 +79,23 @@ pub(crate) async fn v1_invite_code_list_handler(
     // Get the list query.
     let Query(query) = list_query;
 
+    // -------------------------------------------------------------------------
+    // Auth
+    // -------------------------------------------------------------------------
+
     // Get the authenticated user id.
     let auth_user_id = get_user_id(&mut session)?;
 
+    // -------------------------------------------------------------------------
+    // Params
+    // -------------------------------------------------------------------------
+
     // If the address is provided, add it to the query.
     let query_params = construct_invite_code_list_query_params(auth_user_id);
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // Get the invite codes from the database.
     let invite_codes = state
@@ -94,6 +106,10 @@ pub(crate) async fn v1_invite_code_list_handler(
         .take(query.limit.unwrap_or(10))
         .exec()
         .await?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the invite codes to the format that the API expects.
     let invite_codes: Vec<InviteCode> = invite_codes.into_iter().map(InviteCode::from).collect();
@@ -118,14 +134,30 @@ pub(crate) async fn v1_invite_code_list_count_handler(
     State(state): State<AppState>,
     mut session: Session,
 ) -> AppJsonResult<InviteCodeListCount> {
+    // -------------------------------------------------------------------------
+    // Auth
+    // -------------------------------------------------------------------------
+
     // Get the authenticated user id.
     let auth_user_id = get_user_id(&mut session)?;
+
+    // -------------------------------------------------------------------------
+    // Params
+    // -------------------------------------------------------------------------
 
     // If the address is provided, add it to the query.
     let query_params = construct_invite_code_list_query_params(auth_user_id);
 
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
     // Get the invite codes from the database.
     let count = state.client.invite_code().count(query_params).exec().await?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     Ok(Json::from(InviteCodeListCount { count }))
 }

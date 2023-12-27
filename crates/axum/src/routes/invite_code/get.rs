@@ -67,6 +67,10 @@ pub(crate) async fn v1_invite_code_get_handler(
     // Get the get query.
     let Query(query) = get_query;
 
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
     // Get the paymasters from the database.
     let invite_code = state
         .client
@@ -79,6 +83,10 @@ pub(crate) async fn v1_invite_code_get_handler(
     let invite_code = invite_code.ok_or(RouteError::InviteCodeError(InviteCodeError::NotFound(
         "Invite code not found".to_string(),
     )))?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the invite code to the format that the API expects.
     let invite_code: InviteCode = invite_code.into();

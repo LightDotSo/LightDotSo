@@ -75,6 +75,10 @@ pub(crate) async fn v1_wallet_get_handler(
     let parsed_query_address: H160 = query.address.parse()?;
     let checksum_address = to_checksum(&parsed_query_address, None);
 
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
     // Get the wallets from the database.
     let wallet =
         state.client.wallet().find_unique(wallet::address::equals(checksum_address)).exec().await?;
@@ -83,11 +87,19 @@ pub(crate) async fn v1_wallet_get_handler(
     let wallet = wallet
         .ok_or(RouteError::WalletError(WalletError::NotFound("Wallet not found".to_string())))?;
 
-    // Change the wallet to the format that the API expects.
-    let wallet: Wallet = wallet.into();
+    // -------------------------------------------------------------------------
+    // Cookie
+    // -------------------------------------------------------------------------
 
     // Add the wallet cookie.
     cookies.add_wallet_cookie(wallet.address.clone()).await;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
+
+    // Change the wallet to the format that the API expects.
+    let wallet: Wallet = wallet.into();
 
     Ok(Json::from(wallet))
 }

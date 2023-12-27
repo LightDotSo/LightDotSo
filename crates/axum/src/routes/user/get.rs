@@ -71,6 +71,10 @@ pub(crate) async fn v1_user_get_handler(
 
     let parsed_query_address: H160 = query.address.parse()?;
 
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
     // Get the users from the database.
     let user = state
         .client
@@ -82,6 +86,10 @@ pub(crate) async fn v1_user_get_handler(
     // If the user is not found, return a 404.
     let user =
         user.ok_or(RouteError::UserError(UserError::NotFound("User not found".to_string())))?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the user to the format that the API expects.
     let user: User = user.into();

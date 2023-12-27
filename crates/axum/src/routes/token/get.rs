@@ -74,6 +74,10 @@ pub(crate) async fn v1_token_get_handler(
     let parsed_query_address: H160 = query.address.parse()?;
     let checksum_address = to_checksum(&parsed_query_address, None);
 
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
     // Get the tokens from the database.
     let token = state
         .client
@@ -85,6 +89,10 @@ pub(crate) async fn v1_token_get_handler(
     // If the token is not found, return a 404.
     let token =
         token.ok_or(RouteError::TokenError(TokenError::NotFound("Token not found".to_string())))?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the token to the format that the API expects.
     let token: Token = token.into();

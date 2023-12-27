@@ -80,6 +80,10 @@ pub(crate) async fn v1_support_request_post_handler(
     // Get the support_request from the post body.
     let support_request = params.support_request;
 
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
     // Create the support_request the database.
     let support_request = state
         .client
@@ -95,6 +99,10 @@ pub(crate) async fn v1_support_request_post_handler(
         .exec()
         .await?;
     info!(?support_request);
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the support_requests to the format that the API expects.
     let support_request: SupportRequest = support_request.into();

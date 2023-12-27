@@ -101,6 +101,10 @@ pub(crate) async fn v1_user_operation_nonce_handler(
         .await?;
     info!(?user_operation);
 
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
+
     // If the user operation is not found, return 0 as Ok.
     match user_operation {
         Some(user_operation) => {

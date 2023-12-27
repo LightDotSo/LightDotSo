@@ -74,6 +74,10 @@ pub(crate) async fn v1_wallet_settings_get_handler(
 
     info!("Get wallet_settings for address: {:?}", checksum_address);
 
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
     // Get the signatures from the database.
     let wallet_settings = state
         .client
@@ -86,6 +90,10 @@ pub(crate) async fn v1_wallet_settings_get_handler(
     let wallet_settings = wallet_settings.ok_or(RouteError::WalletSettingsError(
         WalletSettingsError::NotFound("Wallet settings not found".to_string()),
     ))?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the wallet_settings to the format that the API expects.
     let wallet_settings: WalletSettings = wallet_settings.into();

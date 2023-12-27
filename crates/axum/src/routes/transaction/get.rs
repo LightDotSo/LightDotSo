@@ -70,6 +70,10 @@ pub(crate) async fn v1_transaction_get_handler(
 
     info!("Get transaction for address: {:?}", query);
 
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
     // Get the transactions from the database.
     let transaction = state
         .client
@@ -82,6 +86,10 @@ pub(crate) async fn v1_transaction_get_handler(
     let transaction = transaction.ok_or(RouteError::TransactionError(
         TransactionError::NotFound("Transaction not found".to_string()),
     ))?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the transaction to the format that the API expects.
     let transaction: Transaction = transaction.into();

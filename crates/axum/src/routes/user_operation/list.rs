@@ -111,6 +111,10 @@ pub(crate) async fn v1_user_operation_list_handler(
     let Query(query) = list_query;
     info!(?query);
 
+    // -------------------------------------------------------------------------
+    // Params
+    // -------------------------------------------------------------------------
+
     // Construct the query.
     let query_params = construct_user_operation_list_query_params(&query);
 
@@ -120,6 +124,10 @@ pub(crate) async fn v1_user_operation_list_handler(
         Some(ListQueryOrder::Desc) => Direction::Desc,
         None => Direction::Asc,
     };
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // Get the user operations from the database.
     let user_operations = state
@@ -133,6 +141,10 @@ pub(crate) async fn v1_user_operation_list_handler(
         .with(user_operation::transaction::fetch())
         .exec()
         .await?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the user operations to the format that the API expects.
     let user_operations: Vec<UserOperation> =
@@ -166,11 +178,23 @@ pub(crate) async fn v1_user_operation_list_count_handler(
     let Query(query) = list_query;
     info!(?query);
 
+    // -------------------------------------------------------------------------
+    // Params
+    // -------------------------------------------------------------------------
+
     // Construct the query.
     let query_params = construct_user_operation_list_query_params(&query);
 
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
     // Get the user operations from the database.
     let count = state.client.user_operation().count(query_params).exec().await?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     Ok(Json::from(UserOperationListCount { count }))
 }

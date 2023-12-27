@@ -67,6 +67,10 @@ pub(crate) async fn v1_configuration_list_handler(
     // Get the list query.
     let Query(query) = list_query;
 
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
     // Get the configurations from the database.
     let configurations = state
         .client
@@ -77,6 +81,10 @@ pub(crate) async fn v1_configuration_list_handler(
         .take(query.limit.unwrap_or(10))
         .exec()
         .await?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the configurations to the format that the API expects.
     let configurations: Vec<Configuration> =

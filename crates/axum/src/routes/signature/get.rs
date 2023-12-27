@@ -71,6 +71,10 @@ pub(crate) async fn v1_signature_get_handler(
 
     let user_operation_hash = query.user_operation_hash;
 
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
     // Get the signatures from the database.
     let signature = state
         .client
@@ -84,6 +88,10 @@ pub(crate) async fn v1_signature_get_handler(
     let signature = signature.ok_or(RouteError::SignatureError(SignatureError::NotFound(
         "Signature not found".to_string(),
     )))?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the signature to the format that the API expects.
     let signature: Signature = signature.into();

@@ -70,6 +70,10 @@ pub(crate) async fn v1_notification_get_handler(
 
     info!("Get notification for address: {:?}", query);
 
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
     // Get the notifications from the database.
     let notification = state
         .client
@@ -82,6 +86,10 @@ pub(crate) async fn v1_notification_get_handler(
     let notification = notification.ok_or(RouteError::NotificationError(
         NotificationError::NotFound("Notification not found".to_string()),
     ))?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the notification to the format that the API expects.
     let notification: Notification = notification.into();

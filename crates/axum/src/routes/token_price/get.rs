@@ -93,6 +93,10 @@ pub(crate) async fn v1_token_price_get_handler(
     let parsed_query_address: H160 = query.address.parse()?;
     let checksum_address = to_checksum(&parsed_query_address, None);
 
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
     // Get the tokens from the database.
     let token = state
         .client
@@ -118,6 +122,10 @@ pub(crate) async fn v1_token_price_get_handler(
         .exec()
         .await?;
     info!("result: {:?}", result);
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Get the price from the result array.
     let price = if !result.is_empty() { result[0].price } else { 0.0 };

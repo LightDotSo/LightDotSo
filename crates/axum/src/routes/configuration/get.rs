@@ -79,6 +79,10 @@ pub(crate) async fn v1_configuration_get_handler(
 
     info!("Get configuration for checksum address: {:?}", checksum_address);
 
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
     // Get the configurations from the database.
     let configuration = match query.checkpoint {
         Some(checkpoint) => {
@@ -106,6 +110,10 @@ pub(crate) async fn v1_configuration_get_handler(
     let configuration = configuration.ok_or(RouteError::ConfigurationError(
         ConfigurationError::NotFound("Configuration not found".to_string()),
     ))?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the configuration to the format that the API expects.
     let configuration: Configuration = configuration.into();

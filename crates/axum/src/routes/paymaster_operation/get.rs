@@ -85,6 +85,10 @@ pub(crate) async fn v1_paymaster_operation_get_handler(
 
     info!("Get paymaster for address: {:?}", query);
 
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
     // First get the paymaster from the database.
     let paymaster = state
         .client
@@ -116,6 +120,10 @@ pub(crate) async fn v1_paymaster_operation_get_handler(
     let paymaster_operation = paymaster_operation.ok_or(RouteError::PaymasterOperationError(
         PaymasterOperationError::NotFound("Paymaster Operation not found".to_string()),
     ))?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the paymaster operation to the format that the API expects.
     let paymaster_operation: PaymasterOperation = paymaster_operation.into();

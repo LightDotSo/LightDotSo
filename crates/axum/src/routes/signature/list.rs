@@ -69,6 +69,10 @@ pub(crate) async fn v1_signature_list_handler(
     // Get the list query.
     let Query(query) = list_query;
 
+    // -------------------------------------------------------------------------
+    // Params
+    // -------------------------------------------------------------------------
+
     // Construct the query parameters.
     let query_params = match query.user_operation_hash {
         Some(user_operation_hash) => {
@@ -76,6 +80,10 @@ pub(crate) async fn v1_signature_list_handler(
         }
         None => vec![],
     };
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // Get the signatures from the database.
     let signatures = state
@@ -87,6 +95,10 @@ pub(crate) async fn v1_signature_list_handler(
         .take(query.limit.unwrap_or(10))
         .exec()
         .await?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the signatures to the format that the API expects.
     let signatures: Vec<Signature> = signatures.into_iter().map(Signature::from).collect();
