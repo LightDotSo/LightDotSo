@@ -56,6 +56,10 @@ pub(crate) async fn v1_paymaster_operation_list_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
 ) -> AppJsonResult<Vec<PaymasterOperation>> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the list query.
     let Query(query) = list_query;
 

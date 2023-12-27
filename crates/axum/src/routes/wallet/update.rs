@@ -92,11 +92,19 @@ pub(crate) async fn v1_wallet_update_handler(
     // Verify the session
     verify_session(&session)?;
 
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the get query.
     let Query(query) = put_query;
 
     let parsed_query_address: H160 = query.address.parse()?;
     let checksum_address = to_checksum(&parsed_query_address, None);
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // Get the wallets from the database.
     let wallet = state
@@ -149,6 +157,10 @@ pub(crate) async fn v1_wallet_update_handler(
         .exec()
         .await?;
 
+    // -------------------------------------------------------------------------
+    // Kafka
+    // -------------------------------------------------------------------------
+
     // Produce an activity message.
     produce_activity_message(
         state.producer.clone(),
@@ -164,6 +176,10 @@ pub(crate) async fn v1_wallet_update_handler(
         },
     )
     .await?;
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the wallet to the format that the API expects.
     let wallet: Wallet = wallet.into();

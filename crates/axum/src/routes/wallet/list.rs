@@ -76,6 +76,10 @@ pub(crate) async fn v1_wallet_list_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
 ) -> AppJsonResult<Vec<Wallet>> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the list query.
     let Query(query) = list_query;
 
@@ -115,6 +119,10 @@ pub(crate) async fn v1_wallet_list_count_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
 ) -> AppJsonResult<WalletListCount> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the query.
     let Query(query) = list_query;
 

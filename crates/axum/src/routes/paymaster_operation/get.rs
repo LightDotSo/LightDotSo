@@ -67,6 +67,10 @@ pub(crate) async fn v1_paymaster_operation_get_handler(
     get_query: Query<GetQuery>,
     State(state): State<AppState>,
 ) -> AppJsonResult<PaymasterOperation> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the get query.
     let Query(query) = get_query;
     let timestamp = NaiveDateTime::from_timestamp_opt(query.valid_after, 0);

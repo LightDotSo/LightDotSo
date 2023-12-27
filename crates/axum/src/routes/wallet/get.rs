@@ -65,6 +65,10 @@ pub(crate) async fn v1_wallet_get_handler(
     State(state): State<AppState>,
     cookies: Cookies,
 ) -> AppJsonResult<Wallet> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the get query.
     let Query(query) = get_query;
 

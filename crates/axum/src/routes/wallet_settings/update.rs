@@ -76,6 +76,10 @@ pub(crate) async fn v1_wallet_settings_post_handler(
     State(state): State<AppState>,
     Json(params): Json<WalletSettingsPostRequestParams>,
 ) -> AppJsonResult<WalletSettings> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the post query.
     let Query(post) = post_query;
 

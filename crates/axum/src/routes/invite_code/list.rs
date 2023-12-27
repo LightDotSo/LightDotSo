@@ -72,6 +72,10 @@ pub(crate) async fn v1_invite_code_list_handler(
     State(state): State<AppState>,
     mut session: Session,
 ) -> AppJsonResult<Vec<InviteCode>> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the list query.
     let Query(query) = list_query;
 

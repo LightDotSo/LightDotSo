@@ -85,6 +85,10 @@ pub(crate) async fn v1_signature_post_handler(
     State(state): State<AppState>,
     Json(params): Json<SignaturePostRequestParams>,
 ) -> AppJsonResult<Signature> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the post query.
     let Query(query) = post_query;
 

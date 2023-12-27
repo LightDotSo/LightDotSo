@@ -161,6 +161,10 @@ pub(crate) async fn v1_user_operation_post_handler(
     State(state): State<AppState>,
     Json(params): Json<UserOperationPostRequestParams>,
 ) -> AppJsonResult<UserOperation> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the post query.
     let Query(query) = post_query;
     info!(?query);

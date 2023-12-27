@@ -65,6 +65,10 @@ pub(crate) async fn v1_queue_token_handler(
     post_query: Query<PostQuery>,
     State(state): State<AppState>,
 ) -> AppJsonResult<QueueSuccess> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the post query.
     let Query(query) = post_query;
 

@@ -61,6 +61,10 @@ pub(crate) async fn v1_user_operation_update_handler(
     post_query: Query<PostQuery>,
     State(state): State<AppState>,
 ) -> AppJsonResult<UserOperationSuccess> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the get query.
     let Query(query) = post_query;
     // Get the wallet address from the nonce query.

@@ -67,6 +67,10 @@ pub(crate) async fn v1_support_request_post_handler(
     State(state): State<AppState>,
     Json(params): Json<SupportRequestPostRequestParams>,
 ) -> AppJsonResult<SupportRequest> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the post query.
     let Query(query) = post_query;
 
