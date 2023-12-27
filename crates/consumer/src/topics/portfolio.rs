@@ -49,7 +49,7 @@ pub async fn portfolio_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
                     WHERE walletAddress = {}
                         AND isLatest = TRUE
                         AND isTestnet = FALSE
-                        AND chainId = 0
+                        AND NOT (chainId = 0)
                 ",
                 PrismaValue::String(to_checksum(&payload.address, None))
             ))

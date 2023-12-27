@@ -149,10 +149,13 @@ pub async fn covalent_consumer(
                 client
                     .wallet_balance()
                     .update_many(
-                        vec![wallet_balance::wallet_address::equals(to_checksum(
-                            &payload.address,
-                            None,
-                        ))],
+                        vec![
+                            wallet_balance::wallet_address::equals(to_checksum(
+                                &payload.address,
+                                None,
+                            )),
+                            wallet_balance::chain_id::equals(payload.chain_id as i64),
+                        ],
                         vec![wallet_balance::is_latest::set(false)],
                     )
                     .exec()
