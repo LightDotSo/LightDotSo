@@ -161,15 +161,11 @@ export const ActivityDataTable: FC<ActivityDataTableProps> = ({ address }) => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!pageCount) {
-    return null;
-  }
-
   return (
     <DataTable
       data={activities ?? []}
       columns={columns}
-      pageCount={pageCount}
+      pageCount={pageCount ?? 0}
     />
   );
 };

@@ -101,6 +101,7 @@ export const NewWalletForm: FC = () => {
   };
 
   const form = useForm<NewFormValues>({
+    mode: "onBlur",
     resolver: zodResolver(newFormSchema),
     defaultValues,
   });

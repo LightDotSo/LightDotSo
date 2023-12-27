@@ -78,6 +78,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
   // ---------------------------------------------------------------------------
 
   const form = useForm<FeedbackFormValues>({
+    mode: "onBlur",
     resolver: zodResolver(feedbackFormSchema),
   });
 

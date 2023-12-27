@@ -91,9 +91,9 @@ export const SettingsProfileCard: FC = () => {
   // ---------------------------------------------------------------------------
 
   const form = useForm<ProfileFormValues>({
+    mode: "onBlur",
     resolver: zodResolver(profileFormSchema),
     defaultValues,
-    mode: "onChange",
   });
 
   const { fields, append } = useFieldArray({

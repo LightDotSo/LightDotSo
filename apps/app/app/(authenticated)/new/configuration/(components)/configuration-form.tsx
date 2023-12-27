@@ -24,7 +24,6 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-  Checkbox,
   Form,
   FormControl,
   FormField,
@@ -163,7 +162,7 @@ export const ConfigurationForm: FC = () => {
   // ---------------------------------------------------------------------------
 
   const form = useForm<NewFormValues>({
-    mode: "onChange",
+    mode: "onBlur",
     resolver: zodResolver(
       newFormConfigurationSchema.superRefine((value, ctx) => {
         // The sum of the weights of all owners must be greater than or equal to the threshold.
@@ -662,28 +661,6 @@ export const ConfigurationForm: FC = () => {
                     )}
                     {/* Show all errors for debugging */}
                     {/* <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre> */}
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="check"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        onBlur={() => {
-                          form.trigger();
-                        }}
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel className="cursor-pointer">
-                        Save and continue
-                      </FormLabel>
-                    </div>
                   </FormItem>
                 )}
               />

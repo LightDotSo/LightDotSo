@@ -172,13 +172,13 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!pageCount) {
-    return null;
-  }
-
   return (
     <div className="rounded-md border border-border bg-background p-4">
-      <DataTable data={tokens ?? []} columns={columns} pageCount={pageCount} />
+      <DataTable
+        data={tokens ?? []}
+        columns={columns}
+        pageCount={pageCount ?? 0}
+      />
     </div>
   );
 };

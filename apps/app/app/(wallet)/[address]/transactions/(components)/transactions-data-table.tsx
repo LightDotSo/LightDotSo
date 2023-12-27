@@ -192,16 +192,12 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!pageCount) {
-    return null;
-  }
-
   return (
     <DataTable
       data={transactions ?? []}
       address={address}
       columns={columns}
-      pageCount={pageCount}
+      pageCount={pageCount ?? 0}
     />
   );
 };
