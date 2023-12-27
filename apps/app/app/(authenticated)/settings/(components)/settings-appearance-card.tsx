@@ -67,6 +67,7 @@ export const SettingsAppearanceCard: FC = () => {
   // ---------------------------------------------------------------------------
 
   const form = useForm<AppearanceFormValues>({
+    mode: "onBlur",
     resolver: zodResolver(appearanceFormSchema),
     defaultValues,
   });

@@ -163,7 +163,7 @@ export const ConfigurationForm: FC = () => {
   // ---------------------------------------------------------------------------
 
   const form = useForm<NewFormValues>({
-    mode: "onChange",
+    mode: "onBlur",
     resolver: zodResolver(
       newFormConfigurationSchema.superRefine((value, ctx) => {
         // The sum of the weights of all owners must be greater than or equal to the threshold.

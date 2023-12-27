@@ -241,6 +241,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   }, [wallet, key]);
 
   const form = useForm<WalletNameFormValues>({
+    mode: "onBlur",
     resolver: zodResolver(walletNameFormSchema),
     defaultValues,
   });
@@ -377,11 +378,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
                   }
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="Your name"
-                    {...field}
-                    onBlur={() => form.trigger()}
-                  />
+                  <Input placeholder="Your name" {...field} />
                 </FormControl>
                 <FormDescription>
                   {
