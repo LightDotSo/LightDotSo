@@ -22,7 +22,7 @@ use std::{sync::Arc, time::Duration};
 /// Add the token rate limit to the redis database.
 pub fn token_rate_limit(client: Arc<Client>, address: String) -> Result<()> {
     let mut rate_limit = RateLimiter::open(client)?;
-    let size = Duration::from_secs(1);
+    let size = Duration::from_secs(300);
 
     rate_limit.record_fixed_window(&QUEUE_TOKEN, &address, size)?;
 
@@ -31,7 +31,7 @@ pub fn token_rate_limit(client: Arc<Client>, address: String) -> Result<()> {
     info!("token rate count: {}", count);
 
     if count > 1 {
-        return Err(eyre::eyre!("rate limit exceeded by {} for {}", count, address));
+        return Err(eyre::eyre!("Rate limit exceeded by {} for {}", count, address));
     }
 
     Ok(())

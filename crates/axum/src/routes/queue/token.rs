@@ -39,7 +39,7 @@ use super::{error::QueueError, types::QueueSuccess};
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct PostQuery {
-    /// The address of the portfolio.
+    /// The address of the target queue.
     pub address: String,
 }
 // -----------------------------------------------------------------------------
@@ -50,6 +50,9 @@ pub struct PostQuery {
 #[utoipa::path(
         post,
         path = "/queue/token",
+        params(
+            PostQuery
+        ),
         responses(
             (status = 200, description = "Queue created successfully", body = i64),
 
