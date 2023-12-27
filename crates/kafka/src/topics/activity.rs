@@ -22,7 +22,11 @@ pub use rdkafka;
 use rdkafka::producer::FutureProducer;
 use std::sync::Arc;
 
-// Produce a message with Activity topic.
+// -----------------------------------------------------------------------------
+// Producer
+// -----------------------------------------------------------------------------
+
+/// Produce a message with Activity topic.
 pub async fn produce_activity_message(
     producer: Arc<FutureProducer>,
     key: ActivityEntity,

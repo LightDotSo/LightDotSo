@@ -21,7 +21,11 @@ pub use rdkafka;
 use rdkafka::producer::FutureProducer;
 use std::sync::Arc;
 
-// Produce a message with Covalent topic.
+// -----------------------------------------------------------------------------
+// Producer
+// -----------------------------------------------------------------------------
+
+/// Produce a message with Covalent topic.
 pub async fn produce_covalent_message(
     producer: Arc<FutureProducer>,
     msg: &CovalentMessage,

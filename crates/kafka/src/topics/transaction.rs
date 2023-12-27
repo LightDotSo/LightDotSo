@@ -25,7 +25,11 @@ pub use rdkafka;
 use rdkafka::producer::FutureProducer;
 use std::sync::Arc;
 
-// Produce a message with Transaction topic.
+// -----------------------------------------------------------------------------
+// Producer
+// -----------------------------------------------------------------------------
+
+/// Produce a message with Transaction topic.
 pub async fn produce_transaction_message(
     producer: Arc<FutureProducer>,
     message: &str,
@@ -34,7 +38,11 @@ pub async fn produce_transaction_message(
     Ok(())
 }
 
-// Produce a message with retry Transaction topic.
+// -----------------------------------------------------------------------------
+// Producer
+// -----------------------------------------------------------------------------
+
+/// Produce a message with retry Transaction topic.
 pub async fn produce_retry_transaction_message(
     producer: Arc<FutureProducer>,
     message: &str,
@@ -43,7 +51,11 @@ pub async fn produce_retry_transaction_message(
     Ok(())
 }
 
-// Produce a message with retry Transaction 0 topic.
+// -----------------------------------------------------------------------------
+// Producer
+// -----------------------------------------------------------------------------
+
+/// Produce a message with retry Transaction 0 topic.
 pub async fn produce_retry_transaction_0_message(
     producer: Arc<FutureProducer>,
     message: &str,
@@ -52,7 +64,11 @@ pub async fn produce_retry_transaction_0_message(
     Ok(())
 }
 
-// Produce a message with retry Transaction 1 topic.
+// -----------------------------------------------------------------------------
+// Producer
+// -----------------------------------------------------------------------------
+
+/// Produce a message with retry Transaction 1 topic.
 pub async fn produce_retry_transaction_1_message(
     producer: Arc<FutureProducer>,
     message: &str,
@@ -61,7 +77,11 @@ pub async fn produce_retry_transaction_1_message(
     Ok(())
 }
 
-// Produce a message with retry Transaction 2 topic.
+// -----------------------------------------------------------------------------
+// Producer
+// -----------------------------------------------------------------------------
+
+/// Produce a message with retry Transaction 2 topic.
 pub async fn produce_retry_transaction_2_message(
     producer: Arc<FutureProducer>,
     message: &str,
@@ -70,7 +90,11 @@ pub async fn produce_retry_transaction_2_message(
     Ok(())
 }
 
-// Produce a message with error Transaction topic.
+// -----------------------------------------------------------------------------
+// Producer
+// -----------------------------------------------------------------------------
+
+/// Produce a message with error Transaction topic.
 pub async fn produce_error_transaction_message(
     producer: Arc<FutureProducer>,
     message: &str,
