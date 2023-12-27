@@ -19,7 +19,6 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { ActivityDataTable } from "@/app/(wallet)/[address]/activity/(components)/activity-data-table";
 import { ActivityDataTablePagination } from "@/app/(wallet)/[address]/activity/(components)/activity-data-table-pagination";
-import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
 import { handler } from "@/handlers/paths/[address]/activity/handler";
 import { preloader } from "@/preloaders/paths/[address]/activity/preloader";
 import { queries } from "@/queries";
@@ -51,7 +50,10 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { activities, activitiesCount } = await handler(params, searchParams);
+  const { activities, activitiesCount, paginationState } = await handler(
+    params,
+    searchParams,
+  );
 
   // ---------------------------------------------------------------------------
   // Query
@@ -62,8 +64,8 @@ export default async function Page({ params, searchParams }: PageProps) {
   queryClient.setQueryData(
     queries.activity.list({
       address: params.address as Address,
-      limit: OVERVIEW_ROW_COUNT,
-      offset: 0,
+      limit: paginationState.pageSize,
+      offset: paginationState.pageIndex * paginationState.pageSize,
     }).queryKey,
     activities,
   );

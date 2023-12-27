@@ -72,6 +72,7 @@ export const handler = async (
   return res.match(
     ([activities, activitiesCount]) => {
       return {
+        paginationState: paginationState,
         activities: activities,
         activitiesCount: activitiesCount,
       };
