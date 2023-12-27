@@ -177,16 +177,12 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!pageCount) {
-    return null;
-  }
-
   return (
     <div className="rounded-md border border-border bg-background p-4">
       <DataTable
         data={transactions ?? []}
         columns={columns}
-        pageCount={pageCount}
+        pageCount={pageCount ?? 0}
       />
     </div>
   );

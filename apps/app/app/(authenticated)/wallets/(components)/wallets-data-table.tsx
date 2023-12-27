@@ -152,11 +152,11 @@ export const WalletsDataTable: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!pageCount) {
-    return null;
-  }
-
   return (
-    <DataTable data={wallets ?? []} columns={columns} pageCount={pageCount} />
+    <DataTable
+      data={wallets ?? []}
+      columns={columns}
+      pageCount={pageCount ?? 0}
+    />
   );
 };
