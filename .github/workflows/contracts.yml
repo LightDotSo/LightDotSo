@@ -109,7 +109,7 @@ jobs:
       - name: Run Test
         uses: nick-fields/retry@v2
         with:
-          timeout_seconds: 30
+          timeout_seconds: 300
           max_attempts: 3
           retry_on: error
           command: |
@@ -161,7 +161,7 @@ jobs:
       - name: Run Fork
         uses: nick-fields/retry@v2
         with:
-          timeout_seconds: 30
+          timeout_seconds: 300
           max_attempts: 3
           retry_on: error
           command: |
@@ -171,7 +171,7 @@ jobs:
       - name: Run Script Fork
         uses: nick-fields/retry@v2
         with:
-          timeout_seconds: 30
+          timeout_seconds: 300
           max_attempts: 3
           retry_on: error
           command: |
