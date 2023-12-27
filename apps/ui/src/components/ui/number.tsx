@@ -104,7 +104,7 @@ const Number = forwardRef<HTMLSpanElement, NumberProps>(
     );
 
     useEffect(() => {
-      spring.set(value);
+      spring.set(parseFloat(value.toFixed(2)));
     }, [spring, value]);
 
     return (

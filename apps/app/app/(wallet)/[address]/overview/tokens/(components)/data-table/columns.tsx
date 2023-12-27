@@ -15,11 +15,11 @@
 
 "use client";
 
-import { Number } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Suspense } from "react";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { TokenCardActions } from "@/components/token/token-card-actions";
+import { TokenCardBalance } from "@/components/token/token-card-balance";
 import { TokenCardChain } from "@/components/token/token-card-chain";
 import { TokenCardPrice } from "@/components/token/token-card-price";
 import { TokenCardSparkline } from "@/components/token/token-card-sparkline";
@@ -46,14 +46,7 @@ export const columns: ColumnDef<TokenData>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Balance" />
     ),
-    cell: ({ row }) => (
-      <Number
-        value={row.getValue("balance_usd")}
-        prefix="$"
-        variant="neutral"
-        size="balance"
-      />
-    ),
+    cell: ({ row }) => <TokenCardBalance token={row.original} />,
     enableSorting: false,
     enableHiding: false,
     size: 416,
