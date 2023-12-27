@@ -143,6 +143,7 @@ impl RouteErrorStatusCodeAndMsg for QueueError {
         match self {
             QueueError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
             QueueError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+            QueueError::RateLimitExceeded(msg) => (StatusCode::TOO_MANY_REQUESTS, msg.to_string()),
         }
     }
 }

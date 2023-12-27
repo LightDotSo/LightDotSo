@@ -31,7 +31,7 @@ pub fn token_rate_limit(client: Arc<Client>, address: String) -> Result<()> {
     info!("token rate count: {}", count);
 
     if count > 1 {
-        return Err(eyre::eyre!("rate limit exceeded"));
+        return Err(eyre::eyre!("rate limit exceeded by {} for {}", count, address));
     }
 
     Ok(())

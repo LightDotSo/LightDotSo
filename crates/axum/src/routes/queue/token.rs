@@ -80,7 +80,9 @@ pub(crate) async fn v1_queue_token_handler(
     let wallet =
         wallet.ok_or(RouteError::QueueError(QueueError::NotFound(checksum_address.clone())))?;
 
-    token_rate_limit(state.redis, checksum_address)?;
+    // Rate limit the queue.
+    token_rate_limit(state.redis, checksum_address)
+        .map_err(|err| RouteError::QueueError(QueueError::RateLimitExceeded(err.to_string())))?;
 
     // Get whether testnet is enabled.
     let testnet_enabled = if let Some(Some(wallet_settings)) = wallet.wallet_settings {

@@ -29,4 +29,7 @@ pub(crate) enum QueueError {
     /// Queue not found by id.
     #[schema(example = "id = 1")]
     NotFound(String),
+    /// Queue rate limit exceeded.
+    #[schema(example = "id = 1")]
+    RateLimitExceeded(String),
 }
