@@ -80,7 +80,7 @@ pub(crate) async fn v1_invite_code_list_handler(
     let Query(query) = list_query;
 
     // -------------------------------------------------------------------------
-    // Auth
+    // Session
     // -------------------------------------------------------------------------
 
     // Get the authenticated user id.
@@ -135,7 +135,7 @@ pub(crate) async fn v1_invite_code_list_count_handler(
     mut session: Session,
 ) -> AppJsonResult<InviteCodeListCount> {
     // -------------------------------------------------------------------------
-    // Auth
+    // Session
     // -------------------------------------------------------------------------
 
     // Get the authenticated user id.
