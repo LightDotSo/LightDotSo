@@ -13,8 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#![allow(clippy::unwrap_used)]
-
 use super::types::Token;
 use crate::{result::AppJsonResult, routes::token::types::TokenGroup, state::AppState};
 use autometrics::autometrics;
@@ -112,6 +110,7 @@ pub(crate) async fn v1_token_list_handler(
         .take(query.limit.unwrap_or(10))
         .exec()
         .await?;
+
     // Convert all of the tokens in the balances array.
     let mut tokens: Vec<Token> =
         balances.clone().into_iter().map(|balance| balance.into()).collect();
@@ -162,11 +161,14 @@ pub(crate) async fn v1_token_list_handler(
                     if let Some(wallet_balance) = token.balances {
                         // Get the latest balance.
                         if let Some(latest_balance) = wallet_balance.first() {
-                            // Get the matched token.
-                            if let Some(matched_token) = tokens
-                                .iter_mut()
-                                .find(|tk| tk.group.clone().unwrap().id == token_group.clone().id)
-                            {
+                            // Get the matched token w/ the same token group.
+                            if let Some(matched_token) = tokens.iter_mut().find(|tk| {
+                                if let Some(group) = &tk.group {
+                                    group.id == token_group.id
+                                } else {
+                                    false
+                                }
+                            }) {
                                 // Convert the latest balance into a token.
                                 let covert_token: Token = latest_balance.clone().into();
 
@@ -190,6 +192,17 @@ pub(crate) async fn v1_token_list_handler(
     // -------------------------------------------------------------------------
     // Return
     // -------------------------------------------------------------------------
+
+    // If a token group is found, modify the root token to be the culmative sum of the token group.
+    for token in tokens.iter_mut() {
+        if let Some(group) = &token.group {
+            // Get the total balance of the token group.
+            let total_balance = group.tokens.iter().fold(0.0, |acc, token| acc + token.balance_usd);
+
+            // Modify the root token to be the culmative sum of the token group.
+            token.balance_usd = total_balance;
+        }
+    }
 
     Ok(Json::from(tokens))
 }

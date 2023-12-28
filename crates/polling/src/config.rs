@@ -17,7 +17,8 @@ use crate::polling::Polling;
 use clap::Parser;
 use eyre::{eyre, Result};
 use lightdotso_graphql::constants::{
-    SATSUMA_BASE_URL, SATSUMA_LIVE_IDS, THE_GRAPH_HOSTED_SERVICE_URLS,
+    CHAIN_SLEEP_SECONDS, DEFAULT_CHAIN_SLEEP_SECONDS, SATSUMA_BASE_URL, SATSUMA_LIVE_IDS,
+    THE_GRAPH_HOSTED_SERVICE_URLS,
 };
 use lightdotso_tracing::tracing::{error, info};
 
@@ -102,15 +103,29 @@ impl PollingArgs {
 }
 
 // Run the polling for a specific chain id.
-pub async fn run_polling(args: PollingArgs, chain_id: u64, url: String, live: bool) {
+pub async fn run_polling(args: PollingArgs, chain_id: u64, url: String, live: bool) -> Result<()> {
     match live {
         true => {
-            let polling = Polling::new(&args, chain_id, url.clone(), live).await;
+            let polling = Polling::new(
+                &args,
+                chain_id,
+                *CHAIN_SLEEP_SECONDS.get(&chain_id).unwrap_or(&DEFAULT_CHAIN_SLEEP_SECONDS),
+                url.clone(),
+                live,
+            )
+            .await?;
             polling.run().await;
         }
         false => {
             loop {
-                let polling = Polling::new(&args, chain_id, url.clone(), live).await;
+                let polling = Polling::new(
+                    &args,
+                    chain_id,
+                    *CHAIN_SLEEP_SECONDS.get(&chain_id).unwrap_or(&DEFAULT_CHAIN_SLEEP_SECONDS),
+                    url.clone(),
+                    live,
+                )
+                .await?;
                 polling.run().await;
 
                 // Sleep for 1 hour
@@ -118,4 +133,6 @@ pub async fn run_polling(args: PollingArgs, chain_id: u64, url: String, live: bo
             }
         }
     }
+
+    Ok(())
 }

@@ -61,6 +61,7 @@ use std::{sync::Arc, time::Duration};
 #[derive(Clone)]
 pub struct Polling {
     chain_id: u64,
+    sleep_seconds: u64,
     url: String,
     live: bool,
     db_client: Arc<PrismaClient>,
@@ -70,14 +71,20 @@ pub struct Polling {
 }
 
 impl Polling {
-    pub async fn new(_args: &PollingArgs, chain_id: u64, url: String, live: bool) -> Self {
+    pub async fn new(
+        _args: &PollingArgs,
+        chain_id: u64,
+        sleep_seconds: u64,
+        url: String,
+        live: bool,
+    ) -> Result<Self> {
         info!("Polling new, starting");
 
         // Create the url
         let url = url.clone();
 
         // Create the db client
-        let db_client = Arc::new(create_client().await.unwrap());
+        let db_client = Arc::new(create_client().await?);
 
         // Create the redis client
         let redis_client: Option<Arc<Client>> =
@@ -91,7 +98,16 @@ impl Polling {
         let provider: Option<Arc<Provider<Http>>> = get_provider(chain_id).await.ok().map(Arc::new);
 
         // Create the polling
-        Self { chain_id, url, live, db_client, redis_client, kafka_client, provider }
+        Ok(Self {
+            chain_id,
+            sleep_seconds,
+            url,
+            live,
+            db_client,
+            redis_client,
+            kafka_client,
+            provider,
+        })
     }
 
     pub async fn run(&self) {
@@ -133,7 +149,7 @@ impl Polling {
                     }
 
                     // Sleep for 1 second.
-                    tokio::time::sleep(std::time::Duration::from_secs(2)).await;
+                    tokio::time::sleep(std::time::Duration::from_secs(self.sleep_seconds)).await;
                 }
                 Err(e) => {
                     error!("run_task {} panicked: {:?}", self.chain_id, e);

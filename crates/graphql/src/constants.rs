@@ -37,6 +37,7 @@ lazy_static! {
 
         // Testnet
         m.insert(80001, "https://api.thegraph.com/subgraphs/name/lightdotso/mumbai".to_string());
+        m.insert(421614, "https://api.thegraph.com/subgraphs/name/lightdotso/arbitrum-sepolia".to_string());
         m.insert(11155111, "https://api.thegraph.com/subgraphs/name/lightdotso/sepolia".to_string());
 
         m
@@ -62,7 +63,37 @@ lazy_static! {
 
         // Testnet
         m.insert(80001, "lightdotso/mumbai/api".to_string());
+        m.insert(84532, "lightdotso/base-sepolia/api".to_string());
+        m.insert(421614, "lightdotso/arbitrum-sepolia/api".to_string());
         m.insert(11155111, "lightdotso/sepolia/api".to_string());
+
+        m
+    };
+}
+
+// The default chain sleep seconds
+lazy_static! {
+    pub static ref DEFAULT_CHAIN_SLEEP_SECONDS: u64 = 12;
+}
+
+// The chain sleep seconds
+lazy_static! {
+    pub static ref CHAIN_SLEEP_SECONDS: HashMap<u64, u64> = {
+        let mut m = HashMap::new();
+
+        // Mainnet
+        m.insert(1, 12);
+        m.insert(10, 2);
+        m.insert(137, 3);
+        m.insert(8453, 2);
+        m.insert(42161, 2);
+
+
+        // Testnet
+        m.insert(80001, 12);
+        m.insert(84532, 12);
+        m.insert(421614, 12);
+        m.insert(11155111, 12);
 
         m
     };
