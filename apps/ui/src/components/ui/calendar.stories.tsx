@@ -13,22 +13,33 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
-
-// -----------------------------------------------------------------------------
-// Components
-// -----------------------------------------------------------------------------
-
-const Collapsible = CollapsiblePrimitive.Root;
-
-const CollapsibleTrigger = CollapsiblePrimitive.CollapsibleTrigger;
-
-const CollapsibleContent = CollapsiblePrimitive.CollapsibleContent;
+import type { Meta, StoryObj } from "@storybook/react";
+import { Calendar } from "./calendar";
 
 // -----------------------------------------------------------------------------
-// Exports
+// Meta
 // -----------------------------------------------------------------------------
 
-export { Collapsible, CollapsibleTrigger, CollapsibleContent };
+const meta: Meta<typeof Calendar> = {
+  title: "ui/Calendar",
+  component: Calendar,
+  tags: ["autodocs"],
+  argTypes: {},
+};
+
+export default meta;
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+type Story = StoryObj<typeof Calendar>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Base: Story = {
+  render: () => <Calendar />,
+  args: {},
+};

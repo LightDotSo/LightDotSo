@@ -13,22 +13,49 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
-
-// -----------------------------------------------------------------------------
-// Components
-// -----------------------------------------------------------------------------
-
-const Collapsible = CollapsiblePrimitive.Root;
-
-const CollapsibleTrigger = CollapsiblePrimitive.CollapsibleTrigger;
-
-const CollapsibleContent = CollapsiblePrimitive.CollapsibleContent;
+import type { Meta, StoryObj } from "@storybook/react";
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardDescription,
+  CardTitle,
+  CardFooter,
+} from "./card";
 
 // -----------------------------------------------------------------------------
-// Exports
+// Meta
 // -----------------------------------------------------------------------------
 
-export { Collapsible, CollapsibleTrigger, CollapsibleContent };
+const meta: Meta<typeof Card> = {
+  title: "ui/Card",
+  component: Card,
+  tags: ["autodocs"],
+  argTypes: {},
+};
+
+export default meta;
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+type Story = StoryObj<typeof Card>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Base: Story = {
+  render: () => (
+    <Card className="w-[350px]">
+      <CardHeader>
+        <CardTitle>Create project</CardTitle>
+        <CardDescription>Deploy your new project in one-click.</CardDescription>
+      </CardHeader>
+      <CardContent>Content</CardContent>
+      <CardFooter className="flex justify-between">Here we go.</CardFooter>
+    </Card>
+  ),
+  args: {},
+};

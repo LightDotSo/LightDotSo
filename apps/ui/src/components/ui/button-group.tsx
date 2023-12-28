@@ -24,10 +24,11 @@ import { forwardRef } from "react";
 // Styles
 // -----------------------------------------------------------------------------
 
-const buttonGroupVariants = cva("button group inline-flex rounded-md", {
+const buttonGroupVariants = cva("inline-flex rounded-md", {
   variants: {
     variant: {
-      default: "bg-background-stronger p-1",
+      default: "button group bg-background-stronger p-1",
+      unstyled: "",
     },
   },
   defaultVariants: {

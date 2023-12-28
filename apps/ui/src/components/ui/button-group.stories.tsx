@@ -53,3 +53,19 @@ export const Base: Story = {
   ),
   args: {},
 };
+export const Unstyled: Story = {
+  render: args => (
+    <ButtonGroup {...args}>
+      <Button size="sm">First</Button>
+      <Button size="sm" variant="ghost">
+        Second
+      </Button>
+      <Button size="sm" variant="ghost">
+        Third
+      </Button>
+    </ButtonGroup>
+  ),
+  args: {
+    variant: "unstyled",
+  },
+};
