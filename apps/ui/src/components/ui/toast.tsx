@@ -21,7 +21,15 @@ import { useTheme } from "next-themes";
 import { toast, Toaster as SonnerToaster } from "sonner";
 import { buttonVariants } from "./button";
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 type ToasterProps = React.ComponentProps<typeof SonnerToaster>;
+
+// -----------------------------------------------------------------------------
+// Styles
+// -----------------------------------------------------------------------------
 
 const toastVariants = cva(
   "pointer-events-auto relative flex w-full items-center space-x-4 overflow-hidden rounded-md border p-4 shadow-xl transition-all",
@@ -43,6 +51,10 @@ const toastVariants = cva(
     },
   },
 );
+
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
 
 const Toaster = () => {
   const { theme } = useTheme();
@@ -73,5 +85,9 @@ const Toaster = () => {
     />
   );
 };
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export { toast, Toaster };

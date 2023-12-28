@@ -27,6 +27,10 @@ import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
 import type { ComponentProps, FC } from "react";
 
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
+
 interface TimelineProps extends ComponentProps<"ol"> {}
 const Timeline: FC<TimelineProps> = ({ children, className, ...props }) => {
   return (
@@ -173,6 +177,10 @@ const TimelineTime: FC<TimelineTimeProps> = ({
     </time>
   );
 };
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export {
   Timeline,

@@ -16,8 +16,16 @@
 import { cn } from "@lightdotso/utils";
 import { forwardRef } from "react";
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 export interface TextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
 
 const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, ...props }, ref) => {
@@ -34,5 +42,9 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   },
 );
 Textarea.displayName = "Textarea";
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export { Textarea };

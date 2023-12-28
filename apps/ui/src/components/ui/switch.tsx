@@ -19,6 +19,10 @@ import { cn } from "@lightdotso/utils";
 import * as SwitchPrimitives from "@radix-ui/react-switch";
 import { forwardRef } from "react";
 
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
+
 const Switch = forwardRef<
   React.ElementRef<typeof SwitchPrimitives.Root>,
   React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root>
@@ -39,5 +43,9 @@ const Switch = forwardRef<
   </SwitchPrimitives.Root>
 ));
 Switch.displayName = SwitchPrimitives.Root.displayName;
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export { Switch };

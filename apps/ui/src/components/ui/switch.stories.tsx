@@ -17,6 +17,10 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Label } from "./label";
 import { Switch } from "./switch";
 
+// -----------------------------------------------------------------------------
+// Meta
+// -----------------------------------------------------------------------------
+
 const meta: Meta<typeof Switch> = {
   title: "ui/Switch",
   component: Switch,
@@ -25,7 +29,15 @@ const meta: Meta<typeof Switch> = {
 };
 export default meta;
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 type Story = StoryObj<typeof Switch>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
 
 export const Base: Story = {
   render: args => (

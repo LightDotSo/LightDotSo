@@ -14,17 +14,15 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { Button } from "./button";
-import { Label } from "./label";
-import { Textarea } from "./textarea";
+import { Skeleton } from "./skeleton";
 
 // -----------------------------------------------------------------------------
 // Meta
 // -----------------------------------------------------------------------------
 
-const meta: Meta<typeof Textarea> = {
-  title: "ui/Textarea",
-  component: Textarea,
+const meta: Meta<typeof Skeleton> = {
+  title: "ui/Skeleton",
+  component: Skeleton,
   tags: ["autodocs"],
   argTypes: {},
 };
@@ -34,56 +32,21 @@ export default meta;
 // Types
 // -----------------------------------------------------------------------------
 
-type Story = StoryObj<typeof Textarea>;
+type Story = StoryObj<typeof Skeleton>;
 
 // -----------------------------------------------------------------------------
 // Story
 // -----------------------------------------------------------------------------
 
-export const Default: Story = {
-  render: args => <Textarea {...args} />,
-  args: {
-    placeholder: "Type your message here.",
-  },
-};
-
-export const Disabled: Story = {
-  render: args => <Textarea {...args} />,
-  args: {
-    ...Default.args,
-    disabled: true,
-  },
-};
-
-export const WithLabel: Story = {
+export const Base: Story = {
   render: args => (
-    <div className="grid w-full gap-1.5">
-      <Label htmlFor="message">Your message</Label>
-      <Textarea {...args} id="message" />
+    <div className="flex items-center space-x-4">
+      <Skeleton className="h-12 w-12 rounded-full" />
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-[250px]" />
+        <Skeleton className="h-4 w-[200px]" />
+      </div>
     </div>
   ),
-  args: { ...Default.args },
-};
-
-export const WithText: Story = {
-  render: args => (
-    <div className="grid w-full gap-1.5">
-      <Label htmlFor="message-2">Your Message</Label>
-      <Textarea {...args} id="message-2" />
-      <p className="text-sm text-text-primary">
-        Your message will be copied to the support team.
-      </p>
-    </div>
-  ),
-  args: { ...Default.args },
-};
-
-export const WithButton: Story = {
-  render: args => (
-    <div className="grid w-full gap-2">
-      <Textarea {...args} />
-      <Button>Send message</Button>
-    </div>
-  ),
-  args: { ...Default.args },
+  args: {},
 };

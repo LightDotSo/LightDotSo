@@ -14,17 +14,23 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { Button } from "./button";
-import { Label } from "./label";
-import { Textarea } from "./textarea";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "./table";
 
 // -----------------------------------------------------------------------------
 // Meta
 // -----------------------------------------------------------------------------
 
-const meta: Meta<typeof Textarea> = {
-  title: "ui/Textarea",
-  component: Textarea,
+const meta: Meta<typeof Table> = {
+  title: "ui/Table",
+  component: Table,
   tags: ["autodocs"],
   argTypes: {},
 };
@@ -34,56 +40,33 @@ export default meta;
 // Types
 // -----------------------------------------------------------------------------
 
-type Story = StoryObj<typeof Textarea>;
+type Story = StoryObj<typeof Table>;
 
 // -----------------------------------------------------------------------------
 // Story
 // -----------------------------------------------------------------------------
 
-export const Default: Story = {
-  render: args => <Textarea {...args} />,
-  args: {
-    placeholder: "Type your message here.",
-  },
-};
-
-export const Disabled: Story = {
-  render: args => <Textarea {...args} />,
-  args: {
-    ...Default.args,
-    disabled: true,
-  },
-};
-
-export const WithLabel: Story = {
+export const Base: Story = {
   render: args => (
-    <div className="grid w-full gap-1.5">
-      <Label htmlFor="message">Your message</Label>
-      <Textarea {...args} id="message" />
-    </div>
+    <Table>
+      <TableCaption>A list of your recent invoices.</TableCaption>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-[100px]">Invoice</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead>Method</TableHead>
+          <TableHead className="text-right">Amount</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow>
+          <TableCell className="font-medium">INV001</TableCell>
+          <TableCell>Paid</TableCell>
+          <TableCell>Credit Card</TableCell>
+          <TableCell className="text-right">$250.00</TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
   ),
-  args: { ...Default.args },
-};
-
-export const WithText: Story = {
-  render: args => (
-    <div className="grid w-full gap-1.5">
-      <Label htmlFor="message-2">Your Message</Label>
-      <Textarea {...args} id="message-2" />
-      <p className="text-sm text-text-primary">
-        Your message will be copied to the support team.
-      </p>
-    </div>
-  ),
-  args: { ...Default.args },
-};
-
-export const WithButton: Story = {
-  render: args => (
-    <div className="grid w-full gap-2">
-      <Textarea {...args} />
-      <Button>Send message</Button>
-    </div>
-  ),
-  args: { ...Default.args },
+  args: {},
 };

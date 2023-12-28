@@ -16,6 +16,10 @@
 import { cn } from "@lightdotso/utils";
 import { forwardRef } from "react";
 
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
+
 const Table = forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
@@ -122,6 +126,10 @@ const TableCaption = forwardRef<
   />
 ));
 TableCaption.displayName = "TableCaption";
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export {
   Table,

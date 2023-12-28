@@ -19,6 +19,10 @@ import { cn } from "@lightdotso/utils";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 import { forwardRef } from "react";
 
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
+
 const Tabs = TabsPrimitive.Root;
 
 const TabsList = forwardRef<
@@ -65,5 +69,9 @@ const TabsContent = forwardRef<
   />
 ));
 TabsContent.displayName = TabsPrimitive.Content.displayName;
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export { Tabs, TabsList, TabsTrigger, TabsContent };
