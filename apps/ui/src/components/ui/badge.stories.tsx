@@ -39,13 +39,7 @@ type Story = StoryObj<typeof Badge>;
 // -----------------------------------------------------------------------------
 
 export const Single: Story = {
-  render: args => (
-    <div>
-      <Badge {...args} intent="default">
-        Default
-      </Badge>
-    </div>
-  ),
+  render: args => <Badge {...args}>Default</Badge>,
   args: {
     variant: "default",
   },
