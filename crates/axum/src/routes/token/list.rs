@@ -24,7 +24,8 @@ use axum::{
 };
 use ethers_main::{types::H160, utils::to_checksum};
 use eyre::Result;
-use lightdotso_prisma::{wallet_balance, wallet_balance::WhereParam};
+use lightdotso_prisma::{token, token_group, wallet_balance, wallet_balance::WhereParam};
+use lightdotso_tracing::tracing::info;
 use prisma_client_rust::Direction;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
@@ -106,11 +107,56 @@ pub(crate) async fn v1_token_list_handler(
         .wallet_balance()
         .find_many(query_params)
         .order_by(wallet_balance::balance_usd::order(Direction::Desc))
-        .with(wallet_balance::token::fetch())
+        .with(wallet_balance::token::fetch().with(token::token_group::fetch()))
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
         .exec()
         .await?;
+
+    // If token group is in the balances, fetch the token group.
+    let token_groups = balances
+        .clone()
+        .into_iter()
+        .map(|balance| {
+            if let Some(Some(token)) = balance.token {
+                if let Some(Some(token_group)) = token.token_group {
+                    Some(token_group)
+                } else {
+                    None
+                }
+            } else {
+                None
+            }
+        })
+        .collect::<Vec<_>>();
+
+    // For each token group, fetch the associated token and balances from the database.
+    #[allow(clippy::manual_flatten)]
+    for token_group in token_groups {
+        if let Some(group) = token_group {
+            let token_group = state
+                .client
+                .token_group()
+                .find_unique(token_group::id::equals(group.id))
+                .with(
+                    token_group::tokens::fetch(vec![]).with(
+                        token::balances::fetch(vec![wallet_balance::wallet_address::equals(
+                            query.address.clone(),
+                        )])
+                        .order_by(wallet_balance::timestamp::order(Direction::Desc))
+                        .take(1),
+                    ),
+                )
+                .exec()
+                .await?;
+            info!(?token_group);
+
+            // If the token group is not found, skip.
+            if token_group.is_none() {
+                continue;
+            }
+        }
+    }
 
     // -------------------------------------------------------------------------
     // Return

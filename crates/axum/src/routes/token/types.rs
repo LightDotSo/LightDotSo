@@ -41,6 +41,18 @@ pub(crate) struct Token {
     pub amount: i64,
     /// The balance of the token in USD.
     pub balance_usd: f64,
+    /// The group of the token.
+    pub group: Option<TokenGroup>,
+}
+
+/// Token group root type.
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
+pub(crate) struct TokenGroup {
+    /// The id of the token group.
+    pub id: String,
+    /// The tokens of the token group.
+    pub tokens: Vec<Token>,
 }
 
 /// Implement From<token::Data> for Token.
@@ -54,6 +66,7 @@ impl From<token::Data> for Token {
             decimals: token.decimals,
             amount: 0,
             balance_usd: 0.0,
+            group: None,
         }
     }
 }
@@ -69,6 +82,7 @@ impl From<wallet_balance::Data> for Token {
             decimals: balance.token.clone().unwrap().unwrap().decimals,
             amount: balance.amount.unwrap(),
             balance_usd: balance.balance_usd,
+            group: None,
         }
     }
 }
