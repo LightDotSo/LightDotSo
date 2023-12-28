@@ -24,6 +24,9 @@ import {
   gnosis,
   bsc,
   avalanche,
+  baseSepolia,
+  optimismSepolia,
+  arbitrumSepolia,
 } from "viem/chains";
 
 // -----------------------------------------------------------------------------
@@ -45,7 +48,13 @@ export const MAINNET_CHAINS = [
 // Testnet
 // -----------------------------------------------------------------------------
 
-export const TESTNET_CHAINS = [sepolia, polygonMumbai];
+export const TESTNET_CHAINS = [
+  sepolia,
+  polygonMumbai,
+  baseSepolia,
+  optimismSepolia,
+  arbitrumSepolia,
+];
 
 // -----------------------------------------------------------------------------
 // All

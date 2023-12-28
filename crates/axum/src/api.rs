@@ -102,6 +102,7 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(token::error::TokenError),
         schemas(token::list::TokenListCount),
         schemas(token::types::Token),
+        schemas(token::types::TokenGroup),
         schemas(token_group::error::TokenGroupError),
         schemas(token_group::types::TokenGroup),
         schemas(token_price::error::TokenPriceError),

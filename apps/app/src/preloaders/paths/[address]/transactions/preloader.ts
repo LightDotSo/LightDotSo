@@ -29,6 +29,11 @@ export const preloader = async (params: { address: string }) => {
   // ---------------------------------------------------------------------------
 
   addressPreloader(params);
+  preloadGetUserOperationsCount({
+    address: params.address as Address,
+    status: null,
+    is_testnet: false,
+  });
   preloadGetUserOperations({
     address: params.address as Address,
     offset: 0,

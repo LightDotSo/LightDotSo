@@ -27,6 +27,8 @@ use utoipa::ToSchema;
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
 pub(crate) struct Token {
+    /// The id of the token.
+    pub id: String,
     /// The address of the token.
     pub address: String,
     /// The chain id of the token.
@@ -59,6 +61,7 @@ pub(crate) struct TokenGroup {
 impl From<token::Data> for Token {
     fn from(token: token::Data) -> Self {
         Self {
+            id: token.id,
             address: token.address,
             chain_id: token.chain_id,
             name: token.name,
@@ -75,6 +78,7 @@ impl From<token::Data> for Token {
 impl From<wallet_balance::Data> for Token {
     fn from(balance: wallet_balance::Data) -> Self {
         Self {
+            id: balance.token.clone().unwrap().unwrap().id,
             address: balance.token.clone().unwrap().unwrap().address,
             chain_id: balance.chain_id,
             name: balance.token.clone().unwrap().unwrap().name,

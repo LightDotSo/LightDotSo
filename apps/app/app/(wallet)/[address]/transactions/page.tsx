@@ -17,6 +17,7 @@ import { Separator } from "@lightdotso/ui";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { OverviewSection } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-section";
+import { OverviewSectionEmpty } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-section-empty";
 import { TransactionsDataTable } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table";
 import { TRANSACTION_ROW_COUNT } from "@/const/numbers";
 import { handler } from "@/handlers/paths/[address]/transactions/handler";
@@ -49,6 +50,7 @@ export default async function Page({ params }: PageProps) {
 
   const {
     walletSettings,
+    userOperationsCount,
     queuedUserOperations,
     queuedUserOperationsCount,
     historyUserOperations,
@@ -64,6 +66,14 @@ export default async function Page({ params }: PageProps) {
   queryClient.setQueryData(
     queries.wallet.settings({ address: params.address as Address }).queryKey,
     walletSettings,
+  );
+  queryClient.setQueryData(
+    queries.user_operation.listCount({
+      address: params.address as Address,
+      status: null,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    }).queryKey,
+    userOperationsCount,
   );
   queryClient.setQueryData(
     queries.user_operation.list({
@@ -111,6 +121,8 @@ export default async function Page({ params }: PageProps) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <OverviewSection
+        address={params.address as Address}
+        status="proposed"
         title="Queue"
         href={`/${params.address}/transactions/queue`}
       >
@@ -121,6 +133,8 @@ export default async function Page({ params }: PageProps) {
       </OverviewSection>
       <Separator className="my-4" />
       <OverviewSection
+        address={params.address as Address}
+        status="history"
         title="History"
         href={`/${params.address}/transactions/history`}
       >
@@ -129,6 +143,7 @@ export default async function Page({ params }: PageProps) {
           status="history"
         />
       </OverviewSection>
+      <OverviewSectionEmpty address={params.address as Address} />
     </HydrationBoundary>
   );
 }

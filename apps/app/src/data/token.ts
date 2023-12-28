@@ -18,6 +18,7 @@
 // -----------------------------------------------------------------------------
 
 export type TokenData = {
+  id: string;
   address: string;
   amount: number;
   balance_usd: number;
@@ -25,6 +26,9 @@ export type TokenData = {
   decimals: number;
   name?: string | null;
   symbol: string;
+  group?: {
+    id: string;
+  } | null;
 };
 
 export type TokenCountData = {

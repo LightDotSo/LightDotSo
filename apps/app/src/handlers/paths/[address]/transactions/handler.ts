@@ -37,6 +37,12 @@ export const handler = async (params: { address: string }) => {
 
   const { walletSettings } = await addressHandler(params);
 
+  const userOperationsCountPromise = getUserOperationsCount({
+    address: params.address as Address,
+    status: null,
+    is_testnet: walletSettings.is_enabled_testnet,
+  });
+
   const queuedUserOperationsPromise = getUserOperations({
     address: params.address as Address,
     status: "proposed",
@@ -66,11 +72,13 @@ export const handler = async (params: { address: string }) => {
   });
 
   const [
+    userOperationsCount,
     queuedUserOperations,
     queuedUserOperationsCount,
     historyUserOperations,
     historyUserOperationsCount,
   ] = await Promise.all([
+    userOperationsCountPromise,
     queuedUserOperationsPromise,
     queuedUserOperationsCountPromise,
     historyUserOperationsPromise,
@@ -82,6 +90,7 @@ export const handler = async (params: { address: string }) => {
   // ---------------------------------------------------------------------------
 
   const res = Result.combineWithAllErrors([
+    userOperationsCount,
     queuedUserOperations,
     queuedUserOperationsCount,
     historyUserOperations,
@@ -90,6 +99,7 @@ export const handler = async (params: { address: string }) => {
 
   return res.match(
     ([
+      userOperationsCount,
       queuedUserOperations,
       queuedUserOperationsCount,
       historyUserOperations,
@@ -97,6 +107,7 @@ export const handler = async (params: { address: string }) => {
     ]) => {
       return {
         walletSettings: walletSettings,
+        userOperationsCount: userOperationsCount,
         queuedUserOperations: queuedUserOperations,
         queuedUserOperationsCount: queuedUserOperationsCount,
         historyUserOperations: historyUserOperations,
@@ -106,6 +117,7 @@ export const handler = async (params: { address: string }) => {
     () => {
       return {
         walletSettings: walletSettings,
+        userOperationsCount: { count: 0 },
         queuedUserOperations: [],
         queuedUserOperationsCount: { count: 0 },
         historyUserOperations: [],
