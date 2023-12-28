@@ -15,7 +15,12 @@
 
 import { cn } from "@lightdotso/utils";
 import { cva, type VariantProps } from "class-variance-authority";
+import type { HTMLAttributes } from "react";
 import { forwardRef } from "react";
+
+// -----------------------------------------------------------------------------
+// Styles
+// -----------------------------------------------------------------------------
 
 const alertVariants = cva(
   "relative w-full rounded-lg border p-4 [&:has(svg)]:pl-11 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-text",
@@ -27,7 +32,13 @@ const alertVariants = cva(
       intent: {
         default: "bg-background text-text",
         destructive:
-          "border-destructive/50 dark:border-destructive text-text-destructive [&>svg]:text-text-destructive",
+          "border-border-destructive text-text-destructive [&>svg]:text-text-destructive",
+        error: "border-border-error text-text-error [&>svg]:text-text-error",
+        warning:
+          "border-border-warning text-text-warning [&>svg]:text-text-warning",
+        info: "border-border-info text-text-info [&>svg]:text-text-info",
+        success:
+          "border-border-success text-text-success [&>svg]:text-text-success",
       },
     },
     defaultVariants: {
@@ -37,9 +48,13 @@ const alertVariants = cva(
   },
 );
 
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
+
 const Alert = forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants>
+  HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants>
 >(({ className, variant, intent, ...props }, ref) => (
   <div
     ref={ref}
@@ -53,7 +68,7 @@ Alert.displayName = "Alert";
 
 const AlertTitle = forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLHeadingElement>
+  HTMLAttributes<HTMLHeadingElement>
 >(({ className, ...props }, ref) => (
   // eslint-disable-next-line jsx-a11y/heading-has-content
   <h5
@@ -66,7 +81,7 @@ AlertTitle.displayName = "AlertTitle";
 
 const AlertDescription = forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
+  HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
@@ -75,5 +90,9 @@ const AlertDescription = forwardRef<
   />
 ));
 AlertDescription.displayName = "AlertDescription";
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export { Alert, AlertTitle, AlertDescription };

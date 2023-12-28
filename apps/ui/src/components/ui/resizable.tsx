@@ -20,6 +20,10 @@ import { GripVertical } from "lucide-react";
 import type { ComponentProps } from "react";
 import * as ResizablePrimitive from "react-resizable-panels";
 
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
+
 const ResizablePanelGroup = ({
   className,
   ...props
@@ -56,5 +60,9 @@ const ResizableHandle = ({
     )}
   </ResizablePrimitive.PanelResizeHandle>
 );
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export { ResizablePanelGroup, ResizablePanel, ResizableHandle };

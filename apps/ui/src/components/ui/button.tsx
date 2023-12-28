@@ -22,10 +22,25 @@ import { cn } from "@lightdotso/utils";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Loader2 } from "lucide-react";
+import type { ButtonHTMLAttributes } from "react";
 import { forwardRef } from "react";
 
+// -----------------------------------------------------------------------------
+// Styles
+// -----------------------------------------------------------------------------
+
 const buttonVariants = cva(
-  "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-info focus-visible:ring-offset-2 active:ring-2 disabled:cursor-not-allowed disabled:opacity-30 disabled:ring-0",
+  [
+    [
+      "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus:outline-none focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-info focus-visible:ring-offset-2 active:z-10 active:ring-2 disabled:cursor-not-allowed disabled:opacity-30 disabled:ring-0",
+    ],
+    [
+      ["group-[.button]:rounded-none"],
+      ["group-[.button]:first:rounded-l-md"],
+      ["group-[.button]:last:rounded-r-md"],
+      ["group-[.button]:hover:z-10"],
+    ],
+  ],
   {
     variants: {
       variant: {
@@ -62,7 +77,7 @@ const buttonVariants = cva(
           ["data-[variant=ghost]:text-text"],
           ["data-[variant=ghost]:hover:text-text-weak"],
           ["data-[variant=ghost]:hover:bg-background-stronger"],
-          ["data-[variant=ghost]:active:ring-border-primary"],
+          ["data-[variant=ghost]:active:ring-border-primary-weak"],
           // Link
           ["data-[variant=link]:text-text"],
           // Loading
@@ -110,7 +125,7 @@ const buttonVariants = cva(
           ["data-[variant=default]:bg-background-error"],
           ["data-[variant=default]:text-text-inverse"],
           ["data-[variant=default]:hover:border-border-error-weaker"],
-          ["data-[variant=default]:hover:bg-background-error-weak"],
+          ["data-[variant=default]:hover:bg-background-error/80"],
           ["data-[variant=default]:active:ring-border-error-weaker"],
           // Shadow
           ["data-[variant=shadow]:bg-background-error/50"],
@@ -127,7 +142,7 @@ const buttonVariants = cva(
           // Ghost
           ["data-[variant=ghost]:text-text-error"],
           ["data-[variant=ghost]:hover:text-text-error-strong"],
-          ["data-[variant=ghost]:hover:bg-background-error-weaker"],
+          ["data-[variant=ghost]:hover:bg-background-error/20"],
           ["data-[variant=ghost]:active:ring-border-error-weaker"],
           // Link
           ["data-[variant=link]:text-text-error"],
@@ -176,7 +191,7 @@ const buttonVariants = cva(
           ["data-[variant=default]:bg-background-info"],
           ["data-[variant=default]:text-text-inverse"],
           ["data-[variant=default]:hover:border-border-info-weaker"],
-          ["data-[variant=default]:hover:bg-background-info-weak"],
+          ["data-[variant=default]:hover:bg-background-info/80"],
           ["data-[variant=default]:active:ring-border-info-weaker"],
           // Shadow
           ["data-[variant=shadow]:bg-background-info/50"],
@@ -209,7 +224,7 @@ const buttonVariants = cva(
           ["data-[variant=default]:bg-background-success"],
           ["data-[variant=default]:text-text-inverse"],
           ["data-[variant=default]:hover:border-border-success-weaker"],
-          ["data-[variant=default]:hover:bg-background-success-weak"],
+          ["data-[variant=default]:hover:bg-background-success/80"],
           ["data-[variant=default]:active:ring-border-success-weaker"],
           // Shadow
           ["data-[variant=shadow]:bg-background-success/50"],
@@ -236,6 +251,105 @@ const buttonVariants = cva(
           ["data-[variant=loading]:hover:bg-background-success/70"],
           ["data-[variant=loading]:active:ring-border-success-weaker"],
         ],
+        indigo: [
+          // Default
+          ["data-[variant=default]:border-border-indigo-weak"],
+          ["data-[variant=default]:bg-background-indigo"],
+          ["data-[variant=default]:text-text-inverse"],
+          ["data-[variant=default]:hover:border-border-indigo-weaker"],
+          ["data-[variant=default]:hover:bg-background-indigo/80"],
+          ["data-[variant=default]:active:ring-border-indigo-weaker"],
+          // Shadow
+          ["data-[variant=shadow]:bg-background-indigo/50"],
+          ["data-[variant=shadow]:text-text-indigo"],
+          ["data-[variant=shadow]:hover:bg-background-indigo/30"],
+          ["data-[variant=shadow]:active:ring-indigo-weak"],
+          ["data-[variant=shadow]:active:ring-border-indigo-weaker"],
+          // Outline
+          ["data-[variant=outline]:border-border-indigo"],
+          ["data-[variant=outline]:text-text-indigo"],
+          ["data-[variant=outline]:hover:border-border-indigo-weak"],
+          ["data-[variant=outline]:active:border-border-indigo-weaker"],
+          ["data-[variant=outline]:active:ring-0"],
+          // Ghost
+          ["data-[variant=ghost]:text-text-indigo"],
+          ["data-[variant=ghost]:hover:text-text-indigo-strong"],
+          ["data-[variant=ghost]:hover:bg-background-indigo/20"],
+          ["data-[variant=ghost]:active:ring-border-indigo-weaker"],
+          // Link
+          ["data-[variant=link]:text-text-indigo"],
+          // Loading
+          ["data-[variant=loading]:bg-background-indigo"],
+          ["data-[variant=loading]:text-text-inverse"],
+          ["data-[variant=loading]:hover:bg-background-indigo/70"],
+          ["data-[variant=loading]:active:ring-border-indigo-weaker"],
+        ],
+        pink: [
+          // Default
+          ["data-[variant=default]:border-border-pink-weak"],
+          ["data-[variant=default]:bg-background-pink"],
+          ["data-[variant=default]:text-text-inverse"],
+          ["data-[variant=default]:hover:border-border-pink-weaker"],
+          ["data-[variant=default]:hover:bg-background-pink/80"],
+          ["data-[variant=default]:active:ring-border-pink-weaker"],
+          // Shadow
+          ["data-[variant=shadow]:bg-background-pink/50"],
+          ["data-[variant=shadow]:text-text-pink"],
+          ["data-[variant=shadow]:hover:bg-background-pink/30"],
+          ["data-[variant=shadow]:active:ring-pink-weak"],
+          ["data-[variant=shadow]:active:ring-border-pink-weaker"],
+          // Outline
+          ["data-[variant=outline]:border-border-pink"],
+          ["data-[variant=outline]:text-text-pink"],
+          ["data-[variant=outline]:hover:border-border-pink-weak"],
+          ["data-[variant=outline]:active:border-border-pink-weaker"],
+          ["data-[variant=outline]:active:ring-0"],
+          // Ghost
+          ["data-[variant=ghost]:text-text-pink"],
+          ["data-[variant=ghost]:hover:text-text-pink-strong"],
+          ["data-[variant=ghost]:hover:bg-background-pink/20"],
+          ["data-[variant=ghost]:active:ring-border-pink-weaker"],
+          // Link
+          ["data-[variant=link]:text-text-pink"],
+          // Loading
+          ["data-[variant=loading]:bg-background-pink"],
+          ["data-[variant=loading]:text-text-inverse"],
+          ["data-[variant=loading]:hover:bg-background-pink/70"],
+          ["data-[variant=loading]:active:ring-border-pink-weaker"],
+        ],
+        purple: [
+          // Default
+          ["data-[variant=default]:border-border-purple-weak"],
+          ["data-[variant=default]:bg-background-purple"],
+          ["data-[variant=default]:text-text-inverse"],
+          ["data-[variant=default]:hover:border-border-purple-weaker"],
+          ["data-[variant=default]:hover:bg-background-purple/80"],
+          ["data-[variant=default]:active:ring-border-purple-weaker"],
+          // Shadow
+          ["data-[variant=shadow]:bg-background-purple/50"],
+          ["data-[variant=shadow]:text-text-purple"],
+          ["data-[variant=shadow]:hover:bg-background-purple/30"],
+          ["data-[variant=shadow]:active:ring-purple-weak"],
+          ["data-[variant=shadow]:active:ring-border-purple-weaker"],
+          // Outline
+          ["data-[variant=outline]:border-border-purple"],
+          ["data-[variant=outline]:text-text-purple"],
+          ["data-[variant=outline]:hover:border-border-purple-weak"],
+          ["data-[variant=outline]:active:border-border-purple-weaker"],
+          ["data-[variant=outline]:active:ring-0"],
+          // Ghost
+          ["data-[variant=ghost]:text-text-purple"],
+          ["data-[variant=ghost]:hover:text-text-purple-strong"],
+          ["data-[variant=ghost]:hover:bg-background-purple/20"],
+          ["data-[variant=ghost]:active:ring-border-purple-weaker"],
+          // Link
+          ["data-[variant=link]:text-text-purple"],
+          // Loading
+          ["data-[variant=loading]:bg-background-purple"],
+          ["data-[variant=loading]:text-text-inverse"],
+          ["data-[variant=loading]:hover:bg-background-purple/70"],
+          ["data-[variant=loading]:active:ring-border-purple-weaker"],
+        ],
       },
       size: {
         default: "h-9 px-4 py-2",
@@ -253,11 +367,19 @@ const buttonVariants = cva(
   },
 );
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
 }
+
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, intent, size, asChild = false, ...props }, ref) => {
@@ -306,5 +428,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   },
 );
 Button.displayName = "Button";
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export { Button, buttonVariants };

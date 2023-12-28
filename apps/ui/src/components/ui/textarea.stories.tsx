@@ -18,6 +18,10 @@ import { Button } from "./button";
 import { Label } from "./label";
 import { Textarea } from "./textarea";
 
+// -----------------------------------------------------------------------------
+// Meta
+// -----------------------------------------------------------------------------
+
 const meta: Meta<typeof Textarea> = {
   title: "ui/Textarea",
   component: Textarea,
@@ -26,7 +30,15 @@ const meta: Meta<typeof Textarea> = {
 };
 export default meta;
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 type Story = StoryObj<typeof Textarea>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
 
 export const Default: Story = {
   render: args => <Textarea {...args} />,

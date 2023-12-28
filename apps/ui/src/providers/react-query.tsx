@@ -20,6 +20,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import dynamic from "next/dynamic";
+import type { ReactNode } from "react";
 import { useState, useEffect } from "react";
 import superjson from "superjson";
 
@@ -30,7 +31,7 @@ const ReactQueryDevtoolsProduction = dynamic(() =>
   })),
 );
 
-function ReactQueryProvider(props: { children: React.ReactNode }) {
+function ReactQueryProvider(props: { children: ReactNode }) {
   const [queryClient, setQueryClient] = useState<QueryClient | null>(null);
 
   useEffect(() => {

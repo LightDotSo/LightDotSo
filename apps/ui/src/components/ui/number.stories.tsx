@@ -18,6 +18,10 @@ import { useState } from "react";
 import { Button } from "./button";
 import { Number } from "./number";
 
+// -----------------------------------------------------------------------------
+// Meta
+// -----------------------------------------------------------------------------
+
 const meta: Meta<typeof Number> = {
   title: "ui/Number",
   component: Number,
@@ -26,7 +30,15 @@ const meta: Meta<typeof Number> = {
 };
 export default meta;
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 type Story = StoryObj<typeof Number>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
 
 export const Base: Story = {
   render: args => {
@@ -43,7 +55,6 @@ export const Base: Story = {
   },
   args: {},
 };
-
 export const Prefix: Story = {
   render: args => <Number value={100_000_000} {...args} prefix="$" />,
   args: {},

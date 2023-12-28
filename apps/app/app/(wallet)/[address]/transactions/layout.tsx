@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import type { Address } from "viem";
 import { InvokeUserOperationButton } from "@/app/(wallet)/[address]/transactions/(components)/invoke-user-operation-button";
 import { BannerSection } from "@/components/section/banner-section";
@@ -59,8 +60,8 @@ export const metadata: Metadata = {
 // -----------------------------------------------------------------------------
 
 interface TransactionsLayoutProps {
-  children: React.ReactNode;
-  nav: React.ReactNode;
+  children: ReactNode;
+  nav: ReactNode;
   params: {
     address: string;
   };

@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
 // -----------------------------------------------------------------------------
 
 interface SettingsDeploymentLayoutProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 // -----------------------------------------------------------------------------

@@ -16,44 +16,47 @@
 "use client";
 
 import { cn } from "@lightdotso/utils";
-import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
+import type { VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
+import type { HTMLAttributes } from "react";
 import { forwardRef } from "react";
 
+// -----------------------------------------------------------------------------
+// Styles
+// -----------------------------------------------------------------------------
+
+const buttonGroupVariants = cva("inline-flex space-x-[-1px] rounded-md", {
+  variants: {
+    variant: {
+      default: "button group p-1",
+      unstyled: "",
+    },
+  },
+  defaultVariants: {
+    variant: "default",
+  },
+});
+
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
+
 const ButtonGroup = forwardRef<
-  React.ElementRef<typeof RadioGroupPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>
->(({ className, ...props }, ref) => {
-  return (
-    <RadioGroupPrimitive.Root
-      className={cn(
-        "inline-flex h-10 items-center justify-center rounded-md bg-background-stronger p-1 text-text-weak",
-        className,
-      )}
-      {...props}
-      ref={ref}
-    />
-  );
-});
-ButtonGroup.displayName = RadioGroupPrimitive.Root.displayName;
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & VariantProps<typeof buttonGroupVariants>
+>(({ className, variant, ...props }, ref) => (
+  <div
+    ref={ref}
+    role="alert"
+    className={cn(buttonGroupVariants({ variant }), className)}
+    data-variant={variant ?? "default"}
+    {...props}
+  />
+));
+ButtonGroup.displayName = "ButtonGroup";
 
-const ButtonGroupItem = forwardRef<
-  React.ElementRef<typeof RadioGroupPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item>
->(({ className, children, ...props }, ref) => {
-  return (
-    <RadioGroupPrimitive.Item
-      ref={ref}
-      className={cn(
-        "inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-info focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=checked]:bg-background data-[state=checked]:text-text data-[state=checked]:shadow-sm",
-        className,
-      )}
-      {...props}
-      asChild
-    >
-      <button type="button">{children}</button>
-    </RadioGroupPrimitive.Item>
-  );
-});
-ButtonGroupItem.displayName = RadioGroupPrimitive.Item.displayName;
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
-export { ButtonGroup, ButtonGroupItem };
+export { ButtonGroup };

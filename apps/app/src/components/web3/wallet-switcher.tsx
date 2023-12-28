@@ -45,7 +45,7 @@ import {
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
-import type { UIEvent, FC } from "react";
+import type { UIEvent, FC, ComponentPropsWithoutRef } from "react";
 import { getAddress, isAddress } from "viem";
 import type { Address } from "viem";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
@@ -58,9 +58,7 @@ import { useAuth } from "@/stores";
 // Props
 // -----------------------------------------------------------------------------
 
-type PopoverTriggerProps = React.ComponentPropsWithoutRef<
-  typeof PopoverTrigger
->;
+type PopoverTriggerProps = ComponentPropsWithoutRef<typeof PopoverTrigger>;
 interface WalletSwitcherProps extends PopoverTriggerProps {}
 
 // -----------------------------------------------------------------------------

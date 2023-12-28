@@ -14,7 +14,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Meta, StoryObj } from "@storybook/react";
+import { AlertCircle, FileWarning, Trash2Icon } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "./alert";
+
+// -----------------------------------------------------------------------------
+// Meta
+// -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Alert> = {
   title: "ui/Alert",
@@ -24,7 +29,15 @@ const meta: Meta<typeof Alert> = {
 };
 export default meta;
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 type Story = StoryObj<typeof Alert>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
 
 export const Base: Story = {
   render: args => (
@@ -38,11 +51,58 @@ export const Base: Story = {
 export const Destructive: Story = {
   render: args => (
     <Alert {...args}>
+      <Trash2Icon className="h-4 w-4" />
       <AlertTitle>Destructive</AlertTitle>
       <AlertDescription>Destructive Alert Description</AlertDescription>
     </Alert>
   ),
   args: {
     intent: "destructive",
+  },
+};
+export const Error: Story = {
+  render: args => (
+    <Alert {...args}>
+      <AlertCircle className="h-4 w-4" />
+      <AlertTitle>Error</AlertTitle>
+      <AlertDescription>Error Alert Description</AlertDescription>
+    </Alert>
+  ),
+  args: {
+    intent: "error",
+  },
+};
+export const Warning: Story = {
+  render: args => (
+    <Alert {...args}>
+      <FileWarning className="h-4 w-4" />
+      <AlertTitle>Warning</AlertTitle>
+      <AlertDescription>Warning Alert Description</AlertDescription>
+    </Alert>
+  ),
+  args: {
+    intent: "warning",
+  },
+};
+export const Info: Story = {
+  render: args => (
+    <Alert {...args}>
+      <AlertTitle>Info</AlertTitle>
+      <AlertDescription>Info Alert Description</AlertDescription>
+    </Alert>
+  ),
+  args: {
+    intent: "info",
+  },
+};
+export const Success: Story = {
+  render: args => (
+    <Alert {...args}>
+      <AlertTitle>Success</AlertTitle>
+      <AlertDescription>Success Alert Description</AlertDescription>
+    </Alert>
+  ),
+  args: {
+    intent: "success",
   },
 };

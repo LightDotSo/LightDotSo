@@ -33,6 +33,10 @@ import {
 } from "react";
 import { Button } from "./button";
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 type CarouselProps = {
   opts?: CarouselOptions;
   plugins?: CarouselPlugin[];
@@ -49,6 +53,10 @@ type CarouselContextProps = {
   canScrollNext: boolean;
 } & CarouselProps;
 
+// -----------------------------------------------------------------------------
+// Hooks
+// -----------------------------------------------------------------------------
+
 const CarouselContext = createContext<CarouselContextProps | null>(null);
 
 function useCarousel() {
@@ -60,6 +68,10 @@ function useCarousel() {
 
   return context;
 }
+
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
 
 const Carousel = forwardRef<
   HTMLDivElement,
@@ -269,6 +281,10 @@ const CarouselNext = forwardRef<
   );
 });
 CarouselNext.displayName = "CarouselNext";
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export {
   type CarouselApi,

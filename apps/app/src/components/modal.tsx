@@ -23,14 +23,14 @@ import {
 } from "@lightdotso/ui";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
-import type { FC } from "react";
+import type { FC, ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
 interface ModalProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 // -----------------------------------------------------------------------------

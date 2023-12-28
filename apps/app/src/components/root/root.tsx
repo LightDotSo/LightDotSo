@@ -25,7 +25,7 @@ import dynamic from "next/dynamic";
 import { Inter } from "next/font/google";
 import Script from "next/script";
 import { Suspense } from "react";
-import type { FC } from "react";
+import type { FC, ReactNode } from "react";
 import { AuthState } from "@/components/auth/auth-state";
 import { ChainPopover } from "@/components/chain/chain-popover";
 import { VercelToolbar } from "@/components/dev/vercel-toolbar";
@@ -65,7 +65,7 @@ const inter = Inter({
 // -----------------------------------------------------------------------------
 
 interface RootProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 // -----------------------------------------------------------------------------

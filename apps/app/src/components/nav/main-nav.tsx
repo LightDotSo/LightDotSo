@@ -28,8 +28,8 @@ import {
   ChatBubbleIcon,
 } from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
-import React, { Suspense, useMemo, useState, useEffect } from "react";
-import type { FC, HTMLAttributes } from "react";
+import { Suspense, useMemo, useState, useEffect } from "react";
+import type { FC, HTMLAttributes, RefAttributes } from "react";
 import { Tabs } from "@/components/nav/tabs-nav";
 import { usePathType } from "@/hooks/usePathType";
 import { useTabs } from "@/hooks/useTabs";
@@ -44,9 +44,7 @@ const tabs = [
     id: "overview",
     href: "/overview",
     icon: (
-      props: React.JSX.IntrinsicAttributes &
-        IconProps &
-        React.RefAttributes<SVGSVGElement>,
+      props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <DashboardIcon {...props} />,
   },
   {
@@ -54,9 +52,7 @@ const tabs = [
     id: "transactions",
     href: "/transactions",
     icon: (
-      props: React.JSX.IntrinsicAttributes &
-        IconProps &
-        React.RefAttributes<SVGSVGElement>,
+      props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <WidthIcon {...props} />,
   },
   {
@@ -64,9 +60,7 @@ const tabs = [
     id: "owners",
     href: "/owners",
     icon: (
-      props: React.JSX.IntrinsicAttributes &
-        IconProps &
-        React.RefAttributes<SVGSVGElement>,
+      props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <PersonIcon {...props} />,
   },
   {
@@ -74,9 +68,7 @@ const tabs = [
     id: "activity",
     href: "/activity",
     icon: (
-      props: React.JSX.IntrinsicAttributes &
-        IconProps &
-        React.RefAttributes<SVGSVGElement>,
+      props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <ActivityLogIcon {...props} />,
   },
   {
@@ -84,9 +76,7 @@ const tabs = [
     id: "settings",
     href: "/settings",
     icon: (
-      props: React.JSX.IntrinsicAttributes &
-        IconProps &
-        React.RefAttributes<SVGSVGElement>,
+      props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <MixerVerticalIcon {...props} />,
   },
   {
@@ -94,9 +84,7 @@ const tabs = [
     id: "support",
     href: "/support",
     icon: (
-      props: React.JSX.IntrinsicAttributes &
-        IconProps &
-        React.RefAttributes<SVGSVGElement>,
+      props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <ChatBubbleIcon {...props} />,
   },
 ];

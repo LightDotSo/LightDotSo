@@ -22,7 +22,7 @@ import {
   CardTitle,
   Separator,
 } from "@lightdotso/ui";
-import type { FC } from "react";
+import type { FC, ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -31,8 +31,8 @@ import type { FC } from "react";
 type SettingsCardProps = {
   title: string;
   subtitle: string;
-  children: React.ReactNode;
-  footerContent?: React.ReactNode;
+  children: ReactNode;
+  footerContent?: ReactNode;
 };
 
 // -----------------------------------------------------------------------------

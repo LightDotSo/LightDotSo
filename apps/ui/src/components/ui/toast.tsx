@@ -18,10 +18,19 @@
 import { cn } from "@lightdotso/utils";
 import { cva } from "class-variance-authority";
 import { useTheme } from "next-themes";
+import type { ComponentProps } from "react";
 import { toast, Toaster as SonnerToaster } from "sonner";
 import { buttonVariants } from "./button";
 
-type ToasterProps = React.ComponentProps<typeof SonnerToaster>;
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+type ToasterProps = ComponentProps<typeof SonnerToaster>;
+
+// -----------------------------------------------------------------------------
+// Styles
+// -----------------------------------------------------------------------------
 
 const toastVariants = cva(
   "pointer-events-auto relative flex w-full items-center space-x-4 overflow-hidden rounded-md border p-4 shadow-xl transition-all",
@@ -43,6 +52,10 @@ const toastVariants = cva(
     },
   },
 );
+
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
 
 const Toaster = () => {
   const { theme } = useTheme();
@@ -73,5 +86,9 @@ const Toaster = () => {
     />
   );
 };
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export { toast, Toaster };

@@ -16,6 +16,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Separator } from "./separator";
 
+// -----------------------------------------------------------------------------
+// Meta
+// -----------------------------------------------------------------------------
+
 const meta: Meta<typeof Separator> = {
   title: "ui/Separator",
   component: Separator,
@@ -24,7 +28,15 @@ const meta: Meta<typeof Separator> = {
 };
 export default meta;
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 type Story = StoryObj<typeof Separator>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
 
 export const Base: Story = {
   render: args => (

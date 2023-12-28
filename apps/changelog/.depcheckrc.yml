@@ -19,3 +19,6 @@ ignores:
   - tailwindcss
   - typescript
   - sharp
+  - clsx
+  - motion
+  - next-themes

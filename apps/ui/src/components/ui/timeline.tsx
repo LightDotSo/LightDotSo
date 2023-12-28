@@ -25,7 +25,11 @@
 import { cn } from "@lightdotso/utils";
 import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
-import type { ComponentProps, FC } from "react";
+import type { ComponentProps, FC, ReactNode } from "react";
+
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
 
 interface TimelineProps extends ComponentProps<"ol"> {}
 const Timeline: FC<TimelineProps> = ({ children, className, ...props }) => {
@@ -48,7 +52,7 @@ const timelinePointVariants = cva("", {
   },
 });
 interface TimelnePointProps extends ComponentProps<"div"> {
-  children: React.ReactNode;
+  children: ReactNode;
   size?: VariantProps<typeof timelinePointVariants>["size"];
 }
 const TimelinePoint: FC<TimelnePointProps> = ({
@@ -173,6 +177,10 @@ const TimelineTime: FC<TimelineTimeProps> = ({
     </time>
   );
 };
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export {
   Timeline,

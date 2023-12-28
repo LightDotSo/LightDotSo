@@ -17,6 +17,10 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Mail } from "lucide-react";
 import { Button } from "./button";
 
+// -----------------------------------------------------------------------------
+// Meta
+// -----------------------------------------------------------------------------
+
 const meta: Meta<typeof Button> = {
   title: "ui/Button",
   component: Button,
@@ -25,7 +29,15 @@ const meta: Meta<typeof Button> = {
 };
 export default meta;
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 type Story = StoryObj<typeof Button>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
 
 export const Base: Story = {
   render: args => <Button {...args}>Base</Button>,
@@ -252,5 +264,95 @@ export const Success: Story = {
   ),
   args: {
     intent: "success",
+  },
+};
+export const Indigo: Story = {
+  render: args => (
+    <div className="flex items-center space-x-2">
+      <Button {...args} variant="default">
+        Default
+      </Button>
+      <Button {...args} variant="shadow">
+        Shadow
+      </Button>
+      <Button {...args} variant="outline">
+        Outline
+      </Button>
+      <Button {...args} variant="ghost">
+        Ghost
+      </Button>
+      <Button {...args} variant="link">
+        Link
+      </Button>
+      <Button {...args} variant="loading">
+        Loading
+      </Button>
+      <Button {...args} disabled>
+        Disabled
+      </Button>
+    </div>
+  ),
+  args: {
+    intent: "indigo",
+  },
+};
+export const Pink: Story = {
+  render: args => (
+    <div className="flex items-center space-x-2">
+      <Button {...args} variant="default">
+        Default
+      </Button>
+      <Button {...args} variant="shadow">
+        Shadow
+      </Button>
+      <Button {...args} variant="outline">
+        Outline
+      </Button>
+      <Button {...args} variant="ghost">
+        Ghost
+      </Button>
+      <Button {...args} variant="link">
+        Link
+      </Button>
+      <Button {...args} variant="loading">
+        Loading
+      </Button>
+      <Button {...args} disabled>
+        Disabled
+      </Button>
+    </div>
+  ),
+  args: {
+    intent: "pink",
+  },
+};
+export const Purple: Story = {
+  render: args => (
+    <div className="flex items-center space-x-2">
+      <Button {...args} variant="default">
+        Default
+      </Button>
+      <Button {...args} variant="shadow">
+        Shadow
+      </Button>
+      <Button {...args} variant="outline">
+        Outline
+      </Button>
+      <Button {...args} variant="ghost">
+        Ghost
+      </Button>
+      <Button {...args} variant="link">
+        Link
+      </Button>
+      <Button {...args} variant="loading">
+        Loading
+      </Button>
+      <Button {...args} disabled>
+        Disabled
+      </Button>
+    </div>
+  ),
+  args: {
+    intent: "purple",
   },
 };

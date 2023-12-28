@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { FC } from "react";
+import type { FC, ReactNode } from "react";
 import { MiddleLayerWrapper } from "@/components/wrapper/layer/middle-layer-wrapper";
 
 // -----------------------------------------------------------------------------
@@ -23,8 +23,8 @@ import { MiddleLayerWrapper } from "@/components/wrapper/layer/middle-layer-wrap
 interface BannerSectionProps {
   title: string;
   description?: string;
-  cta?: React.ReactNode;
-  children: React.ReactNode;
+  cta?: ReactNode;
+  children: ReactNode;
 }
 
 // -----------------------------------------------------------------------------

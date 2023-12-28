@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import "@lightdotso/styles/global.css";
+import type { ReactNode } from "react";
 import { Root } from "@/components/root/root";
 
 // -----------------------------------------------------------------------------
@@ -21,7 +22,7 @@ import { Root } from "@/components/root/root";
 // -----------------------------------------------------------------------------
 
 interface RootLayoutProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 // -----------------------------------------------------------------------------

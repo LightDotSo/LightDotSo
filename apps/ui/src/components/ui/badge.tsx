@@ -20,9 +20,14 @@
 
 import { cn } from "@lightdotso/utils";
 import { cva, type VariantProps } from "class-variance-authority";
+import type { HTMLAttributes } from "react";
+
+// -----------------------------------------------------------------------------
+// Styles
+// -----------------------------------------------------------------------------
 
 const badgeVariants = cva(
-  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-border-info focus:ring-offset-2",
+  "inline-flex items-center justify-center rounded-full border text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-border-info focus:ring-offset-2",
   {
     variants: {
       variant: {
@@ -86,27 +91,99 @@ const badgeVariants = cva(
           ["data-[variant=shadow]:bg-background-success-weakest"],
           ["data-[variant=shadow]:text-text-success"],
         ],
+        indigo: [
+          // Default
+          ["data-[variant=default]:bg-background-indigo"],
+          ["data-[variant=default]:text-text-inverse"],
+          // Shadow
+          ["data-[variant=shadow]:border-border-indigo"],
+          ["data-[variant=shadow]:bg-background-indigo-weakest"],
+          ["data-[variant=shadow]:text-text-indigo"],
+        ],
+        pink: [
+          // Default
+          ["data-[variant=default]:bg-background-pink"],
+          ["data-[variant=default]:text-text-inverse"],
+          // Shadow
+          ["data-[variant=shadow]:border-border-pink"],
+          ["data-[variant=shadow]:bg-background-pink-weakest"],
+          ["data-[variant=shadow]:text-text-pink"],
+        ],
+        purple: [
+          // Default
+          ["data-[variant=default]:bg-background-purple"],
+          ["data-[variant=default]:text-text-inverse"],
+          // Shadow
+          ["data-[variant=shadow]:border-border-purple"],
+          ["data-[variant=shadow]:bg-background-purple-weakest"],
+          ["data-[variant=shadow]:text-text-purple"],
+        ],
+      },
+      size: {
+        sm: "h-4 min-w-[1rem] text-xs",
+        md: "h-5 min-w-[1.25rem] text-sm",
+        lg: "h-6 min-w-[1.5rem] text-base",
+      },
+      type: {
+        number: [
+          ["data-[number-single=false]:data-[size=sm]:px-1"],
+          ["data-[number-single=false]:data-[size=md]:px-2"],
+          ["data-[number-single=false]:data-[size=lg]:px-2"],
+        ],
+        text: [
+          ["data-[size=sm]:px-1.5"],
+          ["data-[size=md]:px-2"],
+          ["data-[size=lg]:px-2.5"],
+        ],
       },
     },
     defaultVariants: {
       variant: "default",
       intent: "default",
+      size: "md",
+      type: "text",
     },
   },
 );
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 export interface BadgeProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof badgeVariants> {}
 
-function Badge({ className, variant, intent, ...props }: BadgeProps) {
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
+
+function Badge({
+  className,
+  variant,
+  size,
+  type,
+  intent,
+  children,
+  ...props
+}: BadgeProps) {
   return (
     <div
-      className={cn(badgeVariants({ variant, intent }), className)}
+      className={cn(badgeVariants({ variant, intent, size, type }), className)}
+      data-number-single={
+        children?.toString().length === 1 && type === "number"
+      }
+      data-size={size ?? "md"}
       data-variant={variant ?? "default"}
       {...props}
-    />
+    >
+      {children}
+    </div>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export { Badge, badgeVariants };
