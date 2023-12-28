@@ -29,7 +29,16 @@ import { forwardRef } from "react";
 // -----------------------------------------------------------------------------
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-info focus-visible:ring-offset-2 active:ring-2 disabled:cursor-not-allowed disabled:opacity-30 disabled:ring-0",
+  [
+    [
+      "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus:outline-none focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-info focus-visible:ring-offset-2 active:z-10 active:ring-2 disabled:cursor-not-allowed disabled:opacity-30 disabled:ring-0",
+    ],
+    [
+      ["group-[.button]:rounded-none"],
+      ["group-[.button]:first:rounded-l-md"],
+      ["group-[.button]:last:rounded-r-md"],
+    ],
+  ],
   {
     variants: {
       variant: {
@@ -66,7 +75,7 @@ const buttonVariants = cva(
           ["data-[variant=ghost]:text-text"],
           ["data-[variant=ghost]:hover:text-text-weak"],
           ["data-[variant=ghost]:hover:bg-background-stronger"],
-          ["data-[variant=ghost]:active:ring-border-primary"],
+          ["data-[variant=ghost]:active:ring-border-primary-weak"],
           // Link
           ["data-[variant=link]:text-text"],
           // Loading

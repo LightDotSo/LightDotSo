@@ -42,9 +42,13 @@ type Story = StoryObj<typeof ButtonGroup>;
 export const Base: Story = {
   render: args => (
     <ButtonGroup {...args}>
-      <Button>First</Button>
-      <Button>Second</Button>
-      <Button>Third</Button>
+      <Button size="sm">First</Button>
+      <Button size="sm" variant="ghost">
+        Second
+      </Button>
+      <Button size="sm" variant="ghost">
+        Third
+      </Button>
     </ButtonGroup>
   ),
   args: {},
