@@ -22,7 +22,11 @@ use axum::{
 };
 use ethers_main::{types::H160, utils::to_checksum};
 use eyre::Result;
-use lightdotso_prisma::{token, token_group, wallet_balance, wallet_balance::WhereParam};
+use lightdotso_prisma::{
+    token, token_group,
+    wallet_balance::WhereParam,
+    wallet_balance::{self, Data},
+};
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::Direction;
 use serde::{Deserialize, Serialize};
@@ -111,6 +115,39 @@ pub(crate) async fn v1_token_list_handler(
         .exec()
         .await?;
 
+    // Deduplicate the balances that have the same token group id.
+    let balances = balances
+        .into_iter()
+        .fold(vec![], |mut acc: Vec<Data>, balance: Data| {
+            // If the balance has a token group, check if the group id is already in the accumulator.
+            if let Some(Some(token)) = &balance.token {
+                if let Some(Some(group)) = &token.group {
+                    // If the group id is not in the accumulator, push the balance into the accumulator.
+                    if !acc.iter().any(|bal| {
+                        if let Some(Some(tk)) = &bal.token {
+                            if let Some(Some(tk_group)) = &tk.group {
+                                tk_group.id == group.id
+                            } else {
+                                false
+                            }
+                        } else {
+                            false
+                        }
+                    }) {
+                        acc.push(balance);
+                    }
+                } else {
+                    acc.push(balance);
+                }
+            } else {
+                acc.push(balance);
+            }
+
+            acc
+        })
+        .into_iter()
+        .collect::<Vec<_>>();
+
     // Convert all of the tokens in the balances array.
     let mut tokens: Vec<Token> =
         balances.clone().into_iter().map(|balance| balance.into()).collect();
@@ -192,6 +229,31 @@ pub(crate) async fn v1_token_list_handler(
     // -------------------------------------------------------------------------
     // Return
     // -------------------------------------------------------------------------
+
+    // Deduplicate the tokens that have the same group id.
+    tokens = tokens
+        .into_iter()
+        .fold(vec![], |mut acc: Vec<Token>, token: Token| {
+            // If the token has a group, check if the group id is already in the accumulator.
+            if let Some(token_group) = &token.group {
+                // If the group id is not in the accumulator, push the token into the accumulator.
+                if !acc.iter().any(|tk| {
+                    if let Some(tk_group) = &tk.group {
+                        tk_group.id == token_group.id
+                    } else {
+                        false
+                    }
+                }) {
+                    acc.push(token);
+                }
+            } else {
+                acc.push(token);
+            }
+
+            acc
+        })
+        .into_iter()
+        .collect();
 
     // If a token group is found, modify the root token to be the culmative sum of the token group.
     for token in tokens.iter_mut() {
