@@ -154,19 +154,31 @@ pub(crate) async fn v1_token_list_handler(
 
         // If the token group is found, assign the tokens in the token group to the pre-converted token.
         if let Some(token_group) = token_group {
+            // If the token group has tokens, assign the tokens to the pre-converted token.
             if let Some(token_group_tokens) = token_group.clone().tokens {
+                // For each token in the token group, get the latest balance.
                 for token in token_group_tokens {
-                    info!(?token);
+                    // Get the wallet balance of the token in the token group
                     if let Some(wallet_balance) = token.balances {
-                        info!(?wallet_balance);
+                        // Get the latest balance.
                         if let Some(latest_balance) = wallet_balance.first() {
-                            info!(?latest_balance);
+                            // Get the matched token.
                             if let Some(matched_token) = tokens
                                 .iter_mut()
                                 .find(|tk| tk.group.clone().unwrap().id == token_group.clone().id)
                             {
-                                matched_token.group =
-                                    Some(TokenGroup { id: token_group.clone().id, tokens: vec![] })
+                                // Convert the latest balance into a token.
+                                let covert_token: Token = latest_balance.clone().into();
+
+                                // If the token has a group, push the token into the group.
+                                if let Some(group) = &mut matched_token.group {
+                                    group.tokens.push(covert_token);
+                                } else {
+                                    matched_token.group = Some(TokenGroup {
+                                        id: token_group.clone().id,
+                                        tokens: vec![covert_token],
+                                    });
+                                }
                             }
                         }
                     }
