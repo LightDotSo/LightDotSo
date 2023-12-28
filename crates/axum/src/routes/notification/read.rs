@@ -50,7 +50,7 @@ pub(crate) struct NotificationReadRequest {
         request_body = NotificationReadRequestParams,
         responses(
             (status = 200, description = "Notification created successfully", body = i64),
-            (status = 500, description = "Notification internal error", body = UserOperationError),
+            (status = 500, description = "Notification internal error", body = NotificationError),
         )
     )]
 #[autometrics]

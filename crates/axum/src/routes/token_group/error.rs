@@ -29,4 +29,7 @@ pub(crate) enum TokenGroupError {
     /// TokenGroup not found by id.
     #[schema(example = "id = 1")]
     NotFound(String),
+    /// TokenGroup unauthorized.
+    #[schema(example = "Unauthorized")]
+    Unauthorized(String),
 }

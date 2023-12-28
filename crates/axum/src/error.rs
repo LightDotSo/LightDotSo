@@ -182,6 +182,7 @@ impl RouteErrorStatusCodeAndMsg for TokenGroupError {
         match self {
             TokenGroupError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
             TokenGroupError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+            TokenGroupError::Unauthorized(msg) => (StatusCode::UNAUTHORIZED, msg.to_string()),
         }
     }
 }

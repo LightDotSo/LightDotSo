@@ -168,6 +168,7 @@ use utoipa_swagger_ui::SwaggerUi;
         token::v1_token_get_handler,
         token::v1_token_list_handler,
         token::v1_token_list_count_handler,
+        token_group::v1_token_group_create_handler,
         token_group::v1_token_group_get_handler,
         token_group::v1_token_group_list_handler,
         token_price::v1_token_price_get_handler,
