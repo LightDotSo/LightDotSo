@@ -69,6 +69,10 @@ module.exports = {
           strongest: "hsl(var(--background-error-strongest) / <alpha-value>)",
           weakest: "hsl(var(--background-error-weakest) / <alpha-value>)",
         },
+        "background-indigo": {
+          DEFAULT: "hsl(var(--background-indigo) / <alpha-value>)",
+          weakest: "hsl(var(--background-indigo-weakest) / <alpha-value>)",
+        },
         "background-info": {
           DEFAULT: "hsl(var(--background-info) / <alpha-value>)",
           weakest: "hsl(var(--background-info-weakest) / <alpha-value>)",
@@ -85,9 +89,9 @@ module.exports = {
           DEFAULT: "hsl(var(--background-neutral) / <alpha-value>)",
           weakest: "hsl(var(--background-neutral-weakest) / <alpha-value>)",
         },
-        "background-new": {
-          DEFAULT: "hsl(var(--background-new) / <alpha-value>)",
-          weakest: "hsl(var(--background-new-weakest) / <alpha-value>)",
+        "background-pink": {
+          DEFAULT: "hsl(var(--background-pink) / <alpha-value>)",
+          weakest: "hsl(var(--background-pink-weakest) / <alpha-value>)",
         },
         "background-primary": {
           DEFAULT: "hsl(var(--background-primary) / <alpha-value>)",
@@ -97,6 +101,10 @@ module.exports = {
           weak: "hsl(var(--background-primary-weak) / <alpha-value>)",
           weaker: "hsl(var(--background-primary-weaker) / <alpha-value>)",
           weakest: "hsl(var(--background-primary-weakest) / <alpha-value>)",
+        },
+        "background-purple": {
+          DEFAULT: "hsl(var(--background-purple) / <alpha-value>)",
+          weakest: "hsl(var(--background-purple-weakest) / <alpha-value>)",
         },
         "background-success": {
           DEFAULT: "hsl(var(--background-success) / <alpha-value>)",
@@ -131,6 +139,12 @@ module.exports = {
           weaker: "hsl(var(--border-error-weaker) / <alpha-value>)",
           weakest: "hsl(var(--border-error-weakest) / <alpha-value>)",
         },
+        "border-indigo": {
+          DEFAULT: "hsl(var(--border-indigo) / <alpha-value>)",
+          weak: "hsl(var(--border-indigo-weak) / <alpha-value>)",
+          weaker: "hsl(var(--border-indigo-weaker) / <alpha-value>)",
+          weakest: "hsl(var(--border-indigo-weakest) / <alpha-value>)",
+        },
         "border-info": {
           DEFAULT: "hsl(var(--border-info) / <alpha-value>)",
           weak: "hsl(var(--border-info-weak) / <alpha-value>)",
@@ -151,11 +165,11 @@ module.exports = {
           weaker: "hsl(var(--border-neutral-weaker) / <alpha-value>)",
           weakest: "hsl(var(--border-neutral-weakest) / <alpha-value>)",
         },
-        "border-new": {
-          DEFAULT: "hsl(var(--border-new) / <alpha-value>)",
-          weak: "hsl(var(--border-new-weak) / <alpha-value>)",
-          weaker: "hsl(var(--border-new-weaker) / <alpha-value>)",
-          weakest: "hsl(var(--border-new-weakest) / <alpha-value>)",
+        "border-pink": {
+          DEFAULT: "hsl(var(--border-pink) / <alpha-value>)",
+          weak: "hsl(var(--border-pink-weak) / <alpha-value>)",
+          weaker: "hsl(var(--border-pink-weaker) / <alpha-value>)",
+          weakest: "hsl(var(--border-pink-weakest) / <alpha-value>)",
         },
         "border-primary": {
           DEFAULT: "hsl(var(--border-primary) / <alpha-value>)",
@@ -165,6 +179,12 @@ module.exports = {
           weak: "hsl(var(--border-primary-weak) / <alpha-value>)",
           weaker: "hsl(var(--border-primary-weaker) / <alpha-value>)",
           weakest: "hsl(var(--border-primary-weakest) / <alpha-value>)",
+        },
+        "border-purple": {
+          DEFAULT: "hsl(var(--border-purple) / <alpha-value>)",
+          weak: "hsl(var(--border-purple-weak) / <alpha-value>)",
+          weaker: "hsl(var(--border-purple-weaker) / <alpha-value>)",
+          weakest: "hsl(var(--border-purple-weakest) / <alpha-value>)",
         },
         "border-success": {
           DEFAULT: "hsl(var(--border-success) / <alpha-value>)",
@@ -219,6 +239,9 @@ module.exports = {
           warning: "hsl(var(--text-icon-warning) / <alpha-value>)",
           weaker: "hsl(var(--text-icon-weaker) / <alpha-value>)",
         },
+        "text-indigo": {
+          DEFAULT: "hsl(var(--text-indigo) / <alpha-value>)",
+        },
         "text-info": {
           DEFAULT: "hsl(var(--text-info) / <alpha-value>)",
           strong: "hsl(var(--text-info-strong) / <alpha-value>)",
@@ -245,8 +268,8 @@ module.exports = {
             "hsl(var(--text-link-destructive-strongest) / <alpha-value>)",
           weak: "hsl(var(--text-link-destructive-weak) / <alpha-value>)",
         },
-        "text-new": {
-          DEFAULT: "hsl(var(--text-new) / <alpha-value>)",
+        "text-pink": {
+          DEFAULT: "hsl(var(--text-pink) / <alpha-value>)",
         },
         "text-primary": {
           DEFAULT: "hsl(var(--text-primary) / <alpha-value>)",
@@ -254,6 +277,9 @@ module.exports = {
           stronger: "hsl(var(--text-primary-stronger) / <alpha-value>)",
           strongest: "hsl(var(--text-primary-strongest) / <alpha-value>)",
           weak: "hsl(var(--text-primary-weak) / <alpha-value>)",
+        },
+        "text-purple": {
+          DEFAULT: "hsl(var(--text-purple) / <alpha-value>)",
         },
         "text-success": {
           DEFAULT: "hsl(var(--text-success) / <alpha-value>)",
