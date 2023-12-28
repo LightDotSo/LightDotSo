@@ -16,6 +16,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Badge } from "./badge";
 
+// -----------------------------------------------------------------------------
+// Meta
+// -----------------------------------------------------------------------------
+
 const meta: Meta<typeof Badge> = {
   title: "ui/Badge",
   component: Badge,
@@ -24,7 +28,15 @@ const meta: Meta<typeof Badge> = {
 };
 export default meta;
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 type Story = StoryObj<typeof Badge>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
 
 export const Default: Story = {
   render: args => (
@@ -46,6 +58,15 @@ export const Default: Story = {
       </Badge>
       <Badge {...args} intent="success">
         Success
+      </Badge>
+      <Badge {...args} intent="indigo">
+        Indigo
+      </Badge>
+      <Badge {...args} intent="pink">
+        Pink
+      </Badge>
+      <Badge {...args} intent="purple">
+        Purple
       </Badge>
     </div>
   ),
@@ -73,6 +94,15 @@ export const Shadow: Story = {
       </Badge>
       <Badge {...args} intent="success">
         Success
+      </Badge>
+      <Badge {...args} intent="indigo">
+        Indigo
+      </Badge>
+      <Badge {...args} intent="pink">
+        Pink
+      </Badge>
+      <Badge {...args} intent="purple">
+        Purple
       </Badge>
     </div>
   ),

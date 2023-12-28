@@ -21,6 +21,10 @@
 import { cn } from "@lightdotso/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
+
 const badgeVariants = cva(
   "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-border-info focus:ring-offset-2",
   {
@@ -86,6 +90,33 @@ const badgeVariants = cva(
           ["data-[variant=shadow]:bg-background-success-weakest"],
           ["data-[variant=shadow]:text-text-success"],
         ],
+        indigo: [
+          // Default
+          ["data-[variant=default]:bg-background-indigo"],
+          ["data-[variant=default]:text-text-inverse"],
+          // Shadow
+          ["data-[variant=shadow]:border-border-indigo"],
+          ["data-[variant=shadow]:bg-background-indigo-weakest"],
+          ["data-[variant=shadow]:text-text-indigo"],
+        ],
+        pink: [
+          // Default
+          ["data-[variant=default]:bg-background-pink"],
+          ["data-[variant=default]:text-text-inverse"],
+          // Shadow
+          ["data-[variant=shadow]:border-border-pink"],
+          ["data-[variant=shadow]:bg-background-pink-weakest"],
+          ["data-[variant=shadow]:text-text-pink"],
+        ],
+        purple: [
+          // Default
+          ["data-[variant=default]:bg-background-purple"],
+          ["data-[variant=default]:text-text-inverse"],
+          // Shadow
+          ["data-[variant=shadow]:border-border-purple"],
+          ["data-[variant=shadow]:bg-background-purple-weakest"],
+          ["data-[variant=shadow]:text-text-purple"],
+        ],
       },
     },
     defaultVariants: {
@@ -108,5 +139,9 @@ function Badge({ className, variant, intent, ...props }: BadgeProps) {
     />
   );
 }
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export { Badge, badgeVariants };

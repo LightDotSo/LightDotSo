@@ -17,6 +17,10 @@ import type { Meta, StoryObj } from "@storybook/react";
 import Image from "next/image";
 import { AspectRatio } from "./aspect-ratio";
 
+// -----------------------------------------------------------------------------
+// Meta
+// -----------------------------------------------------------------------------
+
 const meta: Meta<typeof AspectRatio> = {
   title: "ui/AspectRatio",
   component: AspectRatio,
@@ -26,7 +30,15 @@ const meta: Meta<typeof AspectRatio> = {
 
 export default meta;
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 type Story = StoryObj<typeof AspectRatio>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
 
 export const Base: Story = {
   render: () => (

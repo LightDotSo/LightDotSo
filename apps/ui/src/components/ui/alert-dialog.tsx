@@ -22,6 +22,10 @@ import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import { forwardRef } from "react";
 import { buttonVariants } from "./button";
 
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
+
 const AlertDialog = AlertDialogPrimitive.Root;
 
 const AlertDialogTrigger = AlertDialogPrimitive.Trigger;
@@ -101,7 +105,7 @@ const AlertDialogTitle = forwardRef<
 >(({ className, ...props }, ref) => (
   <AlertDialogPrimitive.Title
     ref={ref}
-    className={cn("text-lg font-semibold", className)}
+    className={cn("text-lg text-text font-semibold", className)}
     {...props}
   />
 ));
@@ -147,6 +151,10 @@ const AlertDialogCancel = forwardRef<
   />
 ));
 AlertDialogCancel.displayName = AlertDialogPrimitive.Cancel.displayName;
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export {
   AlertDialog,

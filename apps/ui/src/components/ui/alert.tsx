@@ -27,7 +27,13 @@ const alertVariants = cva(
       intent: {
         default: "bg-background text-text",
         destructive:
-          "border-destructive/50 dark:border-destructive text-text-destructive [&>svg]:text-text-destructive",
+          "border-border-destructive text-text-destructive [&>svg]:text-text-destructive",
+        error: "border-border-error text-text-error [&>svg]:text-text-error",
+        warning:
+          "border-border-warning text-text-warning [&>svg]:text-text-warning",
+        info: "border-border-info text-text-info [&>svg]:text-text-info",
+        success:
+          "border-border-success text-text-success [&>svg]:text-text-success",
       },
     },
     defaultVariants: {

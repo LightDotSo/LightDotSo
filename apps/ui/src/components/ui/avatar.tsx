@@ -19,6 +19,10 @@ import { cn } from "@lightdotso/utils";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import { forwardRef } from "react";
 
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
+
 const Avatar = forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>
@@ -60,5 +64,9 @@ const AvatarFallback = forwardRef<
   />
 ));
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName;
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export { Avatar, AvatarImage, AvatarFallback };
