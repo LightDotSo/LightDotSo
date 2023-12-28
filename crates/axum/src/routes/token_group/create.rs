@@ -112,6 +112,28 @@ pub(crate) async fn v1_token_group_create_handler(
         }
     };
 
+    // Find the token by id.
+    let token = state
+        .client
+        .token()
+        .find_unique(token::id::equals(token_id.clone()))
+        .exec()
+        .await?
+        .ok_or_else(|| {
+            RouteError::TokenGroupError(TokenGroupError::NotFound(format!(
+                "Token not found by id: {}",
+                token_id
+            )))
+        })?;
+
+    // If the group is already in the toke, return an error.
+    if token.token_group_id.is_some() {
+        return Err(RouteError::TokenGroupError(TokenGroupError::BadRequest(
+            "Token already in group".to_string(),
+        ))
+        .into());
+    }
+
     // Add the token to the token group.
     let token_group = state
         .client
