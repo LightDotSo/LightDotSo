@@ -20,6 +20,10 @@ import * as MenubarPrimitive from "@radix-ui/react-menubar";
 import { Check, ChevronRight, Circle } from "lucide-react";
 import { forwardRef } from "react";
 
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
+
 const MenubarMenu = MenubarPrimitive.Menu;
 
 const MenubarGroup = MenubarPrimitive.Group;
@@ -229,6 +233,10 @@ const MenubarShortcut = ({
   );
 };
 MenubarShortcut.displayname = "MenubarShortcut";
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export {
   Menubar,

@@ -14,48 +14,42 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { Separator } from "./separator";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "./resizable";
 
 // -----------------------------------------------------------------------------
 // Meta
 // -----------------------------------------------------------------------------
 
-const meta: Meta<typeof Separator> = {
-  title: "ui/Separator",
-  component: Separator,
+const meta: Meta<typeof ResizablePanelGroup> = {
+  title: "ui/Resizable",
+  component: ResizablePanelGroup,
   tags: ["autodocs"],
   argTypes: {},
 };
+
 export default meta;
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
 
-type Story = StoryObj<typeof Separator>;
+type Story = StoryObj<typeof ResizablePanelGroup>;
 
 // -----------------------------------------------------------------------------
 // Story
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => (
-    <div>
-      <div className="space-y-1">
-        <h4 className="text-sm font-medium leading-none">Radix Primitives</h4>
-        <p className="text-sm text-text-primary">
-          An open-source UI component library.
-        </p>
-      </div>
-      <Separator className="my-4" />
-      <div className="flex h-5 items-center space-x-4 text-sm">
-        <div>Blog</div>
-        <Separator orientation="vertical" />
-        <div>Docs</div>
-        <Separator orientation="vertical" />
-        <div>Source</div>
-      </div>
-    </div>
+  render: () => (
+    <ResizablePanelGroup direction="horizontal">
+      <ResizablePanel>One</ResizablePanel>
+      <ResizableHandle />
+      <ResizablePanel>Two</ResizablePanel>
+    </ResizablePanelGroup>
   ),
   args: {},
 };

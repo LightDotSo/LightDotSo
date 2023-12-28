@@ -17,6 +17,10 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Label } from "./label";
 import { RadioGroup, RadioGroupItem } from "./radio-group";
 
+// -----------------------------------------------------------------------------
+// Meta
+// -----------------------------------------------------------------------------
+
 const meta: Meta<typeof RadioGroup> = {
   title: "ui/RadioGroup",
   component: RadioGroup,
@@ -25,7 +29,15 @@ const meta: Meta<typeof RadioGroup> = {
 };
 export default meta;
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 type Story = StoryObj<typeof RadioGroup>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
 
 export const Base: Story = {
   render: args => (

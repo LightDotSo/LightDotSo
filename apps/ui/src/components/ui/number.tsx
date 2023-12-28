@@ -21,6 +21,10 @@ import { motion, useSpring, useTransform } from "framer-motion";
 import type { HTMLMotionProps, MotionValue } from "framer-motion";
 import { forwardRef, useEffect, useState } from "react";
 
+// -----------------------------------------------------------------------------
+// Styles
+// -----------------------------------------------------------------------------
+
 const numberVariantsWhole = cva("text-text", {
   variants: {
     variant: {
@@ -59,6 +63,10 @@ const numberVariantsFraction = cva("text-sm", {
   },
 });
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 interface NumberProps
   extends HTMLMotionProps<"span">,
     VariantProps<typeof numberVariantsWhole>,
@@ -66,6 +74,10 @@ interface NumberProps
   prefix?: string;
   value: number;
 }
+
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
 
 const NumberValue = ({
   display,
@@ -125,5 +137,9 @@ const Number = forwardRef<HTMLSpanElement, NumberProps>(
 );
 
 Number.displayName = "Number";
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export { Number };

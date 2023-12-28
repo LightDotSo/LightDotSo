@@ -19,6 +19,10 @@ import { cn } from "@lightdotso/utils";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { forwardRef } from "react";
 
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
+
 const Popover = PopoverPrimitive.Root;
 
 const PopoverTrigger = PopoverPrimitive.Trigger;
@@ -41,5 +45,9 @@ const PopoverContent = forwardRef<
   </PopoverPrimitive.Portal>
 ));
 PopoverContent.displayName = PopoverPrimitive.Content.displayName;
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export { Popover, PopoverTrigger, PopoverContent };

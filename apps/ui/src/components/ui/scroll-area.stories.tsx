@@ -18,6 +18,10 @@ import React from "react";
 import { ScrollArea } from "./scroll-area";
 import { Separator } from "./separator";
 
+// -----------------------------------------------------------------------------
+// Meta
+// -----------------------------------------------------------------------------
+
 const meta: Meta<typeof ScrollArea> = {
   title: "ui/ScrollArea",
   component: ScrollArea,
@@ -26,7 +30,15 @@ const meta: Meta<typeof ScrollArea> = {
 };
 export default meta;
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 type Story = StoryObj<typeof ScrollArea>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
 
 export const Base: Story = {
   render: args => (
