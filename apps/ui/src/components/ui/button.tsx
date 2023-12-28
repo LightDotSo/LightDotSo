@@ -37,6 +37,7 @@ const buttonVariants = cva(
       ["group-[.button]:rounded-none"],
       ["group-[.button]:first:rounded-l-md"],
       ["group-[.button]:last:rounded-r-md"],
+      ["group-[.button]:hover:z-10"],
     ],
   ],
   {
