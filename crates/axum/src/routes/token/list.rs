@@ -107,7 +107,7 @@ pub(crate) async fn v1_token_list_handler(
         .wallet_balance()
         .find_many(query_params)
         .order_by(wallet_balance::balance_usd::order(Direction::Desc))
-        .with(wallet_balance::token::fetch().with(token::token_group::fetch()))
+        .with(wallet_balance::token::fetch().with(token::group::fetch()))
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
         .exec()
@@ -122,7 +122,7 @@ pub(crate) async fn v1_token_list_handler(
         .into_iter()
         .map(|balance| {
             if let Some(Some(token)) = balance.token {
-                if let Some(Some(token_group)) = token.token_group {
+                if let Some(Some(token_group)) = token.group {
                     Some(token_group)
                 } else {
                     None

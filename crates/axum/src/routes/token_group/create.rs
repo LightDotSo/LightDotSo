@@ -127,7 +127,7 @@ pub(crate) async fn v1_token_group_create_handler(
         })?;
 
     // If the group is already in the toke, return an error.
-    if token.token_group_id.is_some() {
+    if token.group_id.is_some() {
         return Err(RouteError::TokenGroupError(TokenGroupError::BadRequest(
             "Token already in group".to_string(),
         ))

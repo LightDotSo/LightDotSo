@@ -605,11 +605,11 @@ model Token {
   balances WalletBalance[]
   prices   TokenPrice[]
 
-  tokenGroup   TokenGroup? @relation(fields: [tokenGroupId], references: [id])
-  tokenGroupId String?
+  group   TokenGroup? @relation(fields: [groupId], references: [id])
+  groupId String?
 
   @@unique([address, chainId])
-  @@index([tokenGroupId])
+  @@index([groupId])
 }
 
 model TokenGroup {
