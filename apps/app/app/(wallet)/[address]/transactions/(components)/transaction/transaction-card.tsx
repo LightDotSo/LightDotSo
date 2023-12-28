@@ -131,7 +131,7 @@ export const TransactionCard: FC<TransactionCardProps> = ({
       <>
         <CollapsibleTrigger
           asChild
-          className="cursor-pointer [&[data-state=open]>td>button>svg]:rotate-180"
+          className="cursor-pointer [&[data-state=open]>td>div>button>svg]:rotate-180"
           type={undefined}
         >
           <TableRow>

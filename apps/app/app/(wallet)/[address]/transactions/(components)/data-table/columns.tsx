@@ -87,7 +87,7 @@ export const columns: ColumnDef<UserOperationData>[] = [
     cell: ({ row: _ }) => (
       <div className="flex items-center justify-end">
         <ButtonIcon className="bg-background-strong" variant="ghost" size="sm">
-          <ChevronDown className="h-4 w-4" />
+          <ChevronDown className="h-4 w-4 transition-all duration-200" />
         </ButtonIcon>
       </div>
     ),
