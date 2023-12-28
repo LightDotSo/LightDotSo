@@ -27,6 +27,7 @@ import {
   AccordionTrigger,
   Avatar,
   Button,
+  ButtonIcon,
   CardFooter,
   Form,
   FormControl,
@@ -1079,11 +1080,9 @@ export const SendDialog: FC<SendDialogProps> = ({
                               : "justify-end",
                           )}
                         >
-                          <Button
-                            type="button"
+                          <ButtonIcon
                             disabled={fields.length < 2}
                             variant="outline"
-                            size="icon"
                             className="mt-1.5 rounded-full"
                             onClick={() => {
                               remove(index);
@@ -1091,7 +1090,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                             }}
                           >
                             <Trash2Icon className="h-5 w-5" />
-                          </Button>
+                          </ButtonIcon>
                         </div>
                         <Tabs
                           className="col-span-7"

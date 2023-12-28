@@ -33,9 +33,9 @@ const buttonIconVariants = cva(["px-0"], {
   variants: {
     size: {
       default: "w-9",
+      xs: "w-6",
       sm: "w-8",
       lg: "w-10",
-      icon: "w-10",
       unsized: "",
     },
   },

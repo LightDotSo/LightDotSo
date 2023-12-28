@@ -16,7 +16,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import type { Address } from "viem";
-import { InvokeUserOperationButton } from "@/app/(wallet)/[address]/transactions/(components)/invoke-user-operation-button";
+import { OverviewInvokeButton } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-invoke-button";
 import { BannerSection } from "@/components/section/banner-section";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
 import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
@@ -89,7 +89,7 @@ export default function TransactionsLayout({
         <MiddleLayerWrapper>
           <LinkButtonGroup items={transactionsNavItems}>
             {nav}
-            <InvokeUserOperationButton address={params.address as Address} />
+            <OverviewInvokeButton address={params.address as Address} />
           </LinkButtonGroup>
         </MiddleLayerWrapper>
       </BannerSection>

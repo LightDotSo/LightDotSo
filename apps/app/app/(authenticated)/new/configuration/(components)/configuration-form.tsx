@@ -18,6 +18,7 @@
 import {
   Avatar,
   Button,
+  ButtonIcon,
   Card,
   CardContent,
   CardDescription,
@@ -570,7 +571,7 @@ export const ConfigurationForm: FC = () => {
                       />
                       <div
                         className={cn(
-                          "flex h-full flex-col col-span-1",
+                          "flex items-center h-full flex-col col-span-1",
                           // If there is error, justify center, else end
                           form.formState.errors.owners &&
                             form.formState.errors.owners[index] &&
@@ -579,11 +580,9 @@ export const ConfigurationForm: FC = () => {
                             : "justify-end",
                         )}
                       >
-                        <Button
-                          type="button"
+                        <ButtonIcon
                           disabled={fields.length < 2}
                           variant="outline"
-                          size="icon"
                           className="mt-1.5 rounded-full"
                           onClick={() => {
                             remove(index);
@@ -591,7 +590,7 @@ export const ConfigurationForm: FC = () => {
                           }}
                         >
                           <Trash2Icon className="h-5 w-5" />
-                        </Button>
+                        </ButtonIcon>
                       </div>
                     </FormItem>
                   </div>

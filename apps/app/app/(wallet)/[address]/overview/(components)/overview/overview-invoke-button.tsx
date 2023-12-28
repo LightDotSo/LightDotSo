@@ -15,9 +15,9 @@
 
 "use client";
 
-import { updateUserOperation } from "@lightdotso/client";
+import { createQueueToken } from "@lightdotso/client";
 import {
-  Button,
+  ButtonIcon,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
@@ -26,14 +26,15 @@ import {
 import { RefreshCcw } from "lucide-react";
 import type { FC } from "react";
 import type { Address } from "viem";
+import invokePortfolioAction from "@/actions/invokePortfolioAction";
 import { useAuth } from "@/stores";
-import { errorToast, infoToast, successToast } from "@/utils";
+import { infoToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface InvokeUserOperationProps {
+interface OverviewInvokeButtonProps {
   address: Address;
 }
 
@@ -41,7 +42,7 @@ interface InvokeUserOperationProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export const InvokeUserOperationButton: FC<InvokeUserOperationProps> = ({
+export const OverviewInvokeButton: FC<OverviewInvokeButtonProps> = ({
   address,
 }) => {
   // ---------------------------------------------------------------------------
@@ -59,33 +60,21 @@ export const InvokeUserOperationButton: FC<InvokeUserOperationProps> = ({
       <Tooltip>
         <TooltipTrigger asChild>
           <span>
-            <Button
-              size="unsized"
+            <ButtonIcon
               variant="shadow"
-              className="h-8 px-3 py-1"
               onClick={() => {
-                updateUserOperation(
+                invokePortfolioAction(address as Address);
+                createQueueToken(
                   {
-                    params: { query: { address: address } },
+                    params: { query: { address: address as Address } },
                   },
                   clientType,
-                ).then(res => {
-                  infoToast("Updating operation...");
-                  res.match(
-                    _success => {
-                      successToast("Operation updated");
-                    },
-                    err => {
-                      if (err instanceof Error) {
-                        errorToast(err.message);
-                      }
-                    },
-                  );
-                });
+                );
+                infoToast("Refreshing...");
               }}
             >
               <RefreshCcw className="h-4 w-4" />
-            </Button>
+            </ButtonIcon>
           </span>
         </TooltipTrigger>
         <TooltipContent>
