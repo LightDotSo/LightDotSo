@@ -94,6 +94,8 @@ lazy_static! {
         let mut m = HashMap::new();
 
         m.insert(80001, "Mumbai Testnet");
+        m.insert(84532, "Base Sepolia Testnet");
+        m.insert(421614, "Arbitrum Sepolia Testnet");
         m.insert(11155111, "Sepolia Testnet");
 
         m
