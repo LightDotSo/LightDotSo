@@ -15,7 +15,7 @@
 
 "use client";
 
-import { Button } from "@lightdotso/ui";
+import { ButtonIcon } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ChevronDown } from "lucide-react";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
@@ -86,12 +86,9 @@ export const columns: ColumnDef<UserOperationData>[] = [
     id: "actions",
     cell: ({ row: _ }) => (
       <div className="flex items-center justify-end">
-        <Button
-          variant="ghost"
-          className="block rounded-md bg-background-strong p-3"
-        >
-          <ChevronDown className="h-4 w-4 shrink-0 fill-text transition-transform duration-200" />
-        </Button>
+        <ButtonIcon className="bg-background-strong" variant="ghost" size="sm">
+          <ChevronDown className="h-4 w-4 transition-all duration-200" />
+        </ButtonIcon>
       </div>
     ),
     enableHiding: false,

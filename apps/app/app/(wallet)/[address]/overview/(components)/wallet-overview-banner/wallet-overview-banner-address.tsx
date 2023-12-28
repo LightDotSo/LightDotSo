@@ -19,6 +19,7 @@ import { getWallet } from "@lightdotso/client";
 import {
   Avatar,
   Button,
+  ButtonIcon,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
@@ -136,13 +137,13 @@ export const WalletOverviewBannerAddress: FC<
       <Avatar className="h-16 w-16">
         <PlaceholderOrb address={address ?? "0x"} />
       </Avatar>
-      <div className="flex space-x-3 overflow-hidden text-ellipsis p-1 text-left">
+      <div className="flex items-center space-x-3 overflow-hidden text-ellipsis p-1 text-left">
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
               variant="unstyled"
               size="unsized"
-              className="text-2xl font-extrabold tracking-tight"
+              className="text-lg font-extrabold tracking-tight md:text-2xl"
               onClick={handleAddressClick}
             >
               {wallet
@@ -157,9 +158,9 @@ export const WalletOverviewBannerAddress: FC<
         </Tooltip>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button className="m-1 px-2" size="unsized" variant="outline">
-              <ChevronDown className="h-3- w-3" />
-            </Button>
+            <ButtonIcon variant="outline" size="xs">
+              <ChevronDown className="h-3 w-3" />
+            </ButtonIcon>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">
             <DropdownMenuGroup>

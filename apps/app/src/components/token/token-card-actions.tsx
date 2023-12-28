@@ -16,7 +16,7 @@
 "use client";
 
 import {
-  Button,
+  ButtonIcon,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
@@ -57,10 +57,10 @@ export const TokenCardActions: FC<TokenCardActionsProps> = ({
         <Tooltip>
           <TooltipTrigger asChild>
             <span>
-              <Button disabled size="sm" variant="shadow">
+              <ButtonIcon disabled size="sm" variant="shadow">
                 <Shuffle className="h-4 w-4" />
                 <span className="sr-only">Open swap modal</span>
-              </Button>
+              </ButtonIcon>
             </span>
           </TooltipTrigger>
           <TooltipContent>
@@ -70,14 +70,14 @@ export const TokenCardActions: FC<TokenCardActionsProps> = ({
         <Tooltip>
           <TooltipTrigger asChild>
             <span>
-              <Button asChild size="sm" variant="shadow">
+              <ButtonIcon asChild size="sm" variant="shadow">
                 <Link
                   href={`/${address}/send?transfers=0:_:_:${chain_id}:erc20:${tokenAddress}|${decimals}|0`}
                 >
                   <Send className="h-4 w-4" />
                   <span className="sr-only">Open send modal</span>
                 </Link>
-              </Button>
+              </ButtonIcon>
             </span>
           </TooltipTrigger>
           <TooltipContent>

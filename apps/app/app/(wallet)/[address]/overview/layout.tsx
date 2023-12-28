@@ -16,7 +16,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import type { Address } from "viem";
-import { InvokePortfolioButton } from "@/app/(wallet)/[address]/overview/(components)/invoke-portfolio-button";
+import { OverviewInvokeButton } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-invoke-button";
 import { WalletOverviewBanner } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner";
 import { OVERVIEW_NAV_ITEMS } from "@/app/(wallet)/[address]/overview/(const)/nav-items";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
@@ -68,7 +68,7 @@ export default function OverviewLayout({
       <MiddleLayerWrapper>
         <LinkButtonGroup items={OVERVIEW_NAV_ITEMS}>
           {nav}
-          <InvokePortfolioButton address={params.address as Address} />
+          <OverviewInvokeButton address={params.address as Address} />
         </LinkButtonGroup>
       </MiddleLayerWrapper>
       <BaseLayerWrapper>
