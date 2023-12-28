@@ -20,8 +20,9 @@ use crate::routes::{
     paymaster::error::PaymasterError, paymaster_operation::error::PaymasterOperationError,
     portfolio::error::PortfolioError, queue::error::QueueError, signature::error::SignatureError,
     support_request::error::SupportRequestError, token::error::TokenError,
-    token_price::error::TokenPriceError, transaction::error::TransactionError,
-    user::error::UserError, user_operation::error::UserOperationError, wallet::error::WalletError,
+    token_group::error::TokenGroupError, token_price::error::TokenPriceError,
+    transaction::error::TransactionError, user::error::UserError,
+    user_operation::error::UserOperationError, wallet::error::WalletError,
     wallet_settings::error::WalletSettingsError,
 };
 use http::StatusCode;
@@ -41,13 +42,14 @@ pub(crate) enum RouteError {
     QueueError(QueueError),
     SignatureError(SignatureError),
     SupportRequestError(SupportRequestError),
-    TokenPriceError(TokenPriceError),
     TokenError(TokenError),
+    TokenGroupError(TokenGroupError),
+    TokenPriceError(TokenPriceError),
     TransactionError(TransactionError),
     UserOperationError(UserOperationError),
     UserError(UserError),
-    WalletSettingsError(WalletSettingsError),
     WalletError(WalletError),
+    WalletSettingsError(WalletSettingsError),
 }
 
 pub trait RouteErrorStatusCodeAndMsg {
@@ -166,20 +168,29 @@ impl RouteErrorStatusCodeAndMsg for SupportRequestError {
     }
 }
 
-impl RouteErrorStatusCodeAndMsg for TokenPriceError {
-    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
-        match self {
-            TokenPriceError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
-            TokenPriceError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
-        }
-    }
-}
-
 impl RouteErrorStatusCodeAndMsg for TokenError {
     fn error_status_code_and_msg(&self) -> (StatusCode, String) {
         match self {
             TokenError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
             TokenError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+        }
+    }
+}
+
+impl RouteErrorStatusCodeAndMsg for TokenGroupError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            TokenGroupError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
+            TokenGroupError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+        }
+    }
+}
+
+impl RouteErrorStatusCodeAndMsg for TokenPriceError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            TokenPriceError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
+            TokenPriceError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
         }
     }
 }
@@ -211,15 +222,6 @@ impl RouteErrorStatusCodeAndMsg for UserError {
     }
 }
 
-impl RouteErrorStatusCodeAndMsg for WalletSettingsError {
-    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
-        match self {
-            WalletSettingsError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
-            WalletSettingsError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
-        }
-    }
-}
-
 impl RouteErrorStatusCodeAndMsg for WalletError {
     fn error_status_code_and_msg(&self) -> (StatusCode, String) {
         match self {
@@ -227,6 +229,15 @@ impl RouteErrorStatusCodeAndMsg for WalletError {
             WalletError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
             WalletError::Conflict(msg) => (StatusCode::CONFLICT, msg.to_string()),
             WalletError::InvalidConfiguration(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
+        }
+    }
+}
+
+impl RouteErrorStatusCodeAndMsg for WalletSettingsError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            WalletSettingsError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
+            WalletSettingsError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
         }
     }
 }
@@ -246,13 +257,14 @@ impl RouteErrorStatusCodeAndMsg for RouteError {
             RouteError::QueueError(err) => err.error_status_code_and_msg(),
             RouteError::SignatureError(err) => err.error_status_code_and_msg(),
             RouteError::SupportRequestError(err) => err.error_status_code_and_msg(),
-            RouteError::TokenPriceError(err) => err.error_status_code_and_msg(),
             RouteError::TokenError(err) => err.error_status_code_and_msg(),
+            RouteError::TokenGroupError(err) => err.error_status_code_and_msg(),
+            RouteError::TokenPriceError(err) => err.error_status_code_and_msg(),
             RouteError::TransactionError(err) => err.error_status_code_and_msg(),
             RouteError::UserOperationError(err) => err.error_status_code_and_msg(),
             RouteError::UserError(err) => err.error_status_code_and_msg(),
-            RouteError::WalletSettingsError(err) => err.error_status_code_and_msg(),
             RouteError::WalletError(err) => err.error_status_code_and_msg(),
+            RouteError::WalletSettingsError(err) => err.error_status_code_and_msg(),
         }
     }
 }

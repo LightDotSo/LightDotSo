@@ -13,26 +13,25 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub(crate) mod activity;
-pub(crate) mod auth;
-pub(crate) mod check;
-pub(crate) mod configuration;
-pub(crate) mod feedback;
-pub(crate) mod health;
-pub(crate) mod invite_code;
-pub(crate) mod metrics;
-pub(crate) mod notification;
-pub(crate) mod paymaster;
-pub(crate) mod paymaster_operation;
-pub(crate) mod portfolio;
-pub(crate) mod queue;
-pub(crate) mod signature;
-pub(crate) mod support_request;
-pub(crate) mod token;
-pub(crate) mod token_group;
-pub(crate) mod token_price;
-pub(crate) mod transaction;
-pub(crate) mod user;
-pub(crate) mod user_operation;
-pub(crate) mod wallet;
-pub(crate) mod wallet_settings;
+use lightdotso_prisma::token_group;
+use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+/// TokenGroup root type.
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
+pub(crate) struct TokenGroup {
+    /// The id of the token group.
+    id: String,
+}
+
+/// Implement From<token_group::Data> for TokenGroup.
+impl From<token_group::Data> for TokenGroup {
+    fn from(token_group: token_group::Data) -> Self {
+        Self { id: token_group.id }
+    }
+}

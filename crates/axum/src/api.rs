@@ -22,8 +22,8 @@ use crate::{
     handle_error,
     routes::{
         activity, auth, check, configuration, feedback, health, invite_code, metrics, notification,
-        paymaster, paymaster_operation, portfolio, signature, support_request, token, token_price,
-        transaction, user, user_operation, wallet, wallet_settings,
+        paymaster, paymaster_operation, portfolio, signature, support_request, token, token_group,
+        token_price, transaction, user, user_operation, wallet, wallet_settings,
     },
     sessions::{authenticated, RedisStore},
     state::AppState,
@@ -102,6 +102,8 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(token::error::TokenError),
         schemas(token::list::TokenListCount),
         schemas(token::types::Token),
+        schemas(token_group::error::TokenGroupError),
+        schemas(token_group::types::TokenGroup),
         schemas(token_price::error::TokenPriceError),
         schemas(token_price::types::TokenPrice),
         schemas(token_price::types::TokenPriceDate),
@@ -166,6 +168,8 @@ use utoipa_swagger_ui::SwaggerUi;
         token::v1_token_get_handler,
         token::v1_token_list_handler,
         token::v1_token_list_count_handler,
+        token_group::v1_token_group_get_handler,
+        token_group::v1_token_group_list_handler,
         token_price::v1_token_price_get_handler,
         transaction::v1_transaction_get_handler,
         transaction::v1_transaction_list_handler,
@@ -203,6 +207,7 @@ use utoipa_swagger_ui::SwaggerUi;
         (name = "signature", description = "Signature API"),
         (name = "support_request", description = "Support Request API"),
         (name = "token", description = "Token API"),
+        (name = "token_group", description = "Token Group API"),
         (name = "token_price", description = "Token Price API"),
         (name = "transaction", description = "Transaction API"),
         (name = "user", description = "User API"),
@@ -310,6 +315,7 @@ pub async fn start_api_server() -> Result<()> {
         .merge(signature::router())
         .merge(support_request::router())
         .merge(token::router())
+        .merge(token_group::router())
         .merge(token_price::router())
         .merge(transaction::router())
         .merge(user::router())
