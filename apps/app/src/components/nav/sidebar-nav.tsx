@@ -19,13 +19,13 @@ import { buttonVariants } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { FC } from "react";
+import type { FC, HTMLAttributes } from "react";
 
 // -----------------------------------------------------------------------------
 // Type
 // -----------------------------------------------------------------------------
 
-interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
+interface SidebarNavProps extends HTMLAttributes<HTMLElement> {
   items: {
     href: string;
     title: string;

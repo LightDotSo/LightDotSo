@@ -18,6 +18,7 @@
 import { cn } from "@lightdotso/utils";
 import { cva } from "class-variance-authority";
 import { useTheme } from "next-themes";
+import type { ComponentProps } from "react";
 import { toast, Toaster as SonnerToaster } from "sonner";
 import { buttonVariants } from "./button";
 
@@ -25,7 +26,7 @@ import { buttonVariants } from "./button";
 // Types
 // -----------------------------------------------------------------------------
 
-type ToasterProps = React.ComponentProps<typeof SonnerToaster>;
+type ToasterProps = ComponentProps<typeof SonnerToaster>;
 
 // -----------------------------------------------------------------------------
 // Styles

@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Meta, StoryObj } from "@storybook/react";
-import React from "react";
+import { Fragment } from "react";
 import { ScrollArea } from "./scroll-area";
 import { Separator } from "./separator";
 
@@ -48,12 +48,12 @@ export const Base: Story = {
         {Array.from({ length: 50 })
           .map((_, i, a) => `v1.2.0-beta.${a.length - i}`)
           .map(tag => (
-            <React.Fragment key={tag}>
+            <Fragment key={tag}>
               <div key={tag} className="text-sm">
                 {tag}
               </div>
               <Separator className="my-2" />
-            </React.Fragment>
+            </Fragment>
           ))}
       </div>
     </ScrollArea>

@@ -20,6 +20,7 @@
 
 import { cn } from "@lightdotso/utils";
 import { cva, type VariantProps } from "class-variance-authority";
+import type { HTMLAttributes } from "react";
 
 // -----------------------------------------------------------------------------
 // Styles
@@ -150,7 +151,7 @@ const badgeVariants = cva(
 // -----------------------------------------------------------------------------
 
 export interface BadgeProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof badgeVariants> {}
 
 // -----------------------------------------------------------------------------

@@ -13,11 +13,16 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type {
+  ForwardRefExoticComponent,
+  PropsWithoutRef,
+  RefAttributes,
+  SVGProps,
+} from "react";
 import { forwardRef } from "react";
 
-export const PolygonLogo: React.ForwardRefExoticComponent<
-  React.PropsWithoutRef<React.SVGProps<SVGSVGElement>> &
-    React.RefAttributes<SVGSVGElement>
+export const PolygonLogo: ForwardRefExoticComponent<
+  PropsWithoutRef<SVGProps<SVGSVGElement>> & RefAttributes<SVGSVGElement>
 > = forwardRef((props, ref) => (
   <svg
     {...props}

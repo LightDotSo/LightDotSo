@@ -22,6 +22,7 @@ import { cn } from "@lightdotso/utils";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Loader2 } from "lucide-react";
+import type { ButtonHTMLAttributes } from "react";
 import { forwardRef } from "react";
 
 // -----------------------------------------------------------------------------
@@ -371,7 +372,7 @@ const buttonVariants = cva(
 // -----------------------------------------------------------------------------
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
 }

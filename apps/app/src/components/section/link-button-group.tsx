@@ -20,20 +20,19 @@ import { cn } from "@lightdotso/utils";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import type { FC } from "react";
+import type { FC, HTMLAttributes, ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface TransactionsButtonLayoutProps
-  extends React.HTMLAttributes<HTMLElement> {
+interface TransactionsButtonLayoutProps extends HTMLAttributes<HTMLElement> {
   items: {
     id: string;
     href: string;
     title: string;
   }[];
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 // -----------------------------------------------------------------------------

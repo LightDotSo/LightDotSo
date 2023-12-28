@@ -12,14 +12,15 @@
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-import type { FC } from "react";
+
+import type { FC, ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
 type OverviewWrapperProps = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 // -----------------------------------------------------------------------------

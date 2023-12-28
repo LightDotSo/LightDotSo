@@ -29,13 +29,14 @@ import {
   EyeNoneIcon,
 } from "@radix-ui/react-icons";
 import type { Column } from "@tanstack/react-table";
+import type { HTMLAttributes } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
 interface DataTableColumnHeaderProps<TData, TValue>
-  extends React.HTMLAttributes<HTMLDivElement> {
+  extends HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>;
   title: string;
 }

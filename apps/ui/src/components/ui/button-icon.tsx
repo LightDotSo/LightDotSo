@@ -21,6 +21,7 @@
 import { cn } from "@lightdotso/utils";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
+import type { ButtonHTMLAttributes } from "react";
 import { forwardRef } from "react";
 import { buttonVariants } from "./button";
 
@@ -48,7 +49,7 @@ const buttonIconVariants = cva(["px-0"], {
 // -----------------------------------------------------------------------------
 
 export interface ButtonIconProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
 }

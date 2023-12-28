@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { OwnersDataTableToolbar } from "@/app/(wallet)/[address]/owners/(components)/owners-data-table-toolbar";
 import { BannerSection } from "@/components/section/banner-section";
 import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
 // -----------------------------------------------------------------------------
 
 interface OwnersLayoutProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 // -----------------------------------------------------------------------------

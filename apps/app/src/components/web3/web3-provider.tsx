@@ -16,6 +16,7 @@
 "use client";
 
 import { ConnectKitProvider } from "connectkit";
+import type { ReactNode } from "react";
 import { WagmiConfig, createConfig, configureChains } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { publicProvider } from "wagmi/providers/public";
@@ -46,7 +47,7 @@ const config = createConfig({
   webSocketPublicClient,
 });
 
-function Web3Provider({ children }: { children: React.ReactNode }) {
+function Web3Provider({ children }: { children: ReactNode }) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------

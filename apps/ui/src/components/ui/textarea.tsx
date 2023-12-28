@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { cn } from "@lightdotso/utils";
+import type { TextareaHTMLAttributes } from "react";
 import { forwardRef } from "react";
 
 // -----------------------------------------------------------------------------
@@ -21,7 +22,7 @@ import { forwardRef } from "react";
 // -----------------------------------------------------------------------------
 
 export interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+  extends TextareaHTMLAttributes<HTMLTextAreaElement> {}
 
 // -----------------------------------------------------------------------------
 // Components

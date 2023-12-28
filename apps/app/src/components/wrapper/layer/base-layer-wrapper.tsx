@@ -14,13 +14,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { cn } from "@lightdotso/utils";
+import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
 interface BaseLayerWrapperProps {
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
 }
 

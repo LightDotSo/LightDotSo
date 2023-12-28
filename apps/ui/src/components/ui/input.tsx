@@ -14,14 +14,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { cn } from "@lightdotso/utils";
+import type { InputHTMLAttributes } from "react";
 import { forwardRef } from "react";
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
 
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {}
 
 // -----------------------------------------------------------------------------
 // Components

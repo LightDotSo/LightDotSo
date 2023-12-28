@@ -31,6 +31,7 @@ import {
 import { cn } from "@lightdotso/utils";
 import { CheckIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 import type { Column } from "@tanstack/react-table";
+import type { ComponentType } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -42,7 +43,7 @@ interface DataTableFacetedFilterProps<TData, TValue> {
   options: {
     label: string;
     value: string;
-    icon?: React.ComponentType<{ className?: string }>;
+    icon?: ComponentType<{ className?: string }>;
   }[];
 }
 

@@ -18,6 +18,7 @@
 import { cn } from "@lightdotso/utils";
 import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
+import type { HTMLAttributes } from "react";
 import { forwardRef } from "react";
 
 // -----------------------------------------------------------------------------
@@ -42,8 +43,7 @@ const buttonGroupVariants = cva("inline-flex space-x-[-1px] rounded-md", {
 
 const ButtonGroup = forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> &
-    VariantProps<typeof buttonGroupVariants>
+  HTMLAttributes<HTMLDivElement> & VariantProps<typeof buttonGroupVariants>
 >(({ className, variant, ...props }, ref) => (
   <div
     ref={ref}

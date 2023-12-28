@@ -14,15 +14,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { cn } from "@lightdotso/utils";
+import type { HTMLAttributes } from "react";
 
 // -----------------------------------------------------------------------------
 // Components
 // -----------------------------------------------------------------------------
 
-function Skeleton({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+function Skeleton({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       className={cn(

@@ -16,13 +16,14 @@
 /* eslint-disable jsx-a11y/heading-has-content, react/display-name */
 
 import { cn } from "@lightdotso/utils";
+import type { ComponentPropsWithoutRef } from "react";
 import { forwardRef } from "react";
 
 // -----------------------------------------------------------------------------
 // Components
 // -----------------------------------------------------------------------------
 
-const H1 = forwardRef<HTMLHeadingElement, React.ComponentPropsWithoutRef<"h1">>(
+const H1 = forwardRef<HTMLHeadingElement, ComponentPropsWithoutRef<"h1">>(
   ({ className, ...props }, ref) => (
     <h1
       ref={ref}
@@ -35,7 +36,7 @@ const H1 = forwardRef<HTMLHeadingElement, React.ComponentPropsWithoutRef<"h1">>(
   ),
 );
 
-const H2 = forwardRef<HTMLHeadingElement, React.ComponentPropsWithoutRef<"h2">>(
+const H2 = forwardRef<HTMLHeadingElement, ComponentPropsWithoutRef<"h2">>(
   ({ className, ...props }, ref) => (
     <h2
       ref={ref}
@@ -48,7 +49,7 @@ const H2 = forwardRef<HTMLHeadingElement, React.ComponentPropsWithoutRef<"h2">>(
   ),
 );
 
-const H3 = forwardRef<HTMLHeadingElement, React.ComponentPropsWithoutRef<"h3">>(
+const H3 = forwardRef<HTMLHeadingElement, ComponentPropsWithoutRef<"h3">>(
   ({ className, ...props }, ref) => (
     <h3
       ref={ref}
@@ -61,7 +62,7 @@ const H3 = forwardRef<HTMLHeadingElement, React.ComponentPropsWithoutRef<"h3">>(
   ),
 );
 
-const H4 = forwardRef<HTMLHeadingElement, React.ComponentPropsWithoutRef<"h4">>(
+const H4 = forwardRef<HTMLHeadingElement, ComponentPropsWithoutRef<"h4">>(
   ({ className, ...props }, ref) => (
     <h4
       ref={ref}
@@ -74,7 +75,7 @@ const H4 = forwardRef<HTMLHeadingElement, React.ComponentPropsWithoutRef<"h4">>(
   ),
 );
 
-const P = forwardRef<HTMLParagraphElement, React.ComponentPropsWithoutRef<"p">>(
+const P = forwardRef<HTMLParagraphElement, ComponentPropsWithoutRef<"p">>(
   ({ className, ...props }, ref) => (
     <p
       ref={ref}
@@ -86,7 +87,7 @@ const P = forwardRef<HTMLParagraphElement, React.ComponentPropsWithoutRef<"p">>(
 
 const BlockQuote = forwardRef<
   HTMLQuoteElement,
-  React.ComponentPropsWithoutRef<"blockquote">
+  ComponentPropsWithoutRef<"blockquote">
 >(({ className, ...props }, ref) => (
   <blockquote
     ref={ref}
@@ -98,70 +99,66 @@ const BlockQuote = forwardRef<
   />
 ));
 
-const Table = forwardRef<
-  HTMLTableElement,
-  React.ComponentPropsWithoutRef<"table">
->(({ className, ...props }, ref) => (
-  <table ref={ref} className={cn("w-full", className)} {...props} />
-));
+const Table = forwardRef<HTMLTableElement, ComponentPropsWithoutRef<"table">>(
+  ({ className, ...props }, ref) => (
+    <table ref={ref} className={cn("w-full", className)} {...props} />
+  ),
+);
 
 const THead = forwardRef<
   HTMLTableSectionElement,
-  React.ComponentPropsWithoutRef<"thead">
+  ComponentPropsWithoutRef<"thead">
 >(({ className, ...props }, ref) => (
   <thead ref={ref} className={cn("", className)} {...props} />
 ));
 
 const TBody = forwardRef<
   HTMLTableSectionElement,
-  React.ComponentPropsWithoutRef<"tbody">
+  ComponentPropsWithoutRef<"tbody">
 >(({ className, ...props }, ref) => (
   <tbody ref={ref} className={cn("", className)} {...props} />
 ));
 
-const TR = forwardRef<
-  HTMLTableRowElement,
-  React.ComponentPropsWithoutRef<"tr">
->(({ className, ...props }, ref) => (
-  <tr
-    ref={ref}
-    className={cn(
-      "m-0 border-t border-border p-0 even:bg-background-weaker",
-      className,
-    )}
-    {...props}
-  />
-));
+const TR = forwardRef<HTMLTableRowElement, ComponentPropsWithoutRef<"tr">>(
+  ({ className, ...props }, ref) => (
+    <tr
+      ref={ref}
+      className={cn(
+        "m-0 border-t border-border p-0 even:bg-background-weaker",
+        className,
+      )}
+      {...props}
+    />
+  ),
+);
 
-const TD = forwardRef<
-  HTMLTableCellElement,
-  React.ComponentPropsWithoutRef<"td">
->(({ className, ...props }, ref) => (
-  <td
-    ref={ref}
-    className={cn(
-      "border border-border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right",
-      className,
-    )}
-    {...props}
-  />
-));
+const TD = forwardRef<HTMLTableCellElement, ComponentPropsWithoutRef<"td">>(
+  ({ className, ...props }, ref) => (
+    <td
+      ref={ref}
+      className={cn(
+        "border border-border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right",
+        className,
+      )}
+      {...props}
+    />
+  ),
+);
 
-const TH = forwardRef<
-  HTMLTableCellElement,
-  React.ComponentPropsWithoutRef<"th">
->(({ className, ...props }, ref) => (
-  <th
-    ref={ref}
-    className={cn(
-      "border border-border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right",
-      className,
-    )}
-    {...props}
-  />
-));
+const TH = forwardRef<HTMLTableCellElement, ComponentPropsWithoutRef<"th">>(
+  ({ className, ...props }, ref) => (
+    <th
+      ref={ref}
+      className={cn(
+        "border border-border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right",
+        className,
+      )}
+      {...props}
+    />
+  ),
+);
 
-const UL = forwardRef<HTMLUListElement, React.ComponentPropsWithoutRef<"ul">>(
+const UL = forwardRef<HTMLUListElement, ComponentPropsWithoutRef<"ul">>(
   ({ className, ...props }, ref) => (
     <ul
       ref={ref}
@@ -171,38 +168,36 @@ const UL = forwardRef<HTMLUListElement, React.ComponentPropsWithoutRef<"ul">>(
   ),
 );
 
-const LI = forwardRef<HTMLLIElement, React.ComponentPropsWithoutRef<"li">>(
+const LI = forwardRef<HTMLLIElement, ComponentPropsWithoutRef<"li">>(
   ({ className, ...props }, ref) => (
     <li ref={ref} className={cn("", className)} {...props} />
   ),
 );
 
-const InlineCode = forwardRef<
-  HTMLElement,
-  React.ComponentPropsWithoutRef<"code">
->(({ className, ...props }, ref) => (
-  <code
-    ref={ref}
-    className={cn(
-      "relative rounded bg-background py-[0.2rem] px-[0.3rem] font-mono text-sm font-semibold text-text-primary",
-      className,
-    )}
-    {...props}
-  />
-));
+const InlineCode = forwardRef<HTMLElement, ComponentPropsWithoutRef<"code">>(
+  ({ className, ...props }, ref) => (
+    <code
+      ref={ref}
+      className={cn(
+        "relative rounded bg-background py-[0.2rem] px-[0.3rem] font-mono text-sm font-semibold text-text-primary",
+        className,
+      )}
+      {...props}
+    />
+  ),
+);
 
-const Lead = forwardRef<
-  HTMLParagraphElement,
-  React.ComponentPropsWithoutRef<"p">
->(({ className, ...props }, ref) => (
-  <p
-    ref={ref}
-    className={cn("text-xl text-text-primary", className)}
-    {...props}
-  />
-));
+const Lead = forwardRef<HTMLParagraphElement, ComponentPropsWithoutRef<"p">>(
+  ({ className, ...props }, ref) => (
+    <p
+      ref={ref}
+      className={cn("text-xl text-text-primary", className)}
+      {...props}
+    />
+  ),
+);
 
-const Large = forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<"div">>(
+const Large = forwardRef<HTMLDivElement, ComponentPropsWithoutRef<"div">>(
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
@@ -212,7 +207,7 @@ const Large = forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<"div">>(
   ),
 );
 
-const Small = forwardRef<HTMLElement, React.ComponentPropsWithoutRef<"small">>(
+const Small = forwardRef<HTMLElement, ComponentPropsWithoutRef<"small">>(
   ({ className, ...props }, ref) => (
     <small
       ref={ref}
@@ -222,12 +217,15 @@ const Small = forwardRef<HTMLElement, React.ComponentPropsWithoutRef<"small">>(
   ),
 );
 
-const Subtle = forwardRef<
-  HTMLParagraphElement,
-  React.ComponentPropsWithoutRef<"p">
->(({ className, ...props }, ref) => (
-  <p ref={ref} className={cn("text-sm text-text-weak", className)} {...props} />
-));
+const Subtle = forwardRef<HTMLParagraphElement, ComponentPropsWithoutRef<"p">>(
+  ({ className, ...props }, ref) => (
+    <p
+      ref={ref}
+      className={cn("text-sm text-text-weak", className)}
+      {...props}
+    />
+  ),
+);
 
 // -----------------------------------------------------------------------------
 // Exports

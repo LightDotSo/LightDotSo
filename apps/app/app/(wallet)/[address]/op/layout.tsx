@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { HStackFull } from "@/components/stack/h-stack-full";
 import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
 import { BasicPageWrapper } from "@/components/wrapper/page/basic-page-wrapper";
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
 // -----------------------------------------------------------------------------
 
 interface UserOperationLayoutProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 // -----------------------------------------------------------------------------

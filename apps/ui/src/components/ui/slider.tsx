@@ -17,6 +17,7 @@
 
 import { cn } from "@lightdotso/utils";
 import * as SliderPrimitive from "@radix-ui/react-slider";
+import type { ComponentPropsWithoutRef, ElementRef } from "react";
 import { forwardRef } from "react";
 
 // -----------------------------------------------------------------------------
@@ -24,8 +25,8 @@ import { forwardRef } from "react";
 // -----------------------------------------------------------------------------
 
 const Slider = forwardRef<
-  React.ElementRef<typeof SliderPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root>
+  ElementRef<typeof SliderPrimitive.Root>,
+  ComponentPropsWithoutRef<typeof SliderPrimitive.Root>
 >(({ className, ...props }, ref) => (
   <SliderPrimitive.Root
     ref={ref}

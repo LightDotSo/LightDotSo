@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { ReactNode } from "react";
 import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
 
 // -----------------------------------------------------------------------------
@@ -20,7 +21,7 @@ import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper"
 // -----------------------------------------------------------------------------
 
 interface MiddleLayerWrapperProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 // -----------------------------------------------------------------------------
