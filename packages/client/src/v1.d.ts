@@ -234,6 +234,27 @@ export interface paths {
      */
     get: operations["v1_token_get_handler"];
   };
+  "/token/group/create": {
+    /**
+     * Create a tokengroup.
+     * @description Create a tokengroup.
+     */
+    post: operations["v1_token_group_create_handler"];
+  };
+  "/token/group/get": {
+    /**
+     * Get a token group
+     * @description Get a token group
+     */
+    get: operations["v1_token_group_get_handler"];
+  };
+  "/token/group/list": {
+    /**
+     * Returns a list of token groups.
+     * @description Returns a list of token groups.
+     */
+    get: operations["v1_token_group_list_handler"];
+  };
   "/token/list": {
     /**
      * Returns a list of tokens.
@@ -713,6 +734,9 @@ export interface components {
        * @description The decimals of the token.
        */
       decimals: number;
+      group?: components["schemas"]["TokenGroup"] | null;
+      /** @description The id of the token. */
+      id: string;
       /** @description The name of the token. */
       name?: string | null;
       /** @description The symbol of the token. */
@@ -725,6 +749,22 @@ export interface components {
     }, {
       /** @description Token not found by id. */
       NotFound: string;
+    }]>;
+    /** @description TokenGroup root type. */
+    TokenGroup: {
+      /** @description The id of the token group. */
+      id: string;
+    };
+    /** @description TokenGroup errors */
+    TokenGroupError: OneOf<[{
+      /** @description TokenGroup query error. */
+      BadRequest: string;
+    }, {
+      /** @description TokenGroup not found by id. */
+      NotFound: string;
+    }, {
+      /** @description TokenGroup unauthorized. */
+      Unauthorized: string;
     }]>;
     /** @description Count of list of tokens. */
     TokenListCount: {
@@ -1535,7 +1575,7 @@ export interface operations {
       /** @description Notification internal error */
       500: {
         content: {
-          "application/json": components["schemas"]["UserOperationError"];
+          "application/json": components["schemas"]["NotificationError"];
         };
       };
     };
@@ -1884,6 +1924,84 @@ export interface operations {
       404: {
         content: {
           "application/json": components["schemas"]["TokenError"];
+        };
+      };
+    };
+  };
+  /**
+   * Create a tokengroup.
+   * @description Create a tokengroup.
+   */
+  v1_token_group_create_handler: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["TokenGroupPostRequestParams"];
+      };
+    };
+    responses: {
+      /** @description Token group created successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["TokenGroup"];
+        };
+      };
+      /** @description Token group internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["TokenGroupError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a token group
+   * @description Get a token group
+   */
+  v1_token_group_get_handler: {
+    parameters: {
+      query: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Tokena group returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["TokenGroup"];
+        };
+      };
+      /** @description Tokena group not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["TokenGroupError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of token groups.
+   * @description Returns a list of token groups.
+   */
+  v1_token_group_list_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first token group to return. */
+        offset?: number | null;
+        /** @description The maximum number of token groups to return. */
+        limit?: number | null;
+      };
+    };
+    responses: {
+      /** @description Token groups returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["TokenGroup"][];
+        };
+      };
+      /** @description Token group bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["TokenGroupError"];
         };
       };
     };
