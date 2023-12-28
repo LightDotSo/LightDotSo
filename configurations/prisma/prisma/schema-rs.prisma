@@ -605,7 +605,17 @@ model Token {
   balances WalletBalance[]
   prices   TokenPrice[]
 
+  group   TokenGroup? @relation(fields: [groupId], references: [id])
+  groupId String?
+
   @@unique([address, chainId])
+  @@index([groupId])
+}
+
+model TokenGroup {
+  id String @id @default(cuid())
+
+  tokens Token[]
 }
 
 model TokenPrice {

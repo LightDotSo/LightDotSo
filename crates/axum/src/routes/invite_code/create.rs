@@ -42,9 +42,17 @@ pub(crate) async fn v1_invite_code_post_handler(
     State(state): State<AppState>,
     mut session: Session,
 ) -> AppJsonResult<InviteCode> {
+    // -------------------------------------------------------------------------
+    // Session
+    // -------------------------------------------------------------------------
+
     // Get the authenticated user id.
     let auth_user_id = get_user_id(&mut session)?;
     info!(?auth_user_id);
+
+    // -------------------------------------------------------------------------
+    // Authorization
+    // -------------------------------------------------------------------------
 
     // If the authenticated user id is not `KAKI_USER_ID`, return an error.
     if auth_user_id != KAKI_USER_ID.to_string() {
@@ -54,6 +62,10 @@ pub(crate) async fn v1_invite_code_post_handler(
         )))
         .into());
     }
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // Generate a new invite_code w/ the format AAA-ZZZ.
     let code = InviteCode::generate_invite_code();
@@ -66,6 +78,10 @@ pub(crate) async fn v1_invite_code_post_handler(
         .exec()
         .await?;
     info!(?invite_code);
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // Change the invite_codes to the format that the API expects.
     let invite_code: InviteCode = invite_code.into();

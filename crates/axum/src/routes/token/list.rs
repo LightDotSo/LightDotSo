@@ -16,7 +16,7 @@
 #![allow(clippy::unwrap_used)]
 
 use super::types::Token;
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{result::AppJsonResult, routes::token::types::TokenGroup, state::AppState};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -24,7 +24,8 @@ use axum::{
 };
 use ethers_main::{types::H160, utils::to_checksum};
 use eyre::Result;
-use lightdotso_prisma::{wallet_balance, wallet_balance::WhereParam};
+use lightdotso_prisma::{token, token_group, wallet_balance, wallet_balance::WhereParam};
+use lightdotso_tracing::tracing::info;
 use prisma_client_rust::Direction;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
@@ -106,18 +107,89 @@ pub(crate) async fn v1_token_list_handler(
         .wallet_balance()
         .find_many(query_params)
         .order_by(wallet_balance::balance_usd::order(Direction::Desc))
-        .with(wallet_balance::token::fetch())
+        .with(wallet_balance::token::fetch().with(token::group::fetch()))
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
         .exec()
         .await?;
+    // Convert all of the tokens in the balances array.
+    let mut tokens: Vec<Token> =
+        balances.clone().into_iter().map(|balance| balance.into()).collect();
+
+    // If token group is in the balances, fetch the token group.
+    let token_groups = balances
+        .clone()
+        .into_iter()
+        .map(|balance| {
+            if let Some(Some(token)) = balance.token {
+                if let Some(Some(token_group)) = token.group {
+                    Some(token_group)
+                } else {
+                    None
+                }
+            } else {
+                None
+            }
+        })
+        .collect::<Vec<_>>();
+
+    // For each token group, fetch the associated token and balances from the database.
+    for group in token_groups.into_iter().flatten() {
+        let token_group = state
+            .client
+            .token_group()
+            .find_unique(token_group::id::equals(group.id))
+            .with(
+                token_group::tokens::fetch(vec![]).with(
+                    token::balances::fetch(vec![wallet_balance::wallet_address::equals(
+                        query.address.clone(),
+                    )])
+                    .order_by(wallet_balance::timestamp::order(Direction::Desc))
+                    .take(1),
+                ),
+            )
+            .exec()
+            .await?;
+        info!(?token_group);
+
+        // If the token group is found, assign the tokens in the token group to the pre-converted token.
+        if let Some(token_group) = token_group {
+            // If the token group has tokens, assign the tokens to the pre-converted token.
+            if let Some(token_group_tokens) = token_group.clone().tokens {
+                // For each token in the token group, get the latest balance.
+                for token in token_group_tokens {
+                    // Get the wallet balance of the token in the token group
+                    if let Some(wallet_balance) = token.balances {
+                        // Get the latest balance.
+                        if let Some(latest_balance) = wallet_balance.first() {
+                            // Get the matched token.
+                            if let Some(matched_token) = tokens
+                                .iter_mut()
+                                .find(|tk| tk.group.clone().unwrap().id == token_group.clone().id)
+                            {
+                                // Convert the latest balance into a token.
+                                let covert_token: Token = latest_balance.clone().into();
+
+                                // If the token has a group, push the token into the group.
+                                if let Some(group) = &mut matched_token.group {
+                                    group.tokens.push(covert_token);
+                                } else {
+                                    matched_token.group = Some(TokenGroup {
+                                        id: token_group.clone().id,
+                                        tokens: vec![covert_token],
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     // -------------------------------------------------------------------------
     // Return
     // -------------------------------------------------------------------------
-
-    // Get all of the tokens in the balances array.
-    let tokens: Vec<Token> = balances.into_iter().map(|balance| balance.into()).collect();
 
     Ok(Json::from(tokens))
 }

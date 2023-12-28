@@ -120,9 +120,17 @@ pub(crate) async fn v1_wallet_update_handler(
         .clone()
         .ok_or(RouteError::WalletError(WalletError::NotFound("Wallet not found".to_string())))?;
 
+    // -------------------------------------------------------------------------
+    // Session
+    // -------------------------------------------------------------------------
+
     // Get the userid from the session.
     let user_id = get_user_id(&mut session)?;
     info!(?user_id);
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // Check to see if the user is one of the owners of the wallet configurations.
     let _ = wallet
@@ -141,6 +149,10 @@ pub(crate) async fn v1_wallet_update_handler(
             "User is not an owner of the wallet".to_string(),
         )))?;
 
+    // -------------------------------------------------------------------------
+    // Params
+    // -------------------------------------------------------------------------
+
     // Construct the params for the update.
     let name = params.name;
     info!(?name);
@@ -148,6 +160,10 @@ pub(crate) async fn v1_wallet_update_handler(
     if name.is_some() {
         params.push(wallet::name::set(name.unwrap()));
     }
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // Update the wallet name.
     let wallet = state

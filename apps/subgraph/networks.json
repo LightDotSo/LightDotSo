@@ -91,19 +91,19 @@
   },
   "optimism-sepolia": {
     "EntryPointv0.6.0": {
-      "address": "0x5Ff137D4B0FDCD49DcA30c7CF57E578A026d2789",
+      "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
       "startBlock": 3593614
     }
   },
   "scroll": {
     "EntryPointv0.6.0": {
-      "address": "0x5Ff137D4B0FDCD49DcA30c7CF57E578A026d2789",
+      "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
       "startBlock": 17
     }
   },
   "scroll-sepolia": {
     "EntryPointv0.6.0": {
-      "address": "0x5Ff137D4B0FDCD49DcA30c7CF57E578A026d2789",
+      "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
       "startBlock": 91
     }
   },
