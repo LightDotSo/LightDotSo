@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use super::{error::QueueError, types::QueueSuccess};
 use crate::{error::RouteError, result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
@@ -28,8 +29,6 @@ use lightdotso_prisma::wallet;
 use lightdotso_redis::query::token::token_rate_limit;
 use serde::Deserialize;
 use utoipa::IntoParams;
-
-use super::{error::QueueError, types::QueueSuccess};
 
 // -----------------------------------------------------------------------------
 // Query
@@ -92,9 +91,17 @@ pub(crate) async fn v1_queue_token_handler(
     let wallet =
         wallet.ok_or(RouteError::QueueError(QueueError::NotFound(checksum_address.clone())))?;
 
+    // -------------------------------------------------------------------------
+    // Redis
+    // -------------------------------------------------------------------------
+
     // Rate limit the queue.
     token_rate_limit(state.redis, checksum_address)
         .map_err(|err| RouteError::QueueError(QueueError::RateLimitExceeded(err.to_string())))?;
+
+    // -------------------------------------------------------------------------
+    // Kafka
+    // -------------------------------------------------------------------------
 
     // Get whether testnet is enabled.
     let testnet_enabled = if let Some(Some(wallet_settings)) = wallet.wallet_settings {
@@ -105,10 +112,6 @@ pub(crate) async fn v1_queue_token_handler(
 
     // Define the chains.
     let chains = if testnet_enabled { ALL_CHAIN_IDS.clone() } else { MAINNET_CHAIN_IDS.clone() };
-
-    // -------------------------------------------------------------------------
-    // Kafka
-    // -------------------------------------------------------------------------
 
     // For each chain, run the kafka producer.
     for chain in chains.iter() {
