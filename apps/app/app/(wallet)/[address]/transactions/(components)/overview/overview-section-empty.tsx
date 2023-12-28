@@ -13,38 +13,28 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Button } from "@lightdotso/ui";
+import { Table, TableBody, TableCell, TableRow } from "@lightdotso/ui";
 import { useQueryClient } from "@tanstack/react-query";
-import { ChevronRightIcon } from "lucide-react";
-import Link from "next/link";
-import type { ReactNode } from "react";
 import type { Address } from "viem";
-import type { UserOperationData, WalletSettingsData } from "@/data";
+import { TableEmpty } from "@/components/state/table-empty";
+import type { UserOperationCountData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface OverviewSectionProps {
+interface OverviewSectionEmptyProps {
   address: Address;
-  status: "proposed" | "history";
-  href: string;
-  title: string;
-  children: ReactNode;
 }
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const OverviewSection = ({
+export const OverviewSectionEmpty = ({
   address,
-  status,
-  href,
-  children,
-  title,
-}: OverviewSectionProps) => {
+}: OverviewSectionEmptyProps) => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -54,41 +44,32 @@ export const OverviewSection = ({
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(queries.wallet.settings({ address }).queryKey);
 
-  const currentData: UserOperationData[] | undefined = queryClient.getQueryData(
-    queries.user_operation.list({
-      address,
-      status,
-      order: status === "proposed" ? "asc" : "desc",
-      limit: 10,
-      offset: 0,
-      is_testnet: walletSettings?.is_enabled_testnet ?? false,
-    }).queryKey,
-  );
+  const currentData: UserOperationCountData | undefined =
+    queryClient.getQueryData(
+      queries.user_operation.listCount({
+        address: address as Address,
+        status: null,
+        is_testnet: walletSettings?.is_enabled_testnet ?? false,
+      }).queryKey,
+    );
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!currentData) {
+  if (!currentData || (currentData && currentData?.count > 0)) {
     return null;
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex w-full items-center justify-between">
-        <div className="flex items-center">
-          <div className="text-xl font-semibold text-text-primary">{title}</div>
-        </div>
-        <div className="flex items-center space-x-3">
-          <Button asChild size="sm" variant="outline">
-            <Link href={href}>
-              See All
-              <ChevronRightIcon className="ml-2 h-3 w-3" />
-            </Link>
-          </Button>
-        </div>
-      </div>
-      {children}
-    </div>
+    <Table>
+      <TableBody>
+        <TableRow>
+          <TableCell className="h-24 text-center">
+            <TableEmpty entity="transaction" />
+          </TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
   );
 };
