@@ -9,5 +9,4 @@
   repository.workspace = true
 
 [dependencies]
-  ethers = { workspace = true }
   lazy_static = { workspace = true }

@@ -6110,7 +6110,6 @@ dependencies = [
 name = "lightdotso-constants"
 version = "0.1.0"
 dependencies = [
- "ethers 2.0.8",
  "lazy_static",
 ]
 

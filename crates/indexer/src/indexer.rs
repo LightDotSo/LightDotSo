@@ -34,8 +34,8 @@ use ethers::{
 };
 use ethers_providers::StreamExt;
 use eyre::eyre;
-use lightdotso_constants::{FACTORY_ADDRESSES, RUNNER_CHAIN_IDS, SLEEP_CHAIN_IDS};
-use lightdotso_contracts::provider::get_provider;
+use lightdotso_constants::{RUNNER_CHAIN_IDS, SLEEP_CHAIN_IDS};
+use lightdotso_contracts::{constants::LIGHT_WALLET_FACTORY_ADDRESSES, provider::get_provider};
 use lightdotso_db::{error::DbError, models::transaction::upsert_transaction_with_log_receipt};
 use lightdotso_kafka::{
     get_producer, rdkafka::producer::FutureProducer,
@@ -629,7 +629,7 @@ impl Indexer {
         // Loop over the calls
         if frame.typ == "CREATE2" {
             // If the from address is a factory address
-            if FACTORY_ADDRESSES.contains(&frame.from) {
+            if LIGHT_WALLET_FACTORY_ADDRESSES.contains(&frame.from) {
                 // Build the wallet_address_hashmap
                 let wallet_entry = wallet_address_hashmap.entry(tx_hash).or_default();
 
