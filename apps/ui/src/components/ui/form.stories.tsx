@@ -14,68 +14,57 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { Button } from "./button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./form";
 import { Input } from "./input";
-import { Label } from "./label";
 
 // -----------------------------------------------------------------------------
 // Meta
 // -----------------------------------------------------------------------------
 
-const meta: Meta<typeof Input> = {
-  title: "ui/Input",
-  component: Input,
+const meta: Meta<typeof Form> = {
+  title: "ui/Form",
+  component: Form,
   tags: ["autodocs"],
   argTypes: {},
 };
+
 export default meta;
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
 
-type Story = StoryObj<typeof Input>;
+type Story = StoryObj<typeof Form>;
 
 // -----------------------------------------------------------------------------
 // Story
 // -----------------------------------------------------------------------------
 
-export const Default: Story = {
-  render: args => <Input {...args} />,
-  args: {
-    type: "email",
-    placeholder: "Email",
-  },
-};
-export const Disabled: Story = {
-  render: args => <Input disabled {...args} />,
-  args: { ...Default.args },
-};
-export const WithLabel: Story = {
-  render: args => (
-    <div className="grid w-full max-w-sm items-center gap-1.5">
-      <Label htmlFor="email">{args.placeholder}</Label>
-      <Input {...args} id="email" />
-    </div>
+export const Base: Story = {
+  render: () => (
+    <FormField
+      name="username"
+      render={({ field }) => {
+        return (
+          <FormItem>
+            <FormLabel>Username</FormLabel>
+            <FormControl>
+              <Input placeholder="shadcn" {...field} />
+            </FormControl>
+            <FormDescription>This is your public display name.</FormDescription>
+            <FormMessage />
+          </FormItem>
+        );
+      }}
+    />
   ),
-  args: { ...Default.args },
-};
-export const WithText: Story = {
-  render: args => (
-    <div className="grid w-full max-w-sm items-center gap-1.5">
-      <Label htmlFor="email-2">{args.placeholder}</Label>
-      <Input {...args} id="email-2" />
-      <p className="text-sm text-slate-500">Enter your email address.</p>
-    </div>
-  ),
-  args: { ...Default.args },
-};
-export const WithButton: Story = {
-  render: args => (
-    <div className="flex w-full max-w-sm items-center space-x-2">
-      <Input {...args} />
-      <Button type="submit">Subscribe</Button>
-    </div>
-  ),
-  args: { ...Default.args },
+  args: {},
 };

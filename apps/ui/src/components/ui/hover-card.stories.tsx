@@ -19,6 +19,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import { Button } from "./button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card";
 
+// -----------------------------------------------------------------------------
+// Meta
+// -----------------------------------------------------------------------------
+
 const meta: Meta<typeof HoverCard> = {
   title: "ui/HoverCard",
   component: HoverCard,
@@ -27,7 +31,15 @@ const meta: Meta<typeof HoverCard> = {
 };
 export default meta;
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 type Story = StoryObj<typeof HoverCard>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
 
 export const Base: Story = {
   render: args => (

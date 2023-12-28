@@ -16,6 +16,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Label } from "./label";
 
+// -----------------------------------------------------------------------------
+// Meta
+// -----------------------------------------------------------------------------
+
 const meta: Meta<typeof Label> = {
   title: "ui/Label",
   component: Label,
@@ -24,7 +28,15 @@ const meta: Meta<typeof Label> = {
 };
 export default meta;
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 type Story = StoryObj<typeof Label>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
 
 export const Base: Story = {
   render: args => <Label htmlFor="email">Your email address</Label>,

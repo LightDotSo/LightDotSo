@@ -20,6 +20,10 @@ import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { Check, ChevronRight, Circle } from "lucide-react";
 import { forwardRef } from "react";
 
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
+
 const DropdownMenu = DropdownMenuPrimitive.Root;
 
 const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger;
@@ -194,6 +198,10 @@ const DropdownMenuShortcut = ({
   );
 };
 DropdownMenuShortcut.displayName = "DropdownMenuShortcut";
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export {
   DropdownMenu,

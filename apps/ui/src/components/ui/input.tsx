@@ -16,8 +16,16 @@
 import { cn } from "@lightdotso/utils";
 import { forwardRef } from "react";
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {}
+
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => {
@@ -35,5 +43,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
   },
 );
 Input.displayName = "Input";
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export { Input };

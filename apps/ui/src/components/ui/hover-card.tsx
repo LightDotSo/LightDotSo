@@ -19,6 +19,10 @@ import { cn } from "@lightdotso/utils";
 import * as HoverCardPrimitive from "@radix-ui/react-hover-card";
 import { forwardRef } from "react";
 
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
+
 const HoverCard = HoverCardPrimitive.Root;
 
 const HoverCardTrigger = HoverCardPrimitive.Trigger;
@@ -39,5 +43,9 @@ const HoverCardContent = forwardRef<
   />
 ));
 HoverCardContent.displayName = HoverCardPrimitive.Content.displayName;
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export { HoverCard, HoverCardTrigger, HoverCardContent };

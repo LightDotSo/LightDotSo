@@ -23,6 +23,10 @@ import type { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
 import { Controller, FormProvider, useFormContext } from "react-hook-form";
 import { Label } from "./label";
 
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
+
 const Form = FormProvider;
 
 type FormFieldContextValue<
@@ -174,6 +178,10 @@ const FormMessage = forwardRef<
   );
 });
 FormMessage.displayName = "FormMessage";
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export {
   useFormField,
