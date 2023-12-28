@@ -90,6 +90,10 @@ pub(crate) async fn v1_queue_portfolio_handler(
     // If the wallet is not found, return a 404.
     wallet.ok_or(RouteError::QueueError(QueueError::NotFound(checksum_address.clone())))?;
 
+    // -------------------------------------------------------------------------
+    // Redis
+    // -------------------------------------------------------------------------
+
     // Rate limit the queue.
     portfolio_rate_limit(state.redis, checksum_address)
         .map_err(|err| RouteError::QueueError(QueueError::RateLimitExceeded(err.to_string())))?;

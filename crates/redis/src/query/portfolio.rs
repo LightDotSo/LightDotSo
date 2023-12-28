@@ -24,15 +24,13 @@ pub fn portfolio_rate_limit(client: Arc<Client>, address: String) -> Result<()> 
     let mut rate_limit = RateLimiter::open(client)?;
     let size = Duration::from_secs(300);
 
+    rate_limit.record_fixed_window(&QUEUE_PORTFOLIO, &address, size)?;
     let count = rate_limit.fetch_fixed_window(&QUEUE_PORTFOLIO, &address, size)?;
-
     info!("portfolio rate count: {}", count);
 
     if count > 3 {
         return Err(eyre::eyre!("Rate limit exceeded by {} for {}", count, address));
     }
-
-    rate_limit.record_fixed_window(&QUEUE_PORTFOLIO, &address, size)?;
 
     Ok(())
 }
