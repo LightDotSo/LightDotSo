@@ -16,7 +16,7 @@
 #![allow(clippy::unwrap_used)]
 
 use super::types::Token;
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{result::AppJsonResult, routes::token::types::TokenGroup, state::AppState};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -112,6 +112,9 @@ pub(crate) async fn v1_token_list_handler(
         .take(query.limit.unwrap_or(10))
         .exec()
         .await?;
+    // Convert all of the tokens in the balances array.
+    let mut tokens: Vec<Token> =
+        balances.clone().into_iter().map(|balance| balance.into()).collect();
 
     // If token group is in the balances, fetch the token group.
     let token_groups = balances
@@ -131,29 +134,43 @@ pub(crate) async fn v1_token_list_handler(
         .collect::<Vec<_>>();
 
     // For each token group, fetch the associated token and balances from the database.
-    #[allow(clippy::manual_flatten)]
-    for token_group in token_groups {
-        if let Some(group) = token_group {
-            let token_group = state
-                .client
-                .token_group()
-                .find_unique(token_group::id::equals(group.id))
-                .with(
-                    token_group::tokens::fetch(vec![]).with(
-                        token::balances::fetch(vec![wallet_balance::wallet_address::equals(
-                            query.address.clone(),
-                        )])
-                        .order_by(wallet_balance::timestamp::order(Direction::Desc))
-                        .take(1),
-                    ),
-                )
-                .exec()
-                .await?;
-            info!(?token_group);
+    for group in token_groups.into_iter().flatten() {
+        let token_group = state
+            .client
+            .token_group()
+            .find_unique(token_group::id::equals(group.id))
+            .with(
+                token_group::tokens::fetch(vec![]).with(
+                    token::balances::fetch(vec![wallet_balance::wallet_address::equals(
+                        query.address.clone(),
+                    )])
+                    .order_by(wallet_balance::timestamp::order(Direction::Desc))
+                    .take(1),
+                ),
+            )
+            .exec()
+            .await?;
+        info!(?token_group);
 
-            // If the token group is not found, skip.
-            if token_group.is_none() {
-                continue;
+        // If the token group is found, assign the tokens in the token group to the pre-converted token.
+        if let Some(token_group) = token_group {
+            if let Some(token_group_tokens) = token_group.clone().tokens {
+                for token in token_group_tokens {
+                    info!(?token);
+                    if let Some(wallet_balance) = token.balances {
+                        info!(?wallet_balance);
+                        if let Some(latest_balance) = wallet_balance.first() {
+                            info!(?latest_balance);
+                            if let Some(matched_token) = tokens
+                                .iter_mut()
+                                .find(|tk| tk.group.clone().unwrap().id == token_group.clone().id)
+                            {
+                                matched_token.group =
+                                    Some(TokenGroup { id: token_group.clone().id, tokens: vec![] })
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -161,9 +178,6 @@ pub(crate) async fn v1_token_list_handler(
     // -------------------------------------------------------------------------
     // Return
     // -------------------------------------------------------------------------
-
-    // Get all of the tokens in the balances array.
-    let tokens: Vec<Token> = balances.into_iter().map(|balance| balance.into()).collect();
 
     Ok(Json::from(tokens))
 }
