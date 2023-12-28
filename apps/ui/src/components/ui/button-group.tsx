@@ -19,6 +19,10 @@ import { cn } from "@lightdotso/utils";
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 import { forwardRef } from "react";
 
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
+
 const ButtonGroup = forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>
@@ -55,5 +59,9 @@ const ButtonGroupItem = forwardRef<
   );
 });
 ButtonGroupItem.displayName = RadioGroupPrimitive.Item.displayName;
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export { ButtonGroup, ButtonGroupItem };

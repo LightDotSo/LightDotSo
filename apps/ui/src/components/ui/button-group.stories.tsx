@@ -16,6 +16,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { ButtonGroup, ButtonGroupItem } from "./button-group";
 
+// -----------------------------------------------------------------------------
+// Meta
+// -----------------------------------------------------------------------------
+
 const meta: Meta<typeof ButtonGroup> = {
   title: "ui/ButtonGroup",
   component: ButtonGroup,
@@ -24,7 +28,15 @@ const meta: Meta<typeof ButtonGroup> = {
 };
 export default meta;
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 type Story = StoryObj<typeof ButtonGroup>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
 
 export const Base: Story = {
   render: args => (
