@@ -102,15 +102,15 @@ impl PollingArgs {
 }
 
 // Run the polling for a specific chain id.
-pub async fn run_polling(args: PollingArgs, chain_id: u64, url: String, live: bool) {
+pub async fn run_polling(args: PollingArgs, chain_id: u64, url: String, live: bool) -> Result<()> {
     match live {
         true => {
-            let polling = Polling::new(&args, chain_id, url.clone(), live).await;
+            let polling = Polling::new(&args, chain_id, 2, url.clone(), live).await?;
             polling.run().await;
         }
         false => {
             loop {
-                let polling = Polling::new(&args, chain_id, url.clone(), live).await;
+                let polling = Polling::new(&args, chain_id, 2, url.clone(), live).await?;
                 polling.run().await;
 
                 // Sleep for 1 hour
@@ -118,4 +118,6 @@ pub async fn run_polling(args: PollingArgs, chain_id: u64, url: String, live: bo
             }
         }
     }
+
+    Ok(())
 }
