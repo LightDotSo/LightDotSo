@@ -26,7 +26,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 // -----------------------------------------------------------------------------
 
 const badgeVariants = cva(
-  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-border-info focus:ring-offset-2",
+  "flex items-center justify-center rounded-full border text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-border-info focus:ring-offset-2",
   {
     variants: {
       variant: {
@@ -118,10 +118,29 @@ const badgeVariants = cva(
           ["data-[variant=shadow]:text-text-purple"],
         ],
       },
+      size: {
+        sm: "h-4 min-w-[1rem] text-xs",
+        md: "h-5 min-w-[1.25rem] text-sm",
+        lg: "h-6 min-w-[1.5rem] text-base",
+      },
+      type: {
+        number: [
+          ["data-[number-single=false]:data-[size=sm]:px-1"],
+          ["data-[number-single=false]:data-[size=md]:px-2"],
+          ["data-[number-single=false]:data-[size=lg]:px-2"],
+        ],
+        text: [
+          ["data-[size=sm]:px-1.5"],
+          ["data-[size=md]:px-2"],
+          ["data-[size=lg]:px-2.5"],
+        ],
+      },
     },
     defaultVariants: {
       variant: "default",
       intent: "default",
+      size: "md",
+      type: "text",
     },
   },
 );
@@ -130,13 +149,27 @@ export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof badgeVariants> {}
 
-function Badge({ className, variant, intent, ...props }: BadgeProps) {
+function Badge({
+  className,
+  variant,
+  size,
+  type,
+  intent,
+  children,
+  ...props
+}: BadgeProps) {
   return (
     <div
-      className={cn(badgeVariants({ variant, intent }), className)}
+      className={cn(badgeVariants({ variant, intent, size, type }), className)}
+      data-number-single={
+        children?.toString().length === 1 && type === "number"
+      }
+      data-size={size ?? "md"}
       data-variant={variant ?? "default"}
       {...props}
-    />
+    >
+      {children}
+    </div>
   );
 }
 

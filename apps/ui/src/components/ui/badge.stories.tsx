@@ -110,3 +110,39 @@ export const Shadow: Story = {
     variant: "shadow",
   },
 };
+export const Size: Story = {
+  render: args => (
+    <div className="flex items-center space-x-2">
+      <Badge {...args} size="sm">
+        Small
+      </Badge>
+      <Badge {...args} size="md">
+        Medium
+      </Badge>
+      <Badge {...args} size="lg">
+        Large
+      </Badge>
+    </div>
+  ),
+  args: {
+    variant: "default",
+  },
+};
+export const Type: Story = {
+  render: args => (
+    <div className="flex items-center space-x-2">
+      <Badge {...args} type="number">
+        1
+      </Badge>
+      <Badge {...args} type="number">
+        300
+      </Badge>
+      <Badge {...args} type="text">
+        Text
+      </Badge>
+    </div>
+  ),
+  args: {
+    variant: "default",
+  },
+};
