@@ -40,7 +40,7 @@ const buttonIconVariants = cva(["px-0"], {
     },
   },
   defaultVariants: {
-    size: "sm",
+    size: "default",
   },
 });
 

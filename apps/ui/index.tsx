@@ -41,6 +41,7 @@ export {
 export { Badge, badgeVariants } from "./src/components/ui/badge";
 export { Button, buttonVariants } from "./src/components/ui/button";
 export { ButtonGroup } from "./src/components/ui/button-group";
+export { ButtonIcon } from "./src/components/ui/button-icon";
 export { Calendar } from "./src/components/ui/calendar";
 export {
   Card,

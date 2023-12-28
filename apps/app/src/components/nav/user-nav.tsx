@@ -16,7 +16,7 @@
 "use client";
 
 import {
-  Button,
+  ButtonIcon,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
@@ -70,13 +70,10 @@ export const UserNav: FC = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          className="hidden rounded-full p-2.5 md:block"
-        >
-          <GearIcon className="h-4 w-4" />
+        <ButtonIcon variant="outline" className="rounded-full">
+          <GearIcon />
           <span className="sr-only">Open user settings</span>
-        </Button>
+        </ButtonIcon>
       </DropdownMenuTrigger>
       <DropdownMenuContent forceMount className="w-56" align="end">
         <DropdownMenuGroup>
