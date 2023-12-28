@@ -22,10 +22,18 @@ import type { ComponentPropsWithoutRef, ElementRef } from "react";
 import { createContext, forwardRef, useContext } from "react";
 import { toggleVariants } from "./toggle";
 
+// -----------------------------------------------------------------------------
+// Hooks
+// -----------------------------------------------------------------------------
+
 const ToggleGroupContext = createContext<VariantProps<typeof toggleVariants>>({
   size: "default",
   variant: "default",
 });
+
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
 
 const ToggleGroup = forwardRef<
   ElementRef<typeof ToggleGroupPrimitive.Root>,
@@ -70,5 +78,9 @@ const ToggleGroupItem = forwardRef<
 });
 
 ToggleGroupItem.displayName = ToggleGroupPrimitive.Item.displayName;
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export { ToggleGroup, ToggleGroupItem };

@@ -14,22 +14,15 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { Plus } from "lucide-react";
-import { Button } from "./button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-  TooltipProvider,
-} from "./tooltip";
+import { Toggle } from "./toggle";
 
 // -----------------------------------------------------------------------------
 // Meta
 // -----------------------------------------------------------------------------
 
-const meta: Meta<typeof Tooltip> = {
-  title: "ui/Tooltip",
-  component: Tooltip,
+const meta: Meta<typeof Toggle> = {
+  title: "ui/Toggle",
+  component: Toggle,
   tags: ["autodocs"],
   argTypes: {},
 };
@@ -39,7 +32,7 @@ export default meta;
 // Types
 // -----------------------------------------------------------------------------
 
-type Story = StoryObj<typeof Tooltip>;
+type Story = StoryObj<typeof Toggle>;
 
 // -----------------------------------------------------------------------------
 // Story
@@ -47,19 +40,13 @@ type Story = StoryObj<typeof Tooltip>;
 
 export const Base: Story = {
   render: args => (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button variant="outline" className="w-10 rounded-full p-0">
-            <Plus className="h-4 w-4" />
-            <span className="sr-only">Add</span>
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Add to library</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <div className="flex items-center space-x-4">
+      <Toggle className="h-12 w-12 rounded-full" />
+      <div className="space-y-2">
+        <Toggle className="h-4 w-[250px]" />
+        <Toggle className="h-4 w-[200px]" />
+      </div>
+    </div>
   ),
   args: {},
 };

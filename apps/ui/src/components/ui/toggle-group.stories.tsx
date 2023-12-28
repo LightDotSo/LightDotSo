@@ -14,22 +14,15 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { Plus } from "lucide-react";
-import { Button } from "./button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-  TooltipProvider,
-} from "./tooltip";
+import { ToggleGroup, ToggleGroupItem } from "./toggle-group";
 
 // -----------------------------------------------------------------------------
 // Meta
 // -----------------------------------------------------------------------------
 
-const meta: Meta<typeof Tooltip> = {
-  title: "ui/Tooltip",
-  component: Tooltip,
+const meta: Meta<typeof ToggleGroup> = {
+  title: "ui/ToggleGroup",
+  component: ToggleGroup,
   tags: ["autodocs"],
   argTypes: {},
 };
@@ -39,7 +32,7 @@ export default meta;
 // Types
 // -----------------------------------------------------------------------------
 
-type Story = StoryObj<typeof Tooltip>;
+type Story = StoryObj<typeof ToggleGroup>;
 
 // -----------------------------------------------------------------------------
 // Story
@@ -47,19 +40,11 @@ type Story = StoryObj<typeof Tooltip>;
 
 export const Base: Story = {
   render: args => (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button variant="outline" className="w-10 rounded-full p-0">
-            <Plus className="h-4 w-4" />
-            <span className="sr-only">Add</span>
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Add to library</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <ToggleGroup type="single">
+      <ToggleGroupItem value="a">A</ToggleGroupItem>
+      <ToggleGroupItem value="b">B</ToggleGroupItem>
+      <ToggleGroupItem value="c">C</ToggleGroupItem>
+    </ToggleGroup>
   ),
   args: {},
 };

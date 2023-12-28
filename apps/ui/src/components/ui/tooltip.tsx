@@ -19,6 +19,10 @@ import { cn } from "@lightdotso/utils";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { forwardRef } from "react";
 
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
+
 const TooltipProvider = TooltipPrimitive.Provider;
 
 const Tooltip = TooltipPrimitive.Root;
@@ -40,5 +44,9 @@ const TooltipContent = forwardRef<
   />
 ));
 TooltipContent.displayName = TooltipPrimitive.Content.displayName;
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };

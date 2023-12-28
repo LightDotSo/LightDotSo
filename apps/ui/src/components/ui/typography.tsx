@@ -18,6 +18,10 @@
 import { cn } from "@lightdotso/utils";
 import { forwardRef } from "react";
 
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
+
 const H1 = forwardRef<HTMLHeadingElement, React.ComponentPropsWithoutRef<"h1">>(
   ({ className, ...props }, ref) => (
     <h1
@@ -224,6 +228,10 @@ const Subtle = forwardRef<
 >(({ className, ...props }, ref) => (
   <p ref={ref} className={cn("text-sm text-text-weak", className)} {...props} />
 ));
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export {
   H1,
