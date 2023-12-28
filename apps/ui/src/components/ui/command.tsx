@@ -22,6 +22,10 @@ import { Command as CommandPrimitive } from "cmdk";
 import { forwardRef } from "react";
 import { Dialog, DialogPortal, DialogOverlay, DialogContent } from "./dialog";
 
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
+
 const Command = forwardRef<
   React.ElementRef<typeof CommandPrimitive>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive>
@@ -162,6 +166,10 @@ const CommandShortcut = ({
   );
 };
 CommandShortcut.displayName = "CommandShortcut";
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export {
   Command,

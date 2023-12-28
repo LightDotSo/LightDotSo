@@ -20,6 +20,10 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 import { forwardRef } from "react";
 
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
+
 const Dialog = DialogPrimitive.Root;
 
 const DialogTrigger = DialogPrimitive.Trigger;
@@ -122,6 +126,10 @@ const DialogDescription = forwardRef<
   />
 ));
 DialogDescription.displayName = DialogPrimitive.Description.displayName;
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export {
   Dialog,

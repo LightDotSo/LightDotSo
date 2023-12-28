@@ -20,6 +20,10 @@ import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
 import { Check, ChevronRight, Circle } from "lucide-react";
 import { forwardRef } from "react";
 
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
+
 const ContextMenu = ContextMenuPrimitive.Root;
 
 const ContextMenuTrigger = ContextMenuPrimitive.Trigger;
@@ -194,6 +198,10 @@ const ContextMenuShortcut = ({
   );
 };
 ContextMenuShortcut.displayName = "ContextMenuShortcut";
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export {
   ContextMenu,

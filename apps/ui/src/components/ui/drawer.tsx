@@ -25,6 +25,10 @@ import type {
 import { forwardRef } from "react";
 import { Drawer as DrawerPrimitive } from "vaul";
 
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
+
 const Drawer = ({
   shouldScaleBackground = true,
   ...props
@@ -123,6 +127,10 @@ const DrawerDescription = forwardRef<
   />
 ));
 DrawerDescription.displayName = DrawerPrimitive.Description.displayName;
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export {
   Drawer,
