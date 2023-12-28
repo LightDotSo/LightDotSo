@@ -14,7 +14,15 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { Command } from "./command";
+import {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "./command";
 
 // -----------------------------------------------------------------------------
 // Meta
@@ -40,6 +48,18 @@ type Story = StoryObj<typeof Command>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: () => <Command />,
+  render: () => (
+    <CommandDialog open={true}>
+      <CommandInput placeholder="Type a command or search..." />
+      <CommandList>
+        <CommandEmpty>No results found.</CommandEmpty>
+        <CommandGroup heading="Suggestions">
+          <CommandItem>Calendar</CommandItem>
+          <CommandItem>Search Emoji</CommandItem>
+          <CommandItem>Calculator</CommandItem>
+        </CommandGroup>
+      </CommandList>
+    </CommandDialog>
+  ),
   args: {},
 };
