@@ -40,7 +40,7 @@ export {
 } from "./src/components/ui/avatar";
 export { Badge, badgeVariants } from "./src/components/ui/badge";
 export { Button, buttonVariants } from "./src/components/ui/button";
-export { ButtonGroup, ButtonGroupItem } from "./src/components/ui/button-group";
+export { ButtonGroup } from "./src/components/ui/button-group";
 export { Calendar } from "./src/components/ui/calendar";
 export {
   Card,

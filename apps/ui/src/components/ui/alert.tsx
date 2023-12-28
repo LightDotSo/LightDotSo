@@ -17,6 +17,10 @@ import { cn } from "@lightdotso/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 import { forwardRef } from "react";
 
+// -----------------------------------------------------------------------------
+// Styles
+// -----------------------------------------------------------------------------
+
 const alertVariants = cva(
   "relative w-full rounded-lg border p-4 [&:has(svg)]:pl-11 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-text",
   {
@@ -42,6 +46,10 @@ const alertVariants = cva(
     },
   },
 );
+
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
 
 const Alert = forwardRef<
   HTMLDivElement,
@@ -81,5 +89,9 @@ const AlertDescription = forwardRef<
   />
 ));
 AlertDescription.displayName = "AlertDescription";
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export { Alert, AlertTitle, AlertDescription };

@@ -14,7 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { ButtonGroup, ButtonGroupItem } from "./button-group";
+import { Button } from "./button";
+import { ButtonGroup } from "./button-group";
 
 // -----------------------------------------------------------------------------
 // Meta
@@ -41,9 +42,9 @@ type Story = StoryObj<typeof ButtonGroup>;
 export const Base: Story = {
   render: args => (
     <ButtonGroup {...args}>
-      <ButtonGroupItem value="low">Low</ButtonGroupItem>
-      <ButtonGroupItem value="medium">Medium</ButtonGroupItem>
-      <ButtonGroupItem value="high">High</ButtonGroupItem>
+      <Button>First</Button>
+      <Button>Second</Button>
+      <Button>Third</Button>
     </ButtonGroup>
   ),
   args: {},
