@@ -38,6 +38,18 @@ type Story = StoryObj<typeof Badge>;
 // Story
 // -----------------------------------------------------------------------------
 
+export const Single: Story = {
+  render: args => (
+    <div>
+      <Badge {...args} intent="default">
+        Default
+      </Badge>
+    </div>
+  ),
+  args: {
+    variant: "default",
+  },
+};
 export const Default: Story = {
   render: args => (
     <div className="flex items-center space-x-2">
