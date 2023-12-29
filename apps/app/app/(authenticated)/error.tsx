@@ -32,7 +32,7 @@ interface ErrorProps {
 
 export default function Error({ error, reset }: ErrorProps) {
   // ---------------------------------------------------------------------------
-  // Hooks
+  // Effect Hooks
   // ---------------------------------------------------------------------------
 
   useEffect(() => {

@@ -37,6 +37,10 @@ export const TokenCardChain: FC<TokenCardChainProps> = ({
   // Render
   // ---------------------------------------------------------------------------
 
+  if (chain_id === 0) {
+    return null;
+  }
+
   return (
     <div className="flex items-center space-x-1.5">
       <ChainLogo className="h-6 w-6" chainId={chain_id} />

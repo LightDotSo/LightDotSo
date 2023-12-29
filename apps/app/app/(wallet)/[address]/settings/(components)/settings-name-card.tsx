@@ -257,7 +257,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   }
 
   // ---------------------------------------------------------------------------
-  // Hooks
+  // Effect Hooks
   // ---------------------------------------------------------------------------
 
   const delayedIsSuccess = useDelayedValue<boolean>(isSuccess, false, 3000);

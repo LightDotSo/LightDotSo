@@ -23,6 +23,7 @@ import {
   TableHeader,
   TableRow,
 } from "@lightdotso/ui";
+import { cn } from "@lightdotso/utils";
 import {
   flexRender,
   getCoreRowModel,
@@ -117,7 +118,7 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
   });
 
   // ---------------------------------------------------------------------------
-  // Hooks
+  // Effect Hooks
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
@@ -146,6 +147,11 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
     table.getColumn("actions")?.getIsVisible(),
     setTokenTable,
   ]);
+
+  useEffect(() => {
+    table.toggleAllRowsExpanded();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -176,6 +182,7 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
           table.getRowModel().rows.map(row => (
             <TableRow
               key={row.id}
+              className={cn(row.getCanExpand() && "cursor-pointer")}
               data-state={row.getIsSelected() && "selected"}
               onClick={() => {
                 if (row.getCanExpand()) {

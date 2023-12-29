@@ -24,6 +24,7 @@ import {
   TableHeader,
   TableRow,
 } from "@lightdotso/ui";
+import { cn } from "@lightdotso/utils";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import {
   flexRender,
@@ -36,7 +37,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import type { FC } from "react";
+import { useEffect, type FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/columns";
 import { TableEmpty } from "@/components/state/table-empty";
@@ -160,6 +161,15 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
   });
 
   // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    table.toggleAllRowsExpanded();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -191,6 +201,7 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
             .map(row => (
               <TableRow
                 key={row.id}
+                className={cn(row.getCanExpand() && "cursor-pointer")}
                 data-state={row.getIsSelected() && "selected"}
                 onClick={() => {
                   if (row.getCanExpand()) {
