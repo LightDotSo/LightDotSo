@@ -181,7 +181,7 @@ pub(crate) async fn v1_token_list_handler(
                     token::balances::fetch(vec![wallet_balance::wallet_address::equals(
                         query.address.clone(),
                     )])
-                    .with(wallet_balance::token::fetch().with(token::group::fetch()))
+                    .with(wallet_balance::token::fetch())
                     .order_by(wallet_balance::timestamp::order(Direction::Desc))
                     .take(1),
                 ),

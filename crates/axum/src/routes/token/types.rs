@@ -15,7 +15,7 @@
 
 #![allow(clippy::unwrap_used)]
 
-use lightdotso_prisma::{token, token_group, wallet_balance};
+use lightdotso_prisma::{token, wallet_balance};
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
@@ -86,11 +86,8 @@ impl From<wallet_balance::Data> for Token {
             decimals: balance.token.clone().unwrap().unwrap().decimals,
             amount: balance.amount.unwrap(),
             balance_usd: balance.balance_usd,
-            group: balance.token.clone().unwrap().unwrap().group.map(|group| TokenGroup {
-                id: group
-                    .unwrap_or(Box::new(token_group::Data { id: "".to_string(), tokens: None }))
-                    .id,
-                tokens: vec![],
+            group: balance.token.clone().unwrap().unwrap().group.and_then(|group| {
+                group.map(|group_data| TokenGroup { id: group_data.id, tokens: vec![] })
             }),
         }
     }
