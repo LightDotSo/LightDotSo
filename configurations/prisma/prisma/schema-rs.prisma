@@ -14,17 +14,35 @@ datasource db {
 // -----------------------------------------------------------------------------
 
 model Account {
-  id                 String    @id @default(cuid())
-  userId             String
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Auth Fields
+  // ---------------------------------------------------------------------------
+
   providerType       String
   providerId         String
   providerAccountId  String
   refreshToken       String?
   accessToken        String?
   accessTokenExpires DateTime?
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
-  user               User      @relation(fields: [userId], references: [id])
+
+  // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
 
   @@unique([providerId, providerAccountId])
   @@index([userId])
@@ -35,15 +53,32 @@ model Account {
 // -----------------------------------------------------------------------------
 
 model Session {
-  id           String   @id @default(cuid())
-  userId       String
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Auth Fields
+  // ---------------------------------------------------------------------------
+
   expires      DateTime
   sessionToken String   @unique
   accessToken  String   @unique
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
 
   @@index([userId])
 }
@@ -53,17 +88,39 @@ model Session {
 // -----------------------------------------------------------------------------
 
 model User {
-  id            String    @id @default(cuid())
-  address       String    @unique
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Auth Fields
+  // ---------------------------------------------------------------------------
+
   name          String?
   email         String?   @unique
   emailVerified DateTime?
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  address String @unique
+
+  // ---------------------------------------------------------------------------
+  // Auth Many-to-many
+  // ---------------------------------------------------------------------------
 
   accounts Account[]
   sessions Session[]
+
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
 
   activities    Activity[]
   owners        Owner[]
@@ -78,12 +135,25 @@ model User {
 // -----------------------------------------------------------------------------
 
 model VerificationRequest {
-  id         String   @id @default(cuid())
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Auth Fields
+  // ---------------------------------------------------------------------------
+
   identifier String
   token      String   @unique
   expires    DateTime
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
 
   @@unique([identifier, token])
 }
@@ -93,14 +163,31 @@ model VerificationRequest {
 // -----------------------------------------------------------------------------
 
 model Wallet {
-  address        String   @id
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  address   String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
   salt           String
   factoryAddress String
-  name           String   @default("")
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  name           String @default("")
+
+  // ---------------------------------------------------------------------------
+  // One-to-one
+  // ---------------------------------------------------------------------------
 
   walletSettings WalletSettings?
+
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
 
   activities         Activity[]
   configurations     Configuration[]
@@ -118,16 +205,36 @@ model Wallet {
 // -----------------------------------------------------------------------------
 
 model WalletSettings {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
   isEnabledTestnet Boolean @default(false)
+
+  // ---------------------------------------------------------------------------
+  // One-to-one
+  // ---------------------------------------------------------------------------
 
   wallet        Wallet @relation(fields: [walletAddress], references: [address])
   walletAddress String @unique
 
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
   activities Activity[]
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
 
   @@index([walletAddress])
 }
@@ -137,14 +244,32 @@ model WalletSettings {
 // -----------------------------------------------------------------------------
 
 model Configuration {
-  id         String @id @default(cuid())
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
   address    String
   checkpoint BigInt
   imageHash  String
   threshold  BigInt
 
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
   owners  Owner[]
   wallets Wallet[]
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
 
   @@unique([address, checkpoint])
 }
@@ -154,12 +279,25 @@ model Configuration {
 // -----------------------------------------------------------------------------
 
 model Owner {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
   id        String   @id @default(cuid())
-  address   String
-  weight    BigInt
-  index     Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  address String
+  weight  BigInt
+  index   Int
+
+  // ---------------------------------------------------------------------------
+  // One-to-one
+  // ---------------------------------------------------------------------------
 
   configuration   Configuration @relation(fields: [configurationId], references: [id])
   configurationId String
@@ -167,7 +305,15 @@ model Owner {
   user   User?   @relation(fields: [userId], references: [id])
   userId String?
 
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
   signatures Signature[]
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
 
   @@index([configurationId])
   @@index([userId])
@@ -178,8 +324,23 @@ model Owner {
 // -----------------------------------------------------------------------------
 
 model Interpretation {
-  id     String               @id @default(cuid())
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
   action InterpretationAction
+
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
 
   assetChanges AssetChange[]
   simulations  Simulation[]
@@ -187,6 +348,10 @@ model Interpretation {
 }
 
 enum InterpretationAction {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
+
   DEPOSIT
   WITHDRAW
   TRANSFER
@@ -198,17 +363,33 @@ enum InterpretationAction {
 }
 
 model AssetChange {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
   id String @id @default(cuid())
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
 
   amount         BigInt
   previousAmount BigInt
   newAmount      BigInt
+
+  // ---------------------------------------------------------------------------
+  // One-to-one
+  // ---------------------------------------------------------------------------
 
   token   Token?  @relation(fields: [tokenId], references: [id])
   tokenId String?
 
   interpretation   Interpretation @relation(fields: [interpretationId], references: [id])
   interpretationId String
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
 
   @@index([interpretationId])
   @@index([tokenId])
@@ -219,15 +400,27 @@ model AssetChange {
 // -----------------------------------------------------------------------------
 
 model Simulation {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // One-to-one
+  // ---------------------------------------------------------------------------
 
   interpretation   Interpretation @relation(fields: [interpretationId], references: [id])
   interpretationId String
 
   userOperation     UserOperation? @relation(fields: [userOperationHash], references: [hash])
   userOperationHash String?
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
 
   @@index([interpretationId])
   @@index([userOperationHash])
@@ -240,6 +433,10 @@ model Simulation {
 /// ethers-rs Log struct converted to Prisma model.
 /// From: https://github.com/gakonst/ethers-rs/blob/e8514a7bdbe7e05a16c5e6b994cfc5cab22a1076/ethers-core/src/types/log.rs#L6-L62
 model Log {
+  // ---------------------------------------------------------------------------
+  // Eth
+  // ---------------------------------------------------------------------------
+
   id                  String     @id @default(cuid())
   /// H160. the contract that emitted the log
   /// pub address: Address
@@ -280,9 +477,18 @@ model Log {
   /// pub removed: Option<bool>
   removed             Boolean?
 
-  receipt           Receipt?       @relation(fields: [transactionHash], references: [transactionHash])
+  // ---------------------------------------------------------------------------
+  // Eth One-to-one
+  // ---------------------------------------------------------------------------
+
+  receipt Receipt? @relation(fields: [transactionHash], references: [transactionHash])
+
   userOperation     UserOperation? @relation(fields: [userOperationHash], references: [hash])
   userOperationHash String?
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
 
   @@unique([transactionHash, logIndex])
   @@index([transactionHash])
@@ -290,11 +496,23 @@ model Log {
 }
 
 model LogTopic {
+  // ---------------------------------------------------------------------------
+  // Eth
+  // ---------------------------------------------------------------------------
+
   /// H256 + index of the topic (0-3)
   /// The concatenated id is separated by a hyphen
   id String @id
 
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
   logs Log[]
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
 
   @@index([id])
 }
@@ -306,6 +524,10 @@ model LogTopic {
 /// ethers-rs TransactionReceipt struct converted to Prisma model.
 /// From: https://github.com/gakonst/ethers-rs/blob/e8514a7bdbe7e05a16c5e6b994cfc5cab22a1076/ethers-core/src/types/transaction/response.rs#L388-440
 model Receipt {
+  // ---------------------------------------------------------------------------
+  // Eth
+  // ---------------------------------------------------------------------------
+
   /// Transaction hash.
   /// pub transaction_hash: H256
   transactionHash   String  @id
@@ -358,7 +580,15 @@ model Receipt {
   /// pub logs: Vec<Log>
   logs Log[]
 
+  // ---------------------------------------------------------------------------
+  // Eth One-to-one
+  // ---------------------------------------------------------------------------
+
   transaction Transaction? @relation(fields: [transactionHash], references: [hash])
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
 
   @@index([transactionHash])
 }
@@ -370,6 +600,10 @@ model Receipt {
 /// ethers-rs Transactionstruct converted to Prisma model.
 /// From: https://github.com/gakonst/ethers-rs/blob/e8514a7bdbe7e05a16c5e6b994cfc5cab22a1076/ethers-core/src/types/transaction/response.rs#L17-L123
 model Transaction {
+  // ---------------------------------------------------------------------------
+  // Eth
+  // ---------------------------------------------------------------------------
+
   /// The transaction's hash
   /// pub hash: H256
   hash                 String  @id
@@ -440,12 +674,19 @@ model Transaction {
   /// pub max_fee_per_gas: Option<U256>
   maxFeePerGas         BigInt?
 
+  // ---------------------------------------------------------------------------
+  // Custom Fields
+  // ---------------------------------------------------------------------------
+
   /// pub chain_id: Option<U256>
   chainId   BigInt
   timestamp DateTime
   trace     Json
+  isTestnet Boolean  @default(false)
 
-  isTestnet Boolean @default(false)
+  // ---------------------------------------------------------------------------
+  // Eth One-to-one
+  // ---------------------------------------------------------------------------
 
   wallet        Wallet? @relation(fields: [walletAddress], references: [address])
   walletAddress String?
@@ -462,7 +703,15 @@ model Transaction {
   interpretation   Interpretation? @relation(fields: [interpretationId], references: [id])
   interpretationId String?
 
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
   userOperations UserOperation[]
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
 
   @@index([walletAddress])
   @@index([interpretationId])
@@ -474,6 +723,10 @@ model Transaction {
 
 /// From the official implementation at: https://eips.ethereum.org/EIPS/eip-4337
 model UserOperation {
+  // ---------------------------------------------------------------------------
+  // Eth
+  // ---------------------------------------------------------------------------
+
   /// The userOperation's hash
   /// pub hash: H256
   hash                 String @id
@@ -520,6 +773,10 @@ model UserOperation {
 
   logs Log[]
 
+  // ---------------------------------------------------------------------------
+  // Eth One-to-one
+  // ---------------------------------------------------------------------------
+
   paymaster   Paymaster? @relation(fields: [paymasterId], references: [id])
   paymasterId String?
 
@@ -533,14 +790,22 @@ model UserOperation {
   walletAddress String
 
   // ---------------------------------------------------------------------------
-  // Metadata
+  // Metadata One-to-one
   // ---------------------------------------------------------------------------
 
   activity   Activity? @relation(fields: [activityId], references: [id])
   activityId String?   @unique
 
+  // ---------------------------------------------------------------------------
+  // Metadata Many-to-many
+  // ---------------------------------------------------------------------------
+
   signatures  Signature[]
   simulations Simulation[]
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
 
   @@index([chainId, walletAddress])
   @@index([transactionHash])
@@ -563,24 +828,54 @@ enum UserOperationStatus {
 // -----------------------------------------------------------------------------
 
 model Paymaster {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  address   String
-  chainId   BigInt
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  address String
+  chainId BigInt
+
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
 
   userOperations      UserOperation[]
   paymasterOperations PaymasterOperation[]
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
 
   @@unique([address, chainId])
 }
 
 model PaymasterOperation {
-  id          String   @id @default(cuid())
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id String @id @default(cuid())
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
   sender      String
   senderNonce BigInt
   validUntil  DateTime
   validAfter  DateTime
+
+  // ---------------------------------------------------------------------------
+  // One-to-one
+  // ---------------------------------------------------------------------------
 
   paymaster   Paymaster @relation(fields: [paymasterId], references: [id])
   paymasterId String
@@ -588,6 +883,10 @@ model PaymasterOperation {
   userOperation UserOperation?
 
   wallet Wallet @relation(fields: [sender], references: [address])
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
 
   @@unique([validAfter, paymasterId])
   @@index([paymasterId])
@@ -599,12 +898,25 @@ model PaymasterOperation {
 // -----------------------------------------------------------------------------
 
 model Signature {
-  id            String             @id @default(cuid())
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
   signature     Bytes
   signatureType Int
-  createdAt     DateTime           @default(now())
-  updatedAt     DateTime           @updatedAt
   procedure     SignatureProcedure
+
+  // ---------------------------------------------------------------------------
+  // One-to-one
+  // ---------------------------------------------------------------------------
 
   owner   Owner  @relation(fields: [ownerId], references: [id])
   ownerId String
@@ -613,7 +925,7 @@ model Signature {
   userOperationHash String        @unique
 
   // ---------------------------------------------------------------------------
-  // Metadata
+  // Mappings
   // ---------------------------------------------------------------------------
 
   @@index([ownerId])
@@ -631,7 +943,16 @@ enum SignatureProcedure {
 // -----------------------------------------------------------------------------
 
 model Token {
-  id       String    @id @default(cuid())
+  // ---------------------------------------------------------------------------
+  // Cores
+  // ---------------------------------------------------------------------------
+
+  id String @id @default(cuid())
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
   type     TokenType @default(ERC_20)
   symbol   String
   name     String?
@@ -640,30 +961,67 @@ model Token {
   decimals Int
   tokenId  BigInt?
 
+  // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  group   TokenGroup? @relation(fields: [groupId], references: [id])
+  groupId String?
+
+  // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
   assetChanges AssetChange[]
   balances     WalletBalance[]
   prices       TokenPrice[]
 
-  group   TokenGroup? @relation(fields: [groupId], references: [id])
-  groupId String?
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
 
   @@unique([address, chainId, tokenId])
   @@index([groupId])
 }
 
 model TokenGroup {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
   id String @id @default(cuid())
+
+  // ---------------------------------------------------------------------------
+  // Many-to-one
+  // ---------------------------------------------------------------------------
 
   tokens Token[]
 }
 
 model TokenPrice {
-  id        String   @id @default(cuid())
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id String @id @default(cuid())
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
   price     Float
   timestamp DateTime @default(now())
 
+  // ---------------------------------------------------------------------------
+  // One-to-one
+  // ---------------------------------------------------------------------------
+
   token   Token  @relation(fields: [tokenId], references: [id])
   tokenId String
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
 
   @@index([tokenId])
 }
@@ -690,7 +1048,16 @@ enum TokenType {
 // }
 
 model WalletBalance {
-  id         String   @id @default(cuid())
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id String @id @default(cuid())
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
   balanceUSD Float
   // rewardUSD  Float?
   // debtUSD    Float?
@@ -707,6 +1074,10 @@ model WalletBalance {
   isSpam     Boolean  @default(false)
   isTestnet  Boolean  @default(false)
 
+  // ---------------------------------------------------------------------------
+  // One-to-one
+  // ---------------------------------------------------------------------------
+
   token   Token?  @relation(fields: [tokenId], references: [id])
   tokenId String?
 
@@ -715,6 +1086,10 @@ model WalletBalance {
 
   wallet        Wallet @relation(fields: [walletAddress], references: [address])
   walletAddress String
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
 
   // @@index([protocolId])
   @@index([tokenId])
@@ -728,8 +1103,16 @@ model WalletBalance {
 // -----------------------------------------------------------------------------
 
 model Activity {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
   id        String   @id @default(cuid())
   timestamp DateTime @default(now())
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
 
   entity    ActivityEntity
   operation ActivityOperation
@@ -767,6 +1150,10 @@ model Activity {
   userOperation UserOperation?
   transaction   Transaction?
 
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
   @@index([inviteCodeId])
   @@index([supportRequestId])
   @@index([walletSettingsId])
@@ -775,6 +1162,10 @@ model Activity {
 }
 
 enum ActivityEntity {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
+
   WALLET
   USER
 
@@ -789,6 +1180,10 @@ enum ActivityEntity {
 }
 
 enum ActivityOperation {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
+
   CREATE
   UPDATE
   DELETE
@@ -799,11 +1194,24 @@ enum ActivityOperation {
 // -----------------------------------------------------------------------------
 
 model Notification {
-  id           String    @id @default(cuid())
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
   readAt       DateTime?
   readDeviceId String?
+
+  // ---------------------------------------------------------------------------
+  // One-to-one
+  // ---------------------------------------------------------------------------
 
   activity   Activity? @relation(fields: [activityId], references: [id])
   activityId String?   @unique
@@ -813,6 +1221,10 @@ model Notification {
 
   wallet        Wallet? @relation(fields: [walletAddress], references: [address])
   walletAddress String?
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
 
   @@index([activityId])
   @@index([userId])
@@ -824,17 +1236,34 @@ model Notification {
 // -----------------------------------------------------------------------------
 
 model Feedback {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  text      String
-  emoji     String
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  text  String
+  emoji String
+
+  // ---------------------------------------------------------------------------
+  // One-to-one
+  // ---------------------------------------------------------------------------
 
   user   User   @relation(fields: [userId], references: [id])
   userId String
 
   activity   Activity? @relation(fields: [activityId], references: [id])
   activityId String?   @unique
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
 
   @@index([userId])
   @@index([activityId])
@@ -845,22 +1274,46 @@ model Feedback {
 // -----------------------------------------------------------------------------
 
 enum InviteCodeStatus {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
+
   ACTIVE
   USED
 }
 
 model InviteCode {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
   code   String           @unique
   status InviteCodeStatus @default(ACTIVE)
+
+  // ---------------------------------------------------------------------------
+  // One-to-one
+  // ---------------------------------------------------------------------------
 
   user   User   @relation(fields: [userId], references: [id])
   userId String
 
+  // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
   activities Activity[]
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
 
   @@index([userId])
 }
@@ -870,24 +1323,49 @@ model InviteCode {
 // -----------------------------------------------------------------------------
 
 model SupportRequest {
-  id          String               @id @default(cuid())
-  createdAt   DateTime             @default(now())
-  updatedAt   DateTime             @updatedAt
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
   title       String
   description String
   area        String
   severity    Int
   status      SupportRequestStatus @default(OPEN)
 
+  // ---------------------------------------------------------------------------
+  // One-to-one
+  // ---------------------------------------------------------------------------
+
   wallet        Wallet @relation(fields: [walletAddress], references: [address])
   walletAddress String
 
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
   activities Activity[]
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
 
   @@index([walletAddress])
 }
 
 enum SupportRequestStatus {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
+
   OPEN
   ACTIVE
   CLOSED
