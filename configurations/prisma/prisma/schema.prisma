@@ -742,6 +742,7 @@ model Transaction {
   // ---------------------------------------------------------------------------
 
   @@index([walletAddress])
+  @@index([activityId])
   @@index([interpretationId])
 }
 
@@ -835,10 +836,10 @@ model UserOperation {
   // Mappings
   // ---------------------------------------------------------------------------
 
-  @@index([chainId, walletAddress])
-  @@index([transactionHash])
+  @@index([walletAddress, status, isTestnet])
   @@index([paymasterId])
   @@index([paymasterOperationId])
+  @@index([transactionHash])
   @@index([walletAddress])
   @@index([activityId])
 }
@@ -926,6 +927,7 @@ model PaymasterOperation {
 
   @@unique([validAfter, paymasterId])
   @@index([paymasterId])
+  @@index([sender])
   @@index([sender, senderNonce])
 }
 
@@ -1135,11 +1137,10 @@ model WalletBalance {
   // Mappings
   // ---------------------------------------------------------------------------
 
-  // @@index([protocolId])
+  @@index([walletAddress, chainId, amount, isLatest, isSpam, isTestnet])
   @@index([tokenId])
+  // @@index([protocolId])
   @@index([walletAddress])
-  @@index([timestamp])
-  @@index([chainId])
 }
 
 // -----------------------------------------------------------------------------
@@ -1198,11 +1199,11 @@ model Activity {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  @@index([userId])
+  @@index([walletAddress])
   @@index([inviteCodeId])
   @@index([supportRequestId])
   @@index([walletSettingsId])
-  @@index([userId])
-  @@index([walletAddress])
 }
 
 enum ActivityEntity {
