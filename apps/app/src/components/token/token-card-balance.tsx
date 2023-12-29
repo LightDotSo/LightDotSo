@@ -30,15 +30,11 @@ type TokenCardBalanceProps = { token: TokenData };
 // -----------------------------------------------------------------------------
 
 export const TokenCardBalance: FC<TokenCardBalanceProps> = ({
-  token: { chain_id, balance_usd },
+  token: { balance_usd },
 }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
-
-  if (chain_id === 0) {
-    return null;
-  }
 
   return (
     <Number value={balance_usd} prefix="$" variant="neutral" size="balance" />

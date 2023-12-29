@@ -15,7 +15,9 @@
 
 "use client";
 
+import { ButtonIcon } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
+import { ChevronRightIcon } from "lucide-react";
 import type { FC } from "react";
 import { TokenImage } from "@/components/token/token-image";
 import type { TokenData } from "@/data";
@@ -24,7 +26,11 @@ import type { TokenData } from "@/data";
 // Props
 // -----------------------------------------------------------------------------
 
-type TokenCardTokenProps = { token: TokenData; expanded?: boolean };
+type TokenCardTokenProps = {
+  token: TokenData;
+  canExpand?: boolean;
+  isExpanded?: boolean;
+};
 
 // -----------------------------------------------------------------------------
 // Component
@@ -32,14 +38,27 @@ type TokenCardTokenProps = { token: TokenData; expanded?: boolean };
 
 export const TokenCardToken: FC<TokenCardTokenProps> = ({
   token,
-  expanded,
+  canExpand,
+  isExpanded,
 }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <div className={cn("flex items-center space-x-3", expanded && "pl-2")}>
+    <div className="flex items-center space-x-3">
+      <ButtonIcon
+        className={cn("bg-background-strong", !canExpand && "opacity-0")}
+        variant="ghost"
+        size="sm"
+      >
+        <ChevronRightIcon
+          className={cn(
+            "w-4 h-4 transition-all duration-200",
+            isExpanded && "rotate-90 ",
+          )}
+        />
+      </ButtonIcon>
       <TokenImage token={token} />
       <div className="flex flex-col space-y-1.5">
         <span className="text-sm text-text">{token.name ?? token.symbol}</span>
