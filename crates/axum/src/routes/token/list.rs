@@ -114,6 +114,7 @@ pub(crate) async fn v1_token_list_handler(
         .take(query.limit.unwrap_or(10))
         .exec()
         .await?;
+    info!(?balances);
 
     // Deduplicate the balances that have the same token group id.
     let balances = balances
@@ -180,6 +181,7 @@ pub(crate) async fn v1_token_list_handler(
                     token::balances::fetch(vec![wallet_balance::wallet_address::equals(
                         query.address.clone(),
                     )])
+                    .with(wallet_balance::token::fetch())
                     .order_by(wallet_balance::timestamp::order(Direction::Desc))
                     .take(1),
                 ),
@@ -260,9 +262,14 @@ pub(crate) async fn v1_token_list_handler(
         if let Some(group) = &token.group {
             // Get the total balance of the token group.
             let total_balance = group.tokens.iter().fold(0.0, |acc, token| acc + token.balance_usd);
+            // Get the total amount of the token group.
+            let total_amount = group.tokens.iter().fold(0, |acc, token| acc + token.amount);
 
             // Modify the root token to be the culmative sum of the token group.
             token.balance_usd = total_balance;
+            token.amount = total_amount;
+            // Modify the chain id to be 0, since the token group is not associated with a chain.
+            token.chain_id = 0;
         }
     }
 
