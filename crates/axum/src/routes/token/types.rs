@@ -69,7 +69,7 @@ impl From<token::Data> for Token {
             decimals: token.decimals,
             amount: 0,
             balance_usd: 0.0,
-            group: token.group.map(|group| TokenGroup { id: group.unwrap().id, tokens: vec![] }),
+            group: None,
         }
     }
 }
