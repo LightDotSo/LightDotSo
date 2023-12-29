@@ -193,12 +193,12 @@ model Owner {
 }
 
 // -----------------------------------------------------------------------------
-// Category
+// Interpretation
 // -----------------------------------------------------------------------------
 
-model Category {
-  id     String         @id @default(cuid())
-  action CategoryAction
+model Interpretation {
+  id     String               @id @default(cuid())
+  action InterpretationAction
 
   transaction     Transaction @relation(fields: [transactionHash], references: [hash])
   transactionHash String
@@ -206,11 +206,13 @@ model Category {
   userOperation     UserOperation @relation(fields: [userOperationHash], references: [hash])
   userOperationHash String
 
+  assetChanges AssetChanges[]
+
   @@index([transactionHash])
   @@index([userOperationHash])
 }
 
-enum CategoryAction {
+enum InterpretationAction {
   DEPOSIT
   WITHDRAW
   TRANSFER
@@ -218,6 +220,23 @@ enum CategoryAction {
   MINT
   RECEIVE
   SWAP
+}
+
+model AssetChanges {
+  id String @id @default(cuid())
+
+  amount         BigInt
+  previousAmount BigInt
+  newAmount      BigInt
+
+  token   Token?  @relation(fields: [tokenId], references: [id])
+  tokenId String?
+
+  interpretation   Interpretation @relation(fields: [interpretationId], references: [id])
+  interpretationId String
+
+  @@index([interpretationId])
+  @@index([tokenId])
 }
 
 // -----------------------------------------------------------------------------
@@ -446,8 +465,8 @@ model Transaction {
   activity   Activity? @relation(fields: [activityId], references: [id])
   activityId String?   @unique
 
-  category       Category[]
-  userOperations UserOperation[]
+  interpretations Interpretation[]
+  userOperations  UserOperation[]
 
   @@index([walletAddress])
 }
@@ -523,8 +542,8 @@ model UserOperation {
   activity   Activity? @relation(fields: [activityId], references: [id])
   activityId String?   @unique
 
-  category   Category[]
-  signatures Signature[]
+  interpretations Interpretation[]
+  signatures      Signature[]
 
   @@index([chainId, walletAddress])
   @@index([transactionHash])
@@ -621,8 +640,9 @@ model Token {
   chainId  BigInt
   decimals Int
 
-  balances WalletBalance[]
-  prices   TokenPrice[]
+  assetChanges AssetChanges[]
+  balances     WalletBalance[]
+  prices       TokenPrice[]
 
   group   TokenGroup? @relation(fields: [groupId], references: [id])
   groupId String?
