@@ -13,7 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Separator } from "@lightdotso/ui";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { OverviewSection } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-section";
@@ -131,7 +130,6 @@ export default async function Page({ params }: PageProps) {
           status="proposed"
         />
       </OverviewSection>
-      <Separator className="my-4" />
       <OverviewSection
         address={params.address as Address}
         status="history"
