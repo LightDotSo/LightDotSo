@@ -37,6 +37,8 @@ export const getTokens = async (params: TokenListParams) => {
           address: params.address,
           is_testnet: params.is_testnet,
           group: params.group,
+          limit: params.limit,
+          offset: params.offset,
         },
       },
     },
