@@ -199,7 +199,7 @@ model Wallet {
   name           String @default("")
 
   // ---------------------------------------------------------------------------
-  // One-to-one
+  // One-to-none
   // ---------------------------------------------------------------------------
 
   walletSettings WalletSettings?
@@ -438,6 +438,10 @@ model Simulation {
   interpretation   Interpretation @relation(fields: [interpretationId], references: [id])
   interpretationId String
 
+  // ---------------------------------------------------------------------------
+  // One-to-none
+  // ---------------------------------------------------------------------------
+
   userOperation     UserOperation? @relation(fields: [userOperationHash], references: [hash])
   userOperationHash String?
 
@@ -501,7 +505,7 @@ model Log {
   removed             Boolean?
 
   // ---------------------------------------------------------------------------
-  // Eth One-to-one
+  // Eth One-to-none
   // ---------------------------------------------------------------------------
 
   receipt Receipt? @relation(fields: [transactionHash], references: [transactionHash])
@@ -604,7 +608,7 @@ model Receipt {
   logs Log[]
 
   // ---------------------------------------------------------------------------
-  // Eth One-to-one
+  // Eth One-to-none
   // ---------------------------------------------------------------------------
 
   transaction Transaction? @relation(fields: [transactionHash], references: [hash])
@@ -997,7 +1001,7 @@ model Token {
   tokenId  BigInt?
 
   // ---------------------------------------------------------------------------
-  // One-to-many
+  // One-to-none
   // ---------------------------------------------------------------------------
 
   group   TokenGroup? @relation(fields: [groupId], references: [id])
@@ -1158,7 +1162,7 @@ model Activity {
   log       Json
 
   // ---------------------------------------------------------------------------
-  // Relations One-to-one
+  // Relations One-to-none
   // ---------------------------------------------------------------------------
 
   user   User?   @relation(fields: [userId], references: [id])
@@ -1168,7 +1172,7 @@ model Activity {
   walletAddress String?
 
   // ---------------------------------------------------------------------------
-  // Mutable Relations One-to-one
+  // Mutable Relations One-to-none
   // ---------------------------------------------------------------------------
 
   inviteCode   InviteCode? @relation(fields: [inviteCodeId], references: [id])
@@ -1249,7 +1253,7 @@ model Notification {
   readDeviceId String?
 
   // ---------------------------------------------------------------------------
-  // One-to-one
+  // One-to-none
   // ---------------------------------------------------------------------------
 
   activity   Activity? @relation(fields: [activityId], references: [id])
