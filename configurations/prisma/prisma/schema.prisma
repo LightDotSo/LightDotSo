@@ -633,7 +633,8 @@ enum SignatureProcedure {
 // -----------------------------------------------------------------------------
 
 model Token {
-  id       String  @id @default(cuid())
+  id       String    @id @default(cuid())
+  type     TokenType @default(ERC_20)
   symbol   String
   name     String?
   address  String
@@ -666,6 +667,12 @@ model TokenPrice {
   tokenId String
 
   @@index([tokenId])
+}
+
+enum TokenType {
+  ERC_20
+  ERC_721
+  ERC_1155
 }
 
 // -----------------------------------------------------------------------------
