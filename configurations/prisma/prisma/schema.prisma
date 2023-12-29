@@ -213,6 +213,7 @@ enum InterpretationAction {
   MINT
   RECEIVE
   SWAP
+  UPGRADE
 }
 
 model AssetChange {
