@@ -26,9 +26,12 @@ export type TokenData = {
   decimals: number;
   name?: string | null;
   symbol: string;
-  group?: {
-    id: string;
-  } | null;
+  group?: TokenGroupData | null;
+};
+
+export type TokenGroupData = {
+  id: string;
+  tokens: TokenData[];
 };
 
 export type TokenCountData = {

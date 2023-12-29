@@ -58,6 +58,7 @@ export const handler = async (
     offset: 0,
     limit: Number.MAX_SAFE_INTEGER,
     is_testnet: walletSettings.is_enabled_testnet,
+    group: false,
   });
 
   const [nftsRes, tokensRes] = await Promise.all([nftsPromise, tokensPromise]);

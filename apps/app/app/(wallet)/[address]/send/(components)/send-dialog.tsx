@@ -130,6 +130,7 @@ export const SendDialog: FC<SendDialogProps> = ({
       limit: Number.MAX_SAFE_INTEGER,
       offset: 0,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
+      group: false,
     }).queryKey,
   );
 
@@ -147,6 +148,7 @@ export const SendDialog: FC<SendDialogProps> = ({
       limit: Number.MAX_SAFE_INTEGER,
       offset: 0,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
+      group: false,
     }).queryKey,
     queryFn: async () => {
       const res = await getTokens(
@@ -156,6 +158,7 @@ export const SendDialog: FC<SendDialogProps> = ({
               address,
               is_testnet: walletSettings?.is_enabled_testnet ?? false,
               limit: Number.MAX_SAFE_INTEGER,
+              group: false,
             },
           },
         },
@@ -165,7 +168,7 @@ export const SendDialog: FC<SendDialogProps> = ({
       // Return if the response is 200
       return res.match(
         data => {
-          return data;
+          return data as TokenData[];
         },
         _ => {
           return currentTokenData ?? null;

@@ -50,6 +50,8 @@ pub struct ListQuery {
     pub is_spam: Option<bool>,
     /// The flag to indicate if the token is a testnet token.
     pub is_testnet: Option<bool>,
+    /// The flag to group the tokens by the token group.
+    pub group: Option<bool>,
 }
 
 // -----------------------------------------------------------------------------
@@ -115,6 +117,19 @@ pub(crate) async fn v1_token_list_handler(
         .exec()
         .await?;
     info!(?balances);
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
+
+    // If group is set, return all of the tokens flat.
+    if !query.group.unwrap_or(false) {
+        // Get all of the tokens in the balances array.
+        let tokens: Vec<Token> =
+            balances.clone().into_iter().map(|balance| balance.into()).collect();
+
+        return Ok(Json::from(tokens));
+    }
 
     // Deduplicate the balances that have the same token group id.
     let balances = balances

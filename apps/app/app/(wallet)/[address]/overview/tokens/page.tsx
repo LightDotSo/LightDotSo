@@ -79,6 +79,7 @@ export default async function Page({ params, searchParams }: PageProps) {
       limit: OVERVIEW_ROW_COUNT,
       offset: 0,
       is_testnet: walletSettings?.is_enabled_testnet,
+      group: true,
     }).queryKey,
     tokens,
   );

@@ -15,6 +15,7 @@
 
 "use client";
 
+import { cn } from "@lightdotso/utils";
 import type { FC } from "react";
 import { TokenImage } from "@/components/token/token-image";
 import type { TokenData } from "@/data";
@@ -23,20 +24,23 @@ import type { TokenData } from "@/data";
 // Props
 // -----------------------------------------------------------------------------
 
-type TokenCardTokenProps = { token: TokenData };
+type TokenCardTokenProps = { token: TokenData; expanded?: boolean };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TokenCardToken: FC<TokenCardTokenProps> = ({ token }) => {
+export const TokenCardToken: FC<TokenCardTokenProps> = ({
+  token,
+  expanded,
+}) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="flex items-center space-x-3">
-      <TokenImage token={token} />{" "}
+    <div className={cn("flex items-center space-x-3", expanded && "pl-2")}>
+      <TokenImage token={token} />
       <div className="flex flex-col space-y-1.5">
         <span className="text-sm text-text">{token.name ?? token.symbol}</span>
         <span className="text-sm text-text-weak">

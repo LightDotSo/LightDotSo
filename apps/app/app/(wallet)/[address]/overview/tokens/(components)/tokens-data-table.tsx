@@ -78,6 +78,7 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
       limit: paginationState.pageSize,
       offset: offsetCount,
+      group: true,
     }).queryKey,
   );
 
@@ -88,6 +89,7 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
       limit: paginationState.pageSize,
       offset: offsetCount,
+      group: true,
     }).queryKey,
     queryFn: async () => {
       const res = await getTokens(
@@ -98,6 +100,7 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
               is_testnet: walletSettings?.is_enabled_testnet ?? false,
               limit: paginationState.pageSize,
               offset: offsetCount,
+              group: true,
             },
           },
         },
@@ -107,7 +110,7 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
       // Return if the response is 200
       return res.match(
         data => {
-          return data;
+          return data as TokenData[];
         },
         _ => {
           return currentData ?? null;

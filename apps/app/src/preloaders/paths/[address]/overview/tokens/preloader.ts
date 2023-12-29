@@ -49,6 +49,7 @@ export const preloader = async (
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
     is_testnet: false,
+    group: true,
   });
   preloadGetTokensCount({
     address: params.address as Address,

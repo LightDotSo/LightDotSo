@@ -68,6 +68,7 @@ export default async function Page({ params, searchParams }: PageProps) {
       limit: Number.MAX_SAFE_INTEGER,
       offset: 0,
       is_testnet: walletSettings?.is_enabled_testnet,
+      group: false,
     }).queryKey,
     tokens,
   );
