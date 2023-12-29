@@ -526,6 +526,9 @@ model UserOperation {
   paymasterOperation   PaymasterOperation? @relation(fields: [paymasterOperationId], references: [id])
   paymasterOperationId String?             @unique
 
+  transaction     Transaction? @relation(fields: [transactionHash], references: [hash])
+  transactionHash String?
+
   wallet        Wallet @relation(fields: [walletAddress], references: [address])
   walletAddress String
 
@@ -536,18 +539,15 @@ model UserOperation {
   activity   Activity? @relation(fields: [activityId], references: [id])
   activityId String?   @unique
 
-  transaction     Transaction? @relation(fields: [transactionHash], references: [hash])
-  transactionHash String?
-
   signatures  Signature[]
   simulations Simulation[]
 
   @@index([chainId, walletAddress])
+  @@index([transactionHash])
   @@index([paymasterId])
   @@index([paymasterOperationId])
   @@index([walletAddress])
   @@index([activityId])
-  @@index([transactionHash])
 }
 
 enum UserOperationStatus {
