@@ -181,16 +181,9 @@ model Interpretation {
   id     String               @id @default(cuid())
   action InterpretationAction
 
-  transaction     Transaction @relation(fields: [transactionHash], references: [hash])
-  transactionHash String
-
-  userOperation     UserOperation @relation(fields: [userOperationHash], references: [hash])
-  userOperationHash String
-
-  assetChanges AssetChanges[]
-
-  @@index([transactionHash])
-  @@index([userOperationHash])
+  assetChanges AssetChange[]
+  simulations  Simulation[]
+  transactions Transaction[]
 }
 
 enum InterpretationAction {
@@ -203,7 +196,7 @@ enum InterpretationAction {
   SWAP
 }
 
-model AssetChanges {
+model AssetChange {
   id String @id @default(cuid())
 
   amount         BigInt
@@ -218,6 +211,25 @@ model AssetChanges {
 
   @@index([interpretationId])
   @@index([tokenId])
+}
+
+// -----------------------------------------------------------------------------
+// Simulation
+// -----------------------------------------------------------------------------
+
+model Simulation {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  interpretation   Interpretation @relation(fields: [interpretationId], references: [id])
+  interpretationId String
+
+  userOperation     UserOperation? @relation(fields: [userOperationHash], references: [hash])
+  userOperationHash String?
+
+  @@index([interpretationId])
+  @@index([userOperationHash])
 }
 
 // -----------------------------------------------------------------------------
@@ -446,10 +458,13 @@ model Transaction {
   activity   Activity? @relation(fields: [activityId], references: [id])
   activityId String?   @unique
 
-  interpretations Interpretation[]
-  userOperations  UserOperation[]
+  interpretation   Interpretation? @relation(fields: [interpretationId], references: [id])
+  interpretationId String?
+
+  userOperations UserOperation[]
 
   @@index([walletAddress])
+  @@index([interpretationId])
 }
 
 // -----------------------------------------------------------------------------
@@ -510,9 +525,6 @@ model UserOperation {
   paymasterOperation   PaymasterOperation? @relation(fields: [paymasterOperationId], references: [id])
   paymasterOperationId String?             @unique
 
-  transaction     Transaction? @relation(fields: [transactionHash], references: [hash])
-  transactionHash String?      @unique
-
   wallet        Wallet @relation(fields: [walletAddress], references: [address])
   walletAddress String
 
@@ -523,14 +535,18 @@ model UserOperation {
   activity   Activity? @relation(fields: [activityId], references: [id])
   activityId String?   @unique
 
-  interpretations Interpretation[]
-  signatures      Signature[]
+  transaction     Transaction? @relation(fields: [transactionHash], references: [hash])
+  transactionHash String?
+
+  signatures  Signature[]
+  simulations Simulation[]
 
   @@index([chainId, walletAddress])
-  @@index([transactionHash])
   @@index([paymasterId])
   @@index([paymasterOperationId])
   @@index([walletAddress])
+  @@index([activityId])
+  @@index([transactionHash])
 }
 
 enum UserOperationStatus {
@@ -614,21 +630,23 @@ enum SignatureProcedure {
 // -----------------------------------------------------------------------------
 
 model Token {
-  id       String  @id @default(cuid())
+  id       String    @id @default(cuid())
+  type     TokenType @default(ERC_20)
   symbol   String
   name     String?
   address  String
   chainId  BigInt
   decimals Int
+  tokenId  BigInt?
 
-  assetChanges AssetChanges[]
+  assetChanges AssetChange[]
   balances     WalletBalance[]
   prices       TokenPrice[]
 
   group   TokenGroup? @relation(fields: [groupId], references: [id])
   groupId String?
 
-  @@unique([address, chainId])
+  @@unique([address, chainId, tokenId])
   @@index([groupId])
 }
 
@@ -647,6 +665,12 @@ model TokenPrice {
   tokenId String
 
   @@index([tokenId])
+}
+
+enum TokenType {
+  ERC_20
+  ERC_721
+  ERC_1155
 }
 
 // -----------------------------------------------------------------------------
