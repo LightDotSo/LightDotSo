@@ -83,6 +83,7 @@ pub(crate) async fn v1_token_get_handler(
         .client
         .token()
         .find_unique(token::address_chain_id(checksum_address, query.chain_id))
+        .with(token::group::fetch())
         .exec()
         .await?;
 

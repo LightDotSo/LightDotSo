@@ -69,7 +69,9 @@ impl From<token::Data> for Token {
             decimals: token.decimals,
             amount: 0,
             balance_usd: 0.0,
-            group: None,
+            group: token.group.and_then(|group| {
+                group.map(|group_data| TokenGroup { id: group_data.id, tokens: vec![] })
+            }),
         }
     }
 }
@@ -78,6 +80,8 @@ impl From<token::Data> for Token {
 impl From<wallet_balance::Data> for Token {
     fn from(balance: wallet_balance::Data) -> Self {
         Self {
+            // Note that unwrap() is safe here because we have made sure to fetch
+            // the token and the goken group for all wallet_balance fetches.
             id: balance.token.clone().unwrap().unwrap().id,
             address: balance.token.clone().unwrap().unwrap().address,
             chain_id: balance.chain_id,
