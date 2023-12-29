@@ -147,24 +147,21 @@ export const ChainPopover: FC = () => {
           <CommandEmpty>No chain found.</CommandEmpty>
           <CommandGroup>
             {chains.map(chain => (
-              <CommandItem
+              <a
                 key={chain.id}
-                className="flex items-center space-x-2"
-                value={chain.id.toString()}
-                onSelect={currentValue => {
-                  // Get the current chain from the chain id
-                  const currentChain = chains.find(
-                    chain => chain.id === Number(currentValue),
-                  );
-                  window.open(
-                    `${currentChain?.blockExplorers?.default.url}/address/${wallet}`,
-                  );
-                }}
+                target="_blank"
+                rel="noreferrer"
+                href={`${chain?.blockExplorers?.default.url}/address/${wallet}`}
               >
-                <ChainLogo chainId={chain.id} className="h-5 w-5" />
-                <span>{chain.name}</span>
-                <ArrowUpRight className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-              </CommandItem>
+                <CommandItem
+                  className="flex items-center space-x-2"
+                  value={chain.name.toString()}
+                >
+                  <ChainLogo chainId={chain.id} className="h-5 w-5" />
+                  <span>{chain.name}</span>
+                  <ArrowUpRight className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </CommandItem>
+              </a>
             ))}
           </CommandGroup>
         </Command>
