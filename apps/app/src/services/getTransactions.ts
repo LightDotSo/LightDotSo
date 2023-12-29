@@ -36,6 +36,8 @@ export const getTransactions = async (params: TransactionListParams) => {
         query: {
           address: params.address,
           is_testnet: params.is_testnet,
+          limit: params.limit,
+          offset: params.offset,
         },
       },
     },

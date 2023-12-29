@@ -35,6 +35,8 @@ export const getActivities = async (params: ActivityListParams) => {
       params: {
         query: {
           address: params.address,
+          limit: params.limit,
+          offset: params.offset,
         },
       },
     },

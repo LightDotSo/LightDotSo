@@ -33,7 +33,11 @@ export const getTokens = async (params: TokenListParams) => {
   return getClientTokens(
     {
       params: {
-        query: { address: params.address, is_testnet: params.is_testnet },
+        query: {
+          address: params.address,
+          is_testnet: params.is_testnet,
+          group: params.group,
+        },
       },
     },
     "admin",
