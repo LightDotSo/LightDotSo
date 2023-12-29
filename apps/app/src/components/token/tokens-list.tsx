@@ -24,6 +24,7 @@ import {
   TableHeader,
   TableRow,
 } from "@lightdotso/ui";
+import { cn } from "@lightdotso/utils";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import {
   flexRender,
@@ -191,6 +192,7 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
             .map(row => (
               <TableRow
                 key={row.id}
+                className={cn(row.getCanExpand() && "cursor-pointer")}
                 data-state={row.getIsSelected() && "selected"}
                 onClick={() => {
                   if (row.getCanExpand()) {
