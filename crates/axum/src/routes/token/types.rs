@@ -15,7 +15,7 @@
 
 #![allow(clippy::unwrap_used)]
 
-use lightdotso_prisma::{token, wallet_balance};
+use lightdotso_prisma::{token, token_group, wallet_balance};
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
@@ -24,7 +24,7 @@ use utoipa::ToSchema;
 // -----------------------------------------------------------------------------
 
 /// Token root type.
-#[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[derive(Debug, Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
 pub(crate) struct Token {
     /// The id of the token.
@@ -48,7 +48,7 @@ pub(crate) struct Token {
 }
 
 /// Token group root type.
-#[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[derive(Debug, Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
 pub(crate) struct TokenGroup {
     /// The id of the token group.
@@ -69,7 +69,7 @@ impl From<token::Data> for Token {
             decimals: token.decimals,
             amount: 0,
             balance_usd: 0.0,
-            group: None,
+            group: token.group.map(|group| TokenGroup { id: group.unwrap().id, tokens: vec![] }),
         }
     }
 }
@@ -86,7 +86,12 @@ impl From<wallet_balance::Data> for Token {
             decimals: balance.token.clone().unwrap().unwrap().decimals,
             amount: balance.amount.unwrap(),
             balance_usd: balance.balance_usd,
-            group: None,
+            group: balance.token.clone().unwrap().unwrap().group.map(|group| TokenGroup {
+                id: group
+                    .unwrap_or(Box::new(token_group::Data { id: "".to_string(), tokens: None }))
+                    .id,
+                tokens: vec![],
+            }),
         }
     }
 }
