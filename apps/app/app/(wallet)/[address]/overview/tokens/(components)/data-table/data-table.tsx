@@ -149,7 +149,9 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
   ]);
 
   useEffect(() => {
-    table.toggleAllRowsExpanded();
+    if (!table.getIsAllRowsExpanded()) {
+      table.toggleAllRowsExpanded();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -32,13 +32,13 @@ import { forwardRef } from "react";
 const buttonVariants = cva(
   [
     [
-      "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus:outline-none focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-info focus-visible:ring-offset-2 active:z-10 active:ring-2 disabled:cursor-not-allowed disabled:opacity-30 disabled:ring-0",
+      "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors hover:z-10 focus:outline-none focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-info focus-visible:ring-offset-2 active:z-10 active:ring-2 disabled:cursor-not-allowed disabled:opacity-30 disabled:ring-0",
     ],
     [
+      // Button Group
       ["group-[.button]:rounded-none"],
       ["group-[.button]:first:rounded-l-md"],
       ["group-[.button]:last:rounded-r-md"],
-      ["group-[.button]:hover:z-10"],
     ],
   ],
   {
