@@ -165,7 +165,9 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    table.toggleAllRowsExpanded();
+    if (!table.getIsAllRowsExpanded()) {
+      table.toggleAllRowsExpanded();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
