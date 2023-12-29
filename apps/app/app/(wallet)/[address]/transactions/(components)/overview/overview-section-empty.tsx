@@ -59,7 +59,7 @@ export const OverviewSectionEmpty = ({
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!currentData || (currentData && currentData?.count > 0)) {
+  if (!currentData || currentData?.count > 0) {
     return null;
   }
 

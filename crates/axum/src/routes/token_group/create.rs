@@ -19,20 +19,24 @@ use crate::{
     routes::token_group::error::TokenGroupError, sessions::get_user_id, state::AppState,
 };
 use autometrics::autometrics;
-use axum::{extract::State, Json};
+use axum::{
+    extract::{Query, State},
+    Json,
+};
 use lightdotso_prisma::{token, token_group};
 use lightdotso_tracing::tracing::info;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 use tower_sessions_core::Session;
-use utoipa::ToSchema;
+use utoipa::IntoParams;
 
 // -----------------------------------------------------------------------------
 // Query
 // -----------------------------------------------------------------------------
 
-#[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[derive(Debug, Deserialize, Default, IntoParams)]
 #[serde(rename_all = "snake_case")]
-pub(crate) struct TokenGroupPostRequestParams {
+#[into_params(parameter_in = Query)]
+pub struct PostQuery {
     /// The id of the token id to post for.
     token_id: String,
     /// The optional id of the token group.
@@ -43,10 +47,13 @@ pub(crate) struct TokenGroupPostRequestParams {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Create a tokengroup.
+/// Create a token group.
 #[utoipa::path(
         post,
         path = "/token/group/create",
+        params(
+            PostQuery
+        ),
         responses(
             (status = 200, description = "Token group created successfully", body = TokenGroup),
             (status = 500, description = "Token group internal error", body = TokenGroupError),
@@ -54,9 +61,9 @@ pub(crate) struct TokenGroupPostRequestParams {
     )]
 #[autometrics]
 pub(crate) async fn v1_token_group_create_handler(
+    post_query: Query<PostQuery>,
     State(state): State<AppState>,
     mut session: Session,
-    Json(params): Json<TokenGroupPostRequestParams>,
 ) -> AppJsonResult<TokenGroup> {
     // -------------------------------------------------------------------------
     // Session
@@ -79,11 +86,18 @@ pub(crate) async fn v1_token_group_create_handler(
         .into());
     }
 
-    // Get the token id from the post body.
-    let token_id = params.token_id;
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
 
-    // Get the group id from the post body.
-    let group_id = params.group_id;
+    // Get the post query.
+    let Query(query) = post_query;
+
+    // Get the token id from the post query.
+    let token_id = query.token_id;
+
+    // Get the optional group id from the post query.
+    let group_id = query.group_id;
 
     // -------------------------------------------------------------------------
     // DB

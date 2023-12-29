@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+"use client";
+
 import { Button } from "@lightdotso/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import { ChevronRightIcon } from "lucide-react";
@@ -69,7 +71,7 @@ export const OverviewSection = ({
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!currentData) {
+  if (!currentData || currentData.length === 0) {
     return null;
   }
 
