@@ -29,17 +29,18 @@ type TokenCardBalanceProps = { token: TokenData };
 // Component
 // -----------------------------------------------------------------------------
 
-export const TokenCardBalance: FC<TokenCardBalanceProps> = ({ token }) => {
+export const TokenCardBalance: FC<TokenCardBalanceProps> = ({
+  token: { chain_id, balance_usd },
+}) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
+  if (chain_id === 0) {
+    return null;
+  }
+
   return (
-    <Number
-      value={token.balance_usd}
-      prefix="$"
-      variant="neutral"
-      size="balance"
-    />
+    <Number value={balance_usd} prefix="$" variant="neutral" size="balance" />
   );
 };

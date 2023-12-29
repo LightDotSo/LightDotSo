@@ -51,6 +51,10 @@ export const TokenCardActions: FC<TokenCardActionsProps> = ({
   // Render
   // ---------------------------------------------------------------------------
 
+  if (chain_id === 0) {
+    return null;
+  }
+
   return (
     <TooltipProvider>
       <div className="flex items-center justify-end gap-x-2">

@@ -59,7 +59,7 @@ export const TokenCardPrice: FC<TokenCardPriceProps> = ({
     queryKey: queries.token_price.get({ address: address as Address, chain_id })
       .queryKey,
     queryFn: async () => {
-      if (!address) {
+      if (!address || chain_id === 0) {
         return null;
       }
 
@@ -91,7 +91,7 @@ export const TokenCardPrice: FC<TokenCardPriceProps> = ({
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!token_price) {
+  if (!token_price || chain_id === 0) {
     return null;
   }
 
