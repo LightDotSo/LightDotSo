@@ -640,6 +640,7 @@ model Token {
   address  String
   chainId  BigInt
   decimals Int
+  tokenId  BigInt?
 
   assetChanges AssetChanges[]
   balances     WalletBalance[]
@@ -648,7 +649,7 @@ model Token {
   group   TokenGroup? @relation(fields: [groupId], references: [id])
   groupId String?
 
-  @@unique([address, chainId])
+  @@unique([address, chainId, tokenId])
   @@index([groupId])
 }
 
