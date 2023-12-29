@@ -15,7 +15,7 @@
 
 "use client";
 
-import { buttonVariants } from "@lightdotso/ui";
+import { Button, ButtonGroup, buttonVariants } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -106,25 +106,28 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
         </select>
       </div>
       <nav className="flex items-center justify-between" aria-label="Tabs">
-        <div className="hidden rounded-md border border-border bg-background-strong p-0.5 sm:block">
+        <ButtonGroup
+          variant="unstyled"
+          className="hidden rounded-md border border-border bg-background-strong p-0.5 sm:block"
+        >
           {items.map(item => (
-            <Link
+            <Button
               key={item.id}
-              href={`/${address}${item.href}`}
+              asChild
               className={cn(
-                buttonVariants({ variant: "outline", size: "sm" }),
                 "bg-transparent border-none py-0 text-sm h-8",
                 // If the item is the selected, add bg-selected
                 item.id === id
                   ? "bg-background-body text-text font-semibold hover:bg-background-weaker"
-                  : "text-text-weak",
+                  : "text-text-weak hover:text-text",
               )}
-              aria-current={item.id === id ? "page" : undefined}
+              variant="unstyled"
+              size="sm"
             >
-              {item.title}
-            </Link>
+              <Link href={`/${address}${item.href}`}>{item.title}</Link>
+            </Button>
           ))}
-        </div>
+        </ButtonGroup>
         <div className="hidden items-center space-x-2 md:flex">{children}</div>
       </nav>
     </>

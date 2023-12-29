@@ -47,7 +47,6 @@ const ButtonGroup = forwardRef<
 >(({ className, variant, ...props }, ref) => (
   <div
     ref={ref}
-    role="alert"
     className={cn(buttonGroupVariants({ variant }), className)}
     data-variant={variant ?? "default"}
     {...props}
