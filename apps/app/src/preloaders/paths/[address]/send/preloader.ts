@@ -29,5 +29,6 @@ export const preloader = async (params: { address: string }) => {
     offset: 0,
     limit: Number.MAX_SAFE_INTEGER,
     is_testnet: false,
+    group: false,
   });
 };

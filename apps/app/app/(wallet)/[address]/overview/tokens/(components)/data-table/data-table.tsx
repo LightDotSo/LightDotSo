@@ -26,6 +26,7 @@ import {
 import {
   flexRender,
   getCoreRowModel,
+  getExpandedRowModel,
   getFacetedRowModel,
   getFacetedUniqueValues,
   getFilteredRowModel,
@@ -68,10 +69,12 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
   const {
     tokenColumnFilters,
     tokenColumnVisibility,
+    tokenExpandedState,
     tokenRowSelection,
     tokenSorting,
     setTokenColumnFilters,
     setTokenColumnVisibility,
+    setTokenExpandedState,
     setTokenRowSelection,
     setTokenSorting,
     setTokenTable,
@@ -90,17 +93,22 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
       rowSelection: tokenRowSelection,
       columnFilters: tokenColumnFilters,
       pagination: paginationState,
+      expanded: tokenExpandedState,
     },
     pageCount: pageCount,
-    paginateExpandedRows: false,
-    enableRowSelection: true,
+    enableExpanding: true,
+    enableRowSelection: false,
     manualPagination: true,
+    paginateExpandedRows: true,
     onRowSelectionChange: setTokenRowSelection,
     onSortingChange: setTokenSorting,
     onColumnFiltersChange: setTokenColumnFilters,
     onColumnVisibilityChange: setTokenColumnVisibility,
+    onExpandedChange: setTokenExpandedState,
+    getSubRows: row => row.group?.tokens,
     onPaginationChange: setPaginationState,
     getCoreRowModel: getCoreRowModel(),
+    getExpandedRowModel: getExpandedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -169,6 +177,11 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
             <TableRow
               key={row.id}
               data-state={row.getIsSelected() && "selected"}
+              onClick={() => {
+                if (row.getCanExpand()) {
+                  row.getToggleExpandedHandler()();
+                }
+              }}
             >
               {row.getVisibleCells().map(cell => (
                 <TableCell key={cell.id}>

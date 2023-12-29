@@ -55,6 +55,7 @@ export const getTokens = async (
         limit?: number | null | undefined;
         address: string;
         is_testnet?: boolean | null | undefined;
+        group?: boolean | null | undefined;
       };
     };
   },

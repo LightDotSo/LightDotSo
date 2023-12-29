@@ -80,6 +80,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
       offset: offsetCount,
       limit: paginationState.pageSize,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
+      group: true,
     }).queryKey,
   );
 
@@ -92,6 +93,11 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
     const uniqueChainIdValues = new Set<number>();
     currentData?.forEach(token => {
       uniqueChainIdValues.add(token.chain_id);
+      if (token.group?.tokens) {
+        token.group.tokens.forEach(token => {
+          uniqueChainIdValues.add(token.chain_id);
+        });
+      }
     });
     return uniqueChainIdValues;
   }, [currentData]);

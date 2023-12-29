@@ -236,8 +236,8 @@ export interface paths {
   };
   "/token/group/create": {
     /**
-     * Create a tokengroup.
-     * @description Create a tokengroup.
+     * Create a token group.
+     * @description Create a token group.
      */
     post: operations["v1_token_group_create_handler"];
   };
@@ -1929,13 +1929,16 @@ export interface operations {
     };
   };
   /**
-   * Create a tokengroup.
-   * @description Create a tokengroup.
+   * Create a token group.
+   * @description Create a token group.
    */
   v1_token_group_create_handler: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["TokenGroupPostRequestParams"];
+    parameters: {
+      query: {
+        /** @description The id of the token id to post for. */
+        token_id: string;
+        /** @description The optional id of the token group. */
+        group_id?: string | null;
       };
     };
     responses: {
@@ -2023,6 +2026,8 @@ export interface operations {
         is_spam?: boolean | null;
         /** @description The flag to indicate if the token is a testnet token. */
         is_testnet?: boolean | null;
+        /** @description The flag to group the tokens by the token group. */
+        group?: boolean | null;
       };
     };
     responses: {
@@ -2057,6 +2062,8 @@ export interface operations {
         is_spam?: boolean | null;
         /** @description The flag to indicate if the token is a testnet token. */
         is_testnet?: boolean | null;
+        /** @description The flag to group the tokens by the token group. */
+        group?: boolean | null;
       };
     };
     responses: {

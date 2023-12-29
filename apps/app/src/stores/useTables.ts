@@ -15,6 +15,7 @@
 
 import type {
   ColumnFiltersState,
+  ExpandedState,
   RowSelectionState,
   SortingState,
   Table,
@@ -85,11 +86,13 @@ type TablesStore = {
   setUserOperationTable: (tableObject: Table<UserOperationData>) => void;
   tokenColumnFilters: ColumnFiltersState;
   tokenColumnVisibility: VisibilityState;
+  tokenExpandedState: ExpandedState;
   tokenRowSelection: RowSelectionState;
   tokenSorting: SortingState;
   tokenTable: Table<TokenData> | null;
   setTokenColumnFilters: OnChangeFn<ColumnFiltersState>;
   setTokenColumnVisibility: OnChangeFn<VisibilityState>;
+  setTokenExpandedState: OnChangeFn<ExpandedState>;
   setTokenRowSelection: OnChangeFn<RowSelectionState>;
   setTokenSorting: OnChangeFn<SortingState>;
   setTokenTable: (tableObject: Table<TokenData>) => void;
@@ -318,6 +321,7 @@ export const useTables = create(
           }),
         tokenColumnFilters: [],
         tokenColumnVisibility: { ["chain_id"]: false },
+        tokenExpandedState: {},
         tokenRowSelection: {},
         tokenSorting: [],
         tokenTable: null,
@@ -383,6 +387,14 @@ export const useTables = create(
               columnVisibility instanceof Function
                 ? columnVisibility(prevState.transactionColumnVisibility)
                 : columnVisibility,
+          })),
+        setTokenExpandedState: expandedState =>
+          set(prevState => ({
+            ...prevState,
+            tokenExpandedState:
+              expandedState instanceof Function
+                ? expandedState(prevState.tokenExpandedState)
+                : expandedState,
           })),
         setTransactionRowSelection: rowSelection =>
           set(prevState => ({

@@ -24,6 +24,10 @@ export type TokenListParams = {
   is_testnet: boolean;
   limit: number;
   offset: number;
+  group: boolean;
 };
 
-export type TokenListCountParams = Omit<TokenListParams, "limit" | "offset">;
+export type TokenListCountParams = Omit<
+  TokenListParams,
+  "group" | "limit" | "offset"
+>;

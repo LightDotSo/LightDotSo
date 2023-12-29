@@ -14,11 +14,15 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Chain } from "viem";
+import { mainnet } from "viem/chains";
 import { CHAINS } from "@/const/chains";
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@/const/simplehash";
 
 export function getChainById(chainId: number): Chain {
-  const chain = CHAINS.find(chain => chain.id === chainId)!;
+  const chain = CHAINS.find(chain => chain.id === chainId);
+  if (!chain) {
+    return mainnet;
+  }
   return chain;
 }
 

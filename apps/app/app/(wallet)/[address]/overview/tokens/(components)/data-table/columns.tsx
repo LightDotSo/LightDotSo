@@ -36,7 +36,9 @@ export const columns: ColumnDef<TokenData>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Name" />
     ),
-    cell: ({ row }) => <TokenCardToken token={row.original} />,
+    cell: ({ row }) => (
+      <TokenCardToken token={row.original} expanded={row.depth > 0} />
+    ),
     enableSorting: false,
     enableHiding: false,
     size: 416,

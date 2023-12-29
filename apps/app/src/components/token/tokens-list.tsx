@@ -28,6 +28,7 @@ import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import {
   flexRender,
   getCoreRowModel,
+  getExpandedRowModel,
   getFacetedRowModel,
   getFacetedUniqueValues,
   getFilteredRowModel,
@@ -65,8 +66,10 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
   const {
     tokenColumnFilters,
     tokenColumnVisibility,
+    tokenExpandedState,
     tokenRowSelection,
     tokenSorting,
+    setTokenExpandedState,
   } = useTables();
 
   // ---------------------------------------------------------------------------
@@ -84,6 +87,7 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
       limit: limit,
       offset: 0,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
+      group: true,
     }).queryKey,
   );
 
@@ -93,6 +97,7 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
       limit: limit,
       offset: 0,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
+      group: true,
     }).queryKey,
     queryFn: async () => {
       const res = await getTokens(
@@ -100,7 +105,9 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
           params: {
             query: {
               address,
+              offset: 0,
               is_testnet: walletSettings?.is_enabled_testnet ?? false,
+              group: true,
             },
           },
         },
@@ -110,7 +117,7 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
       // Return if the response is 200
       return res.match(
         data => {
-          return data;
+          return data as TokenData[];
         },
         _ => {
           return currentData ?? null;
@@ -135,10 +142,16 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
         pageIndex: 0,
         pageSize: limit,
       },
+      expanded: tokenExpandedState,
     },
-    paginateExpandedRows: false,
+    enableExpanding: true,
     enableRowSelection: false,
+    manualPagination: true,
+    paginateExpandedRows: true,
+    onExpandedChange: setTokenExpandedState,
+    getSubRows: row => row.group?.tokens,
     getCoreRowModel: getCoreRowModel(),
+    getExpandedRowModel: getExpandedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -179,6 +192,11 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
+                onClick={() => {
+                  if (row.getCanExpand()) {
+                    row.getToggleExpandedHandler()();
+                  }
+                }}
               >
                 {row.getVisibleCells().map(cell => (
                   <TableCell key={cell.id}>
