@@ -321,6 +321,10 @@ model Owner {
   configuration   Configuration @relation(fields: [configurationId], references: [id])
   configurationId String
 
+  // ---------------------------------------------------------------------------
+  // One-to-none
+  // ---------------------------------------------------------------------------
+
   user   User?   @relation(fields: [userId], references: [id])
   userId String?
 
@@ -400,11 +404,11 @@ model AssetChange {
   // One-to-one
   // ---------------------------------------------------------------------------
 
-  token   Token?  @relation(fields: [tokenId], references: [id])
-  tokenId String?
-
   interpretation   Interpretation @relation(fields: [interpretationId], references: [id])
   interpretationId String
+
+  token   Token  @relation(fields: [tokenId], references: [id])
+  tokenId String
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -704,7 +708,7 @@ model Transaction {
   isTestnet Boolean  @default(false)
 
   // ---------------------------------------------------------------------------
-  // Eth One-to-one
+  // Eth One-to-none
   // ---------------------------------------------------------------------------
 
   wallet        Wallet? @relation(fields: [walletAddress], references: [address])
@@ -713,7 +717,7 @@ model Transaction {
   receipt Receipt?
 
   // ---------------------------------------------------------------------------
-  // Metadata
+  // Metadata One-to-none
   // ---------------------------------------------------------------------------
 
   activity   Activity? @relation(fields: [activityId], references: [id])
@@ -793,7 +797,7 @@ model UserOperation {
   logs Log[]
 
   // ---------------------------------------------------------------------------
-  // Eth One-to-one
+  // Eth One-to-none
   // ---------------------------------------------------------------------------
 
   paymaster   Paymaster? @relation(fields: [paymasterId], references: [id])
@@ -809,7 +813,7 @@ model UserOperation {
   walletAddress String
 
   // ---------------------------------------------------------------------------
-  // Metadata One-to-one
+  // Metadata One-to-none
   // ---------------------------------------------------------------------------
 
   activity   Activity? @relation(fields: [activityId], references: [id])
@@ -835,6 +839,10 @@ model UserOperation {
 }
 
 enum UserOperationStatus {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
+
   PROPOSED
   PENDING
   EXECUTED
@@ -899,9 +907,13 @@ model PaymasterOperation {
   paymaster   Paymaster @relation(fields: [paymasterId], references: [id])
   paymasterId String
 
-  userOperation UserOperation?
-
   wallet Wallet @relation(fields: [sender], references: [address])
+
+  // ---------------------------------------------------------------------------
+  // One-to-none
+  // ---------------------------------------------------------------------------
+
+  userOperation UserOperation?
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -952,6 +964,10 @@ model Signature {
 }
 
 enum SignatureProcedure {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
+
   OFF_CHAIN
   ON_CHAIN
   ERC_1271
@@ -988,7 +1004,7 @@ model Token {
   groupId String?
 
   // ---------------------------------------------------------------------------
-  // One-to-many
+  // Many-to-many
   // ---------------------------------------------------------------------------
 
   assetChanges AssetChange[]
@@ -1046,6 +1062,10 @@ model TokenPrice {
 }
 
 enum TokenType {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
+
   ERC_20
   ERC_721
   ERC_1155
@@ -1094,7 +1114,7 @@ model WalletBalance {
   isTestnet  Boolean  @default(false)
 
   // ---------------------------------------------------------------------------
-  // One-to-one
+  // One-to-none
   // ---------------------------------------------------------------------------
 
   token   Token?  @relation(fields: [tokenId], references: [id])
@@ -1138,7 +1158,7 @@ model Activity {
   log       Json
 
   // ---------------------------------------------------------------------------
-  // Relations
+  // Relations One-to-one
   // ---------------------------------------------------------------------------
 
   user   User?   @relation(fields: [userId], references: [id])
@@ -1148,7 +1168,7 @@ model Activity {
   walletAddress String?
 
   // ---------------------------------------------------------------------------
-  // Mutable Relations
+  // Mutable Relations One-to-one
   // ---------------------------------------------------------------------------
 
   inviteCode   InviteCode? @relation(fields: [inviteCodeId], references: [id])
@@ -1161,7 +1181,7 @@ model Activity {
   walletSettingsId String?
 
   // ---------------------------------------------------------------------------
-  // Immutable Relations
+  // Immutable Relations One-to-none
   // ---------------------------------------------------------------------------
 
   feedback      Feedback?
@@ -1277,6 +1297,10 @@ model Feedback {
   user   User   @relation(fields: [userId], references: [id])
   userId String
 
+  // ---------------------------------------------------------------------------
+  // One-to-none
+  // ---------------------------------------------------------------------------
+
   activity   Activity? @relation(fields: [activityId], references: [id])
   activityId String?   @unique
 
@@ -1368,7 +1392,7 @@ model SupportRequest {
   walletAddress String
 
   // ---------------------------------------------------------------------------
-  // Many-to-many
+  // One-to-many
   // ---------------------------------------------------------------------------
 
   activities Activity[]
