@@ -37,7 +37,7 @@ pub(crate) use list::{__path_v1_token_group_list_handler, v1_token_group_list_ha
 #[autometrics]
 pub(crate) fn router() -> Router<AppState> {
     Router::new()
-        .route("/token_group/create", post(v1_token_group_create_handler))
-        .route("/token_group/get", get(v1_token_group_get_handler))
-        .route("/token_group/list", get(v1_token_group_list_handler))
+        .route("/token/group/create", post(v1_token_group_create_handler))
+        .route("/token/group/get", get(v1_token_group_get_handler))
+        .route("/token/group/list", get(v1_token_group_list_handler))
 }

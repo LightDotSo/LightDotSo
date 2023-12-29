@@ -110,10 +110,30 @@ export const ChainLogo: FC<ChainLogoProps> = ({
           {...props}
         />
       );
+    case 84532:
+      return (
+        <TestnetChainLogoWrapper logo={BaseLogo} chainId={chainId} {...props} />
+      );
+    case 421614:
+      return (
+        <TestnetChainLogoWrapper
+          logo={ArbitrumLogo}
+          chainId={chainId}
+          {...props}
+        />
+      );
     case 11155111:
       return (
         <TestnetChainLogoWrapper
           logo={EthereumLogo}
+          chainId={chainId}
+          {...props}
+        />
+      );
+    case 11155420:
+      return (
+        <TestnetChainLogoWrapper
+          logo={OptimismLogo}
           chainId={chainId}
           {...props}
         />
