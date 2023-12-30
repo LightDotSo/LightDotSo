@@ -14,9 +14,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 export { useMutationWallet } from "./useMutationWallet";
+export { useSuspenseQueryAuthSession } from "./useSuspenseQueryAuthSession";
 export { useSuspenseQueryPortfolio } from "./useSuspenseQueryPortfolio";
+export { useSuspenseQueryTokenPrice } from "./useSuspenseQueryTokenPrice";
 export { useSuspenseQueryTokens } from "./useSuspenseQueryTokens";
 export { useSuspenseQueryTransactions } from "./useSuspenseQueryTransactions";
+export { useSuspenseQueryUser } from "./useSuspenseQueryUser";
 export { useSuspenseQueryUserOperations } from "./useSuspenseQueryUserOperations";
 export { useSuspenseQueryWallet } from "./useSuspenseQueryWallet";
 export { useSuspenseQueryWallets } from "./useSuspenseQueryWallets";

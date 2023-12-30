@@ -15,12 +15,8 @@
 
 "use client";
 
-import { getAuthSession, getUser, postAuthLogout } from "@lightdotso/client";
-import {
-  useSuspenseQuery,
-  useQueryClient,
-  QueryObserver,
-} from "@tanstack/react-query";
+import { postAuthLogout } from "@lightdotso/client";
+import { useQueryClient, QueryObserver } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import type { FC } from "react";
@@ -28,6 +24,7 @@ import { isAddress } from "viem";
 import type { Address } from "viem";
 import { useAccount, useEnsName } from "wagmi";
 import type { AuthSessionData, UserData } from "@/data";
+import { useSuspenseQueryAuthSession, useSuspenseQueryUser } from "@/query";
 import { queryKeys } from "@/queryKeys";
 import { useAuth } from "@/stores";
 
@@ -54,8 +51,7 @@ export const AuthState: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { clientType, setAddress, setWallet, setEns, setUserId, setSessionId } =
-    useAuth();
+  const { setAddress, setWallet, setEns, setUserId, setSessionId } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -63,60 +59,12 @@ export const AuthState: FC = () => {
 
   const queryClient = useQueryClient();
 
-  const currentData: UserData | undefined = queryClient.getQueryData(
-    queryKeys.user.get({ address: address as Address }).queryKey,
-  );
-
-  const { data } = useSuspenseQuery<UserData | null>({
-    queryKey: queryKeys.user.get({ address: address as Address }).queryKey,
-    queryFn: async () => {
-      if (!address) {
-        return null;
-      }
-
-      const res = await getUser(
-        {
-          params: {
-            query: {
-              address,
-            },
-          },
-        },
-        clientType,
-      );
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
+  const { user } = useSuspenseQueryUser({
+    address: address as Address,
   });
 
-  const { data: sessionData } = useSuspenseQuery<AuthSessionData | null>({
-    queryKey: queryKeys.auth.session({ address: address as Address }).queryKey,
-    queryFn: async () => {
-      if (!address) {
-        return null;
-      }
-
-      const res = await getAuthSession({}, clientType);
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return null;
-        },
-      );
-    },
-    staleTime: 300,
+  const { authSession } = useSuspenseQueryAuthSession({
+    address: address as Address,
   });
 
   // On component mount, rehydrate the auth state from local storage
@@ -134,23 +82,23 @@ export const AuthState: FC = () => {
 
   // Set the userId in the auth state if it exists
   useEffect(() => {
-    if (data) {
-      setUserId(data.id);
+    if (user) {
+      setUserId(user.id);
     }
-  }, [data, setUserId]);
+  }, [user, setUserId]);
 
   // Set the session in the auth state if it exists
   useEffect(() => {
-    if (sessionData) {
-      if (sessionData.is_authenticated) {
-        setSessionId(sessionData.id);
+    if (authSession) {
+      if (authSession.is_authenticated) {
+        setSessionId(authSession.id);
       } else {
         setSessionId(undefined);
       }
     } else {
       setSessionId(undefined);
     }
-  }, [sessionData, setSessionId]);
+  }, [authSession, setSessionId]);
 
   // Check if the first segment of the pathname is a valid address w/ isAddress
   // If it is, set the auth state's wallet to that address
