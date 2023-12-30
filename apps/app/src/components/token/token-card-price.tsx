@@ -21,7 +21,7 @@ import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import type { FC } from "react";
 import type { Address } from "viem";
 import type { TokenData, TokenPriceData } from "@/data";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
@@ -52,12 +52,15 @@ export const TokenCardPrice: FC<TokenCardPriceProps> = ({
   const queryClient = useQueryClient();
 
   const currentData: TokenPriceData | undefined = queryClient.getQueryData(
-    queries.token_price.get({ address: address as Address, chain_id }).queryKey,
+    queryKeys.token_price.get({ address: address as Address, chain_id })
+      .queryKey,
   );
 
   const { data: token_price } = useSuspenseQuery<TokenPriceData | null>({
-    queryKey: queries.token_price.get({ address: address as Address, chain_id })
-      .queryKey,
+    queryKey: queryKeys.token_price.get({
+      address: address as Address,
+      chain_id,
+    }).queryKey,
     queryFn: async () => {
       if (!address || chain_id === 0) {
         return null;

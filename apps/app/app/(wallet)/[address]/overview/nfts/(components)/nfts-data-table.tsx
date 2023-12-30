@@ -21,7 +21,7 @@ import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/data-table";
 import type { NftDataPage, WalletSettingsData } from "@/data";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -43,10 +43,10 @@ export const NftsDataTable: FC<NftsDataTableProps> = ({ address }) => {
   const queryClient = useQueryClient();
 
   const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queries.wallet.settings({ address }).queryKey);
+    queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
   const nftPage: NftDataPage | undefined = queryClient.getQueryData(
-    queries.nft.list({
+    queryKeys.nft.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,

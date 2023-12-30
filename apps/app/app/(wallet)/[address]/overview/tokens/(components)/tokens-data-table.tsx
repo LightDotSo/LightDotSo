@@ -26,7 +26,7 @@ import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table";
 import type { TokenCountData, TokenData, WalletSettingsData } from "@/data";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { usePaginationQueryState } from "@/querystates";
 import { useAuth } from "@/stores";
 
@@ -70,10 +70,10 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
   const queryClient = useQueryClient();
 
   const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queries.wallet.settings({ address }).queryKey);
+    queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
   const currentData: TokenData[] | undefined = queryClient.getQueryData(
-    queries.token.list({
+    queryKeys.token.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
       limit: paginationState.pageSize,
@@ -84,7 +84,7 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
 
   const { data: tokens } = useQuery<TokenData[] | null>({
     placeholderData: keepPreviousData,
-    queryKey: queries.token.list({
+    queryKey: queryKeys.token.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
       limit: paginationState.pageSize,
@@ -120,14 +120,14 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
   });
 
   const currentCountData: TokenCountData | undefined = queryClient.getQueryData(
-    queries.token.listCount({
+    queryKeys.token.listCount({
       address: address as Address,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
   );
 
   const { data: tokensCount } = useQuery<TokenCountData | null>({
-    queryKey: queries.token.listCount({
+    queryKey: queryKeys.token.listCount({
       address: address as Address,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,

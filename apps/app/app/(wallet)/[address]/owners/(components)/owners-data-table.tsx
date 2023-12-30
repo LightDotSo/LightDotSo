@@ -22,7 +22,7 @@ import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/owners/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table";
 import type { ConfigurationData } from "@/data";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
@@ -51,11 +51,11 @@ export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
   const queryClient = useQueryClient();
 
   const currentData: ConfigurationData | undefined = queryClient.getQueryData(
-    queries.configuration.get({ address }).queryKey,
+    queryKeys.configuration.get({ address }).queryKey,
   );
 
   const { data: configuration } = useQuery<ConfigurationData | null>({
-    queryKey: queries.configuration.get({ address }).queryKey,
+    queryKey: queryKeys.configuration.get({ address }).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;

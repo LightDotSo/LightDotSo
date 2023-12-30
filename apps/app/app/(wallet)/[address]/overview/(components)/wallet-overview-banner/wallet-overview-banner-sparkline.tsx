@@ -23,7 +23,7 @@ import { SparkAreaChart } from "@tremor/react";
 import type { FC } from "react";
 import type { Address } from "viem";
 import type { TokenPortfolioData } from "@/data";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
@@ -54,11 +54,11 @@ export const WalletOverviewBannerSparkline: FC<
   const queryClient = useQueryClient();
 
   const currentData: TokenPortfolioData | undefined = queryClient.getQueryData(
-    queries.portfolio.get({ address }).queryKey,
+    queryKeys.portfolio.get({ address }).queryKey,
   );
 
   const { data: portfolio } = useSuspenseQuery<TokenPortfolioData | null>({
-    queryKey: queries.portfolio.get({ address }).queryKey,
+    queryKey: queryKeys.portfolio.get({ address }).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;

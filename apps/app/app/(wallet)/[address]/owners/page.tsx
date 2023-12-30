@@ -18,7 +18,7 @@ import type { Address } from "viem";
 import { OwnersDataTable } from "@/app/(wallet)/[address]/owners/(components)/owners-data-table";
 import { handler } from "@/handlers/paths/[address]/owners/handler";
 import { preloader } from "@/preloaders/paths/[address]/owners/preloader";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------
@@ -56,11 +56,11 @@ export default async function Page({ params, searchParams }: PageProps) {
   const queryClient = getQueryClient();
 
   queryClient.setQueryData(
-    queries.wallet.settings({ address: params.address as Address }).queryKey,
+    queryKeys.wallet.settings({ address: params.address as Address }).queryKey,
     walletSettings,
   );
   queryClient.setQueryData(
-    queries.configuration.get({
+    queryKeys.configuration.get({
       address: params.address as Address,
     }).queryKey,
     configuration,

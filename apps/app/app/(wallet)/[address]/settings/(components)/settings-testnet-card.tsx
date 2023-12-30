@@ -41,7 +41,7 @@ import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const/titles";
 import type { WalletSettingsData } from "@/data";
 import { useDelayedValue } from "@/hooks/useDelayedValue";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { useAuth } from "@/stores";
 import { errorToast, successToast } from "@/utils";
 
@@ -95,7 +95,7 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   ]);
 
   const { data: wallet } = useSuspenseQuery<WalletSettingsData | null>({
-    queryKey: queries.wallet.settings({ address }).queryKey,
+    queryKey: queryKeys.wallet.settings({ address }).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;
@@ -160,16 +160,18 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
       // Cancel any outgoing refetches
       // (so they don't overwrite our optimistic update)
       await queryClient.cancelQueries({
-        queryKey: queries.wallet.settings({ address }).queryKey,
+        queryKey: queryKeys.wallet.settings({ address }).queryKey,
       });
 
       // Snapshot the previous value
       const previousSettings: WalletSettingsData | undefined =
-        queryClient.getQueryData(queries.wallet.settings({ address }).queryKey);
+        queryClient.getQueryData(
+          queryKeys.wallet.settings({ address }).queryKey,
+        );
 
       // Optimistically update to the new value
       queryClient.setQueryData(
-        queries.wallet.settings({ address }).queryKey,
+        queryKeys.wallet.settings({ address }).queryKey,
         (old: WalletSettingsData) => {
           return { ...old, walletSettings };
         },
@@ -181,7 +183,7 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
     // If the mutation fails, use the context we returned above
     onError: (err, _newWalletSettings, context) => {
       queryClient.setQueryData(
-        queries.wallet.settings({ address }).queryKey,
+        queryKeys.wallet.settings({ address }).queryKey,
         context?.previousSettings,
       );
 
@@ -191,13 +193,13 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
     },
     onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: queries.wallet.settings({ address }).queryKey,
+        queryKey: queryKeys.wallet.settings({ address }).queryKey,
       });
 
       // Invalidate the cache for the address
       fetch(`/api/revalidate/tag?tag=${address}`);
     },
-    mutationKey: queries.wallet.settings({ address }).queryKey,
+    mutationKey: queryKeys.wallet.settings({ address }).queryKey,
   });
 
   // ---------------------------------------------------------------------------

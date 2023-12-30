@@ -19,7 +19,7 @@ import { TransactionsDataTable } from "@/app/(wallet)/[address]/transactions/(co
 import { TransactionsDataTablePagination } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table-pagination";
 import { handler } from "@/handlers/paths/[address]/transactions/history/handler";
 import { preloader } from "@/preloaders/paths/[address]/transactions/history/preloader";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------
@@ -62,11 +62,11 @@ export default async function Page({ params, searchParams }: PageProps) {
   const queryClient = getQueryClient();
 
   queryClient.setQueryData(
-    queries.wallet.settings({ address: params.address as Address }).queryKey,
+    queryKeys.wallet.settings({ address: params.address as Address }).queryKey,
     walletSettings,
   );
   queryClient.setQueryData(
-    queries.user_operation.list({
+    queryKeys.user_operation.list({
       address: params.address as Address,
       status: "history",
       order: "desc",
@@ -77,7 +77,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     userOperations,
   );
   queryClient.setQueryData(
-    queries.user_operation.listCount({
+    queryKeys.user_operation.listCount({
       address: params.address as Address,
       status: "history",
       is_testnet: walletSettings?.is_enabled_testnet ?? false,

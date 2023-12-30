@@ -27,7 +27,7 @@ import type {
   UserOperationCountData,
   WalletSettingsData,
 } from "@/data";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
@@ -89,16 +89,17 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
 
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(
-      queries.wallet.settings({ address: walletAddress as Address }).queryKey,
+      queryKeys.wallet.settings({ address: walletAddress as Address }).queryKey,
     );
 
   const currentConfigurationData: ConfigurationData | undefined =
     queryClient.getQueryData(
-      queries.configuration.get({ address: walletAddress as Address }).queryKey,
+      queryKeys.configuration.get({ address: walletAddress as Address })
+        .queryKey,
     );
 
   const { data: configuration } = useSuspenseQuery<ConfigurationData | null>({
-    queryKey: queries.configuration.get({ address: walletAddress as Address })
+    queryKey: queryKeys.configuration.get({ address: walletAddress as Address })
       .queryKey,
     queryFn: async () => {
       if (!walletAddress) {
@@ -127,7 +128,7 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
 
   const currentUserOperationCountData: UserOperationCountData | undefined =
     queryClient.getQueryData(
-      queries.user_operation.listCount({
+      queryKeys.user_operation.listCount({
         address: walletAddress as Address,
         status: "proposed",
         is_testnet: walletSettings?.is_enabled_testnet ?? false,
@@ -136,7 +137,7 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
 
   const { data: userOperationCount } =
     useSuspenseQuery<UserOperationCountData | null>({
-      queryKey: queries.user_operation.listCount({
+      queryKey: queryKeys.user_operation.listCount({
         address: walletAddress as Address,
         status: "proposed",
         is_testnet: walletSettings?.is_enabled_testnet ?? false,

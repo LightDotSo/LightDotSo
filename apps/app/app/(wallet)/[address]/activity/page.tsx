@@ -21,7 +21,7 @@ import { ActivityDataTable } from "@/app/(wallet)/[address]/activity/(components
 import { ActivityDataTablePagination } from "@/app/(wallet)/[address]/activity/(components)/activity-data-table-pagination";
 import { handler } from "@/handlers/paths/[address]/activity/handler";
 import { preloader } from "@/preloaders/paths/[address]/activity/preloader";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------
@@ -62,7 +62,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   const queryClient = getQueryClient();
 
   queryClient.setQueryData(
-    queries.activity.list({
+    queryKeys.activity.list({
       address: params.address as Address,
       limit: paginationState.pageSize,
       offset: paginationState.pageIndex * paginationState.pageSize,
@@ -70,7 +70,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     activities,
   );
   queryClient.setQueryData(
-    queries.activity.listCount({
+    queryKeys.activity.listCount({
       address: params.address as Address,
     }).queryKey,
     activitiesCount,

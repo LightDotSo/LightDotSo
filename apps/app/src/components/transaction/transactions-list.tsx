@@ -40,7 +40,7 @@ import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/columns";
 import { TableEmpty } from "@/components/state/table-empty";
 import type { TransactionData, WalletSettingsData } from "@/data";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { useAuth, useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
@@ -81,10 +81,10 @@ export const TransactionsList: FC<TransactionsListProps> = ({
   const queryClient = useQueryClient();
 
   const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queries.wallet.settings({ address }).queryKey);
+    queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
   const currentData: TransactionData[] | undefined = queryClient.getQueryData(
-    queries.transaction.list({
+    queryKeys.transaction.list({
       address,
       limit: limit,
       offset: 0,
@@ -93,7 +93,7 @@ export const TransactionsList: FC<TransactionsListProps> = ({
   );
 
   const { data } = useSuspenseQuery<TransactionData[] | null>({
-    queryKey: queries.transaction.list({
+    queryKey: queryKeys.transaction.list({
       address,
       limit: limit,
       offset: 0,

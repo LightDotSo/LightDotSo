@@ -40,7 +40,7 @@ import { useEnsName } from "wagmi";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import type { WalletData } from "@/data";
 import { useCopy } from "@/hooks/useCopy";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { useAuth } from "@/stores";
 import { successToast } from "@/utils";
 
@@ -95,11 +95,11 @@ export const WalletOverviewBannerAddress: FC<
   const queryClient = useQueryClient();
 
   const currentData: WalletData | undefined = queryClient.getQueryData(
-    queries.wallet.get({ address }).queryKey,
+    queryKeys.wallet.get({ address }).queryKey,
   );
 
   const { data: wallet } = useSuspenseQuery<WalletData | null>({
-    queryKey: queries.wallet.get({ address }).queryKey,
+    queryKey: queryKeys.wallet.get({ address }).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;

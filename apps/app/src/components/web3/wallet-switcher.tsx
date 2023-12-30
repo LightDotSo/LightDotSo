@@ -51,7 +51,7 @@ import type { Address } from "viem";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import type { WalletData } from "@/data";
 import { useIsMounted } from "@/hooks/useIsMounted";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
@@ -122,14 +122,14 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   const queryClient = useQueryClient();
 
   const currentData: WalletData[] | undefined = queryClient.getQueryData(
-    queries.wallet.list({
+    queryKeys.wallet.list({
       address: address as Address,
       limit: Number.MAX_SAFE_INTEGER,
     }).queryKey,
   );
 
   const { data, isLoading } = useSuspenseQuery<WalletData[] | null>({
-    queryKey: queries.wallet.list({
+    queryKey: queryKeys.wallet.list({
       address: address as Address,
       limit: Number.MAX_SAFE_INTEGER,
     }).queryKey,

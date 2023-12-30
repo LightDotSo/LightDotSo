@@ -44,6 +44,7 @@ import {
   ShieldExclamationIcon,
 } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowUpRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useCallback } from "react";
 import type { FC } from "react";
@@ -307,12 +308,13 @@ export const NewWalletForm: FC = () => {
                 <CardDescription className="text-base text-text">
                   By creating a new wallet, you are accepting our{" "}
                   <a
-                    className="underline"
+                    className="underline hover:text-text-weak"
                     href={NOTION_LINKS["Terms of Service"]}
                     target="_blank"
                     rel="noreferrer"
                   >
                     term and conditions
+                    <ArrowUpRight className="mb-3 ml-1 inline h-2 w-2" />
                   </a>
                 </CardDescription>
               </div>

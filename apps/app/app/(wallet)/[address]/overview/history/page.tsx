@@ -22,7 +22,7 @@ import { HistoryDataTablePagination } from "@/app/(wallet)/[address]/overview/hi
 import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
 import { handler } from "@/handlers/paths/[address]/overview/history/handler";
 import { preloader } from "@/preloaders/paths/[address]/overview/history/preloader";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------
@@ -63,11 +63,11 @@ export default async function Page({ params, searchParams }: PageProps) {
   const queryClient = getQueryClient();
 
   queryClient.setQueryData(
-    queries.wallet.settings({ address: params.address as Address }).queryKey,
+    queryKeys.wallet.settings({ address: params.address as Address }).queryKey,
     walletSettings,
   );
   queryClient.setQueryData(
-    queries.transaction.list({
+    queryKeys.transaction.list({
       address: params.address as Address,
       limit: OVERVIEW_ROW_COUNT,
       offset: 0,
@@ -76,7 +76,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     transactions,
   );
   queryClient.setQueryData(
-    queries.transaction.listCount({
+    queryKeys.transaction.listCount({
       address: params.address as Address,
       is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,

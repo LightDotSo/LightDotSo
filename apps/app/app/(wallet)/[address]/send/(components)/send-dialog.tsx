@@ -73,7 +73,7 @@ import { publicClient } from "@/clients/public";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@/const/simplehash";
 import type { NftDataPage, TokenData, WalletSettingsData } from "@/data";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import type { Transfer, Transfers } from "@/schemas";
 import { sendFormConfigurationSchema } from "@/schemas/sendForm";
 import { useAuth } from "@/stores";
@@ -122,10 +122,10 @@ export const SendDialog: FC<SendDialogProps> = ({
   const queryClient = useQueryClient();
 
   const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queries.wallet.settings({ address }).queryKey);
+    queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
   const currentTokenData: TokenData[] | undefined = queryClient.getQueryData(
-    queries.token.list({
+    queryKeys.token.list({
       address,
       limit: Number.MAX_SAFE_INTEGER,
       offset: 0,
@@ -135,7 +135,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   );
 
   const currentNftData: NftDataPage | undefined = queryClient.getQueryData(
-    queries.nft.list({
+    queryKeys.nft.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
       limit: Number.MAX_SAFE_INTEGER,
@@ -143,7 +143,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   );
 
   const { data: tokens } = useSuspenseQuery<TokenData[] | null>({
-    queryKey: queries.token.list({
+    queryKey: queryKeys.token.list({
       address,
       limit: Number.MAX_SAFE_INTEGER,
       offset: 0,

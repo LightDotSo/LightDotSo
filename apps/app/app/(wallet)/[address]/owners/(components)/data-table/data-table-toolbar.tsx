@@ -24,7 +24,7 @@ import type { Address } from "viem";
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import type { ConfigurationData, ConfigurationOwnerData } from "@/data";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { useAuth, useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
@@ -54,7 +54,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const queryClient = useQueryClient();
 
   const currentData: ConfigurationData | undefined = queryClient.getQueryData(
-    queries.configuration.get({ address: wallet as Address }).queryKey,
+    queryKeys.configuration.get({ address: wallet as Address }).queryKey,
   );
 
   // ---------------------------------------------------------------------------

@@ -25,7 +25,7 @@ import { TokenPortfolio } from "@/components/token/token-portfolio";
 import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
 import { handler } from "@/handlers/paths/[address]/overview/tokens/handler";
 import { preloader } from "@/preloaders/paths/[address]/overview/tokens/preloader";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------
@@ -66,15 +66,15 @@ export default async function Page({ params, searchParams }: PageProps) {
   const queryClient = getQueryClient();
 
   queryClient.setQueryData(
-    queries.wallet.settings({ address: params.address as Address }).queryKey,
+    queryKeys.wallet.settings({ address: params.address as Address }).queryKey,
     walletSettings,
   );
   queryClient.setQueryData(
-    queries.portfolio.get({ address: params.address as Address }).queryKey,
+    queryKeys.portfolio.get({ address: params.address as Address }).queryKey,
     portfolio,
   );
   queryClient.setQueryData(
-    queries.token.list({
+    queryKeys.token.list({
       address: params.address as Address,
       limit: OVERVIEW_ROW_COUNT,
       offset: 0,
@@ -84,7 +84,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     tokens,
   );
   queryClient.setQueryData(
-    queries.token.listCount({
+    queryKeys.token.listCount({
       address: params.address as Address,
       is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,

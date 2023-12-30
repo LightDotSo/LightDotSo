@@ -22,7 +22,7 @@ import { SettingsTestnetCard } from "@/app/(wallet)/[address]/settings/(componen
 import { SettingsSectionWrapper } from "@/components/wrapper/section/settings-section-wrapper";
 import { handler } from "@/handlers/paths/[address]/settings/handler";
 import { preloader } from "@/preloaders/paths/[address]/settings/preloader";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------
@@ -57,7 +57,7 @@ export default async function Page({ params }: PageProps) {
   const queryClient = getQueryClient();
 
   queryClient.setQueryData(
-    queries.wallet.settings({ address: params.address as Address }).queryKey,
+    queryKeys.wallet.settings({ address: params.address as Address }).queryKey,
     walletSettings,
   );
 

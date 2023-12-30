@@ -22,7 +22,7 @@ import type { Address } from "viem";
 import { columns } from "@/app/(authenticated)/wallets/(components)/data-table/columns";
 import { DataTable } from "@/app/(authenticated)/wallets/(components)/data-table/data-table";
 import type { WalletCountData, WalletData } from "@/data";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { usePaginationQueryState } from "@/querystates";
 import { useAuth } from "@/stores";
 
@@ -58,7 +58,7 @@ export const WalletsDataTable: FC = () => {
   const queryClient = useQueryClient();
 
   const currentData: WalletData[] | undefined = queryClient.getQueryData(
-    queries.wallet.list({
+    queryKeys.wallet.list({
       address: address as Address,
       limit: paginationState.pageSize,
       offset: offsetCount,
@@ -66,7 +66,7 @@ export const WalletsDataTable: FC = () => {
   );
 
   const { data: wallets } = useQuery<WalletData[] | null>({
-    queryKey: queries.wallet.list({
+    queryKey: queryKeys.wallet.list({
       address: address as Address,
       limit: paginationState.pageSize,
       offset: offsetCount,
@@ -103,11 +103,11 @@ export const WalletsDataTable: FC = () => {
 
   const currentCountData: WalletCountData | undefined =
     queryClient.getQueryData(
-      queries.wallet.list({ address: address as Address }).queryKey,
+      queryKeys.wallet.list({ address: address as Address }).queryKey,
     );
 
   const { data: walletsCount } = useQuery<WalletCountData | null>({
-    queryKey: queries.wallet.listCount({ address: address as Address })
+    queryKey: queryKeys.wallet.listCount({ address: address as Address })
       .queryKey,
     queryFn: async () => {
       if (!address) {

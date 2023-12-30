@@ -22,7 +22,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Address } from "viem";
 import type { UserOperationData, WalletSettingsData } from "@/data";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -54,10 +54,10 @@ export const OverviewSection = ({
   const queryClient = useQueryClient();
 
   const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queries.wallet.settings({ address }).queryKey);
+    queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
   const currentData: UserOperationData[] | undefined = queryClient.getQueryData(
-    queries.user_operation.list({
+    queryKeys.user_operation.list({
       address,
       status,
       order: status === "proposed" ? "asc" : "desc",

@@ -22,7 +22,7 @@ import { SettingsSectionWrapper } from "@/components/wrapper/section/settings-se
 import { CHAINS, MAINNET_CHAINS } from "@/const/chains";
 import { handler } from "@/handlers/paths/[address]/settings/deployment/handler";
 import { preloader } from "@/preloaders/paths/[address]/preloader";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------
@@ -58,7 +58,7 @@ export default async function Page({ params }: PageProps) {
   const queryClient = getQueryClient();
 
   queryClient.setQueryData(
-    queries.user_operation.list({
+    queryKeys.user_operation.list({
       address: params.address as Address,
       status: "history",
       order: "asc",

@@ -24,7 +24,7 @@ import type { Address } from "viem";
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import type { TransactionData, WalletSettingsData } from "@/data";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { usePaginationQueryState } from "@/querystates";
 import { useAuth, useTables } from "@/stores";
 import { getChainNameById } from "@/utils/chain";
@@ -71,11 +71,11 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
 
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(
-      queries.wallet.settings({ address: wallet as Address }).queryKey,
+      queryKeys.wallet.settings({ address: wallet as Address }).queryKey,
     );
 
   const currentData: TransactionData[] | undefined = queryClient.getQueryData(
-    queries.transaction.list({
+    queryKeys.transaction.list({
       address: wallet as Address,
       offset: offsetCount,
       limit: paginationState.pageSize,

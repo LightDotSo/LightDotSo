@@ -33,7 +33,7 @@ import type { Address } from "viem";
 import { TransactionCard } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transaction-card";
 import { TableEmpty } from "@/components/state/table-empty";
 import type { ConfigurationData, UserOperationData } from "@/data";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { usePaginationQueryState } from "@/querystates";
 import { useAuth, useTables } from "@/stores";
 import { groupByDate } from "@/utils/group";
@@ -148,11 +148,11 @@ export function DataTable({
   const queryClient = useQueryClient();
 
   const currentData: ConfigurationData | undefined = queryClient.getQueryData(
-    queries.configuration.get({ address }).queryKey,
+    queryKeys.configuration.get({ address }).queryKey,
   );
 
   const { data: configuration } = useQuery<ConfigurationData | null>({
-    queryKey: queries.configuration.get({ address }).queryKey,
+    queryKey: queryKeys.configuration.get({ address }).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;
