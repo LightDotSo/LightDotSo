@@ -21,7 +21,7 @@ import { TransactionsDataTable } from "@/app/(wallet)/[address]/transactions/(co
 import { TRANSACTION_ROW_COUNT } from "@/const/numbers";
 import { handler } from "@/handlers/paths/[address]/transactions/handler";
 import { preloader } from "@/preloaders/paths/[address]/transactions/preloader";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------
@@ -63,11 +63,11 @@ export default async function Page({ params }: PageProps) {
   const queryClient = getQueryClient();
 
   queryClient.setQueryData(
-    queries.wallet.settings({ address: params.address as Address }).queryKey,
+    queryKeys.wallet.settings({ address: params.address as Address }).queryKey,
     walletSettings,
   );
   queryClient.setQueryData(
-    queries.user_operation.listCount({
+    queryKeys.user_operation.listCount({
       address: params.address as Address,
       status: null,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
@@ -75,7 +75,7 @@ export default async function Page({ params }: PageProps) {
     userOperationsCount,
   );
   queryClient.setQueryData(
-    queries.user_operation.list({
+    queryKeys.user_operation.list({
       address: params.address as Address,
       status: "proposed",
       order: "asc",
@@ -86,7 +86,7 @@ export default async function Page({ params }: PageProps) {
     queuedUserOperations,
   );
   queryClient.setQueryData(
-    queries.user_operation.listCount({
+    queryKeys.user_operation.listCount({
       address: params.address as Address,
       status: "proposed",
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
@@ -94,7 +94,7 @@ export default async function Page({ params }: PageProps) {
     queuedUserOperationsCount,
   );
   queryClient.setQueryData(
-    queries.user_operation.list({
+    queryKeys.user_operation.list({
       address: params.address as Address,
       status: "history",
       order: "desc",
@@ -105,7 +105,7 @@ export default async function Page({ params }: PageProps) {
     historyUserOperations,
   );
   queryClient.setQueryData(
-    queries.user_operation.listCount({
+    queryKeys.user_operation.listCount({
       address: params.address as Address,
       status: "history",
       is_testnet: walletSettings?.is_enabled_testnet ?? false,

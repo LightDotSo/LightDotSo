@@ -26,7 +26,7 @@ import { useCallback, useState, useEffect } from "react";
 import { toHex, fromHex, recoverMessageAddress } from "viem";
 import type { Hex, Address } from "viem";
 import type { ConfigurationData, UserOperationData } from "@/data";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { errorToast, successToast } from "@/utils";
 import {
   useLightVerifyingPaymasterGetHash,
@@ -109,7 +109,7 @@ export const useUserOperationSubmit = ({
   // ---------------------------------------------------------------------------
 
   const { data: paymasterOperation } = useSuspenseQuery({
-    queryKey: queries.paymaster_operation.get({
+    queryKey: queryKeys.paymaster_operation.get({
       address: userOperation.paymaster_and_data.slice(0, 42) as Address,
       chainId: userOperation.chain_id,
       valid_after: fromHex(

@@ -26,7 +26,7 @@ import type { Address, Chain, Hex } from "viem";
 import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const/titles";
 import type { UserOperationData, WalletSettingsData } from "@/data";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
@@ -69,10 +69,10 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   const queryClient = useQueryClient();
 
   const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queries.wallet.settings({ address }).queryKey);
+    queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
   const currentData: UserOperationData[] | undefined = queryClient.getQueryData(
-    queries.user_operation.list({
+    queryKeys.user_operation.list({
       address,
       status: "history",
       order: "asc",
@@ -83,7 +83,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   );
 
   const { data: ops } = useSuspenseQuery<UserOperationData[] | null>({
-    queryKey: queries.user_operation.list({
+    queryKey: queryKeys.user_operation.list({
       address,
       status: "history",
       order: "asc",

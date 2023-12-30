@@ -20,7 +20,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { TableEmpty } from "@/components/state/table-empty";
 import type { UserOperationCountData, WalletSettingsData } from "@/data";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -44,11 +44,11 @@ export const OverviewSectionEmpty = ({
   const queryClient = useQueryClient();
 
   const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queries.wallet.settings({ address }).queryKey);
+    queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
   const currentData: UserOperationCountData | undefined =
     queryClient.getQueryData(
-      queries.user_operation.listCount({
+      queryKeys.user_operation.listCount({
         address: address as Address,
         status: null,
         is_testnet: walletSettings?.is_enabled_testnet ?? false,

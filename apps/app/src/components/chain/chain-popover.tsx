@@ -36,7 +36,7 @@ import { useQueryClient } from "wagmi";
 import { CHAINS, MAINNET_CHAINS } from "@/const/chains";
 import type { WalletSettingsData } from "@/data";
 import { useIsMounted } from "@/hooks/useIsMounted";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { useAuth } from "@/stores";
 import { ChainLogo } from "@/svgs";
 
@@ -70,7 +70,8 @@ export const ChainPopover: FC = () => {
   ]);
 
   const { data: walletSettings } = useSuspenseQuery<WalletSettingsData | null>({
-    queryKey: queries.wallet.settings({ address: wallet as Address }).queryKey,
+    queryKey: queryKeys.wallet.settings({ address: wallet as Address })
+      .queryKey,
     queryFn: async () => {
       if (!wallet) {
         return null;

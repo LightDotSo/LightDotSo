@@ -21,7 +21,7 @@ import { OverviewList } from "@/app/(wallet)/[address]/overview/(components)/ove
 import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
 import { handler } from "@/handlers/paths/[address]/overview/handler";
 import { preloader } from "@/preloaders/paths/[address]/overview/preloader";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------
@@ -63,15 +63,15 @@ export default async function Page({ params }: PageProps) {
   const queryClient = getQueryClient();
 
   queryClient.setQueryData(
-    queries.wallet.settings({ address: params.address as Address }).queryKey,
+    queryKeys.wallet.settings({ address: params.address as Address }).queryKey,
     walletSettings,
   );
   queryClient.setQueryData(
-    queries.portfolio.get({ address: params.address as Address }).queryKey,
+    queryKeys.portfolio.get({ address: params.address as Address }).queryKey,
     portfolio,
   );
   queryClient.setQueryData(
-    queries.token.list({
+    queryKeys.token.list({
       address: params.address as Address,
       limit: OVERVIEW_ROW_COUNT,
       offset: 0,
@@ -81,11 +81,12 @@ export default async function Page({ params }: PageProps) {
     tokens,
   );
   queryClient.setQueryData(
-    queries.nft_valuation.get({ address: params.address as Address }).queryKey,
+    queryKeys.nft_valuation.get({ address: params.address as Address })
+      .queryKey,
     nftValuation,
   );
   queryClient.setQueryData(
-    queries.nft.list({
+    queryKeys.nft.list({
       address: params.address as Address,
       is_testnet: walletSettings?.is_enabled_testnet,
       limit: OVERVIEW_ROW_COUNT,
@@ -93,7 +94,7 @@ export default async function Page({ params }: PageProps) {
     nfts,
   );
   queryClient.setQueryData(
-    queries.transaction.list({
+    queryKeys.transaction.list({
       address: params.address as Address,
       limit: OVERVIEW_ROW_COUNT,
       offset: 0,

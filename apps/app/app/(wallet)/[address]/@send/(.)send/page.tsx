@@ -18,7 +18,7 @@ import { SendDialog } from "@/app/(wallet)/[address]/send/(components)/send-dial
 import { Modal } from "@/components/modal";
 import { handler } from "@/handlers/paths/[address]/send/handler";
 import { preloader } from "@/preloaders/paths/[address]/send/preloader";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------
@@ -59,11 +59,11 @@ export default async function Page({ params, searchParams }: PageProps) {
   const queryClient = getQueryClient();
 
   queryClient.setQueryData(
-    queries.wallet.settings({ address: params.address as Address }).queryKey,
+    queryKeys.wallet.settings({ address: params.address as Address }).queryKey,
     walletSettings,
   );
   queryClient.setQueryData(
-    queries.token.list({
+    queryKeys.token.list({
       address: params.address as Address,
       limit: Number.MAX_SAFE_INTEGER,
       offset: 0,
@@ -73,7 +73,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     tokens,
   );
   queryClient.setQueryData(
-    queries.nft.list({
+    queryKeys.nft.list({
       address: params.address as Address,
       is_testnet: walletSettings?.is_enabled_testnet,
       limit: Number.MAX_SAFE_INTEGER,

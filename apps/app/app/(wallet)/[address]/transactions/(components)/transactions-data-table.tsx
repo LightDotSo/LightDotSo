@@ -30,8 +30,8 @@ import type {
   UserOperationData,
   WalletSettingsData,
 } from "@/data";
-import { queries } from "@/queries";
-import { usePaginationQueryState } from "@/querystates";
+import { queryKeys } from "@/queryKeys";
+import { usePaginationQueryState } from "@/queryStatess";
 import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
@@ -78,10 +78,10 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   const queryClient = useQueryClient();
 
   const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queries.wallet.settings({ address }).queryKey);
+    queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
   const currentData: UserOperationData[] | undefined = queryClient.getQueryData(
-    queries.user_operation.list({
+    queryKeys.user_operation.list({
       address,
       status,
       order: status === "proposed" ? "asc" : "desc",
@@ -93,7 +93,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
 
   const { data: transactions } = useQuery<UserOperationData[] | null>({
     placeholderData: keepPreviousData,
-    queryKey: queries.user_operation.list({
+    queryKey: queryKeys.user_operation.list({
       address,
       status,
       order: status === "proposed" ? "asc" : "desc",
@@ -132,7 +132,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
 
   const currentCountData: UserOperationCountData | undefined =
     queryClient.getQueryData(
-      queries.user_operation.listCount({
+      queryKeys.user_operation.listCount({
         address: address as Address,
         status,
         is_testnet: walletSettings?.is_enabled_testnet ?? false,
@@ -141,7 +141,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
 
   const { data: userOperationsCount } = useQuery<UserOperationCountData | null>(
     {
-      queryKey: queries.user_operation.listCount({
+      queryKey: queryKeys.user_operation.listCount({
         address: address as Address,
         status,
         is_testnet: walletSettings?.is_enabled_testnet ?? false,

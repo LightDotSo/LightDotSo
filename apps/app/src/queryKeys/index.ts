@@ -29,7 +29,7 @@ import { user } from "./user";
 import { user_operation } from "./user_operation";
 import { wallet } from "./wallet";
 
-export const queries = mergeQueryKeys(
+export const queryKeys = mergeQueryKeys(
   auth,
   activity,
   configuration,
@@ -45,4 +45,4 @@ export const queries = mergeQueryKeys(
   wallet,
 );
 
-export type QueryKeys = inferQueryKeyStore<typeof queries>;
+export type QueryKeys = inferQueryKeyStore<typeof queryKeys>;

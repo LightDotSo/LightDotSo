@@ -33,7 +33,7 @@ import { NftCard } from "@/components/nft/nft-card";
 import { NftsWrapper } from "@/components/nft/nfts-wrapper";
 import { TableEmpty } from "@/components/state/table-empty";
 import type { NftData, NftDataPage, WalletSettingsData } from "@/data";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
@@ -64,10 +64,10 @@ export const NftsList: FC<NftsListProps> = ({ address, limit }) => {
   const queryClient = useQueryClient();
 
   const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queries.wallet.settings({ address }).queryKey);
+    queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
   const data: NftDataPage | undefined = queryClient.getQueryData(
-    queries.nft.list({
+    queryKeys.nft.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet,
       limit: limit,

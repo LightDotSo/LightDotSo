@@ -24,7 +24,7 @@ import type { Address } from "viem";
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import type { NftData, NftDataPage, WalletSettingsData } from "@/data";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { useAuth, useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
@@ -55,11 +55,11 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
 
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(
-      queries.wallet.settings({ address: wallet as Address }).queryKey,
+      queryKeys.wallet.settings({ address: wallet as Address }).queryKey,
     );
 
   const currentData: NftDataPage | undefined = queryClient.getQueryData(
-    queries.nft.list({
+    queryKeys.nft.list({
       address: wallet as Address,
       is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,

@@ -39,7 +39,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { useEffect } from "react";
 import { TableEmpty } from "@/components/state/table-empty";
 import type { TokenData } from "@/data";
-import { usePaginationQueryState } from "@/querystates";
+import { usePaginationQueryState } from "@/queryStatess";
 import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------

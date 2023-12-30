@@ -30,8 +30,8 @@ import type {
   TransactionData,
   WalletSettingsData,
 } from "@/data";
-import { queries } from "@/queries";
-import { usePaginationQueryState } from "@/querystates";
+import { queryKeys } from "@/queryKeys";
+import { usePaginationQueryState } from "@/queryStatess";
 import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
@@ -74,10 +74,10 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
   const queryClient = useQueryClient();
 
   const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queries.wallet.settings({ address }).queryKey);
+    queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
   const currentData: TransactionData[] | undefined = queryClient.getQueryData(
-    queries.transaction.list({
+    queryKeys.transaction.list({
       address,
       limit: paginationState.pageSize,
       offset: offsetCount,
@@ -87,7 +87,7 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
 
   const { data: transactions } = useQuery<TransactionData[] | null>({
     placeholderData: keepPreviousData,
-    queryKey: queries.transaction.list({
+    queryKey: queryKeys.transaction.list({
       address,
       limit: paginationState.pageSize,
       offset: offsetCount,
@@ -122,14 +122,14 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
 
   const currentCountData: TransactionCountData | undefined =
     queryClient.getQueryData(
-      queries.transaction.listCount({
+      queryKeys.transaction.listCount({
         address: address as Address,
         is_testnet: walletSettings?.is_enabled_testnet ?? false,
       }).queryKey,
     );
 
   const { data: transactionsCount } = useQuery<TransactionCountData | null>({
-    queryKey: queries.transaction.listCount({
+    queryKey: queryKeys.transaction.listCount({
       address: address as Address,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,

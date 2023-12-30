@@ -43,7 +43,7 @@ import { TITLES } from "@/const/titles";
 import type { WalletData } from "@/data";
 import { useAuthModal } from "@/hooks/useAuthModal";
 import { useDelayedValue } from "@/hooks/useDelayedValue";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { useAuth } from "@/stores";
 import { errorToast, successToast } from "@/utils";
 
@@ -103,11 +103,11 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   const queryClient = useQueryClient();
 
   const currentData: WalletData | undefined = queryClient.getQueryData(
-    queries.wallet.get({ address }).queryKey,
+    queryKeys.wallet.get({ address }).queryKey,
   );
 
   const { data: wallet } = useSuspenseQuery<WalletData | null>({
-    queryKey: queries.wallet.get({ address }).queryKey,
+    queryKey: queryKeys.wallet.get({ address }).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;
@@ -179,17 +179,17 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
       // Cancel any outgoing refetches
       // (so they don't overwrite our optimistic update)
       await queryClient.cancelQueries({
-        queryKey: queries.wallet.get({ address }).queryKey,
+        queryKey: queryKeys.wallet.get({ address }).queryKey,
       });
 
       // Snapshot the previous value
       const previousSettings: WalletData | undefined = queryClient.getQueryData(
-        queries.wallet.get({ address }).queryKey,
+        queryKeys.wallet.get({ address }).queryKey,
       );
 
       // Optimistically update to the new value
       queryClient.setQueryData(
-        queries.wallet.settings({ address }).queryKey,
+        queryKeys.wallet.settings({ address }).queryKey,
         (old: WalletData) => {
           return { ...old, wallet };
         },
@@ -201,7 +201,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
     // If the mutation fails, use the context we returned above
     onError: (err, _newWalletSettings, context) => {
       queryClient.setQueryData(
-        queries.wallet.get({ address }).queryKey,
+        queryKeys.wallet.get({ address }).queryKey,
         context?.previousSettings,
       );
 
@@ -216,16 +216,16 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
     },
     onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: queries.wallet.get({ address }).queryKey,
+        queryKey: queryKeys.wallet.get({ address }).queryKey,
       });
       queryClient.invalidateQueries({
-        queryKey: queries.wallet.list({ address: address }).queryKey,
+        queryKey: queryKeys.wallet.list({ address: address }).queryKey,
       });
 
       // Invalidate the cache for the address
       // fetch(`/api/revalidate/tag?tag=${address}`);
     },
-    mutationKey: queries.wallet.get({ address }).queryKey,
+    mutationKey: queryKeys.wallet.get({ address }).queryKey,
   });
 
   // ---------------------------------------------------------------------------

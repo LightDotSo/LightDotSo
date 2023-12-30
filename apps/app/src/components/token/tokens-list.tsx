@@ -42,7 +42,7 @@ import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/columns";
 import { TableEmpty } from "@/components/state/table-empty";
 import type { TokenData, WalletSettingsData } from "@/data";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { useAuth, useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
@@ -80,10 +80,10 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
   const queryClient = useQueryClient();
 
   const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queries.wallet.settings({ address }).queryKey);
+    queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
   const currentData: TokenData[] | undefined = queryClient.getQueryData(
-    queries.token.list({
+    queryKeys.token.list({
       address,
       limit: limit,
       offset: 0,
@@ -93,7 +93,7 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
   );
 
   const { data } = useSuspenseQuery<TokenData[] | null>({
-    queryKey: queries.token.list({
+    queryKey: queryKeys.token.list({
       address,
       limit: limit,
       offset: 0,

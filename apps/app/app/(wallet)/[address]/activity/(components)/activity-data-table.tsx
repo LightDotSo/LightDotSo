@@ -26,8 +26,8 @@ import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/activity/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/activity/(components)/data-table/data-table";
 import type { ActivityData, ActivityCountData } from "@/data";
-import { queries } from "@/queries";
-import { usePaginationQueryState } from "@/querystates";
+import { queryKeys } from "@/queryKeys";
+import { usePaginationQueryState } from "@/queryStatess";
 import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
@@ -70,7 +70,7 @@ export const ActivityDataTable: FC<ActivityDataTableProps> = ({ address }) => {
   const queryClient = useQueryClient();
 
   const currentData: ActivityData[] | undefined = queryClient.getQueryData(
-    queries.activity.list({
+    queryKeys.activity.list({
       address,
       limit: paginationState.pageSize,
       offset: offsetCount,
@@ -79,7 +79,7 @@ export const ActivityDataTable: FC<ActivityDataTableProps> = ({ address }) => {
 
   const { data: activities } = useQuery<ActivityData[] | null>({
     placeholderData: keepPreviousData,
-    queryKey: queries.activity.list({
+    queryKey: queryKeys.activity.list({
       address,
       limit: paginationState.pageSize,
       offset: offsetCount,
@@ -112,13 +112,13 @@ export const ActivityDataTable: FC<ActivityDataTableProps> = ({ address }) => {
 
   const currentCountData: ActivityCountData | undefined =
     queryClient.getQueryData(
-      queries.activity.listCount({
+      queryKeys.activity.listCount({
         address: address as Address,
       }).queryKey,
     );
 
   const { data: activitiesCount } = useQuery<ActivityCountData | null>({
-    queryKey: queries.activity.listCount({
+    queryKey: queryKeys.activity.listCount({
       address: address as Address,
     }).queryKey,
     queryFn: async () => {

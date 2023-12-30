@@ -20,7 +20,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import type { FC } from "react";
 import type { Address } from "viem";
 import type { NftPortfolioData } from "@/data";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -48,7 +48,7 @@ export const NftPortfolio: FC<NftPortfolioProps> = ({
   const queryClient = useQueryClient();
 
   const portfolio: NftPortfolioData | undefined = queryClient.getQueryData(
-    queries.nft_valuation.get({ address }).queryKey,
+    queryKeys.nft_valuation.get({ address }).queryKey,
   );
 
   if (!portfolio) {

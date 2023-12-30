@@ -28,7 +28,7 @@ import { isAddress } from "viem";
 import type { Address } from "viem";
 import { useAccount, useEnsName } from "wagmi";
 import type { AuthSessionData, UserData } from "@/data";
-import { queries } from "@/queries";
+import { queryKeys } from "@/queryKeys";
 import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
@@ -64,11 +64,11 @@ export const AuthState: FC = () => {
   const queryClient = useQueryClient();
 
   const currentData: UserData | undefined = queryClient.getQueryData(
-    queries.user.get({ address: address as Address }).queryKey,
+    queryKeys.user.get({ address: address as Address }).queryKey,
   );
 
   const { data } = useSuspenseQuery<UserData | null>({
-    queryKey: queries.user.get({ address: address as Address }).queryKey,
+    queryKey: queryKeys.user.get({ address: address as Address }).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;
@@ -98,7 +98,7 @@ export const AuthState: FC = () => {
   });
 
   const { data: sessionData } = useSuspenseQuery<AuthSessionData | null>({
-    queryKey: queries.auth.session({ address: address as Address }).queryKey,
+    queryKey: queryKeys.auth.session({ address: address as Address }).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;
@@ -184,7 +184,7 @@ export const AuthState: FC = () => {
   // Subscribe to the user query
   useEffect(() => {
     const observer = new QueryObserver<UserData | null>(queryClient, {
-      queryKey: queries.user.get({ address: address as Address }).queryKey,
+      queryKey: queryKeys.user.get({ address: address as Address }).queryKey,
     });
 
     const unsubscribe = observer.subscribe(result => {
@@ -197,7 +197,8 @@ export const AuthState: FC = () => {
   // Subscribe to the session query
   useEffect(() => {
     const observer = new QueryObserver<AuthSessionData | null>(queryClient, {
-      queryKey: queries.auth.session({ address: address as Address }).queryKey,
+      queryKey: queryKeys.auth.session({ address: address as Address })
+        .queryKey,
     });
 
     const unsubscribe = observer.subscribe(result => {
