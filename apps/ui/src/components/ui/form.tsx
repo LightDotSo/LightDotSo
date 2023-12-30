@@ -41,9 +41,17 @@ type FormFieldContextValue<
   name: TName;
 };
 
+// -----------------------------------------------------------------------------
+// Hooks
+// -----------------------------------------------------------------------------
+
 const FormFieldContext = createContext<FormFieldContextValue>(
   {} as FormFieldContextValue,
 );
+
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
 
 const FormField = <
   TFieldValues extends FieldValues = FieldValues,
@@ -57,6 +65,10 @@ const FormField = <
     </FormFieldContext.Provider>
   );
 };
+
+// -----------------------------------------------------------------------------
+// Hooks
+// -----------------------------------------------------------------------------
 
 const useFormField = () => {
   const fieldContext = useContext(FormFieldContext);
@@ -81,13 +93,25 @@ const useFormField = () => {
   };
 };
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 type FormItemContextValue = {
   id: string;
 };
 
+// -----------------------------------------------------------------------------
+// Hooks
+// -----------------------------------------------------------------------------
+
 const FormItemContext = createContext<FormItemContextValue>(
   {} as FormItemContextValue,
 );
+
+// -----------------------------------------------------------------------------
+// Components
+// -----------------------------------------------------------------------------
 
 const FormItem = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => {

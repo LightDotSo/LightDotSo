@@ -90,3 +90,26 @@ export const Base: Story = {
     defaultValue: "account",
   },
 };
+export const Outline: Story = {
+  render: args => (
+    <Tabs {...args} variant="outline" className="w-[400px]">
+      <TabsList>
+        <TabsTrigger value="account">Account</TabsTrigger>
+        <TabsTrigger value="password">Password</TabsTrigger>
+      </TabsList>
+      <TabsContent value="account">
+        <p>
+          Make changes to your account here. Click save when you&apos;re done.
+        </p>
+      </TabsContent>
+      <TabsContent value="password">
+        <p>
+          Change your password here. After saving, you&apos;ll be logged out.
+        </p>
+      </TabsContent>
+    </Tabs>
+  ),
+  args: {
+    defaultValue: "account",
+  },
+};
