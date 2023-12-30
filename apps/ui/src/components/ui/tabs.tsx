@@ -97,7 +97,7 @@ const tabsTriggerVariants = cva(
     variants: {
       variant: {
         default:
-          "px-3 py-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-info focus-visible:ring-offset-2 data-[state=active]:bg-background data-[state=active]:text-text data-[state=active]:shadow-sm ",
+          "px-3 py-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-info focus-visible:ring-offset-2 data-[state=active]:bg-background data-[state=active]:text-text data-[state=active]:shadow-sm",
         outline: [
           "relative py-2 text-text-weak transition-colors hover:text-text focus:outline-none disabled:text-text-weaker disabled:hover:text-text-weaker data-[state=active]:text-text data-[state=active]:before:absolute data-[state=active]:before:bottom-[0.75px] data-[state=active]:before:left-0 data-[state=active]:before:h-0.5 data-[state=active]:before:w-full data-[state=active]:before:rounded-full data-[state=active]:before:bg-text",
         ],
