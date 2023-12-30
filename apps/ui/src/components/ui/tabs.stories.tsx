@@ -98,12 +98,12 @@ export const Outline: Story = {
         <TabsTrigger value="password">Password</TabsTrigger>
       </TabsList>
       <TabsContent value="account">
-        <p>
+        <p className="text-sm text-text-primary">
           Make changes to your account here. Click save when you&apos;re done.
         </p>
       </TabsContent>
       <TabsContent value="password">
-        <p>
+        <p className="text-sm text-text-primary">
           Change your password here. After saving, you&apos;ll be logged out.
         </p>
       </TabsContent>

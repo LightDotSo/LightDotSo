@@ -56,12 +56,12 @@ const Tabs = forwardRef<
 Tabs.displayName = TabsPrimitive.Root.displayName;
 
 const tabsListVariants = cva(
-  "inline-flex h-10 items-center justify-center rounded-md  p-1 text-text-weak",
+  "inline-flex h-10 items-center justify-center rounded-md p-1 text-text-weak",
   {
     variants: {
       variant: {
         default: "bg-background-stronger",
-        outline: "",
+        outline: "space-x-1",
       },
     },
     defaultVariants: {
@@ -92,14 +92,14 @@ const TabsList = forwardRef<
 TabsList.displayName = TabsPrimitive.List.displayName;
 
 const tabsTriggerVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-sm py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-info focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "group inline-flex items-center justify-center whitespace-nowrap rounded-sm  text-sm font-medium ring-offset-background transition-all disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
         default:
-          "px-3 data-[state=active]:bg-background data-[state=active]:text-text data-[state=active]:shadow-sm",
+          "px-3 py-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-info focus-visible:ring-offset-2 data-[state=active]:bg-background data-[state=active]:text-text data-[state=active]:shadow-sm ",
         outline: [
-          "relative text-text-weak transition-colors hover:text-text focus:outline-none disabled:text-text-weaker disabled:hover:text-text-weaker data-[state=active]:text-text data-[state=active]:before:absolute data-[state=active]:before:bottom-[0.75px] data-[state=active]:before:left-0 data-[state=active]:before:h-0.5 data-[state=active]:before:w-full data-[state=active]:before:rounded-full data-[state=active]:before:bg-text",
+          "relative py-2 text-text-weak transition-colors hover:text-text focus:outline-none disabled:text-text-weaker disabled:hover:text-text-weaker data-[state=active]:text-text data-[state=active]:before:absolute data-[state=active]:before:bottom-[0.75px] data-[state=active]:before:left-0 data-[state=active]:before:h-0.5 data-[state=active]:before:w-full data-[state=active]:before:rounded-full data-[state=active]:before:bg-text",
         ],
       },
     },
@@ -128,8 +128,8 @@ const TabsTrigger = forwardRef<
     >
       <span
         className={cn(
-          context.variant === "outline" &&
-            "flex items-center justify-center w-full px-3 h-7 hover:bg-background-stronger rounded-md",
+          (context.variant || variant) === "outline" &&
+            "flex items-center justify-center w-full px-3 h-7 hover:bg-background-stronger rounded-md group-focus-visible:outline-none group-focus-visible:ring-2 group-focus-visible:ring-border-info group-focus-visible:ring-offset-2 ",
         )}
       >
         {children}
@@ -146,7 +146,7 @@ const TabsContent = forwardRef<
   <TabsPrimitive.Content
     ref={ref}
     className={cn(
-      "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-info focus-visible:ring-offset-2",
+      "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-info focus-visible:ring-offset-2 ",
       className,
     )}
     {...props}
