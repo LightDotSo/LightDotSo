@@ -38,7 +38,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { TableEmpty } from "@/components/state/table-empty";
 import type { ActivityData } from "@/data";
-import { usePaginationQueryState } from "@/queryStatess";
+import { usePaginationQueryState } from "@/queryStates";
 import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
