@@ -17,7 +17,7 @@ import { Result } from "neverthrow";
 import type { Address } from "viem";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
-import { paginationParser } from "@/queryStatess";
+import { paginationParser } from "@/queryStates";
 import { getUserOperations, getUserOperationsCount } from "@/services";
 
 // -----------------------------------------------------------------------------
