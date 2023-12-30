@@ -18,4 +18,5 @@ export { useSuspenseQueryPortfolio } from "./useSuspenseQueryPortfolio";
 export { useSuspenseQueryTokens } from "./useSuspenseQueryTokens";
 export { useSuspenseQueryUserOperations } from "./useSuspenseQueryUserOperations";
 export { useSuspenseQueryWallet } from "./useSuspenseQueryWallet";
+export { useSuspenseQueryWallets } from "./useSuspenseQueryWallets";
 export { useSuspenseQueryWalletSettings } from "./useSuspenseQueryWalletSettings";
