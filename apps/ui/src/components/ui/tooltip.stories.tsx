@@ -15,9 +15,10 @@
 
 import type { Meta, StoryObj } from "@storybook/react";
 import { Plus } from "lucide-react";
-import { Button } from "./button";
+import { ButtonIcon } from "./button-icon";
 import {
   Tooltip,
+  TooltipArrow,
   TooltipContent,
   TooltipTrigger,
   TooltipProvider,
@@ -50,12 +51,13 @@ export const Base: Story = {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant="outline" className="w-10 rounded-full p-0">
-            <Plus className="h-4 w-4" />
+          <ButtonIcon variant="outline">
+            <Plus />
             <span className="sr-only">Add</span>
-          </Button>
+          </ButtonIcon>
         </TooltipTrigger>
         <TooltipContent>
+          <TooltipArrow />
           <p>Add to library</p>
         </TooltipContent>
       </Tooltip>

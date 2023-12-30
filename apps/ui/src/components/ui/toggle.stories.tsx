@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Meta, StoryObj } from "@storybook/react";
+import { Bold } from "lucide-react";
 import { Toggle } from "./toggle";
 
 // -----------------------------------------------------------------------------
@@ -40,13 +41,9 @@ type Story = StoryObj<typeof Toggle>;
 
 export const Base: Story = {
   render: args => (
-    <div className="flex items-center space-x-4">
-      <Toggle className="h-12 w-12 rounded-full" />
-      <div className="space-y-2">
-        <Toggle className="h-4 w-[250px]" />
-        <Toggle className="h-4 w-[200px]" />
-      </div>
-    </div>
+    <Toggle aria-label="Toggle italic">
+      <Bold className="h-4 w-4" />
+    </Toggle>
   ),
   args: {},
 };

@@ -247,6 +247,7 @@ export { Toggle, toggleVariants } from "./src/components/ui/toggle";
 export { ToggleGroup, ToggleGroupItem } from "./src/components/ui/toggle-group";
 export {
   Tooltip,
+  TooltipArrow,
   TooltipTrigger,
   TooltipContent,
   TooltipProvider,
