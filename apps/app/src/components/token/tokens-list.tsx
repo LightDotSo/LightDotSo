@@ -15,7 +15,6 @@
 
 "use client";
 
-import { getTokens } from "@lightdotso/client";
 import {
   Table,
   TableBody,
@@ -25,7 +24,7 @@ import {
   TableRow,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   flexRender,
   getCoreRowModel,
@@ -42,8 +41,9 @@ import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/columns";
 import { TableEmpty } from "@/components/state/table-empty";
 import type { TokenData, WalletSettingsData } from "@/data";
+import { useSuspenseQueryTokens } from "@/query";
 import { queryKeys } from "@/queryKeys";
-import { useAuth, useTables } from "@/stores";
+import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -63,7 +63,6 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { clientType } = useAuth();
   const {
     tokenColumnFilters,
     tokenColumnVisibility,
@@ -82,49 +81,12 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
-  const currentData: TokenData[] | undefined = queryClient.getQueryData(
-    queryKeys.token.list({
-      address,
-      limit: limit,
-      offset: 0,
-      is_testnet: walletSettings?.is_enabled_testnet ?? false,
-      group: true,
-    }).queryKey,
-  );
-
-  const { data } = useSuspenseQuery<TokenData[] | null>({
-    queryKey: queryKeys.token.list({
-      address,
-      limit: limit,
-      offset: 0,
-      is_testnet: walletSettings?.is_enabled_testnet ?? false,
-      group: true,
-    }).queryKey,
-    queryFn: async () => {
-      const res = await getTokens(
-        {
-          params: {
-            query: {
-              address,
-              offset: 0,
-              is_testnet: walletSettings?.is_enabled_testnet ?? false,
-              group: true,
-            },
-          },
-        },
-        clientType,
-      );
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data as TokenData[];
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
+  const { tokens } = useSuspenseQueryTokens({
+    address: address,
+    limit: limit,
+    offset: 0,
+    is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    group: true,
   });
 
   // ---------------------------------------------------------------------------
@@ -132,7 +94,7 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
   // ---------------------------------------------------------------------------
 
   const table = useReactTable({
-    data: data ?? ([] as TokenData[]),
+    data: tokens ?? ([] as TokenData[]),
     columns: columns,
     state: {
       sorting: tokenSorting,

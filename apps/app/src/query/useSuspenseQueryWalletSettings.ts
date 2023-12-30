@@ -20,7 +20,9 @@ import type { WalletSettingsParams } from "@/params";
 import { queryKeys } from "@/queryKeys";
 import { useAuth } from "@/stores";
 
-export const useSuspenseQueryWallet = (params: WalletSettingsParams) => {
+export const useSuspenseQueryWalletSettings = (
+  params: WalletSettingsParams,
+) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------

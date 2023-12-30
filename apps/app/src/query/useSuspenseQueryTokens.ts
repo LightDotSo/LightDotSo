@@ -20,7 +20,7 @@ import type { TokenListParams } from "@/params";
 import { queryKeys } from "@/queryKeys";
 import { useAuth } from "@/stores";
 
-export const useSuspenseQueryToken = (params: TokenListParams) => {
+export const useSuspenseQueryTokens = (params: TokenListParams) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
