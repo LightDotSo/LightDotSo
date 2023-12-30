@@ -36,7 +36,8 @@ const toastVariants = cva(
   {
     variants: {
       intent: {
-        default: "border bg-background",
+        default:
+          "border bg-background [&>button]:data-[visible=true]:ring-border",
         destructive:
           "border-4 border-border-destructive-weaker bg-background-destructive text-text-inverse [&>button]:data-[type=destructive]:bg-background-destructive [&>button]:data-[type=destructive]:ring-border-destructive-weak",
         success:
