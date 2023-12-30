@@ -20,7 +20,6 @@ import { cva } from "class-variance-authority";
 import { useTheme } from "next-themes";
 import type { ComponentProps } from "react";
 import { toast, Toaster as SonnerToaster } from "sonner";
-import { buttonVariants } from "./button";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -39,12 +38,12 @@ const toastVariants = cva(
       intent: {
         default: "border bg-background",
         destructive:
-          "border-4 border-border-destructive-weaker bg-background-destructive text-text-inverse",
+          "border-4 border-border-destructive-weaker bg-background-destructive text-text-inverse [&>button]:data-[type=destructive]:bg-background-destructive [&>button]:data-[type=destructive]:ring-border-destructive-weak",
         success:
-          "border-4 border-border-success-weaker bg-background-success text-text-inverse",
-        info: "border-4 border-border-info-weaker bg-background-info text-text-inverse",
+          "border-4 border-border-success-weaker bg-background-success text-text-inverse [&>button]:data-[type=success]:bg-background-success [&>button]:data-[type=success]:ring-border-success-weak",
+        info: "border-4 border-border-info-weaker bg-background-info text-text-inverse [&>button]:data-[type=info]:bg-background-info [&>button]:data-[type=info]:ring-border-info-weak",
         warning:
-          "border-4 border-border-warning-weaker bg-background-warning text-text-inverse",
+          "border-4 border-border-warning-weaker bg-background-warning text-text-inverse [&>button]:data-[type=warning]:bg-background-warning [&>button]:data-[type=warning]:ring-border-warning-weak",
       },
     },
     defaultVariants: {
@@ -67,16 +66,13 @@ const Toaster = () => {
       toastOptions={{
         unstyled: true,
         classNames: {
-          toast: toastVariants({ intent: "default" }),
+          toast: cn("group toast", toastVariants({ intent: "default" })),
           title: "text-sm font-semibold text-ellipsis overflow-hidden",
           description: "text-sm opacity-90 text-ellipsis overflow-hidden",
           loader: "text-text",
-          actionButton: cn(
-            "group-[.toast]:bg-primary group-[.toast]:text-primary-foreground",
-            buttonVariants({ variant: "outline" }),
-          ),
+          actionButton: "group-[.toast]:ring-1",
           cancelButton:
-            "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
+            "group-[.toast]:border group-[.toast]:text-text-inverse",
           success: toastVariants({ intent: "success" }),
           error: toastVariants({ intent: "destructive" }),
           info: toastVariants({ intent: "info" }),

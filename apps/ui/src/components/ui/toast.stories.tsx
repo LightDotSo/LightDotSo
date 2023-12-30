@@ -138,7 +138,7 @@ export const Loading: Story = {
 export const Action: Story = {
   args: {
     message: "This is an informational message.",
-    variant: "info",
+    variant: "success",
     data: {
       action: {
         label: "Action",
@@ -146,6 +146,7 @@ export const Action: Story = {
           console.info("Action clicked");
         },
       },
+      duration: 400000,
     },
   },
 };
