@@ -92,7 +92,7 @@ const TabsList = forwardRef<
 TabsList.displayName = TabsPrimitive.List.displayName;
 
 const tabsTriggerVariants = cva(
-  "group inline-flex items-center justify-center whitespace-nowrap rounded-sm  text-sm font-medium ring-offset-background transition-all disabled:pointer-events-none disabled:opacity-50",
+  "group inline-flex items-center justify-center whitespace-nowrap rounded-sm text-sm font-medium ring-offset-background transition-all disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
@@ -129,7 +129,7 @@ const TabsTrigger = forwardRef<
       <span
         className={cn(
           (context.variant || variant) === "outline" &&
-            "flex items-center justify-center w-full px-3 h-7 hover:bg-background-stronger rounded-md group-focus-visible:outline-none group-focus-visible:ring-2 group-focus-visible:ring-border-info group-focus-visible:ring-offset-2 ",
+            "flex items-center justify-center w-full px-3 h-7 hover:bg-background-stronger rounded-md group-focus-visible:outline-none group-focus-visible:ring-2 group-focus-visible:ring-border-info group-focus-visible:ring-offset-2",
         )}
       >
         {children}
@@ -146,7 +146,7 @@ const TabsContent = forwardRef<
   <TabsPrimitive.Content
     ref={ref}
     className={cn(
-      "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-info focus-visible:ring-offset-2 ",
+      "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-info focus-visible:ring-offset-2",
       className,
     )}
     {...props}
