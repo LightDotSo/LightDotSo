@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 export { useMutationWallet } from "./useMutationWallet";
+export { useMutationWalletSettings } from "./useMutationWalletSettings";
 export { useSuspenseQueryAuthSession } from "./useSuspenseQueryAuthSession";
 export { useSuspenseQueryPortfolio } from "./useSuspenseQueryPortfolio";
 export { useSuspenseQueryTokenPrice } from "./useSuspenseQueryTokenPrice";
