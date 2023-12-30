@@ -15,7 +15,6 @@
 
 "use client";
 
-import { getTransactions } from "@lightdotso/client";
 import {
   Table,
   TableBody,
@@ -24,7 +23,7 @@ import {
   TableHeader,
   TableRow,
 } from "@lightdotso/ui";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   flexRender,
   getCoreRowModel,
@@ -40,8 +39,9 @@ import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/columns";
 import { TableEmpty } from "@/components/state/table-empty";
 import type { TransactionData, WalletSettingsData } from "@/data";
+import { useSuspenseQueryTransactions } from "@/query";
 import { queryKeys } from "@/queryKeys";
-import { useAuth, useTables } from "@/stores";
+import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -64,7 +64,6 @@ export const TransactionsList: FC<TransactionsListProps> = ({
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { clientType } = useAuth();
   const {
     transactionColumnFilters,
     transactionColumnVisibility,
@@ -83,45 +82,11 @@ export const TransactionsList: FC<TransactionsListProps> = ({
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
-  const currentData: TransactionData[] | undefined = queryClient.getQueryData(
-    queryKeys.transaction.list({
-      address,
-      limit: limit,
-      offset: 0,
-      is_testnet: walletSettings?.is_enabled_testnet ?? false,
-    }).queryKey,
-  );
-
-  const { data } = useSuspenseQuery<TransactionData[] | null>({
-    queryKey: queryKeys.transaction.list({
-      address,
-      limit: limit,
-      offset: 0,
-      is_testnet: walletSettings?.is_enabled_testnet ?? false,
-    }).queryKey,
-    queryFn: async () => {
-      const res = await getTransactions(
-        {
-          params: {
-            query: {
-              address,
-              is_testnet: walletSettings?.is_enabled_testnet ?? false,
-            },
-          },
-        },
-        clientType,
-      );
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
+  const { transactions } = useSuspenseQueryTransactions({
+    address,
+    limit,
+    offset: 0,
+    is_testnet: walletSettings?.is_enabled_testnet ?? false,
   });
 
   // ---------------------------------------------------------------------------
@@ -129,7 +94,7 @@ export const TransactionsList: FC<TransactionsListProps> = ({
   // ---------------------------------------------------------------------------
 
   const table = useReactTable({
-    data: data ?? ([] as TransactionData[]),
+    data: transactions ?? ([] as TransactionData[]),
     columns: columns,
     state: {
       sorting: transactionSorting,
