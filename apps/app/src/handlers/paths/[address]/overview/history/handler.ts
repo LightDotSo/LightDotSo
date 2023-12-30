@@ -18,7 +18,7 @@ import { notFound } from "next/navigation";
 import type { Address } from "viem";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
-import { paginationParser } from "@/queryStates";
+import { paginationParser } from "@/queryStatess";
 import { getTransactions, getTransactionsCount } from "@/services";
 
 // -----------------------------------------------------------------------------

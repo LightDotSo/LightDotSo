@@ -31,7 +31,7 @@ import type {
   WalletSettingsData,
 } from "@/data";
 import { queryKeys } from "@/queryKeys";
-import { usePaginationQueryState } from "@/queryStates";
+import { usePaginationQueryState } from "@/queryStatess";
 import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------

@@ -25,7 +25,7 @@ import { DataTableFacetedFilter } from "@/components/data-table/data-table-facet
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import type { ActivityData } from "@/data";
 import { queryKeys } from "@/queryKeys";
-import { usePaginationQueryState } from "@/queryStates";
+import { usePaginationQueryState } from "@/queryStatess";
 import { useAuth, useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------

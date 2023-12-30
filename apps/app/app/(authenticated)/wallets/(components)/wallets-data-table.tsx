@@ -23,7 +23,7 @@ import { columns } from "@/app/(authenticated)/wallets/(components)/data-table/c
 import { DataTable } from "@/app/(authenticated)/wallets/(components)/data-table/data-table";
 import type { WalletCountData, WalletData } from "@/data";
 import { queryKeys } from "@/queryKeys";
-import { usePaginationQueryState } from "@/queryStates";
+import { usePaginationQueryState } from "@/queryStatess";
 import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------

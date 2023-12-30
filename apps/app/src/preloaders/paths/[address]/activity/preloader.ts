@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Address } from "viem";
-import { paginationParser } from "@/queryStates";
+import { paginationParser } from "@/queryStatess";
 import { preload as preloadGetActivities } from "@/services/getActivities";
 import { preload as preloadGetActivitiesCount } from "@/services/getActivitiesCount";
 
