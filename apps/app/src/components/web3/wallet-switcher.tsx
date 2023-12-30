@@ -168,6 +168,12 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
       // ex) /0x1234 -> 0x1234
       const slug = pathname.split("/")[1];
 
+      // If the slug is `/new` or `/wallets`, set the selected wallet to undefined
+      if (slug === "new" || slug === "wallets") {
+        setSelectedWallet(undefined);
+        return;
+      }
+
       // If the slug is not an address, return
       if (!isAddress(slug)) {
         return;
