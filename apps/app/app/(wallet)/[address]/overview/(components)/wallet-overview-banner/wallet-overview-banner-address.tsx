@@ -15,7 +15,6 @@
 
 "use client";
 
-import { getWallet } from "@lightdotso/client";
 import {
   Avatar,
   Button,
@@ -32,16 +31,13 @@ import {
   TooltipProvider,
 } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { ChevronDown, Copy } from "lucide-react";
 import { useCallback, type FC } from "react";
 import type { Address } from "viem";
 import { useEnsName } from "wagmi";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
-import type { WalletData } from "@/data";
 import { useCopy } from "@/hooks/useCopy";
-import { queryKeys } from "@/queryKeys";
-import { useAuth } from "@/stores";
+import { useSuspenseQueryWallet } from "@/query";
 import { successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
@@ -59,12 +55,6 @@ interface WalletOverviewBannerAddressProps {
 export const WalletOverviewBannerAddress: FC<
   WalletOverviewBannerAddressProps
 > = ({ address }) => {
-  // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { clientType } = useAuth();
-
   // ---------------------------------------------------------------------------
   // Wagmi Hooks
   // ---------------------------------------------------------------------------
@@ -92,41 +82,7 @@ export const WalletOverviewBannerAddress: FC<
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
-
-  const currentData: WalletData | undefined = queryClient.getQueryData(
-    queryKeys.wallet.get({ address }).queryKey,
-  );
-
-  const { data: wallet } = useSuspenseQuery<WalletData | null>({
-    queryKey: queryKeys.wallet.get({ address }).queryKey,
-    queryFn: async () => {
-      if (!address) {
-        return null;
-      }
-
-      const res = await getWallet(
-        {
-          params: {
-            query: {
-              address: address,
-            },
-          },
-        },
-        clientType,
-      );
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
-  });
+  const { wallet } = useSuspenseQueryWallet({ address: address });
 
   // ---------------------------------------------------------------------------
   // Render
