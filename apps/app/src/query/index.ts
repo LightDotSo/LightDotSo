@@ -16,5 +16,6 @@
 export { useMutationWallet } from "./useMutationWallet";
 export { useSuspenseQueryPortfolio } from "./useSuspenseQueryPortfolio";
 export { useSuspenseQueryTokens } from "./useSuspenseQueryTokens";
+export { useSuspenseQueryUserOperations } from "./useSuspenseQueryUserOperations";
 export { useSuspenseQueryWallet } from "./useSuspenseQueryWallet";
 export { useSuspenseQueryWalletSettings } from "./useSuspenseQueryWalletSettings";

@@ -15,7 +15,7 @@
 
 "use client";
 
-import { getWalletSettings, updateWalletSettings } from "@lightdotso/client";
+import { updateWalletSettings } from "@lightdotso/client";
 import {
   Button,
   Form,
@@ -28,11 +28,7 @@ import {
   Switch,
 } from "@lightdotso/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  useSuspenseQuery,
-  useQueryClient,
-  useMutation,
-} from "@tanstack/react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { useState, type FC, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";
@@ -41,8 +37,8 @@ import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const/titles";
 import type { WalletSettingsData } from "@/data";
 import { useDelayedValue } from "@/hooks/useDelayedValue";
+import { useSuspenseQueryWalletSettings } from "@/query";
 import { queryKeys } from "@/queryKeys";
-import { useAuth } from "@/stores";
 import { errorToast, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
@@ -71,12 +67,6 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   address,
 }) => {
   // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { clientType } = useAuth();
-
-  // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
 
@@ -89,39 +79,8 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
 
   const queryClient = useQueryClient();
 
-  const currentData: WalletSettingsData | undefined = queryClient.getQueryData([
-    "wallet_settings",
-    address,
-  ]);
-
-  const { data: wallet } = useSuspenseQuery<WalletSettingsData | null>({
-    queryKey: queryKeys.wallet.settings({ address }).queryKey,
-    queryFn: async () => {
-      if (!address) {
-        return null;
-      }
-
-      const res = await getWalletSettings(
-        {
-          params: {
-            query: {
-              address: address,
-            },
-          },
-        },
-        clientType,
-      );
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
+  const { walletSettings } = useSuspenseQueryWalletSettings({
+    address: address,
   });
 
   // ---------------------------------------------------------------------------
@@ -209,10 +168,10 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   // This can come from your database or API.
   const defaultValues: Partial<WalletTestnetFormValues> = useMemo(() => {
     return {
-      enabled: wallet?.is_enabled_testnet ?? false,
+      enabled: walletSettings?.is_enabled_testnet ?? false,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [wallet, key]);
+  }, [walletSettings, key]);
 
   const form = useForm<WalletTestnetFormValues>({
     mode: "onBlur",

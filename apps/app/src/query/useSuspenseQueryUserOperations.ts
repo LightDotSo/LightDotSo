@@ -46,7 +46,7 @@ export const useSuspenseQueryUserOperations = (
     }).queryKey,
   );
 
-  const { data: useroperations } = useSuspenseQuery<UserOperationData[] | null>(
+  const { data: userOperations } = useSuspenseQuery<UserOperationData[] | null>(
     {
       queryKey: queryKeys.user_operation.list({
         address: params.address,
@@ -91,6 +91,6 @@ export const useSuspenseQueryUserOperations = (
   );
 
   return {
-    useroperations,
+    userOperations,
   };
 };

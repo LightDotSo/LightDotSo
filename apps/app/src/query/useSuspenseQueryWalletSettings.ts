@@ -39,7 +39,7 @@ export const useSuspenseQueryWalletSettings = (
     queryKeys.wallet.settings({ address: params.address }).queryKey,
   );
 
-  const { data: wallet } = useSuspenseQuery<WalletSettingsData | null>({
+  const { data: walletSettings } = useSuspenseQuery<WalletSettingsData | null>({
     queryKey: queryKeys.wallet.settings({ address: params.address }).queryKey,
     queryFn: async () => {
       if (!params.address) {
@@ -70,6 +70,6 @@ export const useSuspenseQueryWalletSettings = (
   });
 
   return {
-    wallet,
+    walletSettings,
   };
 };
