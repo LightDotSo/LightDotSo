@@ -44,7 +44,9 @@ model Account {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Unique
   @@unique([providerId, providerAccountId])
+  // Relations
   @@index([userId])
 }
 
@@ -80,6 +82,7 @@ model Session {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Relations
   @@index([userId])
 }
 
@@ -155,6 +158,7 @@ model VerificationRequest {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Unique
   @@unique([identifier, token])
 }
 
@@ -236,6 +240,7 @@ model WalletSettings {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Relations
   @@index([walletAddress])
 }
 
@@ -272,6 +277,7 @@ model Configuration {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Unique
   @@unique([address, checkpoint])
 }
 
@@ -320,6 +326,7 @@ model Owner {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Relations
   @@index([configurationId])
   @@index([userId])
 }
@@ -396,6 +403,7 @@ model AssetChange {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Relations
   @@index([interpretationId])
   @@index([tokenId])
 }
@@ -431,6 +439,7 @@ model Simulation {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Relations
   @@index([interpretationId])
   @@index([userOperationHash])
 }
@@ -499,7 +508,9 @@ model Log {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Unique
   @@unique([transactionHash, logIndex])
+  // Relations
   @@index([transactionHash])
   @@index([userOperationHash])
 }
@@ -523,6 +534,7 @@ model LogTopic {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Relations
   @@index([id])
 }
 
@@ -599,6 +611,7 @@ model Receipt {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Relations
   @@index([transactionHash])
 }
 
@@ -722,7 +735,9 @@ model Transaction {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Relations
   @@index([walletAddress])
+  @@index([activityId])
   @@index([interpretationId])
 }
 
@@ -816,10 +831,12 @@ model UserOperation {
   // Mappings
   // ---------------------------------------------------------------------------
 
-  @@index([chainId, walletAddress])
-  @@index([transactionHash])
+  // Unique
+  @@index([walletAddress, status, isTestnet])
+  // Relations
   @@index([paymasterId])
   @@index([paymasterOperationId])
+  @@index([transactionHash])
   @@index([walletAddress])
   @@index([activityId])
 }
@@ -867,6 +884,7 @@ model Paymaster {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Unique
   @@unique([address, chainId])
 }
 
@@ -905,8 +923,11 @@ model PaymasterOperation {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Unique
   @@unique([validAfter, paymasterId])
+  // Relations
   @@index([paymasterId])
+  @@index([sender])
   @@index([sender, senderNonce])
 }
 
@@ -945,6 +966,7 @@ model Signature {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Relations
   @@index([ownerId])
   @@index([userOperationHash])
 }
@@ -1001,7 +1023,9 @@ model Token {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Unique
   @@unique([address, chainId, tokenId])
+  // Relations
   @@index([groupId])
 }
 
@@ -1044,6 +1068,7 @@ model TokenPrice {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Relations
   @@index([tokenId])
 }
 
@@ -1116,11 +1141,12 @@ model WalletBalance {
   // Mappings
   // ---------------------------------------------------------------------------
 
-  // @@index([protocolId])
+  // Query
+  @@index([walletAddress, chainId, amount, isLatest, isSpam, isTestnet])
+  // Relations
   @@index([tokenId])
+  // @@index([protocolId])
   @@index([walletAddress])
-  @@index([timestamp])
-  @@index([chainId])
 }
 
 // -----------------------------------------------------------------------------
@@ -1179,11 +1205,12 @@ model Activity {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Relations
+  @@index([userId])
+  @@index([walletAddress])
   @@index([inviteCodeId])
   @@index([supportRequestId])
   @@index([walletSettingsId])
-  @@index([userId])
-  @@index([walletAddress])
 }
 
 enum ActivityEntity {
@@ -1251,6 +1278,7 @@ model Notification {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Relations
   @@index([activityId])
   @@index([userId])
   @@index([walletAddress])
@@ -1294,6 +1322,7 @@ model Feedback {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Relations
   @@index([userId])
   @@index([activityId])
 }
@@ -1344,6 +1373,7 @@ model InviteCode {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Relations
   @@index([userId])
 }
 
@@ -1387,6 +1417,7 @@ model SupportRequest {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Relations
   @@index([walletAddress])
 }
 
