@@ -27,7 +27,7 @@ import { columns } from "@/app/(wallet)/[address]/activity/(components)/data-tab
 import { DataTable } from "@/app/(wallet)/[address]/activity/(components)/data-table/data-table";
 import type { ActivityData, ActivityCountData } from "@/data";
 import { queryKeys } from "@/queryKeys";
-import { usePaginationQueryState } from "@/querystates";
+import { usePaginationQueryState } from "@/queryStates";
 import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------

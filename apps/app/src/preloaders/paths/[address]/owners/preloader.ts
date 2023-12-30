@@ -15,7 +15,7 @@
 
 import type { Address } from "viem";
 import { preloader as addressPreloader } from "@/preloaders/paths/[address]/preloader";
-import { paginationParser } from "@/querystates";
+import { paginationParser } from "@/queryStates";
 import { preload as preloadGetConfiguration } from "@/services/getConfiguration";
 
 // -----------------------------------------------------------------------------

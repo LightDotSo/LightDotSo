@@ -31,7 +31,7 @@ import { NftCard } from "@/components/nft/nft-card";
 import { NftsWrapper } from "@/components/nft/nfts-wrapper";
 import { TableEmpty } from "@/components/state/table-empty";
 import type { NftData } from "@/data";
-import { usePaginationQueryState } from "@/querystates";
+import { usePaginationQueryState } from "@/queryStates";
 import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------

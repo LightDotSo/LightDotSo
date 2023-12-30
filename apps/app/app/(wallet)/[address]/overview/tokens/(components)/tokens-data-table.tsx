@@ -27,7 +27,7 @@ import { columns } from "@/app/(wallet)/[address]/overview/tokens/(components)/d
 import { DataTable } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table";
 import type { TokenCountData, TokenData, WalletSettingsData } from "@/data";
 import { queryKeys } from "@/queryKeys";
-import { usePaginationQueryState } from "@/querystates";
+import { usePaginationQueryState } from "@/queryStates";
 import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------

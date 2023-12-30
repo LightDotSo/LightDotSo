@@ -34,7 +34,7 @@ import { TransactionCard } from "@/app/(wallet)/[address]/transactions/(componen
 import { TableEmpty } from "@/components/state/table-empty";
 import type { ConfigurationData, UserOperationData } from "@/data";
 import { queryKeys } from "@/queryKeys";
-import { usePaginationQueryState } from "@/querystates";
+import { usePaginationQueryState } from "@/queryStates";
 import { useAuth, useTables } from "@/stores";
 import { groupByDate } from "@/utils/group";
 
