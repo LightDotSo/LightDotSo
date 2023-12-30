@@ -105,10 +105,10 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
           ))}
         </select>
       </div>
-      <nav className="flex items-center justify-between" aria-label="Tabs">
+      <div className="flex items-center justify-between">
         <ButtonGroup
           variant="unstyled"
-          className="hidden rounded-md border border-border bg-background-strong p-0.5 sm:block"
+          className="hidden space-x-1 rounded-md border border-border bg-background-strong p-0.5 sm:block"
         >
           {items.map(item => (
             <Button
@@ -129,7 +129,7 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
           ))}
         </ButtonGroup>
         <div className="hidden items-center space-x-2 md:flex">{children}</div>
-      </nav>
+      </div>
     </>
   );
 };
