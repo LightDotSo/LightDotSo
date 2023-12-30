@@ -1043,6 +1043,7 @@ model Token {
   // ---------------------------------------------------------------------------
 
   // Unique
+  @@unique([address, chainId])
   @@unique([address, chainId, tokenId])
   // Relations
   @@index([groupId])
