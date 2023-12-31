@@ -15,24 +15,15 @@
 
 "use client";
 
-import { getTransactions, getTransactionsCount } from "@lightdotso/client";
-import {
-  keepPreviousData,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/data-table";
-import type {
-  TransactionCountData,
-  TransactionData,
-  WalletSettingsData,
-} from "@/data";
+import type { WalletSettingsData } from "@/data";
+import { useQueryTransactions, useQueryTransactionsCount } from "@/query";
 import { queryKeys } from "@/queryKeys";
 import { usePaginationQueryState } from "@/queryStates";
-import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -47,12 +38,6 @@ interface HistoryDataTableProps {
 // -----------------------------------------------------------------------------
 
 export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
-  // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { clientType } = useAuth();
-
   // ---------------------------------------------------------------------------
   // Query State Hooks
   // ---------------------------------------------------------------------------
@@ -76,90 +61,16 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
-  const currentData: TransactionData[] | undefined = queryClient.getQueryData(
-    queryKeys.transaction.list({
-      address,
-      limit: paginationState.pageSize,
-      offset: offsetCount,
-      is_testnet: walletSettings?.is_enabled_testnet ?? false,
-    }).queryKey,
-  );
-
-  const { data: transactions } = useQuery<TransactionData[] | null>({
-    placeholderData: keepPreviousData,
-    queryKey: queryKeys.transaction.list({
-      address,
-      limit: paginationState.pageSize,
-      offset: offsetCount,
-      is_testnet: walletSettings?.is_enabled_testnet ?? false,
-    }).queryKey,
-    queryFn: async () => {
-      const res = await getTransactions(
-        {
-          params: {
-            query: {
-              address,
-              limit: paginationState.pageSize,
-              offset: offsetCount,
-              is_testnet: walletSettings?.is_enabled_testnet ?? false,
-            },
-          },
-        },
-        clientType,
-      );
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
+  const { transactions } = useQueryTransactions({
+    address: address,
+    limit: paginationState.pageSize,
+    offset: offsetCount,
+    is_testnet: walletSettings?.is_enabled_testnet ?? false,
   });
 
-  const currentCountData: TransactionCountData | undefined =
-    queryClient.getQueryData(
-      queryKeys.transaction.listCount({
-        address: address as Address,
-        is_testnet: walletSettings?.is_enabled_testnet ?? false,
-      }).queryKey,
-    );
-
-  const { data: transactionsCount } = useQuery<TransactionCountData | null>({
-    queryKey: queryKeys.transaction.listCount({
-      address: address as Address,
-      is_testnet: walletSettings?.is_enabled_testnet ?? false,
-    }).queryKey,
-    queryFn: async () => {
-      if (!address) {
-        return null;
-      }
-
-      const res = await getTransactionsCount(
-        {
-          params: {
-            query: {
-              address: address,
-              is_testnet: walletSettings?.is_enabled_testnet ?? false,
-            },
-          },
-        },
-        clientType,
-      );
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentCountData ?? null;
-        },
-      );
-    },
+  const { transactionsCount } = useQueryTransactionsCount({
+    address: address,
+    is_testnet: walletSettings?.is_enabled_testnet ?? false,
   });
 
   // ---------------------------------------------------------------------------

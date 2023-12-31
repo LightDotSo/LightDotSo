@@ -17,6 +17,8 @@ export { useMutationWallet } from "./useMutationWallet";
 export { useMutationWalletSettings } from "./useMutationWalletSettings";
 export { useQueryActivities } from "./useQueryActivities";
 export { useQueryActivitiesCount } from "./useQueryActivitiesCount";
+export { useQueryTransactions } from "./useQueryTransactions";
+export { useQueryTransactionsCount } from "./useQueryTransactionsCount";
 export { useQueryConfiguration } from "./useQueryConfiguration";
 export { useSuspenseQueryAuthSession } from "./useSuspenseQueryAuthSession";
 export { useSuspenseQueryPortfolio } from "./useSuspenseQueryPortfolio";
