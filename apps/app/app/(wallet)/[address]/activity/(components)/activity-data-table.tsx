@@ -15,20 +15,12 @@
 
 "use client";
 
-import { getActivities, getActivitiesCount } from "@lightdotso/client";
-import {
-  keepPreviousData,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/activity/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/activity/(components)/data-table/data-table";
-import type { ActivityData, ActivityCountData } from "@/data";
-import { queryKeys } from "@/queryKeys";
+import { useQueryActivities, useQueryActivitiesCount } from "@/query";
 import { usePaginationQueryState } from "@/queryStates";
-import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -43,12 +35,6 @@ interface ActivityDataTableProps {
 // -----------------------------------------------------------------------------
 
 export const ActivityDataTable: FC<ActivityDataTableProps> = ({ address }) => {
-  // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { clientType } = useAuth();
-
   // ---------------------------------------------------------------------------
   // Query State Hooks
   // ---------------------------------------------------------------------------
@@ -67,83 +53,14 @@ export const ActivityDataTable: FC<ActivityDataTableProps> = ({ address }) => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
-
-  const currentData: ActivityData[] | undefined = queryClient.getQueryData(
-    queryKeys.activity.list({
-      address,
-      limit: paginationState.pageSize,
-      offset: offsetCount,
-    }).queryKey,
-  );
-
-  const { data: activities } = useQuery<ActivityData[] | null>({
-    placeholderData: keepPreviousData,
-    queryKey: queryKeys.activity.list({
-      address,
-      limit: paginationState.pageSize,
-      offset: offsetCount,
-    }).queryKey,
-    queryFn: async () => {
-      const res = await getActivities(
-        {
-          params: {
-            query: {
-              address,
-              limit: paginationState.pageSize,
-              offset: offsetCount,
-            },
-          },
-        },
-        clientType,
-      );
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
+  const { activities } = useQueryActivities({
+    address: address as Address,
+    limit: paginationState.pageSize,
+    offset: offsetCount,
   });
 
-  const currentCountData: ActivityCountData | undefined =
-    queryClient.getQueryData(
-      queryKeys.activity.listCount({
-        address: address as Address,
-      }).queryKey,
-    );
-
-  const { data: activitiesCount } = useQuery<ActivityCountData | null>({
-    queryKey: queryKeys.activity.listCount({
-      address: address as Address,
-    }).queryKey,
-    queryFn: async () => {
-      if (!address) {
-        return null;
-      }
-
-      const res = await getActivitiesCount({
-        params: {
-          query: {
-            address: address,
-          },
-        },
-      });
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentCountData ?? null;
-        },
-      );
-    },
+  const { activitiesCount } = useQueryActivitiesCount({
+    address: address as Address,
   });
 
   // ---------------------------------------------------------------------------
