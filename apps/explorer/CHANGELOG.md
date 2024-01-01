@@ -1,5 +1,12 @@
 # @lightdotso/web
 
+## 2.2.1
+
+### Patch Changes
+
+- Updated dependencies [[`bfb2f4f`](https://github.com/LightDotSo/LightDotSo/commit/bfb2f4f789946b15ea7d863a9672b1fd3778c97d)]:
+  - @lightdotso/ui@2.3.0
+
 ## 2.2.0
 
 ### Patch Changes
