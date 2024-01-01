@@ -33,5 +33,9 @@ export type {
   UserOperationListParams,
   UserOperationListCountParams,
 } from "./userOperation";
-export type { WalletParams, WalletListParams } from "./wallet";
+export type {
+  WalletParams,
+  WalletListParams,
+  WalletListCountParams,
+} from "./wallet";
 export type { WalletSettingsParams } from "./walletSettings";

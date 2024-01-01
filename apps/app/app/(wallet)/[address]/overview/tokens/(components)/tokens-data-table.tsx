@@ -15,20 +15,15 @@
 
 "use client";
 
-import { getTokens, getTokensCount } from "@lightdotso/client";
-import {
-  useQueryClient,
-  useQuery,
-  keepPreviousData,
-} from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table";
-import type { TokenCountData, TokenData, WalletSettingsData } from "@/data";
+import type { WalletSettingsData } from "@/data";
+import { useQueryTokens, useQueryTokensCount } from "@/query";
 import { queryKeys } from "@/queryKeys";
 import { usePaginationQueryState } from "@/queryStates";
-import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -43,12 +38,6 @@ interface TokensDataTableProps {
 // -----------------------------------------------------------------------------
 
 export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
-  // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { clientType } = useAuth();
-
   // ---------------------------------------------------------------------------
   // Query State Hooks
   // ---------------------------------------------------------------------------
@@ -72,92 +61,17 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
-  const currentData: TokenData[] | undefined = queryClient.getQueryData(
-    queryKeys.token.list({
-      address,
-      is_testnet: walletSettings?.is_enabled_testnet ?? false,
-      limit: paginationState.pageSize,
-      offset: offsetCount,
-      group: true,
-    }).queryKey,
-  );
-
-  const { data: tokens } = useQuery<TokenData[] | null>({
-    placeholderData: keepPreviousData,
-    queryKey: queryKeys.token.list({
-      address,
-      is_testnet: walletSettings?.is_enabled_testnet ?? false,
-      limit: paginationState.pageSize,
-      offset: offsetCount,
-      group: true,
-    }).queryKey,
-    queryFn: async () => {
-      const res = await getTokens(
-        {
-          params: {
-            query: {
-              address,
-              is_testnet: walletSettings?.is_enabled_testnet ?? false,
-              limit: paginationState.pageSize,
-              offset: offsetCount,
-              group: true,
-            },
-          },
-        },
-        clientType,
-      );
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data as TokenData[];
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
+  const { tokens } = useQueryTokens({
+    address: address,
+    is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    limit: paginationState.pageSize,
+    offset: offsetCount,
+    group: true,
   });
 
-  const currentCountData: TokenCountData | undefined = queryClient.getQueryData(
-    queryKeys.token.listCount({
-      address: address as Address,
-      is_testnet: walletSettings?.is_enabled_testnet ?? false,
-    }).queryKey,
-  );
-
-  const { data: tokensCount } = useQuery<TokenCountData | null>({
-    queryKey: queryKeys.token.listCount({
-      address: address as Address,
-      is_testnet: walletSettings?.is_enabled_testnet ?? false,
-    }).queryKey,
-    queryFn: async () => {
-      if (!address) {
-        return null;
-      }
-
-      const res = await getTokensCount(
-        {
-          params: {
-            query: {
-              address: address,
-              is_testnet: walletSettings?.is_enabled_testnet ?? false,
-            },
-          },
-        },
-        clientType,
-      );
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentCountData ?? null;
-        },
-      );
-    },
+  const { tokensCount } = useQueryTokensCount({
+    address: address,
+    is_testnet: walletSettings?.is_enabled_testnet ?? false,
   });
 
   // ---------------------------------------------------------------------------
