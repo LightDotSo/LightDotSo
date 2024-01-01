@@ -23,7 +23,7 @@ jobs:
       - if: github.actor != 'LightDotSoBot'
         name: Check for changeset
         run: |
-          pnpm changeset status
+          pnpm run changeset:status
   changesets-pr:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
