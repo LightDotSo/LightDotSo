@@ -117,8 +117,13 @@ jobs:
         env:
           FOUNDRY_PROFILE: local
       - name: Check Gas Snapshots
-        run: |
-          make contracts-snapshot-check
+        uses: nick-fields/retry@v2
+        with:
+          timeout_seconds: 300
+          max_attempts: 3
+          retry_on: error
+          command: |
+            make contracts-snapshot-check
         env:
           FOUNDRY_PROFILE: local
       - name: Run Coverage

@@ -8,5 +8,6 @@
   ],
   "commit": false,
   "access": "public",
-  "baseBranch": "main"
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch"
 }
