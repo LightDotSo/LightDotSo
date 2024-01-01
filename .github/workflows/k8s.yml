@@ -23,7 +23,7 @@ jobs:
         run: |
           sleep 30s
       - name: Wait Docker
-        uses: lewagon/wait-on-check-action@v1.3.1
+        uses: lewagon/wait-on-check-action@v1.3.3
         with:
           ref: ${{ github.ref }}
           check-name: docker-build
@@ -66,7 +66,7 @@ jobs:
           format: sarif
           output-file: kube-linter.sarif
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         continue-on-error: true
         with:
           sarif_file: kube-linter.sarif
