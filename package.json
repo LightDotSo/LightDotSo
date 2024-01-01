@@ -19,6 +19,7 @@
     "cargo:fmt:fix": "cargo fmt --all",
     "changeset": "changeset",
     "changeset:publish": "changeset publish",
+    "changeset:status": "changeset status --since origin/main",
     "changeset:version": "changeset version && pnpm install --lockfile-only && pnpm run fix",
     "clippy:cmd": "cargo clippy --workspace -- -D warnings --no-deps -D clippy::expect_used -D clippy::unwrap_used",
     "depcheck:lint": "pnpm -r exec depcheck .",
