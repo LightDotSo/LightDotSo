@@ -52,6 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
+      HUSKY: 0
       TURBO_API: ${{ secrets.TURBO_API }}
       TURBO_REMOTE_CACHE_SIGNATURE_KEY: ${{ secrets.TURBO_REMOTE_CACHE_SIGNATURE_KEY }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
@@ -73,7 +74,7 @@ jobs:
           publish: pnpm run changeset:publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.BOT_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
   changesets-check:
     if: always()
