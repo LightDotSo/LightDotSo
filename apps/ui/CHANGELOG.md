@@ -1,5 +1,18 @@
 # @lightdotso/ui
 
+## 2.2.0-pre.0
+
+### Minor Changes
+
+- [#1258](https://github.com/LightDotSo/LightDotSo/pull/1258) [`b65face`](https://github.com/LightDotSo/LightDotSo/commit/b65face830ec21f930f5c4b8d0cd3a0fde56d684) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add major bumps
+
+### Patch Changes
+
+- Updated dependencies [[`1eb3070`](https://github.com/LightDotSo/LightDotSo/commit/1eb307004ea3fb694d602fd2861baa54bc2e4e0e), [`b65face`](https://github.com/LightDotSo/LightDotSo/commit/b65face830ec21f930f5c4b8d0cd3a0fde56d684)]:
+  - @lightdotso/utils@2.2.0-pre.0
+  - @lightdotso/styles@2.2.0-pre.0
+  - @lightdotso/const@2.2.0-pre.0
+
 ## 1.1.0
 
 ### Minor Changes

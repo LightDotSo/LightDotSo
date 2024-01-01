@@ -1,5 +1,15 @@
 # @lightdotso/web
 
+## 2.2.0-pre.0
+
+### Patch Changes
+
+- Updated dependencies [[`b65face`](https://github.com/LightDotSo/LightDotSo/commit/b65face830ec21f930f5c4b8d0cd3a0fde56d684)]:
+  - @lightdotso/ui@2.2.0-pre.0
+  - @lightdotso/styles@2.2.0-pre.0
+  - @lightdotso/kysely@2.2.0-pre.0
+  - @lightdotso/prisma@2.2.0-pre.0
+
 ## 0.0.0
 
 ### Patch Changes

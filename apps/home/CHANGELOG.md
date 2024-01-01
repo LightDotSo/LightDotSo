@@ -1,5 +1,7 @@
 # @lightdotso/home
 
+## 2.2.0-pre.0
+
 ## 2.0.0
 
 ### Major Changes

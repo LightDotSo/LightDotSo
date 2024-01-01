@@ -1,5 +1,7 @@
 # @lightdotso/solutions
 
+## 2.2.0-pre.0
+
 ## 0.2.0
 
 ### Minor Changes

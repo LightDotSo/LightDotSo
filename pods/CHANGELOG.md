@@ -1,5 +1,7 @@
 # @lightdotso/pods
 
+## 2.2.0-pre.0
+
 ## 0.1.0
 
 ### Minor Changes

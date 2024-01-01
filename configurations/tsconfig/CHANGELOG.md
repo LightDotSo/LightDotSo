@@ -1,5 +1,7 @@
 # @lightdotso/tsconfig
 
+## 2.2.0-pre.0
+
 ## 1.1.0
 
 ### Minor Changes

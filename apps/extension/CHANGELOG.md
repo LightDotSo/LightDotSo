@@ -1,5 +1,16 @@
 # @lightdotso/extension
 
+## 2.2.0-pre.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @lightdotso/background@2.2.0-pre.0
+  - @lightdotso/content@2.2.0-pre.0
+  - @lightdotso/inpage@2.2.0-pre.0
+  - @lightdotso/popup@2.2.0-pre.0
+  - @lightdotso/resources@2.2.0-pre.0
+
 ## 1.1.0
 
 ### Minor Changes
