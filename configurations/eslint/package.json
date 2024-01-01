@@ -17,8 +17,8 @@
     "src/index.js"
   ],
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^6.15.0",
-    "@typescript-eslint/parser": "^6.15.0",
+    "@typescript-eslint/eslint-plugin": "^6.16.0",
+    "@typescript-eslint/parser": "^6.16.0",
     "eslint": "^8.56.0",
     "eslint-config-next": "^14.0.4",
     "eslint-config-turbo": "^1.11.2",
@@ -29,11 +29,11 @@
     "eslint-plugin-jsonc": "^2.11.2",
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-neverthrow": "^1.1.4",
-    "eslint-plugin-prettier": "^5.1.1",
+    "eslint-plugin-prettier": "^5.1.2",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
-    "eslint-plugin-tailwindcss": "^3.13.0",
+    "eslint-plugin-tailwindcss": "^3.13.1",
     "next": "^14.0.4"
   },
   "publishConfig": {
