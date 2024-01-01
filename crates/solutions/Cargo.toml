@@ -17,10 +17,10 @@
   lightdotso-tracing = { workspace = true }
   rand = { workspace = true }
   serde = { workspace = true }
-  serde_bytes = "0.11.12"
+  serde_bytes = "0.11.13"
   serde_json = { workspace = true }
-  serde_with = "3.3.0"
-  test-fuzz = "4.0.2"
+  serde_with = "3.4.0"
+  test-fuzz = "4.0.5"
   tokio = { workspace = true }
 
 [dev-dependencies]
