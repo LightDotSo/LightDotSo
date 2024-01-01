@@ -1,5 +1,33 @@
 # @lightdotso/app
 
+## 2.2.0
+
+### Patch Changes
+
+- [#1086](https://github.com/LightDotSo/LightDotSo/pull/1086) [`bb18156`](https://github.com/LightDotSo/LightDotSo/commit/bb18156f6072a3cc2362a2077db6075aeb21e810) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add changeset Root
+
+- [#1087](https://github.com/LightDotSo/LightDotSo/pull/1087) [`1eb3070`](https://github.com/LightDotSo/LightDotSo/commit/1eb307004ea3fb694d602fd2861baa54bc2e4e0e) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add wallets table
+
+- [#1086](https://github.com/LightDotSo/LightDotSo/pull/1086) [`bb18156`](https://github.com/LightDotSo/LightDotSo/commit/bb18156f6072a3cc2362a2077db6075aeb21e810) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix the underlying input quantity problem
+
+  <video controls>
+    <source src="https://lightcache.net/ipsum-tenetur-pariatur.mp4" type="video/mp4">
+  </video>
+
+  Thank you to [@kzycras](https://twitter.com/kzycras) and [@littlemonastar](https://twitter.com/littlemonastar) for the feedback!
+
+- Updated dependencies [[`1eb3070`](https://github.com/LightDotSo/LightDotSo/commit/1eb307004ea3fb694d602fd2861baa54bc2e4e0e), [`b65face`](https://github.com/LightDotSo/LightDotSo/commit/b65face830ec21f930f5c4b8d0cd3a0fde56d684)]:
+  - @lightdotso/utils@2.2.0
+  - @lightdotso/ui@2.2.0
+  - @lightdotso/styles@2.2.0
+  - @lightdotso/kysely@2.2.0
+  - @lightdotso/prisma@2.2.0
+  - @lightdotso/client@2.2.0
+  - @lightdotso/const@2.2.0
+  - @lightdotso/schemas@2.2.0
+  - @lightdotso/solutions@2.2.0
+  - @lightdotso/wagmi@2.2.0
+
 ## 1.1.1
 
 ### Patch Changes

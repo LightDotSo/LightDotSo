@@ -1,5 +1,11 @@
 # @lightdotso/utils
 
+## 2.2.0
+
+### Patch Changes
+
+- [#1087](https://github.com/LightDotSo/LightDotSo/pull/1087) [`1eb3070`](https://github.com/LightDotSo/LightDotSo/commit/1eb307004ea3fb694d602fd2861baa54bc2e4e0e) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add proper root changesets log
+
 ## 0.1.0
 
 ### Minor Changes

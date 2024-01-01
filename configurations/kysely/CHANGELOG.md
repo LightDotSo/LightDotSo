@@ -1,5 +1,12 @@
 # @lightdotso/kysely
 
+## 2.2.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @lightdotso/prisma@2.2.0
+
 ## 0.0.1
 
 ### Patch Changes

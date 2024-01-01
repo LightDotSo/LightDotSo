@@ -1,5 +1,13 @@
 # @lightdotso/contracts
 
+## 2.2.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @lightdotso/solutions@2.2.0
+  - @lightdotso/wagmi@2.2.0
+
 ## 0.1.0
 
 ### Minor Changes
