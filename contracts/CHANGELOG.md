@@ -1,5 +1,11 @@
 # @lightdotso/contracts
 
+## 2.3.0
+
+### Minor Changes
+
+- [#1268](https://github.com/LightDotSo/LightDotSo/pull/1268) [`595a2a7`](https://github.com/LightDotSo/LightDotSo/commit/595a2a73b29877a86844cdcdb66968c5f4e24999) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix contracts testing
+
 ## 2.2.0
 
 ### Patch Changes
