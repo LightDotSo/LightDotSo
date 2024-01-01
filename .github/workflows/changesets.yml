@@ -39,13 +39,10 @@ jobs:
       - name: Fetch Head
         uses: actions/checkout@v4
         with:
+          token: ${{ secrets.BOT_TOKEN }}
           fetch-depth: 0
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
-      - name: Bun Install
-        uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: latest
       - name: Node Build
         run: |
           pnpm run build:turbo
@@ -55,8 +52,8 @@ jobs:
         with:
           commit: "chore: changesets version package"
           title: "chore: changesets pr"
-          publish: pnpm run release:publish
-          version: pnpm run release:version
+          publish: pnpm run changeset:publish
+          version: pnpm run changeset:version
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
