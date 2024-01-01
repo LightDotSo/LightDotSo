@@ -1,5 +1,13 @@
 # @lightdotso/ios
 
+## 2.2.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @lightdotso/extension@2.2.0
+  - @lightdotso/crates@2.2.0
+
 ## 2.0.0
 
 ### Major Changes
