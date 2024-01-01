@@ -40,7 +40,6 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - name: Changesets Version
         uses: changesets/action@v1
-        continue-on-error: true
         with:
           commit: "chore: changesets version package"
           title: "chore: changesets pr"
