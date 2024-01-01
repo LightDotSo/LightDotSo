@@ -1,5 +1,11 @@
 # @lightdotso/ui
 
+## 2.4.0
+
+### Minor Changes
+
+- [#1274](https://github.com/LightDotSo/LightDotSo/pull/1274) [`51583b5`](https://github.com/LightDotSo/LightDotSo/commit/51583b54720f0b18cc4da9aa31fd599dfb0776c9) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Bump version ui
+
 ## 2.3.0
 
 ### Minor Changes
