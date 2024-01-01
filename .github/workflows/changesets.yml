@@ -70,6 +70,7 @@ jobs:
           pnpm run build:turbo
       - name: Changesets Publish
         uses: changesets/action@v1
+        continue-on-error: true
         with:
           publish: pnpm run changeset:publish
         env:
