@@ -15,7 +15,6 @@
 
 "use client";
 
-import { getWallet, updateWallet } from "@lightdotso/client";
 import {
   Button,
   Form,
@@ -28,11 +27,6 @@ import {
   Input,
 } from "@lightdotso/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  useSuspenseQuery,
-  useQueryClient,
-  useMutation,
-} from "@tanstack/react-query";
 import type { FC } from "react";
 import { useState, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
@@ -40,12 +34,9 @@ import type { Address } from "viem";
 import * as z from "zod";
 import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const/titles";
-import type { WalletData } from "@/data";
 import { useAuthModal } from "@/hooks/useAuthModal";
 import { useDelayedValue } from "@/hooks/useDelayedValue";
-import { queryKeys } from "@/queryKeys";
-import { useAuth } from "@/stores";
-import { errorToast, successToast } from "@/utils";
+import { useSuspenseQueryWallet, useMutationWallet } from "@/query";
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -78,12 +69,6 @@ type SettingsNameCardProps = {
 
 export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { clientType } = useAuth();
-
-  // ---------------------------------------------------------------------------
   // Staet Hooks
   // ---------------------------------------------------------------------------
 
@@ -100,132 +85,14 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
-
-  const currentData: WalletData | undefined = queryClient.getQueryData(
-    queryKeys.wallet.get({ address }).queryKey,
-  );
-
-  const { data: wallet } = useSuspenseQuery<WalletData | null>({
-    queryKey: queryKeys.wallet.get({ address }).queryKey,
-    queryFn: async () => {
-      if (!address) {
-        return null;
-      }
-
-      const res = await getWallet(
-        {
-          params: {
-            query: {
-              address: address,
-            },
-          },
-        },
-        clientType,
-      );
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
-  });
+  const { wallet } = useSuspenseQueryWallet({ address: address });
 
   // ---------------------------------------------------------------------------
   // Mutate
   // ---------------------------------------------------------------------------
 
-  const { mutate, isPending, isSuccess, isError } = useMutation({
-    mutationFn: async (data: Partial<WalletData>) => {
-      const res = await updateWallet(
-        {
-          params: {
-            query: {
-              address: address,
-            },
-          },
-          body: {
-            name: data.name,
-          },
-        },
-        clientType,
-      );
-
-      // Return if the response is 200
-      res.match(
-        _ => {
-          successToast("Successfully updated name.");
-        },
-        err => {
-          if (err instanceof Error) {
-            errorToast(err.message);
-            return;
-          }
-          if (typeof err === "string") {
-            errorToast(err);
-            return;
-          }
-          throw err;
-        },
-      );
-    },
-    // When mutate is called:
-    onMutate: async (wallet: Partial<WalletData>) => {
-      // Cancel any outgoing refetches
-      // (so they don't overwrite our optimistic update)
-      await queryClient.cancelQueries({
-        queryKey: queryKeys.wallet.get({ address }).queryKey,
-      });
-
-      // Snapshot the previous value
-      const previousSettings: WalletData | undefined = queryClient.getQueryData(
-        queryKeys.wallet.get({ address }).queryKey,
-      );
-
-      // Optimistically update to the new value
-      queryClient.setQueryData(
-        queryKeys.wallet.settings({ address }).queryKey,
-        (old: WalletData) => {
-          return { ...old, wallet };
-        },
-      );
-
-      // Return a context object with the snapshotted value
-      return { previousSettings };
-    },
-    // If the mutation fails, use the context we returned above
-    onError: (err, _newWalletSettings, context) => {
-      queryClient.setQueryData(
-        queryKeys.wallet.get({ address }).queryKey,
-        context?.previousSettings,
-      );
-
-      if (err instanceof Error) {
-        errorToast(err.message);
-        return;
-      }
-      if (typeof err === "string") {
-        errorToast(err);
-        return;
-      }
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.wallet.get({ address }).queryKey,
-      });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.wallet.list({ address: address }).queryKey,
-      });
-
-      // Invalidate the cache for the address
-      // fetch(`/api/revalidate/tag?tag=${address}`);
-    },
-    mutationKey: queryKeys.wallet.get({ address }).queryKey,
+  const { mutate, isSuccess, isError, isPending } = useMutationWallet({
+    address: address,
   });
 
   // ---------------------------------------------------------------------------

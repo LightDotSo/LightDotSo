@@ -15,19 +15,18 @@
 
 "use client";
 
-import { getUserOperations } from "@lightdotso/client";
 import { CONTRACT_ADDRESSES } from "@lightdotso/const";
 import { calculateInitCode } from "@lightdotso/solutions";
 import { Button } from "@lightdotso/ui";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import type { FC } from "react";
 import type { Address, Chain, Hex } from "viem";
 import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const/titles";
-import type { UserOperationData, WalletSettingsData } from "@/data";
+import type { WalletSettingsData } from "@/data";
+import { useSuspenseQueryUserOperations } from "@/query";
 import { queryKeys } from "@/queryKeys";
-import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -57,12 +56,6 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   const chain = JSON.parse(chain_JSON) as Chain;
 
   // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { clientType } = useAuth();
-
-  // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
@@ -71,57 +64,13 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
-  const currentData: UserOperationData[] | undefined = queryClient.getQueryData(
-    queryKeys.user_operation.list({
-      address,
-      status: "history",
-      order: "asc",
-      offset: 0,
-      limit: Number.MAX_SAFE_INTEGER,
-      is_testnet: walletSettings?.is_enabled_testnet ?? false,
-    }).queryKey,
-  );
-
-  const { data: ops } = useSuspenseQuery<UserOperationData[] | null>({
-    queryKey: queryKeys.user_operation.list({
-      address,
-      status: "history",
-      order: "asc",
-      offset: 0,
-      limit: Number.MAX_SAFE_INTEGER,
-      is_testnet: walletSettings?.is_enabled_testnet ?? false,
-    }).queryKey,
-    queryFn: async () => {
-      if (!address) {
-        return null;
-      }
-
-      const res = await getUserOperations(
-        {
-          params: {
-            query: {
-              address: address,
-              status: "history",
-              order: "desc",
-              limit: Number.MAX_SAFE_INTEGER,
-              offset: 0,
-              is_testnet: walletSettings?.is_enabled_testnet ?? false,
-            },
-          },
-        },
-        clientType,
-      );
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
+  const { userOperations } = useSuspenseQueryUserOperations({
+    address,
+    status: "history",
+    order: "asc",
+    offset: 0,
+    limit: Number.MAX_SAFE_INTEGER,
+    is_testnet: walletSettings?.is_enabled_testnet ?? false,
   });
 
   // ---------------------------------------------------------------------------
@@ -129,7 +78,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // ---------------------------------------------------------------------------
 
   // Try to extract a matching operation w/ the current chain id
-  const deployed_op = ops?.find(op => op.chain_id === chain.id);
+  const deployed_op = userOperations?.find(op => op.chain_id === chain.id);
 
   let initCode = calculateInitCode(
     CONTRACT_ADDRESSES["Factory"] as Address,

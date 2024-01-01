@@ -15,7 +15,6 @@
 
 "use client";
 
-import { getTokens } from "@lightdotso/client";
 import type {
   SimplehashMainnetChain,
   SimplehashTestnetChain,
@@ -49,7 +48,7 @@ import {
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { Trash2Icon, UserPlus2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -72,11 +71,11 @@ import { useTransfersQueryState } from "@/app/(wallet)/[address]/send/(hooks)";
 import { publicClient } from "@/clients/public";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@/const/simplehash";
-import type { NftDataPage, TokenData, WalletSettingsData } from "@/data";
+import type { NftDataPage, WalletSettingsData } from "@/data";
+import { useSuspenseQueryTokens } from "@/query";
 import { queryKeys } from "@/queryKeys";
 import type { Transfer, Transfers } from "@/schemas";
 import { sendFormConfigurationSchema } from "@/schemas/sendForm";
-import { useAuth } from "@/stores";
 import { debounce } from "@/utils";
 import { lightWalletABI } from "@/wagmi";
 
@@ -104,12 +103,6 @@ export const SendDialog: FC<SendDialogProps> = ({
   initialTransfers,
 }) => {
   // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { clientType } = useAuth();
-
-  // ---------------------------------------------------------------------------
   // Next Hooks
   // ---------------------------------------------------------------------------
 
@@ -124,16 +117,6 @@ export const SendDialog: FC<SendDialogProps> = ({
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
-  const currentTokenData: TokenData[] | undefined = queryClient.getQueryData(
-    queryKeys.token.list({
-      address,
-      limit: Number.MAX_SAFE_INTEGER,
-      offset: 0,
-      is_testnet: walletSettings?.is_enabled_testnet ?? false,
-      group: false,
-    }).queryKey,
-  );
-
   const currentNftData: NftDataPage | undefined = queryClient.getQueryData(
     queryKeys.nft.list({
       address,
@@ -142,39 +125,12 @@ export const SendDialog: FC<SendDialogProps> = ({
     }).queryKey,
   );
 
-  const { data: tokens } = useSuspenseQuery<TokenData[] | null>({
-    queryKey: queryKeys.token.list({
-      address,
-      limit: Number.MAX_SAFE_INTEGER,
-      offset: 0,
-      is_testnet: walletSettings?.is_enabled_testnet ?? false,
-      group: false,
-    }).queryKey,
-    queryFn: async () => {
-      const res = await getTokens(
-        {
-          params: {
-            query: {
-              address,
-              is_testnet: walletSettings?.is_enabled_testnet ?? false,
-              limit: Number.MAX_SAFE_INTEGER,
-              group: false,
-            },
-          },
-        },
-        clientType,
-      );
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data as TokenData[];
-        },
-        _ => {
-          return currentTokenData ?? null;
-        },
-      );
-    },
+  const { tokens } = useSuspenseQueryTokens({
+    address,
+    is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    offset: 0,
+    limit: Number.MAX_SAFE_INTEGER,
+    group: false,
   });
 
   // ---------------------------------------------------------------------------

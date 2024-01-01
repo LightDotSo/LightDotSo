@@ -15,14 +15,11 @@
 
 "use client";
 
-import { getWallets, getWalletsCount } from "@lightdotso/client";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(authenticated)/wallets/(components)/data-table/columns";
 import { DataTable } from "@/app/(authenticated)/wallets/(components)/data-table/data-table";
-import type { WalletCountData, WalletData } from "@/data";
-import { queryKeys } from "@/queryKeys";
+import { useQueryWallets, useQueryWalletsCount } from "@/query";
 import { usePaginationQueryState } from "@/queryStates";
 import { useAuth } from "@/stores";
 
@@ -35,7 +32,7 @@ export const WalletsDataTable: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address, clientType } = useAuth();
+  const { address } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Query State Hooks
@@ -55,86 +52,14 @@ export const WalletsDataTable: FC = () => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
-
-  const currentData: WalletData[] | undefined = queryClient.getQueryData(
-    queryKeys.wallet.list({
-      address: address as Address,
-      limit: paginationState.pageSize,
-      offset: offsetCount,
-    }).queryKey,
-  );
-
-  const { data: wallets } = useQuery<WalletData[] | null>({
-    queryKey: queryKeys.wallet.list({
-      address: address as Address,
-      limit: paginationState.pageSize,
-      offset: offsetCount,
-    }).queryKey,
-    queryFn: async () => {
-      if (!address) {
-        return null;
-      }
-
-      const res = await getWallets(
-        {
-          params: {
-            query: {
-              owner: address,
-              limit: paginationState.pageSize,
-              offset: offsetCount,
-            },
-          },
-        },
-        clientType,
-      );
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
+  const { wallets } = useQueryWallets({
+    address: address as Address,
+    limit: paginationState.pageSize,
+    offset: offsetCount,
   });
 
-  const currentCountData: WalletCountData | undefined =
-    queryClient.getQueryData(
-      queryKeys.wallet.list({ address: address as Address }).queryKey,
-    );
-
-  const { data: walletsCount } = useQuery<WalletCountData | null>({
-    queryKey: queryKeys.wallet.listCount({ address: address as Address })
-      .queryKey,
-    queryFn: async () => {
-      if (!address) {
-        return null;
-      }
-
-      const res = await getWalletsCount(
-        {
-          params: {
-            query: {
-              owner: address,
-            },
-          },
-        },
-        clientType,
-      );
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentCountData ?? null;
-        },
-      );
-    },
+  const { walletsCount } = useQueryWalletsCount({
+    address: address as Address,
   });
 
   // ---------------------------------------------------------------------------

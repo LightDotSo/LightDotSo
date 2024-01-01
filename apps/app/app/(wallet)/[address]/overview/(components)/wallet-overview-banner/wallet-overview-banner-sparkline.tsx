@@ -15,16 +15,12 @@
 
 "use client";
 
-import { getPortfolio } from "@lightdotso/client";
 import { Number } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { SparkAreaChart } from "@tremor/react";
 import type { FC } from "react";
 import type { Address } from "viem";
-import type { TokenPortfolioData } from "@/data";
-import { queryKeys } from "@/queryKeys";
-import { useAuth } from "@/stores";
+import { useSuspenseQueryPortfolio } from "@/query";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -42,50 +38,10 @@ export const WalletOverviewBannerSparkline: FC<
   WalletOverviewBannerSparklineProps
 > = ({ address }) => {
   // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { clientType } = useAuth();
-
-  // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
-
-  const currentData: TokenPortfolioData | undefined = queryClient.getQueryData(
-    queryKeys.portfolio.get({ address }).queryKey,
-  );
-
-  const { data: portfolio } = useSuspenseQuery<TokenPortfolioData | null>({
-    queryKey: queryKeys.portfolio.get({ address }).queryKey,
-    queryFn: async () => {
-      if (!address) {
-        return null;
-      }
-
-      const res = await getPortfolio(
-        {
-          params: {
-            query: {
-              address: address,
-            },
-          },
-        },
-        clientType,
-      );
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
-  });
+  const { portfolio } = useSuspenseQueryPortfolio({ address: address });
 
   // ---------------------------------------------------------------------------
   // Render

@@ -18,7 +18,6 @@
 
 "use client";
 
-import { getWallets } from "@lightdotso/client";
 import {
   Avatar,
   Button,
@@ -42,16 +41,14 @@ import {
   PlusCircledIcon,
   StackIcon,
 } from "@radix-ui/react-icons";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import type { UIEvent, FC, ComponentPropsWithoutRef } from "react";
 import { getAddress, isAddress } from "viem";
 import type { Address } from "viem";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
-import type { WalletData } from "@/data";
 import { useIsMounted } from "@/hooks/useIsMounted";
-import { queryKeys } from "@/queryKeys";
+import { useSuspenseQueryWallets } from "@/query";
 import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
@@ -113,60 +110,25 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address, clientType } = useAuth();
+  const { address } = useAuth();
 
-  // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
-
-  const queryClient = useQueryClient();
-
-  const currentData: WalletData[] | undefined = queryClient.getQueryData(
-    queryKeys.wallet.list({
-      address: address as Address,
-      limit: Number.MAX_SAFE_INTEGER,
-    }).queryKey,
-  );
-
-  const { data, isLoading } = useSuspenseQuery<WalletData[] | null>({
-    queryKey: queryKeys.wallet.list({
-      address: address as Address,
-      limit: Number.MAX_SAFE_INTEGER,
-    }).queryKey,
-    queryFn: async () => {
-      if (!address) {
-        return null;
-      }
-
-      const res = await getWallets(
-        {
-          params: {
-            query: {
-              owner: address,
-              limit: Number.MAX_SAFE_INTEGER,
-            },
-          },
-        },
-        clientType,
-      );
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
+  const { wallets, isLoading } = useSuspenseQueryWallets({
+    address: address as Address,
+    limit: Number.MAX_SAFE_INTEGER,
+    offset: 0,
   });
 
   useEffect(() => {
-    if (data && pathname && pathname.split("/").length > 1) {
+    if (wallets && pathname && pathname.split("/").length > 1) {
       // Get the slug of the path and find the wallet
       // ex) /0x1234 -> 0x1234
       const slug = pathname.split("/")[1];
+
+      // If the slug is `/new` or `/wallets`, set the selected wallet to undefined
+      if (slug === "new" || slug === "wallets") {
+        setSelectedWallet(undefined);
+        return;
+      }
 
       // If the slug is not an address, return
       if (!isAddress(slug)) {
@@ -174,17 +136,19 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
       }
 
       // Find the wallet from the slug
-      const wallet = data.find(wallet => wallet.address === getAddress(slug));
+      const wallet = wallets.find(
+        wallet => wallet.address === getAddress(slug),
+      );
 
       // If there is no wallet, set the first wallet as the selected wallet
       if (!wallet) {
-        setSelectedWallet(data[0]);
+        setSelectedWallet(wallets[0]);
         return;
       }
 
       setSelectedWallet(wallet);
     }
-  }, [data, address, pathname]);
+  }, [wallets, address, pathname]);
 
   // From: https://github.com/fiveoutofnine/www/blob/a04dd54f76f57c145155dce96744d003f0d3de5e/components/pages/home/featured-works/works/colormap-registry.tsx#L64
   // License: MIT
@@ -209,7 +173,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   }
 
   // If there is no wallet, render a button to create a new wallet
-  if (!data) {
+  if (!wallets) {
     return (
       <Button
         variant="ghost"
@@ -248,13 +212,13 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
                 {selectedWallet?.name}
               </>
             )}
-            {!selectedWallet && data && data.length > 0 && (
+            {!selectedWallet && wallets && wallets.length > 0 && (
               <>
                 <StackIcon className="mr-2 h-5 w-5" />
                 Select a wallet
               </>
             )}
-            {selectedWallet && data && data.length === 0 && (
+            {selectedWallet && wallets && wallets.length === 0 && (
               <>
                 <PlusCircledIcon className="mr-2 h-5 w-5" />
                 New Wallet
@@ -293,9 +257,9 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
                     <CheckIcon className="ml-auto h-4 w-4" />
                   </CommandItem>
                 )}
-                {data &&
+                {wallets &&
                   // Filter out the selected wallet
-                  data
+                  wallets
                     .filter(
                       wallet => wallet.address !== selectedWallet?.address,
                     )

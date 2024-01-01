@@ -15,15 +15,11 @@
 
 "use client";
 
-import { getConfiguration } from "@lightdotso/client";
-import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { type FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/owners/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table";
-import type { ConfigurationData } from "@/data";
-import { queryKeys } from "@/queryKeys";
-import { useAuth } from "@/stores";
+import { useQueryConfiguration } from "@/query";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -39,49 +35,11 @@ interface OwnersDataTableProps {
 
 export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { clientType } = useAuth();
-
-  // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
-
-  const currentData: ConfigurationData | undefined = queryClient.getQueryData(
-    queryKeys.configuration.get({ address }).queryKey,
-  );
-
-  const { data: configuration } = useQuery<ConfigurationData | null>({
-    queryKey: queryKeys.configuration.get({ address }).queryKey,
-    queryFn: async () => {
-      if (!address) {
-        return null;
-      }
-
-      const res = await getConfiguration(
-        {
-          params: {
-            query: {
-              address: address,
-            },
-          },
-        },
-        clientType,
-      );
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
+  const { configuration } = useQueryConfiguration({
+    address: address,
   });
 
   // ---------------------------------------------------------------------------

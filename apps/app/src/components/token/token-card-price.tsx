@@ -15,14 +15,11 @@
 
 "use client";
 
-import { getTokenPrice } from "@lightdotso/client";
 import { cn } from "@lightdotso/utils";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import type { FC } from "react";
 import type { Address } from "viem";
-import type { TokenData, TokenPriceData } from "@/data";
-import { queryKeys } from "@/queryKeys";
-import { useAuth } from "@/stores";
+import type { TokenData } from "@/data";
+import { useSuspenseQueryTokenPrice } from "@/query";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -40,54 +37,12 @@ export const TokenCardPrice: FC<TokenCardPriceProps> = ({
   token: { address, chain_id },
 }) => {
   // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { clientType } = useAuth();
-
-  // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
-
-  const currentData: TokenPriceData | undefined = queryClient.getQueryData(
-    queryKeys.token_price.get({ address: address as Address, chain_id })
-      .queryKey,
-  );
-
-  const { data: token_price } = useSuspenseQuery<TokenPriceData | null>({
-    queryKey: queryKeys.token_price.get({
-      address: address as Address,
-      chain_id,
-    }).queryKey,
-    queryFn: async () => {
-      if (!address || chain_id === 0) {
-        return null;
-      }
-
-      const res = await getTokenPrice(
-        {
-          params: {
-            query: {
-              address: address,
-              chain_id: chain_id,
-            },
-          },
-        },
-        clientType,
-      );
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
+  const { token_price } = useSuspenseQueryTokenPrice({
+    address: address as Address,
+    chain_id: chain_id,
   });
 
   // ---------------------------------------------------------------------------

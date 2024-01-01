@@ -15,9 +15,7 @@
 
 "use client";
 
-import { getConfiguration } from "@lightdotso/client";
 import { Table, TableBody, TableCell, TableRow } from "@lightdotso/ui";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getCoreRowModel,
   getFacetedRowModel,
@@ -32,10 +30,10 @@ import { useEffect } from "react";
 import type { Address } from "viem";
 import { TransactionCard } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transaction-card";
 import { TableEmpty } from "@/components/state/table-empty";
-import type { ConfigurationData, UserOperationData } from "@/data";
-import { queryKeys } from "@/queryKeys";
+import type { UserOperationData } from "@/data";
+import { useQueryConfiguration } from "@/query";
 import { usePaginationQueryState } from "@/queryStates";
-import { useAuth, useTables } from "@/stores";
+import { useTables } from "@/stores";
 import { groupByDate } from "@/utils/group";
 
 // -----------------------------------------------------------------------------
@@ -59,12 +57,6 @@ export function DataTable({
   data,
   pageCount,
 }: DataTableProps) {
-  // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { clientType } = useAuth();
-
   // ---------------------------------------------------------------------------
   // Query State Hooks
   // ---------------------------------------------------------------------------
@@ -145,41 +137,13 @@ export function DataTable({
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
-
-  const currentData: ConfigurationData | undefined = queryClient.getQueryData(
-    queryKeys.configuration.get({ address }).queryKey,
-  );
-
-  const { data: configuration } = useQuery<ConfigurationData | null>({
-    queryKey: queryKeys.configuration.get({ address }).queryKey,
-    queryFn: async () => {
-      if (!address) {
-        return null;
-      }
-
-      const res = await getConfiguration(
-        {
-          params: {
-            query: {
-              address: address,
-            },
-          },
-        },
-        clientType,
-      );
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
+  const { configuration } = useQueryConfiguration({
+    address: address,
   });
+
+  // ---------------------------------------------------------------------------
+  // Local Variables
+  // ---------------------------------------------------------------------------
 
   const items = table
     .getRowModel()

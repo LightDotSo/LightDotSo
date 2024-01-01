@@ -28,3 +28,5 @@ export type WalletListParams = {
   limit?: number;
   offset?: number;
 };
+
+export type WalletListCountParams = Omit<WalletListParams, "limit" | "offset">;
