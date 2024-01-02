@@ -22,94 +22,12 @@ use std::str::FromStr;
 
 use crate::{
     evm::Evm,
-    simulator_api::SimulatorServer,
-    types::{CallTrace, SimulationRequest, SimulationResponse, UserOperationRequest},
+    types::{CallTrace, SimulationRequest, SimulationResponse},
 };
-use async_trait::async_trait;
 use ethers_main::abi::Uint;
 use eyre::{eyre, Result};
-use jsonrpsee::core::RpcResult;
 
 pub struct SimulatorServerImpl {}
-
-#[async_trait]
-impl SimulatorServer for SimulatorServerImpl {
-    async fn simulate_execution(&self, tx: SimulationRequest) -> RpcResult<String> {
-        let res = simulate(tx).await;
-        match res {
-            Ok(res) => Ok(serde_json::to_string(&res).unwrap()),
-            Err(err) => Ok(serde_json::to_string(&err.to_string()).unwrap()),
-        }
-    }
-    async fn simulate_execution_bundle(&self, txs: Vec<SimulationRequest>) -> RpcResult<String> {
-        let res = simulate_bundle(txs).await;
-        match res {
-            Ok(res) => Ok(serde_json::to_string(&res).unwrap()),
-            Err(err) => Ok(serde_json::to_string(&err.to_string()).unwrap()),
-        }
-    }
-    async fn simulate_asset_changes(&self, tx: SimulationRequest) -> RpcResult<String> {
-        let res = simulate(tx).await;
-        match res {
-            Ok(res) => Ok(serde_json::to_string(&res).unwrap()),
-            Err(err) => Ok(serde_json::to_string(&err.to_string()).unwrap()),
-        }
-    }
-    async fn simulate_asset_changes_bundle(
-        &self,
-        txs: Vec<SimulationRequest>,
-    ) -> RpcResult<String> {
-        let res = simulate_bundle(txs).await;
-        match res {
-            Ok(res) => Ok(serde_json::to_string(&res).unwrap()),
-            Err(err) => Ok(serde_json::to_string(&err.to_string()).unwrap()),
-        }
-    }
-    async fn simulate_user_operation(
-        &self,
-        user_operation: UserOperationRequest,
-    ) -> RpcResult<String> {
-        let res = simulate(SimulationRequest::from(user_operation)).await;
-        match res {
-            Ok(res) => Ok(serde_json::to_string(&res).unwrap()),
-            Err(err) => Ok(serde_json::to_string(&err.to_string()).unwrap()),
-        }
-    }
-    async fn simulate_user_operation_bundle(
-        &self,
-        user_operations: Vec<UserOperationRequest>,
-    ) -> RpcResult<String> {
-        let res =
-            simulate_bundle(user_operations.into_iter().map(SimulationRequest::from).collect())
-                .await;
-        match res {
-            Ok(res) => Ok(serde_json::to_string(&res).unwrap()),
-            Err(err) => Ok(serde_json::to_string(&err.to_string()).unwrap()),
-        }
-    }
-    async fn simulate_user_operation_asset_changes(
-        &self,
-        user_operation: UserOperationRequest,
-    ) -> RpcResult<String> {
-        let res = simulate(SimulationRequest::from(user_operation)).await;
-        match res {
-            Ok(res) => Ok(serde_json::to_string(&res).unwrap()),
-            Err(err) => Ok(serde_json::to_string(&err.to_string()).unwrap()),
-        }
-    }
-    async fn simulate_user_operation_asset_changes_bundle(
-        &self,
-        user_operations: Vec<UserOperationRequest>,
-    ) -> RpcResult<String> {
-        let res =
-            simulate_bundle(user_operations.into_iter().map(SimulationRequest::from).collect())
-                .await;
-        match res {
-            Ok(res) => Ok(serde_json::to_string(&res).unwrap()),
-            Err(err) => Ok(serde_json::to_string(&err.to_string()).unwrap()),
-        }
-    }
-}
 
 fn get_fork_url(first_chain_id: u64) -> String {
     // If env `ENVIRONMENT` is `development`, use the local anvil fork

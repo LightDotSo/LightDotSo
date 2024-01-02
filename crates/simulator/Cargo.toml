@@ -15,8 +15,6 @@
   eyre = { workspace = true }
   foundry-config = { workspace = true }
   foundry-evm = { workspace = true }
-  jsonrpsee = { workspace = true }
-  lightdotso-jsonrpsee = { workspace = true }
   lightdotso-tracing = { workspace = true }
   revm = { workspace = true }
   serde = { workspace = true }

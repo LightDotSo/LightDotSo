@@ -13,15 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{simulator::SimulatorServerImpl, simulator_api::SimulatorServer};
 use clap::Parser;
-use eyre::{eyre, Result};
-use lightdotso_jsonrpsee::rpc::{JsonRpcServer, JsonRpcServerType};
+use eyre::Result;
 use lightdotso_tracing::tracing::info;
-use std::{
-    future::pending,
-    net::{IpAddr, Ipv6Addr},
-};
 
 #[derive(Debug, Clone, Parser)]
 pub struct SimulatorArgs {}
@@ -34,28 +28,6 @@ impl SimulatorArgs {
         // Print the config
         info!("Config: {:?}", self);
 
-        tokio::spawn({
-            async move {
-                // Create the server
-                let mut server = JsonRpcServer::new(
-                    true,
-                    IpAddr::V6(Ipv6Addr::UNSPECIFIED),
-                    3000,
-                    true,
-                    IpAddr::V6(Ipv6Addr::UNSPECIFIED),
-                    3001,
-                );
-
-                // Add the simulator server
-                server.add_methods(SimulatorServerImpl {}.into_rpc(), JsonRpcServerType::Http)?;
-
-                // Start the server
-                let _handle = server.start().await.map_err(|e| eyre!("Error in handle: {:?}", e));
-                info!("Started simulator JSON-RPC server at [::]:3000");
-
-                pending::<Result<()>>().await
-            }
-        });
         info!("SimulatorArgs run, finished");
 
         Ok(())

@@ -16,5 +16,4 @@
 pub mod config;
 pub mod evm;
 pub mod simulator;
-pub mod simulator_api;
 mod types;
