@@ -48,25 +48,20 @@ pub struct SimulationRequest {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SimulationResponse {
     /// The simulation ID
-    #[serde(rename = "simulationId")]
     pub simulation_id: u64,
     /// Gas used by the transaction
-    #[serde(rename = "gasUsed")]
     pub gas_used: u64,
     /// Block number of the simulation
-    #[serde(rename = "blockNumber")]
     pub block_number: u64,
     /// Whether the transaction was successful
     pub success: bool,
     /// Trace of the transaction
     pub trace: Vec<CallTrace>,
     /// Formatted trace of the transaction
-    #[serde(rename = "formattedTrace")]
     pub formatted_trace: Option<String>,
     /// Logs of the transaction
     pub logs: Vec<Log>,
     /// Exit reason of the transaction
-    #[serde(rename = "exitReason")]
     pub exit_reason: InstructionResult,
 }
 
@@ -74,11 +69,9 @@ pub struct SimulationResponse {
 pub struct UserOperationRequest {
     /// Chain ID of the network
     /// Specific for the request
-    #[serde(rename = "chainId")]
     pub chain_id: u64,
     /// Block number of the request
     /// Specific for the request
-    #[serde(rename = "blockNumber")]
     /// Block number of the request
     pub block_number: Option<u64>,
     /// From address of the transaction

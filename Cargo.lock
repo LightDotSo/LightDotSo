@@ -6463,8 +6463,6 @@ dependencies = [
  "eyre",
  "foundry-config",
  "foundry-evm",
- "jsonrpsee",
- "lightdotso-jsonrpsee",
  "lightdotso-tracing",
  "revm",
  "serde",
