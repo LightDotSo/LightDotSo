@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - main
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.sha }}
+  cancel-in-progress: true
 jobs:
   release-please:
     runs-on: ubuntu-latest
