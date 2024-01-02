@@ -52,8 +52,8 @@ pub struct ListQuery {
     pub is_testnet: Option<bool>,
     /// The flag to group the tokens by the token group.
     pub group: Option<bool>,
-    /// The chain id of the tokens to query for.
-    pub chain_id: Option<i64>,
+    /// The optional chain ids of the tokens to query for.
+    pub chain_ids: Option<String>,
 }
 
 // -----------------------------------------------------------------------------
@@ -125,7 +125,7 @@ pub(crate) async fn v1_token_list_handler(
     // -------------------------------------------------------------------------
 
     // If group or chain_id is set, return all of the tokens flat.
-    if !query.group.unwrap_or(false) || query.chain_id.is_some() {
+    if !query.group.unwrap_or(false) || query.chain_ids.is_some() {
         // Get all of the tokens in the balances array.
         let tokens: Vec<Token> =
             balances.clone().into_iter().map(|balance| balance.into()).collect();
@@ -352,8 +352,15 @@ fn construct_token_list_query_params(query: &ListQuery) -> Result<Vec<WhereParam
     }
 
     // If chain_id is set, only return the tokens that have the same chain id.
-    if let Some(chain_id) = query.chain_id {
-        query_params.push(wallet_balance::chain_id::equals(chain_id));
+    if let Some(chain_id) = &query.chain_ids {
+        // Try to deseaialize the chain id (String to Vec<i64> separated by comma).
+        let chain_ids: Vec<i64> = chain_id
+            .split(',')
+            .map(|chain_id| chain_id.parse::<i64>())
+            .collect::<Result<Vec<_>, _>>()?;
+        for chain_id in chain_ids {
+            query_params.push(wallet_balance::chain_id::equals(chain_id));
+        }
     }
 
     Ok(query_params)

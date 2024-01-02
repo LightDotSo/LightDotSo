@@ -40,6 +40,7 @@ export const useQueryTokens = (params: TokenListParams) => {
       limit: params.limit,
       offset: params.offset,
       group: params.group,
+      chain_ids: params.chain_ids,
     }).queryKey,
   );
 
@@ -50,6 +51,7 @@ export const useQueryTokens = (params: TokenListParams) => {
       limit: params.limit,
       offset: params.offset,
       group: params.group,
+      chain_ids: params.chain_ids,
     }).queryKey,
     queryFn: async () => {
       if (!params.address) {
@@ -65,6 +67,7 @@ export const useQueryTokens = (params: TokenListParams) => {
               limit: params.limit,
               offset: params.offset,
               group: params.group,
+              chain_ids: params.chain_ids,
             },
           },
         },

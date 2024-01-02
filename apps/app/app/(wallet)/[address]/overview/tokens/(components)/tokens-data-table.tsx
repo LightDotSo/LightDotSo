@@ -67,11 +67,13 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
     limit: paginationState.pageSize,
     offset: offsetCount,
     group: true,
+    chain_ids: null,
   });
 
   const { tokensCount } = useQueryTokensCount({
     address: address,
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    chain_ids: null,
   });
 
   // ---------------------------------------------------------------------------

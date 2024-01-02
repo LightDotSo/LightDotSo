@@ -57,11 +57,13 @@ export const handler = async (
     limit: paginationState.pageSize,
     is_testnet: walletSettings.is_enabled_testnet,
     group: true,
+    chain_ids: null,
   });
 
   const tokensCountPromise = getTokensCount({
     address: params.address as Address,
     is_testnet: walletSettings.is_enabled_testnet,
+    chain_ids: null,
   });
 
   const portfolioPromise = getPortfolio({ address: params.address as Address });

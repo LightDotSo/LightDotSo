@@ -131,6 +131,7 @@ export const SendDialog: FC<SendDialogProps> = ({
     offset: 0,
     limit: Number.MAX_SAFE_INTEGER,
     group: false,
+    chain_ids: null,
   });
 
   // ---------------------------------------------------------------------------

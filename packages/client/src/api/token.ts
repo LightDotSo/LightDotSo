@@ -56,6 +56,7 @@ export const getTokens = async (
         address: string;
         is_testnet?: boolean | null | undefined;
         group?: boolean | null | undefined;
+        chain_ids?: string | null | undefined;
       };
     };
   },
@@ -85,6 +86,7 @@ export const getTokensCount = async (
         limit?: number | null | undefined;
         address: string;
         is_testnet?: boolean | null | undefined;
+        chain_ids?: string | null | undefined;
       };
     };
   },

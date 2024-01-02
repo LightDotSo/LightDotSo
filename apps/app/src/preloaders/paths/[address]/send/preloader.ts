@@ -30,5 +30,6 @@ export const preloader = async (params: { address: string }) => {
     limit: Number.MAX_SAFE_INTEGER,
     is_testnet: false,
     group: false,
+    chain_ids: null,
   });
 };

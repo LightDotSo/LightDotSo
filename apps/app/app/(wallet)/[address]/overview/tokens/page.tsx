@@ -80,6 +80,7 @@ export default async function Page({ params, searchParams }: PageProps) {
       offset: 0,
       is_testnet: walletSettings?.is_enabled_testnet,
       group: true,
+      chain_ids: null,
     }).queryKey,
     tokens,
   );
@@ -87,6 +88,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     queryKeys.token.listCount({
       address: params.address as Address,
       is_testnet: walletSettings?.is_enabled_testnet,
+      chain_ids: null,
     }).queryKey,
     tokensCount,
   );

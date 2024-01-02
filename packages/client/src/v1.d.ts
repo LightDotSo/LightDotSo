@@ -2028,8 +2028,8 @@ export interface operations {
         is_testnet?: boolean | null;
         /** @description The flag to group the tokens by the token group. */
         group?: boolean | null;
-        /** @description The chain id of the tokens to query for. */
-        chain_id?: number | null;
+        /** @description The optional chain ids of the tokens to query for. */
+        chain_ids?: string | null;
       };
     };
     responses: {
@@ -2066,8 +2066,8 @@ export interface operations {
         is_testnet?: boolean | null;
         /** @description The flag to group the tokens by the token group. */
         group?: boolean | null;
-        /** @description The chain id of the tokens to query for. */
-        chain_id?: number | null;
+        /** @description The optional chain ids of the tokens to query for. */
+        chain_ids?: string | null;
       };
     };
     responses: {

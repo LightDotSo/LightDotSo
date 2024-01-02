@@ -38,6 +38,7 @@ export const useQueryTokensCount = (params: TokenListCountParams) => {
     queryKeys.token.listCount({
       address: params.address as Address,
       is_testnet: params.is_testnet,
+      chain_ids: null,
     }).queryKey,
   );
 
@@ -45,6 +46,7 @@ export const useQueryTokensCount = (params: TokenListCountParams) => {
     queryKey: queryKeys.token.listCount({
       address: params.address as Address,
       is_testnet: params.is_testnet,
+      chain_ids: null,
     }).queryKey,
     queryFn: async () => {
       if (!params.address) {

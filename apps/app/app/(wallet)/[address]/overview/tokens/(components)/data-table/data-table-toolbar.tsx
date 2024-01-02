@@ -81,6 +81,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
       limit: paginationState.pageSize,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
       group: true,
+      chain_ids: null,
     }).queryKey,
   );
 
