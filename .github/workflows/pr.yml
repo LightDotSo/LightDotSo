@@ -5,6 +5,9 @@ on:
       - opened
       - edited
       - synchronize
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.head_ref }}
+  cancel-in-progress: true
 jobs:
   pr-lint:
     name: PR
