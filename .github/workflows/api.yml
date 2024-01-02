@@ -23,7 +23,7 @@ jobs:
         run: |
           sleep 30s
       - name: Wait Docker
-        uses: lewagon/wait-on-check-action@v1.3.1
+        uses: lewagon/wait-on-check-action@v1.3.3
         with:
           ref: ${{ github.ref }}
           check-name: fly-wait-docker

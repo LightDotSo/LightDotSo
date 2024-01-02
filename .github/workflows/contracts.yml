@@ -238,7 +238,7 @@ jobs:
         run: |
           forge build > smt-checker-report.txt
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: smt-checker-report
           path: smt-checker-report.txt
@@ -336,7 +336,7 @@ jobs:
           sarif: results.sarif
           target: contracts/src/
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         continue-on-error: true
         with:
           sarif_file: ${{ steps.slither.outputs.sarif }}
