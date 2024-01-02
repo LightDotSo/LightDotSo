@@ -9,7 +9,7 @@ on:
       - labeled
   merge_group:
 concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.head_ref || github.sha }}
   cancel-in-progress: true
 env:
   TURBO_API: ${{ secrets.TURBO_API }}

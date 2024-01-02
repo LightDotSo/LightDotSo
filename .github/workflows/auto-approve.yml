@@ -1,5 +1,8 @@
 name: Auto Approve
 on: pull_request_target
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.head_ref }}
+  cancel-in-progress: true
 jobs:
   auto-approve:
     runs-on: ubuntu-latest

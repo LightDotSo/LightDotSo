@@ -1083,20 +1083,34 @@ enum TokenType {
   ERC_1155
 }
 
-// -----------------------------------------------------------------------------
-// WalletBalance
-// -----------------------------------------------------------------------------
-
 // The wallet balances are from: https://github.com/llamafolio/llamafolio-api
 // License: GPL-3.0
 
-// model Protocol {
-//   id             String          @id @default(cuid())
-//   balanceUSD     Float
-//   debtUSD        Float
-//   rewardUSD      Float
-//   walletBalances WalletBalance[]
-// }
+model Protocol {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id String @id @default(cuid())
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  balanceUSD Float
+  debtUSD    Float
+  rewardUSD  Float
+
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
+  walletBalances WalletBalance[]
+}
+
+// -----------------------------------------------------------------------------
+// WalletBalance
+// -----------------------------------------------------------------------------
 
 model WalletBalance {
   // ---------------------------------------------------------------------------
@@ -1110,6 +1124,10 @@ model WalletBalance {
   // ---------------------------------------------------------------------------
 
   balanceUSD Float
+
+  // The below fields are from: https://github.com/llamafolio/llamafolio-api
+  // License: GPL-3.0
+
   // rewardUSD  Float?
   // debtUSD    Float?
   // apy           Float?
@@ -1117,13 +1135,14 @@ model WalletBalance {
   // apyMean30d    Float?
   // ilRisk        Boolean?
   // collateralUSD Float?
-  chainId    BigInt
-  amount     BigInt?
-  stable     Boolean?
-  timestamp  DateTime @default(now())
-  isLatest   Boolean  @default(false)
-  isSpam     Boolean  @default(false)
-  isTestnet  Boolean  @default(false)
+
+  chainId   BigInt
+  amount    BigInt?
+  stable    Boolean?
+  timestamp DateTime @default(now())
+  isLatest  Boolean  @default(false)
+  isSpam    Boolean  @default(false)
+  isTestnet Boolean  @default(false)
 
   // ---------------------------------------------------------------------------
   // One-to-none
@@ -1132,8 +1151,8 @@ model WalletBalance {
   token   Token?  @relation(fields: [tokenId], references: [id])
   tokenId String?
 
-  // protocol   Protocol? @relation(fields: [protocolId], references: [id])
-  // protocolId String?
+  protocol   Protocol? @relation(fields: [protocolId], references: [id])
+  protocolId String?
 
   wallet        Wallet @relation(fields: [walletAddress], references: [address])
   walletAddress String
@@ -1146,7 +1165,7 @@ model WalletBalance {
   @@index([walletAddress, chainId, amount, isLatest, isSpam, isTestnet])
   // Relations
   @@index([tokenId])
-  // @@index([protocolId])
+  @@index([protocolId])
   @@index([walletAddress])
 }
 
