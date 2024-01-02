@@ -52,6 +52,8 @@ pub struct ListQuery {
     pub is_testnet: Option<bool>,
     /// The flag to group the tokens by the token group.
     pub group: Option<bool>,
+    /// The chain id of the tokens to query for.
+    pub chain_id: Option<i64>,
 }
 
 // -----------------------------------------------------------------------------
@@ -122,8 +124,8 @@ pub(crate) async fn v1_token_list_handler(
     // Return
     // -------------------------------------------------------------------------
 
-    // If group is set, return all of the tokens flat.
-    if !query.group.unwrap_or(false) {
+    // If group or chain_id is set, return all of the tokens flat.
+    if !query.group.unwrap_or(false) || query.chain_id.is_some() {
         // Get all of the tokens in the balances array.
         let tokens: Vec<Token> =
             balances.clone().into_iter().map(|balance| balance.into()).collect();
@@ -347,6 +349,11 @@ fn construct_token_list_query_params(query: &ListQuery) -> Result<Vec<WhereParam
     match query.is_testnet {
         Some(false) | None => query_params.push(wallet_balance::is_testnet::equals(false)),
         _ => (),
+    }
+
+    // If chain_id is set, only return the tokens that have the same chain id.
+    if let Some(chain_id) = query.chain_id {
+        query_params.push(wallet_balance::chain_id::equals(chain_id));
     }
 
     Ok(query_params)
