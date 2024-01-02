@@ -40,6 +40,7 @@ export const useSuspenseQueryTokens = (params: TokenListParams) => {
       offset: params.offset,
       is_testnet: params.is_testnet,
       group: params.group,
+      chain_ids: params.chain_ids,
     }).queryKey,
   );
 
@@ -50,6 +51,7 @@ export const useSuspenseQueryTokens = (params: TokenListParams) => {
       offset: params.offset,
       is_testnet: params.is_testnet,
       group: params.group,
+      chain_ids: params.chain_ids,
     }).queryKey,
     queryFn: async () => {
       if (!params.address) {
@@ -65,6 +67,7 @@ export const useSuspenseQueryTokens = (params: TokenListParams) => {
               offset: params.offset,
               is_testnet: params.is_testnet,
               group: params.group,
+              chain_ids: params.chain_ids,
             },
           },
         },

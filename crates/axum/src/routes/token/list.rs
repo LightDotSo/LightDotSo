@@ -52,6 +52,8 @@ pub struct ListQuery {
     pub is_testnet: Option<bool>,
     /// The flag to group the tokens by the token group.
     pub group: Option<bool>,
+    /// The optional chain ids of the tokens to query for.
+    pub chain_ids: Option<String>,
 }
 
 // -----------------------------------------------------------------------------
@@ -122,8 +124,8 @@ pub(crate) async fn v1_token_list_handler(
     // Return
     // -------------------------------------------------------------------------
 
-    // If group is set, return all of the tokens flat.
-    if !query.group.unwrap_or(false) {
+    // If group or chain_id is set, return all of the tokens flat.
+    if !query.group.unwrap_or(false) || query.chain_ids.is_some() {
         // Get all of the tokens in the balances array.
         let tokens: Vec<Token> =
             balances.clone().into_iter().map(|balance| balance.into()).collect();
@@ -169,20 +171,10 @@ pub(crate) async fn v1_token_list_handler(
         balances.clone().into_iter().map(|balance| balance.into()).collect();
 
     // If token group is in the balances, fetch the token group.
+    // Thank you to @sudolabel for the help!
     let token_groups = balances
-        .clone()
         .into_iter()
-        .map(|balance| {
-            if let Some(Some(token)) = balance.token {
-                if let Some(Some(token_group)) = token.group {
-                    Some(token_group)
-                } else {
-                    None
-                }
-            } else {
-                None
-            }
-        })
+        .filter_map(|balance| balance.token.and_then(|token| token.and_then(|token| token.group)))
         .collect::<Vec<_>>();
 
     // For each token group, fetch the associated token and balances from the database.
@@ -348,7 +340,6 @@ fn construct_token_list_query_params(query: &ListQuery) -> Result<Vec<WhereParam
     let mut query_params = vec![
         wallet_balance::wallet_address::equals(checksum_address),
         wallet_balance::is_latest::equals(true),
-        wallet_balance::chain_id::not(0),
         wallet_balance::is_spam::equals(query.is_spam.unwrap_or(false)),
         wallet_balance::amount::not(Some(0)),
     ];
@@ -357,6 +348,25 @@ fn construct_token_list_query_params(query: &ListQuery) -> Result<Vec<WhereParam
     match query.is_testnet {
         Some(false) | None => query_params.push(wallet_balance::is_testnet::equals(false)),
         _ => (),
+    }
+
+    // If chain_id is set, only return the tokens that have the same chain id.
+    if let Some(chain_id) = &query.chain_ids {
+        // Try to deseaialize the chain id (String to Vec<i64> separated by comma).
+        let chain_ids: Vec<i64> = chain_id
+            .split(',')
+            .map(|chain_id| chain_id.parse::<i64>())
+            .collect::<Result<Vec<_>, _>>()?;
+
+        // Construct the chain id query params.
+        let chain_query_params =
+            chain_ids.into_iter().map(wallet_balance::chain_id::equals).collect::<Vec<_>>();
+
+        // Push the constructed chain id query params into the query params.
+        query_params.push(wallet_balance::WhereParam::Or(chain_query_params));
+    } else {
+        // If chain_id is not set, only return the tokens that are not portfoloio tokens.
+        query_params.push(wallet_balance::chain_id::not(0));
     }
 
     Ok(query_params)

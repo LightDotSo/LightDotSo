@@ -39,6 +39,7 @@ export const getTokens = async (params: TokenListParams) => {
           group: params.group,
           limit: params.limit,
           offset: params.offset,
+          chain_ids: params.chain_ids,
         },
       },
     },

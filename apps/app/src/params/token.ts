@@ -25,6 +25,7 @@ export type TokenListParams = {
   limit: number;
   offset: number;
   group: boolean;
+  chain_ids: string | null;
 };
 
 export type TokenListCountParams = Omit<

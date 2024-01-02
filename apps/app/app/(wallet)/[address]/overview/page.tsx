@@ -77,6 +77,7 @@ export default async function Page({ params }: PageProps) {
       offset: 0,
       is_testnet: walletSettings?.is_enabled_testnet,
       group: true,
+      chain_ids: null,
     }).queryKey,
     tokens,
   );

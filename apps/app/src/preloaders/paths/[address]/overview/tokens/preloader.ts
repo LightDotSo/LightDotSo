@@ -50,9 +50,11 @@ export const preloader = async (
     limit: paginationState.pageSize,
     is_testnet: false,
     group: true,
+    chain_ids: null,
   });
   preloadGetTokensCount({
     address: params.address as Address,
     is_testnet: false,
+    chain_ids: null,
   });
 };

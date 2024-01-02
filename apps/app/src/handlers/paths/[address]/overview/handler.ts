@@ -48,6 +48,7 @@ export const handler = async (params: { address: string }) => {
     limit: OVERVIEW_ROW_COUNT,
     is_testnet: walletSettings.is_enabled_testnet,
     group: true,
+    chain_ids: null,
   });
 
   const portfolioPromise = getPortfolio({ address: params.address as Address });
