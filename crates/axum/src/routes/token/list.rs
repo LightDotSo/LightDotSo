@@ -169,6 +169,7 @@ pub(crate) async fn v1_token_list_handler(
         balances.clone().into_iter().map(|balance| balance.into()).collect();
 
     // If token group is in the balances, fetch the token group.
+    // Thank you to @sudolabel for the help!
     let token_groups = balances
         .into_iter()
         .map(|balance| balance.token.and_then(|token| token))
