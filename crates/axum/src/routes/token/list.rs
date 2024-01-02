@@ -340,7 +340,6 @@ fn construct_token_list_query_params(query: &ListQuery) -> Result<Vec<WhereParam
     let mut query_params = vec![
         wallet_balance::wallet_address::equals(checksum_address),
         wallet_balance::is_latest::equals(true),
-        wallet_balance::chain_id::not(0),
         wallet_balance::is_spam::equals(query.is_spam.unwrap_or(false)),
         wallet_balance::amount::not(Some(0)),
     ];
@@ -358,9 +357,16 @@ fn construct_token_list_query_params(query: &ListQuery) -> Result<Vec<WhereParam
             .split(',')
             .map(|chain_id| chain_id.parse::<i64>())
             .collect::<Result<Vec<_>, _>>()?;
-        for chain_id in chain_ids {
-            query_params.push(wallet_balance::chain_id::equals(chain_id));
-        }
+
+        // Construct the chain id query params.
+        let chain_query_params =
+            chain_ids.into_iter().map(wallet_balance::chain_id::equals).collect::<Vec<_>>();
+
+        // Push the constructed chain id query params into the query params.
+        query_params.push(wallet_balance::WhereParam::Or(chain_query_params));
+    } else {
+        // If chain_id is not set, only return the tokens that are not portfoloio tokens.
+        query_params.push(wallet_balance::chain_id::not(0));
     }
 
     Ok(query_params)
