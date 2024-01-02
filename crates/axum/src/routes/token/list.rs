@@ -172,7 +172,7 @@ pub(crate) async fn v1_token_list_handler(
     // Thank you to @sudolabel for the help!
     let token_groups = balances
         .into_iter()
-        .map(|balance| balance.token.and_then(|token| token))
+        .filter_map(|balance| balance.token.and_then(|token| token.and_then(|token| token.group)))
         .collect::<Vec<_>>();
 
     // For each token group, fetch the associated token and balances from the database.
