@@ -6,7 +6,7 @@ on:
   pull_request:
   merge_group:
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.head_ref || github.sha }}
   cancel-in-progress: true
 jobs:
   changesets-status:
@@ -71,7 +71,6 @@ jobs:
         uses: changesets/action@v1
         continue-on-error: true
         with:
-          version: echo "changesets version"
           publish: pnpm run changeset:publish
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
