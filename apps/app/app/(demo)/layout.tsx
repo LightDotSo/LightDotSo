@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import "@lightdotso/styles/global.css";
+import { getWallets } from "@lightdotso/client";
 import type { ReactNode } from "react";
 import { MSWInit } from "@/components/msw/msw-init";
 
