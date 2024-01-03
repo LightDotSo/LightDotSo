@@ -15,10 +15,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import OriginalPage from "@/app/(wallet)/[address]/overview/page";
+import Layout from "@/app/(wallet)/[address]/overview/layout";
 
-export default async function Page() {
-  return OriginalPage({
-    params: { address: "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F" },
-  });
-}
+export default Layout;

@@ -16,32 +16,32 @@
 import "@lightdotso/styles/global.css";
 import type { ReactNode } from "react";
 import { MSWInit } from "@/components/msw/msw-init";
-import { getWallets } from "@lightdotso/client";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface RootLayoutProps {
+type RootLayoutProps = {
   children: ReactNode;
-}
+  op: ReactNode;
+  send: ReactNode;
+};
 
 // -----------------------------------------------------------------------------
 // Layout
 // -----------------------------------------------------------------------------
 
-export default async function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout(props: RootLayoutProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  const wallets = await getWallets({ params: {} }, "public").then(res => res);
-
   return (
     <>
       <MSWInit />
-      {JSON.stringify(wallets)}
-      {children}
+      {props.children}
+      {props.op}
+      {props.send}
     </>
   );
 }
