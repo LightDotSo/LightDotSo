@@ -15,7 +15,7 @@
 
 use ethers_main::{
     abi::{Address, Uint},
-    types::Log,
+    types::{Bytes, Log},
 };
 use foundry_evm::{trace::node::CallTraceNode, CallKind};
 use revm::interpreter::InstructionResult;
@@ -32,10 +32,25 @@ pub struct InterpretationRequest {
     pub to: Address,
     /// Chain ID of the simulation
     pub chain_id: u64,
+    /// Call data of the transaction
+    pub call_data: Option<Bytes>,
     /// Trace of the transaction
     pub traces: Vec<CallTrace>,
     /// Logs of the transaction
     pub logs: Vec<Log>,
+}
+
+impl Default for InterpretationRequest {
+    fn default() -> Self {
+        Self {
+            from: Address::default(),
+            to: Address::default(),
+            chain_id: 0,
+            call_data: Some(Bytes::new()),
+            traces: Vec::new(),
+            logs: Vec::new(),
+        }
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]

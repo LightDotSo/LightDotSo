@@ -18,6 +18,12 @@ use crate::{adapter::Adapter, types::InterpretationRequest};
 #[derive(Clone)]
 pub(crate) struct ERC721Adapter {}
 
+impl ERC721Adapter {
+    pub fn new() -> Self {
+        ERC721Adapter {}
+    }
+}
+
 impl Adapter for ERC721Adapter {
     fn matches(&self, _request: InterpretationRequest) -> bool {
         true

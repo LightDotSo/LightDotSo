@@ -17,10 +17,11 @@ use crate::adapter::Adapter;
 use crate::adapters::generic::erc1155::ERC1155Adapter;
 use crate::adapters::generic::erc20::ERC20Adapter;
 use crate::adapters::generic::erc721::ERC721Adapter;
+use crate::adapters::generic::eth::EthAdapter;
 use lazy_static::lazy_static;
 
 lazy_static! {
     #[derive(Clone)]
     pub static ref ADAPTERS: Vec<Box<dyn Adapter + Sync + Send>> =
-        vec![Box::new(ERC20Adapter {}), Box::new(ERC721Adapter {}), Box::new(ERC1155Adapter {})];
+        vec![Box::new(EthAdapter::new()), Box::new(ERC20Adapter::new()), Box::new(ERC721Adapter::new()), Box::new(ERC1155Adapter::new())];
 }
