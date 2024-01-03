@@ -13,6 +13,26 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod evm;
-pub mod simulator;
-pub mod types;
+use eyre::Result;
+use lightdotso_simulator::{simulator::simulate, types::SimulationRequest};
+
+#[tokio::test(flavor = "multi_thread")]
+async fn test_integration_eth_transfer() -> Result<()> {
+    let request = SimulationRequest {
+        chain_id: 1,
+        // kaki.eth
+        from: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".parse()?,
+        // fiveoutofnine.eth
+        to: "0xA85572Cd96f1643458f17340b6f0D6549Af482F5".parse()?,
+        data: None,
+        value: Some("0x1".to_string()),
+        gas_limit: u64::MAX,
+        block_number: None,
+    };
+
+    let res = simulate(request).await?;
+
+    println!("res: {:?}", res);
+
+    Ok(())
+}

@@ -13,23 +13,4 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use clap::Parser;
-use eyre::Result;
-use lightdotso_tracing::tracing::info;
-
-#[derive(Debug, Clone, Parser)]
-pub struct SimulatorArgs {}
-
-impl SimulatorArgs {
-    pub async fn run(self) -> Result<()> {
-        // Add info
-        info!("SimulatorArgs run, starting...");
-
-        // Print the config
-        info!("Config: {:?}", self);
-
-        info!("SimulatorArgs run, finished");
-
-        Ok(())
-    }
-}
+mod eth_transfer;

@@ -27,7 +27,6 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SimulationRequest {
     /// Chain ID of the network
-    #[serde(rename = "chainId")]
     pub chain_id: u64,
     /// From address of the transaction
     pub from: Address,
@@ -36,12 +35,10 @@ pub struct SimulationRequest {
     /// Calldata of the transaction
     pub data: Option<Bytes>,
     /// Gas limit of the transaction
-    #[serde(rename = "gasLimit")]
     pub gas_limit: u64,
     /// Value to send
     pub value: Option<String>,
     /// Block number of the request
-    #[serde(rename = "blockNumber")]
     pub block_number: Option<u64>,
 }
 
@@ -100,7 +97,6 @@ pub struct UserOperationRequest {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct CallTrace {
-    #[serde(rename = "callType")]
     pub call_type: CallKind,
     pub from: Address,
     pub to: Address,
