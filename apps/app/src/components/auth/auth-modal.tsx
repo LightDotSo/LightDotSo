@@ -115,7 +115,7 @@ export function AuthModal() {
         }
       },
     );
-  }, [address, chain, router, sessionId, signMessageAsync]);
+  }, [address, chain, clientType, router, sessionId, signMessageAsync]);
 
   // ---------------------------------------------------------------------------
   // Render
