@@ -13,11 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#![allow(clippy::unwrap_used)]
+
 use crate::{
     adapter::Adapter,
-    types::{AdapterResponse, InterpretationRequest},
+    types::{AdapterResponse, AssetChange, AssetToken, InterpretationRequest},
 };
 use async_trait::async_trait;
+use ethers_main::types::Address;
 use eyre::Result;
 use lightdotso_simulator::evm::Evm;
 
@@ -41,9 +44,32 @@ impl Adapter for EthAdapter {
         evm: &mut Evm,
         request: InterpretationRequest,
     ) -> Result<AdapterResponse> {
-        let _before = evm.get_balance(request.from).await?;
+        let token = AssetToken { address: Address::zero(), token_id: None };
 
-        Ok(AdapterResponse { asset_changes: vec![] })
+        let before_from_balance = evm.get_balance(request.from).await?;
+        let before_to_balance = evm.get_balance(request.to).await?;
+
+        // Get the after balances
+        // unwrap is safe because we know that value is Some in the matches function
+        let after_from_balance = before_from_balance - request.value.unwrap();
+        let after_to_balance = before_to_balance + request.value.unwrap();
+
+        let from_asset_change = AssetChange {
+            address: request.from,
+            token: token.clone(),
+            before_amount: before_from_balance,
+            after_amount: after_from_balance,
+            amount: request.value.unwrap().into(),
+        };
+
+        let to_asset_change = AssetChange {
+            address: request.to,
+            token: token.clone(),
+            before_amount: before_to_balance,
+            after_amount: after_to_balance,
+            amount: request.value.unwrap().into(),
+        };
+        Ok(AdapterResponse { asset_changes: vec![from_asset_change, to_asset_change] })
     }
 }
 

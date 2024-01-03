@@ -20,7 +20,7 @@ use crate::{
     adapter::Adapter,
     config::InterpreterArgs,
     constants::ADAPTERS,
-    types::{CallTrace, InterpretationRequest, InterpretationResponse},
+    types::{AdapterResponse, CallTrace, InterpretationRequest, InterpretationResponse},
 };
 use eyre::Result;
 use foundry_config::Chain;
@@ -59,17 +59,19 @@ impl Interpreter<'_> {
         Interpreter { decoder, etherscan_identifier, adapters }
     }
 
-    pub async fn interpret(&self, request: InterpretationRequest) -> Result<()> {
+    pub async fn interpret(&self, request: InterpretationRequest) -> Result<Vec<AdapterResponse>> {
         let fork_url = get_provider(request.chain_id).await?.url().to_string();
         let mut evm = Evm::new(None, fork_url, request.block_number, request.gas_limit, true).await;
+        let mut response = vec![];
 
         for adapter in self.adapters {
             if adapter.matches(request.clone()) {
-                adapter.query(&mut evm, request.clone()).await?;
+                let query_res = adapter.query(&mut evm, request.clone()).await?;
+                response.push(query_res);
             }
         }
 
-        Ok(())
+        Ok(response)
     }
 
     pub async fn format_trace(&mut self, traces: Option<CallTraceArena>) -> Result<String> {
@@ -89,12 +91,33 @@ impl Interpreter<'_> {
         request: SimulationRequest,
     ) -> Result<InterpretationResponse> {
         // Simulate the user operation
-        let res = simulate(request).await?;
+        let res = simulate(request.clone()).await?;
 
         // Run the interpreter
         let format_trace = self.format_trace(res.arena.clone()).await?;
 
-        let traces = res.arena.unwrap_or_default().arena.into_iter().map(CallTrace::from).collect();
+        // Get the traces
+        let traces: Vec<CallTrace> =
+            res.clone().arena.unwrap_or_default().arena.into_iter().map(CallTrace::from).collect();
+
+        // Construct the interpretation request
+        let req = InterpretationRequest {
+            block_number: request.block_number,
+            gas_limit: request.gas_limit,
+            from: request.from,
+            to: request.to,
+            chain_id: request.chain_id,
+            call_data: request.data,
+            value: request.value,
+            traces: traces.clone(),
+            logs: res.clone().logs,
+        };
+
+        // Run the interpreter
+        let interpretation = self.interpret(req).await?;
+
+        // Flatten the asset changes
+        let asset_changes = interpretation.into_iter().flat_map(|res| res.asset_changes).collect();
 
         Ok(InterpretationResponse {
             gas_used: res.gas_used,
@@ -104,7 +127,7 @@ impl Interpreter<'_> {
             logs: res.logs,
             exit_reason: res.exit_reason,
             formatted_trace: format_trace,
-            asset_changes: vec![],
+            asset_changes,
         })
     }
 }
