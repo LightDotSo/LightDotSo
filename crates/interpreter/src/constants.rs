@@ -13,11 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::adapter::Adapter;
-use crate::adapters::generic::erc1155::ERC1155Adapter;
-use crate::adapters::generic::erc20::ERC20Adapter;
-use crate::adapters::generic::erc721::ERC721Adapter;
-use crate::adapters::generic::eth::EthAdapter;
+use crate::{
+    adapter::Adapter,
+    adapters::generic::{
+        erc1155::ERC1155Adapter, erc20::ERC20Adapter, erc721::ERC721Adapter, eth::EthAdapter,
+    },
+};
 use lazy_static::lazy_static;
 
 lazy_static! {

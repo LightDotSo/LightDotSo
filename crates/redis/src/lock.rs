@@ -200,10 +200,10 @@ impl LockManager {
 
             let drift = (ttl as f32 * CLOCK_DRIFT_FACTOR) as usize + 2;
             let elapsed = start_time.elapsed();
-            let validity_time = ttl
-                - drift
-                - elapsed.as_secs() as usize * 1000
-                - elapsed.subsec_nanos() as usize / 1_000_000;
+            let validity_time = ttl -
+                drift -
+                elapsed.as_secs() as usize * 1000 -
+                elapsed.subsec_nanos() as usize / 1_000_000;
 
             if n >= self.quorum && validity_time > 0 {
                 return Ok(Lock {

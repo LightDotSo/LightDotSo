@@ -147,9 +147,9 @@ pub async fn upsert_user_operation_logs(
         .into_iter()
         .filter(|log| {
             uow.logs.iter().any(|l| {
-                l.log_index == log.log_index.map(U256::from)
-                    && l.log_index.is_some()
-                    && log.log_index.is_some()
+                l.log_index == log.log_index.map(U256::from) &&
+                    l.log_index.is_some() &&
+                    log.log_index.is_some()
             })
         })
         .collect::<Vec<_>>();

@@ -16,8 +16,10 @@
 use super::types::Activity;
 use crate::{result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
-use axum::extract::{Query, State};
-use axum::Json;
+use axum::{
+    extract::{Query, State},
+    Json,
+};
 use lightdotso_prisma::activity::{self, WhereParam};
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::Direction;

@@ -117,8 +117,8 @@ async fn recover_chained(
             .await?,
         );
 
-        if config.as_ref().ok_or_else(|| eyre!("config is None"))?.weight
-            < config.as_ref().ok_or_else(|| eyre!("config is None"))?.threshold.into()
+        if config.as_ref().ok_or_else(|| eyre!("config is None"))?.weight <
+            config.as_ref().ok_or_else(|| eyre!("config is None"))?.threshold.into()
         {
             return Err(eyre!("Less than threshold"));
         }

@@ -370,9 +370,9 @@ impl EthApi {
         let logs = &tx_receipt.logs;
 
         let is_ref_user_op = |log: &Log| {
-            log.topics[0] == reference_log.topics[0]
-                && log.topics[1] == reference_log.topics[1]
-                && log.address == reference_log.address
+            log.topics[0] == reference_log.topics[0] &&
+                log.topics[1] == reference_log.topics[1] &&
+                log.address == reference_log.address
         };
 
         let is_user_op_event = |log: &Log| log.topics[0] == reference_log.topics[0];

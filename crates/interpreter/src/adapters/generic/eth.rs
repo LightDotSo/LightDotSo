@@ -87,7 +87,8 @@ mod tests {
             ..Default::default()
         };
 
-        // Assume that the check_call_data function returns true if call_data is empty and value is not None
+        // Assume that the check_call_data function returns true if call_data is empty and value is
+        // not None
         assert!(eth_adapter.matches(request));
     }
 

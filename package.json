@@ -15,8 +15,8 @@
   "scripts": {
     "build:test": "concurrently \"pnpm:*:compile\"",
     "build:turbo": "dotenv -- turbo run build",
-    "cargo:fmt:cmd": "cargo fmt --all --check",
-    "cargo:fmt:fix": "cargo fmt --all",
+    "cargo:fmt:cmd": "cargo +nightly fmt --all --check",
+    "cargo:fmt:fix": "cargo +nightly fmt --all",
     "changeset": "changeset",
     "changeset:publish": "changeset publish",
     "changeset:status": "changeset status --verbose --since origin/main",

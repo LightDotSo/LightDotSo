@@ -199,10 +199,10 @@ impl SignerNode {
     }
 
     pub fn reduce_node_leaf(&mut self) -> Result<()> {
-        if self.left.is_some()
-            && self.right.is_some()
-            && self.left.as_ref().unwrap().signer.is_some()
-            && self.right.as_ref().unwrap().signer.is_some()
+        if self.left.is_some() &&
+            self.right.is_some() &&
+            self.left.as_ref().unwrap().signer.is_some() &&
+            self.right.as_ref().unwrap().signer.is_some()
         {
             // If left and right are both AddressSignature, then we can reduce them
             if let SignatureLeaf::AddressSignature(left_leaf) =

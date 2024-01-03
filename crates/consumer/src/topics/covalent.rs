@@ -19,15 +19,13 @@ use ethers::utils::to_checksum;
 use eyre::Result;
 use lightdotso_contracts::constants::MAINNET_CHAIN_IDS;
 use lightdotso_covalent::get_token_balances;
-use lightdotso_kafka::topics::portfolio::produce_portfolio_message;
-use lightdotso_kafka::types::covalent::CovalentMessage;
-use lightdotso_kafka::types::portfolio::PortfolioMessage;
-use lightdotso_prisma::token;
-use lightdotso_prisma::wallet_balance;
-use lightdotso_prisma::PrismaClient;
+use lightdotso_kafka::{
+    topics::portfolio::produce_portfolio_message,
+    types::{covalent::CovalentMessage, portfolio::PortfolioMessage},
+};
+use lightdotso_prisma::{token, wallet_balance, PrismaClient};
 use lightdotso_tracing::tracing::info;
-use rdkafka::producer::FutureProducer;
-use rdkafka::{message::BorrowedMessage, Message};
+use rdkafka::{message::BorrowedMessage, producer::FutureProducer, Message};
 use std::sync::Arc;
 
 pub async fn covalent_consumer(
@@ -61,20 +59,22 @@ pub async fn covalent_consumer(
         .await?;
         info!(?balances);
 
-        // Replace the addresses of `0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee` with `0x0000000000000000000000000000000000000000`
-        // This is because Covalent uses the former for ETH, but we use the latter.
+        // Replace the addresses of `0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee` with
+        // `0x0000000000000000000000000000000000000000` This is because Covalent uses the
+        // former for ETH, but we use the latter.
         for item in &mut balances.data.items {
-            if item.contract_address
-                == Some("0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee".to_string())
-                || item.contract_address
-                    == Some("0x0000000000000000000000000000000000001010".to_string())
+            if item.contract_address ==
+                Some("0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee".to_string()) ||
+                item.contract_address ==
+                    Some("0x0000000000000000000000000000000000001010".to_string())
             {
                 item.contract_address =
                     Some("0x0000000000000000000000000000000000000000".to_string());
             }
         }
 
-        // Filter the balances to only include tokens with non-none contract addresses and non-zero decimals
+        // Filter the balances to only include tokens with non-none contract addresses and non-zero
+        // decimals
         balances.data.items = balances
             .data
             .items
@@ -122,8 +122,8 @@ pub async fn covalent_consumer(
             .map(|ite| {
                 // Find the item
                 let token = tokens.iter().find(|token| {
-                    token.address.clone().to_lowercase()
-                        == ite.contract_address.clone().unwrap().to_lowercase()
+                    token.address.clone().to_lowercase() ==
+                        ite.contract_address.clone().unwrap().to_lowercase()
                 });
 
                 // Convert the Option to a Result
@@ -173,8 +173,8 @@ pub async fn covalent_consumer(
                                 let token = tokens
                                     .iter()
                                     .find(|token| {
-                                        token.address.clone().to_lowercase()
-                                            == item.contract_address.clone().unwrap()
+                                        token.address.clone().to_lowercase() ==
+                                            item.contract_address.clone().unwrap()
                                     })
                                     .unwrap();
 

@@ -17,11 +17,9 @@
 // License: MIT
 
 use constants::COVALENT_BASE_URL;
-use eyre::Result;
-use eyre::WrapErr;
+use eyre::{Result, WrapErr};
 use reqwest::Response;
-use types::BalancesData;
-use types::TransactionsData;
+use types::{BalancesData, TransactionsData};
 
 pub mod constants;
 pub mod types;

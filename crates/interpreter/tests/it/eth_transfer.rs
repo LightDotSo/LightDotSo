@@ -38,7 +38,9 @@ async fn test_integration_eth_transfer() -> Result<()> {
     // Run the interpreter
     let res = args.run(request).await?;
 
-    println!("res: {:?}", res);
+    println!("{:?}", res);
+
+    assert!(!res.asset_changes.is_empty());
 
     Ok(())
 }

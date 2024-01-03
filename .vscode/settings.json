@@ -60,6 +60,7 @@
   "npm.exclude": "**/lib/**",
   // Rust settings
   "rust-analyzer.diagnostics.disabled": ["unresolved-proc-macro"],
+  "rust-analyzer.rustfmt.extraArgs": ["+nightly"],
   // Tailwind settings
   // From: https://github.com/joe-bell/cva/discussions/85#discussioncomment-5014769
   "tailwindCSS.experimental.classRegex": [

@@ -136,7 +136,7 @@ jobs:
       - if: matrix.workspace
         name: Rust Format Check
         run: |
-          cargo fmt --all --check
+          cargo +nightly fmt --all --check
       - if: matrix.test
         name: Rust Test
         run: |

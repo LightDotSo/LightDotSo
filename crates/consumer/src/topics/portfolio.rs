@@ -16,12 +16,9 @@
 use ethers::utils::to_checksum;
 use eyre::Result;
 use lightdotso_kafka::types::portfolio::PortfolioMessage;
-use lightdotso_prisma::wallet;
-use lightdotso_prisma::wallet_balance;
-use lightdotso_prisma::PrismaClient;
+use lightdotso_prisma::{wallet, wallet_balance, PrismaClient};
 use lightdotso_tracing::tracing::info;
-use prisma_client_rust::raw;
-use prisma_client_rust::PrismaValue;
+use prisma_client_rust::{raw, PrismaValue};
 use rdkafka::{message::BorrowedMessage, Message};
 use serde::Deserialize;
 use std::sync::Arc;
