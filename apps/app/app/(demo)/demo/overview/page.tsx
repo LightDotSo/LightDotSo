@@ -15,16 +15,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { redirect } from "next/navigation";
+import OriginalPage from "@/app/(wallet)/[address]/overview/page";
 
 // -----------------------------------------------------------------------------
 // Page
 // -----------------------------------------------------------------------------
 
 export default async function Page() {
-  // ---------------------------------------------------------------------------
-  // Redirect
-  // ---------------------------------------------------------------------------
-
-  redirect("/demo/overview");
+  return OriginalPage({
+    params: { address: "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F" },
+  });
 }

@@ -13,6 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { handlers as walletsHandlers } from "./wallets";
+import { handlers as walletHandlers } from "./wallet";
 
-export const handlers = [...walletsHandlers];
+export const handlers = [...walletHandlers];
