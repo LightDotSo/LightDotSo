@@ -17,6 +17,7 @@
 
 "use client";
 
+import { getWallets } from "@lightdotso/client";
 import { useEffect, useState } from "react";
 
 // -----------------------------------------------------------------------------
@@ -28,12 +29,9 @@ export default function Page() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      fetch("https://api.light.so/demo/v1/wallets/list")
-        .then(res => res.json())
-        .then(result => {
-          setWallets(JSON.stringify(result));
-        })
-        .catch(console.error);
+      getWallets({ params: { query: {} } }, "public").then(wallets => {
+        setWallets(JSON.stringify(wallets, null, 2));
+      });
     }, 3000); // Running every 3 seconds
 
     return () => clearInterval(interval); // clearing interval on component unmount

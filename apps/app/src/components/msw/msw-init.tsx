@@ -16,18 +16,16 @@
 "use client";
 
 const mswInit = () => {
-  if (process.env.NODE_ENV === "development") {
-    if (typeof window === "undefined") {
-      (async () => {
-        const { server } = await import("@/msw/node");
-        server.listen();
-      })();
-    } else {
-      (async () => {
-        const { worker } = await import("@/msw/browser");
-        worker.start();
-      })();
-    }
+  if (typeof window === "undefined") {
+    (async () => {
+      const { server } = await import("@/msw/node");
+      server.listen();
+    })();
+  } else {
+    (async () => {
+      const { worker } = await import("@/msw/browser");
+      worker.start();
+    })();
   }
 };
 

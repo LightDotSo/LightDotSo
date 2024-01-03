@@ -36,7 +36,7 @@ export const getInviteCode = async (
   return ResultAsync.fromPromise(
     client.GET("/invite_code/get", {
       // @ts-ignore
-      next: { revalidate: 300, tags: [params.query.address] },
+      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -64,7 +64,7 @@ export const getInviteCodes = async (
   return ResultAsync.fromPromise(
     client.GET("/invite_code/list", {
       // @ts-ignore
-      next: { revalidate: 300, tags: [params.query.address] },
+      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -91,7 +91,7 @@ export const getInviteCodesCount = async (
   return ResultAsync.fromPromise(
     client.GET("/invite_code/list/count", {
       // @ts-ignore
-      next: { revalidate: 300, tags: [params.query.address] },
+      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),

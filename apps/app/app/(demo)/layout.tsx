@@ -16,6 +16,7 @@
 import "@lightdotso/styles/global.css";
 import type { ReactNode } from "react";
 import { MSWInit } from "@/components/msw/msw-init";
+import { getWallets } from "@lightdotso/client";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -29,14 +30,12 @@ interface RootLayoutProps {
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export default async function RootLayout({ children }: RootLayoutProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  const wallets = fetch("https://api.light.so/demo/v1/wallets/list").then(res =>
-    res.json(),
-  );
+  const wallets = await getWallets({ params: {} }, "public").then(res => res);
 
   return (
     <>

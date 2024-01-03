@@ -16,7 +16,7 @@
 import { http, HttpResponse } from "msw";
 
 export const getWallets = http.get(
-  "https://api.light.so/demo/v1/wallets/list",
+  "https://api.light.so/v1/wallet/list",
   () => {
     return HttpResponse.json([
       {
