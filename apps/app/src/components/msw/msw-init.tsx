@@ -31,7 +31,7 @@ const mswInit = () => {
   }
 };
 
-export const MSWInitComponent = () => {
+export const MSWState = () => {
   mswInit();
 
   return null;
