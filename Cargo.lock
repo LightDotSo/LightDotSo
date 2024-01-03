@@ -6265,8 +6265,6 @@ dependencies = [
  "eyre",
  "foundry-config",
  "foundry-evm",
- "revm",
- "serde",
 ]
 
 [[package]]
