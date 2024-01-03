@@ -381,6 +381,7 @@ model AssetChange {
   // Fields
   // ---------------------------------------------------------------------------
 
+  address        String
   amount         BigInt
   previousAmount BigInt
   newAmount      BigInt

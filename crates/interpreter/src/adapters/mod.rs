@@ -13,8 +13,4 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#![recursion_limit = "256"]
-#[allow(clippy::all)]
-
-/// Empty file to make `cargo run` work.
-fn main() {}
+pub(crate) mod generic;

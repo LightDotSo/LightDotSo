@@ -119,8 +119,7 @@ jobs:
         name: Docker Compose Up
         run: |
           docker-compose up -d --build
-      - if: matrix.workspace || matrix.check
-        name: Make Install
+      - name: Make Install
         run: |
           make install
       - name: Make Prisma
@@ -136,7 +135,7 @@ jobs:
       - if: matrix.workspace
         name: Rust Format Check
         run: |
-          cargo fmt --all --check
+          cargo +nightly fmt --all --check
       - if: matrix.test
         name: Rust Test
         run: |

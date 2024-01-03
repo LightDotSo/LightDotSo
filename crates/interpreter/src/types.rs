@@ -15,7 +15,7 @@
 
 use ethers_main::{
     abi::{Address, Uint},
-    types::Log,
+    types::{Bytes, Log},
 };
 use foundry_evm::{trace::node::CallTraceNode, CallKind};
 use revm::interpreter::InstructionResult;
@@ -23,6 +23,44 @@ use serde::{Deserialize, Serialize};
 
 // Entire file is derived from https://github.com/EnsoFinance/transaction-simulator/blob/42bc679fb171de760838457820d5c6622e53ab15/src/simulation.rs
 // License: MIT
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct InterpretationRequest {
+    /// Block number of the request
+    pub block_number: Option<u64>,
+    /// Gas limit of the transaction
+    pub gas_limit: u64,
+    /// From address of the transaction
+    pub from: Address,
+    /// To address of the transaction
+    pub to: Address,
+    /// Chain ID of the simulation
+    pub chain_id: u64,
+    /// Call data of the transaction
+    pub call_data: Option<Bytes>,
+    /// Value to send
+    pub value: Option<u64>,
+    /// Trace of the transaction
+    pub traces: Vec<CallTrace>,
+    /// Logs of the transaction
+    pub logs: Vec<Log>,
+}
+
+impl Default for InterpretationRequest {
+    fn default() -> Self {
+        Self {
+            block_number: None,
+            gas_limit: u64::MAX,
+            from: Address::default(),
+            to: Address::default(),
+            chain_id: 0,
+            call_data: Some(Bytes::new()),
+            value: None,
+            traces: Vec::new(),
+            logs: Vec::new(),
+        }
+    }
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InterpretationResponse {
@@ -40,6 +78,30 @@ pub struct InterpretationResponse {
     pub exit_reason: InstructionResult,
     /// Formatted trace of the transaction
     pub formatted_trace: String,
+    /// Changes in the assets of the transaction
+    pub asset_changes: Vec<AssetChange>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct AdapterResponse {
+    /// Changes in the assets of the transaction
+    pub asset_changes: Vec<AssetChange>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct AssetChange {
+    pub address: Address,
+    pub before_amount: Uint,
+    pub after_amount: Uint,
+    pub amount: Uint,
+
+    pub token: AssetToken,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct AssetToken {
+    pub address: Address,
+    pub token_id: Option<Uint>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]

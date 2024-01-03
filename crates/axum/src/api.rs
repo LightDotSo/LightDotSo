@@ -15,15 +15,14 @@
 
 #![allow(clippy::unwrap_used)]
 
-use crate::constants::SESSION_COOKIE_ID;
-use crate::routes::queue;
 use crate::{
     admin::admin,
+    constants::SESSION_COOKIE_ID,
     handle_error,
     routes::{
         activity, auth, check, configuration, feedback, health, invite_code, metrics, notification,
-        paymaster, paymaster_operation, portfolio, signature, support_request, token, token_group,
-        token_price, transaction, user, user_operation, wallet, wallet_settings,
+        paymaster, paymaster_operation, portfolio, queue, signature, support_request, token,
+        token_group, token_price, transaction, user, user_operation, wallet, wallet_settings,
     },
     sessions::{authenticated, RedisStore},
     state::AppState,
@@ -265,11 +264,11 @@ pub async fn start_api_server() -> Result<()> {
             origin
                 .to_str()
                 .map(|origin_string| {
-                    origin_string.ends_with(".vercel.app")
-                        || origin_string.ends_with(".light.so")
-                        || origins
-                            .iter()
-                            .any(|allowed_origin| allowed_origin.to_str().unwrap() == origin_string)
+                    origin_string.ends_with(".vercel.app") ||
+                        origin_string.ends_with(".light.so") ||
+                        origins.iter().any(|allowed_origin| {
+                            allowed_origin.to_str().unwrap() == origin_string
+                        })
                 })
                 .unwrap_or(false)
         }))
@@ -330,8 +329,8 @@ pub async fn start_api_server() -> Result<()> {
     let mut session_manager_layer =
         SessionManagerLayer::new(session_store.clone()).with_name(&SESSION_COOKIE_ID);
 
-    // If deployed under fly.io, `FLY_APP_NAME` starts w/ `lightdotso-api` then set the cookie domain to `.light.so` and secure to true.
-    // Also set the same site to lax.
+    // If deployed under fly.io, `FLY_APP_NAME` starts w/ `lightdotso-api` then set the cookie
+    // domain to `.light.so` and secure to true. Also set the same site to lax.
     if let Ok(fly_app_name) = std::env::var("FLY_APP_NAME") {
         if fly_app_name.starts_with("lightdotso-api") {
             session_manager_layer = session_manager_layer

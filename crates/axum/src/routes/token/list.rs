@@ -24,8 +24,7 @@ use ethers_main::{types::H160, utils::to_checksum};
 use eyre::Result;
 use lightdotso_prisma::{
     token, token_group,
-    wallet_balance::WhereParam,
-    wallet_balance::{self, Data},
+    wallet_balance::{self, Data, WhereParam},
 };
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::Direction;
@@ -137,10 +136,12 @@ pub(crate) async fn v1_token_list_handler(
     let balances = balances
         .into_iter()
         .fold(vec![], |mut acc: Vec<Data>, balance: Data| {
-            // If the balance has a token group, check if the group id is already in the accumulator.
+            // If the balance has a token group, check if the group id is already in the
+            // accumulator.
             if let Some(Some(token)) = &balance.token {
                 if let Some(Some(group)) = &token.group {
-                    // If the group id is not in the accumulator, push the balance into the accumulator.
+                    // If the group id is not in the accumulator, push the balance into the
+                    // accumulator.
                     if !acc.iter().any(|bal| {
                         if let Some(Some(tk)) = &bal.token {
                             if let Some(Some(tk_group)) = &tk.group {
@@ -197,7 +198,8 @@ pub(crate) async fn v1_token_list_handler(
             .await?;
         info!(?token_group);
 
-        // If the token group is found, assign the tokens in the token group to the pre-converted token.
+        // If the token group is found, assign the tokens in the token group to the pre-converted
+        // token.
         if let Some(token_group) = token_group {
             // If the token group has tokens, assign the tokens to the pre-converted token.
             if let Some(token_group_tokens) = token_group.clone().tokens {

@@ -16,8 +16,10 @@
 use super::types::PaymasterOperation;
 use crate::{result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
-use axum::extract::{Query, State};
-use axum::Json;
+use axum::{
+    extract::{Query, State},
+    Json,
+};
 use serde::Deserialize;
 use utoipa::IntoParams;
 

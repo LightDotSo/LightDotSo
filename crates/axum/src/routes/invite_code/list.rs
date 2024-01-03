@@ -14,11 +14,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use super::types::InviteCode;
-use crate::sessions::get_user_id;
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{result::AppJsonResult, sessions::get_user_id, state::AppState};
 use autometrics::autometrics;
-use axum::extract::{Query, State};
-use axum::Json;
+use axum::{
+    extract::{Query, State},
+    Json,
+};
 use lightdotso_prisma::invite_code::{self, WhereParam};
 use serde::{Deserialize, Serialize};
 use tower_sessions_core::Session;

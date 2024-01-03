@@ -14,10 +14,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use super::types::InviteCode;
-use crate::routes::invite_code::error::InviteCodeError;
 use crate::{
-    constants::KAKI_USER_ID, error::RouteError, result::AppJsonResult,
-    routes::invite_code::types::GenerateInviteCode, sessions::get_user_id, state::AppState,
+    constants::KAKI_USER_ID,
+    error::RouteError,
+    result::AppJsonResult,
+    routes::invite_code::{error::InviteCodeError, types::GenerateInviteCode},
+    sessions::get_user_id,
+    state::AppState,
 };
 use autometrics::autometrics;
 use axum::{extract::State, Json};

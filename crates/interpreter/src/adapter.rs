@@ -13,8 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#![recursion_limit = "256"]
-#[allow(clippy::all)]
+use crate::types::{AdapterResponse, InterpretationRequest};
+use async_trait::async_trait;
+use eyre::Result;
+use lightdotso_simulator::evm::Evm;
 
-/// Empty file to make `cargo run` work.
-fn main() {}
+#[async_trait]
+pub trait Adapter: Sync + Send {
+    fn matches(&self, request: InterpretationRequest) -> bool;
+    async fn query(&self, evm: &mut Evm, request: InterpretationRequest)
+        -> Result<AdapterResponse>;
+}

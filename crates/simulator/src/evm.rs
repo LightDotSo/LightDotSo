@@ -16,56 +16,17 @@
 // From: https://github.com/EnsoFinance/transaction-simulator/blob/64fe96afd52e5ff138ea0c22ad23aa4287346e7c/src/evm.rs
 // License: MIT
 
+use crate::types::CallRawResult;
 use ethers_main::{
     abi::{Address, Uint},
-    core::types::Log,
     types::Bytes,
 };
-use eyre::Report;
+use eyre::{eyre, Result};
 use foundry_evm::{
     executor::{fork::CreateFork, opts::EvmOpts, Backend, Executor, ExecutorBuilder},
-    trace::{
-        identifier::SignaturesIdentifier, node::CallTraceNode, CallTraceArena,
-        CallTraceDecoderBuilder,
-    },
-    CallKind,
+    trace::{identifier::SignaturesIdentifier, CallTraceDecoderBuilder},
 };
-use revm::{interpreter::InstructionResult, primitives::Env};
-use serde::{Deserialize, Serialize};
-
-#[derive(Debug)]
-pub struct EvmError(pub Report);
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-pub struct CallTrace {
-    #[serde(rename = "callType")]
-    pub call_type: CallKind,
-    pub from: Address,
-    pub to: Address,
-    pub value: Uint,
-}
-
-#[derive(Debug, Clone)]
-pub struct CallRawResult {
-    pub gas_used: u64,
-    pub block_number: u64,
-    pub success: bool,
-    pub trace: Option<CallTraceArena>,
-    pub logs: Vec<Log>,
-    pub exit_reason: InstructionResult,
-    pub return_data: Bytes,
-}
-
-impl From<CallTraceNode> for CallTrace {
-    fn from(item: CallTraceNode) -> Self {
-        CallTrace {
-            call_type: item.trace.kind,
-            from: item.trace.caller,
-            to: item.trace.address,
-            value: item.trace.value,
-        }
-    }
-}
+use revm::primitives::Env;
 
 pub struct Evm {
     executor: Executor,
@@ -130,13 +91,13 @@ impl Evm {
         to: Address,
         value: Option<Uint>,
         data: Option<Bytes>,
-    ) -> Result<CallRawResult, EvmError> {
+    ) -> Result<CallRawResult> {
         let res = self
             .executor
             .call_raw(from, to, data.unwrap_or_default().0, value.unwrap_or_default())
             .map_err(|err| {
                 dbg!(&err);
-                EvmError(err)
+                eyre!(err)
             })?;
 
         Ok(CallRawResult {
@@ -157,14 +118,14 @@ impl Evm {
         value: Option<Uint>,
         data: Option<Bytes>,
         gas_limit: u64,
-    ) -> Result<CallRawResult, EvmError> {
+    ) -> Result<CallRawResult> {
         self.executor.set_gas_limit(gas_limit.into());
         let res = self
             .executor
             .call_raw_committing(from, to, data.unwrap_or_default().0, value.unwrap_or_default())
             .map_err(|err| {
                 dbg!(&err);
-                EvmError(err)
+                eyre!(err)
             })?;
 
         Ok(CallRawResult {
@@ -178,7 +139,16 @@ impl Evm {
         })
     }
 
-    pub async fn set_block(&mut self, number: u64) -> Result<(), EvmError> {
+    pub async fn get_balance(&self, address: Address) -> Result<Uint> {
+        let balance = self.executor.get_balance(address).map_err(|err| {
+            dbg!(&err);
+            eyre!(err)
+        })?;
+
+        Ok(balance)
+    }
+
+    pub async fn set_block(&mut self, number: u64) -> Result<()> {
         self.executor.env_mut().block.number = Uint::from(number).into();
         Ok(())
     }
@@ -187,7 +157,7 @@ impl Evm {
         self.executor.env().block.number.into()
     }
 
-    pub async fn set_block_timestamp(&mut self, timestamp: u64) -> Result<(), EvmError> {
+    pub async fn set_block_timestamp(&mut self, timestamp: u64) -> Result<()> {
         self.executor.env_mut().block.timestamp = Uint::from(timestamp).into();
         Ok(())
     }

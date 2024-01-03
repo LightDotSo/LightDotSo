@@ -32,8 +32,7 @@ use lightdotso_kafka::{
 use lightdotso_opentelemetry::consumer::ConsumerMetrics;
 use lightdotso_prisma::PrismaClient;
 use lightdotso_tracing::tracing::{error, info, warn};
-use rdkafka::message::BorrowedMessage;
-use rdkafka::{producer::FutureProducer, Message};
+use rdkafka::{message::BorrowedMessage, producer::FutureProducer, Message};
 use std::sync::Arc;
 
 pub async fn transaction_consumer(

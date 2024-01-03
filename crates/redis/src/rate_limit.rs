@@ -19,9 +19,11 @@
 
 use eyre::Result;
 use redis::{Client, Commands, Connection};
-use std::sync::Arc;
-use std::time;
-use std::time::{Duration, SystemTime};
+use std::{
+    sync::Arc,
+    time,
+    time::{Duration, SystemTime},
+};
 
 const KEY_PREFIX: &str = "rate-limit";
 
@@ -158,8 +160,8 @@ impl RateLimiter {
     ) -> u64 {
         let current_window = (now.as_secs() / size.as_secs()) * size.as_secs();
         let next_window = current_window + size.as_secs();
-        let weight = (Duration::from_secs(next_window).as_millis() - now.as_millis()) as f64
-            / size.as_millis() as f64;
+        let weight = (Duration::from_secs(next_window).as_millis() - now.as_millis()) as f64 /
+            size.as_millis() as f64;
         current.unwrap_or(0) + (previous.unwrap_or(0) as f64 * weight).round() as u64
     }
 }

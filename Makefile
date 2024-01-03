@@ -21,11 +21,11 @@ TARGET_DIR = target
 
 ifdef CI
   ifeq ($(CI),true)
-    INSTALL_PARAMS = ci-setup
+    INSTALL_PARAMS = cargo-setup ci-setup
   endif
   else
     ifeq ($(DOCKER),true)
-      INSTALL_PARAMS = docker-setup
+      INSTALL_PARAMS = cargo-setup docker-setup
     else
       INSTALL_PARAMS = ios-setup mac-setup
     endif
@@ -40,6 +40,11 @@ help: ## Display this help.
 ##@ Install
 
 install: $(INSTALL_PARAMS) ## Install all dependencies.
+
+.PHONY: cargo-setup
+cargo-setup: ## Install Cargo dependencies.
+	rustup toolchain install nightly
+	rustup component add rustfmt --toolchain nightly
 
 .PHONY: ci-setup
 ci-setup: solc-setup ## Install CI dependencies.
@@ -200,7 +205,7 @@ docker-compose-restart: ## Restart the docker-compose.
 cargo-generate:
 	cargo generate
 	cargo fix --lib --allow-no-vcs -p lightdotso-prisma
-	cargo fmt
+	cargo +nightly fmt
 
 .PHONY: prisma
 prisma: cargo-generate ## Add clippy ignore.

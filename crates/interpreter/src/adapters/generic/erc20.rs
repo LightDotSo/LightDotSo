@@ -13,8 +13,33 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#![recursion_limit = "256"]
-#[allow(clippy::all)]
+use crate::{
+    adapter::Adapter,
+    types::{AdapterResponse, InterpretationRequest},
+};
+use async_trait::async_trait;
+use eyre::Result;
+use lightdotso_simulator::evm::Evm;
 
-/// Empty file to make `cargo run` work.
-fn main() {}
+#[derive(Clone)]
+pub(crate) struct ERC20Adapter {}
+
+impl ERC20Adapter {
+    pub fn new() -> Self {
+        ERC20Adapter {}
+    }
+}
+
+#[async_trait]
+impl Adapter for ERC20Adapter {
+    fn matches(&self, _request: InterpretationRequest) -> bool {
+        true
+    }
+    async fn query(
+        &self,
+        _evm: &mut Evm,
+        _request: InterpretationRequest,
+    ) -> Result<AdapterResponse> {
+        Ok(AdapterResponse { asset_changes: vec![] })
+    }
+}

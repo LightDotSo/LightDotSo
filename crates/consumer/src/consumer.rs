@@ -110,11 +110,11 @@ impl Consumer {
                     match m.topic() {
                         // If the topic is the transaction topic
                         topic
-                            if topic == TRANSACTION.to_string()
-                                || topic == RETRY_TRANSACTION.to_string()
-                                || topic == RETRY_TRANSACTION_0.to_string()
-                                || topic == RETRY_TRANSACTION_1.to_string()
-                                || topic == RETRY_TRANSACTION_2.to_string() =>
+                            if topic == TRANSACTION.to_string() ||
+                                topic == RETRY_TRANSACTION.to_string() ||
+                                topic == RETRY_TRANSACTION_0.to_string() ||
+                                topic == RETRY_TRANSACTION_1.to_string() ||
+                                topic == RETRY_TRANSACTION_2.to_string() =>
                         {
                             let _ = transaction_consumer(
                                 self.producer.clone(),

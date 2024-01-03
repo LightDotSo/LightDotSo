@@ -43,6 +43,9 @@ jobs:
         uses: mkroening/rust-toolchain-toml@main
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
+      - name: Make Install
+        run: |
+          make install
       - name: Make Prisma
         run: |
           pnpm turbo run prisma

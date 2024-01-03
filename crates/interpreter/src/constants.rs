@@ -13,8 +13,16 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#![recursion_limit = "256"]
-#[allow(clippy::all)]
+use crate::{
+    adapter::Adapter,
+    adapters::generic::{
+        erc1155::ERC1155Adapter, erc20::ERC20Adapter, erc721::ERC721Adapter, eth::EthAdapter,
+    },
+};
+use lazy_static::lazy_static;
 
-/// Empty file to make `cargo run` work.
-fn main() {}
+lazy_static! {
+    #[derive(Clone)]
+    pub static ref ADAPTERS: Vec<Box<dyn Adapter + Sync + Send>> =
+        vec![Box::new(EthAdapter::new()), Box::new(ERC20Adapter::new()), Box::new(ERC721Adapter::new()), Box::new(ERC1155Adapter::new())];
+}

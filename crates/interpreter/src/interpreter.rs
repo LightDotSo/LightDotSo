@@ -17,24 +17,27 @@
 // License: MIT
 
 use crate::{
+    adapter::Adapter,
     config::InterpreterArgs,
-    types::{CallTrace, InterpretationResponse},
+    constants::ADAPTERS,
+    types::{AdapterResponse, CallTrace, InterpretationRequest, InterpretationResponse},
 };
-use ethers_main::types::Log;
 use eyre::Result;
 use foundry_config::Chain;
 use foundry_evm::trace::{
     identifier::{EtherscanIdentifier, SignaturesIdentifier},
     CallTraceArena, CallTraceDecoder, CallTraceDecoderBuilder,
 };
-use lightdotso_simulator::{simulator::simulate, types::SimulationRequest};
+use lightdotso_contracts::provider::get_provider;
+use lightdotso_simulator::{evm::Evm, simulator::simulate, types::SimulationRequest};
 
-pub struct Interpreter {
+pub struct Interpreter<'a> {
+    adapters: &'a [Box<dyn Adapter + Sync + Send>],
     decoder: CallTraceDecoder,
     etherscan_identifier: Option<EtherscanIdentifier>,
 }
 
-impl Interpreter {
+impl Interpreter<'_> {
     pub async fn new(args: &InterpreterArgs, chain_id: u64) -> Self {
         let foundry_config = foundry_config::Config {
             etherscan_api_key: args.clone().etherscan_key,
@@ -51,11 +54,24 @@ impl Interpreter {
             decoder.add_signature_identifier(identifier);
         }
 
-        Interpreter { decoder, etherscan_identifier }
+        let adapters = &ADAPTERS[..];
+
+        Interpreter { decoder, etherscan_identifier, adapters }
     }
 
-    pub fn interpret(_logs: Vec<Log>, _traces: Vec<CallTrace>) -> Result<()> {
-        Ok(())
+    pub async fn interpret(&self, request: InterpretationRequest) -> Result<Vec<AdapterResponse>> {
+        let fork_url = get_provider(request.chain_id).await?.url().to_string();
+        let mut evm = Evm::new(None, fork_url, request.block_number, request.gas_limit, true).await;
+        let mut response = vec![];
+
+        for adapter in self.adapters {
+            if adapter.matches(request.clone()) {
+                let query_res = adapter.query(&mut evm, request.clone()).await?;
+                response.push(query_res);
+            }
+        }
+
+        Ok(response)
     }
 
     pub async fn format_trace(&mut self, traces: Option<CallTraceArena>) -> Result<String> {
@@ -75,12 +91,33 @@ impl Interpreter {
         request: SimulationRequest,
     ) -> Result<InterpretationResponse> {
         // Simulate the user operation
-        let res = simulate(request).await?;
+        let res = simulate(request.clone()).await?;
 
         // Run the interpreter
         let format_trace = self.format_trace(res.arena.clone()).await?;
 
-        let traces = res.arena.unwrap_or_default().arena.into_iter().map(CallTrace::from).collect();
+        // Get the traces
+        let traces: Vec<CallTrace> =
+            res.clone().arena.unwrap_or_default().arena.into_iter().map(CallTrace::from).collect();
+
+        // Construct the interpretation request
+        let req = InterpretationRequest {
+            block_number: request.block_number,
+            gas_limit: request.gas_limit,
+            from: request.from,
+            to: request.to,
+            chain_id: request.chain_id,
+            call_data: request.data,
+            value: request.value,
+            traces: traces.clone(),
+            logs: res.clone().logs,
+        };
+
+        // Run the interpreter
+        let interpretation = self.interpret(req).await?;
+
+        // Flatten the asset changes
+        let asset_changes = interpretation.into_iter().flat_map(|res| res.asset_changes).collect();
 
         Ok(InterpretationResponse {
             gas_used: res.gas_used,
@@ -90,6 +127,7 @@ impl Interpreter {
             logs: res.logs,
             exit_reason: res.exit_reason,
             formatted_trace: format_trace,
+            asset_changes,
         })
     }
 }

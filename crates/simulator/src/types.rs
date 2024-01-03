@@ -37,7 +37,7 @@ pub struct SimulationRequest {
     /// Gas limit of the transaction
     pub gas_limit: u64,
     /// Value to send
-    pub value: Option<String>,
+    pub value: Option<u64>,
     /// Block number of the request
     pub block_number: Option<u64>,
 }
@@ -58,13 +58,22 @@ pub struct SimulationResponse {
     pub exit_reason: InstructionResult,
 }
 
+#[derive(Debug, Clone)]
+pub struct CallRawResult {
+    pub gas_used: u64,
+    pub block_number: u64,
+    pub success: bool,
+    pub trace: Option<CallTraceArena>,
+    pub logs: Vec<Log>,
+    pub exit_reason: InstructionResult,
+    pub return_data: Bytes,
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct UserOperationRequest {
     /// Chain ID of the network
     /// Specific for the request
     pub chain_id: u64,
-    /// Block number of the request
-    /// Specific for the request
     /// Block number of the request
     pub block_number: Option<u64>,
     /// From address of the transaction
