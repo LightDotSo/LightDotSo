@@ -22,9 +22,9 @@ import { TITLES } from "@/const/titles";
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: TITLES.Demo.subcategories.Queue.subcategories.History.title,
+  title: TITLES.Demo.subcategories.Transactions.subcategories.History.title,
   description:
-    TITLES.Demo.subcategories.Queue.subcategories.History.description,
+    TITLES.Demo.subcategories.Transactions.subcategories.History.description,
 };
 
 // -----------------------------------------------------------------------------
