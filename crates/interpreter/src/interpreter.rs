@@ -17,10 +17,11 @@
 // License: MIT
 
 use crate::{
+    adapter::Adapter,
     config::InterpreterArgs,
-    types::{CallTrace, InterpretationResponse},
+    constants::ADAPTERS,
+    types::{CallTrace, InterpretationRequest, InterpretationResponse},
 };
-use ethers_main::types::Log;
 use eyre::Result;
 use foundry_config::Chain;
 use foundry_evm::trace::{
@@ -29,12 +30,13 @@ use foundry_evm::trace::{
 };
 use lightdotso_simulator::{simulator::simulate, types::SimulationRequest};
 
-pub struct Interpreter {
+pub struct Interpreter<'a> {
+    adapters: &'a [Box<dyn Adapter + Sync + Send>],
     decoder: CallTraceDecoder,
     etherscan_identifier: Option<EtherscanIdentifier>,
 }
 
-impl Interpreter {
+impl Interpreter<'_> {
     pub async fn new(args: &InterpreterArgs, chain_id: u64) -> Self {
         let foundry_config = foundry_config::Config {
             etherscan_api_key: args.clone().etherscan_key,
@@ -51,10 +53,18 @@ impl Interpreter {
             decoder.add_signature_identifier(identifier);
         }
 
-        Interpreter { decoder, etherscan_identifier }
+        let adapters = &ADAPTERS[..];
+
+        Interpreter { decoder, etherscan_identifier, adapters }
     }
 
-    pub fn interpret(_logs: Vec<Log>, _traces: Vec<CallTrace>) -> Result<()> {
+    pub fn interpret(&self, request: InterpretationRequest) -> Result<()> {
+        for adapter in self.adapters {
+            if adapter.matches(request.clone()) {
+                adapter.query();
+            }
+        }
+
         Ok(())
     }
 

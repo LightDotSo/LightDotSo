@@ -13,9 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod adapter;
-pub mod adapters;
-pub mod config;
-pub mod constants;
-pub mod interpreter;
-pub mod types;
+pub(crate) mod erc1155;
+pub(crate) mod erc20;
+pub(crate) mod erc721;

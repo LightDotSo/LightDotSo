@@ -13,9 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod adapter;
-pub mod adapters;
-pub mod config;
-pub mod constants;
-pub mod interpreter;
-pub mod types;
+use crate::{adapter::Adapter, types::InterpretationRequest};
+
+#[derive(Clone)]
+pub(crate) struct ERC20Adapter {}
+
+impl Adapter for ERC20Adapter {
+    fn matches(&self, _request: InterpretationRequest) -> bool {
+        true
+    }
+    fn query(&self) {}
+}

@@ -25,6 +25,20 @@ use serde::{Deserialize, Serialize};
 // License: MIT
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct InterpretationRequest {
+    /// From address of the transaction
+    pub from: Address,
+    /// To address of the transaction
+    pub to: Address,
+    /// Chain ID of the simulation
+    pub chain_id: u64,
+    /// Trace of the transaction
+    pub traces: Vec<CallTrace>,
+    /// Logs of the transaction
+    pub logs: Vec<Log>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InterpretationResponse {
     /// Gas used by the transaction
     pub gas_used: u64,
