@@ -65,6 +65,7 @@
     "*.toml",
     "*.txt",
     "*.yml",
+    "apps/app/public/mockServiceWorker.js",
     "apps/extension/**/*.js",
     "apps/docs/src/pages/posts/**/*.mdx",
     "apps/subgraph/generated/**",

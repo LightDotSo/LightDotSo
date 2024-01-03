@@ -1,5 +1,6 @@
 generated.ts
 
+apps/app/public/mockServiceWorker.js
 apps/docs/src/pages/posts/**/*.mdx
 apps/subgraph/generated/**/*.ts
 apps/extension/**
