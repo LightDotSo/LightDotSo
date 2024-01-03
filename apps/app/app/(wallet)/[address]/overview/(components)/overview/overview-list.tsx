@@ -33,9 +33,7 @@ import { OverviewSubCategory, TITLES } from "@/const/titles";
 // Const
 // -----------------------------------------------------------------------------
 
-const initialItems = Object.keys(TITLES.Overview.subcategories).filter(
-  key => key !== OverviewSubCategory.All,
-);
+const initialItems = Object.keys(TITLES.Overview.subcategories);
 
 // -----------------------------------------------------------------------------
 // Props

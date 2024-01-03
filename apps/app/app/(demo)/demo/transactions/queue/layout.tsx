@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/img-redundant-alt */
-/* eslint-disable @next/next/no-img-element */
 // Copyright (C) 2023 Light, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -16,8 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Metadata } from "next";
-import type { ReactNode } from "react";
-import OriginalLayout from "@/app/(wallet)/[address]/overview/layout";
+import OriginalLayout from "@/app/(wallet)/[address]/transactions/queue/layout";
 import { TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
@@ -25,27 +22,9 @@ import { TITLES } from "@/const/titles";
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: TITLES.Demo.subcategories.Overview.title,
-  description: TITLES.Demo.subcategories.Overview.description,
+  title: TITLES.Demo.subcategories.Transactions.subcategories.Queue.title,
+  description:
+    TITLES.Demo.subcategories.Transactions.subcategories.Queue.description,
 };
 
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-type LayoutProps = {
-  children: ReactNode;
-  nav: ReactNode;
-};
-
-// -----------------------------------------------------------------------------
-// Component
-// -----------------------------------------------------------------------------
-
-export default async function Layout({ children, nav }: LayoutProps) {
-  return OriginalLayout({
-    params: { address: "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F" },
-    children,
-    nav,
-  });
-}
+export default OriginalLayout;

@@ -57,6 +57,12 @@ export enum OverviewSubCategory {
   History = "History",
 }
 
+export enum TransactionsSubCategory {
+  All = "All",
+  Queue = "Queue",
+  History = "History",
+}
+
 export enum SettingsSubCategory {
   Account = "Account",
   Billing = "Billing",
@@ -133,7 +139,23 @@ export const TITLES: Record<Category, CategoryObject> = {
   [Category.Transactions]: {
     title: "Transactions",
     description: "Conduct and execute transactions.",
-    subcategories: {},
+    subcategories: {
+      [TransactionsSubCategory.All]: {
+        title: "All",
+        description: "View all your wallet transactions.",
+        subcategories: {},
+      },
+      [TransactionsSubCategory.Queue]: {
+        title: "Queue",
+        description: "View your queued transactions.",
+        subcategories: {},
+      },
+      [TransactionsSubCategory.History]: {
+        title: "History",
+        description: "View your transaction history.",
+        subcategories: {},
+      },
+    },
   },
   [Category.Profile]: {
     title: "Profile",
@@ -216,7 +238,7 @@ export const TITLES: Record<Category, CategoryObject> = {
         subcategories: {
           [OverviewSubCategory.All]: {
             title: "All",
-            description: "[Demo] View all your wallet assets.",
+            description: "View all your wallet assets.",
             subcategories: {},
           },
           [OverviewSubCategory.Tokens]: {
@@ -236,14 +258,30 @@ export const TITLES: Record<Category, CategoryObject> = {
           },
         },
       },
-      [DemoSubCategory.UserOperation]: {
-        title: "Demo User Operation",
-        description: "[Demo] Perform and execute transactions.",
-        subcategories: {},
-      },
       [DemoSubCategory.Transactions]: {
         title: "Demo Transactions",
         description: "[Demo] Conduct and execute transactions.",
+        subcategories: {
+          [TransactionsSubCategory.All]: {
+            title: "Demo All",
+            description: "[Demo]  View all your wallet transactions.",
+            subcategories: {},
+          },
+          [TransactionsSubCategory.Queue]: {
+            title: "Demo Queue",
+            description: "[Demo] View your queued transactions.",
+            subcategories: {},
+          },
+          [TransactionsSubCategory.History]: {
+            title: "Demo History",
+            description: "[Demo] View your transaction history.",
+            subcategories: {},
+          },
+        },
+      },
+      [DemoSubCategory.UserOperation]: {
+        title: "Demo User Operation",
+        description: "[Demo] Perform and execute transactions.",
         subcategories: {},
       },
       [DemoSubCategory.Activity]: {

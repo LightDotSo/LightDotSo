@@ -25,8 +25,8 @@ import { TITLES } from "@/const/titles";
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: TITLES.Demo.subcategories.Overview.subcategories.All.title,
-  description: TITLES.Demo.subcategories.Overview.subcategories.All.description,
+  title: TITLES.Demo.subcategories.Transactions.title,
+  description: TITLES.Demo.subcategories.Transactions.description,
 };
 
 // -----------------------------------------------------------------------------

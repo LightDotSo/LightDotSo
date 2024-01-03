@@ -15,37 +15,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Metadata } from "next";
-import type { ReactNode } from "react";
-import OriginalLayout from "@/app/(wallet)/[address]/overview/layout";
-import { TITLES } from "@/const/titles";
+import OriginalPage from "@/app/(wallet)/[address]/transactions/page";
 
 // -----------------------------------------------------------------------------
-// Metadata
+// Page
 // -----------------------------------------------------------------------------
 
-export const metadata: Metadata = {
-  title: TITLES.Demo.subcategories.Overview.title,
-  description: TITLES.Demo.subcategories.Overview.description,
-};
-
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-type LayoutProps = {
-  children: ReactNode;
-  nav: ReactNode;
-};
-
-// -----------------------------------------------------------------------------
-// Component
-// -----------------------------------------------------------------------------
-
-export default async function Layout({ children, nav }: LayoutProps) {
-  return OriginalLayout({
+export default async function Page() {
+  return OriginalPage({
     params: { address: "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F" },
-    children,
-    nav,
   });
 }
