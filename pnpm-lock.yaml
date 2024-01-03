@@ -239,6 +239,9 @@ importers:
       npm-package-json-lint-config-default:
         specifier: ^6.0.0
         version: 6.0.0(npm-package-json-lint@7.1.0)
+      oxlint:
+        specifier: ^0.0.22
+        version: 0.0.22
       postcss:
         specifier: ^8.4.32
         version: 8.4.32
@@ -349,7 +352,7 @@ importers:
         version: link:../../packages/wagmi
       '@lukemorales/query-key-factory':
         specifier: ^1.3.2
-        version: 1.3.2(@tanstack/query-core@5.14.2)(@tanstack/react-query@5.17.0)
+        version: 1.3.2(@tanstack/query-core@5.17.0)(@tanstack/react-query@5.17.0)
       '@opentelemetry/exporter-trace-otlp-http':
         specifier: ^0.46.0
         version: 0.46.0(@opentelemetry/api@1.4.1)
@@ -6085,14 +6088,14 @@ packages:
     dependencies:
       '@lit-labs/ssr-dom-shim': 1.1.1
 
-  /@lukemorales/query-key-factory@1.3.2(@tanstack/query-core@5.14.2)(@tanstack/react-query@5.17.0):
+  /@lukemorales/query-key-factory@1.3.2(@tanstack/query-core@5.17.0)(@tanstack/react-query@5.17.0):
     resolution: {integrity: sha512-SFOWcB5ec+RhlKjLjZxTAbOPF2uXNED6lqXiMu3TUt2twKzxE/QLhnYkdbxOBMK5Wwc2Ia+WP3yqCPRKWywnwQ==}
     engines: {node: '>=14'}
     peerDependencies:
       '@tanstack/query-core': '>= 4.0.0'
       '@tanstack/react-query': '>= 4.0.0'
     dependencies:
-      '@tanstack/query-core': 5.14.2
+      '@tanstack/query-core': 5.17.0
       '@tanstack/react-query': 5.17.0(react@18.2.0)
     dev: false
 
@@ -7535,6 +7538,54 @@ packages:
   /@openzeppelin/contracts@5.0.1:
     resolution: {integrity: sha512-yQJaT5HDp9hYOOp4jTYxMsR02gdFZFXhewX5HW9Jo4fsqSVqqyIO/xTHdWDaKX5a3pv1txmf076Lziz+sO7L1w==}
     dev: true
+
+  /@oxlint/darwin-arm64@0.0.22:
+    resolution: {integrity: sha512-n8ZsnApsKKxho00fYR+EzOEt6dVcuMfwdOwoAwpWwdIwrJRUyjWDzZhauX1VGEmgf4Hzm2y53aJMSZAWnIbr7g==}
+    cpu: [arm64]
+    os: [darwin]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /@oxlint/darwin-x64@0.0.22:
+    resolution: {integrity: sha512-glVFfh5OtpeqfW2xGf47LPZxByvoodQKQF9Y3ql6HVNHzpUNSDsacO/5hyQ585FiKG3OtFlOP8TaeeDCcj+pXQ==}
+    cpu: [x64]
+    os: [darwin]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /@oxlint/linux-arm64@0.0.22:
+    resolution: {integrity: sha512-01B8IEMQBFXGabcqLJXxiaT5eTqjO6eNJTl9HwaGJsTlDIxfbE0wPGWJz1POuvTDHDp+IjAR+NjuCwgikWpzbg==}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /@oxlint/linux-x64@0.0.22:
+    resolution: {integrity: sha512-pR9G7yt6RuZMgahe/fAl+TN4hgKZ60qfktwgMn5aLZAufE3fVEg83KncJtFwE++gTiG+xZ8qReYPjEWlI7a7cQ==}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /@oxlint/win32-arm64@0.0.22:
+    resolution: {integrity: sha512-R/uejrBLO4uQw+jbyusn1LwNTHasZCeiFa/zmP31CRlgD/tUwTYGpERLkpGRmvlzwf8UeFOxyRibNLzz4pXpxA==}
+    cpu: [arm64]
+    os: [win32]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /@oxlint/win32-x64@0.0.22:
+    resolution: {integrity: sha512-g4mY10w/oFJUE6lc8F0IiU5LTEKcqxmY4vdmPLQZa2FoM8d2Rf+lLdbiaL9xouF8Zlp8mUyEgWHasKgN/wzLxw==}
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    dev: true
+    optional: true
 
   /@parcel/watcher-android-arm64@2.3.0:
     resolution: {integrity: sha512-f4o9eA3dgk0XRT3XhB0UWpWpLnKgrh1IwNJKJ7UJek7eTYccQ8LR7XUWFKqw6aEq5KUNlCcGvSzKqSX/vtWVVA==}
@@ -11738,10 +11789,6 @@ packages:
 
   /@tanstack/query-core@4.32.6:
     resolution: {integrity: sha512-YVB+mVWENQwPyv+40qO7flMgKZ0uI41Ph7qXC2Zf1ft5AIGfnXnMZyifB2ghhZ27u+5wm5mlzO4Y6lwwadzxCA==}
-
-  /@tanstack/query-core@5.14.2:
-    resolution: {integrity: sha512-QmoJvC72sSWs3hgGis8JdmlDvqLfYGWUK4UG6OR9Q6t28JMN9m2FDwKPqoSJ9YVocELCSjMt/FGjEiLfk8000Q==}
-    dev: false
 
   /@tanstack/query-core@5.17.0:
     resolution: {integrity: sha512-LoBaPtbMY26kRS+ohII4thTsWkJJsXKGitOLikTo2aqPA4yy7cfFJITs8DRnuERT7tLF5xfG9Lnm33Vp/38Vmw==}
@@ -19632,6 +19679,7 @@ packages:
       is-hex-prefixed: 1.0.0
       strip-hex-prefix: 1.0.0
     dev: true
+    bundledDependencies: false
 
   /event-target-shim@5.0.1:
     resolution: {integrity: sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==}
@@ -26567,6 +26615,19 @@ packages:
 
   /outdent@0.5.0:
     resolution: {integrity: sha512-/jHxFIzoMXdqPzTaCpFzAAWhpkSjZPF4Vsn6jAfNpmbH/ymsmd7Qc6VE9BGn0L6YMj6uwpQLxCECpus4ukKS9Q==}
+    dev: true
+
+  /oxlint@0.0.22:
+    resolution: {integrity: sha512-ZV9pmXiNdY9CHkDcceJ8bpo05HfgLb2nC6wlGcQeUktHpX8ASHgWM2fuw4fEPhhWsydy2lmdiNkw55CCw6S2+g==}
+    engines: {node: '>=14.*'}
+    hasBin: true
+    optionalDependencies:
+      '@oxlint/darwin-arm64': 0.0.22
+      '@oxlint/darwin-x64': 0.0.22
+      '@oxlint/linux-arm64': 0.0.22
+      '@oxlint/linux-x64': 0.0.22
+      '@oxlint/win32-arm64': 0.0.22
+      '@oxlint/win32-x64': 0.0.22
     dev: true
 
   /p-cancelable@3.0.0:
