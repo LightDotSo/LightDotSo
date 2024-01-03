@@ -59,13 +59,16 @@ const adminApiClient: ReturnType<typeof createClient<paths>> =
 export const getClient: (
   clientType?: "admin" | "authenticated" | "public",
 ) => ReturnType<typeof createClient<paths>> = clientType =>
-  process.env.LOCAL_ENV === "dev" || process.env.NEXT_PUBLIC_LOCAL_ENV === "dev"
-    ? localAdminApiClient
-    : clientType === undefined || clientType === "public"
-      ? publicApiClient
-      : clientType === "authenticated"
-        ? authenticatedApiClient
-        : adminApiClient;
+  clientType === "public"
+    ? publicApiClient
+    : process.env.LOCAL_ENV === "dev" ||
+        process.env.NEXT_PUBLIC_LOCAL_ENV === "dev"
+      ? localAdminApiClient
+      : clientType === undefined
+        ? publicApiClient
+        : clientType === "authenticated"
+          ? authenticatedApiClient
+          : adminApiClient;
 
 // -----------------------------------------------------------------------------
 // RPC

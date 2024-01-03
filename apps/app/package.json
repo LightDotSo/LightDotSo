@@ -18,6 +18,7 @@
     "dev:inngest": "inngest dev -u http://localhost:3001/api/inngest",
     "dev:next": "next dev -p 3001",
     "lint": "next lint",
+    "msw:init": "msw init public",
     "start": "next start",
     "tsc": "tsc --noEmit"
   },
@@ -74,6 +75,7 @@
     "kysely-postgres-js": "^2.0.0",
     "lodash": "^4.17.21",
     "lucide-react": "^0.303.0",
+    "msw": "^2.0.11",
     "neverthrow": "^6.1.0",
     "next": "^14.0.4",
     "next-themes": "^0.2.1",
@@ -112,5 +114,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }

@@ -36,7 +36,7 @@ export const getConfiguration = async (
   return ResultAsync.fromPromise(
     client.GET("/configuration/get", {
       // @ts-ignore
-      next: { revalidate: 300, tags: [params.query.address] },
+      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),

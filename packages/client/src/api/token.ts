@@ -36,7 +36,7 @@ export const getToken = async (
   return ResultAsync.fromPromise(
     client.GET("/token/get", {
       // @ts-ignore
-      next: { revalidate: 300, tags: [params.query.address] },
+      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -67,7 +67,7 @@ export const getTokens = async (
   return ResultAsync.fromPromise(
     client.GET("/token/list", {
       // @ts-ignore
-      next: { revalidate: 300, tags: [params.query.address] },
+      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -97,7 +97,7 @@ export const getTokensCount = async (
   return ResultAsync.fromPromise(
     client.GET("/token/list/count", {
       // @ts-ignore
-      next: { revalidate: 300, tags: [params.query.address] },
+      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),

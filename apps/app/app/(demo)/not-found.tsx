@@ -13,34 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { ResultAsync, err, ok } from "neverthrow";
-import type { ClientType } from "../client";
-import { getClient } from "../client";
-
 // -----------------------------------------------------------------------------
-// GET
+// NotFound
 // -----------------------------------------------------------------------------
 
-export const getPortfolio = async (
-  {
-    params,
-  }: {
-    params: {
-      query: { address: string };
-    };
-  },
-  clientType?: ClientType,
-) => {
-  const client = getClient(clientType);
-
-  return ResultAsync.fromPromise(
-    client.GET("/portfolio/get", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [params?.query?.address] },
-      params,
-    }),
-    () => new Error("Database error"),
-  ).andThen(({ data, response, error }) => {
-    return response.status === 200 && data ? ok(data) : err(error);
-  });
-};
+export default async function NotFound() {}
