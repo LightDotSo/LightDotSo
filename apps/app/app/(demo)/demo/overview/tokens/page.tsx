@@ -28,7 +28,7 @@ interface PageProps {
 }
 
 // -----------------------------------------------------------------------------
-// Page
+// Original Page
 // -----------------------------------------------------------------------------
 
 export default async function Page({ searchParams }: PageProps) {
