@@ -15,8 +15,11 @@
   "[rust]": {
     "editor.defaultFormatter": "rust-lang.rust-analyzer"
   },
+  "[javascript]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+  },
   "[typescript]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    "editor.defaultFormatter": "oxc.oxc-vscode"
   },
   // Exclude generated files
   "files.exclude": {
@@ -24,18 +27,8 @@
     "**/crates/prisma/src/lib.rs": true
   },
   // Formatter settings on save
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "editor.rulers": [80, 100],
-  // Eslint settings
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "json",
-    "jsonc",
-    "json5"
-  ],
-  "eslint.workingDirectories": [{ "pattern": "./app/*/" }],
   // Toml settings
   "evenBetterToml.taplo.configFile.path": ".taplo.toml",
   // Files linting
@@ -61,6 +54,7 @@
   // Rust settings
   "rust-analyzer.diagnostics.disabled": ["unresolved-proc-macro"],
   "rust-analyzer.rustfmt.extraArgs": ["+nightly"],
+  "rust-analyzer.showUnlinkedFileNotification": false,
   // Tailwind settings
   // From: https://github.com/joe-bell/cva/discussions/85#discussioncomment-5014769
   "tailwindCSS.experimental.classRegex": [
@@ -73,6 +67,5 @@
   "tailwindCSS.experimental.configFile": "configurations/tailwindcss/src/index.js",
   // Typescript settings
   "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
-  "rust-analyzer.showUnlinkedFileNotification": false
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }
