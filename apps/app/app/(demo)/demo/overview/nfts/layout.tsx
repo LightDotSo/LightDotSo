@@ -27,4 +27,8 @@ export const metadata: Metadata = {
     TITLES.Demo.subcategories.Overview.subcategories.NFTs.description,
 };
 
+// -----------------------------------------------------------------------------
+// Original Layout
+// -----------------------------------------------------------------------------
+
 export default OriginalLayout;

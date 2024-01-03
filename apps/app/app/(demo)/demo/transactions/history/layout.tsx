@@ -27,4 +27,8 @@ export const metadata: Metadata = {
     TITLES.Demo.subcategories.Queue.subcategories.History.description,
 };
 
+// -----------------------------------------------------------------------------
+// Original Layout
+// -----------------------------------------------------------------------------
+
 export default OriginalLayout;
