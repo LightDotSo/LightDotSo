@@ -31,6 +31,7 @@ import { ChainPopover } from "@/components/chain/chain-popover";
 import { VercelToolbar } from "@/components/dev/vercel-toolbar";
 import { FeedbackPopover } from "@/components/feedback/feedback-popover";
 import { MainNav } from "@/components/nav/main-nav";
+import { MSWInit } from "@/components/msw/msw-init";
 import { UserNav } from "@/components/nav/user-nav";
 import { RootLogo } from "@/components/root/root-logo";
 import { ConnectButton } from "@/components/web3/connect-button";
@@ -120,6 +121,7 @@ export const Root: FC<RootProps> = ({ children }) => {
                 <AuthModal />
               </Suspense>
               <CommandK />
+              <MSWInit />
               <WssState />
             </Web3Provider>
           </ReactQueryProvider>
