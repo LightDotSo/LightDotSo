@@ -13,12 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#![allow(clippy::unwrap_used)]
-
 // Entire file is derived from https://github.com/EnsoFinance/transaction-simulator/blob/42bc679fb171de760838457820d5c6622e53ab15/src/simulation.rs
 // License: MIT
-
-use std::str::FromStr;
 
 use crate::{
     evm::Evm,
@@ -26,17 +22,8 @@ use crate::{
 };
 use ethers_main::abi::Uint;
 use eyre::{eyre, Result};
-
-pub struct SimulatorServerImpl {}
-
-fn get_fork_url(first_chain_id: u64) -> String {
-    // If env `ENVIRONMENT` is `development`, use the local anvil fork
-    if std::env::var("ENVIRONMENT").unwrap_or_default() == "development" {
-        return "http://localhost:8545".to_string();
-    }
-
-    format!("http://lightdotso-rpc-internal.internal:3000/internal/{}", first_chain_id)
-}
+use lightdotso_contracts::provider::get_provider;
+use std::str::FromStr;
 
 async fn run(
     evm: &mut Evm,
@@ -78,7 +65,6 @@ async fn run(
     };
 
     Ok(SimulationResponse {
-        simulation_id: 1,
         gas_used: result.gas_used,
         block_number: result.block_number,
         success: result.success,
@@ -90,7 +76,7 @@ async fn run(
 }
 
 pub async fn simulate(transaction: SimulationRequest) -> Result<SimulationResponse> {
-    let fork_url = get_fork_url(transaction.chain_id);
+    let fork_url = get_provider(transaction.chain_id).await?.url().to_string();
     let mut evm =
         Evm::new(None, fork_url, transaction.block_number, transaction.gas_limit, true, None).await;
 
@@ -105,7 +91,7 @@ pub async fn simulate_bundle(
     let first_chain_id = transactions[0].chain_id;
     let first_block_number = transactions[0].block_number;
 
-    let fork_url = get_fork_url(first_chain_id);
+    let fork_url = get_provider(first_chain_id).await?.url().to_string();
     let mut evm =
         Evm::new(None, fork_url, first_block_number, transactions[0].gas_limit, true, None).await;
 

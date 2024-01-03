@@ -18,6 +18,16 @@ use eyre::{eyre, Result};
 
 /// Returns a provider for the given chain ID w/ fallbacks
 pub async fn get_provider(chain_id: u64) -> Result<Provider<Http>> {
+    // If env `ENVIRONMENT` is `development`, use the local anvil fork
+    let internal_rpc_url = "http://localhost:8545".to_string();
+    if std::env::var("ENVIRONMENT").unwrap_or_default() == "development" {
+        if let Ok(provider) = Provider::<Http>::try_from(internal_rpc_url.as_str()) {
+            if provider.get_block_number().await.is_ok() {
+                return Ok(provider);
+            }
+        }
+    }
+
     // Primary RPC URL
     let rpc_url_1 = format!("http://lightdotso-rpc-internal.internal:3000/internal/{}", chain_id);
     if let Ok(provider) = Provider::<Http>::try_from(rpc_url_1.as_str()) {

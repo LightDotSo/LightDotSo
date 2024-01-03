@@ -47,8 +47,6 @@ pub struct SimulationRequest {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SimulationResponse {
-    /// The simulation ID
-    pub simulation_id: u64,
     /// Gas used by the transaction
     pub gas_used: u64,
     /// Block number of the simulation

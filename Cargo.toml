@@ -20,6 +20,7 @@
     "crates/graphql",
     "crates/jsonrpsee",
     "crates/indexer",
+    "crates/interpreter",
     "crates/kafka",
     "crates/keychain",
     "crates/notifier",
@@ -113,6 +114,7 @@
   lightdotso-gas = { path = "./crates/gas" }
   lightdotso-graphql = { path = "./crates/graphql" }
   lightdotso-indexer = { path = "./crates/indexer" }
+  lightdotso-interpreter = { path = "./crates/interpreter" }
   lightdotso-jsonrpsee = { path = "./crates/jsonrpsee" }
   lightdotso-kafka = { path = "./crates/kafka" }
   lightdotso-keychain = { path = "./crates/indexer" }
