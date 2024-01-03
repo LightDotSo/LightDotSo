@@ -21,7 +21,7 @@ TARGET_DIR = target
 
 ifdef CI
   ifeq ($(CI),true)
-    INSTALL_PARAMS = ci-setup
+    INSTALL_PARAMS = cargo-setup ci-setup
   endif
   else
     ifeq ($(DOCKER),true)
@@ -44,7 +44,7 @@ install: $(INSTALL_PARAMS) ## Install all dependencies.
 .PHONY: cargo-setup
 cargo-setup: ## Install Cargo dependencies.
 	rustup toolchain install nightly
-	rustup component add rustfmt --toolchain nightly-x86_64-unknown-linux-gnu
+	rustup component add rustfmt
 
 .PHONY: ci-setup
 ci-setup: solc-setup ## Install CI dependencies.
