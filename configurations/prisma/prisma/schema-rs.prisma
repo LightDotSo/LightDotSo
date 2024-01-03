@@ -345,33 +345,29 @@ model Interpretation {
   updatedAt DateTime @updatedAt
 
   // ---------------------------------------------------------------------------
-  // Fields
-  // ---------------------------------------------------------------------------
-
-  action InterpretationAction
-
-  // ---------------------------------------------------------------------------
   // Many-to-many
   // ---------------------------------------------------------------------------
 
+  actions      InterpretationAction[]
   assetChanges AssetChange[]
   simulations  Simulation[]
   transactions Transaction[]
 }
 
-enum InterpretationAction {
+model InterpretationAction {
   // ---------------------------------------------------------------------------
-  // Enum Fields
+  // Core
   // ---------------------------------------------------------------------------
 
-  DEPOSIT
-  WITHDRAW
-  TRANSFER
-  APPROVE
-  MINT
-  RECEIVE
-  SWAP
-  UPGRADE
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
+  interpretations Interpretation[]
 }
 
 model AssetChange {

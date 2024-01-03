@@ -6258,6 +6258,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "lightdotso-interpreter"
+version = "0.1.0"
+dependencies = [
+ "clap 4.4.0",
+ "ethers 2.0.9 (git+https://github.com/gakonst/ethers-rs)",
+ "eyre",
+ "foundry-config",
+ "foundry-evm",
+ "lightdotso-simulator",
+ "lightdotso-tracing",
+ "revm",
+ "serde",
+ "tokio",
+]
+
+[[package]]
 name = "lightdotso-jsonrpsee"
 version = "0.1.0"
 dependencies = [
@@ -6457,16 +6473,14 @@ dependencies = [
 name = "lightdotso-simulator"
 version = "0.1.0"
 dependencies = [
- "async-trait",
- "clap 4.4.0",
  "ethers 2.0.9 (git+https://github.com/gakonst/ethers-rs)",
  "eyre",
  "foundry-config",
  "foundry-evm",
+ "lightdotso-contracts",
  "lightdotso-tracing",
  "revm",
  "serde",
- "serde_json",
  "tokio",
 ]
 

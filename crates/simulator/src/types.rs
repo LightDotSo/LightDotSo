@@ -14,10 +14,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use ethers_main::{
-    abi::{Address, Uint},
+    abi::Address,
     types::{Bytes, Log, U256},
 };
-use foundry_evm::{trace::node::CallTraceNode, CallKind};
+use foundry_evm::trace::CallTraceArena;
 use revm::interpreter::InstructionResult;
 use serde::{Deserialize, Serialize};
 
@@ -27,7 +27,6 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SimulationRequest {
     /// Chain ID of the network
-    #[serde(rename = "chainId")]
     pub chain_id: u64,
     /// From address of the transaction
     pub from: Address,
@@ -36,29 +35,23 @@ pub struct SimulationRequest {
     /// Calldata of the transaction
     pub data: Option<Bytes>,
     /// Gas limit of the transaction
-    #[serde(rename = "gasLimit")]
     pub gas_limit: u64,
     /// Value to send
     pub value: Option<String>,
     /// Block number of the request
-    #[serde(rename = "blockNumber")]
     pub block_number: Option<u64>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SimulationResponse {
-    /// The simulation ID
-    pub simulation_id: u64,
     /// Gas used by the transaction
     pub gas_used: u64,
     /// Block number of the simulation
     pub block_number: u64,
     /// Whether the transaction was successful
     pub success: bool,
-    /// Trace of the transaction
-    pub trace: Vec<CallTrace>,
-    /// Formatted trace of the transaction
-    pub formatted_trace: Option<String>,
+    /// Trace of the transaction in the form of a CallTraceArena
+    pub arena: Option<CallTraceArena>,
     /// Logs of the transaction
     pub logs: Vec<Log>,
     /// Exit reason of the transaction
@@ -98,26 +91,6 @@ pub struct UserOperationRequest {
     pub paymaster_and_data: Option<Bytes>,
     /// Signature of the transaction
     pub signature: Option<Bytes>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-pub struct CallTrace {
-    #[serde(rename = "callType")]
-    pub call_type: CallKind,
-    pub from: Address,
-    pub to: Address,
-    pub value: Option<Uint>,
-}
-
-impl From<CallTraceNode> for CallTrace {
-    fn from(node: CallTraceNode) -> Self {
-        CallTrace {
-            call_type: node.kind(),
-            from: node.trace.caller,
-            to: node.trace.address,
-            value: Some(node.trace.value),
-        }
-    }
 }
 
 impl From<UserOperationRequest> for SimulationRequest {
