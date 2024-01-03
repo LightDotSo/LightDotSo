@@ -20,6 +20,7 @@ use crate::{
     config::InterpreterArgs,
     types::{CallTrace, InterpretationResponse},
 };
+use ethers_main::types::Log;
 use eyre::Result;
 use foundry_config::Chain;
 use foundry_evm::trace::{
@@ -53,6 +54,10 @@ impl Interpreter {
         Interpreter { decoder, etherscan_identifier }
     }
 
+    pub fn interpret(_logs: Vec<Log>, _traces: Vec<CallTrace>) -> Result<()> {
+        Ok(())
+    }
+
     pub async fn format_trace(&mut self, traces: Option<CallTraceArena>) -> Result<String> {
         let mut output = String::new();
         for trace in &mut traces.clone() {
@@ -75,11 +80,13 @@ impl Interpreter {
         // Run the interpreter
         let format_trace = self.format_trace(res.arena.clone()).await?;
 
+        let traces = res.arena.unwrap_or_default().arena.into_iter().map(CallTrace::from).collect();
+
         Ok(InterpretationResponse {
             gas_used: res.gas_used,
             block_number: res.block_number,
             success: res.success,
-            traces: res.arena.unwrap_or_default().arena.into_iter().map(CallTrace::from).collect(),
+            traces,
             logs: res.logs,
             exit_reason: res.exit_reason,
             formatted_trace: format_trace,
