@@ -17,7 +17,6 @@ use ethers_main::{
     abi::Address,
     types::{Bytes, Log, U256},
 };
-use eyre::Report;
 use foundry_evm::trace::CallTraceArena;
 use revm::interpreter::InstructionResult;
 use serde::{Deserialize, Serialize};
@@ -58,9 +57,6 @@ pub struct SimulationResponse {
     /// Exit reason of the transaction
     pub exit_reason: InstructionResult,
 }
-
-#[derive(Debug)]
-pub struct EvmError(pub Report);
 
 #[derive(Debug, Clone)]
 pub struct CallRawResult {

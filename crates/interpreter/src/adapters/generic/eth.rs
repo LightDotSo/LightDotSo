@@ -33,7 +33,9 @@ impl Adapter for EthAdapter {
         // If the calldata is empty, it's a value transfer
         request.call_data.filter(|data| !data.is_empty()).is_none() && request.value.is_some()
     }
-    async fn query(&self, _evm: &mut Evm, _request: InterpretationRequest) -> Result<()> {
+    async fn query(&self, evm: &mut Evm, request: InterpretationRequest) -> Result<()> {
+        let _before = evm.get_balance(request.from).await?;
+
         Ok(())
     }
 }
