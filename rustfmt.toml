@@ -6,4 +6,3 @@ wrap_comments = true
 binop_separator = "Back"
 trailing_comma = "Vertical"
 use_field_init_shorthand = true
-unstable_features = true
