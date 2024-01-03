@@ -19,6 +19,7 @@
 
 export enum Category {
   Root = "Root",
+  Demo = "Demo",
   New = "New",
   Wallets = "Wallets",
   Overview = "Overview",
@@ -35,6 +36,15 @@ export enum Category {
 // -----------------------------------------------------------------------------
 // Sub
 // -----------------------------------------------------------------------------
+
+export enum DemoSubCategory {
+  Overview = "Demo Overview",
+  UserOperation = "Demo UserOperation",
+  Transactions = "Demo Transactions",
+  Activity = "Demo Activity",
+  Owners = "Demo Owners",
+  Send = "Demo Send",
+}
 
 export enum UserOperationSubCategory {
   Details = "Details",
@@ -195,5 +205,57 @@ export const TITLES: Record<Category, CategoryObject> = {
     title: "Support",
     description: "Get help from our support team.",
     subcategories: {},
+  },
+  [Category.Demo]: {
+    title: "Demo",
+    description: "Demo",
+    subcategories: {
+      [DemoSubCategory.Overview]: {
+        title: "Demo Overview",
+        description: "[Demo] View your wallet overview.",
+        subcategories: {
+          [OverviewSubCategory.All]: {
+            title: "All",
+            description: "[Demo] View all your wallet assets.",
+            subcategories: {},
+          },
+          [OverviewSubCategory.Tokens]: {
+            title: "Tokens",
+            description: "[Demo] View your wallet tokens.",
+            subcategories: {},
+          },
+          [OverviewSubCategory.NFTs]: {
+            title: "NFTs",
+            description: "[Demo] View your wallet NFTs.",
+            subcategories: {},
+          },
+          [OverviewSubCategory.History]: {
+            title: "History",
+            description: "[Demo] View your wallet history.",
+            subcategories: {},
+          },
+        },
+      },
+      [DemoSubCategory.UserOperation]: {
+        title: "Demo User Operation",
+        description: "[Demo] Perform and execute transactions.",
+        subcategories: {},
+      },
+      [DemoSubCategory.Transactions]: {
+        title: "Demo Transactions",
+        description: "[Demo] Conduct and execute transactions.",
+        subcategories: {},
+      },
+      [DemoSubCategory.Activity]: {
+        title: "Demo Activity",
+        description: "[Demo] View your wallet activity.",
+        subcategories: {},
+      },
+      [DemoSubCategory.Owners]: {
+        title: "Demo Owners",
+        description: "[Demo] Manage and view your wallet owners.",
+        subcategories: {},
+      },
+    },
   },
 };

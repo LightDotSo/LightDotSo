@@ -16,8 +16,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { Metadata } from "next";
-import { ReactNode } from "react";
-import OriginalLayout from "@/app/(wallet)/[address]/overview/layout";
+import OriginalLayout from "@/app/(wallet)/[address]/op/layout";
 import { TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
@@ -25,27 +24,12 @@ import { TITLES } from "@/const/titles";
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: TITLES.Demo.subcategories.Overview.subcategories.All.title,
-  description: TITLES.Demo.subcategories.Overview.subcategories.All.description,
-};
-
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-type LayoutProps = {
-  children: ReactNode;
-  nav: ReactNode;
+  title: TITLES.Demo.subcategories.UserOperation.title,
+  description: TITLES.Demo.subcategories.UserOperation.description,
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export default async function Layout({ children, nav }: LayoutProps) {
-  return OriginalLayout({
-    params: { address: "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F" },
-    children,
-    nav,
-  });
-}
+export default OriginalLayout;

@@ -13,6 +13,18 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import OriginalPage from "@/app/(wallet)/[address]/overview/@nav/page";
+import type { Metadata } from "next";
+import OriginalLayout from "@/app/(wallet)/[address]/overview/nfts/layout";
+import { TITLES } from "@/const/titles";
 
-export default OriginalPage;
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
+export const metadata: Metadata = {
+  title: TITLES.Demo.subcategories.Overview.subcategories.NFTs.title,
+  description:
+    TITLES.Demo.subcategories.Overview.subcategories.NFTs.description,
+};
+
+export default OriginalLayout;

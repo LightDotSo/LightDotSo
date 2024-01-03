@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
+/* eslint-disable @next/next/no-img-element */
 // Copyright (C) 2023 Light, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -13,10 +15,25 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import OriginalPage from "@/app/(wallet)/[address]/overview/history/page";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+interface PageProps {
+  searchParams: {
+    pagination?: string;
+  };
+}
+
 // -----------------------------------------------------------------------------
 // Page
 // -----------------------------------------------------------------------------
 
-export default function Page() {
-  return null;
+export default async function Page({ searchParams }: PageProps) {
+  return OriginalPage({
+    params: { address: "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F" },
+    searchParams,
+  });
 }
