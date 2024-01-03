@@ -19,7 +19,7 @@ use eyre::Result;
 use lightdotso_simulator::types::SimulationRequest;
 use lightdotso_tracing::tracing::info;
 
-#[derive(Debug, Clone, Parser)]
+#[derive(Debug, Clone, Parser, Default)]
 pub struct InterpreterArgs {
     /// The etherscan API key
     #[clap(long, env = "ETHERSCAN_KEYS")]
@@ -27,7 +27,7 @@ pub struct InterpreterArgs {
 }
 
 impl InterpreterArgs {
-    pub async fn run(self, chain_id: u64, request: SimulationRequest) -> Result<()> {
+    pub async fn run(self, request: SimulationRequest) -> Result<String> {
         // Add info
         info!("InterpreterArgs run, starting...");
 
@@ -35,7 +35,7 @@ impl InterpreterArgs {
         info!("Config: {:?}", self);
 
         // Construct the interpreter
-        let mut interpreter = Interpreter::new(&self, chain_id).await;
+        let mut interpreter = Interpreter::new(&self, request.chain_id).await;
 
         info!("InterpreterArgs run, starting simulate...");
 
@@ -46,6 +46,6 @@ impl InterpreterArgs {
 
         info!("InterpreterArgs run, finished");
 
-        Ok(())
+        Ok(res)
     }
 }

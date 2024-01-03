@@ -17,4 +17,6 @@
   lightdotso-tracing = { workspace = true }
   revm = { workspace = true }
   serde = { workspace = true }
+
+[dev-dependencies]
   tokio = { workspace = true }
