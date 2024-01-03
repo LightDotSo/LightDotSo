@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import OriginalLayout from "@/app/(wallet)/[address]/owners/layout";
 import { TITLES } from "@/const/titles";
 
