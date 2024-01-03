@@ -251,6 +251,11 @@ export const TITLES: Record<Category, CategoryObject> = {
         description: "[Demo] View your wallet activity.",
         subcategories: {},
       },
+      [DemoSubCategory.Send]: {
+        title: "Demo Send",
+        description: "[Demo] Send assets to another wallet.",
+        subcategories: {},
+      },
       [DemoSubCategory.Owners]: {
         title: "Demo Owners",
         description: "[Demo] Manage and view your wallet owners.",
