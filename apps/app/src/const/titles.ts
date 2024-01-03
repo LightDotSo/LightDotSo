@@ -264,7 +264,7 @@ export const TITLES: Record<Category, CategoryObject> = {
         subcategories: {
           [TransactionsSubCategory.All]: {
             title: "Demo All",
-            description: "[Demo]  View all your wallet transactions.",
+            description: "[Demo] View all your wallet transactions.",
             subcategories: {},
           },
           [TransactionsSubCategory.Queue]: {
