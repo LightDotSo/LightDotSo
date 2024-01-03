@@ -6261,6 +6261,7 @@ dependencies = [
 name = "lightdotso-interpreter"
 version = "0.1.0"
 dependencies = [
+ "async-trait",
  "clap 4.4.0",
  "ethers 2.0.9 (git+https://github.com/gakonst/ethers-rs)",
  "eyre",

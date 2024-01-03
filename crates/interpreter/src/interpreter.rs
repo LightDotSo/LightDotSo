@@ -58,10 +58,10 @@ impl Interpreter<'_> {
         Interpreter { decoder, etherscan_identifier, adapters }
     }
 
-    pub fn interpret(&self, request: InterpretationRequest) -> Result<()> {
+    pub async fn interpret(&self, request: InterpretationRequest) -> Result<()> {
         for adapter in self.adapters {
             if adapter.matches(request.clone()) {
-                adapter.query(request.clone())?;
+                adapter.query(request.clone()).await?;
             }
         }
 

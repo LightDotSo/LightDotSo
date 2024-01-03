@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{adapter::Adapter, types::InterpretationRequest};
+use async_trait::async_trait;
 use eyre::Result;
 
 #[derive(Clone)]
@@ -25,12 +26,13 @@ impl EthAdapter {
     }
 }
 
+#[async_trait]
 impl Adapter for EthAdapter {
     fn matches(&self, request: InterpretationRequest) -> bool {
         // If the calldata is empty, it's a value transfer
         request.call_data.filter(|data| !data.is_empty()).is_some()
     }
-    fn query(&self, _request: InterpretationRequest) -> Result<()> {
+    async fn query(&self, _request: InterpretationRequest) -> Result<()> {
         Ok(())
     }
 }
