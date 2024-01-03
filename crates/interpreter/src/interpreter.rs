@@ -61,7 +61,7 @@ impl Interpreter<'_> {
     pub fn interpret(&self, request: InterpretationRequest) -> Result<()> {
         for adapter in self.adapters {
             if adapter.matches(request.clone()) {
-                adapter.query();
+                adapter.query(request.clone())?;
             }
         }
 

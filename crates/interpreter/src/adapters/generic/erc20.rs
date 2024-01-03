@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{adapter::Adapter, types::InterpretationRequest};
+use eyre::Result;
 
 #[derive(Clone)]
 pub(crate) struct ERC20Adapter {}
@@ -28,5 +29,7 @@ impl Adapter for ERC20Adapter {
     fn matches(&self, _request: InterpretationRequest) -> bool {
         true
     }
-    fn query(&self) {}
+    fn query(&self, _request: InterpretationRequest) -> Result<()> {
+        Ok(())
+    }
 }

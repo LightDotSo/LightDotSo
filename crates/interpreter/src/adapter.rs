@@ -14,8 +14,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::types::InterpretationRequest;
+use eyre::Result;
 
 pub trait Adapter: Sync + Send {
     fn matches(&self, request: InterpretationRequest) -> bool;
-    fn query(&self);
+    fn query(&self, request: InterpretationRequest) -> Result<()>;
 }

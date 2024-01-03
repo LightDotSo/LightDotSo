@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{adapter::Adapter, types::InterpretationRequest};
+use eyre::Result;
 
 #[derive(Clone)]
 pub(crate) struct EthAdapter {}
@@ -29,7 +30,9 @@ impl Adapter for EthAdapter {
         // If the calldata is empty, it's a value transfer
         request.call_data.filter(|data| !data.is_empty()).is_some()
     }
-    fn query(&self) {}
+    fn query(&self, _request: InterpretationRequest) -> Result<()> {
+        Ok(())
+    }
 }
 
 #[cfg(test)]
