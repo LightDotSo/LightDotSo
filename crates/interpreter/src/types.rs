@@ -75,6 +75,12 @@ pub struct InterpretationResponse {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct AssetChange {
+    pub address: Address,
+    pub value: Uint,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct CallTrace {
     pub call_type: CallKind,
     pub from: Address,

@@ -16,56 +16,16 @@
 // From: https://github.com/EnsoFinance/transaction-simulator/blob/64fe96afd52e5ff138ea0c22ad23aa4287346e7c/src/evm.rs
 // License: MIT
 
+use crate::types::{CallRawResult, EvmError};
 use ethers_main::{
     abi::{Address, Uint},
-    core::types::Log,
     types::Bytes,
 };
-use eyre::Report;
 use foundry_evm::{
     executor::{fork::CreateFork, opts::EvmOpts, Backend, Executor, ExecutorBuilder},
-    trace::{
-        identifier::SignaturesIdentifier, node::CallTraceNode, CallTraceArena,
-        CallTraceDecoderBuilder,
-    },
-    CallKind,
+    trace::{identifier::SignaturesIdentifier, CallTraceDecoderBuilder},
 };
-use revm::{interpreter::InstructionResult, primitives::Env};
-use serde::{Deserialize, Serialize};
-
-#[derive(Debug)]
-pub struct EvmError(pub Report);
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-pub struct CallTrace {
-    #[serde(rename = "callType")]
-    pub call_type: CallKind,
-    pub from: Address,
-    pub to: Address,
-    pub value: Uint,
-}
-
-#[derive(Debug, Clone)]
-pub struct CallRawResult {
-    pub gas_used: u64,
-    pub block_number: u64,
-    pub success: bool,
-    pub trace: Option<CallTraceArena>,
-    pub logs: Vec<Log>,
-    pub exit_reason: InstructionResult,
-    pub return_data: Bytes,
-}
-
-impl From<CallTraceNode> for CallTrace {
-    fn from(item: CallTraceNode) -> Self {
-        CallTrace {
-            call_type: item.trace.kind,
-            from: item.trace.caller,
-            to: item.trace.address,
-            value: item.trace.value,
-        }
-    }
-}
+use revm::primitives::Env;
 
 pub struct Evm {
     executor: Executor,
