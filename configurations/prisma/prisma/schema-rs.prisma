@@ -372,6 +372,8 @@ enum InterpretationAction {
   RECEIVE
   SWAP
   UPGRADE
+  // Unknown
+  UNKNOWN
 }
 
 model AssetChange {
