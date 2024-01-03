@@ -16,6 +16,7 @@
 use crate::{adapter::Adapter, types::InterpretationRequest};
 use async_trait::async_trait;
 use eyre::Result;
+use lightdotso_simulator::evm::Evm;
 
 #[derive(Clone)]
 pub(crate) struct EthAdapter {}
@@ -32,7 +33,7 @@ impl Adapter for EthAdapter {
         // If the calldata is empty, it's a value transfer
         request.call_data.filter(|data| !data.is_empty()).is_none() && request.value.is_some()
     }
-    async fn query(&self, _request: InterpretationRequest) -> Result<()> {
+    async fn query(&self, _evm: &mut Evm, _request: InterpretationRequest) -> Result<()> {
         Ok(())
     }
 }

@@ -6268,6 +6268,7 @@ dependencies = [
  "foundry-config",
  "foundry-evm",
  "lazy_static",
+ "lightdotso-contracts",
  "lightdotso-simulator",
  "lightdotso-tracing",
  "revm",

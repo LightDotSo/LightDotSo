@@ -16,6 +16,7 @@
   foundry-config = { workspace = true }
   foundry-evm = { workspace = true }
   lazy_static = { workspace = true }
+  lightdotso-contracts = { workspace = true }
   lightdotso-simulator = { workspace = true }
   lightdotso-tracing = { workspace = true }
   revm = { workspace = true }

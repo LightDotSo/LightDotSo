@@ -16,6 +16,7 @@
 use crate::{adapter::Adapter, types::InterpretationRequest};
 use async_trait::async_trait;
 use eyre::Result;
+use lightdotso_simulator::evm::Evm;
 
 #[derive(Clone)]
 pub(crate) struct ERC1155Adapter {}
@@ -31,7 +32,7 @@ impl Adapter for ERC1155Adapter {
     fn matches(&self, _request: InterpretationRequest) -> bool {
         true
     }
-    async fn query(&self, _request: InterpretationRequest) -> Result<()> {
+    async fn query(&self, _evm: &mut Evm, _request: InterpretationRequest) -> Result<()> {
         Ok(())
     }
 }

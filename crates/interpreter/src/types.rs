@@ -26,6 +26,10 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InterpretationRequest {
+    /// Block number of the request
+    pub block_number: Option<u64>,
+    /// Gas limit of the transaction
+    pub gas_limit: u64,
     /// From address of the transaction
     pub from: Address,
     /// To address of the transaction
@@ -45,6 +49,8 @@ pub struct InterpretationRequest {
 impl Default for InterpretationRequest {
     fn default() -> Self {
         Self {
+            block_number: None,
+            gas_limit: u64::MAX,
             from: Address::default(),
             to: Address::default(),
             chain_id: 0,

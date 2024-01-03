@@ -28,7 +28,8 @@ use foundry_evm::trace::{
     identifier::{EtherscanIdentifier, SignaturesIdentifier},
     CallTraceArena, CallTraceDecoder, CallTraceDecoderBuilder,
 };
-use lightdotso_simulator::{simulator::simulate, types::SimulationRequest};
+use lightdotso_contracts::provider::get_provider;
+use lightdotso_simulator::{evm::Evm, simulator::simulate, types::SimulationRequest};
 
 pub struct Interpreter<'a> {
     adapters: &'a [Box<dyn Adapter + Sync + Send>],
@@ -59,9 +60,12 @@ impl Interpreter<'_> {
     }
 
     pub async fn interpret(&self, request: InterpretationRequest) -> Result<()> {
+        let fork_url = get_provider(request.chain_id).await?.url().to_string();
+        let mut evm = Evm::new(None, fork_url, request.block_number, request.gas_limit, true).await;
+
         for adapter in self.adapters {
             if adapter.matches(request.clone()) {
-                adapter.query(request.clone()).await?;
+                adapter.query(&mut evm, request.clone()).await?;
             }
         }
 

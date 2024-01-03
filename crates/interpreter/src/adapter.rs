@@ -16,9 +16,10 @@
 use crate::types::InterpretationRequest;
 use async_trait::async_trait;
 use eyre::Result;
+use lightdotso_simulator::evm::Evm;
 
 #[async_trait]
 pub trait Adapter: Sync + Send {
     fn matches(&self, request: InterpretationRequest) -> bool;
-    async fn query(&self, request: InterpretationRequest) -> Result<()>;
+    async fn query(&self, evm: &mut Evm, request: InterpretationRequest) -> Result<()>;
 }

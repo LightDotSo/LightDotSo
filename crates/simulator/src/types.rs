@@ -79,8 +79,6 @@ pub struct UserOperationRequest {
     /// Specific for the request
     pub chain_id: u64,
     /// Block number of the request
-    /// Specific for the request
-    /// Block number of the request
     pub block_number: Option<u64>,
     /// From address of the transaction
     pub sender: Address,
