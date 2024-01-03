@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
+/* eslint-disable @next/next/no-img-element */
 // Copyright (C) 2023 Light, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -13,32 +15,37 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import OriginalLayout from "@/app/(wallet)/[address]/overview/layout";
+import { TITLES } from "@/const/titles";
+
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
+export const metadata: Metadata = {
+  title: TITLES.Demo.subcategories.Overview.title,
+  description: TITLES.Demo.subcategories.Overview.description,
+};
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type RootLayoutProps = {
+type LayoutProps = {
   children: ReactNode;
-  op: ReactNode;
-  send: ReactNode;
+  nav: ReactNode;
 };
 
 // -----------------------------------------------------------------------------
-// Layout
+// Original Layout
 // -----------------------------------------------------------------------------
 
-export default function RootLayout(props: RootLayoutProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <>
-      {props.children}
-      {props.op}
-      {props.send}
-    </>
-  );
+export default async function Layout({ children, nav }: LayoutProps) {
+  return OriginalLayout({
+    params: { address: "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F" },
+    children,
+    nav,
+  });
 }

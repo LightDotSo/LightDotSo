@@ -15,16 +15,21 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { redirect } from "next/navigation";
+import type { Metadata } from "next";
+import OriginalLayout from "@/app/(wallet)/[address]/activity/layout";
+import { TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
-// Page
+// Metadata
 // -----------------------------------------------------------------------------
 
-export default async function Page() {
-  // ---------------------------------------------------------------------------
-  // Redirect
-  // ---------------------------------------------------------------------------
+export const metadata: Metadata = {
+  title: TITLES.Demo.subcategories.Activity.title,
+  description: TITLES.Demo.subcategories.Activity.description,
+};
 
-  redirect("/demo/overview");
-}
+// -----------------------------------------------------------------------------
+// Original Layout
+// -----------------------------------------------------------------------------
+
+export default OriginalLayout;

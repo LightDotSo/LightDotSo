@@ -58,7 +58,7 @@ interface SettingsLayoutProps {
 }
 
 // -----------------------------------------------------------------------------
-// Page
+// Layout
 // -----------------------------------------------------------------------------
 
 export default function SettingsLayout({ children }: SettingsLayoutProps) {

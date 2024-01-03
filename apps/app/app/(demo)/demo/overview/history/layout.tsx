@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/img-redundant-alt */
-/* eslint-disable @next/next/no-img-element */
 // Copyright (C) 2023 Light, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -15,16 +13,22 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { redirect } from "next/navigation";
+import type { Metadata } from "next";
+import OriginalLayout from "@/app/(wallet)/[address]/overview/history/layout";
+import { TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
-// Page
+// Metadata
 // -----------------------------------------------------------------------------
 
-export default async function Page() {
-  // ---------------------------------------------------------------------------
-  // Redirect
-  // ---------------------------------------------------------------------------
+export const metadata: Metadata = {
+  title: TITLES.Demo.subcategories.Overview.subcategories.History.title,
+  description:
+    TITLES.Demo.subcategories.Overview.subcategories.History.description,
+};
 
-  redirect("/demo/overview");
-}
+// -----------------------------------------------------------------------------
+// Original Layout
+// -----------------------------------------------------------------------------
+
+export default OriginalLayout;

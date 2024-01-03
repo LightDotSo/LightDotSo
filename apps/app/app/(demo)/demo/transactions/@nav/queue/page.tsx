@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/img-redundant-alt */
-/* eslint-disable @next/next/no-img-element */
 // Copyright (C) 2023 Light, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -15,16 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { redirect } from "next/navigation";
+import OriginalPage from "@/app/(wallet)/[address]/transactions/@nav/queue/page";
 
 // -----------------------------------------------------------------------------
-// Page
+// Original Page
 // -----------------------------------------------------------------------------
 
-export default async function Page() {
-  // ---------------------------------------------------------------------------
-  // Redirect
-  // ---------------------------------------------------------------------------
-
-  redirect("/demo/overview");
-}
+export default OriginalPage;

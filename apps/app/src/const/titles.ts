@@ -19,6 +19,7 @@
 
 export enum Category {
   Root = "Root",
+  Demo = "Demo",
   New = "New",
   Wallets = "Wallets",
   Overview = "Overview",
@@ -36,6 +37,15 @@ export enum Category {
 // Sub
 // -----------------------------------------------------------------------------
 
+export enum DemoSubCategory {
+  Overview = Category.Overview,
+  UserOperation = Category.UserOperation,
+  Transactions = Category.Transactions,
+  Activity = Category.Activity,
+  Owners = Category.Owners,
+  Send = Category.Send,
+}
+
 export enum UserOperationSubCategory {
   Details = "Details",
 }
@@ -44,6 +54,12 @@ export enum OverviewSubCategory {
   All = "All",
   Tokens = "Tokens",
   NFTs = "NFTs",
+  History = "History",
+}
+
+export enum TransactionsSubCategory {
+  All = "All",
+  Queue = "Queue",
   History = "History",
 }
 
@@ -123,7 +139,23 @@ export const TITLES: Record<Category, CategoryObject> = {
   [Category.Transactions]: {
     title: "Transactions",
     description: "Conduct and execute transactions.",
-    subcategories: {},
+    subcategories: {
+      [TransactionsSubCategory.All]: {
+        title: "All",
+        description: "View all your wallet transactions.",
+        subcategories: {},
+      },
+      [TransactionsSubCategory.Queue]: {
+        title: "Queue",
+        description: "View your queued transactions.",
+        subcategories: {},
+      },
+      [TransactionsSubCategory.History]: {
+        title: "History",
+        description: "View your transaction history.",
+        subcategories: {},
+      },
+    },
   },
   [Category.Profile]: {
     title: "Profile",
@@ -195,5 +227,78 @@ export const TITLES: Record<Category, CategoryObject> = {
     title: "Support",
     description: "Get help from our support team.",
     subcategories: {},
+  },
+  [Category.Demo]: {
+    title: "Demo",
+    description: "Demo",
+    subcategories: {
+      [DemoSubCategory.Overview]: {
+        title: "Demo Overview",
+        description: "[Demo] View your wallet overview.",
+        subcategories: {
+          [OverviewSubCategory.All]: {
+            title: "All",
+            description: "View all your wallet assets.",
+            subcategories: {},
+          },
+          [OverviewSubCategory.Tokens]: {
+            title: "Tokens",
+            description: "[Demo] View your wallet tokens.",
+            subcategories: {},
+          },
+          [OverviewSubCategory.NFTs]: {
+            title: "NFTs",
+            description: "[Demo] View your wallet NFTs.",
+            subcategories: {},
+          },
+          [OverviewSubCategory.History]: {
+            title: "History",
+            description: "[Demo] View your wallet history.",
+            subcategories: {},
+          },
+        },
+      },
+      [DemoSubCategory.Transactions]: {
+        title: "Demo Transactions",
+        description: "[Demo] Conduct and execute transactions.",
+        subcategories: {
+          [TransactionsSubCategory.All]: {
+            title: "Demo All",
+            description: "[Demo] View all your wallet transactions.",
+            subcategories: {},
+          },
+          [TransactionsSubCategory.Queue]: {
+            title: "Demo Queue",
+            description: "[Demo] View your queued transactions.",
+            subcategories: {},
+          },
+          [TransactionsSubCategory.History]: {
+            title: "Demo History",
+            description: "[Demo] View your transaction history.",
+            subcategories: {},
+          },
+        },
+      },
+      [DemoSubCategory.UserOperation]: {
+        title: "Demo User Operation",
+        description: "[Demo] Perform and execute transactions.",
+        subcategories: {},
+      },
+      [DemoSubCategory.Activity]: {
+        title: "Demo Activity",
+        description: "[Demo] View your wallet activity.",
+        subcategories: {},
+      },
+      [DemoSubCategory.Send]: {
+        title: "Demo Send",
+        description: "[Demo] Send assets to another wallet.",
+        subcategories: {},
+      },
+      [DemoSubCategory.Owners]: {
+        title: "Demo Owners",
+        description: "[Demo] Manage and view your wallet owners.",
+        subcategories: {},
+      },
+    },
   },
 };

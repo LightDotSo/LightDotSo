@@ -15,16 +15,25 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { redirect } from "next/navigation";
+import OriginalPage from "@/app/(wallet)/[address]/@op/(.)op/page";
 
 // -----------------------------------------------------------------------------
-// Page
+// Props
 // -----------------------------------------------------------------------------
 
-export default async function Page() {
-  // ---------------------------------------------------------------------------
-  // Redirect
-  // ---------------------------------------------------------------------------
+interface PageProps {
+  searchParams: {
+    userOperations?: string;
+  };
+}
 
-  redirect("/demo/overview");
+// -----------------------------------------------------------------------------
+// Original Page
+// -----------------------------------------------------------------------------
+
+export default async function Page({ searchParams }: PageProps) {
+  return OriginalPage({
+    params: { address: "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F" },
+    searchParams,
+  });
 }
