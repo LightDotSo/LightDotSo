@@ -13,22 +13,30 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// From: https://github.com/EnsoFinance/transaction-simulator/blob/64fe96afd52e5ff138ea0c22ad23aa4287346e7c/src/evm.rs
+// License: MIT
+
 use eyre::Result;
 use foundry_config::Chain;
 use foundry_evm::trace::{
     identifier::{EtherscanIdentifier, SignaturesIdentifier},
     CallTraceArena, CallTraceDecoder, CallTraceDecoderBuilder,
 };
+use lightdotso_simulator::{simulator::simulate, types::SimulationRequest};
 
-pub struct Intepreter {
+use crate::config::InterpreterArgs;
+
+pub struct Interpreter {
     decoder: CallTraceDecoder,
     etherscan_identifier: Option<EtherscanIdentifier>,
 }
 
-impl Intepreter {
-    pub async fn new(chain_id: u64, etherscan_key: Option<String>) -> Self {
-        let foundry_config =
-            foundry_config::Config { etherscan_api_key: etherscan_key, ..Default::default() };
+impl Interpreter {
+    pub async fn new(args: &InterpreterArgs, chain_id: u64) -> Self {
+        let foundry_config = foundry_config::Config {
+            etherscan_api_key: args.clone().etherscan_key,
+            ..Default::default()
+        };
 
         let chain: Chain = chain_id.into();
         let etherscan_identifier = EtherscanIdentifier::new(&foundry_config, Some(chain)).ok();
@@ -40,10 +48,10 @@ impl Intepreter {
             decoder.add_signature_identifier(identifier);
         }
 
-        Intepreter { decoder, etherscan_identifier }
+        Interpreter { decoder, etherscan_identifier }
     }
 
-    pub async fn format_trace(&mut self, traces: Vec<CallTraceArena>) -> Result<String> {
+    pub async fn format_trace(&mut self, traces: Option<CallTraceArena>) -> Result<String> {
         let mut output = String::new();
         for trace in &mut traces.clone() {
             if let Some(identifier) = &mut self.etherscan_identifier {
@@ -53,5 +61,15 @@ impl Intepreter {
             output.push_str(format!("{trace}").as_str());
         }
         Ok(output)
+    }
+
+    pub async fn run_with_simulate(&mut self, request: SimulationRequest) -> Result<String> {
+        // Simulate the user operation
+        let res = simulate(request).await?;
+
+        // Run the interpreter
+        let format_trace = self.format_trace(res.arena).await?;
+
+        Ok(format_trace)
     }
 }

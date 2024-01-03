@@ -67,6 +67,7 @@ async fn run(
         gas_used: result.gas_used,
         block_number: result.block_number,
         success: result.success,
+        arena: result.trace.clone(),
         trace: result.trace.unwrap_or_default().arena.into_iter().map(CallTrace::from).collect(),
         logs: result.logs,
         exit_reason: result.exit_reason,

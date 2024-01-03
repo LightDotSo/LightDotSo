@@ -9,8 +9,6 @@
   repository.workspace = true
 
 [dependencies]
-  async-trait = { workspace = true }
-  clap = { workspace = true }
   ethers-main = { workspace = true }
   eyre = { workspace = true }
   foundry-config = { workspace = true }
@@ -19,5 +17,4 @@
   lightdotso-tracing = { workspace = true }
   revm = { workspace = true }
   serde = { workspace = true }
-  serde_json = { workspace = true }
   tokio = { workspace = true }

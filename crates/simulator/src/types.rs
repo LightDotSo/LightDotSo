@@ -17,7 +17,10 @@ use ethers_main::{
     abi::{Address, Uint},
     types::{Bytes, Log, U256},
 };
-use foundry_evm::{trace::node::CallTraceNode, CallKind};
+use foundry_evm::{
+    trace::{node::CallTraceNode, CallTraceArena},
+    CallKind,
+};
 use revm::interpreter::InstructionResult;
 use serde::{Deserialize, Serialize};
 
@@ -50,6 +53,8 @@ pub struct SimulationResponse {
     pub block_number: u64,
     /// Whether the transaction was successful
     pub success: bool,
+    /// Trace of the transaction in the form of a CallTraceArena
+    pub arena: Option<CallTraceArena>,
     /// Trace of the transaction
     pub trace: Vec<CallTrace>,
     /// Logs of the transaction
