@@ -27,7 +27,7 @@ async fn test_integration_eth_transfer() -> Result<()> {
         // fiveoutofnine.eth
         to: "0xA85572Cd96f1643458f17340b6f0D6549Af482F5".parse()?,
         data: None,
-        value: Some("0x1".to_string()),
+        value: Some(1),
         gas_limit: u64::MAX,
         block_number: None,
     };

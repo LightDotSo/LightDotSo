@@ -37,7 +37,7 @@ pub struct SimulationRequest {
     /// Gas limit of the transaction
     pub gas_limit: u64,
     /// Value to send
-    pub value: Option<String>,
+    pub value: Option<u64>,
     /// Block number of the request
     pub block_number: Option<u64>,
 }

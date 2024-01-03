@@ -30,7 +30,7 @@ impl EthAdapter {
 impl Adapter for EthAdapter {
     fn matches(&self, request: InterpretationRequest) -> bool {
         // If the calldata is empty, it's a value transfer
-        request.call_data.filter(|data| !data.is_empty()).is_some()
+        request.call_data.filter(|data| !data.is_empty()).is_none() && request.value.is_some()
     }
     async fn query(&self, _request: InterpretationRequest) -> Result<()> {
         Ok(())
@@ -45,11 +45,14 @@ mod tests {
     fn test_check_call_data_with_empty() {
         let eth_adapter = EthAdapter::new();
 
-        let request =
-            InterpretationRequest { call_data: Some(vec![].into()), ..Default::default() };
+        let request = InterpretationRequest {
+            call_data: Some(vec![].into()),
+            value: Some(1),
+            ..Default::default()
+        };
 
-        // Assume that the check_call_data function returns true if call_data is empty
-        assert!(!eth_adapter.matches(request));
+        // Assume that the check_call_data function returns true if call_data is empty and value is not None
+        assert!(eth_adapter.matches(request));
     }
 
     #[test]
@@ -60,7 +63,7 @@ mod tests {
             InterpretationRequest { call_data: Some(vec![1, 2, 3].into()), ..Default::default() };
 
         // Assume that the check_call_data function returns false if call_data is not empty
-        assert!(eth_adapter.matches(request));
+        assert!(!eth_adapter.matches(request));
     }
 
     #[test]
@@ -69,7 +72,7 @@ mod tests {
 
         let request = InterpretationRequest::default();
 
-        // Assume that the check_call_data function returns true if call_data is None
+        // Assume that the check_call_data function returns true if call_data and value is None
         assert!(!eth_adapter.matches(request));
     }
 }

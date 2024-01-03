@@ -23,42 +23,20 @@ use crate::{
 use ethers_main::abi::Uint;
 use eyre::{eyre, Result};
 use lightdotso_contracts::provider::get_provider;
-use std::str::FromStr;
 
 async fn run(
     evm: &mut Evm,
-    transaction: SimulationRequest,
+    request: SimulationRequest,
     commit: bool,
 ) -> Result<SimulationResponse> {
-    // Accept value in hex or decimal formats
-    let value = if let Some(value) = transaction.value {
-        if value.starts_with("0x") {
-            Some(
-                Uint::from_str(value.as_str())
-                    .map_err(|_err| eyre!("Failed to parse value as hex: {}", value))?,
-            )
-        } else {
-            Some(
-                Uint::from_dec_str(value.as_str())
-                    .map_err(|_err| eyre!("Failed to parse value as dec: {}", value))?,
-            )
-        }
-    } else {
-        None
-    };
+    let value = request.value.map(Uint::from);
 
     let result = if commit {
-        evm.call_raw_committing(
-            transaction.from,
-            transaction.to,
-            value,
-            transaction.data,
-            transaction.gas_limit,
-        )
-        .await
-        .map_err(|_err| eyre!("Failed to commit transaction"))?
+        evm.call_raw_committing(request.from, request.to, value, request.data, request.gas_limit)
+            .await
+            .map_err(|_err| eyre!("Failed to commit transaction"))?
     } else {
-        evm.call_raw(transaction.from, transaction.to, value, transaction.data)
+        evm.call_raw(request.from, request.to, value, request.data)
             .await
             .map_err(|_err| eyre!("Failed to call transaction"))?
     };

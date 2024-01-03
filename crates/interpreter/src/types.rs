@@ -34,6 +34,8 @@ pub struct InterpretationRequest {
     pub chain_id: u64,
     /// Call data of the transaction
     pub call_data: Option<Bytes>,
+    /// Value to send
+    pub value: Option<u64>,
     /// Trace of the transaction
     pub traces: Vec<CallTrace>,
     /// Logs of the transaction
@@ -47,6 +49,7 @@ impl Default for InterpretationRequest {
             to: Address::default(),
             chain_id: 0,
             call_data: Some(Bytes::new()),
+            value: None,
             traces: Vec::new(),
             logs: Vec::new(),
         }
