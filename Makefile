@@ -44,7 +44,7 @@ install: $(INSTALL_PARAMS) ## Install all dependencies.
 .PHONY: cargo-setup
 cargo-setup: ## Install Cargo dependencies.
 	rustup toolchain install nightly
-	rustup component add rustfmt
+	rustup component add rustfmt --toolchain nightly
 
 .PHONY: ci-setup
 ci-setup: solc-setup ## Install CI dependencies.
