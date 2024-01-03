@@ -13,10 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { HttpResponse, http } from "msw";
+import { handlers as walletsHandlers } from "./wallets";
 
-export const handlers = [
-  http.get("https://api.example.com/user", () => {
-    return HttpResponse.json({ name: "John Maverick" });
-  }),
-];
+export const handlers = [...walletsHandlers];

@@ -14,6 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { setupServer } from "msw/node";
-import { handlers } from "./handlers";
+import { handlers } from "@/msw/handlers";
 
 export const server = setupServer(...handlers);
