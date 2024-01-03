@@ -104,6 +104,7 @@ impl Interpreter<'_> {
             logs: res.logs,
             exit_reason: res.exit_reason,
             formatted_trace: format_trace,
+            asset_changes: vec![],
         })
     }
 }

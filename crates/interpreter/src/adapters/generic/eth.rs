@@ -13,7 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{adapter::Adapter, types::InterpretationRequest};
+use crate::{
+    adapter::Adapter,
+    types::{AdapterResponse, InterpretationRequest},
+};
 use async_trait::async_trait;
 use eyre::Result;
 use lightdotso_simulator::evm::Evm;
@@ -33,10 +36,14 @@ impl Adapter for EthAdapter {
         // If the calldata is empty, it's a value transfer
         request.call_data.filter(|data| !data.is_empty()).is_none() && request.value.is_some()
     }
-    async fn query(&self, evm: &mut Evm, request: InterpretationRequest) -> Result<()> {
+    async fn query(
+        &self,
+        evm: &mut Evm,
+        request: InterpretationRequest,
+    ) -> Result<AdapterResponse> {
         let _before = evm.get_balance(request.from).await?;
 
-        Ok(())
+        Ok(AdapterResponse { asset_changes: vec![] })
     }
 }
 

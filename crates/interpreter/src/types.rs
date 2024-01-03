@@ -78,12 +78,30 @@ pub struct InterpretationResponse {
     pub exit_reason: InstructionResult,
     /// Formatted trace of the transaction
     pub formatted_trace: String,
+    /// Changes in the assets of the transaction
+    pub asset_changes: Vec<AssetChange>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct AdapterResponse {
+    /// Changes in the assets of the transaction
+    pub asset_changes: Vec<AssetChange>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct AssetChange {
     pub address: Address,
-    pub value: Uint,
+    pub before_amount: Uint,
+    pub after_amount: Uint,
+    pub amount: Uint,
+
+    pub token: AssetToken,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct AssetToken {
+    pub address: Address,
+    pub token_id: Option<Uint>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
