@@ -38,12 +38,12 @@ export enum Category {
 // -----------------------------------------------------------------------------
 
 export enum DemoSubCategory {
-  Overview = "Demo Overview",
-  UserOperation = "Demo UserOperation",
-  Transactions = "Demo Transactions",
-  Activity = "Demo Activity",
-  Owners = "Demo Owners",
-  Send = "Demo Send",
+  Overview = Category.Overview,
+  UserOperation = Category.UserOperation,
+  Transactions = Category.Transactions,
+  Activity = Category.Activity,
+  Owners = Category.Owners,
+  Send = Category.Send,
 }
 
 export enum UserOperationSubCategory {
