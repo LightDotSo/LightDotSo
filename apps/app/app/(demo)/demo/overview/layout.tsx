@@ -39,7 +39,7 @@ type LayoutProps = {
 };
 
 // -----------------------------------------------------------------------------
-// Component
+// Original Layout
 // -----------------------------------------------------------------------------
 
 export default async function Layout({ children, nav }: LayoutProps) {

@@ -15,4 +15,8 @@
 
 import OriginalPage from "@/app/(wallet)/[address]/transactions/@nav/history/page";
 
+// -----------------------------------------------------------------------------
+// Original Page
+// -----------------------------------------------------------------------------
+
 export default OriginalPage;

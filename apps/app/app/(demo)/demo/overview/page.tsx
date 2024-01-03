@@ -18,7 +18,7 @@
 import OriginalPage from "@/app/(wallet)/[address]/overview/page";
 
 // -----------------------------------------------------------------------------
-// Page
+// Original Page
 // -----------------------------------------------------------------------------
 
 export default async function Page() {
