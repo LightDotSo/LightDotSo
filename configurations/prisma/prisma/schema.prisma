@@ -378,7 +378,9 @@ model InterpretationAction {
   // Core
   // ---------------------------------------------------------------------------
 
-  id String @id
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // ---------------------------------------------------------------------------
   // Many-to-many
