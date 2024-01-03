@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { BASE_API_URL, BASE_LOCAL_ADMIN_URL } from "@/const/api";
 import { http, HttpResponse } from "msw";
+import { BASE_API_URL, BASE_LOCAL_ADMIN_URL } from "@/const/api";
 
 export const getWallet = (url: string) =>
   http.get(`${url}/v1/wallet/get`, () => {
