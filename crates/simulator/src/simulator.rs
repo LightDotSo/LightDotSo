@@ -18,7 +18,7 @@
 
 use crate::{
     evm::Evm,
-    types::{CallTrace, SimulationRequest, SimulationResponse},
+    types::{SimulationRequest, SimulationResponse},
 };
 use ethers_main::abi::Uint;
 use eyre::{eyre, Result};
@@ -68,7 +68,6 @@ async fn run(
         block_number: result.block_number,
         success: result.success,
         arena: result.trace.clone(),
-        trace: result.trace.unwrap_or_default().arena.into_iter().map(CallTrace::from).collect(),
         logs: result.logs,
         exit_reason: result.exit_reason,
     })

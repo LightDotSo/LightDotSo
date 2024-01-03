@@ -16,6 +16,8 @@
   foundry-evm = { workspace = true }
   lightdotso-simulator = { workspace = true }
   lightdotso-tracing = { workspace = true }
+  revm = { workspace = true }
+  serde = { workspace = true }
 
 [dev-dependencies]
   tokio = { workspace = true }

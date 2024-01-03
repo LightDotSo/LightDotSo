@@ -6268,6 +6268,8 @@ dependencies = [
  "foundry-evm",
  "lightdotso-simulator",
  "lightdotso-tracing",
+ "revm",
+ "serde",
  "tokio",
 ]
 

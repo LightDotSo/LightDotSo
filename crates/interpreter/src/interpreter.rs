@@ -16,6 +16,10 @@
 // From: https://github.com/EnsoFinance/transaction-simulator/blob/64fe96afd52e5ff138ea0c22ad23aa4287346e7c/src/evm.rs
 // License: MIT
 
+use crate::{
+    config::InterpreterArgs,
+    types::{CallTrace, InterpretationResponse},
+};
 use eyre::Result;
 use foundry_config::Chain;
 use foundry_evm::trace::{
@@ -23,8 +27,6 @@ use foundry_evm::trace::{
     CallTraceArena, CallTraceDecoder, CallTraceDecoderBuilder,
 };
 use lightdotso_simulator::{simulator::simulate, types::SimulationRequest};
-
-use crate::config::InterpreterArgs;
 
 pub struct Interpreter {
     decoder: CallTraceDecoder,
@@ -63,13 +65,24 @@ impl Interpreter {
         Ok(output)
     }
 
-    pub async fn run_with_simulate(&mut self, request: SimulationRequest) -> Result<String> {
+    pub async fn run_with_simulate(
+        &mut self,
+        request: SimulationRequest,
+    ) -> Result<InterpretationResponse> {
         // Simulate the user operation
         let res = simulate(request).await?;
 
         // Run the interpreter
-        let format_trace = self.format_trace(res.arena).await?;
+        let format_trace = self.format_trace(res.arena.clone()).await?;
 
-        Ok(format_trace)
+        Ok(InterpretationResponse {
+            gas_used: res.gas_used,
+            block_number: res.block_number,
+            success: res.success,
+            traces: res.arena.unwrap_or_default().arena.into_iter().map(CallTrace::from).collect(),
+            logs: res.logs,
+            exit_reason: res.exit_reason,
+            formatted_trace: format_trace,
+        })
     }
 }

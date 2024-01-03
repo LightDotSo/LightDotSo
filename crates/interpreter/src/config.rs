@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::interpreter::Interpreter;
+use crate::{interpreter::Interpreter, types::InterpretationResponse};
 use clap::Parser;
 use eyre::Result;
 use lightdotso_simulator::types::SimulationRequest;
@@ -27,7 +27,7 @@ pub struct InterpreterArgs {
 }
 
 impl InterpreterArgs {
-    pub async fn run(self, request: SimulationRequest) -> Result<String> {
+    pub async fn run(self, request: SimulationRequest) -> Result<InterpretationResponse> {
         // Add info
         info!("InterpreterArgs run, starting...");
 
