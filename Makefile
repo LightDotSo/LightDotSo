@@ -25,7 +25,7 @@ ifdef CI
   endif
   else
     ifeq ($(DOCKER),true)
-      INSTALL_PARAMS = docker-setup
+      INSTALL_PARAMS = cargo-setup docker-setup
     else
       INSTALL_PARAMS = ios-setup mac-setup
     endif
@@ -40,6 +40,10 @@ help: ## Display this help.
 ##@ Install
 
 install: $(INSTALL_PARAMS) ## Install all dependencies.
+
+.PHONY: cargo-setup
+cargo-setup: ## Install Cargo dependencies.
+	rustup toolchain install nightly
 
 .PHONY: ci-setup
 ci-setup: solc-setup ## Install CI dependencies.
