@@ -3,6 +3,7 @@ module.exports = {
   "*.{js,ts,tsx}": [
     // "pnpm run eslint:cmd --fix",
     "pnpm run oxlint:cmd --fix",
+    "pnpm run prettier:cmd --write",
   ],
   "*.{ts,tsx}": ["sh -c 'pnpm run tsc:turbo && echo \"\"'"],
   "*.{md,json,yml}": ["pnpm run prettier:cmd --write"],
