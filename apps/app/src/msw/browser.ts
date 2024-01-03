@@ -13,22 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export async function register() {
-  console.log(
-    "[instrumentation] server.listen()...",
-    process.env.NEXT_RUNTIME,
-    typeof window,
-  );
+import { setupWorker } from "msw/browser";
+import { handlers } from "./handlers";
 
-  if (process.env.NEXT_RUNTIME === "nodejs") {
-    console.log("MOCKING ENABLED FOR:", process.pid);
-    await import("./instrumentation.node");
-
-    const { server } = await import("./src/msw/node");
-    server.listen();
-
-    Reflect.set(fetch, "foo", "bar");
-
-    console.log({ fetch });
-  }
-}
+export const worker = setupWorker(...handlers);
