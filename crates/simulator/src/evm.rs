@@ -20,13 +20,11 @@ use ethers_main::{
     types::Bytes,
 };
 use eyre::Report;
-use foundry_config::Chain;
 use foundry_evm::{
     executor::{fork::CreateFork, opts::EvmOpts, Backend, Executor, ExecutorBuilder},
     trace::{
-        identifier::{EtherscanIdentifier, SignaturesIdentifier},
-        node::CallTraceNode,
-        CallTraceArena, CallTraceDecoder, CallTraceDecoderBuilder,
+        identifier::SignaturesIdentifier, node::CallTraceNode, CallTraceArena,
+        CallTraceDecoderBuilder,
     },
     CallKind,
 };
@@ -54,7 +52,6 @@ pub struct CallRawResult {
     pub logs: Vec<Log>,
     pub exit_reason: InstructionResult,
     pub return_data: Bytes,
-    pub formatted_trace: Option<String>,
 }
 
 impl From<CallTraceNode> for CallTrace {
@@ -70,8 +67,6 @@ impl From<CallTraceNode> for CallTrace {
 
 pub struct Evm {
     executor: Executor,
-    decoder: CallTraceDecoder,
-    etherscan_identifier: Option<EtherscanIdentifier>,
 }
 
 impl Evm {
@@ -81,7 +76,6 @@ impl Evm {
         fork_block_number: Option<u64>,
         gas_limit: u64,
         tracing: bool,
-        etherscan_key: Option<String>,
     ) -> Self {
         let evm_opts = EvmOpts {
             fork_url: Some(fork_url.clone()),
@@ -117,11 +111,6 @@ impl Evm {
 
         let executor = builder.build(db.await);
 
-        let foundry_config =
-            foundry_config::Config { etherscan_api_key: etherscan_key, ..Default::default() };
-
-        let chain: Chain = fork_opts.env.cfg.chain_id.to::<u64>().into();
-        let etherscan_identifier = EtherscanIdentifier::new(&foundry_config, Some(chain)).ok();
         let mut decoder = CallTraceDecoderBuilder::new().with_verbosity(5).build();
 
         if let Ok(identifier) =
@@ -130,7 +119,7 @@ impl Evm {
             decoder.add_signature_identifier(identifier);
         }
 
-        Evm { executor, decoder, etherscan_identifier }
+        Evm { executor }
     }
 
     pub async fn call_raw(
@@ -139,7 +128,6 @@ impl Evm {
         to: Address,
         value: Option<Uint>,
         data: Option<Bytes>,
-        format_trace: bool,
     ) -> Result<CallRawResult, EvmError> {
         let res = self
             .executor
@@ -149,20 +137,6 @@ impl Evm {
                 EvmError(err)
             })?;
 
-        let formatted_trace = if format_trace {
-            let mut output = String::new();
-            for trace in &mut res.traces.clone() {
-                if let Some(identifier) = &mut self.etherscan_identifier {
-                    self.decoder.identify(trace, identifier);
-                }
-                self.decoder.decode(trace).await;
-                output.push_str(format!("{trace}").as_str());
-            }
-            Some(output)
-        } else {
-            None
-        };
-
         Ok(CallRawResult {
             gas_used: res.gas_used,
             block_number: res.env.block.number.to(),
@@ -171,7 +145,6 @@ impl Evm {
             logs: res.logs,
             exit_reason: res.exit_reason,
             return_data: Bytes(res.result),
-            formatted_trace,
         })
     }
 
@@ -182,7 +155,6 @@ impl Evm {
         value: Option<Uint>,
         data: Option<Bytes>,
         gas_limit: u64,
-        format_trace: bool,
     ) -> Result<CallRawResult, EvmError> {
         self.executor.set_gas_limit(gas_limit.into());
         let res = self
@@ -193,20 +165,6 @@ impl Evm {
                 EvmError(err)
             })?;
 
-        let formatted_trace = if format_trace {
-            let mut output = String::new();
-            for trace in &mut res.traces.clone() {
-                if let Some(identifier) = &mut self.etherscan_identifier {
-                    self.decoder.identify(trace, identifier);
-                }
-                self.decoder.decode(trace).await;
-                output.push_str(format!("{trace}").as_str());
-            }
-            Some(output)
-        } else {
-            None
-        };
-
         Ok(CallRawResult {
             gas_used: res.gas_used,
             block_number: res.env.block.number.to(),
@@ -215,7 +173,6 @@ impl Evm {
             logs: res.logs,
             exit_reason: res.exit_reason,
             return_data: Bytes(res.result),
-            formatted_trace,
         })
     }
 

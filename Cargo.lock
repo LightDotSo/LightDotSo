@@ -6260,6 +6260,14 @@ dependencies = [
 [[package]]
 name = "lightdotso-interpreter"
 version = "0.1.0"
+dependencies = [
+ "ethers 2.0.9 (git+https://github.com/gakonst/ethers-rs)",
+ "eyre",
+ "foundry-config",
+ "foundry-evm",
+ "revm",
+ "serde",
+]
 
 [[package]]
 name = "lightdotso-jsonrpsee"

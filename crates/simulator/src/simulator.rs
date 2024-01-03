@@ -54,12 +54,11 @@ async fn run(
             value,
             transaction.data,
             transaction.gas_limit,
-            true,
         )
         .await
         .map_err(|_err| eyre!("Failed to commit transaction"))?
     } else {
-        evm.call_raw(transaction.from, transaction.to, value, transaction.data, true)
+        evm.call_raw(transaction.from, transaction.to, value, transaction.data)
             .await
             .map_err(|_err| eyre!("Failed to call transaction"))?
     };
@@ -71,14 +70,13 @@ async fn run(
         trace: result.trace.unwrap_or_default().arena.into_iter().map(CallTrace::from).collect(),
         logs: result.logs,
         exit_reason: result.exit_reason,
-        formatted_trace: result.formatted_trace,
     })
 }
 
 pub async fn simulate(transaction: SimulationRequest) -> Result<SimulationResponse> {
     let fork_url = get_provider(transaction.chain_id).await?.url().to_string();
     let mut evm =
-        Evm::new(None, fork_url, transaction.block_number, transaction.gas_limit, true, None).await;
+        Evm::new(None, fork_url, transaction.block_number, transaction.gas_limit, true).await;
 
     let response = run(&mut evm, transaction, false).await?;
 
@@ -93,7 +91,7 @@ pub async fn simulate_bundle(
 
     let fork_url = get_provider(first_chain_id).await?.url().to_string();
     let mut evm =
-        Evm::new(None, fork_url, first_block_number, transactions[0].gas_limit, true, None).await;
+        Evm::new(None, fork_url, first_block_number, transactions[0].gas_limit, true).await;
 
     let mut response = Vec::with_capacity(transactions.len());
     for transaction in transactions {

@@ -52,8 +52,6 @@ pub struct SimulationResponse {
     pub success: bool,
     /// Trace of the transaction
     pub trace: Vec<CallTrace>,
-    /// Formatted trace of the transaction
-    pub formatted_trace: Option<String>,
     /// Logs of the transaction
     pub logs: Vec<Log>,
     /// Exit reason of the transaction
