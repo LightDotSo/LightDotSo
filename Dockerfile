@@ -94,7 +94,6 @@ COPY --from=builder /app/target/release/paymaster /usr/local/bin
 COPY --from=builder /app/target/release/polling /usr/local/bin
 COPY --from=builder /app/target/release/prometheus /usr/local/bin
 COPY --from=builder /app/target/release/rpc /usr/local/bin
-COPY --from=builder /app/target/release/simulator /usr/local/bin
 
 # Run the binary.
 EXPOSE 3002
