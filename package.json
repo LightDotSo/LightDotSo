@@ -78,7 +78,7 @@
   "dependencies": {
     "next": "14.0.4",
     "solc": "0.8.18",
-    "wagmi": "1.4.12"
+    "wagmi": "1.4.13"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.0",
@@ -109,8 +109,8 @@
     "@types/node": "^20.10.6",
     "@types/react": "^18.2.46",
     "@types/react-dom": "^18.2.18",
-    "@typescript-eslint/eslint-plugin": "^6.16.0",
-    "@typescript-eslint/parser": "^6.16.0",
+    "@typescript-eslint/eslint-plugin": "^6.17.0",
+    "@typescript-eslint/parser": "^6.17.0",
     "@viem/anvil": "^0.0.7",
     "@vitest/coverage-v8": "^1.1.1",
     "@vitest/ui": "^1.1.1",
@@ -168,7 +168,7 @@
     "turbo": "^1.11.2",
     "typescript": "^5.3.3",
     "vercel": "^33.0.1",
-    "viem": "^1.21.3",
+    "viem": "^1.21.4",
     "vite": "^5.0.10",
     "vite-tsconfig-paths": "^4.2.3",
     "vitest": "^1.1.1",
@@ -180,7 +180,7 @@
       "next": "$next"
     },
     "patchedDependencies": {
-      "@wagmi/core@1.4.12": "patches/@wagmi__core@1.4.12.patch"
+      "@wagmi/core@1.4.13": "patches/@wagmi__core@1.4.13.patch"
     }
   }
 }
