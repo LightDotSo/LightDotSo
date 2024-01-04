@@ -149,6 +149,7 @@ export {
 } from "./src/components/ui/hover-card";
 export { Input } from "./src/components/ui/input";
 export { Label } from "./src/components/ui/label";
+export { OTP } from "./src/components/ui/otp";
 export {
   Menubar,
   MenubarMenu,
