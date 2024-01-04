@@ -164,7 +164,8 @@ export const ConfigurationForm: FC = () => {
   // ---------------------------------------------------------------------------
 
   const form = useForm<NewFormValues>({
-    mode: "onBlur",
+    mode: "all",
+    reValidateMode: "onBlur",
     resolver: zodResolver(
       newFormConfigurationSchema.superRefine((value, ctx) => {
         // The sum of the weights of all owners must be greater than or equal to the threshold.
@@ -607,8 +608,12 @@ export const ConfigurationForm: FC = () => {
                       <FormControl>
                         <Select
                           defaultValue={field.value.toString()}
+                          onOpenChange={() => {
+                            form.trigger("threshold");
+                          }}
                           onValueChange={value => {
                             field.onChange(parseInt(value));
+                            form.trigger("threshold");
                           }}
                         >
                           <FormControl>

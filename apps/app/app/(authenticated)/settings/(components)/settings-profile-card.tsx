@@ -91,7 +91,8 @@ export const SettingsProfileCard: FC = () => {
   // ---------------------------------------------------------------------------
 
   const form = useForm<ProfileFormValues>({
-    mode: "onBlur",
+    mode: "all",
+    reValidateMode: "onBlur",
     resolver: zodResolver(profileFormSchema),
     defaultValues,
   });

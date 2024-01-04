@@ -75,7 +75,8 @@ export const SettingsNotificationCard: FC = () => {
   // ---------------------------------------------------------------------------
 
   const form = useForm<SettingsNotificationCardValues>({
-    mode: "onBlur",
+    mode: "all",
+    reValidateMode: "onBlur",
     resolver: zodResolver(SettingsNotificationCardSchema),
     defaultValues,
   });

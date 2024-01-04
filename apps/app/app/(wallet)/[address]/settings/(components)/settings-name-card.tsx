@@ -108,7 +108,8 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   }, [wallet, key]);
 
   const form = useForm<WalletNameFormValues>({
-    mode: "onBlur",
+    mode: "all",
+    reValidateMode: "onBlur",
     resolver: zodResolver(walletNameFormSchema),
     defaultValues,
   });
