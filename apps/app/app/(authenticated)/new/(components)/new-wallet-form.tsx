@@ -15,6 +15,7 @@
 
 "use client";
 
+import { getInviteCode } from "@lightdotso/client";
 import { NOTION_LINKS } from "@lightdotso/const";
 import {
   Button,
@@ -33,10 +34,12 @@ import {
   RadioGroupItem,
   Input,
   Label,
+  OTP,
   TooltipProvider,
   Tooltip,
   TooltipTrigger,
   TooltipContent,
+  FormMessage,
 } from "@lightdotso/ui";
 import {
   BanknotesIcon,
@@ -164,6 +167,43 @@ export const NewWalletForm: FC = () => {
   );
 
   // ---------------------------------------------------------------------------
+  // Validation
+  // ---------------------------------------------------------------------------
+
+  async function validateInviteCode(inviteCode: string) {
+    if (/^[0-9A-Z]{3}-[0-9A-Z]{3}$/.test(inviteCode)) {
+      const res = await getInviteCode({
+        params: { query: { code: inviteCode } },
+      });
+
+      res.match(
+        data => {
+          if (data.status === "ACTIVE") {
+            form.clearErrors("inviteCode");
+          } else {
+            form.setError("inviteCode", {
+              type: "manual",
+              message: "Invite code not valid",
+            });
+          }
+        },
+        _err => {
+          form.setError("inviteCode", {
+            type: "manual",
+            message: "Invite code failed could not be found",
+          });
+        },
+      );
+    } else {
+      // Show an error message
+      form.setError("inviteCode", {
+        type: "manual",
+        message: "Invalid invite code format",
+      });
+    }
+  }
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -268,6 +308,47 @@ export const NewWalletForm: FC = () => {
               />
               <FormField
                 control={form.control}
+                name="inviteCode"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="inviteCode">Invite Code</FormLabel>
+                    <OTP
+                      length={6}
+                      id="inviteCode"
+                      placeholder="Your Invite Code"
+                      defaultValue={field.value}
+                      onBlur={e => {
+                        // Validate the address
+                        if (!e.target.value) {
+                          // Clear the value of key address
+                          form.setValue("inviteCode", "");
+                        }
+                        const inviteCode = e.target.value;
+
+                        // Don't validate if the length is not 7 (including the dash)
+                        if (inviteCode.length !== 7) {
+                          validateInviteCode(inviteCode);
+                        }
+                      }}
+                      onChange={e => {
+                        // Update the field value
+                        field.onChange(e.target.value || "");
+
+                        // Validate the address
+                        const inviteCode = e.target.value;
+
+                        if (inviteCode.length === 7) {
+                          validateInviteCode(inviteCode);
+                        }
+                      }}
+                    />
+                    <FormDescription>Enter the invite code</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
@@ -277,30 +358,16 @@ export const NewWalletForm: FC = () => {
                         id="name"
                         placeholder="Your Wallet Name"
                         defaultValue={field.value}
-                        onChange={field.onChange}
+                        onChange={e => {
+                          field.onChange(e);
+                          form.trigger();
+                        }}
                       />
                     </div>
                     <FormDescription>
                       Enter a name for your new wallet
                     </FormDescription>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="inviteCode"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="inviteCode">Invite Code</FormLabel>
-                    <div className="grid gap-3">
-                      <Input
-                        id="inviteCode"
-                        placeholder="Your Invite Code"
-                        defaultValue={field.value}
-                        onChange={field.onChange}
-                      />
-                    </div>
-                    <FormDescription>Enter the invite code</FormDescription>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
