@@ -19,7 +19,7 @@ import { usePathname } from "next/navigation";
 // Types
 // -----------------------------------------------------------------------------
 
-export type RootType = "authenticated" | "unauthenticated" | "wallet";
+export type RootType = "authenticated" | "unauthenticated" | "wallet" | "demo";
 
 // -----------------------------------------------------------------------------
 // Hook
@@ -43,6 +43,13 @@ export const usePathType = (): RootType => {
     "/support",
     "/wallets",
   ];
+  const demoPaths = [
+    "/demo",
+    "/demo/activity",
+    "/demo/owners",
+    "/demo/overview",
+    "/demo/transactions",
+  ];
 
   if (unauthenticatedPaths.includes(pathname)) {
     return "unauthenticated";
@@ -50,6 +57,10 @@ export const usePathType = (): RootType => {
 
   if (authenticatedPaths.includes(pathname)) {
     return "authenticated";
+  }
+
+  if (demoPaths.includes(pathname)) {
+    return "demo";
   }
 
   return "wallet";

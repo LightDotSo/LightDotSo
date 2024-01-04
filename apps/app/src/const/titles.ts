@@ -237,22 +237,22 @@ export const TITLES: Record<Category, CategoryObject> = {
         description: "[Demo] View your wallet overview.",
         subcategories: {
           [OverviewSubCategory.All]: {
-            title: "All",
+            title: "Demo Overview All",
             description: "View all your wallet assets.",
             subcategories: {},
           },
           [OverviewSubCategory.Tokens]: {
-            title: "Tokens",
+            title: "Demo Tokens",
             description: "[Demo] View your wallet tokens.",
             subcategories: {},
           },
           [OverviewSubCategory.NFTs]: {
-            title: "NFTs",
+            title: "Demo NFTs",
             description: "[Demo] View your wallet NFTs.",
             subcategories: {},
           },
           [OverviewSubCategory.History]: {
-            title: "History",
+            title: "Demo History",
             description: "[Demo] View your wallet history.",
             subcategories: {},
           },

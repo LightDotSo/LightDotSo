@@ -36,7 +36,9 @@ export const paginationParser = createParser({
   serialize(value: PaginationState): string {
     return `${value.pageIndex},${value.pageSize}`;
   },
-}).withDefault({ pageIndex: 0, pageSize: 10 });
+})
+  .withDefault({ pageIndex: 0, pageSize: 10 })
+  .withOptions({ shallow: false });
 
 // -----------------------------------------------------------------------------
 // Hook

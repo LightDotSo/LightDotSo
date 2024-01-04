@@ -78,6 +78,11 @@ export const Tabs: FC<TabProps> = ({
     // Split the path using '/' as delimiter and remove empty strings
     const slugs = pathname.split("/").filter(slug => slug);
 
+    // If the first slug is `demo`, return `/demo`
+    if (slugs.length > 0 && slugs[0] === "demo") {
+      return "/demo";
+    }
+
     // Return the first slug if it is an address
     return slugs.length > 0 && isAddress(slugs[0]) ? "/" + slugs[0] : "";
   }, [pathname]);

@@ -24,6 +24,7 @@ import {
 import { Gamepad, Wallet } from "lucide-react";
 import type { FC } from "react";
 import { ConnectButton } from "@/components/web3/connect-button";
+import Link from "next/link";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -65,8 +66,10 @@ export const RootWelcomeCards: FC = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Button size="sm" variant="outline">
-            <Gamepad className="mr-2 h-4 w-4" /> Start Demo
+          <Button asChild size="sm" variant="outline">
+            <Link href="/demo/overview">
+              <Gamepad className="mr-2 h-4 w-4" /> Start Demo
+            </Link>
           </Button>
         </CardContent>
       </Card>
