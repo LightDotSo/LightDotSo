@@ -28,6 +28,7 @@ import {
 import type { Step } from "@/app/(authenticated)/new/(components)/root/root";
 import {
   ownerParser,
+  useInviteCodeQueryState,
   useNameQueryState,
   useOwnersQueryState,
   useSaltQueryState,
@@ -60,6 +61,7 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
+  const [inviteCode] = useInviteCodeQueryState();
   const [name] = useNameQueryState();
   const [type] = useTypeQueryState();
   const [threshold] = useThresholdQueryState();
@@ -115,6 +117,7 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
     (step: Step) => {
       const url = new URL(step.href, window.location.origin);
       // Forward the search params to the next step
+      url.searchParams.set("inviteCode", inviteCode);
       url.searchParams.set("name", name);
       url.searchParams.set("type", type);
       url.searchParams.set("threshold", threshold.toString());
@@ -164,7 +167,7 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
     return true;
   };
 
-  let requiredParams = ["name", "owners", "salt", "threshold"];
+  let requiredParams = ["inviteCode", "name", "owners", "salt", "threshold"];
 
   // ---------------------------------------------------------------------------
   // Render
