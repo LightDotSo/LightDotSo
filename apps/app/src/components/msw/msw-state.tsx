@@ -15,7 +15,7 @@
 
 "use client";
 
-import { SetupWorker } from "msw/lib/browser";
+import type { SetupWorker } from "msw/lib/browser";
 import { useEffect, useState } from "react";
 import { usePathType } from "@/hooks/usePathType";
 
@@ -55,7 +55,7 @@ export const MSWState = () => {
         worker.stop();
       }
     };
-  }, [type]);
+  }, [type, worker]);
 
   // ---------------------------------------------------------------------------
   // Render
