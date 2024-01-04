@@ -21,6 +21,7 @@
 import { cn } from "@lightdotso/utils";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Input } from "./input";
+import { set } from "zod";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -42,6 +43,7 @@ interface NumericInputFieldProps
 const NumericInputField = ({ focus, ...props }: NumericInputFieldProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Focus the input when the focus prop is true
   useLayoutEffect(() => {
     if (inputRef.current) {
       if (focus) {
@@ -114,20 +116,17 @@ export const OTP = ({
 
     switch (key) {
       case "BACKSPACE":
-        if (activeInputIndex > 0) {
-          e.preventDefault();
-          setInputs(prevInputs => {
-            prevInputs[activeInputIndex - 1] = "";
-            return [...prevInputs];
-          });
-          focusInput(activeInputIndex - 1);
-          triggerOnChange(
-            `${inputs.join("").slice(0, activeInputIndex - 1)}${inputs
-              .join("")
-              .slice(activeInputIndex)}`,
-            `input-${activeInputIndex}`,
-          );
-        }
+        setInputs(prevInputs => {
+          prevInputs[activeInputIndex] = "";
+          return [...prevInputs];
+        });
+        focusInput(activeInputIndex - 1);
+        triggerOnChange(
+          `${inputs.join("").slice(0, activeInputIndex - 1)}${inputs
+            .join("")
+            .slice(activeInputIndex)}`,
+          `input-${activeInputIndex}`,
+        );
         break;
 
       case "ARROWLEFT":
@@ -199,15 +198,25 @@ export const OTP = ({
 
   useEffect(() => {
     const defaultVal = defaultValue as string;
-    if (defaultVal && defaultVal.length <= length) {
-      defaultVal.length < length
-        ? setInputs([
-            ...defaultVal.split(""),
-            ...Array<string>(length - defaultVal.length).fill(""),
-          ])
-        : setInputs(defaultVal.split(""));
+
+    if (defaultVal) {
+      const alphanumericChars = defaultVal.replace("-", "").split("");
+
+      if (
+        alphanumericChars.length === length &&
+        alphanumericChars.every(char => /^[0-9A-Z]$/.test(char))
+      ) {
+        setInputs([...alphanumericChars]);
+        setActiveInputIndex(-1);
+      } else {
+        setInputs(Array<string>(length).fill(""));
+        setActiveInputIndex(0);
+      }
+    } else {
+      setInputs(Array<string>(length).fill(""));
+      setActiveInputIndex(0);
     }
-  }, [defaultValue, length]);
+  }, []);
 
   return (
     <div className={cn("flex space-x-3", className)}>
