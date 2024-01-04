@@ -81,9 +81,13 @@ export const OTP = ({
 
   const triggerOnChange = (value: string, id: string) => {
     if (onChange) {
+      let formattedValue = value;
+      if (value.length === 6) {
+        formattedValue = value.slice(0, 3) + "-" + value.slice(3, 6);
+      }
       const newEvent = {
         target: {
-          value,
+          value: formattedValue,
           id,
         },
       };
@@ -93,7 +97,7 @@ export const OTP = ({
   };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!/^[0-9]$/.test(e.currentTarget.value)) {
+    if (/^[0-9A-Z]$/.test(e.currentTarget.value)) {
       e.preventDefault();
 
       const newInputs = [...inputs];
@@ -137,7 +141,7 @@ export const OTP = ({
         break;
       }
       default: {
-        if (/^[0-9]$/.test(key)) {
+        if (/^[0-9A-Z]$/.test(key)) {
           e.preventDefault();
           const newInputs = [...inputs];
           newInputs[activeInputIndex] = key;

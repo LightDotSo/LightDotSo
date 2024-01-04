@@ -206,6 +206,10 @@ export const ConfigurationForm: FC = () => {
             });
           }
 
+          // if (owner.addressOrEns) {
+          //   validateAddress(owner.addressOrEns, index);
+          // }
+
           if (owner.address && !isAddress(owner.address)) {
             ctx.addIssue({
               code: z.ZodIssueCode.invalid_type,
@@ -337,9 +341,6 @@ export const ConfigurationForm: FC = () => {
   // ---------------------------------------------------------------------------
 
   async function validateAddress(address: string, index: number) {
-    // If the address is empty, return
-    if (!address || address.length <= 3) return;
-
     // Try to parse the address
     if (isAddress(address)) {
       // If the address is valid, set the value of key address
@@ -361,6 +362,7 @@ export const ConfigurationForm: FC = () => {
             if (ensNameAddress) {
               // If the ENS name resolves, set the value of key address
               form.setValue(`owners.${index}.address`, ensNameAddress);
+              form.clearErrors(`owners.${index}.addressOrEns`);
             } else {
               // Show an error on the message
               form.setError(`owners.${index}.addressOrEns`, {
@@ -368,12 +370,7 @@ export const ConfigurationForm: FC = () => {
                 message:
                   "The ENS name did not resolve. Please enter a valid address or ENS name",
               });
-              // Clear the value of key address
-              form.setValue(`owners.${index}.address`, "");
             }
-
-            // Trigger the form validation
-            form.trigger();
           })
           .catch(() => {
             // Show an error on the message
@@ -381,11 +378,6 @@ export const ConfigurationForm: FC = () => {
               type: "manual",
               message: "Please enter a valid address or ENS name",
             });
-            // Clear the value of key address
-            form.setValue(`owners.${index}.address`, "");
-
-            // Trigger the form validation
-            form.trigger();
           });
       } catch {
         // Show an error on the message
@@ -395,16 +387,10 @@ export const ConfigurationForm: FC = () => {
         });
         // Clear the value of key address
         form.setValue(`owners.${index}.address`, "");
-      } finally {
-        // Trigger the form validation
-        form.trigger();
       }
     } else {
       // Clear the value of key address
       form.setValue(`owners.${index}.address`, "");
-
-      // Trigger the form validation
-      form.trigger();
     }
   }
 
@@ -413,6 +399,10 @@ export const ConfigurationForm: FC = () => {
   // ---------------------------------------------------------------------------
 
   const debouncedValidateAddress = debounce(validateAddress, 300);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
   return (
     <Card className="flex flex-col space-y-6 px-2 py-4 lg:px-6 lg:pt-6">
@@ -622,9 +612,10 @@ export const ConfigurationForm: FC = () => {
                       <FormControl>
                         <Select
                           defaultValue={field.value.toString()}
-                          onValueChange={value =>
-                            field.onChange(parseInt(value))
-                          }
+                          onValueChange={value => {
+                            field.onChange(parseInt(value));
+                            form.trigger();
+                          }}
                         >
                           <FormControl>
                             <SelectTrigger className="w-24">

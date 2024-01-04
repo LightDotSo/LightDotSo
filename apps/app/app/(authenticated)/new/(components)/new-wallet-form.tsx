@@ -38,6 +38,7 @@ import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
+  FormMessage,
 } from "@lightdotso/ui";
 import {
   BanknotesIcon,
@@ -278,9 +279,15 @@ export const NewWalletForm: FC = () => {
                       id="inviteCode"
                       placeholder="Your Invite Code"
                       defaultValue={field.value}
-                      onChange={field.onChange}
+                      onChange={e => {
+                        field.onChange(e);
+                        if (e.target.value.length === 6) {
+                          form.trigger();
+                        }
+                      }}
                     />
                     <FormDescription>Enter the invite code</FormDescription>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -295,7 +302,10 @@ export const NewWalletForm: FC = () => {
                         id="name"
                         placeholder="Your Wallet Name"
                         defaultValue={field.value}
-                        onChange={field.onChange}
+                        onChange={e => {
+                          field.onChange(e);
+                          form.trigger();
+                        }}
                       />
                     </div>
                     <FormDescription>
