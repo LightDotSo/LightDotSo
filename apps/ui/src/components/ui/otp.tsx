@@ -162,35 +162,38 @@ export const OTP = ({
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault();
 
-    const pastedData = e.clipboardData
-      .getData("text/plain")
-      .trim()
-      .slice(0, length - activeInputIndex)
-      .split("");
+    let pastedData = e.clipboardData.getData("text/plain").trim().toUpperCase();
 
-    if (pastedData) {
-      let nextFocusIndex = 0;
+    if (
+      /^[0-9A-Z]{3}-[0-9A-Z]{3}$/.test(pastedData) &&
+      pastedData.length <= length + 1
+    ) {
+      pastedData = pastedData.replace("-", ""); // Remove dash
+      const pastedChars = pastedData.split("");
+
       const updatedInputs = [...inputs];
-
-      updatedInputs.forEach((val, index) => {
-        if (index >= activeInputIndex) {
-          let changedValue = pastedData.shift() || val;
-          changedValue = Number(changedValue) >= 0 ? changedValue : "";
-          if (changedValue) {
-            updatedInputs[index] = changedValue;
-            nextFocusIndex = index;
-          }
-        }
-      });
+      updatedInputs.fill(
+        "",
+        activeInputIndex,
+        activeInputIndex + pastedChars.length,
+      );
+      for (let i = 0; i < pastedChars.length; i++) {
+        updatedInputs[activeInputIndex + i] = pastedChars[i];
+      }
 
       setInputs(updatedInputs);
-      if (nextFocusIndex === length - 1) {
+      const nextFocusIndex = activeInputIndex + pastedChars.length - 1;
+
+      if (nextFocusIndex === length) {
         setActiveInputIndex(-1);
       } else {
         focusInput(nextFocusIndex + 1);
       }
 
-      triggerOnChange(updatedInputs.join(""), `input-${activeInputIndex}`);
+      triggerOnChange(
+        updatedInputs.join("").replace(/^(.{3})/, "$1-"),
+        `input-${activeInputIndex}`,
+      );
     }
   };
 
