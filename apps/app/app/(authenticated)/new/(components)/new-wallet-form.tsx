@@ -178,13 +178,13 @@ export const NewWalletForm: FC = () => {
 
       res.match(
         data => {
-          if (data.code !== "ok") {
+          if (data.status === "ACTIVE") {
+            form.clearErrors("inviteCode");
+          } else {
             form.setError("inviteCode", {
               type: "manual",
               message: "Invite code not valid",
             });
-          } else {
-            form.clearErrors("inviteCode");
           }
         },
         _err => {
@@ -325,7 +325,10 @@ export const NewWalletForm: FC = () => {
                         }
                         const inviteCode = e.target.value;
 
-                        validateInviteCode(inviteCode);
+                        // Don't validate if the length is not 7 (including the dash)
+                        if (inviteCode.length !== 7) {
+                          validateInviteCode(inviteCode);
+                        }
                       }}
                       onChange={e => {
                         // Update the field value
@@ -334,7 +337,7 @@ export const NewWalletForm: FC = () => {
                         // Validate the address
                         const inviteCode = e.target.value;
 
-                        if (inviteCode) {
+                        if (inviteCode.length === 7) {
                           validateInviteCode(inviteCode);
                         }
                       }}

@@ -97,11 +97,12 @@ export const OTP = ({
   };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (/^[0-9A-Z]$/.test(e.currentTarget.value)) {
+    const inputValue = e.currentTarget.value.toUpperCase();
+    if (/^[0-9A-Z]$/.test(inputValue)) {
       e.preventDefault();
 
       const newInputs = [...inputs];
-      newInputs[activeInputIndex] = e.currentTarget.value;
+      newInputs[activeInputIndex] = inputValue;
       setInputs(newInputs);
 
       triggerOnChange(newInputs.join(""), `input-${activeInputIndex}`);
@@ -109,53 +110,52 @@ export const OTP = ({
   };
 
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const key = e.key;
+    const key = e.key.toUpperCase();
 
     switch (key) {
-      case "Backspace":
-      case "Delete": {
-        e.preventDefault();
-        if (inputs[activeInputIndex].length !== 0) {
-          const newInputs = [...inputs];
-          newInputs[activeInputIndex] = "";
-          setInputs(newInputs);
-          triggerOnChange(newInputs.join(""), `input-${activeInputIndex}`);
-        } else {
-          const newInputs = [...inputs];
-          newInputs[activeInputIndex - 1] = "";
-          setInputs(newInputs);
-          focusInput(activeInputIndex - 1);
-          triggerOnChange(newInputs.join(""), `input-${activeInputIndex}`);
-        }
-
-        break;
-      }
-      case "ArrowLeft": {
-        e.preventDefault();
-        focusInput(activeInputIndex - 1);
-        break;
-      }
-      case "ArrowRight": {
-        e.preventDefault();
-        focusInput(activeInputIndex + 1);
-        break;
-      }
-      default: {
-        if (/^[0-9A-Z]$/.test(key)) {
+      case "BACKSPACE":
+        if (activeInputIndex > 0) {
           e.preventDefault();
-          const newInputs = [...inputs];
-          newInputs[activeInputIndex] = key;
-          setInputs(newInputs);
-          if (activeInputIndex === length - 1) {
-            setActiveInputIndex(-1);
-          } else {
-            focusInput(activeInputIndex + 1);
-          }
-
-          triggerOnChange(newInputs.join(""), `input-${activeInputIndex}`);
-          break;
+          setInputs(prevInputs => {
+            prevInputs[activeInputIndex - 1] = "";
+            return [...prevInputs];
+          });
+          focusInput(activeInputIndex - 1);
+          triggerOnChange(
+            `${inputs.join("").slice(0, activeInputIndex - 1)}${inputs
+              .join("")
+              .slice(activeInputIndex)}`,
+            `input-${activeInputIndex}`,
+          );
         }
-      }
+        break;
+
+      case "ARROWLEFT":
+        e.preventDefault();
+        focusInput(Math.max(0, activeInputIndex - 1));
+        break;
+
+      case "ARROWRIGHT":
+        e.preventDefault();
+        focusInput(Math.min(length - 1, activeInputIndex + 1));
+        break;
+
+      default:
+        if (key && /^[0-9A-Z]$/.test(key)) {
+          e.preventDefault();
+          setInputs(prevInputs => {
+            prevInputs[activeInputIndex] = key;
+            return [...prevInputs];
+          });
+          if (activeInputIndex < length - 1) focusInput(activeInputIndex + 1);
+          triggerOnChange(
+            `${inputs.join("").slice(0, activeInputIndex)}${key}${inputs
+              .join("")
+              .slice(activeInputIndex + 1)}`,
+            `input-${activeInputIndex}`,
+          );
+        }
+        break;
     }
   };
 
