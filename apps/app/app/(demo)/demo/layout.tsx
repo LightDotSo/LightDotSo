@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { ReactNode } from "react";
-import { MSWInit } from "@/components/msw/msw-init";
+import { MSWState } from "@/components/msw/msw-state";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -37,7 +37,7 @@ export default function RootLayout(props: RootLayoutProps) {
 
   return (
     <>
-      <MSWInit />
+      <MSWState />
       {props.children}
       {props.op}
       {props.send}
