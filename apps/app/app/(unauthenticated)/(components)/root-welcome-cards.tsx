@@ -22,9 +22,9 @@ import {
   CardTitle,
 } from "@lightdotso/ui";
 import { Gamepad, Wallet } from "lucide-react";
+import Link from "next/link";
 import type { FC } from "react";
 import { ConnectButton } from "@/components/web3/connect-button";
-import Link from "next/link";
 
 // -----------------------------------------------------------------------------
 // Component
