@@ -15,12 +15,12 @@
 
 import { http, HttpResponse } from "msw";
 import { BASE_API_URL, BASE_LOCAL_ADMIN_URL } from "@/const/api";
-import { DEMO_ADDRESS } from "@/const/demo";
+import { DEMO_WALLET_ADDRESS } from "@/const/demo";
 
 export const getWallet = (url: string) =>
   http.get(`${url}/v1/wallet/get`, () => {
     return HttpResponse.json({
-      address: DEMO_ADDRESS,
+      address: DEMO_WALLET_ADDRESS,
       factory_address: "0x0000000000756D3E6464f5efe7e413a0Af1C7474",
       name: "Demo",
       salt: "0x0000000000000000000000000000000000000000000000000000018bac7d2d77",

@@ -15,5 +15,5 @@
 
 import type { Address } from "viem";
 
-export const DEMO_ADDRESS: Address =
+export const DEMO_WALLET_ADDRESS: Address =
   "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F";
