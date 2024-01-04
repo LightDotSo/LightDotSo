@@ -61,6 +61,7 @@ import {
 import type { WalletType } from "@/app/(authenticated)/new/(hooks)";
 import { newFormSchema } from "@/schemas/newForm";
 import { useNewForm } from "@/stores";
+import { getInviteCode } from "@lightdotso/client";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -164,6 +165,43 @@ export const NewWalletForm: FC = () => {
     },
     [navigateToStep],
   );
+
+  // ---------------------------------------------------------------------------
+  // Validation
+  // ---------------------------------------------------------------------------
+
+  async function validateInviteCode(inviteCode: string) {
+    if (/^[0-9A-Z]{3}-[0-9A-Z]{3}$/.test(inviteCode)) {
+      const res = await getInviteCode({
+        params: { query: { code: inviteCode } },
+      });
+
+      res.match(
+        data => {
+          if (data.code !== "ok") {
+            form.setError("inviteCode", {
+              type: "manual",
+              message: "Invite code not valid",
+            });
+          } else {
+            form.clearErrors("inviteCode");
+          }
+        },
+        _err => {
+          form.setError("inviteCode", {
+            type: "manual",
+            message: "Invite code failed could not be found",
+          });
+        },
+      );
+    } else {
+      // Show an error message
+      form.setError("inviteCode", {
+        type: "manual",
+        message: "Invalid invite code format",
+      });
+    }
+  }
 
   // ---------------------------------------------------------------------------
   // Render
@@ -279,10 +317,25 @@ export const NewWalletForm: FC = () => {
                       id="inviteCode"
                       placeholder="Your Invite Code"
                       defaultValue={field.value}
+                      onBlur={e => {
+                        // Validate the address
+                        if (!e.target.value) {
+                          // Clear the value of key address
+                          form.setValue("inviteCode", "");
+                        }
+                        const inviteCode = e.target.value;
+
+                        validateInviteCode(inviteCode);
+                      }}
                       onChange={e => {
-                        field.onChange(e);
-                        if (e.target.value.length === 6) {
-                          form.trigger();
+                        // Update the field value
+                        field.onChange(e.target.value || "");
+
+                        // Validate the address
+                        const inviteCode = e.target.value;
+
+                        if (inviteCode) {
+                          validateInviteCode(inviteCode);
                         }
                       }}
                     />
@@ -311,6 +364,7 @@ export const NewWalletForm: FC = () => {
                     <FormDescription>
                       Enter a name for your new wallet
                     </FormDescription>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
