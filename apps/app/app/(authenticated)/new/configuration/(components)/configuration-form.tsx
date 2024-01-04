@@ -533,6 +533,12 @@ export const ConfigurationForm: FC = () => {
                                   defaultValue={field.value.toString()}
                                   onValueChange={value => {
                                     field.onChange(parseInt(value));
+                                    form.trigger(`owners.${index}.weight`);
+                                    form.trigger("threshold");
+                                  }}
+                                  onOpenChange={() => {
+                                    form.trigger(`owners.${index}.weight`);
+                                    form.trigger("threshold");
                                   }}
                                 >
                                   <FormControl>
