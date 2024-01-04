@@ -19,16 +19,15 @@
 // License: MIT
 
 import { cn } from "@lightdotso/utils";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Input } from "./input";
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
 
-interface OTPFieldProps {
+interface OTPFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   length: number;
-  className?: string;
 }
 
 interface NumericInputFieldProps
@@ -66,7 +65,12 @@ const NumericInputField = ({ focus, ...props }: NumericInputFieldProps) => {
   );
 };
 
-export const OTP = ({ length, className }: OTPFieldProps) => {
+export const OTP = ({
+  length,
+  className,
+  defaultValue,
+  onChange,
+}: OTPFieldProps) => {
   const [activeInputIndex, setActiveInputIndex] = useState(0);
   const [inputs, setInputs] = useState(Array<string>(length).fill(""));
 
@@ -75,9 +79,28 @@ export const OTP = ({ length, className }: OTPFieldProps) => {
     setActiveInputIndex(Math.max(Math.min(length - 1, index), 0));
   };
 
+  const triggerOnChange = (value: string, id: string) => {
+    if (onChange) {
+      const newEvent = {
+        target: {
+          value,
+          id,
+        },
+      };
+
+      onChange(newEvent as any);
+    }
+  };
+
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!/^[0-9]$/.test(e.currentTarget.value)) {
       e.preventDefault();
+
+      const newInputs = [...inputs];
+      newInputs[activeInputIndex] = e.currentTarget.value;
+      setInputs(newInputs);
+
+      triggerOnChange(newInputs.join(""), `input-${activeInputIndex}`);
     }
   };
 
@@ -92,12 +115,15 @@ export const OTP = ({ length, className }: OTPFieldProps) => {
           const newInputs = [...inputs];
           newInputs[activeInputIndex] = "";
           setInputs(newInputs);
+          triggerOnChange(newInputs.join(""), `input-${activeInputIndex}`);
         } else {
           const newInputs = [...inputs];
           newInputs[activeInputIndex - 1] = "";
           setInputs(newInputs);
           focusInput(activeInputIndex - 1);
+          triggerOnChange(newInputs.join(""), `input-${activeInputIndex}`);
         }
+
         break;
       }
       case "ArrowLeft": {
@@ -121,6 +147,8 @@ export const OTP = ({ length, className }: OTPFieldProps) => {
           } else {
             focusInput(activeInputIndex + 1);
           }
+
+          triggerOnChange(newInputs.join(""), `input-${activeInputIndex}`);
           break;
         }
       }
@@ -157,8 +185,22 @@ export const OTP = ({ length, className }: OTPFieldProps) => {
       } else {
         focusInput(nextFocusIndex + 1);
       }
+
+      triggerOnChange(updatedInputs.join(""), `input-${activeInputIndex}`);
     }
   };
+
+  useEffect(() => {
+    const defaultVal = defaultValue as string;
+    if (defaultVal && defaultVal.length <= length) {
+      defaultVal.length < length
+        ? setInputs([
+            ...defaultVal.split(""),
+            ...Array<string>(length - defaultVal.length).fill(""),
+          ])
+        : setInputs(defaultVal.split(""));
+    }
+  }, [defaultValue, length]);
 
   return (
     <div className={cn("flex space-x-3", className)}>

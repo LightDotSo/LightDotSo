@@ -33,6 +33,7 @@ import {
   RadioGroupItem,
   Input,
   Label,
+  OTP,
   TooltipProvider,
   Tooltip,
   TooltipTrigger,
@@ -268,6 +269,23 @@ export const NewWalletForm: FC = () => {
               />
               <FormField
                 control={form.control}
+                name="inviteCode"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="inviteCode">Invite Code</FormLabel>
+                    <OTP
+                      length={6}
+                      id="inviteCode"
+                      placeholder="Your Invite Code"
+                      defaultValue={field.value}
+                      onChange={field.onChange}
+                    />
+                    <FormDescription>Enter the invite code</FormDescription>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
@@ -283,24 +301,6 @@ export const NewWalletForm: FC = () => {
                     <FormDescription>
                       Enter a name for your new wallet
                     </FormDescription>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="inviteCode"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="inviteCode">Invite Code</FormLabel>
-                    <div className="grid gap-3">
-                      <Input
-                        id="inviteCode"
-                        placeholder="Your Invite Code"
-                        defaultValue={field.value}
-                        onChange={field.onChange}
-                      />
-                    </div>
-                    <FormDescription>Enter the invite code</FormDescription>
                   </FormItem>
                 )}
               />
