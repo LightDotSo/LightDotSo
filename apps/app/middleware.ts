@@ -22,6 +22,7 @@ export function middleware(request: NextRequest) {
 
   let pathArray = ["/"];
   if (
+    process.env.NODE_ENV === "production" &&
     pathArray.some(path => request.nextUrl.pathname === path) &&
     wallet_cookie
   ) {

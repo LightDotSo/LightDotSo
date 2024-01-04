@@ -111,7 +111,7 @@ export const MainNav: FC<MainNavProps> = ({ className = "", ...props }) => {
   // ---------------------------------------------------------------------------
 
   const typeTabs = useMemo(() => {
-    if (type === "unauthenticated") {
+    if (type === "demo") {
       return tabs.filter(tab => {
         // Don't return `settings` and `support` tabs
         return tab.id !== "settings" && tab.id !== "support";
@@ -141,7 +141,7 @@ export const MainNav: FC<MainNavProps> = ({ className = "", ...props }) => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (type === "authenticated") {
+  if (type === "unauthenticated" || type === "authenticated") {
     return null;
   }
 
