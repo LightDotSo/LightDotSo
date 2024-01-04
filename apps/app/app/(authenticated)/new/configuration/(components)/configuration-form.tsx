@@ -44,6 +44,7 @@ import {
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { isEmpty } from "lodash";
 import { Trash2Icon, UserPlus2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useCallback, useMemo } from "react";
@@ -530,11 +531,7 @@ export const ConfigurationForm: FC = () => {
                                 <Select
                                   defaultValue={field.value.toString()}
                                   onValueChange={value => {
-                                    form.trigger();
                                     field.onChange(parseInt(value));
-                                  }}
-                                  onOpenChange={() => {
-                                    form.trigger();
                                   }}
                                 >
                                   <FormControl>
@@ -576,7 +573,6 @@ export const ConfigurationForm: FC = () => {
                           className="mt-1.5 rounded-full"
                           onClick={() => {
                             remove(index);
-                            form.trigger();
                           }}
                         >
                           <Trash2Icon className="h-5 w-5" />
@@ -594,7 +590,6 @@ export const ConfigurationForm: FC = () => {
                   className="mt-6"
                   onClick={() => {
                     append({ addressOrEns: "", weight: 1 });
-                    form.trigger();
                   }}
                 >
                   <UserPlus2 className="mr-2 h-5 w-5" />
@@ -614,7 +609,6 @@ export const ConfigurationForm: FC = () => {
                           defaultValue={field.value.toString()}
                           onValueChange={value => {
                             field.onChange(parseInt(value));
-                            form.trigger();
                           }}
                         >
                           <FormControl>
@@ -664,8 +658,10 @@ export const ConfigurationForm: FC = () => {
                   Go Back
                 </Button>
                 <Button
-                  disabled={!form.formState.isValid}
-                  variant={form.formState.isValid ? "default" : "outline"}
+                  disabled={!isEmpty(form.formState.errors)}
+                  variant={
+                    isEmpty(form.formState.errors) ? "default" : "outline"
+                  }
                   type="submit"
                   onClick={() => navigateToStep()}
                 >

@@ -47,6 +47,7 @@ import {
   ShieldExclamationIcon,
 } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { isEmpty } from "lodash";
 import { ArrowUpRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useCallback } from "react";
@@ -143,6 +144,10 @@ export const NewWalletForm: FC = () => {
   useEffect(() => {
     // Set the form values from the default values
     setFormValues(defaultValues);
+
+    if (inviteCode) {
+      validateInviteCode(inviteCode);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -360,7 +365,6 @@ export const NewWalletForm: FC = () => {
                         defaultValue={field.value}
                         onChange={e => {
                           field.onChange(e);
-                          form.trigger();
                         }}
                       />
                     </div>
@@ -387,8 +391,10 @@ export const NewWalletForm: FC = () => {
               </div>
               <CardFooter className="justify-end p-0">
                 <Button
-                  disabled={!form.formState.isValid}
-                  variant={form.formState.isValid ? "default" : "outline"}
+                  disabled={!isEmpty(form.formState.errors)}
+                  variant={
+                    isEmpty(form.formState.errors) ? "default" : "outline"
+                  }
                   type="submit"
                   onClick={() => navigateToStep()}
                 >
