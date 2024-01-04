@@ -28,7 +28,7 @@ export type RootType = "authenticated" | "unauthenticated" | "wallet" | "demo";
 export const usePathType = (): RootType => {
   const pathname = usePathname();
 
-  const unauthenticatedPaths = ["/", "/activity", "/owners", "/transactions"];
+  const unauthenticatedPaths = ["/activity", "/owners", "/transactions"];
   const authenticatedPaths = [
     "/new",
     "/new/configuration",
@@ -51,15 +51,18 @@ export const usePathType = (): RootType => {
     "/demo/transactions",
   ];
 
-  if (unauthenticatedPaths.includes(pathname)) {
+  if (
+    unauthenticatedPaths.some(path => pathname.startsWith(path)) ||
+    pathname === "/"
+  ) {
     return "unauthenticated";
   }
 
-  if (authenticatedPaths.includes(pathname)) {
+  if (authenticatedPaths.some(path => pathname.startsWith(path))) {
     return "authenticated";
   }
 
-  if (demoPaths.includes(pathname)) {
+  if (demoPaths.some(path => pathname.startsWith(path))) {
     return "demo";
   }
 
