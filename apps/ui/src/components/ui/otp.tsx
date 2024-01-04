@@ -55,11 +55,11 @@ const NumericInputField = ({ focus, ...props }: NumericInputFieldProps) => {
 
   return (
     <Input
-      className="w-12 h-12 text-center"
+      ref={inputRef}
+      className="h-12 w-12 text-center"
       type="text"
       autoComplete="off"
       maxLength={1}
-      ref={inputRef}
       {...props}
     />
   );
@@ -216,8 +216,8 @@ export const OTP = ({
           key={`input-${index}`}
           id={`input-${index}`}
           focus={activeInputIndex === index}
-          onFocus={() => focusInput(index)}
           value={value}
+          onFocus={() => focusInput(index)}
           onChange={handleOnChange}
           onBlur={() => setActiveInputIndex(-1)}
           onKeyDown={handleOnKeyDown}

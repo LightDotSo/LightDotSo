@@ -15,6 +15,7 @@
 
 "use client";
 
+import { getInviteCode } from "@lightdotso/client";
 import { NOTION_LINKS } from "@lightdotso/const";
 import {
   Button,
@@ -61,7 +62,6 @@ import {
 import type { WalletType } from "@/app/(authenticated)/new/(hooks)";
 import { newFormSchema } from "@/schemas/newForm";
 import { useNewForm } from "@/stores";
-import { getInviteCode } from "@lightdotso/client";
 
 // -----------------------------------------------------------------------------
 // Types

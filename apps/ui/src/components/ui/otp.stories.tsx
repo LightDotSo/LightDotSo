@@ -39,7 +39,7 @@ type Story = StoryObj<typeof OTP>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <OTP {...args}></OTP>,
+  render: args => <OTP {...args} />,
   args: {
     length: 6,
   },
