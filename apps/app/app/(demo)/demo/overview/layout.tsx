@@ -18,6 +18,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import OriginalLayout from "@/app/(wallet)/[address]/overview/layout";
+import { DEMO_ADDRESS } from "@/const/demo";
 import { TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
@@ -44,7 +45,7 @@ type LayoutProps = {
 
 export default async function Layout({ children, nav }: LayoutProps) {
   return OriginalLayout({
-    params: { address: "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F" },
+    params: { address: DEMO_ADDRESS },
     children,
     nav,
   });

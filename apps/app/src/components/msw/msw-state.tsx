@@ -15,48 +15,51 @@
 
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import type { FC } from "react";
-import { Logo } from "@/components/lightdotso/light-logo";
 import { usePathType } from "@/hooks/usePathType";
+import { SetupWorker } from "msw/lib/browser";
+import { useEffect, useState } from "react";
 
-// -----------------------------------------------------------------------------
-// Component
-// -----------------------------------------------------------------------------
-
-export const RootLogo: FC = () => {
+export const MSWState = () => {
   // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
 
   const type = usePathType();
+  const [worker, setWorker] = useState<SetupWorker>();
 
   // ---------------------------------------------------------------------------
-  // Next Hooks
+  // Effect Hooks
   // ---------------------------------------------------------------------------
 
-  const pathname = usePathname();
+  useEffect(() => {
+    const doMswInit = async () => {
+      if (type === "demo") {
+        if (typeof window !== "undefined") {
+          if (!worker) {
+            const { worker } = await import("@/msw/browser");
+            worker.start();
+            setWorker(worker);
+          }
+        }
+      } else {
+        if (worker) {
+          worker.stop();
+          setWorker(undefined);
+        }
+      }
+    };
+    doMswInit();
+
+    return () => {
+      if (worker) {
+        worker.stop();
+      }
+    };
+  }, [type]);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <Link
-      href={
-        type === "unauthenticated" || type === "demo"
-          ? "/"
-          : type === "authenticated"
-            ? "/wallets"
-            : // Get the wallet address from the path
-              // Address is the first part of the path
-              // e.g. /0x1234
-              `/${pathname.split("/")[1]}`
-      }
-      className="hover:rounded-md hover:bg-background-stronger"
-    >
-      <Logo className="m-2.5 h-8 w-8 fill-text" />
-    </Link>
-  );
+  return null;
 };

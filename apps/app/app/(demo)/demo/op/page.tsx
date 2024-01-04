@@ -16,6 +16,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import OriginalPage from "@/app/(wallet)/[address]/op/page";
+import { DEMO_ADDRESS } from "@/const/demo";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -33,7 +34,7 @@ interface PageProps {
 
 export default async function Page({ searchParams }: PageProps) {
   return OriginalPage({
-    params: { address: "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F" },
+    params: { address: DEMO_ADDRESS },
     searchParams,
   });
 }

@@ -13,24 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
+import type { Address } from "viem";
 
-const mswInit = () => {
-  if (typeof window === "undefined") {
-    (async () => {
-      const { server } = await import("@/msw/node");
-      server.listen();
-    })();
-  } else {
-    (async () => {
-      const { worker } = await import("@/msw/browser");
-      worker.start();
-    })();
-  }
-};
-
-export const MSWInit = () => {
-  mswInit();
-
-  return null;
-};
+export const DEMO_ADDRESS: Address =
+  "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F";
