@@ -15,9 +15,9 @@
 
 "use client";
 
-import { usePathType } from "@/hooks/usePathType";
 import { SetupWorker } from "msw/lib/browser";
 import { useEffect, useState } from "react";
+import { usePathType } from "@/hooks/usePathType";
 
 export const MSWState = () => {
   // ---------------------------------------------------------------------------
