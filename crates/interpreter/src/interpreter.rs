@@ -120,6 +120,9 @@ impl Interpreter<'_> {
         // Run the interpreter
         let interpretation = self.interpret(req).await?;
 
+        // Flatten the actions
+        let actions = interpretation.clone().into_iter().flat_map(|res| res.actions).collect();
+
         // Flatten the asset changes
         let asset_changes = interpretation.into_iter().flat_map(|res| res.asset_changes).collect();
 
@@ -131,6 +134,7 @@ impl Interpreter<'_> {
             logs: res.logs,
             exit_reason: res.exit_reason,
             formatted_trace: format_trace,
+            actions,
             asset_changes,
         })
     }
@@ -180,6 +184,9 @@ impl Interpreter<'_> {
             // Run the interpreter
             let interpretation = self.interpret(req).await?;
 
+            // Flatten the actions
+            let actions = interpretation.clone().into_iter().flat_map(|res| res.actions).collect();
+
             // Flatten the asset changes
             let asset_changes =
                 interpretation.into_iter().flat_map(|res| res.asset_changes).collect();
@@ -193,6 +200,7 @@ impl Interpreter<'_> {
                 logs: res.logs,
                 exit_reason: res.exit_reason,
                 formatted_trace: format_trace,
+                actions,
                 asset_changes,
             });
         }
@@ -207,6 +215,7 @@ impl Interpreter<'_> {
                 acc.logs.extend(res.logs);
                 acc.exit_reason = res.exit_reason;
                 acc.formatted_trace.push_str(res.formatted_trace.as_str());
+                acc.actions.extend(res.actions);
                 acc.asset_changes.extend(res.asset_changes);
                 acc
             },
