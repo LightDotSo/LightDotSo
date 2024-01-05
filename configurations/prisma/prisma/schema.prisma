@@ -1127,6 +1127,7 @@ model Token {
   assetChanges AssetChange[]
   balances     WalletBalance[]
   prices       TokenPrice[]
+  strategies   TokenProtocolStrategy[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1257,6 +1258,7 @@ enum ProtocolStatus {
 
   TRUSTWORTHY
   KNOWN
+  // Other
   UNKNOWN
 }
 
@@ -1267,7 +1269,8 @@ model TokenProtocol {
   // Core
   // ---------------------------------------------------------------------------
 
-  id String @id @default(cuid())
+  id        String   @id @default(cuid())
+  timestamp DateTime @default(now())
 
   // ---------------------------------------------------------------------------
   // Fields
@@ -1289,6 +1292,7 @@ model TokenProtocol {
   // ---------------------------------------------------------------------------
 
   assetChanges   AssetChange[]
+  strategies     TokenProtocolStrategy[]
   walletBalances WalletBalance[]
 
   // ---------------------------------------------------------------------------
@@ -1297,6 +1301,51 @@ model TokenProtocol {
 
   // Relations
   @@index([protocolId])
+}
+
+model TokenProtocolStrategy {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id String @id @default(cuid())
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  strategy ProtocolStrategy @default(LENDING)
+
+  // ---------------------------------------------------------------------------
+  // One-to-one
+  // ---------------------------------------------------------------------------
+
+  token   Token  @relation(fields: [tokenId], references: [id])
+  tokenId String
+
+  tokenProtocolId String
+  tokenProtocol   TokenProtocol @relation(fields: [tokenProtocolId], references: [id])
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
+  // Relations
+  @@index([tokenId])
+  @@index([tokenProtocolId])
+}
+
+enum ProtocolStrategy {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
+
+  BORROWING
+  DEPOSITING
+  LENDING
+  STAKING
+  // Other
+  UNKNOWN
 }
 
 // -----------------------------------------------------------------------------
