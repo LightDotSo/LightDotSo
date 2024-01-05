@@ -18,7 +18,9 @@ use crate::routes::{
     configuration::error::ConfigurationError, feedback::error::FeedbackError,
     invite_code::error::InviteCodeError, notification::error::NotificationError,
     paymaster::error::PaymasterError, paymaster_operation::error::PaymasterOperationError,
-    portfolio::error::PortfolioError, queue::error::QueueError, signature::error::SignatureError,
+    portfolio::error::PortfolioError, protocol::error::ProtocolError,
+    protocol_group::error::ProtocolGroupError, queue::error::QueueError,
+    signature::error::SignatureError, simulation::error::SimulationError,
     support_request::error::SupportRequestError, token::error::TokenError,
     token_group::error::TokenGroupError, token_price::error::TokenPriceError,
     transaction::error::TransactionError, user::error::UserError,
@@ -39,8 +41,11 @@ pub(crate) enum RouteError {
     PaymasterError(PaymasterError),
     PaymasterOperationError(PaymasterOperationError),
     PortfolioError(PortfolioError),
+    ProtocolError(ProtocolError),
+    ProtocolGroupError(ProtocolGroupError),
     QueueError(QueueError),
     SignatureError(SignatureError),
+    SimulationError(SimulationError),
     SupportRequestError(SupportRequestError),
     TokenError(TokenError),
     TokenGroupError(TokenGroupError),
@@ -140,6 +145,25 @@ impl RouteErrorStatusCodeAndMsg for PortfolioError {
     }
 }
 
+impl RouteErrorStatusCodeAndMsg for ProtocolError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            ProtocolError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
+            ProtocolError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+        }
+    }
+}
+
+impl RouteErrorStatusCodeAndMsg for ProtocolGroupError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            ProtocolGroupError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
+            ProtocolGroupError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+            ProtocolGroupError::Unauthorized(msg) => (StatusCode::UNAUTHORIZED, msg.to_string()),
+        }
+    }
+}
+
 impl RouteErrorStatusCodeAndMsg for QueueError {
     fn error_status_code_and_msg(&self) -> (StatusCode, String) {
         match self {
@@ -155,6 +179,15 @@ impl RouteErrorStatusCodeAndMsg for SignatureError {
         match self {
             SignatureError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
             SignatureError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+        }
+    }
+}
+
+impl RouteErrorStatusCodeAndMsg for SimulationError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            SimulationError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
+            SimulationError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
         }
     }
 }
@@ -255,8 +288,11 @@ impl RouteErrorStatusCodeAndMsg for RouteError {
             RouteError::PaymasterError(err) => err.error_status_code_and_msg(),
             RouteError::PaymasterOperationError(err) => err.error_status_code_and_msg(),
             RouteError::PortfolioError(err) => err.error_status_code_and_msg(),
+            RouteError::ProtocolError(err) => err.error_status_code_and_msg(),
+            RouteError::ProtocolGroupError(err) => err.error_status_code_and_msg(),
             RouteError::QueueError(err) => err.error_status_code_and_msg(),
             RouteError::SignatureError(err) => err.error_status_code_and_msg(),
+            RouteError::SimulationError(err) => err.error_status_code_and_msg(),
             RouteError::SupportRequestError(err) => err.error_status_code_and_msg(),
             RouteError::TokenError(err) => err.error_status_code_and_msg(),
             RouteError::TokenGroupError(err) => err.error_status_code_and_msg(),

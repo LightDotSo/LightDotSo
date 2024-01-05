@@ -21,8 +21,9 @@ use crate::{
     handle_error,
     routes::{
         activity, auth, check, configuration, feedback, health, invite_code, metrics, notification,
-        paymaster, paymaster_operation, portfolio, queue, signature, support_request, token,
-        token_group, token_price, transaction, user, user_operation, wallet, wallet_settings,
+        paymaster, paymaster_operation, portfolio, protocol, protocol_group, queue, signature,
+        simulation, support_request, token, token_group, token_price, transaction, user,
+        user_operation, wallet, wallet_settings,
     },
     sessions::{authenticated, RedisStore},
     state::AppState,
@@ -90,6 +91,10 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(portfolio::error::PortfolioError),
         schemas(portfolio::types::Portfolio),
         schemas(portfolio::types::PortfolioBalanceDate),
+        schemas(protocol::error::ProtocolError),
+        schemas(protocol::types::Protocol),
+        schemas(protocol_group::error::ProtocolGroupError),
+        schemas(protocol_group::types::ProtocolGroup),
         schemas(queue::error::QueueError),
         schemas(queue::types::QueueSuccess),
         schemas(signature::error::SignatureError),
@@ -159,11 +164,20 @@ use utoipa_swagger_ui::SwaggerUi;
         paymaster_operation::v1_paymaster_operation_get_handler,
         paymaster_operation::v1_paymaster_operation_list_handler,
         portfolio::v1_portfolio_get_handler,
+        protocol::v1_protocol_get_handler,
+        protocol::v1_protocol_list_handler,
+        protocol_group::v1_protocol_group_create_handler,
+        protocol_group::v1_protocol_group_get_handler,
+        protocol_group::v1_protocol_group_list_handler,
         queue::v1_queue_portfolio_handler,
         queue::v1_queue_token_handler,
         signature::v1_signature_get_handler,
         signature::v1_signature_list_handler,
         signature::v1_signature_post_handler,
+        simulation::v1_simulation_get_handler,
+        simulation::v1_simulation_list_handler,
+        simulation::v1_simulation_list_count_handler,
+        simulation::v1_simulation_update_handler,
         support_request::v1_support_request_post_handler,
         token::v1_token_get_handler,
         token::v1_token_list_handler,
@@ -204,8 +218,11 @@ use utoipa_swagger_ui::SwaggerUi;
         (name = "paymaster", description = "Paymaster API"),
         (name = "paymaster_operation", description = "Paymaster Operation API"),
         (name = "portfolio", description = "Portfolio API"),
+        (name = "protocol", description = "Protocol API"),
+        (name = "protocol_group", description = "Protocol Group API"),
         (name = "queue", description = "Queue API"),
         (name = "signature", description = "Signature API"),
+        (name = "simulation", description = "Simulation API"),
         (name = "support_request", description = "Support Request API"),
         (name = "token", description = "Token API"),
         (name = "token_group", description = "Token Group API"),
@@ -312,8 +329,11 @@ pub async fn start_api_server() -> Result<()> {
         .merge(paymaster::router())
         .merge(paymaster_operation::router())
         .merge(portfolio::router())
+        .merge(protocol::router())
+        .merge(protocol_group::router())
         .merge(queue::router())
         .merge(signature::router())
+        .merge(simulation::router())
         .merge(support_request::router())
         .merge(token::router())
         .merge(token_group::router())
