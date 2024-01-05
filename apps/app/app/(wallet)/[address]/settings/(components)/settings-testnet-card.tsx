@@ -100,7 +100,8 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   }, [walletSettings, key]);
 
   const form = useForm<WalletTestnetFormValues>({
-    mode: "onBlur",
+    mode: "all",
+    reValidateMode: "onBlur",
     resolver: zodResolver(walletTestnetFormSchema),
     defaultValues,
   });

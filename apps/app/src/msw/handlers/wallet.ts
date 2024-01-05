@@ -14,7 +14,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { http, HttpResponse } from "msw";
-import { BASE_API_URL, BASE_LOCAL_ADMIN_URL } from "@/const/api";
+import {
+  BASE_API_AUTHENTICATED_URL,
+  BASE_API_URL,
+  BASE_LOCAL_ADMIN_URL,
+} from "@/const/api";
 import { DEMO_WALLET_ADDRESS } from "@/const/demo";
 
 export const getWallet = (url: string) =>
@@ -41,7 +45,9 @@ export const getWallets = (url: string) =>
 
 export const handlers = [
   getWallet(BASE_LOCAL_ADMIN_URL),
+  getWallet(BASE_API_AUTHENTICATED_URL),
   getWallet(BASE_API_URL),
   getWallets(BASE_LOCAL_ADMIN_URL),
+  getWallets(BASE_API_AUTHENTICATED_URL),
   getWallets(BASE_API_URL),
 ];

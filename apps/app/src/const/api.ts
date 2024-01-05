@@ -17,4 +17,6 @@ export const BASE_LOCAL_ADMIN_URL = "http://localhost:3000/admin";
 
 export const BASE_LOCAL_API_URL = "http://localhost:3000";
 
+export const BASE_API_AUTHENTICATED_URL = "https://api.light.so/authenticated";
+
 export const BASE_API_URL = "https://api.light.so";

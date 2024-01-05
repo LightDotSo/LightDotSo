@@ -125,7 +125,8 @@ export const ConfirmForm: FC = () => {
   // ---------------------------------------------------------------------------
 
   const form = useForm<NewFormValues>({
-    mode: "onBlur",
+    mode: "all",
+    reValidateMode: "onBlur",
     // TODO: Fix this type error w/ zod
     // @ts-expect-error
     resolver: zodResolver(newFormStoreSchema, defaultValues),
