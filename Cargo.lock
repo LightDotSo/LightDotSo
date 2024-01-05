@@ -6273,6 +6273,8 @@ dependencies = [
  "lightdotso-tracing",
  "revm",
  "serde",
+ "strum 0.25.0",
+ "strum_macros 0.25.2",
  "tokio",
 ]
 

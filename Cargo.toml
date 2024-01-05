@@ -177,6 +177,8 @@
   serde = "1.0.183"
   serde_json = "1.0.104"
   spki = "0.7.2"
+  strum = "0.25"
+  strum_macros = "0.25"
   tauri = { version = "1.4", features = ["shell-open"] }
   tauri-build = { version = "1.4", features = [] }
   thiserror = "1.0.40"

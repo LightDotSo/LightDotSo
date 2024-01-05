@@ -20,9 +20,19 @@ use crate::{
     },
 };
 use lazy_static::lazy_static;
+use serde::{Deserialize, Serialize};
+use strum_macros::EnumVariantNames;
 
 lazy_static! {
     #[derive(Clone)]
     pub static ref ADAPTERS: Vec<Box<dyn Adapter + Sync + Send>> =
         vec![Box::new(EthAdapter::new()), Box::new(ERC20Adapter::new()), Box::new(ERC721Adapter::new()), Box::new(ERC1155Adapter::new())];
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, EnumVariantNames)]
+pub enum InterpretationActionType {
+    #[strum(serialize = "NATIVE_RECEIVE")]
+    NativeReceive,
+    #[strum(serialize = "NATIVE_SEND")]
+    NativeSend,
 }

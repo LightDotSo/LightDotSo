@@ -17,7 +17,10 @@
 
 use crate::{
     adapter::Adapter,
-    types::{AdapterResponse, AssetChange, AssetToken, InterpretationRequest},
+    constants::InterpretationActionType,
+    types::{
+        AdapterResponse, AssetChange, AssetToken, InterpretationAction, InterpretationRequest,
+    },
 };
 use async_trait::async_trait;
 use ethers_main::types::Address;
@@ -54,6 +57,7 @@ impl Adapter for EthAdapter {
         let after_from_balance = before_from_balance - request.value.unwrap();
         let after_to_balance = before_to_balance + request.value.unwrap();
 
+        // Get the asset changes for the from address
         let from_asset_change = AssetChange {
             address: request.from,
             token: token.clone(),
@@ -62,6 +66,7 @@ impl Adapter for EthAdapter {
             amount: request.value.unwrap().into(),
         };
 
+        // Get the asset changes for the to address
         let to_asset_change = AssetChange {
             address: request.to,
             token: token.clone(),
@@ -69,7 +74,24 @@ impl Adapter for EthAdapter {
             after_amount: after_to_balance,
             amount: request.value.unwrap().into(),
         };
-        Ok(AdapterResponse { asset_changes: vec![from_asset_change, to_asset_change] })
+
+        // Get the actions for the from address
+        let from_action = InterpretationAction {
+            action_type: InterpretationActionType::NativeSend,
+            address: request.from,
+        };
+
+        // Get the actions for the to address
+        let to_action = InterpretationAction {
+            action_type: InterpretationActionType::NativeReceive,
+            address: request.to,
+        };
+
+        // Return the adapter response
+        Ok(AdapterResponse {
+            actions: vec![from_action, to_action],
+            asset_changes: vec![from_asset_change, to_asset_change],
+        })
     }
 }
 

@@ -40,6 +40,6 @@ impl Adapter for ERC721Adapter {
         _evm: &mut Evm,
         _request: InterpretationRequest,
     ) -> Result<AdapterResponse> {
-        Ok(AdapterResponse { asset_changes: vec![] })
+        Ok(AdapterResponse { actions: vec![], asset_changes: vec![] })
     }
 }
