@@ -49,6 +49,7 @@ impl Adapter for EthAdapter {
     ) -> Result<AdapterResponse> {
         let token = AssetToken { address: Address::zero(), token_id: None };
 
+        // Get the before balances
         let before_from_balance = evm.get_balance(request.from).await?;
         let before_to_balance = evm.get_balance(request.to).await?;
 
