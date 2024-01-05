@@ -15,7 +15,7 @@
 
 use crate::{
     adapter::Adapter,
-    adapters::generic::{
+    adapters::transfer::{
         erc1155::ERC1155Adapter, erc20::ERC20Adapter, erc721::ERC721Adapter, eth::EthAdapter,
     },
 };
