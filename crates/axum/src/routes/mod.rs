@@ -19,6 +19,7 @@ pub(crate) mod check;
 pub(crate) mod configuration;
 pub(crate) mod feedback;
 pub(crate) mod health;
+pub(crate) mod interpretation;
 pub(crate) mod invite_code;
 pub(crate) mod metrics;
 pub(crate) mod notification;

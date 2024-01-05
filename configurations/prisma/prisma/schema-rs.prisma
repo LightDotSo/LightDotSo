@@ -348,10 +348,11 @@ model Interpretation {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  actions      InterpretationAction[]
-  assetChanges AssetChange[]
-  simulations  Simulation[]
-  transactions Transaction[]
+  actions        InterpretationAction[]
+  assetChanges   AssetChange[]
+  simulations    Simulation[]
+  transactions   Transaction[]
+  userOperations UserOperation[]
 }
 
 model InterpretationAction {
@@ -865,6 +866,9 @@ model UserOperation {
   // Eth One-to-none
   // ---------------------------------------------------------------------------
 
+  interpretation   Interpretation? @relation(fields: [interpretationId], references: [id])
+  interpretationId String?
+
   paymaster   Paymaster? @relation(fields: [paymasterId], references: [id])
   paymasterId String?
 
@@ -901,6 +905,7 @@ model UserOperation {
   // Unique
   @@index([walletAddress, status, isTestnet])
   // Relations
+  @@index([interpretationId])
   @@index([paymasterId])
   @@index([paymasterOperationId])
   @@index([transactionHash])
@@ -1295,7 +1300,7 @@ model TokenProtocolStrategy {
   // Fields
   // ---------------------------------------------------------------------------
 
-  strategy ProtocolStrategy @default(LENDING)
+  strategy ProtocolStrategy
 
   // ---------------------------------------------------------------------------
   // One-to-one
