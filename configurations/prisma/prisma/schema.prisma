@@ -216,6 +216,7 @@ model Wallet {
   configurations      Configuration[]
   paymasterOperations PaymasterOperation[]
   notifications       Notification[]
+  simulations         Simulation[]
   supportRequests     SupportRequest[]
   transactions        Transaction[]
   userOperations      UserOperation[]
@@ -463,7 +464,26 @@ model Simulation {
   // Fields
   // ---------------------------------------------------------------------------
 
+  blockNumber Int
+  gasLimit    BigInt
+  success     Boolean
+  trace       Json
+
   status SimulationStatus @default(NONE)
+
+  // ---------------------------------------------------------------------------
+  // Eth
+  // ---------------------------------------------------------------------------
+
+  /// The account making the operation
+  /// address
+  sender   String
+  /// Anti-replay parameter (see “Semi-abstracted Nonce Support” )
+  /// uint256
+  nonce    BigInt
+  /// The data to pass to the sender during the main execution call
+  /// bytes
+  callData Bytes
 
   // ---------------------------------------------------------------------------
   // One-to-one
@@ -471,6 +491,12 @@ model Simulation {
 
   interpretation   Interpretation @relation(fields: [interpretationId], references: [id])
   interpretationId String         @unique
+
+  // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  wallet Wallet @relation(fields: [sender], references: [address])
 
   // ---------------------------------------------------------------------------
   // None-to-many
@@ -483,6 +509,7 @@ model Simulation {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
+  logs     Log[]
   warnings SimulationWarning[]
 
   // ---------------------------------------------------------------------------
@@ -491,6 +518,7 @@ model Simulation {
 
   // Relations
   @@index([interpretationId])
+  @@index([sender])
   @@index([userOperationHash])
 }
 
@@ -580,6 +608,9 @@ model Log {
   // Relation None-to-many
   // ---------------------------------------------------------------------------
 
+  simulation   Simulation? @relation(fields: [simulationId], references: [id])
+  simulationId String?
+
   userOperation     UserOperation? @relation(fields: [userOperationHash], references: [hash])
   userOperationHash String?
 
@@ -591,6 +622,7 @@ model Log {
   @@unique([transactionHash, logIndex])
   // Relations
   @@index([transactionHash])
+  @@index([simulationId])
   @@index([userOperationHash])
 }
 
@@ -925,8 +957,7 @@ model UserOperation {
   // Relation One-to-many
   // ---------------------------------------------------------------------------
 
-  wallet        Wallet @relation(fields: [walletAddress], references: [address])
-  walletAddress String
+  wallet Wallet @relation(fields: [sender], references: [address])
 
   // ---------------------------------------------------------------------------
   // Relation None-to-many
@@ -947,15 +978,15 @@ model UserOperation {
   // ---------------------------------------------------------------------------
 
   // Unique
-  @@index([walletAddress, status, isTestnet])
+  @@index([sender, status, isTestnet])
   // Relations
   @@index([transactionHash])
   @@index([activityId])
   @@index([interpretationId])
   @@index([metadataId])
-  @@index([paymasterId])
   @@index([paymasterOperationId])
-  @@index([walletAddress])
+  @@index([sender])
+  @@index([paymasterId])
 }
 
 enum UserOperationStatus {
