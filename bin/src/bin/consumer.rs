@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#![recursion_limit = "256"]
+
 use clap::Parser;
 use lightdotso_axum::internal::start_internal_server;
 use lightdotso_bin::version::SHORT_VERSION;

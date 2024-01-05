@@ -44,6 +44,8 @@ pub async fn upsert_user_operation(
         .upsert(
             user_operation::hash::equals(format!("{:?}", uow.hash)),
             user_operation::create(
+                chain_id,
+                to_checksum(&uow.entry_point, None),
                 format!("{:?}", uow.hash),
                 to_checksum(&uow.light_wallet, None),
                 uow.nonce.unwrap_or(0.into()).as_u64() as i64,
@@ -55,8 +57,6 @@ pub async fn upsert_user_operation(
                 uow.max_fee_per_gas.unwrap_or(0.into()).as_u64() as i64,
                 uow.max_priority_fee_per_gas.unwrap_or(0.into()).as_u64() as i64,
                 uow.paymaster_and_data.clone().unwrap_or_else(|| vec![].into()).to_vec(),
-                chain_id,
-                to_checksum(&uow.entry_point, None),
                 wallet::address::equals(to_checksum(&uow.light_wallet, None)),
                 vec![user_operation::signature::set(Some(
                     uow.signature.clone().unwrap_or_else(|| vec![].into()).to_vec(),

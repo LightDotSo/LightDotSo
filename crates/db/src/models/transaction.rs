@@ -126,17 +126,17 @@ pub async fn upsert_transaction_with_log_receipt(
         .upsert(
             transaction::hash::equals(format!("{:?}", transaction.hash)),
             transaction::create(
-                format!("{:?}", transaction.hash),
-                transaction.nonce.as_u64() as i64,
-                to_checksum(&transaction.from, None),
-                chain_id,
                 DateTime::<FixedOffset>::from_utc(
                     NaiveDateTime::from_timestamp_opt(timestamp.as_u64() as i64, 0).unwrap(),
                     FixedOffset::east_opt(0).unwrap(),
                 ),
+                chain_id,
                 trace
                     .clone()
                     .map_or(json!({}), |t| serde_json::to_value(t).unwrap_or_else(|_| (json!({})))),
+                format!("{:?}", transaction.hash),
+                transaction.nonce.as_u64() as i64,
+                to_checksum(&transaction.from, None),
                 transaction_params.clone(),
             ),
             transaction_params.clone(),
