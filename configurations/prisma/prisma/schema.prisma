@@ -400,6 +400,7 @@ model InterpretationAction {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
+  assetChanges    AssetChange[]
   interpretations Interpretation[]
 
   // ---------------------------------------------------------------------------
@@ -441,6 +442,9 @@ model AssetChange {
   // None-to-many
   // ---------------------------------------------------------------------------
 
+  interpretationAction   InterpretationAction? @relation(fields: [interpretationActionId], references: [id])
+  interpretationActionId String?
+
   protocol   Protocol? @relation(fields: [protocolId], references: [id])
   protocolId String?
 
@@ -456,6 +460,7 @@ model AssetChange {
 
   // Relations
   @@index([interpretationId])
+  @@index([interpretationActionId])
   @@index([protocolId])
   @@index([tokenId])
   @@index([tokenProtocolId])
