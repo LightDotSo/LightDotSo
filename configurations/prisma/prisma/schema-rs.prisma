@@ -899,18 +899,22 @@ model UserOperation {
   metadata   UserOperationMetadata? @relation(fields: [metadataId], references: [id])
   metadataId String?                @unique
 
-  paymaster   Paymaster? @relation(fields: [paymasterId], references: [id])
-  paymasterId String?    @unique
-
   paymasterOperation   PaymasterOperation? @relation(fields: [paymasterOperationId], references: [id])
   paymasterOperationId String?             @unique
 
   // ---------------------------------------------------------------------------
-  // One-to-many
+  // Relation One-to-many
   // ---------------------------------------------------------------------------
 
   wallet        Wallet @relation(fields: [walletAddress], references: [address])
   walletAddress String
+
+  // ---------------------------------------------------------------------------
+  // Relation None-to-many
+  // ---------------------------------------------------------------------------
+
+  paymaster   Paymaster? @relation(fields: [paymasterId], references: [id])
+  paymasterId String?
 
   // ---------------------------------------------------------------------------
   // Relation Many-to-many
@@ -1468,7 +1472,7 @@ model Activity {
   walletSettingsId String?
 
   // ---------------------------------------------------------------------------
-  // Immutable Relations None-to-one
+  // Immutable Relations None-to-none
   // ---------------------------------------------------------------------------
 
   feedback      Feedback?
