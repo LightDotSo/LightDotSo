@@ -57,24 +57,6 @@ impl Adapter for EthAdapter {
         let after_from_balance = before_from_balance - request.value.unwrap();
         let after_to_balance = before_to_balance + request.value.unwrap();
 
-        // Get the asset changes for the from address
-        let from_asset_change = AssetChange {
-            address: request.from,
-            token: token.clone(),
-            before_amount: before_from_balance,
-            after_amount: after_from_balance,
-            amount: request.value.unwrap().into(),
-        };
-
-        // Get the asset changes for the to address
-        let to_asset_change = AssetChange {
-            address: request.to,
-            token: token.clone(),
-            before_amount: before_to_balance,
-            after_amount: after_to_balance,
-            amount: request.value.unwrap().into(),
-        };
-
         // Get the actions for the from address
         let from_action = InterpretationAction {
             action_type: InterpretationActionType::NativeSend,
@@ -85,6 +67,26 @@ impl Adapter for EthAdapter {
         let to_action = InterpretationAction {
             action_type: InterpretationActionType::NativeReceive,
             address: request.to,
+        };
+
+        // Get the asset changes for the from address
+        let from_asset_change = AssetChange {
+            address: request.from,
+            action: from_action.clone(),
+            token: token.clone(),
+            before_amount: before_from_balance,
+            after_amount: after_from_balance,
+            amount: request.value.unwrap().into(),
+        };
+
+        // Get the asset changes for the to address
+        let to_asset_change = AssetChange {
+            address: request.to,
+            action: to_action.clone(),
+            token: token.clone(),
+            before_amount: before_to_balance,
+            after_amount: after_to_balance,
+            amount: request.value.unwrap().into(),
         };
 
         // Return the adapter response

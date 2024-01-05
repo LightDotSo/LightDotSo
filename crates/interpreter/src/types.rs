@@ -122,6 +122,7 @@ pub struct AssetChange {
     pub after_amount: Uint,
     pub amount: Uint,
 
+    pub action: InterpretationAction,
     pub token: AssetToken,
 }
 
