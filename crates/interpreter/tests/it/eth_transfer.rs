@@ -48,7 +48,7 @@ async fn test_integration_eth_transfer() -> Result<()> {
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_light_eth_transfer() -> Result<()> {
     let request = SimulationRequest {
-        chain_id: 1,
+        chain_id: 10,
         // Light
         from: "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F".parse()?,
         // kaki.eth
@@ -56,7 +56,7 @@ async fn test_integration_light_eth_transfer() -> Result<()> {
         data: None,
         value: Some(1),
         gas_limit: u64::MAX,
-        block_number: None,
+        block_number: Some(114445705),
     };
 
     // Parse the command line arguments

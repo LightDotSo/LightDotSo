@@ -43,7 +43,7 @@ async fn run(
 
     Ok(SimulationResponse {
         gas_used: result.gas_used,
-        block_number: result.block_number,
+        block_number: request.block_number.unwrap_or(0),
         success: result.success,
         arena: result.trace.clone(),
         logs: result.logs,
