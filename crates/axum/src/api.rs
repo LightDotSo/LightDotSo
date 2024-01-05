@@ -177,6 +177,7 @@ use utoipa_swagger_ui::SwaggerUi;
         simulation::v1_simulation_get_handler,
         simulation::v1_simulation_list_handler,
         simulation::v1_simulation_list_count_handler,
+        simulation::v1_simulation_post_handler,
         simulation::v1_simulation_update_handler,
         support_request::v1_support_request_post_handler,
         token::v1_token_get_handler,

@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+pub(crate) mod create;
 pub(crate) mod error;
 pub(crate) mod get;
 pub(crate) mod list;
@@ -23,6 +24,7 @@ use crate::state::AppState;
 use autometrics::autometrics;
 use axum::{routing::get, Router};
 
+pub(crate) use create::{__path_v1_simulation_post_handler, v1_simulation_post_handler};
 pub(crate) use get::{__path_v1_simulation_get_handler, v1_simulation_get_handler};
 pub(crate) use list::{
     __path_v1_simulation_list_count_handler, __path_v1_simulation_list_handler,
@@ -37,6 +39,7 @@ pub(crate) use update::{__path_v1_simulation_update_handler, v1_simulation_updat
 #[autometrics]
 pub(crate) fn router() -> Router<AppState> {
     Router::new()
+        .route("/simulation/create", get(v1_simulation_post_handler))
         .route("/simulation/get", get(v1_simulation_get_handler))
         .route("/simulation/list", get(v1_simulation_list_handler))
         .route("/simulation/list/count", get(v1_simulation_list_count_handler))
