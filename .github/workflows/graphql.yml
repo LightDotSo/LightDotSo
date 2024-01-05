@@ -9,7 +9,7 @@ on:
   schedule:
     - cron: "0 0 * * *"
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.head_ref || github.sha }}
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.head_ref || github.sha }}${{ inputs.url }}
   cancel-in-progress: true
 jobs:
   graphql-update-schema:
