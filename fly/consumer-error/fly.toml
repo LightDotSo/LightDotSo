@@ -33,6 +33,11 @@ kill_timeout = "5s"
     method = "get"
     path = "/health"
 
-[metrics]
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 256
+
+[[metrics]]
   port = 9091
   path = "/metrics"

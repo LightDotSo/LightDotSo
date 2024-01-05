@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for lightdotso-consumer-nfn on 2023-09-05T17:56:04-07:00
+# fly.toml app configuration file generated for lightdotso-consumer-intptn on 2024-01-05T12:20:58-08:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "lightdotso-consumer-nfn"
+app = "lightdotso-consumer-intptn"
 primary_region = "sjc"
 kill_signal = "SIGINT"
 kill_timeout = "5s"
@@ -15,13 +15,7 @@ kill_timeout = "5s"
   image = "ghcr.io/lightdotso/lightdotso:latest"
 
 [deploy]
-  strategy = "canary"
-
-[http_service]
-  internal_port = 0
-  auto_stop_machines = true
-  auto_start_machines = true
-  min_machines_running = 1
+  strategy = "bluegreen"
 
 [checks]
   [checks.health]

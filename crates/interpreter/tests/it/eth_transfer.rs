@@ -44,3 +44,30 @@ async fn test_integration_eth_transfer() -> Result<()> {
 
     Ok(())
 }
+
+#[tokio::test(flavor = "multi_thread")]
+async fn test_integration_light_eth_transfer() -> Result<()> {
+    let request = SimulationRequest {
+        chain_id: 1,
+        // Light
+        from: "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F".parse()?,
+        // kaki.eth
+        to: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".parse()?,
+        data: None,
+        value: Some(1),
+        gas_limit: u64::MAX,
+        block_number: None,
+    };
+
+    // Parse the command line arguments
+    let args = InterpreterArgs::parse_from([""]);
+
+    // Run the interpreter
+    let res = args.run(request).await?;
+
+    println!("{:?}", res);
+
+    assert!(!res.asset_changes.is_empty());
+
+    Ok(())
+}

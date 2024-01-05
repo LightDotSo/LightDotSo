@@ -47,7 +47,6 @@ pub async fn upsert_user_operation(
                 chain_id,
                 to_checksum(&uow.entry_point, None),
                 format!("{:?}", uow.hash),
-                to_checksum(&uow.light_wallet, None),
                 uow.nonce.unwrap_or(0.into()).as_u64() as i64,
                 uow.init_code.clone().unwrap_or_else(|| vec![].into()).to_vec(),
                 uow.call_data.clone().unwrap_or_else(|| vec![].into()).to_vec(),
