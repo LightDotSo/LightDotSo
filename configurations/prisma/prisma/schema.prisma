@@ -481,6 +481,9 @@ model Simulation {
   /// Anti-replay parameter (see “Semi-abstracted Nonce Support” )
   /// uint256
   nonce    BigInt
+  /// The initCode of the account (needed if and only if the account is not yet on-chain and needs to be created)
+  /// bytes
+  initCode Bytes
   /// The data to pass to the sender during the main execution call
   /// bytes
   callData Bytes
