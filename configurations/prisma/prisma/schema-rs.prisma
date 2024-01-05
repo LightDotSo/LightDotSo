@@ -1295,7 +1295,7 @@ model TokenProtocolStrategy {
   // Fields
   // ---------------------------------------------------------------------------
 
-  strategy ProtocolStrategy @default(LENDING)
+  strategy ProtocolStrategy
 
   // ---------------------------------------------------------------------------
   // One-to-one
