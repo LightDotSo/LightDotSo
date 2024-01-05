@@ -639,6 +639,21 @@ model Receipt {
 /// From: https://github.com/gakonst/ethers-rs/blob/e8514a7bdbe7e05a16c5e6b994cfc5cab22a1076/ethers-core/src/types/transaction/response.rs#L17-L123
 model Transaction {
   // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  timestamp DateTime
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  /// pub chain_id: Option<U256>
+  chainId   BigInt
+  trace     Json
+  isTestnet Boolean @default(false)
+
+  // ---------------------------------------------------------------------------
   // Eth
   // ---------------------------------------------------------------------------
 
@@ -711,16 +726,6 @@ model Transaction {
   /// baseFeePerGas + maxPriorityFeePerGas is “refunded” to the user.
   /// pub max_fee_per_gas: Option<U256>
   maxFeePerGas         BigInt?
-
-  // ---------------------------------------------------------------------------
-  // Custom Fields
-  // ---------------------------------------------------------------------------
-
-  /// pub chain_id: Option<U256>
-  chainId   BigInt
-  timestamp DateTime
-  trace     Json
-  isTestnet Boolean  @default(false)
 
   // ---------------------------------------------------------------------------
   // Eth One-to-none
