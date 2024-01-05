@@ -212,15 +212,15 @@ model Wallet {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  activities         Activity[]
-  configurations     Configuration[]
-  paymasterOperation PaymasterOperation[]
-  notifications      Notification[]
-  supportRequests    SupportRequest[]
-  transactions       Transaction[]
-  userOperations     UserOperation[]
-  users              User[]
-  walletBalances     WalletBalance[]
+  activities          Activity[]
+  configurations      Configuration[]
+  paymasterOperations PaymasterOperation[]
+  notifications       Notification[]
+  supportRequests     SupportRequest[]
+  transactions        Transaction[]
+  userOperations      UserOperation[]
+  users               User[]
+  walletBalances      WalletBalance[]
 }
 
 // -----------------------------------------------------------------------------
