@@ -393,8 +393,18 @@ model AssetChange {
   interpretation   Interpretation @relation(fields: [interpretationId], references: [id])
   interpretationId String
 
+  // ---------------------------------------------------------------------------
+  // One-to-none
+  // ---------------------------------------------------------------------------
+
+  protocol   Protocol? @relation(fields: [protocolId], references: [id])
+  protocolId String?
+
   token   Token  @relation(fields: [tokenId], references: [id])
   tokenId String
+
+  tokenProtocol   TokenProtocol? @relation(fields: [tokenProtocolId], references: [id])
+  tokenProtocolId String?
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -402,7 +412,9 @@ model AssetChange {
 
   // Relations
   @@index([interpretationId])
+  @@index([protocolId])
   @@index([tokenId])
+  @@index([tokenProtocolId])
 }
 
 // -----------------------------------------------------------------------------
@@ -1120,10 +1132,37 @@ enum TokenType {
   ERC_1155
 }
 
-// The wallet balances are from: https://github.com/llamafolio/llamafolio-api
-// License: GPL-3.0
+// -----------------------------------------------------------------------------
+// Protocol
+// -----------------------------------------------------------------------------
 
 model Protocol {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  chainId BigInt
+  name    String
+
+  // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  assetChanges AssetChange[]
+  protocols    TokenProtocol[]
+}
+
+// The wallet balances are from: https://github.com/llamafolio/llamafolio-api
+// License: GPL-3.0
+model TokenProtocol {
   // ---------------------------------------------------------------------------
   // Core
   // ---------------------------------------------------------------------------
@@ -1139,10 +1178,25 @@ model Protocol {
   rewardUSD  Float
 
   // ---------------------------------------------------------------------------
+  // One-to-one
+  // ---------------------------------------------------------------------------
+
+  protocol   Protocol @relation(fields: [protocolId], references: [id])
+  protocolId String
+
+  // ---------------------------------------------------------------------------
   // Many-to-many
   // ---------------------------------------------------------------------------
 
+  assetChanges   AssetChange[]
   walletBalances WalletBalance[]
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
+  // Relations
+  @@index([protocolId])
 }
 
 // -----------------------------------------------------------------------------
@@ -1188,8 +1242,8 @@ model WalletBalance {
   token   Token?  @relation(fields: [tokenId], references: [id])
   tokenId String?
 
-  protocol   Protocol? @relation(fields: [protocolId], references: [id])
-  protocolId String?
+  tokenProtocol   TokenProtocol? @relation(fields: [tokenProtocolId], references: [id])
+  tokenProtocolId String?
 
   wallet        Wallet @relation(fields: [walletAddress], references: [address])
   walletAddress String
@@ -1202,7 +1256,7 @@ model WalletBalance {
   @@index([walletAddress, chainId, amount, isLatest, isSpam, isTestnet])
   // Relations
   @@index([tokenId])
-  @@index([protocolId])
+  @@index([tokenProtocolId])
   @@index([walletAddress])
 }
 
