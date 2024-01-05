@@ -214,8 +214,8 @@ model Wallet {
 
   activities          Activity[]
   configurations      Configuration[]
-  paymasterOperations PaymasterOperation[]
   notifications       Notification[]
+  paymasterOperations PaymasterOperation[]
   simulations         Simulation[]
   supportRequests     SupportRequest[]
   transactions        Transaction[]
@@ -1047,8 +1047,8 @@ model Paymaster {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  userOperations      UserOperation[]
   paymasterOperations PaymasterOperation[]
+  userOperations      UserOperation[]
 
   // ---------------------------------------------------------------------------
   // Mappings
