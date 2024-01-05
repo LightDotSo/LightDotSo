@@ -35,7 +35,7 @@ pub(crate) struct SimulationCreateRequestParams {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Update a list of simulations
+/// Create a simulation.
 #[utoipa::path(
         post,
         path = "/simulation/create",
