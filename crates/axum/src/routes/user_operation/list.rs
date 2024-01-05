@@ -218,7 +218,6 @@ fn construct_user_operation_list_query_params(query: &ListQuery) -> Vec<WherePar
             ListQueryStatus::History => query_exp.push(or![
                 user_operation::status::equals(UserOperationStatus::Executed),
                 user_operation::status::equals(UserOperationStatus::Reverted),
-                user_operation::status::equals(UserOperationStatus::Invalid),
             ]),
             ListQueryStatus::Pending => {
                 query_exp.push(user_operation::status::equals(UserOperationStatus::Pending))
