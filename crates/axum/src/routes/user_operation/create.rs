@@ -357,8 +357,8 @@ pub(crate) async fn v1_user_operation_post_handler(
                     sig.signature.hex_to_bytes()?,
                     sig.signature_type,
                     SignatureProcedure::OnChain,
-                    owner::id::equals(sig.owner_id),
                     user_operation::hash::equals(user_operation_hash),
+                    owner::id::equals(sig.owner_id),
                     vec![],
                 )
                 .exec()
