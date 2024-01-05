@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#![allow(clippy::unwrap_used)]
+
 use crate::{
     adapter::Adapter,
     types::{AdapterResponse, InterpretationRequest},
@@ -32,8 +34,16 @@ impl ERC20Adapter {
 
 #[async_trait]
 impl Adapter for ERC20Adapter {
-    fn matches(&self, _request: InterpretationRequest) -> bool {
-        true
+    fn matches(&self, request: InterpretationRequest) -> bool {
+        request.logs.iter().any(|log| {
+            log.topics.len() == 3 &&
+                log.topics[0] ==
+                    // https://www.4byte.directory/event-signatures/?bytes_signature=0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
+                    // Transfer(address,address,uint256)
+                    "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
+                        .parse()
+                        .unwrap()
+        })
     }
     async fn query(
         &self,

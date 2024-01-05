@@ -61,13 +61,13 @@ impl Adapter for EthAdapter {
         // Get the actions for the from address
         let from_action = InterpretationAction {
             action_type: InterpretationActionType::NativeSend,
-            address: request.from,
+            address: Some(request.from),
         };
 
         // Get the actions for the to address
         let to_action = InterpretationAction {
             action_type: InterpretationActionType::NativeReceive,
-            address: request.to,
+            address: Some(request.to),
         };
 
         // Get the asset changes for the from address

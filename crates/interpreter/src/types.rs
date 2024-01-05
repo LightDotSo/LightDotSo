@@ -104,7 +104,7 @@ impl Default for InterpretationResponse {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InterpretationAction {
     pub action_type: InterpretationActionType,
-    pub address: Address,
+    pub address: Option<Address>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
