@@ -1170,6 +1170,7 @@ model Protocol {
 
   chainId BigInt
   name    String
+  status  ProtocolStatus @default(UNKNOWN)
 
   // ---------------------------------------------------------------------------
   // One-to-many
@@ -1177,6 +1178,16 @@ model Protocol {
 
   assetChanges AssetChange[]
   protocols    TokenProtocol[]
+}
+
+enum ProtocolStatus {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
+
+  TRUSTWORTHY
+  KNOWN
+  UNKNOWN
 }
 
 // The wallet balances are from: https://github.com/llamafolio/llamafolio-api
