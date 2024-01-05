@@ -1172,7 +1172,8 @@ model WalletBalance {
   // Core
   // ---------------------------------------------------------------------------
 
-  id String @id @default(cuid())
+  id        String   @id @default(cuid())
+  timestamp DateTime @default(now())
 
   // ---------------------------------------------------------------------------
   // Fields
@@ -1194,7 +1195,6 @@ model WalletBalance {
   chainId   BigInt
   amount    BigInt?
   stable    Boolean?
-  timestamp DateTime @default(now())
   isLatest  Boolean  @default(false)
   isSpam    Boolean  @default(false)
   isTestnet Boolean  @default(false)
