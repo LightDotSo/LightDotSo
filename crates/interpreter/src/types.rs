@@ -82,6 +82,21 @@ pub struct InterpretationResponse {
     pub asset_changes: Vec<AssetChange>,
 }
 
+impl Default for InterpretationResponse {
+    fn default() -> Self {
+        Self {
+            gas_used: 0,
+            block_number: 0,
+            success: false,
+            traces: Vec::new(),
+            logs: Vec::new(),
+            exit_reason: InstructionResult::Stop,
+            formatted_trace: String::new(),
+            asset_changes: Vec::new(),
+        }
+    }
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct AdapterResponse {
     /// Changes in the assets of the transaction

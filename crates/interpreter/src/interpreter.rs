@@ -138,7 +138,7 @@ impl Interpreter<'_> {
     pub async fn run_with_simulate_bundle(
         &mut self,
         requests: Vec<SimulationRequest>,
-    ) -> Result<Vec<InterpretationResponse>> {
+    ) -> Result<InterpretationResponse> {
         // Simulate the user operation
         let simulation_results = simulate_bundle(requests.clone()).await?;
 
@@ -197,6 +197,21 @@ impl Interpreter<'_> {
             });
         }
 
-        Ok(interpretation_responses)
+        // Flatten the vector to single InterpretationResponse
+        let res = interpretation_responses.into_iter().fold(
+            InterpretationResponse::default(),
+            |mut acc, res| {
+                acc.gas_used += res.gas_used;
+                acc.success &= res.success;
+                acc.traces.extend(res.traces);
+                acc.logs.extend(res.logs);
+                acc.exit_reason = res.exit_reason;
+                acc.formatted_trace.push_str(res.formatted_trace.as_str());
+                acc.asset_changes.extend(res.asset_changes);
+                acc
+            },
+        );
+
+        Ok(res)
     }
 }
