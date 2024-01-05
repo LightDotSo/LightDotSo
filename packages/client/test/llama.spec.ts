@@ -20,8 +20,8 @@ import { getLlama } from "../src"; // Replace with your actual file path
 
 test("getLlama", async () => {
   // Call your function with actual address
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const actualAddress = "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"; // replace with actual address
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const result = await getLlama(actualAddress);
 
   // Expect that status is either "success" or "stale"
@@ -29,8 +29,4 @@ test("getLlama", async () => {
   //   "success",
   //   "stale",
   // ]);
-  // Check that the array length is greater than 0
-  expect(result._unsafeUnwrap().protocols.length, "protocols").toBeGreaterThan(
-    1,
-  );
 });

@@ -364,14 +364,19 @@ model Interpretation {
   updatedAt DateTime @updatedAt
 
   // ---------------------------------------------------------------------------
+  // One-to-none
+  // ---------------------------------------------------------------------------
+
+  simulation    Simulation?
+  transaction   Transaction?
+  userOperation UserOperation?
+
+  // ---------------------------------------------------------------------------
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  actions        InterpretationAction[]
-  assetChanges   AssetChange[]
-  simulations    Simulation[]
-  transactions   Transaction[]
-  userOperations UserOperation[]
+  actions      InterpretationAction[]
+  assetChanges AssetChange[]
 }
 
 model InterpretationAction {
@@ -465,7 +470,7 @@ model Simulation {
   // ---------------------------------------------------------------------------
 
   interpretation   Interpretation @relation(fields: [interpretationId], references: [id])
-  interpretationId String
+  interpretationId String         @unique
 
   // ---------------------------------------------------------------------------
   // One-to-none
@@ -571,6 +576,10 @@ model Log {
 
   receipt Receipt? @relation(fields: [transactionHash], references: [transactionHash])
 
+  // ---------------------------------------------------------------------------
+  // Relation One-to-none
+  // ---------------------------------------------------------------------------
+
   userOperation     UserOperation? @relation(fields: [userOperationHash], references: [hash])
   userOperationHash String?
 
@@ -595,7 +604,7 @@ model LogTopic {
   id String @id
 
   // ---------------------------------------------------------------------------
-  // Many-to-many
+  // Eth Many-to-many
   // ---------------------------------------------------------------------------
 
   logs Log[]
@@ -666,6 +675,10 @@ model Receipt {
   /// amount that's actually paid by users can only be determined post-execution
   /// pub effective_gas_price: Option<U256>
   effectiveGasPrice BigInt?
+
+  // ---------------------------------------------------------------------------
+  // Eth Many-to-many
+  // ---------------------------------------------------------------------------
 
   /// Logs generated within this transaction.
   /// pub logs: Vec<Log>
@@ -798,7 +811,7 @@ model Transaction {
   activityId String?   @unique
 
   interpretation   Interpretation? @relation(fields: [interpretationId], references: [id])
-  interpretationId String?
+  interpretationId String?         @unique
 
   // ---------------------------------------------------------------------------
   // Many-to-many
@@ -886,7 +899,7 @@ model UserOperation {
   // ---------------------------------------------------------------------------
 
   interpretation   Interpretation? @relation(fields: [interpretationId], references: [id])
-  interpretationId String?
+  interpretationId String?         @unique
 
   paymaster   Paymaster? @relation(fields: [paymasterId], references: [id])
   paymasterId String?
