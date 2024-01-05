@@ -25,6 +25,11 @@ lazy_static! {
     pub static ref COVALENT: String = "covalent".to_string();
 }
 
+// The interpretation namesapce
+lazy_static! {
+    pub static ref INTERPRETATION: String = "interpretation".to_string();
+}
+
 // The notification namesapce
 lazy_static! {
     pub static ref NOTIFICATION: String = "notification".to_string();
