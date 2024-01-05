@@ -412,8 +412,18 @@ model AssetChange {
   interpretation   Interpretation @relation(fields: [interpretationId], references: [id])
   interpretationId String
 
-  token   Token  @relation(fields: [tokenId], references: [id])
-  tokenId String
+  // ---------------------------------------------------------------------------
+  // One-to-none
+  // ---------------------------------------------------------------------------
+
+  protocol   Protocol? @relation(fields: [protocolId], references: [id])
+  protocolId String?
+
+  token   Token?  @relation(fields: [tokenId], references: [id])
+  tokenId String?
+
+  tokenProtocol   TokenProtocol? @relation(fields: [tokenProtocolId], references: [id])
+  tokenProtocolId String?
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -421,7 +431,9 @@ model AssetChange {
 
   // Relations
   @@index([interpretationId])
+  @@index([protocolId])
   @@index([tokenId])
+  @@index([tokenProtocolId])
 }
 
 // -----------------------------------------------------------------------------
@@ -639,6 +651,21 @@ model Receipt {
 /// From: https://github.com/gakonst/ethers-rs/blob/e8514a7bdbe7e05a16c5e6b994cfc5cab22a1076/ethers-core/src/types/transaction/response.rs#L17-L123
 model Transaction {
   // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  timestamp DateTime
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  /// pub chain_id: Option<U256>
+  chainId   BigInt
+  trace     Json
+  isTestnet Boolean @default(false)
+
+  // ---------------------------------------------------------------------------
   // Eth
   // ---------------------------------------------------------------------------
 
@@ -713,16 +740,6 @@ model Transaction {
   maxFeePerGas         BigInt?
 
   // ---------------------------------------------------------------------------
-  // Custom Fields
-  // ---------------------------------------------------------------------------
-
-  /// pub chain_id: Option<U256>
-  chainId   BigInt
-  timestamp DateTime
-  trace     Json
-  isTestnet Boolean  @default(false)
-
-  // ---------------------------------------------------------------------------
   // Eth One-to-none
   // ---------------------------------------------------------------------------
 
@@ -732,7 +749,7 @@ model Transaction {
   receipt Receipt?
 
   // ---------------------------------------------------------------------------
-  // Metadata One-to-none
+  // Relation One-to-none
   // ---------------------------------------------------------------------------
 
   activity   Activity? @relation(fields: [activityId], references: [id])
@@ -763,6 +780,23 @@ model Transaction {
 
 /// From the official implementation at: https://eips.ethereum.org/EIPS/eip-4337
 model UserOperation {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  chainId    BigInt
+  /// The address of the entry point contract
+  entryPoint String
+  status     UserOperationStatus @default(PROPOSED)
+  isTestnet  Boolean             @default(false)
+
   // ---------------------------------------------------------------------------
   // Eth
   // ---------------------------------------------------------------------------
@@ -803,14 +837,6 @@ model UserOperation {
   /// Data passed into the account along with the nonce during the verification step
   signature            Bytes?
 
-  createdAt  DateTime            @default(now())
-  updatedAt  DateTime            @updatedAt
-  chainId    BigInt
-  /// The address of the entry point contract
-  entryPoint String
-  status     UserOperationStatus @default(PROPOSED)
-  isTestnet  Boolean             @default(false)
-
   logs Log[]
 
   // ---------------------------------------------------------------------------
@@ -830,14 +856,17 @@ model UserOperation {
   walletAddress String
 
   // ---------------------------------------------------------------------------
-  // Metadata One-to-none
+  // Relation One-to-none
   // ---------------------------------------------------------------------------
 
   activity   Activity? @relation(fields: [activityId], references: [id])
   activityId String?   @unique
 
+  metadata   UserOperationMetadata? @relation(fields: [metadataId], references: [id])
+  metadataId String?
+
   // ---------------------------------------------------------------------------
-  // Metadata Many-to-many
+  // Relation Many-to-many
   // ---------------------------------------------------------------------------
 
   signatures  Signature[]
@@ -855,6 +884,7 @@ model UserOperation {
   @@index([transactionHash])
   @@index([walletAddress])
   @@index([activityId])
+  @@index([metadataId])
 }
 
 enum UserOperationStatus {
@@ -867,6 +897,28 @@ enum UserOperationStatus {
   EXECUTED
   REVERTED
   INVALID
+}
+
+model UserOperationMetadata {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  url String?
+
+  // ---------------------------------------------------------------------------
+  // Many-to-one
+  // ---------------------------------------------------------------------------
+
+  userOperations UserOperation[]
 }
 
 // -----------------------------------------------------------------------------
@@ -1065,14 +1117,14 @@ model TokenPrice {
   // Core
   // ---------------------------------------------------------------------------
 
-  id String @id @default(cuid())
+  id        String   @id @default(cuid())
+  timestamp DateTime @default(now())
 
   // ---------------------------------------------------------------------------
   // Fields
   // ---------------------------------------------------------------------------
 
-  price     Float
-  timestamp DateTime @default(now())
+  price Float
 
   // ---------------------------------------------------------------------------
   // One-to-one
@@ -1099,10 +1151,77 @@ enum TokenType {
   ERC_1155
 }
 
-// The wallet balances are from: https://github.com/llamafolio/llamafolio-api
-// License: GPL-3.0
+// -----------------------------------------------------------------------------
+// Protocol
+// -----------------------------------------------------------------------------
 
 model Protocol {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  address String
+  chainId BigInt
+  name    String
+  status  ProtocolStatus @default(UNKNOWN)
+
+  // ---------------------------------------------------------------------------
+  // One-to-none
+  // ---------------------------------------------------------------------------
+
+  group   ProtocolGroup? @relation(fields: [groupId], references: [id])
+  groupId String?
+
+  // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  assetChanges AssetChange[]
+  protocols    TokenProtocol[]
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
+  // Relations
+  @@index([groupId])
+}
+
+model ProtocolGroup {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id String @id @default(cuid())
+
+  // ---------------------------------------------------------------------------
+  // Many-to-one
+  // ---------------------------------------------------------------------------
+
+  protocols Protocol[]
+}
+
+enum ProtocolStatus {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
+
+  TRUSTWORTHY
+  KNOWN
+  UNKNOWN
+}
+
+// The wallet balances are from: https://github.com/llamafolio/llamafolio-api
+// License: GPL-3.0
+model TokenProtocol {
   // ---------------------------------------------------------------------------
   // Core
   // ---------------------------------------------------------------------------
@@ -1118,10 +1237,25 @@ model Protocol {
   rewardUSD  Float
 
   // ---------------------------------------------------------------------------
+  // One-to-one
+  // ---------------------------------------------------------------------------
+
+  protocol   Protocol @relation(fields: [protocolId], references: [id])
+  protocolId String
+
+  // ---------------------------------------------------------------------------
   // Many-to-many
   // ---------------------------------------------------------------------------
 
+  assetChanges   AssetChange[]
   walletBalances WalletBalance[]
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
+  // Relations
+  @@index([protocolId])
 }
 
 // -----------------------------------------------------------------------------
@@ -1133,7 +1267,8 @@ model WalletBalance {
   // Core
   // ---------------------------------------------------------------------------
 
-  id String @id @default(cuid())
+  id        String   @id @default(cuid())
+  timestamp DateTime @default(now())
 
   // ---------------------------------------------------------------------------
   // Fields
@@ -1155,7 +1290,6 @@ model WalletBalance {
   chainId   BigInt
   amount    BigInt?
   stable    Boolean?
-  timestamp DateTime @default(now())
   isLatest  Boolean  @default(false)
   isSpam    Boolean  @default(false)
   isTestnet Boolean  @default(false)
@@ -1167,8 +1301,8 @@ model WalletBalance {
   token   Token?  @relation(fields: [tokenId], references: [id])
   tokenId String?
 
-  protocol   Protocol? @relation(fields: [protocolId], references: [id])
-  protocolId String?
+  tokenProtocol   TokenProtocol? @relation(fields: [tokenProtocolId], references: [id])
+  tokenProtocolId String?
 
   wallet        Wallet @relation(fields: [walletAddress], references: [address])
   walletAddress String
@@ -1181,7 +1315,7 @@ model WalletBalance {
   @@index([walletAddress, chainId, amount, isLatest, isSpam, isTestnet])
   // Relations
   @@index([tokenId])
-  @@index([protocolId])
+  @@index([tokenProtocolId])
   @@index([walletAddress])
 }
 
