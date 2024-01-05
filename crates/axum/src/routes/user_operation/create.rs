@@ -249,6 +249,15 @@ pub(crate) async fn v1_user_operation_post_handler(
     // If the wallet is not found, return a 404.
     let wallet = wallet.ok_or(AppError::NotFound)?;
 
+    // If the wallet address is not equal to user operation sender, return a 400.
+    if wallet.address != user_operation.sender {
+        error!(
+            "user_operation.sender: {}, wallet.address: {}",
+            user_operation.sender, wallet.address
+        );
+        return Err(AppError::BadRequest);
+    }
+
     // Get the current configuration for the wallet.
     let configuration = state
         .client
@@ -334,7 +343,6 @@ pub(crate) async fn v1_user_operation_post_handler(
                     chain_id,
                     "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789".parse()?,
                     user_operation.hash,
-                    user_operation.sender,
                     user_operation.nonce,
                     user_operation.init_code.hex_to_bytes()?,
                     user_operation.call_data.hex_to_bytes()?,
@@ -344,7 +352,7 @@ pub(crate) async fn v1_user_operation_post_handler(
                     user_operation.max_fee_per_gas,
                     user_operation.max_priority_fee_per_gas,
                     user_operation.paymaster_and_data.hex_to_bytes()?,
-                    wallet::address::equals(wallet.address),
+                    wallet::address::equals(user_operation.sender),
                     params,
                 )
                 .exec()
