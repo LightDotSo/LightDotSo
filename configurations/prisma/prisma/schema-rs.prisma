@@ -400,8 +400,8 @@ model AssetChange {
   protocol   Protocol? @relation(fields: [protocolId], references: [id])
   protocolId String?
 
-  token   Token  @relation(fields: [tokenId], references: [id])
-  tokenId String
+  token   Token?  @relation(fields: [tokenId], references: [id])
+  tokenId String?
 
   tokenProtocol   TokenProtocol? @relation(fields: [tokenProtocolId], references: [id])
   tokenProtocolId String?
@@ -1149,9 +1149,17 @@ model Protocol {
   // Fields
   // ---------------------------------------------------------------------------
 
+  address String
   chainId BigInt
   name    String
   status  ProtocolStatus @default(UNKNOWN)
+
+  // ---------------------------------------------------------------------------
+  // One-to-none
+  // ---------------------------------------------------------------------------
+
+  group   ProtocolGroup? @relation(fields: [groupId], references: [id])
+  groupId String?
 
   // ---------------------------------------------------------------------------
   // One-to-many
@@ -1159,6 +1167,27 @@ model Protocol {
 
   assetChanges AssetChange[]
   protocols    TokenProtocol[]
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
+  // Relations
+  @@index([groupId])
+}
+
+model ProtocolGroup {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id String @id @default(cuid())
+
+  // ---------------------------------------------------------------------------
+  // Many-to-one
+  // ---------------------------------------------------------------------------
+
+  protocols Protocol[]
 }
 
 enum ProtocolStatus {
