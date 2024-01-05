@@ -13,8 +13,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#![recursion_limit = "512"]
+use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
 
-pub mod config;
-pub mod indexer;
-pub mod namespace;
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+/// Interpretation operation errors
+#[derive(Serialize, Deserialize, ToSchema)]
+pub(crate) enum InterpretationError {
+    /// Interpretation query error.
+    #[schema(example = "Bad request")]
+    BadRequest(String),
+    /// Interpretation not found by id.
+    #[schema(example = "id = 1")]
+    NotFound(String),
+}

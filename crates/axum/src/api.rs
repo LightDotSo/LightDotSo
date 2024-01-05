@@ -20,10 +20,10 @@ use crate::{
     constants::SESSION_COOKIE_ID,
     handle_error,
     routes::{
-        activity, auth, check, configuration, feedback, health, invite_code, metrics, notification,
-        paymaster, paymaster_operation, portfolio, protocol, protocol_group, queue, signature,
-        simulation, support_request, token, token_group, token_price, transaction, user,
-        user_operation, wallet, wallet_settings,
+        activity, auth, check, configuration, feedback, health, interpretation, invite_code,
+        metrics, notification, paymaster, paymaster_operation, portfolio, protocol, protocol_group,
+        queue, signature, simulation, support_request, token, token_group, token_price,
+        transaction, user, user_operation, wallet, wallet_settings,
     },
     sessions::{authenticated, RedisStore},
     state::AppState,
@@ -78,6 +78,10 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(feedback::create::FeedbackPostRequestParams),
         schemas(feedback::error::FeedbackError),
         schemas(feedback::types::Feedback),
+        schemas(interpretation::error::InterpretationError),
+        schemas(interpretation::types::Interpretation),
+        schemas(interpretation::update::InterpretationUpdateRequest),
+        schemas(interpretation::update::InterpretationUpdateRequestParams),
         schemas(invite_code::error::InviteCodeError),
         schemas(invite_code::types::InviteCode),
         schemas(notification::error::NotificationError),
@@ -151,6 +155,9 @@ use utoipa_swagger_ui::SwaggerUi;
         configuration::v1_configuration_get_handler,
         configuration::v1_configuration_list_handler,
         feedback::v1_feedback_post_handler,
+        interpretation::v1_interpretation_get_handler,
+        interpretation::v1_interpretation_list_handler,
+        interpretation::v1_interpretation_update_handler,
         invite_code::v1_invite_code_get_handler,
         invite_code::v1_invite_code_list_handler,
         invite_code::v1_invite_code_list_count_handler,
@@ -213,6 +220,7 @@ use utoipa_swagger_ui::SwaggerUi;
         (name = "configuration", description = "Configuration API"),
         (name = "check", description = "Check API"),
         (name = "feedback", description = "Feedback API"),
+        (name = "interpretation", description = "Interpretation API"),
         (name = "invite_code", description = "Invite Code API"),
         (name = "health", description = "Health API"),
         (name = "notification", description = "Notification API"),
@@ -324,6 +332,7 @@ pub async fn start_api_server() -> Result<()> {
         .merge(check::router())
         .merge(feedback::router())
         .merge(health::router())
+        .merge(interpretation::router())
         .merge(invite_code::router())
         .merge(metrics::router())
         .merge(notification::router())
