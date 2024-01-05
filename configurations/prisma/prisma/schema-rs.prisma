@@ -713,7 +713,7 @@ model Transaction {
   receipt Receipt?
 
   // ---------------------------------------------------------------------------
-  // Metadata One-to-none
+  // Relation One-to-none
   // ---------------------------------------------------------------------------
 
   activity   Activity? @relation(fields: [activityId], references: [id])
@@ -744,6 +744,23 @@ model Transaction {
 
 /// From the official implementation at: https://eips.ethereum.org/EIPS/eip-4337
 model UserOperation {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  chainId    BigInt
+  /// The address of the entry point contract
+  entryPoint String
+  status     UserOperationStatus @default(PROPOSED)
+  isTestnet  Boolean             @default(false)
+
   // ---------------------------------------------------------------------------
   // Eth
   // ---------------------------------------------------------------------------
@@ -784,14 +801,6 @@ model UserOperation {
   /// Data passed into the account along with the nonce during the verification step
   signature            Bytes?
 
-  createdAt  DateTime            @default(now())
-  updatedAt  DateTime            @updatedAt
-  chainId    BigInt
-  /// The address of the entry point contract
-  entryPoint String
-  status     UserOperationStatus @default(PROPOSED)
-  isTestnet  Boolean             @default(false)
-
   logs Log[]
 
   // ---------------------------------------------------------------------------
@@ -811,14 +820,17 @@ model UserOperation {
   walletAddress String
 
   // ---------------------------------------------------------------------------
-  // Metadata One-to-none
+  // Relation One-to-none
   // ---------------------------------------------------------------------------
 
   activity   Activity? @relation(fields: [activityId], references: [id])
   activityId String?   @unique
 
+  metadata   UserOperationMetadata? @relation(fields: [metadataId], references: [id])
+  metadataId String?
+
   // ---------------------------------------------------------------------------
-  // Metadata Many-to-many
+  // Relation Many-to-many
   // ---------------------------------------------------------------------------
 
   signatures  Signature[]
@@ -836,6 +848,7 @@ model UserOperation {
   @@index([transactionHash])
   @@index([walletAddress])
   @@index([activityId])
+  @@index([metadataId])
 }
 
 enum UserOperationStatus {
@@ -848,6 +861,27 @@ enum UserOperationStatus {
   EXECUTED
   REVERTED
   INVALID
+}
+
+model UserOperationMetadata {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+  url String?
+
+  // ---------------------------------------------------------------------------
+  // Many-to-one
+  // ---------------------------------------------------------------------------
+
+  userOperations UserOperation[]
 }
 
 // -----------------------------------------------------------------------------
@@ -1046,14 +1080,14 @@ model TokenPrice {
   // Core
   // ---------------------------------------------------------------------------
 
-  id String @id @default(cuid())
+  id        String   @id @default(cuid())
+  timestamp DateTime @default(now())
 
   // ---------------------------------------------------------------------------
   // Fields
   // ---------------------------------------------------------------------------
 
-  price     Float
-  timestamp DateTime @default(now())
+  price Float
 
   // ---------------------------------------------------------------------------
   // One-to-one
