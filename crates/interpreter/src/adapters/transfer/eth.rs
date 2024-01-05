@@ -39,8 +39,8 @@ impl EthAdapter {
 #[async_trait]
 impl Adapter for EthAdapter {
     fn matches(&self, request: InterpretationRequest) -> bool {
-        // If the calldata is empty, it's a value transfer
-        request.call_data.filter(|data| !data.is_empty()).is_none() && request.value.is_some()
+        // If the request has a value larger than 0, then it is a native transfer
+        request.value.map_or(false, |v| v > 0)
     }
     async fn query(
         &self,
@@ -103,38 +103,22 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_check_call_data_with_empty() {
+    fn test_check_value_none() {
         let eth_adapter = EthAdapter::new();
 
-        let request = InterpretationRequest {
-            call_data: Some(vec![].into()),
-            value: Some(1),
-            ..Default::default()
-        };
+        let request = InterpretationRequest { value: None, ..Default::default() };
 
-        // Assume that the check_call_data function returns true if call_data is empty and value is
-        // not None
+        // Assume that the matches function returns false if value is None
+        assert!(!eth_adapter.matches(request));
+    }
+
+    #[test]
+    fn test_check_value_greater_than_zero() {
+        let eth_adapter = EthAdapter::new();
+
+        let request = InterpretationRequest { value: Some(10), ..Default::default() };
+
+        // Assume that the matches function returns true if value is greater than 0
         assert!(eth_adapter.matches(request));
-    }
-
-    #[test]
-    fn test_check_call_data_with_data() {
-        let eth_adapter = EthAdapter::new();
-
-        let request =
-            InterpretationRequest { call_data: Some(vec![1, 2, 3].into()), ..Default::default() };
-
-        // Assume that the check_call_data function returns false if call_data is not empty
-        assert!(!eth_adapter.matches(request));
-    }
-
-    #[test]
-    fn test_check_call_data_with_none() {
-        let eth_adapter = EthAdapter::new();
-
-        let request = InterpretationRequest::default();
-
-        // Assume that the check_call_data function returns true if call_data and value is None
-        assert!(!eth_adapter.matches(request));
     }
 }
