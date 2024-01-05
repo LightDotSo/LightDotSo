@@ -184,7 +184,7 @@ model Wallet {
   name           String @default("")
 
   // ---------------------------------------------------------------------------
-  // One-to-none
+  // None-to-none
   // ---------------------------------------------------------------------------
 
   walletSettings WalletSettings?
@@ -303,14 +303,14 @@ model Owner {
   index   Int
 
   // ---------------------------------------------------------------------------
-  // One-to-one
+  // One-to-many
   // ---------------------------------------------------------------------------
 
   configuration   Configuration @relation(fields: [configurationId], references: [id])
   configurationId String
 
   // ---------------------------------------------------------------------------
-  // One-to-none
+  // None-to-many
   // ---------------------------------------------------------------------------
 
   user   User?   @relation(fields: [userId], references: [id])
@@ -345,7 +345,7 @@ model Interpretation {
   updatedAt DateTime @updatedAt
 
   // ---------------------------------------------------------------------------
-  // One-to-none
+  // None-to-none
   // ---------------------------------------------------------------------------
 
   simulation    Simulation?
@@ -397,14 +397,14 @@ model AssetChange {
   newAmount      BigInt
 
   // ---------------------------------------------------------------------------
-  // One-to-one
+  // One-to-many
   // ---------------------------------------------------------------------------
 
   interpretation   Interpretation @relation(fields: [interpretationId], references: [id])
   interpretationId String
 
   // ---------------------------------------------------------------------------
-  // One-to-none
+  // None-to-many
   // ---------------------------------------------------------------------------
 
   protocol   Protocol? @relation(fields: [protocolId], references: [id])
@@ -454,7 +454,7 @@ model Simulation {
   interpretationId String         @unique
 
   // ---------------------------------------------------------------------------
-  // One-to-none
+  // None-to-many
   // ---------------------------------------------------------------------------
 
   userOperation     UserOperation? @relation(fields: [userOperationHash], references: [hash])
@@ -552,13 +552,13 @@ model Log {
   removed             Boolean?
 
   // ---------------------------------------------------------------------------
-  // Eth One-to-none
+  // Eth None-to-many
   // ---------------------------------------------------------------------------
 
   receipt Receipt? @relation(fields: [transactionHash], references: [transactionHash])
 
   // ---------------------------------------------------------------------------
-  // Relation One-to-none
+  // Relation None-to-many
   // ---------------------------------------------------------------------------
 
   userOperation     UserOperation? @relation(fields: [userOperationHash], references: [hash])
@@ -666,7 +666,7 @@ model Receipt {
   logs Log[]
 
   // ---------------------------------------------------------------------------
-  // Eth One-to-none
+  // Eth None-to-one
   // ---------------------------------------------------------------------------
 
   transaction Transaction? @relation(fields: [transactionHash], references: [hash])
@@ -782,10 +782,14 @@ model Transaction {
   wallet        Wallet? @relation(fields: [walletAddress], references: [address])
   walletAddress String?
 
+  // ---------------------------------------------------------------------------
+  // Eth None-to-none
+  // ---------------------------------------------------------------------------
+
   receipt Receipt?
 
   // ---------------------------------------------------------------------------
-  // Relation One-to-none
+  // Relation None-to-one
   // ---------------------------------------------------------------------------
 
   activity   Activity? @relation(fields: [activityId], references: [id])
@@ -876,33 +880,37 @@ model UserOperation {
   logs Log[]
 
   // ---------------------------------------------------------------------------
-  // Eth One-to-none
+  // Eth None-to-many
   // ---------------------------------------------------------------------------
-
-  interpretation   Interpretation? @relation(fields: [interpretationId], references: [id])
-  interpretationId String?         @unique
-
-  paymaster   Paymaster? @relation(fields: [paymasterId], references: [id])
-  paymasterId String?
-
-  paymasterOperation   PaymasterOperation? @relation(fields: [paymasterOperationId], references: [id])
-  paymasterOperationId String?             @unique
 
   transaction     Transaction? @relation(fields: [transactionHash], references: [hash])
   transactionHash String?
 
-  wallet        Wallet @relation(fields: [walletAddress], references: [address])
-  walletAddress String
-
   // ---------------------------------------------------------------------------
-  // Relation One-to-none
+  // Relation None-to-one
   // ---------------------------------------------------------------------------
 
   activity   Activity? @relation(fields: [activityId], references: [id])
   activityId String?   @unique
 
+  interpretation   Interpretation? @relation(fields: [interpretationId], references: [id])
+  interpretationId String?         @unique
+
   metadata   UserOperationMetadata? @relation(fields: [metadataId], references: [id])
-  metadataId String?
+  metadataId String?                @unique
+
+  paymaster   Paymaster? @relation(fields: [paymasterId], references: [id])
+  paymasterId String?    @unique
+
+  paymasterOperation   PaymasterOperation? @relation(fields: [paymasterOperationId], references: [id])
+  paymasterOperationId String?             @unique
+
+  // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  wallet        Wallet @relation(fields: [walletAddress], references: [address])
+  walletAddress String
 
   // ---------------------------------------------------------------------------
   // Relation Many-to-many
@@ -918,13 +926,13 @@ model UserOperation {
   // Unique
   @@index([walletAddress, status, isTestnet])
   // Relations
+  @@index([transactionHash])
+  @@index([activityId])
   @@index([interpretationId])
+  @@index([metadataId])
   @@index([paymasterId])
   @@index([paymasterOperationId])
-  @@index([transactionHash])
   @@index([walletAddress])
-  @@index([activityId])
-  @@index([metadataId])
 }
 
 enum UserOperationStatus {
@@ -955,7 +963,7 @@ model UserOperationMetadata {
   url String?
 
   // ---------------------------------------------------------------------------
-  // Many-to-one
+  // Many-to-many
   // ---------------------------------------------------------------------------
 
   userOperations UserOperation[]
@@ -1013,7 +1021,7 @@ model PaymasterOperation {
   validAfter  DateTime
 
   // ---------------------------------------------------------------------------
-  // One-to-one
+  // One-to-many
   // ---------------------------------------------------------------------------
 
   paymaster   Paymaster @relation(fields: [paymasterId], references: [id])
@@ -1022,7 +1030,7 @@ model PaymasterOperation {
   wallet Wallet @relation(fields: [sender], references: [address])
 
   // ---------------------------------------------------------------------------
-  // One-to-none
+  // None-to-none
   // ---------------------------------------------------------------------------
 
   userOperation UserOperation?
@@ -1064,19 +1072,23 @@ model Signature {
   // One-to-one
   // ---------------------------------------------------------------------------
 
-  owner   Owner  @relation(fields: [ownerId], references: [id])
-  ownerId String
-
   userOperation     UserOperation @relation(fields: [userOperationHash], references: [hash])
   userOperationHash String        @unique
+
+  // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  owner   Owner  @relation(fields: [ownerId], references: [id])
+  ownerId String
 
   // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
 
   // Relations
-  @@index([ownerId])
   @@index([userOperationHash])
+  @@index([ownerId])
 }
 
 enum SignatureProcedure {
@@ -1113,7 +1125,7 @@ model Token {
   tokenId  BigInt?
 
   // ---------------------------------------------------------------------------
-  // One-to-none
+  // None-to-many
   // ---------------------------------------------------------------------------
 
   group   TokenGroup? @relation(fields: [groupId], references: [id])
@@ -1147,7 +1159,7 @@ model TokenGroup {
   id String @id @default(cuid())
 
   // ---------------------------------------------------------------------------
-  // Many-to-one
+  // Many-to-many
   // ---------------------------------------------------------------------------
 
   tokens Token[]
@@ -1215,7 +1227,7 @@ model Protocol {
   status  ProtocolStatus @default(UNKNOWN)
 
   // ---------------------------------------------------------------------------
-  // One-to-none
+  // None-to-many
   // ---------------------------------------------------------------------------
 
   group   ProtocolGroup? @relation(fields: [groupId], references: [id])
@@ -1280,7 +1292,7 @@ model TokenProtocol {
   rewardUSD  Float
 
   // ---------------------------------------------------------------------------
-  // One-to-one
+  // One-to-many
   // ---------------------------------------------------------------------------
 
   protocol   Protocol @relation(fields: [protocolId], references: [id])
@@ -1316,14 +1328,14 @@ model TokenProtocolStrategy {
   strategy ProtocolStrategy
 
   // ---------------------------------------------------------------------------
-  // One-to-one
+  // One-to-many
   // ---------------------------------------------------------------------------
 
   token   Token  @relation(fields: [tokenId], references: [id])
   tokenId String
 
-  tokenProtocolId String
   tokenProtocol   TokenProtocol @relation(fields: [tokenProtocolId], references: [id])
+  tokenProtocolId String
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1384,7 +1396,14 @@ model WalletBalance {
   isTestnet Boolean  @default(false)
 
   // ---------------------------------------------------------------------------
-  // One-to-none
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  wallet        Wallet @relation(fields: [walletAddress], references: [address])
+  walletAddress String
+
+  // ---------------------------------------------------------------------------
+  // None-to-many
   // ---------------------------------------------------------------------------
 
   token   Token?  @relation(fields: [tokenId], references: [id])
@@ -1393,9 +1412,6 @@ model WalletBalance {
   tokenProtocol   TokenProtocol? @relation(fields: [tokenProtocolId], references: [id])
   tokenProtocolId String?
 
-  wallet        Wallet @relation(fields: [walletAddress], references: [address])
-  walletAddress String
-
   // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
@@ -1403,9 +1419,9 @@ model WalletBalance {
   // Query
   @@index([walletAddress, chainId, amount, isLatest, isSpam, isTestnet])
   // Relations
+  @@index([walletAddress])
   @@index([tokenId])
   @@index([tokenProtocolId])
-  @@index([walletAddress])
 }
 
 // -----------------------------------------------------------------------------
@@ -1429,7 +1445,7 @@ model Activity {
   log       Json
 
   // ---------------------------------------------------------------------------
-  // Relations One-to-none
+  // Relations None-to-many
   // ---------------------------------------------------------------------------
 
   user   User?   @relation(fields: [userId], references: [id])
@@ -1439,7 +1455,7 @@ model Activity {
   walletAddress String?
 
   // ---------------------------------------------------------------------------
-  // Mutable Relations One-to-none
+  // Mutable Relations None-to-many
   // ---------------------------------------------------------------------------
 
   inviteCode   InviteCode? @relation(fields: [inviteCodeId], references: [id])
@@ -1452,7 +1468,7 @@ model Activity {
   walletSettingsId String?
 
   // ---------------------------------------------------------------------------
-  // Immutable Relations One-to-none
+  // Immutable Relations None-to-one
   // ---------------------------------------------------------------------------
 
   feedback      Feedback?
@@ -1521,11 +1537,15 @@ model Notification {
   readDeviceId String?
 
   // ---------------------------------------------------------------------------
-  // One-to-none
+  // None-to-one
   // ---------------------------------------------------------------------------
 
   activity   Activity? @relation(fields: [activityId], references: [id])
   activityId String?   @unique
+
+  // ---------------------------------------------------------------------------
+  // None-to-many
+  // ---------------------------------------------------------------------------
 
   user   User?   @relation(fields: [userId], references: [id])
   userId String?
@@ -1564,26 +1584,26 @@ model Feedback {
   emoji String
 
   // ---------------------------------------------------------------------------
-  // One-to-one
-  // ---------------------------------------------------------------------------
-
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
-
-  // ---------------------------------------------------------------------------
-  // One-to-none
+  // None-to-one
   // ---------------------------------------------------------------------------
 
   activity   Activity? @relation(fields: [activityId], references: [id])
   activityId String?   @unique
 
   // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
 
   // Relations
-  @@index([userId])
   @@index([activityId])
+  @@index([userId])
 }
 
 // -----------------------------------------------------------------------------
@@ -1616,14 +1636,14 @@ model InviteCode {
   status InviteCodeStatus @default(ACTIVE)
 
   // ---------------------------------------------------------------------------
-  // One-to-one
+  // One-to-many
   // ---------------------------------------------------------------------------
 
   user   User   @relation(fields: [userId], references: [id])
   userId String
 
   // ---------------------------------------------------------------------------
-  // One-to-many
+  // Many-to-many
   // ---------------------------------------------------------------------------
 
   activities Activity[]
@@ -1660,14 +1680,14 @@ model SupportRequest {
   status      SupportRequestStatus @default(OPEN)
 
   // ---------------------------------------------------------------------------
-  // One-to-one
+  // One-to-many
   // ---------------------------------------------------------------------------
 
   wallet        Wallet @relation(fields: [walletAddress], references: [address])
   walletAddress String
 
   // ---------------------------------------------------------------------------
-  // One-to-many
+  // Many-to-many
   // ---------------------------------------------------------------------------
 
   activities Activity[]
