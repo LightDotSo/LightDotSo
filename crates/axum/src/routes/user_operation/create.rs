@@ -331,6 +331,8 @@ pub(crate) async fn v1_user_operation_post_handler(
             let user_operation = client
                 .user_operation()
                 .create(
+                    chain_id,
+                    "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789".parse()?,
                     user_operation.hash,
                     user_operation.sender,
                     user_operation.nonce,
@@ -342,8 +344,6 @@ pub(crate) async fn v1_user_operation_post_handler(
                     user_operation.max_fee_per_gas,
                     user_operation.max_priority_fee_per_gas,
                     user_operation.paymaster_and_data.hex_to_bytes()?,
-                    chain_id,
-                    "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789".parse()?,
                     wallet::address::equals(wallet.address),
                     params,
                 )

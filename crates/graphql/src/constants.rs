@@ -66,6 +66,7 @@ lazy_static! {
         m.insert(84532, "lightdotso/base-sepolia/api".to_string());
         m.insert(421614, "lightdotso/arbitrum-sepolia/api".to_string());
         m.insert(11155111, "lightdotso/sepolia/api".to_string());
+        m.insert(11155420, "lightdotso/optimism-sepolia/api".to_string());
 
         m
     };
