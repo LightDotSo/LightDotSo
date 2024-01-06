@@ -1,0 +1,93 @@
+---
+source: crates/interpreter/tests/it/transfer/erc1155_transfer.rs
+expression: res
+---
+InterpretationResponse {
+    gas_used: 52550,
+    block_number: 16306968,
+    success: true,
+    traces: [
+        CallTrace {
+            call_type: Call,
+            from: 0x4fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed,
+            to: 0x495f947276749ce646f68ac8c248420045cb7b5e,
+            value: Some(
+                0,
+            ),
+        },
+    ],
+    logs: [
+        Log {
+            address: 0x495f947276749ce646f68ac8c248420045cb7b5e,
+            topics: [
+                0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62,
+                0x0000000000000000000000004fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed,
+                0x0000000000000000000000004fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed,
+                0x0000000000000000000000002af8ddab77a7c90a38cf26f29763365d0028cfef,
+            ],
+            data: Bytes(0x2af8ddab77a7c90a38cf26f29763365d0028cfef0000000000000100000000010000000000000000000000000000000000000000000000000000000000000001),
+            block_hash: None,
+            block_number: None,
+            transaction_hash: None,
+            transaction_index: None,
+            log_index: None,
+            transaction_log_index: None,
+            log_type: None,
+            removed: None,
+        },
+    ],
+    exit_reason: Stop,
+    formatted_trace: "  [29782] \u{1b}[32m0x495f947276749Ce646f68AC8c248420045cb7b5e\u{1b}[0m::\u{1b}[32msafeTransferFrom\u{1b}[0m(0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed, 0x2aF8DDAb77A7c90a38CF26F29763365D0028cfEf, 19436847621256934005310036695213036766726316577505360454363262586838063251457 \u{1b}[2;49;39m[1.943e76]\u{1b}[0m, 1, 0x) \u{1b}[33m\u{1b}[0m\n    ├─ emit \u{1b}[36mTransferSingle\u{1b}[0m(param0: 0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed, param1: 0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed, param2: 0x2aF8DDAb77A7c90a38CF26F29763365D0028cfEf, param3: 19436847621256934005310036695213036766726316577505360454363262586838063251457 \u{1b}[2;49;39m[1.943e76]\u{1b}[0m, param4: 1)\n    └─ \u{1b}[32m← \u{1b}[0m()\n",
+    actions: [
+        InterpretationAction {
+            action_type: ERC1155Send,
+            address: Some(
+                0x4fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed,
+            ),
+        },
+        InterpretationAction {
+            action_type: ERC1155Receive,
+            address: Some(
+                0x2af8ddab77a7c90a38cf26f29763365d0028cfef,
+            ),
+        },
+    ],
+    asset_changes: [
+        AssetChange {
+            address: 0x4fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed,
+            before_amount: 1,
+            after_amount: 0,
+            amount: 1,
+            action: InterpretationAction {
+                action_type: ERC1155Send,
+                address: Some(
+                    0x4fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed,
+                ),
+            },
+            token: AssetToken {
+                address: 0x495f947276749ce646f68ac8c248420045cb7b5e,
+                token_id: Some(
+                    19436847621256934005310036695213036766726316577505360454363262586838063251457,
+                ),
+            },
+        },
+        AssetChange {
+            address: 0x2af8ddab77a7c90a38cf26f29763365d0028cfef,
+            before_amount: 0,
+            after_amount: 1,
+            amount: 1,
+            action: InterpretationAction {
+                action_type: ERC1155Receive,
+                address: Some(
+                    0x2af8ddab77a7c90a38cf26f29763365d0028cfef,
+                ),
+            },
+            token: AssetToken {
+                address: 0x495f947276749ce646f68ac8c248420045cb7b5e,
+                token_id: Some(
+                    19436847621256934005310036695213036766726316577505360454363262586838063251457,
+                ),
+            },
+        },
+    ],
+}

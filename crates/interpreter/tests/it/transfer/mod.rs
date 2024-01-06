@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+pub mod erc1155_transfer;
 pub mod erc20_transfer;
 pub mod erc721_transfer;
 pub mod eth_transfer;
