@@ -51,6 +51,29 @@ lazy_static! {
     );
 }
 
+lazy_static! {
+    pub static ref ERC721_ABI: BaseContract = BaseContract::from(
+        parse_abi(&[
+            "event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)",
+            "function balanceOf(address) external view returns (uint256)",
+            "function ownerOf(uint256) external view returns (address)",
+        ])
+        .expect("Failed to parse ABI"),
+    );
+}
+
+lazy_static! {
+    pub static ref ERC1155_ABI: BaseContract = BaseContract::from(
+        parse_abi(&[
+            "event TransferSingle(address indexed operator, address indexed from, address indexed to, uint256 id, uint256 value)",
+            "event TransferBatch(address indexed operator, address indexed from, address indexed to, uint256[] ids, uint256[] values)",
+            "function balanceOf(address, uint256) external view returns (uint256)",
+            "function balanceOfBatch(address[] calldata, uint256[] calldata) external view returns (uint256[] memory)",
+        ])
+        .expect("Failed to parse ABI"),
+    );
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, EnumVariantNames)]
 pub enum InterpretationActionType {
     #[strum(serialize = "NATIVE_RECEIVE")]
@@ -61,4 +84,8 @@ pub enum InterpretationActionType {
     ERC20Receive,
     #[strum(serialize = "ERC20_SEND")]
     ERC20Send,
+    #[strum(serialize = "ERC721_RECEIVE")]
+    ERC721Receive,
+    #[strum(serialize = "ERC721_SEND")]
+    ERC721Send,
 }

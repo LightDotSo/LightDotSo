@@ -14,4 +14,5 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 pub mod erc20_transfer;
+pub mod erc721_transfer;
 pub mod eth_transfer;
