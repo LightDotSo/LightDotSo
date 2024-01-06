@@ -13,18 +13,25 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub(crate) mod transfer;
+use serde::{Deserialize, Serialize};
+use strum_macros::EnumVariantNames;
 
-use crate::{
-    adapter::Adapter,
-    adapters::transfer::{
-        erc1155::ERC1155Adapter, erc20::ERC20Adapter, erc721::ERC721Adapter, eth::EthAdapter,
-    },
-};
-use lazy_static::lazy_static;
-
-lazy_static! {
-    #[derive(Clone)]
-    pub static ref ADAPTERS: Vec<Box<dyn Adapter + Sync + Send>> =
-        vec![Box::new(EthAdapter::new()), Box::new(ERC20Adapter::new()), Box::new(ERC721Adapter::new()), Box::new(ERC1155Adapter::new())];
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, EnumVariantNames)]
+pub enum InterpretationActionType {
+    #[strum(serialize = "NATIVE_RECEIVE")]
+    NativeReceive,
+    #[strum(serialize = "NATIVE_SEND")]
+    NativeSend,
+    #[strum(serialize = "ERC20_RECEIVE")]
+    ERC20Receive,
+    #[strum(serialize = "ERC20_SEND")]
+    ERC20Send,
+    #[strum(serialize = "ERC721_RECEIVE")]
+    ERC721Receive,
+    #[strum(serialize = "ERC721_SEND")]
+    ERC721Send,
+    #[strum(serialize = "ERC721_MINTED")]
+    ERC721Minted,
+    #[strum(serialize = "ERC721_BURNED")]
+    ERC721Burned,
 }

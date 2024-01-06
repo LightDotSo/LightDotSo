@@ -18,8 +18,8 @@
 
 use crate::{
     adapter::Adapter,
+    adapters::ADAPTERS,
     config::InterpreterArgs,
-    constants::ADAPTERS,
     types::{AdapterResponse, CallTrace, InterpretationRequest, InterpretationResponse},
 };
 use eyre::{eyre, Result};

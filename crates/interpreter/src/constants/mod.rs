@@ -13,18 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub(crate) mod transfer;
+pub mod abis;
+pub mod actions;
+pub mod events;
 
-use crate::{
-    adapter::Adapter,
-    adapters::transfer::{
-        erc1155::ERC1155Adapter, erc20::ERC20Adapter, erc721::ERC721Adapter, eth::EthAdapter,
-    },
-};
-use lazy_static::lazy_static;
-
-lazy_static! {
-    #[derive(Clone)]
-    pub static ref ADAPTERS: Vec<Box<dyn Adapter + Sync + Send>> =
-        vec![Box::new(EthAdapter::new()), Box::new(ERC20Adapter::new()), Box::new(ERC721Adapter::new()), Box::new(ERC1155Adapter::new())];
-}
+pub use abis::*;
+pub use actions::*;
+pub use events::*;
