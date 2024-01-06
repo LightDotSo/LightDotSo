@@ -15,20 +15,48 @@
 
 use crate::{
     adapter::Adapter,
-    constants::TRANSFER_EVENT_TOPIC,
-    types::{AdapterResponse, InterpretationRequest},
+    constants::{InterpretationActionType, ERC20_ABI, TRANSFER_EVENT_TOPIC},
+    types::{
+        AdapterResponse, AssetChange, AssetToken, InterpretationAction, InterpretationRequest,
+    },
 };
 use async_trait::async_trait;
-use ethers_main::{abi::parse_abi, contract::BaseContract};
+use ethers_main::{
+    abi::Address,
+    contract::BaseContract,
+    types::{H160, U256},
+};
 use eyre::Result;
 use lightdotso_simulator::evm::Evm;
 
 #[derive(Clone)]
-pub(crate) struct ERC20Adapter {}
+pub(crate) struct ERC20Adapter {
+    abi: BaseContract,
+}
 
 impl ERC20Adapter {
     pub fn new() -> Self {
-        ERC20Adapter {}
+        let erc20_abi: BaseContract = ERC20_ABI.clone();
+        ERC20Adapter { abi: erc20_abi }
+    }
+
+    pub async fn get_erc20_balance(
+        &self,
+        evm: &mut Evm,
+        address: H160,
+        token_address: H160,
+    ) -> Result<U256> {
+        // Encode the method and parameters to call
+        let calldata = self.abi.encode("balanceOf", address)?;
+
+        // Call the contract method
+        let res = evm.call_raw(address, token_address, Some(0.into()), Some(calldata)).await?;
+
+        // Decode the output
+        let balance: U256 = self.abi.decode_output("balanceOf", res.return_data)?;
+
+        // Return the balance
+        Ok(balance)
     }
 }
 
@@ -52,22 +80,65 @@ impl Adapter for ERC20Adapter {
             .filter(|log| log.topics.len() == 3 && log.topics[0] == *TRANSFER_EVENT_TOPIC)
             .collect::<Vec<_>>();
 
-        // Get all of the address of the token contract from the matching logs
-        let token_addresses =
-            logs.iter().map(|log| log.address).collect::<std::collections::HashSet<_>>();
+        let mut actions = Vec::new();
+        let mut asset_changes = Vec::new();
 
-        let erc20_abi = BaseContract::from(parse_abi(&[
-            "function balanceOf(address) external view returns (uint256)",
-        ])?);
+        // Iterate over all of the logs
+        for log in logs {
+            // Get the `from` and `to` addresses from the log
+            let (from, to, value): (Address, Address, U256) =
+                self.abi.decode_event("Transfer", log.clone().topics, log.clone().data)?;
 
-        // For each token address, get the before balances
-        for token_address in token_addresses {
-            let calldata = erc20_abi.encode("balanceOf", request.from)?;
-            let res =
-                evm.call_raw(request.from, token_address, Some(0.into()), Some(calldata)).await?;
-            println!("res: {:?}", res);
+            // Get the token address from the log
+            let token_address = log.address;
+
+            // Get the token balance of the `from` address
+            let from_balance = &self.get_erc20_balance(evm, from, token_address).await?;
+
+            // Get the token balance of the `to` address
+            let to_balance = &self.get_erc20_balance(evm, to, token_address).await?;
+
+            // Get the actions for the `from` address
+            let from_action = InterpretationAction {
+                action_type: InterpretationActionType::ERC20Send,
+                address: Some(from),
+            };
+
+            // Get the actions for the `to` address
+            let to_action = InterpretationAction {
+                action_type: InterpretationActionType::ERC20Receive,
+                address: Some(to),
+            };
+
+            // Get the asset changes for the `from` address
+            let from_asset_change = AssetChange {
+                address: from,
+                action: from_action.clone(),
+                token: AssetToken { address: token_address, token_id: None },
+                before_amount: *from_balance,
+                after_amount: from_balance - value,
+                amount: value,
+            };
+
+            // Get the asset changes for the `to` address
+            let to_asset_change = AssetChange {
+                address: to,
+                action: to_action.clone(),
+                token: AssetToken { address: token_address, token_id: None },
+                before_amount: *to_balance,
+                after_amount: to_balance + value,
+                amount: value,
+            };
+
+            // Add the actions and asset changes to the vectors
+            actions.push(from_action);
+            actions.push(to_action);
+
+            // Add the asset changes to the vector
+            asset_changes.push(from_asset_change);
+            asset_changes.push(to_asset_change);
         }
 
-        Ok(AdapterResponse { actions: vec![], asset_changes: vec![] })
+        Ok(AdapterResponse { actions, asset_changes })
     }
 }

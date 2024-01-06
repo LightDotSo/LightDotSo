@@ -109,7 +109,7 @@ impl Adapter for EthAdapter {
         }
 
         // If the to/from address is not in the traces, then it is in the request
-        if !traces.iter().any(|t| t.from == request.from) {
+        if !traces.iter().any(|t| t.from == request.from && t.to == request.to) {
             // Get the before balances
             let before_from_balance = evm.get_balance(request.from).await?;
             let before_to_balance = evm.get_balance(request.to).await?;

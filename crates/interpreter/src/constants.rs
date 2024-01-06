@@ -21,7 +21,7 @@ use crate::{
         erc1155::ERC1155Adapter, erc20::ERC20Adapter, erc721::ERC721Adapter, eth::EthAdapter,
     },
 };
-use ethers_main::types::H256;
+use ethers_main::{abi::parse_abi, contract::BaseContract, types::H256};
 use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
 use std::str::FromStr;
@@ -41,10 +41,24 @@ lazy_static! {
             .expect("Failed to parse address");
 }
 
+lazy_static! {
+    pub static ref ERC20_ABI: BaseContract = BaseContract::from(
+        parse_abi(&[
+            "event Transfer(address indexed from, address indexed to, uint256 value)",
+            "function balanceOf(address) external view returns (uint256)",
+        ])
+        .expect("Failed to parse ABI"),
+    );
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, EnumVariantNames)]
 pub enum InterpretationActionType {
     #[strum(serialize = "NATIVE_RECEIVE")]
     NativeReceive,
     #[strum(serialize = "NATIVE_SEND")]
     NativeSend,
+    #[strum(serialize = "ERC20_RECEIVE")]
+    ERC20Receive,
+    #[strum(serialize = "ERC20_SEND")]
+    ERC20Send,
 }
