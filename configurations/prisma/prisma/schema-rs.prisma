@@ -366,15 +366,31 @@ model InterpretationAction {
   // Core
   // ---------------------------------------------------------------------------
 
-  id        String   @id
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  action  String
+  address String?
 
   // ---------------------------------------------------------------------------
   // Many-to-many
   // ---------------------------------------------------------------------------
 
+  assetChanges    AssetChange[]
   interpretations Interpretation[]
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
+  // Unique
+  @@unique([action])
+  @@unique([action, address])
 }
 
 // ---------------------------------------------------------------------------
@@ -408,6 +424,9 @@ model AssetChange {
   // None-to-many
   // ---------------------------------------------------------------------------
 
+  interpretationAction   InterpretationAction? @relation(fields: [interpretationActionId], references: [id])
+  interpretationActionId String?
+
   protocol   Protocol? @relation(fields: [protocolId], references: [id])
   protocolId String?
 
@@ -423,6 +442,7 @@ model AssetChange {
 
   // Relations
   @@index([interpretationId])
+  @@index([interpretationActionId])
   @@index([protocolId])
   @@index([tokenId])
   @@index([tokenProtocolId])

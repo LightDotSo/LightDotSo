@@ -18,21 +18,18 @@ use eyre::Result;
 use lightdotso_interpreter::config::InterpreterArgs;
 use lightdotso_simulator::types::SimulationRequest;
 
-// https://etherscan.io/tx/0xee623726751e879ca379d3680a7658e307a6cbc3aa99be7f2706470eebdd969d
-
 #[tokio::test(flavor = "multi_thread")]
-async fn test_integration_erc20_transfer() -> Result<()> {
+async fn test_integration_eth_transfer() -> Result<()> {
     let request = SimulationRequest {
         chain_id: 1,
         // kaki.eth
         from: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".parse()?,
-        // ENS token address
-        to: "0xC18360217D8F7Ab5e7c516566761Ea12Ce7F9D72".parse()?,
-        data: Some("0xa9059cbb0000000000000000000000006f8a90995fdce00da1f7dd731d812f6a6d18d1ff000000000000000000000000000000000000000000000001a055690d9db80000".parse()?),
-        value: None,
+        // fiveoutofnine.eth
+        to: "0xA85572Cd96f1643458f17340b6f0D6549Af482F5".parse()?,
+        data: None,
+        value: Some(1),
         gas_limit: u64::MAX,
-        // Tx was on 13704035
-        block_number: Some(13704034),
+        block_number: None,
     };
 
     // Parse the command line arguments
@@ -41,7 +38,40 @@ async fn test_integration_erc20_transfer() -> Result<()> {
     // Run the interpreter
     let res = args.run(request).await?;
 
-    assert!(res.success);
+    println!("{:?}", res);
+
+    assert!(!res.asset_changes.is_empty());
+
+    insta::assert_debug_snapshot!(res);
+
+    Ok(())
+}
+
+#[tokio::test(flavor = "multi_thread")]
+async fn test_integration_light_eth_transfer() -> Result<()> {
+    let request = SimulationRequest {
+        chain_id: 10,
+        // Light
+        from: "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F".parse()?,
+        // kaki.eth
+        to: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".parse()?,
+        data: None,
+        value: Some(1),
+        gas_limit: u64::MAX,
+        block_number: Some(114445705),
+    };
+
+    // Parse the command line arguments
+    let args = InterpreterArgs::parse_from([""]);
+
+    // Run the interpreter
+    let res = args.run(request).await?;
+
+    println!("{:?}", res);
+
+    assert!(!res.asset_changes.is_empty());
+
+    insta::assert_debug_snapshot!(res);
 
     Ok(())
 }

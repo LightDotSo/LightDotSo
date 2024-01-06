@@ -13,33 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{
-    adapter::Adapter,
-    types::{AdapterResponse, InterpretationRequest},
-};
-use async_trait::async_trait;
-use eyre::Result;
-use lightdotso_simulator::evm::Evm;
+pub mod abis;
+pub mod actions;
+pub mod events;
 
-#[derive(Clone)]
-pub(crate) struct ERC721Adapter {}
-
-impl ERC721Adapter {
-    pub fn new() -> Self {
-        ERC721Adapter {}
-    }
-}
-
-#[async_trait]
-impl Adapter for ERC721Adapter {
-    fn matches(&self, _request: InterpretationRequest) -> bool {
-        true
-    }
-    async fn query(
-        &self,
-        _evm: &mut Evm,
-        _request: InterpretationRequest,
-    ) -> Result<AdapterResponse> {
-        Ok(AdapterResponse { asset_changes: vec![] })
-    }
-}
+pub use abis::*;
+pub use actions::*;
+pub use events::*;

@@ -18,18 +18,22 @@
 
 use crate::{
     adapter::Adapter,
+    adapters::ADAPTERS,
     config::InterpreterArgs,
-    constants::ADAPTERS,
     types::{AdapterResponse, CallTrace, InterpretationRequest, InterpretationResponse},
 };
-use eyre::Result;
+use eyre::{eyre, Result};
 use foundry_config::Chain;
 use foundry_evm::trace::{
     identifier::{EtherscanIdentifier, SignaturesIdentifier},
     CallTraceArena, CallTraceDecoder, CallTraceDecoderBuilder,
 };
 use lightdotso_contracts::provider::get_provider;
-use lightdotso_simulator::{evm::Evm, simulator::simulate, types::SimulationRequest};
+use lightdotso_simulator::{
+    evm::Evm,
+    simulator::{simulate, simulate_bundle},
+    types::SimulationRequest,
+};
 
 pub struct Interpreter<'a> {
     adapters: &'a [Box<dyn Adapter + Sync + Send>],
@@ -116,6 +120,9 @@ impl Interpreter<'_> {
         // Run the interpreter
         let interpretation = self.interpret(req).await?;
 
+        // Flatten the actions
+        let actions = interpretation.clone().into_iter().flat_map(|res| res.actions).collect();
+
         // Flatten the asset changes
         let asset_changes = interpretation.into_iter().flat_map(|res| res.asset_changes).collect();
 
@@ -127,7 +134,93 @@ impl Interpreter<'_> {
             logs: res.logs,
             exit_reason: res.exit_reason,
             formatted_trace: format_trace,
+            actions,
             asset_changes,
         })
+    }
+
+    pub async fn run_with_simulate_bundle(
+        &mut self,
+        requests: Vec<SimulationRequest>,
+    ) -> Result<InterpretationResponse> {
+        // Simulate the user operation
+        let simulation_results = simulate_bundle(requests.clone()).await?;
+
+        // Prepare a vector to hold the InterpretationResponse objects
+        let mut interpretation_responses = Vec::new();
+
+        // For each simulation result, run the interpreter
+        for (idx, res) in simulation_results.into_iter().enumerate() {
+            // Get the corresponding request
+            let req =
+                requests.get(idx).ok_or(eyre!("No matching request for simulation result"))?;
+
+            // Run the formatter
+            let format_trace = self.format_trace(res.arena.clone()).await?;
+
+            // Get the traces
+            let traces: Vec<CallTrace> = res
+                .clone()
+                .arena
+                .unwrap_or_default()
+                .arena
+                .into_iter()
+                .map(CallTrace::from)
+                .collect();
+
+            // Construct the interpretation request
+            let req = InterpretationRequest {
+                block_number: req.block_number,
+                gas_limit: req.gas_limit,
+                from: req.from,
+                to: req.to,
+                chain_id: req.chain_id,
+                call_data: req.data.clone(),
+                value: req.value,
+                traces: traces.clone(),
+                logs: res.clone().logs,
+            };
+
+            // Run the interpreter
+            let interpretation = self.interpret(req).await?;
+
+            // Flatten the actions
+            let actions = interpretation.clone().into_iter().flat_map(|res| res.actions).collect();
+
+            // Flatten the asset changes
+            let asset_changes =
+                interpretation.into_iter().flat_map(|res| res.asset_changes).collect();
+
+            // Push the interpretation response to the vector
+            interpretation_responses.push(InterpretationResponse {
+                gas_used: res.gas_used,
+                block_number: res.block_number,
+                success: res.success,
+                traces,
+                logs: res.logs,
+                exit_reason: res.exit_reason,
+                formatted_trace: format_trace,
+                actions,
+                asset_changes,
+            });
+        }
+
+        // Flatten the vector to single InterpretationResponse
+        let res = interpretation_responses.into_iter().fold(
+            InterpretationResponse::default(),
+            |mut acc, res| {
+                acc.gas_used += res.gas_used;
+                acc.success &= res.success;
+                acc.traces.extend(res.traces);
+                acc.logs.extend(res.logs);
+                acc.exit_reason = res.exit_reason;
+                acc.formatted_trace.push_str(res.formatted_trace.as_str());
+                acc.actions.extend(res.actions);
+                acc.asset_changes.extend(res.asset_changes);
+                acc
+            },
+        );
+
+        Ok(res)
     }
 }

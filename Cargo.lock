@@ -6267,12 +6267,15 @@ dependencies = [
  "eyre",
  "foundry-config",
  "foundry-evm",
+ "insta",
  "lazy_static",
  "lightdotso-contracts",
  "lightdotso-simulator",
  "lightdotso-tracing",
  "revm",
  "serde",
+ "strum 0.25.0",
+ "strum_macros 0.25.2",
  "tokio",
 ]
 

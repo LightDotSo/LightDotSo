@@ -19,17 +19,19 @@ use lightdotso_interpreter::config::InterpreterArgs;
 use lightdotso_simulator::types::SimulationRequest;
 
 #[tokio::test(flavor = "multi_thread")]
-async fn test_integration_eth_transfer() -> Result<()> {
+async fn test_integration_erc1155_transfer() -> Result<()> {
+    // https://etherscan.io/tx/0x34869de523b7e8c78c58bbb0f12194318c10f37b8fa7549193f533e2a5ac92fc
     let request = SimulationRequest {
         chain_id: 1,
         // kaki.eth
         from: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".parse()?,
-        // fiveoutofnine.eth
-        to: "0xA85572Cd96f1643458f17340b6f0D6549Af482F5".parse()?,
-        data: None,
-        value: Some(1),
+        // Bystander token address
+        to: "0x495f947276749Ce646f68AC8c248420045cb7b5e".parse()?,
+        data: Some("0xf242432a0000000000000000000000004fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed0000000000000000000000002af8ddab77a7c90a38cf26f29763365d0028cfef2af8ddab77a7c90a38cf26f29763365d0028cfef000000000000010000000001000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000360c6ebe".parse()?),
+        value: None,
         gas_limit: u64::MAX,
-        block_number: None,
+        // Tx was on 16306969
+        block_number: Some(16306968),
     };
 
     // Parse the command line arguments
@@ -38,36 +40,9 @@ async fn test_integration_eth_transfer() -> Result<()> {
     // Run the interpreter
     let res = args.run(request).await?;
 
-    println!("{:?}", res);
+    assert!(res.success);
 
-    assert!(!res.asset_changes.is_empty());
-
-    Ok(())
-}
-
-#[tokio::test(flavor = "multi_thread")]
-async fn test_integration_light_eth_transfer() -> Result<()> {
-    let request = SimulationRequest {
-        chain_id: 1,
-        // Light
-        from: "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F".parse()?,
-        // kaki.eth
-        to: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".parse()?,
-        data: None,
-        value: Some(1),
-        gas_limit: u64::MAX,
-        block_number: None,
-    };
-
-    // Parse the command line arguments
-    let args = InterpreterArgs::parse_from([""]);
-
-    // Run the interpreter
-    let res = args.run(request).await?;
-
-    println!("{:?}", res);
-
-    assert!(!res.asset_changes.is_empty());
+    insta::assert_debug_snapshot!(res);
 
     Ok(())
 }

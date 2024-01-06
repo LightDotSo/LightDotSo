@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use crate::constants::InterpretationActionType;
 use ethers_main::{
     abi::{Address, Uint},
     types::{Bytes, Log},
@@ -78,12 +79,38 @@ pub struct InterpretationResponse {
     pub exit_reason: InstructionResult,
     /// Formatted trace of the transaction
     pub formatted_trace: String,
+    /// Actions that were interpreted
+    pub actions: Vec<InterpretationAction>,
     /// Changes in the assets of the transaction
     pub asset_changes: Vec<AssetChange>,
 }
 
+impl Default for InterpretationResponse {
+    fn default() -> Self {
+        Self {
+            gas_used: 0,
+            block_number: 0,
+            success: false,
+            traces: Vec::new(),
+            logs: Vec::new(),
+            exit_reason: InstructionResult::Stop,
+            formatted_trace: String::new(),
+            actions: Vec::new(),
+            asset_changes: Vec::new(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct InterpretationAction {
+    pub action_type: InterpretationActionType,
+    pub address: Option<Address>,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct AdapterResponse {
+    /// Actions that were interpreted
+    pub actions: Vec<InterpretationAction>,
     /// Changes in the assets of the transaction
     pub asset_changes: Vec<AssetChange>,
 }
@@ -95,6 +122,7 @@ pub struct AssetChange {
     pub after_amount: Uint,
     pub amount: Uint,
 
+    pub action: InterpretationAction,
     pub token: AssetToken,
 }
 
