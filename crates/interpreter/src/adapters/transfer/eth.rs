@@ -40,7 +40,9 @@ impl EthAdapter {
 impl Adapter for EthAdapter {
     fn matches(&self, request: InterpretationRequest) -> bool {
         // If the request has a value larger than 0, then it is a native transfer
-        request.value.map_or(false, |v| v > 0)
+        request.value.map_or(false, |v| v > 0) ||
+        // If the traces have a value larger than 0, then it is a native transfer
+            request.traces.iter().any(|t| t.value.is_some())
     }
     async fn query(
         &self,
@@ -49,52 +51,117 @@ impl Adapter for EthAdapter {
     ) -> Result<AdapterResponse> {
         let token = AssetToken { address: Address::zero(), token_id: None };
 
-        // Get the before balances
-        let before_from_balance = evm.get_balance(request.from).await?;
-        let before_to_balance = evm.get_balance(request.to).await?;
+        // Get all the traces w/ call type
+        let traces: Vec<_> = request.traces.iter().filter(|t| t.value.is_some()).collect();
 
-        // Get the after balances
-        // unwrap is safe because we know that value is Some in the matches function
-        let after_from_balance = before_from_balance - request.value.unwrap();
-        let after_to_balance = before_to_balance + request.value.unwrap();
+        let mut actions = vec![];
+        let mut asset_changes = vec![];
 
-        // Get the actions for the from address
-        let from_action = InterpretationAction {
-            action_type: InterpretationActionType::NativeSend,
-            address: Some(request.from),
-        };
+        for trace in traces.clone() {
+            // Get the before balances
+            let before_from_balance = evm.get_balance(trace.from).await?;
+            let before_to_balance = evm.get_balance(trace.to).await?;
 
-        // Get the actions for the to address
-        let to_action = InterpretationAction {
-            action_type: InterpretationActionType::NativeReceive,
-            address: Some(request.to),
-        };
+            // Get the after balances
+            // unwrap is safe because we know that value is Some in the matches function
+            let after_from_balance = before_from_balance - trace.value.unwrap();
+            let after_to_balance = before_to_balance + trace.value.unwrap();
 
-        // Get the asset changes for the from address
-        let from_asset_change = AssetChange {
-            address: request.from,
-            action: from_action.clone(),
-            token: token.clone(),
-            before_amount: before_from_balance,
-            after_amount: after_from_balance,
-            amount: request.value.unwrap().into(),
-        };
+            // Get the actions for the from address
+            let from_action = InterpretationAction {
+                action_type: InterpretationActionType::NativeSend,
+                address: Some(trace.from),
+            };
 
-        // Get the asset changes for the to address
-        let to_asset_change = AssetChange {
-            address: request.to,
-            action: to_action.clone(),
-            token: token.clone(),
-            before_amount: before_to_balance,
-            after_amount: after_to_balance,
-            amount: request.value.unwrap().into(),
-        };
+            // Get the actions for the to address
+            let to_action = InterpretationAction {
+                action_type: InterpretationActionType::NativeReceive,
+                address: Some(trace.to),
+            };
+
+            // Get the asset changes for the from address
+            let from_asset_change = AssetChange {
+                address: trace.from,
+                action: from_action.clone(),
+                token: token.clone(),
+                before_amount: before_from_balance,
+                after_amount: after_from_balance,
+                amount: trace.value.unwrap(),
+            };
+
+            // Get the asset changes for the to address
+            let to_asset_change = AssetChange {
+                address: trace.to,
+                action: to_action.clone(),
+                token: token.clone(),
+                before_amount: before_to_balance,
+                after_amount: after_to_balance,
+                amount: trace.value.unwrap(),
+            };
+
+            // Add the actions and asset changes to the vectors
+            actions.push(from_action);
+            actions.push(to_action);
+
+            // Add the asset changes to the vector
+            asset_changes.push(from_asset_change);
+            asset_changes.push(to_asset_change);
+        }
+
+        // If the to/from address is not in the traces, then it is in the request
+        if !traces.iter().any(|t| t.from == request.from) {
+            // Get the before balances
+            let before_from_balance = evm.get_balance(request.from).await?;
+            let before_to_balance = evm.get_balance(request.to).await?;
+
+            // Get the after balances
+            // unwrap is safe because we know that value is Some in the matches function
+            let after_from_balance = before_from_balance - request.value.unwrap();
+            let after_to_balance = before_to_balance + request.value.unwrap();
+
+            // Get the actions for the from address
+            let from_action = InterpretationAction {
+                action_type: InterpretationActionType::NativeSend,
+                address: Some(request.from),
+            };
+
+            // Get the actions for the to address
+            let to_action = InterpretationAction {
+                action_type: InterpretationActionType::NativeReceive,
+                address: Some(request.to),
+            };
+
+            // Get the asset changes for the from address
+            let from_asset_change = AssetChange {
+                address: request.from,
+                action: from_action.clone(),
+                token: token.clone(),
+                before_amount: before_from_balance,
+                after_amount: after_from_balance,
+                amount: request.value.unwrap().into(),
+            };
+
+            // Get the asset changes for the to address
+            let to_asset_change = AssetChange {
+                address: request.to,
+                action: to_action.clone(),
+                token: token.clone(),
+                before_amount: before_to_balance,
+                after_amount: after_to_balance,
+                amount: request.value.unwrap().into(),
+            };
+
+            // Add the actions and asset changes to the vectors
+            actions.push(from_action);
+            actions.push(to_action);
+
+            // Add the asset changes to the vector
+            asset_changes.push(from_asset_change);
+            asset_changes.push(to_asset_change);
+        }
 
         // Return the adapter response
-        Ok(AdapterResponse {
-            actions: vec![from_action, to_action],
-            asset_changes: vec![from_asset_change, to_asset_change],
-        })
+        Ok(AdapterResponse { actions, asset_changes })
     }
 }
 
