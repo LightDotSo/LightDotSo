@@ -1,5 +1,5 @@
 ---
-source: crates/interpreter/tests/it/erc20_transfer.rs
+source: crates/interpreter/tests/it/transfer/erc20_transfer.rs
 expression: res
 ---
 InterpretationResponse {

@@ -1,5 +1,5 @@
 ---
-source: crates/interpreter/tests/it/eth_transfer.rs
+source: crates/interpreter/tests/it/transfer/eth_transfer.rs
 expression: res
 ---
 InterpretationResponse {
