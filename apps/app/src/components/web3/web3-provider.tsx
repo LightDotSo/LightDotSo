@@ -19,6 +19,8 @@ import { ConnectKitProvider } from "connectkit";
 import type { ReactNode } from "react";
 import { WagmiConfig, createConfig, configureChains } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
+import { MetaMaskConnector } from "wagmi/connectors/metamask";
+import { WalletConnectConnector } from "wagmi/connectors/walletconnect";
 import { publicProvider } from "wagmi/providers/public";
 import { CHAINS as configuredChains } from "@/const/chains";
 
@@ -35,11 +37,11 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
 const config = createConfig({
   autoConnect: true,
   connectors: [
-    new InjectedConnector({
-      chains,
+    new InjectedConnector(),
+    new MetaMaskConnector(),
+    new WalletConnectConnector({
       options: {
-        name: "Injected",
-        shimDisconnect: true,
+        projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
       },
     }),
   ],

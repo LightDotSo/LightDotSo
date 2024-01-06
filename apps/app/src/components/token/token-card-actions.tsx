@@ -45,7 +45,7 @@ export const TokenCardActions: FC<TokenCardActionsProps> = ({
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address } = useAuth();
+  const { wallet } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Render
@@ -76,7 +76,7 @@ export const TokenCardActions: FC<TokenCardActionsProps> = ({
             <span>
               <ButtonIcon asChild size="sm" variant="shadow">
                 <Link
-                  href={`/${address}/send?transfers=0:_:_:${chain_id}:erc20:${tokenAddress}|${decimals}|0`}
+                  href={`/${wallet}/send?transfers=0:_:_:${chain_id}:erc20:${tokenAddress}|${decimals}|0`}
                 >
                   <Send className="h-4 w-4" />
                   <span className="sr-only">Open send modal</span>
