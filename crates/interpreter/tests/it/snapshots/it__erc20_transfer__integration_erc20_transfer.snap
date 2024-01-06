@@ -1,0 +1,104 @@
+---
+source: crates/interpreter/tests/it/erc20_transfer.rs
+expression: res
+---
+InterpretationResponse {
+    gas_used: 85889,
+    block_number: 13704034,
+    success: true,
+    traces: [
+        CallTrace {
+            call_type: Call,
+            from: 0x4fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed,
+            to: 0xc18360217d8f7ab5e7c516566761ea12ce7f9d72,
+            value: Some(
+                0,
+            ),
+        },
+    ],
+    logs: [
+        Log {
+            address: 0xc18360217d8f7ab5e7c516566761ea12ce7f9d72,
+            topics: [
+                0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
+                0x0000000000000000000000004fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed,
+                0x0000000000000000000000006f8a90995fdce00da1f7dd731d812f6a6d18d1ff,
+            ],
+            data: Bytes(0x000000000000000000000000000000000000000000000001a055690d9db80000),
+            block_hash: None,
+            block_number: None,
+            transaction_hash: None,
+            transaction_index: None,
+            log_index: None,
+            transaction_log_index: None,
+            log_type: None,
+            removed: None,
+        },
+        Log {
+            address: 0xc18360217d8f7ab5e7c516566761ea12ce7f9d72,
+            topics: [
+                0xdec2bacdd2f05b59de34da9b523dff8be42e5e38e818c82fdb0bae774387a724,
+                0x0000000000000000000000005bfcb4be4d7b43437d5a0c57e908c048a4418390,
+            ],
+            data: Bytes(0x000000000000000000000000000000000000000000002c0c5f545fac2d32d119000000000000000000000000000000000000000000002c0abefef69e8f7ad119),
+            block_hash: None,
+            block_number: None,
+            transaction_hash: None,
+            transaction_index: None,
+            log_index: None,
+            transaction_log_index: None,
+            log_type: None,
+            removed: None,
+        },
+    ],
+    exit_reason: Return,
+    formatted_trace: "  [64245] \u{1b}[32m0xC18360217D8F7Ab5e7c516566761Ea12Ce7F9D72\u{1b}[0m::\u{1b}[32mtransfer\u{1b}[0m(0x6f8A90995FdcE00da1F7dd731d812F6a6D18d1ff, 30000000000000000000 \u{1b}[2;49;39m[3e19]\u{1b}[0m) \u{1b}[33m\u{1b}[0m\n    ├─ emit \u{1b}[36mTransfer\u{1b}[0m(param0: 0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed, param1: 0x6f8A90995FdcE00da1F7dd731d812F6a6D18d1ff, param2: 30000000000000000000 \u{1b}[2;49;39m[3e19]\u{1b}[0m)\n    ├─ emit \u{1b}[36mDelegateVotesChanged\u{1b}[0m(param0: 0x5BFCB4BE4d7B43437d5A0c57E908c048a4418390, param1: 208012355395673648189721 \u{1b}[2;49;39m[2.08e23]\u{1b}[0m, param2: 207982355395673648189721 \u{1b}[2;49;39m[2.079e23]\u{1b}[0m)\n    └─ \u{1b}[32m← \u{1b}[0m0x0000000000000000000000000000000000000000000000000000000000000001\n",
+    actions: [
+        InterpretationAction {
+            action_type: ERC20Send,
+            address: Some(
+                0x4fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed,
+            ),
+        },
+        InterpretationAction {
+            action_type: ERC20Receive,
+            address: Some(
+                0x6f8a90995fdce00da1f7dd731d812f6a6d18d1ff,
+            ),
+        },
+    ],
+    asset_changes: [
+        AssetChange {
+            address: 0x4fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed,
+            before_amount: 30000000000000000000,
+            after_amount: 0,
+            amount: 30000000000000000000,
+            action: InterpretationAction {
+                action_type: ERC20Send,
+                address: Some(
+                    0x4fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed,
+                ),
+            },
+            token: AssetToken {
+                address: 0xc18360217d8f7ab5e7c516566761ea12ce7f9d72,
+                token_id: None,
+            },
+        },
+        AssetChange {
+            address: 0x6f8a90995fdce00da1f7dd731d812f6a6d18d1ff,
+            before_amount: 0,
+            after_amount: 30000000000000000000,
+            amount: 30000000000000000000,
+            action: InterpretationAction {
+                action_type: ERC20Receive,
+                address: Some(
+                    0x6f8a90995fdce00da1f7dd731d812f6a6d18d1ff,
+                ),
+            },
+            token: AssetToken {
+                address: 0xc18360217d8f7ab5e7c516566761ea12ce7f9d72,
+                token_id: None,
+            },
+        },
+    ],
+}

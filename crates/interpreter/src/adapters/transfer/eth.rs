@@ -42,7 +42,7 @@ impl Adapter for EthAdapter {
         // If the request has a value larger than 0, then it is a native transfer
         request.value.map_or(false, |v| v > 0) ||
         // If the traces have a value larger than 0, then it is a native transfer
-            request.traces.iter().any(|t| t.value.is_some())
+            request.traces.iter().any(|t| t.value.map_or(false, |v| v > 0.into()))
     }
     async fn query(
         &self,

@@ -43,7 +43,7 @@ async fn test_integration_erc20_transfer() -> Result<()> {
 
     assert!(res.success);
 
-    println!("Result: {:?}", res);
+    insta::assert_debug_snapshot!(res);
 
     Ok(())
 }
