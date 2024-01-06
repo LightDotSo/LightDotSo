@@ -42,6 +42,8 @@ async fn test_integration_eth_transfer() -> Result<()> {
 
     assert!(!res.asset_changes.is_empty());
 
+    insta::assert_debug_snapshot!(res);
+
     Ok(())
 }
 
@@ -68,6 +70,8 @@ async fn test_integration_light_eth_transfer() -> Result<()> {
     println!("{:?}", res);
 
     assert!(!res.asset_changes.is_empty());
+
+    insta::assert_debug_snapshot!(res);
 
     Ok(())
 }

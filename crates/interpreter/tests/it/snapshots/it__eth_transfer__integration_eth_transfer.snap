@@ -1,0 +1,70 @@
+---
+source: crates/interpreter/tests/it/eth_transfer.rs
+expression: res
+---
+InterpretationResponse {
+    gas_used: 21000,
+    block_number: 0,
+    success: true,
+    traces: [
+        CallTrace {
+            call_type: Call,
+            from: 0x4fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed,
+            to: 0xa85572cd96f1643458f17340b6f0d6549af482f5,
+            value: Some(
+                1,
+            ),
+        },
+    ],
+    logs: [],
+    exit_reason: Stop,
+    formatted_trace: "  [0] \u{1b}[32m0xA85572Cd96f1643458f17340b6f0D6549Af482F5\u{1b}[0m::\u{1b}[32mfallback\u{1b}[0m{value: 1}() \u{1b}[33m\u{1b}[0m\n    └─ \u{1b}[32m← \u{1b}[0m()\n",
+    actions: [
+        InterpretationAction {
+            action_type: NativeSend,
+            address: Some(
+                0x4fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed,
+            ),
+        },
+        InterpretationAction {
+            action_type: NativeReceive,
+            address: Some(
+                0xa85572cd96f1643458f17340b6f0d6549af482f5,
+            ),
+        },
+    ],
+    asset_changes: [
+        AssetChange {
+            address: 0x4fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed,
+            before_amount: 4819415871555135,
+            after_amount: 4819415871555134,
+            amount: 1,
+            action: InterpretationAction {
+                action_type: NativeSend,
+                address: Some(
+                    0x4fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed,
+                ),
+            },
+            token: AssetToken {
+                address: 0x0000000000000000000000000000000000000000,
+                token_id: None,
+            },
+        },
+        AssetChange {
+            address: 0xa85572cd96f1643458f17340b6f0d6549af482f5,
+            before_amount: 248397011934372040,
+            after_amount: 248397011934372041,
+            amount: 1,
+            action: InterpretationAction {
+                action_type: NativeReceive,
+                address: Some(
+                    0xa85572cd96f1643458f17340b6f0d6549af482f5,
+                ),
+            },
+            token: AssetToken {
+                address: 0x0000000000000000000000000000000000000000,
+                token_id: None,
+            },
+        },
+    ],
+}
