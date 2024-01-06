@@ -18,10 +18,9 @@ use eyre::Result;
 use lightdotso_interpreter::config::InterpreterArgs;
 use lightdotso_simulator::types::SimulationRequest;
 
-// https://etherscan.io/tx/0xfc9ab285eef688cac83d0fd32d8da79099202a0606e82843ab5d226e38ac12a1
-
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_erc721_transfer() -> Result<()> {
+    // https://etherscan.io/tx/0xfc9ab285eef688cac83d0fd32d8da79099202a0606e82843ab5d226e38ac12a1
     let request = SimulationRequest {
         chain_id: 1,
         // kaki.eth
@@ -33,6 +32,34 @@ async fn test_integration_erc721_transfer() -> Result<()> {
         gas_limit: u64::MAX,
         // Tx was on 16318897
         block_number: Some(16318896),
+    };
+
+    // Parse the command line arguments
+    let args = InterpreterArgs::parse_from([""]);
+
+    // Run the interpreter
+    let res = args.run(request).await?;
+
+    assert!(res.success);
+
+    insta::assert_debug_snapshot!(res);
+
+    Ok(())
+}
+
+#[tokio::test(flavor = "multi_thread")]
+async fn test_integration_erc721_mint() -> Result<()> {
+    let request = SimulationRequest {
+        chain_id: 1,
+        // kaki.eth
+        from: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".parse()?,
+        // WAGUMI token address
+        to: "0x6144D927EE371de7e7f8221b596F3432E7A8e6D9".parse()?,
+        data: Some("0x1249c58b".parse()?),
+        value: None,
+        gas_limit: u64::MAX,
+        // Tx was on 13834190
+        block_number: Some(13834189),
     };
 
     // Parse the command line arguments

@@ -88,4 +88,8 @@ pub enum InterpretationActionType {
     ERC721Receive,
     #[strum(serialize = "ERC721_SEND")]
     ERC721Send,
+    #[strum(serialize = "ERC721_MINTED")]
+    ERC721Minted,
+    #[strum(serialize = "ERC721_BURNED")]
+    ERC721Burned,
 }

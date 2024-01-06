@@ -70,16 +70,21 @@ impl Adapter for ERC721Adapter {
             let token_address = log.address;
 
             // Get the actions for the `from` address
-            let from_action = InterpretationAction {
-                action_type: InterpretationActionType::ERC20Send,
-                address: Some(from),
+            let from_action_type = if from == Address::zero() {
+                InterpretationActionType::ERC721Minted
+            } else {
+                InterpretationActionType::ERC721Send
             };
+            let from_action =
+                InterpretationAction { action_type: from_action_type, address: Some(from) };
 
             // Get the actions for the `to` address
-            let to_action = InterpretationAction {
-                action_type: InterpretationActionType::ERC20Receive,
-                address: Some(to),
+            let to_action_type = if to == Address::zero() {
+                InterpretationActionType::ERC721Burned
+            } else {
+                InterpretationActionType::ERC721Receive
             };
+            let to_action = InterpretationAction { action_type: to_action_type, address: Some(to) };
 
             // Get the asset changes for the `from` address
             let from_asset_change = AssetChange {
