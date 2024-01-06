@@ -19,8 +19,8 @@ import { ConnectKitProvider } from "connectkit";
 import type { ReactNode } from "react";
 import { WagmiConfig, createConfig, configureChains } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
-import { MetaMaskConnector } from "wagmi/connectors/metamask";
-import { WalletConnectConnector } from "wagmi/connectors/walletconnect";
+import { MetaMaskConnector } from "wagmi/connectors/metaMask";
+import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { publicProvider } from "wagmi/providers/public";
 import { CHAINS as configuredChains } from "@/const/chains";
 
@@ -28,7 +28,7 @@ import { CHAINS as configuredChains } from "@/const/chains";
 // Wagmi
 // -----------------------------------------------------------------------------
 
-const { chains, publicClient, webSocketPublicClient } = configureChains(
+const { publicClient, webSocketPublicClient } = configureChains(
   configuredChains,
   [publicProvider()],
 );
