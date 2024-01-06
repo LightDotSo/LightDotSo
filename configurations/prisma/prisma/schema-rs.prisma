@@ -375,7 +375,7 @@ model InterpretationAction {
   // ---------------------------------------------------------------------------
 
   action  String
-  address String
+  address String?
 
   // ---------------------------------------------------------------------------
   // Many-to-many
@@ -389,6 +389,7 @@ model InterpretationAction {
   // ---------------------------------------------------------------------------
 
   // Unique
+  @@unique([action])
   @@unique([action, address])
 }
 

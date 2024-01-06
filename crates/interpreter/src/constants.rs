@@ -13,20 +13,32 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#![allow(clippy::expect_used)]
+
 use crate::{
     adapter::Adapter,
     adapters::transfer::{
         erc1155::ERC1155Adapter, erc20::ERC20Adapter, erc721::ERC721Adapter, eth::EthAdapter,
     },
 };
+use ethers_main::types::H256;
 use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
+use std::str::FromStr;
 use strum_macros::EnumVariantNames;
 
 lazy_static! {
     #[derive(Clone)]
     pub static ref ADAPTERS: Vec<Box<dyn Adapter + Sync + Send>> =
         vec![Box::new(EthAdapter::new()), Box::new(ERC20Adapter::new()), Box::new(ERC721Adapter::new()), Box::new(ERC1155Adapter::new())];
+}
+
+lazy_static! {
+    pub static ref TRANSFER_EVENT_TOPIC: H256 =
+        // https://www.4byte.directory/event-signatures/?bytes_signature=0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
+        // Transfer(address,address,uint256)
+        H256::from_str("0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef")
+            .expect("Failed to parse address");
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, EnumVariantNames)]

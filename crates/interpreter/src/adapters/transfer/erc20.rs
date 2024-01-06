@@ -13,13 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#![allow(clippy::unwrap_used)]
-
 use crate::{
     adapter::Adapter,
+    constants::TRANSFER_EVENT_TOPIC,
     types::{AdapterResponse, InterpretationRequest},
 };
 use async_trait::async_trait;
+use ethers_main::{abi::parse_abi, contract::BaseContract};
 use eyre::Result;
 use lightdotso_simulator::evm::Evm;
 
@@ -35,21 +35,39 @@ impl ERC20Adapter {
 #[async_trait]
 impl Adapter for ERC20Adapter {
     fn matches(&self, request: InterpretationRequest) -> bool {
-        request.logs.iter().any(|log| {
-            log.topics.len() == 3 &&
-                log.topics[0] ==
-                    // https://www.4byte.directory/event-signatures/?bytes_signature=0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
-                    // Transfer(address,address,uint256)
-                    "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
-                        .parse()
-                        .unwrap()
-        })
+        request
+            .logs
+            .iter()
+            .any(|log| log.topics.len() == 3 && log.topics[0] == *TRANSFER_EVENT_TOPIC)
     }
     async fn query(
         &self,
-        _evm: &mut Evm,
-        _request: InterpretationRequest,
+        evm: &mut Evm,
+        request: InterpretationRequest,
     ) -> Result<AdapterResponse> {
+        // Get all the logs that match the ERC20 Transfer event
+        let logs = request
+            .logs
+            .iter()
+            .filter(|log| log.topics.len() == 3 && log.topics[0] == *TRANSFER_EVENT_TOPIC)
+            .collect::<Vec<_>>();
+
+        // Get all of the address of the token contract from the matching logs
+        let token_addresses =
+            logs.iter().map(|log| log.address).collect::<std::collections::HashSet<_>>();
+
+        let erc20_abi = BaseContract::from(parse_abi(&[
+            "function balanceOf(address) external view returns (uint256)",
+        ])?);
+
+        // For each token address, get the before balances
+        for token_address in token_addresses {
+            let calldata = erc20_abi.encode("balanceOf", request.from)?;
+            let res =
+                evm.call_raw(request.from, token_address, Some(0.into()), Some(calldata)).await?;
+            println!("res: {:?}", res);
+        }
+
         Ok(AdapterResponse { actions: vec![], asset_changes: vec![] })
     }
 }
