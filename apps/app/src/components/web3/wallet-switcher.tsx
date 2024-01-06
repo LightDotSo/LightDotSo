@@ -173,7 +173,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   }
 
   // If there is no wallet, render a button to create a new wallet
-  if (!wallets) {
+  if (!wallets || (wallets && wallets.length === 0)) {
     return (
       <Button
         variant="ghost"
