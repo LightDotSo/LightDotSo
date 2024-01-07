@@ -350,58 +350,75 @@ pub(crate) async fn v1_user_operation_create_handler(
     }
 
     // Create the user operation in the database w/ the sig.
-    let user_operation: Result<lightdotso_prisma::user_operation::Data> = state
-        .client
-        ._transaction()
-        .run(|client| async move {
-            let user_operation = client
-                .user_operation()
-                .create(
-                    chain_id,
-                    "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789".parse()?,
-                    user_operation.hash,
-                    user_operation.nonce,
-                    user_operation.init_code.hex_to_bytes()?,
-                    user_operation.call_data.hex_to_bytes()?,
-                    user_operation.call_gas_limit,
-                    user_operation.verification_gas_limit,
-                    user_operation.pre_verification_gas,
-                    user_operation.max_fee_per_gas,
-                    user_operation.max_priority_fee_per_gas,
-                    user_operation.paymaster_and_data.hex_to_bytes()?,
-                    wallet::address::equals(user_operation.sender),
-                    params,
-                )
-                .exec()
-                .await?;
-            info!(?user_operation);
+    let res: Result<(lightdotso_prisma::signature::Data, lightdotso_prisma::user_operation::Data)> =
+        state
+            .client
+            ._transaction()
+            .run(|client| async move {
+                let user_operation = client
+                    .user_operation()
+                    .create(
+                        chain_id,
+                        "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789".parse()?,
+                        user_operation.hash,
+                        user_operation.nonce,
+                        user_operation.init_code.hex_to_bytes()?,
+                        user_operation.call_data.hex_to_bytes()?,
+                        user_operation.call_gas_limit,
+                        user_operation.verification_gas_limit,
+                        user_operation.pre_verification_gas,
+                        user_operation.max_fee_per_gas,
+                        user_operation.max_priority_fee_per_gas,
+                        user_operation.paymaster_and_data.hex_to_bytes()?,
+                        wallet::address::equals(user_operation.sender),
+                        params,
+                    )
+                    .exec()
+                    .await?;
+                info!(?user_operation);
 
-            let signature = client
-                .signature()
-                .create(
-                    sig.signature.hex_to_bytes()?,
-                    sig.signature_type,
-                    SignatureProcedure::OnChain,
-                    owner::id::equals(sig.owner_id),
-                    user_operation::hash::equals(user_operation_hash),
-                    vec![],
-                )
-                .exec()
-                .await?;
-            info!(?signature);
+                let signature = client
+                    .signature()
+                    .create(
+                        sig.signature.hex_to_bytes()?,
+                        sig.signature_type,
+                        SignatureProcedure::OnChain,
+                        owner::id::equals(sig.owner_id),
+                        user_operation::hash::equals(user_operation_hash),
+                        vec![],
+                    )
+                    .exec()
+                    .await?;
+                info!(?signature);
 
-            Ok(user_operation)
-        })
-        .await;
-    info!(?user_operation);
+                Ok((signature, user_operation))
+            })
+            .await;
 
     // If the user_operation is not created, return a 500.
-    let user_operation = user_operation.map_err(|_| AppError::InternalError)?;
+    let (signature, user_operation) = res.map_err(|_| AppError::InternalError)?;
     info!(?user_operation);
 
     // -------------------------------------------------------------------------
     // Kafka
     // -------------------------------------------------------------------------
+
+    // Produce an activity message.
+    produce_activity_message(
+        state.producer.clone(),
+        ActivityEntity::Signature,
+        &ActivityMessage {
+            operation: ActivityOperation::Create,
+            log: serde_json::to_value(&user_operation)?,
+            params: CustomParams {
+                signature_id: Some(signature.id.clone()),
+                user_id: Some(user_id.clone()),
+                wallet_address: Some(wallet.address.clone()),
+                ..Default::default()
+            },
+        },
+    )
+    .await?;
 
     // Produce an activity message.
     produce_activity_message(
