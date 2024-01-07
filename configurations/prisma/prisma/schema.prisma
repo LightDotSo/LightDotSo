@@ -1153,13 +1153,6 @@ model Signature {
   procedure     SignatureProcedure
 
   // ---------------------------------------------------------------------------
-  // One-to-one
-  // ---------------------------------------------------------------------------
-
-  userOperation     UserOperation @relation(fields: [userOperationHash], references: [hash])
-  userOperationHash String        @unique
-
-  // ---------------------------------------------------------------------------
   // None-to-one
   // ---------------------------------------------------------------------------
 
@@ -1173,13 +1166,16 @@ model Signature {
   owner   Owner  @relation(fields: [ownerId], references: [id])
   ownerId String
 
+  userOperation     UserOperation @relation(fields: [userOperationHash], references: [hash])
+  userOperationHash String
+
   // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
 
   // Relations
-  @@index([userOperationHash])
   @@index([ownerId])
+  @@index([userOperationHash])
 }
 
 enum SignatureProcedure {

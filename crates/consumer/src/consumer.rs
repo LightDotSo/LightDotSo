@@ -20,9 +20,9 @@ use crate::{
     config::ConsumerArgs,
     topics::{
         activity::activity_consumer, covalent::covalent_consumer,
-        error_transaction::error_transaction_consumer, notification::notification_consumer,
-        portfolio::portfolio_consumer, transaction::transaction_consumer,
-        unknown::unknown_consumer,
+        error_transaction::error_transaction_consumer, interpretation::interpretation_consumer,
+        notification::notification_consumer, portfolio::portfolio_consumer,
+        transaction::transaction_consumer, unknown::unknown_consumer,
     },
 };
 use clap::Parser;
@@ -32,8 +32,9 @@ use lightdotso_indexer::config::IndexerArgs;
 use lightdotso_kafka::{
     get_consumer, get_producer,
     namespace::{
-        ACTIVITY, COVALENT, ERROR_TRANSACTION, NOTIFICATION, PORTFOLIO, RETRY_TRANSACTION,
-        RETRY_TRANSACTION_0, RETRY_TRANSACTION_1, RETRY_TRANSACTION_2, TRANSACTION,
+        ACTIVITY, COVALENT, ERROR_TRANSACTION, INTERPRETATION, NOTIFICATION, PORTFOLIO,
+        RETRY_TRANSACTION, RETRY_TRANSACTION_0, RETRY_TRANSACTION_1, RETRY_TRANSACTION_2,
+        TRANSACTION,
     },
 };
 use lightdotso_notifier::config::NotifierArgs;
@@ -138,6 +139,10 @@ impl Consumer {
                                 // Log the error
                                 warn!("Covalent consumer failed with error: {:?}", e);
                             }
+                            let _ = self.consumer.commit_message(&m, CommitMode::Async);
+                        }
+                        topic if topic == INTERPRETATION.to_string() => {
+                            let _ = interpretation_consumer(&m).await;
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         topic if topic == PORTFOLIO.to_string() => {
