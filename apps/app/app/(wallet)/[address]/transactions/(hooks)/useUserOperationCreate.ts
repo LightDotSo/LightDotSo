@@ -18,7 +18,7 @@
 import { createUserOperation } from "@lightdotso/client";
 import { subdigestOf } from "@lightdotso/solutions";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Address, Hex } from "viem";
 import {
   isAddressEqual,
@@ -59,8 +59,27 @@ export const useUserOperationCreate = ({
   config: { owners, threshold },
   userOperation,
 }: UserOperationCreateProps) => {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
   const { address: userAddress } = useAuth();
+
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
   const router = useRouter();
+
+  // ---------------------------------------------------------------------------
+  // Local Variables
+  // ---------------------------------------------------------------------------
 
   const subdigest = subdigestOf(
     address,
@@ -72,7 +91,11 @@ export const useUserOperationCreate = ({
   // Wagmi
   // ---------------------------------------------------------------------------
 
-  const { data, signMessage } = useSignMessage({
+  const {
+    data,
+    signMessage,
+    isLoading: isSignLoading,
+  } = useSignMessage({
     message: { raw: toBytes(subdigest) },
   });
 
@@ -147,6 +170,11 @@ export const useUserOperationCreate = ({
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
+
+  // Sync the loading state
+  useEffect(() => {
+    setIsLoading(isSignLoading);
+  }, [isSignLoading]);
 
   useEffect(() => {
     const fetchUserOp = async () => {

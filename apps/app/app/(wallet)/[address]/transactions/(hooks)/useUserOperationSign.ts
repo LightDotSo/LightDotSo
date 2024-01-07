@@ -104,13 +104,22 @@ export const useUserOperationSign = ({
   // Wagmi
   // ---------------------------------------------------------------------------
 
-  const { data: signedMessage, signMessage } = useSignMessage({
+  const {
+    data: signedMessage,
+    isLoading: isSignLoading,
+    signMessage,
+  } = useSignMessage({
     message: { raw: toBytes(subdigest) },
   });
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
+
+  // Sync the loading state
+  useEffect(() => {
+    setIsLoading(isSignLoading);
+  }, [isSignLoading]);
 
   // A handler for submitting the signature
   useEffect(() => {
