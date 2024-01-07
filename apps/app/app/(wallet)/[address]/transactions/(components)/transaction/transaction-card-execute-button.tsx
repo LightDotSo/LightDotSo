@@ -42,7 +42,7 @@ export const TransactionCardExecuteButton: FC<
   // App Hooks
   // ---------------------------------------------------------------------------
 
-  const { handleConfirm } = useUserOperationSubmit({
+  const { isLoading, isValid, handleConfirm } = useUserOperationSubmit({
     address: address,
     config: config,
     userOperation: userOperation,
@@ -53,7 +53,13 @@ export const TransactionCardExecuteButton: FC<
   // ---------------------------------------------------------------------------
 
   return (
-    <Button className="w-full" onClick={handleConfirm}>
+    <Button
+      disabled={!isValid}
+      isLoading={isLoading}
+      variant={isValid ? "default" : "outline"}
+      className="w-full"
+      onClick={handleConfirm}
+    >
       Execute
     </Button>
   );

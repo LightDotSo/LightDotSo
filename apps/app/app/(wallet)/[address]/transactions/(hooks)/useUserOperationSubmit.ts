@@ -55,6 +55,7 @@ export const useUserOperationSubmit = ({
   // ---------------------------------------------------------------------------
 
   const [recoveredAddress, setRecoveredAddress] = useState<Address>();
+  const [isLoading, setIsLoading] = useState(false);
 
   // ---------------------------------------------------------------------------
   // Local Variables
@@ -159,6 +160,9 @@ export const useUserOperationSubmit = ({
 
   // A `useCallback` handler for confirming the operation
   const handleConfirm = useCallback(() => {
+    // Set loading state
+    setIsLoading(true);
+
     const processSignature = async () => {
       // Get the sig as bytes from caller
       const sigRes = await getSignatureUserOperation({
@@ -205,6 +209,9 @@ export const useUserOperationSubmit = ({
     };
 
     processSignature();
+
+    // Unset loading state
+    setIsLoading(false);
   }, [userOperation]);
 
   // ---------------------------------------------------------------------------
@@ -212,6 +219,7 @@ export const useUserOperationSubmit = ({
   // ---------------------------------------------------------------------------
 
   return {
+    isLoading,
     isValid,
     paymasterNonce,
     paymasterOperation,

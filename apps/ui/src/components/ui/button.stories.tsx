@@ -70,7 +70,7 @@ export const Link: Story = {
 export const Loading: Story = {
   render: args => <Button {...args}>Loading</Button>,
   args: {
-    variant: "loading",
+    isLoading: true,
   },
 };
 export const Disabled: Story = {
@@ -104,7 +104,7 @@ export const Default: Story = {
       <Button {...args} variant="link">
         Link
       </Button>
-      <Button {...args} variant="loading">
+      <Button {...args} isLoading>
         Loading
       </Button>
       <Button {...args} disabled>
@@ -134,7 +134,7 @@ export const Destructive: Story = {
       <Button {...args} variant="link">
         Link
       </Button>
-      <Button {...args} variant="loading">
+      <Button {...args} isLoading>
         Loading
       </Button>
       <Button {...args} disabled>
@@ -164,7 +164,7 @@ export const Error: Story = {
       <Button {...args} variant="link">
         Link
       </Button>
-      <Button {...args} variant="loading">
+      <Button {...args} isLoading>
         Loading
       </Button>
       <Button {...args} disabled>
@@ -194,7 +194,7 @@ export const Warning: Story = {
       <Button {...args} variant="link">
         Link
       </Button>
-      <Button {...args} variant="loading">
+      <Button {...args} isLoading>
         Loading
       </Button>
       <Button {...args} disabled>
@@ -224,7 +224,7 @@ export const Info: Story = {
       <Button {...args} variant="link">
         Link
       </Button>
-      <Button {...args} variant="loading">
+      <Button {...args} isLoading>
         Loading
       </Button>
       <Button {...args} disabled>
@@ -254,7 +254,7 @@ export const Success: Story = {
       <Button {...args} variant="link">
         Link
       </Button>
-      <Button {...args} variant="loading">
+      <Button {...args} isLoading>
         Loading
       </Button>
       <Button {...args} disabled>
@@ -284,7 +284,7 @@ export const Indigo: Story = {
       <Button {...args} variant="link">
         Link
       </Button>
-      <Button {...args} variant="loading">
+      <Button {...args} isLoading>
         Loading
       </Button>
       <Button {...args} disabled>
@@ -314,7 +314,7 @@ export const Pink: Story = {
       <Button {...args} variant="link">
         Link
       </Button>
-      <Button {...args} variant="loading">
+      <Button {...args} isLoading>
         Loading
       </Button>
       <Button {...args} disabled>
@@ -344,7 +344,7 @@ export const Purple: Story = {
       <Button {...args} variant="link">
         Link
       </Button>
-      <Button {...args} variant="loading">
+      <Button {...args} isLoading>
         Loading
       </Button>
       <Button {...args} disabled>

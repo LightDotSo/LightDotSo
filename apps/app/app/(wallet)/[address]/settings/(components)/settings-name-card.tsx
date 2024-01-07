@@ -174,7 +174,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
       <Button
         type="submit"
         form="walletNameForm"
-        variant={isPending ? "loading" : "default"}
+        isLoading={isPending}
         disabled={
           delayedIsSuccess ||
           !isFormChanged ||

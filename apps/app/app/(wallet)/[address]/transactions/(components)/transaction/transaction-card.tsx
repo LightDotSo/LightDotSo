@@ -150,7 +150,7 @@ export const TransactionCard: FC<TransactionCardProps> = ({
         <CollapsibleContent asChild>
           <TableCell className="p-0" colSpan={row.getAllCells().length}>
             <div className="m-4 grid gap-4 md:grid-cols-2">
-              <Card className="col-span-1 space-y-4 border border-border-weak bg-background-strong p-4">
+              <Card className="col-span-1 flex flex-col space-y-4 justify-between h-full border border-border-weak bg-background-strong p-4">
                 <CardHeader className="p-0">
                   <CardTitle className="text-lg">
                     Transaction Information
@@ -159,7 +159,7 @@ export const TransactionCard: FC<TransactionCardProps> = ({
                     Get more information about this transaction.
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="p-0">
+                <CardContent className="p-0 flex-grow">
                   {informationItems.map((item, index) => (
                     <div
                       key={index}
@@ -202,14 +202,14 @@ export const TransactionCard: FC<TransactionCardProps> = ({
                   </Button>
                 </CardFooter>
               </Card>
-              <Card className="col-span-1 space-y-4 border border-border-weak bg-background-strong p-4">
+              <Card className="col-span-1 flex flex-col space-y-4 justify-between border border-border-weak bg-background-strong p-4">
                 <CardHeader className="p-0">
                   <CardTitle className="text-lg">Progress</CardTitle>
                   <CardDescription>
                     View the progress of this transaction.
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="p-0">
+                <CardContent className="p-0 flex-grow">
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="col-span-2 flex items-center">
                       <Progress

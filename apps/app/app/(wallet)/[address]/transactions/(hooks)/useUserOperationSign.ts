@@ -15,12 +15,21 @@
 
 "use client";
 
+import { createSignature } from "@lightdotso/client";
 import { subdigestOf } from "@lightdotso/solutions";
-import { useMemo } from "react";
-import { hexToBytes, type Address, type Hex, getAddress, toBytes } from "viem";
+import { useEffect, useMemo, useState } from "react";
+import {
+  hexToBytes,
+  type Address,
+  type Hex,
+  getAddress,
+  toBytes,
+  toHex,
+} from "viem";
 import { useSignMessage } from "wagmi";
 import type { ConfigurationData, UserOperationData } from "@/data";
 import { useAuth } from "@/stores";
+import { errorToast, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -42,6 +51,12 @@ export const useUserOperationSign = ({
   userOperation,
 }: UserOperationSignProps) => {
   // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
@@ -61,22 +76,24 @@ export const useUserOperationSign = ({
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
+  const userOwnerId = useMemo(() => {
+    // Map the user id to the owner id
+    return owners.find(owner => owner.address === userAddress)?.id;
+  }, [owners, userAddress]);
+
   const isSignable = useMemo(() => {
     // Check if the user is an owner
     const isOwner = owners.some(
       owner => owner.address === getAddress(userAddress as Address),
     );
 
-    // Map the user id to the owner id
-    const userId = owners.find(owner => owner.address === userAddress)?.id;
-
     // Check if the user has already signed
     const isSigned = userOperation.signatures.some(
-      signature => signature.owner_id === userId,
+      signature => signature.owner_id === userOwnerId,
     );
 
     return isOwner && !isSigned;
-  }, [owners, userOperation, userAddress]);
+  }, [owners, userOperation.signatures, userAddress, userOwnerId]);
 
   // ---------------------------------------------------------------------------
   // Wagmi
@@ -87,10 +104,62 @@ export const useUserOperationSign = ({
   });
 
   // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // A handler for submitting the signature
+  useEffect(() => {
+    // Set loading state
+    setIsLoading(true);
+
+    const processSignature = async () => {
+      if (!userOwnerId || !signedMessage) {
+        errorToast("You must sign the message first and be an owner");
+        return;
+      }
+
+      // Get the sig as bytes from caller
+      await signMessage();
+
+      const res = await createSignature({
+        params: {
+          query: {
+            user_operation_hash: userOperation.hash,
+          },
+        },
+        body: {
+          signature: {
+            owner_id: userOwnerId,
+            signature: toHex(new Uint8Array([...toBytes(signedMessage), 2])),
+            signature_type: 1,
+          },
+        },
+      });
+
+      res.match(
+        _ => {
+          successToast("You submitted the userOperation result");
+        },
+        err => {
+          if (err instanceof Error) {
+            errorToast(err.message);
+          }
+        },
+      );
+    };
+
+    processSignature();
+
+    // Unset loading state
+    setIsLoading(false);
+  }, [signMessage, signedMessage, userOperation, userOwnerId]);
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return {
+    isLoading,
     isSignable,
     signedMessage,
     signMessage,
