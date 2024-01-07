@@ -69,9 +69,8 @@ pub(crate) async fn v1_feedback_create_handler(
     // Session
     // -------------------------------------------------------------------------
 
-    // Get the userid from the session.
-    let user_id = get_user_id(&mut session)?;
-    info!(?user_id);
+    // Get the authenticated user id from the session.
+    let auth_user_id = get_user_id(&mut session)?;
 
     // -------------------------------------------------------------------------
     // DB
@@ -84,7 +83,7 @@ pub(crate) async fn v1_feedback_create_handler(
         .create(
             feedback.text,
             feedback.emoji,
-            lightdotso_prisma::user::id::equals(user_id.clone()),
+            lightdotso_prisma::user::id::equals(auth_user_id.clone()),
             vec![],
         )
         .exec()
@@ -104,7 +103,7 @@ pub(crate) async fn v1_feedback_create_handler(
             log: serde_json::to_value(&feedback)?,
             params: CustomParams {
                 feedback_id: Some(feedback.id.clone()),
-                user_id: Some(user_id),
+                user_id: Some(auth_user_id),
                 ..Default::default()
             },
         },

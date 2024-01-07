@@ -76,8 +76,8 @@ pub(crate) async fn v1_notification_read_handler(
     // Session
     // -------------------------------------------------------------------------
 
-    // Get the userid from the session.
-    let user_id = get_user_id(&mut session)?;
+    // Get the authenticated user id from the session.
+    let auth_user_id = get_user_id(&mut session)?;
 
     // -------------------------------------------------------------------------
     // DB
@@ -111,7 +111,7 @@ pub(crate) async fn v1_notification_read_handler(
                 log: serde_json::to_value(&notification)?,
                 params: CustomParams {
                     notification_id: Some(notification.id.clone()),
-                    user_id: Some(user_id.clone()),
+                    user_id: Some(auth_user_id.clone()),
                     ..Default::default()
                 },
             },

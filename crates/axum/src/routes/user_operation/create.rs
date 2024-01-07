@@ -18,7 +18,6 @@
 use super::types::UserOperation;
 use crate::{
     result::{AppError, AppJsonResult},
-    sessions::get_user_id,
     state::AppState,
 };
 use autometrics::autometrics;
@@ -62,7 +61,6 @@ use prisma_client_rust::{
 };
 use rundler_types::UserOperation as RundlerUserOperation;
 use serde::{Deserialize, Serialize};
-use tower_sessions_core::Session;
 use utoipa::{IntoParams, ToSchema};
 
 // -----------------------------------------------------------------------------
@@ -167,7 +165,6 @@ pub(crate) struct UserOperationCreateSignature {
 pub(crate) async fn v1_user_operation_create_handler(
     post_query: Query<PostQuery>,
     State(state): State<AppState>,
-    mut session: Session,
     Json(params): Json<UserOperationPostRequestParams>,
 ) -> AppJsonResult<UserOperation> {
     // -------------------------------------------------------------------------
@@ -226,24 +223,27 @@ pub(crate) async fn v1_user_operation_create_handler(
     info!(?recovered_sig);
 
     // -------------------------------------------------------------------------
-    // Session
-    // -------------------------------------------------------------------------
-
-    // Get the userid from the session.
-    let user_id = get_user_id(&mut session)?;
-    info!(?user_id);
-
-    // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
 
     // Get the owner from the database.
-    let owner =
-        state.client.owner().find_unique(owner::id::equals(sig.clone().owner_id)).exec().await?;
+    let owner = state
+        .client
+        .owner()
+        .find_unique(owner::id::equals(sig.clone().owner_id))
+        .with(owner::user::fetch())
+        .exec()
+        .await?;
     info!(?owner);
 
     // If the owner is not found, return a 404.
     let owner = owner.ok_or(AppError::NotFound)?;
+
+    // Get the user id from the owner.
+    let user_id = match owner.user_id {
+        Some(id) => id,
+        None => return Err(AppError::NotFound),
+    };
 
     // Check that the recovered signature is the same as the signature sender.
     if recovered_sig.address != owner.address.parse()? {
