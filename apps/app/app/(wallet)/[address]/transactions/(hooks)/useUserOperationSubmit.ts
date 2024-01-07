@@ -37,7 +37,7 @@ import {
 // Props
 // -----------------------------------------------------------------------------
 
-type OpCreateCardProps = {
+type UserOperationSubmitProps = {
   address: Address;
   config: ConfigurationData;
   userOperation: UserOperationData;
@@ -51,7 +51,7 @@ export const useUserOperationSubmit = ({
   // address,
   config,
   userOperation,
-}: OpCreateCardProps) => {
+}: UserOperationSubmitProps) => {
   const [recoveredAddress, setRecoveredAddress] = useState<Address>();
 
   // Get the cumulative weight of all owners in the userOperation signatures array and check if it is greater than or equal to the threshold

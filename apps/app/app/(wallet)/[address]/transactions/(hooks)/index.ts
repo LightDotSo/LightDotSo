@@ -14,4 +14,5 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 export { useUserOperationCreate } from "./useUserOperationCreate";
+export { useUserOperationSign } from "./useUserOperationSign";
 export { useUserOperationSubmit } from "./useUserOperationSubmit";
