@@ -1154,6 +1154,8 @@ model Signature {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Unique
+  @@unique([ownerId, userOperationHash])
   // Relations
   @@index([ownerId])
   @@index([userOperationHash])
