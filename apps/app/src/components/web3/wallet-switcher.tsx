@@ -47,7 +47,7 @@ import type { UIEvent, FC, ComponentPropsWithoutRef } from "react";
 import { getAddress, isAddress } from "viem";
 import type { Address } from "viem";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
-import { useIsMounted } from "@/hooks/useIsMounted";
+import { useIsMounted } from "@/hooks";
 import { useSuspenseQueryWallets } from "@/query";
 import { useAuth } from "@/stores";
 

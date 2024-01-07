@@ -32,7 +32,7 @@ import { GearIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import type { FC } from "react";
-import { useIsMounted } from "@/hooks/useIsMounted";
+import { useIsMounted } from "@/hooks";
 import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------

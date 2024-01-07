@@ -31,8 +31,7 @@ import type { IconProps } from "@radix-ui/react-icons/dist/types";
 import { Suspense, useMemo, useState, useEffect } from "react";
 import type { FC, HTMLAttributes, RefAttributes } from "react";
 import { Tabs } from "@/components/nav/tabs-nav";
-import { usePathType } from "@/hooks/usePathType";
-import { useTabs } from "@/hooks/useTabs";
+import { usePathType, useTabs } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Const

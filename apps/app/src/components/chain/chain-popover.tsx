@@ -35,7 +35,7 @@ import type { Address } from "viem";
 import { useQueryClient } from "wagmi";
 import { CHAINS, MAINNET_CHAINS } from "@/const/chains";
 import type { WalletSettingsData } from "@/data";
-import { useIsMounted } from "@/hooks/useIsMounted";
+import { useIsMounted } from "@/hooks";
 import { queryKeys } from "@/queryKeys";
 import { useAuth } from "@/stores";
 import { ChainLogo } from "@/svgs";

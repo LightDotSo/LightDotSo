@@ -16,18 +16,15 @@
 "use client";
 
 import {
-  getPaymasterOperation,
   getSignatureUserOperation,
   sendUserOperation,
 } from "@lightdotso/client";
 import { CONTRACT_ADDRESSES } from "@lightdotso/const";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { useCallback, useState, useEffect } from "react";
 import { toHex, fromHex, recoverMessageAddress } from "viem";
 import type { Hex, Address } from "viem";
 import type { ConfigurationData, UserOperationData } from "@/data";
 import { useSuspenseQueryPaymasterOperation } from "@/query";
-import { queryKeys } from "@/queryKeys";
 import { errorToast, successToast } from "@/utils";
 import {
   useLightVerifyingPaymasterGetHash,
