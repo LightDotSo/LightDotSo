@@ -57,7 +57,7 @@ export const TransactionCardSignButton: FC<TransactionCardSignButtonProps> = ({
   return (
     <Button
       disabled={!isSignable}
-      variant="outline"
+      variant={isSignable ? "default" : "outline"}
       className="w-full"
       onClick={() => signMessage()}
     >

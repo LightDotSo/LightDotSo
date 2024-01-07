@@ -37,11 +37,7 @@ export const ConnectButton = () => {
     <ConnectKitButton.Custom>
       {({ isConnected, isConnecting, show, address, ensName }) => {
         return (
-          <Button
-            size="sm"
-            variant={isConnecting ? "loading" : "default"}
-            onClick={show}
-          >
+          <Button size="sm" isLoading={isConnecting} onClick={show}>
             <Wallet className="mr-2 h-4 w-4" />
             {isConnected
               ? ensName ?? shortenAddress(address as Address)
