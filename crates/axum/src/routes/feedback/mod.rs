@@ -21,7 +21,7 @@ pub use crate::state::AppState;
 use autometrics::autometrics;
 use axum::{routing::post, Router};
 
-pub(crate) use create::{__path_v1_feedback_post_handler, v1_feedback_post_handler};
+pub(crate) use create::{__path_v1_feedback_create_handler, v1_feedback_create_handler};
 
 // -----------------------------------------------------------------------------
 // Router
@@ -29,5 +29,5 @@ pub(crate) use create::{__path_v1_feedback_post_handler, v1_feedback_post_handle
 
 #[autometrics]
 pub(crate) fn router() -> Router<AppState> {
-    Router::new().route("/feedback/create", post(v1_feedback_post_handler))
+    Router::new().route("/feedback/create", post(v1_feedback_create_handler))
 }

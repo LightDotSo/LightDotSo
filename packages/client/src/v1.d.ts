@@ -85,7 +85,7 @@ export interface paths {
      * Create a feedback
      * @description Create a feedback
      */
-    post: operations["v1_feedback_post_handler"];
+    post: operations["v1_feedback_create_handler"];
   };
   "/health": {
     /**
@@ -99,7 +99,7 @@ export interface paths {
      * Create an invite code
      * @description Create an invite code
      */
-    post: operations["v1_invite_code_post_handler"];
+    post: operations["v1_invite_code_create_handler"];
   };
   "/invite_code/get": {
     /**
@@ -204,7 +204,7 @@ export interface paths {
      * Create a signature
      * @description Create a signature
      */
-    post: operations["v1_signature_post_handler"];
+    post: operations["v1_signature_create_handler"];
   };
   "/signature/get": {
     /**
@@ -225,7 +225,7 @@ export interface paths {
      * Create a support_request
      * @description Create a support_request
      */
-    post: operations["v1_support_request_post_handler"];
+    post: operations["v1_support_request_create_handler"];
   };
   "/token/get": {
     /**
@@ -309,7 +309,7 @@ export interface paths {
      * Create a user operation
      * @description Create a user operation
      */
-    post: operations["v1_user_operation_post_handler"];
+    post: operations["v1_user_operation_create_handler"];
   };
   "/user_operation/get": {
     /**
@@ -358,7 +358,7 @@ export interface paths {
      * Create a wallet
      * @description Create a wallet
      */
-    post: operations["v1_wallet_post_handler"];
+    post: operations["v1_wallet_create_handler"];
   };
   "/wallet/get": {
     /**
@@ -393,7 +393,7 @@ export interface paths {
      * Create a wallet_settings
      * @description Create a wallet_settings
      */
-    post: operations["v1_wallet_settings_post_handler"];
+    post: operations["v1_wallet_settings_create_handler"];
   };
   "/wallet/update": {
     /**
@@ -1336,7 +1336,7 @@ export interface operations {
    * Create a feedback
    * @description Create a feedback
    */
-  v1_feedback_post_handler: {
+  v1_feedback_create_handler: {
     parameters: {
       query: {
         /** @description The id of the user to query. */
@@ -1367,7 +1367,7 @@ export interface operations {
    * Create an invite code
    * @description Create an invite code
    */
-  v1_invite_code_post_handler: {
+  v1_invite_code_create_handler: {
     responses: {
       /** @description Invite code created successfully */
       200: {
@@ -1773,7 +1773,7 @@ export interface operations {
    * Create a signature
    * @description Create a signature
    */
-  v1_signature_post_handler: {
+  v1_signature_create_handler: {
     parameters: {
       query: {
         /** @description The hash of the user operation. */
@@ -1873,7 +1873,7 @@ export interface operations {
    * Create a support_request
    * @description Create a support_request
    */
-  v1_support_request_post_handler: {
+  v1_support_request_create_handler: {
     parameters: {
       query: {
         /** @description The wallet address of the user operation. */
@@ -2232,7 +2232,7 @@ export interface operations {
    * Create a user operation
    * @description Create a user operation
    */
-  v1_user_operation_post_handler: {
+  v1_user_operation_create_handler: {
     parameters: {
       query: {
         chain_id: number;
@@ -2460,7 +2460,7 @@ export interface operations {
    * Create a wallet
    * @description Create a wallet
    */
-  v1_wallet_post_handler: {
+  v1_wallet_create_handler: {
     parameters: {
       query?: {
         /** @description Whether to simulate the wallet creation. */
@@ -2617,7 +2617,7 @@ export interface operations {
    * Create a wallet_settings
    * @description Create a wallet_settings
    */
-  v1_wallet_settings_post_handler: {
+  v1_wallet_settings_create_handler: {
     parameters: {
       query: {
         /** @description The hash of the wallet settings. */

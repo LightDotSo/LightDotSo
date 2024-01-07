@@ -65,7 +65,7 @@ pub struct FeedbackPostRequestParams {
         )
     )]
 #[autometrics]
-pub(crate) async fn v1_feedback_post_handler(
+pub(crate) async fn v1_feedback_create_handler(
     post_query: Query<PostQuery>,
     State(state): State<AppState>,
     Json(params): Json<FeedbackPostRequestParams>,

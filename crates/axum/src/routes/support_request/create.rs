@@ -62,7 +62,7 @@ pub struct SupportRequestPostRequestParams {
         )
     )]
 #[autometrics]
-pub(crate) async fn v1_support_request_post_handler(
+pub(crate) async fn v1_support_request_create_handler(
     post_query: Query<PostQuery>,
     State(state): State<AppState>,
     Json(params): Json<SupportRequestPostRequestParams>,

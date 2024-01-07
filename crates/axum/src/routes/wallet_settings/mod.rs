@@ -26,7 +26,9 @@ use axum::{
 };
 
 pub(crate) use get::{__path_v1_wallet_settings_get_handler, v1_wallet_settings_get_handler};
-pub(crate) use update::{__path_v1_wallet_settings_post_handler, v1_wallet_settings_post_handler};
+pub(crate) use update::{
+    __path_v1_wallet_settings_update_handler, v1_wallet_settings_update_handler,
+};
 
 // -----------------------------------------------------------------------------
 // Router
@@ -36,5 +38,5 @@ pub(crate) use update::{__path_v1_wallet_settings_post_handler, v1_wallet_settin
 pub(crate) fn router() -> Router<AppState> {
     Router::new()
         .route("/wallet/settings/get", get(v1_wallet_settings_get_handler))
-        .route("/wallet/settings/update", post(v1_wallet_settings_post_handler))
+        .route("/wallet/settings/update", post(v1_wallet_settings_update_handler))
 }
