@@ -52,5 +52,9 @@ export const TransactionCardExecuteButton: FC<
   // Render
   // ---------------------------------------------------------------------------
 
-  return <Button onClick={handleConfirm}>Execute</Button>;
+  return (
+    <Button className="w-full" onClick={handleConfirm}>
+      Execute
+    </Button>
+  );
 };

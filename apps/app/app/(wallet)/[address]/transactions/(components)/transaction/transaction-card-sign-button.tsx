@@ -15,67 +15,53 @@
 
 "use client";
 
-import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@lightdotso/ui";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import type { Row } from "@tanstack/react-table";
-import { useRouter } from "next/navigation";
-import type { UserOperationData } from "@/data";
-import { useAuth } from "@/stores";
+import { Button } from "@lightdotso/ui";
+import type { FC } from "react";
+import type { Address } from "viem";
+import { useUserOperationSign } from "@/app/(wallet)/[address]/transactions/(hooks)/useUserOperationSign";
+import type { ConfigurationData, UserOperationData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface DataTableRowActionsProps {
-  row: Row<UserOperationData>;
-}
+type TransactionCardSignButtonProps = {
+  address: Address;
+  config: ConfigurationData;
+  userOperation: UserOperationData;
+};
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export function DataTableRowActions({ row }: DataTableRowActionsProps) {
+export const TransactionCardSignButton: FC<TransactionCardSignButtonProps> = ({
+  address,
+  config,
+  userOperation,
+}) => {
   // ---------------------------------------------------------------------------
-  // Next Hooks
-  // ---------------------------------------------------------------------------
-
-  const router = useRouter();
-
-  // ---------------------------------------------------------------------------
-  // Stores
+  // App Hooks
   // ---------------------------------------------------------------------------
 
-  const { wallet } = useAuth();
+  const { isSignable, signMessage } = useUserOperationSign({
+    address: address,
+    config: config,
+    userOperation: userOperation,
+  });
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          className="flex h-8 w-8 p-0 data-[state=open]:bg-background-stronger"
-        >
-          <DotsHorizontalIcon className="h-4 w-4" />
-          <span className="sr-only">Open menu</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem
-          onClick={() => {
-            router.push(`/${wallet}/op/${row.original.hash}`);
-          }}
-        >
-          Execute
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <Button
+      disabled={!isSignable}
+      variant="outline"
+      className="w-full"
+      onClick={() => signMessage()}
+    >
+      Sign
+    </Button>
   );
-}
+};

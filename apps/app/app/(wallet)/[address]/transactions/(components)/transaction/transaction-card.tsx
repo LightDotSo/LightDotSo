@@ -37,6 +37,7 @@ import type { FC } from "react";
 import { useMemo } from "react";
 import type { Address } from "viem";
 import { TransactionCardExecuteButton } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transaction-card-execute-button";
+import { TransactionCardSignButton } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transaction-card-sign-button";
 import { UserOperationTimeline } from "@/components/user-operation/user-operation-timeline";
 import type { ConfigurationData, UserOperationData } from "@/data";
 import { getChainById } from "@/utils";
@@ -233,7 +234,12 @@ export const TransactionCard: FC<TransactionCardProps> = ({
                   </div>
                 </CardContent>
                 {userOperation.status === "PROPOSED" && (
-                  <CardFooter className="flex w-full items-center justify-end p-0">
+                  <CardFooter className="grid grid-cols-2 gap-3 w-full items-center p-0">
+                    <TransactionCardSignButton
+                      address={address}
+                      config={configuration}
+                      userOperation={userOperation}
+                    />
                     <TransactionCardExecuteButton
                       address={address}
                       config={configuration}
