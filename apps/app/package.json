@@ -42,7 +42,6 @@
     "@opentelemetry/sdk-node": "^0.46.0",
     "@opentelemetry/sdk-trace-node": "^1.19.0",
     "@opentelemetry/semantic-conventions": "^1.19.0",
-    "@popperjs/core": "^2.11.8",
     "@prisma/client": "^5.7.1",
     "@prisma/nextjs-monorepo-workaround-plugin": "^5.7.1",
     "@radix-ui/react-dropdown-menu": "^2.0.6",

@@ -26,15 +26,15 @@ use utoipa::ToSchema;
 
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub(crate) struct NotificationReadRequestParams {
+pub(crate) struct NotificationPostRequestParams {
     /// The array of the notifications to query.
-    pub notifications: Vec<NotificationReadRequest>,
+    pub notifications: Vec<NotificationPostRequest>,
 }
 
 /// Item to request.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub(crate) struct NotificationReadRequest {
+pub(crate) struct NotificationPostRequest {
     /// The id of the notification to read for.
     id: String,
 }
@@ -47,7 +47,7 @@ pub(crate) struct NotificationReadRequest {
 #[utoipa::path(
         post,
         path = "/notification/read",
-        request_body = NotificationReadRequestParams,
+        request_body = NotificationPostRequestParams,
         responses(
             (status = 200, description = "Notification created successfully", body = i64),
             (status = 500, description = "Notification internal error", body = NotificationError),
@@ -56,7 +56,7 @@ pub(crate) struct NotificationReadRequest {
 #[autometrics]
 pub(crate) async fn v1_notification_read_handler(
     State(state): State<AppState>,
-    Json(params): Json<NotificationReadRequestParams>,
+    Json(params): Json<NotificationPostRequestParams>,
 ) -> AppJsonResult<i64> {
     // Get the notification from the post body.
     let notifications = params.notifications;

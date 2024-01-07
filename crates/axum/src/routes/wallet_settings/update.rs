@@ -71,7 +71,7 @@ pub struct WalletSettingsPostRequestParams {
         )
     )]
 #[autometrics]
-pub(crate) async fn v1_wallet_settings_post_handler(
+pub(crate) async fn v1_wallet_settings_update_handler(
     post_query: Query<PostQuery>,
     State(state): State<AppState>,
     Json(params): Json<WalletSettingsPostRequestParams>,

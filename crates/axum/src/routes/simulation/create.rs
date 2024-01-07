@@ -46,7 +46,7 @@ pub(crate) struct SimulationCreateRequestParams {
         )
     )]
 #[autometrics]
-pub(crate) async fn v1_simulation_post_handler(
+pub(crate) async fn v1_simulation_create_handler(
     State(_state): State<AppState>,
     Json(params): Json<SimulationCreateRequestParams>,
 ) -> AppJsonResult<i64> {

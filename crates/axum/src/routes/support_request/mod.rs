@@ -21,7 +21,9 @@ use crate::state::AppState;
 use autometrics::autometrics;
 use axum::{routing::post, Router};
 
-pub(crate) use create::{__path_v1_support_request_post_handler, v1_support_request_post_handler};
+pub(crate) use create::{
+    __path_v1_support_request_create_handler, v1_support_request_create_handler,
+};
 
 // -----------------------------------------------------------------------------
 // Router
@@ -29,5 +31,5 @@ pub(crate) use create::{__path_v1_support_request_post_handler, v1_support_reque
 
 #[autometrics]
 pub(crate) fn router() -> Router<AppState> {
-    Router::new().route("/support_request/create", post(v1_support_request_post_handler))
+    Router::new().route("/support_request/create", post(v1_support_request_create_handler))
 }

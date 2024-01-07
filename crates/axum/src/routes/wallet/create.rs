@@ -107,7 +107,7 @@ pub struct WalletPostRequestParams {
         )
     )]
 #[autometrics]
-pub(crate) async fn v1_wallet_post_handler(
+pub(crate) async fn v1_wallet_create_handler(
     post_query: Query<PostQuery>,
     State(state): State<AppState>,
     Json(params): Json<WalletPostRequestParams>,

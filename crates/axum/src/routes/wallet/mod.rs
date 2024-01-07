@@ -27,7 +27,7 @@ use axum::{
     Router,
 };
 
-pub(crate) use create::{__path_v1_wallet_post_handler, v1_wallet_post_handler};
+pub(crate) use create::{__path_v1_wallet_create_handler, v1_wallet_create_handler};
 pub(crate) use get::{__path_v1_wallet_get_handler, v1_wallet_get_handler};
 pub(crate) use list::{
     __path_v1_wallet_list_count_handler, __path_v1_wallet_list_handler,
@@ -45,6 +45,6 @@ pub(crate) fn router() -> Router<AppState> {
         .route("/wallet/get", get(v1_wallet_get_handler))
         .route("/wallet/list", get(v1_wallet_list_handler))
         .route("/wallet/list/count", get(v1_wallet_list_count_handler))
-        .route("/wallet/create", post(v1_wallet_post_handler))
+        .route("/wallet/create", post(v1_wallet_create_handler))
         .route("/wallet/update", put(v1_wallet_update_handler))
 }

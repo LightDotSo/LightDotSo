@@ -14,7 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import createClient from "openapi-fetch";
-import type { paths } from "./v1";
+import type { paths as LifiPaths } from "./lifi";
+import type { paths as ApiPaths } from "./v1";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -23,11 +24,19 @@ import type { paths } from "./v1";
 export type ClientType = "admin" | "authenticated" | "public";
 
 // -----------------------------------------------------------------------------
+// Lifi
+// -----------------------------------------------------------------------------
+export const lifiClient: ReturnType<typeof createClient<LifiPaths>> =
+  createClient<LifiPaths>({
+    baseUrl: "https://li.quest/v1",
+  });
+
+// -----------------------------------------------------------------------------
 // Light
 // -----------------------------------------------------------------------------
 
-const localAdminApiClient: ReturnType<typeof createClient<paths>> =
-  createClient<paths>({
+const localAdminApiClient: ReturnType<typeof createClient<ApiPaths>> =
+  createClient<ApiPaths>({
     baseUrl: "http://localhost:3000/admin/v1",
     headers: {
       Authorization: `Bearer ${process.env.NEXT_PUBLIC_LIGHT_ADMIN_TOKEN}`,
@@ -35,20 +44,20 @@ const localAdminApiClient: ReturnType<typeof createClient<paths>> =
     credentials: "include",
   });
 
-const publicApiClient: ReturnType<typeof createClient<paths>> =
-  createClient<paths>({
+const publicApiClient: ReturnType<typeof createClient<ApiPaths>> =
+  createClient<ApiPaths>({
     baseUrl: "https://api.light.so/v1",
     credentials: "include",
   });
 
-const authenticatedApiClient: ReturnType<typeof createClient<paths>> =
-  createClient<paths>({
+const authenticatedApiClient: ReturnType<typeof createClient<ApiPaths>> =
+  createClient<ApiPaths>({
     baseUrl: "https://api.light.so/authenticated/v1",
     credentials: "include",
   });
 
-const adminApiClient: ReturnType<typeof createClient<paths>> =
-  createClient<paths>({
+const adminApiClient: ReturnType<typeof createClient<ApiPaths>> =
+  createClient<ApiPaths>({
     baseUrl: "https://api.light.so/admin/v1",
     headers: {
       Authorization: `Bearer ${process.env.LIGHT_ADMIN_TOKEN}`,
@@ -58,7 +67,7 @@ const adminApiClient: ReturnType<typeof createClient<paths>> =
 
 export const getClient: (
   clientType?: "admin" | "authenticated" | "public",
-) => ReturnType<typeof createClient<paths>> = clientType =>
+) => ReturnType<typeof createClient<ApiPaths>> = clientType =>
   clientType === "public"
     ? publicApiClient
     : process.env.LOCAL_ENV === "dev" ||

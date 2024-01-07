@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+pub(crate) mod create;
 pub(crate) mod error;
 pub(crate) mod get;
 pub(crate) mod list;
-pub(crate) mod post;
 pub(crate) mod types;
 
 use crate::state::AppState;
@@ -26,9 +26,9 @@ use axum::{
     Router,
 };
 
+pub(crate) use create::{__path_v1_signature_create_handler, v1_signature_create_handler};
 pub(crate) use get::{__path_v1_signature_get_handler, v1_signature_get_handler};
 pub(crate) use list::{__path_v1_signature_list_handler, v1_signature_list_handler};
-pub(crate) use post::{__path_v1_signature_post_handler, v1_signature_post_handler};
 
 // -----------------------------------------------------------------------------
 // Router
@@ -37,7 +37,7 @@ pub(crate) use post::{__path_v1_signature_post_handler, v1_signature_post_handle
 #[autometrics]
 pub(crate) fn router() -> Router<AppState> {
     Router::new()
+        .route("/signature/create", post(v1_signature_create_handler))
         .route("/signature/get", get(v1_signature_get_handler))
         .route("/signature/list", get(v1_signature_list_handler))
-        .route("/signature/create", post(v1_signature_post_handler))
 }

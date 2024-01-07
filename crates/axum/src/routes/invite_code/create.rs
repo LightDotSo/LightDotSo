@@ -41,7 +41,7 @@ use tower_sessions_core::Session;
         )
     )]
 #[autometrics]
-pub(crate) async fn v1_invite_code_post_handler(
+pub(crate) async fn v1_invite_code_create_handler(
     State(state): State<AppState>,
     mut session: Session,
 ) -> AppJsonResult<InviteCode> {
