@@ -493,6 +493,9 @@ model Simulation {
   // One-to-one
   // ---------------------------------------------------------------------------
 
+  activity   Activity? @relation(fields: [activityId], references: [id])
+  activityId String?   @unique
+
   interpretation   Interpretation @relation(fields: [interpretationId], references: [id])
   interpretationId String         @unique
 
@@ -1501,6 +1504,7 @@ model Activity {
   entity    ActivityEntity
   operation ActivityOperation
   log       Json
+  key       String?
 
   // ---------------------------------------------------------------------------
   // Relations None-to-many
@@ -1531,8 +1535,9 @@ model Activity {
 
   feedback      Feedback?
   notification  Notification?
-  userOperation UserOperation?
+  simulation    Simulation?
   transaction   Transaction?
+  userOperation UserOperation?
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1560,8 +1565,9 @@ enum ActivityEntity {
 
   FEEDBACK
   NOTIFICATION
-  USER_OPERATION
+  SIMULATION
   TRANSACTION
+  USER_OPERATION
 }
 
 enum ActivityOperation {
