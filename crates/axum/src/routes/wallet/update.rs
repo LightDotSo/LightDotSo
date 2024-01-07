@@ -185,8 +185,8 @@ pub(crate) async fn v1_wallet_update_handler(
             operation: ActivityOperation::Update,
             log: serde_json::to_value(&wallet)?,
             params: CustomParams {
-                wallet_address: Some(wallet.address.clone()),
                 user_id: Some(user_id),
+                wallet_address: Some(wallet.address.clone()),
                 ..Default::default()
             },
         },

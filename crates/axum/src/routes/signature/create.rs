@@ -165,7 +165,7 @@ pub(crate) async fn v1_signature_create_handler(
         state.producer.clone(),
         ActivityEntity::Signature,
         &ActivityMessage {
-            operation: ActivityOperation::Update,
+            operation: ActivityOperation::Create,
             log: serde_json::to_value(&signature)?,
             params: CustomParams {
                 signature_id: Some(signature.id.clone()),

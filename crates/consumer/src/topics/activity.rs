@@ -32,15 +32,17 @@ pub trait FromStrExt: Sized {
 impl FromStrExt for ActivityEntity {
     fn from_str_ext(s: &str) -> Result<Self> {
         match s {
-            "WALLET" => Ok(Self::Wallet),
             "USER" => Ok(Self::User),
+            "WALLET" => Ok(Self::Wallet),
             "INVITE_CODE" => Ok(Self::InviteCode),
             "SUPPORT_REQUEST" => Ok(Self::SupportRequest),
             "WALLET_SETTINGS" => Ok(Self::WalletSettings),
             "FEEDBACK" => Ok(Self::Feedback),
             "NOTIFICATION" => Ok(Self::Notification),
-            "USER_OPERATION" => Ok(Self::UserOperation),
+            "SIGNATURE" => Ok(Self::Signature),
+            "SIMULATION" => Ok(Self::Simulation),
             "TRANSACTION" => Ok(Self::Transaction),
+            "USER_OPERATION" => Ok(Self::UserOperation),
             _ => Err(eyre!("no match for input string")),
         }
     }

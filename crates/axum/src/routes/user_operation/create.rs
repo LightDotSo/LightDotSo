@@ -18,6 +18,7 @@
 use super::types::UserOperation;
 use crate::{
     result::{AppError, AppJsonResult},
+    sessions::get_user_id,
     state::AppState,
 };
 use autometrics::autometrics;
@@ -61,6 +62,7 @@ use prisma_client_rust::{
 };
 use rundler_types::UserOperation as RundlerUserOperation;
 use serde::{Deserialize, Serialize};
+use tower_sessions_core::Session;
 use utoipa::{IntoParams, ToSchema};
 
 // -----------------------------------------------------------------------------
@@ -165,6 +167,7 @@ pub(crate) struct UserOperationCreateSignature {
 pub(crate) async fn v1_user_operation_create_handler(
     post_query: Query<PostQuery>,
     State(state): State<AppState>,
+    mut session: Session,
     Json(params): Json<UserOperationPostRequestParams>,
 ) -> AppJsonResult<UserOperation> {
     // -------------------------------------------------------------------------
@@ -221,6 +224,14 @@ pub(crate) async fn v1_user_operation_create_handler(
 
     let recovered_sig = recover_ecdsa_signature(&sig_bytes, &subdigest, 0)?;
     info!(?recovered_sig);
+
+    // -------------------------------------------------------------------------
+    // Session
+    // -------------------------------------------------------------------------
+
+    // Get the userid from the session.
+    let user_id = get_user_id(&mut session)?;
+    info!(?user_id);
 
     // -------------------------------------------------------------------------
     // DB
@@ -400,8 +411,9 @@ pub(crate) async fn v1_user_operation_create_handler(
             operation: ActivityOperation::Create,
             log: serde_json::to_value(&user_operation)?,
             params: CustomParams {
-                wallet_address: Some(wallet.address.clone()),
                 user_operation_hash: Some(user_operation.hash.clone()),
+                user_id: Some(user_id.clone()),
+                wallet_address: Some(wallet.address.clone()),
                 ..Default::default()
             },
         },
