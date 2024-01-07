@@ -95,7 +95,7 @@ export const Root: FC<RootProps> = ({ children }) => {
                         <span className="ml-2 mr-1 text-text/60">/</span>
                         <WalletSwitcher />
                       </div>
-                      <div className="hidden md:flex ml-auto items-center space-x-2.5">
+                      <div className="ml-auto hidden items-center space-x-2.5 md:flex">
                         {/* <Search /> */}
                         <Suspense>
                           <ChainPopover />
