@@ -36,6 +36,9 @@ use utoipa::IntoParams;
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct GetQuery {
+    /// The owner of the signature.
+    pub owner_id: String,
+    /// The hash of the user operation.
     pub user_operation_hash: String,
 }
 
@@ -69,6 +72,7 @@ pub(crate) async fn v1_signature_get_handler(
 
     info!("Get signature for address: {:?}", query);
 
+    let owner_id = query.owner_id;
     let user_operation_hash = query.user_operation_hash;
 
     // -------------------------------------------------------------------------
@@ -79,7 +83,7 @@ pub(crate) async fn v1_signature_get_handler(
     let signature = state
         .client
         .signature()
-        .find_unique(signature::user_operation_hash::equals(user_operation_hash))
+        .find_unique(signature::owner_id_user_operation_hash(owner_id, user_operation_hash))
         .with(signature::owner::fetch())
         .exec()
         .await?;
