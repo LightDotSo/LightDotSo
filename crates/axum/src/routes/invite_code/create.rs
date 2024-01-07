@@ -24,6 +24,11 @@ use crate::{
 };
 use autometrics::autometrics;
 use axum::{extract::State, Json};
+use lightdotso_db::models::activity::CustomParams;
+use lightdotso_kafka::{
+    topics::activity::produce_activity_message, types::activity::ActivityMessage,
+};
+use lightdotso_prisma::{ActivityEntity, ActivityOperation};
 use lightdotso_tracing::tracing::info;
 use tower_sessions_core::Session;
 
@@ -77,10 +82,30 @@ pub(crate) async fn v1_invite_code_create_handler(
     let invite_code = state
         .client
         .invite_code()
-        .create(code, lightdotso_prisma::user::id::equals(auth_user_id), vec![])
+        .create(code, lightdotso_prisma::user::id::equals(auth_user_id.clone()), vec![])
         .exec()
         .await?;
     info!(?invite_code);
+
+    // -------------------------------------------------------------------------
+    // Kafka
+    // -------------------------------------------------------------------------
+
+    // Produce an activity message.
+    produce_activity_message(
+        state.producer.clone(),
+        ActivityEntity::InviteCode,
+        &ActivityMessage {
+            operation: ActivityOperation::Create,
+            log: serde_json::to_value(&invite_code)?,
+            params: CustomParams {
+                invite_code_id: Some(invite_code.id.clone()),
+                user_id: Some(auth_user_id),
+                ..Default::default()
+            },
+        },
+    )
+    .await?;
 
     // -------------------------------------------------------------------------
     // Return

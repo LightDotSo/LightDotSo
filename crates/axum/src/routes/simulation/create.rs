@@ -57,5 +57,25 @@ pub(crate) async fn v1_simulation_create_handler(
     // let simulation = state.client.simulation().create(vec![], vec![]).exec().await?;
     // info!(?simulation);
 
+    // -------------------------------------------------------------------------
+    // Kafka
+    // -------------------------------------------------------------------------
+
+    // Produce an activity message.
+    produce_activity_message(
+        state.producer.clone(),
+        ActivityEntity::InviteCode,
+        &ActivityMessage {
+            operation: ActivityOperation::Update,
+            log: serde_json::to_value(&invite_code)?,
+            params: CustomParams {
+                wallet_address: Some(wallet.address.clone()),
+                invite_code_id: Some(invite_code.id.clone()),
+                ..Default::default()
+            },
+        },
+    )
+    .await?;
+
     Ok(Json::from(1))
 }

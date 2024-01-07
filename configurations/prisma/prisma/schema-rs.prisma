@@ -493,11 +493,15 @@ model Simulation {
   // One-to-one
   // ---------------------------------------------------------------------------
 
-  activity   Activity? @relation(fields: [activityId], references: [id])
-  activityId String?   @unique
-
   interpretation   Interpretation @relation(fields: [interpretationId], references: [id])
   interpretationId String         @unique
+
+  // ---------------------------------------------------------------------------
+  // None-to-one
+  // ---------------------------------------------------------------------------
+
+  activity   Activity? @relation(fields: [activityId], references: [id])
+  activityId String?   @unique
 
   // ---------------------------------------------------------------------------
   // One-to-many
@@ -1137,6 +1141,13 @@ model Signature {
   userOperationHash String        @unique
 
   // ---------------------------------------------------------------------------
+  // None-to-one
+  // ---------------------------------------------------------------------------
+
+  activity   Activity? @relation(fields: [activityId], references: [id])
+  activityId String?   @unique
+
+  // ---------------------------------------------------------------------------
   // One-to-many
   // ---------------------------------------------------------------------------
 
@@ -1535,6 +1546,7 @@ model Activity {
 
   feedback      Feedback?
   notification  Notification?
+  signature     Signature?
   simulation    Simulation?
   transaction   Transaction?
   userOperation UserOperation?

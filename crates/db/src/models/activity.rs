@@ -17,8 +17,8 @@ use crate::types::{AppJsonResult, Database};
 use autometrics::autometrics;
 use axum::extract::Json;
 use lightdotso_prisma::{
-    activity, feedback, notification, transaction, user_operation, ActivityEntity,
-    ActivityOperation,
+    activity, feedback, notification, signature, simulation, transaction, user_operation,
+    ActivityEntity, ActivityOperation,
 };
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
@@ -32,9 +32,11 @@ pub struct CustomParams {
     pub support_request_id: Option<String>,
     pub wallet_settings_id: Option<String>,
     pub feedback_id: Option<String>,
+    pub signature_id: Option<String>,
+    pub simulation_id: Option<String>,
     pub notification_id: Option<String>,
-    pub user_operation_hash: Option<String>,
     pub transaction_hash: Option<String>,
+    pub user_operation_hash: Option<String>,
 }
 
 /// Create activity with user and wallet w/ optional custom params
@@ -79,14 +81,22 @@ pub async fn create_activity_with_user_and_wallet(
         params.push(activity::notification::connect(notification::id::equals(notification_id)));
     }
 
-    if let Some(user_operation_hash) = custom_params.user_operation_hash {
-        params.push(activity::user_operation::connect(user_operation::hash::equals(
-            user_operation_hash,
-        )));
+    if let Some(signature_id) = custom_params.signature_id {
+        params.push(activity::signature::connect(signature::id::equals(signature_id)));
+    }
+
+    if let Some(simulation_id) = custom_params.simulation_id {
+        params.push(activity::simulation::connect(simulation::id::equals(simulation_id)));
     }
 
     if let Some(transaction_hash) = custom_params.transaction_hash {
         params.push(activity::transaction::connect(transaction::hash::equals(transaction_hash)));
+    }
+
+    if let Some(user_operation_hash) = custom_params.user_operation_hash {
+        params.push(activity::user_operation::connect(user_operation::hash::equals(
+            user_operation_hash,
+        )));
     }
 
     let activity = db.activity().create(entity, operation, log, params).exec().await?;
