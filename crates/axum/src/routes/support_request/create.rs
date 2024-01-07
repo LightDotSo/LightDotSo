@@ -14,15 +14,21 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use super::types::SupportRequest;
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{result::AppJsonResult, sessions::get_user_id, state::AppState};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
 use ethers_main::{types::H160, utils::to_checksum};
+use lightdotso_db::models::activity::CustomParams;
+use lightdotso_kafka::{
+    topics::activity::produce_activity_message, types::activity::ActivityMessage,
+};
+use lightdotso_prisma::{ActivityEntity, ActivityOperation};
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
+use tower_sessions_core::Session;
 use utoipa::{IntoParams, ToSchema};
 
 // -----------------------------------------------------------------------------
@@ -65,6 +71,7 @@ pub struct SupportRequestPostRequestParams {
 pub(crate) async fn v1_support_request_create_handler(
     post_query: Query<PostQuery>,
     State(state): State<AppState>,
+    mut session: Session,
     Json(params): Json<SupportRequestPostRequestParams>,
 ) -> AppJsonResult<SupportRequest> {
     // -------------------------------------------------------------------------
@@ -79,6 +86,14 @@ pub(crate) async fn v1_support_request_create_handler(
 
     // Get the support_request from the post body.
     let support_request = params.support_request;
+
+    // -------------------------------------------------------------------------
+    // Session
+    // -------------------------------------------------------------------------
+
+    // Get the userid from the session.
+    let user_id = get_user_id(&mut session)?;
+    info!(?user_id);
 
     // -------------------------------------------------------------------------
     // DB
@@ -99,6 +114,26 @@ pub(crate) async fn v1_support_request_create_handler(
         .exec()
         .await?;
     info!(?support_request);
+
+    // -------------------------------------------------------------------------
+    // Kafka
+    // -------------------------------------------------------------------------
+
+    // Produce an activity message.
+    produce_activity_message(
+        state.producer.clone(),
+        ActivityEntity::SupportRequest,
+        &ActivityMessage {
+            operation: ActivityOperation::Create,
+            log: serde_json::to_value(&support_request)?,
+            params: CustomParams {
+                support_request_id: Some(support_request.id.clone()),
+                wallet_address: Some(to_checksum(&wallet_address, None)),
+                ..Default::default()
+            },
+        },
+    )
+    .await?;
 
     // -------------------------------------------------------------------------
     // Return

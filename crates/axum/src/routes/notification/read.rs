@@ -13,11 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{result::AppJsonResult, sessions::get_user_id, state::AppState};
 use autometrics::autometrics;
 use axum::{extract::State, Json};
+use lightdotso_db::models::activity::CustomParams;
+use lightdotso_kafka::{
+    topics::activity::produce_activity_message, types::activity::ActivityMessage,
+};
+use lightdotso_prisma::{ActivityEntity, ActivityOperation};
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
+use tower_sessions_core::Session;
 use utoipa::ToSchema;
 
 // -----------------------------------------------------------------------------
@@ -56,13 +62,29 @@ pub(crate) struct NotificationPostRequest {
 #[autometrics]
 pub(crate) async fn v1_notification_read_handler(
     State(state): State<AppState>,
+    mut session: Session,
     Json(params): Json<NotificationPostRequestParams>,
 ) -> AppJsonResult<i64> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the notification from the post body.
     let notifications = params.notifications;
 
-    // Create the notification the database.
-    let notifications = state
+    // -------------------------------------------------------------------------
+    // Session
+    // -------------------------------------------------------------------------
+
+    // Get the userid from the session.
+    let user_id = get_user_id(&mut session)?;
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
+    // Update the notification the database.
+    let notifications_count = state
         .client
         .notification()
         .update_many(
@@ -73,7 +95,29 @@ pub(crate) async fn v1_notification_read_handler(
         )
         .exec()
         .await?;
-    info!(?notifications);
+    info!(?notifications_count);
 
-    Ok(Json::from(notifications))
+    // -------------------------------------------------------------------------
+    // Kafka
+    // -------------------------------------------------------------------------
+
+    for notification in notifications {
+        // Produce an activity message.
+        produce_activity_message(
+            state.producer.clone(),
+            ActivityEntity::Notification,
+            &ActivityMessage {
+                operation: ActivityOperation::Update,
+                log: serde_json::to_value(&notification)?,
+                params: CustomParams {
+                    notification_id: Some(notification.id.clone()),
+                    user_id: Some(user_id.clone()),
+                    ..Default::default()
+                },
+            },
+        )
+        .await?;
+    }
+
+    Ok(Json::from(notifications_count))
 }

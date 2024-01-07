@@ -14,14 +14,23 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use super::types::Signature;
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{
+    error::RouteError, result::AppJsonResult, routes::signature::error::SignatureError,
+    state::AppState,
+};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
 use lightdotso_common::traits::HexToBytes;
-use lightdotso_prisma::{owner, user_operation, SignatureProcedure};
+use lightdotso_db::models::activity::CustomParams;
+use lightdotso_kafka::{
+    topics::activity::produce_activity_message, types::activity::ActivityMessage,
+};
+use lightdotso_prisma::{
+    owner, user_operation, ActivityEntity, ActivityOperation, SignatureProcedure,
+};
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
@@ -120,13 +129,52 @@ pub(crate) async fn v1_signature_create_handler(
             sig.signature.hex_to_bytes()?,
             sig.signature_type,
             procedure,
-            user_operation::hash::equals(user_operation_hash),
+            user_operation::hash::equals(user_operation_hash.clone()),
             owner::id::equals(sig.owner_id),
             vec![],
         )
         .exec()
         .await?;
     info!(?signature);
+
+    // Get the user operation from the database.
+    let user_operation = state
+        .client
+        .user_operation()
+        .find_unique(user_operation::hash::equals(user_operation_hash))
+        .with(user_operation::wallet::fetch())
+        .exec()
+        .await?;
+
+    // If the user operation is not found, return a 404.
+    let user_operation = user_operation.ok_or(RouteError::SignatureError(
+        SignatureError::NotFound("User operation not found".to_string()),
+    ))?;
+
+    // Get the wallet from the database.
+    let wallet = user_operation.clone().wallet.ok_or(RouteError::SignatureError(
+        SignatureError::NotFound("Wallet not found".to_string()),
+    ))?;
+
+    // -------------------------------------------------------------------------
+    // Kafka
+    // -------------------------------------------------------------------------
+
+    // Produce an activity message.
+    produce_activity_message(
+        state.producer.clone(),
+        ActivityEntity::Signature,
+        &ActivityMessage {
+            operation: ActivityOperation::Update,
+            log: serde_json::to_value(&signature)?,
+            params: CustomParams {
+                signature_id: Some(signature.id.clone()),
+                wallet_address: Some(wallet.address.clone()),
+                ..Default::default()
+            },
+        },
+    )
+    .await?;
 
     // -------------------------------------------------------------------------
     // Return

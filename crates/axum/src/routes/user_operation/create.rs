@@ -36,6 +36,10 @@ use lightdotso_contracts::{
     // constants::{ENTRYPOINT_V060_ADDRESS, LIGHT_PAYMASTER_ADDRESSES},
     paymaster::decode_paymaster_and_data,
 };
+use lightdotso_db::models::activity::CustomParams;
+use lightdotso_kafka::{
+    topics::activity::produce_activity_message, types::activity::ActivityMessage,
+};
 use lightdotso_prisma::{
     configuration,
     // log,
@@ -45,6 +49,8 @@ use lightdotso_prisma::{
     // receipt,
     user_operation,
     wallet,
+    ActivityEntity,
+    ActivityOperation,
     SignatureProcedure,
 };
 use lightdotso_solutions::{signature::recover_ecdsa_signature, utils::render_subdigest};
@@ -381,6 +387,26 @@ pub(crate) async fn v1_user_operation_create_handler(
     // If the user_operation is not created, return a 500.
     let user_operation = user_operation.map_err(|_| AppError::InternalError)?;
     info!(?user_operation);
+
+    // -------------------------------------------------------------------------
+    // Kafka
+    // -------------------------------------------------------------------------
+
+    // Produce an activity message.
+    produce_activity_message(
+        state.producer.clone(),
+        ActivityEntity::UserOperation,
+        &ActivityMessage {
+            operation: ActivityOperation::Create,
+            log: serde_json::to_value(&user_operation)?,
+            params: CustomParams {
+                wallet_address: Some(wallet.address.clone()),
+                user_operation_hash: Some(user_operation.hash.clone()),
+                ..Default::default()
+            },
+        },
+    )
+    .await?;
 
     // -------------------------------------------------------------------------
     // Return

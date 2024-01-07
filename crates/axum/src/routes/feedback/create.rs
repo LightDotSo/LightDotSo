@@ -14,27 +14,18 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use super::types::Feedback;
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{result::AppJsonResult, sessions::get_user_id, state::AppState};
 use autometrics::autometrics;
-use axum::{
-    extract::{Query, State},
-    Json,
+use axum::{extract::State, Json};
+use lightdotso_db::models::activity::CustomParams;
+use lightdotso_kafka::{
+    topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
+use lightdotso_prisma::{ActivityEntity, ActivityOperation};
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
-use utoipa::{IntoParams, ToSchema};
-
-// -----------------------------------------------------------------------------
-// Query
-// -----------------------------------------------------------------------------
-
-#[derive(Debug, Deserialize, Default, IntoParams)]
-#[serde(rename_all = "snake_case")]
-#[into_params(parameter_in = Query)]
-pub struct PostQuery {
-    /// The id of the user to query.
-    pub user_id: String,
-}
+use tower_sessions_core::Session;
+use utoipa::ToSchema;
 
 // -----------------------------------------------------------------------------
 // Params
@@ -55,9 +46,6 @@ pub struct FeedbackPostRequestParams {
 #[utoipa::path(
         post,
         path = "/feedback/create",
-        params(
-            PostQuery
-        ),
         request_body = FeedbackPostRequestParams,
         responses(
             (status = 200, description = "Feedback created successfully", body = Feedback),
@@ -66,22 +54,24 @@ pub struct FeedbackPostRequestParams {
     )]
 #[autometrics]
 pub(crate) async fn v1_feedback_create_handler(
-    post_query: Query<PostQuery>,
     State(state): State<AppState>,
+    mut session: Session,
     Json(params): Json<FeedbackPostRequestParams>,
 ) -> AppJsonResult<Feedback> {
     // -------------------------------------------------------------------------
     // Parse
     // -------------------------------------------------------------------------
 
-    // Get the post query.
-    let Query(query) = post_query;
-
-    // Get the user id from the post query.
-    let user_id = query.user_id;
-
     // Get the feedback from the post body.
     let feedback = params.feedback;
+
+    // -------------------------------------------------------------------------
+    // Session
+    // -------------------------------------------------------------------------
+
+    // Get the userid from the session.
+    let user_id = get_user_id(&mut session)?;
+    info!(?user_id);
 
     // -------------------------------------------------------------------------
     // DB
@@ -91,10 +81,35 @@ pub(crate) async fn v1_feedback_create_handler(
     let feedback = state
         .client
         .feedback()
-        .create(feedback.text, feedback.emoji, lightdotso_prisma::user::id::equals(user_id), vec![])
+        .create(
+            feedback.text,
+            feedback.emoji,
+            lightdotso_prisma::user::id::equals(user_id.clone()),
+            vec![],
+        )
         .exec()
         .await?;
     info!(?feedback);
+
+    // -------------------------------------------------------------------------
+    // Kafka
+    // -------------------------------------------------------------------------
+
+    // Produce an activity message.
+    produce_activity_message(
+        state.producer.clone(),
+        ActivityEntity::Feedback,
+        &ActivityMessage {
+            operation: ActivityOperation::Create,
+            log: serde_json::to_value(&feedback)?,
+            params: CustomParams {
+                feedback_id: Some(feedback.id.clone()),
+                user_id: Some(user_id),
+                ..Default::default()
+            },
+        },
+    )
+    .await?;
 
     // -------------------------------------------------------------------------
     // Return

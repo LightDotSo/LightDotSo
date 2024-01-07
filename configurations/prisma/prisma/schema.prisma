@@ -516,6 +516,13 @@ model Simulation {
   interpretationId String         @unique
 
   // ---------------------------------------------------------------------------
+  // None-to-one
+  // ---------------------------------------------------------------------------
+
+  activity   Activity? @relation(fields: [activityId], references: [id])
+  activityId String?   @unique
+
+  // ---------------------------------------------------------------------------
   // One-to-many
   // ---------------------------------------------------------------------------
 
@@ -1153,6 +1160,13 @@ model Signature {
   userOperationHash String        @unique
 
   // ---------------------------------------------------------------------------
+  // None-to-one
+  // ---------------------------------------------------------------------------
+
+  activity   Activity? @relation(fields: [activityId], references: [id])
+  activityId String?   @unique
+
+  // ---------------------------------------------------------------------------
   // One-to-many
   // ---------------------------------------------------------------------------
 
@@ -1520,6 +1534,7 @@ model Activity {
   entity    ActivityEntity
   operation ActivityOperation
   log       Json
+  key       String?
 
   // ---------------------------------------------------------------------------
   // Relations None-to-many
@@ -1550,8 +1565,10 @@ model Activity {
 
   feedback      Feedback?
   notification  Notification?
-  userOperation UserOperation?
+  signature     Signature?
+  simulation    Simulation?
   transaction   Transaction?
+  userOperation UserOperation?
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1579,8 +1596,10 @@ enum ActivityEntity {
 
   FEEDBACK
   NOTIFICATION
-  USER_OPERATION
+  SIGNATURE
+  SIMULATION
   TRANSACTION
+  USER_OPERATION
 }
 
 enum ActivityOperation {

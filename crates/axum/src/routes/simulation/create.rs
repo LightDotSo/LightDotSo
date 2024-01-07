@@ -16,6 +16,11 @@
 use crate::{result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{extract::State, Json};
+use lightdotso_db::models::activity::CustomParams;
+use lightdotso_kafka::{
+    topics::activity::produce_activity_message, types::activity::ActivityMessage,
+};
+use lightdotso_prisma::{ActivityEntity, ActivityOperation};
 // use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
@@ -47,15 +52,43 @@ pub(crate) struct SimulationCreateRequestParams {
     )]
 #[autometrics]
 pub(crate) async fn v1_simulation_create_handler(
-    State(_state): State<AppState>,
+    State(state): State<AppState>,
     Json(params): Json<SimulationCreateRequestParams>,
 ) -> AppJsonResult<i64> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
     // Get the simulation from the post body.
-    let _simulation = params.id;
+    let simulation = params.id;
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // Create the simulation the database.
     // let simulation = state.client.simulation().create(vec![], vec![]).exec().await?;
     // info!(?simulation);
+
+    // -------------------------------------------------------------------------
+    // Kafka
+    // -------------------------------------------------------------------------
+
+    // Produce an activity message.
+    produce_activity_message(
+        state.producer.clone(),
+        ActivityEntity::Simulation,
+        &ActivityMessage {
+            operation: ActivityOperation::Create,
+            log: serde_json::to_value(&simulation)?,
+            params: CustomParams {
+                // wallet_address: Some(wallet.address.clone()),
+                // invite_code_id: Some(invite_code.id.clone()),
+                ..Default::default()
+            },
+        },
+    )
+    .await?;
 
     Ok(Json::from(1))
 }
