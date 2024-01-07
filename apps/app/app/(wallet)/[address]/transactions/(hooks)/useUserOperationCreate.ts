@@ -132,7 +132,9 @@ export const useUserOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   const owner = useMemo(() => {
-    if (!userAddress) return;
+    if (!userAddress) {
+      return;
+    }
 
     return owners?.find(owner =>
       isAddressEqual(owner.address as Address, userAddress),
@@ -237,6 +239,8 @@ export const useUserOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   return {
+    isLoading,
+    isCreatable: typeof owner !== "undefined",
     decodedCallData,
     decodedInitCode,
     paymasterHash,

@@ -215,7 +215,7 @@ export const OTP = ({
       setInputs(Array<string>(length).fill(""));
       setActiveInputIndex(0);
     }
-  }, []);
+  }, [defaultValue, length]);
 
   return (
     <div className={cn("flex space-x-3", className)}>
