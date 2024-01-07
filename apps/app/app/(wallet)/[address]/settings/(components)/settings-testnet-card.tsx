@@ -121,10 +121,14 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   }
 
   // ---------------------------------------------------------------------------
-  // Effect Hooks
+  // Hooks
   // ---------------------------------------------------------------------------
 
   const delayedIsSuccess = useDelayedValue<boolean>(isSuccess, false, 3000);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   useEffect(() => {
     if (delayedIsSuccess) {

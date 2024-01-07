@@ -100,7 +100,7 @@ type MainNavProps = HTMLAttributes<HTMLElement>;
 
 export const MainNav: FC<MainNavProps> = ({ className = "", ...props }) => {
   // ---------------------------------------------------------------------------
-  // State Hooks
+  // Hooks
   // ---------------------------------------------------------------------------
 
   const type = usePathType();

@@ -42,7 +42,7 @@ import {
   StackIcon,
 } from "@radix-ui/react-icons";
 import { usePathname, useRouter } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import type { UIEvent, FC, ComponentPropsWithoutRef } from "react";
 import { getAddress, isAddress } from "viem";
 import type { Address } from "viem";
@@ -117,11 +117,19 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
 
   const { address } = useAuth();
 
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
   const { wallets, isLoading } = useSuspenseQueryWallets({
     address: address as Address,
     limit: Number.MAX_SAFE_INTEGER,
     offset: 0,
   });
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   useEffect(() => {
     if (wallets && pathname && pathname.split("/").length > 1) {
@@ -155,10 +163,14 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
     }
   }, [wallets, address, pathname]);
 
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
   // From: https://github.com/fiveoutofnine/www/blob/a04dd54f76f57c145155dce96744d003f0d3de5e/components/pages/home/featured-works/works/colormap-registry.tsx#L64
   // License: MIT
   // Thank you @fiveoutofnine
-  const handleScroll = (event: UIEvent<HTMLDivElement>) => {
+  const handleScroll = useCallback((event: UIEvent<HTMLDivElement>) => {
     const target = event.target as HTMLDivElement;
     const scrollTop = target.scrollTop;
     // const scrollHeight = target.scrollHeight;
@@ -166,7 +178,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
 
     setScrollIsAtTop(scrollTop < 10);
     // setScrollIsAtBottom(scrollHeight - scrollTop === clientHeight);
-  };
+  }, []);
 
   // ---------------------------------------------------------------------------
   // Render

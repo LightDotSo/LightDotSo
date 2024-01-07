@@ -68,17 +68,17 @@ type SettingsNameCardProps = {
 
 export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
-  // Staet Hooks
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const { isAuthValid, openAuthModal } = useAuthModal();
+
+  // ---------------------------------------------------------------------------
+  // State Hooks
   // ---------------------------------------------------------------------------
 
   const [isFormChanged, setIsFormChanged] = useState(false);
   const [key, setKey] = useState(Math.random());
-
-  // ---------------------------------------------------------------------------
-  // Operation Hooks
-  // ---------------------------------------------------------------------------
-
-  const { isAuthValid, openAuthModal } = useAuthModal();
 
   // ---------------------------------------------------------------------------
   // Query

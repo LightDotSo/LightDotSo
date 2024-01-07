@@ -39,7 +39,7 @@ export const TransactionCardExecuteButton: FC<
   TransactionCardExecuteButtonProps
 > = ({ address, config, userOperation }) => {
   // ---------------------------------------------------------------------------
-  // Operation Hooks
+  // App Hooks
   // ---------------------------------------------------------------------------
 
   const { handleConfirm } = useUserOperationSubmit({

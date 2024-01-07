@@ -41,7 +41,7 @@ import { useAuth } from "@/stores";
 
 export const UserNav: FC = () => {
   // ---------------------------------------------------------------------------
-  // State Hooks
+  // Hooks
   // ---------------------------------------------------------------------------
 
   const isMounted = useIsMounted();
