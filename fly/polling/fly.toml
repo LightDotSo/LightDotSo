@@ -14,6 +14,9 @@ kill_timeout = "5s"
 [build]
   image = "ghcr.io/lightdotso/lightdotso:latest"
 
+[deploy]
+  strategy = "canary"
+
 [http_service]
   internal_port = 0
   auto_stop_machines = true
@@ -29,6 +32,11 @@ kill_timeout = "5s"
   #     grace_period = "30s"
   #     method = "get"
   #     path = "/health"
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 1024
 
 [[metrics]]
   port = 9091
