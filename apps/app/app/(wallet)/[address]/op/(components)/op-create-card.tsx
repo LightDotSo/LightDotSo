@@ -15,32 +15,14 @@
 
 "use client";
 
-import { createUserOperation } from "@lightdotso/client";
-import { subdigestOf } from "@lightdotso/solutions";
 import { Button } from "@lightdotso/ui";
-import { useRouter } from "next/navigation";
-import { useEffect, useMemo } from "react";
 import type { FC } from "react";
-import type { Address, Hex } from "viem";
-import {
-  isAddressEqual,
-  toBytes,
-  hexToBytes,
-  toHex,
-  fromHex,
-  decodeFunctionData,
-} from "viem";
-import { useSignMessage } from "wagmi";
+import type { Address } from "viem";
+import { useUserOperationCreate } from "@/app/(wallet)/[address]/transactions/(hooks)/useUserOperationCreate";
 import type { ConfigurationData } from "@/data";
-import { useAuth, useDev } from "@/stores";
+import { useDev } from "@/stores";
 import type { UserOperation } from "@/types";
-import { errorToast, serializeBigInt, successToast } from "@/utils";
-import {
-  lightWalletABI,
-  lightWalletFactoryABI,
-  useLightVerifyingPaymasterGetHash,
-  useLightVerifyingPaymasterSenderNonce,
-} from "@/wagmi";
+import { serializeBigInt } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -58,172 +40,89 @@ type OpCreateCardProps = {
 
 export const OpCreateCard: FC<OpCreateCardProps> = ({
   address,
-  config: { owners, threshold },
+  config,
   userOperation,
 }) => {
-  // ---------------------------------------------------------------------------
-  // Next Hooks
-  // ---------------------------------------------------------------------------
-
-  const router = useRouter();
-
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address: userAddress, clientType } = useAuth();
   const { isDev } = useDev();
 
   // ---------------------------------------------------------------------------
-  // Local Variables
+  // App Hooks
   // ---------------------------------------------------------------------------
 
-  const subdigest = subdigestOf(
-    address,
-    hexToBytes(userOperation.hash as Hex),
-    userOperation.chainId,
-  );
-
-  // ---------------------------------------------------------------------------
-  // Wagmi Hooks
-  // ---------------------------------------------------------------------------
-
-  const { data, signMessage } = useSignMessage({
-    message: { raw: toBytes(subdigest) },
-  });
-
-  const { data: paymasterNonce } = useLightVerifyingPaymasterSenderNonce({
-    address: userOperation.paymasterAndData.slice(0, 42) as Address,
-    chainId: Number(userOperation.chainId),
-    args: [userOperation.sender as Address],
-  });
-
-  const { data: paymasterHash } = useLightVerifyingPaymasterGetHash({
-    address: userOperation.paymasterAndData.slice(0, 42) as Address,
-    chainId: Number(userOperation.chainId),
-    args: [
-      {
-        sender: userOperation.sender as Address,
-        nonce: userOperation.nonce,
-        initCode: userOperation.initCode as Hex,
-        callData: userOperation.callData as Hex,
-        callGasLimit: userOperation.callGasLimit,
-        verificationGasLimit: userOperation.verificationGasLimit,
-        preVerificationGas: userOperation.preVerificationGas,
-        maxFeePerGas: userOperation.maxFeePerGas,
-        maxPriorityFeePerGas: userOperation.maxPriorityFeePerGas,
-        paymasterAndData: userOperation.paymasterAndData as Hex,
-        signature: toHex(new Uint8Array([2])),
-      },
-      fromHex(`0x${userOperation.paymasterAndData.slice(154, 162)}`, "number"),
-      fromHex(`0x${userOperation.paymasterAndData.slice(162, 170)}`, "number"),
-    ],
+  const {
+    isLoading,
+    isCreatable,
+    signMessage,
+    decodedCallData,
+    decodedInitCode,
+    paymasterHash,
+    paymasterNonce,
+    subdigest,
+  } = useUserOperationCreate({
+    address: address,
+    userOperation: userOperation,
+    config: config,
   });
 
   // ---------------------------------------------------------------------------
-  // Memoized Hooks
+  // Dev Component
   // ---------------------------------------------------------------------------
 
-  const owner = useMemo(() => {
-    if (!userAddress) return;
-
-    return owners?.find(owner =>
-      isAddressEqual(owner.address as Address, userAddress),
+  const Dev = () => {
+    return (
+      <div className="grid gap-4 py-4">
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code>
+            userOperation: {userOperation && serializeBigInt(userOperation)}
+          </code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">
+            chainId: {Number(userOperation.chainId)}
+          </code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">
+            decodedInitCode:{" "}
+            {decodedInitCode && serializeBigInt(decodedInitCode)}
+          </code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">
+            decodedCallData:{" "}
+            {decodedCallData && serializeBigInt(decodedCallData)}
+          </code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">
+            userOpHash: {userOperation.hash}
+          </code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">
+            paymasterNonce: {serializeBigInt(paymasterNonce)}
+          </code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">
+            paymasterHash: {paymasterHash}
+          </code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">subdigest: {subdigest}</code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">
+            owners: {config.owners && JSON.stringify(config.owners, null, 2)}
+          </code>
+        </pre>
+      </div>
     );
-  }, [owners, userAddress]);
-
-  const decodedInitCode = useMemo(() => {
-    // If the initCode is `0x`, return
-    if (userOperation.initCode === "0x") {
-      return;
-    }
-
-    // Parse the initCode of the userOperation
-    return decodeFunctionData({
-      abi: lightWalletFactoryABI,
-      data: `0x${userOperation.initCode.slice(42)}` as Hex,
-    }).args;
-  }, [userOperation.initCode]);
-
-  const decodedCallData = useMemo(() => {
-    // Parse the callData of tha args depending on the args type
-    switch (userOperation.callData.slice(0, 10)) {
-      // If the function selector is `execute` or `executeBatch`
-      case "0xb61d27f6":
-      case "0x47e1da2a":
-        return decodeFunctionData({
-          abi: lightWalletABI,
-          data: userOperation.callData as Hex,
-        }).args;
-      default:
-        return userOperation.callData;
-    }
-  }, [userOperation.callData]);
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
-
-  useEffect(() => {
-    const fetchUserOp = async () => {
-      if (!data || !owner || !userOperation) {
-        return;
-      }
-
-      const res = await createUserOperation(
-        {
-          params: {
-            query: {
-              chain_id: Number(userOperation.chainId),
-            },
-          },
-          body: {
-            signature: {
-              owner_id: owner.id,
-              signature: toHex(new Uint8Array([...toBytes(data), 2])),
-              signature_type: 1,
-            },
-            user_operation: {
-              chain_id: Number(userOperation.chainId),
-              hash: userOperation.hash,
-              nonce: Number(userOperation.nonce),
-              init_code: userOperation.initCode,
-              sender: userOperation.sender,
-              call_data: userOperation.callData,
-              call_gas_limit: Number(userOperation.callGasLimit),
-              verification_gas_limit: Number(
-                userOperation.verificationGasLimit,
-              ),
-              pre_verification_gas: Number(userOperation.preVerificationGas),
-              max_fee_per_gas: Number(userOperation.maxFeePerGas),
-              max_priority_fee_per_gas: Number(
-                userOperation.maxPriorityFeePerGas,
-              ),
-              paymaster_and_data: userOperation.paymasterAndData,
-            },
-          },
-        },
-        clientType,
-      );
-
-      res.match(
-        _ => {
-          successToast("You submitted the userOperation result");
-          if (threshold >= owner.weight) {
-            router.push(`/${address}/op/${userOperation.hash}`);
-          }
-        },
-        err => {
-          if (err instanceof Error) {
-            errorToast(err.message);
-          }
-        },
-      );
-    };
-
-    fetchUserOp();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, owner, userOperation, subdigest, threshold, address]);
+  };
 
   // ---------------------------------------------------------------------------
   // Render
@@ -231,57 +130,13 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
 
   return (
     <>
-      {isDev && (
-        <div className="grid gap-4 py-4">
-          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-            <code>
-              userOperation: {userOperation && serializeBigInt(userOperation)}
-            </code>
-          </pre>
-          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-            <code className="break-all text-text">
-              chainId: {Number(userOperation.chainId)}
-            </code>
-          </pre>
-          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-            <code className="break-all text-text">
-              decodedInitCode:{" "}
-              {decodedInitCode && serializeBigInt(decodedInitCode)}
-            </code>
-          </pre>
-          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-            <code className="break-all text-text">
-              decodedCallData:{" "}
-              {decodedCallData && serializeBigInt(decodedCallData)}
-            </code>
-          </pre>
-          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-            <code className="break-all text-text">
-              userOpHash: {userOperation.hash}
-            </code>
-          </pre>
-          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-            <code className="break-all text-text">
-              paymasterNonce: {serializeBigInt(paymasterNonce)}
-            </code>
-          </pre>
-          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-            <code className="break-all text-text">
-              paymasterHash: {paymasterHash}
-            </code>
-          </pre>
-          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-            <code className="break-all text-text">subdigest: {subdigest}</code>
-          </pre>
-          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-            <code className="break-all text-text">
-              owners: {owners && JSON.stringify(owners, null, 2)}
-            </code>
-          </pre>
-        </div>
-      )}
+      {isDev && <Dev />}
       <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-        <Button disabled={!owner} onClick={() => signMessage()}>
+        <Button
+          disabled={isCreatable}
+          isLoading={isLoading}
+          onClick={() => signMessage()}
+        >
           Sign Transaction
         </Button>
       </div>

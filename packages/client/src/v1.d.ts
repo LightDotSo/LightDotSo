@@ -94,6 +94,27 @@ export interface paths {
      */
     get: operations["handler"];
   };
+  "/interpretation/get": {
+    /**
+     * Get a interpretation
+     * @description Get a interpretation
+     */
+    get: operations["v1_interpretation_get_handler"];
+  };
+  "/interpretation/list": {
+    /**
+     * Returns a list of interpretations.
+     * @description Returns a list of interpretations.
+     */
+    get: operations["v1_interpretation_list_handler"];
+  };
+  "/interpretation/update": {
+    /**
+     * Update a list of interpretations
+     * @description Update a list of interpretations
+     */
+    post: operations["v1_interpretation_update_handler"];
+  };
   "/invite_code/create": {
     /**
      * Create an invite code
@@ -185,6 +206,41 @@ export interface paths {
      */
     get: operations["v1_portfolio_get_handler"];
   };
+  "/protocol/get": {
+    /**
+     * Get a protocol
+     * @description Get a protocol
+     */
+    get: operations["v1_protocol_get_handler"];
+  };
+  "/protocol/group/create": {
+    /**
+     * Create a protocol group.
+     * @description Create a protocol group.
+     */
+    post: operations["v1_protocol_group_create_handler"];
+  };
+  "/protocol/group/get": {
+    /**
+     * Get a protocol group
+     * @description Get a protocol group
+     */
+    get: operations["v1_protocol_group_get_handler"];
+  };
+  "/protocol/group/list": {
+    /**
+     * Returns a list of protocol groups.
+     * @description Returns a list of protocol groups.
+     */
+    get: operations["v1_protocol_group_list_handler"];
+  };
+  "/protocol/list": {
+    /**
+     * Returns a list of protocols.
+     * @description Returns a list of protocols.
+     */
+    get: operations["v1_protocol_list_handler"];
+  };
   "/queue/portfolio": {
     /**
      * Queue portfolio handler.
@@ -219,6 +275,41 @@ export interface paths {
      * @description Returns a list of signatures.
      */
     get: operations["v1_signature_list_handler"];
+  };
+  "/simulation/create": {
+    /**
+     * Create a simulation.
+     * @description Create a simulation.
+     */
+    post: operations["v1_simulation_create_handler"];
+  };
+  "/simulation/get": {
+    /**
+     * Get a simulation
+     * @description Get a simulation
+     */
+    get: operations["v1_simulation_get_handler"];
+  };
+  "/simulation/list": {
+    /**
+     * Returns a list of simulations.
+     * @description Returns a list of simulations.
+     */
+    get: operations["v1_simulation_list_handler"];
+  };
+  "/simulation/list/count": {
+    /**
+     * Returns a count of list of simulations.
+     * @description Returns a count of list of simulations.
+     */
+    get: operations["v1_simulation_list_count_handler"];
+  };
+  "/simulation/update": {
+    /**
+     * Update a list of simulations
+     * @description Update a list of simulations
+     */
+    post: operations["v1_simulation_update_handler"];
   };
   "/support_request/create": {
     /**
@@ -393,7 +484,7 @@ export interface paths {
      * Create a wallet_settings
      * @description Create a wallet_settings
      */
-    post: operations["v1_wallet_settings_create_handler"];
+    post: operations["v1_wallet_settings_update_handler"];
   };
   "/wallet/update": {
     /**
@@ -523,6 +614,28 @@ export interface components {
     FeedbackPostRequestParams: {
       feedback: components["schemas"]["Feedback"];
     };
+    /** @description Interpretation root type. */
+    Interpretation: {
+      /** @description The id of the interpretation to read for. */
+      id: string;
+    };
+    /** @description Interpretation operation errors */
+    InterpretationError: OneOf<[{
+      /** @description Interpretation query error. */
+      BadRequest: string;
+    }, {
+      /** @description Interpretation not found by id. */
+      NotFound: string;
+    }]>;
+    /** @description Item to request. */
+    InterpretationUpdateRequest: {
+      /** @description The id of the interpretation to update for. */
+      id: string;
+    };
+    InterpretationUpdateRequestParams: {
+      /** @description The array of the interpretations to query. */
+      interpretations: components["schemas"]["InterpretationUpdateRequest"][];
+    };
     /** @description InviteCode root type. */
     InviteCode: {
       /** @description The code of the invite code. */
@@ -557,13 +670,13 @@ export interface components {
       NotFound: string;
     }]>;
     /** @description Item to request. */
-    NotificationReadRequest: {
+    NotificationPostRequest: {
       /** @description The id of the notification to read for. */
       id: string;
     };
-    NotificationReadRequestParams: {
+    NotificationPostRequestParams: {
       /** @description The array of the notifications to query. */
-      notifications: components["schemas"]["NotificationReadRequest"][];
+      notifications: components["schemas"]["NotificationPostRequest"][];
     };
     /**
      * @description Wallet owner.
@@ -644,6 +757,35 @@ export interface components {
     }, {
       /** @description Portfolio already exists conflict. */
       Conflict: string;
+    }]>;
+    /** @description Protocol root type. */
+    Protocol: {
+      /** @description The address of the protocol. */
+      address: string;
+    };
+    /** @description Protocol errors */
+    ProtocolError: OneOf<[{
+      /** @description Protocol query error. */
+      BadRequest: string;
+    }, {
+      /** @description Protocol not found by id. */
+      NotFound: string;
+    }]>;
+    /** @description ProtocolGroup root type. */
+    ProtocolGroup: {
+      /** @description The id of the protocol group. */
+      id: string;
+    };
+    /** @description ProtocolGroup errors */
+    ProtocolGroupError: OneOf<[{
+      /** @description ProtocolGroup query error. */
+      BadRequest: string;
+    }, {
+      /** @description ProtocolGroup not found by id. */
+      NotFound: string;
+    }, {
+      /** @description ProtocolGroup unauthorized. */
+      Unauthorized: string;
     }]>;
     /** @description Queue operation errors */
     QueueError: OneOf<[{
@@ -1337,12 +1479,6 @@ export interface operations {
    * @description Create a feedback
    */
   v1_feedback_create_handler: {
-    parameters: {
-      query: {
-        /** @description The id of the user to query. */
-        user_id: string;
-      };
-    };
     requestBody: {
       content: {
         "application/json": components["schemas"]["FeedbackPostRequestParams"];
@@ -1359,6 +1495,85 @@ export interface operations {
       500: {
         content: {
           "application/json": components["schemas"]["FeedbackError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a interpretation
+   * @description Get a interpretation
+   */
+  v1_interpretation_get_handler: {
+    parameters: {
+      query: {
+        /** @description The id of the interpretation to get. */
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Interpretation returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Interpretation"];
+        };
+      };
+      /** @description Interpretation not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["InterpretationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of interpretations.
+   * @description Returns a list of interpretations.
+   */
+  v1_interpretation_list_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first interpretation to return. */
+        offset?: number | null;
+        /** @description The maximum number of interpretations to return. */
+        limit?: number | null;
+      };
+    };
+    responses: {
+      /** @description Interpretations returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Interpretation"][];
+        };
+      };
+      /** @description Interpretations bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["InterpretationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Update a list of interpretations
+   * @description Update a list of interpretations
+   */
+  v1_interpretation_update_handler: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["InterpretationUpdateRequestParams"];
+      };
+    };
+    responses: {
+      /** @description Interpretation created successfully */
+      200: {
+        content: {
+          "text/plain": number;
+        };
+      };
+      /** @description Interpretation internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["InterpretationError"];
         };
       };
     };
@@ -1562,7 +1777,7 @@ export interface operations {
   v1_notification_read_handler: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["NotificationReadRequestParams"];
+        "application/json": components["schemas"]["NotificationPostRequestParams"];
       };
     };
     responses: {
@@ -1718,6 +1933,140 @@ export interface operations {
     };
   };
   /**
+   * Get a protocol
+   * @description Get a protocol
+   */
+  v1_protocol_get_handler: {
+    parameters: {
+      query: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Protocol returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Protocol"];
+        };
+      };
+      /** @description Protocol not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["ProtocolError"];
+        };
+      };
+    };
+  };
+  /**
+   * Create a protocol group.
+   * @description Create a protocol group.
+   */
+  v1_protocol_group_create_handler: {
+    parameters: {
+      query: {
+        /** @description The id of the protocol id to post for. */
+        protocol_id: string;
+        /** @description The optional id of the protocol group. */
+        group_id?: string | null;
+      };
+    };
+    responses: {
+      /** @description Protocol group created successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ProtocolGroup"];
+        };
+      };
+      /** @description Protocol group internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["ProtocolGroupError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a protocol group
+   * @description Get a protocol group
+   */
+  v1_protocol_group_get_handler: {
+    parameters: {
+      query: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Protocola group returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ProtocolGroup"];
+        };
+      };
+      /** @description Protocola group not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["ProtocolGroupError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of protocol groups.
+   * @description Returns a list of protocol groups.
+   */
+  v1_protocol_group_list_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first protocol group to return. */
+        offset?: number | null;
+        /** @description The maximum number of protocol groups to return. */
+        limit?: number | null;
+      };
+    };
+    responses: {
+      /** @description Protocol groups returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ProtocolGroup"][];
+        };
+      };
+      /** @description Protocol group bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["ProtocolGroupError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of protocols.
+   * @description Returns a list of protocols.
+   */
+  v1_protocol_list_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first protocol to return. */
+        offset?: number | null;
+        /** @description The maximum number of protocols to return. */
+        limit?: number | null;
+      };
+    };
+    responses: {
+      /** @description Protocols returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Protocol"][];
+        };
+      };
+      /** @description Protocol bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["ProtocolError"];
+        };
+      };
+    };
+  };
+  /**
    * Queue portfolio handler.
    * @description Queue portfolio handler.
    */
@@ -1821,6 +2170,9 @@ export interface operations {
   v1_signature_get_handler: {
     parameters: {
       query: {
+        /** @description The owner of the signature. */
+        owner_id: string;
+        /** @description The hash of the user operation. */
         user_operation_hash: string;
       };
     };
@@ -1865,6 +2217,142 @@ export interface operations {
       500: {
         content: {
           "application/json": components["schemas"]["SignatureError"];
+        };
+      };
+    };
+  };
+  /**
+   * Create a simulation.
+   * @description Create a simulation.
+   */
+  v1_simulation_create_handler: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SimulationCreateRequestParams"];
+      };
+    };
+    responses: {
+      /** @description Simulation created successfully */
+      200: {
+        content: {
+          "text/plain": number;
+        };
+      };
+      /** @description Simulation internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["SimulationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a simulation
+   * @description Get a simulation
+   */
+  v1_simulation_get_handler: {
+    parameters: {
+      query: {
+        /** @description The id of the simulation to get. */
+        simulation_id: string;
+      };
+    };
+    responses: {
+      /** @description Simulation returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Simulation"];
+        };
+      };
+      /** @description Simulation not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["SimulationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of simulations.
+   * @description Returns a list of simulations.
+   */
+  v1_simulation_list_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first simulation to return. */
+        offset?: number | null;
+        /** @description The maximum number of simulations to return. */
+        limit?: number | null;
+        /** @description The user id to filter by. */
+        id?: string | null;
+      };
+    };
+    responses: {
+      /** @description Simulations returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Simulation"][];
+        };
+      };
+      /** @description Simulation bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["SimulationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a count of list of simulations.
+   * @description Returns a count of list of simulations.
+   */
+  v1_simulation_list_count_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first simulation to return. */
+        offset?: number | null;
+        /** @description The maximum number of simulations to return. */
+        limit?: number | null;
+        /** @description The user id to filter by. */
+        id?: string | null;
+      };
+    };
+    responses: {
+      /** @description Simulations returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["SimulationListCount"];
+        };
+      };
+      /** @description Simulation bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["SimulationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Update a list of simulations
+   * @description Update a list of simulations
+   */
+  v1_simulation_update_handler: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SimulationUpdateRequestParams"];
+      };
+    };
+    responses: {
+      /** @description Simulation created successfully */
+      200: {
+        content: {
+          "text/plain": number;
+        };
+      };
+      /** @description Simulation internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["SimulationError"];
         };
       };
     };
@@ -2617,7 +3105,7 @@ export interface operations {
    * Create a wallet_settings
    * @description Create a wallet_settings
    */
-  v1_wallet_settings_create_handler: {
+  v1_wallet_settings_update_handler: {
     parameters: {
       query: {
         /** @description The hash of the wallet settings. */
