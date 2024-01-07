@@ -26,6 +26,7 @@ import { useCallback, useState, useEffect } from "react";
 import { toHex, fromHex, recoverMessageAddress } from "viem";
 import type { Hex, Address } from "viem";
 import type { ConfigurationData, UserOperationData } from "@/data";
+import { useSuspenseQueryPaymasterOperation } from "@/query";
 import { queryKeys } from "@/queryKeys";
 import { errorToast, successToast } from "@/utils";
 import {
@@ -116,44 +117,26 @@ export const useUserOperationSubmit = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { data: paymasterOperation } = useSuspenseQuery({
-    queryKey: queryKeys.paymaster_operation.get({
-      address: userOperation.paymaster_and_data.slice(0, 42) as Address,
-      chainId: userOperation.chain_id,
-      valid_after: fromHex(
-        `0x${userOperation.paymaster_and_data.slice(162, 170)}`,
-        "number",
-      ),
-    }).queryKey,
-    queryFn: async () => {
-      const res = await getPaymasterOperation({
-        params: {
-          query: {
-            address: userOperation.paymaster_and_data.slice(0, 42) as Address,
-            chain_id: userOperation.chain_id,
-            valid_after: fromHex(
-              `0x${userOperation.paymaster_and_data.slice(162, 170)}`,
-              "number",
-            ),
-          },
-        },
-      });
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return null;
-        },
-      );
-    },
+  const { paymasterOperation } = useSuspenseQueryPaymasterOperation({
+    address: userOperation.paymaster_and_data.slice(0, 42) as Address,
+    chain_id: userOperation.chain_id,
+    valid_after: fromHex(
+      `0x${userOperation.paymaster_and_data.slice(162, 170)}`,
+      "number",
+    ),
   });
+
+  // ---------------------------------------------------------------------------
+  // Local Variables
+  // ---------------------------------------------------------------------------
 
   const paymasterSignedMsg = `0x${userOperation.paymaster_and_data.slice(
     170,
   )}` as Hex;
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   useEffect(() => {
     const recoverAddress = async () => {

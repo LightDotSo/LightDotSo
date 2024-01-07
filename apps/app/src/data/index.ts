@@ -20,6 +20,7 @@ export type {
   ConfigurationOwnerData,
 } from "./configuration";
 export type { NftData, NftDataPage } from "./nft";
+export type { PaymasterOperationData } from "./paymasterOperation";
 export type { TokenPortfolioData, NftPortfolioData } from "./portfolio";
 export type { TokenData, TokenCountData } from "./token";
 export type { TokenPriceData } from "./tokenPrice";
