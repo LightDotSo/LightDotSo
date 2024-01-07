@@ -25,6 +25,7 @@ import {
   getAddress,
   toBytes,
   toHex,
+  isAddress,
 } from "viem";
 import { useSignMessage } from "wagmi";
 import type { ConfigurationData, UserOperationData } from "@/data";
@@ -82,6 +83,10 @@ export const useUserOperationSign = ({
   }, [owners, userAddress]);
 
   const isSignable = useMemo(() => {
+    if (!userAddress || (userAddress && !isAddress(userAddress as Address))) {
+      return;
+    }
+
     // Check if the user is an owner
     const isOwner = owners.some(
       owner => owner.address === getAddress(userAddress as Address),
@@ -114,12 +119,8 @@ export const useUserOperationSign = ({
 
     const processSignature = async () => {
       if (!userOwnerId || !signedMessage) {
-        errorToast("You must sign the message first and be an owner");
         return;
       }
-
-      // Get the sig as bytes from caller
-      await signMessage();
 
       const res = await createSignature({
         params: {
