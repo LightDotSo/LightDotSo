@@ -163,7 +163,7 @@ pub(crate) async fn v1_signature_create_handler(
     // Produce an activity message.
     produce_activity_message(
         state.producer.clone(),
-        ActivityEntity::InviteCode,
+        ActivityEntity::Signature,
         &ActivityMessage {
             operation: ActivityOperation::Update,
             log: serde_json::to_value(&signature)?,
