@@ -21,6 +21,7 @@
     "build": "tsup",
     "clean": "rimraf -rf dist && rimraf -rf src/v1.d.ts",
     "generate": "pnpm run generate:light && pnpm run generate:prepare",
+    "generate:lifi": "npx openapi-typescript https://li.quest/v1/documentation -o ./src/lifi.d.ts",
     "generate:light": "npx openapi-typescript https://api.light.so/api-docs/openapi.json -o ./src/v1.d.ts",
     "generate:local": "pnpm run generate:local-api && pnpm run generate:prepare",
     "generate:local-api": "npx openapi-typescript http://localhost:3000/api-docs/openapi.json -o ./src/v1.d.ts",
