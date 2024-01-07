@@ -25,7 +25,7 @@ import { Megaphone } from "lucide-react";
 import { useState } from "react";
 import type { FC } from "react";
 import { FeedbackForm } from "@/components/feedback/feedback-form";
-import { useIsMounted } from "@/hooks/useIsMounted";
+import { useIsMounted } from "@/hooks";
 import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
@@ -34,10 +34,15 @@ import { useAuth } from "@/stores";
 
 export const FeedbackPopover: FC = () => {
   // ---------------------------------------------------------------------------
-  // State Hooks
+  // Hooks
   // ---------------------------------------------------------------------------
 
   const isMounted = useIsMounted();
+
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
   const [open, setOpen] = useState(false);
 
   // ---------------------------------------------------------------------------

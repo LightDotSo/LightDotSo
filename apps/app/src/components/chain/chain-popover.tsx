@@ -35,7 +35,7 @@ import type { Address } from "viem";
 import { useQueryClient } from "wagmi";
 import { CHAINS, MAINNET_CHAINS } from "@/const/chains";
 import type { WalletSettingsData } from "@/data";
-import { useIsMounted } from "@/hooks/useIsMounted";
+import { useIsMounted } from "@/hooks";
 import { queryKeys } from "@/queryKeys";
 import { useAuth } from "@/stores";
 import { ChainLogo } from "@/svgs";
@@ -46,10 +46,15 @@ import { ChainLogo } from "@/svgs";
 
 export const ChainPopover: FC = () => {
   // ---------------------------------------------------------------------------
-  // State Hooks
+  // Hooks
   // ---------------------------------------------------------------------------
 
   const isMounted = useIsMounted();
+
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
   const [open, setOpen] = useState(false);
 
   // ---------------------------------------------------------------------------
@@ -101,7 +106,7 @@ export const ChainPopover: FC = () => {
   });
 
   // ---------------------------------------------------------------------------
-  // Effect Hooks
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const chains = useMemo(() => {

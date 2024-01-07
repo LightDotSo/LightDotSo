@@ -42,7 +42,7 @@ export const ActivityDataTable: FC<ActivityDataTableProps> = ({ address }) => {
   const [paginationState] = usePaginationQueryState();
 
   // ---------------------------------------------------------------------------
-  // Effect Hooks
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const offsetCount = useMemo(() => {
@@ -64,7 +64,7 @@ export const ActivityDataTable: FC<ActivityDataTableProps> = ({ address }) => {
   });
 
   // ---------------------------------------------------------------------------
-  // Effect Hooks
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const pageCount = useMemo(() => {

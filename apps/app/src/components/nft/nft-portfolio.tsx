@@ -51,13 +51,13 @@ export const NftPortfolio: FC<NftPortfolioProps> = ({
     queryKeys.nft_valuation.get({ address }).queryKey,
   );
 
-  if (!portfolio) {
-    return null;
-  }
-
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
+
+  if (!portfolio) {
+    return null;
+  }
 
   return (
     portfolio &&

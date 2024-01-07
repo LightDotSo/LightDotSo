@@ -39,7 +39,7 @@ export const TransactionCardExecuteButton: FC<
   TransactionCardExecuteButtonProps
 > = ({ address, config, userOperation }) => {
   // ---------------------------------------------------------------------------
-  // Operation Hooks
+  // App Hooks
   // ---------------------------------------------------------------------------
 
   const { handleConfirm } = useUserOperationSubmit({
@@ -52,5 +52,9 @@ export const TransactionCardExecuteButton: FC<
   // Render
   // ---------------------------------------------------------------------------
 
-  return <Button onClick={handleConfirm}>Execute</Button>;
+  return (
+    <Button className="w-full" onClick={handleConfirm}>
+      Execute
+    </Button>
+  );
 };

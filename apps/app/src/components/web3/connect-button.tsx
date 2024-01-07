@@ -29,6 +29,10 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export const ConnectButton = () => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <ConnectKitButton.Custom>
       {({ isConnected, isConnecting, show, address, ensName }) => {

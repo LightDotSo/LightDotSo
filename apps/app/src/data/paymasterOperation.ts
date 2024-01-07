@@ -13,24 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { ReactNode } from "react";
-
 // -----------------------------------------------------------------------------
-// Props
+// Data
 // -----------------------------------------------------------------------------
 
-interface HStackFullProps {
-  children: ReactNode;
-}
-
-// -----------------------------------------------------------------------------
-// Layout
-// -----------------------------------------------------------------------------
-
-export function HStackFull({ children }: HStackFullProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return <div className="mx-auto flex w-full flex-1 flex-col">{children}</div>;
-}
+export type PaymasterOperationData = {
+  id: string;
+};

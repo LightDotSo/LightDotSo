@@ -44,7 +44,7 @@ import {
 // Props
 // -----------------------------------------------------------------------------
 
-type OpCreateCardProps = {
+type UserOperationCreateProps = {
   address: Address;
   config: ConfigurationData;
   userOperation: UserOperation;
@@ -58,7 +58,7 @@ export const useUserOperationCreate = ({
   address,
   config: { owners, threshold },
   userOperation,
-}: OpCreateCardProps) => {
+}: UserOperationCreateProps) => {
   const { address: userAddress } = useAuth();
   const router = useRouter();
 
@@ -104,6 +104,10 @@ export const useUserOperationCreate = ({
     ],
   });
 
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
   const owner = useMemo(() => {
     if (!userAddress) return;
 
@@ -139,6 +143,10 @@ export const useUserOperationCreate = ({
         return userOperation.callData;
     }
   }, [userOperation.callData]);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   useEffect(() => {
     const fetchUserOp = async () => {

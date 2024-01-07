@@ -23,7 +23,7 @@ import { useRouter, usePathname } from "next/navigation";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import type { FC } from "react";
 import { isAddress } from "viem";
-import type { Tab } from "@/hooks/useTabs";
+import type { Tab } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Const
@@ -71,7 +71,7 @@ export const Tabs: FC<TabProps> = ({
   const pathname = usePathname();
 
   // ---------------------------------------------------------------------------
-  // Effect Hooks
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const firstSlug = useMemo(() => {
@@ -87,7 +87,22 @@ export const Tabs: FC<TabProps> = ({
     return slugs.length > 0 && isAddress(slugs[0]) ? "/" + slugs[0] : "";
   }, [pathname]);
 
+  // ---------------------------------------------------------------------------
+  // Ref Hooks
+  // ---------------------------------------------------------------------------
+
   const navRef = useRef<HTMLDivElement>(null);
+
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [hoveredTabIndex, setHoveredTabIndex] = useState<number | null>(null);
+
+  // ---------------------------------------------------------------------------
+  // Local Variables
+  // ---------------------------------------------------------------------------
+
   const navRect = navRef.current?.getBoundingClientRect();
 
   const selectedRect =
@@ -95,9 +110,12 @@ export const Tabs: FC<TabProps> = ({
       ? anchorRefs[selectedTabIndex]?.getBoundingClientRect()
       : undefined;
 
-  const [hoveredTabIndex, setHoveredTabIndex] = useState<number | null>(null);
   const hoveredRect =
     anchorRefs[hoveredTabIndex ?? -1]?.getBoundingClientRect();
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   // Set the anchor refs array length to the tabs length
   useEffect(() => {

@@ -94,7 +94,7 @@ export const ConfirmForm: FC = () => {
   const [owners] = useOwnersQueryState();
 
   // ---------------------------------------------------------------------------
-  // Effect Hooks
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const defaultValues: NewFormValues = useMemo(() => {

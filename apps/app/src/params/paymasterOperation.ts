@@ -21,6 +21,6 @@ import type { Address } from "viem";
 
 export type PaymasterOperationGetParams = {
   address: Address;
-  chainId: number;
+  chain_id: number;
   valid_after: number;
 };

@@ -120,7 +120,7 @@ export const ConfigurationForm: FC = () => {
   const [owners, setOwners] = useOwnersQueryState();
 
   // ---------------------------------------------------------------------------
-  // Default State
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   // create default owner object

@@ -49,7 +49,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   const [paginationState] = usePaginationQueryState();
 
   // ---------------------------------------------------------------------------
-  // Effect Hooks
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const offsetCount = useMemo(() => {
@@ -81,7 +81,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   });
 
   // ---------------------------------------------------------------------------
-  // Effect Hooks
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const pageCount = useMemo(() => {

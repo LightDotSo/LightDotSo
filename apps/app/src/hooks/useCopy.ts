@@ -14,17 +14,30 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import copy from "copy-to-clipboard";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 // -----------------------------------------------------------------------------
 // Hook
 // -----------------------------------------------------------------------------
 
 export const useCopy = (): [boolean, (text: string) => void] => {
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
   const [showCopied, setShowCopied] = useState(false);
+
+  // ---------------------------------------------------------------------------
+  // Ref Hooks
+  // ---------------------------------------------------------------------------
+
   const timeoutRef = useRef<number | null>(null);
 
-  const copyText = (text: string): void => {
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  const copyText = useCallback((text: string): void => {
     copy(text);
     setShowCopied(true);
 
@@ -36,7 +49,11 @@ export const useCopy = (): [boolean, (text: string) => void] => {
       setShowCopied(false);
       timeoutRef.current = null;
     }, 1500);
-  };
+  }, []);
+
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
 
   return [showCopied, copyText];
 };

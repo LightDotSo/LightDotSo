@@ -33,7 +33,7 @@ import type { Address } from "viem";
 import * as z from "zod";
 import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const/titles";
-import { useDelayedValue } from "@/hooks/useDelayedValue";
+import { useDelayedValue } from "@/hooks";
 import {
   useMutationWalletSettings,
   useSuspenseQueryWalletSettings,
@@ -88,7 +88,7 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   });
 
   // ---------------------------------------------------------------------------
-  // Form
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   // This can come from your database or API.
@@ -98,6 +98,10 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [walletSettings, key]);
+
+  // ---------------------------------------------------------------------------
+  // Form
+  // ---------------------------------------------------------------------------
 
   const form = useForm<WalletTestnetFormValues>({
     mode: "all",
@@ -117,10 +121,14 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   }
 
   // ---------------------------------------------------------------------------
-  // Effect Hooks
+  // Hooks
   // ---------------------------------------------------------------------------
 
   const delayedIsSuccess = useDelayedValue<boolean>(isSuccess, false, 3000);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   useEffect(() => {
     if (delayedIsSuccess) {

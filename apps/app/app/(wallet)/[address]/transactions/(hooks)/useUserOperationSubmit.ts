@@ -16,17 +16,15 @@
 "use client";
 
 import {
-  getPaymasterOperation,
   getSignatureUserOperation,
   sendUserOperation,
 } from "@lightdotso/client";
 import { CONTRACT_ADDRESSES } from "@lightdotso/const";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { useCallback, useState, useEffect } from "react";
 import { toHex, fromHex, recoverMessageAddress } from "viem";
 import type { Hex, Address } from "viem";
 import type { ConfigurationData, UserOperationData } from "@/data";
-import { queryKeys } from "@/queryKeys";
+import { useSuspenseQueryPaymasterOperation } from "@/query";
 import { errorToast, successToast } from "@/utils";
 import {
   useLightVerifyingPaymasterGetHash,
@@ -37,7 +35,7 @@ import {
 // Props
 // -----------------------------------------------------------------------------
 
-type OpCreateCardProps = {
+type UserOperationSubmitProps = {
   address: Address;
   config: ConfigurationData;
   userOperation: UserOperationData;
@@ -51,8 +49,16 @@ export const useUserOperationSubmit = ({
   // address,
   config,
   userOperation,
-}: OpCreateCardProps) => {
+}: UserOperationSubmitProps) => {
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
   const [recoveredAddress, setRecoveredAddress] = useState<Address>();
+
+  // ---------------------------------------------------------------------------
+  // Local Variables
+  // ---------------------------------------------------------------------------
 
   // Get the cumulative weight of all owners in the userOperation signatures array and check if it is greater than or equal to the threshold
   const isValid =
@@ -108,44 +114,26 @@ export const useUserOperationSubmit = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { data: paymasterOperation } = useSuspenseQuery({
-    queryKey: queryKeys.paymaster_operation.get({
-      address: userOperation.paymaster_and_data.slice(0, 42) as Address,
-      chainId: userOperation.chain_id,
-      valid_after: fromHex(
-        `0x${userOperation.paymaster_and_data.slice(162, 170)}`,
-        "number",
-      ),
-    }).queryKey,
-    queryFn: async () => {
-      const res = await getPaymasterOperation({
-        params: {
-          query: {
-            address: userOperation.paymaster_and_data.slice(0, 42) as Address,
-            chain_id: userOperation.chain_id,
-            valid_after: fromHex(
-              `0x${userOperation.paymaster_and_data.slice(162, 170)}`,
-              "number",
-            ),
-          },
-        },
-      });
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return null;
-        },
-      );
-    },
+  const { paymasterOperation } = useSuspenseQueryPaymasterOperation({
+    address: userOperation.paymaster_and_data.slice(0, 42) as Address,
+    chain_id: userOperation.chain_id,
+    valid_after: fromHex(
+      `0x${userOperation.paymaster_and_data.slice(162, 170)}`,
+      "number",
+    ),
   });
+
+  // ---------------------------------------------------------------------------
+  // Local Variables
+  // ---------------------------------------------------------------------------
 
   const paymasterSignedMsg = `0x${userOperation.paymaster_and_data.slice(
     170,
   )}` as Hex;
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   useEffect(() => {
     const recoverAddress = async () => {
@@ -164,6 +152,10 @@ export const useUserOperationSubmit = ({
 
     recoverAddress();
   }, [paymasterHash, paymasterSignedMsg]);
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
 
   // A `useCallback` handler for confirming the operation
   const handleConfirm = useCallback(() => {

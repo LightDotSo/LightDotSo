@@ -15,34 +15,32 @@
 
 "use client";
 
+import { subdigestOf } from "@lightdotso/solutions";
 import { useMemo } from "react";
-import type { FC } from "react";
-import { isAddressEqual } from "viem";
-import type { Address } from "viem";
-import { OpCreateCard } from "@/app/(wallet)/[address]/op/(components)/op-create-card";
-import type { ConfigurationData } from "@/data";
+import { hexToBytes, type Address, type Hex, getAddress, toBytes } from "viem";
+import { useSignMessage } from "wagmi";
+import type { ConfigurationData, UserOperationData } from "@/data";
 import { useAuth } from "@/stores";
-import type { UserOperation } from "@/types";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type OpCreateDialogProps = {
+type UserOperationSignProps = {
   address: Address;
   config: ConfigurationData;
-  userOperations: UserOperation[];
+  userOperation: UserOperationData;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const OpCreateDialog: FC<OpCreateDialogProps> = ({
+export const useUserOperationSign = ({
   address,
-  config,
-  userOperations,
-}) => {
+  config: { owners },
+  userOperation,
+}: UserOperationSignProps) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -50,40 +48,51 @@ export const OpCreateDialog: FC<OpCreateDialogProps> = ({
   const { address: userAddress } = useAuth();
 
   // ---------------------------------------------------------------------------
+  // Local Variables
+  // ---------------------------------------------------------------------------
+
+  const subdigest = subdigestOf(
+    address,
+    hexToBytes(userOperation.hash as Hex),
+    BigInt(userOperation.chain_id),
+  );
+
+  // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const owner = useMemo(() => {
-    if (!userAddress) return;
-
-    return config.owners?.find(owner =>
-      isAddressEqual(owner.address as Address, userAddress),
+  const isSignable = useMemo(() => {
+    // Check if the user is an owner
+    const isOwner = owners.some(
+      owner => owner.address === getAddress(userAddress as Address),
     );
-  }, [config.owners, userAddress]);
+
+    // Map the user id to the owner id
+    const userId = owners.find(owner => owner.address === userAddress)?.id;
+
+    // Check if the user has already signed
+    const isSigned = userOperation.signatures.some(
+      signature => signature.owner_id === userId,
+    );
+
+    return isOwner && !isSigned;
+  }, [owners, userOperation, userAddress]);
+
+  // ---------------------------------------------------------------------------
+  // Wagmi
+  // ---------------------------------------------------------------------------
+
+  const { data: signedMessage, signMessage } = useSignMessage({
+    message: { raw: toBytes(subdigest) },
+  });
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <>
-      <div className="mt-4 flex flex-col space-y-3 text-center sm:text-left">
-        <header className="text-lg font-semibold leading-none tracking-tight">
-          Transaction
-        </header>
-        <p className="text-sm text-text-weak">
-          Are you sure you want to sign this transaction?
-        </p>
-        {userOperations?.map((userOperation, index) => (
-          <OpCreateCard
-            key={index}
-            address={address}
-            config={config}
-            userOperation={userOperation}
-          />
-        ))}
-      </div>
-    </>
-  );
+  return {
+    isSignable,
+    signedMessage,
+    signMessage,
+  };
 };

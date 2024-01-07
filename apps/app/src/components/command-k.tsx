@@ -40,7 +40,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
 import type { FC } from "react";
-import { useCopy } from "@/hooks/useCopy";
+import { useCopy } from "@/hooks";
 import { useAuth, useDev } from "@/stores";
 import { successToast } from "@/utils";
 
@@ -50,16 +50,16 @@ import { successToast } from "@/utils";
 
 export const CommandK: FC = () => {
   // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const [, copy] = useCopy();
+
+  // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
 
   const [open, setOpen] = useState(false);
-
-  // ---------------------------------------------------------------------------
-  // Opearation Hooks
-  // ---------------------------------------------------------------------------
-
-  const [, copy] = useCopy();
 
   // ---------------------------------------------------------------------------
   // Next Hooks
@@ -98,6 +98,10 @@ export const CommandK: FC = () => {
     copy(decodeURIComponent(url.search));
     console.info(decodeURIComponent(url.search));
   }, [copy]);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {

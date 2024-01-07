@@ -15,6 +15,33 @@
 
 import { usePathname } from "next/navigation";
 
+// ---------------------------------------------------------------------------
+// Constants
+// ---------------------------------------------------------------------------
+
+const unauthenticatedPaths = ["/activity", "/owners", "/transactions"];
+const authenticatedPaths = [
+  "/new",
+  "/new/configuration",
+  "/new/confirm",
+  "/wallet",
+  "/settings",
+  "/settings",
+  "/settings/account",
+  "/settings/appearance",
+  "/settings/display",
+  "/settings/notifications",
+  "/support",
+  "/wallets",
+];
+const demoPaths = [
+  "/demo",
+  "/demo/activity",
+  "/demo/owners",
+  "/demo/overview",
+  "/demo/transactions",
+];
+
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
@@ -26,30 +53,15 @@ export type RootType = "authenticated" | "unauthenticated" | "wallet" | "demo";
 // -----------------------------------------------------------------------------
 
 export const usePathType = (): RootType => {
+  // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
   const pathname = usePathname();
 
-  const unauthenticatedPaths = ["/activity", "/owners", "/transactions"];
-  const authenticatedPaths = [
-    "/new",
-    "/new/configuration",
-    "/new/confirm",
-    "/wallet",
-    "/settings",
-    "/settings",
-    "/settings/account",
-    "/settings/appearance",
-    "/settings/display",
-    "/settings/notifications",
-    "/support",
-    "/wallets",
-  ];
-  const demoPaths = [
-    "/demo",
-    "/demo/activity",
-    "/demo/owners",
-    "/demo/overview",
-    "/demo/transactions",
-  ];
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
 
   if (
     unauthenticatedPaths.some(path => pathname.startsWith(path)) ||

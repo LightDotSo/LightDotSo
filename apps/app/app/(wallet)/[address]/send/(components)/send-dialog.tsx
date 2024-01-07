@@ -143,7 +143,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   );
 
   // ---------------------------------------------------------------------------
-  // Default State
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   // create default transfer object
@@ -366,6 +366,10 @@ export const SendDialog: FC<SendDialogProps> = ({
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValues]);
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
 
   const userOperationsParams = useMemo(() => {
     const encodeTransfer = (transfer: Transfer): [Address, bigint, Hex] => {

@@ -19,7 +19,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { FC } from "react";
 import { Logo } from "@/components/lightdotso/light-logo";
-import { usePathType } from "@/hooks/usePathType";
+import { usePathType } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -27,7 +27,7 @@ import { usePathType } from "@/hooks/usePathType";
 
 export const RootLogo: FC = () => {
   // ---------------------------------------------------------------------------
-  // State Hooks
+  // Hooks
   // ---------------------------------------------------------------------------
 
   const type = usePathType();

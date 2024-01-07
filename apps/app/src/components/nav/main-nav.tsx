@@ -31,8 +31,7 @@ import type { IconProps } from "@radix-ui/react-icons/dist/types";
 import { Suspense, useMemo, useState, useEffect } from "react";
 import type { FC, HTMLAttributes, RefAttributes } from "react";
 import { Tabs } from "@/components/nav/tabs-nav";
-import { usePathType } from "@/hooks/usePathType";
-import { useTabs } from "@/hooks/useTabs";
+import { usePathType, useTabs } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Const
@@ -101,13 +100,13 @@ type MainNavProps = HTMLAttributes<HTMLElement>;
 
 export const MainNav: FC<MainNavProps> = ({ className = "", ...props }) => {
   // ---------------------------------------------------------------------------
-  // State Hooks
+  // Hooks
   // ---------------------------------------------------------------------------
 
   const type = usePathType();
 
   // ---------------------------------------------------------------------------
-  // Effect Hooks
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const typeTabs = useMemo(() => {

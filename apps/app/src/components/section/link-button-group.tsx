@@ -15,7 +15,16 @@
 
 "use client";
 
-import { Button, ButtonGroup, buttonVariants } from "@lightdotso/ui";
+import {
+  Button,
+  ButtonGroup,
+  Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -51,7 +60,7 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
   const router = useRouter();
 
   // ---------------------------------------------------------------------------
-  // Effect Hooks
+  // Local Variables
   // ---------------------------------------------------------------------------
 
   // Get the last part of the path
@@ -63,6 +72,10 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
   // Get the wallet address from the path
   // Address is the first part of the path
   const address = pathname.split("/")[1];
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   useEffect(() => {
     // Prefetch all the pages
@@ -78,20 +91,12 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
   return (
     <>
       <div className="sm:hidden">
-        <label htmlFor="tabs" className="sr-only">
+        <Label htmlFor="tabs" className="sr-only">
           Select a tab
-        </label>
-        <select
-          id="tabs"
+        </Label>
+        <Select
           name="tabs"
-          defaultValue={id}
-          className={cn(
-            buttonVariants({ variant: "outline" }),
-            "block w-full px-8",
-          )}
-          onChange={event => {
-            // Get the selected value
-            const value = event.target.value;
+          onValueChange={value => {
             // Get the item from the items
             const item = items.find(item => item.id === value);
             // If the item is not found, return
@@ -100,10 +105,17 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
             router.push(`/${address}${item.href}`);
           }}
         >
-          {items.map(item => (
-            <option key={item.id}>{item.title}</option>
-          ))}
-        </select>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select a category." />
+          </SelectTrigger>
+          <SelectContent className="max-h-48">
+            {items.map(item => (
+              <SelectItem key={item.id} value={item.id}>
+                {item.title}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
       <div className="flex items-center justify-between">
         <ButtonGroup

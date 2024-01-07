@@ -24,6 +24,10 @@ import { pusherClient } from "@/clients/pusher";
 // -----------------------------------------------------------------------------
 
 export const WssState: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
   useEffect(() => {
     // Subscribe to a channel
     const channel = pusherClient.subscribe("test-channel");
@@ -39,6 +43,10 @@ export const WssState: FC = () => {
       pusherClient.unsubscribe("test-channel");
     };
   }, []);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
   return null;
 };

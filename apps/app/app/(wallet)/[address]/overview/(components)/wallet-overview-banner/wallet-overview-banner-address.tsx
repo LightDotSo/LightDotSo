@@ -36,7 +36,7 @@ import { useCallback, type FC } from "react";
 import type { Address } from "viem";
 import { useEnsName } from "wagmi";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
-import { useCopy } from "@/hooks/useCopy";
+import { useCopy } from "@/hooks";
 import { useSuspenseQueryWallet } from "@/query";
 import { successToast } from "@/utils";
 
@@ -56,18 +56,18 @@ export const WalletOverviewBannerAddress: FC<
   WalletOverviewBannerAddressProps
 > = ({ address }) => {
   // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const [, copy] = useCopy();
+
+  // ---------------------------------------------------------------------------
   // Wagmi Hooks
   // ---------------------------------------------------------------------------
 
   const { data: ens } = useEnsName({
     address: address,
   });
-
-  // ---------------------------------------------------------------------------
-  // Operation Hooks
-  // ---------------------------------------------------------------------------
-
-  const [, copy] = useCopy();
 
   // ---------------------------------------------------------------------------
   // Callback Hooks

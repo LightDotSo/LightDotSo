@@ -13,58 +13,37 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import type { SetupWorker } from "msw/lib/browser";
 import { useEffect, useState } from "react";
-import { usePathType } from "@/hooks";
 
-export const MSWState = () => {
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
+// From: https://github.com/shadcn-ui/ui/blob/fb614ac2921a84b916c56e9091aa0ae8e129c565/apps/www/hooks/use-media-query.tsx#L4
+// License: MIT
 
-  const type = usePathType();
-
+export function useMediaQuery(query: string) {
   // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
 
-  const [worker, setWorker] = useState<SetupWorker>();
+  const [value, setValue] = useState(false);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    const doMswInit = async () => {
-      if (type === "demo") {
-        if (typeof window !== "undefined") {
-          if (!worker) {
-            const { worker } = await import("@/msw/browser");
-            worker.start();
-            setWorker(worker);
-          }
-        }
-      } else {
-        if (worker) {
-          worker.stop();
-          setWorker(undefined);
-        }
-      }
-    };
-    doMswInit();
+    function onChange(event: MediaQueryListEvent) {
+      setValue(event.matches);
+    }
 
-    return () => {
-      if (worker) {
-        worker.stop();
-      }
-    };
-  }, [type, worker]);
+    const result = matchMedia(query);
+    result.addEventListener("change", onChange);
+    setValue(result.matches);
+
+    return () => result.removeEventListener("change", onChange);
+  }, [query]);
 
   // ---------------------------------------------------------------------------
-  // Render
+  // Return
   // ---------------------------------------------------------------------------
 
-  return null;
-};
+  return value;
+}

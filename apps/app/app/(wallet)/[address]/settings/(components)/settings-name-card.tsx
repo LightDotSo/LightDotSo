@@ -34,8 +34,7 @@ import type { Address } from "viem";
 import * as z from "zod";
 import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const/titles";
-import { useAuthModal } from "@/hooks/useAuthModal";
-import { useDelayedValue } from "@/hooks/useDelayedValue";
+import { useAuthModal, useDelayedValue } from "@/hooks";
 import { useSuspenseQueryWallet, useMutationWallet } from "@/query";
 
 // -----------------------------------------------------------------------------
@@ -69,17 +68,17 @@ type SettingsNameCardProps = {
 
 export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
-  // Staet Hooks
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const { isAuthValid, openAuthModal } = useAuthModal();
+
+  // ---------------------------------------------------------------------------
+  // State Hooks
   // ---------------------------------------------------------------------------
 
   const [isFormChanged, setIsFormChanged] = useState(false);
   const [key, setKey] = useState(Math.random());
-
-  // ---------------------------------------------------------------------------
-  // Operation Hooks
-  // ---------------------------------------------------------------------------
-
-  const { isAuthValid, openAuthModal } = useAuthModal();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -96,7 +95,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   });
 
   // ---------------------------------------------------------------------------
-  // Form
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   // This can come from your database or API.
@@ -106,6 +105,10 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wallet, key]);
+
+  // ---------------------------------------------------------------------------
+  // Form
+  // ---------------------------------------------------------------------------
 
   const form = useForm<WalletNameFormValues>({
     mode: "all",
