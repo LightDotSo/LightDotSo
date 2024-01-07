@@ -71,7 +71,7 @@ export const Tabs: FC<TabProps> = ({
   const pathname = usePathname();
 
   // ---------------------------------------------------------------------------
-  // Effect Hooks
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const firstSlug = useMemo(() => {

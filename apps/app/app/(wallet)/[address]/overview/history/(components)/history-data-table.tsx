@@ -45,7 +45,7 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
   const [paginationState] = usePaginationQueryState();
 
   // ---------------------------------------------------------------------------
-  // Effect Hooks
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const offsetCount = useMemo(() => {
@@ -74,7 +74,7 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
   });
 
   // ---------------------------------------------------------------------------
-  // Effect Hooks
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const pageCount = useMemo(() => {

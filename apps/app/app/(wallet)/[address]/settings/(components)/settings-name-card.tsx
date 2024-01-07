@@ -96,7 +96,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   });
 
   // ---------------------------------------------------------------------------
-  // Form
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   // This can come from your database or API.
@@ -106,6 +106,10 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wallet, key]);
+
+  // ---------------------------------------------------------------------------
+  // Form
+  // ---------------------------------------------------------------------------
 
   const form = useForm<WalletNameFormValues>({
     mode: "all",

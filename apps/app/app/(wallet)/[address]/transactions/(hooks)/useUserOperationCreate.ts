@@ -104,6 +104,10 @@ export const useUserOperationCreate = ({
     ],
   });
 
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
   const owner = useMemo(() => {
     if (!userAddress) return;
 
@@ -139,6 +143,10 @@ export const useUserOperationCreate = ({
         return userOperation.callData;
     }
   }, [userOperation.callData]);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   useEffect(() => {
     const fetchUserOp = async () => {

@@ -56,7 +56,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const [paginationState] = usePaginationQueryState();
 
   // ---------------------------------------------------------------------------
-  // Effect Hooks
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const offsetCount = useMemo(() => {
@@ -84,7 +84,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   );
 
   // ---------------------------------------------------------------------------
-  // Hook
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const uniqueChainValues = useMemo(() => {

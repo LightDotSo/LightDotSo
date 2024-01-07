@@ -88,7 +88,7 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   });
 
   // ---------------------------------------------------------------------------
-  // Form
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   // This can come from your database or API.
@@ -98,6 +98,10 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [walletSettings, key]);
+
+  // ---------------------------------------------------------------------------
+  // Form
+  // ---------------------------------------------------------------------------
 
   const form = useForm<WalletTestnetFormValues>({
     mode: "all",

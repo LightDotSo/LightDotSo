@@ -66,7 +66,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   );
 
   // ---------------------------------------------------------------------------
-  // Hook
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const uniqueChainValues = useMemo(() => {

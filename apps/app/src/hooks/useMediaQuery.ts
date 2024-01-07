@@ -19,7 +19,15 @@ import { useEffect, useState } from "react";
 // License: MIT
 
 export function useMediaQuery(query: string) {
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
   const [value, setValue] = useState(false);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   useEffect(() => {
     function onChange(event: MediaQueryListEvent) {
@@ -32,6 +40,10 @@ export function useMediaQuery(query: string) {
 
     return () => result.removeEventListener("change", onChange);
   }, [query]);
+
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
 
   return value;
 }

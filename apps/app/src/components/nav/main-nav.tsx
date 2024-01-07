@@ -107,7 +107,7 @@ export const MainNav: FC<MainNavProps> = ({ className = "", ...props }) => {
   const type = usePathType();
 
   // ---------------------------------------------------------------------------
-  // Effect Hooks
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const typeTabs = useMemo(() => {

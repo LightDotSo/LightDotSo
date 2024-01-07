@@ -77,6 +77,10 @@ export const TransactionCard: FC<TransactionCardProps> = ({
     [userOperation],
   );
 
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
   const informationItems = useMemo(() => {
     const items: TransactionInformationItem[] = [
       { title: "Hash", value: shortenBytes32(userOperation.hash) },

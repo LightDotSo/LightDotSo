@@ -41,7 +41,7 @@ export const WalletsDataTable: FC = () => {
   const [paginationState] = usePaginationQueryState();
 
   // ---------------------------------------------------------------------------
-  // Effect Hooks
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const offsetCount = useMemo(() => {
@@ -63,7 +63,7 @@ export const WalletsDataTable: FC = () => {
   });
 
   // ---------------------------------------------------------------------------
-  // Effect Hooks
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const pageCount = useMemo(() => {

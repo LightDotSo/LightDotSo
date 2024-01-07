@@ -52,7 +52,15 @@ export const useUserOperationSubmit = ({
   config,
   userOperation,
 }: UserOperationSubmitProps) => {
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
   const [recoveredAddress, setRecoveredAddress] = useState<Address>();
+
+  // ---------------------------------------------------------------------------
+  // Local Variables
+  // ---------------------------------------------------------------------------
 
   // Get the cumulative weight of all owners in the userOperation signatures array and check if it is greater than or equal to the threshold
   const isValid =
@@ -164,6 +172,10 @@ export const useUserOperationSubmit = ({
 
     recoverAddress();
   }, [paymasterHash, paymasterSignedMsg]);
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
 
   // A `useCallback` handler for confirming the operation
   const handleConfirm = useCallback(() => {

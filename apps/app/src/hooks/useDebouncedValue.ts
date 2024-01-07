@@ -17,13 +17,25 @@ import { debounce } from "lodash";
 import { useEffect, useState } from "react";
 
 export function useDebouncedValue<T>(value: T, delay: number): T {
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   useEffect(() => {
     const handler = debounce(() => setDebouncedValue(value), delay);
     handler();
     return handler.cancel;
   }, [value, delay]);
+
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
 
   return debouncedValue;
 }

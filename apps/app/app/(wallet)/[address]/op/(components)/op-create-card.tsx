@@ -120,6 +120,10 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
     ],
   });
 
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
   const owner = useMemo(() => {
     if (!userAddress) return;
 
@@ -155,6 +159,10 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
         return userOperation.callData;
     }
   }, [userOperation.callData]);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   useEffect(() => {
     const fetchUserOp = async () => {

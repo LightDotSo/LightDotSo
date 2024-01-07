@@ -22,10 +22,22 @@ import { useAuth, useModals } from "@/stores";
 // -----------------------------------------------------------------------------
 
 export const useAuthModal = () => {
-  const { address, sessionId } = useAuth();
-  const { openProfile } = useModal();
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
 
+  const { address, sessionId } = useAuth();
+
+  // ---------------------------------------------------------------------------
+  // ConnectKit
+  // ---------------------------------------------------------------------------
+
+  const { openProfile } = useModal();
   const { showAuthModal } = useModals();
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
 
   const openAuthModal = useCallback(() => {
     if (!address) {
@@ -34,6 +46,10 @@ export const useAuthModal = () => {
       showAuthModal();
     }
   }, [address, openProfile, sessionId, showAuthModal]);
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
 
   const isAuthValid = useMemo(() => {
     return typeof sessionId === "string" && !!address;

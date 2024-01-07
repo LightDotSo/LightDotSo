@@ -49,6 +49,10 @@ export const OpCreateDialog: FC<OpCreateDialogProps> = ({
 
   const { address: userAddress } = useAuth();
 
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const owner = useMemo(() => {
     if (!userAddress) return;
