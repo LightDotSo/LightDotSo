@@ -18,7 +18,14 @@
 import { createSignature } from "@lightdotso/client";
 import { subdigestOf } from "@lightdotso/solutions";
 import { useEffect, useMemo, useState } from "react";
-import { hexToBytes, type Address, type Hex, getAddress, toBytes } from "viem";
+import {
+  hexToBytes,
+  type Address,
+  type Hex,
+  getAddress,
+  toBytes,
+  toHex,
+} from "viem";
 import { useSignMessage } from "wagmi";
 import type { ConfigurationData, UserOperationData } from "@/data";
 import { useAuth } from "@/stores";
@@ -118,14 +125,13 @@ export const useUserOperationSign = ({
         params: {
           query: {
             user_operation_hash: userOperation.hash,
-            procedure: "Onchain",
           },
         },
         body: {
           signature: {
             owner_id: userOwnerId,
-            signature: signedMessage,
-            signature_type: 0,
+            signature: toHex(new Uint8Array([...toBytes(signedMessage), 2])),
+            signature_type: 1,
           },
         },
       });
