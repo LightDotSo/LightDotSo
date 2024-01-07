@@ -19,7 +19,6 @@ use super::types::Owner;
 use crate::{
     result::{AppError, AppJsonResult},
     routes::wallet::types::Wallet,
-    sessions::get_user_id,
     state::AppState,
 };
 use autometrics::autometrics;
@@ -47,7 +46,6 @@ use lightdotso_solutions::{
 };
 use lightdotso_tracing::tracing::{error, info, trace};
 use serde::{Deserialize, Serialize};
-use tower_sessions_core::Session;
 use utoipa::{IntoParams, ToSchema};
 
 // -----------------------------------------------------------------------------
@@ -112,7 +110,6 @@ pub struct WalletPostRequestParams {
 pub(crate) async fn v1_wallet_create_handler(
     post_query: Query<PostQuery>,
     State(state): State<AppState>,
-    mut session: Session,
     Json(params): Json<WalletPostRequestParams>,
 ) -> AppJsonResult<Wallet> {
     // -------------------------------------------------------------------------
@@ -127,14 +124,6 @@ pub(crate) async fn v1_wallet_create_handler(
     let owners = &params.owners;
     let threshold = params.threshold;
     let name = params.name;
-
-    // -------------------------------------------------------------------------
-    // Session
-    // -------------------------------------------------------------------------
-
-    // Get the userid from the session.
-    let user_id = get_user_id(&mut session)?;
-    info!(?user_id);
 
     // -------------------------------------------------------------------------
     // Validate
@@ -380,7 +369,6 @@ pub(crate) async fn v1_wallet_create_handler(
             log: serde_json::to_value(&wallet)?,
             params: CustomParams {
                 wallet_address: Some(wallet.address.clone()),
-                user_id: Some(user_id.clone()),
                 ..Default::default()
             },
         },
@@ -416,7 +404,6 @@ pub(crate) async fn v1_wallet_create_handler(
             log: serde_json::to_value(&invite_code)?,
             params: CustomParams {
                 invite_code_id: Some(invite_code.id.clone()),
-                user_id: Some(user_id.clone()),
                 wallet_address: Some(wallet.address.clone()),
                 ..Default::default()
             },

@@ -91,9 +91,9 @@ pub(crate) async fn v1_support_request_create_handler(
     // Session
     // -------------------------------------------------------------------------
 
-    // Get the userid from the session.
-    let user_id = get_user_id(&mut session)?;
-    info!(?user_id);
+    // Get the authenticated user id from the session.
+    let auth_user_id = get_user_id(&mut session)?;
+    info!(?auth_user_id);
 
     // -------------------------------------------------------------------------
     // DB
@@ -128,7 +128,7 @@ pub(crate) async fn v1_support_request_create_handler(
             log: serde_json::to_value(&support_request)?,
             params: CustomParams {
                 support_request_id: Some(support_request.id.clone()),
-                user_id: Some(user_id.clone()),
+                user_id: Some(auth_user_id.clone()),
                 wallet_address: Some(to_checksum(&wallet_address, None)),
                 ..Default::default()
             },

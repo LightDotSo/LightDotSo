@@ -124,9 +124,9 @@ pub(crate) async fn v1_wallet_update_handler(
     // Session
     // -------------------------------------------------------------------------
 
-    // Get the userid from the session.
-    let user_id = get_user_id(&mut session)?;
-    info!(?user_id);
+    // Get the authenticated user id from the session.
+    let auth_user_id = get_user_id(&mut session)?;
+    info!(?auth_user_id);
 
     // -------------------------------------------------------------------------
     // DB
@@ -143,7 +143,7 @@ pub(crate) async fn v1_wallet_update_handler(
                 .as_ref()
                 .unwrap()
                 .iter()
-                .any(|owner| owner.clone().user_id.as_ref().unwrap() == &user_id)
+                .any(|owner| owner.clone().user_id.as_ref().unwrap() == &auth_user_id)
         })
         .ok_or(RouteError::WalletError(WalletError::BadRequest(
             "User is not an owner of the wallet".to_string(),
@@ -185,7 +185,7 @@ pub(crate) async fn v1_wallet_update_handler(
             operation: ActivityOperation::Update,
             log: serde_json::to_value(&wallet)?,
             params: CustomParams {
-                user_id: Some(user_id),
+                user_id: Some(auth_user_id),
                 wallet_address: Some(wallet.address.clone()),
                 ..Default::default()
             },
