@@ -54,8 +54,8 @@ const navigation = {
 
 export const FooterSocial: FC = () => {
   return (
-    <div className="space-y-8 xl:col-span-1">
-      <div className="inline-flex items-center pb-3 text-text">
+    <div className="flex flex-col space-y-8">
+      <div className="text-text">
         <LightHorizontalLogo className="block h-10 w-auto" />
       </div>
       <div className="flex space-x-6">

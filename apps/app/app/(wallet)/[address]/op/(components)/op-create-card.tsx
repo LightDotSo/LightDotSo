@@ -133,7 +133,7 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
       {isDev && <Dev />}
       <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
         <Button
-          disabled={isCreatable}
+          disabled={!isCreatable}
           isLoading={isLoading}
           onClick={() => signMessage()}
         >
