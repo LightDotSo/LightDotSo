@@ -150,7 +150,7 @@ export const TransactionCard: FC<TransactionCardProps> = ({
         <CollapsibleContent asChild>
           <TableCell className="p-0" colSpan={row.getAllCells().length}>
             <div className="m-4 grid gap-4 md:grid-cols-2">
-              <Card className="col-span-1 flex flex-col space-y-4 justify-between h-full border border-border-weak bg-background-strong p-4">
+              <Card className="col-span-1 flex h-full flex-col justify-between space-y-4 border border-border-weak bg-background-strong p-4">
                 <CardHeader className="p-0">
                   <CardTitle className="text-lg">
                     Transaction Information
@@ -159,7 +159,7 @@ export const TransactionCard: FC<TransactionCardProps> = ({
                     Get more information about this transaction.
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="p-0 flex-grow">
+                <CardContent className="grow p-0">
                   {informationItems.map((item, index) => (
                     <div
                       key={index}
@@ -202,14 +202,14 @@ export const TransactionCard: FC<TransactionCardProps> = ({
                   </Button>
                 </CardFooter>
               </Card>
-              <Card className="col-span-1 flex flex-col space-y-4 justify-between border border-border-weak bg-background-strong p-4">
+              <Card className="col-span-1 flex flex-col justify-between space-y-4 border border-border-weak bg-background-strong p-4">
                 <CardHeader className="p-0">
                   <CardTitle className="text-lg">Progress</CardTitle>
                   <CardDescription>
                     View the progress of this transaction.
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="p-0 flex-grow">
+                <CardContent className="grow p-0">
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="col-span-2 flex items-center">
                       <Progress
@@ -234,7 +234,7 @@ export const TransactionCard: FC<TransactionCardProps> = ({
                   </div>
                 </CardContent>
                 {userOperation.status === "PROPOSED" && (
-                  <CardFooter className="grid grid-cols-2 gap-3 w-full items-center p-0">
+                  <CardFooter className="grid w-full grid-cols-2 items-center gap-3 p-0">
                     <TransactionCardSignButton
                       address={address}
                       config={configuration}
