@@ -1568,8 +1568,8 @@ enum ActivityEntity {
   // Enum Fields
   // ---------------------------------------------------------------------------
 
-  WALLET
   USER
+  WALLET
 
   INVITE_CODE
   SUPPORT_REQUEST
