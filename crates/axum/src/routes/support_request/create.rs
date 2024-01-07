@@ -128,6 +128,7 @@ pub(crate) async fn v1_support_request_create_handler(
             log: serde_json::to_value(&support_request)?,
             params: CustomParams {
                 support_request_id: Some(support_request.id.clone()),
+                user_id: Some(user_id.clone()),
                 wallet_address: Some(to_checksum(&wallet_address, None)),
                 ..Default::default()
             },
