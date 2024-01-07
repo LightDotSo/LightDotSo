@@ -28,5 +28,9 @@ interface HStackFullProps {
 // -----------------------------------------------------------------------------
 
 export function HStackFull({ children }: HStackFullProps) {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return <div className="mx-auto flex w-full flex-1 flex-col">{children}</div>;
 }

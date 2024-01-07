@@ -53,6 +53,10 @@ export const PlaceholderOrb: FC<PlaceholderOrbProps> = ({
   address,
   className,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Local Variables
+  // ---------------------------------------------------------------------------
+
   const color = colors[address[41]?.charCodeAt(0) % colors.length];
 
   // ---------------------------------------------------------------------------

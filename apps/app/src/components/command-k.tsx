@@ -99,6 +99,10 @@ export const CommandK: FC = () => {
     console.info(decodeURIComponent(url.search));
   }, [copy]);
 
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {

@@ -67,6 +67,10 @@ export const AuthState: FC = () => {
     address: address as Address,
   });
 
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
   // On component mount, rehydrate the auth state from local storage
   // https://docs.pmnd.rs/zustand/integrations/persisting-store-data#getoptions
   useEffect(() => {
@@ -171,6 +175,10 @@ export const AuthState: FC = () => {
       router.push("/wallets");
     }
   }, [address, pathname, router]);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
   return null; // or return children if there are children to render
 };

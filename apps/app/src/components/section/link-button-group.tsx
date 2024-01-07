@@ -60,7 +60,7 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
   const router = useRouter();
 
   // ---------------------------------------------------------------------------
-  // Effect Hooks
+  // Local Variables
   // ---------------------------------------------------------------------------
 
   // Get the last part of the path
@@ -72,6 +72,10 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
   // Get the wallet address from the path
   // Address is the first part of the path
   const address = pathname.split("/")[1];
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   useEffect(() => {
     // Prefetch all the pages

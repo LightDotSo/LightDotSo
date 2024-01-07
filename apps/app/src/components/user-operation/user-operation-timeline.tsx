@@ -42,6 +42,10 @@ export const AddressPinPointer: FC<AddressPinPointerProps> = ({
   address,
   children,
 }) => (
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   <span className="relative inline-block">
     <span className="relative">
       <Avatar className="h-6 w-6">

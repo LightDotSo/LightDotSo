@@ -86,10 +86,15 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   className,
 }) => {
   // ---------------------------------------------------------------------------
-  // State Hooks
+  // Hooks
   // ---------------------------------------------------------------------------
 
   const isMounted = useIsMounted();
+
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
   const [open, setOpen] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState<{
     address: string;

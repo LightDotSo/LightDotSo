@@ -31,5 +31,9 @@ type UserOperationCardNonceProps = { userOperation: UserOperationData };
 export const UserOperationCardNonce: FC<UserOperationCardNonceProps> = ({
   userOperation: { nonce },
 }) => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return <div className="group flex items-center space-x-1.5">{nonce}</div>;
 };
