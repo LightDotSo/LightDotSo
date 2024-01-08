@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-filename="src/v1.d.ts"
+filename="src/types/api/v1.d.ts"
 temp_filename="src/temp.d.ts"
 
 while IFS= read -r line

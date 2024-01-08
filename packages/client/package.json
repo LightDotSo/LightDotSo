@@ -19,13 +19,14 @@
   ],
   "scripts": {
     "build": "tsup",
-    "clean": "rimraf -rf dist && rimraf -rf src/v1.d.ts",
+    "clean": "rimraf -rf dist && rimraf -rf src/types",
     "generate": "pnpm run generate:light && pnpm run generate:prepare",
-    "generate:lifi": "npx openapi-typescript https://li.quest/v1/documentation -o ./src/lifi.d.ts",
-    "generate:light": "npx openapi-typescript https://api.light.so/api-docs/openapi.json -o ./src/v1.d.ts",
+    "generate:lifi": "npx openapi-typescript https://li.quest/v1/documentation -o ./src/types/lifi/v1.d.ts",
+    "generate:light": "npx openapi-typescript https://api.light.so/api-docs/openapi.json -o ./src/types/api/v1.d.ts",
     "generate:local": "pnpm run generate:local-api && pnpm run generate:prepare",
-    "generate:local-api": "npx openapi-typescript http://localhost:3000/api-docs/openapi.json -o ./src/v1.d.ts",
+    "generate:local-api": "npx openapi-typescript http://localhost:3000/api-docs/openapi.json -o ./src/types/api/v1.d.ts",
     "generate:prepare": "./prepend.sh",
+    "generate:socket": "npx openapi-typescript https://raw.githubusercontent.com/SocketDotTech/socket-v2-sdk/927c8ae8726d3bcee198ad1891327697e60523ee/spec.json -o ./src/types/socket/v1.d.ts",
     "prepack": "clean-package",
     "postpack": "clean-package restore",
     "tsc": "tsc --noEmit"
