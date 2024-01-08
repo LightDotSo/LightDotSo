@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { Client } from "@upstash/edge-flags";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 
@@ -33,4 +34,12 @@ export const ratelimit = new Ratelimit({
   redis: redis,
   analytics: true,
   limiter: Ratelimit.slidingWindow(2, "30s"),
+});
+
+// -----------------------------------------------------------------------------
+// Edge
+// -----------------------------------------------------------------------------
+
+export const edge = new Client({
+  redis: redis,
 });

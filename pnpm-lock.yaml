@@ -413,6 +413,9 @@ importers:
       '@types/lodash':
         specifier: ^4.14.202
         version: 4.14.202
+      '@upstash/edge-flags':
+        specifier: ^0.1.1
+        version: 0.1.1(@babel/core@7.23.7)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)
       '@upstash/kafka':
         specifier: ^1.3.4-canary.1
         version: 1.3.4-canary.1
@@ -13041,6 +13044,21 @@ packages:
     engines: {node: '>=16.0.0'}
     dependencies:
       '@upstash/redis': 1.27.1
+    dev: false
+
+  /@upstash/edge-flags@0.1.1(@babel/core@7.23.7)(@opentelemetry/api@1.4.1)(react-dom@18.2.0):
+    resolution: {integrity: sha512-rfiWaxom+YeSZuyryaX567xWqnjjaYEdYJoUCTmB9lIWLvw55T2dWdsfNw6bGd6zKya4R2UtFpU+JBRq4TOqJA==}
+    dependencies:
+      '@upstash/redis': 1.27.1
+      next: 14.0.4(@babel/core@7.23.7)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+      zod: 3.22.4
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@opentelemetry/api'
+      - babel-plugin-macros
+      - react-dom
+      - sass
     dev: false
 
   /@upstash/kafka@1.3.4-canary.1:
