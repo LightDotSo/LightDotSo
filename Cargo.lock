@@ -3089,7 +3089,7 @@ dependencies = [
  "ethers-core 2.0.8",
  "ethers-etherscan 2.0.8",
  "eyre",
- "prettyplease",
+ "prettyplease 0.2.12",
  "proc-macro2",
  "quote",
  "regex",
@@ -3112,7 +3112,7 @@ dependencies = [
  "ethers-core 2.0.9",
  "ethers-etherscan 2.0.9",
  "eyre",
- "prettyplease",
+ "prettyplease 0.2.12",
  "proc-macro2",
  "quote",
  "regex",
@@ -3136,7 +3136,7 @@ dependencies = [
  "ethers-core 2.0.10",
  "ethers-etherscan 2.0.10",
  "eyre",
- "prettyplease",
+ "prettyplease 0.2.12",
  "proc-macro2",
  "quote",
  "regex",
@@ -6120,11 +6120,15 @@ dependencies = [
  "base64 0.21.3",
  "chrono",
  "futures",
+ "prettyplease 0.1.25",
  "progenitor",
+ "progenitor-client",
  "rand 0.8.5",
  "regress 0.4.1",
  "reqwest",
  "serde",
+ "serde_json",
+ "syn 2.0.48",
  "uuid 1.4.1",
 ]
 
@@ -8672,6 +8676,16 @@ name = "pretty-hex"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c6fa0831dd7cc608c38a5e323422a0077678fa5744aa2be4ad91c4ece8eec8d5"
+
+[[package]]
+name = "prettyplease"
+version = "0.1.25"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6c8646e95016a7a6c4adea95bafa8a16baab64b583356217f2c85db4a39d9a86"
+dependencies = [
+ "proc-macro2",
+ "syn 1.0.109",
+]
 
 [[package]]
 name = "prettyplease"

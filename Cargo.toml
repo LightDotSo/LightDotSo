@@ -182,6 +182,7 @@
   spki = "0.7.2"
   strum = "0.25"
   strum_macros = "0.25"
+  syn = "2.0"
   tauri = { version = "1.4", features = ["shell-open"] }
   tauri-build = { version = "1.4", features = [] }
   thiserror = "1.0.40"

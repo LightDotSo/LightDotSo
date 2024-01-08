@@ -12,9 +12,15 @@
   base64 = { workspace = true }
   chrono = { workspace = true, features = ["serde"] }
   futures = { workspace = true }
-  progenitor = { git = "https://github.com/oxidecomputer/progenitor", rev = "4a182d734e46fa1ce15415bf5bd497fc347dc43e" }
+  progenitor-client = { git = "https://github.com/oxidecomputer/progenitor", rev = "4a182d734e46fa1ce15415bf5bd497fc347dc43e" }
   rand = { workspace = true }
   regress = { workspace = true }
   reqwest = { workspace = true }
   serde = { workspace = true, features = ["derive"] }
   uuid = { workspace = true }
+
+[build-dependencies]
+  prettyplease = "0.1.25"
+  progenitor = { git = "https://github.com/oxidecomputer/progenitor", rev = "4a182d734e46fa1ce15415bf5bd497fc347dc43e" }
+  serde_json = { workspace = true }
+  syn = { workspace = true }

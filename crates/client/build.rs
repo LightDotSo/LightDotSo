@@ -13,14 +13,28 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// From: https://github.com/oxidecomputer/progenitor/blob/4a182d734e46fa1ce15415bf5bd497fc347dc43e/example-build/src/main.rs
+// From: https://github.com/oxidecomputer/progenitor/blob/4a182d734e46fa1ce15415bf5bd497fc347dc43e/example-build/build.rs
 // License: MPL-2.0
 
-// Include the generated code.
-include!(concat!(env!("OUT_DIR"), "/codegen.rs"));
+use std::{
+    env,
+    fs::{self, File},
+    path::Path,
+};
 
 fn main() {
-    let client = Client::new("https://foo/bar");
-    let _ =
-        client.enrol("auth-token", &types::EnrolBody { host: "".to_string(), key: "".to_string() });
+    let src = "./specs/keeper.json";
+    println!("cargo:rerun-if-changed={}", src);
+    let file = File::open(src).unwrap();
+    let spec = serde_json::from_reader(file).unwrap();
+    let mut generator = progenitor::Generator::default();
+
+    let tokens = generator.generate_tokens(&spec).unwrap();
+    let ast = syn::parse2(tokens).unwrap();
+    let content = prettyplease::unparse(&ast);
+
+    let mut out_file = Path::new(&env::var("OUT_DIR").unwrap()).to_path_buf();
+    out_file.push("codegen.rs");
+
+    fs::write(out_file, content).unwrap();
 }
