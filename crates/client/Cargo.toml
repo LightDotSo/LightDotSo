@@ -1,0 +1,27 @@
+[package]
+  name = "lightdotso-client"
+
+  version.workspace = true
+  edition.workspace = true
+  rust-version.workspace = true
+  license.workspace = true
+  homepage.workspace = true
+  repository.workspace = true
+
+[dependencies]
+  base64 = { workspace = true }
+  chrono = { workspace = true, features = ["serde"] }
+  eyre = { workspace = true }
+  futures = { workspace = true }
+  progenitor-client = { git = "https://github.com/oxidecomputer/progenitor", rev = "4a182d734e46fa1ce15415bf5bd497fc347dc43e" }
+  rand = { workspace = true }
+  regress = { workspace = true }
+  reqwest = { workspace = true }
+  serde = { workspace = true, features = ["derive"] }
+  uuid = { workspace = true }
+
+[build-dependencies]
+  prettyplease = { workspace = true }
+  progenitor = { git = "https://github.com/oxidecomputer/progenitor", rev = "4a182d734e46fa1ce15415bf5bd497fc347dc43e" }
+  serde_json = { workspace = true }
+  syn = { workspace = true }

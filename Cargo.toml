@@ -8,6 +8,7 @@
     "crates/autometrics",
     "crates/axum",
     "crates/bundler",
+    "crates/client",
     "crates/common",
     "crates/constants",
     "crates/consumer",
@@ -104,6 +105,7 @@
   lightdotso-autometrics = { path = "./crates/autometrics" }
   lightdotso-axum = { path = "./crates/axum" }
   lightdotso-bundler = { path = "./crates/bundler" }
+  lightdotso-client = { path = "./crates/client" }
   lightdotso-common = { path = "./crates/common" }
   lightdotso-consumer = { path = "./crates/consumer" }
   lightdotso-constants = { path = "./crates/constants" }
@@ -144,6 +146,7 @@
   opentelemetry-prometheus = "0.13.0"
   opentelemetry_sdk = { version = "0.20.0", features = ["metrics"] }
   once_cell = "1.8.0"
+  prettyplease = "0.2.15"
   prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.10", features = [
     "migrations",
     "mocking",
@@ -160,7 +163,8 @@
   rand = "0.8.5"
   rdkafka = { version = "0.33.2", features = ["sasl", "ssl"] }
   redb = "1.0.5"
-  reqwest = { version = "0.11.20", features = ["blocking", "json"] }
+  regress = "0.4.1"
+  reqwest = { version = "0.11.20", features = ["blocking", "json", "stream"] }
   revm = { version = "3", default-features = false, features = [
     "std",
     "serde",
@@ -179,6 +183,7 @@
   spki = "0.7.2"
   strum = "0.25"
   strum_macros = "0.25"
+  syn = "2.0"
   tauri = { version = "1.4", features = ["shell-open"] }
   tauri-build = { version = "1.4", features = [] }
   thiserror = "1.0.40"

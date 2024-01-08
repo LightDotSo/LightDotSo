@@ -13,8 +13,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod activity;
-pub mod covalent;
-pub mod interpretation;
-pub mod portfolio;
-pub mod transaction;
+// From: https://github.com/oxidecomputer/progenitor/blob/4a182d734e46fa1ce15415bf5bd497fc347dc43e/example-build/src/main.rs
+// License: MPL-2.0
+
+use eyre::Result;
+
+// Include the generated code.
+include!(concat!(env!("OUT_DIR"), "/codegen.rs"));
+
+pub async fn main() -> Result<()> {
+    let client = Client::new("https://foo/bar");
+
+    client
+        .enrol("auth-token", &types::EnrolBody { host: "".to_string(), key: "".to_string() })
+        .await?;
+
+    Ok(())
+}

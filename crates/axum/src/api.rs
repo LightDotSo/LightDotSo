@@ -176,6 +176,7 @@ use utoipa_swagger_ui::SwaggerUi;
         protocol_group::v1_protocol_group_create_handler,
         protocol_group::v1_protocol_group_get_handler,
         protocol_group::v1_protocol_group_list_handler,
+        queue::v1_queue_interpretation_handler,
         queue::v1_queue_portfolio_handler,
         queue::v1_queue_token_handler,
         signature::v1_signature_create_handler,
