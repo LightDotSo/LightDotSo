@@ -13,30 +13,26 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub(crate) mod error;
-pub(crate) mod interpretation;
-pub(crate) mod portfolio;
-pub(crate) mod token;
-pub(crate) mod types;
-
-use crate::state::AppState;
-use autometrics::autometrics;
-use axum::{routing::post, Router};
-
-pub(crate) use interpretation::{
-    __path_v1_queue_interpretation_handler, v1_queue_interpretation_handler,
+use crate::{
+    namespace::INTERPRETATION, produce_message, traits::ToJson,
+    types::interpretation::InterpretationMessage,
 };
-pub(crate) use portfolio::{__path_v1_queue_portfolio_handler, v1_queue_portfolio_handler};
-pub(crate) use token::{__path_v1_queue_token_handler, v1_queue_token_handler};
+use eyre::Result;
+pub use rdkafka;
+use rdkafka::producer::FutureProducer;
+use std::sync::Arc;
 
 // -----------------------------------------------------------------------------
-// Router
+// Producer
 // -----------------------------------------------------------------------------
 
-#[autometrics]
-pub(crate) fn router() -> Router<AppState> {
-    Router::new()
-        .route("/queue/interpretation", post(v1_queue_interpretation_handler))
-        .route("/queue/portfolio", post(v1_queue_portfolio_handler))
-        .route("/queue/token", post(v1_queue_token_handler))
+/// Produce a message with interpretation topic.
+pub async fn produce_interpretation_message(
+    producer: Arc<FutureProducer>,
+    msg: &InterpretationMessage,
+) -> Result<()> {
+    let message = msg.to_json();
+
+    produce_message(producer, INTERPRETATION.as_str(), &message, None).await?;
+    Ok(())
 }
