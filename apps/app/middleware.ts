@@ -16,20 +16,32 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { isAddress } from "viem";
+import { edgeFlags } from "@/clients/redis";
 
-export function middleware(request: NextRequest) {
-  let wallet_cookie = request.cookies.get("lightdotso.wallet");
+export async function middleware(req: NextRequest) {
+  let wallet_cookie = req.cookies.get("lightdotso.wallet");
 
   let pathArray = ["/"];
   if (
     process.env.NODE_ENV === "production" &&
-    pathArray.some(path => request.nextUrl.pathname === path) &&
+    pathArray.some(path => req.nextUrl.pathname === path) &&
     wallet_cookie
   ) {
     const wallet = wallet_cookie.value;
 
     if (isAddress(wallet)) {
-      return NextResponse.redirect(new URL(`/${wallet}/overview`, request.url));
+      return NextResponse.redirect(new URL(`/${wallet}/overview`, req.url));
+    }
+  }
+
+  if (
+    process.env.NODE_ENV === "production" &&
+    isAddress(req.nextUrl.pathname.slice(1))
+  ) {
+    const enabled = await edgeFlags.getFlag("eu-countries", req.geo ?? {});
+
+    if (!enabled) {
+      return NextResponse.redirect(new URL(`/disabled`, req.url));
     }
   }
 }

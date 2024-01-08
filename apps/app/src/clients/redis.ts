@@ -40,6 +40,6 @@ export const ratelimit = new Ratelimit({
 // Edge
 // -----------------------------------------------------------------------------
 
-export const edge = new Client({
+export const edgeFlags = new Client({
   redis: redis,
 });
