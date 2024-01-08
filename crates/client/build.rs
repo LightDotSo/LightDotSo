@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#![allow(clippy::unwrap_used)]
+
 // From: https://github.com/oxidecomputer/progenitor/blob/4a182d734e46fa1ce15415bf5bd497fc347dc43e/example-build/build.rs
 // License: MPL-2.0
 
@@ -31,7 +33,10 @@ fn main() {
 
     let tokens = generator.generate_tokens(&spec).unwrap();
     let ast = syn::parse2(tokens).unwrap();
-    let content = prettyplease::unparse(&ast);
+
+    // Allow clippy::unwrap_used for the coming generated code
+    let mut content = "#![allow(clippy::all)]\n\n".to_owned();
+    content.push_str(&prettyplease::unparse(&ast));
 
     let mut out_file = Path::new(&env::var("OUT_DIR").unwrap()).to_path_buf();
     out_file.push("codegen.rs");

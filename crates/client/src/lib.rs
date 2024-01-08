@@ -16,11 +16,17 @@
 // From: https://github.com/oxidecomputer/progenitor/blob/4a182d734e46fa1ce15415bf5bd497fc347dc43e/example-build/src/main.rs
 // License: MPL-2.0
 
+use eyre::Result;
+
 // Include the generated code.
 include!(concat!(env!("OUT_DIR"), "/codegen.rs"));
 
-fn main() {
+pub async fn main() -> Result<()> {
     let client = Client::new("https://foo/bar");
-    let _ =
-        client.enrol("auth-token", &types::EnrolBody { host: "".to_string(), key: "".to_string() });
+
+    client
+        .enrol("auth-token", &types::EnrolBody { host: "".to_string(), key: "".to_string() })
+        .await?;
+
+    Ok(())
 }
