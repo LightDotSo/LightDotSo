@@ -6,7 +6,7 @@ apps/subgraph/generated/**/*.ts
 apps/extension/**
 configurations/prisma/src/zod/**
 crates/solutions/tests/samples/**
-packages/client/src/*.d.ts
+packages/client/src/types/**/*.d.ts
 ios/LightWallet
 ios/LightWalletSafariExtension/Resources/**
 

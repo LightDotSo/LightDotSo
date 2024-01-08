@@ -14,8 +14,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import createClient from "openapi-fetch";
-import type { paths as LifiPaths } from "./lifi";
-import type { paths as ApiPaths } from "./v1";
+import type { paths as ApiPaths } from "./types/api/v1";
+import type { paths as LifiPaths } from "./types/lifi/v1";
+import type { paths as SocketPaths } from "./types/socket/v1";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -26,9 +27,19 @@ export type ClientType = "admin" | "authenticated" | "public";
 // -----------------------------------------------------------------------------
 // Lifi
 // -----------------------------------------------------------------------------
+
 export const lifiClient: ReturnType<typeof createClient<LifiPaths>> =
   createClient<LifiPaths>({
     baseUrl: "https://li.quest/v1",
+  });
+
+// -----------------------------------------------------------------------------
+// Socket
+// -----------------------------------------------------------------------------
+
+export const socketClient: ReturnType<typeof createClient<SocketPaths>> =
+  createClient<LifiPaths>({
+    baseUrl: "https://api.socket.tech",
   });
 
 // -----------------------------------------------------------------------------
