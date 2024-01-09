@@ -29,5 +29,5 @@ export async function GET(request: NextRequest, event: NextFetchEvent) {
 // -----------------------------------------------------------------------------
 
 export const config = {
-  runtime: "experimental-edge",
+  runtime: "edge",
 };
