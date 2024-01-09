@@ -13,16 +13,26 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// @ts-ignore
+import config from "@lightdotso/tailwindcss";
 import { useEffect, useState } from "react";
+import resolveConfig from "tailwindcss/resolveConfig";
 
 // From: https://github.com/shadcn-ui/ui/blob/fb614ac2921a84b916c56e9091aa0ae8e129c565/apps/www/hooks/use-media-query.tsx#L4
 // License: MIT
 
 // -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
+
+const fullConfig = resolveConfig(config);
+const screens = fullConfig.theme?.screens as Record<string, string>;
+
+// -----------------------------------------------------------------------------
 // Hook
 // -----------------------------------------------------------------------------
 
-export function useMediaQuery(query: string) {
+export function useMediaQuery(query: keyof typeof screens) {
   // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
@@ -38,7 +48,7 @@ export function useMediaQuery(query: string) {
       setValue(event.matches);
     }
 
-    const result = matchMedia(query);
+    const result = matchMedia(`(min-width: ${screens[query]})`);
     result.addEventListener("change", onChange);
     setValue(result.matches);
 

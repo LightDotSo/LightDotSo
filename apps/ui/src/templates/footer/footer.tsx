@@ -28,12 +28,12 @@ export const Footer: FC = () => {
       <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
-      <div className="mx-auto max-w-7xl px-4 pb-20 pt-12 sm:px-6 lg:px-8 lg:py-16">
+      <div className="mx-auto max-w-7xl px-4 pb-10 pt-8 sm:px-6 md:pb-20 md:pt-12 lg:px-8 lg:py-16">
         <div className="xl:grid xl:grid-cols-2 xl:gap-8">
           <FooterSocial />
           <FooterList />
         </div>
-        <div className="mt-12 space-y-6 border-t border-border pt-8 md:flex md:items-center md:justify-between">
+        <div className="mt-8 space-y-6 border-t border-border pt-8 md:mt-12 md:flex md:items-center md:justify-between">
           <p className="text-base text-text-weak xl:text-center">
             &copy; {new Date().getFullYear()} Light, Inc. All rights reserved.
           </p>

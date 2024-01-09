@@ -18,7 +18,6 @@
 
 "use client";
 
-import { cn } from "@lightdotso/utils";
 import {
   ActivityLogIcon,
   DashboardIcon,
@@ -29,8 +28,11 @@ import {
 } from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
 import { Suspense, useMemo, useState, useEffect } from "react";
-import type { FC, HTMLAttributes, RefAttributes } from "react";
-import { Tabs } from "@/components/nav/tabs-nav";
+import type { FC, HTMLAttributes, ReactNode, RefAttributes } from "react";
+import { AppNav } from "@/components/nav/app-nav";
+import { TabsNav } from "@/components/nav/tabs-nav";
+import { RootLogo } from "@/components/root/root-logo";
+import { WalletSwitcher } from "@/components/web3/wallet-switcher";
 import { usePathType, useTabs } from "@/hooks";
 
 // -----------------------------------------------------------------------------
@@ -92,13 +94,15 @@ const tabs = [
 // Props
 // -----------------------------------------------------------------------------
 
-type MainNavProps = HTMLAttributes<HTMLElement>;
+type MainNavProps = HTMLAttributes<HTMLElement> & {
+  children: ReactNode;
+};
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const MainNav: FC<MainNavProps> = ({ className = "", ...props }) => {
+export const MainNav: FC<MainNavProps> = ({ children, ...props }) => {
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
@@ -137,23 +141,45 @@ export const MainNav: FC<MainNavProps> = ({ className = "", ...props }) => {
   }, [typeTabs]);
 
   // ---------------------------------------------------------------------------
+  // Component
+  // ---------------------------------------------------------------------------
+
+  const Tabs = () => {
+    if (type === "unauthenticated" || type === "authenticated") {
+      return null;
+    }
+
+    return (
+      <div
+        className="flex h-10 items-center space-x-4 px-2 md:px-4 lg:space-x-6 lg:px-8"
+        {...props}
+      >
+        {/* Render upon mount */}
+        <Suspense>{framer && <TabsNav {...framer.tabProps} />}</Suspense>
+      </div>
+    );
+  };
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  if (type === "unauthenticated" || type === "authenticated") {
-    return null;
-  }
-
   return (
-    <div
-      className={cn(
-        "flex items-center space-x-4 lg:space-x-6 overflow-x-scroll overflow-y-hidden lg:overflow-x-visible md:overflow-y-visible scrollbar-none",
-        className,
-      )}
-      {...props}
-    >
-      {/* Render upon mount */}
-      <Suspense>{framer && <Tabs {...framer.tabProps} />}</Suspense>
-    </div>
+    <main>
+      <div className="flex flex-col">
+        <div className="overflow-y-visible border-b border-b-border py-2">
+          <div className="flex h-16 items-center px-2 md:px-4 lg:px-8">
+            <div className="flex items-center">
+              <RootLogo />
+              <span className="ml-2 mr-1 text-text/60">/</span>
+              <WalletSwitcher />
+            </div>
+            <AppNav />
+          </div>
+          <Tabs />
+        </div>
+        {children}
+      </div>
+    </main>
   );
 };
