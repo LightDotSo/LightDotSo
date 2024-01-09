@@ -67,6 +67,9 @@ solc-setup: ## Install solc dependencies.
 mac-setup: ## Install macOS dependencies.
 	rustup target add $(ARCHS_MAC)
 
+ruff-setup: ## Install ruff dependencies.
+  npm install -g ruff
+
 ##@ Build
 
 .PHONY: ios
@@ -138,6 +141,20 @@ xcframework:  # Temporary override for old build system
 	lipo -create target/x86_64-apple-ios/release/LightWalletCoreFFI.framework/LightWalletCoreFFI target/aarch64-apple-ios-sim/release/LightWalletCoreFFI.framework/LightWalletCoreFFI -output target/aarch64-apple-ios-sim/release/LightWalletCoreFFI.framework/LightWalletCoreFFI
 	rm -rf target/LightWalletCoreFFI.xcframework || echo "skip removing"
 	xcodebuild -create-xcframework -framework target/aarch64-apple-ios/release/LightWalletCoreFFI.framework -framework target/aarch64-apple-ios-sim/release/LightWalletCoreFFI.framework -output target/LightWalletCoreFFI.xcframework
+
+##@ Cargo
+
+.PHONY: cargo
+cargo: cargo-setup ## Run cargo.
+	cargo build
+
+.PHONY: cargo-clean
+cargo-clean: cargo-setup ## Clean cargo.
+	cargo clean
+
+.PHONY: cargo-fix
+cargo-fmt: cargo-setup ## Fix cargo.
+	cargo +nightly fmt --all
 
 ##@ Contracts
 contracts: contracts-size contracts-storage contracts-wagmi ## Runs all the contract generation scripts
@@ -211,6 +228,16 @@ cargo-generate:
 prisma: cargo-generate ## Add clippy ignore.
 	./scripts/add_recursive_flag.sh
 	./scripts/add_clippy_ignore.sh
+
+##@ Ruff
+
+.PHONY: ruff-fmt
+ruff-fmt: ## Run ruff.
+	ruff format .
+
+.PHONY: ruff-lint
+ruff-lint: ## Run ruff.
+	ruff check .
 
 ##@ Rundler
 

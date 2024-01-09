@@ -25,10 +25,13 @@
 
 [tool.rye]
   managed = true
-  dev-dependencies = ["notebook>=7.0.6"]
+  dev-dependencies = ["notebook>=7.0.6", "nbqa>=1.7.1"]
 
 [tool.hatch.metadata]
   allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
   packages = ["src/lightdotso"]
+
+[tool.ruff]
+  extend-include = ["*.ipynb"]

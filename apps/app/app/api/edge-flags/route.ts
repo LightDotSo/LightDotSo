@@ -21,6 +21,7 @@ import { edgeHandler } from "@/clients/redis";
 // -----------------------------------------------------------------------------
 
 export async function GET(request: NextRequest, event: NextFetchEvent) {
+  // @ts-ignore
   return edgeHandler(request, event);
 }
 

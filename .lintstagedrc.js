@@ -11,6 +11,7 @@ module.exports = {
     "sh -c 'pnpm run clippy:cmd && echo \"\"'",
     "sh -c 'pnpm run cargo:fmt:cmd && echo \"\"'",
   ],
+  "*.python": ["pnpm run ruff:lint"],
   "*.sol": [
     "pnpm run forge:fmt:cmd",
     "pnpm run forge:snapshot:cmd",

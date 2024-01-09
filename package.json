@@ -15,7 +15,7 @@
   "scripts": {
     "build:test": "concurrently \"pnpm:*:compile\"",
     "build:turbo": "dotenv -- turbo run build",
-    "cargo:fmt:cmd": "cargo +nightly fmt --all",
+    "cargo:fmt:cmd": "make cargo-fmt",
     "changeset": "changeset",
     "changeset:publish": "changeset publish",
     "changeset:status": "changeset status --verbose --since origin/main",
@@ -57,6 +57,8 @@
     "prettier:lint": "prettier --check .",
     "prisma": "make prisma",
     "prisma:turbo": "dotenv -- turbo run prisma",
+    "ruff:fix": "make ruff-fix",
+    "ruff:linter": "make ruff-lint",
     "solhint:cmd": "solhint \"contracts/**/*.sol\" --noPrompt",
     "solhint:fix": "solhint \"contracts/**/*.sol\" --noPrompt --fix",
     "solhint:lint": "solhint \"contracts/**/*.sol\" --noPrompt",
