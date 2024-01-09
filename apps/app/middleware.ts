@@ -16,11 +16,16 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { isAddress } from "viem";
-import { edgeFlags } from "@/clients/redis";
+
+// -----------------------------------------------------------------------------
+// Middleware
+// -----------------------------------------------------------------------------
 
 export async function middleware(req: NextRequest) {
-  let wallet_cookie = req.cookies.get("lightdotso.wallet");
+  // Get the wallet cookie
+  const wallet_cookie = req.cookies.get("lightdotso.wallet");
 
+  // Paths to redirect to if the user is logged in
   let pathArray = ["/"];
   if (
     process.env.NODE_ENV === "production" &&
@@ -33,18 +38,12 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL(`/${wallet}/overview`, req.url));
     }
   }
-
-  if (
-    process.env.NODE_ENV === "production" &&
-    isAddress(req.nextUrl.pathname.slice(1))
-  ) {
-    const enabled = await edgeFlags.getFlag("eu-countries", req.geo ?? {});
-
-    if (!enabled) {
-      return NextResponse.redirect(new URL(`/disabled`, req.url));
-    }
-  }
 }
+
+// -----------------------------------------------------------------------------
+// Config
+// -----------------------------------------------------------------------------
+
 export const config = {
   // From: https://nextjs.org/docs/app/building-your-application/routing/middleware
   matcher: [
