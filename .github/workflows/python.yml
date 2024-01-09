@@ -31,8 +31,12 @@ jobs:
           rye sync --no-lock
       - name: Set up Ruff
         uses: chartboost/ruff-action@v1
-        with:
-          src: "."
+      - name: Lint
+        run: |
+          make ruff-lint
+      - name: Check
+        run: |
+          make ruff-fmt
   python-check:
     if: always()
     needs:
