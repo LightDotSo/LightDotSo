@@ -30,7 +30,7 @@ import {
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
 import { Suspense, useMemo, useState, useEffect } from "react";
 import type { FC, HTMLAttributes, RefAttributes } from "react";
-import { Tabs } from "@/components/nav/tabs-nav";
+import { TabsNav } from "@/components/nav/tabs-nav";
 import { usePathType, useTabs } from "@/hooks";
 
 // -----------------------------------------------------------------------------
@@ -150,7 +150,7 @@ export const MainNav: FC<MainNavProps> = ({ className = "", ...props }) => {
       {...props}
     >
       {/* Render upon mount */}
-      <Suspense>{framer && <Tabs {...framer.tabProps} />}</Suspense>
+      <Suspense>{framer && <TabsNav {...framer.tabProps} />}</Suspense>
     </div>
   );
 };

@@ -40,7 +40,7 @@ const transition = {
 // Props
 // -----------------------------------------------------------------------------
 
-type TabProps = {
+type TabNavProps = {
   setSelectedTabIndex: (_index: number) => void;
   selectedTabIndex: number | undefined;
   tabs: Tab[];
@@ -50,7 +50,7 @@ type TabProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const Tabs: FC<TabProps> = ({
+export const TabsNav: FC<TabNavProps> = ({
   tabs,
   selectedTabIndex,
   setSelectedTabIndex,
@@ -142,7 +142,7 @@ export const Tabs: FC<TabProps> = ({
   return (
     <nav
       ref={navRef}
-      className="relative z-0 flex shrink-0 items-center justify-center mb-1.5 mt-2 py-2"
+      className="relative z-0 flex shrink-0 items-center mb-1.5 mt-2 py-2 max-w-full overflow-x-auto overflow-y-visible"
       // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
       onPointerLeave={e => setHoveredTabIndex(null)}
     >
