@@ -27,10 +27,7 @@ import { Suspense } from "react";
 import type { FC, ReactNode } from "react";
 import { AuthState } from "@/components/auth/auth-state";
 import { VercelToolbar } from "@/components/dev/vercel-toolbar";
-import { AppNav } from "@/components/nav/app-nav";
 import { MainNav } from "@/components/nav/main-nav";
-import { RootLogo } from "@/components/root/root-logo";
-import { WalletSwitcher } from "@/components/web3/wallet-switcher";
 import { Web3Provider } from "@/components/web3/web3-provider";
 import { WssState } from "@/components/wss/wss-state";
 
@@ -83,22 +80,7 @@ export const Root: FC<RootProps> = ({ children }) => {
         <ThemeProvider attribute="class">
           <ReactQueryProvider>
             <Web3Provider>
-              <main>
-                <div className="flex flex-col">
-                  <div className="border-b border-b-border py-2 overflow-y-visible">
-                    <div className="flex h-16 items-center px-2 md:px-4 lg:px-8">
-                      <div className="flex items-center">
-                        <RootLogo />
-                        <span className="ml-2 mr-1 text-text/60">/</span>
-                        <WalletSwitcher />
-                      </div>
-                      <AppNav />
-                    </div>
-                    <MainNav className="h-10 items-center px-2 md:px-4 lg:px-8" />
-                  </div>
-                  {children}
-                </div>
-              </main>
+              <MainNav>{children}</MainNav>
               <Footer />
               <Suspense>
                 <AuthState />

@@ -18,7 +18,6 @@
 
 "use client";
 
-import { cn } from "@lightdotso/utils";
 import {
   ActivityLogIcon,
   DashboardIcon,
@@ -29,8 +28,11 @@ import {
 } from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
 import { Suspense, useMemo, useState, useEffect } from "react";
-import type { FC, HTMLAttributes, RefAttributes } from "react";
+import type { FC, HTMLAttributes, ReactNode, RefAttributes } from "react";
+import { AppNav } from "@/components/nav/app-nav";
 import { TabsNav } from "@/components/nav/tabs-nav";
+import { RootLogo } from "@/components/root/root-logo";
+import { WalletSwitcher } from "@/components/web3/wallet-switcher";
 import { usePathType, useTabs } from "@/hooks";
 
 // -----------------------------------------------------------------------------
@@ -92,13 +94,19 @@ const tabs = [
 // Props
 // -----------------------------------------------------------------------------
 
-type MainNavProps = HTMLAttributes<HTMLElement>;
+type MainNavProps = HTMLAttributes<HTMLElement> & {
+  children: ReactNode;
+};
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const MainNav: FC<MainNavProps> = ({ className = "", ...props }) => {
+export const MainNav: FC<MainNavProps> = ({
+  className = "",
+  children,
+  ...props
+}) => {
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
@@ -145,12 +153,27 @@ export const MainNav: FC<MainNavProps> = ({ className = "", ...props }) => {
   }
 
   return (
-    <div
-      className={cn("flex items-center space-x-4 lg:space-x-6", className)}
-      {...props}
-    >
-      {/* Render upon mount */}
-      <Suspense>{framer && <TabsNav {...framer.tabProps} />}</Suspense>
-    </div>
+    <main>
+      <div className="flex flex-col">
+        <div className="border-b border-b-border py-2 overflow-y-visible">
+          <div className="flex h-16 items-center px-2 md:px-4 lg:px-8">
+            <div className="flex items-center">
+              <RootLogo />
+              <span className="ml-2 mr-1 text-text/60">/</span>
+              <WalletSwitcher />
+            </div>
+            <AppNav />
+          </div>
+          <div
+            className="flex items-center space-x-4 lg:space-x-6 h-10 items-center px-2 md:px-4 lg:px-8"
+            {...props}
+          >
+            {/* Render upon mount */}
+            <Suspense>{framer && <TabsNav {...framer.tabProps} />}</Suspense>
+          </div>
+        </div>
+        {children}
+      </div>
+    </main>
   );
 };

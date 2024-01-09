@@ -19,19 +19,27 @@
 // License: MIT
 
 import { cn } from "@lightdotso/utils";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  ClipboardEvent,
+  KeyboardEvent,
+  InputHTMLAttributes,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { Input } from "./input";
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
 
-interface OTPFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface OTPFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   length: number;
 }
 
-interface NumericInputFieldProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+interface NumericInputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   focus: boolean;
 }
 
@@ -97,7 +105,7 @@ export const OTP = ({
     }
   };
 
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.currentTarget.value.toUpperCase();
     if (/^[0-9A-Z]$/.test(inputValue)) {
       e.preventDefault();
@@ -110,7 +118,7 @@ export const OTP = ({
     }
   };
 
-  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleOnKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     const key = e.key.toUpperCase();
 
     switch (key) {
@@ -157,7 +165,7 @@ export const OTP = ({
     }
   };
 
-  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+  const handlePaste = (e: ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault();
 
     let pastedData = e.clipboardData.getData("text/plain").trim().toUpperCase();
