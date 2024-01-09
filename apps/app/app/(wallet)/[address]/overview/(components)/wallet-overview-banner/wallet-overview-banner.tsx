@@ -59,22 +59,20 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
           <WalletOverviewBannerSparkline address={address} />
         </Suspense>
       </div>
-      <div className="col-span-1 flex w-full items-center justify-end">
+      <div className="col-span-2 md:col-span-1 flex w-full items-center md:justify-end">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <span>
-                <Button
-                  type="button"
-                  className="w-full md:w-28"
-                  onClick={() => {
-                    errorToast("Not implemented yet");
-                  }}
-                >
-                  <PlusCircleIcon className="mr-2 h-5 w-5" />
-                  Deposit
-                </Button>
-              </span>
+              <Button
+                type="button"
+                className="w-full md:w-28"
+                onClick={() => {
+                  errorToast("Not implemented yet");
+                }}
+              >
+                <PlusCircleIcon className="mr-2 h-5 w-5" />
+                Deposit
+              </Button>
             </TooltipTrigger>
             <TooltipContent>
               <p>Deposit Assets</p>
