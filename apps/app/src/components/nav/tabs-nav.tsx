@@ -142,7 +142,7 @@ export const TabsNav: FC<TabNavProps> = ({
   return (
     <nav
       ref={navRef}
-      className="relative z-0 flex shrink-0 items-center mb-1.5 mt-2 py-2 max-w-full overflow-x-auto overflow-y-visible"
+      className="relative z-0 mb-1.5 mt-2 flex max-w-full shrink-0 items-center overflow-x-auto overflow-y-visible py-2"
       // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
       onPointerLeave={e => setHoveredTabIndex(null)}
     >
@@ -176,7 +176,7 @@ export const TabsNav: FC<TabNavProps> = ({
                 <Badge
                   type="number"
                   variant="outline"
-                  className="font-sm ml-2 rounded-full bg-background-strong text-text-weak border-0"
+                  className="font-sm ml-2 rounded-full border-0 bg-background-strong text-text-weak"
                 >
                   {item.number}
                 </Badge>

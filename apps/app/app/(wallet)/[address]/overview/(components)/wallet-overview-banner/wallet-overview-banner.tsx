@@ -59,7 +59,7 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
           <WalletOverviewBannerSparkline address={address} />
         </Suspense>
       </div>
-      <div className="col-span-2 md:col-span-1 flex w-full items-center md:justify-end">
+      <div className="col-span-2 flex w-full items-center md:col-span-1 md:justify-end">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>

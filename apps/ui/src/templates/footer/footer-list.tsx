@@ -61,7 +61,7 @@ export const FooterListItem: FC<FooterListItemProps> = ({ items, title }) => {
 
 export const FooterList: FC = () => {
   return (
-    <div className="mt-10 md:mt-12 grid grid-cols-2 gap-6 gap-y-8 md:gap-4 md:grid-cols-3 xl:mt-0">
+    <div className="mt-10 grid grid-cols-2 gap-6 gap-y-8 md:mt-12 md:grid-cols-3 md:gap-4 xl:mt-0">
       <FooterListItem items={NAVIGATION_LINKS.resources} title="Resources" />
       <FooterListItem items={NAVIGATION_LINKS.company} title="Company" />
       <FooterListItem items={NAVIGATION_LINKS.legal} title="Legal" />

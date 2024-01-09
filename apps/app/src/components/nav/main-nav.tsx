@@ -151,7 +151,7 @@ export const MainNav: FC<MainNavProps> = ({ children, ...props }) => {
 
     return (
       <div
-        className="flex items-center space-x-4 lg:space-x-6 h-10 items-center px-2 md:px-4 lg:px-8"
+        className="flex h-10 items-center space-x-4 px-2 md:px-4 lg:space-x-6 lg:px-8"
         {...props}
       >
         {/* Render upon mount */}
@@ -167,7 +167,7 @@ export const MainNav: FC<MainNavProps> = ({ children, ...props }) => {
   return (
     <main>
       <div className="flex flex-col">
-        <div className="border-b border-b-border py-2 overflow-y-visible">
+        <div className="overflow-y-visible border-b border-b-border py-2">
           <div className="flex h-16 items-center px-2 md:px-4 lg:px-8">
             <div className="flex items-center">
               <RootLogo />
