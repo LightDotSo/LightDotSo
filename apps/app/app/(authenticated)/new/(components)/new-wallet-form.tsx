@@ -232,7 +232,7 @@ export const NewWalletForm: FC = () => {
                     <RadioGroup
                       defaultValue={field.value}
                       id="type"
-                      className="grid grid-cols-3 gap-4"
+                      className="grid grid-cols-3 gap-4 items-stretch"
                       onValueChange={field.onChange}
                     >
                       <div>
@@ -245,7 +245,7 @@ export const NewWalletForm: FC = () => {
                           <TooltipTrigger asChild>
                             <Label
                               htmlFor="multi"
-                              className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-border bg-background-body p-4 hover:bg-background-stronger hover:text-text-weak peer-data-[state=checked]:border-border-primary [&:has([data-state=checked])]:border-border-primary"
+                              className="flex cursor-pointer h-full flex-col items-center justify-center rounded-md border-2 border-border bg-background-body p-4 hover:bg-background-stronger hover:text-text-weak peer-data-[state=checked]:border-border-primary [&:has([data-state=checked])]:border-border-primary"
                             >
                               <BuildingLibraryIcon className="mb-3 h-6 w-6" />
                               Multi-sig
@@ -269,7 +269,7 @@ export const NewWalletForm: FC = () => {
                           <TooltipTrigger asChild>
                             <Label
                               htmlFor="personal"
-                              className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-border bg-background-body p-4 hover:bg-background-stronger hover:text-text-weak peer-data-[state=checked]:border-border-primary [&:has([data-state=checked])]:border-border-primary"
+                              className="flex cursor-pointer h-full flex-col items-center justify-center rounded-md border-2 border-border bg-background-body p-4 hover:bg-background-stronger hover:text-text-weak peer-data-[state=checked]:border-border-primary [&:has([data-state=checked])]:border-border-primary"
                             >
                               <BanknotesIcon className="mb-3 h-6 w-6" />
                               Personal Vault
@@ -294,7 +294,7 @@ export const NewWalletForm: FC = () => {
                           <TooltipTrigger asChild>
                             <Label
                               htmlFor="2fa"
-                              className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-border bg-background-body p-4 hover:bg-background-stronger hover:text-text-weak peer-data-[state=checked]:border-border-primary [&:has([data-state=checked])]:border-border-primary"
+                              className="flex cursor-pointer h-full flex-col items-center justify-center rounded-md border-2 border-border bg-background-body p-4 hover:bg-background-stronger hover:text-text-weak peer-data-[state=checked]:border-border-primary [&:has([data-state=checked])]:border-border-primary"
                             >
                               <ShieldExclamationIcon className="mb-3 h-6 w-6" />
                               2FA (Coming Soon)

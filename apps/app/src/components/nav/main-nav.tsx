@@ -141,12 +141,28 @@ export const MainNav: FC<MainNavProps> = ({ children, ...props }) => {
   }, [typeTabs]);
 
   // ---------------------------------------------------------------------------
-  // Render
+  // Component
   // ---------------------------------------------------------------------------
 
-  if (type === "unauthenticated" || type === "authenticated") {
-    return null;
-  }
+  const Tabs = () => {
+    if (type === "unauthenticated" || type === "authenticated") {
+      return null;
+    }
+
+    return (
+      <div
+        className="flex items-center space-x-4 lg:space-x-6 h-10 items-center px-2 md:px-4 lg:px-8"
+        {...props}
+      >
+        {/* Render upon mount */}
+        <Suspense>{framer && <TabsNav {...framer.tabProps} />}</Suspense>
+      </div>
+    );
+  };
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
   return (
     <main>
@@ -160,13 +176,7 @@ export const MainNav: FC<MainNavProps> = ({ children, ...props }) => {
             </div>
             <AppNav />
           </div>
-          <div
-            className="flex items-center space-x-4 lg:space-x-6 h-10 items-center px-2 md:px-4 lg:px-8"
-            {...props}
-          >
-            {/* Render upon mount */}
-            <Suspense>{framer && <TabsNav {...framer.tabProps} />}</Suspense>
-          </div>
+          <Tabs />
         </div>
         {children}
       </div>
