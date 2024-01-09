@@ -27,6 +27,7 @@ export { useQueryUserOperationsCount } from "./useQueryUserOperationsCount";
 export { useQueryWallets } from "./useQueryWallets";
 export { useQueryWalletsCount } from "./useQueryWalletsCount";
 export { useSuspenseQueryAuthSession } from "./useSuspenseQueryAuthSession";
+export { useSuspenseQueryConfiguration } from "./useSuspenseQueryConfiguration";
 export { useSuspenseQueryPaymasterOperation } from "./useSuspenseQueryPaymasterOperation";
 export { useSuspenseQueryPortfolio } from "./useSuspenseQueryPortfolio";
 export { useSuspenseQueryTokenPrice } from "./useSuspenseQueryTokenPrice";

@@ -16,17 +16,16 @@
 // Full complete example from: https://github.com/hqasmei/youtube-tutorials/blob/ee44df8fbf6ab4f4c2f7675f17d67813947a7f61/vercel-animated-tabs/src/hooks/use-tabs.tsx
 // License: MIT
 
-import { getConfiguration, getUserOperationsCount } from "@lightdotso/client";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useMemo } from "react";
 import type { ReactNode } from "react";
 import type { Address } from "viem";
-import type {
-  ConfigurationData,
-  UserOperationCountData,
-  WalletSettingsData,
-} from "@/data";
+import type { WalletSettingsData } from "@/data";
+import {
+  useQueryUserOperationsCount,
+  useSuspenseQueryConfiguration,
+} from "@/query";
 import { queryKeys } from "@/queryKeys";
 import { useAuth } from "@/stores";
 
@@ -43,6 +42,7 @@ export type Tab = {
 };
 
 export type RawTab = Omit<Tab, "number">;
+
 // -----------------------------------------------------------------------------
 // Hook
 // -----------------------------------------------------------------------------
@@ -114,82 +114,15 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
       queryKeys.wallet.settings({ address: walletAddress as Address }).queryKey,
     );
 
-  const currentConfigurationData: ConfigurationData | undefined =
-    queryClient.getQueryData(
-      queryKeys.configuration.get({ address: walletAddress as Address })
-        .queryKey,
-    );
-
-  const { data: configuration } = useSuspenseQuery<ConfigurationData | null>({
-    queryKey: queryKeys.configuration.get({ address: walletAddress as Address })
-      .queryKey,
-    queryFn: async () => {
-      if (!walletAddress) {
-        return null;
-      }
-
-      const res = await getConfiguration({
-        params: {
-          query: {
-            address: walletAddress,
-          },
-        },
-      });
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentConfigurationData ?? null;
-        },
-      );
-    },
+  const { configuration } = useSuspenseQueryConfiguration({
+    address: walletAddress as Address,
   });
 
-  const currentUserOperationCountData: UserOperationCountData | undefined =
-    queryClient.getQueryData(
-      queryKeys.user_operation.listCount({
-        address: walletAddress as Address,
-        status: "proposed",
-        is_testnet: walletSettings?.is_enabled_testnet ?? false,
-      }).queryKey,
-    );
-
-  const { data: userOperationCount } =
-    useSuspenseQuery<UserOperationCountData | null>({
-      queryKey: queryKeys.user_operation.listCount({
-        address: walletAddress as Address,
-        status: "proposed",
-        is_testnet: walletSettings?.is_enabled_testnet ?? false,
-      }).queryKey,
-      queryFn: async () => {
-        if (!walletAddress) {
-          return null;
-        }
-
-        const res = await getUserOperationsCount({
-          params: {
-            query: {
-              address: walletAddress,
-              status: "proposed",
-              is_testnet: walletSettings?.is_enabled_testnet ?? false,
-            },
-          },
-        });
-
-        // Return if the response is 200
-        return res.match(
-          data => {
-            return data;
-          },
-          _ => {
-            return currentUserOperationCountData ?? null;
-          },
-        );
-      },
-    });
+  const { userOperationsCount } = useQueryUserOperationsCount({
+    address: walletAddress as Address,
+    status: "proposed",
+    is_testnet: walletSettings?.is_enabled_testnet ?? false,
+  });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -197,7 +130,7 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
 
   // Inside useTabs function
   const transformedTabs: Tab[] = useMemo(() => {
-    if (!configuration || !userOperationCount) {
+    if (!configuration || !userOperationsCount) {
       return tabs.map(tab => ({ ...tab, number: 0 }));
     }
 
@@ -206,14 +139,14 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
       if (tab.id === "owners") {
         number = configuration.owners.length;
       } else if (tab.id === "transactions") {
-        number = userOperationCount.count;
+        number = userOperationsCount.count;
       }
       // else if (tab.id === "activity") {
       //   number = data.transaction_count;
       // }
       return { ...tab, number };
     });
-  }, [configuration, userOperationCount, tabs]);
+  }, [configuration, userOperationsCount, tabs]);
 
   // ---------------------------------------------------------------------------
   // Return

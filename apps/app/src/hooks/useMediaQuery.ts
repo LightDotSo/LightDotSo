@@ -18,6 +18,10 @@ import { useEffect, useState } from "react";
 // From: https://github.com/shadcn-ui/ui/blob/fb614ac2921a84b916c56e9091aa0ae8e129c565/apps/www/hooks/use-media-query.tsx#L4
 // License: MIT
 
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
+
 export function useMediaQuery(query: string) {
   // ---------------------------------------------------------------------------
   // State Hooks

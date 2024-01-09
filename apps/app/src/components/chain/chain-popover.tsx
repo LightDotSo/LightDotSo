@@ -15,7 +15,6 @@
 
 "use client";
 
-import { getWalletSettings } from "@lightdotso/client";
 import {
   Command,
   CommandEmpty,
@@ -27,16 +26,13 @@ import {
   Button,
   PopoverContent,
 } from "@lightdotso/ui";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { ArrowUpRight, Globe } from "lucide-react";
 import { useMemo, useState } from "react";
 import type { FC } from "react";
 import type { Address } from "viem";
-import { useQueryClient } from "wagmi";
 import { CHAINS, MAINNET_CHAINS } from "@/const/chains";
-import type { WalletSettingsData } from "@/data";
 import { useIsMounted } from "@/hooks";
-import { queryKeys } from "@/queryKeys";
+import { useSuspenseQueryWalletSettings } from "@/query";
 import { useAuth } from "@/stores";
 import { ChainLogo } from "@/svgs";
 
@@ -61,48 +57,14 @@ export const ChainPopover: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { clientType, wallet } = useAuth();
+  const { wallet } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
-
-  const currentData: WalletSettingsData | undefined = queryClient.getQueryData([
-    "wallet_settings",
-    wallet,
-  ]);
-
-  const { data: walletSettings } = useSuspenseQuery<WalletSettingsData | null>({
-    queryKey: queryKeys.wallet.settings({ address: wallet as Address })
-      .queryKey,
-    queryFn: async () => {
-      if (!wallet) {
-        return null;
-      }
-
-      const res = await getWalletSettings(
-        {
-          params: {
-            query: {
-              address: wallet,
-            },
-          },
-        },
-        clientType,
-      );
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
+  const { walletSettings } = useSuspenseQueryWalletSettings({
+    address: wallet as Address,
   });
 
   // ---------------------------------------------------------------------------
