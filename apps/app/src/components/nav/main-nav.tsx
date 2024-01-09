@@ -102,11 +102,7 @@ type MainNavProps = HTMLAttributes<HTMLElement> & {
 // Component
 // -----------------------------------------------------------------------------
 
-export const MainNav: FC<MainNavProps> = ({
-  className = "",
-  children,
-  ...props
-}) => {
+export const MainNav: FC<MainNavProps> = ({ children, ...props }) => {
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
