@@ -35,12 +35,19 @@ import { FeedbackPopover } from "@/components/feedback/feedback-popover";
 import { UserNav } from "@/components/nav/user-nav";
 import { ConnectButton } from "@/components/web3/connect-button";
 import { useIsMounted, useMediaQuery } from "@/hooks";
+import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
 export const AppNav: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { address } = useAuth();
+
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
@@ -84,12 +91,15 @@ export const AppNav: FC = () => {
 
   return (
     <div className="ml-auto hidden items-center space-x-2.5 md:flex">
-      {/* <Search /> */}
-      <Suspense>
-        <ChainPopover />
-      </Suspense>
-      <FeedbackPopover />
-      <UserNav />
+      {address && (
+        <>
+          <Suspense>
+            <ChainPopover />
+          </Suspense>
+          <FeedbackPopover />
+          <UserNav />
+        </>
+      )}
       <ConnectButton />
     </div>
   );
