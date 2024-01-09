@@ -63,6 +63,10 @@ export const usePathType = (): RootType => {
   // Return
   // ---------------------------------------------------------------------------
 
+  if (!pathname) {
+    return "unauthenticated";
+  }
+
   if (
     unauthenticatedPaths.some(path => pathname.startsWith(path)) ||
     pathname === "/"

@@ -67,11 +67,11 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
   // Ex) /wallets/0x1234567890abcdef/transactions -> transactions
   // Ex) /wallets/0x1234567890abcdef/transactions/queue -> queue
 
-  const id = pathname.split("/").pop();
+  const id = pathname ? pathname.split("/").pop() : "";
 
   // Get the wallet address from the path
   // Address is the first part of the path
-  const address = pathname.split("/")[1];
+  const address = pathname ? pathname.split("/")[1] : "";
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
