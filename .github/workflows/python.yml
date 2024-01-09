@@ -29,10 +29,12 @@ jobs:
       - name: Install dependencies
         run: |
           rye sync --no-lock
-      - name: Set up Ruff
+      - name: Ruff Lint
+        uses: chartboost/ruff-action@v1
+      - name: Ruff Format
         uses: chartboost/ruff-action@v1
         with:
-          src: "./src"
+          args: format
   python-check:
     if: always()
     needs:

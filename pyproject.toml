@@ -11,6 +11,9 @@
     "setuptools>=68.0.0",
     "pusher>=3.3.2",
     "python-dotenv>=1.0.0",
+    "langchain>=0.1.0",
+    "openai>=1.7.0",
+    "langsmith>=0.0.78",
   ]
 
   [project.scripts]
@@ -22,10 +25,13 @@
 
 [tool.rye]
   managed = true
-  dev-dependencies = []
+  dev-dependencies = ["notebook>=7.0.6", "nbqa>=1.7.1"]
 
 [tool.hatch.metadata]
   allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
   packages = ["src/lightdotso"]
+
+[tool.ruff]
+  extend-include = ["*.ipynb"]
