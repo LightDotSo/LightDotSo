@@ -67,8 +67,9 @@ solc-setup: ## Install solc dependencies.
 mac-setup: ## Install macOS dependencies.
 	rustup target add $(ARCHS_MAC)
 
+.PHONY: ruff-setup
 ruff-setup: ## Install ruff dependencies.
-  npm install -g ruff
+	brew install ruff
 
 ##@ Build
 

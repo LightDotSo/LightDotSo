@@ -58,7 +58,7 @@
     "prisma": "make prisma",
     "prisma:turbo": "dotenv -- turbo run prisma",
     "ruff:fix": "make ruff-fix",
-    "ruff:linter": "make ruff-lint",
+    "ruff:lint": "make ruff-lint",
     "solhint:cmd": "solhint \"contracts/**/*.sol\" --noPrompt",
     "solhint:fix": "solhint \"contracts/**/*.sol\" --noPrompt --fix",
     "solhint:lint": "solhint \"contracts/**/*.sol\" --noPrompt",
