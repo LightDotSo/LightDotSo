@@ -103,6 +103,9 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
 
   // Set the initialTabId to the matching slug in tabIds array
   useEffect(() => {
+    if (!pathname) {
+      return;
+    }
     // Split the path using '/' as delimiter and remove empty strings
     const slugs = pathname.split("/").filter(slug => slug);
     const replacedSlugs = slugs.map(slug =>

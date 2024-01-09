@@ -18,9 +18,15 @@ import type { NextRequest } from "next/server";
 import { isAddress } from "viem";
 import { edgeFlags } from "@/clients/redis";
 
+// -----------------------------------------------------------------------------
+// Middleware
+// -----------------------------------------------------------------------------
+
 export async function middleware(req: NextRequest) {
+  // Get the wallet cookie
   let wallet_cookie = req.cookies.get("lightdotso.wallet");
 
+  // Paths to redirect to if the user is logged in
   let pathArray = ["/"];
   if (
     process.env.NODE_ENV === "production" &&
@@ -34,17 +40,35 @@ export async function middleware(req: NextRequest) {
     }
   }
 
+  // Paths for edge flags
+  // Get the address from the URL
+  // e.g. /0x1234567890abcdef1234567890abcdef1234567
+  const address = req.nextUrl.pathname.slice(1);
   if (
     process.env.NODE_ENV === "production" &&
-    isAddress(req.nextUrl.pathname.slice(1))
+    isAddress(address) &&
+    req.nextUrl.pathname === `/${address}/ai`
   ) {
-    const enabled = await edgeFlags.getFlag("eu-countries", req.geo ?? {});
+    const enabled = await edgeFlags
+      .getFlag("app-ai", req.geo ?? {})
+      .catch(err => {
+        console.error(err);
+        return false;
+      });
 
-    if (!enabled) {
-      return NextResponse.redirect(new URL(`/disabled`, req.url));
+    if (enabled) {
+      return NextResponse.next();
+    } else {
+      return NextResponse.redirect(new URL(`/${address}/overview`, req.url));
     }
   }
+  return NextResponse.next();
 }
+
+// -----------------------------------------------------------------------------
+// Cookie
+// -----------------------------------------------------------------------------
+
 export const config = {
   // From: https://nextjs.org/docs/app/building-your-application/routing/middleware
   matcher: [

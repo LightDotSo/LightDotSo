@@ -182,8 +182,10 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
           stepType === StepsEnum.Configuration &&
           !name) ||
         // If stepType is `confirm` it's disabled if the validateParams returns false
-        (stepType === StepsEnum.Confirm &&
-          !validateParams(searchParams, requiredParams))
+        (searchParams &&
+          stepType === StepsEnum.Confirm &&
+          !validateParams(searchParams, requiredParams)) ||
+        true
       }
       className="group flex w-full items-center bg-background-weak disabled:cursor-not-allowed"
       onClick={() => navigateToStep(step)}

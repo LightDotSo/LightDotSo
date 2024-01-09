@@ -13,17 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { NextFetchEvent, NextRequest } from "next/server";
 import { edgeHandler } from "@/clients/redis";
 
 // -----------------------------------------------------------------------------
 // Route
 // -----------------------------------------------------------------------------
 
-export async function GET(request: NextRequest, event: NextFetchEvent) {
-  // @ts-ignore
-  return edgeHandler(request, event);
-}
+export default edgeHandler;
 
 // -----------------------------------------------------------------------------
 // Config
