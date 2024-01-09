@@ -185,7 +185,6 @@ export const Tabs: FC<TabProps> = ({
           </Link>
         );
       })}
-
       <AnimatePresence>
         {hoveredRect && navRect && (
           <motion.div
@@ -216,7 +215,6 @@ export const Tabs: FC<TabProps> = ({
           />
         )}
       </AnimatePresence>
-
       {selectedRect && navRect && isAnimated && (
         <motion.div
           className={
