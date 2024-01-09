@@ -13,7 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { useEffect, useState } from "react";
+import { useFlag } from "@upstash/edge-flags";
+import { useMemo } from "react";
+import { useAuth } from "@/stores";
 
 // From: https://github.com/shadcn-ui/ui/blob/fb614ac2921a84b916c56e9091aa0ae8e129c565/apps/www/hooks/use-media-query.tsx#L4
 // License: MIT
@@ -22,32 +24,34 @@ import { useEffect, useState } from "react";
 // Hook
 // -----------------------------------------------------------------------------
 
-export function useMediaQuery(query: string) {
+export function useEdgeFlag(flagName: string) {
   // ---------------------------------------------------------------------------
-  // State Hooks
-  // ---------------------------------------------------------------------------
-
-  const [value, setValue] = useState(false);
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
+  // Stores
   // ---------------------------------------------------------------------------
 
-  useEffect(() => {
-    function onChange(event: MediaQueryListEvent) {
-      setValue(event.matches);
-    }
+  const { address, userId } = useAuth();
 
-    const result = matchMedia(query);
-    result.addEventListener("change", onChange);
-    setValue(result.matches);
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
 
-    return () => result.removeEventListener("change", onChange);
-  }, [query]);
+  const options = useMemo(
+    () => ({
+      address: address ?? "",
+      userId: userId ?? "",
+    }),
+    [address, userId],
+  );
+
+  // ---------------------------------------------------------------------------
+  // Edge Flag Hooks
+  // ---------------------------------------------------------------------------
+
+  const { isEnabled, isLoading, error } = useFlag(`app-${flagName}`, options);
 
   // ---------------------------------------------------------------------------
   // Return
   // ---------------------------------------------------------------------------
 
-  return value;
+  return { isEnabled, isLoading, error };
 }

@@ -15,6 +15,10 @@
 
 import { useEffect, useState } from "react";
 
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
+
 export function useDelayedValue<T>(
   value: T,
   initialValue: T,
