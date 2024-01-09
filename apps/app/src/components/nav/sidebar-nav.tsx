@@ -58,7 +58,7 @@ export const SidebarNav: FC<SidebarNavProps> = ({
   // For example, if the current pathname is "/0x1234/settings",
   // the baseHref will be "/0x1234"
 
-  const baseHref = baseRef ? pathname && pathname.split("/")[1] : undefined;
+  const baseHref = baseRef ? pathname.split("/")[1] : undefined;
 
   // ---------------------------------------------------------------------------
   // Render

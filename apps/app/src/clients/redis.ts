@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Client, createEdgeHandler } from "@upstash/edge-flags";
+import { Client } from "@upstash/edge-flags";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 
@@ -42,11 +42,4 @@ export const ratelimit = new Ratelimit({
 
 export const edgeFlags = new Client({
   redis: redis,
-});
-
-export const edgeHandler = createEdgeHandler({
-  // 3 days
-  maxAge: 60 * 60 * 24 * 3,
-  redisUrl: `https://${process.env.UPSTASH_REST_API_DOMAIN!}`,
-  redisToken: process.env.UPSTASH_REST_API_TOKEN!,
 });

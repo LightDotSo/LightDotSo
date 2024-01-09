@@ -24,7 +24,6 @@ import { useState, useEffect, useMemo } from "react";
 import type { ReactNode, RefAttributes } from "react";
 import type { Address } from "viem";
 import type { WalletSettingsData } from "@/data";
-import { useEdgeFlag } from "@/hooks";
 import {
   useQueryUserOperationsCount,
   useSuspenseQueryConfiguration,
@@ -83,12 +82,6 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
   const tabIds = tabs.map(tab => tab.id);
 
   // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const { isEnabled: isAIEnabled } = useEdgeFlag("ai");
-
-  // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
 
@@ -103,9 +96,6 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
 
   // Set the initialTabId to the matching slug in tabIds array
   useEffect(() => {
-    if (!pathname) {
-      return;
-    }
     // Split the path using '/' as delimiter and remove empty strings
     const slugs = pathname.split("/").filter(slug => slug);
     const replacedSlugs = slugs.map(slug =>
@@ -159,7 +149,8 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
       return tabs.map(tab => ({ ...tab, number: 0 }));
     }
 
-    if (isAIEnabled) {
+    // eslint-disable-next-line no-constant-condition
+    if (false) {
       // If AI not yet in tabs, add it
       if (!tabs.find(tab => tab.id === aiTab.id)) {
         // Add it after the id `activity`
@@ -182,7 +173,7 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
       // }
       return { ...tab, number };
     });
-  }, [configuration, userOperationsCount, isAIEnabled, tabs]);
+  }, [configuration, userOperationsCount, tabs]);
 
   // ---------------------------------------------------------------------------
   // Return

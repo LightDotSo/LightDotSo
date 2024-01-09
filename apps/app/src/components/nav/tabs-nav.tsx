@@ -75,10 +75,6 @@ export const Tabs: FC<TabProps> = ({
   // ---------------------------------------------------------------------------
 
   const firstSlug = useMemo(() => {
-    if (!pathname) {
-      return "";
-    }
-
     // Split the path using '/' as delimiter and remove empty strings
     const slugs = pathname.split("/").filter(slug => slug);
 

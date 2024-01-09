@@ -107,9 +107,6 @@ export const AuthState: FC = () => {
   // Check if the first segment of the pathname is a valid address w/ isAddress
   // If it is, set the auth state's wallet to that address
   useEffect(() => {
-    if (!pathname) {
-      return;
-    }
     const segments = pathname.split("/");
     if (segments.length > 1) {
       const maybeAddress = segments[1];
@@ -170,7 +167,6 @@ export const AuthState: FC = () => {
     // This is to prevent the user from seeing the home page when they are logged in
     if (
       address &&
-      pathname &&
       (pathname === "/" ||
         pathname.startsWith("/overview") ||
         pathname === "/transactions" ||

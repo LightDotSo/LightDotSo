@@ -49,12 +49,10 @@ export const RootLogo: FC = () => {
           ? "/"
           : type === "authenticated"
             ? "/wallets"
-            : pathname
-              ? // Get the wallet address from the path
-                // Address is the first part of the path
-                // e.g. /0x1234
-                `/${pathname.split("/")[1]}`
-              : "/"
+            : // Get the wallet address from the path
+              // Address is the first part of the path
+              // e.g. /0x1234
+              `/${pathname.split("/")[1]}`
       }
       className="hover:rounded-md hover:bg-background-stronger"
     >
