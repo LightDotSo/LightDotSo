@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import clsx from "clsx";
+import { cn } from "@lightdotso/utils";
 import type { FC, InsHTMLAttributes } from "react";
 import s from "@/components/lightdotso/placeholder-orb.module.css";
 
@@ -65,7 +65,7 @@ export const PlaceholderOrb: FC<PlaceholderOrbProps> = ({
 
   return (
     <span
-      className={clsx(
+      className={cn(
         "aspect-square inline-block h-full w-full overflow-hidden rounded-full",
         color === "gray" && s.gray,
         color === "red" && s.red,

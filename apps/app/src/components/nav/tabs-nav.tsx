@@ -16,7 +16,8 @@
 // Full complete example from: https://github.com/hqasmei/youtube-tutorials/blob/ee44df8fbf6ab4f4c2f7675f17d67813947a7f61/vercel-animated-tabs/src/components/tabs.tsx
 // License: MIT
 
-import clsx from "clsx";
+import { Badge } from "@lightdotso/ui";
+import { cn } from "@lightdotso/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
@@ -141,7 +142,7 @@ export const Tabs: FC<TabProps> = ({
   return (
     <nav
       ref={navRef}
-      className="relative z-0 flex shrink-0 items-center justify-center lg:mb-1.5 lg:mt-2 lg:py-2"
+      className="relative z-0 flex shrink-0 items-center justify-center mb-1.5 mt-2 py-2"
       // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
       onPointerLeave={e => setHoveredTabIndex(null)}
     >
@@ -154,8 +155,8 @@ export const Tabs: FC<TabProps> = ({
           <Link key={i} passHref legacyBehavior href={href}>
             <motion.a
               ref={el => (anchorRefs[i] = el)}
-              className={clsx(
-                "relative z-20 flex h-10 cursor-pointer select-none items-center rounded-md bg-transparent px-2.5 text-sm font-medium transition-colors hover:text-text-weak lg:mb-0.5",
+              className={cn(
+                "relative z-20 flex h-10 cursor-pointer select-none items-center rounded-md bg-transparent mb-0.5 px-2.5 text-sm font-medium transition-colors hover:text-text-weak",
                 !isActive ? "text-text-weak" : "text-text",
               )}
               onPointerEnter={() => {
@@ -172,9 +173,13 @@ export const Tabs: FC<TabProps> = ({
               {<item.icon className="mr-2 h-4 w-4" />}
               {item.label}
               {item.number > 0 && (
-                <span className="font-sm ml-2 rounded-full bg-background-strong px-2 py-0.5">
+                <Badge
+                  type="number"
+                  variant="outline"
+                  className="font-sm ml-2 rounded-full bg-background-strong text-text-weak border-0"
+                >
                   {item.number}
-                </span>
+                </Badge>
               )}
             </motion.a>
           </Link>

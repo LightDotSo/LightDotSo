@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import clsx from "clsx";
+import { cn } from "@lightdotso/utils";
 import type { FC, SVGProps } from "react";
 
 // -----------------------------------------------------------------------------
@@ -39,7 +39,7 @@ export const Logo: FC<LogoProps> = ({ className, ...props }) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       // eslint-disable-next-line tailwindcss/no-custom-classname
-      className={clsx("fill-contrast-high", className)}
+      className={cn("fill-contrast-high", className)}
       {...props}
     >
       <path

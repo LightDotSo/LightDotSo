@@ -85,7 +85,7 @@ export const Root: FC<RootProps> = ({ children }) => {
             <Web3Provider>
               <main>
                 <div className="flex flex-col">
-                  <div className="border-b border-b-border lg:py-2">
+                  <div className="border-b border-b-border py-2 overflow-y-visible overflow-x-scroll">
                     <div className="flex h-16 items-center px-2 md:px-4 lg:px-8">
                       <div className="flex items-center">
                         <RootLogo />
