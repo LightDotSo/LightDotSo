@@ -19,16 +19,13 @@
 // License: MIT
 
 import { cn } from "@lightdotso/utils";
-import {
+import type {
   ChangeEvent,
   ClipboardEvent,
   KeyboardEvent,
   InputHTMLAttributes,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
 } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Input } from "./input";
 
 // -----------------------------------------------------------------------------
