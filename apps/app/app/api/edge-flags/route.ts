@@ -13,13 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { useAuthModal } from "./useAuthModal";
-export { useCopy } from "./useCopy";
-export { useDebouncedValue } from "./useDebouncedValue";
-export { useDelayedValue } from "./useDelayedValue";
-export { useEdgeFlag } from "./useEdgeFlag";
-export { useIsMounted } from "./useIsMounted";
-export { useMediaQuery } from "./useMediaQuery";
-export { usePathType } from "./usePathType";
-export { useTabs } from "./useTabs";
-export type { Tab } from "./useTabs";
+import type { NextFetchEvent, NextRequest } from "next/server";
+import { edgeHandler } from "@/clients/redis";
+
+// -----------------------------------------------------------------------------
+// Route
+// -----------------------------------------------------------------------------
+
+export async function GET(request: NextRequest, event: NextFetchEvent) {
+  return edgeHandler(request, event);
+}
+
+export const config = {
+  runtime: "experimental-edge",
+};
