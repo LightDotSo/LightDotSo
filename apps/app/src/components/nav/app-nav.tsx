@@ -13,51 +13,57 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// @ts-ignore
-import config from "@lightdotso/tailwindcss";
-import { useEffect, useState } from "react";
-import resolveConfig from "tailwindcss/resolveConfig";
+"use client";
 
-// From: https://github.com/shadcn-ui/ui/blob/fb614ac2921a84b916c56e9091aa0ae8e129c565/apps/www/hooks/use-media-query.tsx#L4
-// License: MIT
-
-// -----------------------------------------------------------------------------
-// Const
-// -----------------------------------------------------------------------------
-
-const fullConfig = resolveConfig(config);
-const screens = fullConfig.theme?.screens as Record<string, string>;
+import type { FC } from "react";
+import { Suspense } from "react";
+import { ChainPopover } from "@/components/chain/chain-popover";
+import { FeedbackPopover } from "@/components/feedback/feedback-popover";
+import { UserNav } from "@/components/nav/user-nav";
+import { ConnectButton } from "@/components/web3/connect-button";
+import { useIsMounted, useMediaQuery } from "@/hooks";
+import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
-// Hook
+// Component
 // -----------------------------------------------------------------------------
 
-export function useMediaQuery(query: keyof typeof screens) {
+export const AppNav: FC = () => {
   // ---------------------------------------------------------------------------
-  // State Hooks
-  // ---------------------------------------------------------------------------
-
-  const [value, setValue] = useState(false);
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
+  // Hooks
   // ---------------------------------------------------------------------------
 
-  useEffect(() => {
-    function onChange(event: MediaQueryListEvent) {
-      setValue(event.matches);
-    }
-
-    const result = matchMedia(`(min-width: ${screens[query]})`);
-    result.addEventListener("change", onChange);
-    setValue(result.matches);
-
-    return () => result.removeEventListener("change", onChange);
-  }, [query]);
+  const isMounted = useIsMounted();
+  const isDesktop = useMediaQuery("md");
 
   // ---------------------------------------------------------------------------
-  // Return
+  // Stores
   // ---------------------------------------------------------------------------
 
-  return value;
-}
+  const { address } = useAuth();
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  // If the address is empty, return null
+  if (!isMounted || !address) {
+    return null;
+  }
+
+  if (!isDesktop) {
+    return <div className="ml-auto items-center space-x-2.5 md:flex">SM</div>;
+  }
+
+  return (
+    <div className="ml-auto hidden items-center space-x-2.5 md:flex">
+      {/* <Search /> */}
+      <Suspense>
+        <ChainPopover />
+      </Suspense>
+      <FeedbackPopover />
+      <UserNav />
+      <ConnectButton />
+    </div>
+  );
+};

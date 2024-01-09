@@ -26,13 +26,10 @@ import Script from "next/script";
 import { Suspense } from "react";
 import type { FC, ReactNode } from "react";
 import { AuthState } from "@/components/auth/auth-state";
-import { ChainPopover } from "@/components/chain/chain-popover";
 import { VercelToolbar } from "@/components/dev/vercel-toolbar";
-import { FeedbackPopover } from "@/components/feedback/feedback-popover";
+import { AppNav } from "@/components/nav/app-nav";
 import { MainNav } from "@/components/nav/main-nav";
-import { UserNav } from "@/components/nav/user-nav";
 import { RootLogo } from "@/components/root/root-logo";
-import { ConnectButton } from "@/components/web3/connect-button";
 import { WalletSwitcher } from "@/components/web3/wallet-switcher";
 import { Web3Provider } from "@/components/web3/web3-provider";
 import { WssState } from "@/components/wss/wss-state";
@@ -95,15 +92,7 @@ export const Root: FC<RootProps> = ({ children }) => {
                         <span className="ml-2 mr-1 text-text/60">/</span>
                         <WalletSwitcher />
                       </div>
-                      <div className="ml-auto hidden items-center space-x-2.5 md:flex">
-                        {/* <Search /> */}
-                        <Suspense>
-                          <ChainPopover />
-                        </Suspense>
-                        <FeedbackPopover />
-                        <UserNav />
-                        <ConnectButton />
-                      </div>
+                      <AppNav />
                     </div>
                     <MainNav className="h-10 items-center px-2 md:px-4 lg:px-8" />
                   </div>
