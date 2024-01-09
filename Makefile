@@ -232,8 +232,8 @@ prisma: cargo-generate ## Add clippy ignore.
 
 ##@ Ruff
 
-.PHONY: ruff-fmt
-ruff-fmt: ## Run ruff.
+.PHONY: ruff-fix
+ruff-fix: ## Run ruff.
 	ruff format .
 
 .PHONY: ruff-lint
@@ -245,8 +245,6 @@ ruff-lint: ## Run ruff.
 .PHONY: rundler
 rundler: ## Run rundler.
 	pnpm --filter @lightdotso/crates rundler
-
-#@ anvil
 
 #@ anvil
 .PHONY: anvil
