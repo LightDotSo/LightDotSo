@@ -65,7 +65,6 @@
     "@wagmi/core": "^1.4.13",
     "blurhash": "^2.0.5",
     "class-variance-authority": "^0.7.0",
-    "clsx": "^2.1.0",
     "connectkit": "^1.5.3",
     "copy-to-clipboard": "^3.3.3",
     "exponential-backoff": "^3.1.1",
