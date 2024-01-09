@@ -232,8 +232,8 @@ prisma: cargo-generate ## Add clippy ignore.
 
 ##@ Ruff
 
-.PHONY: ruff-fix
-ruff-fix: ## Run ruff.
+.PHONY: ruff-fmt
+ruff-fmt: ## Run ruff.
 	ruff format .
 
 .PHONY: ruff-lint

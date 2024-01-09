@@ -11,7 +11,7 @@ module.exports = {
     "sh -c 'pnpm run clippy:cmd && echo \"\"'",
     "sh -c 'pnpm run cargo:fmt:cmd && echo \"\"'",
   ],
-  "*.{py,ipynb}": ["pnpm run ruff:lint", "pnpm run ruff:fix"],
+  "*.{py,ipynb}": ["pnpm run ruff:lint:cmd", "pnpm run ruff:fmt:cmd"],
   "*.sol": [
     "pnpm run forge:fmt:cmd",
     "pnpm run forge:snapshot:cmd",
