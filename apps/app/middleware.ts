@@ -40,15 +40,15 @@ export async function middleware(req: NextRequest) {
     }
   }
 
-  // Path for edge flags
+  // Paths for edge flags
   if (
     process.env.NODE_ENV === "production" &&
     isAddress(req.nextUrl.pathname.slice(1))
   ) {
-    const enabled = await edgeFlags.getFlag("eu-countries", req.geo ?? {});
+    const enabled = await edgeFlags.getFlag("app-ai", {});
 
-    if (!enabled) {
-      return NextResponse.redirect(new URL(`/disabled`, req.url));
+    if (enabled) {
+      // return NextResponse.redirect(new URL("/ai", req.url));
     }
   }
 }
