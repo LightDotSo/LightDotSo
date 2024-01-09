@@ -24,6 +24,10 @@ export async function GET(request: NextRequest, event: NextFetchEvent) {
   return edgeHandler(request, event);
 }
 
+// -----------------------------------------------------------------------------
+// Config
+// -----------------------------------------------------------------------------
+
 export const config = {
   runtime: "experimental-edge",
 };

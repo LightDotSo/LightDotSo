@@ -37,9 +37,9 @@ import { useAuth } from "@/stores";
 // -----------------------------------------------------------------------------
 
 const aiTab = {
-  label: "Overview",
-  id: "overview",
-  href: "/overview",
+  label: "AI",
+  id: "ai",
+  href: "/ai",
   icon: (
     props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
   ) => <RadiobuttonIcon {...props} />,
@@ -157,7 +157,14 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
     }
 
     if (isAIEnabled) {
-      tabs.push(aiTab);
+      // If AI not yet in tabs, add it
+      if (!tabs.find(tab => tab.id === aiTab.id)) {
+        // Add it after the id `activity`
+        const indexOfTransactions = tabs.findIndex(
+          tab => tab.id === "activity",
+        );
+        tabs.splice(indexOfTransactions + 1, 0, aiTab);
+      }
     }
 
     return tabs.map(tab => {
