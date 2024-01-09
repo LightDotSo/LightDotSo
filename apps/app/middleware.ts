@@ -16,6 +16,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { isAddress } from "viem";
+import { edgeFlags } from "@/clients/redis";
 
 // -----------------------------------------------------------------------------
 // Middleware
@@ -38,6 +39,30 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL(`/${wallet}/overview`, req.url));
     }
   }
+
+  // Paths for edge flags
+  // Get the address from the URL
+  // e.g. /0x1234567890abcdef1234567890abcdef1234567
+  const address = req.nextUrl.pathname.slice(1);
+  if (
+    process.env.NODE_ENV === "production" &&
+    isAddress(address) &&
+    req.nextUrl.pathname === `/${address}/ai`
+  ) {
+    const enabled = await edgeFlags
+      .getFlag("app-ai", req.geo ?? {})
+      .catch(err => {
+        console.error(err);
+        return false;
+      });
+
+    if (enabled) {
+      return NextResponse.next();
+    } else {
+      return NextResponse.redirect(new URL(`/${address}/overview`, req.url));
+    }
+  }
+  return NextResponse.next();
 }
 
 // -----------------------------------------------------------------------------
