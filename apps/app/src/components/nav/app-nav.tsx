@@ -15,6 +15,19 @@
 
 "use client";
 
+import {
+  Button,
+  ButtonIcon,
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerFooter,
+  DrawerClose,
+  DrawerDescription,
+} from "@lightdotso/ui";
+import { AlignRight } from "lucide-react";
 import type { FC } from "react";
 import { Suspense } from "react";
 import { ChainPopover } from "@/components/chain/chain-popover";
@@ -52,7 +65,29 @@ export const AppNav: FC = () => {
   }
 
   if (!isDesktop) {
-    return <div className="ml-auto items-center space-x-2.5 md:flex">SM</div>;
+    return (
+      <Drawer>
+        <div className="ml-auto">
+          <DrawerTrigger>
+            <ButtonIcon variant="outline" size="sm">
+              <AlignRight className="h-4 w-4" />
+            </ButtonIcon>
+          </DrawerTrigger>
+        </div>
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>Are you sure absolutely sure?</DrawerTitle>
+            <DrawerDescription>This action cannot be undone.</DrawerDescription>
+          </DrawerHeader>
+          <DrawerFooter>
+            <Button>Submit</Button>
+            <DrawerClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    );
   }
 
   return (
