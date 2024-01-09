@@ -35,7 +35,6 @@ import { FeedbackPopover } from "@/components/feedback/feedback-popover";
 import { UserNav } from "@/components/nav/user-nav";
 import { ConnectButton } from "@/components/web3/connect-button";
 import { useIsMounted, useMediaQuery } from "@/hooks";
-import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -50,17 +49,10 @@ export const AppNav: FC = () => {
   const isDesktop = useMediaQuery("md");
 
   // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { address } = useAuth();
-
-  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  // If the address is empty, return null
-  if (!isMounted || !address) {
+  if (!isMounted) {
     return null;
   }
 
