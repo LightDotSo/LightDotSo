@@ -146,6 +146,7 @@ jobs:
           --locked --all-features --package ${{ inputs.crate }}
         env:
           DATABASE_READ_URL: ${{ secrets.DATABASE_READ_URL }}
+          PROTECTED_RPC_URL: ${{ secrets.PROTECTED_RPC_URL }}
       # - if: matrix.test
       #   name: Rust Coverage
       #   run: |
