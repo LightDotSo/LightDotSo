@@ -19,12 +19,12 @@ use axum::{
     extract::{Query, State},
     Json,
 };
-use ethers_main::{types::H160, utils::to_checksum};
+use ethers_main::types::H256;
 use lightdotso_kafka::{
     topics::interpretation::produce_interpretation_message,
     types::interpretation::InterpretationMessage,
 };
-use lightdotso_prisma::wallet;
+use lightdotso_prisma::{transaction, user_operation};
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -38,8 +38,10 @@ use super::{error::QueueError, types::QueueSuccess};
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct PostQuery {
-    /// The address of the target queue.
-    pub address: String,
+    /// The optional transaction hash to queue.
+    pub transaction_hash: String,
+    /// The optional user operation hash to queue.
+    pub user_operation_hash: Option<String>,
 }
 
 // -----------------------------------------------------------------------------
@@ -71,24 +73,37 @@ pub(crate) async fn v1_queue_interpretation_handler(
     // Get the post query.
     let Query(query) = post_query;
 
-    let parsed_query_address: H160 = query.address.parse()?;
-    let checksum_address = to_checksum(&parsed_query_address, None);
+    let parsed_transaction_hash: H256 = query.transaction_hash.parse()?;
+    let parsed_user_operation_hash: Option<H256> =
+        query.user_operation_hash.map_or(Ok(None), |hash| hash.parse().map(Some))?;
 
     // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
 
-    // Get the wallet from the database.
-    let wallet = state
+    // If the transaction hash is provided, get the transaction from the database.
+    state
         .client
-        .wallet()
-        .find_unique(wallet::address::equals(checksum_address.clone()))
-        .with(wallet::wallet_settings::fetch())
+        .transaction()
+        .find_unique(transaction::hash::equals(format!("{:?}", parsed_transaction_hash)))
         .exec()
-        .await?;
+        .await?
+        .ok_or_else(|| {
+            RouteError::QueueError(QueueError::NotFound(format!("{:?}", parsed_transaction_hash)))
+        })?;
 
-    // If the wallet is not found, return a 404.
-    wallet.ok_or(RouteError::QueueError(QueueError::NotFound(checksum_address.clone())))?;
+    // If the user operation hash is provided, get the user operation from the database.
+    if let Some(user_operation_hash) = parsed_user_operation_hash {
+        state
+            .client
+            .user_operation()
+            .find_unique(user_operation::hash::equals(format!("{:?}", user_operation_hash)))
+            .exec()
+            .await?
+            .ok_or_else(|| {
+                RouteError::QueueError(QueueError::NotFound(format!("{:?}", user_operation_hash)))
+            })?;
+    }
 
     // -------------------------------------------------------------------------
     // Kafka
@@ -97,7 +112,10 @@ pub(crate) async fn v1_queue_interpretation_handler(
     // For each chain, run the kafka producer.
     produce_interpretation_message(
         state.producer.clone(),
-        &InterpretationMessage { address: parsed_query_address },
+        &InterpretationMessage {
+            transaction_hash: parsed_transaction_hash,
+            user_operation_hash: parsed_user_operation_hash,
+        },
     )
     .await?;
 
