@@ -38,4 +38,5 @@ export type {
   WalletListParams,
   WalletListCountParams,
 } from "./wallet";
+export type { WalletFeaturesParams } from "./walletFeatures";
 export type { WalletSettingsParams } from "./walletSettings";

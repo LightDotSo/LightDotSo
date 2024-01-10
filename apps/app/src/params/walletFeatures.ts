@@ -13,34 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { createQueryKeys } from "@lukemorales/query-key-factory";
-import type { inferQueryKeys } from "@lukemorales/query-key-factory";
-import type { WalletListParams, WalletParams } from "@/params";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
-// Keys
+// Params
 // -----------------------------------------------------------------------------
 
-export const wallet = createQueryKeys("wallet", {
-  get: (params: WalletParams) => ({
-    queryKey: [{ params }],
-  }),
-  list: (params: WalletListParams) => ({
-    queryKey: [{ params }],
-  }),
-  listCount: (params: WalletListParams) => ({
-    queryKey: [{ params }],
-  }),
-  features: (params: WalletParams) => ({
-    queryKey: [{ params }],
-  }),
-  settings: (params: WalletParams) => ({
-    queryKey: [{ params }],
-  }),
-});
-
-// -----------------------------------------------------------------------------
-// Infer
-// -----------------------------------------------------------------------------
-
-export type WalletKeys = inferQueryKeys<typeof wallet>;
+export type WalletFeaturesParams = {
+  address: Address;
+};

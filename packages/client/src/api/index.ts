@@ -28,3 +28,5 @@ export * from "./transaction";
 export * from "./user_operation";
 export * from "./user";
 export * from "./wallet";
+export * from "./wallet_features";
+export * from "./wallet_settings";

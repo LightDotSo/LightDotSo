@@ -45,30 +45,6 @@ export const getWallet = async (
   });
 };
 
-export const getWalletSettings = async (
-  {
-    params,
-  }: {
-    params: {
-      query: { address: string };
-    };
-  },
-  clientType?: ClientType,
-) => {
-  const client = getClient(clientType);
-
-  return ResultAsync.fromPromise(
-    client.GET("/wallet/settings/get", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [params?.query?.address] },
-      params,
-    }),
-    () => new Error("Database error"),
-  ).andThen(({ data, response, error }) => {
-    return response.status === 200 && data ? ok(data) : err(error);
-  });
-};
-
 export const getWallets = async (
   {
     params,
@@ -191,37 +167,6 @@ export const updateWallet = async (
 
   return ResultAsync.fromPromise(
     client.PUT("/wallet/update", {
-      // @ts-ignore
-      next: { revalidate: 0 },
-      params,
-      body,
-    }),
-    () => new Error("Database error"),
-  ).andThen(({ data, response, error }) => {
-    return response.status === 200 && data ? ok(data) : err(error);
-  });
-};
-
-export const updateWalletSettings = async (
-  {
-    params,
-    body,
-  }: {
-    params: {
-      query: { address: string };
-    };
-    body: {
-      wallet_settings: {
-        is_enabled_testnet?: boolean | null | undefined;
-      };
-    };
-  },
-  clientType?: ClientType,
-) => {
-  const client = getClient(clientType);
-
-  return ResultAsync.fromPromise(
-    client.POST("/wallet/settings/update", {
       // @ts-ignore
       next: { revalidate: 0 },
       params,

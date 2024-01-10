@@ -37,4 +37,5 @@ export { useSuspenseQueryUser } from "./useSuspenseQueryUser";
 export { useSuspenseQueryUserOperations } from "./useSuspenseQueryUserOperations";
 export { useSuspenseQueryWallet } from "./useSuspenseQueryWallet";
 export { useSuspenseQueryWallets } from "./useSuspenseQueryWallets";
+export { useSuspenseQueryWalletFeatures } from "./useSuspenseQueryWalletFeatures";
 export { useSuspenseQueryWalletSettings } from "./useSuspenseQueryWalletSettings";

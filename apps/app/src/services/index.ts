@@ -29,4 +29,5 @@ export { getUserOperationNonce } from "@/services/getUserOperationNonce";
 export { getUserOperations } from "@/services/getUserOperations";
 export { getUserOperationsCount } from "@/services/getUserOperationsCount";
 export { getWallet } from "@/services/getWallet";
+export { getWalletFeatures } from "@/services/getWalletFeatures";
 export { getWalletSettings } from "@/services/getWalletSettings";

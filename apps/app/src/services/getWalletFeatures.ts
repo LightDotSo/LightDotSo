@@ -13,34 +13,25 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { createQueryKeys } from "@lukemorales/query-key-factory";
-import type { inferQueryKeys } from "@lukemorales/query-key-factory";
-import type { WalletListParams, WalletParams } from "@/params";
+import { getWalletFeatures as getClientWalletSettigns } from "@lightdotso/client";
+import type { WalletFeaturesParams } from "@/params";
+import "server-only";
 
 // -----------------------------------------------------------------------------
-// Keys
+// Pre
 // -----------------------------------------------------------------------------
 
-export const wallet = createQueryKeys("wallet", {
-  get: (params: WalletParams) => ({
-    queryKey: [{ params }],
-  }),
-  list: (params: WalletListParams) => ({
-    queryKey: [{ params }],
-  }),
-  listCount: (params: WalletListParams) => ({
-    queryKey: [{ params }],
-  }),
-  features: (params: WalletParams) => ({
-    queryKey: [{ params }],
-  }),
-  settings: (params: WalletParams) => ({
-    queryKey: [{ params }],
-  }),
-});
+export const preload = (params: WalletFeaturesParams) => {
+  void getWalletFeatures(params);
+};
 
 // -----------------------------------------------------------------------------
-// Infer
+// Service
 // -----------------------------------------------------------------------------
 
-export type WalletKeys = inferQueryKeys<typeof wallet>;
+export const getWalletFeatures = async (params: WalletFeaturesParams) => {
+  return getClientWalletSettigns(
+    { params: { query: { address: params.address } } },
+    "admin",
+  );
+};
