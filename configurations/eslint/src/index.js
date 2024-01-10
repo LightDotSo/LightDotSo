@@ -99,8 +99,9 @@ module.exports = {
       },
     ],
     "react/self-closing-comp": "error",
+    "tailwindcss/classnames-order": "error",
     "tailwindcss/no-custom-classname": [
-      0,
+      "off",
       {
         cssFiles: [
           "**/*.css",

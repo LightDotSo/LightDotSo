@@ -14,7 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { NAVIGATION_LINKS } from "@lightdotso/const";
-import { ArrowUpRight } from "lucide-react";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------

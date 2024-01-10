@@ -23,10 +23,10 @@ import type { FC } from "react";
 export const FooterVersion: FC = () => {
   return (
     <div className="flex items-center justify-between space-x-2">
-      <span className="text-text-weak/60 text-xs">
+      <span className="text-xs text-text-weak/60">
         Version:{" "}
         <a
-          className="hover:underline text-text-weak"
+          className="text-text-weak hover:underline"
           href={`${SOCIAL_LINKS.Github}/releases/tag/${process.env.NEXT_PUBLIC_APP_VERSION}`}
           target="_blank"
           rel="noreferrer"

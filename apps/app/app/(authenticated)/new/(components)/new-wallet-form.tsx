@@ -146,7 +146,7 @@ export const NewWalletForm: FC = () => {
     // Set the form values from the default values
     setFormValues(defaultValues);
 
-    if (inviteCode) {
+    if (inviteCode && inviteCode.length === 7) {
       validateInviteCode(inviteCode);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -323,30 +323,30 @@ export const NewWalletForm: FC = () => {
                       id="inviteCode"
                       placeholder="Your Invite Code"
                       defaultValue={field.value}
-                      onBlur={e => {
-                        // Validate the address
-                        if (!e.target.value) {
-                          // Clear the value of key address
-                          form.setValue("inviteCode", "");
-                        }
-                        const inviteCode = e.target.value;
+                      // onBlur={e => {
+                      //   // Validate the address
+                      //   if (!e.target.value) {
+                      //     // Clear the value of key address
+                      //     form.setValue("inviteCode", "");
+                      //   }
+                      //   const inviteCode = e.target.value;
 
-                        // Don't validate if the length is not 7 (including the dash)
-                        if (inviteCode.length !== 7) {
-                          validateInviteCode(inviteCode);
-                        }
-                      }}
-                      onChange={e => {
-                        // Update the field value
-                        field.onChange(e.target.value || "");
+                      //   // Don't validate if the length is not 7 (including the dash)
+                      //   if (inviteCode.length !== 7) {
+                      //     validateInviteCode(inviteCode);
+                      //   }
+                      // }}
+                      // onChange={e => {
+                      //   // Update the field value
+                      //   field.onChange(e.target.value || "");
 
-                        // Validate the address
-                        const inviteCode = e.target.value;
+                      //   // Validate the address
+                      //   const inviteCode = e.target.value;
 
-                        if (inviteCode.length === 7) {
-                          validateInviteCode(inviteCode);
-                        }
-                      }}
+                      //   if (inviteCode.length === 7) {
+                      //     validateInviteCode(inviteCode);
+                      //   }
+                      // }}
                     />
                     <FormDescription>Enter the invite code</FormDescription>
                     <FormMessage />

@@ -32,15 +32,15 @@ export const Footer: FC = () => {
       <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
-      <div className="mx-auto max-w-7xl py-8 space-y-4 md:space-y-8">
-        <div className="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between md:items-center">
+      <div className="mx-auto max-w-7xl space-y-4 py-8 md:space-y-8">
+        <div className="flex flex-col justify-between space-y-6 md:flex-row md:items-center md:space-y-0">
           <FooterLogo />
           <FooterSocial />
         </div>
         <div>
           <FooterList />
         </div>
-        <div className="hidden md:flex justify-end">
+        <div className="hidden justify-end md:flex">
           <FooterVersion />
         </div>
       </div>
