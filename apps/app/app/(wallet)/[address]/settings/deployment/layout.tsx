@@ -39,5 +39,9 @@ interface SettingsDeploymentLayoutProps {
 // -----------------------------------------------------------------------------
 
 export default function Layout({ children }: SettingsDeploymentLayoutProps) {
-  return { children };
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  return children;
 }

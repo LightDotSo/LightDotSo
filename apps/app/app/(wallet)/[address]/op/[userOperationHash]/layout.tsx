@@ -45,5 +45,5 @@ export default function UserOperationDetailsLayout({
   // Render
   // ---------------------------------------------------------------------------
 
-  return { children };
+  return children;
 }

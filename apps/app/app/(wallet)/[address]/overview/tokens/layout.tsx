@@ -39,5 +39,9 @@ interface OverviewTokensLayoutProps {
 // -----------------------------------------------------------------------------
 
 export default function Layout({ children }: OverviewTokensLayoutProps) {
-  return { children };
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  return children;
 }
