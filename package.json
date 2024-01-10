@@ -175,7 +175,7 @@
     "vitest": "^1.1.1",
     "vitest-solidity-coverage": "^0.1.4"
   },
-  "packageManager": "pnpm@8.9.0",
+  "packageManager": "pnpm@8.14.0",
   "pnpm": {
     "overrides": {
       "next": "$next"
