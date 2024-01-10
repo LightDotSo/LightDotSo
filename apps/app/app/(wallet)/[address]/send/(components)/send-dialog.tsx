@@ -1390,7 +1390,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                   transfers[index]?.asset
                                                     ?.address &&
                                                   "tokenId" in
-                                                    // eslint-disable-next-line no-unsafe-optional-chaining @typescript-eslint/no-non-null-asserted-optional-chain
+                                                    // eslint-disable-next-line no-unsafe-optional-chaining, @typescript-eslint/no-non-null-asserted-optional-chain
                                                     transfers[index]?.asset! &&
                                                   currentNftData.nfts?.find(
                                                     nft =>
@@ -1455,7 +1455,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                             transfers[index]?.asset &&
                                             transfers[index]?.asset?.address &&
                                             "tokenId" in
-                                              // eslint-disable-next-line no-unsafe-optional-chaining @typescript-eslint/no-non-null-asserted-optional-chain
+                                              // eslint-disable-next-line no-unsafe-optional-chaining, @typescript-eslint/no-non-null-asserted-optional-chain
                                               transfers[index]?.asset! &&
                                             transfers[index]?.chainId
                                               ? // @ts-expect-error
