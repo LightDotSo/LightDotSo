@@ -144,6 +144,8 @@ jobs:
         run: |
           cargo nextest run \
           --locked --all-features --package ${{ inputs.crate }}
+        env:
+          TEST_DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
       # - if: matrix.test
       #   name: Rust Coverage
       #   run: |

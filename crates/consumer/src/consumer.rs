@@ -142,7 +142,7 @@ impl Consumer {
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         topic if topic == INTERPRETATION.to_string() => {
-                            let _ = interpretation_consumer(&m).await;
+                            let _ = interpretation_consumer(&m, db.clone()).await;
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         topic if topic == PORTFOLIO.to_string() => {
