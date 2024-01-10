@@ -13,53 +13,32 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { NAVIGATION_LINKS } from "@lightdotso/const";
-import type { FC } from "react";
+import type { Meta, StoryObj } from "@storybook/react";
+import { Footer } from "./footer";
 
 // -----------------------------------------------------------------------------
-// Props
+// Meta
 // -----------------------------------------------------------------------------
 
-interface ListItem {
-  name: string;
-  href: string;
-}
-
-interface FooterListItemProps {
-  items: ListItem[];
-  title: string;
-}
-
-// -----------------------------------------------------------------------------
-// Component
-// -----------------------------------------------------------------------------
-
-export const FooterListItem: FC<FooterListItemProps> = ({ items, title }) => {
-  return (
-    <>
-      {items.map(item => {
-        return (
-          <li key={item.name} className="text-text-weak/60 hover:underline">
-            <a href={item.href} target="_blank" rel="noreferrer">
-              {item.name}
-            </a>
-          </li>
-        );
-      })}
-    </>
-  );
+const meta: Meta<typeof Footer> = {
+  title: "template/Footer",
+  component: Footer,
+  tags: ["autodocs"],
+  argTypes: {},
 };
+export default meta;
 
 // -----------------------------------------------------------------------------
-// Component
+// Types
 // -----------------------------------------------------------------------------
 
-export const FooterList: FC = () => {
-  return (
-    <ul className="grid grid-cols-2 gap-2 md:flex md:flex-row md:gap-8">
-      <FooterListItem items={NAVIGATION_LINKS.resources} title="Resources" />
-      <FooterListItem items={NAVIGATION_LINKS.company} title="Company" />
-      <FooterListItem items={NAVIGATION_LINKS.legal} title="Legal" />
-    </ul>
-  );
+type Story = StoryObj<typeof Footer>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Base: Story = {
+  render: args => <Footer />,
+  args: {},
 };

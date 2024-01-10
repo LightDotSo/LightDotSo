@@ -13,34 +13,34 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { MonitorCheck } from "lucide-react";
 import type { FC } from "react";
-import { FooterList } from "./footer-list";
-import { FooterLogo } from "./footer-logo";
-import { FooterModeSelect } from "./footer-mode-select";
-import { FooterSocial } from "./footer-social";
+import { Button } from "../../components/ui/button";
+import { LightHorizontalLogo } from "../../svgs/logo/light-horizontal";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const Footer: FC = () => {
+export const FooterLogo: FC = () => {
   return (
-    <footer className="border-t border-border" aria-labelledby="footer-heading">
-      <h2 id="footer-heading" className="sr-only">
-        Footer
-      </h2>
-      <div className="mx-auto max-w-7xl px-2 md:px-4 lg:px-8 py-8 space-y-4 md:space-y-6">
-        <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row justify-between md:items-center">
-          <FooterLogo />
-          <FooterSocial />
-        </div>
-        <div>
-          <FooterList />
-        </div>
-        <div className="mt-8 space-y-6 border-t border-border pt-8 md:mt-12 md:flex md:items-center md:justify-between">
-          <FooterModeSelect />
-        </div>
+    <div className="flex space-x-3 items-center justify-between">
+      <div className="flex shrink-0 items-center space-x-1">
+        <LightHorizontalLogo className="block h-8" />
+        <p className="text-base text-text-weak xl:text-center">
+          &copy; {new Date().getFullYear()}
+        </p>
       </div>
-    </footer>
+      <div className="flex items-center">
+        <Button asChild size="xs" variant="ghost">
+          <a href="https://status.light.so" target="_blank" rel="noreferrer">
+            <MonitorCheck className="text-text-info h-4 w-4" />
+            <span className="ml-2 text-text-info text-xs">
+              All systems normal.
+            </span>
+          </a>
+        </Button>
+      </div>
+    </div>
   );
 };
