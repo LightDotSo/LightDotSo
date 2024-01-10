@@ -24,18 +24,19 @@ import { LightHorizontalLogo } from "../../svgs/logo/light-horizontal";
 
 export const FooterLogo: FC = () => {
   return (
-    <div className="flex space-x-3 items-center justify-between">
+    <div className="flex items-center justify-between space-x-3">
       <div className="flex shrink-0 items-center space-x-1">
         <LightHorizontalLogo className="block h-8" />
         <p className="text-base text-text-weak xl:text-center">
           &copy; {new Date().getFullYear()}
+          <span className="hidden md:inline-flex">&nbsp;Light, Inc.</span>
         </p>
       </div>
       <div className="flex items-center">
         <Button asChild size="xs" variant="ghost">
           <a href="https://status.light.so" target="_blank" rel="noreferrer">
-            <MonitorCheck className="text-text-info h-4 w-4" />
-            <span className="ml-2 text-text-info text-xs">
+            <MonitorCheck className="h-4 w-4 text-text-info" />
+            <span className="ml-2 text-xs text-text-info-strong">
               All systems normal.
             </span>
           </a>

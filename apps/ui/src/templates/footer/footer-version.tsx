@@ -13,34 +13,37 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { SOCIAL_LINKS } from "@lightdotso/const";
 import type { FC } from "react";
-import { FooterList } from "./footer-list";
-import { FooterLogo } from "./footer-logo";
-import { FooterSocial } from "./footer-social";
-import { FooterVersion } from "./footer-version";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const Footer: FC = () => {
+export const FooterVersion: FC = () => {
   return (
-    <footer className="border-t border-border" aria-labelledby="footer-heading">
-      <h2 id="footer-heading" className="sr-only">
-        Footer
-      </h2>
-      <div className="mx-auto max-w-7xl py-8 space-y-4 md:space-y-6">
-        <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row justify-between md:items-center">
-          <FooterLogo />
-          <FooterSocial />
-        </div>
-        <div>
-          <FooterList />
-        </div>
-        <div className="hidden md:flex justify-end">
-          <FooterVersion />
-        </div>
-      </div>
-    </footer>
+    <div className="flex items-center justify-between space-x-2">
+      <span className="text-text-weak/60 text-xs">
+        Version{" "}
+        <a
+          className="hover:underline text-text-weak"
+          href={`${SOCIAL_LINKS.Github}/releases/tag/${process.env.NEXT_PUBLIC_APP_VERSION}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          v${process.env.NEXT_PUBLIC_APP_VERSION}
+        </a>{" "}
+        {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA && (
+          <a
+            className="hover:underline"
+            target="_blank"
+            rel="noreferrer"
+            href={SOCIAL_LINKS.Github}
+          >
+            ({process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA.slice(0, 7)})
+          </a>
+        )}
+      </span>
+    </div>
   );
 };

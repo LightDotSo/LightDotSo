@@ -17,6 +17,7 @@ const config: StorybookConfig = {
   },
   viteFinal: async (config, { configType }) => {
     return mergeConfig(config, {
+      define: { "process.env": {} },
       resolve: {
         alias: {
           "@lightdotso/ui": path.resolve(__dirname, "../src/"),
