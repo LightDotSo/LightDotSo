@@ -49,12 +49,10 @@ export default function UserOperationLayout({
   // ---------------------------------------------------------------------------
 
   return (
-    <>
-      <HStackFull>
-        <BaseLayerWrapper>
-          <BasicPageWrapper>{children}</BasicPageWrapper>
-        </BaseLayerWrapper>
-      </HStackFull>
-    </>
+    <HStackFull>
+      <BaseLayerWrapper>
+        <BasicPageWrapper>{children}</BasicPageWrapper>
+      </BaseLayerWrapper>
+    </HStackFull>
   );
 }

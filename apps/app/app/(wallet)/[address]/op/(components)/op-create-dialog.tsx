@@ -67,23 +67,21 @@ export const OpCreateDialog: FC<OpCreateDialogProps> = ({
   // ---------------------------------------------------------------------------
 
   return (
-    <>
-      <div className="mt-4 flex flex-col space-y-3 text-center sm:text-left">
-        <header className="text-lg font-semibold leading-none tracking-tight">
-          Transaction
-        </header>
-        <p className="text-sm text-text-weak">
-          Are you sure you want to sign this transaction?
-        </p>
-        {userOperations?.map((userOperation, index) => (
-          <OpCreateCard
-            key={index}
-            address={address}
-            config={config}
-            userOperation={userOperation}
-          />
-        ))}
-      </div>
-    </>
+    <div className="mt-4 flex flex-col space-y-3 text-center sm:text-left">
+      <header className="text-lg font-semibold leading-none tracking-tight">
+        Transaction
+      </header>
+      <p className="text-sm text-text-weak">
+        Are you sure you want to sign this transaction?
+      </p>
+      {userOperations?.map((userOperation, index) => (
+        <OpCreateCard
+          key={index}
+          address={address}
+          config={config}
+          userOperation={userOperation}
+        />
+      ))}
+    </div>
   );
 };

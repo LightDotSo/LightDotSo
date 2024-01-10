@@ -44,17 +44,15 @@ interface SendLayoutProps {
 
 export default function SendLayout({ children }: SendLayoutProps) {
   return (
-    <>
-      <BannerSection
-        title={TITLES.Send.title}
-        description={TITLES.Send.description}
-      >
-        <HStackFull>
-          <BaseLayerWrapper>
-            <BasicPageWrapper>{children}</BasicPageWrapper>
-          </BaseLayerWrapper>
-        </HStackFull>
-      </BannerSection>
-    </>
+    <BannerSection
+      title={TITLES.Send.title}
+      description={TITLES.Send.description}
+    >
+      <HStackFull>
+        <BaseLayerWrapper>
+          <BasicPageWrapper>{children}</BasicPageWrapper>
+        </BaseLayerWrapper>
+      </HStackFull>
+    </BannerSection>
   );
 }

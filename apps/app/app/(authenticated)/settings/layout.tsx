@@ -63,19 +63,17 @@ interface SettingsLayoutProps {
 
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
-    <>
-      <BannerSection
-        title="Settings"
-        description="Manage your account settings and set preferences."
-      >
-        <HStackFull>
-          <BaseLayerWrapper>
-            <SettingsPageWrapper nav={<SidebarNav items={sidebarNavItems} />}>
-              {children}
-            </SettingsPageWrapper>
-          </BaseLayerWrapper>
-        </HStackFull>
-      </BannerSection>
-    </>
+    <BannerSection
+      title="Settings"
+      description="Manage your account settings and set preferences."
+    >
+      <HStackFull>
+        <BaseLayerWrapper>
+          <SettingsPageWrapper nav={<SidebarNav items={sidebarNavItems} />}>
+            {children}
+          </SettingsPageWrapper>
+        </BaseLayerWrapper>
+      </HStackFull>
+    </BannerSection>
   );
 }

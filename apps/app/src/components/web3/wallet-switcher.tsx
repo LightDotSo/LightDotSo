@@ -206,148 +206,144 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   }
 
   return (
-    <>
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            variant="ghost"
-            role="combobox"
-            aria-expanded={open}
-            aria-label="Select a wallet"
-            className={cn("mx-2 justify-start", className)}
-          >
-            {selectedWallet && (
-              <>
-                <Avatar className="mr-3 h-7 w-7">
-                  {/* <AvatarImage
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="ghost"
+          role="combobox"
+          aria-expanded={open}
+          aria-label="Select a wallet"
+          className={cn("mx-2 justify-start", className)}
+        >
+          {selectedWallet && (
+            <>
+              <Avatar className="mr-3 h-7 w-7">
+                {/* <AvatarImage
                     src={`https://avatar.vercel.sh/${selectedWallet.value}.png`}
                     alt={selectedWallet.label}
                   /> */}
-                  <PlaceholderOrb address={selectedWallet?.address ?? "0x"} />
-                  {/* <AvatarFallback>SC</AvatarFallback> */}
-                </Avatar>
-                {selectedWallet?.name}
-              </>
-            )}
-            {!selectedWallet && wallets && wallets.length > 0 && (
-              <>
-                <StackIcon className="mr-2 h-5 w-5" />
-                Select a wallet
-              </>
-            )}
-            {selectedWallet && wallets && wallets.length === 0 && (
-              <>
-                <PlusCircledIcon className="mr-2 h-5 w-5" />
-                New Wallet
-              </>
-            )}
-            <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="ml-24 w-[300px] p-0">
-          <Command>
-            <CommandList>
-              <CommandInput
-                className="bg-transparent"
-                placeholder="Search wallet..."
-              />
-              <CommandEmpty>No wallet found.</CommandEmpty>
-            </CommandList>
-            <CommandList onScroll={handleScroll}>
-              <CommandGroup>
-                {/* Negative margins to widen out to full width */}
-                <div className="relative -ml-1 -mr-2">
-                  <div
-                    className={cn(
-                      "pointer-events-none absolute -mt-2 top-1 left-0 h-14 w-full bg-gradient-to-b from-muted to-transparent transition-opacity duration-500",
-                      scrollIsAtTop ? "opacity-0" : "opacity-100",
-                    )}
-                  />
-                </div>
-                {selectedWallet && (
-                  <CommandItem className="text-sm">
-                    <Avatar className="mr-2 h-5 w-5">
-                      <PlaceholderOrb address={selectedWallet.address} />
-                    </Avatar>
-                    {selectedWallet.name}
-                    <span className="hidden">{selectedWallet.address}</span>
-                    <CheckIcon className="ml-auto h-4 w-4" />
-                  </CommandItem>
-                )}
-                {wallets &&
-                  // Filter out the selected wallet
-                  wallets
-                    .filter(
-                      wallet => wallet.address !== selectedWallet?.address,
-                    )
-                    .map(wallet => (
-                      <CommandItem
-                        key={wallet.address}
-                        className="text-sm"
-                        onSelect={() => {
-                          setSelectedWallet(wallet);
-                          setOpen(false);
-                          // Replace the current wallet address with the new one
-                          if (!pathname) return;
-                          if (pathname && pathname.split("/").length > 1) {
-                            router.push(
-                              `${pathname.replace(
-                                pathname.split("/")[1],
-                                wallet.address,
-                              )}
+                <PlaceholderOrb address={selectedWallet?.address ?? "0x"} />
+                {/* <AvatarFallback>SC</AvatarFallback> */}
+              </Avatar>
+              {selectedWallet?.name}
+            </>
+          )}
+          {!selectedWallet && wallets && wallets.length > 0 && (
+            <>
+              <StackIcon className="mr-2 h-5 w-5" />
+              Select a wallet
+            </>
+          )}
+          {selectedWallet && wallets && wallets.length === 0 && (
+            <>
+              <PlusCircledIcon className="mr-2 h-5 w-5" />
+              New Wallet
+            </>
+          )}
+          <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="ml-24 w-[300px] p-0">
+        <Command>
+          <CommandList>
+            <CommandInput
+              className="bg-transparent"
+              placeholder="Search wallet..."
+            />
+            <CommandEmpty>No wallet found.</CommandEmpty>
+          </CommandList>
+          <CommandList onScroll={handleScroll}>
+            <CommandGroup>
+              {/* Negative margins to widen out to full width */}
+              <div className="relative -ml-1 -mr-2">
+                <div
+                  className={cn(
+                    "pointer-events-none absolute -mt-2 top-1 left-0 h-14 w-full bg-gradient-to-b from-muted to-transparent transition-opacity duration-500",
+                    scrollIsAtTop ? "opacity-0" : "opacity-100",
+                  )}
+                />
+              </div>
+              {selectedWallet && (
+                <CommandItem className="text-sm">
+                  <Avatar className="mr-2 h-5 w-5">
+                    <PlaceholderOrb address={selectedWallet.address} />
+                  </Avatar>
+                  {selectedWallet.name}
+                  <span className="hidden">{selectedWallet.address}</span>
+                  <CheckIcon className="ml-auto h-4 w-4" />
+                </CommandItem>
+              )}
+              {wallets &&
+                // Filter out the selected wallet
+                wallets
+                  .filter(wallet => wallet.address !== selectedWallet?.address)
+                  .map(wallet => (
+                    <CommandItem
+                      key={wallet.address}
+                      className="text-sm"
+                      onSelect={() => {
+                        setSelectedWallet(wallet);
+                        setOpen(false);
+                        // Replace the current wallet address with the new one
+                        if (!pathname) return;
+                        if (pathname && pathname.split("/").length > 1) {
+                          router.push(
+                            `${pathname.replace(
+                              pathname.split("/")[1],
+                              wallet.address,
+                            )}
                                 `,
-                            );
-                          }
-                        }}
-                      >
-                        <Avatar className="mr-2 h-5 w-5">
-                          {/* <AvatarImage
+                          );
+                        }
+                      }}
+                    >
+                      <Avatar className="mr-2 h-5 w-5">
+                        {/* <AvatarImage
                         src={`https://avatar.vercel.sh/${wallet.value}.png`}
                         alt={wallet.label}
                         className="grayscale"
                       />
                       <AvatarFallback>SC</AvatarFallback> */}
-                          <PlaceholderOrb address={wallet.address} />
-                        </Avatar>
-                        {wallet.name}
-                        <span className="hidden">{wallet.address}</span>
-                      </CommandItem>
-                    ))}
-              </CommandGroup>
-            </CommandList>
-            <CommandSeparator />
-            <CommandList>
-              <CommandGroup>
-                <CommandItem
-                  className="text-sm"
-                  onSelect={() => {
-                    setOpen(false);
-                    router.push("/wallets");
-                  }}
-                >
-                  <GridIcon className="mr-2 h-5 w-5" />
-                  All Wallets
-                </CommandItem>
-              </CommandGroup>
-            </CommandList>
-            <CommandSeparator />
-            <CommandList>
-              <CommandGroup>
-                <CommandItem
-                  className="text-sm"
-                  onSelect={() => {
-                    setOpen(false);
-                    router.push("/new");
-                  }}
-                >
-                  <PlusCircledIcon className="mr-2 h-5 w-5" />
-                  New Wallet
-                </CommandItem>
-              </CommandGroup>
-            </CommandList>
-          </Command>
-        </PopoverContent>
-      </Popover>
-    </>
+                        <PlaceholderOrb address={wallet.address} />
+                      </Avatar>
+                      {wallet.name}
+                      <span className="hidden">{wallet.address}</span>
+                    </CommandItem>
+                  ))}
+            </CommandGroup>
+          </CommandList>
+          <CommandSeparator />
+          <CommandList>
+            <CommandGroup>
+              <CommandItem
+                className="text-sm"
+                onSelect={() => {
+                  setOpen(false);
+                  router.push("/wallets");
+                }}
+              >
+                <GridIcon className="mr-2 h-5 w-5" />
+                All Wallets
+              </CommandItem>
+            </CommandGroup>
+          </CommandList>
+          <CommandSeparator />
+          <CommandList>
+            <CommandGroup>
+              <CommandItem
+                className="text-sm"
+                onSelect={() => {
+                  setOpen(false);
+                  router.push("/new");
+                }}
+              >
+                <PlusCircledIcon className="mr-2 h-5 w-5" />
+                New Wallet
+              </CommandItem>
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
   );
 };

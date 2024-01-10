@@ -29,10 +29,8 @@ export default async function Page() {
   // ---------------------------------------------------------------------------
 
   return (
-    <>
-      <NewRoot currentStepType={StepsEnum.Confirm}>
-        <ConfirmForm />
-      </NewRoot>
-    </>
+    <NewRoot currentStepType={StepsEnum.Confirm}>
+      <ConfirmForm />
+    </NewRoot>
   );
 }

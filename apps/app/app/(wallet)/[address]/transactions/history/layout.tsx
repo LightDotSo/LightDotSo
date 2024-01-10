@@ -39,5 +39,9 @@ interface TransactionsHistoryLayoutProps {
 // -----------------------------------------------------------------------------
 
 export default function Layout({ children }: TransactionsHistoryLayoutProps) {
-  return <>{children}</>;
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  return children;
 }

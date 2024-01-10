@@ -199,13 +199,12 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
           // If the step is the current step, then we want to show the primary color
           // If the step is not the current step, then we want to show the muted color
           step.status === "current"
-            ? "bg-background-primary w-1 md:h-0.5"
+            ? "bg-background-primary w-1 md:h-1"
             : "bg-border w-0 md:h-0",
-          "translate-y-1/2",
         )}
         aria-hidden="true"
       />
-      <span className="flex items-center px-6 py-4 text-sm font-medium">
+      <span className="flex items-center px-4 py-2 text-sm font-medium md:px-6 md:py-4">
         <span
           className={cn(
             "flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 bg-background-weak",
