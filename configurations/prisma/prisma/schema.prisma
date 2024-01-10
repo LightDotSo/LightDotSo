@@ -352,232 +352,6 @@ model Owner {
 }
 
 // -----------------------------------------------------------------------------
-// Interpretation
-// -----------------------------------------------------------------------------
-
-model Interpretation {
-  // ---------------------------------------------------------------------------
-  // Core
-  // ---------------------------------------------------------------------------
-
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // ---------------------------------------------------------------------------
-  // None-to-none
-  // ---------------------------------------------------------------------------
-
-  simulation    Simulation?
-  transaction   Transaction?
-  userOperation UserOperation?
-
-  // ---------------------------------------------------------------------------
-  // Many-to-many
-  // ---------------------------------------------------------------------------
-
-  actions      InterpretationAction[]
-  assetChanges AssetChange[]
-}
-
-model InterpretationAction {
-  // ---------------------------------------------------------------------------
-  // Core
-  // ---------------------------------------------------------------------------
-
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // ---------------------------------------------------------------------------
-  // Fields
-  // ---------------------------------------------------------------------------
-
-  action  String
-  address String?
-
-  // ---------------------------------------------------------------------------
-  // Many-to-many
-  // ---------------------------------------------------------------------------
-
-  assetChanges    AssetChange[]
-  interpretations Interpretation[]
-
-  // ---------------------------------------------------------------------------
-  // Mappings
-  // ---------------------------------------------------------------------------
-
-  // Unique
-  @@unique([action])
-  @@unique([action, address])
-}
-
-// ---------------------------------------------------------------------------
-// AssetChange
-// ---------------------------------------------------------------------------
-
-model AssetChange {
-  // ---------------------------------------------------------------------------
-  // Core
-  // ---------------------------------------------------------------------------
-
-  id String @id @default(cuid())
-
-  // ---------------------------------------------------------------------------
-  // Fields
-  // ---------------------------------------------------------------------------
-
-  address        String
-  amount         BigInt
-  previousAmount BigInt
-  newAmount      BigInt
-
-  // ---------------------------------------------------------------------------
-  // One-to-many
-  // ---------------------------------------------------------------------------
-
-  interpretation   Interpretation @relation(fields: [interpretationId], references: [id])
-  interpretationId String
-
-  // ---------------------------------------------------------------------------
-  // None-to-many
-  // ---------------------------------------------------------------------------
-
-  interpretationAction   InterpretationAction? @relation(fields: [interpretationActionId], references: [id])
-  interpretationActionId String?
-
-  protocol   Protocol? @relation(fields: [protocolId], references: [id])
-  protocolId String?
-
-  token   Token?  @relation(fields: [tokenId], references: [id])
-  tokenId String?
-
-  tokenProtocol   TokenProtocol? @relation(fields: [tokenProtocolId], references: [id])
-  tokenProtocolId String?
-
-  // ---------------------------------------------------------------------------
-  // Mappings
-  // ---------------------------------------------------------------------------
-
-  // Relations
-  @@index([interpretationId])
-  @@index([interpretationActionId])
-  @@index([protocolId])
-  @@index([tokenId])
-  @@index([tokenProtocolId])
-}
-
-// -----------------------------------------------------------------------------
-// Simulation
-// -----------------------------------------------------------------------------
-
-model Simulation {
-  // ---------------------------------------------------------------------------
-  // Core
-  // ---------------------------------------------------------------------------
-
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // ---------------------------------------------------------------------------
-  // Fields
-  // ---------------------------------------------------------------------------
-
-  blockNumber Int
-  gasLimit    BigInt
-  success     Boolean
-  trace       Json
-
-  status SimulationStatus @default(NONE)
-
-  // ---------------------------------------------------------------------------
-  // Eth
-  // ---------------------------------------------------------------------------
-
-  /// The account making the operation
-  /// address
-  sender   String
-  /// Anti-replay parameter (see “Semi-abstracted Nonce Support” )
-  /// uint256
-  nonce    BigInt
-  /// The initCode of the account (needed if and only if the account is not yet on-chain and needs to be created)
-  /// bytes
-  initCode Bytes
-  /// The data to pass to the sender during the main execution call
-  /// bytes
-  callData Bytes
-
-  // ---------------------------------------------------------------------------
-  // One-to-one
-  // ---------------------------------------------------------------------------
-
-  interpretation   Interpretation @relation(fields: [interpretationId], references: [id])
-  interpretationId String         @unique
-
-  // ---------------------------------------------------------------------------
-  // None-to-one
-  // ---------------------------------------------------------------------------
-
-  activity   Activity? @relation(fields: [activityId], references: [id])
-  activityId String?   @unique
-
-  // ---------------------------------------------------------------------------
-  // One-to-many
-  // ---------------------------------------------------------------------------
-
-  wallet Wallet @relation(fields: [sender], references: [address])
-
-  // ---------------------------------------------------------------------------
-  // None-to-many
-  // ---------------------------------------------------------------------------
-
-  userOperation     UserOperation? @relation(fields: [userOperationHash], references: [hash])
-  userOperationHash String?
-
-  // ---------------------------------------------------------------------------
-  // Many-to-many
-  // ---------------------------------------------------------------------------
-
-  logs     Log[]
-  warnings SimulationWarning[]
-
-  // ---------------------------------------------------------------------------
-  // Mappings
-  // ---------------------------------------------------------------------------
-
-  // Relations
-  @@index([interpretationId])
-  @@index([sender])
-  @@index([userOperationHash])
-}
-
-model SimulationWarning {
-  // ---------------------------------------------------------------------------
-  // Core
-  // ---------------------------------------------------------------------------
-
-  id        String   @id
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // ---------------------------------------------------------------------------
-  // Many-to-many
-  // ---------------------------------------------------------------------------
-
-  simulations Simulation[]
-}
-
-enum SimulationStatus {
-  // ---------------------------------------------------------------------------
-  // Enum Fields
-  // ---------------------------------------------------------------------------
-
-  NONE
-  WARNING
-}
-
-// -----------------------------------------------------------------------------
 // Log
 // -----------------------------------------------------------------------------
 
@@ -1188,6 +962,232 @@ enum SignatureProcedure {
   OFF_CHAIN
   ON_CHAIN
   ERC_1271
+}
+
+// -----------------------------------------------------------------------------
+// Interpretation
+// -----------------------------------------------------------------------------
+
+model Interpretation {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // None-to-none
+  // ---------------------------------------------------------------------------
+
+  simulation    Simulation?
+  transaction   Transaction?
+  userOperation UserOperation?
+
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
+  actions      InterpretationAction[]
+  assetChanges AssetChange[]
+}
+
+model InterpretationAction {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  action  String
+  address String?
+
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
+  assetChanges    AssetChange[]
+  interpretations Interpretation[]
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
+  // Unique
+  @@unique([action])
+  @@unique([action, address])
+}
+
+// ---------------------------------------------------------------------------
+// AssetChange
+// ---------------------------------------------------------------------------
+
+model AssetChange {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id String @id @default(cuid())
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  address        String
+  amount         BigInt
+  previousAmount BigInt
+  newAmount      BigInt
+
+  // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  interpretation   Interpretation @relation(fields: [interpretationId], references: [id])
+  interpretationId String
+
+  // ---------------------------------------------------------------------------
+  // None-to-many
+  // ---------------------------------------------------------------------------
+
+  interpretationAction   InterpretationAction? @relation(fields: [interpretationActionId], references: [id])
+  interpretationActionId String?
+
+  protocol   Protocol? @relation(fields: [protocolId], references: [id])
+  protocolId String?
+
+  token   Token?  @relation(fields: [tokenId], references: [id])
+  tokenId String?
+
+  tokenProtocol   TokenProtocol? @relation(fields: [tokenProtocolId], references: [id])
+  tokenProtocolId String?
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
+  // Relations
+  @@index([interpretationId])
+  @@index([interpretationActionId])
+  @@index([protocolId])
+  @@index([tokenId])
+  @@index([tokenProtocolId])
+}
+
+// -----------------------------------------------------------------------------
+// Simulation
+// -----------------------------------------------------------------------------
+
+model Simulation {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  blockNumber Int
+  gasLimit    BigInt
+  success     Boolean
+  trace       Json
+
+  status SimulationStatus @default(NONE)
+
+  // ---------------------------------------------------------------------------
+  // Eth
+  // ---------------------------------------------------------------------------
+
+  /// The account making the operation
+  /// address
+  sender   String
+  /// Anti-replay parameter (see “Semi-abstracted Nonce Support” )
+  /// uint256
+  nonce    BigInt
+  /// The initCode of the account (needed if and only if the account is not yet on-chain and needs to be created)
+  /// bytes
+  initCode Bytes
+  /// The data to pass to the sender during the main execution call
+  /// bytes
+  callData Bytes
+
+  // ---------------------------------------------------------------------------
+  // One-to-one
+  // ---------------------------------------------------------------------------
+
+  interpretation   Interpretation @relation(fields: [interpretationId], references: [id])
+  interpretationId String         @unique
+
+  // ---------------------------------------------------------------------------
+  // None-to-one
+  // ---------------------------------------------------------------------------
+
+  activity   Activity? @relation(fields: [activityId], references: [id])
+  activityId String?   @unique
+
+  // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  wallet Wallet @relation(fields: [sender], references: [address])
+
+  // ---------------------------------------------------------------------------
+  // None-to-many
+  // ---------------------------------------------------------------------------
+
+  userOperation     UserOperation? @relation(fields: [userOperationHash], references: [hash])
+  userOperationHash String?
+
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
+  logs     Log[]
+  warnings SimulationWarning[]
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
+  // Relations
+  @@index([interpretationId])
+  @@index([sender])
+  @@index([userOperationHash])
+}
+
+model SimulationWarning {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
+  simulations Simulation[]
+}
+
+enum SimulationStatus {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
+
+  NONE
+  WARNING
 }
 
 // -----------------------------------------------------------------------------
