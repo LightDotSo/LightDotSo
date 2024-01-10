@@ -15,7 +15,11 @@
 
 #![allow(clippy::unwrap_used)]
 
-use crate::types::{AppJsonResult, Database};
+use crate::{
+    error::DbError,
+    models::log::DbLog,
+    types::{AppJsonResult, Database},
+};
 use autometrics::autometrics;
 use axum::extract::Json;
 use ethers::{types::U256, utils::to_checksum};
@@ -29,6 +33,7 @@ use lightdotso_prisma::{
 };
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::chrono::{DateTime, NaiveDateTime, Utc};
+use serde::{Deserialize, Serialize};
 
 // -----------------------------------------------------------------------------
 // Upsert
@@ -173,4 +178,56 @@ pub async fn upsert_user_operation_logs(
     }
 
     Ok(Json::from(()))
+}
+
+// -----------------------------------------------------------------------------
+// Get
+// -----------------------------------------------------------------------------
+
+pub async fn get_user_operation_with_logs(
+    db: Database,
+    user_operation_hash: ethers::types::H256,
+) -> AppJsonResult<DbUserOperationLogs> {
+    info!("Getting user operation");
+
+    // Get the user operation with the receipt and logs and log topics
+    let user_operation = db
+        .user_operation()
+        .find_unique(user_operation::hash::equals(format!("{:?}", user_operation_hash)))
+        .with(user_operation::logs::fetch(vec![]).with(log::topics::fetch(vec![])))
+        .exec()
+        .await?;
+
+    // If user operation is none, throw an error
+    let user_operation = user_operation.ok_or_else(|| DbError::NotFound)?;
+
+    // Convert the user operation into a DbUserOperationLogs
+    let user_operation_with_logs: DbUserOperationLogs = user_operation.try_into()?;
+
+    // Return the transaction with logs
+    Ok(Json::from(user_operation_with_logs))
+}
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct DbUserOperationLogs {
+    pub user_operation: user_operation::Data,
+    pub logs: Vec<ethers::types::Log>,
+}
+
+impl TryFrom<user_operation::Data> for DbUserOperationLogs {
+    type Error = eyre::Report;
+
+    fn try_from(user_operation: user_operation::Data) -> Result<Self, Self::Error> {
+        let logs = user_operation.clone().logs.unwrap().into_iter().collect::<Vec<_>>();
+
+        let db_logs = logs.into_iter().map(|l| l.try_into()).collect::<Result<Vec<DbLog>, _>>()?;
+
+        let logs = db_logs.into_iter().map(|l| l.log).collect::<Vec<ethers::types::Log>>();
+
+        Ok(Self { user_operation, logs })
+    }
 }

@@ -17,6 +17,7 @@
 
 use crate::{
     error::DbError,
+    models::log::DbLog,
     types::{AppJsonResult, Database},
 };
 use autometrics::autometrics;
@@ -339,49 +340,5 @@ impl TryFrom<transaction::Data> for DbTransactionLogs {
         let logs = db_logs.into_iter().map(|l| l.log).collect::<Vec<ethers::types::Log>>();
 
         Ok(Self { transaction, logs })
-    }
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct DbLog {
-    pub log: ethers::types::Log,
-    pub topics: Vec<ethers::types::H256>,
-}
-
-impl TryFrom<log::Data> for DbLog {
-    type Error = eyre::Report;
-
-    fn try_from(log: log::Data) -> Result<Self, Self::Error> {
-        let topics = log.clone().topics.unwrap().into_iter().collect::<Vec<_>>();
-
-        let log_topics = topics
-            .into_iter()
-            .map(|t| {
-                // The topic is separated by a `-` and the first part is the log topic id
-                let split = t.id.split('-').collect::<Vec<_>>();
-
-                // Get the log topic id
-                let log_topic_id = split[0];
-
-                // Return the log topic
-                log_topic_id.parse::<ethers::types::H256>().unwrap()
-            })
-            .collect::<Vec<ethers::types::H256>>();
-
-        let log = ethers::types::Log {
-            address: log.address.parse().unwrap(),
-            topics: log_topics.clone(),
-            data: log.data.into(),
-            block_hash: log.block_hash.map(|bh| bh.parse().unwrap()),
-            block_number: log.block_number.map(|bn| (bn as u64).into()),
-            transaction_hash: log.transaction_hash.map(|th| th.parse().unwrap()),
-            transaction_index: log.transaction_index.map(|ti| (ti as u64).into()),
-            log_index: log.log_index.map(|li| (li as u64).into()),
-            transaction_log_index: log.transaction_log_index.map(|lti| (lti as u64).into()),
-            log_type: log.log_type,
-            removed: log.removed,
-        };
-
-        Ok(Self { log: log.clone(), topics: log_topics })
     }
 }
