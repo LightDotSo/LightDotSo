@@ -49,7 +49,7 @@ export const RootContext: FC = () => {
             <code className="break-all text-text">
               {isLoading ? "IsLoading" : "Loaded"}
               <br />
-              {/* eslint-disable-nextline jsx-no-useless-fragment */}
+              {/* eslint-disable-nextline react/jsx-no-useless-fragment */}
               {address && <>{address}</>}
               <br />
               {formValues?.name && <>Name: {formValues.name}</>}

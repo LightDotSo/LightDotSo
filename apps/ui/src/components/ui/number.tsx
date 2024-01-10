@@ -96,7 +96,7 @@ const NumberValue = ({
     };
   }, [display]);
 
-  // eslint-disable-nextline jsx-no-useless-fragment
+  // eslint-disable-nextline react/jsx-no-useless-fragment
   return <>{value}</>;
 };
 
