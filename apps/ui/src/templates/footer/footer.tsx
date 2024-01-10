@@ -16,7 +16,6 @@
 import type { FC } from "react";
 import { FooterList } from "./footer-list";
 import { FooterLogo } from "./footer-logo";
-import { FooterModeSelect } from "./footer-mode-select";
 import { FooterSocial } from "./footer-social";
 
 // -----------------------------------------------------------------------------
@@ -29,16 +28,13 @@ export const Footer: FC = () => {
       <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
-      <div className="mx-auto max-w-7xl px-2 md:px-4 lg:px-8 py-8 space-y-4 md:space-y-6">
+      <div className="mx-auto max-w-7xl py-8 space-y-4 md:space-y-6">
         <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row justify-between md:items-center">
           <FooterLogo />
           <FooterSocial />
         </div>
         <div>
           <FooterList />
-        </div>
-        <div className="mt-8 space-y-6 border-t border-border pt-8 md:mt-12 md:flex md:items-center md:justify-between">
-          <FooterModeSelect />
         </div>
       </div>
     </footer>
