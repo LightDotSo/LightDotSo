@@ -43,6 +43,12 @@ import { useAuth } from "@/stores";
 
 export const AppNav: FC = () => {
   // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { address } = useAuth();
+
+  // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
 
@@ -50,17 +56,10 @@ export const AppNav: FC = () => {
   const isDesktop = useMediaQuery("md");
 
   // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { address } = useAuth();
-
-  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  // If the address is empty, return null
-  if (!isMounted || !address) {
+  if (!isMounted) {
     return null;
   }
 
@@ -92,12 +91,15 @@ export const AppNav: FC = () => {
 
   return (
     <div className="ml-auto hidden items-center space-x-2.5 md:flex">
-      {/* <Search /> */}
-      <Suspense>
-        <ChainPopover />
-      </Suspense>
-      <FeedbackPopover />
-      <UserNav />
+      {address && (
+        <>
+          <Suspense>
+            <ChainPopover />
+          </Suspense>
+          <FeedbackPopover />
+          <UserNav />
+        </>
+      )}
       <ConnectButton />
     </div>
   );

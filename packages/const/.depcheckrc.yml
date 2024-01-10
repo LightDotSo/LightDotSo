@@ -5,5 +5,4 @@ ignores:
   - dotenv
   - "@lightdotso/tsconfig"
   - tsup
-  - clsx
   - tailwind-merge

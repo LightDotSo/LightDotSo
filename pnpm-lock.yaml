@@ -437,9 +437,6 @@ importers:
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
-      clsx:
-        specifier: ^2.1.0
-        version: 2.1.0
       connectkit:
         specifier: ^1.5.3
         version: 1.5.3(@babel/core@7.23.7)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(viem@1.21.4)(wagmi@1.4.13)
@@ -607,9 +604,6 @@ importers:
       autoprefixer:
         specifier: ^10.4.16
         version: 10.4.16(postcss@8.4.32)
-      clsx:
-        specifier: ^2.1.0
-        version: 2.1.0
       motion:
         specifier: ^10.16.4
         version: 10.16.4
@@ -1528,9 +1522,6 @@ importers:
       '@types/firefox-webext-browser':
         specifier: ^120.0.0
         version: 120.0.0
-      clsx:
-        specifier: ^2.1.0
-        version: 2.1.0
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
