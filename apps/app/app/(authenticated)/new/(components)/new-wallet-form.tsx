@@ -338,20 +338,14 @@ export const NewWalletForm: FC = () => {
                       defaultValue={field.value}
                       onBlur={e => {
                         if (e.target.value.length === 7) {
-                          validateInviteCode(e.target.value).then(res => {
-                            if (res) {
-                              field.onChange(e.target.value);
-                            }
-                          });
+                          field.onChange(e.target.value);
+                          validateInviteCode(e.target.value);
                         }
                       }}
                       onChange={e => {
                         if (e.target.value.length === 7) {
-                          validateInviteCode(e.target.value).then(res => {
-                            if (res) {
-                              field.onChange(e.target.value);
-                            }
-                          });
+                          field.onChange(e.target.value);
+                          validateInviteCode(e.target.value);
                         }
                       }}
                     />
