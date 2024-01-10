@@ -156,6 +156,7 @@ export function DataTable({
   // ---------------------------------------------------------------------------
 
   return (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
       {Object.keys(groupedItems).length > 0 && configuration ? (
         <>

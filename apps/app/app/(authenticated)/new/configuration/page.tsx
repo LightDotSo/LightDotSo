@@ -29,10 +29,8 @@ export default async function Page() {
   // ---------------------------------------------------------------------------
 
   return (
-    <>
-      <NewRoot currentStepType={StepsEnum.Configuration}>
-        <ConfigurationForm />
-      </NewRoot>
-    </>
+    <NewRoot currentStepType={StepsEnum.Configuration}>
+      <ConfigurationForm />
+    </NewRoot>
   );
 }

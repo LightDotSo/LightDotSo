@@ -27,31 +27,28 @@ interface ListItem {
 
 interface FooterListItemProps {
   items: ListItem[];
-  title: string;
 }
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const FooterListItem: FC<FooterListItemProps> = ({ items, title }) => {
+export const FooterListItem: FC<FooterListItemProps> = ({ items }) => {
   return (
-    <div>
-      <h3 className="text-sm font-semibold uppercase tracking-wider text-text-weak">
-        {title}
-      </h3>
-      <ul className="mt-4 space-y-4 ">
-        {items.map(item => {
-          return (
-            <li key={item.name} className="text-text-weak/60 hover:underline">
-              <a href={item.href} target="_blank" rel="noreferrer">
-                {item.name}
-              </a>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
+    <>
+      {items.map(item => {
+        return (
+          <li
+            key={item.name}
+            className="text-sm text-text-weak/60 hover:underline"
+          >
+            <a href={item.href} target="_blank" rel="noreferrer">
+              {item.name}
+            </a>
+          </li>
+        );
+      })}
+    </>
   );
 };
 
@@ -61,10 +58,10 @@ export const FooterListItem: FC<FooterListItemProps> = ({ items, title }) => {
 
 export const FooterList: FC = () => {
   return (
-    <div className="mt-10 grid grid-cols-2 gap-6 gap-y-8 md:mt-12 md:grid-cols-3 md:gap-4 xl:mt-0">
-      <FooterListItem items={NAVIGATION_LINKS.resources} title="Resources" />
-      <FooterListItem items={NAVIGATION_LINKS.company} title="Company" />
-      <FooterListItem items={NAVIGATION_LINKS.legal} title="Legal" />
-    </div>
+    <ul className="grid grid-cols-2 gap-3 md:flex md:flex-row md:justify-between">
+      <FooterListItem items={NAVIGATION_LINKS.resources} />
+      <FooterListItem items={NAVIGATION_LINKS.company} />
+      <FooterListItem items={NAVIGATION_LINKS.legal} />
+    </ul>
   );
 };

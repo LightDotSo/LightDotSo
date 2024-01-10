@@ -315,6 +315,14 @@ export const ConfigurationForm: FC = () => {
   }, [defaultValues]);
 
   // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const isFormValid = useMemo(() => {
+    return form.formState.isValid && isEmpty(form.formState.errors);
+  }, [form.formState]);
+
+  // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
@@ -407,7 +415,7 @@ export const ConfigurationForm: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <Card className="flex flex-col space-y-6 px-2 py-4 lg:px-6 lg:pt-6">
+    <Card className="flex flex-col space-y-6 px-4 py-4 lg:px-6 lg:pt-6">
       <CardHeader className="gap-3 p-0">
         <CardTitle>Configuration</CardTitle>
         <CardDescription>
@@ -525,42 +533,40 @@ export const ConfigurationForm: FC = () => {
                         control={form.control}
                         name={`owners.${index}.weight`}
                         render={({ field }) => (
-                          <>
-                            <FormControl>
-                              <div className="col-span-1 space-y-2">
-                                <Label htmlFor="weight">Weight</Label>
-                                <Select
-                                  defaultValue={field.value.toString()}
-                                  onValueChange={value => {
-                                    field.onChange(parseInt(value));
-                                    form.trigger(`owners.${index}.weight`);
-                                    form.trigger("threshold");
-                                  }}
-                                  onOpenChange={() => {
-                                    form.trigger(`owners.${index}.weight`);
-                                    form.trigger("threshold");
-                                  }}
-                                >
-                                  <FormControl>
-                                    <SelectTrigger className="w-24">
-                                      <SelectValue placeholder="Select your wallet threshold" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent className="max-h-60">
-                                    {[...Array(MAX_WEIGHT)].map((_, i) => (
-                                      <SelectItem
-                                        key={i}
-                                        value={(i + 1).toString()}
-                                      >
-                                        {i + 1}
-                                      </SelectItem>
-                                    ))}
-                                  </SelectContent>
-                                </Select>
-                                <FormMessage />
-                              </div>
-                            </FormControl>
-                          </>
+                          <FormControl>
+                            <div className="col-span-1 space-y-2">
+                              <Label htmlFor="weight">Weight</Label>
+                              <Select
+                                defaultValue={field.value.toString()}
+                                onValueChange={value => {
+                                  field.onChange(parseInt(value));
+                                  form.trigger(`owners.${index}.weight`);
+                                  form.trigger("threshold");
+                                }}
+                                onOpenChange={() => {
+                                  form.trigger(`owners.${index}.weight`);
+                                  form.trigger("threshold");
+                                }}
+                              >
+                                <FormControl>
+                                  <SelectTrigger className="w-24">
+                                    <SelectValue placeholder="Select your wallet threshold" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent className="max-h-60">
+                                  {[...Array(MAX_WEIGHT)].map((_, i) => (
+                                    <SelectItem
+                                      key={i}
+                                      value={(i + 1).toString()}
+                                    >
+                                      {i + 1}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </div>
+                          </FormControl>
                         )}
                       />
                       <div
@@ -669,10 +675,8 @@ export const ConfigurationForm: FC = () => {
                   Go Back
                 </Button>
                 <Button
-                  disabled={!isEmpty(form.formState.errors)}
-                  variant={
-                    isEmpty(form.formState.errors) ? "default" : "outline"
-                  }
+                  disabled={!isFormValid}
+                  variant={isFormValid ? "default" : "outline"}
                   type="submit"
                   onClick={() => navigateToStep()}
                 >

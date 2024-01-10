@@ -44,17 +44,15 @@ interface NewLayoutProps {
 
 export default function NewLayout({ children }: NewLayoutProps) {
   return (
-    <>
-      <BannerSection
-        title={TITLES.New.title}
-        description={TITLES.New.description}
-      >
-        <HStackFull>
-          <BaseLayerWrapper>
-            <MinimalPageWrapper>{children}</MinimalPageWrapper>
-          </BaseLayerWrapper>
-        </HStackFull>
-      </BannerSection>
-    </>
+    <BannerSection
+      title={TITLES.New.title}
+      description={TITLES.New.description}
+    >
+      <HStackFull>
+        <BaseLayerWrapper>
+          <MinimalPageWrapper>{children}</MinimalPageWrapper>
+        </BaseLayerWrapper>
+      </HStackFull>
+    </BannerSection>
   );
 }

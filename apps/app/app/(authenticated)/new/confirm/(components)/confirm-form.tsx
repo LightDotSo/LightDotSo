@@ -34,6 +34,7 @@ import {
 } from "@lightdotso/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { backOff } from "exponential-backoff";
+import { isEmpty } from "lodash";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo } from "react";
 import type { FC } from "react";
@@ -228,6 +229,14 @@ export const ConfirmForm: FC = () => {
   }, []);
 
   // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const isFormValid = useMemo(() => {
+    return form.formState.isValid && isEmpty(form.formState.errors);
+  }, [form.formState]);
+
+  // ---------------------------------------------------------------------------
   // Utils
   // ---------------------------------------------------------------------------
 
@@ -254,7 +263,7 @@ export const ConfirmForm: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <Card className="flex flex-col space-y-6 px-2 py-4 lg:px-6 lg:pt-6">
+    <Card className="flex flex-col space-y-6 px-4 py-4 lg:px-6 lg:pt-6">
       <CardHeader className="gap-3 p-0">
         <CardTitle>Confirm</CardTitle>
         <CardDescription>
@@ -304,8 +313,8 @@ export const ConfirmForm: FC = () => {
                   Go Back
                 </Button>
                 <Button
-                  disabled={!form.formState.isValid}
-                  variant={form.formState.isValid ? "default" : "outline"}
+                  disabled={!isFormValid}
+                  variant={isFormValid ? "default" : "outline"}
                   type="submit"
                 >
                   Create Wallet

@@ -33,37 +33,35 @@ const ToastDemo = ({
   data?: ExternalToast;
 }) => {
   return (
-    <>
-      <Button
-        variant="outline"
-        onClick={() => {
-          switch (variant) {
-            case "default":
-              toast(message, data);
-              break;
-            case "success":
-              toast.success(message, data);
-              break;
-            case "error":
-              toast.error(message, data);
-              break;
-            case "loading":
-              toast.loading(message, data);
-              break;
-            case "warning":
-              toast.warning(message, data);
-              break;
-            case "info":
-              toast.info(message, data);
-              break;
-            default:
-              break;
-          }
-        }}
-      >
-        Show Toast
-      </Button>
-    </>
+    <Button
+      variant="outline"
+      onClick={() => {
+        switch (variant) {
+          case "default":
+            toast(message, data);
+            break;
+          case "success":
+            toast.success(message, data);
+            break;
+          case "error":
+            toast.error(message, data);
+            break;
+          case "loading":
+            toast.loading(message, data);
+            break;
+          case "warning":
+            toast.warning(message, data);
+            break;
+          case "info":
+            toast.info(message, data);
+            break;
+          default:
+            break;
+        }
+      }}
+    >
+      Show Toast
+    </Button>
   );
 };
 

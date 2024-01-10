@@ -13,35 +13,32 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Metadata } from "next";
-import type { ReactNode } from "react";
-import { TITLES } from "@/const/titles";
+import type { Meta, StoryObj } from "@storybook/react";
+import { Footer } from "./footer";
 
 // -----------------------------------------------------------------------------
-// Metadata
+// Meta
 // -----------------------------------------------------------------------------
 
-export const metadata: Metadata = {
-  title: TITLES.Overview.subcategories.NFTs.title,
-  description: TITLES.Overview.subcategories.NFTs.description,
+const meta: Meta<typeof Footer> = {
+  title: "template/Footer",
+  component: Footer,
+  tags: ["autodocs"],
+  argTypes: {},
 };
+export default meta;
 
 // -----------------------------------------------------------------------------
-// Props
+// Types
 // -----------------------------------------------------------------------------
 
-interface OverviewNftsLayoutProps {
-  children: ReactNode;
-}
+type Story = StoryObj<typeof Footer>;
 
 // -----------------------------------------------------------------------------
-// Layout
+// Story
 // -----------------------------------------------------------------------------
 
-export default function Layout({ children }: OverviewNftsLayoutProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return children;
-}
+export const Base: Story = {
+  render: args => <Footer />,
+  args: {},
+};

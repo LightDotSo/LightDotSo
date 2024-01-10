@@ -46,13 +46,11 @@ export default function SupportLayout({ children }: SupportLayoutProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <>
-      <BannerSection
-        title={TITLES.Support.title}
-        description={TITLES.Support.description}
-      >
-        <HStackFull>{children}</HStackFull>
-      </BannerSection>
-    </>
+    <BannerSection
+      title={TITLES.Support.title}
+      description={TITLES.Support.description}
+    >
+      <HStackFull>{children}</HStackFull>
+    </BannerSection>
   );
 }

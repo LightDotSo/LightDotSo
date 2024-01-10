@@ -118,6 +118,11 @@ export const OTP = ({
   const handleOnKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     const key = e.key.toUpperCase();
 
+    // Handle command + v paste
+    if (e.metaKey && key === "V") {
+      return;
+    }
+
     switch (key) {
       case "BACKSPACE":
         setInputs(prevInputs => {
@@ -171,7 +176,7 @@ export const OTP = ({
       /^[0-9A-Z]{3}-[0-9A-Z]{3}$/.test(pastedData) &&
       pastedData.length <= length + 1
     ) {
-      pastedData = pastedData.replace("-", ""); // Remove dash
+      pastedData = pastedData.replace("-", "");
       const pastedChars = pastedData.split("");
 
       const updatedInputs = [...inputs];

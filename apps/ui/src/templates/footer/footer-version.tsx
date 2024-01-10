@@ -13,37 +13,39 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { SOCIAL_LINKS } from "@lightdotso/const";
 import type { FC } from "react";
-import { FooterList } from "./footer-list";
-import { FooterLogo } from "./footer-logo";
-import { FooterSocial } from "./footer-social";
-import { FooterVersion } from "./footer-version";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const Footer: FC = () => {
+export const FooterVersion: FC = () => {
   return (
-    <footer
-      className="border-t border-border px-2 md:px-4 lg:px-8"
-      aria-labelledby="footer-heading"
-    >
-      <h2 id="footer-heading" className="sr-only">
-        Footer
-      </h2>
-      <div className="mx-auto max-w-7xl space-y-4 py-8 md:space-y-8">
-        <div className="flex flex-col justify-between space-y-6 md:flex-row md:items-center md:space-y-0">
-          <FooterLogo />
-          <FooterSocial />
-        </div>
-        <div>
-          <FooterList />
-        </div>
-        <div className="hidden justify-end md:flex">
-          <FooterVersion />
-        </div>
-      </div>
-    </footer>
+    <div className="flex items-center justify-between space-x-2">
+      <span className="text-xs text-text-weak/60">
+        Version:{" "}
+        <a
+          className="text-text-weak hover:underline"
+          href={`${SOCIAL_LINKS.Github}/releases/tag/${process.env.NEXT_PUBLIC_APP_VERSION}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          v
+          {process.env.NEXT_PUBLIC_APP_VERSION?.match(/(\d+\.\d+\.\d+)/)?.[0] ??
+            "0.0.0"}
+        </a>{" "}
+        {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA && (
+          <a
+            className="hover:underline"
+            target="_blank"
+            rel="noreferrer"
+            href={SOCIAL_LINKS.Github}
+          >
+            ({process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA.slice(0, 7)})
+          </a>
+        )}
+      </span>
+    </div>
   );
 };

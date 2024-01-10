@@ -39,9 +39,5 @@ export const OpDetails: FC<OpDetailsProps> = ({ userOperation }) => {
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <>
-      <UserOperationTimeline userOperation={userOperation} />
-    </>
-  );
+  return <UserOperationTimeline userOperation={userOperation} />;
 };

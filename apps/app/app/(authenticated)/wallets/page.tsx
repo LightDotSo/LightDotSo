@@ -36,9 +36,5 @@ export default async function Page({ searchParams }: PageProps) {
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <>
-      <WalletsDataTable />
-    </>
-  );
+  return <WalletsDataTable />;
 }
