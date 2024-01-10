@@ -4,5 +4,9 @@
   slow-timeout = "3m"
 
   [[profile.default.overrides]]
+    filter = 'test(test_integration)'
+    retries = 10
+
+  [[profile.default.overrides]]
     filter = 'test(test_e2e)'
     retries = 10

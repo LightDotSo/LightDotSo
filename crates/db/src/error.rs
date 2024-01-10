@@ -37,6 +37,16 @@ impl From<eyre::Error> for DbError {
     }
 }
 
+impl From<DbError> for eyre::Report {
+    fn from(error: DbError) -> Self {
+        match error {
+            DbError::EyreError(err) => err,
+            DbError::PrismaError(err) => eyre::Report::new(err),
+            DbError::NotFound => eyre::eyre!("Record not found"),
+        }
+    }
+}
+
 impl From<QueryError> for DbError {
     fn from(error: QueryError) -> Self {
         match error {

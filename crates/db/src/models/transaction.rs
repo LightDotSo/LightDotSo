@@ -278,3 +278,26 @@ pub async fn upsert_transaction_with_log_receipt(
 
     Ok(Json::from(tx_data))
 }
+
+pub async fn get_transaction(
+    db: Database,
+    transaction_hash: ethers::types::H256,
+) -> AppJsonResult<transaction::Data> {
+    info!("Getting transaction");
+
+    let transaction = db
+        .transaction()
+        .find_unique(transaction::hash::equals(format!("{:?}", transaction_hash)))
+        .with(
+            transaction::receipt::fetch()
+                .with(receipt::logs::fetch(vec![]).with(log::topics::fetch(vec![]))),
+        )
+        .exec()
+        .await?;
+
+    if transaction.is_none() {
+        return Err(DbError::NotFound);
+    }
+
+    Ok(Json::from(transaction.unwrap()))
+}

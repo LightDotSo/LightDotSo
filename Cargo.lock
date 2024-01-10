@@ -6204,6 +6204,7 @@ version = "0.1.0"
 dependencies = [
  "autometrics",
  "axum 0.6.20",
+ "dotenvy",
  "ethers 2.0.8",
  "eyre",
  "lightdotso-contracts",
