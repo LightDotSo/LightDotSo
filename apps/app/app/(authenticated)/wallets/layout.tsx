@@ -48,17 +48,15 @@ export default function WalletsLayout({ children }: WalletsLayoutProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <>
-      <BannerSection
-        title={TITLES.Wallets.title}
-        description={TITLES.Wallets.description}
-      >
-        <HStackFull>
-          <BaseLayerWrapper>
-            <MinimalPageWrapper>{children}</MinimalPageWrapper>
-          </BaseLayerWrapper>
-        </HStackFull>
-      </BannerSection>
-    </>
+    <BannerSection
+      title={TITLES.Wallets.title}
+      description={TITLES.Wallets.description}
+    >
+      <HStackFull>
+        <BaseLayerWrapper>
+          <MinimalPageWrapper>{children}</MinimalPageWrapper>
+        </BaseLayerWrapper>
+      </HStackFull>
+    </BannerSection>
   );
 }

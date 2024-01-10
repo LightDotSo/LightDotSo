@@ -26,9 +26,5 @@ export default async function Page() {
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <>
-      <RootWelcomeCards />
-    </>
-  );
+  return <RootWelcomeCards />;
 }

@@ -39,5 +39,5 @@ interface OverviewNftsLayoutProps {
 // -----------------------------------------------------------------------------
 
 export default function Layout({ children }: OverviewNftsLayoutProps) {
-  return <>{children}</>;
+  return { children };
 }

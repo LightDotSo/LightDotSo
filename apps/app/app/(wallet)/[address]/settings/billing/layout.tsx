@@ -39,5 +39,5 @@ interface SettingsBillingLayoutProps {
 // -----------------------------------------------------------------------------
 
 export default function Layout({ children }: SettingsBillingLayoutProps) {
-  return <>{children}</>;
+  return { children };
 }

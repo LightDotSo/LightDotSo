@@ -39,5 +39,5 @@ interface OverviewHistoryLayoutProps {
 // -----------------------------------------------------------------------------
 
 export default function Layout({ children }: OverviewHistoryLayoutProps) {
-  return <>{children}</>;
+  return { children };
 }

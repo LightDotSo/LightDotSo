@@ -48,17 +48,15 @@ export default function RootLayout({ children }: RootLayoutProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <>
-      <BannerSection
-        title={TITLES.Root.title}
-        description={TITLES.Root.description}
-      >
-        <HStackFull>
-          <BaseLayerWrapper>
-            <MinimalPageWrapper>{children}</MinimalPageWrapper>
-          </BaseLayerWrapper>
-        </HStackFull>
-      </BannerSection>
-    </>
+    <BannerSection
+      title={TITLES.Root.title}
+      description={TITLES.Root.description}
+    >
+      <HStackFull>
+        <BaseLayerWrapper>
+          <MinimalPageWrapper>{children}</MinimalPageWrapper>
+        </BaseLayerWrapper>
+      </HStackFull>
+    </BannerSection>
   );
 }

@@ -95,26 +95,24 @@ export const NewRoot: FC<NewRootProps> = async ({
                   stepType={step.enum}
                 />
                 {stepIdx !== steps.length - 1 ? (
-                  <>
-                    <div
-                      className="absolute right-0 top-0 hidden h-full w-5 md:block"
-                      aria-hidden="true"
+                  <div
+                    className="absolute right-0 top-0 hidden h-full w-5 md:block"
+                    aria-hidden="true"
+                  >
+                    <svg
+                      className="h-full w-full text-border"
+                      viewBox="0 0 22 80"
+                      fill="none"
+                      preserveAspectRatio="none"
                     >
-                      <svg
-                        className="h-full w-full text-border"
-                        viewBox="0 0 22 80"
-                        fill="none"
-                        preserveAspectRatio="none"
-                      >
-                        <path
-                          d="M0 -2L20 40L0 82"
-                          vectorEffect="non-scaling-stroke"
-                          stroke="currentcolor"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </div>
-                  </>
+                      <path
+                        d="M0 -2L20 40L0 82"
+                        vectorEffect="non-scaling-stroke"
+                        stroke="currentcolor"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
                 ) : null}
               </li>
             ))}

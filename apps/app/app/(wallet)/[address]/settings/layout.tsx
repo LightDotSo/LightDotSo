@@ -68,21 +68,19 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <>
-      <BannerSection
-        title={TITLES.Settings.title}
-        description={TITLES.Settings.description}
-      >
-        <HStackFull>
-          <BaseLayerWrapper>
-            <SettingsPageWrapper
-              nav={<SidebarNav baseRef items={sidebarNavItems} />}
-            >
-              {children}
-            </SettingsPageWrapper>
-          </BaseLayerWrapper>
-        </HStackFull>
-      </BannerSection>
-    </>
+    <BannerSection
+      title={TITLES.Settings.title}
+      description={TITLES.Settings.description}
+    >
+      <HStackFull>
+        <BaseLayerWrapper>
+          <SettingsPageWrapper
+            nav={<SidebarNav baseRef items={sidebarNavItems} />}
+          >
+            {children}
+          </SettingsPageWrapper>
+        </BaseLayerWrapper>
+      </HStackFull>
+    </BannerSection>
   );
 }

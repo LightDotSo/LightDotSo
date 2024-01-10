@@ -29,10 +29,8 @@ export default function Page() {
   // ---------------------------------------------------------------------------
 
   return (
-    <>
-      <NewRoot currentStepType={StepsEnum.New}>
-        <NewWalletForm />
-      </NewRoot>
-    </>
+    <NewRoot currentStepType={StepsEnum.New}>
+      <NewWalletForm />
+    </NewRoot>
   );
 }

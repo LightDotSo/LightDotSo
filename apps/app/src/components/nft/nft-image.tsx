@@ -74,6 +74,7 @@ export const NftImage: FC<NftImageProps> = ({
             : "scale-100 blur-0 grayscale-0 group-hover:scale-125 group-hover:blur-2 group-hover:grayscale-0",
         )}
         src={
+          // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
           image_url ?? image_large_url ?? extra_metadata?.image_original_url!
         }
         alt={description ?? contract_address!}

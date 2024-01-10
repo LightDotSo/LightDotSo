@@ -182,6 +182,7 @@ export const TransactionCard: FC<TransactionCardProps> = ({
                             <ArrowUpRight className="ml-2 h-4 w-4 shrink-0 opacity-50 group-hover:underline group-hover:opacity-100" />
                           </>
                         ) : (
+                          // eslint-disable-next-line react/jsx-no-useless-fragment
                           <>{item.value}</>
                         )}
                       </div>
@@ -216,12 +217,15 @@ export const TransactionCard: FC<TransactionCardProps> = ({
                         className="h-1"
                         value={
                           (userOperation.signatures.length /
+                            // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
                             configuration?.threshold!) *
                           100
                         }
                       />
                       <span className="ml-2">
+                        {/* eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain */}
                         {userOperation.signatures.length!}/
+                        {/* eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain */}
                         {configuration?.threshold!}
                       </span>
                     </div>
