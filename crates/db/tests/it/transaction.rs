@@ -14,16 +14,16 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use eyre::Result;
-use lightdotso_db::{db::create_client, models::transaction::get_transaction};
+use lightdotso_db::{db::create_client, models::transaction::get_transaction_with_logs};
 use std::sync::Arc;
 
 #[tokio::test(flavor = "multi_thread")]
-async fn test_integration_get_transaction() -> Result<()> {
+async fn test_integration_get_transaction_with_logs() -> Result<()> {
     let _ = dotenvy::dotenv();
 
     let db = create_client().await?;
 
-    let tx = get_transaction(
+    let tx = get_transaction_with_logs(
         Arc::new(db),
         "0x0eba351b13320cf51b42e5218e63c90698ba73bceb65e5a38f146685fe1407fa".parse()?,
     )

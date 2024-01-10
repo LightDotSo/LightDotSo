@@ -77,8 +77,6 @@ pub struct InterpretationResponse {
     pub logs: Vec<Log>,
     /// Exit reason of the transaction
     pub exit_reason: InstructionResult,
-    /// Formatted trace of the transaction
-    pub formatted_trace: String,
     /// Actions that were interpreted
     pub actions: Vec<InterpretationAction>,
     /// Changes in the assets of the transaction
@@ -94,7 +92,6 @@ impl Default for InterpretationResponse {
             traces: Vec::new(),
             logs: Vec::new(),
             exit_reason: InstructionResult::Stop,
-            formatted_trace: String::new(),
             actions: Vec::new(),
             asset_changes: Vec::new(),
         }

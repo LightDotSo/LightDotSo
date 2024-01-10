@@ -32,6 +32,7 @@ use prisma_client_rust::{
     chrono::{DateTime, FixedOffset, NaiveDateTime},
     serde_json::{self, json},
 };
+use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, sync::Arc};
 
 // -----------------------------------------------------------------------------
@@ -287,10 +288,10 @@ pub async fn upsert_transaction_with_log_receipt(
 // Get
 // -----------------------------------------------------------------------------
 
-pub async fn get_transaction(
+pub async fn get_transaction_with_logs(
     db: Database,
     transaction_hash: ethers::types::H256,
-) -> AppJsonResult<transaction::Data> {
+) -> AppJsonResult<DbTransactionLogs> {
     info!("Getting transaction");
 
     let transaction = db
@@ -305,5 +306,67 @@ pub async fn get_transaction(
 
     let transaction = transaction.ok_or_else(|| DbError::NotFound)?;
 
-    Ok(Json::from(transaction))
+    let transaction_with_logs: DbTransactionLogs = transaction.try_into()?;
+
+    Ok(Json::from(transaction_with_logs))
+}
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct DbTransactionLogs {
+    pub transaction: transaction::Data,
+    pub logs: Vec<ethers::types::Log>,
+}
+
+impl TryFrom<transaction::Data> for DbTransactionLogs {
+    type Error = eyre::Report;
+
+    fn try_from(transaction: transaction::Data) -> Result<Self, Self::Error> {
+        let receipt = transaction.clone().receipt.unwrap().unwrap();
+
+        let receipt_logs = receipt.logs.unwrap().into_iter().collect::<Vec<_>>();
+
+        let db_logs =
+            receipt_logs.into_iter().map(|l| l.try_into()).collect::<Result<Vec<DbLog>, _>>()?;
+
+        let logs = db_logs.into_iter().map(|l| l.log).collect::<Vec<ethers::types::Log>>();
+
+        Ok(Self { transaction, logs })
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct DbLog {
+    pub log: ethers::types::Log,
+    pub topics: Vec<ethers::types::H256>,
+}
+
+impl TryFrom<log::Data> for DbLog {
+    type Error = eyre::Report;
+
+    fn try_from(log: log::Data) -> Result<Self, Self::Error> {
+        let topics = log.clone().topics.unwrap().into_iter().collect::<Vec<_>>();
+
+        let log_topics =
+            topics.into_iter().map(|t| t.id.parse().unwrap()).collect::<Vec<ethers::types::H256>>();
+
+        let log = ethers::types::Log {
+            address: log.address.parse().unwrap(),
+            topics: log_topics.clone(),
+            data: log.data.into(),
+            block_hash: log.block_hash.map(|bh| bh.parse().unwrap()),
+            block_number: log.block_number.map(|bn| (bn as u64).into()),
+            transaction_hash: log.transaction_hash.map(|th| th.parse().unwrap()),
+            transaction_index: log.transaction_index.map(|ti| (ti as u64).into()),
+            log_index: log.log_index.map(|li| (li as u64).into()),
+            transaction_log_index: log.transaction_log_index.map(|lti| (lti as u64).into()),
+            log_type: log.log_type,
+            removed: log.removed,
+        };
+
+        Ok(Self { log: log.clone(), topics: log_topics })
+    }
 }

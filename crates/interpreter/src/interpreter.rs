@@ -98,7 +98,7 @@ impl Interpreter<'_> {
         let res = simulate(request.clone()).await?;
 
         // Run the interpreter
-        let format_trace = self.format_trace(res.arena.clone()).await?;
+        let _format_trace = self.format_trace(res.arena.clone()).await?;
 
         // Get the traces
         let traces: Vec<CallTrace> =
@@ -133,7 +133,6 @@ impl Interpreter<'_> {
             traces,
             logs: res.logs,
             exit_reason: res.exit_reason,
-            formatted_trace: format_trace,
             actions,
             asset_changes,
         })
@@ -156,7 +155,7 @@ impl Interpreter<'_> {
                 requests.get(idx).ok_or(eyre!("No matching request for simulation result"))?;
 
             // Run the formatter
-            let format_trace = self.format_trace(res.arena.clone()).await?;
+            let _format_trace = self.format_trace(res.arena.clone()).await?;
 
             // Get the traces
             let traces: Vec<CallTrace> = res
@@ -199,7 +198,6 @@ impl Interpreter<'_> {
                 traces,
                 logs: res.logs,
                 exit_reason: res.exit_reason,
-                formatted_trace: format_trace,
                 actions,
                 asset_changes,
             });
@@ -214,7 +212,6 @@ impl Interpreter<'_> {
                 acc.traces.extend(res.traces);
                 acc.logs.extend(res.logs);
                 acc.exit_reason = res.exit_reason;
-                acc.formatted_trace.push_str(res.formatted_trace.as_str());
                 acc.actions.extend(res.actions);
                 acc.asset_changes.extend(res.asset_changes);
                 acc

@@ -53,7 +53,7 @@ pub async fn interpretation_consumer(
         };
 
         if let Some(_tx) = transaction {
-            // Get the transaction from the provider
+            // Get the transaction receipt
         }
     }
 
