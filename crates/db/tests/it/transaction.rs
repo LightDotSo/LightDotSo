@@ -19,16 +19,20 @@ use std::sync::Arc;
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_get_transaction_with_logs() -> Result<()> {
+    // Load the environment variables.
     let _ = dotenvy::dotenv();
 
+    // Create a database client.
     let db = create_client().await?;
 
+    // Get a transaction with logs.
     let tx = get_transaction_with_logs(
         Arc::new(db),
         "0x0eba351b13320cf51b42e5218e63c90698ba73bceb65e5a38f146685fe1407fa".parse()?,
     )
     .await?;
 
+    // Print the transaction.
     println!("{:?}", tx);
 
     Ok(())

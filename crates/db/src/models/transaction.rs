@@ -294,6 +294,7 @@ pub async fn get_transaction_with_logs(
 ) -> AppJsonResult<DbTransactionLogs> {
     info!("Getting transaction");
 
+    // Get the transaction with the receipt and logs and log topics
     let transaction = db
         .transaction()
         .find_unique(transaction::hash::equals(format!("{:?}", transaction_hash)))
@@ -304,10 +305,13 @@ pub async fn get_transaction_with_logs(
         .exec()
         .await?;
 
+    // If transaction is none, throw an error
     let transaction = transaction.ok_or_else(|| DbError::NotFound)?;
 
+    // Convert the transaction into a DbTransactionLogs
     let transaction_with_logs: DbTransactionLogs = transaction.try_into()?;
 
+    // Return the transaction with logs
     Ok(Json::from(transaction_with_logs))
 }
 
@@ -350,8 +354,19 @@ impl TryFrom<log::Data> for DbLog {
     fn try_from(log: log::Data) -> Result<Self, Self::Error> {
         let topics = log.clone().topics.unwrap().into_iter().collect::<Vec<_>>();
 
-        let log_topics =
-            topics.into_iter().map(|t| t.id.parse().unwrap()).collect::<Vec<ethers::types::H256>>();
+        let log_topics = topics
+            .into_iter()
+            .map(|t| {
+                // The topic is separated by a `-` and the first part is the log topic id
+                let split = t.id.split('-').collect::<Vec<_>>();
+
+                // Get the log topic id
+                let log_topic_id = split[0];
+
+                // Return the log topic
+                log_topic_id.parse::<ethers::types::H256>().unwrap()
+            })
+            .collect::<Vec<ethers::types::H256>>();
 
         let log = ethers::types::Log {
             address: log.address.parse().unwrap(),
