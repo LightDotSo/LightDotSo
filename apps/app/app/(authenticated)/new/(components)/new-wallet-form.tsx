@@ -50,7 +50,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { isEmpty } from "lodash";
 import { ArrowUpRight } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useMemo } from "react";
 import type { FC } from "react";
 import { useForm } from "react-hook-form";
 import type * as z from "zod";
@@ -106,7 +106,7 @@ export const NewWalletForm: FC = () => {
   };
 
   const form = useForm<NewFormValues>({
-    // mode: "all",
+    mode: "all",
     reValidateMode: "onBlur",
     resolver: zodResolver(newFormSchema),
     defaultValues,
@@ -153,6 +153,14 @@ export const NewWalletForm: FC = () => {
   }, []);
 
   // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const isFormValid = useMemo(() => {
+    return form.formState.isValid && isEmpty(form.formState.errors);
+  }, [form.formState]);
+
+  // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
@@ -176,7 +184,7 @@ export const NewWalletForm: FC = () => {
   // Validation
   // ---------------------------------------------------------------------------
 
-  async function validateInviteCode(inviteCode: string) {
+  async function validateInviteCode(inviteCode: string): Promise<boolean> {
     if (/^[0-9A-Z]{3}-[0-9A-Z]{3}$/.test(inviteCode)) {
       const res = await getInviteCode({
         params: { query: { code: inviteCode } },
@@ -186,11 +194,13 @@ export const NewWalletForm: FC = () => {
         data => {
           if (data.status === "ACTIVE") {
             form.clearErrors("inviteCode");
+            return true;
           } else {
             form.setError("inviteCode", {
               type: "manual",
               message: "Invite code not valid",
             });
+            return false;
           }
         },
         _err => {
@@ -198,6 +208,7 @@ export const NewWalletForm: FC = () => {
             type: "manual",
             message: "Invite code failed could not be found",
           });
+          return false;
         },
       );
     } else {
@@ -206,7 +217,9 @@ export const NewWalletForm: FC = () => {
         type: "manual",
         message: "Invalid invite code format",
       });
+      return false;
     }
+    return false;
   }
 
   // ---------------------------------------------------------------------------
@@ -214,7 +227,7 @@ export const NewWalletForm: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <Card className="flex flex-col space-y-6 px-2 py-4 lg:px-6 lg:pt-6">
+    <Card className="flex flex-col space-y-6 px-4 py-4 lg:px-6 lg:pt-6">
       <CardHeader className="gap-3 p-0">
         <CardTitle>Create a New Wallet</CardTitle>
         <CardDescription>Select a name for your new wallet.</CardDescription>
@@ -323,30 +336,24 @@ export const NewWalletForm: FC = () => {
                       id="inviteCode"
                       placeholder="Your Invite Code"
                       defaultValue={field.value}
-                      // onBlur={e => {
-                      //   // Validate the address
-                      //   if (!e.target.value) {
-                      //     // Clear the value of key address
-                      //     form.setValue("inviteCode", "");
-                      //   }
-                      //   const inviteCode = e.target.value;
-
-                      //   // Don't validate if the length is not 7 (including the dash)
-                      //   if (inviteCode.length !== 7) {
-                      //     validateInviteCode(inviteCode);
-                      //   }
-                      // }}
-                      // onChange={e => {
-                      //   // Update the field value
-                      //   field.onChange(e.target.value || "");
-
-                      //   // Validate the address
-                      //   const inviteCode = e.target.value;
-
-                      //   if (inviteCode.length === 7) {
-                      //     validateInviteCode(inviteCode);
-                      //   }
-                      // }}
+                      onBlur={e => {
+                        if (e.target.value.length === 7) {
+                          validateInviteCode(e.target.value).then(res => {
+                            if (res) {
+                              field.onChange(e.target.value);
+                            }
+                          });
+                        }
+                      }}
+                      onChange={e => {
+                        if (e.target.value.length === 7) {
+                          validateInviteCode(e.target.value).then(res => {
+                            if (res) {
+                              field.onChange(e.target.value);
+                            }
+                          });
+                        }
+                      }}
                     />
                     <FormDescription>Enter the invite code</FormDescription>
                     <FormMessage />
@@ -392,10 +399,8 @@ export const NewWalletForm: FC = () => {
               </div>
               <CardFooter className="justify-end p-0">
                 <Button
-                  disabled={!isEmpty(form.formState.errors)}
-                  variant={
-                    isEmpty(form.formState.errors) ? "default" : "outline"
-                  }
+                  disabled={!isFormValid}
+                  variant={isFormValid ? "default" : "outline"}
                   type="submit"
                   onClick={() => navigateToStep()}
                 >
