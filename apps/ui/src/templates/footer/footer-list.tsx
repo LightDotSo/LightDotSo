@@ -27,14 +27,13 @@ interface ListItem {
 
 interface FooterListItemProps {
   items: ListItem[];
-  title: string;
 }
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const FooterListItem: FC<FooterListItemProps> = ({ items, title }) => {
+export const FooterListItem: FC<FooterListItemProps> = ({ items }) => {
   return (
     <>
       {items.map(item => {
@@ -56,10 +55,10 @@ export const FooterListItem: FC<FooterListItemProps> = ({ items, title }) => {
 
 export const FooterList: FC = () => {
   return (
-    <ul className="grid grid-cols-2 gap-2 md:flex md:flex-row md:gap-8">
-      <FooterListItem items={NAVIGATION_LINKS.resources} title="Resources" />
-      <FooterListItem items={NAVIGATION_LINKS.company} title="Company" />
-      <FooterListItem items={NAVIGATION_LINKS.legal} title="Legal" />
+    <ul className="grid grid-cols-2 gap-2 md:flex md:flex-row md:justify-between">
+      <FooterListItem items={NAVIGATION_LINKS.resources} />
+      <FooterListItem items={NAVIGATION_LINKS.company} />
+      <FooterListItem items={NAVIGATION_LINKS.legal} />
     </ul>
   );
 };
