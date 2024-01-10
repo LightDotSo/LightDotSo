@@ -315,6 +315,14 @@ export const ConfigurationForm: FC = () => {
   }, [defaultValues]);
 
   // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const isFormValid = useMemo(() => {
+    return form.formState.isValid && isEmpty(form.formState.errors);
+  }, [form.formState]);
+
+  // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
@@ -407,7 +415,7 @@ export const ConfigurationForm: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <Card className="flex flex-col space-y-6 px-2 py-4 lg:px-6 lg:pt-6">
+    <Card className="flex flex-col space-y-6 px-4 py-4 lg:px-6 lg:pt-6">
       <CardHeader className="gap-3 p-0">
         <CardTitle>Configuration</CardTitle>
         <CardDescription>
@@ -667,10 +675,8 @@ export const ConfigurationForm: FC = () => {
                   Go Back
                 </Button>
                 <Button
-                  disabled={!isEmpty(form.formState.errors)}
-                  variant={
-                    isEmpty(form.formState.errors) ? "default" : "outline"
-                  }
+                  disabled={!isFormValid}
+                  variant={isFormValid ? "default" : "outline"}
                   type="submit"
                   onClick={() => navigateToStep()}
                 >

@@ -54,7 +54,7 @@ const navigation = {
 
 export const FooterSocial: FC = () => {
   return (
-    <div className="flex space-x-2 items-center">
+    <div className="flex items-center space-x-2">
       {navigation.social.map(item => {
         return (
           <ButtonIcon key={item.name} asChild variant="shadow" size="sm">
