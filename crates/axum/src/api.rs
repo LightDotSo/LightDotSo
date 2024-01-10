@@ -23,7 +23,7 @@ use crate::{
         activity, auth, check, configuration, feedback, health, interpretation, invite_code,
         metrics, notification, paymaster, paymaster_operation, portfolio, protocol, protocol_group,
         queue, signature, simulation, support_request, token, token_group, token_price,
-        transaction, user, user_operation, wallet, wallet_settings,
+        transaction, user, user_operation, wallet, wallet_features, wallet_settings,
     },
     sessions::{authenticated, RedisStore},
     state::AppState,
@@ -137,6 +137,10 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(wallet::types::Owner),
         schemas(wallet::types::Wallet),
         schemas(wallet::update::WalletPutRequestParams),
+        schemas(wallet_features::error::WalletFeaturesError),
+        schemas(wallet_features::types::WalletFeatures),
+        schemas(wallet_features::types::WalletFeaturesOptional),
+        schemas(wallet_features::update::WalletFeaturesPostRequestParams),
         schemas(wallet_settings::error::WalletSettingsError),
         schemas(wallet_settings::types::WalletSettings),
         schemas(wallet_settings::types::WalletSettingsOptional),
@@ -212,6 +216,8 @@ use utoipa_swagger_ui::SwaggerUi;
         wallet::v1_wallet_list_count_handler,
         wallet::v1_wallet_list_count_handler,
         wallet::v1_wallet_update_handler,
+        wallet_features::v1_wallet_features_update_handler,
+        wallet_features::v1_wallet_features_get_handler,
         wallet_settings::v1_wallet_settings_update_handler,
         wallet_settings::v1_wallet_settings_get_handler,
     ),
@@ -241,6 +247,7 @@ use utoipa_swagger_ui::SwaggerUi;
         (name = "user", description = "User API"),
         (name = "user_operation", description = "User Operation API"),
         (name = "wallet", description = "Wallet API"),
+        (name = "wallet_features", description = "Wallet Features API"),
         (name = "wallet_settings", description = "Wallet Settings API"),
     )
 )]
@@ -353,6 +360,7 @@ pub async fn start_api_server() -> Result<()> {
         .merge(user::router())
         .merge(user_operation::router())
         .merge(wallet::router())
+        .merge(wallet_features::router())
         .merge(wallet_settings::router());
 
     // Create the session store

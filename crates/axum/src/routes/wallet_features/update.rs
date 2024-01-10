@@ -15,17 +15,21 @@
 
 #![allow(clippy::unwrap_used)]
 
-use super::types::{WalletSettings, WalletSettingsOptional};
-use crate::{result::AppJsonResult, state::AppState};
+use super::types::{WalletFeatures, WalletFeaturesOptional};
+use crate::{
+    constants::KAKI_USER_ID, error::RouteError, result::AppJsonResult,
+    routes::wallet_features::error::WalletFeaturesError, sessions::get_user_id, state::AppState,
+};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
 use ethers_main::{types::H160, utils::to_checksum};
-use lightdotso_prisma::{wallet, wallet_settings};
+use lightdotso_prisma::{wallet, wallet_features};
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
+use tower_sessions_core::Session;
 use utoipa::{IntoParams, ToSchema};
 
 // -----------------------------------------------------------------------------
@@ -36,7 +40,7 @@ use utoipa::{IntoParams, ToSchema};
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct PostQuery {
-    /// The hash of the wallet settings.
+    /// The hash of the wallet features.
     pub address: String,
 }
 
@@ -46,36 +50,58 @@ pub struct PostQuery {
 
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub struct WalletSettingsPostRequestParams {
-    /// The result of the wallet_settings.
-    pub wallet_settings: WalletSettingsOptional,
+pub struct WalletFeaturesPostRequestParams {
+    /// The result of the wallet_features.
+    pub wallet_features: WalletFeaturesOptional,
 }
 
 // -----------------------------------------------------------------------------
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Create a wallet_settings
+/// Create a wallet_features
 #[utoipa::path(
         post,
-        path = "/wallet/settings/update",
+        path = "/wallet/features/update",
         params(
             PostQuery
         ),
-        request_body = WalletSettingsPostRequestParams,
+        request_body = WalletFeaturesPostRequestParams,
         responses(
-            (status = 200, description = "Wallet Settings updated successfully", body = WalletSettings),
-            (status = 400, description = "Invalid Configuration", body = WalletSettingsError),
-            (status = 409, description = "Wallet Settings already exists", body = WalletSettingsError),
-            (status = 500, description = "Wallet Settings internal error", body = WalletSettingsError),
+            (status = 200, description = "Wallet Features updated successfully", body = WalletFeatures),
+            (status = 400, description = "Invalid Configuration", body = WalletFeaturesError),
+            (status = 401, description = "Unauthorized", body = WalletFeaturesError),
+            (status = 500, description = "Wallet Features internal error", body = WalletFeaturesError),
         )
     )]
 #[autometrics]
-pub(crate) async fn v1_wallet_settings_update_handler(
+pub(crate) async fn v1_wallet_features_update_handler(
     post_query: Query<PostQuery>,
     State(state): State<AppState>,
-    Json(params): Json<WalletSettingsPostRequestParams>,
-) -> AppJsonResult<WalletSettings> {
+    mut session: Session,
+    Json(params): Json<WalletFeaturesPostRequestParams>,
+) -> AppJsonResult<WalletFeatures> {
+    // -------------------------------------------------------------------------
+    // Session
+    // -------------------------------------------------------------------------
+
+    // Get the authenticated user id.
+    let auth_user_id = get_user_id(&mut session)?;
+    info!(?auth_user_id);
+
+    // -------------------------------------------------------------------------
+    // Authorization
+    // -------------------------------------------------------------------------
+
+    // If the authenticated user id is not `KAKI_USER_ID`, return an error.
+    if auth_user_id != KAKI_USER_ID.to_string() {
+        return Err(RouteError::WalletFeaturesError(WalletFeaturesError::Unauthorized(format!(
+            "Not authorized for {}",
+            auth_user_id
+        )))
+        .into());
+    }
+
     // -------------------------------------------------------------------------
     // Parse
     // -------------------------------------------------------------------------
@@ -87,34 +113,34 @@ pub(crate) async fn v1_wallet_settings_update_handler(
     let parsed_query_address: H160 = post.address.parse()?;
     let checksum_address = to_checksum(&parsed_query_address, None);
 
-    // Get the wallet_settings from the post body.
-    let wallet_settings = params.wallet_settings;
+    // Get the wallet_features from the post body.
+    let wallet_features = params.wallet_features;
 
     // -------------------------------------------------------------------------
     // Params
     // -------------------------------------------------------------------------
 
-    // For each wallet_settings, create the params update.
+    // For each wallet_features, create the params update.
     let mut params = vec![];
 
-    info!("Update wallet_settings for address: {:?}", checksum_address);
+    info!("Update wallet_features for address: {:?}", checksum_address);
 
-    if wallet_settings.is_enabled_testnet.is_some() {
-        let is_enabled_testnet = wallet_settings.is_enabled_testnet.unwrap();
-        params.push(wallet_settings::is_enabled_testnet::set(is_enabled_testnet));
+    if wallet_features.is_enabled_ai.is_some() {
+        let is_enabled_ai = wallet_features.is_enabled_ai.unwrap();
+        params.push(wallet_features::is_enabled_ai::set(is_enabled_ai));
     }
 
     // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
 
-    // Create the wallet_settings the database.
-    let wallet_settings = state
+    // Create the wallet_features the database.
+    let wallet_features = state
         .client
-        .wallet_settings()
+        .wallet_features()
         .upsert(
-            wallet_settings::wallet_address::equals(checksum_address.clone()),
-            wallet_settings::create(
+            wallet_features::wallet_address::equals(checksum_address.clone()),
+            wallet_features::create(
                 wallet::address::equals(checksum_address.clone()),
                 params.clone(),
             ),
@@ -122,14 +148,14 @@ pub(crate) async fn v1_wallet_settings_update_handler(
         )
         .exec()
         .await?;
-    info!(?wallet_settings);
+    info!(?wallet_features);
 
     // -------------------------------------------------------------------------
     // Return
     // -------------------------------------------------------------------------
 
     // Change the signatures to the format that the API expects.
-    let wallet_settings: WalletSettings = wallet_settings.into();
+    let wallet_features: WalletFeatures = wallet_features.into();
 
-    Ok(Json::from(wallet_settings))
+    Ok(Json::from(wallet_features))
 }
