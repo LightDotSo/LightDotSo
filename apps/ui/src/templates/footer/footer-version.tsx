@@ -24,14 +24,16 @@ export const FooterVersion: FC = () => {
   return (
     <div className="flex items-center justify-between space-x-2">
       <span className="text-text-weak/60 text-xs">
-        Version{" "}
+        Version:{" "}
         <a
           className="hover:underline text-text-weak"
           href={`${SOCIAL_LINKS.Github}/releases/tag/${process.env.NEXT_PUBLIC_APP_VERSION}`}
           target="_blank"
           rel="noreferrer"
         >
-          v${process.env.NEXT_PUBLIC_APP_VERSION}
+          v
+          {process.env.NEXT_PUBLIC_APP_VERSION?.match(/(\d+\.\d+\.\d+)/)?.[0] ??
+            "0.0.0"}
         </a>{" "}
         {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA && (
           <a

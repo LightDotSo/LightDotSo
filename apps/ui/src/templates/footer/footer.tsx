@@ -25,12 +25,15 @@ import { FooterVersion } from "./footer-version";
 
 export const Footer: FC = () => {
   return (
-    <footer className="border-t border-border" aria-labelledby="footer-heading">
+    <footer
+      className="border-t border-border px-2 md:px-4 lg:px-8"
+      aria-labelledby="footer-heading"
+    >
       <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
-      <div className="mx-auto max-w-7xl py-8 space-y-4 md:space-y-6">
-        <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row justify-between md:items-center">
+      <div className="mx-auto max-w-7xl py-8 space-y-4 md:space-y-8">
+        <div className="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between md:items-center">
           <FooterLogo />
           <FooterSocial />
         </div>

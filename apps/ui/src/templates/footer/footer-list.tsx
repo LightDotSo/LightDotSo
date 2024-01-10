@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { NAVIGATION_LINKS } from "@lightdotso/const";
+import { ArrowUpRight } from "lucide-react";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
@@ -38,7 +39,10 @@ export const FooterListItem: FC<FooterListItemProps> = ({ items }) => {
     <>
       {items.map(item => {
         return (
-          <li key={item.name} className="text-text-weak/60 hover:underline">
+          <li
+            key={item.name}
+            className="text-sm text-text-weak/60 hover:underline"
+          >
             <a href={item.href} target="_blank" rel="noreferrer">
               {item.name}
             </a>
@@ -55,7 +59,7 @@ export const FooterListItem: FC<FooterListItemProps> = ({ items }) => {
 
 export const FooterList: FC = () => {
   return (
-    <ul className="grid grid-cols-2 gap-2 md:flex md:flex-row md:justify-between">
+    <ul className="grid grid-cols-2 gap-3 md:flex md:flex-row md:justify-between">
       <FooterListItem items={NAVIGATION_LINKS.resources} />
       <FooterListItem items={NAVIGATION_LINKS.company} />
       <FooterListItem items={NAVIGATION_LINKS.legal} />
