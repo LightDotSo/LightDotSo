@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use super::types::WalletSettings;
+use super::types::WalletFeatures;
 use crate::{
-    error::RouteError, result::AppJsonResult, routes::wallet_settings::error::WalletSettingsError,
+    error::RouteError, result::AppJsonResult, routes::wallet_features::error::WalletFeaturesError,
     state::AppState,
 };
 use autometrics::autometrics;
@@ -24,7 +24,7 @@ use axum::{
     Json,
 };
 use ethers_main::{types::H160, utils::to_checksum};
-use lightdotso_prisma::wallet_settings;
+use lightdotso_prisma::wallet_features;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -37,7 +37,7 @@ use utoipa::IntoParams;
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct GetQuery {
-    /// The address of the wallet settings.
+    /// The address of the wallet features.
     pub address: String,
 }
 
@@ -45,23 +45,23 @@ pub struct GetQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Get a wallet_settings
+/// Get a wallet_features
 #[utoipa::path(
         get,
-        path = "/wallet/settings/get",
+        path = "/wallet/features/get",
         params(
             GetQuery
         ),
         responses(
-            (status = 200, description = "Wallet Settings returned successfully", body = WalletSettings),
-            (status = 404, description = "Wallet Settings not found", body = WalletSettingsError),
+            (status = 200, description = "Wallet Features returned successfully", body = WalletFeatures),
+            (status = 404, description = "Wallet Features not found", body = WalletFeaturesError),
         )
     )]
 #[autometrics]
-pub(crate) async fn v1_wallet_settings_get_handler(
+pub(crate) async fn v1_wallet_features_get_handler(
     get_query: Query<GetQuery>,
     State(state): State<AppState>,
-) -> AppJsonResult<WalletSettings> {
+) -> AppJsonResult<WalletFeatures> {
     // -------------------------------------------------------------------------
     // Parse
     // -------------------------------------------------------------------------
@@ -72,31 +72,31 @@ pub(crate) async fn v1_wallet_settings_get_handler(
     let parsed_query_address: H160 = query.address.parse()?;
     let checksum_address = to_checksum(&parsed_query_address, None);
 
-    info!("Get wallet_settings for address: {:?}", checksum_address);
+    info!("Get wallet_features for address: {:?}", checksum_address);
 
     // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
 
     // Get the signatures from the database.
-    let wallet_settings = state
+    let wallet_features = state
         .client
-        .wallet_settings()
-        .find_unique(wallet_settings::wallet_address::equals(checksum_address))
+        .wallet_features()
+        .find_unique(wallet_features::wallet_address::equals(checksum_address))
         .exec()
         .await?;
 
-    // If the wallet_settings is not found, return a 404.
-    let wallet_settings = wallet_settings.ok_or(RouteError::WalletSettingsError(
-        WalletSettingsError::NotFound("Wallet settings not found".to_string()),
+    // If the wallet_features is not found, return a 404.
+    let wallet_features = wallet_features.ok_or(RouteError::WalletFeaturesError(
+        WalletFeaturesError::NotFound("Wallet features not found".to_string()),
     ))?;
 
     // -------------------------------------------------------------------------
     // Return
     // -------------------------------------------------------------------------
 
-    // Change the wallet_settings to the format that the API expects.
-    let wallet_settings: WalletSettings = wallet_settings.into();
+    // Change the wallet_features to the format that the API expects.
+    let wallet_features: WalletFeatures = wallet_features.into();
 
-    Ok(Json::from(wallet_settings))
+    Ok(Json::from(wallet_features))
 }

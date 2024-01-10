@@ -27,6 +27,7 @@ import type { WalletSettingsData } from "@/data";
 import {
   useQueryUserOperationsCount,
   useSuspenseQueryConfiguration,
+  useSuspenseQueryWalletFeatures,
 } from "@/query";
 import { queryKeys } from "@/queryKeys";
 import { useAuth } from "@/stores";
@@ -133,6 +134,10 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
     address: walletAddress as Address,
   });
 
+  const { walletFeatures } = useSuspenseQueryWalletFeatures({
+    address: walletAddress as Address,
+  });
+
   const { userOperationsCount } = useQueryUserOperationsCount({
     address: walletAddress as Address,
     status: "proposed",
@@ -149,8 +154,7 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
       return tabs.map(tab => ({ ...tab, number: 0 }));
     }
 
-    // eslint-disable-next-line no-constant-condition
-    if (false) {
+    if (walletFeatures?.is_enabled_ai) {
       // If AI not yet in tabs, add it
       if (!tabs.find(tab => tab.id === aiTab.id)) {
         // Add it after the id `activity`
@@ -173,7 +177,7 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
       // }
       return { ...tab, number };
     });
-  }, [configuration, userOperationsCount, tabs]);
+  }, [configuration, userOperationsCount, walletFeatures?.is_enabled_ai, tabs]);
 
   // ---------------------------------------------------------------------------
   // Return
