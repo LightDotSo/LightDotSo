@@ -241,6 +241,13 @@ export interface paths {
      */
     get: operations["v1_protocol_list_handler"];
   };
+  "/queue/interpretation": {
+    /**
+     * Queue interpretation handler.
+     * @description Queue interpretation handler.
+     */
+    post: operations["v1_queue_interpretation_handler"];
+  };
   "/queue/portfolio": {
     /**
      * Queue portfolio handler.
@@ -450,6 +457,20 @@ export interface paths {
      * @description Create a wallet
      */
     post: operations["v1_wallet_create_handler"];
+  };
+  "/wallet/features/get": {
+    /**
+     * Get a wallet_features
+     * @description Get a wallet_features
+     */
+    get: operations["v1_wallet_features_get_handler"];
+  };
+  "/wallet/features/update": {
+    /**
+     * Create a wallet_features
+     * @description Create a wallet_features
+     */
+    post: operations["v1_wallet_features_update_handler"];
   };
   "/wallet/get": {
     /**
@@ -1128,6 +1149,29 @@ export interface components {
        */
       InvalidConfiguration: string;
     }]>;
+    /** @description WalletFeatures root type. */
+    WalletFeatures: {
+      /** @description The wallet_features of whether the testnet is enabled. */
+      is_enabled_ai: boolean;
+    };
+    /** @description WalletFeatures operation errors */
+    WalletFeaturesError: OneOf<[{
+      BadRequest: string;
+    }, {
+      /** @description WalletFeatures not found by id. */
+      NotFound: string;
+    }, {
+      /** @description WalletFeatures unauthorized. */
+      Unauthorized: string;
+    }]>;
+    /** @description Optional WalletFeatures root type. */
+    WalletFeaturesOptional: {
+      /** @description The update query of wallet_features of whether the testnet is enabled. */
+      is_enabled_ai?: boolean | null;
+    };
+    WalletFeaturesPostRequestParams: {
+      wallet_features: components["schemas"]["WalletFeaturesOptional"];
+    };
     /** @description Count of list of wallets. */
     WalletListCount: {
       /**
@@ -2067,6 +2111,32 @@ export interface operations {
     };
   };
   /**
+   * Queue interpretation handler.
+   * @description Queue interpretation handler.
+   */
+  v1_queue_interpretation_handler: {
+    parameters: {
+      query: {
+        /** @description The address of the target queue. */
+        address: string;
+      };
+    };
+    responses: {
+      /** @description Queue created successfully */
+      200: {
+        content: {
+          "text/plain": number;
+        };
+      };
+      /** @description Queue internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["QueueError"];
+        };
+      };
+    };
+  };
+  /**
    * Queue portfolio handler.
    * @description Queue portfolio handler.
    */
@@ -2988,6 +3058,75 @@ export interface operations {
     };
   };
   /**
+   * Get a wallet_features
+   * @description Get a wallet_features
+   */
+  v1_wallet_features_get_handler: {
+    parameters: {
+      query: {
+        /** @description The address of the wallet features. */
+        address: string;
+      };
+    };
+    responses: {
+      /** @description Wallet Features returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["WalletFeatures"];
+        };
+      };
+      /** @description Wallet Features not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["WalletFeaturesError"];
+        };
+      };
+    };
+  };
+  /**
+   * Create a wallet_features
+   * @description Create a wallet_features
+   */
+  v1_wallet_features_update_handler: {
+    parameters: {
+      query: {
+        /** @description The hash of the wallet features. */
+        address: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["WalletFeaturesPostRequestParams"];
+      };
+    };
+    responses: {
+      /** @description Wallet Features updated successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["WalletFeatures"];
+        };
+      };
+      /** @description Invalid Configuration */
+      400: {
+        content: {
+          "application/json": components["schemas"]["WalletFeaturesError"];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          "application/json": components["schemas"]["WalletFeaturesError"];
+        };
+      };
+      /** @description Wallet Features internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["WalletFeaturesError"];
+        };
+      };
+    };
+  };
+  /**
    * Get a wallet
    * @description Get a wallet
    */
@@ -3087,13 +3226,13 @@ export interface operations {
       };
     };
     responses: {
-      /** @description WalletSettings returned successfully */
+      /** @description Wallet Settings returned successfully */
       200: {
         content: {
           "application/json": components["schemas"]["WalletSettings"];
         };
       };
-      /** @description WalletSettings not found */
+      /** @description Wallet Settings not found */
       404: {
         content: {
           "application/json": components["schemas"]["WalletSettingsError"];
@@ -3118,7 +3257,7 @@ export interface operations {
       };
     };
     responses: {
-      /** @description WalletSettings updated successfully */
+      /** @description Wallet Settings updated successfully */
       200: {
         content: {
           "application/json": components["schemas"]["WalletSettings"];
@@ -3130,13 +3269,13 @@ export interface operations {
           "application/json": components["schemas"]["WalletSettingsError"];
         };
       };
-      /** @description WalletSettings already exists */
+      /** @description Wallet Settings already exists */
       409: {
         content: {
           "application/json": components["schemas"]["WalletSettingsError"];
         };
       };
-      /** @description WalletSettings internal error */
+      /** @description Wallet Settings internal error */
       500: {
         content: {
           "application/json": components["schemas"]["WalletSettingsError"];
