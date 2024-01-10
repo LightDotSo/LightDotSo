@@ -16,7 +16,7 @@
 import { Social, SOCIAL_LINKS } from "@lightdotso/const";
 import type { FC, SVGProps } from "react";
 import { FaDiscord, FaGithub, FaTwitter } from "react-icons/fa";
-import { LightHorizontalLogo } from "../../svgs/logo/light-horizontal";
+import { ButtonIcon } from "../../components/ui/button-icon";
 
 // -----------------------------------------------------------------------------
 // Const
@@ -54,26 +54,20 @@ const navigation = {
 
 export const FooterSocial: FC = () => {
   return (
-    <div className="flex flex-col space-y-8">
-      <div className="text-text">
-        <LightHorizontalLogo className="block h-10 w-auto" />
-      </div>
-      <div className="flex space-x-6">
-        {navigation.social.map(item => {
-          return (
-            <a
-              key={item.name}
-              href={item.href}
-              target="_blank"
-              rel="noreferrer"
-              className="text-text-weak hover:text-text"
-            >
+    <div className="flex space-x-2 items-center">
+      {navigation.social.map(item => {
+        return (
+          <ButtonIcon key={item.name} asChild variant="shadow" size="sm">
+            <a href={item.href} target="_blank" rel="noreferrer">
               <span className="sr-only">{item.name}</span>
-              <item.icon className="h-6 w-6" aria-hidden="true" />
+              <item.icon
+                className="h-4 w-4 fill-text-weak"
+                aria-hidden="true"
+              />
             </a>
-          );
-        })}
-      </div>
+          </ButtonIcon>
+        );
+      })}
     </div>
   );
 };
