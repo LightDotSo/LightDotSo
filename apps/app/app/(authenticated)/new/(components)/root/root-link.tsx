@@ -204,7 +204,7 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
         )}
         aria-hidden="true"
       />
-      <span className="flex items-center px-4 py-2 md:px-6 md:py-4 text-sm font-medium">
+      <span className="flex items-center px-4 py-2 text-sm font-medium md:px-6 md:py-4">
         <span
           className={cn(
             "flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 bg-background-weak",
