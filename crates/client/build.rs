@@ -18,6 +18,7 @@
 // From: https://github.com/oxidecomputer/progenitor/blob/4a182d734e46fa1ce15415bf5bd497fc347dc43e/example-build/build.rs
 // License: MPL-2.0
 
+#[allow(unused_imports)]
 use std::{
     env,
     fs::{self, File},
@@ -33,10 +34,15 @@ fn main() {
 
     let tokens = generator.generate_tokens(&spec).unwrap();
     let ast = syn::parse2(tokens).unwrap();
-    let content = prettyplease::unparse(&ast);
+    let _ = prettyplease::unparse(&ast);
+    // let parsed_content = prettyplease::unparse(&ast);
 
-    let mut out_file = Path::new(&env::var("OUT_DIR").unwrap()).to_path_buf();
-    out_file.push("codegen.rs");
+    // Allow clippy::unwrap_used for the coming generated code
+    // let mut content = "#![allow(clippy::all)]\n\n".to_owned();
+    // content.push_str(&parsed_content);
 
-    fs::write(out_file, content).unwrap();
+    // let mut out_file = Path::new(&env::var("OUT_DIR").unwrap()).to_path_buf();
+    // out_file.push("mod.rs");
+
+    // fs::write(out_file, content).unwrap();
 }

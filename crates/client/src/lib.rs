@@ -19,14 +19,14 @@
 use eyre::Result;
 
 // Include the generated code.
-include!(concat!(env!("OUT_DIR"), "/codegen.rs"));
+// include!(concat!(env!("OUT_DIR"), "/mod.rs"));
 
 pub async fn main() -> Result<()> {
-    let client = Client::new("https://foo/bar");
+    // let client = Client::new("https://foo/bar");
 
-    client
-        .enrol("auth-token", &types::EnrolBody { host: "".to_string(), key: "".to_string() })
-        .await?;
+    // client
+    //     .enrol("auth-token", &types::EnrolBody { host: "".to_string(), key: "".to_string() })
+    //     .await?;
 
     Ok(())
 }
