@@ -20,6 +20,10 @@ use ethers::{types::H256, utils::to_checksum};
 use lightdotso_prisma::wallet;
 use lightdotso_tracing::tracing::info;
 
+// -----------------------------------------------------------------------------
+// Upsert
+// -----------------------------------------------------------------------------
+
 /// Create a new wallet.
 #[autometrics]
 pub async fn upsert_wallet_with_configuration(
@@ -48,6 +52,10 @@ pub async fn upsert_wallet_with_configuration(
 
     Ok(Json::from(wallet))
 }
+
+// -----------------------------------------------------------------------------
+// Tests
+// -----------------------------------------------------------------------------
 
 // Tests
 #[cfg(test)]

@@ -34,6 +34,10 @@ use prisma_client_rust::{
 };
 use std::{collections::HashMap, sync::Arc};
 
+// -----------------------------------------------------------------------------
+// Upsert
+// -----------------------------------------------------------------------------
+
 /// Taken from: https://prisma.brendonovich.dev/extra/transactions
 #[autometrics]
 #[allow(clippy::too_many_arguments)]
@@ -279,6 +283,10 @@ pub async fn upsert_transaction_with_log_receipt(
     Ok(Json::from(tx_data))
 }
 
+// -----------------------------------------------------------------------------
+// Get
+// -----------------------------------------------------------------------------
+
 pub async fn get_transaction(
     db: Database,
     transaction_hash: ethers::types::H256,
@@ -295,9 +303,7 @@ pub async fn get_transaction(
         .exec()
         .await?;
 
-    if transaction.is_none() {
-        return Err(DbError::NotFound);
-    }
+    let transaction = transaction.ok_or_else(|| DbError::NotFound)?;
 
-    Ok(Json::from(transaction.unwrap()))
+    Ok(Json::from(transaction))
 }

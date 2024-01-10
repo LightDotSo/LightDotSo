@@ -15,6 +15,7 @@
 
 #![allow(clippy::unwrap_used)]
 
+use crate::types::{AppJsonResult, Database};
 use autometrics::autometrics;
 use axum::extract::Json;
 use ethers::{types::U256, utils::to_checksum};
@@ -29,7 +30,9 @@ use lightdotso_prisma::{
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::chrono::{DateTime, NaiveDateTime, Utc};
 
-use crate::types::{AppJsonResult, Database};
+// -----------------------------------------------------------------------------
+// Upsert
+// -----------------------------------------------------------------------------
 
 #[autometrics]
 pub async fn upsert_user_operation(
