@@ -15,7 +15,12 @@
 
 "use client";
 
-import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import {
+  RainbowKitProvider,
+  lightTheme,
+  darkTheme,
+} from "@rainbow-me/rainbowkit";
+import { useTheme } from "next-themes";
 import type { ReactNode } from "react";
 import { WagmiProvider, createConfig, http } from "wagmi";
 import { mainnet, sepolia } from "wagmi/chains";
@@ -36,12 +41,22 @@ export const config = createConfig({
 
 function Web3Provider({ children }: { children: ReactNode }) {
   // ---------------------------------------------------------------------------
+  // Operation Hooks
+  // ---------------------------------------------------------------------------
+
+  const { theme } = useTheme();
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
     <WagmiProvider config={config}>
-      <RainbowKitProvider>{children}</RainbowKitProvider>
+      <RainbowKitProvider
+        theme={theme === "light" ? lightTheme() : darkTheme()}
+      >
+        {children}
+      </RainbowKitProvider>
     </WagmiProvider>
   );
 }

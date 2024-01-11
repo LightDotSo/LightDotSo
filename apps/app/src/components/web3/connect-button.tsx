@@ -21,7 +21,7 @@ import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
 import { Wallet } from "lucide-react";
 import type { Address } from "viem";
 
-// From:https://www.rainbowkit.com/docs/custom-connect-button
+// From: https://www.rainbowkit.com/docs/custom-connect-button
 // Customizes the ConnectKit button to use the UI Button component.
 
 // -----------------------------------------------------------------------------
@@ -35,9 +35,12 @@ export const ConnectButton = () => {
 
   return (
     <RainbowConnectButton.Custom>
-      {({ account, mounted, openConnectModal }) => {
+      {({ account, openAccountModal, openConnectModal }) => {
         return (
-          <Button size="sm" isLoading={!mounted} onClick={openConnectModal}>
+          <Button
+            size="sm"
+            onClick={!account ? openConnectModal : openAccountModal}
+          >
             <Wallet className="mr-2 h-4 w-4" />
             {account
               ? account.ensName ?? shortenAddress(account.address as Address)

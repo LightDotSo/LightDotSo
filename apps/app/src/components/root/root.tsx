@@ -20,6 +20,7 @@ import {
   Toaster,
   Footer,
 } from "@lightdotso/ui";
+import "@rainbow-me/rainbowkit/styles.css";
 import dynamic from "next/dynamic";
 import { Inter } from "next/font/google";
 import Script from "next/script";
