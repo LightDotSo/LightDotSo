@@ -3,6 +3,7 @@ source: crates/interpreter/tests/it/transfer/eth_transfer.rs
 expression: res
 ---
 InterpretationResponse {
+    chain_id: 10,
     gas_used: 21000,
     block_number: 114445705,
     success: true,
@@ -18,7 +19,6 @@ InterpretationResponse {
     ],
     logs: [],
     exit_reason: Stop,
-    formatted_trace: "  [0] \u{1b}[32m0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed\u{1b}[0m::\u{1b}[32mfallback\u{1b}[0m{value: 1}() \u{1b}[33m\u{1b}[0m\n    └─ \u{1b}[32m← \u{1b}[0m()\n",
     actions: [
         InterpretationAction {
             action_type: NativeSend,

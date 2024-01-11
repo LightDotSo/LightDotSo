@@ -3,6 +3,7 @@ source: crates/interpreter/tests/it/transfer/erc20_transfer.rs
 expression: res
 ---
 InterpretationResponse {
+    chain_id: 1,
     gas_used: 85889,
     block_number: 13704034,
     success: true,
@@ -52,7 +53,6 @@ InterpretationResponse {
         },
     ],
     exit_reason: Return,
-    formatted_trace: "  [64245] \u{1b}[32m0xC18360217D8F7Ab5e7c516566761Ea12Ce7F9D72\u{1b}[0m::\u{1b}[32mtransfer\u{1b}[0m(0x6f8A90995FdcE00da1F7dd731d812F6a6D18d1ff, 30000000000000000000 \u{1b}[2;49;39m[3e19]\u{1b}[0m) \u{1b}[33m\u{1b}[0m\n    ├─ emit \u{1b}[36mTransfer\u{1b}[0m(param0: 0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed, param1: 0x6f8A90995FdcE00da1F7dd731d812F6a6D18d1ff, param2: 30000000000000000000 \u{1b}[2;49;39m[3e19]\u{1b}[0m)\n    ├─ emit \u{1b}[36mDelegateVotesChanged\u{1b}[0m(param0: 0x5BFCB4BE4d7B43437d5A0c57E908c048a4418390, param1: 208012355395673648189721 \u{1b}[2;49;39m[2.08e23]\u{1b}[0m, param2: 207982355395673648189721 \u{1b}[2;49;39m[2.079e23]\u{1b}[0m)\n    └─ \u{1b}[32m← \u{1b}[0m0x0000000000000000000000000000000000000000000000000000000000000001\n",
     actions: [
         InterpretationAction {
             action_type: ERC20Send,

@@ -3,6 +3,7 @@ source: crates/interpreter/tests/it/transfer/erc1155_transfer.rs
 expression: res
 ---
 InterpretationResponse {
+    chain_id: 1,
     gas_used: 52550,
     block_number: 16306968,
     success: true,
@@ -37,7 +38,6 @@ InterpretationResponse {
         },
     ],
     exit_reason: Stop,
-    formatted_trace: "  [29782] \u{1b}[32m0x495f947276749Ce646f68AC8c248420045cb7b5e\u{1b}[0m::\u{1b}[32msafeTransferFrom\u{1b}[0m(0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed, 0x2aF8DDAb77A7c90a38CF26F29763365D0028cfEf, 19436847621256934005310036695213036766726316577505360454363262586838063251457 \u{1b}[2;49;39m[1.943e76]\u{1b}[0m, 1, 0x) \u{1b}[33m\u{1b}[0m\n    ├─ emit \u{1b}[36mTransferSingle\u{1b}[0m(param0: 0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed, param1: 0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed, param2: 0x2aF8DDAb77A7c90a38CF26F29763365D0028cfEf, param3: 19436847621256934005310036695213036766726316577505360454363262586838063251457 \u{1b}[2;49;39m[1.943e76]\u{1b}[0m, param4: 1)\n    └─ \u{1b}[32m← \u{1b}[0m()\n",
     actions: [
         InterpretationAction {
             action_type: ERC1155Send,

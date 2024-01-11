@@ -3,6 +3,7 @@ source: crates/interpreter/tests/it/transfer/erc721_transfer.rs
 expression: res
 ---
 InterpretationResponse {
+    chain_id: 1,
     gas_used: 58674,
     block_number: 16318896,
     success: true,
@@ -55,7 +56,6 @@ InterpretationResponse {
         },
     ],
     exit_reason: Stop,
-    formatted_trace: "  [36734] \u{1b}[32m0x6144D927EE371de7e7f8221b596F3432E7A8e6D9\u{1b}[0m::\u{1b}[32mtransferFrom\u{1b}[0m(0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed, 0x914a7625B645d0d705B9a0a30D22583e1FB87eb1, 11) \u{1b}[33m\u{1b}[0m\n    ├─ emit \u{1b}[36mApproval\u{1b}[0m(param0: 0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed, param1: 0x0000000000000000000000000000000000000000, param2: 11)\n    ├─ emit \u{1b}[36mTransfer\u{1b}[0m(param0: 0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed, param1: 0x914a7625B645d0d705B9a0a30D22583e1FB87eb1, param2: 11)\n    └─ \u{1b}[32m← \u{1b}[0m()\n",
     actions: [
         InterpretationAction {
             action_type: ERC721Send,

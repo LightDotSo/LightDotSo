@@ -88,17 +88,8 @@ pub async fn upsert_interpretation_with_actions(
             res.clone()
                 .actions
                 .into_iter()
-                .map(|action| {
-                    if action.address.is_some() {
-                        interpretation_action::action_address(
-                            action.action_type.to_string(),
-                            to_checksum(&action.address.unwrap(), None),
-                        )
-                    } else {
-                        interpretation_action::action::equals(action.action_type.to_string())
-                    }
-                })
-                .collect(),
+                .map(|action| interpretation_action::action::equals(action.action_type.to_string()))
+                .collect::<Vec<_>>(),
         )
         .exec()
         .await?;
