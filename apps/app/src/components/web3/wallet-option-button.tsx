@@ -13,45 +13,55 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
+import { Button } from "@lightdotso/ui";
+import { useEffect, useState } from "react";
+import type { FC } from "react";
+import type { Connector } from "wagmi";
 
-import { useTheme } from "next-themes";
-import type { ReactNode } from "react";
-import { WagmiProvider, createConfig, http } from "wagmi";
-import { mainnet, sepolia } from "wagmi/chains";
-import { injected, metaMask, walletConnect } from "wagmi/connectors";
-// import { CHAINS } from "@/const/chains";
+// From: https://wagmi.sh/react/guides/connect-wallet#third-party-libraries
+// License: MIT
 
 // -----------------------------------------------------------------------------
-// Wagmi
+// Props
 // -----------------------------------------------------------------------------
 
-// Set up wagmi config
-export const config = createConfig({
-  chains: [mainnet, sepolia],
-  connectors: [
-    injected(),
-    walletConnect({
-      projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
-    }),
-    metaMask(),
-  ],
-  transports: {
-    [mainnet.id]: http(),
-    [sepolia.id]: http(),
-  },
-});
+type WalletOptionButtonProps = {
+  connector: Connector;
+  onClick: () => void;
+};
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-function Web3Provider({ children }: { children: ReactNode }) {
+export const WalletOptionButton: FC<WalletOptionButtonProps> = async ({
+  connector,
+  onClick,
+}) => {
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [ready, setReady] = useState<boolean>(false);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    (async () => {
+      const provider = await connector.getProvider();
+      setReady(!!provider);
+    })();
+  }, [connector]);
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return <WagmiProvider config={config}>{children}</WagmiProvider>;
-}
-
-export { Web3Provider };
+  return (
+    <Button disabled={!ready} onClick={onClick}>
+      {connector.name}
+    </Button>
+  );
+};

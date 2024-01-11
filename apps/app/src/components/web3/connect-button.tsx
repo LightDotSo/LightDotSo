@@ -17,9 +17,10 @@
 
 import { Button } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
-import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
 import { Wallet } from "lucide-react";
 import type { Address } from "viem";
+import { useAccount, useDisconnect, useEnsName } from "wagmi";
+import { useModals } from "@/stores";
 
 // From: https://www.rainbowkit.com/docs/custom-connect-button
 // Customizes the ConnectKit button to use the UI Button component.
@@ -30,24 +31,30 @@ import type { Address } from "viem";
 
 export const ConnectButton = () => {
   // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { showWalletModal } = useModals();
+
+  // ---------------------------------------------------------------------------
+  // Wagmi Hooks
+  // ---------------------------------------------------------------------------
+
+  const { address } = useAccount();
+  const { disconnect } = useDisconnect();
+  const { data: ensName } = useEnsName({ address });
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <RainbowConnectButton.Custom>
-      {({ account, openAccountModal, openConnectModal }) => {
-        return (
-          <Button
-            size="sm"
-            onClick={!account ? openConnectModal : openAccountModal}
-          >
-            <Wallet className="mr-2 h-4 w-4" />
-            {account
-              ? account.ensName ?? shortenAddress(account.address as Address)
-              : "Connect Wallet"}
-          </Button>
-        );
-      }}
-    </RainbowConnectButton.Custom>
+    // @ts-expect-error
+    <Button size="sm" onClick={!address ? showWalletModal : disconnect}>
+      <Wallet className="mr-2 h-4 w-4" />
+      {address
+        ? ensName ?? shortenAddress(address as Address)
+        : "Connect Wallet"}
+    </Button>
   );
 };

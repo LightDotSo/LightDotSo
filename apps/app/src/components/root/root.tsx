@@ -22,7 +22,6 @@ import {
   Toaster,
   Footer,
 } from "@lightdotso/ui";
-import "@rainbow-me/rainbowkit/styles.css";
 import dynamic from "next/dynamic";
 import { Inter } from "next/font/google";
 import Script from "next/script";
@@ -31,6 +30,7 @@ import type { FC, ReactNode } from "react";
 import { AuthState } from "@/components/auth/auth-state";
 import { VercelToolbar } from "@/components/dev/vercel-toolbar";
 import { MainNav } from "@/components/nav/main-nav";
+import { WalletModal } from "@/components/web3/wallet-modal";
 import { Web3Provider } from "@/components/web3/web3-provider";
 import { WssState } from "@/components/wss/wss-state";
 
@@ -91,6 +91,7 @@ export const Root: FC<RootProps> = ({ children }) => {
               <Toaster />
               <Suspense>
                 <AuthModal />
+                <WalletModal />
               </Suspense>
               <CommandK />
               <WssState />
