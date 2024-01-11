@@ -1075,10 +1075,10 @@ model AssetChange {
   // Fields
   // ---------------------------------------------------------------------------
 
-  address        String
-  amount         BigInt
-  previousAmount BigInt
-  newAmount      BigInt
+  address      String
+  amount       BigInt
+  beforeAmount BigInt
+  afterAmount  BigInt
 
   // ---------------------------------------------------------------------------
   // One-to-many
@@ -1241,11 +1241,11 @@ model Token {
   // ---------------------------------------------------------------------------
 
   type     TokenType @default(ERC_20)
-  symbol   String
+  symbol   String?
   name     String?
   address  String
   chainId  BigInt
-  decimals Int
+  decimals Int?
   tokenId  BigInt?
 
   // ---------------------------------------------------------------------------

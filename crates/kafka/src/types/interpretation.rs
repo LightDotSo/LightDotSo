@@ -24,7 +24,7 @@ use serde_json::{json, Value};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct InterpretationMessage {
-    pub transaction_hash: H256,
+    pub transaction_hash: Option<H256>,
     pub user_operation_hash: Option<H256>,
 }
 
@@ -58,14 +58,14 @@ mod tests {
     #[test]
     fn test_to_json() {
         let msg = InterpretationMessage {
-            transaction_hash: h256_mock(),
+            transaction_hash: Some(h256_mock()),
             user_operation_hash: Some(h256_mock()),
         };
 
         let json_str = msg.to_json();
         let expected_str = format!(
             "{{\"transaction_hash\":\"{:?}\",\"user_operation_hash\":\"{:?}\"}}",
-            msg.transaction_hash,
+            msg.transaction_hash.unwrap(),
             msg.user_operation_hash.unwrap()
         );
 
@@ -75,8 +75,10 @@ mod tests {
     // Test serialization and deserialization
     #[test]
     fn test_serialization_deserialization() -> Result<()> {
-        let original_msg =
-            InterpretationMessage { transaction_hash: h256_mock(), user_operation_hash: None };
+        let original_msg = InterpretationMessage {
+            transaction_hash: Some(h256_mock()),
+            user_operation_hash: None,
+        };
 
         let serialized = original_msg.to_json();
         let deserialized: InterpretationMessage = serde_json::from_str(&serialized)?;

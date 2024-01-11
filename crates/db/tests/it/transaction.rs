@@ -17,6 +17,7 @@ use eyre::Result;
 use lightdotso_db::{db::create_client, models::transaction::get_transaction_with_logs};
 use std::sync::Arc;
 
+#[ignore]
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_get_transaction_with_logs() -> Result<()> {
     // Load the environment variables.

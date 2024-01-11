@@ -18,7 +18,8 @@
 use clap::Parser;
 use eyre::Result;
 use lightdotso_db::models::{
-    transaction::get_transaction_with_logs, user_operation::get_user_operation_with_logs,
+    interpretation::upsert_interpretation_with_actions, transaction::get_transaction_with_logs,
+    user_operation::get_user_operation_with_logs,
 };
 use lightdotso_interpreter::{config::InterpreterArgs, types::InterpretationRequest};
 use lightdotso_kafka::types::interpretation::InterpretationMessage;
@@ -42,33 +43,94 @@ pub async fn interpretation_consumer(
 
         info!("payload: {:?}", payload);
 
-        // Get the transaction from the database
-        let transaction_with_logs =
-            get_transaction_with_logs(db.clone(), payload.transaction_hash).await?;
-
-        // If the user operation hash is not empty, get the user operation from the database
-        let _user_operation_with_logs =
-            if let Some(user_operation_hash) = payload.user_operation_hash {
-                Some(get_user_operation_with_logs(db, user_operation_hash).await?)
-            } else {
-                None
-            };
-
         let args = InterpreterArgs::parse_from([""]);
 
-        let request = InterpretationRequest {
-            block_number: transaction_with_logs.transaction.clone().block_number.map(|n| n as u64),
-            gas_limit: u64::MAX,
-            chain_id: transaction_with_logs.transaction.clone().chain_id as u64,
-            from: transaction_with_logs.transaction.clone().from.parse()?,
-            to: transaction_with_logs.transaction.clone().to.map(|to| to.parse()).unwrap()?,
-            call_data: transaction_with_logs.transaction.clone().input.map(|input| input.into()),
-            value: transaction_with_logs.transaction.clone().value.map(|value| value as u64),
-            traces: vec![],
-            logs: transaction_with_logs.logs,
-        };
+        // If the payload has a transaction hash
+        if let Some(transaction_hash) = payload.transaction_hash {
+            // Get the transaction from the database
+            let transaction_with_logs =
+                get_transaction_with_logs(db.clone(), transaction_hash).await?;
 
-        let _res = args.run_interpretation(request).await?;
+            info!("transaction_with_logs: {:?}", transaction_with_logs);
+
+            // Create an `InterpretationRequest` from the transaction
+            let request = InterpretationRequest {
+                block_number: transaction_with_logs
+                    .transaction
+                    .clone()
+                    .block_number
+                    .map(|n| n as u64),
+                gas_limit: u64::MAX,
+                chain_id: transaction_with_logs.transaction.clone().chain_id as u64,
+                from: transaction_with_logs.transaction.clone().from.parse()?,
+                to: Some(
+                    transaction_with_logs.transaction.clone().to.map(|to| to.parse()).unwrap()?,
+                ),
+                call_data: transaction_with_logs
+                    .transaction
+                    .clone()
+                    .input
+                    .map(|input| input.into()),
+                value: transaction_with_logs.transaction.clone().value.map(|value| value as u64),
+                traces: vec![],
+                logs: transaction_with_logs.logs,
+            };
+
+            // Run the interpretation
+            let res = args.clone().run_interpretation(request).await?;
+
+            info!("res: {:?}", res);
+
+            // Upsert the interpretation
+            upsert_interpretation_with_actions(
+                db.clone(),
+                res.clone(),
+                Some(transaction_with_logs.transaction.hash),
+                None,
+            )
+            .await?;
+        }
+
+        // If the payload has a user operation hash
+        if let Some(user_operation_with_logs) = payload.user_operation_hash {
+            // Get the transaction from the database
+            let user_operation_with_logs =
+                get_user_operation_with_logs(db.clone(), user_operation_with_logs).await?;
+
+            // If the `transaction` field is `None`, then return early
+            if user_operation_with_logs.transaction.is_none() {
+                return Ok(());
+            }
+
+            // Create an `InterpretationRequest` from the transaction
+            let request = InterpretationRequest {
+                block_number: user_operation_with_logs
+                    .transaction
+                    .unwrap()
+                    .block_number
+                    .map(|n| n as u64),
+                gas_limit: u64::MAX,
+                chain_id: user_operation_with_logs.user_operation.clone().chain_id as u64,
+                from: user_operation_with_logs.user_operation.clone().sender.parse()?,
+                to: None,
+                call_data: Some(user_operation_with_logs.user_operation.clone().call_data.into()),
+                value: None,
+                traces: vec![],
+                logs: user_operation_with_logs.logs,
+            };
+
+            // Run the interpretation
+            let res = args.run_interpretation(request).await?;
+
+            // Upsert the interpretation
+            upsert_interpretation_with_actions(
+                db,
+                res,
+                None,
+                Some(user_operation_with_logs.user_operation.hash),
+            )
+            .await?;
+        }
     }
 
     Ok(())

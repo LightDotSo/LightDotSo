@@ -34,7 +34,7 @@ pub struct InterpretationRequest {
     /// From address of the transaction
     pub from: Address,
     /// To address of the transaction
-    pub to: Address,
+    pub to: Option<Address>,
     /// Chain ID of the simulation
     pub chain_id: u64,
     /// Call data of the transaction
@@ -53,7 +53,7 @@ impl Default for InterpretationRequest {
             block_number: None,
             gas_limit: u64::MAX,
             from: Address::default(),
-            to: Address::default(),
+            to: Some(Address::default()),
             chain_id: 0,
             call_data: Some(Bytes::new()),
             value: None,
@@ -65,6 +65,8 @@ impl Default for InterpretationRequest {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InterpretationResponse {
+    /// Chain ID of the interpretation
+    pub chain_id: u64,
     /// Gas used by the transaction
     pub gas_used: u64,
     /// Block number of the simulation
@@ -86,6 +88,7 @@ pub struct InterpretationResponse {
 impl Default for InterpretationResponse {
     fn default() -> Self {
         Self {
+            chain_id: 0,
             gas_used: 0,
             block_number: 0,
             success: false,
@@ -114,18 +117,25 @@ pub struct AdapterResponse {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct AssetChange {
+    /// Address of the asset holder
     pub address: Address,
+    /// Amount of the asset before the transaction
     pub before_amount: Uint,
+    /// Amount of the asset after the transaction
     pub after_amount: Uint,
+    /// The amount of the asset that was transferred
     pub amount: Uint,
-
+    /// The action that was interpreted
     pub action: InterpretationAction,
+    /// The token that was transferred
     pub token: AssetToken,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct AssetToken {
+    /// Address of the token
     pub address: Address,
+    /// The optional id of the token
     pub token_id: Option<Uint>,
 }
 

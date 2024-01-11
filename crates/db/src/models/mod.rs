@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 pub mod activity;
+pub mod interpretation;
 pub mod log;
 pub mod paymaster_operation;
 pub mod transaction;

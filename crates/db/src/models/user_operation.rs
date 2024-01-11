@@ -30,7 +30,7 @@ use lightdotso_contracts::{
     types::UserOperationWithTransactionAndReceiptLogs,
 };
 use lightdotso_prisma::{
-    log, paymaster, paymaster_operation, user_operation, wallet, UserOperationStatus,
+    log, paymaster, paymaster_operation, transaction, user_operation, wallet, UserOperationStatus,
 };
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::chrono::{DateTime, NaiveDateTime, Utc};
@@ -196,6 +196,7 @@ pub async fn get_user_operation_with_logs(
         .user_operation()
         .find_unique(user_operation::hash::equals(format!("{:?}", user_operation_hash)))
         .with(user_operation::logs::fetch(vec![]).with(log::topics::fetch(vec![])))
+        .with(user_operation::transaction::fetch())
         .exec()
         .await?;
 
@@ -215,6 +216,7 @@ pub async fn get_user_operation_with_logs(
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DbUserOperationLogs {
+    pub transaction: Option<transaction::Data>,
     pub user_operation: user_operation::Data,
     pub logs: Vec<ethers_main::types::Log>,
 }
@@ -223,12 +225,14 @@ impl TryFrom<user_operation::Data> for DbUserOperationLogs {
     type Error = eyre::Report;
 
     fn try_from(user_operation: user_operation::Data) -> Result<Self, Self::Error> {
+        let transaction = user_operation.clone().transaction.unwrap().map(|tx| *tx);
+
         let logs = user_operation.clone().logs.unwrap().into_iter().collect::<Vec<_>>();
 
         let db_logs = logs.into_iter().map(|l| l.try_into()).collect::<Result<Vec<DbLog>, _>>()?;
 
         let logs = db_logs.into_iter().map(|l| l.log).collect::<Vec<ethers_main::types::Log>>();
 
-        Ok(Self { user_operation, logs })
+        Ok(Self { transaction, user_operation, logs })
     }
 }

@@ -109,10 +109,10 @@ impl Adapter for EthAdapter {
         }
 
         // If the to/from address is not in the traces, then it is in the request
-        if !traces.iter().any(|t| t.from == request.from && t.to == request.to) {
+        if !traces.iter().any(|t| t.from == request.from && Some(t.to) == request.to) {
             // Get the before balances
             let before_from_balance = evm.get_balance(request.from).await?;
-            let before_to_balance = evm.get_balance(request.to).await?;
+            let before_to_balance = evm.get_balance(request.to.unwrap()).await?;
 
             // Get the after balances
             // unwrap is safe because we know that value is Some in the matches function
@@ -128,7 +128,7 @@ impl Adapter for EthAdapter {
             // Get the actions for the to address
             let to_action = InterpretationAction {
                 action_type: InterpretationActionType::NativeReceive,
-                address: Some(request.to),
+                address: Some(request.to.unwrap()),
             };
 
             // Get the asset changes for the from address
@@ -143,7 +143,7 @@ impl Adapter for EthAdapter {
 
             // Get the asset changes for the to address
             let to_asset_change = AssetChange {
-                address: request.to,
+                address: request.to.unwrap(),
                 action: to_action.clone(),
                 token: token.clone(),
                 before_amount: before_to_balance,
