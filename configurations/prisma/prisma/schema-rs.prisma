@@ -607,7 +607,7 @@ model Transaction {
   /// Gas amount
   /// pub gas: U256
   /// WARNING: Converting this as optional due to the graph limitations
-  gas                  String?
+  gas                  BigInt?
   /// Input data
   /// pub input: Bytes
   /// WARNING: Converting this as optional due to the graph limitations
