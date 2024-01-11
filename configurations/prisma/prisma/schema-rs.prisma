@@ -1056,10 +1056,10 @@ model AssetChange {
   // Fields
   // ---------------------------------------------------------------------------
 
-  address        String
-  amount         BigInt
-  previousAmount BigInt
-  newAmount      BigInt
+  address      String
+  amount       BigInt
+  beforeAmount BigInt
+  afterAmount  BigInt
 
   // ---------------------------------------------------------------------------
   // One-to-many
