@@ -600,7 +600,7 @@ model Transaction {
   /// Transferred value
   /// pub value: U256
   /// WARNING: Converting this as optional due to the graph limitations
-  value                String?
+  value                BigInt?
   /// Gas Price, null for Type 2 transactions
   /// pub gas_price: Option<U256>
   gas_price            BigInt?
