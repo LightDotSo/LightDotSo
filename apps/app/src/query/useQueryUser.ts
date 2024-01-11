@@ -14,13 +14,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getUser } from "@lightdotso/client";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { UserData } from "@/data";
 import type { UserParams } from "@/params";
 import { queryKeys } from "@/queryKeys";
 import { useAuth } from "@/stores";
 
-export const useSuspenseQueryUser = (params: UserParams) => {
+export const useQueryUser = (params: UserParams) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -37,7 +37,7 @@ export const useSuspenseQueryUser = (params: UserParams) => {
     queryKeys.user.get({ address: params.address }).queryKey,
   );
 
-  const { data: user } = useSuspenseQuery<UserData | null>({
+  const { data: user } = useQuery<UserData | null>({
     queryKey: queryKeys.user.get({ address: params.address }).queryKey,
     queryFn: async () => {
       if (!params.address) {

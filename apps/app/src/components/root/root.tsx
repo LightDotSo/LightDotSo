@@ -13,8 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
 import {
   TailwindIndicator,
   ThemeProvider,
@@ -30,7 +28,6 @@ import type { FC, ReactNode } from "react";
 import { AuthState } from "@/components/auth/auth-state";
 import { VercelToolbar } from "@/components/dev/vercel-toolbar";
 import { MainNav } from "@/components/nav/main-nav";
-import { WalletModal } from "@/components/web3/wallet-modal";
 import { Web3Provider } from "@/components/web3/web3-provider";
 import { WssState } from "@/components/wss/wss-state";
 
@@ -43,6 +40,10 @@ const CommandK = dynamic(() => import("@/components/command-k"), {
 });
 
 const AuthModal = dynamic(() => import("@/components/auth/auth-modal"), {
+  ssr: false,
+});
+
+const WalletModal = dynamic(() => import("@/components/web3/wallet-modal"), {
   ssr: false,
 });
 
@@ -81,22 +82,18 @@ export const Root: FC<RootProps> = ({ children }) => {
     >
       <body className="min-h-[100dvh] bg-background-body">
         <ThemeProvider attribute="class">
-          <ReactQueryProvider>
-            <Web3Provider>
+          <Web3Provider>
+            <ReactQueryProvider>
               <MainNav>{children}</MainNav>
               <Footer />
-              <Suspense>
-                <AuthState />
-              </Suspense>
+              <AuthState />
               <Toaster />
-              <Suspense>
-                <AuthModal />
-                <WalletModal />
-              </Suspense>
+              <AuthModal />
+              <WalletModal />
               <CommandK />
               <WssState />
-            </Web3Provider>
-          </ReactQueryProvider>
+            </ReactQueryProvider>
+          </Web3Provider>
         </ThemeProvider>
         <TailwindIndicator />
         <Suspense>
