@@ -44,7 +44,7 @@ export const TransactionCardSignButton: FC<TransactionCardSignButtonProps> = ({
   // App Hooks
   // ---------------------------------------------------------------------------
 
-  const { isLoading, isSignable, signMessage } = useUserOperationSign({
+  const { isLoading, isSignable, signUserOperation } = useUserOperationSign({
     address: address,
     config: config,
     userOperation: userOperation,
@@ -60,7 +60,7 @@ export const TransactionCardSignButton: FC<TransactionCardSignButtonProps> = ({
       isLoading={isLoading}
       variant={isSignable ? "default" : "outline"}
       className="w-full"
-      onClick={() => signMessage()}
+      onClick={() => signUserOperation()}
     >
       Sign
     </Button>

@@ -57,7 +57,9 @@ function ReactQueryProvider(props: { children: ReactNode }) {
   }, []);
 
   // Ensure that rendering is blocked until useEffect initializes `queryClient`
-  if (!queryClient) return null;
+  if (!queryClient) {
+    return null;
+  }
 
   return (
     <QueryClientProvider client={queryClient}>

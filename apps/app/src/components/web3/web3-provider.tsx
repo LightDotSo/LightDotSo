@@ -15,38 +15,23 @@
 
 "use client";
 
-import { ConnectKitProvider } from "connectkit";
+import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import type { ReactNode } from "react";
-import { WagmiConfig, createConfig, configureChains } from "wagmi";
-import { InjectedConnector } from "wagmi/connectors/injected";
-import { MetaMaskConnector } from "wagmi/connectors/metaMask";
-import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
-import { publicProvider } from "wagmi/providers/public";
-import { CHAINS as configuredChains } from "@/const/chains";
+import { WagmiProvider, createConfig, http } from "wagmi";
+import { mainnet, sepolia } from "wagmi/chains";
+// import { CHAINS } from "@/const/chains";
 
 // -----------------------------------------------------------------------------
 // Wagmi
 // -----------------------------------------------------------------------------
 
-const { publicClient, webSocketPublicClient } = configureChains(
-  configuredChains,
-  [publicProvider()],
-);
-
 // Set up wagmi config
-const config = createConfig({
-  autoConnect: true,
-  connectors: [
-    new InjectedConnector(),
-    new MetaMaskConnector(),
-    new WalletConnectConnector({
-      options: {
-        projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
-      },
-    }),
-  ],
-  publicClient,
-  webSocketPublicClient,
+export const config = createConfig({
+  chains: [mainnet, sepolia],
+  transports: {
+    [mainnet.id]: http(),
+    [sepolia.id]: http(),
+  },
 });
 
 function Web3Provider({ children }: { children: ReactNode }) {
@@ -55,9 +40,9 @@ function Web3Provider({ children }: { children: ReactNode }) {
   // ---------------------------------------------------------------------------
 
   return (
-    <WagmiConfig config={config}>
-      <ConnectKitProvider>{children}</ConnectKitProvider>
-    </WagmiConfig>
+    <WagmiProvider config={config}>
+      <RainbowKitProvider>{children}</RainbowKitProvider>
+    </WagmiProvider>
   );
 }
 

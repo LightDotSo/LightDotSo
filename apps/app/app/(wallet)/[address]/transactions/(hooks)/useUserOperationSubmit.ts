@@ -27,8 +27,8 @@ import type { ConfigurationData, UserOperationData } from "@/data";
 import { useSuspenseQueryPaymasterOperation } from "@/query";
 import { errorToast, successToast } from "@/utils";
 import {
-  useLightVerifyingPaymasterGetHash,
-  useLightVerifyingPaymasterSenderNonce,
+  useReadLightVerifyingPaymasterGetHash,
+  useReadLightVerifyingPaymasterSenderNonce,
 } from "@/wagmi";
 
 // -----------------------------------------------------------------------------
@@ -77,7 +77,7 @@ export const useUserOperationSubmit = ({
   // Wagmi
   // ---------------------------------------------------------------------------
 
-  const { data: paymasterHash } = useLightVerifyingPaymasterGetHash({
+  const { data: paymasterHash } = useReadLightVerifyingPaymasterGetHash({
     address: userOperation.paymaster_and_data.slice(0, 42) as Address,
     chainId: userOperation.chain_id,
     args: [
@@ -105,7 +105,7 @@ export const useUserOperationSubmit = ({
     ],
   });
 
-  const { data: paymasterNonce } = useLightVerifyingPaymasterSenderNonce({
+  const { data: paymasterNonce } = useReadLightVerifyingPaymasterSenderNonce({
     address: userOperation.paymaster_and_data.slice(0, 42) as Address,
     chainId: Number(userOperation.chain_id),
     args: [userOperation.sender as Address],

@@ -18,7 +18,7 @@
 import { createUserOperation } from "@lightdotso/client";
 import { subdigestOf } from "@lightdotso/solutions";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Address, Hex } from "viem";
 import {
   isAddressEqual,
@@ -34,10 +34,10 @@ import { useAuth } from "@/stores";
 import type { UserOperation } from "@/types";
 import { errorToast, successToast } from "@/utils";
 import {
-  lightWalletABI,
-  lightWalletFactoryABI,
-  useLightVerifyingPaymasterGetHash,
-  useLightVerifyingPaymasterSenderNonce,
+  lightWalletAbi,
+  lightWalletFactoryAbi,
+  useReadLightVerifyingPaymasterGetHash,
+  useReadLightVerifyingPaymasterSenderNonce,
 } from "@/wagmi";
 
 // -----------------------------------------------------------------------------
@@ -91,21 +91,15 @@ export const useUserOperationCreate = ({
   // Wagmi
   // ---------------------------------------------------------------------------
 
-  const {
-    data,
-    signMessage,
-    isLoading: isSignLoading,
-  } = useSignMessage({
-    message: { raw: toBytes(subdigest) },
-  });
+  const { data, signMessage, isPending: isSignLoading } = useSignMessage();
 
-  const { data: paymasterNonce } = useLightVerifyingPaymasterSenderNonce({
+  const { data: paymasterNonce } = useReadLightVerifyingPaymasterSenderNonce({
     address: userOperation.paymasterAndData.slice(0, 42) as Address,
     chainId: Number(userOperation.chainId),
     args: [userOperation.sender as Address],
   });
 
-  const { data: paymasterHash } = useLightVerifyingPaymasterGetHash({
+  const { data: paymasterHash } = useReadLightVerifyingPaymasterGetHash({
     address: userOperation.paymasterAndData.slice(0, 42) as Address,
     chainId: Number(userOperation.chainId),
     args: [
@@ -149,7 +143,7 @@ export const useUserOperationCreate = ({
 
     // Parse the initCode of the userOperation
     return decodeFunctionData({
-      abi: lightWalletFactoryABI,
+      abi: lightWalletFactoryAbi,
       data: `0x${userOperation.initCode.slice(42)}` as Hex,
     }).args;
   }, [userOperation.initCode]);
@@ -161,13 +155,21 @@ export const useUserOperationCreate = ({
       case "0xb61d27f6":
       case "0x47e1da2a":
         return decodeFunctionData({
-          abi: lightWalletABI,
+          abi: lightWalletAbi,
           data: userOperation.callData as Hex,
         }).args;
       default:
         return userOperation.callData;
     }
   }, [userOperation.callData]);
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  const signUserOperation = useCallback(() => {
+    signMessage({ message: { raw: toBytes(subdigest) } });
+  }, [subdigest, signMessage]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -245,7 +247,7 @@ export const useUserOperationCreate = ({
     decodedInitCode,
     paymasterHash,
     paymasterNonce,
-    signMessage,
+    signUserOperation,
     subdigest,
     threshold,
   };

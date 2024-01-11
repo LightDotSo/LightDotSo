@@ -18,7 +18,6 @@ ignores:
   - checkly
   - "@lightdotso/styles"
   - "@lightdotso/ui"
-  - connectkit
   - siwe
   - viem
   - wagmi

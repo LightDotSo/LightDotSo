@@ -14,28 +14,17 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import {
-  useContractRead,
-  useContractWrite,
-  usePrepareContractWrite,
-  useContractEvent,
-} from "wagmi";
-import type {
-  UseContractReadConfig,
-  UseContractWriteConfig,
-  UsePrepareContractWriteConfig,
-  UseContractEventConfig,
-} from "wagmi";
-import type {
-  ReadContractResult,
-  WriteContractMode,
-  PrepareWriteContractResult,
-} from "wagmi/actions";
+  createUseReadContract,
+  createUseWriteContract,
+  createUseSimulateContract,
+  createUseWatchContractEvent,
+} from "wagmi/codegen";
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // LightVerifyingPaymaster
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const lightVerifyingPaymasterABI = [
+export const lightVerifyingPaymasterAbi = [
   {
     stateMutability: "nonpayable",
     type: "constructor",
@@ -285,7 +274,7 @@ export const lightVerifyingPaymasterABI = [
 // LightWallet
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const lightWalletABI = [
+export const lightWalletAbi = [
   {
     stateMutability: "nonpayable",
     type: "constructor",
@@ -708,7 +697,7 @@ export const lightWalletABI = [
 // LightWalletFactory
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const lightWalletFactoryABI = [
+export const lightWalletFactoryAbi = [
   {
     stateMutability: "nonpayable",
     type: "constructor",
@@ -773,1873 +762,661 @@ export const lightWalletFactoryABI = [
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__
  */
-export function useLightVerifyingPaymasterRead<
-  TFunctionName extends string,
-  TSelectData = ReadContractResult<
-    typeof lightVerifyingPaymasterABI,
-    TFunctionName
-  >,
->(
-  config: Omit<
-    UseContractReadConfig<
-      typeof lightVerifyingPaymasterABI,
-      TFunctionName,
-      TSelectData
-    >,
-    "abi"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightVerifyingPaymasterABI,
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightVerifyingPaymasterABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+export const useReadLightVerifyingPaymaster =
+  /*#__PURE__*/ createUseReadContract({ abi: lightVerifyingPaymasterAbi });
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__ and `functionName` set to `"entryPoint"`.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"entryPoint"`
  */
-export function useLightVerifyingPaymasterEntryPoint<
-  TFunctionName extends "entryPoint",
-  TSelectData = ReadContractResult<
-    typeof lightVerifyingPaymasterABI,
-    TFunctionName
-  >,
->(
-  config: Omit<
-    UseContractReadConfig<
-      typeof lightVerifyingPaymasterABI,
-      TFunctionName,
-      TSelectData
-    >,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightVerifyingPaymasterABI,
+export const useReadLightVerifyingPaymasterEntryPoint =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightVerifyingPaymasterAbi,
     functionName: "entryPoint",
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightVerifyingPaymasterABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+  });
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__ and `functionName` set to `"getDeposit"`.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"getDeposit"`
  */
-export function useLightVerifyingPaymasterGetDeposit<
-  TFunctionName extends "getDeposit",
-  TSelectData = ReadContractResult<
-    typeof lightVerifyingPaymasterABI,
-    TFunctionName
-  >,
->(
-  config: Omit<
-    UseContractReadConfig<
-      typeof lightVerifyingPaymasterABI,
-      TFunctionName,
-      TSelectData
-    >,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightVerifyingPaymasterABI,
+export const useReadLightVerifyingPaymasterGetDeposit =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightVerifyingPaymasterAbi,
     functionName: "getDeposit",
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightVerifyingPaymasterABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+  });
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__ and `functionName` set to `"getHash"`.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"getHash"`
  */
-export function useLightVerifyingPaymasterGetHash<
-  TFunctionName extends "getHash",
-  TSelectData = ReadContractResult<
-    typeof lightVerifyingPaymasterABI,
-    TFunctionName
-  >,
->(
-  config: Omit<
-    UseContractReadConfig<
-      typeof lightVerifyingPaymasterABI,
-      TFunctionName,
-      TSelectData
-    >,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightVerifyingPaymasterABI,
+export const useReadLightVerifyingPaymasterGetHash =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightVerifyingPaymasterAbi,
     functionName: "getHash",
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightVerifyingPaymasterABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+  });
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__ and `functionName` set to `"owner"`.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"owner"`
  */
-export function useLightVerifyingPaymasterOwner<
-  TFunctionName extends "owner",
-  TSelectData = ReadContractResult<
-    typeof lightVerifyingPaymasterABI,
-    TFunctionName
-  >,
->(
-  config: Omit<
-    UseContractReadConfig<
-      typeof lightVerifyingPaymasterABI,
-      TFunctionName,
-      TSelectData
-    >,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightVerifyingPaymasterABI,
+export const useReadLightVerifyingPaymasterOwner =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightVerifyingPaymasterAbi,
     functionName: "owner",
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightVerifyingPaymasterABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+  });
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__ and `functionName` set to `"parsePaymasterAndData"`.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"parsePaymasterAndData"`
  */
-export function useLightVerifyingPaymasterParsePaymasterAndData<
-  TFunctionName extends "parsePaymasterAndData",
-  TSelectData = ReadContractResult<
-    typeof lightVerifyingPaymasterABI,
-    TFunctionName
-  >,
->(
-  config: Omit<
-    UseContractReadConfig<
-      typeof lightVerifyingPaymasterABI,
-      TFunctionName,
-      TSelectData
-    >,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightVerifyingPaymasterABI,
+export const useReadLightVerifyingPaymasterParsePaymasterAndData =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightVerifyingPaymasterAbi,
     functionName: "parsePaymasterAndData",
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightVerifyingPaymasterABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+  });
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__ and `functionName` set to `"senderNonce"`.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"senderNonce"`
  */
-export function useLightVerifyingPaymasterSenderNonce<
-  TFunctionName extends "senderNonce",
-  TSelectData = ReadContractResult<
-    typeof lightVerifyingPaymasterABI,
-    TFunctionName
-  >,
->(
-  config: Omit<
-    UseContractReadConfig<
-      typeof lightVerifyingPaymasterABI,
-      TFunctionName,
-      TSelectData
-    >,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightVerifyingPaymasterABI,
+export const useReadLightVerifyingPaymasterSenderNonce =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightVerifyingPaymasterAbi,
     functionName: "senderNonce",
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightVerifyingPaymasterABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+  });
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__ and `functionName` set to `"verifyingSigner"`.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"verifyingSigner"`
  */
-export function useLightVerifyingPaymasterVerifyingSigner<
-  TFunctionName extends "verifyingSigner",
-  TSelectData = ReadContractResult<
-    typeof lightVerifyingPaymasterABI,
-    TFunctionName
-  >,
->(
-  config: Omit<
-    UseContractReadConfig<
-      typeof lightVerifyingPaymasterABI,
-      TFunctionName,
-      TSelectData
-    >,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightVerifyingPaymasterABI,
+export const useReadLightVerifyingPaymasterVerifyingSigner =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightVerifyingPaymasterAbi,
     functionName: "verifyingSigner",
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightVerifyingPaymasterABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+  });
 
 /**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__.
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__
  */
-export function useLightVerifyingPaymasterWrite<
-  TFunctionName extends string,
-  TMode extends WriteContractMode = undefined,
->(
-  config: TMode extends "prepared"
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof lightVerifyingPaymasterABI,
-          string
-        >["request"]["abi"],
-        TFunctionName,
-        TMode
-      >
-    : UseContractWriteConfig<
-        typeof lightVerifyingPaymasterABI,
-        TFunctionName,
-        TMode
-      > & {
-        abi?: never;
-      } = {} as any,
-) {
-  return useContractWrite<
-    typeof lightVerifyingPaymasterABI,
-    TFunctionName,
-    TMode
-  >({ abi: lightVerifyingPaymasterABI, ...config } as any);
-}
+export const useWriteLightVerifyingPaymaster =
+  /*#__PURE__*/ createUseWriteContract({ abi: lightVerifyingPaymasterAbi });
 
 /**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__ and `functionName` set to `"addStake"`.
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"addStake"`
  */
-export function useLightVerifyingPaymasterAddStake<
-  TMode extends WriteContractMode = undefined,
->(
-  config: TMode extends "prepared"
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof lightVerifyingPaymasterABI,
-          "addStake"
-        >["request"]["abi"],
-        "addStake",
-        TMode
-      > & { functionName?: "addStake" }
-    : UseContractWriteConfig<
-        typeof lightVerifyingPaymasterABI,
-        "addStake",
-        TMode
-      > & {
-        abi?: never;
-        functionName?: "addStake";
-      } = {} as any,
-) {
-  return useContractWrite<typeof lightVerifyingPaymasterABI, "addStake", TMode>(
-    {
-      abi: lightVerifyingPaymasterABI,
-      functionName: "addStake",
-      ...config,
-    } as any,
-  );
-}
-
-/**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__ and `functionName` set to `"deposit"`.
- */
-export function useLightVerifyingPaymasterDeposit<
-  TMode extends WriteContractMode = undefined,
->(
-  config: TMode extends "prepared"
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof lightVerifyingPaymasterABI,
-          "deposit"
-        >["request"]["abi"],
-        "deposit",
-        TMode
-      > & { functionName?: "deposit" }
-    : UseContractWriteConfig<
-        typeof lightVerifyingPaymasterABI,
-        "deposit",
-        TMode
-      > & {
-        abi?: never;
-        functionName?: "deposit";
-      } = {} as any,
-) {
-  return useContractWrite<typeof lightVerifyingPaymasterABI, "deposit", TMode>({
-    abi: lightVerifyingPaymasterABI,
-    functionName: "deposit",
-    ...config,
-  } as any);
-}
-
-/**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__ and `functionName` set to `"postOp"`.
- */
-export function useLightVerifyingPaymasterPostOp<
-  TMode extends WriteContractMode = undefined,
->(
-  config: TMode extends "prepared"
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof lightVerifyingPaymasterABI,
-          "postOp"
-        >["request"]["abi"],
-        "postOp",
-        TMode
-      > & { functionName?: "postOp" }
-    : UseContractWriteConfig<
-        typeof lightVerifyingPaymasterABI,
-        "postOp",
-        TMode
-      > & {
-        abi?: never;
-        functionName?: "postOp";
-      } = {} as any,
-) {
-  return useContractWrite<typeof lightVerifyingPaymasterABI, "postOp", TMode>({
-    abi: lightVerifyingPaymasterABI,
-    functionName: "postOp",
-    ...config,
-  } as any);
-}
-
-/**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__ and `functionName` set to `"renounceOwnership"`.
- */
-export function useLightVerifyingPaymasterRenounceOwnership<
-  TMode extends WriteContractMode = undefined,
->(
-  config: TMode extends "prepared"
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof lightVerifyingPaymasterABI,
-          "renounceOwnership"
-        >["request"]["abi"],
-        "renounceOwnership",
-        TMode
-      > & { functionName?: "renounceOwnership" }
-    : UseContractWriteConfig<
-        typeof lightVerifyingPaymasterABI,
-        "renounceOwnership",
-        TMode
-      > & {
-        abi?: never;
-        functionName?: "renounceOwnership";
-      } = {} as any,
-) {
-  return useContractWrite<
-    typeof lightVerifyingPaymasterABI,
-    "renounceOwnership",
-    TMode
-  >({
-    abi: lightVerifyingPaymasterABI,
-    functionName: "renounceOwnership",
-    ...config,
-  } as any);
-}
-
-/**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__ and `functionName` set to `"transferOwnership"`.
- */
-export function useLightVerifyingPaymasterTransferOwnership<
-  TMode extends WriteContractMode = undefined,
->(
-  config: TMode extends "prepared"
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof lightVerifyingPaymasterABI,
-          "transferOwnership"
-        >["request"]["abi"],
-        "transferOwnership",
-        TMode
-      > & { functionName?: "transferOwnership" }
-    : UseContractWriteConfig<
-        typeof lightVerifyingPaymasterABI,
-        "transferOwnership",
-        TMode
-      > & {
-        abi?: never;
-        functionName?: "transferOwnership";
-      } = {} as any,
-) {
-  return useContractWrite<
-    typeof lightVerifyingPaymasterABI,
-    "transferOwnership",
-    TMode
-  >({
-    abi: lightVerifyingPaymasterABI,
-    functionName: "transferOwnership",
-    ...config,
-  } as any);
-}
-
-/**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__ and `functionName` set to `"unlockStake"`.
- */
-export function useLightVerifyingPaymasterUnlockStake<
-  TMode extends WriteContractMode = undefined,
->(
-  config: TMode extends "prepared"
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof lightVerifyingPaymasterABI,
-          "unlockStake"
-        >["request"]["abi"],
-        "unlockStake",
-        TMode
-      > & { functionName?: "unlockStake" }
-    : UseContractWriteConfig<
-        typeof lightVerifyingPaymasterABI,
-        "unlockStake",
-        TMode
-      > & {
-        abi?: never;
-        functionName?: "unlockStake";
-      } = {} as any,
-) {
-  return useContractWrite<
-    typeof lightVerifyingPaymasterABI,
-    "unlockStake",
-    TMode
-  >({
-    abi: lightVerifyingPaymasterABI,
-    functionName: "unlockStake",
-    ...config,
-  } as any);
-}
-
-/**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__ and `functionName` set to `"validatePaymasterUserOp"`.
- */
-export function useLightVerifyingPaymasterValidatePaymasterUserOp<
-  TMode extends WriteContractMode = undefined,
->(
-  config: TMode extends "prepared"
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof lightVerifyingPaymasterABI,
-          "validatePaymasterUserOp"
-        >["request"]["abi"],
-        "validatePaymasterUserOp",
-        TMode
-      > & { functionName?: "validatePaymasterUserOp" }
-    : UseContractWriteConfig<
-        typeof lightVerifyingPaymasterABI,
-        "validatePaymasterUserOp",
-        TMode
-      > & {
-        abi?: never;
-        functionName?: "validatePaymasterUserOp";
-      } = {} as any,
-) {
-  return useContractWrite<
-    typeof lightVerifyingPaymasterABI,
-    "validatePaymasterUserOp",
-    TMode
-  >({
-    abi: lightVerifyingPaymasterABI,
-    functionName: "validatePaymasterUserOp",
-    ...config,
-  } as any);
-}
-
-/**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__ and `functionName` set to `"withdrawStake"`.
- */
-export function useLightVerifyingPaymasterWithdrawStake<
-  TMode extends WriteContractMode = undefined,
->(
-  config: TMode extends "prepared"
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof lightVerifyingPaymasterABI,
-          "withdrawStake"
-        >["request"]["abi"],
-        "withdrawStake",
-        TMode
-      > & { functionName?: "withdrawStake" }
-    : UseContractWriteConfig<
-        typeof lightVerifyingPaymasterABI,
-        "withdrawStake",
-        TMode
-      > & {
-        abi?: never;
-        functionName?: "withdrawStake";
-      } = {} as any,
-) {
-  return useContractWrite<
-    typeof lightVerifyingPaymasterABI,
-    "withdrawStake",
-    TMode
-  >({
-    abi: lightVerifyingPaymasterABI,
-    functionName: "withdrawStake",
-    ...config,
-  } as any);
-}
-
-/**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__ and `functionName` set to `"withdrawTo"`.
- */
-export function useLightVerifyingPaymasterWithdrawTo<
-  TMode extends WriteContractMode = undefined,
->(
-  config: TMode extends "prepared"
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof lightVerifyingPaymasterABI,
-          "withdrawTo"
-        >["request"]["abi"],
-        "withdrawTo",
-        TMode
-      > & { functionName?: "withdrawTo" }
-    : UseContractWriteConfig<
-        typeof lightVerifyingPaymasterABI,
-        "withdrawTo",
-        TMode
-      > & {
-        abi?: never;
-        functionName?: "withdrawTo";
-      } = {} as any,
-) {
-  return useContractWrite<
-    typeof lightVerifyingPaymasterABI,
-    "withdrawTo",
-    TMode
-  >({
-    abi: lightVerifyingPaymasterABI,
-    functionName: "withdrawTo",
-    ...config,
-  } as any);
-}
-
-/**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__.
- */
-export function usePrepareLightVerifyingPaymasterWrite<
-  TFunctionName extends string,
->(
-  config: Omit<
-    UsePrepareContractWriteConfig<
-      typeof lightVerifyingPaymasterABI,
-      TFunctionName
-    >,
-    "abi"
-  > = {} as any,
-) {
-  return usePrepareContractWrite({
-    abi: lightVerifyingPaymasterABI,
-    ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof lightVerifyingPaymasterABI,
-    TFunctionName
-  >);
-}
-
-/**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__ and `functionName` set to `"addStake"`.
- */
-export function usePrepareLightVerifyingPaymasterAddStake(
-  config: Omit<
-    UsePrepareContractWriteConfig<
-      typeof lightVerifyingPaymasterABI,
-      "addStake"
-    >,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return usePrepareContractWrite({
-    abi: lightVerifyingPaymasterABI,
+export const useWriteLightVerifyingPaymasterAddStake =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightVerifyingPaymasterAbi,
     functionName: "addStake",
-    ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof lightVerifyingPaymasterABI,
-    "addStake"
-  >);
-}
+  });
 
 /**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__ and `functionName` set to `"deposit"`.
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"deposit"`
  */
-export function usePrepareLightVerifyingPaymasterDeposit(
-  config: Omit<
-    UsePrepareContractWriteConfig<typeof lightVerifyingPaymasterABI, "deposit">,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return usePrepareContractWrite({
-    abi: lightVerifyingPaymasterABI,
+export const useWriteLightVerifyingPaymasterDeposit =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightVerifyingPaymasterAbi,
     functionName: "deposit",
-    ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof lightVerifyingPaymasterABI,
-    "deposit"
-  >);
-}
+  });
 
 /**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__ and `functionName` set to `"postOp"`.
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"postOp"`
  */
-export function usePrepareLightVerifyingPaymasterPostOp(
-  config: Omit<
-    UsePrepareContractWriteConfig<typeof lightVerifyingPaymasterABI, "postOp">,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return usePrepareContractWrite({
-    abi: lightVerifyingPaymasterABI,
+export const useWriteLightVerifyingPaymasterPostOp =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightVerifyingPaymasterAbi,
     functionName: "postOp",
-    ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof lightVerifyingPaymasterABI,
-    "postOp"
-  >);
-}
+  });
 
 /**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__ and `functionName` set to `"renounceOwnership"`.
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"renounceOwnership"`
  */
-export function usePrepareLightVerifyingPaymasterRenounceOwnership(
-  config: Omit<
-    UsePrepareContractWriteConfig<
-      typeof lightVerifyingPaymasterABI,
-      "renounceOwnership"
-    >,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return usePrepareContractWrite({
-    abi: lightVerifyingPaymasterABI,
+export const useWriteLightVerifyingPaymasterRenounceOwnership =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightVerifyingPaymasterAbi,
     functionName: "renounceOwnership",
-    ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof lightVerifyingPaymasterABI,
-    "renounceOwnership"
-  >);
-}
+  });
 
 /**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__ and `functionName` set to `"transferOwnership"`.
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"transferOwnership"`
  */
-export function usePrepareLightVerifyingPaymasterTransferOwnership(
-  config: Omit<
-    UsePrepareContractWriteConfig<
-      typeof lightVerifyingPaymasterABI,
-      "transferOwnership"
-    >,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return usePrepareContractWrite({
-    abi: lightVerifyingPaymasterABI,
+export const useWriteLightVerifyingPaymasterTransferOwnership =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightVerifyingPaymasterAbi,
     functionName: "transferOwnership",
-    ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof lightVerifyingPaymasterABI,
-    "transferOwnership"
-  >);
-}
+  });
 
 /**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__ and `functionName` set to `"unlockStake"`.
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"unlockStake"`
  */
-export function usePrepareLightVerifyingPaymasterUnlockStake(
-  config: Omit<
-    UsePrepareContractWriteConfig<
-      typeof lightVerifyingPaymasterABI,
-      "unlockStake"
-    >,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return usePrepareContractWrite({
-    abi: lightVerifyingPaymasterABI,
+export const useWriteLightVerifyingPaymasterUnlockStake =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightVerifyingPaymasterAbi,
     functionName: "unlockStake",
-    ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof lightVerifyingPaymasterABI,
-    "unlockStake"
-  >);
-}
+  });
 
 /**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__ and `functionName` set to `"validatePaymasterUserOp"`.
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"validatePaymasterUserOp"`
  */
-export function usePrepareLightVerifyingPaymasterValidatePaymasterUserOp(
-  config: Omit<
-    UsePrepareContractWriteConfig<
-      typeof lightVerifyingPaymasterABI,
-      "validatePaymasterUserOp"
-    >,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return usePrepareContractWrite({
-    abi: lightVerifyingPaymasterABI,
+export const useWriteLightVerifyingPaymasterValidatePaymasterUserOp =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightVerifyingPaymasterAbi,
     functionName: "validatePaymasterUserOp",
-    ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof lightVerifyingPaymasterABI,
-    "validatePaymasterUserOp"
-  >);
-}
+  });
 
 /**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__ and `functionName` set to `"withdrawStake"`.
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"withdrawStake"`
  */
-export function usePrepareLightVerifyingPaymasterWithdrawStake(
-  config: Omit<
-    UsePrepareContractWriteConfig<
-      typeof lightVerifyingPaymasterABI,
-      "withdrawStake"
-    >,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return usePrepareContractWrite({
-    abi: lightVerifyingPaymasterABI,
+export const useWriteLightVerifyingPaymasterWithdrawStake =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightVerifyingPaymasterAbi,
     functionName: "withdrawStake",
-    ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof lightVerifyingPaymasterABI,
-    "withdrawStake"
-  >);
-}
+  });
 
 /**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__ and `functionName` set to `"withdrawTo"`.
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"withdrawTo"`
  */
-export function usePrepareLightVerifyingPaymasterWithdrawTo(
-  config: Omit<
-    UsePrepareContractWriteConfig<
-      typeof lightVerifyingPaymasterABI,
-      "withdrawTo"
-    >,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return usePrepareContractWrite({
-    abi: lightVerifyingPaymasterABI,
+export const useWriteLightVerifyingPaymasterWithdrawTo =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightVerifyingPaymasterAbi,
     functionName: "withdrawTo",
-    ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof lightVerifyingPaymasterABI,
-    "withdrawTo"
-  >);
-}
+  });
 
 /**
- * Wraps __{@link useContractEvent}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__.
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__
  */
-export function useLightVerifyingPaymasterEvent<TEventName extends string>(
-  config: Omit<
-    UseContractEventConfig<typeof lightVerifyingPaymasterABI, TEventName>,
-    "abi"
-  > = {} as any,
-) {
-  return useContractEvent({
-    abi: lightVerifyingPaymasterABI,
-    ...config,
-  } as UseContractEventConfig<typeof lightVerifyingPaymasterABI, TEventName>);
-}
+export const useSimulateLightVerifyingPaymaster =
+  /*#__PURE__*/ createUseSimulateContract({ abi: lightVerifyingPaymasterAbi });
 
 /**
- * Wraps __{@link useContractEvent}__ with `abi` set to __{@link lightVerifyingPaymasterABI}__ and `eventName` set to `"OwnershipTransferred"`.
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"addStake"`
  */
-export function useLightVerifyingPaymasterOwnershipTransferredEvent(
-  config: Omit<
-    UseContractEventConfig<
-      typeof lightVerifyingPaymasterABI,
-      "OwnershipTransferred"
-    >,
-    "abi" | "eventName"
-  > = {} as any,
-) {
-  return useContractEvent({
-    abi: lightVerifyingPaymasterABI,
+export const useSimulateLightVerifyingPaymasterAddStake =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: "addStake",
+  });
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"deposit"`
+ */
+export const useSimulateLightVerifyingPaymasterDeposit =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: "deposit",
+  });
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"postOp"`
+ */
+export const useSimulateLightVerifyingPaymasterPostOp =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: "postOp",
+  });
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"renounceOwnership"`
+ */
+export const useSimulateLightVerifyingPaymasterRenounceOwnership =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: "renounceOwnership",
+  });
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"transferOwnership"`
+ */
+export const useSimulateLightVerifyingPaymasterTransferOwnership =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: "transferOwnership",
+  });
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"unlockStake"`
+ */
+export const useSimulateLightVerifyingPaymasterUnlockStake =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: "unlockStake",
+  });
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"validatePaymasterUserOp"`
+ */
+export const useSimulateLightVerifyingPaymasterValidatePaymasterUserOp =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: "validatePaymasterUserOp",
+  });
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"withdrawStake"`
+ */
+export const useSimulateLightVerifyingPaymasterWithdrawStake =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: "withdrawStake",
+  });
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"withdrawTo"`
+ */
+export const useSimulateLightVerifyingPaymasterWithdrawTo =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: "withdrawTo",
+  });
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__
+ */
+export const useWatchLightVerifyingPaymasterEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: lightVerifyingPaymasterAbi,
+  });
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `eventName` set to `"OwnershipTransferred"`
+ */
+export const useWatchLightVerifyingPaymasterOwnershipTransferredEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: lightVerifyingPaymasterAbi,
     eventName: "OwnershipTransferred",
-    ...config,
-  } as UseContractEventConfig<
-    typeof lightVerifyingPaymasterABI,
-    "OwnershipTransferred"
-  >);
-}
+  });
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightWalletABI}__.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__
  */
-export function useLightWalletRead<
-  TFunctionName extends string,
-  TSelectData = ReadContractResult<typeof lightWalletABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof lightWalletABI, TFunctionName, TSelectData>,
-    "abi"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightWalletABI,
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightWalletABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+export const useReadLightWallet = /*#__PURE__*/ createUseReadContract({
+  abi: lightWalletAbi,
+});
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"NAME"`.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"NAME"`
  */
-export function useLightWalletName<
-  TFunctionName extends "NAME",
-  TSelectData = ReadContractResult<typeof lightWalletABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof lightWalletABI, TFunctionName, TSelectData>,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightWalletABI,
-    functionName: "NAME",
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightWalletABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+export const useReadLightWalletName = /*#__PURE__*/ createUseReadContract({
+  abi: lightWalletAbi,
+  functionName: "NAME",
+});
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"SET_IMAGE_HASH_TYPE_HASH"`.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"SET_IMAGE_HASH_TYPE_HASH"`
  */
-export function useLightWalletSetImageHashTypeHash<
-  TFunctionName extends "SET_IMAGE_HASH_TYPE_HASH",
-  TSelectData = ReadContractResult<typeof lightWalletABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof lightWalletABI, TFunctionName, TSelectData>,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightWalletABI,
+export const useReadLightWalletSetImageHashTypeHash =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightWalletAbi,
     functionName: "SET_IMAGE_HASH_TYPE_HASH",
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightWalletABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+  });
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"VERSION"`.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"VERSION"`
  */
-export function useLightWalletVersion<
-  TFunctionName extends "VERSION",
-  TSelectData = ReadContractResult<typeof lightWalletABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof lightWalletABI, TFunctionName, TSelectData>,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightWalletABI,
-    functionName: "VERSION",
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightWalletABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+export const useReadLightWalletVersion = /*#__PURE__*/ createUseReadContract({
+  abi: lightWalletAbi,
+  functionName: "VERSION",
+});
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"entryPoint"`.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"entryPoint"`
  */
-export function useLightWalletEntryPoint<
-  TFunctionName extends "entryPoint",
-  TSelectData = ReadContractResult<typeof lightWalletABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof lightWalletABI, TFunctionName, TSelectData>,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightWalletABI,
-    functionName: "entryPoint",
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightWalletABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+export const useReadLightWalletEntryPoint = /*#__PURE__*/ createUseReadContract(
+  { abi: lightWalletAbi, functionName: "entryPoint" },
+);
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"getNonce"`.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"getNonce"`
  */
-export function useLightWalletGetNonce<
-  TFunctionName extends "getNonce",
-  TSelectData = ReadContractResult<typeof lightWalletABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof lightWalletABI, TFunctionName, TSelectData>,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightWalletABI,
-    functionName: "getNonce",
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightWalletABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+export const useReadLightWalletGetNonce = /*#__PURE__*/ createUseReadContract({
+  abi: lightWalletAbi,
+  functionName: "getNonce",
+});
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"imageHash"`.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"imageHash"`
  */
-export function useLightWalletImageHash<
-  TFunctionName extends "imageHash",
-  TSelectData = ReadContractResult<typeof lightWalletABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof lightWalletABI, TFunctionName, TSelectData>,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightWalletABI,
-    functionName: "imageHash",
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightWalletABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+export const useReadLightWalletImageHash = /*#__PURE__*/ createUseReadContract({
+  abi: lightWalletAbi,
+  functionName: "imageHash",
+});
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"isValidSignature"`.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"isValidSignature"`
  */
-export function useLightWalletIsValidSignature<
-  TFunctionName extends "isValidSignature",
-  TSelectData = ReadContractResult<typeof lightWalletABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof lightWalletABI, TFunctionName, TSelectData>,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightWalletABI,
+export const useReadLightWalletIsValidSignature =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightWalletAbi,
     functionName: "isValidSignature",
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightWalletABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+  });
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"onERC1155BatchReceived"`.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"onERC1155BatchReceived"`
  */
-export function useLightWalletOnErc1155BatchReceived<
-  TFunctionName extends "onERC1155BatchReceived",
-  TSelectData = ReadContractResult<typeof lightWalletABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof lightWalletABI, TFunctionName, TSelectData>,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightWalletABI,
+export const useReadLightWalletOnErc1155BatchReceived =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightWalletAbi,
     functionName: "onERC1155BatchReceived",
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightWalletABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+  });
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"onERC1155Received"`.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"onERC1155Received"`
  */
-export function useLightWalletOnErc1155Received<
-  TFunctionName extends "onERC1155Received",
-  TSelectData = ReadContractResult<typeof lightWalletABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof lightWalletABI, TFunctionName, TSelectData>,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightWalletABI,
+export const useReadLightWalletOnErc1155Received =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightWalletAbi,
     functionName: "onERC1155Received",
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightWalletABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+  });
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"onERC721Received"`.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"onERC721Received"`
  */
-export function useLightWalletOnErc721Received<
-  TFunctionName extends "onERC721Received",
-  TSelectData = ReadContractResult<typeof lightWalletABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof lightWalletABI, TFunctionName, TSelectData>,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightWalletABI,
+export const useReadLightWalletOnErc721Received =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightWalletAbi,
     functionName: "onERC721Received",
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightWalletABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+  });
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"proxiableUUID"`.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"proxiableUUID"`
  */
-export function useLightWalletProxiableUuid<
-  TFunctionName extends "proxiableUUID",
-  TSelectData = ReadContractResult<typeof lightWalletABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof lightWalletABI, TFunctionName, TSelectData>,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightWalletABI,
+export const useReadLightWalletProxiableUuid =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightWalletAbi,
     functionName: "proxiableUUID",
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightWalletABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+  });
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"signatureRecovery"`.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"signatureRecovery"`
  */
-export function useLightWalletSignatureRecovery<
-  TFunctionName extends "signatureRecovery",
-  TSelectData = ReadContractResult<typeof lightWalletABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof lightWalletABI, TFunctionName, TSelectData>,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightWalletABI,
+export const useReadLightWalletSignatureRecovery =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightWalletAbi,
     functionName: "signatureRecovery",
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightWalletABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+  });
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"supportsInterface"`.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"supportsInterface"`
  */
-export function useLightWalletSupportsInterface<
-  TFunctionName extends "supportsInterface",
-  TSelectData = ReadContractResult<typeof lightWalletABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof lightWalletABI, TFunctionName, TSelectData>,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightWalletABI,
+export const useReadLightWalletSupportsInterface =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightWalletAbi,
     functionName: "supportsInterface",
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightWalletABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+  });
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"tokensReceived"`.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"tokensReceived"`
  */
-export function useLightWalletTokensReceived<
-  TFunctionName extends "tokensReceived",
-  TSelectData = ReadContractResult<typeof lightWalletABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<typeof lightWalletABI, TFunctionName, TSelectData>,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightWalletABI,
+export const useReadLightWalletTokensReceived =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightWalletAbi,
     functionName: "tokensReceived",
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightWalletABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+  });
 
 /**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link lightWalletABI}__.
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightWalletAbi}__
  */
-export function useLightWalletWrite<
-  TFunctionName extends string,
-  TMode extends WriteContractMode = undefined,
->(
-  config: TMode extends "prepared"
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof lightWalletABI,
-          string
-        >["request"]["abi"],
-        TFunctionName,
-        TMode
-      >
-    : UseContractWriteConfig<typeof lightWalletABI, TFunctionName, TMode> & {
-        abi?: never;
-      } = {} as any,
-) {
-  return useContractWrite<typeof lightWalletABI, TFunctionName, TMode>({
-    abi: lightWalletABI,
-    ...config,
-  } as any);
-}
+export const useWriteLightWallet = /*#__PURE__*/ createUseWriteContract({
+  abi: lightWalletAbi,
+});
 
 /**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"execute"`.
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"execute"`
  */
-export function useLightWalletExecute<
-  TMode extends WriteContractMode = undefined,
->(
-  config: TMode extends "prepared"
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof lightWalletABI,
-          "execute"
-        >["request"]["abi"],
-        "execute",
-        TMode
-      > & { functionName?: "execute" }
-    : UseContractWriteConfig<typeof lightWalletABI, "execute", TMode> & {
-        abi?: never;
-        functionName?: "execute";
-      } = {} as any,
-) {
-  return useContractWrite<typeof lightWalletABI, "execute", TMode>({
-    abi: lightWalletABI,
-    functionName: "execute",
-    ...config,
-  } as any);
-}
+export const useWriteLightWalletExecute = /*#__PURE__*/ createUseWriteContract({
+  abi: lightWalletAbi,
+  functionName: "execute",
+});
 
 /**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"executeBatch"`.
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"executeBatch"`
  */
-export function useLightWalletExecuteBatch<
-  TMode extends WriteContractMode = undefined,
->(
-  config: TMode extends "prepared"
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof lightWalletABI,
-          "executeBatch"
-        >["request"]["abi"],
-        "executeBatch",
-        TMode
-      > & { functionName?: "executeBatch" }
-    : UseContractWriteConfig<typeof lightWalletABI, "executeBatch", TMode> & {
-        abi?: never;
-        functionName?: "executeBatch";
-      } = {} as any,
-) {
-  return useContractWrite<typeof lightWalletABI, "executeBatch", TMode>({
-    abi: lightWalletABI,
+export const useWriteLightWalletExecuteBatch =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightWalletAbi,
     functionName: "executeBatch",
-    ...config,
-  } as any);
-}
+  });
 
 /**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"initialize"`.
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"initialize"`
  */
-export function useLightWalletInitialize<
-  TMode extends WriteContractMode = undefined,
->(
-  config: TMode extends "prepared"
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof lightWalletABI,
-          "initialize"
-        >["request"]["abi"],
-        "initialize",
-        TMode
-      > & { functionName?: "initialize" }
-    : UseContractWriteConfig<typeof lightWalletABI, "initialize", TMode> & {
-        abi?: never;
-        functionName?: "initialize";
-      } = {} as any,
-) {
-  return useContractWrite<typeof lightWalletABI, "initialize", TMode>({
-    abi: lightWalletABI,
+export const useWriteLightWalletInitialize =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightWalletAbi,
     functionName: "initialize",
-    ...config,
-  } as any);
-}
+  });
 
 /**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"updateImageHash"`.
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"updateImageHash"`
  */
-export function useLightWalletUpdateImageHash<
-  TMode extends WriteContractMode = undefined,
->(
-  config: TMode extends "prepared"
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof lightWalletABI,
-          "updateImageHash"
-        >["request"]["abi"],
-        "updateImageHash",
-        TMode
-      > & { functionName?: "updateImageHash" }
-    : UseContractWriteConfig<
-        typeof lightWalletABI,
-        "updateImageHash",
-        TMode
-      > & {
-        abi?: never;
-        functionName?: "updateImageHash";
-      } = {} as any,
-) {
-  return useContractWrite<typeof lightWalletABI, "updateImageHash", TMode>({
-    abi: lightWalletABI,
+export const useWriteLightWalletUpdateImageHash =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightWalletAbi,
     functionName: "updateImageHash",
-    ...config,
-  } as any);
-}
+  });
 
 /**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"upgradeTo"`.
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"upgradeTo"`
  */
-export function useLightWalletUpgradeTo<
-  TMode extends WriteContractMode = undefined,
->(
-  config: TMode extends "prepared"
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof lightWalletABI,
-          "upgradeTo"
-        >["request"]["abi"],
-        "upgradeTo",
-        TMode
-      > & { functionName?: "upgradeTo" }
-    : UseContractWriteConfig<typeof lightWalletABI, "upgradeTo", TMode> & {
-        abi?: never;
-        functionName?: "upgradeTo";
-      } = {} as any,
-) {
-  return useContractWrite<typeof lightWalletABI, "upgradeTo", TMode>({
-    abi: lightWalletABI,
+export const useWriteLightWalletUpgradeTo =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightWalletAbi,
     functionName: "upgradeTo",
-    ...config,
-  } as any);
-}
+  });
 
 /**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"upgradeToAndCall"`.
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"upgradeToAndCall"`
  */
-export function useLightWalletUpgradeToAndCall<
-  TMode extends WriteContractMode = undefined,
->(
-  config: TMode extends "prepared"
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof lightWalletABI,
-          "upgradeToAndCall"
-        >["request"]["abi"],
-        "upgradeToAndCall",
-        TMode
-      > & { functionName?: "upgradeToAndCall" }
-    : UseContractWriteConfig<
-        typeof lightWalletABI,
-        "upgradeToAndCall",
-        TMode
-      > & {
-        abi?: never;
-        functionName?: "upgradeToAndCall";
-      } = {} as any,
-) {
-  return useContractWrite<typeof lightWalletABI, "upgradeToAndCall", TMode>({
-    abi: lightWalletABI,
+export const useWriteLightWalletUpgradeToAndCall =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightWalletAbi,
     functionName: "upgradeToAndCall",
-    ...config,
-  } as any);
-}
+  });
 
 /**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"validateUserOp"`.
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"validateUserOp"`
  */
-export function useLightWalletValidateUserOp<
-  TMode extends WriteContractMode = undefined,
->(
-  config: TMode extends "prepared"
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof lightWalletABI,
-          "validateUserOp"
-        >["request"]["abi"],
-        "validateUserOp",
-        TMode
-      > & { functionName?: "validateUserOp" }
-    : UseContractWriteConfig<typeof lightWalletABI, "validateUserOp", TMode> & {
-        abi?: never;
-        functionName?: "validateUserOp";
-      } = {} as any,
-) {
-  return useContractWrite<typeof lightWalletABI, "validateUserOp", TMode>({
-    abi: lightWalletABI,
+export const useWriteLightWalletValidateUserOp =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightWalletAbi,
     functionName: "validateUserOp",
-    ...config,
-  } as any);
-}
+  });
 
 /**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link lightWalletABI}__.
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightWalletAbi}__
  */
-export function usePrepareLightWalletWrite<TFunctionName extends string>(
-  config: Omit<
-    UsePrepareContractWriteConfig<typeof lightWalletABI, TFunctionName>,
-    "abi"
-  > = {} as any,
-) {
-  return usePrepareContractWrite({
-    abi: lightWalletABI,
-    ...config,
-  } as UsePrepareContractWriteConfig<typeof lightWalletABI, TFunctionName>);
-}
+export const useSimulateLightWallet = /*#__PURE__*/ createUseSimulateContract({
+  abi: lightWalletAbi,
+});
 
 /**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"execute"`.
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"execute"`
  */
-export function usePrepareLightWalletExecute(
-  config: Omit<
-    UsePrepareContractWriteConfig<typeof lightWalletABI, "execute">,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return usePrepareContractWrite({
-    abi: lightWalletABI,
+export const useSimulateLightWalletExecute =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightWalletAbi,
     functionName: "execute",
-    ...config,
-  } as UsePrepareContractWriteConfig<typeof lightWalletABI, "execute">);
-}
+  });
 
 /**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"executeBatch"`.
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"executeBatch"`
  */
-export function usePrepareLightWalletExecuteBatch(
-  config: Omit<
-    UsePrepareContractWriteConfig<typeof lightWalletABI, "executeBatch">,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return usePrepareContractWrite({
-    abi: lightWalletABI,
+export const useSimulateLightWalletExecuteBatch =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightWalletAbi,
     functionName: "executeBatch",
-    ...config,
-  } as UsePrepareContractWriteConfig<typeof lightWalletABI, "executeBatch">);
-}
+  });
 
 /**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"initialize"`.
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"initialize"`
  */
-export function usePrepareLightWalletInitialize(
-  config: Omit<
-    UsePrepareContractWriteConfig<typeof lightWalletABI, "initialize">,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return usePrepareContractWrite({
-    abi: lightWalletABI,
+export const useSimulateLightWalletInitialize =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightWalletAbi,
     functionName: "initialize",
-    ...config,
-  } as UsePrepareContractWriteConfig<typeof lightWalletABI, "initialize">);
-}
+  });
 
 /**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"updateImageHash"`.
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"updateImageHash"`
  */
-export function usePrepareLightWalletUpdateImageHash(
-  config: Omit<
-    UsePrepareContractWriteConfig<typeof lightWalletABI, "updateImageHash">,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return usePrepareContractWrite({
-    abi: lightWalletABI,
+export const useSimulateLightWalletUpdateImageHash =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightWalletAbi,
     functionName: "updateImageHash",
-    ...config,
-  } as UsePrepareContractWriteConfig<typeof lightWalletABI, "updateImageHash">);
-}
+  });
 
 /**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"upgradeTo"`.
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"upgradeTo"`
  */
-export function usePrepareLightWalletUpgradeTo(
-  config: Omit<
-    UsePrepareContractWriteConfig<typeof lightWalletABI, "upgradeTo">,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return usePrepareContractWrite({
-    abi: lightWalletABI,
+export const useSimulateLightWalletUpgradeTo =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightWalletAbi,
     functionName: "upgradeTo",
-    ...config,
-  } as UsePrepareContractWriteConfig<typeof lightWalletABI, "upgradeTo">);
-}
+  });
 
 /**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"upgradeToAndCall"`.
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"upgradeToAndCall"`
  */
-export function usePrepareLightWalletUpgradeToAndCall(
-  config: Omit<
-    UsePrepareContractWriteConfig<typeof lightWalletABI, "upgradeToAndCall">,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return usePrepareContractWrite({
-    abi: lightWalletABI,
+export const useSimulateLightWalletUpgradeToAndCall =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightWalletAbi,
     functionName: "upgradeToAndCall",
-    ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof lightWalletABI,
-    "upgradeToAndCall"
-  >);
-}
+  });
 
 /**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link lightWalletABI}__ and `functionName` set to `"validateUserOp"`.
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"validateUserOp"`
  */
-export function usePrepareLightWalletValidateUserOp(
-  config: Omit<
-    UsePrepareContractWriteConfig<typeof lightWalletABI, "validateUserOp">,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return usePrepareContractWrite({
-    abi: lightWalletABI,
+export const useSimulateLightWalletValidateUserOp =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightWalletAbi,
     functionName: "validateUserOp",
-    ...config,
-  } as UsePrepareContractWriteConfig<typeof lightWalletABI, "validateUserOp">);
-}
+  });
 
 /**
- * Wraps __{@link useContractEvent}__ with `abi` set to __{@link lightWalletABI}__.
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightWalletAbi}__
  */
-export function useLightWalletEvent<TEventName extends string>(
-  config: Omit<
-    UseContractEventConfig<typeof lightWalletABI, TEventName>,
-    "abi"
-  > = {} as any,
-) {
-  return useContractEvent({
-    abi: lightWalletABI,
-    ...config,
-  } as UseContractEventConfig<typeof lightWalletABI, TEventName>);
-}
+export const useWatchLightWalletEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({ abi: lightWalletAbi });
 
 /**
- * Wraps __{@link useContractEvent}__ with `abi` set to __{@link lightWalletABI}__ and `eventName` set to `"AdminChanged"`.
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightWalletAbi}__ and `eventName` set to `"AdminChanged"`
  */
-export function useLightWalletAdminChangedEvent(
-  config: Omit<
-    UseContractEventConfig<typeof lightWalletABI, "AdminChanged">,
-    "abi" | "eventName"
-  > = {} as any,
-) {
-  return useContractEvent({
-    abi: lightWalletABI,
+export const useWatchLightWalletAdminChangedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: lightWalletAbi,
     eventName: "AdminChanged",
-    ...config,
-  } as UseContractEventConfig<typeof lightWalletABI, "AdminChanged">);
-}
+  });
 
 /**
- * Wraps __{@link useContractEvent}__ with `abi` set to __{@link lightWalletABI}__ and `eventName` set to `"BeaconUpgraded"`.
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightWalletAbi}__ and `eventName` set to `"BeaconUpgraded"`
  */
-export function useLightWalletBeaconUpgradedEvent(
-  config: Omit<
-    UseContractEventConfig<typeof lightWalletABI, "BeaconUpgraded">,
-    "abi" | "eventName"
-  > = {} as any,
-) {
-  return useContractEvent({
-    abi: lightWalletABI,
+export const useWatchLightWalletBeaconUpgradedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: lightWalletAbi,
     eventName: "BeaconUpgraded",
-    ...config,
-  } as UseContractEventConfig<typeof lightWalletABI, "BeaconUpgraded">);
-}
+  });
 
 /**
- * Wraps __{@link useContractEvent}__ with `abi` set to __{@link lightWalletABI}__ and `eventName` set to `"ImageHashUpdated"`.
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightWalletAbi}__ and `eventName` set to `"ImageHashUpdated"`
  */
-export function useLightWalletImageHashUpdatedEvent(
-  config: Omit<
-    UseContractEventConfig<typeof lightWalletABI, "ImageHashUpdated">,
-    "abi" | "eventName"
-  > = {} as any,
-) {
-  return useContractEvent({
-    abi: lightWalletABI,
+export const useWatchLightWalletImageHashUpdatedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: lightWalletAbi,
     eventName: "ImageHashUpdated",
-    ...config,
-  } as UseContractEventConfig<typeof lightWalletABI, "ImageHashUpdated">);
-}
+  });
 
 /**
- * Wraps __{@link useContractEvent}__ with `abi` set to __{@link lightWalletABI}__ and `eventName` set to `"Initialized"`.
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightWalletAbi}__ and `eventName` set to `"Initialized"`
  */
-export function useLightWalletInitializedEvent(
-  config: Omit<
-    UseContractEventConfig<typeof lightWalletABI, "Initialized">,
-    "abi" | "eventName"
-  > = {} as any,
-) {
-  return useContractEvent({
-    abi: lightWalletABI,
+export const useWatchLightWalletInitializedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: lightWalletAbi,
     eventName: "Initialized",
-    ...config,
-  } as UseContractEventConfig<typeof lightWalletABI, "Initialized">);
-}
+  });
 
 /**
- * Wraps __{@link useContractEvent}__ with `abi` set to __{@link lightWalletABI}__ and `eventName` set to `"LightWalletInitialized"`.
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightWalletAbi}__ and `eventName` set to `"LightWalletInitialized"`
  */
-export function useLightWalletLightWalletInitializedEvent(
-  config: Omit<
-    UseContractEventConfig<typeof lightWalletABI, "LightWalletInitialized">,
-    "abi" | "eventName"
-  > = {} as any,
-) {
-  return useContractEvent({
-    abi: lightWalletABI,
+export const useWatchLightWalletLightWalletInitializedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: lightWalletAbi,
     eventName: "LightWalletInitialized",
-    ...config,
-  } as UseContractEventConfig<typeof lightWalletABI, "LightWalletInitialized">);
-}
+  });
 
 /**
- * Wraps __{@link useContractEvent}__ with `abi` set to __{@link lightWalletABI}__ and `eventName` set to `"Upgraded"`.
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightWalletAbi}__ and `eventName` set to `"Upgraded"`
  */
-export function useLightWalletUpgradedEvent(
-  config: Omit<
-    UseContractEventConfig<typeof lightWalletABI, "Upgraded">,
-    "abi" | "eventName"
-  > = {} as any,
-) {
-  return useContractEvent({
-    abi: lightWalletABI,
+export const useWatchLightWalletUpgradedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: lightWalletAbi,
     eventName: "Upgraded",
-    ...config,
-  } as UseContractEventConfig<typeof lightWalletABI, "Upgraded">);
-}
+  });
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightWalletFactoryABI}__.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletFactoryAbi}__
  */
-export function useLightWalletFactoryRead<
-  TFunctionName extends string,
-  TSelectData = ReadContractResult<typeof lightWalletFactoryABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<
-      typeof lightWalletFactoryABI,
-      TFunctionName,
-      TSelectData
-    >,
-    "abi"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightWalletFactoryABI,
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightWalletFactoryABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+export const useReadLightWalletFactory = /*#__PURE__*/ createUseReadContract({
+  abi: lightWalletFactoryAbi,
+});
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightWalletFactoryABI}__ and `functionName` set to `"NAME"`.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletFactoryAbi}__ and `functionName` set to `"NAME"`
  */
-export function useLightWalletFactoryName<
-  TFunctionName extends "NAME",
-  TSelectData = ReadContractResult<typeof lightWalletFactoryABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<
-      typeof lightWalletFactoryABI,
-      TFunctionName,
-      TSelectData
-    >,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightWalletFactoryABI,
+export const useReadLightWalletFactoryName =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightWalletFactoryAbi,
     functionName: "NAME",
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightWalletFactoryABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+  });
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightWalletFactoryABI}__ and `functionName` set to `"VERSION"`.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletFactoryAbi}__ and `functionName` set to `"VERSION"`
  */
-export function useLightWalletFactoryVersion<
-  TFunctionName extends "VERSION",
-  TSelectData = ReadContractResult<typeof lightWalletFactoryABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<
-      typeof lightWalletFactoryABI,
-      TFunctionName,
-      TSelectData
-    >,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightWalletFactoryABI,
+export const useReadLightWalletFactoryVersion =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightWalletFactoryAbi,
     functionName: "VERSION",
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightWalletFactoryABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+  });
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightWalletFactoryABI}__ and `functionName` set to `"accountImplementation"`.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletFactoryAbi}__ and `functionName` set to `"accountImplementation"`
  */
-export function useLightWalletFactoryAccountImplementation<
-  TFunctionName extends "accountImplementation",
-  TSelectData = ReadContractResult<typeof lightWalletFactoryABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<
-      typeof lightWalletFactoryABI,
-      TFunctionName,
-      TSelectData
-    >,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightWalletFactoryABI,
+export const useReadLightWalletFactoryAccountImplementation =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightWalletFactoryAbi,
     functionName: "accountImplementation",
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightWalletFactoryABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+  });
 
 /**
- * Wraps __{@link useContractRead}__ with `abi` set to __{@link lightWalletFactoryABI}__ and `functionName` set to `"getAddress"`.
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletFactoryAbi}__ and `functionName` set to `"getAddress"`
  */
-export function useLightWalletFactoryGetAddress<
-  TFunctionName extends "getAddress",
-  TSelectData = ReadContractResult<typeof lightWalletFactoryABI, TFunctionName>,
->(
-  config: Omit<
-    UseContractReadConfig<
-      typeof lightWalletFactoryABI,
-      TFunctionName,
-      TSelectData
-    >,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return useContractRead({
-    abi: lightWalletFactoryABI,
+export const useReadLightWalletFactoryGetAddress =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightWalletFactoryAbi,
     functionName: "getAddress",
-    ...config,
-  } as UseContractReadConfig<
-    typeof lightWalletFactoryABI,
-    TFunctionName,
-    TSelectData
-  >);
-}
+  });
 
 /**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link lightWalletFactoryABI}__.
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightWalletFactoryAbi}__
  */
-export function useLightWalletFactoryWrite<
-  TFunctionName extends string,
-  TMode extends WriteContractMode = undefined,
->(
-  config: TMode extends "prepared"
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof lightWalletFactoryABI,
-          string
-        >["request"]["abi"],
-        TFunctionName,
-        TMode
-      >
-    : UseContractWriteConfig<
-        typeof lightWalletFactoryABI,
-        TFunctionName,
-        TMode
-      > & {
-        abi?: never;
-      } = {} as any,
-) {
-  return useContractWrite<typeof lightWalletFactoryABI, TFunctionName, TMode>({
-    abi: lightWalletFactoryABI,
-    ...config,
-  } as any);
-}
+export const useWriteLightWalletFactory = /*#__PURE__*/ createUseWriteContract({
+  abi: lightWalletFactoryAbi,
+});
 
 /**
- * Wraps __{@link useContractWrite}__ with `abi` set to __{@link lightWalletFactoryABI}__ and `functionName` set to `"createAccount"`.
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightWalletFactoryAbi}__ and `functionName` set to `"createAccount"`
  */
-export function useLightWalletFactoryCreateAccount<
-  TMode extends WriteContractMode = undefined,
->(
-  config: TMode extends "prepared"
-    ? UseContractWriteConfig<
-        PrepareWriteContractResult<
-          typeof lightWalletFactoryABI,
-          "createAccount"
-        >["request"]["abi"],
-        "createAccount",
-        TMode
-      > & { functionName?: "createAccount" }
-    : UseContractWriteConfig<
-        typeof lightWalletFactoryABI,
-        "createAccount",
-        TMode
-      > & {
-        abi?: never;
-        functionName?: "createAccount";
-      } = {} as any,
-) {
-  return useContractWrite<typeof lightWalletFactoryABI, "createAccount", TMode>(
-    {
-      abi: lightWalletFactoryABI,
-      functionName: "createAccount",
-      ...config,
-    } as any,
-  );
-}
-
-/**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link lightWalletFactoryABI}__.
- */
-export function usePrepareLightWalletFactoryWrite<TFunctionName extends string>(
-  config: Omit<
-    UsePrepareContractWriteConfig<typeof lightWalletFactoryABI, TFunctionName>,
-    "abi"
-  > = {} as any,
-) {
-  return usePrepareContractWrite({
-    abi: lightWalletFactoryABI,
-    ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof lightWalletFactoryABI,
-    TFunctionName
-  >);
-}
-
-/**
- * Wraps __{@link usePrepareContractWrite}__ with `abi` set to __{@link lightWalletFactoryABI}__ and `functionName` set to `"createAccount"`.
- */
-export function usePrepareLightWalletFactoryCreateAccount(
-  config: Omit<
-    UsePrepareContractWriteConfig<
-      typeof lightWalletFactoryABI,
-      "createAccount"
-    >,
-    "abi" | "functionName"
-  > = {} as any,
-) {
-  return usePrepareContractWrite({
-    abi: lightWalletFactoryABI,
+export const useWriteLightWalletFactoryCreateAccount =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightWalletFactoryAbi,
     functionName: "createAccount",
-    ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof lightWalletFactoryABI,
-    "createAccount"
-  >);
-}
+  });
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightWalletFactoryAbi}__
+ */
+export const useSimulateLightWalletFactory =
+  /*#__PURE__*/ createUseSimulateContract({ abi: lightWalletFactoryAbi });
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightWalletFactoryAbi}__ and `functionName` set to `"createAccount"`
+ */
+export const useSimulateLightWalletFactoryCreateAccount =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightWalletFactoryAbi,
+    functionName: "createAccount",
+  });

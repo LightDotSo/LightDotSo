@@ -17,11 +17,11 @@
 
 import { Button } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
-import { ConnectKitButton } from "connectkit";
+import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
 import { Wallet } from "lucide-react";
 import type { Address } from "viem";
 
-// From: https://docs.family.co/connectkit/connect-button#connect-button-example
+// From:https://www.rainbowkit.com/docs/custom-connect-button
 // Customizes the ConnectKit button to use the UI Button component.
 
 // -----------------------------------------------------------------------------
@@ -34,17 +34,17 @@ export const ConnectButton = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <ConnectKitButton.Custom>
-      {({ isConnected, isConnecting, show, address, ensName }) => {
+    <RainbowConnectButton.Custom>
+      {({ account, mounted, openConnectModal }) => {
         return (
-          <Button size="sm" isLoading={isConnecting} onClick={show}>
+          <Button size="sm" isLoading={!mounted} onClick={openConnectModal}>
             <Wallet className="mr-2 h-4 w-4" />
-            {isConnected
-              ? ensName ?? shortenAddress(address as Address)
+            {account
+              ? account.ensName ?? shortenAddress(account.address as Address)
               : "Connect Wallet"}
           </Button>
         );
       }}
-    </ConnectKitButton.Custom>
+    </RainbowConnectButton.Custom>
   );
 };
