@@ -39,7 +39,7 @@ use super::{error::QueueError, types::QueueSuccess};
 #[into_params(parameter_in = Query)]
 pub struct PostQuery {
     /// The optional transaction hash to queue.
-    pub transaction_hash: String,
+    pub transaction_hash: Option<String>,
     /// The optional user operation hash to queue.
     pub user_operation_hash: Option<String>,
 }
@@ -73,7 +73,8 @@ pub(crate) async fn v1_queue_interpretation_handler(
     // Get the post query.
     let Query(query) = post_query;
 
-    let parsed_transaction_hash: H256 = query.transaction_hash.parse()?;
+    let parsed_transaction_hash: Option<H256> =
+        query.transaction_hash.map_or(Ok(None), |hash| hash.parse().map(Some))?;
     let parsed_user_operation_hash: Option<H256> =
         query.user_operation_hash.map_or(Ok(None), |hash| hash.parse().map(Some))?;
 
@@ -82,15 +83,17 @@ pub(crate) async fn v1_queue_interpretation_handler(
     // -------------------------------------------------------------------------
 
     // If the transaction hash is provided, get the transaction from the database.
-    state
-        .client
-        .transaction()
-        .find_unique(transaction::hash::equals(format!("{:?}", parsed_transaction_hash)))
-        .exec()
-        .await?
-        .ok_or_else(|| {
-            RouteError::QueueError(QueueError::NotFound(format!("{:?}", parsed_transaction_hash)))
-        })?;
+    if let Some(transaction_hash) = parsed_transaction_hash {
+        state
+            .client
+            .transaction()
+            .find_unique(transaction::hash::equals(format!("{:?}", transaction_hash)))
+            .exec()
+            .await?
+            .ok_or_else(|| {
+                RouteError::QueueError(QueueError::NotFound(format!("{:?}", transaction_hash)))
+            })?;
+    }
 
     // If the user operation hash is provided, get the user operation from the database.
     if let Some(user_operation_hash) = parsed_user_operation_hash {
