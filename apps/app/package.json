@@ -13,7 +13,7 @@
   "license": "AGPL-3.0-or-later",
   "author": "Light, Inc.",
   "scripts": {
-    "build": "next build || true",
+    "build": "dotenv -- next build || true",
     "dev": "concurrently \"pnpm:dev:*\"",
     "dev:inngest": "inngest dev -u http://localhost:3001/api/inngest",
     "dev:next": "next dev -p 3001",
