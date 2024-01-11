@@ -20,7 +20,9 @@ use autometrics::autometrics;
 use ethers::utils::to_checksum;
 use eyre::Result;
 use lightdotso_interpreter::types::InterpretationResponse;
-use lightdotso_prisma::{interpretation, interpretation_action, transaction, user_operation};
+use lightdotso_prisma::{
+    asset_change, interpretation, interpretation_action, token, transaction, user_operation,
+};
 use lightdotso_tracing::tracing::info;
 
 // -----------------------------------------------------------------------------
@@ -129,29 +131,27 @@ pub async fn upsert_interpretation_with_actions(
             res.clone()
                 .asset_changes
                 .into_iter()
-                .map(|asset_change| {
+                .map(|change| {
                     (
-                        to_checksum(&asset_change.address, None),
-                        asset_change.amount.as_u64() as i64,
-                        asset_change.before_amount.as_u64() as i64,
-                        asset_change.after_amount.as_u64() as i64,
+                        to_checksum(&change.address, None),
+                        change.amount.as_u64() as i64,
+                        change.before_amount.as_u64() as i64,
+                        change.after_amount.as_u64() as i64,
                         interpretation.clone().id,
-                        vec![
-                            // asset_change::token::add(to_checksum(&asset_change.token.address,
-                            // None)),
-                            //Get the corresponding
-                            // interpretation action
-                            // asset_change::action::set(
-                            //     interpretation_actions
-                            //         .iter()
-                            //         .find(|action| {
-                            //             action.action_type.eq(&asset_change.action.action_type) &&
-                            //                 action.address.eq(&asset_change.address)
-                            //         })
-                            //         .unwrap()
-                            //         .id,
-                            // ),
-                        ],
+                        vec![asset_change::token::connect(
+                            if let Some(token_id) = change.token.token_id {
+                                token::address_chain_id_token_id(
+                                    to_checksum(&change.address, None),
+                                    res.chain_id as i64,
+                                    token_id.as_u64() as i64,
+                                )
+                            } else {
+                                token::address_chain_id(
+                                    to_checksum(&change.address, None),
+                                    res.chain_id as i64,
+                                )
+                            },
+                        )],
                     )
                 })
                 .collect::<Vec<_>>(),
