@@ -17,40 +17,23 @@
 
 import { createConfig, http } from "@wagmi/core";
 import type { ReactNode } from "react";
-import type { Address } from "viem";
 import { createClient } from "viem";
 import { WagmiProvider } from "wagmi";
 import { injected, walletConnect } from "wagmi/connectors";
-import { CHAINS, MAINNET_CHAINS } from "@/const/chains";
-import { useSuspenseQueryWalletSettings } from "@/query";
-import { useAuth } from "@/stores";
+import { CHAINS } from "@/const/chains";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
 function Web3Provider({ children }: { children: ReactNode }) {
-  // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { address } = useAuth();
-
-  // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
-
-  const { walletSettings } = useSuspenseQueryWalletSettings({
-    address: address as Address,
-  });
-
   // -----------------------------------------------------------------------------
   // Wagmi
   // -----------------------------------------------------------------------------
 
   // Set up wagmi config
   const config = createConfig({
-    chains: walletSettings?.is_enabled_testnet ? CHAINS : MAINNET_CHAINS,
+    chains: CHAINS,
     client({ chain }) {
       return createClient({ chain, transport: http() });
     },
