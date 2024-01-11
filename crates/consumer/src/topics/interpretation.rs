@@ -62,14 +62,14 @@ pub async fn interpretation_consumer(
             gas_limit: u64::MAX,
             chain_id: transaction_with_logs.transaction.clone().chain_id as u64,
             from: transaction_with_logs.transaction.clone().from.parse()?,
-            to: transaction_with_logs.transaction.clone().to.map(|to| to.parse()).unwrap()?,
+            to: Some(transaction_with_logs.transaction.clone().to.map(|to| to.parse()).unwrap()?),
             call_data: transaction_with_logs.transaction.clone().input.map(|input| input.into()),
             value: transaction_with_logs.transaction.clone().value.map(|value| value as u64),
             traces: vec![],
             logs: transaction_with_logs.logs,
         };
 
-        let res = args.run_interpretation(request).await?;
+        let res = args.clone().run_interpretation(request).await?;
 
         info!("res: {:?}", res);
 
@@ -82,6 +82,20 @@ pub async fn interpretation_consumer(
         .await?;
 
         if let Some(user_operation_with_logs) = user_operation_with_logs {
+            let request = InterpretationRequest {
+                block_number: None,
+                gas_limit: u64::MAX,
+                chain_id: user_operation_with_logs.user_operation.clone().chain_id as u64,
+                from: user_operation_with_logs.user_operation.clone().sender.parse()?,
+                to: None,
+                call_data: Some(user_operation_with_logs.user_operation.clone().call_data.into()),
+                value: None,
+                traces: vec![],
+                logs: user_operation_with_logs.logs,
+            };
+
+            let res = args.run_interpretation(request).await?;
+
             upsert_interpretation_with_actions(
                 db,
                 res,

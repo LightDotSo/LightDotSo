@@ -34,7 +34,7 @@ pub struct InterpretationRequest {
     /// From address of the transaction
     pub from: Address,
     /// To address of the transaction
-    pub to: Address,
+    pub to: Option<Address>,
     /// Chain ID of the simulation
     pub chain_id: u64,
     /// Call data of the transaction
@@ -53,7 +53,7 @@ impl Default for InterpretationRequest {
             block_number: None,
             gas_limit: u64::MAX,
             from: Address::default(),
-            to: Address::default(),
+            to: Some(Address::default()),
             chain_id: 0,
             call_data: Some(Bytes::new()),
             value: None,
@@ -125,7 +125,6 @@ pub struct AssetChange {
     pub after_amount: Uint,
     /// The amount of the asset that was transferred
     pub amount: Uint,
-
     /// The action that was interpreted
     pub action: InterpretationAction,
     /// The token that was transferred
