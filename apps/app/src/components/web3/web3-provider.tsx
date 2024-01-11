@@ -19,12 +19,26 @@ import {
   RainbowKitProvider,
   lightTheme,
   darkTheme,
+  getDefaultWallets,
+  connectorsForWallets,
 } from "@rainbow-me/rainbowkit";
 import { useTheme } from "next-themes";
 import type { ReactNode } from "react";
 import { WagmiProvider, createConfig, http } from "wagmi";
 import { mainnet, sepolia } from "wagmi/chains";
+import { injected, metaMask, walletConnect } from "wagmi/connectors";
 // import { CHAINS } from "@/const/chains";
+
+// -----------------------------------------------------------------------------
+// Rainbow
+// -----------------------------------------------------------------------------
+
+const walletList = getDefaultWallets();
+
+const connectors = connectorsForWallets(walletList.wallets, {
+  projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
+  appName: "Light",
+});
 
 // -----------------------------------------------------------------------------
 // Wagmi
@@ -33,11 +47,23 @@ import { mainnet, sepolia } from "wagmi/chains";
 // Set up wagmi config
 export const config = createConfig({
   chains: [mainnet, sepolia],
+  connectors: [
+    injected(),
+    walletConnect({
+      projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
+    }),
+    metaMask(),
+    ...connectors,
+  ],
   transports: {
     [mainnet.id]: http(),
     [sepolia.id]: http(),
   },
 });
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 function Web3Provider({ children }: { children: ReactNode }) {
   // ---------------------------------------------------------------------------
