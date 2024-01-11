@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { fetchLogs } from "@viem/anvil";
-import { setAutomine, setIntervalMining } from "viem/test";
+import { setAutomine, setIntervalMining } from "viem/actions";
 import { afterAll, afterEach, vi } from "vitest";
 import { testClient } from "@/contracts/test/spec/utils";
 
