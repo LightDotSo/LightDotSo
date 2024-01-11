@@ -77,7 +77,7 @@ import { queryKeys } from "@/queryKeys";
 import type { Transfer, Transfers } from "@/schemas";
 import { sendFormConfigurationSchema } from "@/schemas/sendForm";
 import { debounce } from "@/utils";
-import { lightWalletABI } from "@/wagmi";
+import { lightWalletAbi } from "@/wagmi";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -648,7 +648,7 @@ export const SendDialog: FC<SendDialogProps> = ({
       transfers[0].asset
     ) {
       return `${transfers[0].chainId}:_:${encodeFunctionData({
-        abi: lightWalletABI,
+        abi: lightWalletAbi,
         functionName: "execute",
         args: encodeTransfer(transfers[0]) as [Address, bigint, Hex],
       })}`;
@@ -672,7 +672,7 @@ export const SendDialog: FC<SendDialogProps> = ({
         if (transfers.length === 1) {
           userOperationsParams.push(
             `${chainId}:_:${encodeFunctionData({
-              abi: lightWalletABI,
+              abi: lightWalletAbi,
               functionName: "execute",
               args: encodeTransfer(transfers[0]) as [Address, bigint, Hex],
             })}`,
@@ -748,7 +748,7 @@ export const SendDialog: FC<SendDialogProps> = ({
           // If the transfer count is more than one, encode as `executeBatch`
           userOperationsParams.push(
             `${chainId}:_:${encodeFunctionData({
-              abi: lightWalletABI,
+              abi: lightWalletAbi,
               functionName: "executeBatch",
               args: [
                 encodedTransfers.map(transfer => transfer[0]),
@@ -1045,7 +1045,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                         />
                         <div
                           className={cn(
-                            "flex h-full flex-col col-span-1",
+                            "col-span-1 flex h-full flex-col",
                             // If there is error, justify center, else end
                             form.formState.errors.transfers &&
                               form.formState.errors.transfers[index] &&

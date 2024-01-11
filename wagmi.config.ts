@@ -8,9 +8,6 @@ export default defineConfig({
     foundry({
       artifacts: "out-wagmi/",
     }),
-    react({
-      useContractRead: true,
-      useContractFunctionRead: true,
-    }),
+    react(),
   ],
 });

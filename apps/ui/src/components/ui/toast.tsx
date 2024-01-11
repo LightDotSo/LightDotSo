@@ -67,7 +67,7 @@ const Toaster = () => {
       toastOptions={{
         unstyled: true,
         classNames: {
-          toast: cn("group toast", toastVariants({ intent: "default" })),
+          toast: cn("toast group", toastVariants({ intent: "default" })),
           title: "text-sm font-semibold text-ellipsis overflow-hidden",
           description: "text-sm opacity-90 text-ellipsis overflow-hidden",
           loader: "text-text",

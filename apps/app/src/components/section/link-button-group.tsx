@@ -130,7 +130,7 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
                 "text-sm",
                 // If the item is the selected, add bg-selected
                 item.id === id
-                  ? "bg-background-body text-text font-semibold hover:bg-background-weaker"
+                  ? "hover:bg-background-weaker bg-background-body font-semibold text-text"
                   : "text-text-weak hover:text-text",
               )}
               variant="unstyled"

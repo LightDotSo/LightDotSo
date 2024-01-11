@@ -28,3 +28,4 @@ ignores:
   - "@wagmi/core"
   - blurhash
   - sonner
+  - "@prisma/nextjs-monorepo-workaround-plugin"

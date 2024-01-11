@@ -13,38 +13,55 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { cn } from "@lightdotso/utils";
-import type { ReactNode } from "react";
+import { Button } from "@lightdotso/ui";
+import { useEffect, useState } from "react";
+import type { FC } from "react";
+import type { Connector } from "wagmi";
+
+// From: https://wagmi.sh/react/guides/connect-wallet#third-party-libraries
+// License: MIT
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface BaseLayerWrapperProps {
-  children: ReactNode;
-  className?: string;
-}
+type WalletOptionButtonProps = {
+  connector: Connector;
+  onClick: () => void;
+};
 
 // -----------------------------------------------------------------------------
-// Layout
+// Component
 // -----------------------------------------------------------------------------
 
-export function BaseLayerWrapper({
-  children,
-  className,
-}: BaseLayerWrapperProps) {
+export const WalletOptionButton: FC<WalletOptionButtonProps> = async ({
+  connector,
+  onClick,
+}) => {
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [ready, setReady] = useState<boolean>(false);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    (async () => {
+      const provider = await connector.getProvider();
+      setReady(!!provider);
+    })();
+  }, [connector]);
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <div
-      className={cn(
-        "flex w-full flex-row overflow-x-scroll px-2 md:overflow-hidden md:px-4 lg:px-8",
-        className,
-      )}
-    >
-      <div className="mx-auto max-w-7xl flex-1">{children}</div>
-    </div>
+    <Button disabled={!ready} onClick={onClick}>
+      {connector.name}
+    </Button>
   );
-}
+};

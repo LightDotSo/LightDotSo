@@ -13,7 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { useModal } from "connectkit";
 import { useCallback, useMemo } from "react";
 import { useAuth, useModals } from "@/stores";
 
@@ -27,13 +26,7 @@ export const useAuthModal = () => {
   // ---------------------------------------------------------------------------
 
   const { address, sessionId } = useAuth();
-
-  // ---------------------------------------------------------------------------
-  // ConnectKit
-  // ---------------------------------------------------------------------------
-
-  const { openProfile } = useModal();
-  const { showAuthModal } = useModals();
+  const { showAuthModal, showWalletModal } = useModals();
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -41,11 +34,11 @@ export const useAuthModal = () => {
 
   const openAuthModal = useCallback(() => {
     if (!address) {
-      openProfile();
+      showWalletModal();
     } else if (typeof sessionId !== "string") {
       showAuthModal();
     }
-  }, [address, openProfile, sessionId, showAuthModal]);
+  }, [address, sessionId, showAuthModal, showWalletModal]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks

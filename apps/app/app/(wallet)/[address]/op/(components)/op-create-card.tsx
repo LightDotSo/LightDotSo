@@ -56,7 +56,7 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
   const {
     isLoading,
     isCreatable,
-    signMessage,
+    signUserOperation,
     decodedCallData,
     decodedInitCode,
     paymasterHash,
@@ -135,7 +135,7 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
         <Button
           disabled={!isCreatable}
           isLoading={isLoading}
-          onClick={() => signMessage()}
+          onClick={signUserOperation}
         >
           Sign Transaction
         </Button>

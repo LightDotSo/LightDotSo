@@ -43,6 +43,10 @@ const AuthModal = dynamic(() => import("@/components/auth/auth-modal"), {
   ssr: false,
 });
 
+const WalletModal = dynamic(() => import("@/components/web3/wallet-modal"), {
+  ssr: false,
+});
+
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
@@ -82,13 +86,10 @@ export const Root: FC<RootProps> = ({ children }) => {
             <Web3Provider>
               <MainNav>{children}</MainNav>
               <Footer />
-              <Suspense>
-                <AuthState />
-              </Suspense>
+              <AuthState />
               <Toaster />
-              <Suspense>
-                <AuthModal />
-              </Suspense>
+              <AuthModal />
+              <WalletModal />
               <CommandK />
               <WssState />
             </Web3Provider>

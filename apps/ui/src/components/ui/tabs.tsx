@@ -129,7 +129,7 @@ const TabsTrigger = forwardRef<
       <span
         className={cn(
           (context.variant || variant) === "outline" &&
-            "flex items-center justify-center w-full px-3 py-1.5 hover:bg-background-stronger rounded-md group-focus-visible:outline-none group-focus-visible:ring-2 group-focus-visible:ring-border-info group-focus-visible:ring-offset-2",
+            "flex w-full items-center justify-center rounded-md px-3 py-1.5 hover:bg-background-stronger group-focus-visible:outline-none group-focus-visible:ring-2 group-focus-visible:ring-border-info group-focus-visible:ring-offset-2",
         )}
       >
         {children}

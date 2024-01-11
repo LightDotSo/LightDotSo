@@ -17,7 +17,7 @@
 
 import { createSignature } from "@lightdotso/client";
 import { subdigestOf } from "@lightdotso/solutions";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   hexToBytes,
   type Address,
@@ -64,16 +64,6 @@ export const useUserOperationSign = ({
   const { address: userAddress } = useAuth();
 
   // ---------------------------------------------------------------------------
-  // Local Variables
-  // ---------------------------------------------------------------------------
-
-  const subdigest = subdigestOf(
-    address,
-    hexToBytes(userOperation.hash as Hex),
-    BigInt(userOperation.chain_id),
-  );
-
-  // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
@@ -100,17 +90,25 @@ export const useUserOperationSign = ({
     return isOwner && !isSigned;
   }, [owners, userOperation.signatures, userAddress, userOwnerId]);
 
+  const subdigest = useMemo(
+    () =>
+      subdigestOf(
+        address,
+        hexToBytes(userOperation.hash as Hex),
+        BigInt(userOperation.chain_id),
+      ),
+    [address, userOperation.hash, userOperation.chain_id],
+  );
+
   // ---------------------------------------------------------------------------
   // Wagmi
   // ---------------------------------------------------------------------------
 
   const {
     data: signedMessage,
-    isLoading: isSignLoading,
+    isPending: isSignLoading,
     signMessage,
-  } = useSignMessage({
-    message: { raw: toBytes(subdigest) },
-  });
+  } = useSignMessage();
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -165,6 +163,14 @@ export const useUserOperationSign = ({
   }, [signMessage, signedMessage, userOperation, userOwnerId]);
 
   // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  const signUserOperation = useCallback(() => {
+    signMessage({ message: { raw: toBytes(subdigest) } });
+  }, [subdigest, signMessage]);
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -172,6 +178,6 @@ export const useUserOperationSign = ({
     isLoading,
     isSignable,
     signedMessage,
-    signMessage,
+    signUserOperation,
   };
 };

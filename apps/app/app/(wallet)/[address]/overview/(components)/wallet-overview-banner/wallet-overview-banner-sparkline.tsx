@@ -62,7 +62,7 @@ export const WalletOverviewBannerSparkline: FC<
       <div className="col-span-1 flex flex-col justify-between">
         <span
           className={cn(
-            "px-1.5 font-medium rounded",
+            "rounded px-1.5 font-medium",
             portfolio.balance_change_24h && portfolio.balance_change_24h > 0
               ? "text-emerald-500"
               : "text-red-500",

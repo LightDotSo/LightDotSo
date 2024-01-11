@@ -263,7 +263,7 @@ export const ConfirmForm: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <Card className="flex flex-col space-y-6 px-4 py-4 lg:px-6 lg:pt-6">
+    <Card className="flex flex-col space-y-6 p-4 lg:px-6 lg:pt-6">
       <CardHeader className="gap-3 p-0">
         <CardTitle>Confirm</CardTitle>
         <CardDescription>

@@ -15,6 +15,7 @@
 
 import { PrismaPlugin } from "@prisma/nextjs-monorepo-workaround-plugin";
 import { withSentryConfig } from "@sentry/nextjs";
+import packageJson from "./package.json" assert { type: "json" };
 
 // ---------------------------------------------------------------------------
 // Sentry
@@ -31,6 +32,9 @@ const sentryWebpackPluginOptions = {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  env: {
+    NEXT_PUBLIC_APP_VERSION: `@lightdotso/app@${packageJson.version}`,
+  },
   experimental: {
     instrumentationHook: true,
     outputFileTracingExcludes: {

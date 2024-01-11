@@ -76,7 +76,7 @@ const CommandInput = forwardRef<
     <CommandPrimitive.Input
       ref={ref}
       className={cn(
-        "flex h-8 w-full bg-background border-transparent focus:text-text focus:placeholder:font-medium focus:border-transparent focus:ring-0 rounded-md py-2.5 my-2 text-sm placeholder:text-text-weak disabled:cursor-not-allowed disabled:opacity-50",
+        "my-2 flex h-8 w-full rounded-md border-transparent bg-background py-2.5 text-sm placeholder:text-text-weak focus:border-transparent focus:text-text focus:ring-0 focus:placeholder:font-medium disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}
       {...props}

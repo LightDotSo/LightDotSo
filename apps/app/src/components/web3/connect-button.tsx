@@ -17,11 +17,12 @@
 
 import { Button } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
-import { ConnectKitButton } from "connectkit";
 import { Wallet } from "lucide-react";
 import type { Address } from "viem";
+import { useAccount, useDisconnect, useEnsName } from "wagmi";
+import { useModals } from "@/stores";
 
-// From: https://docs.family.co/connectkit/connect-button#connect-button-example
+// From: https://www.rainbowkit.com/docs/custom-connect-button
 // Customizes the ConnectKit button to use the UI Button component.
 
 // -----------------------------------------------------------------------------
@@ -30,21 +31,30 @@ import type { Address } from "viem";
 
 export const ConnectButton = () => {
   // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { showWalletModal } = useModals();
+
+  // ---------------------------------------------------------------------------
+  // Wagmi Hooks
+  // ---------------------------------------------------------------------------
+
+  const { address } = useAccount();
+  const { disconnect } = useDisconnect();
+  const { data: ensName } = useEnsName({ address });
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <ConnectKitButton.Custom>
-      {({ isConnected, isConnecting, show, address, ensName }) => {
-        return (
-          <Button size="sm" isLoading={isConnecting} onClick={show}>
-            <Wallet className="mr-2 h-4 w-4" />
-            {isConnected
-              ? ensName ?? shortenAddress(address as Address)
-              : "Connect Wallet"}
-          </Button>
-        );
-      }}
-    </ConnectKitButton.Custom>
+    // @ts-expect-error
+    <Button size="sm" onClick={!address ? showWalletModal : disconnect}>
+      <Wallet className="mr-2 h-4 w-4" />
+      {address
+        ? ensName ?? shortenAddress(address as Address)
+        : "Connect Wallet"}
+    </Button>
   );
 };

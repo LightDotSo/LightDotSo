@@ -15,50 +15,41 @@
 
 "use client";
 
-import { ConnectKitProvider } from "connectkit";
+import { createConfig, http } from "@wagmi/core";
 import type { ReactNode } from "react";
-import { WagmiConfig, createConfig, configureChains } from "wagmi";
-import { InjectedConnector } from "wagmi/connectors/injected";
-import { MetaMaskConnector } from "wagmi/connectors/metaMask";
-import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
-import { publicProvider } from "wagmi/providers/public";
-import { CHAINS as configuredChains } from "@/const/chains";
+import { createClient } from "viem";
+import { WagmiProvider } from "wagmi";
+import { injected, walletConnect } from "wagmi/connectors";
+import { CHAINS } from "@/const/chains";
 
 // -----------------------------------------------------------------------------
-// Wagmi
+// Component
 // -----------------------------------------------------------------------------
-
-const { publicClient, webSocketPublicClient } = configureChains(
-  configuredChains,
-  [publicProvider()],
-);
-
-// Set up wagmi config
-const config = createConfig({
-  autoConnect: true,
-  connectors: [
-    new InjectedConnector(),
-    new MetaMaskConnector(),
-    new WalletConnectConnector({
-      options: {
-        projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
-      },
-    }),
-  ],
-  publicClient,
-  webSocketPublicClient,
-});
 
 function Web3Provider({ children }: { children: ReactNode }) {
+  // -----------------------------------------------------------------------------
+  // Wagmi
+  // -----------------------------------------------------------------------------
+
+  // Set up wagmi config
+  const config = createConfig({
+    chains: CHAINS,
+    client({ chain }) {
+      return createClient({ chain, transport: http() });
+    },
+    connectors: [
+      injected(),
+      walletConnect({
+        projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
+      }),
+    ],
+  });
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <WagmiConfig config={config}>
-      <ConnectKitProvider>{children}</ConnectKitProvider>
-    </WagmiConfig>
-  );
+  return <WagmiProvider config={config}>{children}</WagmiProvider>;
 }
 
 export { Web3Provider };

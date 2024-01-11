@@ -24,7 +24,7 @@ import { isAddress } from "viem";
 import type { Address } from "viem";
 import { useAccount, useEnsName } from "wagmi";
 import type { AuthSessionData, UserData } from "@/data";
-import { useSuspenseQueryAuthSession, useSuspenseQueryUser } from "@/query";
+import { useQueryAuthSession, useQueryUser } from "@/query";
 import { queryKeys } from "@/queryKeys";
 import { useAuth } from "@/stores";
 
@@ -59,11 +59,11 @@ export const AuthState: FC = () => {
 
   const queryClient = useQueryClient();
 
-  const { user } = useSuspenseQueryUser({
+  const { user } = useQueryUser({
     address: address as Address,
   });
 
-  const { authSession } = useSuspenseQueryAuthSession({
+  const { authSession } = useQueryAuthSession({
     address: address as Address,
   });
 

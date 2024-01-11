@@ -415,7 +415,7 @@ export const ConfigurationForm: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <Card className="flex flex-col space-y-6 px-4 py-4 lg:px-6 lg:pt-6">
+    <Card className="flex flex-col space-y-6 p-4 lg:px-6 lg:pt-6">
       <CardHeader className="gap-3 p-0">
         <CardTitle>Configuration</CardTitle>
         <CardDescription>
@@ -571,7 +571,7 @@ export const ConfigurationForm: FC = () => {
                       />
                       <div
                         className={cn(
-                          "flex items-center h-full flex-col col-span-1",
+                          "col-span-1 flex h-full flex-col items-center",
                           // If there is error, justify center, else end
                           form.formState.errors.owners &&
                             form.formState.errors.owners[index] &&

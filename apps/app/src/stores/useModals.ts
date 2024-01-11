@@ -23,10 +23,13 @@ import { devtools } from "zustand/middleware";
 type ModalsStore = {
   isAuthModalVisible: boolean;
   isDepositModalVisible: boolean;
+  isWalletModalVisible: boolean;
   showAuthModal: () => void;
   hideAuthModal: () => void;
   showDepositModal: () => void;
   hideDepositModal: () => void;
+  showWalletModal: () => void;
+  hideWalletModal: () => void;
 };
 
 // -----------------------------------------------------------------------------
@@ -38,10 +41,13 @@ export const useModals = create(
     set => ({
       isAuthModalVisible: false,
       isDepositModalVisible: false,
+      isWalletModalVisible: false,
       showAuthModal: () => set({ isAuthModalVisible: true }),
       hideAuthModal: () => set({ isAuthModalVisible: false }),
       showDepositModal: () => set({ isDepositModalVisible: true }),
       hideDepositModal: () => set({ isDepositModalVisible: false }),
+      showWalletModal: () => set({ isWalletModalVisible: true }),
+      hideWalletModal: () => set({ isWalletModalVisible: false }),
     }),
     {
       anonymousActionType: "useModals",
