@@ -15,38 +15,53 @@
 
 "use client";
 
-import { useTheme } from "next-themes";
+import { createConfig, http } from "@wagmi/core";
 import type { ReactNode } from "react";
-import { WagmiProvider, createConfig, http } from "wagmi";
-import { mainnet, sepolia } from "wagmi/chains";
-import { injected, metaMask, walletConnect } from "wagmi/connectors";
-// import { CHAINS } from "@/const/chains";
-
-// -----------------------------------------------------------------------------
-// Wagmi
-// -----------------------------------------------------------------------------
-
-// Set up wagmi config
-export const config = createConfig({
-  chains: [mainnet, sepolia],
-  connectors: [
-    injected(),
-    walletConnect({
-      projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
-    }),
-    metaMask(),
-  ],
-  transports: {
-    [mainnet.id]: http(),
-    [sepolia.id]: http(),
-  },
-});
+import type { Address } from "viem";
+import { createClient } from "viem";
+import { WagmiProvider } from "wagmi";
+import { injected, walletConnect } from "wagmi/connectors";
+import { CHAINS, MAINNET_CHAINS } from "@/const/chains";
+import { useSuspenseQueryWalletSettings } from "@/query";
+import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
 function Web3Provider({ children }: { children: ReactNode }) {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { address } = useAuth();
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { walletSettings } = useSuspenseQueryWalletSettings({
+    address: address as Address,
+  });
+
+  // -----------------------------------------------------------------------------
+  // Wagmi
+  // -----------------------------------------------------------------------------
+
+  // Set up wagmi config
+  const config = createConfig({
+    chains: walletSettings?.is_enabled_testnet ? CHAINS : MAINNET_CHAINS,
+    client({ chain }) {
+      return createClient({ chain, transport: http() });
+    },
+    connectors: [
+      injected(),
+      walletConnect({
+        projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
+      }),
+    ],
+  });
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------

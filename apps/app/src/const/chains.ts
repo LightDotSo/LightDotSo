@@ -27,7 +27,8 @@ import {
   baseSepolia,
   optimismSepolia,
   arbitrumSepolia,
-} from "viem/chains";
+} from "@wagmi/core/chains";
+import type { Chain } from "viem/chains";
 
 // -----------------------------------------------------------------------------
 // Mainnet
@@ -42,7 +43,7 @@ export const MAINNET_CHAINS = [
   base,
   avalanche,
   arbitrum,
-];
+] as readonly [Chain, ...Chain[]];
 
 // -----------------------------------------------------------------------------
 // Testnet
@@ -54,10 +55,13 @@ export const TESTNET_CHAINS = [
   baseSepolia,
   optimismSepolia,
   arbitrumSepolia,
-];
+] as readonly [Chain, ...Chain[]];
 
 // -----------------------------------------------------------------------------
 // All
 // -----------------------------------------------------------------------------
 
-export const CHAINS = [...MAINNET_CHAINS, ...TESTNET_CHAINS];
+export const CHAINS = [...MAINNET_CHAINS, ...TESTNET_CHAINS] as readonly [
+  Chain,
+  ...Chain[],
+];

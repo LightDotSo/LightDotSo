@@ -82,8 +82,8 @@ export const Root: FC<RootProps> = ({ children }) => {
     >
       <body className="min-h-[100dvh] bg-background-body">
         <ThemeProvider attribute="class">
-          <Web3Provider>
-            <ReactQueryProvider>
+          <ReactQueryProvider>
+            <Web3Provider>
               <MainNav>{children}</MainNav>
               <Footer />
               <AuthState />
@@ -92,8 +92,8 @@ export const Root: FC<RootProps> = ({ children }) => {
               <WalletModal />
               <CommandK />
               <WssState />
-            </ReactQueryProvider>
-          </Web3Provider>
+            </Web3Provider>
+          </ReactQueryProvider>
         </ThemeProvider>
         <TailwindIndicator />
         <Suspense>
