@@ -24,6 +24,10 @@ use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
+// -----------------------------------------------------------------------------
+// Params
+// -----------------------------------------------------------------------------
+
 #[derive(Default, Debug, Serialize, Deserialize)]
 pub struct CustomParams {
     pub user_id: Option<String>,
@@ -38,6 +42,10 @@ pub struct CustomParams {
     pub transaction_hash: Option<String>,
     pub user_operation_hash: Option<String>,
 }
+
+// -----------------------------------------------------------------------------
+// Create
+// -----------------------------------------------------------------------------
 
 /// Create activity with user and wallet w/ optional custom params
 #[autometrics]

@@ -12,6 +12,7 @@
   autometrics = { workspace = true }
   axum = { workspace = true }
   ethers = { workspace = true }
+  ethers-main = { workspace = true }
   eyre = { workspace = true }
   lightdotso-contracts = { workspace = true }
   lightdotso-graphql = { workspace = true }
@@ -21,3 +22,6 @@
   serde = { workspace = true }
   serde_json = { workspace = true }
   tokio = { workspace = true, features = ["sync", "macros", "rt-multi-thread"] }
+
+[dev-dependencies]
+  dotenvy = { workspace = true }

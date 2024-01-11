@@ -13,9 +13,27 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#![recursion_limit = "512"]
+use eyre::Result;
+use lightdotso_db::{db::create_client, models::transaction::get_transaction_with_logs};
+use std::sync::Arc;
 
-pub mod db;
-pub mod error;
-pub mod models;
-pub mod types;
+#[tokio::test(flavor = "multi_thread")]
+async fn test_integration_get_transaction_with_logs() -> Result<()> {
+    // Load the environment variables.
+    let _ = dotenvy::dotenv();
+
+    // Create a database client.
+    let db = create_client().await?;
+
+    // Get a transaction with logs.
+    let tx = get_transaction_with_logs(
+        Arc::new(db),
+        "0x0eba351b13320cf51b42e5218e63c90698ba73bceb65e5a38f146685fe1407fa".parse()?,
+    )
+    .await?;
+
+    // Print the transaction.
+    println!("{:?}", tx);
+
+    Ok(())
+}

@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-/// Taken from official example: https://github.com/Brendonovich/prisma-client-rust/blob/124e8216a9d093e9ae1feb8b9b84614bc3579f18/examples/axum-rest/src/routes.rs
+// Taken from official example: https://github.com/Brendonovich/prisma-client-rust/blob/124e8216a9d093e9ae1feb8b9b84614bc3579f18/examples/axum-rest/src/routes.rs
+
 use axum::{
     http::StatusCode,
     response::{IntoResponse, Response},
@@ -33,6 +34,16 @@ pub enum DbError {
 impl From<eyre::Error> for DbError {
     fn from(error: eyre::Error) -> Self {
         DbError::EyreError(error)
+    }
+}
+
+impl From<DbError> for eyre::Report {
+    fn from(error: DbError) -> Self {
+        match error {
+            DbError::EyreError(err) => err,
+            DbError::PrismaError(err) => eyre::Report::new(err),
+            DbError::NotFound => eyre::eyre!("Record not found"),
+        }
     }
 }
 

@@ -28,6 +28,10 @@ use prisma_client_rust::{
     or, Direction,
 };
 
+// -----------------------------------------------------------------------------
+// Create
+// -----------------------------------------------------------------------------
+
 /// Create a new paymaster operation
 #[autometrics]
 pub async fn create_paymaster_operation(
@@ -75,6 +79,10 @@ pub async fn create_paymaster_operation(
 
     Ok(paymaster_operation)
 }
+
+// -----------------------------------------------------------------------------
+// Get
+// -----------------------------------------------------------------------------
 
 #[autometrics]
 pub async fn get_most_recent_paymaster_operation_with_sender(

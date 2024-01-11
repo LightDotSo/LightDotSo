@@ -34,6 +34,7 @@ use lightdotso_simulator::{
     simulator::{simulate, simulate_bundle},
     types::SimulationRequest,
 };
+use revm::interpreter::InstructionResult;
 
 pub struct Interpreter<'a> {
     adapters: &'a [Box<dyn Adapter + Sync + Send>],
@@ -90,6 +91,31 @@ impl Interpreter<'_> {
         Ok(output)
     }
 
+    pub async fn run_with_interpret(
+        &mut self,
+        request: InterpretationRequest,
+    ) -> Result<InterpretationResponse> {
+        // Run the interpreter
+        let interpretation = self.interpret(request.clone()).await?;
+
+        // Flatten the actions
+        let actions = interpretation.clone().into_iter().flat_map(|res| res.actions).collect();
+
+        // Flatten the asset changes
+        let asset_changes = interpretation.into_iter().flat_map(|res| res.asset_changes).collect();
+
+        Ok(InterpretationResponse {
+            gas_used: 0,
+            block_number: request.block_number.unwrap_or(0),
+            success: true,
+            traces: request.traces,
+            logs: request.logs,
+            exit_reason: InstructionResult::Stop,
+            actions,
+            asset_changes,
+        })
+    }
+
     pub async fn run_with_simulate(
         &mut self,
         request: SimulationRequest,
@@ -98,7 +124,7 @@ impl Interpreter<'_> {
         let res = simulate(request.clone()).await?;
 
         // Run the interpreter
-        let format_trace = self.format_trace(res.arena.clone()).await?;
+        let _format_trace = self.format_trace(res.arena.clone()).await?;
 
         // Get the traces
         let traces: Vec<CallTrace> =
@@ -133,7 +159,6 @@ impl Interpreter<'_> {
             traces,
             logs: res.logs,
             exit_reason: res.exit_reason,
-            formatted_trace: format_trace,
             actions,
             asset_changes,
         })
@@ -156,7 +181,7 @@ impl Interpreter<'_> {
                 requests.get(idx).ok_or(eyre!("No matching request for simulation result"))?;
 
             // Run the formatter
-            let format_trace = self.format_trace(res.arena.clone()).await?;
+            let _format_trace = self.format_trace(res.arena.clone()).await?;
 
             // Get the traces
             let traces: Vec<CallTrace> = res
@@ -199,7 +224,6 @@ impl Interpreter<'_> {
                 traces,
                 logs: res.logs,
                 exit_reason: res.exit_reason,
-                formatted_trace: format_trace,
                 actions,
                 asset_changes,
             });
@@ -214,7 +238,6 @@ impl Interpreter<'_> {
                 acc.traces.extend(res.traces);
                 acc.logs.extend(res.logs);
                 acc.exit_reason = res.exit_reason;
-                acc.formatted_trace.push_str(res.formatted_trace.as_str());
                 acc.actions.extend(res.actions);
                 acc.asset_changes.extend(res.asset_changes);
                 acc

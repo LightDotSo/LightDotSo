@@ -17,11 +17,13 @@
 
 use crate::{
     error::DbError,
+    models::log::DbLog,
     types::{AppJsonResult, Database},
 };
 use autometrics::autometrics;
 use axum::extract::Json;
 use ethers::{types::Bloom, utils::to_checksum};
+use eyre::Result;
 use lightdotso_contracts::constants::MAINNET_CHAIN_IDS;
 use lightdotso_prisma::{log, log_topic, receipt, transaction, wallet};
 use lightdotso_tracing::{
@@ -32,7 +34,12 @@ use prisma_client_rust::{
     chrono::{DateTime, FixedOffset, NaiveDateTime},
     serde_json::{self, json},
 };
+use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, sync::Arc};
+
+// -----------------------------------------------------------------------------
+// Upsert
+// -----------------------------------------------------------------------------
 
 /// Taken from: https://prisma.brendonovich.dev/extra/transactions
 #[autometrics]
@@ -96,10 +103,10 @@ pub async fn upsert_transaction_with_log_receipt(
         ))
     }
     if transaction.gas != 0.into() {
-        transaction_params.push(transaction::gas::set(Some(transaction.gas.to_string())))
+        transaction_params.push(transaction::gas::set(Some(transaction.gas.as_u64() as i64)))
     }
     if transaction.value != 0.into() {
-        transaction_params.push(transaction::value::set(Some(transaction.value.to_string())))
+        transaction_params.push(transaction::value::set(Some(transaction.value.as_u64() as i64)))
     }
     if transaction.gas_price.is_some() {
         transaction_params
@@ -277,4 +284,62 @@ pub async fn upsert_transaction_with_log_receipt(
     }
 
     Ok(Json::from(tx_data))
+}
+
+// -----------------------------------------------------------------------------
+// Get
+// -----------------------------------------------------------------------------
+
+pub async fn get_transaction_with_logs(
+    db: Database,
+    transaction_hash: ethers_main::types::H256,
+) -> Result<DbTransactionLogs> {
+    info!("Getting transaction");
+
+    // Get the transaction with the receipt and logs and log topics
+    let transaction = db
+        .transaction()
+        .find_unique(transaction::hash::equals(format!("{:?}", transaction_hash)))
+        .with(
+            transaction::receipt::fetch()
+                .with(receipt::logs::fetch(vec![]).with(log::topics::fetch(vec![]))),
+        )
+        .exec()
+        .await?;
+
+    // If transaction is none, throw an error
+    let transaction = transaction.ok_or_else(|| DbError::NotFound)?;
+
+    // Convert the transaction into a DbTransactionLogs
+    let transaction_with_logs: DbTransactionLogs = transaction.try_into()?;
+
+    // Return the transaction with logs
+    Ok(transaction_with_logs)
+}
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct DbTransactionLogs {
+    pub transaction: transaction::Data,
+    pub logs: Vec<ethers_main::types::Log>,
+}
+
+impl TryFrom<transaction::Data> for DbTransactionLogs {
+    type Error = eyre::Report;
+
+    fn try_from(transaction: transaction::Data) -> Result<Self, Self::Error> {
+        let receipt = transaction.clone().receipt.unwrap().unwrap();
+
+        let receipt_logs = receipt.logs.unwrap().into_iter().collect::<Vec<_>>();
+
+        let db_logs =
+            receipt_logs.into_iter().map(|l| l.try_into()).collect::<Result<Vec<DbLog>, _>>()?;
+
+        let logs = db_logs.into_iter().map(|l| l.log).collect::<Vec<ethers_main::types::Log>>();
+
+        Ok(Self { transaction, logs })
+    }
 }
