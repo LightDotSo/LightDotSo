@@ -14,9 +14,19 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use serde::{Deserialize, Serialize};
-use strum_macros::EnumVariantNames;
+use strum_macros::{Display, EnumString, EnumVariantNames, IntoStaticStr};
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, EnumVariantNames)]
+#[derive(
+    Debug,
+    Clone,
+    Serialize,
+    Deserialize,
+    PartialEq,
+    EnumVariantNames,
+    Display,
+    EnumString,
+    IntoStaticStr,
+)]
 pub enum InterpretationActionType {
     #[strum(serialize = "NATIVE_RECEIVE")]
     NativeReceive,
@@ -42,4 +52,36 @@ pub enum InterpretationActionType {
     ERC1155Minted,
     #[strum(serialize = "ERC1155_BURNED")]
     ERC1155Burned,
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::str::FromStr;
+
+    #[test]
+    fn test_to_string() {
+        let action = InterpretationActionType::NativeReceive;
+        let serialized_action = action.to_string();
+        assert_eq!(serialized_action, "NATIVE_RECEIVE");
+    }
+
+    #[test]
+    fn test_from_str() {
+        let action_str = "NATIVE_RECEIVE";
+        let deserialized_action: Result<InterpretationActionType, _> =
+            InterpretationActionType::from_str(action_str);
+        assert!(deserialized_action.is_ok());
+        assert_eq!(deserialized_action.unwrap(), InterpretationActionType::NativeReceive);
+    }
+
+    #[test]
+    fn test_round_trip() {
+        let original = InterpretationActionType::NativeReceive;
+        let serialized = original.to_string();
+        let deserialized: Result<InterpretationActionType, _> =
+            InterpretationActionType::from_str(&serialized);
+        assert!(deserialized.is_ok());
+        assert_eq!(original, deserialized.unwrap());
+    }
 }

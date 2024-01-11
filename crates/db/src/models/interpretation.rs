@@ -63,7 +63,7 @@ pub async fn upsert_interpretation_with_actions(
                 .into_iter()
                 .map(|action| {
                     (
-                        serde_json::to_string(&action.action_type).unwrap(),
+                        action.action_type.to_string(),
                         action
                             .address
                             .as_ref()
@@ -91,13 +91,11 @@ pub async fn upsert_interpretation_with_actions(
                 .map(|action| {
                     if action.address.is_some() {
                         interpretation_action::action_address(
-                            serde_json::to_string(&action.action_type).unwrap(),
+                            action.action_type.to_string(),
                             to_checksum(&action.address.unwrap(), None),
                         )
                     } else {
-                        interpretation_action::action::equals(
-                            serde_json::to_string(&action.action_type).unwrap(),
-                        )
+                        interpretation_action::action::equals(action.action_type.to_string())
                     }
                 })
                 .collect(),
@@ -123,8 +121,10 @@ pub async fn upsert_interpretation_with_actions(
             user_operation::hash::equals(user_operation_hash),
         ));
     };
+
     // Create the interpretation
     let interpretation = db.interpretation().create(interpretation_params).exec().await?;
+    info!(?interpretation);
 
     // Create all possible asset changes
     let asset_changes = db
