@@ -23,6 +23,7 @@ use crate::{
 use autometrics::autometrics;
 use axum::extract::Json;
 use ethers::{types::U256, utils::to_checksum};
+use eyre::Result;
 use lightdotso_contracts::{
     constants::{LIGHT_PAYMASTER_ADDRESSES, MAINNET_CHAIN_IDS},
     paymaster::decode_paymaster_and_data,
@@ -187,7 +188,7 @@ pub async fn upsert_user_operation_logs(
 pub async fn get_user_operation_with_logs(
     db: Database,
     user_operation_hash: ethers::types::H256,
-) -> AppJsonResult<DbUserOperationLogs> {
+) -> Result<DbUserOperationLogs> {
     info!("Getting user operation");
 
     // Get the user operation with the receipt and logs and log topics
@@ -205,7 +206,7 @@ pub async fn get_user_operation_with_logs(
     let user_operation_with_logs: DbUserOperationLogs = user_operation.try_into()?;
 
     // Return the transaction with logs
-    Ok(Json::from(user_operation_with_logs))
+    Ok(user_operation_with_logs)
 }
 
 // -----------------------------------------------------------------------------
@@ -215,7 +216,7 @@ pub async fn get_user_operation_with_logs(
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DbUserOperationLogs {
     pub user_operation: user_operation::Data,
-    pub logs: Vec<ethers::types::Log>,
+    pub logs: Vec<ethers_main::types::Log>,
 }
 
 impl TryFrom<user_operation::Data> for DbUserOperationLogs {
@@ -226,7 +227,7 @@ impl TryFrom<user_operation::Data> for DbUserOperationLogs {
 
         let db_logs = logs.into_iter().map(|l| l.try_into()).collect::<Result<Vec<DbLog>, _>>()?;
 
-        let logs = db_logs.into_iter().map(|l| l.log).collect::<Vec<ethers::types::Log>>();
+        let logs = db_logs.into_iter().map(|l| l.log).collect::<Vec<ethers_main::types::Log>>();
 
         Ok(Self { user_operation, logs })
     }

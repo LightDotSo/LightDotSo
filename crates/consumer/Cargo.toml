@@ -18,6 +18,7 @@
   lightdotso-covalent = { workspace = true }
   lightdotso-db = { workspace = true }
   lightdotso-indexer = { workspace = true }
+  lightdotso-interpreter = { workspace = true }
   lightdotso-kafka = { workspace = true }
   lightdotso-notifier = { workspace = true }
   lightdotso-opentelemetry = { workspace = true }

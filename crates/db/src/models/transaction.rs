@@ -23,6 +23,7 @@ use crate::{
 use autometrics::autometrics;
 use axum::extract::Json;
 use ethers::{types::Bloom, utils::to_checksum};
+use eyre::Result;
 use lightdotso_contracts::constants::MAINNET_CHAIN_IDS;
 use lightdotso_prisma::{log, log_topic, receipt, transaction, wallet};
 use lightdotso_tracing::{
@@ -291,8 +292,8 @@ pub async fn upsert_transaction_with_log_receipt(
 
 pub async fn get_transaction_with_logs(
     db: Database,
-    transaction_hash: ethers::types::H256,
-) -> AppJsonResult<DbTransactionLogs> {
+    transaction_hash: ethers_main::types::H256,
+) -> Result<DbTransactionLogs> {
     info!("Getting transaction");
 
     // Get the transaction with the receipt and logs and log topics
@@ -313,7 +314,7 @@ pub async fn get_transaction_with_logs(
     let transaction_with_logs: DbTransactionLogs = transaction.try_into()?;
 
     // Return the transaction with logs
-    Ok(Json::from(transaction_with_logs))
+    Ok(transaction_with_logs)
 }
 
 // -----------------------------------------------------------------------------
@@ -323,7 +324,7 @@ pub async fn get_transaction_with_logs(
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DbTransactionLogs {
     pub transaction: transaction::Data,
-    pub logs: Vec<ethers::types::Log>,
+    pub logs: Vec<ethers_main::types::Log>,
 }
 
 impl TryFrom<transaction::Data> for DbTransactionLogs {
@@ -337,7 +338,7 @@ impl TryFrom<transaction::Data> for DbTransactionLogs {
         let db_logs =
             receipt_logs.into_iter().map(|l| l.try_into()).collect::<Result<Vec<DbLog>, _>>()?;
 
-        let logs = db_logs.into_iter().map(|l| l.log).collect::<Vec<ethers::types::Log>>();
+        let logs = db_logs.into_iter().map(|l| l.log).collect::<Vec<ethers_main::types::Log>>();
 
         Ok(Self { transaction, logs })
     }

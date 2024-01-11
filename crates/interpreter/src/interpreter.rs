@@ -34,6 +34,7 @@ use lightdotso_simulator::{
     simulator::{simulate, simulate_bundle},
     types::SimulationRequest,
 };
+use revm::interpreter::InstructionResult;
 
 pub struct Interpreter<'a> {
     adapters: &'a [Box<dyn Adapter + Sync + Send>],
@@ -88,6 +89,31 @@ impl Interpreter<'_> {
             output.push_str(format!("{trace}").as_str());
         }
         Ok(output)
+    }
+
+    pub async fn run_with_interpret(
+        &mut self,
+        request: InterpretationRequest,
+    ) -> Result<InterpretationResponse> {
+        // Run the interpreter
+        let interpretation = self.interpret(request.clone()).await?;
+
+        // Flatten the actions
+        let actions = interpretation.clone().into_iter().flat_map(|res| res.actions).collect();
+
+        // Flatten the asset changes
+        let asset_changes = interpretation.into_iter().flat_map(|res| res.asset_changes).collect();
+
+        Ok(InterpretationResponse {
+            gas_used: 0,
+            block_number: request.block_number.unwrap_or(0),
+            success: true,
+            traces: request.traces,
+            logs: request.logs,
+            exit_reason: InstructionResult::Stop,
+            actions,
+            asset_changes,
+        })
     }
 
     pub async fn run_with_simulate(

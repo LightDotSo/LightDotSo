@@ -23,8 +23,8 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DbLog {
-    pub log: ethers::types::Log,
-    pub topics: Vec<ethers::types::H256>,
+    pub log: ethers_main::types::Log,
+    pub topics: Vec<ethers_main::types::H256>,
 }
 
 impl TryFrom<log::Data> for DbLog {
@@ -43,11 +43,11 @@ impl TryFrom<log::Data> for DbLog {
                 let log_topic_id = split[0];
 
                 // Return the log topic
-                log_topic_id.parse::<ethers::types::H256>().unwrap()
+                log_topic_id.parse::<ethers_main::types::H256>().unwrap()
             })
-            .collect::<Vec<ethers::types::H256>>();
+            .collect::<Vec<ethers_main::types::H256>>();
 
-        let log = ethers::types::Log {
+        let log = ethers_main::types::Log {
             address: log.address.parse().unwrap(),
             topics: log_topics.clone(),
             data: log.data.into(),
