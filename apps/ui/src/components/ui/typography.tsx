@@ -124,7 +124,7 @@ const TR = forwardRef<HTMLTableRowElement, ComponentPropsWithoutRef<"tr">>(
     <tr
       ref={ref}
       className={cn(
-        "m-0 border-t border-border p-0 even:bg-background-weaker",
+        "even:bg-background-weaker m-0 border-t border-border p-0",
         className,
       )}
       {...props}
@@ -179,7 +179,7 @@ const InlineCode = forwardRef<HTMLElement, ComponentPropsWithoutRef<"code">>(
     <code
       ref={ref}
       className={cn(
-        "relative rounded bg-background py-[0.2rem] px-[0.3rem] font-mono text-sm font-semibold text-text-primary",
+        "relative rounded bg-background px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold text-text-primary",
         className,
       )}
       {...props}

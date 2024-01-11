@@ -56,7 +56,7 @@ export const NftImage: FC<NftImageProps> = ({
   return (
     <div
       className={cn(
-        "relative aspect-w-1 aspect-h-1 bg-background overflow-hidden w-full",
+        "aspect-h-1 aspect-w-1 relative w-full overflow-hidden bg-background",
         className,
       )}
     >
@@ -68,10 +68,10 @@ export const NftImage: FC<NftImageProps> = ({
       <img
         className={cn(
           "absolute inset-0 w-full duration-500 ease-in-out",
-          !isImageLoaded && "animate-pulse bg-emphasis-medium",
+          !isImageLoaded && "bg-emphasis-medium animate-pulse",
           !isImageLoaded
             ? "scale-90 blur-xl"
-            : "scale-100 blur-0 grayscale-0 group-hover:scale-125 group-hover:blur-2 group-hover:grayscale-0",
+            : "group-hover:blur-2 scale-100 blur-0 grayscale-0 group-hover:scale-125 group-hover:grayscale-0",
         )}
         src={
           // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain

@@ -64,7 +64,7 @@ export const NftCard: FC<NftCardProps> = ({
   return (
     <li
       className={cn(
-        "group relative col-span-1 rounded-md flex flex-col overflow-hidden bg-background",
+        "group relative col-span-1 flex flex-col overflow-hidden rounded-md bg-background",
         "border border-border",
       )}
     >

@@ -40,7 +40,7 @@ export function BaseLayerWrapper({
   return (
     <div
       className={cn(
-        "flex w-full overflow-x-scroll flex-row px-2 md:px-4 lg:px-8 md:overflow-hidden",
+        "flex w-full flex-row overflow-x-scroll px-2 md:overflow-hidden md:px-4 lg:px-8",
         className,
       )}
     >

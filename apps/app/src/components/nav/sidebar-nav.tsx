@@ -80,7 +80,7 @@ export const SidebarNav: FC<SidebarNavProps> = ({
             buttonVariants({ variant: "ghost" }),
             pathname === (baseHref ? "/" + baseHref + item.href : item.href)
               ? "bg-background-stronger hover:bg-background-stronger"
-              : "hover:bg-transparent hover:underline text-text-weak",
+              : "text-text-weak hover:bg-transparent hover:underline",
             "justify-start",
           )}
         >

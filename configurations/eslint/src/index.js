@@ -99,10 +99,18 @@ module.exports = {
       },
     ],
     "react/self-closing-comp": "error",
-    "tailwindcss/classnames-order": "error",
+    "tailwindcss/enforces-shorthand": [
+      "error",
+      { callees: ["classnames", "clsx", "cva", "cn"] },
+    ],
+    "tailwindcss/classnames-order": [
+      "error",
+      { callees: ["classnames", "clsx", "cva", "cn"] },
+    ],
     "tailwindcss/no-custom-classname": [
       "off",
       {
+        callees: ["classnames", "clsx", "cva", "cn"],
         cssFiles: [
           "**/*.css",
           "!**/node_modules",

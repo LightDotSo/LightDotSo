@@ -1045,7 +1045,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                         />
                         <div
                           className={cn(
-                            "flex h-full flex-col col-span-1",
+                            "col-span-1 flex h-full flex-col",
                             // If there is error, justify center, else end
                             form.formState.errors.transfers &&
                               form.formState.errors.transfers[index] &&
