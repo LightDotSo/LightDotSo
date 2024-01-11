@@ -18,7 +18,8 @@
 use clap::Parser;
 use eyre::Result;
 use lightdotso_db::models::{
-    transaction::get_transaction_with_logs, user_operation::get_user_operation_with_logs,
+    interpretation::upsert_interpretation_with_actions, transaction::get_transaction_with_logs,
+    user_operation::get_user_operation_with_logs,
 };
 use lightdotso_interpreter::{config::InterpreterArgs, types::InterpretationRequest};
 use lightdotso_kafka::types::interpretation::InterpretationMessage;
@@ -49,7 +50,7 @@ pub async fn interpretation_consumer(
         // If the user operation hash is not empty, get the user operation from the database
         let _user_operation_with_logs =
             if let Some(user_operation_hash) = payload.user_operation_hash {
-                Some(get_user_operation_with_logs(db, user_operation_hash).await?)
+                Some(get_user_operation_with_logs(db.clone(), user_operation_hash).await?)
             } else {
                 None
             };
@@ -68,7 +69,11 @@ pub async fn interpretation_consumer(
             logs: transaction_with_logs.logs,
         };
 
-        let _res = args.run_interpretation(request).await?;
+        let res = args.run_interpretation(request).await?;
+
+        info!("res: {:?}", res);
+
+        upsert_interpretation_with_actions(db, res).await?;
     }
 
     Ok(())
