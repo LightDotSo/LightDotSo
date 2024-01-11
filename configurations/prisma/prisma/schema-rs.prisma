@@ -1222,11 +1222,11 @@ model Token {
   // ---------------------------------------------------------------------------
 
   type     TokenType @default(ERC_20)
-  symbol   String
+  symbol   String?
   name     String?
   address  String
   chainId  BigInt
-  decimals Int
+  decimals Int?
   tokenId  BigInt?
 
   // ---------------------------------------------------------------------------

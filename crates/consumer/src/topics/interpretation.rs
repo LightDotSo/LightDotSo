@@ -73,7 +73,8 @@ pub async fn interpretation_consumer(
 
         info!("res: {:?}", res);
 
-        upsert_interpretation_with_actions(db, res).await?;
+        upsert_interpretation_with_actions(db, res, transaction_with_logs.transaction.hash, None)
+            .await?;
     }
 
     Ok(())

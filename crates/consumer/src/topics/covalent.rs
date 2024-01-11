@@ -92,11 +92,15 @@ pub async fn covalent_consumer(
                     .iter()
                     .map(|item| {
                         (
-                            item.contract_ticker_symbol.clone().unwrap_or("".to_string()),
                             item.contract_address.clone().unwrap(),
                             payload.chain_id as i64,
-                            item.contract_decimals.unwrap(),
-                            vec![token::name::set(item.contract_name.clone())],
+                            vec![
+                                token::symbol::set(Some(
+                                    item.contract_ticker_symbol.clone().unwrap_or("".to_string()),
+                                )),
+                                token::decimals::set(Some(item.contract_decimals.unwrap())),
+                                token::name::set(item.contract_name.clone()),
+                            ],
                         )
                     })
                     .collect::<Vec<_>>(),

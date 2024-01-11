@@ -65,8 +65,8 @@ impl From<token::Data> for Token {
             address: token.address,
             chain_id: token.chain_id,
             name: token.name,
-            symbol: token.symbol,
-            decimals: token.decimals,
+            symbol: token.symbol.unwrap_or("".to_string()),
+            decimals: token.decimals.unwrap_or(0),
             amount: 0,
             balance_usd: 0.0,
             group: token.group.and_then(|group| {
@@ -86,8 +86,8 @@ impl From<wallet_balance::Data> for Token {
             address: balance.token.clone().unwrap().unwrap().address,
             chain_id: balance.chain_id,
             name: balance.token.clone().unwrap().unwrap().name,
-            symbol: balance.token.clone().unwrap().unwrap().symbol,
-            decimals: balance.token.clone().unwrap().unwrap().decimals,
+            symbol: balance.token.clone().unwrap().unwrap().symbol.unwrap_or("".to_string()),
+            decimals: balance.token.clone().unwrap().unwrap().decimals.unwrap_or(0),
             amount: balance.amount.unwrap(),
             balance_usd: balance.balance_usd,
             group: balance.token.clone().unwrap().unwrap().group.and_then(|group| {

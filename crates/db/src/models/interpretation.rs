@@ -20,7 +20,7 @@ use autometrics::autometrics;
 use ethers::utils::to_checksum;
 use eyre::Result;
 use lightdotso_interpreter::types::InterpretationResponse;
-use lightdotso_prisma::{interpretation, interpretation_action};
+use lightdotso_prisma::{interpretation, interpretation_action, transaction, user_operation};
 use lightdotso_tracing::tracing::info;
 
 // -----------------------------------------------------------------------------
@@ -32,9 +32,27 @@ use lightdotso_tracing::tracing::info;
 pub async fn upsert_interpretation_with_actions(
     db: Database,
     res: InterpretationResponse,
+    transaction_hash: String,
+    user_operation_hash: Option<String>,
 ) -> Result<interpretation::Data> {
     info!("Creating new interpretation");
 
+    // Create all possible tokens
+    let tokens = db
+        .token()
+        .create_many(
+            res.clone()
+                .asset_changes
+                .into_iter()
+                .map(|token| (to_checksum(&token.address, None), res.chain_id as i64, vec![]))
+                .collect::<Vec<_>>(),
+        )
+        .skip_duplicates()
+        .exec()
+        .await?;
+    info!(?tokens);
+
+    // Create all possible interpretation actions
     let actions = db
         .interpretation_action()
         .create_many(
@@ -61,6 +79,7 @@ pub async fn upsert_interpretation_with_actions(
         .await?;
     info!(?actions);
 
+    // Get the corresponding interpretation actions
     let interpretation_actions = db
         .interpretation_action()
         .find_many(
@@ -85,17 +104,25 @@ pub async fn upsert_interpretation_with_actions(
         .await?;
     info!(?interpretation_actions);
 
-    let interpretation = db
-        .interpretation()
-        .create(vec![interpretation::actions::set(
+    // Connect the interpretation to the transaction and user operation
+    let mut interpretation_params = vec![
+        interpretation::actions::set(
             interpretation_actions
                 .into_iter()
                 .map(|action| interpretation_action::id::equals(action.id))
                 .collect::<Vec<_>>(),
-        )])
-        .exec()
-        .await?;
+        ),
+        interpretation::transaction::connect(transaction::hash::equals(transaction_hash)),
+    ];
+    if let Some(user_operation_hash) = user_operation_hash {
+        interpretation_params.push(interpretation::user_operation::connect(
+            user_operation::hash::equals(user_operation_hash),
+        ));
+    };
+    // Create the interpretation
+    let interpretation = db.interpretation().create(interpretation_params).exec().await?;
 
+    // Create all possible asset changes
     let asset_changes = db
         .asset_change()
         .create_many(

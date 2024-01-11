@@ -65,6 +65,8 @@ impl Default for InterpretationRequest {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InterpretationResponse {
+    /// Chain ID of the interpretation
+    pub chain_id: u64,
     /// Gas used by the transaction
     pub gas_used: u64,
     /// Block number of the simulation
@@ -86,6 +88,7 @@ pub struct InterpretationResponse {
 impl Default for InterpretationResponse {
     fn default() -> Self {
         Self {
+            chain_id: 0,
             gas_used: 0,
             block_number: 0,
             success: false,

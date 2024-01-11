@@ -105,6 +105,7 @@ impl Interpreter<'_> {
         let asset_changes = interpretation.into_iter().flat_map(|res| res.asset_changes).collect();
 
         Ok(InterpretationResponse {
+            chain_id: request.chain_id,
             gas_used: 0,
             block_number: request.block_number.unwrap_or(0),
             success: true,
@@ -153,6 +154,7 @@ impl Interpreter<'_> {
         let asset_changes = interpretation.into_iter().flat_map(|res| res.asset_changes).collect();
 
         Ok(InterpretationResponse {
+            chain_id: request.chain_id,
             gas_used: res.gas_used,
             block_number: res.block_number,
             success: res.success,
@@ -207,7 +209,7 @@ impl Interpreter<'_> {
             };
 
             // Run the interpreter
-            let interpretation = self.interpret(req).await?;
+            let interpretation = self.interpret(req.clone()).await?;
 
             // Flatten the actions
             let actions = interpretation.clone().into_iter().flat_map(|res| res.actions).collect();
@@ -218,6 +220,7 @@ impl Interpreter<'_> {
 
             // Push the interpretation response to the vector
             interpretation_responses.push(InterpretationResponse {
+                chain_id: req.chain_id,
                 gas_used: res.gas_used,
                 block_number: res.block_number,
                 success: res.success,
