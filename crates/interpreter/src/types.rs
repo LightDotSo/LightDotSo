@@ -114,18 +114,26 @@ pub struct AdapterResponse {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct AssetChange {
+    /// Address of the asset holder
     pub address: Address,
+    /// Amount of the asset before the transaction
     pub before_amount: Uint,
+    /// Amount of the asset after the transaction
     pub after_amount: Uint,
+    /// The amount of the asset that was transferred
     pub amount: Uint,
 
+    /// The action that was interpreted
     pub action: InterpretationAction,
+    /// The token that was transferred
     pub token: AssetToken,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct AssetToken {
+    /// Address of the token
     pub address: Address,
+    /// The optional id of the token
     pub token_id: Option<Uint>,
 }
 

@@ -64,7 +64,8 @@ pub async fn upsert_interpretation_with_actions(
     let interpretation_actions = db
         .interpretation_action()
         .find_many(
-            res.actions
+            res.clone()
+                .actions
                 .into_iter()
                 .map(|action| {
                     if action.address.is_some() {
@@ -94,6 +95,44 @@ pub async fn upsert_interpretation_with_actions(
         )])
         .exec()
         .await?;
+
+    let asset_changes = db
+        .asset_change()
+        .create_many(
+            res.clone()
+                .asset_changes
+                .into_iter()
+                .map(|asset_change| {
+                    (
+                        to_checksum(&asset_change.address, None),
+                        asset_change.amount.as_u64() as i64,
+                        asset_change.before_amount.as_u64() as i64,
+                        asset_change.after_amount.as_u64() as i64,
+                        interpretation.clone().id,
+                        vec![
+                            // asset_change::token::add(to_checksum(&asset_change.token.address,
+                            // None)),
+                            //Get the corresponding
+                            // interpretation action
+                            // asset_change::action::set(
+                            //     interpretation_actions
+                            //         .iter()
+                            //         .find(|action| {
+                            //             action.action_type.eq(&asset_change.action.action_type) &&
+                            //                 action.address.eq(&asset_change.address)
+                            //         })
+                            //         .unwrap()
+                            //         .id,
+                            // ),
+                        ],
+                    )
+                })
+                .collect::<Vec<_>>(),
+        )
+        .skip_duplicates()
+        .exec()
+        .await?;
+    info!(?asset_changes);
 
     Ok(interpretation)
 }
