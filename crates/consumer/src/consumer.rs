@@ -142,7 +142,12 @@ impl Consumer {
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         topic if topic == INTERPRETATION.to_string() => {
-                            let _ = interpretation_consumer(&m, db.clone()).await;
+                            let res = interpretation_consumer(&m, db.clone()).await;
+                            // If the consumer failed
+                            if let Err(e) = res {
+                                // Log the error
+                                warn!("Interpretation consumer failed with error: {:?}", e);
+                            }
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         topic if topic == PORTFOLIO.to_string() => {
