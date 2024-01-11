@@ -48,7 +48,7 @@ pub async fn interpretation_consumer(
             get_transaction_with_logs(db.clone(), payload.transaction_hash).await?;
 
         // If the user operation hash is not empty, get the user operation from the database
-        let _user_operation_with_logs =
+        let user_operation_with_logs =
             if let Some(user_operation_hash) = payload.user_operation_hash {
                 Some(get_user_operation_with_logs(db.clone(), user_operation_hash).await?)
             } else {
@@ -73,8 +73,23 @@ pub async fn interpretation_consumer(
 
         info!("res: {:?}", res);
 
-        upsert_interpretation_with_actions(db, res, transaction_with_logs.transaction.hash, None)
+        upsert_interpretation_with_actions(
+            db.clone(),
+            res.clone(),
+            Some(transaction_with_logs.transaction.hash),
+            None,
+        )
+        .await?;
+
+        if let Some(user_operation_with_logs) = user_operation_with_logs {
+            upsert_interpretation_with_actions(
+                db,
+                res,
+                None,
+                Some(user_operation_with_logs.user_operation.hash),
+            )
             .await?;
+        }
     }
 
     Ok(())

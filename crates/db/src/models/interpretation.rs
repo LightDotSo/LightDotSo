@@ -34,7 +34,7 @@ use lightdotso_tracing::tracing::info;
 pub async fn upsert_interpretation_with_actions(
     db: Database,
     res: InterpretationResponse,
-    transaction_hash: String,
+    transaction_hash: Option<String>,
     user_operation_hash: Option<String>,
 ) -> Result<interpretation::Data> {
     info!("Creating new interpretation");
@@ -107,15 +107,17 @@ pub async fn upsert_interpretation_with_actions(
     info!(?interpretation_actions);
 
     // Connect the interpretation to the transaction and user operation
-    let mut interpretation_params = vec![
-        interpretation::actions::set(
-            interpretation_actions
-                .into_iter()
-                .map(|action| interpretation_action::id::equals(action.id))
-                .collect::<Vec<_>>(),
-        ),
-        interpretation::transaction::connect(transaction::hash::equals(transaction_hash)),
-    ];
+    let mut interpretation_params = vec![interpretation::actions::set(
+        interpretation_actions
+            .into_iter()
+            .map(|action| interpretation_action::id::equals(action.id))
+            .collect::<Vec<_>>(),
+    )];
+    if let Some(transaction_hash) = transaction_hash {
+        interpretation_params.push(interpretation::transaction::connect(
+            transaction::hash::equals(transaction_hash),
+        ));
+    };
     if let Some(user_operation_hash) = user_operation_hash {
         interpretation_params.push(interpretation::user_operation::connect(
             user_operation::hash::equals(user_operation_hash),
