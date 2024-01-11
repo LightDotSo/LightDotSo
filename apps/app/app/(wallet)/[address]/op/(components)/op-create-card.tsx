@@ -135,7 +135,7 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
         <Button
           disabled={!isCreatable}
           isLoading={isLoading}
-          onClick={() => signUserOperation()}
+          onClick={signUserOperation}
         >
           Sign Transaction
         </Button>

@@ -60,7 +60,7 @@ export const TransactionCardSignButton: FC<TransactionCardSignButtonProps> = ({
       isLoading={isLoading}
       variant={isSignable ? "default" : "outline"}
       className="w-full"
-      onClick={() => signUserOperation()}
+      onClick={signUserOperation}
     >
       Sign
     </Button>
