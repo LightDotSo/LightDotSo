@@ -97,9 +97,18 @@ pub async fn interpretation_consumer(
             let user_operation_with_logs =
                 get_user_operation_with_logs(db.clone(), user_operation_with_logs).await?;
 
+            // If the `transaction` field is `None`, then return early
+            if user_operation_with_logs.transaction.is_none() {
+                return Ok(());
+            }
+
             // Create an `InterpretationRequest` from the transaction
             let request = InterpretationRequest {
-                block_number: None,
+                block_number: user_operation_with_logs
+                    .transaction
+                    .unwrap()
+                    .block_number
+                    .map(|n| n as u64),
                 gas_limit: u64::MAX,
                 chain_id: user_operation_with_logs.user_operation.clone().chain_id as u64,
                 from: user_operation_with_logs.user_operation.clone().sender.parse()?,
