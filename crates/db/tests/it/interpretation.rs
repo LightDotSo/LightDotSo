@@ -54,17 +54,30 @@ async fn test_integration_upsert_interpretation_with_actions() -> Result<()> {
                 action_type: InterpretationActionType::ERC1155Minted,
             },
         ],
-        asset_changes: vec![AssetChange {
-            address: Address::zero(),
-            before_amount: None,
-            after_amount: None,
-            amount: 0.into(),
-            action: InterpretationAction {
-                address: Some(Address::zero()),
-                action_type: InterpretationActionType::ERC1155Burned,
+        asset_changes: vec![
+            AssetChange {
+                address: Address::zero(),
+                before_amount: None,
+                after_amount: None,
+                amount: 0.into(),
+                action: InterpretationAction {
+                    address: Some(Address::zero()),
+                    action_type: InterpretationActionType::ERC1155Burned,
+                },
+                token: AssetToken { address: Address::zero(), token_id: None },
             },
-            token: AssetToken { address: Address::zero(), token_id: None },
-        }],
+            AssetChange {
+                address: Address::zero(),
+                before_amount: Some(1.into()),
+                after_amount: None,
+                amount: 0.into(),
+                action: InterpretationAction {
+                    address: Some(Address::zero()),
+                    action_type: InterpretationActionType::ERC1155Burned,
+                },
+                token: AssetToken { address: Address::zero(), token_id: Some(1.into()) },
+            },
+        ],
     };
 
     // Get a transaction with logs.
