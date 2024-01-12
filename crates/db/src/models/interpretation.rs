@@ -47,7 +47,15 @@ pub async fn upsert_interpretation_with_actions(
             res.clone()
                 .asset_changes
                 .into_iter()
-                .map(|token| (to_checksum(&token.address, None), res.chain_id as i64, vec![]))
+                .map(|token| {
+                    (
+                        to_checksum(&token.address, None),
+                        res.chain_id as i64,
+                        vec![token::token_id::set(
+                            token.token.token_id.map(|id| id.as_u64() as i64),
+                        )],
+                    )
+                })
                 .collect::<Vec<_>>(),
         )
         .skip_duplicates()
@@ -105,6 +113,12 @@ pub async fn upsert_interpretation_with_actions(
 
     // Connect the interpretation to the transaction and user operation
     let mut interpretation_params = vec![];
+    interpretation_params.push(interpretation::actions::connect(
+        interpretation_actions
+            .into_iter()
+            .map(|action| interpretation_action::id::equals(action.id))
+            .collect::<Vec<_>>(),
+    ));
     if let Some(transaction_hash) = transaction_hash {
         interpretation_params.push(interpretation::transaction::connect(
             transaction::hash::equals(transaction_hash),
@@ -118,28 +132,6 @@ pub async fn upsert_interpretation_with_actions(
     // Create the interpretation
     let interpretation = db.interpretation().create(interpretation_params).exec().await?;
     info!(?interpretation);
-
-    // Update the actions with the interpretation id
-    let update_interpretation_action = db
-        .interpretation_action()
-        .update_many(
-            interpretation_actions
-                .clone()
-                .into_iter()
-                .map(|action| interpretation_action::id::equals(action.id))
-                .collect::<Vec<_>>(),
-            interpretation_actions
-                .into_iter()
-                .map(|_action| {
-                    interpretation_action::interpretations::connect(vec![
-                        interpretation::id::equals(interpretation.clone().id),
-                    ])
-                })
-                .collect::<Vec<_>>(),
-        )
-        .exec()
-        .await?;
-    info!(?update_interpretation_action);
 
     // Create all possible asset changes
     let asset_changes = db
@@ -160,20 +152,20 @@ pub async fn upsert_interpretation_with_actions(
                             asset_change::after_amount::set(
                                 change.after_amount.map(|am| am.as_u64() as i64),
                             ),
-                            asset_change::token::connect(
-                                if let Some(token_id) = change.token.token_id {
-                                    token::address_chain_id_token_id(
-                                        to_checksum(&change.address, None),
-                                        res.chain_id as i64,
-                                        token_id.as_u64() as i64,
-                                    )
-                                } else {
-                                    token::address_chain_id(
-                                        to_checksum(&change.address, None),
-                                        res.chain_id as i64,
-                                    )
-                                },
-                            ),
+                            // asset_change::token::connect(
+                            //     if let Some(token_id) = change.token.token_id {
+                            //         token::address_chain_id_token_id(
+                            //             to_checksum(&change.address, None),
+                            //             res.chain_id as i64,
+                            //             token_id.as_u64() as i64,
+                            //         )
+                            //     } else {
+                            //         token::address_chain_id(
+                            //             to_checksum(&change.address, None),
+                            //             res.chain_id as i64,
+                            //         )
+                            //     },
+                            // ),
                         ],
                     )
                 })
