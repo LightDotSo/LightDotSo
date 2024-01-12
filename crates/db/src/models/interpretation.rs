@@ -98,18 +98,13 @@ pub async fn upsert_interpretation_with_actions(
                 .push(or![interpretation_action::action::equals(action.action_type.to_string())])
         }
     });
+    // Find all the matching interpretation actions
     let interpretation_actions =
         db.interpretation_action().find_many(interpration_action_params).exec().await?;
     info!(?interpretation_actions);
 
     // Connect the interpretation to the transaction and user operation
     let mut interpretation_params = vec![];
-    interpretation_params.push(interpretation::actions::set(
-        interpretation_actions
-            .into_iter()
-            .map(|action| interpretation_action::id::equals(action.id))
-            .collect::<Vec<_>>(),
-    ));
     if let Some(transaction_hash) = transaction_hash {
         interpretation_params.push(interpretation::transaction::connect(
             transaction::hash::equals(transaction_hash),
@@ -120,10 +115,31 @@ pub async fn upsert_interpretation_with_actions(
             user_operation::hash::equals(user_operation_hash),
         ));
     };
-
     // Create the interpretation
     let interpretation = db.interpretation().create(interpretation_params).exec().await?;
     info!(?interpretation);
+
+    // Update the actions with the interpretation id
+    let update_interpretation_action = db
+        .interpretation_action()
+        .update_many(
+            interpretation_actions
+                .clone()
+                .into_iter()
+                .map(|action| interpretation_action::id::equals(action.id))
+                .collect::<Vec<_>>(),
+            interpretation_actions
+                .into_iter()
+                .map(|_action| {
+                    interpretation_action::interpretations::connect(vec![
+                        interpretation::id::equals(interpretation.clone().id),
+                    ])
+                })
+                .collect::<Vec<_>>(),
+        )
+        .exec()
+        .await?;
+    info!(?update_interpretation_action);
 
     // Create all possible asset changes
     let asset_changes = db
