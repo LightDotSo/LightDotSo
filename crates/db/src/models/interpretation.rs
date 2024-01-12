@@ -80,31 +80,42 @@ pub async fn upsert_interpretation_with_actions(
     info!(?tokens);
 
     // Create all possible interpretation actions
-    let actions = db
+    let interpretation_actions_params = res
+        .clone()
+        .actions
+        .into_iter()
+        .map(|action| {
+            (
+                action.action_type.to_string(),
+                action
+                    .address
+                    .as_ref()
+                    .map(|addr| interpretation_action::address::set(Some(to_checksum(addr, None))))
+                    .into_iter()
+                    .collect::<Vec<_>>(),
+            )
+        })
+        .collect::<Vec<_>>();
+    let mut interpretation_actions = vec![];
+    for interpretation_action_param in interpretation_actions_params.clone() {
+        // Fails gracefully if the interpretation action already exists
+        let interpretation_action = db
+            .interpretation_action()
+            .create(interpretation_action_param.0, interpretation_action_param.1)
+            .exec()
+            .await;
+        info!(?interpretation_action);
+        interpretation_actions.push(interpretation_action);
+    }
+
+    // Create all possible interpretation actions in bulk
+    let interpretation_actions = db
         .interpretation_action()
-        .create_many(
-            res.clone()
-                .actions
-                .into_iter()
-                .map(|action| {
-                    (
-                        action.action_type.to_string(),
-                        action
-                            .address
-                            .as_ref()
-                            .map(|addr| {
-                                interpretation_action::address::set(Some(to_checksum(addr, None)))
-                            })
-                            .into_iter()
-                            .collect::<Vec<_>>(),
-                    )
-                })
-                .collect::<Vec<_>>(),
-        )
+        .create_many(interpretation_actions_params)
         .skip_duplicates()
         .exec()
         .await?;
-    info!(?actions);
+    info!(?interpretation_actions);
 
     // Get the corresponding tokens
     let mut token_params = vec![];
