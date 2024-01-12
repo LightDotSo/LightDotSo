@@ -14,17 +14,16 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use eyre::Result;
-use lightdotso_db::{db::create_client, models::user_operation::get_user_operation_with_logs};
+use lightdotso_db::{db::create_test_client, models::user_operation::get_user_operation_with_logs};
 use std::sync::Arc;
 
-#[ignore]
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_get_user_operation_with_logs() -> Result<()> {
     // Load the environment variables.
     let _ = dotenvy::dotenv();
 
     // Create a database client.
-    let db = create_client().await?;
+    let db = create_test_client().await?;
 
     // Get a user_operation with logs.
     let tx = get_user_operation_with_logs(
