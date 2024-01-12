@@ -54,8 +54,7 @@ pub struct PostQuery {
             PostQuery
         ),
         responses(
-            (status = 200, description = "Queue created successfully", body = i64),
-
+            (status = 200, description = "Queue created successfully", body = QueueSuccess),
             (status = 500, description = "Queue internal error", body = QueueError),
         )
     )]

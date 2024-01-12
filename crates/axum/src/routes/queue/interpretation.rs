@@ -13,7 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{error::RouteError, result::AppJsonResult, state::AppState};
+use crate::{
+    error::RouteError,
+    result::{AppError, AppJsonResult},
+    state::AppState,
+};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -24,7 +28,7 @@ use lightdotso_kafka::{
     topics::interpretation::produce_interpretation_message,
     types::interpretation::InterpretationMessage,
 };
-use lightdotso_prisma::{transaction, user_operation};
+use lightdotso_prisma::{transaction, user_operation, UserOperationStatus};
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -56,8 +60,7 @@ pub struct PostQuery {
             PostQuery
         ),
         responses(
-            (status = 200, description = "Queue created successfully", body = i64),
-
+            (status = 200, description = "Queue created successfully", body = QueueSuccess),
             (status = 500, description = "Queue internal error", body = QueueError),
         )
     )]
@@ -97,7 +100,7 @@ pub(crate) async fn v1_queue_interpretation_handler(
 
     // If the user operation hash is provided, get the user operation from the database.
     if let Some(user_operation_hash) = parsed_user_operation_hash {
-        state
+        let user_operation = state
             .client
             .user_operation()
             .find_unique(user_operation::hash::equals(format!("{:?}", user_operation_hash)))
@@ -106,6 +109,18 @@ pub(crate) async fn v1_queue_interpretation_handler(
             .ok_or_else(|| {
                 RouteError::QueueError(QueueError::NotFound(format!("{:?}", user_operation_hash)))
             })?;
+
+        // If the user operation's status is not `Executed` or `Reverted`, return an error.
+        if user_operation.status != UserOperationStatus::Invalid &&
+            user_operation.status != UserOperationStatus::Pending &&
+            user_operation.status != UserOperationStatus::Proposed &&
+            // Also, if the user operation's transaction hash is not `None`, return an error.
+            user_operation.transaction_hash.is_some()
+        {
+            return Err(AppError::RouteError(RouteError::QueueError(QueueError::BadRequest(
+                "User operation is not executed or reverted".to_string(),
+            ))));
+        }
     }
 
     // -------------------------------------------------------------------------
