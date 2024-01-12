@@ -25,7 +25,6 @@ use lightdotso_prisma::{
     TokenType,
 };
 use lightdotso_tracing::tracing::info;
-use prisma_client_rust::{and, or};
 
 // -----------------------------------------------------------------------------
 // Create
@@ -138,27 +137,32 @@ pub async fn upsert_interpretation_with_actions(
     let mut interpration_action_params = vec![];
     res.clone().actions.into_iter().for_each(|action| {
         if action.address.is_some() {
-            interpration_action_params.push(and![
-                interpretation_action::address::equals(Some(to_checksum(
-                    &action.address.unwrap(),
-                    None
-                ))),
-                interpretation_action::action::equals(action.action_type.to_string())
-            ])
+            interpration_action_params.push(interpretation_action::action_address(
+                action.action_type.to_string(),
+                to_checksum(&action.address.unwrap(), None),
+            ))
         } else {
             interpration_action_params
-                .push(or![interpretation_action::action::equals(action.action_type.to_string())])
+                .push(interpretation_action::action::equals(action.action_type.to_string()))
         }
     });
     // Find all the matching interpretation actions
-    let interpretation_actions =
-        db.interpretation_action().find_many(interpration_action_params).exec().await?;
+    let mut interpretation_actions = vec![];
+    for interpration_action_param in interpration_action_params {
+        let interpretation_action =
+            db.interpretation_action().find_unique(interpration_action_param).exec().await?;
+        // Push the interpretation action to the list of interpretation actions if not None
+        if let Some(interpretation_action) = interpretation_action {
+            interpretation_actions.push(interpretation_action);
+        }
+    }
     info!(?interpretation_actions);
 
     // Connect the interpretation to the transaction and user operation
     let mut interpretation_params = vec![];
     interpretation_params.push(interpretation::actions::connect(
         interpretation_actions
+            .clone()
             .into_iter()
             .map(|action| interpretation_action::id::equals(action.id))
             .collect::<Vec<_>>(),
@@ -178,66 +182,74 @@ pub async fn upsert_interpretation_with_actions(
     info!(?interpretation);
 
     // Create all possible asset changes
-    let asset_changes = db
-        .asset_change()
-        .create_many(
-            res.clone()
-                .asset_changes
-                .into_iter()
-                .map(|change| {
-                    (
-                        to_checksum(&change.address, None),
-                        change.amount.as_u64() as i64,
-                        interpretation.clone().id,
-                        vec![
-                            asset_change::before_amount::set(
-                                change.before_amount.map(|bm| bm.as_u64() as i64),
-                            ),
-                            asset_change::after_amount::set(
-                                change.after_amount.map(|am| am.as_u64() as i64),
-                            ),
-                            // asset_change::interpretation_action::connect(
-                            //     interpretation_action::id::equals(
-                            //         interpretation_actions
-                            //             .clone()
-                            //             .into_iter()
-                            //             .find(|action| {
-                            //                 action.action ==
-                            // change.action.action_type.to_string()
-                            //             })
-                            //             .unwrap()
-                            //             .id,
-                            //     ),
-                            // ),
-                            // asset_change::token::connect(
-                            //     // Find the corresponding token
-                            //     token::id::equals(
-                            //         asset_tokens
-                            //             .clone()
-                            //             .into_iter()
-                            //             .find(|token| {
-                            //                 token.chain_id == res.chain_id as i64 &&
-                            //                     token.address ==
-                            //                         to_checksum(&change.token.address, None) &&
-                            //                     token.token_id ==
-                            //                         change
-                            //                             .token
-                            //                             .token_id
-                            //                             .map(|id| id.as_u64() as i64)
-                            //             })
-                            //             .unwrap()
-                            //             .id,
-                            //     ),
-                            // ),
-                        ],
-                    )
-                })
-                .collect::<Vec<_>>(),
-        )
-        .skip_duplicates()
-        .exec()
-        .await?;
-    info!(?asset_changes);
+    let asset_change_params = res
+        .clone()
+        .asset_changes
+        .into_iter()
+        .map(|change| {
+            (
+                to_checksum(&change.address, None),
+                change.amount.as_u64() as i64,
+                interpretation::id::equals(interpretation.clone().id),
+                vec![
+                    asset_change::before_amount::set(
+                        change.before_amount.map(|bm| bm.as_u64() as i64),
+                    ),
+                    asset_change::after_amount::set(
+                        change.after_amount.map(|am| am.as_u64() as i64),
+                    ),
+                    asset_change::interpretation_action::connect(
+                        interpretation_action::id::equals(
+                            // Find the corresponding interpretation action
+                            interpretation_actions
+                                .clone()
+                                .into_iter()
+                                .find(|action| {
+                                    action.action == change.action.action_type.to_string() &&
+                                        action.address ==
+                                            change
+                                                .action
+                                                .address
+                                                .map(|addr| to_checksum(&addr, None))
+                                })
+                                .unwrap()
+                                .id,
+                        ),
+                    ),
+                    asset_change::token::connect(
+                        // Find the corresponding token
+                        token::id::equals(
+                            asset_tokens
+                                .clone()
+                                .into_iter()
+                                .find(|token| {
+                                    token.chain_id == res.chain_id as i64 &&
+                                        token.address == to_checksum(&change.token.address, None) &&
+                                        token.token_id ==
+                                            change.token.token_id.map(|id| id.as_u64() as i64)
+                                })
+                                .unwrap()
+                                .id,
+                        ),
+                    ),
+                ],
+            )
+        })
+        .collect::<Vec<_>>();
+    for asset_change_param in asset_change_params.clone() {
+        // Fails gracefully if the asset change already exists
+        let asset_change = db
+            .asset_change()
+            .create(
+                asset_change_param.0,
+                asset_change_param.1,
+                asset_change_param.2,
+                asset_change_param.3,
+            )
+            .exec()
+            .await;
+        info!(?asset_change);
+    }
 
     Ok(interpretation)
 }
