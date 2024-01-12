@@ -44,6 +44,7 @@ const walletList = getDefaultWallets();
 const connectors = connectorsForWallets(walletList.wallets, {
   projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
   appName: "Light",
+  appUrl: "https://app.light.so",
 });
 
 // -----------------------------------------------------------------------------
