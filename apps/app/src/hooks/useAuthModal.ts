@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useCallback, useMemo } from "react";
 import { useAuth, useModals } from "@/stores";
 
@@ -26,19 +27,25 @@ export const useAuthModal = () => {
   // ---------------------------------------------------------------------------
 
   const { address, sessionId } = useAuth();
-  const { showAuthModal, showWalletModal } = useModals();
+
+  // ---------------------------------------------------------------------------
+  // ConnectKit
+  // ---------------------------------------------------------------------------
+
+  const { openConnectModal } = useConnectModal();
+  const { showAuthModal } = useModals();
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
   const openAuthModal = useCallback(() => {
-    if (!address) {
-      showWalletModal();
+    if (!address && openConnectModal) {
+      openConnectModal();
     } else if (typeof sessionId !== "string") {
       showAuthModal();
     }
-  }, [address, sessionId, showAuthModal, showWalletModal]);
+  }, [address, openConnectModal, sessionId, showAuthModal]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks

@@ -15,45 +15,79 @@
 
 "use client";
 
-import { cookieStorage, createConfig, createStorage, http } from "@wagmi/core";
+import {
+  RainbowKitProvider,
+  lightTheme,
+  darkTheme,
+  getDefaultWallets,
+  connectorsForWallets,
+} from "@rainbow-me/rainbowkit";
+import { useTheme } from "next-themes";
 import type { ReactNode } from "react";
 import { createClient } from "viem";
-import { WagmiProvider } from "wagmi";
-import { injected, walletConnect } from "wagmi/connectors";
+import {
+  WagmiProvider,
+  cookieStorage,
+  createConfig,
+  createStorage,
+  http,
+} from "wagmi";
+import { safe } from "wagmi/connectors";
 import { CHAINS } from "@/const/chains";
+
+// -----------------------------------------------------------------------------
+// Rainbow
+// -----------------------------------------------------------------------------
+
+const walletList = getDefaultWallets();
+
+const connectors = connectorsForWallets(walletList.wallets, {
+  projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
+  appName: "Light",
+  appUrl: "https://app.light.so",
+});
+
+// -----------------------------------------------------------------------------
+// Wagmi
+// -----------------------------------------------------------------------------
+
+// Set up wagmi config
+export const config = createConfig({
+  chains: CHAINS,
+  client({ chain }) {
+    return createClient({ chain, transport: http() });
+  },
+  connectors: [safe(), ...connectors],
+  ssr: true,
+  storage: createStorage({
+    storage: cookieStorage,
+  }),
+});
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
 function Web3Provider({ children }: { children: ReactNode }) {
-  // -----------------------------------------------------------------------------
-  // Wagmi
-  // -----------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // Operation Hooks
+  // ---------------------------------------------------------------------------
 
-  // Set up wagmi config
-  const config = createConfig({
-    chains: CHAINS,
-    client({ chain }) {
-      return createClient({ chain, transport: http() });
-    },
-    connectors: [
-      injected(),
-      walletConnect({
-        projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
-      }),
-    ],
-    ssr: true,
-    storage: createStorage({
-      storage: cookieStorage,
-    }),
-  });
+  const { theme } = useTheme();
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return <WagmiProvider config={config}>{children}</WagmiProvider>;
+  return (
+    <WagmiProvider config={config}>
+      <RainbowKitProvider
+        theme={theme === "light" ? lightTheme() : darkTheme()}
+      >
+        {children}
+      </RainbowKitProvider>
+    </WagmiProvider>
+  );
 }
 
 export { Web3Provider };

@@ -22,6 +22,7 @@ import {
   Toaster,
   Footer,
 } from "@lightdotso/ui";
+import "@rainbow-me/rainbowkit/styles.css";
 import dynamic from "next/dynamic";
 import { Inter } from "next/font/google";
 import Script from "next/script";
@@ -42,10 +43,6 @@ const CommandK = dynamic(() => import("@/components/command-k"), {
 });
 
 const AuthModal = dynamic(() => import("@/components/auth/auth-modal"), {
-  ssr: false,
-});
-
-const WalletModal = dynamic(() => import("@/components/web3/wallet-modal"), {
   ssr: false,
 });
 
@@ -93,7 +90,6 @@ export const Root: FC<RootProps> = ({ children }) => {
               <Toaster />
               {/* Modals */}
               <AuthModal />
-              <WalletModal />
               {/* States */}
               <AuthState />
               <WssState />
