@@ -40,7 +40,7 @@
     "server-only": "^0.0.1",
     "superjson": "^2.2.1",
     "viem": "^2.0.6",
-    "wagmi": "^2.1.2"
+    "wagmi": "^2.2.0"
   },
   "devDependencies": {
     "@lightdotso/eslint-config": "workspace:*",

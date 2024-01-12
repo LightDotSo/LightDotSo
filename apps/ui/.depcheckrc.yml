@@ -37,4 +37,3 @@ ignores:
   - storybook-dark-mode
   - "@emotion/is-prop-valid"
   - "@radix-ui/react-toast"
-  - embla-carousel-react
