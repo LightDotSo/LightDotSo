@@ -41,6 +41,8 @@ pub async fn upsert_interpretation_with_actions(
 ) -> Result<interpretation::Data> {
     info!("Creating new interpretation");
 
+    info!(?res);
+
     // Create all possible tokens one by one
     let asset_change_params = res
         .clone()
