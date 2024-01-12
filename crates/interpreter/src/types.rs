@@ -103,7 +103,9 @@ impl Default for InterpretationResponse {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct InterpretationAction {
+    /// The action that was interpreted
     pub action_type: InterpretationActionType,
+    /// The actor of the action
     pub address: Option<Address>,
 }
 
@@ -120,9 +122,9 @@ pub struct AssetChange {
     /// Address of the asset holder
     pub address: Address,
     /// Amount of the asset before the transaction
-    pub before_amount: Uint,
+    pub before_amount: Option<Uint>,
     /// Amount of the asset after the transaction
-    pub after_amount: Uint,
+    pub after_amount: Option<Uint>,
     /// The amount of the asset that was transferred
     pub amount: Uint,
     /// The action that was interpreted
@@ -141,9 +143,13 @@ pub struct AssetToken {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct CallTrace {
+    /// The type of the call
     pub call_type: CallKind,
+    /// The address of the caller
     pub from: Address,
+    /// The address of the callee
     pub to: Address,
+    /// The value of the call
     pub value: Option<Uint>,
 }
 

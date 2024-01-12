@@ -1077,8 +1077,8 @@ model AssetChange {
 
   address      String
   amount       BigInt
-  beforeAmount BigInt
-  afterAmount  BigInt
+  beforeAmount BigInt?
+  afterAmount  BigInt?
 
   // ---------------------------------------------------------------------------
   // One-to-many

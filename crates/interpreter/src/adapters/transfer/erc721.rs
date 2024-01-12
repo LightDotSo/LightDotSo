@@ -91,8 +91,8 @@ impl Adapter for ERC721Adapter {
                 address: from,
                 action: from_action.clone(),
                 token: AssetToken { address: token_address, token_id: Some(id) },
-                before_amount: 1.into(),
-                after_amount: 0.into(),
+                before_amount: Some(1.into()),
+                after_amount: Some(0.into()),
                 amount: 1.into(),
             };
 
@@ -101,8 +101,8 @@ impl Adapter for ERC721Adapter {
                 address: to,
                 action: to_action.clone(),
                 token: AssetToken { address: token_address, token_id: Some(id) },
-                before_amount: 0.into(),
-                after_amount: 1.into(),
+                before_amount: Some(0.into()),
+                after_amount: Some(1.into()),
                 amount: 0.into(),
             };
 

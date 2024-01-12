@@ -126,9 +126,14 @@ impl Adapter for ERC1155Adapter {
             let to_action = InterpretationAction { action_type: to_action_type, address: Some(to) };
 
             let before_from_balance =
-                &self.get_erc1155_balance(evm, from, id, token_address).await?;
+                &self.get_erc1155_balance(evm, from, id, token_address).await.ok();
 
-            let before_to_balance = &self.get_erc1155_balance(evm, to, id, token_address).await?;
+            let before_to_balance =
+                &self.get_erc1155_balance(evm, to, id, token_address).await.ok();
+
+            let after_from_balance = before_from_balance.map(|b| b - value);
+
+            let after_to_balance = before_to_balance.map(|b| b + value);
 
             // Get the asset changes for the `from` address
             let from_asset_change = AssetChange {
@@ -136,7 +141,7 @@ impl Adapter for ERC1155Adapter {
                 action: from_action.clone(),
                 token: asset_token.clone(),
                 before_amount: *before_from_balance,
-                after_amount: before_from_balance - value,
+                after_amount: after_from_balance,
                 amount: value,
             };
 
@@ -146,7 +151,7 @@ impl Adapter for ERC1155Adapter {
                 action: to_action.clone(),
                 token: asset_token.clone(),
                 before_amount: *before_to_balance,
-                after_amount: before_to_balance + value,
+                after_amount: after_to_balance,
                 amount: value,
             };
 
@@ -200,10 +205,14 @@ impl Adapter for ERC1155Adapter {
 
             for (id, value) in ids.iter().zip(values.iter()) {
                 let before_from_balance =
-                    &self.get_erc1155_balance(evm, from, *id, token_address).await?;
+                    &self.get_erc1155_balance(evm, from, *id, token_address).await.ok();
 
                 let before_to_balance =
-                    &self.get_erc1155_balance(evm, to, *id, token_address).await?;
+                    &self.get_erc1155_balance(evm, to, *id, token_address).await.ok();
+
+                let after_from_balance = before_from_balance.map(|b| b - value);
+
+                let after_to_balance = before_to_balance.map(|b| b + value);
 
                 // Get the asset changes for the `from` address
                 let from_asset_change = AssetChange {
@@ -211,7 +220,7 @@ impl Adapter for ERC1155Adapter {
                     action: from_action.clone(),
                     token: asset_token.clone(),
                     before_amount: *before_from_balance,
-                    after_amount: before_from_balance - value,
+                    after_amount: after_from_balance,
                     amount: *value,
                 };
 
@@ -221,7 +230,7 @@ impl Adapter for ERC1155Adapter {
                     action: to_action.clone(),
                     token: asset_token.clone(),
                     before_amount: *before_to_balance,
-                    after_amount: before_to_balance + value,
+                    after_amount: after_to_balance,
                     amount: *value,
                 };
 

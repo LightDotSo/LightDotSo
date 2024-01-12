@@ -93,10 +93,16 @@ impl Adapter for ERC20Adapter {
             let token_address = log.address;
 
             // Get the token balance of the `from` address
-            let from_balance = &self.get_erc20_balance(evm, from, token_address).await?;
+            let before_from_balance = &self.get_erc20_balance(evm, from, token_address).await.ok();
 
             // Get the token balance of the `to` address
-            let to_balance = &self.get_erc20_balance(evm, to, token_address).await?;
+            let before_to_balance = &self.get_erc20_balance(evm, to, token_address).await.ok();
+
+            // Get the after balance of the `from` address
+            let after_from_balance = before_from_balance.map(|b| b - value);
+
+            // Get the after balance of the `to` address
+            let after_to_balance = before_to_balance.map(|b| b + value);
 
             // Get the actions for the `from` address
             let from_action = InterpretationAction {
@@ -115,8 +121,8 @@ impl Adapter for ERC20Adapter {
                 address: from,
                 action: from_action.clone(),
                 token: AssetToken { address: token_address, token_id: None },
-                before_amount: *from_balance,
-                after_amount: from_balance - value,
+                before_amount: *before_from_balance,
+                after_amount: after_from_balance,
                 amount: value,
             };
 
@@ -125,8 +131,8 @@ impl Adapter for ERC20Adapter {
                 address: to,
                 action: to_action.clone(),
                 token: AssetToken { address: token_address, token_id: None },
-                before_amount: *to_balance,
-                after_amount: to_balance + value,
+                before_amount: *before_to_balance,
+                after_amount: after_to_balance,
                 amount: value,
             };
 

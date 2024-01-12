@@ -84,8 +84,8 @@ impl Adapter for EthAdapter {
                 address: trace.from,
                 action: from_action.clone(),
                 token: token.clone(),
-                before_amount: before_from_balance,
-                after_amount: after_from_balance,
+                before_amount: Some(before_from_balance),
+                after_amount: Some(after_from_balance),
                 amount: trace.value.unwrap(),
             };
 
@@ -94,8 +94,8 @@ impl Adapter for EthAdapter {
                 address: trace.to,
                 action: to_action.clone(),
                 token: token.clone(),
-                before_amount: before_to_balance,
-                after_amount: after_to_balance,
+                before_amount: Some(before_to_balance),
+                after_amount: Some(after_to_balance),
                 amount: trace.value.unwrap(),
             };
 
@@ -111,13 +111,21 @@ impl Adapter for EthAdapter {
         // If the to/from address is not in the traces, then it is in the request
         if !traces.iter().any(|t| t.from == request.from && Some(t.to) == request.to) {
             // Get the before balances
-            let before_from_balance = evm.get_balance(request.from).await?;
-            let before_to_balance = evm.get_balance(request.to.unwrap()).await?;
+            let before_from_balance = evm.get_balance(request.from).await.ok();
+            let before_to_balance = evm.get_balance(request.to.unwrap()).await.ok();
 
             // Get the after balances
             // unwrap is safe because we know that value is Some in the matches function
-            let after_from_balance = before_from_balance - request.value.unwrap();
-            let after_to_balance = before_to_balance + request.value.unwrap();
+            let after_from_balance = if let Some(balance) = before_from_balance {
+                Some(balance - request.value.unwrap())
+            } else {
+                None
+            };
+            let after_to_balance = if let Some(balance) = before_to_balance {
+                Some(balance + request.value.unwrap())
+            } else {
+                None
+            };
 
             // Get the actions for the from address
             let from_action = InterpretationAction {
