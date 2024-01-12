@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+"use client";
+
 import {
   TailwindIndicator,
   ThemeProvider,
@@ -86,11 +88,14 @@ export const Root: FC<RootProps> = ({ children }) => {
             <Web3Provider>
               <MainNav>{children}</MainNav>
               <Footer />
-              <AuthState />
+              {/* Utility Functions */}
+              <CommandK />
               <Toaster />
+              {/* Modals */}
               <AuthModal />
               <WalletModal />
-              <CommandK />
+              {/* States */}
+              <AuthState />
               <WssState />
             </Web3Provider>
           </ReactQueryProvider>
