@@ -49,18 +49,20 @@ pub async fn upsert_interpretation_with_actions(
             res.clone()
                 .asset_changes
                 .into_iter()
-                .map(|token| {
+                .map(|asset_change| {
                     (
-                        to_checksum(&token.address, None),
+                        to_checksum(&asset_change.token.address, None),
                         res.chain_id as i64,
                         vec![
-                            token::token_id::set(token.token.token_id.map(|id| id.as_u64() as i64)),
+                            token::token_id::set(
+                                asset_change.token.token_id.map(|id| id.as_u64() as i64),
+                            ),
                             token::r#type::set(
-                                if token.token.token_type == AssetTokenType::Erc20 {
+                                if asset_change.token.token_type == AssetTokenType::Erc20 {
                                     TokenType::Erc20
-                                } else if token.token.token_type == AssetTokenType::Erc721 {
+                                } else if asset_change.token.token_type == AssetTokenType::Erc721 {
                                     TokenType::Erc721
-                                } else if token.token.token_type == AssetTokenType::Erc1155 {
+                                } else if asset_change.token.token_type == AssetTokenType::Erc1155 {
                                     TokenType::Erc1155
                                 } else {
                                     TokenType::Erc1155
@@ -165,20 +167,20 @@ pub async fn upsert_interpretation_with_actions(
                             asset_change::after_amount::set(
                                 change.after_amount.map(|am| am.as_u64() as i64),
                             ),
-                            // asset_change::token::connect(
-                            //     if let Some(token_id) = change.token.token_id {
-                            //         token::address_chain_id_token_id(
-                            //             to_checksum(&change.address, None),
-                            //             res.chain_id as i64,
-                            //             token_id.as_u64() as i64,
-                            //         )
-                            //     } else {
-                            //         token::address_chain_id(
-                            //             to_checksum(&change.address, None),
-                            //             res.chain_id as i64,
-                            //         )
-                            //     },
-                            // ),
+                            asset_change::token::connect(
+                                if let Some(token_id) = change.token.token_id {
+                                    token::address_chain_id_token_id(
+                                        to_checksum(&change.address, None),
+                                        res.chain_id as i64,
+                                        token_id.as_u64() as i64,
+                                    )
+                                } else {
+                                    token::address_chain_id(
+                                        to_checksum(&change.address, None),
+                                        res.chain_id as i64,
+                                    )
+                                },
+                            ),
                         ],
                     )
                 })
