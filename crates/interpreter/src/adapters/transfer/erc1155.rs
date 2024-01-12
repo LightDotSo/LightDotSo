@@ -20,7 +20,8 @@ use crate::{
         TRANSFER_SINGLE_EVENT_TOPIC,
     },
     types::{
-        AdapterResponse, AssetChange, AssetToken, InterpretationAction, InterpretationRequest,
+        AdapterResponse, AssetChange, AssetToken, AssetTokenType, InterpretationAction,
+        InterpretationRequest,
     },
 };
 use async_trait::async_trait;
@@ -104,7 +105,11 @@ impl Adapter for ERC1155Adapter {
             let token_address = log.address;
 
             // Get the asset token
-            let asset_token = AssetToken { address: token_address, token_id: Some(id) };
+            let asset_token = AssetToken {
+                address: token_address,
+                token_id: Some(id),
+                token_type: AssetTokenType::Erc1155,
+            };
 
             // Get the actions for the `from` address
             let from_action_type = if from == Address::zero() {
@@ -184,7 +189,11 @@ impl Adapter for ERC1155Adapter {
             let token_address = log.address;
 
             // Get the asset token
-            let asset_token = AssetToken { address: token_address, token_id: None };
+            let asset_token = AssetToken {
+                address: token_address,
+                token_id: None,
+                token_type: AssetTokenType::Erc1155,
+            };
 
             // Get the actions for the `from` address
             let from_action_type = if from == Address::zero() {

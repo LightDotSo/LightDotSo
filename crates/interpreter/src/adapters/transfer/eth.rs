@@ -19,7 +19,8 @@ use crate::{
     adapter::Adapter,
     constants::InterpretationActionType,
     types::{
-        AdapterResponse, AssetChange, AssetToken, InterpretationAction, InterpretationRequest,
+        AdapterResponse, AssetChange, AssetToken, AssetTokenType, InterpretationAction,
+        InterpretationRequest,
     },
 };
 use async_trait::async_trait;
@@ -49,7 +50,11 @@ impl Adapter for EthAdapter {
         evm: &mut Evm,
         request: InterpretationRequest,
     ) -> Result<AdapterResponse> {
-        let token = AssetToken { address: Address::zero(), token_id: None };
+        let token = AssetToken {
+            address: Address::zero(),
+            token_id: None,
+            token_type: AssetTokenType::Erc20,
+        };
 
         // Get all the traces w/ call type
         let traces: Vec<_> = request.traces.iter().filter(|t| t.value.is_some()).collect();

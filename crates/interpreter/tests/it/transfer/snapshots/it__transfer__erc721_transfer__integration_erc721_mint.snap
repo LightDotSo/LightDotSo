@@ -73,6 +73,7 @@ InterpretationResponse {
                 token_id: Some(
                     11,
                 ),
+                token_type: Erc721,
             },
         },
         AssetChange {
@@ -95,6 +96,7 @@ InterpretationResponse {
                 token_id: Some(
                     11,
                 ),
+                token_type: Erc721,
             },
         },
     ],

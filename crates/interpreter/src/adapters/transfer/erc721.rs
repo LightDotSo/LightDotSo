@@ -17,7 +17,8 @@ use crate::{
     adapter::Adapter,
     constants::{InterpretationActionType, ERC721_ABI, TRANSFER_EVENT_TOPIC},
     types::{
-        AdapterResponse, AssetChange, AssetToken, InterpretationAction, InterpretationRequest,
+        AdapterResponse, AssetChange, AssetToken, AssetTokenType, InterpretationAction,
+        InterpretationRequest,
     },
 };
 use async_trait::async_trait;
@@ -90,7 +91,11 @@ impl Adapter for ERC721Adapter {
             let from_asset_change = AssetChange {
                 address: from,
                 action: from_action.clone(),
-                token: AssetToken { address: token_address, token_id: Some(id) },
+                token: AssetToken {
+                    address: token_address,
+                    token_id: Some(id),
+                    token_type: AssetTokenType::Erc721,
+                },
                 before_amount: Some(1.into()),
                 after_amount: Some(0.into()),
                 amount: 1.into(),
@@ -100,7 +105,11 @@ impl Adapter for ERC721Adapter {
             let to_asset_change = AssetChange {
                 address: to,
                 action: to_action.clone(),
-                token: AssetToken { address: token_address, token_id: Some(id) },
+                token: AssetToken {
+                    address: token_address,
+                    token_id: Some(id),
+                    token_type: AssetTokenType::Erc721,
+                },
                 before_amount: Some(0.into()),
                 after_amount: Some(1.into()),
                 amount: 0.into(),

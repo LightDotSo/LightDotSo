@@ -19,9 +19,10 @@ use crate::types::Database;
 use autometrics::autometrics;
 use ethers::utils::to_checksum;
 use eyre::Result;
-use lightdotso_interpreter::types::InterpretationResponse;
+use lightdotso_interpreter::types::{AssetTokenType, InterpretationResponse};
 use lightdotso_prisma::{
     asset_change, interpretation, interpretation_action, token, transaction, user_operation,
+    TokenType,
 };
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::{and, or};
@@ -31,6 +32,7 @@ use prisma_client_rust::{and, or};
 // -----------------------------------------------------------------------------
 
 /// Create a new interpretation
+#[allow(clippy::if_same_then_else)]
 #[autometrics]
 pub async fn upsert_interpretation_with_actions(
     db: Database,
@@ -40,27 +42,42 @@ pub async fn upsert_interpretation_with_actions(
 ) -> Result<interpretation::Data> {
     info!("Creating new interpretation");
 
-    // Create all possible tokens
-    let tokens = db
-        .token()
-        .create_many(
-            res.clone()
-                .asset_changes
-                .into_iter()
-                .map(|token| {
-                    (
-                        to_checksum(&token.address, None),
-                        res.chain_id as i64,
-                        vec![token::token_id::set(
-                            token.token.token_id.map(|id| id.as_u64() as i64),
-                        )],
-                    )
-                })
-                .collect::<Vec<_>>(),
-        )
-        .skip_duplicates()
-        .exec()
-        .await?;
+    // Create all possible tokens one by one
+    let asset_change_params = res
+        .clone()
+        .asset_changes
+        .into_iter()
+        .map(|change| {
+            (
+                to_checksum(&change.token.address, None),
+                res.chain_id as i64,
+                vec![
+                    token::token_id::set(change.token.token_id.map(|id| id.as_u64() as i64)),
+                    token::r#type::set(if change.token.token_type == AssetTokenType::Erc20 {
+                        TokenType::Erc20
+                    } else if change.token.token_type == AssetTokenType::Erc721 {
+                        TokenType::Erc721
+                    } else if change.token.token_type == AssetTokenType::Erc1155 {
+                        TokenType::Erc1155
+                    } else {
+                        TokenType::Erc1155
+                    }),
+                ],
+            )
+        })
+        .collect::<Vec<_>>();
+    for asset_change_param in asset_change_params.clone() {
+        // Fails gracefully if the token already exists
+        let token = db
+            .token()
+            .create(asset_change_param.0, asset_change_param.1, asset_change_param.2)
+            .exec()
+            .await;
+        info!(?token);
+    }
+
+    // Create all possible interpretation actions in bulk
+    let tokens = db.token().create_many(asset_change_params).skip_duplicates().exec().await?;
     info!(?tokens);
 
     // Create all possible interpretation actions
@@ -90,9 +107,36 @@ pub async fn upsert_interpretation_with_actions(
         .await?;
     info!(?actions);
 
+    // Get the corresponding tokens
+    let mut token_params = vec![];
+    res.clone().asset_changes.into_iter().for_each(|change| {
+        if change.token.token_id.is_some() {
+            token_params.push(token::address_chain_id_token_id(
+                to_checksum(&change.token.address, None),
+                res.chain_id as i64,
+                change.token.token_id.unwrap().as_u64() as i64,
+            ))
+        } else {
+            token_params.push(token::address_chain_id(
+                to_checksum(&change.token.address, None),
+                res.chain_id as i64,
+            ))
+        }
+    });
+    let mut asset_tokens = vec![];
+    // Find all the matching tokens
+    for token_param in token_params {
+        let asset_token = db.token().find_unique(token_param).exec().await?;
+        // Push the token to the list of asset tokens if not None
+        if let Some(asset_token) = asset_token {
+            asset_tokens.push(asset_token);
+        }
+    }
+    info!(?asset_tokens);
+
     // Get the corresponding interpretation actions
     let mut interpration_action_params = vec![];
-    let _ = res.clone().actions.into_iter().map(|action| {
+    res.clone().actions.into_iter().for_each(|action| {
         if action.address.is_some() {
             interpration_action_params.push(and![
                 interpretation_action::address::equals(Some(to_checksum(
@@ -152,19 +196,38 @@ pub async fn upsert_interpretation_with_actions(
                             asset_change::after_amount::set(
                                 change.after_amount.map(|am| am.as_u64() as i64),
                             ),
+                            // asset_change::interpretation_action::connect(
+                            //     interpretation_action::id::equals(
+                            //         interpretation_actions
+                            //             .clone()
+                            //             .into_iter()
+                            //             .find(|action| {
+                            //                 action.action ==
+                            // change.action.action_type.to_string()
+                            //             })
+                            //             .unwrap()
+                            //             .id,
+                            //     ),
+                            // ),
                             // asset_change::token::connect(
-                            //     if let Some(token_id) = change.token.token_id {
-                            //         token::address_chain_id_token_id(
-                            //             to_checksum(&change.address, None),
-                            //             res.chain_id as i64,
-                            //             token_id.as_u64() as i64,
-                            //         )
-                            //     } else {
-                            //         token::address_chain_id(
-                            //             to_checksum(&change.address, None),
-                            //             res.chain_id as i64,
-                            //         )
-                            //     },
+                            //     // Find the corresponding token
+                            //     token::id::equals(
+                            //         asset_tokens
+                            //             .clone()
+                            //             .into_iter()
+                            //             .find(|token| {
+                            //                 token.chain_id == res.chain_id as i64 &&
+                            //                     token.address ==
+                            //                         to_checksum(&change.token.address, None) &&
+                            //                     token.token_id ==
+                            //                         change
+                            //                             .token
+                            //                             .token_id
+                            //                             .map(|id| id.as_u64() as i64)
+                            //             })
+                            //             .unwrap()
+                            //             .id,
+                            //     ),
                             // ),
                         ],
                     )

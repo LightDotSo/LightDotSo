@@ -20,7 +20,9 @@ use lightdotso_db::{
 };
 use lightdotso_interpreter::{
     constants::InterpretationActionType,
-    types::{AssetChange, AssetToken, InterpretationAction, InterpretationResponse},
+    types::{
+        AssetChange, AssetToken, AssetTokenType, InterpretationAction, InterpretationResponse,
+    },
 };
 use revm::interpreter::InstructionResult;
 use std::sync::Arc;
@@ -36,9 +38,9 @@ async fn test_integration_upsert_interpretation_with_actions() -> Result<()> {
     // Create a database client.
     let db = create_test_client().await?;
 
-    let req = InterpretationResponse {
+    let resp = InterpretationResponse {
         gas_used: 0,
-        chain_id: 1,
+        chain_id: 1001,
         block_number: 1,
         success: true,
         traces: vec![],
@@ -64,7 +66,11 @@ async fn test_integration_upsert_interpretation_with_actions() -> Result<()> {
                     address: Some(Address::zero()),
                     action_type: InterpretationActionType::ERC1155Burned,
                 },
-                token: AssetToken { address: Address::zero(), token_id: None },
+                token: AssetToken {
+                    address: Address::zero(),
+                    token_id: None,
+                    token_type: AssetTokenType::Erc1155,
+                },
             },
             AssetChange {
                 address: Address::zero(),
@@ -75,13 +81,17 @@ async fn test_integration_upsert_interpretation_with_actions() -> Result<()> {
                     address: Some(Address::zero()),
                     action_type: InterpretationActionType::ERC1155Burned,
                 },
-                token: AssetToken { address: Address::zero(), token_id: Some(1.into()) },
+                token: AssetToken {
+                    address: "0x6144d927ee371de7e7f8221b596f3432e7a8e6d9".parse().unwrap(),
+                    token_id: Some(1.into()),
+                    token_type: AssetTokenType::Erc1155,
+                },
             },
         ],
     };
 
     // Get a transaction with logs.
-    let tx = upsert_interpretation_with_actions(Arc::new(db), req, None, None).await?;
+    let tx = upsert_interpretation_with_actions(Arc::new(db), resp, None, None).await?;
 
     // Print the transaction.
     println!("{:?}", tx);
