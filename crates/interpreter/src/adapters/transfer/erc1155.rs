@@ -123,12 +123,22 @@ impl Adapter for ERC1155Adapter {
                 InterpretationActionType::ERC1155Receive
             };
 
+            // Get the actions for the `to` address
             let to_action = InterpretationAction { action_type: to_action_type, address: Some(to) };
 
+            // Get the asset changes for the `from` address
             let before_from_balance =
-                &self.get_erc1155_balance(evm, from, id, token_address).await?;
+                &self.get_erc1155_balance(evm, from, id, token_address).await.ok();
 
-            let before_to_balance = &self.get_erc1155_balance(evm, to, id, token_address).await?;
+            // Get the asset changes for the `to` address
+            let before_to_balance =
+                &self.get_erc1155_balance(evm, to, id, token_address).await.ok();
+
+            // Get the after balance of the `from` address
+            let after_from_balance = before_from_balance.map(|b| b - value);
+
+            // Get the after balance of the `to` address
+            let after_to_balance = before_to_balance.map(|b| b + value);
 
             // Get the asset changes for the `from` address
             let from_asset_change = AssetChange {
@@ -136,7 +146,7 @@ impl Adapter for ERC1155Adapter {
                 action: from_action.clone(),
                 token: asset_token.clone(),
                 before_amount: *before_from_balance,
-                after_amount: before_from_balance - value,
+                after_amount: after_from_balance,
                 amount: value,
             };
 
@@ -146,7 +156,7 @@ impl Adapter for ERC1155Adapter {
                 action: to_action.clone(),
                 token: asset_token.clone(),
                 before_amount: *before_to_balance,
-                after_amount: before_to_balance + value,
+                after_amount: after_to_balance,
                 amount: value,
             };
 
@@ -183,6 +193,7 @@ impl Adapter for ERC1155Adapter {
                 InterpretationActionType::ERC1155Send
             };
 
+            //  Get the actions for the `from` address
             let from_action =
                 InterpretationAction { action_type: from_action_type, address: Some(from) };
 
@@ -193,17 +204,25 @@ impl Adapter for ERC1155Adapter {
                 InterpretationActionType::ERC1155Receive
             };
 
+            // Get the actions for the `to` address
             let to_action = InterpretationAction { action_type: to_action_type, address: Some(to) };
 
+            // Get the asset changes for the `from` address
             let mut from_asset_changes = Vec::new();
+
+            // Get the asset changes for the `to` address
             let mut to_asset_changes = Vec::new();
 
             for (id, value) in ids.iter().zip(values.iter()) {
+                // Get the before balances
                 let before_from_balance =
-                    &self.get_erc1155_balance(evm, from, *id, token_address).await?;
-
+                    &self.get_erc1155_balance(evm, from, *id, token_address).await.ok();
                 let before_to_balance =
-                    &self.get_erc1155_balance(evm, to, *id, token_address).await?;
+                    &self.get_erc1155_balance(evm, to, *id, token_address).await.ok();
+
+                // Get the after balances
+                let after_from_balance = before_from_balance.map(|b| b - value);
+                let after_to_balance = before_to_balance.map(|b| b + value);
 
                 // Get the asset changes for the `from` address
                 let from_asset_change = AssetChange {
@@ -211,7 +230,7 @@ impl Adapter for ERC1155Adapter {
                     action: from_action.clone(),
                     token: asset_token.clone(),
                     before_amount: *before_from_balance,
-                    after_amount: before_from_balance - value,
+                    after_amount: after_from_balance,
                     amount: *value,
                 };
 
@@ -221,10 +240,11 @@ impl Adapter for ERC1155Adapter {
                     action: to_action.clone(),
                     token: asset_token.clone(),
                     before_amount: *before_to_balance,
-                    after_amount: before_to_balance + value,
+                    after_amount: after_to_balance,
                     amount: *value,
                 };
 
+                // Add the asset changes to the vector
                 from_asset_changes.push(from_asset_change);
                 to_asset_changes.push(to_asset_change);
 
