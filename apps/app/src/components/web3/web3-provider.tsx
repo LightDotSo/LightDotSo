@@ -15,7 +15,7 @@
 
 "use client";
 
-import { createConfig, http } from "@wagmi/core";
+import { cookieStorage, createConfig, createStorage, http } from "@wagmi/core";
 import type { ReactNode } from "react";
 import { createClient } from "viem";
 import { WagmiProvider } from "wagmi";
@@ -43,6 +43,10 @@ function Web3Provider({ children }: { children: ReactNode }) {
         projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
       }),
     ],
+    ssr: true,
+    storage: createStorage({
+      storage: cookieStorage,
+    }),
   });
 
   // ---------------------------------------------------------------------------
