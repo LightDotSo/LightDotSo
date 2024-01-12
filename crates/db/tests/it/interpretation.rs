@@ -20,7 +20,7 @@ use lightdotso_db::{
 };
 use lightdotso_interpreter::{
     constants::InterpretationActionType,
-    types::{InterpretationAction, InterpretationResponse},
+    types::{AssetChange, AssetToken, InterpretationAction, InterpretationResponse},
 };
 use revm::interpreter::InstructionResult;
 use std::sync::Arc;
@@ -54,7 +54,17 @@ async fn test_integration_upsert_interpretation_with_actions() -> Result<()> {
                 action_type: InterpretationActionType::ERC1155Minted,
             },
         ],
-        asset_changes: vec![],
+        asset_changes: vec![AssetChange {
+            address: Address::zero(),
+            before_amount: None,
+            after_amount: None,
+            amount: 0.into(),
+            action: InterpretationAction {
+                address: Some(Address::zero()),
+                action_type: InterpretationActionType::ERC1155Burned,
+            },
+            token: AssetToken { address: Address::zero(), token_id: None },
+        }],
     };
 
     // Get a transaction with logs.
