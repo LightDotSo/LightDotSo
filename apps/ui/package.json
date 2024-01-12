@@ -67,7 +67,7 @@
     "class-variance-authority": "^0.7.0",
     "cmdk": "^0.2.0",
     "date-fns": "^3.2.0",
-    "embla-carousel-react": "^8.0.0-rc19",
+    "embla-carousel-react": "^8.0.0-rc17",
     "framer-motion": "^10.18.0",
     "lucide-react": "^0.263.1",
     "next": "^14.0.4",
