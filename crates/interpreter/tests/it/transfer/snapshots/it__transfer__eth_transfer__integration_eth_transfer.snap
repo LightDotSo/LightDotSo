@@ -52,6 +52,7 @@ InterpretationResponse {
             token: AssetToken {
                 address: 0x0000000000000000000000000000000000000000,
                 token_id: None,
+                token_type: Erc20,
             },
         },
         AssetChange {
@@ -72,6 +73,7 @@ InterpretationResponse {
             token: AssetToken {
                 address: 0x0000000000000000000000000000000000000000,
                 token_id: None,
+                token_type: Erc20,
             },
         },
     ],

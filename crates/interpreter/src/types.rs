@@ -139,6 +139,20 @@ pub struct AssetToken {
     pub address: Address,
     /// The optional id of the token
     pub token_id: Option<Uint>,
+    /// The type of the token
+    pub token_type: AssetTokenType,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub enum AssetTokenType {
+    /// ERC20 token
+    Erc20,
+    /// ERC721 token
+    Erc721,
+    /// ERC1155 token
+    Erc1155,
+    /// Other token
+    Other,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]

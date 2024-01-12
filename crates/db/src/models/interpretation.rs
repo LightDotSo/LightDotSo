@@ -19,9 +19,10 @@ use crate::types::Database;
 use autometrics::autometrics;
 use ethers::utils::to_checksum;
 use eyre::Result;
-use lightdotso_interpreter::types::InterpretationResponse;
+use lightdotso_interpreter::types::{AssetTokenType, InterpretationResponse};
 use lightdotso_prisma::{
     asset_change, interpretation, interpretation_action, token, transaction, user_operation,
+    TokenType,
 };
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::{and, or};
@@ -31,6 +32,7 @@ use prisma_client_rust::{and, or};
 // -----------------------------------------------------------------------------
 
 /// Create a new interpretation
+#[allow(clippy::if_same_then_else)]
 #[autometrics]
 pub async fn upsert_interpretation_with_actions(
     db: Database,
@@ -51,9 +53,20 @@ pub async fn upsert_interpretation_with_actions(
                     (
                         to_checksum(&token.address, None),
                         res.chain_id as i64,
-                        vec![token::token_id::set(
-                            token.token.token_id.map(|id| id.as_u64() as i64),
-                        )],
+                        vec![
+                            token::token_id::set(token.token.token_id.map(|id| id.as_u64() as i64)),
+                            token::r#type::set(
+                                if token.token.token_type == AssetTokenType::Erc20 {
+                                    TokenType::Erc20
+                                } else if token.token.token_type == AssetTokenType::Erc721 {
+                                    TokenType::Erc721
+                                } else if token.token.token_type == AssetTokenType::Erc1155 {
+                                    TokenType::Erc1155
+                                } else {
+                                    TokenType::Erc1155
+                                },
+                            ),
+                        ],
                     )
                 })
                 .collect::<Vec<_>>(),

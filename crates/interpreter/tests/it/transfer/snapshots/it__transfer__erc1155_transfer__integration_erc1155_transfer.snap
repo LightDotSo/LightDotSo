@@ -73,6 +73,7 @@ InterpretationResponse {
                 token_id: Some(
                     19436847621256934005310036695213036766726316577505360454363262586838063251457,
                 ),
+                token_type: Erc1155,
             },
         },
         AssetChange {
@@ -95,6 +96,7 @@ InterpretationResponse {
                 token_id: Some(
                     19436847621256934005310036695213036766726316577505360454363262586838063251457,
                 ),
+                token_type: Erc1155,
             },
         },
     ],

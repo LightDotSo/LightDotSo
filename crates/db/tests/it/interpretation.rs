@@ -20,7 +20,9 @@ use lightdotso_db::{
 };
 use lightdotso_interpreter::{
     constants::InterpretationActionType,
-    types::{AssetChange, AssetToken, InterpretationAction, InterpretationResponse},
+    types::{
+        AssetChange, AssetToken, AssetTokenType, InterpretationAction, InterpretationResponse,
+    },
 };
 use revm::interpreter::InstructionResult;
 use std::sync::Arc;
@@ -64,7 +66,11 @@ async fn test_integration_upsert_interpretation_with_actions() -> Result<()> {
                     address: Some(Address::zero()),
                     action_type: InterpretationActionType::ERC1155Burned,
                 },
-                token: AssetToken { address: Address::zero(), token_id: None },
+                token: AssetToken {
+                    address: Address::zero(),
+                    token_id: None,
+                    token_type: AssetTokenType::Erc1155,
+                },
             },
             AssetChange {
                 address: Address::zero(),
@@ -75,7 +81,11 @@ async fn test_integration_upsert_interpretation_with_actions() -> Result<()> {
                     address: Some(Address::zero()),
                     action_type: InterpretationActionType::ERC1155Burned,
                 },
-                token: AssetToken { address: Address::zero(), token_id: Some(1.into()) },
+                token: AssetToken {
+                    address: Address::zero(),
+                    token_id: Some(1.into()),
+                    token_type: AssetTokenType::Erc1155,
+                },
             },
         ],
     };
