@@ -1056,7 +1056,6 @@ model InterpretationAction {
   // ---------------------------------------------------------------------------
 
   // Unique
-  @@unique([action])
   @@unique([action, address])
 }
 
