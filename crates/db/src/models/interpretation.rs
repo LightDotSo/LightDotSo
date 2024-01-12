@@ -43,7 +43,7 @@ pub async fn upsert_interpretation_with_actions(
     info!("Creating new interpretation");
 
     // Create all possible tokens one by one
-    let asset_change_param = res
+    let asset_change_params = res
         .clone()
         .asset_changes
         .into_iter()
@@ -66,46 +66,18 @@ pub async fn upsert_interpretation_with_actions(
             )
         })
         .collect::<Vec<_>>();
-    for asset_change in asset_change_param.clone() {
+    for asset_change_param in asset_change_params.clone() {
         // Fails gracefully if the token already exists
-        let token = db.token().create(asset_change.0, asset_change.1, asset_change.2).exec().await;
+        let token = db
+            .token()
+            .create(asset_change_param.0, asset_change_param.1, asset_change_param.2)
+            .exec()
+            .await;
         info!(?token);
     }
 
     // Create all possible interpretation actions in bulk
-    let tokens = db
-        .token()
-        .create_many(
-            res.clone()
-                .asset_changes
-                .into_iter()
-                .map(|asset_change| {
-                    (
-                        to_checksum(&asset_change.token.address, None),
-                        res.chain_id as i64,
-                        vec![
-                            token::token_id::set(
-                                asset_change.token.token_id.map(|id| id.as_u64() as i64),
-                            ),
-                            token::r#type::set(
-                                if asset_change.token.token_type == AssetTokenType::Erc20 {
-                                    TokenType::Erc20
-                                } else if asset_change.token.token_type == AssetTokenType::Erc721 {
-                                    TokenType::Erc721
-                                } else if asset_change.token.token_type == AssetTokenType::Erc1155 {
-                                    TokenType::Erc1155
-                                } else {
-                                    TokenType::Erc1155
-                                },
-                            ),
-                        ],
-                    )
-                })
-                .collect::<Vec<_>>(),
-        )
-        .skip_duplicates()
-        .exec()
-        .await?;
+    let tokens = db.token().create_many(asset_change_params).skip_duplicates().exec().await?;
     info!(?tokens);
 
     // Create all possible interpretation actions
