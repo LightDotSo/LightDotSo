@@ -32,7 +32,7 @@ import {
   createStorage,
   http,
 } from "wagmi";
-import { injected, walletConnect } from "wagmi/connectors";
+import { safe } from "wagmi/connectors";
 import { CHAINS } from "@/const/chains";
 
 // -----------------------------------------------------------------------------
@@ -56,13 +56,7 @@ export const config = createConfig({
   client({ chain }) {
     return createClient({ chain, transport: http() });
   },
-  connectors: [
-    injected(),
-    walletConnect({
-      projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
-    }),
-    ...connectors,
-  ],
+  connectors: [safe(), ...connectors],
   ssr: true,
   storage: createStorage({
     storage: cookieStorage,
