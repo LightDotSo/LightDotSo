@@ -30,6 +30,9 @@ async fn test_integration_upsert_interpretation_with_actions() -> Result<()> {
     // Load the environment variables.
     let _ = dotenvy::dotenv();
 
+    // Initialize the tracing subscriber.
+    lightdotso_tracing::tracing_subscriber::fmt().init();
+
     // Create a database client.
     let db = create_test_client().await?;
 
