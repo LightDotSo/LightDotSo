@@ -105,9 +105,36 @@ pub async fn upsert_interpretation_with_actions(
         .await?;
     info!(?actions);
 
+    // Get the corresponding tokens
+    let mut token_params = vec![];
+    res.clone().asset_changes.into_iter().for_each(|change| {
+        if change.token.token_id.is_some() {
+            token_params.push(token::address_chain_id_token_id(
+                to_checksum(&change.token.address, None),
+                res.chain_id as i64,
+                change.token.token_id.unwrap().as_u64() as i64,
+            ))
+        } else {
+            token_params.push(token::address_chain_id(
+                to_checksum(&change.token.address, None),
+                res.chain_id as i64,
+            ))
+        }
+    });
+    let mut asset_tokens = vec![];
+    // Find all the matching tokens
+    for token_param in token_params {
+        let asset_token = db.token().find_unique(token_param).exec().await?;
+        // Push the token to the list of asset tokens if not None
+        if let Some(asset_token) = asset_token {
+            asset_tokens.push(asset_token);
+        }
+    }
+    info!(?asset_tokens);
+
     // Get the corresponding interpretation actions
     let mut interpration_action_params = vec![];
-    let _ = res.clone().actions.into_iter().map(|action| {
+    res.clone().actions.into_iter().for_each(|action| {
         if action.address.is_some() {
             interpration_action_params.push(and![
                 interpretation_action::address::equals(Some(to_checksum(
@@ -168,18 +195,24 @@ pub async fn upsert_interpretation_with_actions(
                                 change.after_amount.map(|am| am.as_u64() as i64),
                             ),
                             asset_change::token::connect(
-                                if let Some(token_id) = change.token.token_id {
-                                    token::address_chain_id_token_id(
-                                        to_checksum(&change.address, None),
-                                        res.chain_id as i64,
-                                        token_id.as_u64() as i64,
-                                    )
-                                } else {
-                                    token::address_chain_id(
-                                        to_checksum(&change.address, None),
-                                        res.chain_id as i64,
-                                    )
-                                },
+                                // Find the corresponding token
+                                token::id::equals(
+                                    asset_tokens
+                                        .clone()
+                                        .into_iter()
+                                        .find(|token| {
+                                            token.chain_id == res.chain_id as i64 &&
+                                                token.address ==
+                                                    to_checksum(&change.token.address, None) &&
+                                                token.token_id ==
+                                                    change
+                                                        .token
+                                                        .token_id
+                                                        .map(|id| id.as_u64() as i64)
+                                        })
+                                        .unwrap()
+                                        .id,
+                                ),
                             ),
                         ],
                     )
