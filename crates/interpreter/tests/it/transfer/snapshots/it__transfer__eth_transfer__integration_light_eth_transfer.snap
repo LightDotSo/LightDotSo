@@ -36,8 +36,12 @@ InterpretationResponse {
     asset_changes: [
         AssetChange {
             address: 0xfbd80fe5ce1ece895845fd131bd621e2b6a1345f,
-            before_amount: 1000000000000000,
-            after_amount: 999999999999999,
+            before_amount: Some(
+                1000000000000000,
+            ),
+            after_amount: Some(
+                999999999999999,
+            ),
             amount: 1,
             action: InterpretationAction {
                 action_type: NativeSend,
@@ -52,8 +56,12 @@ InterpretationResponse {
         },
         AssetChange {
             address: 0x4fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed,
-            before_amount: 2412758692803309,
-            after_amount: 2412758692803310,
+            before_amount: Some(
+                2412758692803309,
+            ),
+            after_amount: Some(
+                2412758692803310,
+            ),
             amount: 1,
             action: InterpretationAction {
                 action_type: NativeReceive,

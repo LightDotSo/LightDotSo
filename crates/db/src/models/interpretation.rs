@@ -128,13 +128,14 @@ pub async fn upsert_interpretation_with_actions(
                     (
                         to_checksum(&change.address, None),
                         change.amount.as_u64() as i64,
-                        // change.before_amount.as_u64() as i64,
-                        // change.after_amount.as_u64() as i64,
                         interpretation.clone().id,
                         vec![
-                            // asset_change::before_amount::set(change.before_amount.as_u64() as
-                            // i64),
-                            // asset_change::before_amount::set(0),
+                            asset_change::before_amount::set(
+                                change.before_amount.map(|bm| bm.as_u64() as i64),
+                            ),
+                            asset_change::after_amount::set(
+                                change.after_amount.map(|am| am.as_u64() as i64),
+                            ),
                             asset_change::token::connect(
                                 if let Some(token_id) = change.token.token_id {
                                     token::address_chain_id_token_id(

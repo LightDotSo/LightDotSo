@@ -73,8 +73,12 @@ InterpretationResponse {
     asset_changes: [
         AssetChange {
             address: 0x4fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed,
-            before_amount: 1,
-            after_amount: 0,
+            before_amount: Some(
+                1,
+            ),
+            after_amount: Some(
+                0,
+            ),
             amount: 1,
             action: InterpretationAction {
                 action_type: ERC721Send,
@@ -91,8 +95,12 @@ InterpretationResponse {
         },
         AssetChange {
             address: 0x914a7625b645d0d705b9a0a30d22583e1fb87eb1,
-            before_amount: 0,
-            after_amount: 1,
+            before_amount: Some(
+                0,
+            ),
+            after_amount: Some(
+                1,
+            ),
             amount: 0,
             action: InterpretationAction {
                 action_type: ERC721Receive,
