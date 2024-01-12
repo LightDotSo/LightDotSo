@@ -82,7 +82,7 @@ async fn test_integration_upsert_interpretation_with_actions() -> Result<()> {
                     action_type: InterpretationActionType::ERC1155Burned,
                 },
                 token: AssetToken {
-                    address: Address::zero(),
+                    address: "0x6144d927ee371de7e7f8221b596f3432e7a8e6d9".parse().unwrap(),
                     token_id: Some(1.into()),
                     token_type: AssetTokenType::Erc1155,
                 },
