@@ -13,11 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use ethers_main::types::Address;
 use eyre::Result;
 use lightdotso_db::{
     db::create_test_client, models::interpretation::upsert_interpretation_with_actions,
 };
-use lightdotso_interpreter::types::InterpretationResponse;
+use lightdotso_interpreter::{
+    constants::InterpretationActionType,
+    types::{InterpretationAction, InterpretationResponse},
+};
 use revm::interpreter::InstructionResult;
 use std::sync::Arc;
 
@@ -37,7 +41,16 @@ async fn test_integration_upsert_interpretation_with_actions() -> Result<()> {
         traces: vec![],
         logs: vec![],
         exit_reason: InstructionResult::Stop,
-        actions: vec![],
+        actions: vec![
+            InterpretationAction {
+                address: Some(Address::zero()),
+                action_type: InterpretationActionType::ERC1155Burned,
+            },
+            InterpretationAction {
+                address: None,
+                action_type: InterpretationActionType::ERC1155Minted,
+            },
+        ],
         asset_changes: vec![],
     };
 
