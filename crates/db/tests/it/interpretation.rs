@@ -98,3 +98,35 @@ async fn test_integration_upsert_interpretation_with_actions() -> Result<()> {
 
     Ok(())
 }
+
+#[tokio::test(flavor = "multi_thread")]
+async fn test_integration_upsert_interpretation_with_actions_empty() -> Result<()> {
+    // Load the environment variables.
+    let _ = dotenvy::dotenv();
+
+    // Initialize the tracing subscriber.
+    lightdotso_tracing::tracing_subscriber::fmt().init();
+
+    // Create a database client.
+    let db = create_test_client().await?;
+
+    let resp = InterpretationResponse {
+        gas_used: 0,
+        chain_id: 1001,
+        block_number: 1,
+        success: true,
+        traces: vec![],
+        logs: vec![],
+        exit_reason: InstructionResult::Stop,
+        actions: vec![],
+        asset_changes: vec![],
+    };
+
+    // Get a transaction with logs.
+    let tx = upsert_interpretation_with_actions(Arc::new(db), resp, None, None).await?;
+
+    // Print the transaction.
+    println!("{:?}", tx);
+
+    Ok(())
+}
