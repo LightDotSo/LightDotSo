@@ -15,6 +15,9 @@
 
 "use client";
 
+import type { UserOperationData } from "@lightdotso/data";
+import { useQueryConfiguration } from "@lightdotso/query";
+import { useTables } from "@lightdotso/stores";
 import { Table, TableBody, TableCell, TableRow } from "@lightdotso/ui";
 import {
   getCoreRowModel,
@@ -30,10 +33,7 @@ import { useEffect } from "react";
 import type { Address } from "viem";
 import { TransactionCard } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transaction-card";
 import { TableEmpty } from "@/components/state/table-empty";
-import type { UserOperationData } from "@lightdotso/data";
-import { useQueryConfiguration } from "@lightdotso/query";
 import { usePaginationQueryState } from "@/queryStates";
-import { useTables } from "@lightdotso/stores";
 import { groupByDate } from "@/utils/group";
 
 // -----------------------------------------------------------------------------

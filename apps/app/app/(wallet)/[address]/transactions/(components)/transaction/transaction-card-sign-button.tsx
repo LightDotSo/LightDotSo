@@ -15,11 +15,11 @@
 
 "use client";
 
+import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
 import { Button } from "@lightdotso/ui";
 import type { FC } from "react";
 import type { Address } from "viem";
 import { useUserOperationSign } from "@/app/(wallet)/[address]/transactions/(hooks)/useUserOperationSign";
-import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
 
 // -----------------------------------------------------------------------------
 // Props

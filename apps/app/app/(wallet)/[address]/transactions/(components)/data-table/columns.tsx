@@ -15,6 +15,7 @@
 
 "use client";
 
+import type { UserOperationData } from "@lightdotso/data";
 import { ButtonIcon } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ChevronDown } from "lucide-react";
@@ -23,7 +24,6 @@ import { UserOperationCardChain } from "@/components/user-operation/user-operati
 import { UserOperationCardHash } from "@/components/user-operation/user-operation-card-hash";
 import { UserOperationCardNonce } from "@/components/user-operation/user-operation-card-nonce";
 import { UserOperationCardStatus } from "@/components/user-operation/user-operation-card-status";
-import type { UserOperationData } from "@lightdotso/data";
 
 // -----------------------------------------------------------------------------
 // Definitions

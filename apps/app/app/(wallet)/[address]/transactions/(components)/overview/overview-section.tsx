@@ -15,14 +15,14 @@
 
 "use client";
 
+import type { UserOperationData, WalletSettingsData } from "@lightdotso/data";
+import { queryKeys } from "@lightdotso/query-keys";
 import { Button } from "@lightdotso/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import { ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Address } from "viem";
-import type { UserOperationData, WalletSettingsData } from "@lightdotso/data";
-import { queryKeys } from "@lightdotso/query-keys";
 
 // -----------------------------------------------------------------------------
 // Props

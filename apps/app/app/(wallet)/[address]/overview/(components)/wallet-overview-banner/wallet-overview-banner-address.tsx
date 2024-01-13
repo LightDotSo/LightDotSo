@@ -15,6 +15,7 @@
 
 "use client";
 
+import { useSuspenseQueryWallet } from "@lightdotso/query";
 import {
   Avatar,
   Button,
@@ -37,7 +38,6 @@ import type { Address } from "viem";
 import { useEnsName } from "wagmi";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import { useCopy } from "@/hooks";
-import { useSuspenseQueryWallet } from "@lightdotso/query";
 import { successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------

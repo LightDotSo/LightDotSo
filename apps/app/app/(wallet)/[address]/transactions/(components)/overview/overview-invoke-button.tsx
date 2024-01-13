@@ -16,6 +16,7 @@
 "use client";
 
 import { updateUserOperation } from "@lightdotso/client";
+import { useAuth } from "@lightdotso/stores";
 import {
   ButtonIcon,
   Tooltip,
@@ -26,7 +27,6 @@ import {
 import { RefreshCcw } from "lucide-react";
 import type { FC } from "react";
 import type { Address } from "viem";
-import { useAuth } from "@lightdotso/stores";
 import { errorToast, infoToast, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------

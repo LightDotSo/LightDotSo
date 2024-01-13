@@ -15,6 +15,7 @@
 
 "use client";
 
+import { useAuth, useNewForm } from "@lightdotso/stores";
 import {
   Avatar,
   Button,
@@ -68,7 +69,6 @@ import { publicClient } from "@/clients/public";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import { MAX_THRESHOLD, MAX_WEIGHT } from "@/const/configuration";
 import { newFormSchema, newFormConfigurationSchema } from "@/schemas/newForm";
-import { useAuth, useNewForm } from "@lightdotso/stores";
 import { debounce, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------

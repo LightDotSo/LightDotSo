@@ -15,6 +15,7 @@
 
 "use client";
 
+import { useNewForm } from "@lightdotso/stores";
 import {
   Accordion,
   AccordionContent,
@@ -24,7 +25,6 @@ import {
 } from "@lightdotso/ui";
 import { motion, AnimatePresence } from "framer-motion";
 import type { FC } from "react";
-import { useNewForm } from "@lightdotso/stores";
 
 // -----------------------------------------------------------------------------
 // Component

@@ -15,6 +15,8 @@
 
 "use client";
 
+import type { NftData } from "@lightdotso/data";
+import { useTables } from "@lightdotso/stores";
 import { Table, TableBody, TableCell, TableRow } from "@lightdotso/ui";
 import {
   getCoreRowModel,
@@ -30,9 +32,7 @@ import { useEffect } from "react";
 import { NftCard } from "@/components/nft/nft-card";
 import { NftsWrapper } from "@/components/nft/nfts-wrapper";
 import { TableEmpty } from "@/components/state/table-empty";
-import type { NftData } from "@lightdotso/data";
 import { usePaginationQueryState } from "@/queryStates";
-import { useTables } from "@lightdotso/stores";
 
 // -----------------------------------------------------------------------------
 // Props

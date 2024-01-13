@@ -15,6 +15,13 @@
 
 "use client";
 
+import type {
+  NftData,
+  NftDataPage,
+  WalletSettingsData,
+} from "@lightdotso/data";
+import { queryKeys } from "@lightdotso/query-keys";
+import { useAuth, useTables } from "@lightdotso/stores";
 import { Button } from "@lightdotso/ui";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { useQueryClient } from "@tanstack/react-query";
@@ -23,13 +30,6 @@ import { useMemo } from "react";
 import type { Address } from "viem";
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
-import type {
-  NftData,
-  NftDataPage,
-  WalletSettingsData,
-} from "@lightdotso/data";
-import { queryKeys } from "@lightdotso/query-keys";
-import { useAuth, useTables } from "@lightdotso/stores";
 
 // -----------------------------------------------------------------------------
 // Props

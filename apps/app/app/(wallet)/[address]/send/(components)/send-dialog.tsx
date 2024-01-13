@@ -16,8 +16,8 @@
 "use client";
 
 import type { NftDataPage, WalletSettingsData } from "@lightdotso/data";
-import { queryKeys } from "@lightdotso/query-keys";
 import { useSuspenseQueryTokens } from "@lightdotso/query";
+import { queryKeys } from "@lightdotso/query-keys";
 import type {
   SimplehashMainnetChain,
   SimplehashTestnetChain,

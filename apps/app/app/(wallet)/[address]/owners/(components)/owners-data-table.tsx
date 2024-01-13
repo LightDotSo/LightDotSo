@@ -15,11 +15,11 @@
 
 "use client";
 
+import { useQueryConfiguration } from "@lightdotso/query";
 import { type FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/owners/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table";
-import { useQueryConfiguration } from "@lightdotso/query";
 
 // -----------------------------------------------------------------------------
 // Props
