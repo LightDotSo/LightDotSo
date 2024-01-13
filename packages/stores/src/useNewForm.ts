@@ -14,11 +14,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { createWallet } from "@lightdotso/client";
+import { newFormStoreSchema } from "@lightdotso/schemas";
 import { isEqual } from "lodash";
 import type * as z from "zod";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import { newFormStoreSchema } from "@/schemas/newForm";
 
 // -----------------------------------------------------------------------------
 // State

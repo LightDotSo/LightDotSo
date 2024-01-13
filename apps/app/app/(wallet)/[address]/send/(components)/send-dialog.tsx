@@ -18,9 +18,12 @@
 import type { NftDataPage, WalletSettingsData } from "@lightdotso/data";
 import { useSuspenseQueryTokens } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
+import { sendFormConfigurationSchema } from "@lightdotso/schemas";
 import type {
   SimplehashMainnetChain,
   SimplehashTestnetChain,
+  Transfer,
+  Transfers,
 } from "@lightdotso/schemas";
 import {
   Accordion,
@@ -74,8 +77,6 @@ import { useTransfersQueryState } from "@/app/(wallet)/[address]/send/(hooks)";
 import { publicClient } from "@/clients/public";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@/const/simplehash";
-import type { Transfer, Transfers } from "@/schemas";
-import { sendFormConfigurationSchema } from "@/schemas/sendForm";
 import { debounce } from "@/utils";
 import { lightWalletAbi } from "@/wagmi";
 

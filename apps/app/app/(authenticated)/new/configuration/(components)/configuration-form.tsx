@@ -15,6 +15,7 @@
 
 "use client";
 
+import { newFormSchema, newFormConfigurationSchema } from "@lightdotso/schemas";
 import { useAuth, useNewForm } from "@lightdotso/stores";
 import {
   Avatar,
@@ -68,7 +69,6 @@ import type { Owner, Owners } from "@/app/(authenticated)/new/(hooks)";
 import { publicClient } from "@/clients/public";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import { MAX_THRESHOLD, MAX_WEIGHT } from "@/const/configuration";
-import { newFormSchema, newFormConfigurationSchema } from "@/schemas/newForm";
 import { debounce, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
@@ -238,7 +238,7 @@ export const ConfigurationForm: FC = () => {
 
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
-      // @ts-expect-error
+      // @ts-ignore
       setFormValues(value);
 
       // Fetch the configuration to create the wallet (simulation)

@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { Transfers } from "@lightdotso/schemas";
 import { createParser, useQueryState } from "next-usequerystate";
 import { isAddress } from "viem";
-import type { Transfers } from "@/schemas";
 
 // -----------------------------------------------------------------------------
 // Parser

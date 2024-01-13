@@ -17,6 +17,7 @@
 
 import { createUserOperation } from "@lightdotso/client";
 import type { ConfigurationData } from "@lightdotso/data";
+import type { UserOperation } from "@lightdotso/schemas";
 import { subdigestOf } from "@lightdotso/solutions";
 import { useAuth } from "@lightdotso/stores";
 import { useRouter } from "next/navigation";
@@ -31,7 +32,6 @@ import {
   decodeFunctionData,
 } from "viem";
 import { useSignMessage } from "wagmi";
-import type { UserOperation } from "@/types";
 import { errorToast, successToast } from "@/utils";
 import {
   lightWalletAbi,

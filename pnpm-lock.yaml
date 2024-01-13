@@ -1783,6 +1783,9 @@ importers:
       '@lightdotso/data':
         specifier: workspace:*
         version: link:../data
+      '@lightdotso/schemas':
+        specifier: workspace:*
+        version: link:../schemas
       '@tanstack/react-table':
         specifier: ^8.11.6
         version: 8.11.6(react-dom@18.2.0)(react@18.2.0)

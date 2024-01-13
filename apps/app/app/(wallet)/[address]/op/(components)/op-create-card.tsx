@@ -21,7 +21,7 @@ import { Button } from "@lightdotso/ui";
 import type { FC } from "react";
 import type { Address } from "viem";
 import { useUserOperationCreate } from "@/app/(wallet)/[address]/transactions/(hooks)/useUserOperationCreate";
-import type { UserOperation } from "@/types";
+import type { UserOperation } from "@lightdotso/schemas";
 import { serializeBigInt } from "@/utils";
 
 // -----------------------------------------------------------------------------

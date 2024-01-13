@@ -22,7 +22,7 @@ import type { FC } from "react";
 import { isAddressEqual } from "viem";
 import type { Address } from "viem";
 import { OpCreateCard } from "@/app/(wallet)/[address]/op/(components)/op-create-card";
-import type { UserOperation } from "@/types";
+import type { UserOperation } from "@lightdotso/schemas";
 
 // -----------------------------------------------------------------------------
 // Props

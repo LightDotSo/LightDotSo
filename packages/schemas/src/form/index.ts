@@ -13,35 +13,23 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export {
-  confirmFormConfigurationSchema,
-  newFormSchema,
-  newFormConfigurationSchema,
-  newFormConfigurationRefinedSchema,
-  newFormConfirmSchema,
-  newFormStoreSchema,
-  sendFormConfigurationSchema,
-} from "./form";
 export type {
   PartialUserOperation,
   PartialUserOperations,
   ConfirmFormConfiguration,
+} from "./confirmForm";
+export { confirmFormConfigurationSchema } from "./confirmForm";
+export {
+  newFormSchema,
+  newFormConfirmSchema,
+  newFormConfigurationSchema,
+  newFormConfigurationRefinedSchema,
+  newFormStoreSchema,
+} from "./newForm";
+export type {
   Asset,
   Transfer,
   Transfers,
   SendFormConfiguration,
-} from "./form";
-export {
-  simplehashMainnetChainSchema,
-  simplehashTestnetChainSchema,
-  simplehashChainSchema,
-  nftsByOwnerSchema,
-  nftWalletValuationsSchema,
-} from "./simplehash";
-export type {
-  SimplehashMainnetChain,
-  SimplehashTestnetChain,
-} from "./simplehash";
-export { llamaGetSchema, llamaPostSchema } from "./llama";
-export { userOperation } from "./web3";
-export type { UserOperation } from "./web3";
+} from "./sendForm";
+export { sendFormConfigurationSchema } from "./sendForm";

@@ -27,6 +27,7 @@
   "dependencies": {
     "@lightdotso/client": "workspace:*",
     "@lightdotso/data": "workspace:*",
+    "@lightdotso/schemas": "workspace:*",
     "@tanstack/react-table": "^8.11.6",
     "@types/lodash": "^4.14.202",
     "lodash": "^4.17.21",

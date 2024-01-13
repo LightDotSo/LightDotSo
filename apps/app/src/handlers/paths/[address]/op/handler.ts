@@ -27,7 +27,7 @@ import { userOperationsParser } from "@/app/(wallet)/[address]/op/(hooks)";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
 import { getConfiguration, getUserOperationNonce, getWallet } from "@/services";
-import type { UserOperation } from "@/types";
+import type { UserOperation } from "@lightdotso/schemas";
 
 // -----------------------------------------------------------------------------
 // Handler
