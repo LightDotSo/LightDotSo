@@ -1,5 +1,9 @@
-import type { Preview } from "@storybook/react";
 import "@lightdotso/styles/global.css";
+import type { Preview } from "@storybook/react";
+import {
+  INITIAL_VIEWPORTS,
+  MINIMAL_VIEWPORTS,
+} from "@storybook/addon-viewport";
 import * as React from "react";
 import { Toaster } from "../src/components/ui/toast";
 
@@ -25,6 +29,12 @@ const preview: Preview = {
       darkClass: "dark",
       lightClass: "light",
       stylePreview: true,
+    },
+    viewport: {
+      viewports: {
+        ...INITIAL_VIEWPORTS,
+        ...MINIMAL_VIEWPORTS,
+      },
     },
   },
 };

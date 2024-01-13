@@ -17,6 +17,7 @@ import { MonitorCheck } from "lucide-react";
 import type { FC } from "react";
 import { Button } from "../../components/ui/button";
 import { LightHorizontalLogo } from "../../svgs/logo/light-horizontal";
+import { FooterCopy } from "./footer-copy";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -27,10 +28,9 @@ export const FooterLogo: FC = () => {
     <div className="flex items-center justify-between space-x-3">
       <div className="flex shrink-0 items-center space-x-1">
         <LightHorizontalLogo className="block h-8" />
-        <p className="text-sm text-text-weak xl:text-center">
-          &copy; {new Date().getFullYear()}
-          <span className="hidden md:inline-flex">&nbsp;Light, Inc.</span>
-        </p>
+        <span className="md:hidden">
+          <FooterCopy />
+        </span>
       </div>
       <div className="flex items-center">
         <Button asChild size="xs" variant="ghost">
