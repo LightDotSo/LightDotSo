@@ -69,17 +69,17 @@ pub async fn upsert_interpretation_with_actions(
         .collect::<Vec<_>>();
     for asset_change_param in asset_change_params.clone() {
         // Fails gracefully if the token already exists
-        let token = db
+        let token_creation = db
             .token()
             .create(asset_change_param.0, asset_change_param.1, asset_change_param.2)
             .exec()
             .await;
-        info!(?token);
+        info!(?token_creation);
     }
 
     // Create all possible interpretation actions in bulk
-    let tokens = db.token().create_many(asset_change_params).skip_duplicates().exec().await?;
-    info!(?tokens);
+    let token_count = db.token().create_many(asset_change_params).skip_duplicates().exec().await?;
+    info!(?token_count);
 
     // Create all possible interpretation actions
     let interpretation_actions_params = res
@@ -98,26 +98,24 @@ pub async fn upsert_interpretation_with_actions(
             )
         })
         .collect::<Vec<_>>();
-    let mut interpretation_actions = vec![];
     for interpretation_action_param in interpretation_actions_params.clone() {
         // Fails gracefully if the interpretation action already exists
-        let interpretation_action = db
+        let interpretation_action_creation = db
             .interpretation_action()
             .create(interpretation_action_param.0, interpretation_action_param.1, vec![])
             .exec()
             .await;
-        info!(?interpretation_action);
-        interpretation_actions.push(interpretation_action);
+        info!(?interpretation_action_creation);
     }
 
     // Create all possible interpretation actions in bulk
-    let interpretation_actions = db
+    let interpretation_action_count = db
         .interpretation_action()
         .create_many(interpretation_actions_params)
         .skip_duplicates()
         .exec()
         .await?;
-    info!(?interpretation_actions);
+    info!(?interpretation_action_count);
 
     // Get the corresponding tokens
     let mut token_params = vec![];
@@ -163,6 +161,7 @@ pub async fn upsert_interpretation_with_actions(
     for interpration_action_param in interpration_action_params {
         let interpretation_action =
             db.interpretation_action().find_unique(interpration_action_param).exec().await?;
+        info!(?interpretation_action);
         // Push the interpretation action to the list of interpretation actions if not None
         if let Some(interpretation_action) = interpretation_action {
             interpretation_actions.push(interpretation_action);

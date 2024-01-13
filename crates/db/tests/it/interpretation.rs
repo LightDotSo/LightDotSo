@@ -52,7 +52,11 @@ async fn test_integration_upsert_interpretation_with_actions() -> Result<()> {
                 action_type: InterpretationActionType::ERC1155Burned,
             },
             InterpretationAction {
-                address: None,
+                address: Some(Address::zero()),
+                action_type: InterpretationActionType::ERC1155Burned,
+            },
+            InterpretationAction {
+                address: Some("0x6144d927ee371de7e7f8221b596f3432e7a8e6d9".parse().unwrap()),
                 action_type: InterpretationActionType::ERC1155Minted,
             },
         ],
@@ -94,7 +98,7 @@ async fn test_integration_upsert_interpretation_with_actions() -> Result<()> {
                 amount: 0.into(),
                 action: InterpretationAction {
                     address: Some("0x6144d927ee371de7e7f8221b596f3432e7a8e6d9".parse().unwrap()),
-                    action_type: InterpretationActionType::ERC1155Burned,
+                    action_type: InterpretationActionType::ERC1155Minted,
                 },
                 token: AssetToken {
                     address: "0x6144d927ee371de7e7f8221b596f3432e7a8e6d9".parse().unwrap(),
