@@ -48,7 +48,6 @@ const nextConfig = {
       ],
     },
     serverComponentsExternalPackages: [],
-    typedRoutes: true,
   },
   transpilePackages: ["@lightdotso/ui", "@lightdotso/wagmi"],
   // async rewrites() {
