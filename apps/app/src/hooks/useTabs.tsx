@@ -16,6 +16,14 @@
 // Full complete example from: https://github.com/hqasmei/youtube-tutorials/blob/ee44df8fbf6ab4f4c2f7675f17d67813947a7f61/vercel-animated-tabs/src/hooks/use-tabs.tsx
 // License: MIT
 
+import type { WalletSettingsData } from "@lightdotso/data";
+import {
+  useQueryUserOperationsCount,
+  useSuspenseQueryConfiguration,
+  useSuspenseQueryWalletFeatures,
+} from "@lightdotso/query";
+import { queryKeys } from "@lightdotso/query-keys";
+import { useAuth } from "@lightdotso/stores";
 import { RadiobuttonIcon } from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
 import { useQueryClient } from "@tanstack/react-query";
@@ -23,14 +31,6 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect, useMemo } from "react";
 import type { ReactNode, RefAttributes } from "react";
 import type { Address } from "viem";
-import type { WalletSettingsData } from "@/data";
-import {
-  useQueryUserOperationsCount,
-  useSuspenseQueryConfiguration,
-  useSuspenseQueryWalletFeatures,
-} from "@/query";
-import { queryKeys } from "@/queryKeys";
-import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Const

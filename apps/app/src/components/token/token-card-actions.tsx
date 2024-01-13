@@ -15,6 +15,8 @@
 
 "use client";
 
+import type { TokenData } from "@lightdotso/data";
+import { useAuth } from "@lightdotso/stores";
 import {
   ButtonIcon,
   Tooltip,
@@ -25,8 +27,6 @@ import {
 import { Send, Shuffle } from "lucide-react";
 import Link from "next/link";
 import type { FC } from "react";
-import type { TokenData } from "@/data";
-import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props

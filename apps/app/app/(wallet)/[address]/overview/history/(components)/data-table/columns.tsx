@@ -15,12 +15,12 @@
 
 "use client";
 
+import type { TransactionData } from "@lightdotso/data";
 import type { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { TransactionCardChain } from "@/components/transaction/transaction-card-chain";
 import { TransactionCardHash } from "@/components/transaction/transaction-card-hash";
 import { TransactionCardTimestamp } from "@/components/transaction/transaction-card-timestamp";
-import type { TransactionData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Definitions

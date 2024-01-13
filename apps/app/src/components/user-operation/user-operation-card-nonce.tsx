@@ -15,8 +15,8 @@
 
 "use client";
 
+import type { UserOperationData } from "@lightdotso/data";
 import type { FC } from "react";
-import type { UserOperationData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props

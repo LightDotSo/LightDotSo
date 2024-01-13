@@ -15,6 +15,10 @@
 
 "use client";
 
+import type { TokenData, WalletSettingsData } from "@lightdotso/data";
+import { useSuspenseQueryTokens } from "@lightdotso/query";
+import { queryKeys } from "@lightdotso/query-keys";
+import { useTables } from "@lightdotso/stores";
 import {
   Table,
   TableBody,
@@ -40,10 +44,6 @@ import { useEffect, type FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/columns";
 import { TableEmpty } from "@/components/state/table-empty";
-import type { TokenData, WalletSettingsData } from "@/data";
-import { useSuspenseQueryTokens } from "@/query";
-import { queryKeys } from "@/queryKeys";
-import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props

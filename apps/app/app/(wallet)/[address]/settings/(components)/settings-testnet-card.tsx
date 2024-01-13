@@ -16,6 +16,10 @@
 "use client";
 
 import {
+  useMutationWalletSettings,
+  useSuspenseQueryWalletSettings,
+} from "@lightdotso/query";
+import {
   Button,
   Form,
   FormControl,
@@ -34,10 +38,6 @@ import * as z from "zod";
 import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const/titles";
 import { useDelayedValue } from "@/hooks";
-import {
-  useMutationWalletSettings,
-  useSuspenseQueryWalletSettings,
-} from "@/query";
 
 // -----------------------------------------------------------------------------
 // Schema

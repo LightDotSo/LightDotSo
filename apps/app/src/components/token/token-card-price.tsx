@@ -15,11 +15,11 @@
 
 "use client";
 
+import type { TokenData } from "@lightdotso/data";
+import { useSuspenseQueryTokenPrice } from "@lightdotso/query";
 import { cn } from "@lightdotso/utils";
 import type { FC } from "react";
 import type { Address } from "viem";
-import type { TokenData } from "@/data";
-import { useSuspenseQueryTokenPrice } from "@/query";
 
 // -----------------------------------------------------------------------------
 // Props

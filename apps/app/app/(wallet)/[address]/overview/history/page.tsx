@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { queryKeys } from "@lightdotso/query-keys";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { HistoryDataTable } from "@/app/(wallet)/[address]/overview/history/(components)/history-data-table";
@@ -22,7 +23,6 @@ import { HistoryDataTablePagination } from "@/app/(wallet)/[address]/overview/hi
 import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
 import { handler } from "@/handlers/paths/[address]/overview/history/handler";
 import { preloader } from "@/preloaders/paths/[address]/overview/history/preloader";
-import { queryKeys } from "@/queryKeys";
 import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------

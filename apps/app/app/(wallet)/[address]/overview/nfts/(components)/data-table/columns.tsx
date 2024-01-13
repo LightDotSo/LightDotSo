@@ -15,8 +15,8 @@
 
 "use client";
 
+import type { NftData } from "@lightdotso/data";
 import type { ColumnDef } from "@tanstack/react-table";
-import type { NftData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Definitions

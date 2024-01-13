@@ -15,12 +15,12 @@
 
 "use client";
 
+import type { WalletData } from "@lightdotso/data";
 import { Avatar } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { DataTableRowActions } from "@/app/(authenticated)/wallets/(components)/data-table/data-table-row-actions";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
-import type { WalletData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Definitions

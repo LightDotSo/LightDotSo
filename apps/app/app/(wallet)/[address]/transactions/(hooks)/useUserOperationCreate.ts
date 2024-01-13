@@ -16,7 +16,10 @@
 "use client";
 
 import { createUserOperation } from "@lightdotso/client";
+import type { ConfigurationData } from "@lightdotso/data";
+import type { UserOperation } from "@lightdotso/schemas";
 import { subdigestOf } from "@lightdotso/solutions";
+import { useAuth } from "@lightdotso/stores";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Address, Hex } from "viem";
@@ -29,9 +32,6 @@ import {
   decodeFunctionData,
 } from "viem";
 import { useSignMessage } from "wagmi";
-import type { ConfigurationData } from "@/data";
-import { useAuth } from "@/stores";
-import type { UserOperation } from "@/types";
 import { errorToast, successToast } from "@/utils";
 import {
   lightWalletAbi,

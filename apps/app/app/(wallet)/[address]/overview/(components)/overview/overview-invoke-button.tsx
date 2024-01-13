@@ -16,6 +16,7 @@
 "use client";
 
 import { createQueueToken } from "@lightdotso/client";
+import { useAuth } from "@lightdotso/stores";
 import {
   ButtonIcon,
   Tooltip,
@@ -27,7 +28,6 @@ import { RefreshCcw } from "lucide-react";
 import type { FC } from "react";
 import type { Address } from "viem";
 import invokePortfolioAction from "@/actions/invokePortfolioAction";
-import { useAuth } from "@/stores";
 import { infoToast } from "@/utils";
 
 // -----------------------------------------------------------------------------

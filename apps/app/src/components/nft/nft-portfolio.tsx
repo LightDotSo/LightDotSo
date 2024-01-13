@@ -15,12 +15,12 @@
 
 "use client";
 
+import type { NftPortfolioData } from "@lightdotso/data";
+import { queryKeys } from "@lightdotso/query-keys";
 import { Number } from "@lightdotso/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import type { FC } from "react";
 import type { Address } from "viem";
-import type { NftPortfolioData } from "@/data";
-import { queryKeys } from "@/queryKeys";
 
 // -----------------------------------------------------------------------------
 // Props

@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { queryKeys } from "@lightdotso/query-keys";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
 import type { Address } from "viem";
@@ -24,7 +25,6 @@ import { NftPortfolio } from "@/components/nft/nft-portfolio";
 import { PortfolioSection } from "@/components/section/portfolio-section";
 import { handler } from "@/handlers/paths/[address]/overview/nfts/handler";
 import { preloader } from "@/preloaders/paths/[address]/overview/nfts/preloader";
-import { queryKeys } from "@/queryKeys";
 import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------

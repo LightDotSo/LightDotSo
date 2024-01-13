@@ -17,6 +17,12 @@
 
 import { getWallet } from "@lightdotso/client";
 import {
+  newFormSchema,
+  newFormConfigurationSchema,
+  newFormStoreSchema,
+} from "@lightdotso/schemas";
+import { useAuth, useNewForm } from "@lightdotso/stores";
+import {
   Button,
   Card,
   CardContent,
@@ -51,12 +57,6 @@ import {
   useTypeQueryState,
 } from "@/app/(authenticated)/new/(hooks)";
 import { publicClient } from "@/clients/public";
-import {
-  newFormSchema,
-  newFormConfigurationSchema,
-  newFormStoreSchema,
-} from "@/schemas/newForm";
-import { useAuth, useNewForm } from "@/stores";
 import { errorToast, infoToast, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------

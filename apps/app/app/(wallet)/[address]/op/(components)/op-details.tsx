@@ -15,10 +15,10 @@
 
 "use client";
 
+import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
 import type { FC } from "react";
 import type { Address } from "viem";
 import { UserOperationTimeline } from "@/components/user-operation/user-operation-timeline";
-import type { ConfigurationData, UserOperationData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props

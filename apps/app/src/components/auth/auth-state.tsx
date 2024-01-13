@@ -16,6 +16,10 @@
 "use client";
 
 import { postAuthLogout } from "@lightdotso/client";
+import type { AuthSessionData, UserData } from "@lightdotso/data";
+import { useQueryAuthSession, useQueryUser } from "@lightdotso/query";
+import { queryKeys } from "@lightdotso/query-keys";
+import { useAuth } from "@lightdotso/stores";
 import { useQueryClient, QueryObserver } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -23,10 +27,6 @@ import type { FC } from "react";
 import { isAddress } from "viem";
 import type { Address } from "viem";
 import { useAccount, useEnsName } from "wagmi";
-import type { AuthSessionData, UserData } from "@/data";
-import { useQueryAuthSession, useQueryUser } from "@/query";
-import { queryKeys } from "@/queryKeys";
-import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Component

@@ -15,6 +15,7 @@
 
 "use client";
 
+import type { WalletData } from "@lightdotso/data";
 import {
   Button,
   DropdownMenu,
@@ -25,7 +26,6 @@ import {
 } from "@lightdotso/ui";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import type { Row } from "@tanstack/react-table";
-import type { WalletData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props

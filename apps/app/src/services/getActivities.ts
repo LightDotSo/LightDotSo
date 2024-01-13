@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getActivities as getClientActivities } from "@lightdotso/client";
-import type { ActivityListParams } from "@/params";
+import type { ActivityListParams } from "@lightdotso/params";
 import "server-only";
 
 // -----------------------------------------------------------------------------

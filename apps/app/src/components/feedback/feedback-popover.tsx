@@ -15,6 +15,7 @@
 
 "use client";
 
+import { useAuth } from "@lightdotso/stores";
 import {
   Popover,
   PopoverTrigger,
@@ -26,7 +27,6 @@ import { useState } from "react";
 import type { FC } from "react";
 import { FeedbackForm } from "@/components/feedback/feedback-form";
 import { useIsMounted } from "@/hooks";
-import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Component

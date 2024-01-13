@@ -15,14 +15,17 @@
 
 "use client";
 
+import type { WalletSettingsData } from "@lightdotso/data";
+import {
+  useQueryUserOperations,
+  useQueryUserOperationsCount,
+} from "@lightdotso/query";
+import { queryKeys } from "@lightdotso/query-keys";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/transactions/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/transactions/(components)/data-table/data-table";
-import type { WalletSettingsData } from "@/data";
-import { useQueryUserOperations, useQueryUserOperationsCount } from "@/query";
-import { queryKeys } from "@/queryKeys";
 import { usePaginationQueryState } from "@/queryStates";
 
 // -----------------------------------------------------------------------------

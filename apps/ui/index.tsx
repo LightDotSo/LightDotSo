@@ -243,7 +243,13 @@ export {
   TabsContent,
 } from "./src/components/ui/tabs";
 export { Textarea } from "./src/components/ui/textarea";
-export { toast, Toaster } from "./src/components/ui/toast";
+export {
+  toast,
+  Toaster,
+  errorToast,
+  successToast,
+  infoToast,
+} from "./src/components/ui/toast";
 export { Toggle, toggleVariants } from "./src/components/ui/toggle";
 export { ToggleGroup, ToggleGroupItem } from "./src/components/ui/toggle-group";
 export {

@@ -15,9 +15,9 @@
 
 "use client";
 
+import { useTables } from "@lightdotso/stores";
 import { useEffect, type FC } from "react";
 import { DataTableToolbar } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/data-table-toolbar";
-import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Component

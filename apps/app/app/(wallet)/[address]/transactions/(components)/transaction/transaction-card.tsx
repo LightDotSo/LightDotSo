@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
 import {
   Button,
   Card,
@@ -39,7 +40,6 @@ import type { Address } from "viem";
 import { TransactionCardExecuteButton } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transaction-card-execute-button";
 import { TransactionCardSignButton } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transaction-card-sign-button";
 import { UserOperationTimeline } from "@/components/user-operation/user-operation-timeline";
-import type { ConfigurationData, UserOperationData } from "@/data";
 import { getChainById } from "@/utils";
 
 // -----------------------------------------------------------------------------

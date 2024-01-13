@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getNftsByOwner as getClientNftsByOwner } from "@lightdotso/client";
-import type { NftListParams } from "@/params";
+import type { NftListParams } from "@lightdotso/params";
 import "server-only";
 
 // -----------------------------------------------------------------------------
