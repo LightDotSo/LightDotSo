@@ -89,12 +89,12 @@ pub async fn upsert_interpretation_with_actions(
         .map(|action| {
             (
                 action.action_type.to_string(),
-                action
-                    .address
-                    .as_ref()
-                    .map(|addr| interpretation_action::address::set(Some(to_checksum(addr, None))))
-                    .into_iter()
-                    .collect::<Vec<_>>(),
+                if action.address.is_some() {
+                    to_checksum(&action.address.unwrap(), None)
+                } else {
+                    "".to_string()
+                },
+                vec![],
             )
         })
         .collect::<Vec<_>>();
@@ -103,7 +103,7 @@ pub async fn upsert_interpretation_with_actions(
         // Fails gracefully if the interpretation action already exists
         let interpretation_action = db
             .interpretation_action()
-            .create(interpretation_action_param.0, interpretation_action_param.1)
+            .create(interpretation_action_param.0, interpretation_action_param.1, vec![])
             .exec()
             .await;
         info!(?interpretation_action);
@@ -149,15 +149,14 @@ pub async fn upsert_interpretation_with_actions(
     // Get the corresponding interpretation actions
     let mut interpration_action_params = vec![];
     res.clone().actions.into_iter().for_each(|action| {
-        if action.address.is_some() {
-            interpration_action_params.push(interpretation_action::action_address(
-                action.action_type.to_string(),
-                to_checksum(&action.address.unwrap(), None),
-            ))
-        } else {
-            interpration_action_params
-                .push(interpretation_action::action::equals(action.action_type.to_string()))
-        }
+        interpration_action_params.push(interpretation_action::action_address(
+            action.action_type.to_string(),
+            if action.address.is_some() {
+                to_checksum(&action.address.unwrap(), None)
+            } else {
+                "".to_string()
+            },
+        ))
     });
     // Find all the matching interpretation actions
     let mut interpretation_actions = vec![];
@@ -220,10 +219,11 @@ pub async fn upsert_interpretation_with_actions(
                                 .find(|action| {
                                     action.action == change.action.action_type.to_string() &&
                                         action.address ==
-                                            change
-                                                .action
-                                                .address
-                                                .map(|addr| to_checksum(&addr, None))
+                                            if change.action.address.is_some() {
+                                                to_checksum(&change.action.address.unwrap(), None)
+                                            } else {
+                                                "".to_string()
+                                            }
                                 })
                                 .unwrap()
                                 .id,
