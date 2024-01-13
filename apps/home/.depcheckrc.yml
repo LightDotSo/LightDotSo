@@ -11,8 +11,6 @@ ignores:
   - "@next/eslint-plugin-next"
   - eslint-plugin-turbo
   - "@babel/core"
-  - nextra
-  - nextra-theme-docs
   - "@types/node"
   - autoprefixer
   - postcss
