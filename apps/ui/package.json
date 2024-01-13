@@ -99,6 +99,7 @@
     "@storybook/addon-outline": "^7.6.8",
     "@storybook/addon-postcss": "^2.0.0",
     "@storybook/addon-themes": "^7.6.8",
+    "@storybook/addon-viewport": "^7.6.8",
     "@storybook/addons": "^7.6.8",
     "@storybook/blocks": "^7.6.8",
     "@storybook/channel-postmessage": "^7.6.8",

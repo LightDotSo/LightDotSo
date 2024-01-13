@@ -14,38 +14,16 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { FC } from "react";
-import { FooterCopy } from "./footer-copy";
-import { FooterList } from "./footer-list";
-import { FooterLogo } from "./footer-logo";
-import { FooterSocial } from "./footer-social";
-import { FooterVersion } from "./footer-version";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const Footer: FC = () => {
+export const FooterCopy: FC = () => {
   return (
-    <footer
-      className="border-t border-border px-2 md:px-4 lg:px-8"
-      aria-labelledby="footer-heading"
-    >
-      <h2 id="footer-heading" className="sr-only">
-        Footer
-      </h2>
-      <div className="mx-auto max-w-7xl space-y-4 py-8 md:space-y-8">
-        <div className="flex flex-col justify-between space-y-6 md:flex-row md:items-center md:space-y-0">
-          <FooterLogo />
-          <FooterSocial />
-        </div>
-        <div>
-          <FooterList />
-        </div>
-        <div className="hidden justify-between md:flex">
-          <FooterCopy />
-          <FooterVersion />
-        </div>
-      </div>
-    </footer>
+    <p className="text-sm text-text-weak xl:text-center">
+      &copy; {new Date().getFullYear()}
+      <span className="hidden md:inline-flex">&nbsp;Light.</span>
+    </p>
   );
 };

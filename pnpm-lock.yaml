@@ -1191,6 +1191,9 @@ importers:
       '@storybook/addon-themes':
         specifier: ^7.6.8
         version: 7.6.8
+      '@storybook/addon-viewport':
+        specifier: ^7.6.8
+        version: 7.6.8
       '@storybook/addons':
         specifier: ^7.6.8
         version: 7.6.8(react-dom@18.2.0)(react@18.2.0)
@@ -1745,6 +1748,9 @@ importers:
 
   packages/schemas:
     dependencies:
+      viem:
+        specifier: ^2.0.6
+        version: 2.0.6(typescript@5.3.3)(zod@3.22.4)
       zod:
         specifier: ^3.22.4
         version: 3.22.4
