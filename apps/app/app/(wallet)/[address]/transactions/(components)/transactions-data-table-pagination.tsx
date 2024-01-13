@@ -17,7 +17,7 @@
 
 import { useEffect, type FC } from "react";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
-import { useTables } from "@/stores";
+import { useTables } from "@lightdotso/stores";
 
 // -----------------------------------------------------------------------------
 // Component

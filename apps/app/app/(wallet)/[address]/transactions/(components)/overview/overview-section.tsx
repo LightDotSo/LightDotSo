@@ -21,8 +21,8 @@ import { ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Address } from "viem";
-import type { UserOperationData, WalletSettingsData } from "@/data";
-import { queryKeys } from "@/queryKeys";
+import type { UserOperationData, WalletSettingsData } from "@lightdotso/data";
+import { queryKeys } from "@lightdotso/query-keys";
 
 // -----------------------------------------------------------------------------
 // Props

@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getTokensCount as getClientTokensCount } from "@lightdotso/client";
-import type { TokenListCountParams } from "@/params";
+import type { TokenListCountParams } from "@lightdotso/params";
 import "server-only";
 
 // -----------------------------------------------------------------------------

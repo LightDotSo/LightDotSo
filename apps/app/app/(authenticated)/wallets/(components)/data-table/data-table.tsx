@@ -15,6 +15,9 @@
 
 "use client";
 
+import type { WalletData } from "@lightdotso/data";
+import { usePaginationQueryState } from "@/queryStates";
+import { useTables } from "@lightdotso/stores";
 import {
   Table,
   TableBody,
@@ -39,9 +42,6 @@ import { useEffect } from "react";
 import { DataTableToolbar } from "@/app/(authenticated)/wallets/(components)/data-table/data-table-toolbar";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
 import { TableEmpty } from "@/components/state/table-empty";
-import type { WalletData } from "@/data";
-import { usePaginationQueryState } from "@/queryStates";
-import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props

@@ -62,7 +62,7 @@ import {
 } from "@/app/(authenticated)/new/(hooks)";
 import type { WalletType } from "@/app/(authenticated)/new/(hooks)";
 import { newFormSchema } from "@/schemas/newForm";
-import { useNewForm } from "@/stores";
+import { useNewForm } from "@lightdotso/stores";
 
 // -----------------------------------------------------------------------------
 // Types

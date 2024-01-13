@@ -15,6 +15,7 @@
 
 "use client";
 
+import { useAuth } from "@lightdotso/stores";
 import {
   ButtonIcon,
   DropdownMenu,
@@ -33,7 +34,6 @@ import Link from "next/link";
 import { useTheme } from "next-themes";
 import type { FC } from "react";
 import { useIsMounted } from "@/hooks";
-import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Component

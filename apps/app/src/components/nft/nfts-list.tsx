@@ -15,6 +15,13 @@
 
 "use client";
 
+import type {
+  NftData,
+  NftDataPage,
+  WalletSettingsData,
+} from "@lightdotso/data";
+import { queryKeys } from "@lightdotso/query-keys";
+import { useTables } from "@lightdotso/stores";
 import { Table, TableBody, TableCell, TableRow } from "@lightdotso/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import {
@@ -32,9 +39,6 @@ import { columns } from "@/app/(wallet)/[address]/overview/nfts/(components)/dat
 import { NftCard } from "@/components/nft/nft-card";
 import { NftsWrapper } from "@/components/nft/nfts-wrapper";
 import { TableEmpty } from "@/components/state/table-empty";
-import type { NftData, NftDataPage, WalletSettingsData } from "@/data";
-import { queryKeys } from "@/queryKeys";
-import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props

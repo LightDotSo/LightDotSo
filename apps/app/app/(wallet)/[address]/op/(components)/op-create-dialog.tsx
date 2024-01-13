@@ -15,13 +15,13 @@
 
 "use client";
 
+import type { ConfigurationData } from "@lightdotso/data";
+import { useAuth } from "@lightdotso/stores";
 import { useMemo } from "react";
 import type { FC } from "react";
 import { isAddressEqual } from "viem";
 import type { Address } from "viem";
 import { OpCreateCard } from "@/app/(wallet)/[address]/op/(components)/op-create-card";
-import type { ConfigurationData } from "@/data";
-import { useAuth } from "@/stores";
 import type { UserOperation } from "@/types";
 
 // -----------------------------------------------------------------------------

@@ -35,7 +35,7 @@ import * as z from "zod";
 import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const/titles";
 import { useAuthModal, useDelayedValue } from "@/hooks";
-import { useSuspenseQueryWallet, useMutationWallet } from "@/query";
+import { useSuspenseQueryWallet, useMutationWallet } from "@lightdotso/query";
 
 // -----------------------------------------------------------------------------
 // Schema

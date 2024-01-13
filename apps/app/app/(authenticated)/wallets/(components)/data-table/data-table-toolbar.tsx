@@ -15,12 +15,12 @@
 
 "use client";
 
+import type { WalletData } from "@lightdotso/data";
+import { useTables } from "@lightdotso/stores";
 import { Button, Input } from "@lightdotso/ui";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import type { Table } from "@tanstack/react-table";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
-import type { WalletData } from "@/data";
-import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props

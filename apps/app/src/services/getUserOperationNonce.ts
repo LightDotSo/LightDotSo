@@ -14,8 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getUserOperationNonce as getClientUserOperationNonce } from "@lightdotso/client";
+import type { UserOperationNonceParams } from "@lightdotso/params";
 import "server-only";
-import type { UserOperationNonceParams } from "@/params";
 
 // -----------------------------------------------------------------------------
 // Pre

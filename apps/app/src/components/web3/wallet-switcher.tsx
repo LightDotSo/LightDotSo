@@ -18,6 +18,8 @@
 
 "use client";
 
+import { useSuspenseQueryWallets } from "@lightdotso/query";
+import { useAuth } from "@lightdotso/stores";
 import {
   Avatar,
   Button,
@@ -48,8 +50,6 @@ import { getAddress, isAddress } from "viem";
 import type { Address } from "viem";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import { useIsMounted } from "@/hooks";
-import { useSuspenseQueryWallets } from "@/query";
-import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props

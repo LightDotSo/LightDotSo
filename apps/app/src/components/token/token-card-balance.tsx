@@ -15,9 +15,9 @@
 
 "use client";
 
+import type { TokenData } from "@lightdotso/data";
 import { Number } from "@lightdotso/ui";
 import type { FC } from "react";
-import type { TokenData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props

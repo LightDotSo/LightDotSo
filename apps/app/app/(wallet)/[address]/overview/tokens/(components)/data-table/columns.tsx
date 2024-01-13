@@ -24,7 +24,7 @@ import { TokenCardChain } from "@/components/token/token-card-chain";
 import { TokenCardPrice } from "@/components/token/token-card-price";
 import { TokenCardSparkline } from "@/components/token/token-card-sparkline";
 import { TokenCardToken } from "@/components/token/token-card-token";
-import type { TokenData } from "@/data";
+import type { TokenData } from "@lightdotso/data";
 
 // -----------------------------------------------------------------------------
 // Definitions

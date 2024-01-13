@@ -15,10 +15,10 @@
 
 "use client";
 
+import { useSuspenseQueryPortfolio } from "@lightdotso/query";
 import { Number } from "@lightdotso/ui";
 import type { FC } from "react";
 import type { Address } from "viem";
-import { useSuspenseQueryPortfolio } from "@/query";
 
 // -----------------------------------------------------------------------------
 // Props

@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getWalletFeatures as getClientWalletSettigns } from "@lightdotso/client";
-import type { WalletFeaturesParams } from "@/params";
+import type { WalletFeaturesParams } from "@lightdotso/params";
 import "server-only";
 
 // -----------------------------------------------------------------------------

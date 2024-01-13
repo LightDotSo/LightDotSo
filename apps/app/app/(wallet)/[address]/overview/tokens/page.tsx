@@ -25,7 +25,7 @@ import { TokenPortfolio } from "@/components/token/token-portfolio";
 import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
 import { handler } from "@/handlers/paths/[address]/overview/tokens/handler";
 import { preloader } from "@/preloaders/paths/[address]/overview/tokens/preloader";
-import { queryKeys } from "@/queryKeys";
+import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------

@@ -9,6 +9,18 @@
     },
     "target": "es2020"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "../../packages/stores/src/index.ts",
+    "../../packages/stores/src/useAuth.ts",
+    "../../packages/stores/src/useDev.ts",
+    "../../packages/stores/src/useModals.ts",
+    "../../packages/stores/src/useNewForm.ts",
+    "../../packages/stores/src/useSettings.ts",
+    "../../packages/stores/src/useTables.ts"
+  ],
   "exclude": ["node_modules"]
 }

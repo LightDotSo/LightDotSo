@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getTransactions as getClientTransactions } from "@lightdotso/client";
-import type { TransactionListParams } from "@/params";
+import type { TransactionListParams } from "@lightdotso/params";
 import "server-only";
 
 // -----------------------------------------------------------------------------

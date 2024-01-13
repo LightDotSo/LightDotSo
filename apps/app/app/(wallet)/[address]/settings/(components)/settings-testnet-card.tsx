@@ -37,7 +37,7 @@ import { useDelayedValue } from "@/hooks";
 import {
   useMutationWalletSettings,
   useSuspenseQueryWalletSettings,
-} from "@/query";
+} from "@lightdotso/query";
 
 // -----------------------------------------------------------------------------
 // Schema

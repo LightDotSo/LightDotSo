@@ -22,7 +22,7 @@ import { SettingsTestnetCard } from "@/app/(wallet)/[address]/settings/(componen
 import { SettingsSectionWrapper } from "@/components/wrapper/section/settings-section-wrapper";
 import { handler } from "@/handlers/paths/[address]/settings/handler";
 import { preloader } from "@/preloaders/paths/[address]/settings/preloader";
-import { queryKeys } from "@/queryKeys";
+import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------

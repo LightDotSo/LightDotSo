@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getActivitiesCount as getClientActivitiesCount } from "@lightdotso/client";
-import type { ActivityListCountParams } from "@/params";
+import type { ActivityListCountParams } from "@lightdotso/params";
 import "server-only";
 
 // -----------------------------------------------------------------------------

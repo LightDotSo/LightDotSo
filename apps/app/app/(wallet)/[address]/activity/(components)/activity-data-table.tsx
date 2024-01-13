@@ -15,11 +15,11 @@
 
 "use client";
 
+import { useQueryActivities, useQueryActivitiesCount } from "@lightdotso/query";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/activity/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/activity/(components)/data-table/data-table";
-import { useQueryActivities, useQueryActivitiesCount } from "@/query";
 import { usePaginationQueryState } from "@/queryStates";
 
 // -----------------------------------------------------------------------------

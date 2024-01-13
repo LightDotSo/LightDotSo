@@ -15,13 +15,13 @@
 
 /* eslint-disable @next/next/no-img-element */
 
+import type { NftData } from "@lightdotso/data";
+import { useAuth } from "@lightdotso/stores";
 import { Button } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import Link from "next/link";
 import { type FC } from "react";
 import { NftImage } from "@/components/nft/nft-image";
-import type { NftData } from "@/data";
-import { useAuth } from "@/stores";
 import { ChainLogo } from "@/svgs";
 import {
   getChainBySimplehashChainName,

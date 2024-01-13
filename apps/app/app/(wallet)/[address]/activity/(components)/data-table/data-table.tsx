@@ -37,9 +37,9 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { TableEmpty } from "@/components/state/table-empty";
-import type { ActivityData } from "@/data";
+import type { ActivityData } from "@lightdotso/data";
 import { usePaginationQueryState } from "@/queryStates";
-import { useTables } from "@/stores";
+import { useTables } from "@lightdotso/stores";
 
 // -----------------------------------------------------------------------------
 // Props

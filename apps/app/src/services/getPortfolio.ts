@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getPortfolio as getClientPortfolio } from "@lightdotso/client";
-import type { PortfolioParams } from "@/params";
+import type { PortfolioParams } from "@lightdotso/params";
 import "server-only";
 
 // -----------------------------------------------------------------------------

@@ -27,7 +27,7 @@ import { RefreshCcw } from "lucide-react";
 import type { FC } from "react";
 import type { Address } from "viem";
 import invokePortfolioAction from "@/actions/invokePortfolioAction";
-import { useAuth } from "@/stores";
+import { useAuth } from "@lightdotso/stores";
 import { infoToast } from "@/utils";
 
 // -----------------------------------------------------------------------------

@@ -16,6 +16,9 @@
 "use client";
 
 import { CONTRACT_ADDRESSES } from "@lightdotso/const";
+import type { WalletSettingsData } from "@lightdotso/data";
+import { useSuspenseQueryUserOperations } from "@lightdotso/query";
+import { queryKeys } from "@lightdotso/query-keys";
 import { calculateInitCode } from "@lightdotso/solutions";
 import { Button } from "@lightdotso/ui";
 import { useQueryClient } from "@tanstack/react-query";
@@ -24,9 +27,6 @@ import type { FC } from "react";
 import type { Address, Chain, Hex } from "viem";
 import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const/titles";
-import type { WalletSettingsData } from "@/data";
-import { useSuspenseQueryUserOperations } from "@/query";
-import { queryKeys } from "@/queryKeys";
 
 // -----------------------------------------------------------------------------
 // Props

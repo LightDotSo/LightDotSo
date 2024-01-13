@@ -18,6 +18,7 @@
 // "use client";
 
 import { createFeedback } from "@lightdotso/client";
+import { useAuth } from "@lightdotso/stores";
 import {
   Button,
   Form,
@@ -34,7 +35,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { FC } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { useAuth } from "@/stores";
 import { errorToast, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------

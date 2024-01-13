@@ -24,7 +24,7 @@ import {
 } from "@lightdotso/ui";
 import { motion, AnimatePresence } from "framer-motion";
 import type { FC } from "react";
-import { useNewForm } from "@/stores";
+import { useNewForm } from "@lightdotso/stores";
 
 // -----------------------------------------------------------------------------
 // Component

@@ -30,10 +30,10 @@ import { useEffect } from "react";
 import type { Address } from "viem";
 import { TransactionCard } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transaction-card";
 import { TableEmpty } from "@/components/state/table-empty";
-import type { UserOperationData } from "@/data";
-import { useQueryConfiguration } from "@/query";
+import type { UserOperationData } from "@lightdotso/data";
+import { useQueryConfiguration } from "@lightdotso/query";
 import { usePaginationQueryState } from "@/queryStates";
-import { useTables } from "@/stores";
+import { useTables } from "@lightdotso/stores";
 import { groupByDate } from "@/utils/group";
 
 // -----------------------------------------------------------------------------

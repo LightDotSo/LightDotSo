@@ -15,6 +15,9 @@
 
 "use client";
 
+import type { NftDataPage, WalletSettingsData } from "@lightdotso/data";
+import { queryKeys } from "@lightdotso/query-keys";
+import { useSuspenseQueryTokens } from "@lightdotso/query";
 import type {
   SimplehashMainnetChain,
   SimplehashTestnetChain,
@@ -71,9 +74,6 @@ import { useTransfersQueryState } from "@/app/(wallet)/[address]/send/(hooks)";
 import { publicClient } from "@/clients/public";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@/const/simplehash";
-import type { NftDataPage, WalletSettingsData } from "@/data";
-import { useSuspenseQueryTokens } from "@/query";
-import { queryKeys } from "@/queryKeys";
 import type { Transfer, Transfers } from "@/schemas";
 import { sendFormConfigurationSchema } from "@/schemas/sendForm";
 import { debounce } from "@/utils";

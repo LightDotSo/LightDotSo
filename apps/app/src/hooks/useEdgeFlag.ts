@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { useAuth } from "@lightdotso/stores";
 import { useFlag } from "@upstash/edge-flags";
 import { useMemo } from "react";
-import { useAuth } from "@/stores";
 
 // From: https://github.com/shadcn-ui/ui/blob/fb614ac2921a84b916c56e9091aa0ae8e129c565/apps/www/hooks/use-media-query.tsx#L4
 // License: MIT

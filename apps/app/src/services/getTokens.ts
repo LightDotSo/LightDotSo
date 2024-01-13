@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getTokens as getClientTokens } from "@lightdotso/client";
-import type { TokenListParams } from "@/params";
+import type { TokenListParams } from "@lightdotso/params";
 import "server-only";
 
 // -----------------------------------------------------------------------------

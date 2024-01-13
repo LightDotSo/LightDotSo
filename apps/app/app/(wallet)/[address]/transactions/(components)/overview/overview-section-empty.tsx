@@ -19,8 +19,11 @@ import { Table, TableBody, TableCell, TableRow } from "@lightdotso/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { TableEmpty } from "@/components/state/table-empty";
-import type { UserOperationCountData, WalletSettingsData } from "@/data";
-import { queryKeys } from "@/queryKeys";
+import type {
+  UserOperationCountData,
+  WalletSettingsData,
+} from "@lightdotso/data";
+import { queryKeys } from "@lightdotso/query-keys";
 
 // -----------------------------------------------------------------------------
 // Props

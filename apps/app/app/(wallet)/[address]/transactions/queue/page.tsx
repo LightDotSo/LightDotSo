@@ -19,7 +19,7 @@ import { TransactionsDataTable } from "@/app/(wallet)/[address]/transactions/(co
 import { TransactionsDataTablePagination } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table-pagination";
 import { handler } from "@/handlers/paths/[address]/transactions/queue/handler";
 import { preloader } from "@/preloaders/paths/[address]/transactions/queue/preloader";
-import { queryKeys } from "@/queryKeys";
+import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------

@@ -20,8 +20,8 @@ import { type FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/data-table";
-import type { NftDataPage, WalletSettingsData } from "@/data";
-import { queryKeys } from "@/queryKeys";
+import type { NftDataPage, WalletSettingsData } from "@lightdotso/data";
+import { queryKeys } from "@lightdotso/query-keys";
 
 // -----------------------------------------------------------------------------
 // Props

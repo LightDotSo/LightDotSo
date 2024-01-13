@@ -30,7 +30,7 @@ import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { SiweMessage } from "siwe";
 import { useSignMessage, useAccount } from "wagmi";
-import { useAuth, useModals } from "@/stores";
+import { useAuth, useModals } from "@lightdotso/stores";
 import { errorToast, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------

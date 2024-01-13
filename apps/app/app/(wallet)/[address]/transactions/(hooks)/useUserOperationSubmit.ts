@@ -20,11 +20,11 @@ import {
   sendUserOperation,
 } from "@lightdotso/client";
 import { CONTRACT_ADDRESSES } from "@lightdotso/const";
+import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
+import { useSuspenseQueryPaymasterOperation } from "@lightdotso/query";
 import { useCallback, useState, useEffect } from "react";
 import { toHex, fromHex, recoverMessageAddress } from "viem";
 import type { Hex, Address } from "viem";
-import type { ConfigurationData, UserOperationData } from "@/data";
-import { useSuspenseQueryPaymasterOperation } from "@/query";
 import { errorToast, successToast } from "@/utils";
 import {
   useReadLightVerifyingPaymasterGetHash,

@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getUserOperation as getClientUserOperation } from "@lightdotso/client";
-import type { UserOperationGetParams } from "@/params";
+import type { UserOperationGetParams } from "@lightdotso/params";
 import "server-only";
 
 // -----------------------------------------------------------------------------

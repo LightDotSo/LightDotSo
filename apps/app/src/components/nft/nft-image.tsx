@@ -17,10 +17,10 @@
 
 /* eslint-disable @next/next/no-img-element */
 
+import type { NftData } from "@lightdotso/data";
 import { cn } from "@lightdotso/utils";
 import { useState, type FC } from "react";
 import { Blurhash } from "react-blurhash";
-import type { NftData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props

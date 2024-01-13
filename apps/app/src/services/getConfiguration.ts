@@ -14,8 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getConfiguration as getClientConfiguration } from "@lightdotso/client";
+import type { ConfigurationParams } from "@lightdotso/params";
 import "server-only";
-import type { ConfigurationParams } from "@/params";
 
 // -----------------------------------------------------------------------------
 // Pre

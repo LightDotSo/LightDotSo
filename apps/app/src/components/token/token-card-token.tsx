@@ -15,12 +15,12 @@
 
 "use client";
 
+import type { TokenData } from "@lightdotso/data";
 import { ButtonIcon } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { ChevronRightIcon } from "lucide-react";
 import type { FC } from "react";
 import { TokenImage } from "@/components/token/token-image";
-import type { TokenData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props

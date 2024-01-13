@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getTransactionsCount as getClientTransactionsCount } from "@lightdotso/client";
-import type { TransactionListCountParams } from "@/params";
+import type { TransactionListCountParams } from "@lightdotso/params";
 import "server-only";
 
 // -----------------------------------------------------------------------------

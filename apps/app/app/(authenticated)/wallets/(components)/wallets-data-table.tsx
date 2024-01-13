@@ -15,13 +15,13 @@
 
 "use client";
 
+import { useQueryWallets, useQueryWalletsCount } from "@lightdotso/query";
+import { useAuth } from "@lightdotso/stores";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(authenticated)/wallets/(components)/data-table/columns";
 import { DataTable } from "@/app/(authenticated)/wallets/(components)/data-table/data-table";
-import { useQueryWallets, useQueryWalletsCount } from "@/query";
 import { usePaginationQueryState } from "@/queryStates";
-import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Component

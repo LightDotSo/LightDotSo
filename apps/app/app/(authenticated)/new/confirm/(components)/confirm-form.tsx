@@ -56,7 +56,7 @@ import {
   newFormConfigurationSchema,
   newFormStoreSchema,
 } from "@/schemas/newForm";
-import { useAuth, useNewForm } from "@/stores";
+import { useAuth, useNewForm } from "@lightdotso/stores";
 import { errorToast, infoToast, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------

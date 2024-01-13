@@ -36,9 +36,9 @@ import {
 import type { ColumnDef } from "@tanstack/react-table";
 import { useEffect } from "react";
 import { TableEmpty } from "@/components/state/table-empty";
-import type { ConfigurationOwnerData } from "@/data";
+import type { ConfigurationOwnerData } from "@lightdotso/data";
 import { usePaginationQueryState } from "@/queryStates";
-import { useTables } from "@/stores";
+import { useTables } from "@lightdotso/stores";
 
 // -----------------------------------------------------------------------------
 // Props

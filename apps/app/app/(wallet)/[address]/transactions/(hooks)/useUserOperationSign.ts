@@ -16,6 +16,8 @@
 "use client";
 
 import { createSignature } from "@lightdotso/client";
+import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
+import { useAuth } from "@lightdotso/stores";
 import { subdigestOf } from "@lightdotso/solutions";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
@@ -28,8 +30,6 @@ import {
   isAddress,
 } from "viem";
 import { useSignMessage } from "wagmi";
-import type { ConfigurationData, UserOperationData } from "@/data";
-import { useAuth } from "@/stores";
 import { errorToast, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------

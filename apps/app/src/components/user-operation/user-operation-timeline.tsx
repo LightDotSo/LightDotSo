@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { UserOperationData } from "@lightdotso/data";
 import {
   Avatar,
   Timeline,
@@ -27,7 +28,6 @@ import type { FC, ReactNode } from "react";
 import TimeAgo from "timeago-react";
 import type { Address } from "viem";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
-import type { UserOperationData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Wrapper

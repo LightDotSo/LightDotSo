@@ -25,7 +25,7 @@ import {
 } from "@lightdotso/ui";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import type { Row } from "@tanstack/react-table";
-import type { ConfigurationOwnerData } from "@/data";
+import type { ConfigurationOwnerData } from "@lightdotso/data";
 
 // -----------------------------------------------------------------------------
 // Props

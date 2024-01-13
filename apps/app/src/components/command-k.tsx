@@ -15,6 +15,7 @@
 
 "use client";
 
+import { useAuth, useDev } from "@lightdotso/stores";
 import {
   CommandDialog,
   CommandEmpty,
@@ -41,7 +42,6 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
 import type { FC } from "react";
 import { useCopy } from "@/hooks";
-import { useAuth, useDev } from "@/stores";
 import { successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------

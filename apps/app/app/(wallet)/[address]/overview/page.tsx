@@ -15,13 +15,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { queryKeys } from "@lightdotso/query-keys";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { OverviewList } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-list";
 import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
 import { handler } from "@/handlers/paths/[address]/overview/handler";
 import { preloader } from "@/preloaders/paths/[address]/overview/preloader";
-import { queryKeys } from "@/queryKeys";
 import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------

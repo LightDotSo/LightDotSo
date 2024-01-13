@@ -22,7 +22,7 @@ import { SettingsSectionWrapper } from "@/components/wrapper/section/settings-se
 import { CHAINS, MAINNET_CHAINS } from "@/const/chains";
 import { handler } from "@/handlers/paths/[address]/settings/deployment/handler";
 import { preloader } from "@/preloaders/paths/[address]/preloader";
-import { queryKeys } from "@/queryKeys";
+import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------

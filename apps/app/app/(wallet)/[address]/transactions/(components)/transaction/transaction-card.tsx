@@ -39,7 +39,7 @@ import type { Address } from "viem";
 import { TransactionCardExecuteButton } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transaction-card-execute-button";
 import { TransactionCardSignButton } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transaction-card-sign-button";
 import { UserOperationTimeline } from "@/components/user-operation/user-operation-timeline";
-import type { ConfigurationData, UserOperationData } from "@/data";
+import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
 import { getChainById } from "@/utils";
 
 // -----------------------------------------------------------------------------

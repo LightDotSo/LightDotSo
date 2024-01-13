@@ -20,7 +20,7 @@ import { cn } from "@lightdotso/utils";
 import { SparkAreaChart } from "@tremor/react";
 import type { FC } from "react";
 import type { Address } from "viem";
-import { useSuspenseQueryPortfolio } from "@/query";
+import { useSuspenseQueryPortfolio } from "@lightdotso/query";
 
 // -----------------------------------------------------------------------------
 // Props

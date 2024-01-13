@@ -15,6 +15,8 @@
 
 "use client";
 
+import { useSuspenseQueryWalletSettings } from "@lightdotso/query";
+import { useAuth } from "@lightdotso/stores";
 import {
   Command,
   CommandEmpty,
@@ -32,8 +34,6 @@ import type { FC } from "react";
 import type { Address } from "viem";
 import { CHAINS, MAINNET_CHAINS } from "@/const/chains";
 import { useIsMounted } from "@/hooks";
-import { useSuspenseQueryWalletSettings } from "@/query";
-import { useAuth } from "@/stores";
 import { ChainLogo } from "@/svgs";
 
 // -----------------------------------------------------------------------------

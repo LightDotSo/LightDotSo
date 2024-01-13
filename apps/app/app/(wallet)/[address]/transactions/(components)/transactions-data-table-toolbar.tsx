@@ -18,7 +18,7 @@
 import { useEffect, type FC } from "react";
 import type { DataTableToolbarProps } from "@/app/(wallet)/[address]/transactions/(components)/data-table/data-table-toolbar";
 import { DataTableToolbar } from "@/app/(wallet)/[address]/transactions/(components)/data-table/data-table-toolbar";
-import { useTables } from "@/stores";
+import { useTables } from "@lightdotso/stores";
 
 // -----------------------------------------------------------------------------
 // Props

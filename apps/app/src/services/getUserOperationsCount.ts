@@ -14,8 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getUserOperationsCount as getClientUserOperationsCount } from "@lightdotso/client";
+import type { UserOperationListCountParams } from "@lightdotso/params";
 import "server-only";
-import type { UserOperationListCountParams } from "@/params";
 
 // -----------------------------------------------------------------------------
 // Pre

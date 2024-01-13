@@ -20,9 +20,9 @@ import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table";
-import type { WalletSettingsData } from "@/data";
-import { useQueryTokens, useQueryTokensCount } from "@/query";
-import { queryKeys } from "@/queryKeys";
+import type { WalletSettingsData } from "@lightdotso/data";
+import { useQueryTokens, useQueryTokensCount } from "@lightdotso/query";
+import { queryKeys } from "@lightdotso/query-keys";
 import { usePaginationQueryState } from "@/queryStates";
 
 // -----------------------------------------------------------------------------
