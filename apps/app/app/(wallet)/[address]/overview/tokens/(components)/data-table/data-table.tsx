@@ -185,7 +185,10 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
             <TableRow
               key={row.id}
               className={cn(
-                row.getCanExpand() ? "cursor-pointer" : "border-b-0",
+                row.getCanExpand()
+                  ? "cursor-pointer"
+                  : "border-b border-b-border",
+                row.getIsExpanded() && "bg-background-secondary",
               )}
               data-state={row.getIsSelected() && "selected"}
               onClick={() => {
