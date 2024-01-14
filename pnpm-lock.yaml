@@ -1832,9 +1832,12 @@ importers:
       '@lightdotso/utils':
         specifier: workspace:*
         version: link:../utils
-      viem:
-        specifier: ^2.0.6
-        version: 2.0.6(typescript@5.3.3)(zod@3.22.4)
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
@@ -1842,6 +1845,12 @@ importers:
       '@types/node':
         specifier: ^20.11.0
         version: 20.11.0
+      '@types/react':
+        specifier: ^18.2.47
+        version: 18.2.47
+      '@types/react-dom':
+        specifier: ^18.2.18
+        version: 18.2.18
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
