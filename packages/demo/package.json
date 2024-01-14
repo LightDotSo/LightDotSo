@@ -25,7 +25,8 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@lightdotso/client": "workspace:*"
+    "@lightdotso/client": "workspace:*",
+    "@lightdotso/data": "workspace:*"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
