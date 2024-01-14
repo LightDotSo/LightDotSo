@@ -13,7 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{
+    result::AppJsonResult, routes::interpretation::types::Interpretation, state::AppState,
+};
 use autometrics::autometrics;
 use axum::{extract::State, Json};
 use clap::Parser;
@@ -91,7 +93,7 @@ impl TryFrom<SimulationCreateRequestParams> for SimulationRequest {
 pub(crate) async fn v1_simulation_create_handler(
     State(state): State<AppState>,
     Json(params): Json<SimulationCreateRequestParams>,
-) -> AppJsonResult<i64> {
+) -> AppJsonResult<Interpretation> {
     // -------------------------------------------------------------------------
     // Parse
     // -------------------------------------------------------------------------
@@ -111,7 +113,8 @@ pub(crate) async fn v1_simulation_create_handler(
     info!("res: {:?}", res);
 
     // Upsert the interpretation
-    upsert_interpretation_with_actions(state.client.clone(), res.clone(), None, None).await?;
+    let interpretation =
+        upsert_interpretation_with_actions(state.client.clone(), res.clone(), None, None).await?;
 
     // -------------------------------------------------------------------------
     // Kafka
@@ -133,5 +136,12 @@ pub(crate) async fn v1_simulation_create_handler(
     )
     .await?;
 
-    Ok(Json::from(1))
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
+
+    // Change the interpretation to the format that the API expects.
+    let interpretation: Interpretation = interpretation.into();
+
+    Ok(Json::from(interpretation))
 }
