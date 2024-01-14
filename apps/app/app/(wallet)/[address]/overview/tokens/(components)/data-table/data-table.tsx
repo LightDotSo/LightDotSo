@@ -184,10 +184,7 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
           table.getRowModel().rows.map(row => (
             <TableRow
               key={row.id}
-              className={cn(
-                row.getCanExpand() && "cursor-pointer border-0",
-                !row.getIsExpanded() && "border-0",
-              )}
+              className={cn(row.getCanExpand() && "cursor-pointer")}
               data-state={row.getIsSelected() && "selected"}
               onClick={() => {
                 if (row.getCanExpand()) {
