@@ -26,11 +26,14 @@
   },
   "dependencies": {
     "@lightdotso/utils": "workspace:*",
-    "viem": "^2.0.6"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^20.11.0",
+    "@types/react": "^18.2.47",
+    "@types/react-dom": "^18.2.18",
     "typescript": "^5.3.3"
   },
   "publishConfig": {
