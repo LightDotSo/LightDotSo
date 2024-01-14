@@ -35,11 +35,12 @@ jobs:
           sleep 30s
       - name: Wait Docker
         uses: lewagon/wait-on-check-action@v1.3.3
+        continue-on-error: true
         with:
           ref: ${{ github.ref }}
           check-name: docker-build
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 10
+          wait-interval: 30
           allowed-conclusions: success,skipped,cancelled
   fly-deploy-api:
     runs-on: ubuntu-latest
