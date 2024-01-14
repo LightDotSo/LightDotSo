@@ -61,12 +61,24 @@ pub enum PostQueryProcedure {
 // Params
 // -----------------------------------------------------------------------------
 
-/// Signature operation errors
+/// Signature operation post request params
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
 pub struct SignaturePostRequestParams {
     /// The result of the signature.
-    pub signature: Signature,
+    pub signature: SignaturePostRequestSignatureParams,
+}
+
+/// Signature operation
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
+pub struct SignaturePostRequestSignatureParams {
+    /// The id of the owner of the signature.
+    pub owner_id: String,
+    /// The signature of the user operation in hex.
+    pub signature: String,
+    /// The type of the signature.
+    pub signature_type: i32,
 }
 
 // -----------------------------------------------------------------------------

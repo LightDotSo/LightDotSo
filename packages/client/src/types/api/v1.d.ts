@@ -108,13 +108,6 @@ export interface paths {
      */
     get: operations["v1_interpretation_list_handler"];
   };
-  "/interpretation/update": {
-    /**
-     * Update a list of interpretations
-     * @description Update a list of interpretations
-     */
-    post: operations["v1_interpretation_update_handler"];
-  };
   "/invite_code/create": {
     /**
      * Create an invite code
@@ -170,6 +163,20 @@ export interface paths {
      * @description Read a list of notifications
      */
     post: operations["v1_notification_read_handler"];
+  };
+  "/owner/get": {
+    /**
+     * Get a owner
+     * @description Get a owner
+     */
+    get: operations["v1_owner_get_handler"];
+  };
+  "/owner/list": {
+    /**
+     * Returns a list of owners.
+     * @description Returns a list of owners.
+     */
+    get: operations["v1_owner_list_handler"];
   };
   "/paymaster/get": {
     /**
@@ -637,6 +644,8 @@ export interface components {
     };
     /** @description Interpretation root type. */
     Interpretation: {
+      /** @description The array of actions of the interpretation. */
+      actions: string[];
       /** @description The id of the interpretation to read for. */
       id: string;
     };
@@ -648,15 +657,6 @@ export interface components {
       /** @description Interpretation not found by id. */
       NotFound: string;
     }]>;
-    /** @description Item to request. */
-    InterpretationUpdateRequest: {
-      /** @description The id of the interpretation to update for. */
-      id: string;
-    };
-    InterpretationUpdateRequestParams: {
-      /** @description The array of the interpretations to query. */
-      interpretations: components["schemas"]["InterpretationUpdateRequest"][];
-    };
     /** @description InviteCode root type. */
     InviteCode: {
       /** @description The code of the invite code. */
@@ -699,22 +699,26 @@ export interface components {
       /** @description The array of the notifications to query. */
       notifications: components["schemas"]["NotificationPostRequest"][];
     };
-    /**
-     * @description Wallet owner.
-     * @example {
-     *   "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
-     *   "weight": 1
-     * }
-     */
+    /** @description Owner root type. */
     Owner: {
       /** @description The address of the owner. */
       address: string;
+      /** @description The id of the owner. */
+      id: string;
       /**
-       * Format: int32
+       * Format: int64
        * @description The weight of the owner.
        */
       weight: number;
     };
+    /** @description Owner operation errors */
+    OwnerError: OneOf<[{
+      /** @description Owner query error. */
+      BadRequest: string;
+    }, {
+      /** @description Owner not found by id. */
+      NotFound: string;
+    }]>;
     /** @description Paymaster root type. */
     Paymaster: {
       /** @description The address of the paymaster. */
@@ -826,7 +830,9 @@ export interface components {
     };
     /** @description Signature root type. */
     Signature: {
-      /** @description The owner id of the signature. */
+      /** @description The created time of the signature. */
+      created_at: string;
+      /** @description The id of the owner of the signature. */
       owner_id: string;
       /** @description The signature of the user operation in hex. */
       signature: string;
@@ -844,9 +850,9 @@ export interface components {
       /** @description Signature not found by id. */
       NotFound: string;
     }]>;
-    /** @description Signature operation errors */
+    /** @description Signature operation post request params */
     SignaturePostRequestParams: {
-      signature: components["schemas"]["Signature"];
+      signature: components["schemas"]["SignaturePostRequestSignatureParams"];
     };
     /** @description Support Request root type. */
     SupportRequest: {
@@ -983,6 +989,7 @@ export interface components {
       chain_id: number;
       /** @description The hash of the transaction. */
       hash: string;
+      interpretation?: components["schemas"]["Interpretation"] | null;
       /** @description The timestamp of the transaction. */
       timestamp: string;
     };
@@ -1016,30 +1023,61 @@ export interface components {
     }]>;
     /** @description User operation root type. */
     UserOperation: {
+      /** @description The call data of the user operation. */
       call_data: string;
-      /** Format: int64 */
+      /**
+       * Format: int64
+       * @description The call gas of the user operation.
+       */
       call_gas_limit: number;
-      /** Format: int64 */
+      /**
+       * Format: int64
+       * @description The chain id of the user operation.
+       */
       chain_id: number;
+      /** @description The timestamp of the user operation. */
       created_at: string;
+      /** @description The hash of the user operation. */
       hash: string;
+      /** @description The init code of the user operation. */
       init_code: string;
-      /** Format: int64 */
+      interpretation?: components["schemas"]["Interpretation"] | null;
+      /**
+       * Format: int64
+       * @description The maximum fee per gas of the user operation.
+       */
       max_fee_per_gas: number;
-      /** Format: int64 */
+      /**
+       * Format: int64
+       * @description The maximum priority fee per gas of the user operation.
+       */
       max_priority_fee_per_gas: number;
-      /** Format: int64 */
+      /**
+       * Format: int64
+       * @description The nonce of the user operation.
+       */
       nonce: number;
-      paymaster?: components["schemas"]["UserOperationPaymaster"] | null;
+      paymaster?: components["schemas"]["Paymaster"] | null;
+      /** @description The paymaster and data of the user operation. */
       paymaster_and_data: string;
-      /** Format: int64 */
+      /**
+       * Format: int64
+       * @description The pre verification gas of the user operation.
+       */
       pre_verification_gas: number;
+      /** @description The sender of the user operation. */
       sender: string;
-      signatures: components["schemas"]["UserOperationSignature"][];
+      /** @description The signatures of the user operation. */
+      signatures: components["schemas"]["Signature"][];
+      /** @description The status of the user operation. */
       status: string;
-      transaction?: components["schemas"]["UserOperationTransaction"] | null;
+      transaction?: components["schemas"]["Transaction"] | null;
+      /** @description The timestamp updated of the user operation. */
       updated_at: string;
-      /** Format: int64 */
+      /**
+       * Format: int64
+       * @description The verification gas of the user operation.
+       */
       verification_gas_limit: number;
     };
     /** @description Item to create. */
@@ -1087,38 +1125,14 @@ export interface components {
        */
       nonce: number;
     };
-    /** @description User operation paymaster */
-    UserOperationPaymaster: {
-      /** @description The address of the paymaster. */
-      address: string;
-    };
     UserOperationPostRequestParams: {
       signature: components["schemas"]["UserOperationCreateSignature"];
       user_operation: components["schemas"]["UserOperationCreate"];
-    };
-    /** @description User operation signature */
-    UserOperationSignature: {
-      /** @description The created time of the signature. */
-      created_at: string;
-      /** @description The id of the owner of the signature. */
-      owner_id: string;
-      /** @description The signature in hex string. */
-      signature: string;
-      /**
-       * Format: int32
-       * @description The signature type
-       */
-      signature_type: number;
     };
     /** @description User operation operation errors */
     UserOperationSuccess: {
       /** @description User operation updated successfully. */
       Updated: string;
-    };
-    /** @description User operation transaction */
-    UserOperationTransaction: {
-      /** @description The hash of the transaction. */
-      hash: string;
     };
     /** @description Wallet root type. */
     Wallet: {
@@ -1201,7 +1215,7 @@ export interface components {
        *   }
        * ]
        */
-      owners: components["schemas"]["Owner"][];
+      owners: components["schemas"]["WalletPostRequestOwnerParams"][];
       /**
        * @description The salt is used to calculate the new wallet address.
        * @default 0x0000000000000000000000000000000000000000000000000000000000000001
@@ -1215,14 +1229,6 @@ export interface components {
        * @example 3
        */
       threshold: number;
-    };
-    WalletPutRequestParams: {
-      /**
-       * @description The name of the wallet.
-       * @default My Wallet
-       * @example My Wallet
-       */
-      name?: string | null;
     };
     /** @description WalletSettings root type. */
     WalletSettings: {
@@ -1243,6 +1249,14 @@ export interface components {
     };
     WalletSettingsUpdateRequestParams: {
       wallet_settings: components["schemas"]["WalletSettingsOptional"];
+    };
+    WalletUpdateRequestParams: {
+      /**
+       * @description The name of the wallet.
+       * @default My Wallet
+       * @example My Wallet
+       */
+      name?: string | null;
     };
   };
   responses: never;
@@ -1598,31 +1612,6 @@ export interface operations {
     };
   };
   /**
-   * Update a list of interpretations
-   * @description Update a list of interpretations
-   */
-  v1_interpretation_update_handler: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["InterpretationUpdateRequestParams"];
-      };
-    };
-    responses: {
-      /** @description Interpretation created successfully */
-      200: {
-        content: {
-          "text/plain": number;
-        };
-      };
-      /** @description Interpretation internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["InterpretationError"];
-        };
-      };
-    };
-  };
-  /**
    * Create an invite code
    * @description Create an invite code
    */
@@ -1835,6 +1824,59 @@ export interface operations {
       500: {
         content: {
           "application/json": components["schemas"]["NotificationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a owner
+   * @description Get a owner
+   */
+  v1_owner_get_handler: {
+    parameters: {
+      query: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Owner returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Owner"];
+        };
+      };
+      /** @description Owner not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["OwnerError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of owners.
+   * @description Returns a list of owners.
+   */
+  v1_owner_list_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first owner to return. */
+        offset?: number | null;
+        /** @description The maximum number of owners to return. */
+        limit?: number | null;
+      };
+    };
+    responses: {
+      /** @description Owners returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Owner"][];
+        };
+      };
+      /** @description Owner bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["OwnerError"];
         };
       };
     };
@@ -2116,16 +2158,18 @@ export interface operations {
    */
   v1_queue_interpretation_handler: {
     parameters: {
-      query: {
-        /** @description The address of the target queue. */
-        address: string;
+      query?: {
+        /** @description The optional transaction hash to queue. */
+        transaction_hash?: string | null;
+        /** @description The optional user operation hash to queue. */
+        user_operation_hash?: string | null;
       };
     };
     responses: {
       /** @description Queue created successfully */
       200: {
         content: {
-          "text/plain": number;
+          "application/json": components["schemas"]["QueueSuccess"];
         };
       };
       /** @description Queue internal error */
@@ -2151,7 +2195,7 @@ export interface operations {
       /** @description Queue created successfully */
       200: {
         content: {
-          "text/plain": number;
+          "application/json": components["schemas"]["QueueSuccess"];
         };
       };
       /** @description Queue internal error */
@@ -2177,7 +2221,7 @@ export interface operations {
       /** @description Queue created successfully */
       200: {
         content: {
-          "text/plain": number;
+          "application/json": components["schemas"]["QueueSuccess"];
         };
       };
       /** @description Queue internal error */
@@ -3298,7 +3342,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["WalletPutRequestParams"];
+        "application/json": components["schemas"]["WalletUpdateRequestParams"];
       };
     };
     responses: {
