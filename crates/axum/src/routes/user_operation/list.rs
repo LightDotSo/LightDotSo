@@ -20,7 +20,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::{
-    asset_change, interpretation,
+    asset_change, interpretation, interpretation_action,
     user_operation::{self, WhereParam},
     UserOperationStatus,
 };
@@ -130,6 +130,14 @@ pub(crate) async fn v1_user_operation_list_handler(
     // DB
     // -------------------------------------------------------------------------
 
+    // Get the interpretation action params.
+    let mut interpretaion_action_params =
+        vec![or![interpretation_action::address::equals("".to_string())]];
+    if let Some(addr) = &query.address {
+        interpretaion_action_params
+            .push(or![interpretation_action::address::equals(addr.clone()),]);
+    }
+
     // Get the user operations from the database.
     let user_operations = state
         .client
@@ -142,7 +150,7 @@ pub(crate) async fn v1_user_operation_list_handler(
         .with(user_operation::signatures::fetch(vec![]))
         .with(
             user_operation::interpretation::fetch()
-                .with(interpretation::actions::fetch(vec![]))
+                .with(interpretation::actions::fetch(interpretaion_action_params))
                 .with(
                     interpretation::asset_changes::fetch(vec![]).with(asset_change::token::fetch()),
                 ),
