@@ -13,15 +13,18 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use super::types::Interpretation;
-use crate::{result::AppJsonResult, state::AppState};
+use super::types::AssetChange;
+use crate::{
+    error::RouteError, result::AppJsonResult, routes::asset_change::error::AssetChangeError,
+    state::AppState,
+};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use lightdotso_prisma::{asset_change, interpretation};
-use prisma_client_rust::Direction;
+use lightdotso_prisma::asset_change;
+use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -32,65 +35,64 @@ use utoipa::IntoParams;
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
-pub struct ListQuery {
-    /// The offset of the first interpretation to return.
-    pub offset: Option<i64>,
-    /// The maximum number of interpretations to return.
-    pub limit: Option<i64>,
+pub struct GetQuery {
+    pub id: String,
 }
 
 // -----------------------------------------------------------------------------
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of interpretations.
+/// Get a asset
 #[utoipa::path(
         get,
-        path = "/interpretation/list",
+        path = "/asset_change/get",
         params(
-            ListQuery
+            GetQuery
         ),
         responses(
-            (status = 200, description = "Interpretations returned successfully", body = [Interpretation]),
-            (status = 500, description = "Interpretations bad request", body = InterpretationError),
+            (status = 200, description = "Asset Change returned successfully", body = AssetChange),
+            (status = 404, description = "Asset Change not found", body = AssetChangeError),
         )
     )]
 #[autometrics]
-pub(crate) async fn v1_interpretation_list_handler(
-    list_query: Query<ListQuery>,
+pub(crate) async fn v1_asset_change_get_handler(
+    get_query: Query<GetQuery>,
     State(state): State<AppState>,
-) -> AppJsonResult<Vec<Interpretation>> {
+) -> AppJsonResult<AssetChange> {
     // -------------------------------------------------------------------------
     // Parse
     // -------------------------------------------------------------------------
 
-    // Get the list query.
-    let Query(query) = list_query;
+    // Get the get query.
+    let Query(query) = get_query;
+
+    info!("Get asset change for address: {:?}", query);
 
     // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
 
-    // Get the interpretations from the database.
-    let interpretations = state
+    // Get the asset_changes from the database.
+    let asset_change = state
         .client
-        .interpretation()
-        .find_many(vec![])
-        .order_by(interpretation::created_at::order(Direction::Desc))
-        .with(interpretation::actions::fetch(vec![]))
-        .with(interpretation::asset_changes::fetch(vec![]).with(asset_change::token::fetch()))
-        .skip(query.offset.unwrap_or(0))
-        .take(query.limit.unwrap_or(10))
+        .asset_change()
+        .find_unique(asset_change::id::equals(query.id))
+        .with(asset_change::token::fetch())
         .exec()
         .await?;
+
+    // If the asset_change is not found, return a 404.
+    let asset_change = asset_change.ok_or(RouteError::AssetChangeError(
+        AssetChangeError::NotFound("Asset_change not found".to_string()),
+    ))?;
 
     // -------------------------------------------------------------------------
     // Return
     // -------------------------------------------------------------------------
 
-    // Change the interpretations to the format that the API expects.
-    let interpretations: Vec<Interpretation> =
-        interpretations.into_iter().map(Interpretation::from).collect();
+    // Change the asset_change to the format that the API expects.
+    let asset_change: AssetChange = asset_change.into();
 
-    Ok(Json::from(interpretations))
+    Ok(Json::from(asset_change))
 }

@@ -57,6 +57,10 @@ pub(crate) struct TokenGroup {
     pub tokens: Vec<Token>,
 }
 
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
 /// Implement From<token::Data> for Token.
 impl From<token::Data> for Token {
     fn from(token: token::Data) -> Self {

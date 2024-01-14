@@ -13,7 +13,7 @@ importers:
     dependencies:
       next:
         specifier: 14.0.4
-        version: 14.0.4(@babel/core@7.23.7)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 14.0.4(react-dom@18.2.0)(react@18.2.0)
       solc:
         specifier: 0.8.18
         version: 0.8.18
@@ -357,9 +357,6 @@ importers:
       '@lightdotso/wagmi':
         specifier: workspace:*
         version: link:../../packages/wagmi
-      '@lukemorales/query-key-factory':
-        specifier: ^1.3.2
-        version: 1.3.2(@tanstack/query-core@5.17.10)(@tanstack/react-query@5.17.10)
       '@opentelemetry/exporter-trace-otlp-http':
         specifier: ^0.46.0
         version: 0.46.0(@opentelemetry/api@1.4.1)
@@ -440,7 +437,7 @@ importers:
         version: 0.1.10(next@14.0.4)(react@18.2.0)
       '@wagmi/core':
         specifier: ^2.2.0
-        version: 2.2.0(@tanstack/query-core@5.17.10)(@types/react@18.2.47)(immer@10.0.3)(react@18.2.0)(typescript@5.3.3)(viem@2.0.6)(zod@3.22.4)
+        version: 2.2.0(@types/react@18.2.47)(immer@10.0.3)(react@18.2.0)(typescript@5.3.3)(viem@2.0.6)(zod@3.22.4)
       blurhash:
         specifier: ^2.0.5
         version: 2.0.5
@@ -533,7 +530,7 @@ importers:
         version: 2.0.6(typescript@5.3.3)(zod@3.22.4)
       wagmi:
         specifier: ^2.2.0
-        version: 2.2.0(@tanstack/query-core@5.17.10)(@tanstack/react-query@5.17.10)(@types/react@18.2.47)(@upstash/redis@1.28.0)(immer@10.0.3)(react-dom@18.2.0)(react-native@0.73.2)(react@18.2.0)(typescript@5.3.3)(viem@2.0.6)(zod@3.22.4)
+        version: 2.2.0(@tanstack/react-query@5.17.10)(@types/react@18.2.47)(@upstash/redis@1.28.0)(immer@10.0.3)(react-dom@18.2.0)(react-native@0.73.2)(react@18.2.0)(typescript@5.3.3)(viem@2.0.6)(zod@3.22.4)
       zod:
         specifier: ^3.22.4
         version: 3.22.4
@@ -616,7 +613,7 @@ importers:
         version: 10.17.0
       next:
         specifier: 14.0.4
-        version: 14.0.4(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
+        version: 14.0.4(@babel/core@7.23.7)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-themes:
         specifier: ^0.2.1
         version: 0.2.1(next@14.0.4)(react-dom@18.2.0)(react@18.2.0)
@@ -705,7 +702,7 @@ importers:
         version: 7.93.0(next@14.0.4)(react@18.2.0)(webpack@5.88.2)
       next:
         specifier: 14.0.4
-        version: 14.0.4(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
+        version: 14.0.4(@babel/core@7.23.7)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       nextra:
         specifier: ^2.13.2
         version: 2.13.2(next@14.0.4)(react-dom@18.2.0)(react@18.2.0)
@@ -793,7 +790,7 @@ importers:
         version: 2.0.0(kysely@0.27.2)(postgres@3.4.3)
       next:
         specifier: 14.0.4
-        version: 14.0.4(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
+        version: 14.0.4(@babel/core@7.23.7)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       postgres:
         specifier: ^3.4.3
         version: 3.4.3
@@ -817,7 +814,7 @@ importers:
         version: 2.0.6(typescript@5.3.3)(zod@3.22.4)
       wagmi:
         specifier: ^2.2.0
-        version: 2.2.0(@tanstack/query-core@5.17.10)(@tanstack/react-query@5.17.10)(@types/react@18.2.47)(@upstash/redis@1.28.0)(immer@10.0.3)(react-dom@18.2.0)(react-native@0.73.2)(react@18.2.0)(typescript@5.3.3)(viem@2.0.6)(zod@3.22.4)
+        version: 2.2.0(@tanstack/react-query@5.17.10)(@types/react@18.2.47)(@upstash/redis@1.28.0)(immer@10.0.3)(react-dom@18.2.0)(react-native@0.73.2)(react@18.2.0)(typescript@5.3.3)(viem@2.0.6)(zod@3.22.4)
     devDependencies:
       '@lightdotso/eslint-config':
         specifier: workspace:*
@@ -900,7 +897,7 @@ importers:
         version: 0.0.20
       next:
         specifier: 14.0.4
-        version: 14.0.4(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
+        version: 14.0.4(@babel/core@7.23.7)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -1111,7 +1108,7 @@ importers:
         version: 0.263.1(react@18.2.0)
       next:
         specifier: 14.0.4
-        version: 14.0.4(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
+        version: 14.0.4(@babel/core@7.23.7)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-themes:
         specifier: ^0.2.1
         version: 0.2.1(next@14.0.4)(react-dom@18.2.0)(react@18.2.0)
@@ -1331,7 +1328,7 @@ importers:
         version: 3.13.1(tailwindcss@3.4.1)
       next:
         specifier: 14.0.4
-        version: 14.0.4(@babel/core@7.23.7)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 14.0.4(react-dom@18.2.0)(react@18.2.0)
 
   configurations/kysely:
     dependencies:
@@ -1655,7 +1652,7 @@ importers:
         version: 4.0.0
       next:
         specifier: 14.0.4
-        version: 14.0.4(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
+        version: 14.0.4(@babel/core@7.23.7)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -1850,7 +1847,7 @@ importers:
     dependencies:
       wagmi:
         specifier: ^2.2.0
-        version: 2.2.0(@tanstack/query-core@5.17.10)(@tanstack/react-query@5.17.10)(@types/react@18.2.47)(@upstash/redis@1.28.0)(immer@10.0.3)(react-dom@18.2.0)(react-native@0.73.2)(react@18.2.0)(typescript@5.3.3)(viem@2.0.6)(zod@3.22.4)
+        version: 2.2.0(@tanstack/react-query@5.17.10)(@types/react@18.2.47)(@upstash/redis@1.28.0)(immer@10.0.3)(react-dom@18.2.0)(react-native@0.73.2)(react@18.2.0)(typescript@5.3.3)(viem@2.0.6)(zod@3.22.4)
 
   pods: {}
 
@@ -7362,7 +7359,6 @@ packages:
   /@opentelemetry/api@1.4.1:
     resolution: {integrity: sha512-O2yRJce1GOc6PAy3QxFM4NzFiWzvScDC1/5ihYBL6BUEVdq0XMWN01sppE+H6bBXbaFYipjwFLEWLg5PaSOThA==}
     engines: {node: '>=8.0.0'}
-    dev: false
 
   /@opentelemetry/context-async-hooks@1.19.0(@opentelemetry/api@1.4.1):
     resolution: {integrity: sha512-0i1ECOc9daKK3rjUgDDXf0GDD5XfCou5lXnt2DALIc2qKoruPPcesobNKE54laSVUWnC3jX26RzuOa31g0V32A==}
@@ -9730,7 +9726,7 @@ packages:
       react-remove-scroll: 2.5.7(@types/react@18.2.47)(react@18.2.0)
       ua-parser-js: 1.0.37
       viem: 2.0.6(typescript@5.3.3)(zod@3.22.4)
-      wagmi: 2.2.0(@tanstack/query-core@5.17.10)(@tanstack/react-query@5.17.10)(@types/react@18.2.47)(@upstash/redis@1.28.0)(immer@10.0.3)(react-dom@18.2.0)(react-native@0.73.2)(react@18.2.0)(typescript@5.3.3)(viem@2.0.6)(zod@3.22.4)
+      wagmi: 2.2.0(@tanstack/react-query@5.17.10)(@types/react@18.2.47)(@upstash/redis@1.28.0)(immer@10.0.3)(react-dom@18.2.0)(react-native@0.73.2)(react@18.2.0)(typescript@5.3.3)(viem@2.0.6)(zod@3.22.4)
     transitivePeerDependencies:
       - '@types/react'
     dev: false
@@ -11735,7 +11731,7 @@ packages:
       fs-extra: 11.1.1
       image-size: 1.1.1
       loader-utils: 3.2.1
-      next: 14.0.4(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
+      next: 14.0.4(@babel/core@7.23.7)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       node-polyfill-webpack-plugin: 2.0.1(webpack@5.88.2)
       pnp-webpack-plugin: 1.7.0(typescript@5.3.3)
       postcss: 8.4.33
@@ -14003,7 +13999,7 @@ packages:
       '@metamask/sdk': 0.14.1(@types/react@18.2.47)(react-dom@18.2.0)(react-native@0.73.2)(react@18.2.0)
       '@safe-global/safe-apps-provider': 0.18.1(typescript@5.3.3)(zod@3.22.4)
       '@safe-global/safe-apps-sdk': 8.1.0(typescript@5.3.3)(zod@3.22.4)
-      '@wagmi/core': 2.2.0(@tanstack/query-core@5.17.10)(@types/react@18.2.47)(immer@10.0.3)(react@18.2.0)(typescript@5.3.3)(viem@2.0.6)(zod@3.22.4)
+      '@wagmi/core': 2.2.0(@types/react@18.2.47)(immer@10.0.3)(react@18.2.0)(typescript@5.3.3)(viem@2.0.6)(zod@3.22.4)
       '@walletconnect/ethereum-provider': 2.11.0(@types/react@18.2.47)(@upstash/redis@1.28.0)(react@18.2.0)
       '@walletconnect/modal': 2.6.2(@types/react@18.2.47)(react@18.2.0)
       typescript: 5.3.3
@@ -14033,7 +14029,7 @@ packages:
       - zod
     dev: false
 
-  /@wagmi/core@2.2.0(@tanstack/query-core@5.17.10)(@types/react@18.2.47)(immer@10.0.3)(react@18.2.0)(typescript@5.3.3)(viem@2.0.6)(zod@3.22.4):
+  /@wagmi/core@2.2.0(@types/react@18.2.47)(immer@10.0.3)(react@18.2.0)(typescript@5.3.3)(viem@2.0.6)(zod@3.22.4):
     resolution: {integrity: sha512-K3nAX9BR73l6sTGlv0grZd8VinOu5/nMA7j0zsTz6hq04glitN4aWiLMw1S8OuxwAVSZIGnpLv6uXjjKgP1low==}
     peerDependencies:
       '@tanstack/query-core': '>=5.0.0'
@@ -14045,7 +14041,6 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@tanstack/query-core': 5.17.10
       eventemitter3: 5.0.1
       mipd: 0.0.5(typescript@5.3.3)(zod@3.22.4)
       typescript: 5.3.3
@@ -26642,7 +26637,7 @@ packages:
       react: '>=16.0.0'
       react-dom: '>=16.0.0'
     dependencies:
-      next: 14.0.4(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
+      next: 14.0.4(@babel/core@7.23.7)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -26687,7 +26682,7 @@ packages:
       '@opentelemetry/api': 1.4.1
       '@swc/helpers': 0.5.2
       busboy: 1.6.0
-      caniuse-lite: 1.0.30001547
+      caniuse-lite: 1.0.30001568
       graceful-fs: 4.2.11
       postcss: 8.4.31
       react: 18.2.0
@@ -26707,9 +26702,8 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
-    dev: false
 
-  /next@14.0.4(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0):
+  /next@14.0.4(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-qbwypnM7327SadwFtxXnQdGiKpkuhaRLE2uq62/nRul9cj9KhQ5LhHmlziTNqUidZotw/Q1I9OjirBROdUJNgA==}
     engines: {node: '>=18.17.0'}
     hasBin: true
@@ -26747,6 +26741,7 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
+    dev: false
 
   /nextra-theme-docs@2.13.2(next@14.0.4)(nextra@2.13.2)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-yE4umXaImp1/kf/sFciPj2+EFrNSwd9Db26hi98sIIiujzGf3+9eUgAz45vF9CwBw50FSXxm1QGRcY+slQ4xQQ==}
@@ -26765,7 +26760,7 @@ packages:
       git-url-parse: 13.1.1
       intersection-observer: 0.12.2
       match-sorter: 6.3.1
-      next: 14.0.4(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
+      next: 14.0.4(@babel/core@7.23.7)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-seo: 6.4.0(next@14.0.4)(react-dom@18.2.0)(react@18.2.0)
       next-themes: 0.2.1(next@14.0.4)(react-dom@18.2.0)(react@18.2.0)
       nextra: 2.13.2(next@14.0.4)(react-dom@18.2.0)(react@18.2.0)
@@ -26795,7 +26790,7 @@ packages:
       gray-matter: 4.0.3
       katex: 0.16.9
       lodash.get: 4.4.2
-      next: 14.0.4(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
+      next: 14.0.4(@babel/core@7.23.7)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-mdx-remote: 4.4.1(react-dom@18.2.0)(react@18.2.0)
       p-limit: 3.1.0
       react: 18.2.0
@@ -34050,7 +34045,7 @@ packages:
     hasBin: true
     dev: true
 
-  /wagmi@2.2.0(@tanstack/query-core@5.17.10)(@tanstack/react-query@5.17.10)(@types/react@18.2.47)(@upstash/redis@1.28.0)(immer@10.0.3)(react-dom@18.2.0)(react-native@0.73.2)(react@18.2.0)(typescript@5.3.3)(viem@2.0.6)(zod@3.22.4):
+  /wagmi@2.2.0(@tanstack/react-query@5.17.10)(@types/react@18.2.47)(@upstash/redis@1.28.0)(immer@10.0.3)(react-dom@18.2.0)(react-native@0.73.2)(react@18.2.0)(typescript@5.3.3)(viem@2.0.6)(zod@3.22.4):
     resolution: {integrity: sha512-WX5A7t9ZaCK3Ino0n8MzCmE7+ZWFOjejm3b21K0SiPEGt7v4dbOC0pC0nFUJTz3s1bqkOcWOqzEJiEVNLjgK8w==}
     peerDependencies:
       '@tanstack/react-query': '>=5.0.0'
@@ -34063,7 +34058,7 @@ packages:
     dependencies:
       '@tanstack/react-query': 5.17.10(react@18.2.0)
       '@wagmi/connectors': 4.1.3(@types/react@18.2.47)(@upstash/redis@1.28.0)(@wagmi/core@2.2.0)(react-dom@18.2.0)(react-native@0.73.2)(react@18.2.0)(typescript@5.3.3)(viem@2.0.6)(zod@3.22.4)
-      '@wagmi/core': 2.2.0(@tanstack/query-core@5.17.10)(@types/react@18.2.47)(immer@10.0.3)(react@18.2.0)(typescript@5.3.3)(viem@2.0.6)(zod@3.22.4)
+      '@wagmi/core': 2.2.0(@types/react@18.2.47)(immer@10.0.3)(react@18.2.0)(typescript@5.3.3)(viem@2.0.6)(zod@3.22.4)
       react: 18.2.0
       typescript: 5.3.3
       use-sync-external-store: 1.2.0(react@18.2.0)

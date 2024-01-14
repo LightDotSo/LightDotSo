@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use crate::routes::interpretation::types::Interpretation;
 use lightdotso_prisma::simulation;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
@@ -27,11 +28,20 @@ use utoipa::ToSchema;
 pub(crate) struct Simulation {
     /// The id of the simulation to read for.
     id: String,
+    /// The interpretation of the simulation.
+    interpretation: Option<Interpretation>,
 }
+
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
 
 /// Implement From<simulation::Data> for Simulation.
 impl From<simulation::Data> for Simulation {
     fn from(simulation: simulation::Data) -> Self {
-        Self { id: simulation.id }
+        Self {
+            id: simulation.id,
+            interpretation: simulation.interpretation.map(|int| Interpretation::from(*int)),
+        }
     }
 }

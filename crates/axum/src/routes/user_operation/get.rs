@@ -23,7 +23,7 @@ use axum::{
     extract::{Query, State},
     Json,
 };
-use lightdotso_prisma::{signature, user_operation};
+use lightdotso_prisma::{asset_change, interpretation, signature, user_operation};
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -77,9 +77,17 @@ pub(crate) async fn v1_user_operation_get_handler(
         .client
         .user_operation()
         .find_unique(user_operation::hash::equals(query.user_operation_hash))
+        .with(user_operation::transaction::fetch())
         .with(user_operation::signatures::fetch(vec![signature::user_operation_hash::equals(
             user_operation_hash,
         )]))
+        .with(
+            user_operation::interpretation::fetch()
+                .with(interpretation::actions::fetch(vec![]))
+                .with(
+                    interpretation::asset_changes::fetch(vec![]).with(asset_change::token::fetch()),
+                ),
+        )
         .exec()
         .await?;
 

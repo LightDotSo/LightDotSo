@@ -17,7 +17,7 @@
 
 use crate::{
     result::{AppError, AppJsonResult},
-    routes::user_operation::types::{UserOperationOwner, UserOperationSignature},
+    routes::{owner::types::Owner, signature::types::Signature},
     state::AppState,
 };
 use autometrics::autometrics;
@@ -112,9 +112,10 @@ pub(crate) async fn v1_user_operation_signature_handler(
     let user_operation = user_operation.ok_or(AppError::NotFound)?;
 
     // Map the signatures into type from the user_operation
-    let signatures = user_operation.clone().signatures.map_or(Vec::new(), |signature| {
-        signature.into_iter().map(UserOperationSignature::from).collect()
-    });
+    let signatures = user_operation
+        .clone()
+        .signatures
+        .map_or(Vec::new(), |signature| signature.into_iter().map(Signature::from).collect());
     info!("{}", signatures.len());
 
     // Get the wallet from the database.
@@ -151,9 +152,9 @@ pub(crate) async fn v1_user_operation_signature_handler(
     let mut owners = configuration.owners.ok_or(AppError::NotFound)?;
     owners.sort_by(|a, b| a.index.cmp(&b.index));
     info!(?owners);
+
     // Map the signatures into type from the user_operation
-    let owners: Vec<UserOperationOwner> =
-        owners.into_iter().map(UserOperationOwner::from).collect();
+    let owners: Vec<Owner> = owners.into_iter().map(Owner::from).collect();
 
     // Convert the owners to SignerNode.
     let owner_nodes: Result<Vec<SignerNode>> = owners

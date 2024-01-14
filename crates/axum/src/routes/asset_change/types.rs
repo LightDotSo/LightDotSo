@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use lightdotso_prisma::token_group;
+use crate::routes::token::types::Token;
+use lightdotso_prisma::asset_change;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
@@ -21,21 +22,40 @@ use utoipa::ToSchema;
 // Types
 // -----------------------------------------------------------------------------
 
-/// TokenGroup root type.
+/// AssetChange root type.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub(crate) struct TokenGroup {
-    /// The id of the token group.
+pub(crate) struct AssetChange {
+    /// The id of the asset change.
     id: String,
+    /// The address of the asset change.
+    address: String,
+    /// The amount of the asset change.
+    amount: i64,
+    /// The before amount of the asset change.
+    before_amount: Option<i64>,
+    /// The after amount of the asset change.
+    after_amount: Option<i64>,
+    /// The token id of the asset change.
+    token: Option<Token>,
 }
 
 // -----------------------------------------------------------------------------
 // From
 // -----------------------------------------------------------------------------
 
-/// Implement From<token_group::Data> for TokenGroup.
-impl From<token_group::Data> for TokenGroup {
-    fn from(token_group: token_group::Data) -> Self {
-        Self { id: token_group.id }
+/// Implement From<asset_change::Data> for AssetChange.
+impl From<asset_change::Data> for AssetChange {
+    fn from(asset_change: asset_change::Data) -> Self {
+        Self {
+            id: asset_change.id,
+            address: asset_change.address,
+            amount: asset_change.amount,
+            before_amount: asset_change.before_amount,
+            after_amount: asset_change.after_amount,
+            token: asset_change
+                .token
+                .and_then(|maybe_token| maybe_token.map(|token| Token::from(*token))),
+        }
     }
 }

@@ -20,10 +20,11 @@ use crate::{
     constants::SESSION_COOKIE_ID,
     handle_error,
     routes::{
-        activity, auth, check, configuration, feedback, health, interpretation, invite_code,
-        metrics, notification, paymaster, paymaster_operation, portfolio, protocol, protocol_group,
-        queue, signature, simulation, support_request, token, token_group, token_price,
-        transaction, user, user_operation, wallet, wallet_features, wallet_settings,
+        activity, asset_change, auth, check, configuration, feedback, health, interpretation,
+        invite_code, metrics, notification, owner, paymaster, paymaster_operation, portfolio,
+        protocol, protocol_group, queue, signature, simulation, support_request, token,
+        token_group, token_price, transaction, user, user_operation, wallet, wallet_features,
+        wallet_settings,
     },
     sessions::{authenticated, RedisStore},
     state::AppState,
@@ -68,6 +69,8 @@ use utoipa_swagger_ui::SwaggerUi;
     components(
         schemas(activity::error::ActivityError),
         schemas(activity::types::Activity),
+        schemas(asset_change::error::AssetChangeError),
+        schemas(asset_change::types::AssetChange),
         schemas(auth::error::AuthError),
         schemas(auth::nonce::AuthNonce),
         schemas(auth::session::AuthSession),
@@ -80,14 +83,14 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(feedback::types::Feedback),
         schemas(interpretation::error::InterpretationError),
         schemas(interpretation::types::Interpretation),
-        schemas(interpretation::update::InterpretationUpdateRequest),
-        schemas(interpretation::update::InterpretationUpdateRequestParams),
         schemas(invite_code::error::InviteCodeError),
         schemas(invite_code::types::InviteCode),
         schemas(notification::error::NotificationError),
         schemas(notification::read::NotificationPostRequest),
         schemas(notification::read::NotificationPostRequestParams),
         schemas(notification::types::Notification),
+        schemas(owner::error::OwnerError),
+        schemas(owner::types::Owner),
         schemas(paymaster::error::PaymasterError),
         schemas(paymaster::types::Paymaster),
         schemas(paymaster_operation::error::PaymasterOperationError),
@@ -127,29 +130,27 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(user_operation::list::UserOperationListCount),
         schemas(user_operation::nonce::UserOperationNonce),
         schemas(user_operation::types::UserOperation),
-        schemas(user_operation::types::UserOperationPaymaster),
         schemas(user_operation::types::UserOperationSuccess),
-        schemas(user_operation::types::UserOperationSignature),
-        schemas(user_operation::types::UserOperationTransaction),
         schemas(wallet::create::WalletPostRequestParams),
         schemas(wallet::error::WalletError),
         schemas(wallet::list::WalletListCount),
-        schemas(wallet::types::Owner),
         schemas(wallet::types::Wallet),
-        schemas(wallet::update::WalletPutRequestParams),
+        schemas(wallet::update::WalletUpdateRequestParams),
         schemas(wallet_features::error::WalletFeaturesError),
         schemas(wallet_features::types::WalletFeatures),
         schemas(wallet_features::types::WalletFeaturesOptional),
-        schemas(wallet_features::update::WalletFeaturesPostRequestParams),
+        schemas(wallet_features::update::WalletFeaturesUpdateRequestParams),
         schemas(wallet_settings::error::WalletSettingsError),
         schemas(wallet_settings::types::WalletSettings),
         schemas(wallet_settings::types::WalletSettingsOptional),
-        schemas(wallet_settings::update::WalletSettingsPostRequestParams),
+        schemas(wallet_settings::update::WalletSettingsUpdateRequestParams),
     ),
     paths(
         activity::v1_activity_get_handler,
         activity::v1_activity_list_handler,
         activity::v1_activity_list_count_handler,
+        asset_change::v1_asset_change_get_handler,
+        asset_change::v1_asset_change_list_handler,
         auth::v1_auth_nonce_handler,
         auth::v1_auth_session_handler,
         auth::v1_auth_logout_handler,
@@ -161,7 +162,6 @@ use utoipa_swagger_ui::SwaggerUi;
         feedback::v1_feedback_create_handler,
         interpretation::v1_interpretation_get_handler,
         interpretation::v1_interpretation_list_handler,
-        interpretation::v1_interpretation_update_handler,
         invite_code::v1_invite_code_create_handler,
         invite_code::v1_invite_code_get_handler,
         invite_code::v1_invite_code_list_handler,
@@ -170,6 +170,8 @@ use utoipa_swagger_ui::SwaggerUi;
         notification::v1_notification_list_handler,
         notification::v1_notification_list_count_handler,
         notification::v1_notification_read_handler,
+        owner::v1_owner_get_handler,
+        owner::v1_owner_list_handler,
         paymaster::v1_paymaster_get_handler,
         paymaster::v1_paymaster_list_handler,
         paymaster_operation::v1_paymaster_operation_get_handler,
@@ -223,6 +225,7 @@ use utoipa_swagger_ui::SwaggerUi;
     ),
     tags(
         (name = "activity", description = "Activity API"),
+        (name = "asset_change", description = "Asset Change API"),
         (name = "auth", description = "Auth API"),
         (name = "configuration", description = "Configuration API"),
         (name = "check", description = "Check API"),
@@ -231,6 +234,7 @@ use utoipa_swagger_ui::SwaggerUi;
         (name = "invite_code", description = "Invite Code API"),
         (name = "health", description = "Health API"),
         (name = "notification", description = "Notification API"),
+        (name = "owner", description = "Owner API"),
         (name = "paymaster", description = "Paymaster API"),
         (name = "paymaster_operation", description = "Paymaster Operation API"),
         (name = "portfolio", description = "Portfolio API"),
@@ -335,6 +339,7 @@ pub async fn start_api_server() -> Result<()> {
     // Create the API
     let api = Router::new()
         .merge(activity::router())
+        .merge(asset_change::router())
         .merge(auth::router())
         .merge(configuration::router())
         .merge(check::router())
@@ -344,6 +349,7 @@ pub async fn start_api_server() -> Result<()> {
         .merge(invite_code::router())
         .merge(metrics::router())
         .merge(notification::router())
+        .merge(owner::router())
         .merge(paymaster::router())
         .merge(paymaster_operation::router())
         .merge(portfolio::router())

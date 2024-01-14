@@ -14,13 +14,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::routes::{
-    activity::error::ActivityError, auth::error::AuthError,
+    activity::error::ActivityError, asset_change::error::AssetChangeError, auth::error::AuthError,
     configuration::error::ConfigurationError, feedback::error::FeedbackError,
     interpretation::error::InterpretationError, invite_code::error::InviteCodeError,
-    notification::error::NotificationError, paymaster::error::PaymasterError,
-    paymaster_operation::error::PaymasterOperationError, portfolio::error::PortfolioError,
-    protocol::error::ProtocolError, protocol_group::error::ProtocolGroupError,
-    queue::error::QueueError, signature::error::SignatureError, simulation::error::SimulationError,
+    notification::error::NotificationError, owner::error::OwnerError,
+    paymaster::error::PaymasterError, paymaster_operation::error::PaymasterOperationError,
+    portfolio::error::PortfolioError, protocol::error::ProtocolError,
+    protocol_group::error::ProtocolGroupError, queue::error::QueueError,
+    signature::error::SignatureError, simulation::error::SimulationError,
     support_request::error::SupportRequestError, token::error::TokenError,
     token_group::error::TokenGroupError, token_price::error::TokenPriceError,
     transaction::error::TransactionError, user::error::UserError,
@@ -33,12 +34,14 @@ use http::StatusCode;
 #[allow(dead_code)]
 pub(crate) enum RouteError {
     ActivityError(ActivityError),
+    AssetChangeError(AssetChangeError),
     AuthError(AuthError),
     ConfigurationError(ConfigurationError),
     FeedbackError(FeedbackError),
     InterpretationError(InterpretationError),
     InviteCodeError(InviteCodeError),
     NotificationError(NotificationError),
+    OwnerError(OwnerError),
     PaymasterError(PaymasterError),
     PaymasterOperationError(PaymasterOperationError),
     PortfolioError(PortfolioError),
@@ -68,6 +71,15 @@ impl RouteErrorStatusCodeAndMsg for ActivityError {
         match self {
             ActivityError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
             ActivityError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+        }
+    }
+}
+
+impl RouteErrorStatusCodeAndMsg for AssetChangeError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            AssetChangeError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
+            AssetChangeError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
         }
     }
 }
@@ -125,6 +137,15 @@ impl RouteErrorStatusCodeAndMsg for NotificationError {
         match self {
             NotificationError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
             NotificationError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+        }
+    }
+}
+
+impl RouteErrorStatusCodeAndMsg for OwnerError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            OwnerError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
+            OwnerError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
         }
     }
 }
@@ -301,12 +322,14 @@ impl RouteErrorStatusCodeAndMsg for RouteError {
     fn error_status_code_and_msg(&self) -> (StatusCode, String) {
         match self {
             RouteError::ActivityError(err) => err.error_status_code_and_msg(),
+            RouteError::AssetChangeError(err) => err.error_status_code_and_msg(),
             RouteError::AuthError(err) => err.error_status_code_and_msg(),
             RouteError::ConfigurationError(err) => err.error_status_code_and_msg(),
             RouteError::FeedbackError(err) => err.error_status_code_and_msg(),
             RouteError::InterpretationError(err) => err.error_status_code_and_msg(),
             RouteError::InviteCodeError(err) => err.error_status_code_and_msg(),
             RouteError::NotificationError(err) => err.error_status_code_and_msg(),
+            RouteError::OwnerError(err) => err.error_status_code_and_msg(),
             RouteError::PaymasterError(err) => err.error_status_code_and_msg(),
             RouteError::PaymasterOperationError(err) => err.error_status_code_and_msg(),
             RouteError::PortfolioError(err) => err.error_status_code_and_msg(),

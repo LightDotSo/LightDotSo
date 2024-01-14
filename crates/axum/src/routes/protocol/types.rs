@@ -29,6 +29,10 @@ pub(crate) struct Protocol {
     address: String,
 }
 
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
 /// Implement From<protocol::Data> for Protocol.
 impl From<protocol::Data> for Protocol {
     fn from(protocol: protocol::Data) -> Self {

@@ -35,6 +35,10 @@ pub(crate) struct SupportRequest {
     pub severity: i32,
 }
 
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
 /// Implement From<support_request::Data> for Support_request.
 impl From<support_request::Data> for SupportRequest {
     fn from(support_request: support_request::Data) -> Self {

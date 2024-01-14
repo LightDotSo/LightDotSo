@@ -54,6 +54,10 @@ struct TokenPriceQueryReturnType {
     price: f64,
 }
 
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
 /// Implement FromTokenPriceQueryReturnType> for Token.
 impl From<TokenPriceQueryReturnType> for TokenPriceDate {
     fn from(token_price_query: TokenPriceQueryReturnType) -> Self {

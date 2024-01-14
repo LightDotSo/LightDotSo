@@ -13,15 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use super::types::Interpretation;
-use crate::{result::AppJsonResult, state::AppState};
+use super::types::Owner;
+use crate::{
+    error::RouteError, result::AppJsonResult, routes::owner::error::OwnerError, state::AppState,
+};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use lightdotso_prisma::{asset_change, interpretation};
-use prisma_client_rust::Direction;
+use lightdotso_prisma::owner;
+use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -32,65 +34,57 @@ use utoipa::IntoParams;
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
-pub struct ListQuery {
-    /// The offset of the first interpretation to return.
-    pub offset: Option<i64>,
-    /// The maximum number of interpretations to return.
-    pub limit: Option<i64>,
+pub struct GetQuery {
+    pub id: String,
 }
 
 // -----------------------------------------------------------------------------
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of interpretations.
+/// Get a owner
 #[utoipa::path(
         get,
-        path = "/interpretation/list",
+        path = "/owner/get",
         params(
-            ListQuery
+            GetQuery
         ),
         responses(
-            (status = 200, description = "Interpretations returned successfully", body = [Interpretation]),
-            (status = 500, description = "Interpretations bad request", body = InterpretationError),
+            (status = 200, description = "Owner returned successfully", body = Owner),
+            (status = 404, description = "Owner not found", body = OwnerError),
         )
     )]
 #[autometrics]
-pub(crate) async fn v1_interpretation_list_handler(
-    list_query: Query<ListQuery>,
+pub(crate) async fn v1_owner_get_handler(
+    get_query: Query<GetQuery>,
     State(state): State<AppState>,
-) -> AppJsonResult<Vec<Interpretation>> {
+) -> AppJsonResult<Owner> {
     // -------------------------------------------------------------------------
     // Parse
     // -------------------------------------------------------------------------
 
-    // Get the list query.
-    let Query(query) = list_query;
+    // Get the get query.
+    let Query(query) = get_query;
+
+    info!("Get owner for address: {:?}", query);
 
     // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
 
-    // Get the interpretations from the database.
-    let interpretations = state
-        .client
-        .interpretation()
-        .find_many(vec![])
-        .order_by(interpretation::created_at::order(Direction::Desc))
-        .with(interpretation::actions::fetch(vec![]))
-        .with(interpretation::asset_changes::fetch(vec![]).with(asset_change::token::fetch()))
-        .skip(query.offset.unwrap_or(0))
-        .take(query.limit.unwrap_or(10))
-        .exec()
-        .await?;
+    // Get the owners from the database.
+    let owner = state.client.owner().find_unique(owner::id::equals(query.id)).exec().await?;
+
+    // If the owner is not found, return a 404.
+    let owner =
+        owner.ok_or(RouteError::OwnerError(OwnerError::NotFound("Owner not found".to_string())))?;
 
     // -------------------------------------------------------------------------
     // Return
     // -------------------------------------------------------------------------
 
-    // Change the interpretations to the format that the API expects.
-    let interpretations: Vec<Interpretation> =
-        interpretations.into_iter().map(Interpretation::from).collect();
+    // Change the owner to the format that the API expects.
+    let owner: Owner = owner.into();
 
-    Ok(Json::from(interpretations))
+    Ok(Json::from(owner))
 }

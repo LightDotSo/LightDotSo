@@ -59,7 +59,7 @@ pub struct PutQuery {
 
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub struct WalletPutRequestParams {
+pub struct WalletUpdateRequestParams {
     /// The name of the wallet.
     #[schema(example = "My Wallet", default = "My Wallet")]
     pub name: Option<String>,
@@ -76,7 +76,7 @@ pub struct WalletPutRequestParams {
         params(
             PutQuery
         ),
-        request_body = WalletPutRequestParams,
+        request_body = WalletUpdateRequestParams,
         responses(
             (status = 200, description = "Wallet returned successfully", body = Wallet),
             (status = 500, description = "Wallet bad request", body = WalletError),
@@ -87,7 +87,7 @@ pub(crate) async fn v1_wallet_update_handler(
     State(state): State<AppState>,
     mut session: Session,
     put_query: Query<PutQuery>,
-    Json(params): Json<WalletPutRequestParams>,
+    Json(params): Json<WalletUpdateRequestParams>,
 ) -> AppJsonResult<Wallet> {
     // Verify the session
     verify_session(&session)?;

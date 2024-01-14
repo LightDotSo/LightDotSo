@@ -29,6 +29,10 @@ pub(crate) struct ProtocolGroup {
     id: String,
 }
 
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
 /// Implement From<protocol_group::Data> for ProtocolGroup.
 impl From<protocol_group::Data> for ProtocolGroup {
     fn from(protocol_group: protocol_group::Data) -> Self {

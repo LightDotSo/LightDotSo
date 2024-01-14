@@ -23,7 +23,7 @@ use axum::{
     extract::{Query, State},
     Json,
 };
-use lightdotso_prisma::interpretation;
+use lightdotso_prisma::{asset_change, interpretation};
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -79,8 +79,11 @@ pub(crate) async fn v1_interpretation_get_handler(
         .client
         .interpretation()
         .find_unique(interpretation::id::equals(query.id))
+        .with(interpretation::actions::fetch(vec![]))
+        .with(interpretation::asset_changes::fetch(vec![]).with(asset_change::token::fetch()))
         .exec()
         .await?;
+    info!(?interpretation);
 
     // If the interpretation is not found, return a 404.
     let interpretation = interpretation.ok_or(RouteError::InterpretationError(

@@ -31,6 +31,10 @@ pub(crate) struct Feedback {
     pub emoji: String,
 }
 
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
 /// Implement From<feedback::Data> for Feedback.
 impl From<feedback::Data> for Feedback {
     fn from(feedback: feedback::Data) -> Self {

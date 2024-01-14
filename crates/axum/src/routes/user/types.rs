@@ -28,6 +28,10 @@ pub(crate) struct User {
     id: String,
 }
 
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
 /// Implement From<user::Data> for User.
 impl From<user::Data> for User {
     fn from(user: user::Data) -> Self {

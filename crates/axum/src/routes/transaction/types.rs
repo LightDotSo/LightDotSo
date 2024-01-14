@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use crate::routes::interpretation::types::Interpretation;
 use lightdotso_prisma::transaction;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
@@ -31,7 +32,13 @@ pub(crate) struct Transaction {
     hash: String,
     /// The timestamp of the transaction.
     timestamp: String,
+    /// The interpretation of the transaction.
+    interpretation: Option<Interpretation>,
 }
+
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
 
 /// Implement From<transaction::Data> for Transaction.
 impl From<transaction::Data> for Transaction {
@@ -40,6 +47,9 @@ impl From<transaction::Data> for Transaction {
             chain_id: transaction.chain_id,
             hash: transaction.hash,
             timestamp: transaction.timestamp.to_rfc3339(),
+            interpretation: transaction.interpretation.and_then(|maybe_interpretation| {
+                maybe_interpretation.map(|interpretation| Interpretation::from(*interpretation))
+            }),
         }
     }
 }

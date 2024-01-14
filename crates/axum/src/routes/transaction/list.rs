@@ -20,7 +20,10 @@ use axum::{
     extract::{Query, State},
     Json,
 };
-use lightdotso_prisma::transaction::{self, WhereParam};
+use lightdotso_prisma::{
+    asset_change, interpretation,
+    transaction::{self, WhereParam},
+};
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::{or, Direction};
 use serde::{Deserialize, Serialize};
@@ -102,10 +105,16 @@ pub(crate) async fn v1_transaction_list_handler(
         .transaction()
         .find_many(query_params)
         .order_by(transaction::timestamp::order(Direction::Desc))
+        .with(
+            transaction::interpretation::fetch().with(interpretation::actions::fetch(vec![])).with(
+                interpretation::asset_changes::fetch(vec![]).with(asset_change::token::fetch()),
+            ),
+        )
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
         .exec()
         .await?;
+    info!(?transactions);
 
     // -------------------------------------------------------------------------
     // Return

@@ -29,6 +29,10 @@ pub(crate) struct PaymasterOperation {
     id: String,
 }
 
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
 /// Implement From<paymaster_operation::Data> for PaymasterOperation.
 impl From<paymaster_operation::Data> for PaymasterOperation {
     fn from(paymaster_operation: paymaster_operation::Data) -> Self {

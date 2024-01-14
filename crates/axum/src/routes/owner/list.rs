@@ -13,15 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use super::types::Interpretation;
+use super::types::Owner;
 use crate::{result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use lightdotso_prisma::{asset_change, interpretation};
-use prisma_client_rust::Direction;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -33,9 +31,9 @@ use utoipa::IntoParams;
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct ListQuery {
-    /// The offset of the first interpretation to return.
+    /// The offset of the first owner to return.
     pub offset: Option<i64>,
-    /// The maximum number of interpretations to return.
+    /// The maximum number of owners to return.
     pub limit: Option<i64>,
 }
 
@@ -43,23 +41,23 @@ pub struct ListQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of interpretations.
+/// Returns a list of owners.
 #[utoipa::path(
         get,
-        path = "/interpretation/list",
+        path = "/owner/list",
         params(
             ListQuery
         ),
         responses(
-            (status = 200, description = "Interpretations returned successfully", body = [Interpretation]),
-            (status = 500, description = "Interpretations bad request", body = InterpretationError),
+            (status = 200, description = "Owners returned successfully", body = [Owner]),
+            (status = 500, description = "Owner bad request", body = OwnerError),
         )
     )]
 #[autometrics]
-pub(crate) async fn v1_interpretation_list_handler(
+pub(crate) async fn v1_owner_list_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
-) -> AppJsonResult<Vec<Interpretation>> {
+) -> AppJsonResult<Vec<Owner>> {
     // -------------------------------------------------------------------------
     // Parse
     // -------------------------------------------------------------------------
@@ -71,14 +69,11 @@ pub(crate) async fn v1_interpretation_list_handler(
     // DB
     // -------------------------------------------------------------------------
 
-    // Get the interpretations from the database.
-    let interpretations = state
+    // Get the owners from the database.
+    let owners = state
         .client
-        .interpretation()
+        .owner()
         .find_many(vec![])
-        .order_by(interpretation::created_at::order(Direction::Desc))
-        .with(interpretation::actions::fetch(vec![]))
-        .with(interpretation::asset_changes::fetch(vec![]).with(asset_change::token::fetch()))
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
         .exec()
@@ -88,9 +83,8 @@ pub(crate) async fn v1_interpretation_list_handler(
     // Return
     // -------------------------------------------------------------------------
 
-    // Change the interpretations to the format that the API expects.
-    let interpretations: Vec<Interpretation> =
-        interpretations.into_iter().map(Interpretation::from).collect();
+    // Change the owners to the format that the API expects.
+    let owners: Vec<Owner> = owners.into_iter().map(Owner::from).collect();
 
-    Ok(Json::from(interpretations))
+    Ok(Json::from(owners))
 }

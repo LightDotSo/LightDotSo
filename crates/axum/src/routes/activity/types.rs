@@ -37,6 +37,10 @@ pub(crate) struct Activity {
     address: Option<String>,
 }
 
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
 /// Implement From<activity::Data> for Activity.
 impl From<activity::Data> for Activity {
     fn from(activity: activity::Data) -> Self {

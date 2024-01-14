@@ -39,6 +39,10 @@ pub(crate) struct AuthNonce {
     pub(crate) nonce: String,
 }
 
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
 /// Implement From<String> for AuthNonce.
 impl From<String> for AuthNonce {
     fn from(nonce: String) -> Self {

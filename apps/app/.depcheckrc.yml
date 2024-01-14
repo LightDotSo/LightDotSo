@@ -29,3 +29,5 @@ ignores:
   - blurhash
   - sonner
   - "@prisma/nextjs-monorepo-workaround-plugin"
+  - "@lukemorales/query-key-factory"
+  - zustand

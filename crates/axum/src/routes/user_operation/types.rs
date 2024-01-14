@@ -13,8 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use crate::routes::{
+    interpretation::types::Interpretation, paymaster::types::Paymaster,
+    signature::types::Signature, transaction::types::Transaction,
+};
 use lightdotso_common::traits::VecU8ToHex;
-use lightdotso_prisma::{owner, paymaster, signature, transaction, user_operation};
+use lightdotso_prisma::user_operation;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
@@ -40,40 +44,6 @@ pub(crate) struct UserOperationCreate {
     paymaster_and_data: String,
 }
 
-/// User operation paymaster
-#[derive(Serialize, Deserialize, ToSchema, Clone)]
-#[serde(rename_all = "snake_case")]
-pub(crate) struct UserOperationPaymaster {
-    /// The address of the paymaster.
-    address: String,
-}
-
-/// User operation owner
-#[derive(Serialize, Deserialize, ToSchema, Clone)]
-#[serde(rename_all = "snake_case")]
-pub(crate) struct UserOperationOwner {
-    /// The id of the owner.
-    pub id: String,
-    /// The address of the owner.
-    pub address: String,
-    /// The weight of the owner.
-    pub weight: i64,
-}
-
-/// User operation signature
-#[derive(Serialize, Deserialize, ToSchema, Clone)]
-#[serde(rename_all = "snake_case")]
-pub(crate) struct UserOperationSignature {
-    /// The id of the owner of the signature.
-    pub owner_id: String,
-    /// The signature in hex string.
-    pub signature: String,
-    /// The signature type
-    pub signature_type: i32,
-    /// The created time of the signature.
-    pub created_at: String,
-}
-
 /// User operation transaction
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
@@ -94,23 +64,43 @@ pub(crate) enum UserOperationSuccess {
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
 pub(crate) struct UserOperation {
+    /// The chain id of the user operation.
     chain_id: i64,
+    /// The hash of the user operation.
     hash: String,
+    /// The sender of the user operation.
     sender: String,
+    /// The nonce of the user operation.
     nonce: i64,
+    /// The init code of the user operation.
     init_code: String,
+    /// The call data of the user operation.
     call_data: String,
+    /// The call gas of the user operation.
     call_gas_limit: i64,
+    /// The verification gas of the user operation.
     verification_gas_limit: i64,
+    /// The pre verification gas of the user operation.
     pre_verification_gas: i64,
+    /// The maximum fee per gas of the user operation.
     max_fee_per_gas: i64,
+    /// The maximum priority fee per gas of the user operation.
     max_priority_fee_per_gas: i64,
+    /// The paymaster and data of the user operation.
     paymaster_and_data: String,
+    /// The status of the user operation.
     status: String,
-    paymaster: Option<UserOperationPaymaster>,
-    signatures: Vec<UserOperationSignature>,
-    transaction: Option<UserOperationTransaction>,
+    /// The paymaster of the user operation.
+    paymaster: Option<Paymaster>,
+    /// The signatures of the user operation.
+    signatures: Vec<Signature>,
+    /// The transaction of the user operation.
+    transaction: Option<Transaction>,
+    /// The interpretation of the transaction.
+    interpretation: Option<Interpretation>,
+    /// The timestamp of the user operation.
     created_at: String,
+    /// The timestamp updated of the user operation.
     updated_at: String,
 }
 
@@ -133,48 +123,18 @@ impl From<user_operation::Data> for UserOperation {
             status: user_operation.status.to_string(),
             paymaster: user_operation
                 .paymaster
-                .and_then(|paymaster| paymaster.map(|data| UserOperationPaymaster::from(*data))),
+                .and_then(|paymaster| paymaster.map(|data| Paymaster::from(*data))),
             signatures: user_operation.signatures.map_or(Vec::new(), |signature| {
-                signature.into_iter().map(UserOperationSignature::from).collect()
+                signature.into_iter().map(|sig| sig.into()).collect()
             }),
-            transaction: user_operation.transaction.and_then(|transaction| {
-                transaction.map(|data| UserOperationTransaction::from(*data))
-            }),
+            transaction: user_operation
+                .transaction
+                .and_then(|transaction| transaction.map(|data| Transaction::from(*data))),
+            interpretation: user_operation
+                .interpretation
+                .and_then(|interpretation| interpretation.map(|data| Interpretation::from(*data))),
             created_at: user_operation.created_at.to_rfc3339(),
             updated_at: user_operation.updated_at.to_rfc3339(),
         }
-    }
-}
-
-/// Implement From<owner::Data> for Owner.
-impl From<owner::Data> for UserOperationOwner {
-    fn from(owner: owner::Data) -> Self {
-        Self { id: owner.id.to_string(), address: owner.address.to_string(), weight: owner.weight }
-    }
-}
-
-/// Implement From<paymaster::Data> for Paymaster.
-impl From<paymaster::Data> for UserOperationPaymaster {
-    fn from(paymaster: paymaster::Data) -> Self {
-        Self { address: paymaster.address }
-    }
-}
-
-/// Implement From<signature::Data> for Owner.
-impl From<signature::Data> for UserOperationSignature {
-    fn from(signature: signature::Data) -> Self {
-        Self {
-            owner_id: signature.owner_id.to_string(),
-            signature: signature.signature.to_hex_string(),
-            signature_type: signature.signature_type,
-            created_at: signature.created_at.to_rfc3339(),
-        }
-    }
-}
-
-/// Implement From<transaction::Data> for Owner.
-impl From<transaction::Data> for UserOperationTransaction {
-    fn from(transaction: transaction::Data) -> Self {
-        Self { hash: transaction.hash }
     }
 }

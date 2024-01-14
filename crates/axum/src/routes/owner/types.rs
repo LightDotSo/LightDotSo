@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use lightdotso_prisma::token_group;
+use lightdotso_prisma::owner;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
@@ -21,21 +21,25 @@ use utoipa::ToSchema;
 // Types
 // -----------------------------------------------------------------------------
 
-/// TokenGroup root type.
+/// Owner root type.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub(crate) struct TokenGroup {
-    /// The id of the token group.
-    id: String,
+pub(crate) struct Owner {
+    /// The id of the owner.
+    pub id: String,
+    /// The address of the owner.
+    pub address: String,
+    /// The weight of the owner.
+    pub weight: i64,
 }
 
 // -----------------------------------------------------------------------------
 // From
 // -----------------------------------------------------------------------------
 
-/// Implement From<token_group::Data> for TokenGroup.
-impl From<token_group::Data> for TokenGroup {
-    fn from(token_group: token_group::Data) -> Self {
-        Self { id: token_group.id }
+/// Implement From<owner::Data> for Owner.
+impl From<owner::Data> for Owner {
+    fn from(owner: owner::Data) -> Self {
+        Self { id: owner.id.to_string(), address: owner.address.to_string(), weight: owner.weight }
     }
 }
