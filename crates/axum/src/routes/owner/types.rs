@@ -25,8 +25,12 @@ use utoipa::ToSchema;
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
 pub(crate) struct Owner {
+    /// The id of the owner.
+    pub id: String,
     /// The address of the owner.
-    address: String,
+    pub address: String,
+    /// The weight of the owner.
+    pub weight: i64,
 }
 
 // -----------------------------------------------------------------------------
@@ -36,6 +40,6 @@ pub(crate) struct Owner {
 /// Implement From<owner::Data> for Owner.
 impl From<owner::Data> for Owner {
     fn from(owner: owner::Data) -> Self {
-        Self { address: owner.address }
+        Self { id: owner.id.to_string(), address: owner.address.to_string(), weight: owner.weight }
     }
 }
