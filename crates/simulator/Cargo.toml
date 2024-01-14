@@ -9,6 +9,7 @@
   repository.workspace = true
 
 [dependencies]
+  ethers = { workspace = true }
   ethers-main = { workspace = true }
   eyre = { workspace = true }
   foundry-config = { workspace = true }
