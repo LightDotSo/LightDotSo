@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Address } from "viem";
-import { TRANSACTION_ROW_COUNT } from "@/const/numbers";
+import { TRANSACTION_ROW_COUNT } from "@/const";
 import { preloader as addressPreloader } from "@/preloaders/paths/[address]/preloader";
 import { preload as preloadGetUserOperations } from "@/services/getUserOperations";
 import { preload as preloadGetUserOperationsCount } from "@/services/getUserOperationsCount";

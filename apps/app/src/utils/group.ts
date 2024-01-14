@@ -15,6 +15,10 @@
 
 import type { Row } from "@tanstack/react-table";
 
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
 export const groupByDate = <T extends { created_at: string }>(
   array: { original: T; row: Row<T> }[],
 ): Record<string, { original: T; row: Row<T> }[]> => {

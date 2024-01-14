@@ -15,7 +15,7 @@
 
 import type { Metadata } from "next";
 import OriginalLayout from "@/app/(wallet)/[address]/overview/history/layout";
-import { TITLES } from "@/const/titles";
+import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Metadata

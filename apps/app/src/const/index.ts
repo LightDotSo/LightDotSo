@@ -13,6 +13,21 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export const shortenName = (name: string) => {
-  return name.match(/\b\w/g)?.join("").substring(0, 3);
-};
+export {
+  BASE_LOCAL_ADMIN_URL,
+  BASE_LOCAL_API_URL,
+  BASE_API_AUTHENTICATED_URL,
+  BASE_API_URL,
+} from "./api";
+export { MAX_WEIGHT, MAX_THRESHOLD } from "./configuration";
+export { DEMO_WALLET_ADDRESS } from "./demo";
+export { OVERVIEW_ROW_COUNT, TRANSACTION_ROW_COUNT } from "./numbers";
+export {
+  Category,
+  DemoSubCategory,
+  UserOperationSubCategory,
+  OverviewSubCategory,
+  TransactionsSubCategory,
+  SettingsSubCategory,
+  TITLES,
+} from "./titles";

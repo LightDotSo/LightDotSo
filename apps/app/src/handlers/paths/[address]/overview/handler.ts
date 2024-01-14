@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Address } from "viem";
-import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
+import { OVERVIEW_ROW_COUNT } from "@/const";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
 import {

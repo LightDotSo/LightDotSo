@@ -29,7 +29,7 @@ import {
   TableCell,
   TableRow,
 } from "@lightdotso/ui";
-import { shortenBytes32 } from "@lightdotso/utils";
+import { getChainById, shortenBytes32 } from "@lightdotso/utils";
 import type { Row } from "@tanstack/react-table";
 import { flexRender } from "@tanstack/react-table";
 import { ArrowUpRight } from "lucide-react";
@@ -40,7 +40,6 @@ import type { Address } from "viem";
 import { TransactionCardExecuteButton } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transaction-card-execute-button";
 import { TransactionCardSignButton } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transaction-card-sign-button";
 import { UserOperationTimeline } from "@/components/user-operation/user-operation-timeline";
-import { getChainById } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Props

@@ -27,7 +27,7 @@ import {
   baseSepolia,
   optimismSepolia,
   arbitrumSepolia,
-} from "@wagmi/core/chains";
+} from "viem/chains";
 import type { Chain } from "viem/chains";
 
 // -----------------------------------------------------------------------------

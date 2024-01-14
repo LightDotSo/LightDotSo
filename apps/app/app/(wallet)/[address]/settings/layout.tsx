@@ -20,7 +20,7 @@ import { BannerSection } from "@/components/section/banner-section";
 import { HStackFull } from "@/components/stack/h-stack-full";
 import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
 import { SettingsPageWrapper } from "@/components/wrapper/page/settings-page-wrapper";
-import { TITLES } from "@/const/titles";
+import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Const

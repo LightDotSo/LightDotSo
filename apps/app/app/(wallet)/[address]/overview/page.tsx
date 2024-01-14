@@ -19,7 +19,7 @@ import { queryKeys } from "@lightdotso/query-keys";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { OverviewList } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-list";
-import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
+import { OVERVIEW_ROW_COUNT } from "@/const";
 import { handler } from "@/handlers/paths/[address]/overview/handler";
 import { preloader } from "@/preloaders/paths/[address]/overview/preloader";
 import { getQueryClient } from "@/services";

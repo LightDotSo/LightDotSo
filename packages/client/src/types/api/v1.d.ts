@@ -332,13 +332,6 @@ export interface paths {
      */
     get: operations["v1_simulation_list_count_handler"];
   };
-  "/simulation/update": {
-    /**
-     * Update a list of simulations
-     * @description Update a list of simulations
-     */
-    post: operations["v1_simulation_update_handler"];
-  };
   "/support_request/create": {
     /**
      * Create a support_request
@@ -975,6 +968,14 @@ export interface components {
       /** @description Simulation not found by id. */
       NotFound: string;
     }]>;
+    /** @description Count of list of simulations. */
+    SimulationListCount: {
+      /**
+       * Format: int64
+       * @description The count of the list of simulations..
+       */
+      count: number;
+    };
     /** @description Support Request root type. */
     SupportRequest: {
       /** @description The area of the support_request. */
@@ -1266,6 +1267,22 @@ export interface components {
       /** @description The salt of the wallet. */
       salt: string;
     };
+    /**
+     * @description Wallet owner.
+     * @example {
+     *   "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
+     *   "weight": 1
+     * }
+     */
+    WalletCreateOwnerParams: {
+      /** @description The address of the owner. */
+      address: string;
+      /**
+       * Format: int32
+       * @description The weight of the owner.
+       */
+      weight: number;
+    };
     WalletCreateRequestParams: {
       /**
        * @description The invite code of the wallet.
@@ -1287,7 +1304,7 @@ export interface components {
        *   }
        * ]
        */
-      owners: components["schemas"]["WalletCreateRequestOwnerParams"][];
+      owners: components["schemas"]["WalletCreateOwnerParams"][];
       /**
        * @description The salt is used to calculate the new wallet address.
        * @default 0x0000000000000000000000000000000000000000000000000000000000000001
@@ -2613,31 +2630,6 @@ export interface operations {
         };
       };
       /** @description Simulation bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["SimulationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Update a list of simulations
-   * @description Update a list of simulations
-   */
-  v1_simulation_update_handler: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["SimulationUpdateRequestParams"];
-      };
-    };
-    responses: {
-      /** @description Simulation created successfully */
-      200: {
-        content: {
-          "text/plain": number;
-        };
-      };
-      /** @description Simulation internal error */
       500: {
         content: {
           "application/json": components["schemas"]["SimulationError"];

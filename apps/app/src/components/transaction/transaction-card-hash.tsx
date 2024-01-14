@@ -16,9 +16,9 @@
 "use client";
 
 import type { TransactionData } from "@lightdotso/data";
+import { getChainById } from "@lightdotso/utils";
 import { ArrowUpRight } from "lucide-react";
 import type { FC } from "react";
-import { getChainById } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Props

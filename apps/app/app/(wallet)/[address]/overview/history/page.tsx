@@ -20,7 +20,7 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { HistoryDataTable } from "@/app/(wallet)/[address]/overview/history/(components)/history-data-table";
 import { HistoryDataTablePagination } from "@/app/(wallet)/[address]/overview/history/(components)/history-data-table-pagination";
-import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
+import { OVERVIEW_ROW_COUNT } from "@/const";
 import { handler } from "@/handlers/paths/[address]/overview/history/handler";
 import { preloader } from "@/preloaders/paths/[address]/overview/history/preloader";
 import { getQueryClient } from "@/services";

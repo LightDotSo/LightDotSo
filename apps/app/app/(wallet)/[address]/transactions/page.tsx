@@ -19,7 +19,7 @@ import type { Address } from "viem";
 import { OverviewSection } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-section";
 import { OverviewSectionEmpty } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-section-empty";
 import { TransactionsDataTable } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table";
-import { TRANSACTION_ROW_COUNT } from "@/const/numbers";
+import { TRANSACTION_ROW_COUNT } from "@/const";
 import { handler } from "@/handlers/paths/[address]/transactions/handler";
 import { preloader } from "@/preloaders/paths/[address]/transactions/preloader";
 import { getQueryClient } from "@/services";

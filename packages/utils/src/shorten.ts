@@ -28,3 +28,7 @@ export const shortenBytes32 = (bytes32: string) => {
     bytes32?.substring(bytes32.length - 8, bytes32.length)
   );
 };
+
+export const shortenName = (name: string) => {
+  return name.match(/\b\w/g)?.join("").substring(0, 3);
+};

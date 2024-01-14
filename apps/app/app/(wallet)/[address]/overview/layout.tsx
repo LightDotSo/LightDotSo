@@ -24,7 +24,7 @@ import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper"
 import { LargeLayerWrapper } from "@/components/wrapper/layer/large-layer-wrapper";
 import { MiddleLayerWrapper } from "@/components/wrapper/layer/middle-layer-wrapper";
 import { MinimalPageWrapper } from "@/components/wrapper/page/minimal-page-wrapper";
-import { TITLES } from "@/const/titles";
+import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Metadata

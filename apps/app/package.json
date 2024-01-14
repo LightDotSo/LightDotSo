@@ -38,6 +38,7 @@
     "@lightdotso/solutions": "workspace:*",
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/styles": "workspace:*",
+    "@lightdotso/svg": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",

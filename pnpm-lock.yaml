@@ -348,6 +348,9 @@ importers:
       '@lightdotso/styles':
         specifier: workspace:*
         version: link:../../configurations/styles
+      '@lightdotso/svg':
+        specifier: workspace:*
+        version: link:../../packages/svg
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../ui
@@ -980,6 +983,9 @@ importers:
       '@lightdotso/styles':
         specifier: workspace:*
         version: link:../../configurations/styles
+      '@lightdotso/svg':
+        specifier: workspace:*
+        version: link:../../packages/svg
       '@lightdotso/utils':
         specifier: workspace:*
         version: link:../../packages/utils
@@ -1520,6 +1526,9 @@ importers:
 
   packages/const:
     dependencies:
+      '@lightdotso/schemas':
+        specifier: workspace:*
+        version: link:../schemas
       '@types/firefox-webext-browser':
         specifier: ^120.0.0
         version: 120.0.0
@@ -1818,8 +1827,30 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
+  packages/svg:
+    dependencies:
+      '@lightdotso/utils':
+        specifier: workspace:*
+        version: link:../utils
+      viem:
+        specifier: ^2.0.6
+        version: 2.0.6(typescript@5.3.3)(zod@3.22.4)
+    devDependencies:
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../../configurations/tsconfig
+      '@types/node':
+        specifier: ^20.11.0
+        version: 20.11.0
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
   packages/utils:
     dependencies:
+      '@lightdotso/const':
+        specifier: workspace:*
+        version: link:../const
       clsx:
         specifier: ^2.1.0
         version: 2.1.0

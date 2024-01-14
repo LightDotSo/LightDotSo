@@ -26,7 +26,7 @@ import Link from "next/link";
 import type { FC } from "react";
 import type { Address, Chain, Hex } from "viem";
 import { SettingsCard } from "@/components/settings/settings-card";
-import { TITLES } from "@/const/titles";
+import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Props

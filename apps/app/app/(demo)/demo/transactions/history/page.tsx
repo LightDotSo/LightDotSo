@@ -16,7 +16,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import OriginalPage from "@/app/(wallet)/[address]/transactions/history/page";
-import { DEMO_WALLET_ADDRESS } from "@/const/demo";
+import { DEMO_WALLET_ADDRESS } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Props

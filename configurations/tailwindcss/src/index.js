@@ -28,6 +28,7 @@ module.exports = {
     "../../apps/ui/src/**/*.{ts,tsx}",
     "../../apps/ui/.storybook/**/*.{ts,tsx}",
     "../../apps/ui/stories/**/*.{ts,tsx}",
+    "../../packages/svg/src/**/*.{ts,tsx}",
   ],
   theme: {
     transparent: "transparent",

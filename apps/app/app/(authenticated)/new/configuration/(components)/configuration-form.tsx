@@ -68,7 +68,7 @@ import {
 import type { Owner, Owners } from "@/app/(authenticated)/new/(hooks)";
 import { publicClient } from "@/clients/public";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
-import { MAX_THRESHOLD, MAX_WEIGHT } from "@/const/configuration";
+import { MAX_THRESHOLD, MAX_WEIGHT } from "@/const";
 import { debounce, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------

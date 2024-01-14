@@ -15,6 +15,7 @@
 
 "use client";
 
+import { CHAINS } from "@lightdotso/const";
 import {
   RainbowKitProvider,
   lightTheme,
@@ -33,7 +34,6 @@ import {
   http,
 } from "wagmi";
 import { safe } from "wagmi/connectors";
-import { CHAINS } from "@/const/chains";
 
 // -----------------------------------------------------------------------------
 // Rainbow

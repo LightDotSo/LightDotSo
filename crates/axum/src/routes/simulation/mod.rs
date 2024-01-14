@@ -18,7 +18,6 @@ pub(crate) mod error;
 pub(crate) mod get;
 pub(crate) mod list;
 pub(crate) mod types;
-pub(crate) mod update;
 
 use crate::state::AppState;
 use autometrics::autometrics;
@@ -30,7 +29,6 @@ pub(crate) use list::{
     __path_v1_simulation_list_count_handler, __path_v1_simulation_list_handler,
     v1_simulation_list_count_handler, v1_simulation_list_handler,
 };
-pub(crate) use update::{__path_v1_simulation_update_handler, v1_simulation_update_handler};
 
 // -----------------------------------------------------------------------------
 // Router
@@ -43,5 +41,4 @@ pub(crate) fn router() -> Router<AppState> {
         .route("/simulation/get", get(v1_simulation_get_handler))
         .route("/simulation/list", get(v1_simulation_list_handler))
         .route("/simulation/list/count", get(v1_simulation_list_count_handler))
-        .route("/simulation/update", get(v1_simulation_update_handler))
 }

@@ -18,7 +18,7 @@ import type { ReactNode } from "react";
 import { HStackFull } from "@/components/stack/h-stack-full";
 import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
 import { BasicPageWrapper } from "@/components/wrapper/page/basic-page-wrapper";
-import { TITLES } from "@/const/titles";
+import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Metadata

@@ -15,7 +15,7 @@
 
 import { Result } from "neverthrow";
 import type { Address } from "viem";
-import { TRANSACTION_ROW_COUNT } from "@/const/numbers";
+import { TRANSACTION_ROW_COUNT } from "@/const";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
 import { getUserOperations, getUserOperationsCount } from "@/services";
