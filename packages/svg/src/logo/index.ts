@@ -13,5 +13,4 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { ChainLogo } from "./chain";
-export { LightHorizontalLogo } from "./logo";
+export { LightHorizontalLogo } from "./light-horizontal";
