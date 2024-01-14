@@ -166,8 +166,12 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
             .map(row => (
               <TableRow
                 key={row.id}
-                className={cn(row.getCanExpand() && "cursor-pointer")}
+                className={cn(
+                  row.getCanExpand() && "cursor-pointer",
+                  row.getCanExpand() && row.getIsExpanded() && "border-b-0",
+                )}
                 data-state={row.getIsSelected() && "selected"}
+                data-expanded={row.getParentRow() ? "true" : "false"}
                 onClick={() => {
                   if (row.getCanExpand()) {
                     row.getToggleExpandedHandler()();
