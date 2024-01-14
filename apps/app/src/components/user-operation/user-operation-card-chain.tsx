@@ -16,8 +16,8 @@
 "use client";
 
 import type { UserOperationData } from "@lightdotso/data";
-import { getChainById } from "@lightdotso/utils";
 import { ChainLogo } from "@lightdotso/svg";
+import { getChainById } from "@lightdotso/utils";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------

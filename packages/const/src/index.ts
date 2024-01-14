@@ -23,6 +23,6 @@ export { NOTION_LINKS } from "./notion_links";
 export {
   SIMPLEHASH_MAINNET_CHAIN_ID_MAPPING,
   SIMPLEHASH_TESTNET_CHAIN_ID_MAPPING,
-  SIMPLEHASH_CHAIN_ID_MAPPING
+  SIMPLEHASH_CHAIN_ID_MAPPING,
 } from "./simplehash";
 export { Social, SOCIAL_LINKS } from "./social_links";

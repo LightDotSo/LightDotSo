@@ -18,8 +18,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import OriginalLayout from "@/app/(wallet)/[address]/transactions/layout";
-import { DEMO_WALLET_ADDRESS } from "@/const";
-import { TITLES } from "@/const";
+import { DEMO_WALLET_ADDRESS, TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Metadata
