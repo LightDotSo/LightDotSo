@@ -48,7 +48,7 @@ impl From<transaction::Data> for Transaction {
             hash: transaction.hash,
             timestamp: transaction.timestamp.to_rfc3339(),
             interpretation: transaction.interpretation.and_then(|maybe_interpretation| {
-                maybe_interpretation.map(|interpretation| interpretation.into())
+                maybe_interpretation.map(|interpretation| Interpretation::from(*interpretation))
             }),
         }
     }

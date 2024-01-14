@@ -49,10 +49,3 @@ impl From<interpretation::Data> for Interpretation {
         }
     }
 }
-
-/// Implement From<Box<interpretation::Data>> for Interpretation.
-impl From<Box<interpretation::Data>> for Interpretation {
-    fn from(interpretation: Box<interpretation::Data>) -> Self {
-        Self::from(*interpretation)
-    }
-}
