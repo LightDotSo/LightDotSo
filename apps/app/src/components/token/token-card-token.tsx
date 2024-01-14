@@ -49,7 +49,7 @@ export const TokenCardToken: FC<TokenCardTokenProps> = ({
     <div className="relative z-10">
       {canExpand && (
         <ButtonIcon
-          className="absolute -left-6 md:-left-8 top-1/2 transform -translate-y-1/2"
+          className="absolute -left-6 top-1/2 -translate-y-1/2 md:-left-8"
           variant="ghost"
           size="xs"
         >
