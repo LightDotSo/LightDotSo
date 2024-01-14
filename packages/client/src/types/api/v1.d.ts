@@ -564,8 +564,26 @@ export interface components {
     }]>;
     /** @description AssetChange root type. */
     AssetChange: {
+      /** @description The address of the asset change. */
+      address: string;
+      /**
+       * Format: int64
+       * @description The after amount of the asset change.
+       */
+      after_amount?: number | null;
+      /**
+       * Format: int64
+       * @description The amount of the asset change.
+       */
+      amount: number;
+      /**
+       * Format: int64
+       * @description The before amount of the asset change.
+       */
+      before_amount?: number | null;
       /** @description The id of the asset change. */
       id: string;
+      token?: components["schemas"]["Token"] | null;
     };
     /** @description AssetChange errors */
     AssetChangeError: OneOf<[{
@@ -673,6 +691,8 @@ export interface components {
     Interpretation: {
       /** @description The array of actions of the interpretation. */
       actions: string[];
+      /** @description The array of asset changes of the interpretation. */
+      asset_changes: components["schemas"]["AssetChange"][];
       /** @description The id of the interpretation to read for. */
       id: string;
     };
