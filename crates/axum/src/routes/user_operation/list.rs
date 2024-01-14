@@ -20,6 +20,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::{
+    asset_change, interpretation,
     user_operation::{self, WhereParam},
     UserOperationStatus,
 };
@@ -139,6 +140,13 @@ pub(crate) async fn v1_user_operation_list_handler(
         .order_by(user_operation::created_at::order(order))
         .with(user_operation::signatures::fetch(vec![]))
         .with(user_operation::transaction::fetch())
+        .with(
+            user_operation::interpretation::fetch()
+                .with(interpretation::actions::fetch(vec![]))
+                .with(
+                    interpretation::asset_changes::fetch(vec![]).with(asset_change::token::fetch()),
+                ),
+        )
         .exec()
         .await?;
 

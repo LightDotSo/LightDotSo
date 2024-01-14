@@ -23,7 +23,7 @@ use axum::{
     extract::{Query, State},
     Json,
 };
-use lightdotso_prisma::transaction;
+use lightdotso_prisma::{asset_change, interpretation, transaction};
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -79,8 +79,14 @@ pub(crate) async fn v1_transaction_get_handler(
         .client
         .transaction()
         .find_unique(transaction::hash::equals(query.transaction_hash))
+        .with(
+            transaction::interpretation::fetch().with(interpretation::actions::fetch(vec![])).with(
+                interpretation::asset_changes::fetch(vec![]).with(asset_change::token::fetch()),
+            ),
+        )
         .exec()
         .await?;
+    info!(?transaction);
 
     // If the transaction is not found, return a 404.
     let transaction = transaction.ok_or(RouteError::TransactionError(

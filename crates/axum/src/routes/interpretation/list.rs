@@ -20,7 +20,7 @@ use axum::{
     extract::{Query, State},
     Json,
 };
-use lightdotso_prisma::interpretation;
+use lightdotso_prisma::{asset_change, interpretation};
 use prisma_client_rust::Direction;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -77,6 +77,8 @@ pub(crate) async fn v1_interpretation_list_handler(
         .interpretation()
         .find_many(vec![])
         .order_by(interpretation::created_at::order(Direction::Desc))
+        .with(interpretation::actions::fetch(vec![]))
+        .with(interpretation::asset_changes::fetch(vec![]).with(asset_change::token::fetch()))
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
         .exec()
