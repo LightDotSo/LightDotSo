@@ -74,8 +74,13 @@ pub(crate) async fn v1_asset_change_get_handler(
     // -------------------------------------------------------------------------
 
     // Get the asset_changes from the database.
-    let asset_change =
-        state.client.asset_change().find_unique(asset_change::id::equals(query.id)).exec().await?;
+    let asset_change = state
+        .client
+        .asset_change()
+        .find_unique(asset_change::id::equals(query.id))
+        .with(asset_change::token::fetch())
+        .exec()
+        .await?;
 
     // If the asset_change is not found, return a 404.
     let asset_change = asset_change.ok_or(RouteError::AssetChangeError(

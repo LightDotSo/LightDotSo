@@ -20,6 +20,7 @@ use axum::{
     extract::{Query, State},
     Json,
 };
+use lightdotso_prisma::asset_change;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -74,6 +75,7 @@ pub(crate) async fn v1_asset_change_list_handler(
         .client
         .asset_change()
         .find_many(vec![])
+        .with(asset_change::token::fetch())
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
         .exec()
