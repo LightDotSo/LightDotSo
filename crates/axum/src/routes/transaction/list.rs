@@ -21,7 +21,7 @@ use axum::{
     Json,
 };
 use lightdotso_prisma::{
-    asset_change, interpretation,
+    asset_change, interpretation, interpretation_action,
     transaction::{self, WhereParam},
 };
 use lightdotso_tracing::tracing::info;
@@ -99,6 +99,14 @@ pub(crate) async fn v1_transaction_list_handler(
     // DB
     // -------------------------------------------------------------------------
 
+    // Get the interpretation action params.
+    let mut interpretaion_action_params =
+        vec![or![interpretation_action::address::equals("".to_string())]];
+    if let Some(addr) = &query.address {
+        interpretaion_action_params
+            .push(or![interpretation_action::address::equals(addr.clone()),]);
+    }
+
     // Get the transactions from the database.
     let transactions = state
         .client
@@ -106,9 +114,11 @@ pub(crate) async fn v1_transaction_list_handler(
         .find_many(query_params)
         .order_by(transaction::timestamp::order(Direction::Desc))
         .with(
-            transaction::interpretation::fetch().with(interpretation::actions::fetch(vec![])).with(
-                interpretation::asset_changes::fetch(vec![]).with(asset_change::token::fetch()),
-            ),
+            transaction::interpretation::fetch()
+                .with(interpretation::actions::fetch(interpretaion_action_params))
+                .with(
+                    interpretation::asset_changes::fetch(vec![]).with(asset_change::token::fetch()),
+                ),
         )
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
