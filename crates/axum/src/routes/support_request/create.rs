@@ -49,7 +49,7 @@ pub struct PostQuery {
 
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub struct SupportRequestPostRequestParams {
+pub struct SupportRequestCreateRequestParams {
     /// The result of the support_request.
     pub support_request: SupportRequest,
 }
@@ -61,7 +61,7 @@ pub struct SupportRequestPostRequestParams {
         params(
             PostQuery
         ),
-        request_body = SupportRequestPostRequestParams,
+        request_body = SupportRequestCreateRequestParams,
         responses(
             (status = 200, description = "SupportRequest created successfully", body = SupportRequest),
             (status = 500, description = "SupportRequest internal error", body = SupportRequestError),
@@ -72,7 +72,7 @@ pub(crate) async fn v1_support_request_create_handler(
     post_query: Query<PostQuery>,
     State(state): State<AppState>,
     mut session: Session,
-    Json(params): Json<SupportRequestPostRequestParams>,
+    Json(params): Json<SupportRequestCreateRequestParams>,
 ) -> AppJsonResult<SupportRequest> {
     // -------------------------------------------------------------------------
     // Parse

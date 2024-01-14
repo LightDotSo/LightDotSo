@@ -562,6 +562,14 @@ export interface components {
       /** @description Activity not found by id. */
       NotFound: string;
     }]>;
+    /** @description Count of list of user operations. */
+    ActivityListCount: {
+      /**
+       * Format: int64
+       * @description The count of the list of user operations..
+       */
+      count: number;
+    };
     /** @description AssetChange root type. */
     AssetChange: {
       /** @description The address of the asset change. */
@@ -619,7 +627,7 @@ export interface components {
       /** @description The authenticated status. */
       is_authenticated: boolean;
     };
-    AuthVerifyPostRequestParams: {
+    AuthVerifyCreateRequestParams: {
       message: string;
       signature: string;
     };
@@ -676,6 +684,9 @@ export interface components {
       /** @description The text of the feedback. */
       text: string;
     };
+    FeedbackCreateRequestParams: {
+      feedback: components["schemas"]["Feedback"];
+    };
     /** @description Feedback error */
     FeedbackError: OneOf<[{
       /** @description Feedback bad request error. */
@@ -684,9 +695,6 @@ export interface components {
       /** @description Feedback not found by id. */
       NotFound: string;
     }]>;
-    FeedbackPostRequestParams: {
-      feedback: components["schemas"]["Feedback"];
-    };
     /** @description Interpretation root type. */
     Interpretation: {
       /** @description The array of actions of the interpretation. */
@@ -724,6 +732,14 @@ export interface components {
       /** @description Not Authorized. */
       Unauthorized: string;
     }]>;
+    /** @description Count of list of user operations. */
+    InviteCodeListCount: {
+      /**
+       * Format: int64
+       * @description The count of the list of user operations..
+       */
+      count: number;
+    };
     /** @description Notification root type. */
     Notification: {
       /** @description The id of the notification to read for. */
@@ -737,14 +753,22 @@ export interface components {
       /** @description Notification not found by id. */
       NotFound: string;
     }]>;
+    /** @description Count of list of user operations. */
+    NotificationListCount: {
+      /**
+       * Format: int64
+       * @description The count of the list of user operations..
+       */
+      count: number;
+    };
     /** @description Item to request. */
-    NotificationPostRequest: {
+    NotificationReadParams: {
       /** @description The id of the notification to read for. */
       id: string;
     };
-    NotificationPostRequestParams: {
+    NotificationReadRequestParams: {
       /** @description The array of the notifications to query. */
-      notifications: components["schemas"]["NotificationPostRequest"][];
+      notifications: components["schemas"]["NotificationReadParams"][];
     };
     /** @description Owner root type. */
     Owner: {
@@ -889,6 +913,22 @@ export interface components {
        */
       signature_type: number;
     };
+    /** @description Signature operation */
+    SignatureCreateParams: {
+      /** @description The id of the owner of the signature. */
+      owner_id: string;
+      /** @description The signature of the user operation in hex. */
+      signature: string;
+      /**
+       * Format: int32
+       * @description The type of the signature.
+       */
+      signature_type: number;
+    };
+    /** @description Signature operation post request params */
+    SignatureCreateRequestParams: {
+      signature: components["schemas"]["SignatureCreateParams"];
+    };
     /** @description Signature operation errors */
     SignatureError: OneOf<[{
       /** @description Signature query error. */
@@ -897,10 +937,24 @@ export interface components {
       /** @description Signature not found by id. */
       NotFound: string;
     }]>;
-    /** @description Signature operation post request params */
-    SignaturePostRequestParams: {
-      signature: components["schemas"]["SignaturePostRequestSignatureParams"];
+    /** @description Simulation root type. */
+    Simulation: {
+      /** @description The id of the simulation to read for. */
+      id: string;
+      interpretation?: components["schemas"]["Interpretation"] | null;
     };
+    SimulationCreateRequestParams: {
+      /** @description The id of the simulation to update for. */
+      id: string;
+    };
+    /** @description Simulation operation errors */
+    SimulationError: OneOf<[{
+      /** @description Simulation query error. */
+      BadRequest: string;
+    }, {
+      /** @description Simulation not found by id. */
+      NotFound: string;
+    }]>;
     /** @description Support Request root type. */
     SupportRequest: {
       /** @description The area of the support_request. */
@@ -915,6 +969,9 @@ export interface components {
       /** @description The title of the support_request. */
       title: string;
     };
+    SupportRequestCreateRequestParams: {
+      support_request: components["schemas"]["SupportRequest"];
+    };
     /** @description Support_request operation errors */
     SupportRequestError: OneOf<[{
       /** @description Support_request query error. */
@@ -923,9 +980,6 @@ export interface components {
       /** @description Support_request not found by id. */
       NotFound: string;
     }]>;
-    SupportRequestPostRequestParams: {
-      support_request: components["schemas"]["SupportRequest"];
-    };
     /** @description Token root type. */
     Token: {
       /** @description The address of the token. */
@@ -1128,7 +1182,7 @@ export interface components {
       verification_gas_limit: number;
     };
     /** @description Item to create. */
-    UserOperationCreate: {
+    UserOperationCreateParams: {
       call_data: string;
       /** Format: int64 */
       call_gas_limit: number;
@@ -1148,6 +1202,10 @@ export interface components {
       sender: string;
       /** Format: int64 */
       verification_gas_limit: number;
+    };
+    UserOperationCreateRequestParams: {
+      signature: components["schemas"]["SignatureCreateParams"];
+      user_operation: components["schemas"]["UserOperationCreateParams"];
     };
     /** @description User operation operation errors */
     UserOperationError: OneOf<[{
@@ -1172,10 +1230,6 @@ export interface components {
        */
       nonce: number;
     };
-    UserOperationPostRequestParams: {
-      signature: components["schemas"]["UserOperationCreateSignature"];
-      user_operation: components["schemas"]["UserOperationCreate"];
-    };
     /** @description User operation operation errors */
     UserOperationSuccess: {
       /** @description User operation updated successfully. */
@@ -1191,6 +1245,42 @@ export interface components {
       name: string;
       /** @description The salt of the wallet. */
       salt: string;
+    };
+    WalletCreateRequestParams: {
+      /**
+       * @description The invite code of the wallet.
+       * @example BFD-23S
+       */
+      invite_code: string;
+      /**
+       * @description The name of the wallet.
+       * @default My Wallet
+       * @example My Wallet
+       */
+      name: string;
+      /**
+       * @description The array of owners of the wallet.
+       * @example [
+       *   {
+       *     "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
+       *     "weight": 1
+       *   }
+       * ]
+       */
+      owners: components["schemas"]["WalletCreateRequestOwnerParams"][];
+      /**
+       * @description The salt is used to calculate the new wallet address.
+       * @default 0x0000000000000000000000000000000000000000000000000000000000000001
+       * @example 0x0000000000000000000000000000000000000000000000000000000000000006
+       */
+      salt: string;
+      /**
+       * Format: int32
+       * @description The threshold of the wallet.
+       * @default 1
+       * @example 3
+       */
+      threshold: number;
     };
     /** @description Wallet operation errors */
     WalletError: OneOf<[{
@@ -1240,42 +1330,6 @@ export interface components {
        * @description The count of the list of wallets.
        */
       count: number;
-    };
-    WalletPostRequestParams: {
-      /**
-       * @description The invite code of the wallet.
-       * @example BFD-23S
-       */
-      invite_code: string;
-      /**
-       * @description The name of the wallet.
-       * @default My Wallet
-       * @example My Wallet
-       */
-      name: string;
-      /**
-       * @description The array of owners of the wallet.
-       * @example [
-       *   {
-       *     "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
-       *     "weight": 1
-       *   }
-       * ]
-       */
-      owners: components["schemas"]["WalletPostRequestOwnerParams"][];
-      /**
-       * @description The salt is used to calculate the new wallet address.
-       * @default 0x0000000000000000000000000000000000000000000000000000000000000001
-       * @example 0x0000000000000000000000000000000000000000000000000000000000000006
-       */
-      salt: string;
-      /**
-       * Format: int32
-       * @description The threshold of the wallet.
-       * @default 1
-       * @example 3
-       */
-      threshold: number;
     };
     /** @description WalletSettings root type. */
     WalletSettings: {
@@ -1534,7 +1588,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["AuthVerifyPostRequestParams"];
+        "application/json": components["schemas"]["AuthVerifyCreateRequestParams"];
       };
     };
     responses: {
@@ -1639,7 +1693,7 @@ export interface operations {
   v1_feedback_create_handler: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["FeedbackPostRequestParams"];
+        "application/json": components["schemas"]["FeedbackCreateRequestParams"];
       };
     };
     responses: {
@@ -1910,7 +1964,7 @@ export interface operations {
   v1_notification_read_handler: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["NotificationPostRequestParams"];
+        "application/json": components["schemas"]["NotificationReadRequestParams"];
       };
     };
     responses: {
@@ -2347,7 +2401,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["SignaturePostRequestParams"];
+        "application/json": components["schemas"]["SignatureCreateRequestParams"];
       };
     };
     responses: {
@@ -2584,7 +2638,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["SupportRequestPostRequestParams"];
+        "application/json": components["schemas"]["SupportRequestCreateRequestParams"];
       };
     };
     responses: {
@@ -2942,7 +2996,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["UserOperationPostRequestParams"];
+        "application/json": components["schemas"]["UserOperationCreateRequestParams"];
       };
     };
     responses: {
@@ -3171,7 +3225,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["WalletPostRequestParams"];
+        "application/json": components["schemas"]["WalletCreateRequestParams"];
       };
     };
     responses: {

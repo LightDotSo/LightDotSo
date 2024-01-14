@@ -64,15 +64,15 @@ pub enum PostQueryProcedure {
 /// Signature operation post request params
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub struct SignaturePostRequestParams {
+pub struct SignatureCreateRequestParams {
     /// The result of the signature.
-    pub signature: SignaturePostRequestSignatureParams,
+    pub signature: SignatureCreateParams,
 }
 
 /// Signature operation
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub struct SignaturePostRequestSignatureParams {
+pub struct SignatureCreateParams {
     /// The id of the owner of the signature.
     pub owner_id: String,
     /// The signature of the user operation in hex.
@@ -92,7 +92,7 @@ pub struct SignaturePostRequestSignatureParams {
         params(
             PostQuery
         ),
-        request_body = SignaturePostRequestParams,
+        request_body = SignatureCreateRequestParams,
         responses(
             (status = 200, description = "Signature created successfully", body = Signature),
             (status = 400, description = "Invalid Configuration", body = SignatureError),
@@ -104,7 +104,7 @@ pub struct SignaturePostRequestSignatureParams {
 pub(crate) async fn v1_signature_create_handler(
     post_query: Query<PostQuery>,
     State(state): State<AppState>,
-    Json(params): Json<SignaturePostRequestParams>,
+    Json(params): Json<SignatureCreateRequestParams>,
 ) -> AppJsonResult<Signature> {
     // -------------------------------------------------------------------------
     // Parse
