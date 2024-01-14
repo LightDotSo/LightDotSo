@@ -13,8 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use crate::routes::signature::types::Signature;
 use lightdotso_common::traits::VecU8ToHex;
-use lightdotso_prisma::{owner, paymaster, signature, transaction, user_operation};
+use lightdotso_prisma::{owner, paymaster, transaction, user_operation};
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
@@ -60,20 +61,6 @@ pub(crate) struct UserOperationOwner {
     pub weight: i64,
 }
 
-/// User operation signature
-#[derive(Serialize, Deserialize, ToSchema, Clone)]
-#[serde(rename_all = "snake_case")]
-pub(crate) struct UserOperationSignature {
-    /// The id of the owner of the signature.
-    pub owner_id: String,
-    /// The signature in hex string.
-    pub signature: String,
-    /// The signature type
-    pub signature_type: i32,
-    /// The created time of the signature.
-    pub created_at: String,
-}
-
 /// User operation transaction
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
@@ -108,7 +95,7 @@ pub(crate) struct UserOperation {
     paymaster_and_data: String,
     status: String,
     paymaster: Option<UserOperationPaymaster>,
-    signatures: Vec<UserOperationSignature>,
+    signatures: Vec<Signature>,
     transaction: Option<UserOperationTransaction>,
     created_at: String,
     updated_at: String,
@@ -135,7 +122,7 @@ impl From<user_operation::Data> for UserOperation {
                 .paymaster
                 .and_then(|paymaster| paymaster.map(|data| UserOperationPaymaster::from(*data))),
             signatures: user_operation.signatures.map_or(Vec::new(), |signature| {
-                signature.into_iter().map(UserOperationSignature::from).collect()
+                signature.into_iter().map(|sig| sig.into()).collect()
             }),
             transaction: user_operation.transaction.and_then(|transaction| {
                 transaction.map(|data| UserOperationTransaction::from(*data))
@@ -161,18 +148,6 @@ impl From<owner::Data> for UserOperationOwner {
 impl From<paymaster::Data> for UserOperationPaymaster {
     fn from(paymaster: paymaster::Data) -> Self {
         Self { address: paymaster.address }
-    }
-}
-
-/// Implement From<signature::Data> for Owner.
-impl From<signature::Data> for UserOperationSignature {
-    fn from(signature: signature::Data) -> Self {
-        Self {
-            owner_id: signature.owner_id.to_string(),
-            signature: signature.signature.to_hex_string(),
-            signature_type: signature.signature_type,
-            created_at: signature.created_at.to_rfc3339(),
-        }
     }
 }
 

@@ -26,12 +26,14 @@ use utoipa::ToSchema;
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
 pub(crate) struct Signature {
+    /// The id of the owner of the signature.
+    pub owner_id: String,
     /// The signature of the user operation in hex.
     pub signature: String,
     /// The type of the signature.
     pub signature_type: i32,
-    /// The owner id of the signature.
-    pub owner_id: String,
+    /// The created time of the signature.
+    pub created_at: String,
 }
 
 // -----------------------------------------------------------------------------
@@ -42,9 +44,10 @@ pub(crate) struct Signature {
 impl From<signature::Data> for Signature {
     fn from(signature: signature::Data) -> Self {
         Self {
+            owner_id: signature.owner_id.to_string(),
             signature: signature.signature.to_hex_string(),
             signature_type: signature.signature_type,
-            owner_id: signature.owner_id.to_string(),
+            created_at: signature.created_at.to_rfc3339(),
         }
     }
 }

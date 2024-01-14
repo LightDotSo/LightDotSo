@@ -127,7 +127,6 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(user_operation::types::UserOperation),
         schemas(user_operation::types::UserOperationPaymaster),
         schemas(user_operation::types::UserOperationSuccess),
-        schemas(user_operation::types::UserOperationSignature),
         schemas(user_operation::types::UserOperationTransaction),
         schemas(wallet::create::WalletPostRequestParams),
         schemas(wallet::error::WalletError),
