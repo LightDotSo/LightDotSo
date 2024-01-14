@@ -68,7 +68,7 @@ pub struct PostQuery {
 pub struct WalletCreateRequestParams {
     /// The array of owners of the wallet.
     #[schema(example = json!([{"address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed", "weight": 1}]))]
-    pub owners: Vec<WalletCreateRequestOwnerParams>,
+    pub owners: Vec<WalletCreateOwnerParams>,
     /// The salt is used to calculate the new wallet address.
     #[schema(
         example = "0x0000000000000000000000000000000000000000000000000000000000000006",
@@ -90,7 +90,7 @@ pub struct WalletCreateRequestParams {
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
 #[schema(example = json!({"address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed", "weight": 1}))]
-pub(crate) struct WalletCreateRequestOwnerParams {
+pub(crate) struct WalletCreateOwnerParams {
     /// The address of the owner.
     pub address: String,
     /// The weight of the owner.
