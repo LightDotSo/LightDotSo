@@ -31,6 +31,20 @@ export interface paths {
      */
     get: operations["v1_activity_list_count_handler"];
   };
+  "/asset_change/get": {
+    /**
+     * Get a asset
+     * @description Get a asset
+     */
+    get: operations["v1_asset_change_get_handler"];
+  };
+  "/asset_change/list": {
+    /**
+     * Returns a list of assets.
+     * @description Returns a list of assets.
+     */
+    get: operations["v1_asset_change_list_handler"];
+  };
   "/auth/logout": {
     /**
      * Logout a session
@@ -546,6 +560,19 @@ export interface components {
       BadRequest: string;
     }, {
       /** @description Activity not found by id. */
+      NotFound: string;
+    }]>;
+    /** @description AssetChange root type. */
+    AssetChange: {
+      /** @description The id of the asset change. */
+      id: string;
+    };
+    /** @description AssetChange errors */
+    AssetChangeError: OneOf<[{
+      /** @description AssetChange query error. */
+      BadRequest: string;
+    }, {
+      /** @description AssetChange not found by id. */
       NotFound: string;
     }]>;
     /** @description Auth operation errors */
@@ -1358,6 +1385,59 @@ export interface operations {
       500: {
         content: {
           "application/json": components["schemas"]["ActivityError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a asset
+   * @description Get a asset
+   */
+  v1_asset_change_get_handler: {
+    parameters: {
+      query: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Asset Change returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["AssetChange"];
+        };
+      };
+      /** @description Asset Change not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["AssetChangeError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of assets.
+   * @description Returns a list of assets.
+   */
+  v1_asset_change_list_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first asset change to return. */
+        offset?: number | null;
+        /** @description The maximum number of asset changes to return. */
+        limit?: number | null;
+      };
+    };
+    responses: {
+      /** @description Asset Changes returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["AssetChange"][];
+        };
+      };
+      /** @description Asset Change bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["AssetChangeError"];
         };
       };
     };
