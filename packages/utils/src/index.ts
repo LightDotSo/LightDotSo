@@ -13,5 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+export {
+  getChainById,
+  getChainNameById,
+  getChainBySimplehashChainName,
+  getChainIdBySimplehashChainName,
+} from "./chain";
 export { cn } from "./cn";
-export { shortenAddress, shortenBytes32 } from "./shorten";
+export { shortenAddress, shortenBytes32, shortenName } from "./shorten";

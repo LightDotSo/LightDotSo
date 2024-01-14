@@ -16,9 +16,9 @@
 "use client";
 
 import type { TokenData } from "@lightdotso/data";
+import { ChainLogo } from "@lightdotso/svg";
+import { getChainById } from "@lightdotso/utils";
 import type { FC } from "react";
-import { ChainLogo } from "@/svgs";
-import { getChainById } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Props

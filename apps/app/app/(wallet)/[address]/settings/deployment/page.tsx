@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { CHAINS, MAINNET_CHAINS } from "@lightdotso/const";
 import { queryKeys } from "@lightdotso/query-keys";
 import { Skeleton } from "@lightdotso/ui";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
@@ -20,7 +21,6 @@ import { Suspense } from "react";
 import type { Address, Hex } from "viem";
 import { SettingsDeploymentCard } from "@/app/(wallet)/[address]/settings/(components)/settings-deployment-card";
 import { SettingsSectionWrapper } from "@/components/wrapper/section/settings-section-wrapper";
-import { CHAINS, MAINNET_CHAINS } from "@/const/chains";
 import { handler } from "@/handlers/paths/[address]/settings/deployment/handler";
 import { preloader } from "@/preloaders/paths/[address]/preloader";
 import { getQueryClient } from "@/services";

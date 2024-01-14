@@ -17,16 +17,16 @@
 
 import type { NftData } from "@lightdotso/data";
 import { useAuth } from "@lightdotso/stores";
+import { ChainLogo } from "@lightdotso/svg";
 import { Button } from "@lightdotso/ui";
-import { cn } from "@lightdotso/utils";
+import {
+  cn,
+  getChainBySimplehashChainName,
+  getChainIdBySimplehashChainName,
+} from "@lightdotso/utils";
 import Link from "next/link";
 import { type FC } from "react";
 import { NftImage } from "@/components/nft/nft-image";
-import { ChainLogo } from "@/svgs";
-import {
-  getChainBySimplehashChainName,
-  getChainIdBySimplehashChainName,
-} from "@/utils/chain";
 
 // -----------------------------------------------------------------------------
 // Props

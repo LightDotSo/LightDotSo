@@ -15,8 +15,10 @@
 
 "use client";
 
+import { CHAINS, MAINNET_CHAINS } from "@lightdotso/const";
 import { useSuspenseQueryWalletSettings } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
+import { ChainLogo } from "@lightdotso/svg";
 import {
   Command,
   CommandEmpty,
@@ -32,9 +34,7 @@ import { ArrowUpRight, Globe } from "lucide-react";
 import { useMemo, useState } from "react";
 import type { FC } from "react";
 import type { Address } from "viem";
-import { CHAINS, MAINNET_CHAINS } from "@/const/chains";
 import { useIsMounted } from "@/hooks";
-import { ChainLogo } from "@/svgs";
 
 // -----------------------------------------------------------------------------
 // Component

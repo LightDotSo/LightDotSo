@@ -13,6 +13,4 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export const shortenName = (name: string) => {
-  return name.match(/\b\w/g)?.join("").substring(0, 3);
-};
+export { ChainLogo } from "./chain";
