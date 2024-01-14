@@ -20,10 +20,11 @@ use crate::{
     constants::SESSION_COOKIE_ID,
     handle_error,
     routes::{
-        activity, auth, check, configuration, feedback, health, interpretation, invite_code,
-        metrics, notification, owner, paymaster, paymaster_operation, portfolio, protocol,
-        protocol_group, queue, signature, simulation, support_request, token, token_group,
-        token_price, transaction, user, user_operation, wallet, wallet_features, wallet_settings,
+        activity, asset_change, auth, check, configuration, feedback, health, interpretation,
+        invite_code, metrics, notification, owner, paymaster, paymaster_operation, portfolio,
+        protocol, protocol_group, queue, signature, simulation, support_request, token,
+        token_group, token_price, transaction, user, user_operation, wallet, wallet_features,
+        wallet_settings,
     },
     sessions::{authenticated, RedisStore},
     state::AppState,
@@ -68,6 +69,8 @@ use utoipa_swagger_ui::SwaggerUi;
     components(
         schemas(activity::error::ActivityError),
         schemas(activity::types::Activity),
+        schemas(asset_change::error::AssetChangeError),
+        schemas(asset_change::types::AssetChange),
         schemas(auth::error::AuthError),
         schemas(auth::nonce::AuthNonce),
         schemas(auth::session::AuthSession),
@@ -146,6 +149,8 @@ use utoipa_swagger_ui::SwaggerUi;
         activity::v1_activity_get_handler,
         activity::v1_activity_list_handler,
         activity::v1_activity_list_count_handler,
+        asset_change::v1_asset_change_get_handler,
+        asset_change::v1_asset_change_list_handler,
         auth::v1_auth_nonce_handler,
         auth::v1_auth_session_handler,
         auth::v1_auth_logout_handler,
@@ -220,6 +225,7 @@ use utoipa_swagger_ui::SwaggerUi;
     ),
     tags(
         (name = "activity", description = "Activity API"),
+        (name = "asset_change", description = "Asset Change API"),
         (name = "auth", description = "Auth API"),
         (name = "configuration", description = "Configuration API"),
         (name = "check", description = "Check API"),
@@ -333,6 +339,7 @@ pub async fn start_api_server() -> Result<()> {
     // Create the API
     let api = Router::new()
         .merge(activity::router())
+        .merge(asset_change::router())
         .merge(auth::router())
         .merge(configuration::router())
         .merge(check::router())

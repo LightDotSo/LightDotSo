@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 pub(crate) mod activity;
+pub(crate) mod asset_change;
 pub(crate) mod auth;
 pub(crate) mod check;
 pub(crate) mod configuration;

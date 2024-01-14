@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::routes::{
-    activity::error::ActivityError, auth::error::AuthError,
+    activity::error::ActivityError, asset_change::error::AssetChangeError, auth::error::AuthError,
     configuration::error::ConfigurationError, feedback::error::FeedbackError,
     interpretation::error::InterpretationError, invite_code::error::InviteCodeError,
     notification::error::NotificationError, owner::error::OwnerError,
@@ -34,6 +34,7 @@ use http::StatusCode;
 #[allow(dead_code)]
 pub(crate) enum RouteError {
     ActivityError(ActivityError),
+    AssetChangeError(AssetChangeError),
     AuthError(AuthError),
     ConfigurationError(ConfigurationError),
     FeedbackError(FeedbackError),
@@ -70,6 +71,15 @@ impl RouteErrorStatusCodeAndMsg for ActivityError {
         match self {
             ActivityError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
             ActivityError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+        }
+    }
+}
+
+impl RouteErrorStatusCodeAndMsg for AssetChangeError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            AssetChangeError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
+            AssetChangeError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
         }
     }
 }
@@ -312,6 +322,7 @@ impl RouteErrorStatusCodeAndMsg for RouteError {
     fn error_status_code_and_msg(&self) -> (StatusCode, String) {
         match self {
             RouteError::ActivityError(err) => err.error_status_code_and_msg(),
+            RouteError::AssetChangeError(err) => err.error_status_code_and_msg(),
             RouteError::AuthError(err) => err.error_status_code_and_msg(),
             RouteError::ConfigurationError(err) => err.error_status_code_and_msg(),
             RouteError::FeedbackError(err) => err.error_status_code_and_msg(),
