@@ -17,7 +17,6 @@ pub(crate) mod error;
 pub(crate) mod get;
 pub(crate) mod list;
 pub(crate) mod types;
-pub(crate) mod update;
 
 use crate::state::AppState;
 use autometrics::autometrics;
@@ -25,9 +24,6 @@ use axum::{routing::get, Router};
 
 pub(crate) use get::{__path_v1_interpretation_get_handler, v1_interpretation_get_handler};
 pub(crate) use list::{__path_v1_interpretation_list_handler, v1_interpretation_list_handler};
-pub(crate) use update::{
-    __path_v1_interpretation_update_handler, v1_interpretation_update_handler,
-};
 
 // -----------------------------------------------------------------------------
 // Router
@@ -38,5 +34,4 @@ pub(crate) fn router() -> Router<AppState> {
     Router::new()
         .route("/interpretation/get", get(v1_interpretation_get_handler))
         .route("/interpretation/list", get(v1_interpretation_list_handler))
-        .route("/interpretation/update", get(v1_interpretation_update_handler))
 }
