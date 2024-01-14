@@ -81,11 +81,11 @@ pub struct PostQuery {
 
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub struct UserOperationPostRequestParams {
+pub struct UserOperationCreateRequestParams {
     // The user operation to create.
-    pub user_operation: UserOperationCreate,
+    pub user_operation: UserOperationCreateParams,
     // The signature of the user operation.
-    pub signature: UserOperationCreateSignature,
+    pub signature: UserOperationCreateSignatureParams,
 }
 
 // -----------------------------------------------------------------------------
@@ -95,7 +95,7 @@ pub struct UserOperationPostRequestParams {
 /// Item to create.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub(crate) struct UserOperationCreate {
+pub(crate) struct UserOperationCreateParams {
     chain_id: i64,
     hash: String,
     sender: String,
@@ -110,10 +110,10 @@ pub(crate) struct UserOperationCreate {
     paymaster_and_data: String,
 }
 
-impl TryFrom<UserOperationCreate> for RundlerUserOperation {
+impl TryFrom<UserOperationCreateParams> for RundlerUserOperation {
     type Error = Report;
 
-    fn try_from(op: UserOperationCreate) -> Result<Self> {
+    fn try_from(op: UserOperationCreateParams) -> Result<Self> {
         Ok(RundlerUserOperation {
             sender: op.sender.parse()?,
             nonce: op.nonce.into(),
@@ -133,7 +133,7 @@ impl TryFrom<UserOperationCreate> for RundlerUserOperation {
 /// User operation signature
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub(crate) struct UserOperationCreateSignature {
+pub(crate) struct UserOperationCreateSignatureParams {
     /// The id of the owner of the signature.
     pub owner_id: String,
     /// The signature in hex string.
@@ -153,7 +153,7 @@ pub(crate) struct UserOperationCreateSignature {
         params(
             PostQuery
         ),
-        request_body = UserOperationPostRequestParams,
+        request_body = UserOperationCreateRequestParams,
         responses(
             (status = 200, description = "User Operation created successfully", body = UserOperation),
             (status = 400, description = "Invalid Configuration", body = UserOperationError),
@@ -165,7 +165,7 @@ pub(crate) struct UserOperationCreateSignature {
 pub(crate) async fn v1_user_operation_create_handler(
     post_query: Query<PostQuery>,
     State(state): State<AppState>,
-    Json(params): Json<UserOperationPostRequestParams>,
+    Json(params): Json<UserOperationCreateRequestParams>,
 ) -> AppJsonResult<UserOperation> {
     // -------------------------------------------------------------------------
     // Parse
@@ -454,7 +454,7 @@ mod tests {
 
     #[test]
     fn test_conversion() {
-        let user_op = UserOperationCreate {
+        let user_op = UserOperationCreateParams {
             chain_id: 1,
             hash: "0x9e1a7c8".to_string(),
             sender: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".to_string(),

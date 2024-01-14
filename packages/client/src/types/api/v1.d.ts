@@ -619,7 +619,7 @@ export interface components {
       /** @description The authenticated status. */
       is_authenticated: boolean;
     };
-    AuthVerifyPostRequestParams: {
+    AuthVerifyCreateRequestParams: {
       message: string;
       signature: string;
     };
@@ -684,7 +684,7 @@ export interface components {
       /** @description Feedback not found by id. */
       NotFound: string;
     }]>;
-    FeedbackPostRequestParams: {
+    FeedbackCreateRequestParams: {
       feedback: components["schemas"]["Feedback"];
     };
     /** @description Interpretation root type. */
@@ -742,7 +742,7 @@ export interface components {
       /** @description The id of the notification to read for. */
       id: string;
     };
-    NotificationPostRequestParams: {
+    NotificationCreateRequestParams: {
       /** @description The array of the notifications to query. */
       notifications: components["schemas"]["NotificationPostRequest"][];
     };
@@ -898,7 +898,7 @@ export interface components {
       NotFound: string;
     }]>;
     /** @description Signature operation post request params */
-    SignaturePostRequestParams: {
+    SignatureCreateRequestParams: {
       signature: components["schemas"]["SignaturePostRequestSignatureParams"];
     };
     /** @description Support Request root type. */
@@ -923,7 +923,7 @@ export interface components {
       /** @description Support_request not found by id. */
       NotFound: string;
     }]>;
-    SupportRequestPostRequestParams: {
+    SupportRequestCreateRequestParams: {
       support_request: components["schemas"]["SupportRequest"];
     };
     /** @description Token root type. */
@@ -1172,7 +1172,7 @@ export interface components {
        */
       nonce: number;
     };
-    UserOperationPostRequestParams: {
+    UserOperationCreateRequestParams: {
       signature: components["schemas"]["UserOperationCreateSignature"];
       user_operation: components["schemas"]["UserOperationCreate"];
     };
@@ -1241,7 +1241,7 @@ export interface components {
        */
       count: number;
     };
-    WalletPostRequestParams: {
+    WalletCreateRequestParams: {
       /**
        * @description The invite code of the wallet.
        * @example BFD-23S
@@ -1534,7 +1534,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["AuthVerifyPostRequestParams"];
+        "application/json": components["schemas"]["AuthVerifyCreateRequestParams"];
       };
     };
     responses: {
@@ -1639,7 +1639,7 @@ export interface operations {
   v1_feedback_create_handler: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["FeedbackPostRequestParams"];
+        "application/json": components["schemas"]["FeedbackCreateRequestParams"];
       };
     };
     responses: {
@@ -1910,7 +1910,7 @@ export interface operations {
   v1_notification_read_handler: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["NotificationPostRequestParams"];
+        "application/json": components["schemas"]["NotificationCreateRequestParams"];
       };
     };
     responses: {
@@ -2347,7 +2347,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["SignaturePostRequestParams"];
+        "application/json": components["schemas"]["SignatureCreateRequestParams"];
       };
     };
     responses: {
@@ -2584,7 +2584,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["SupportRequestPostRequestParams"];
+        "application/json": components["schemas"]["SupportRequestCreateRequestParams"];
       };
     };
     responses: {
@@ -2942,7 +2942,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["UserOperationPostRequestParams"];
+        "application/json": components["schemas"]["UserOperationCreateRequestParams"];
       };
     };
     responses: {
@@ -3171,7 +3171,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["WalletPostRequestParams"];
+        "application/json": components["schemas"]["WalletCreateRequestParams"];
       };
     };
     responses: {

@@ -52,7 +52,7 @@ pub struct PostQuery {
 
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub struct AuthVerifyPostRequestParams {
+pub struct AuthVerifyCreateRequestParams {
     // The signature of the message.
     pub signature: String,
     // The message that was signed.
@@ -70,7 +70,7 @@ pub struct AuthVerifyPostRequestParams {
         params(
             PostQuery
         ),
-        // request_body = AuthPostRequestParams,
+        // request_body = AuthCreateRequestParams,
         responses(
             (status = 200, description = "Auth verified successfully", body = AuthNonce),
             (status = 400, description = "Invalid Configuration", body = AuthError),
@@ -82,7 +82,7 @@ pub(crate) async fn v1_auth_verify_handler(
     State(state): State<AppState>,
     cookies: Cookies,
     session: Session,
-    Json(msg): Json<AuthVerifyPostRequestParams>,
+    Json(msg): Json<AuthVerifyCreateRequestParams>,
 ) -> AppJsonResult<AuthNonce> {
     info!(?session);
 

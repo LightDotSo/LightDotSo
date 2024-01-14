@@ -33,7 +33,7 @@ use utoipa::ToSchema;
 
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub struct FeedbackPostRequestParams {
+pub struct FeedbackCreateRequestParams {
     /// The result of the feedback.
     pub feedback: Feedback,
 }
@@ -46,7 +46,7 @@ pub struct FeedbackPostRequestParams {
 #[utoipa::path(
         post,
         path = "/feedback/create",
-        request_body = FeedbackPostRequestParams,
+        request_body = FeedbackCreateRequestParams,
         responses(
             (status = 200, description = "Feedback created successfully", body = Feedback),
             (status = 500, description = "Feedback internal error", body = FeedbackError),
@@ -56,7 +56,7 @@ pub struct FeedbackPostRequestParams {
 pub(crate) async fn v1_feedback_create_handler(
     State(state): State<AppState>,
     mut session: Session,
-    Json(params): Json<FeedbackPostRequestParams>,
+    Json(params): Json<FeedbackCreateRequestParams>,
 ) -> AppJsonResult<Feedback> {
     // -------------------------------------------------------------------------
     // Parse
