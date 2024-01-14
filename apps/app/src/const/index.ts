@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/img-redundant-alt */
-/* eslint-disable @next/next/no-img-element */
 // Copyright (C) 2023 Light, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -15,15 +13,21 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import OriginalPage from "@/app/(wallet)/[address]/overview/page";
-import { DEMO_WALLET_ADDRESS } from "@/const";
-
-// -----------------------------------------------------------------------------
-// Original Page
-// -----------------------------------------------------------------------------
-
-export default async function Page() {
-  return OriginalPage({
-    params: { address: DEMO_WALLET_ADDRESS },
-  });
-}
+export {
+  BASE_LOCAL_ADMIN_URL,
+  BASE_LOCAL_API_URL,
+  BASE_API_AUTHENTICATED_URL,
+  BASE_API_URL,
+} from "./api";
+export { MAX_WEIGHT, MAX_THRESHOLD } from "./configuration";
+export { DEMO_WALLET_ADDRESS } from "./demo";
+export { OVERVIEW_ROW_COUNT, TRANSACTION_ROW_COUNT } from "./numbers";
+export {
+  Category,
+  DemoSubCategory,
+  UserOperationSubCategory,
+  OverviewSubCategory,
+  TransactionsSubCategory,
+  SettingsSubCategory,
+  TITLES,
+} from "./titles";

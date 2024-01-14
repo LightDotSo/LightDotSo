@@ -36,7 +36,7 @@ import { useForm } from "react-hook-form";
 import type { Address } from "viem";
 import * as z from "zod";
 import { SettingsCard } from "@/components/settings/settings-card";
-import { TITLES } from "@/const/titles";
+import { TITLES } from "@/const";
 import { useDelayedValue } from "@/hooks";
 
 // -----------------------------------------------------------------------------

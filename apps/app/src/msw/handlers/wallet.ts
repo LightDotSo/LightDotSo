@@ -18,8 +18,8 @@ import {
   BASE_API_AUTHENTICATED_URL,
   BASE_API_URL,
   BASE_LOCAL_ADMIN_URL,
-} from "@/const/api";
-import { DEMO_WALLET_ADDRESS } from "@/const/demo";
+  DEMO_WALLET_ADDRESS,
+} from "@/const";
 
 export const getWallet = (url: string) =>
   http.get(`${url}/v1/wallet/get`, () => {

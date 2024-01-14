@@ -26,8 +26,8 @@ import { NftsList } from "@/components/nft/nfts-list";
 import { TokenPortfolio } from "@/components/token/token-portfolio";
 import { TokensList } from "@/components/token/tokens-list";
 import { TransactionsList } from "@/components/transaction/transactions-list";
-import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
-import { OverviewSubCategory, TITLES } from "@/const/titles";
+import { OVERVIEW_ROW_COUNT } from "@/const";
+import { OverviewSubCategory, TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Const

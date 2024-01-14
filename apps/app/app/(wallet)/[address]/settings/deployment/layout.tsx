@@ -15,7 +15,7 @@
 
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { TITLES } from "@/const/titles";
+import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Metadata
