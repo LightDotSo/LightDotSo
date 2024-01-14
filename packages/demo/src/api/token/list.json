@@ -1,0 +1,61 @@
+[
+  {
+    "id": "clota6rxh0000l308gsist1ix",
+    "address": "0x0000000000000000000000000000000000000000",
+    "chain_id": 10,
+    "name": "Ether",
+    "symbol": "ETH",
+    "decimals": 18,
+    "amount": 1000000000000000,
+    "balance_usd": 2.6155005,
+    "group": null
+  },
+  {
+    "id": "cloupmjv60002jy08hud4y7mb",
+    "address": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
+    "chain_id": 137,
+    "name": null,
+    "symbol": "USDT",
+    "decimals": 6,
+    "amount": 155815,
+    "balance_usd": 0.15597083,
+    "group": null
+  },
+  {
+    "id": "clp63391v000ot5qsbi5h3vpo",
+    "address": "0x0000000000000000000000000000000000000000",
+    "chain_id": 0,
+    "name": "Ether",
+    "symbol": "ETH",
+    "decimals": 18,
+    "amount": 1030000000000000000,
+    "balance_usd": 0,
+    "group": {
+      "id": "clqpy70ab0000pn98y582g7wu",
+      "tokens": [
+        {
+          "id": "clp63391v000ot5qsbi5h3vpo",
+          "address": "0x0000000000000000000000000000000000000000",
+          "chain_id": 11155111,
+          "name": "Ether",
+          "symbol": "ETH",
+          "decimals": 18,
+          "amount": 30000000000000000,
+          "balance_usd": 0,
+          "group": null
+        },
+        {
+          "id": "clqpu5vc700i7pz8ipj4m4tt3",
+          "address": "0x0000000000000000000000000000000000000000",
+          "chain_id": 84532,
+          "name": "Ethereum",
+          "symbol": "ETH",
+          "decimals": 18,
+          "amount": 1000000000000000000,
+          "balance_usd": 0,
+          "group": null
+        }
+      ]
+    }
+  }
+]

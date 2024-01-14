@@ -980,6 +980,9 @@ importers:
       '@lightdotso/const':
         specifier: workspace:*
         version: link:../../packages/const
+      '@lightdotso/demo':
+        specifier: workspace:*
+        version: link:../../packages/demo
       '@lightdotso/styles':
         specifier: workspace:*
         version: link:../../configurations/styles
@@ -1575,6 +1578,22 @@ importers:
         version: 5.3.3
 
   packages/data:
+    devDependencies:
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../../configurations/tsconfig
+      '@types/node':
+        specifier: ^20.11.0
+        version: 20.11.0
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
+  packages/demo:
+    dependencies:
+      '@lightdotso/client':
+        specifier: workspace:*
+        version: link:../client
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
