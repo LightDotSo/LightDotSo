@@ -154,7 +154,7 @@
     "npm-package-json-lint-config-default": "^6.0.0",
     "oxlint": "^0.2.0",
     "postcss": "^8.4.33",
-    "prettier": "^3.2.1",
+    "prettier": "^3.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "rimraf": "^5.0.5",

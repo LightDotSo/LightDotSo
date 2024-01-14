@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { PaginationState } from "@tanstack/react-table";
-import { createParser, useQueryState } from "next-usequerystate";
+import { createParser, useQueryState } from "nuqs";
 
 // -----------------------------------------------------------------------------
 // Parser
