@@ -83,6 +83,7 @@ pub(crate) async fn v1_interpretation_get_handler(
         .with(interpretation::asset_changes::fetch(vec![]).with(asset_change::token::fetch()))
         .exec()
         .await?;
+    info!(?interpretation);
 
     // If the interpretation is not found, return a 404.
     let interpretation = interpretation.ok_or(RouteError::InterpretationError(

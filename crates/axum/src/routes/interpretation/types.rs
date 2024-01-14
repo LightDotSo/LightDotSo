@@ -27,6 +27,8 @@ use utoipa::ToSchema;
 pub(crate) struct Interpretation {
     /// The id of the interpretation to read for.
     id: String,
+    /// The array of actions of the interpretation.
+    actions: Vec<String>,
 }
 
 // -----------------------------------------------------------------------------
@@ -36,6 +38,21 @@ pub(crate) struct Interpretation {
 /// Implement From<interpretation::Data> for Interpretation.
 impl From<interpretation::Data> for Interpretation {
     fn from(interpretation: interpretation::Data) -> Self {
-        Self { id: interpretation.id }
+        Self {
+            id: interpretation.id,
+            actions: interpretation
+                .actions
+                .unwrap_or_default()
+                .into_iter()
+                .map(|action| action.action)
+                .collect(),
+        }
+    }
+}
+
+/// Implement From<Box<interpretation::Data>> for Interpretation.
+impl From<Box<interpretation::Data>> for Interpretation {
+    fn from(interpretation: Box<interpretation::Data>) -> Self {
+        Self::from(*interpretation)
     }
 }
