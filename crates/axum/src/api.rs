@@ -21,9 +21,9 @@ use crate::{
     handle_error,
     routes::{
         activity, auth, check, configuration, feedback, health, interpretation, invite_code,
-        metrics, notification, paymaster, paymaster_operation, portfolio, protocol, protocol_group,
-        queue, signature, simulation, support_request, token, token_group, token_price,
-        transaction, user, user_operation, wallet, wallet_features, wallet_settings,
+        metrics, notification, owner, paymaster, paymaster_operation, portfolio, protocol,
+        protocol_group, queue, signature, simulation, support_request, token, token_group,
+        token_price, transaction, user, user_operation, wallet, wallet_features, wallet_settings,
     },
     sessions::{authenticated, RedisStore},
     state::AppState,
@@ -86,6 +86,8 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(notification::read::NotificationPostRequest),
         schemas(notification::read::NotificationPostRequestParams),
         schemas(notification::types::Notification),
+        schemas(owner::error::OwnerError),
+        schemas(owner::types::Owner),
         schemas(paymaster::error::PaymasterError),
         schemas(paymaster::types::Paymaster),
         schemas(paymaster_operation::error::PaymasterOperationError),
@@ -165,6 +167,8 @@ use utoipa_swagger_ui::SwaggerUi;
         notification::v1_notification_list_handler,
         notification::v1_notification_list_count_handler,
         notification::v1_notification_read_handler,
+        owner::v1_owner_get_handler,
+        owner::v1_owner_list_handler,
         paymaster::v1_paymaster_get_handler,
         paymaster::v1_paymaster_list_handler,
         paymaster_operation::v1_paymaster_operation_get_handler,
@@ -226,6 +230,7 @@ use utoipa_swagger_ui::SwaggerUi;
         (name = "invite_code", description = "Invite Code API"),
         (name = "health", description = "Health API"),
         (name = "notification", description = "Notification API"),
+        (name = "owner", description = "Owner API"),
         (name = "paymaster", description = "Paymaster API"),
         (name = "paymaster_operation", description = "Paymaster Operation API"),
         (name = "portfolio", description = "Portfolio API"),
@@ -339,6 +344,7 @@ pub async fn start_api_server() -> Result<()> {
         .merge(invite_code::router())
         .merge(metrics::router())
         .merge(notification::router())
+        .merge(owner::router())
         .merge(paymaster::router())
         .merge(paymaster_operation::router())
         .merge(portfolio::router())

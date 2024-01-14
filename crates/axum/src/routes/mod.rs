@@ -23,6 +23,7 @@ pub(crate) mod interpretation;
 pub(crate) mod invite_code;
 pub(crate) mod metrics;
 pub(crate) mod notification;
+pub(crate) mod owner;
 pub(crate) mod paymaster;
 pub(crate) mod paymaster_operation;
 pub(crate) mod portfolio;
