@@ -46,25 +46,31 @@ export const TokenCardToken: FC<TokenCardTokenProps> = ({
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="flex items-center space-x-3">
-      <ButtonIcon
-        className={cn("bg-background-strong", !canExpand && "opacity-0")}
-        variant="ghost"
-        size="sm"
-      >
-        <ChevronRightIcon
-          className={cn(
-            "h-4 w-4 transition-all duration-200",
-            isExpanded && "rotate-90 ",
-          )}
-        />
-      </ButtonIcon>
-      <TokenImage token={token} />
-      <div className="flex flex-col space-y-0.5">
-        <span className="text-sm text-text">{token.name ?? token.symbol}</span>
-        <span className="text-sm text-text-weak">
-          {(token.amount / 10 ** token.decimals).toFixed(3)} {token.symbol}
-        </span>
+    <div className="relative z-10">
+      {canExpand && (
+        <ButtonIcon
+          className="absolute -left-6 md:-left-8 top-1/2 transform -translate-y-1/2"
+          variant="ghost"
+          size="xs"
+        >
+          <ChevronRightIcon
+            className={cn(
+              "h-4 w-4 transition-all duration-200",
+              isExpanded && "rotate-90 ",
+            )}
+          />
+        </ButtonIcon>
+      )}
+      <div className="flex items-center space-x-3">
+        <TokenImage token={token} />
+        <div className="flex flex-col space-y-0.5">
+          <span className="text-sm text-text">
+            {token.name ?? token.symbol}
+          </span>
+          <span className="text-sm text-text-weak">
+            {(token.amount / 10 ** token.decimals).toFixed(3)} {token.symbol}
+          </span>
+        </div>
       </div>
     </div>
   );

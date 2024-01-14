@@ -23,7 +23,7 @@ import { forwardRef } from "react";
 
 const Table = forwardRef<HTMLTableElement, HTMLAttributes<HTMLTableElement>>(
   ({ className, ...props }, ref) => (
-    <div className="w-full overflow-auto">
+    <div className="w-full">
       <table
         ref={ref}
         className={cn("w-full caption-bottom text-sm", className)}
@@ -38,11 +38,7 @@ const TableHeader = forwardRef<
   HTMLTableSectionElement,
   HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
-  <thead
-    ref={ref}
-    className={cn("border-border [&_tr]:border-b", className)}
-    {...props}
-  />
+  <thead ref={ref} className={cn("border-border", className)} {...props} />
 ));
 TableHeader.displayName = "TableHeader";
 
