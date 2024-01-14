@@ -14,7 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::routes::{
-    paymaster::types::Paymaster, signature::types::Signature, transaction::types::Transaction,
+    interpretation::types::Interpretation, paymaster::types::Paymaster,
+    signature::types::Signature, transaction::types::Transaction,
 };
 use lightdotso_common::traits::VecU8ToHex;
 use lightdotso_prisma::user_operation;
@@ -63,23 +64,43 @@ pub(crate) enum UserOperationSuccess {
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
 pub(crate) struct UserOperation {
+    /// The chain id of the user operation.
     chain_id: i64,
+    /// The hash of the user operation.
     hash: String,
+    /// The sender of the user operation.
     sender: String,
+    /// The nonce of the user operation.
     nonce: i64,
+    /// The init code of the user operation.
     init_code: String,
+    /// The call data of the user operation.
     call_data: String,
+    /// The call gas of the user operation.
     call_gas_limit: i64,
+    /// The verification gas of the user operation.
     verification_gas_limit: i64,
+    /// The pre verification gas of the user operation.
     pre_verification_gas: i64,
+    /// The maximum fee per gas of the user operation.
     max_fee_per_gas: i64,
+    /// The maximum priority fee per gas of the user operation.
     max_priority_fee_per_gas: i64,
+    /// The paymaster and data of the user operation.
     paymaster_and_data: String,
+    /// The status of the user operation.
     status: String,
+    /// The paymaster of the user operation.
     paymaster: Option<Paymaster>,
+    /// The signatures of the user operation.
     signatures: Vec<Signature>,
+    /// The transaction of the user operation.
     transaction: Option<Transaction>,
+    /// The interpretation of the transaction.
+    interpretation: Option<Interpretation>,
+    /// The timestamp of the user operation.
     created_at: String,
+    /// The timestamp updated of the user operation.
     updated_at: String,
 }
 
@@ -109,6 +130,9 @@ impl From<user_operation::Data> for UserOperation {
             transaction: user_operation
                 .transaction
                 .and_then(|transaction| transaction.map(|data| Transaction::from(*data))),
+            interpretation: user_operation
+                .interpretation
+                .and_then(|interpretation| interpretation.map(|data| Interpretation::from(*data))),
             created_at: user_operation.created_at.to_rfc3339(),
             updated_at: user_operation.updated_at.to_rfc3339(),
         }

@@ -77,6 +77,7 @@ pub(crate) async fn v1_user_operation_get_handler(
         .client
         .user_operation()
         .find_unique(user_operation::hash::equals(query.user_operation_hash))
+        .with(user_operation::transaction::fetch())
         .with(user_operation::signatures::fetch(vec![signature::user_operation_hash::equals(
             user_operation_hash,
         )]))

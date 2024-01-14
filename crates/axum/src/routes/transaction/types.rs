@@ -13,8 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#![allow(clippy::unwrap_used)]
-
 use crate::routes::interpretation::types::Interpretation;
 use lightdotso_prisma::transaction;
 use serde::{Deserialize, Serialize};
@@ -49,10 +47,9 @@ impl From<transaction::Data> for Transaction {
             chain_id: transaction.chain_id,
             hash: transaction.hash,
             timestamp: transaction.timestamp.to_rfc3339(),
-            interpretation: transaction
-                .interpretation
-                .unwrap()
-                .map(|interpretation| interpretation.into()),
+            interpretation: transaction.interpretation.and_then(|maybe_interpretation| {
+                maybe_interpretation.map(|interpretation| interpretation.into())
+            }),
         }
     }
 }
