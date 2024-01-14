@@ -66,13 +66,13 @@ pub enum PostQueryProcedure {
 #[serde(rename_all = "snake_case")]
 pub struct SignatureCreateRequestParams {
     /// The result of the signature.
-    pub signature: SignatureCreateRequestSignatureParams,
+    pub signature: SignatureCreateParams,
 }
 
 /// Signature operation
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub struct SignatureCreateRequestSignatureParams {
+pub struct SignatureCreateParams {
     /// The id of the owner of the signature.
     pub owner_id: String,
     /// The signature of the user operation in hex.

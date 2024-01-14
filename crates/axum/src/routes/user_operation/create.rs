@@ -18,6 +18,7 @@
 use super::types::UserOperation;
 use crate::{
     result::{AppError, AppJsonResult},
+    routes::signature::create::SignatureCreateParams,
     state::AppState,
 };
 use autometrics::autometrics;
@@ -85,7 +86,7 @@ pub struct UserOperationCreateRequestParams {
     // The user operation to create.
     pub user_operation: UserOperationCreateParams,
     // The signature of the user operation.
-    pub signature: UserOperationCreateSignatureParams,
+    pub signature: SignatureCreateParams,
 }
 
 // -----------------------------------------------------------------------------
@@ -128,18 +129,6 @@ impl TryFrom<UserOperationCreateParams> for RundlerUserOperation {
             signature: vec![].into(),
         })
     }
-}
-
-/// User operation signature
-#[derive(Serialize, Deserialize, ToSchema, Clone)]
-#[serde(rename_all = "snake_case")]
-pub(crate) struct UserOperationCreateSignatureParams {
-    /// The id of the owner of the signature.
-    pub owner_id: String,
-    /// The signature in hex string.
-    pub signature: String,
-    /// The signature type
-    pub signature_type: i32,
 }
 
 // -----------------------------------------------------------------------------
