@@ -33,6 +33,10 @@ pub(crate) struct Transaction {
     timestamp: String,
 }
 
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
 /// Implement From<transaction::Data> for Transaction.
 impl From<transaction::Data> for Transaction {
     fn from(transaction: transaction::Data) -> Self {

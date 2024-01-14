@@ -35,6 +35,10 @@ pub(crate) struct Wallet {
     pub salt: String,
 }
 
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
 /// Implement From<wallet::Data> for Wallet.
 impl From<wallet::Data> for Wallet {
     fn from(wallet: wallet::Data) -> Self {
@@ -46,6 +50,10 @@ impl From<wallet::Data> for Wallet {
         }
     }
 }
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
 
 /// Wallet owner.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]

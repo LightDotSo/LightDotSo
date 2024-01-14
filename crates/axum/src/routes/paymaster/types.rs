@@ -29,6 +29,10 @@ pub(crate) struct Paymaster {
     address: String,
 }
 
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
 /// Implement From<paymaster::Data> for Paymaster.
 impl From<paymaster::Data> for Paymaster {
     fn from(paymaster: paymaster::Data) -> Self {

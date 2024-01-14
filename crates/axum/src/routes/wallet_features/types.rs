@@ -37,6 +37,10 @@ pub(crate) struct WalletFeaturesOptional {
     pub is_enabled_ai: Option<bool>,
 }
 
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
 /// Implement From<wallet_features::Data> for WalletFeatures.
 impl From<wallet_features::Data> for WalletFeatures {
     fn from(wallet_features: wallet_features::Data) -> Self {

@@ -146,6 +146,10 @@ impl From<user_operation::Data> for UserOperation {
     }
 }
 
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
 /// Implement From<owner::Data> for Owner.
 impl From<owner::Data> for UserOperationOwner {
     fn from(owner: owner::Data) -> Self {

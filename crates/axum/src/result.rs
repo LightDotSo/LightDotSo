@@ -28,10 +28,18 @@ use prisma_client_rust::{
 };
 use rustc_hex::FromHexError as RustHexError;
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 /// From: https://github.com/Brendonovich/prisma-client-rust/blob/e520c5f6e30c0839d9dbccaa228f3eedbf188b6c/examples/axum-rest/src/routes.rs#L18
 // type Database = Extension<Arc<PrismaClient>>;
 pub(crate) type AppResult<T> = Result<T, AppError>;
 pub(crate) type AppJsonResult<T> = AppResult<Json<T>>;
+
+// -----------------------------------------------------------------------------
+// Enums
+// -----------------------------------------------------------------------------
 
 /// From: https://github.com/Brendonovich/prisma-client-rust/blob/e520c5f6e30c0839d9dbccaa228f3eedbf188b6c/examples/axum-rest/src/routes.rs#L118
 pub(crate) enum AppError {
@@ -48,6 +56,10 @@ pub(crate) enum AppError {
     InternalError,
     Conflict,
 }
+
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
 
 impl From<eyre::Error> for AppError {
     fn from(error: eyre::Error) -> Self {
@@ -100,6 +112,11 @@ impl From<RouteError> for AppError {
         AppError::RouteError(error)
     }
 }
+
+// -----------------------------------------------------------------------------
+// Implementations
+// -----------------------------------------------------------------------------
+
 /// From: https://github.com/Brendonovich/prisma-client-rust/blob/e520c5f6e30c0839d9dbccaa228f3eedbf188b6c/examples/axum-rest/src/routes.rs#L133
 impl IntoResponse for AppError {
     fn into_response(self) -> Response {

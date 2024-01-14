@@ -29,6 +29,10 @@ pub(crate) struct Simulation {
     id: String,
 }
 
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
 /// Implement From<simulation::Data> for Simulation.
 impl From<simulation::Data> for Simulation {
     fn from(simulation: simulation::Data) -> Self {

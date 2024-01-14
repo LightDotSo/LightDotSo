@@ -34,6 +34,10 @@ pub(crate) struct InviteCode {
     status: String,
 }
 
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
 /// Implement From<invite_code::Data> for InviteCode.
 impl From<invite_code::Data> for InviteCode {
     fn from(invite_code: invite_code::Data) -> Self {
@@ -72,6 +76,7 @@ impl GenerateInviteCode for InviteCode {
         code
     }
 }
+
 #[cfg(test)]
 mod tests {
     use super::*;

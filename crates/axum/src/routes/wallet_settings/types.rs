@@ -37,6 +37,10 @@ pub(crate) struct WalletSettingsOptional {
     pub is_enabled_testnet: Option<bool>,
 }
 
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
 /// Implement From<wallet_settings::Data> for WalletSettings.
 impl From<wallet_settings::Data> for WalletSettings {
     fn from(wallet_settings: wallet_settings::Data) -> Self {

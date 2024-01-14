@@ -29,6 +29,10 @@ pub(crate) struct Interpretation {
     id: String,
 }
 
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
 /// Implement From<interpretation::Data> for Interpretation.
 impl From<interpretation::Data> for Interpretation {
     fn from(interpretation: interpretation::Data) -> Self {

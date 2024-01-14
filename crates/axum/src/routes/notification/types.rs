@@ -29,6 +29,10 @@ pub(crate) struct Notification {
     id: String,
 }
 
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
 /// Implement From<notification::Data> for Notification.
 impl From<notification::Data> for Notification {
     fn from(notification: notification::Data) -> Self {

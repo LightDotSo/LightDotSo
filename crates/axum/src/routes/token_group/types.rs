@@ -29,6 +29,10 @@ pub(crate) struct TokenGroup {
     id: String,
 }
 
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
 /// Implement From<token_group::Data> for TokenGroup.
 impl From<token_group::Data> for TokenGroup {
     fn from(token_group: token_group::Data) -> Self {

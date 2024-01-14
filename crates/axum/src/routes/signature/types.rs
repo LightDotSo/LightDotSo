@@ -34,6 +34,10 @@ pub(crate) struct Signature {
     pub owner_id: String,
 }
 
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
 /// Implement From<signature::Data> for Signature.
 impl From<signature::Data> for Signature {
     fn from(signature: signature::Data) -> Self {

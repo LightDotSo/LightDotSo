@@ -51,6 +51,10 @@ struct PortfolioQueryReturnType {
     date: prisma_client_rust::chrono::DateTime<::prisma_client_rust::chrono::FixedOffset>,
 }
 
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
 /// Implement From<PortfolioQueryReturnType> for Portfolio.
 impl From<PortfolioQueryReturnType> for PortfolioBalanceDate {
     fn from(port: PortfolioQueryReturnType) -> Self {
