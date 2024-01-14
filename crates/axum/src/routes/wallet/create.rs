@@ -15,7 +15,6 @@
 
 #![allow(clippy::unwrap_used)]
 
-use super::types::Owner;
 use crate::{
     result::{AppError, AppJsonResult},
     routes::wallet::types::Wallet,
@@ -69,7 +68,7 @@ pub struct PostQuery {
 pub struct WalletPostRequestParams {
     /// The array of owners of the wallet.
     #[schema(example = json!([{"address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed", "weight": 1}]))]
-    pub owners: Vec<Owner>,
+    pub owners: Vec<WalletPostRequestOwnerParams>,
     /// The salt is used to calculate the new wallet address.
     #[schema(
         example = "0x0000000000000000000000000000000000000000000000000000000000000006",
@@ -85,6 +84,17 @@ pub struct WalletPostRequestParams {
     /// The invite code of the wallet.
     #[schema(example = "BFD-23S")]
     pub invite_code: String,
+}
+
+/// Wallet owner.
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
+#[schema(example = json!({"address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed", "weight": 1}))]
+pub(crate) struct WalletPostRequestOwnerParams {
+    /// The address of the owner.
+    pub address: String,
+    /// The weight of the owner.
+    pub weight: u8,
 }
 
 // -----------------------------------------------------------------------------

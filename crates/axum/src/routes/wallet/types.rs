@@ -50,18 +50,3 @@ impl From<wallet::Data> for Wallet {
         }
     }
 }
-
-// -----------------------------------------------------------------------------
-// Types
-// -----------------------------------------------------------------------------
-
-/// Wallet owner.
-#[derive(Serialize, Deserialize, ToSchema, Clone)]
-#[serde(rename_all = "snake_case")]
-#[schema(example = json!({"address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed", "weight": 1}))]
-pub(crate) struct Owner {
-    /// The address of the owner.
-    pub address: String,
-    /// The weight of the owner.
-    pub weight: u8,
-}

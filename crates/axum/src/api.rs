@@ -132,7 +132,6 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(wallet::create::WalletPostRequestParams),
         schemas(wallet::error::WalletError),
         schemas(wallet::list::WalletListCount),
-        schemas(wallet::types::Owner),
         schemas(wallet::types::Wallet),
         schemas(wallet::update::WalletUpdateRequestParams),
         schemas(wallet_features::error::WalletFeaturesError),
