@@ -1169,7 +1169,7 @@ export interface components {
       /** @description The update query of wallet_features of whether the testnet is enabled. */
       is_enabled_ai?: boolean | null;
     };
-    WalletFeaturesPostRequestParams: {
+    WalletFeaturesUpdateRequestParams: {
       wallet_features: components["schemas"]["WalletFeaturesOptional"];
     };
     /** @description Count of list of wallets. */
@@ -1241,7 +1241,7 @@ export interface components {
       /** @description The update query of wallet_settings of whether the testnet is enabled. */
       is_enabled_testnet?: boolean | null;
     };
-    WalletSettingsPostRequestParams: {
+    WalletSettingsUpdateRequestParams: {
       wallet_settings: components["schemas"]["WalletSettingsOptional"];
     };
   };
@@ -3096,7 +3096,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["WalletFeaturesPostRequestParams"];
+        "application/json": components["schemas"]["WalletFeaturesUpdateRequestParams"];
       };
     };
     responses: {
@@ -3253,7 +3253,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["WalletSettingsPostRequestParams"];
+        "application/json": components["schemas"]["WalletSettingsUpdateRequestParams"];
       };
     };
     responses: {

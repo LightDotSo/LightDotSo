@@ -46,7 +46,7 @@ pub struct PostQuery {
 
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub struct WalletSettingsPostRequestParams {
+pub struct WalletSettingsUpdateRequestParams {
     /// The result of the wallet_settings.
     pub wallet_settings: WalletSettingsOptional,
 }
@@ -62,7 +62,7 @@ pub struct WalletSettingsPostRequestParams {
         params(
             PostQuery
         ),
-        request_body = WalletSettingsPostRequestParams,
+        request_body = WalletSettingsUpdateRequestParams,
         responses(
             (status = 200, description = "Wallet Settings updated successfully", body = WalletSettings),
             (status = 400, description = "Invalid Configuration", body = WalletSettingsError),
@@ -74,7 +74,7 @@ pub struct WalletSettingsPostRequestParams {
 pub(crate) async fn v1_wallet_settings_update_handler(
     post_query: Query<PostQuery>,
     State(state): State<AppState>,
-    Json(params): Json<WalletSettingsPostRequestParams>,
+    Json(params): Json<WalletSettingsUpdateRequestParams>,
 ) -> AppJsonResult<WalletSettings> {
     // -------------------------------------------------------------------------
     // Parse
