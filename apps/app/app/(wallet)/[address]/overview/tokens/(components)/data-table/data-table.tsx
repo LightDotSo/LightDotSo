@@ -17,29 +17,8 @@
 
 import type { TokenData } from "@lightdotso/data";
 import { useTables } from "@lightdotso/stores";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@lightdotso/ui";
-import { cn } from "@lightdotso/utils";
-import {
-  flexRender,
-  getCoreRowModel,
-  getExpandedRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { TokenTable } from "@lightdotso/table";
 import type { ColumnDef } from "@tanstack/react-table";
-import { useEffect } from "react";
-import { TableEmpty } from "@/components/state/table-empty";
 import { usePaginationQueryState } from "@/queryStates";
 
 // -----------------------------------------------------------------------------
@@ -82,12 +61,10 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
   } = useTables();
 
   // ---------------------------------------------------------------------------
-  // Table
+  // Table Options
   // ---------------------------------------------------------------------------
 
-  const table = useReactTable({
-    data,
-    columns,
+  const tableOptions = {
     state: {
       sorting: tokenSorting,
       columnVisibility: tokenColumnVisibility,
@@ -97,120 +74,24 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
       expanded: tokenExpandedState,
     },
     pageCount: pageCount,
-    enableExpanding: true,
-    enableRowSelection: false,
-    manualPagination: true,
-    paginateExpandedRows: true,
     onRowSelectionChange: setTokenRowSelection,
     onSortingChange: setTokenSorting,
     onColumnFiltersChange: setTokenColumnFilters,
     onColumnVisibilityChange: setTokenColumnVisibility,
     onExpandedChange: setTokenExpandedState,
-    getSubRows: row => row.group?.tokens,
     onPaginationChange: setPaginationState,
-    getCoreRowModel: getCoreRowModel(),
-    getExpandedRowModel: getExpandedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-  });
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
-
-  useEffect(() => {
-    setTokenTable(table);
-  }, [
-    table,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("chain_id"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("chain_id")?.getCanHide(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("chain_id")?.getFacetedUniqueValues(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("chain_id")?.getIsVisible(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("sparkline"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("sparkline")?.getIsVisible(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("price"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("price")?.getIsVisible(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("actions"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("actions")?.getIsVisible(),
-    setTokenTable,
-  ]);
-
-  useEffect(() => {
-    if (!table.getIsAllRowsExpanded()) {
-      table.toggleAllRowsExpanded();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  };
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <Table>
-      <TableHeader>
-        {table.getHeaderGroups().map(headerGroup => (
-          <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map(header => {
-              return (
-                <TableHead key={header.id} style={{ width: header.getSize() }}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
-                </TableHead>
-              );
-            })}
-          </TableRow>
-        ))}
-      </TableHeader>
-      <TableBody>
-        {table.getRowModel().rows?.length ? (
-          table.getRowModel().rows.map(row => (
-            <TableRow
-              key={row.id}
-              className={cn(
-                row.getCanExpand() && "cursor-pointer",
-                row.getCanExpand() && row.getIsExpanded() && "border-b-0",
-              )}
-              data-state={row.getIsSelected() && "selected"}
-              data-expanded={row.getParentRow() ? "true" : "false"}
-              onClick={() => {
-                if (row.getCanExpand()) {
-                  row.getToggleExpandedHandler()();
-                }
-              }}
-            >
-              {row.getVisibleCells().map(cell => (
-                <TableCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))
-        ) : (
-          <TableRow>
-            <TableCell colSpan={columns.length} className="h-24 text-center">
-              <TableEmpty entity="token" />
-            </TableCell>
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+    <TokenTable
+      columns={columns}
+      data={data}
+      tableOptions={tableOptions}
+      setTokenTable={setTokenTable}
+    />
   );
 }
