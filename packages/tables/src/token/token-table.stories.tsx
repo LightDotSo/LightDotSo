@@ -15,8 +15,8 @@
 
 import { tokenListData } from "@lightdotso/demo";
 import type { Meta, StoryObj } from "@storybook/react";
-import { TokenTable } from "./token-table";
 import { columns } from "./columns";
+import { TokenTable } from "./token-table";
 
 // -----------------------------------------------------------------------------
 // Meta
