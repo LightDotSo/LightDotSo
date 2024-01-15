@@ -18,3 +18,4 @@ ignores:
   - "@radix-ui/react-toast"
   - "@types/node"
   - vite
+  - "@storybook/blocks"
