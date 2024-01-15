@@ -1,0 +1,21 @@
+ignores:
+  - "@hookform/resolvers"
+  - "@storybook/addon-styling"
+  - zod
+  - "@babel/core"
+  - "@lightdotso/eslint-config"
+  - "@lightdotso/tailwindcss"
+  - shadcn-ui
+  - unist-builder
+  - unist-util-visit
+  - tailwindcss-animate
+  - "@lightdotso/tsconfig"
+  - "@types/react-dom"
+  - autoprefixer
+  - postcss
+  - tailwindcss
+  - "@storybook/blocks"
+  - "@storybook/theming"
+  - storybook-dark-mode
+  - "@emotion/is-prop-valid"
+  - "@radix-ui/react-toast"

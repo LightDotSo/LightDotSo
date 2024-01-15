@@ -1,0 +1,6 @@
+upgrade: true
+reject:
+  - lucide-react
+  - "@radix-ui/react-alert-dialog"
+  - "@radix-ui/react-dialog"
+  - embla-carousel-react
