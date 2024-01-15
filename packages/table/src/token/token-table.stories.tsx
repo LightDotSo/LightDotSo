@@ -15,7 +15,6 @@
 
 import { tokenListData } from "@lightdotso/demo";
 import type { Meta, StoryObj } from "@storybook/react";
-import { columns } from "./columns";
 import { TokenTable } from "./token-table";
 
 // -----------------------------------------------------------------------------
@@ -41,6 +40,6 @@ type Story = StoryObj<typeof TokenTable>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <TokenTable data={tokenListData} columns={columns} />,
+  render: args => <TokenTable data={tokenListData} />,
   args: {},
 };

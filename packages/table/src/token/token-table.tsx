@@ -41,6 +41,7 @@ import {
 } from "@tanstack/react-table";
 import { useEffect, type FC } from "react";
 import { TableEmpty } from "../state/table-empty";
+import { tokenColumns } from "./token-columns";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -52,7 +53,7 @@ type TokenTableProps = {
     TableOptions<TokenData>,
     "data" | "columns" | "getCoreRowModel"
   >;
-  columns: ColumnDef<TokenData>[];
+  columns?: ColumnDef<TokenData>[];
   setTokenTable?: (tableObject: ReactTable<TokenData>) => void;
   limit?: number;
 };
@@ -64,7 +65,7 @@ type TokenTableProps = {
 export const TokenTable: FC<TokenTableProps> = ({
   data,
   tableOptions,
-  columns,
+  columns = tokenColumns,
   limit,
   setTokenTable,
 }) => {

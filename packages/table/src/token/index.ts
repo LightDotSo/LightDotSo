@@ -13,4 +13,5 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { tokenColumns, TokenTable } from "./token";
+export { tokenColumns } from "./token-columns";
+export { TokenTable } from "./token-table";

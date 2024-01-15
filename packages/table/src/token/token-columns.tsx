@@ -30,7 +30,7 @@ import { TokenCardToken } from "./card/token-card-token";
 // Definitions
 // -----------------------------------------------------------------------------
 
-export const columns: ColumnDef<TokenData>[] = [
+export const tokenColumns: ColumnDef<TokenData>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (

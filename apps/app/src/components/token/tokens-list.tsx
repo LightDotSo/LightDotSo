@@ -19,7 +19,7 @@ import type { WalletSettingsData } from "@lightdotso/data";
 import { useSuspenseQueryTokens } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useTables } from "@lightdotso/stores";
-import { TokenTable, columns } from "@lightdotso/table";
+import { TokenTable } from "@lightdotso/table";
 import { useQueryClient } from "@tanstack/react-query";
 import { type FC } from "react";
 import type { Address } from "viem";
@@ -96,7 +96,5 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <TokenTable columns={columns} data={tokens} tableOptions={tableOptions} />
-  );
+  return <TokenTable data={tokens} tableOptions={tableOptions} />;
 };
