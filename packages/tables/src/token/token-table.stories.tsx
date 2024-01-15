@@ -13,8 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { tokenListData } from "@lightdotso/demo";
 import type { Meta, StoryObj } from "@storybook/react";
 import { TokenTable } from "./token-table";
+import { columns } from "./columns";
 
 // -----------------------------------------------------------------------------
 // Meta
@@ -39,6 +41,6 @@ type Story = StoryObj<typeof TokenTable>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <TokenTable />,
+  render: args => <TokenTable data={tokenListData} columns={columns} />,
   args: {},
 };

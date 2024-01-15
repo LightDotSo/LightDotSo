@@ -16,4 +16,4 @@
 import type { TokenData } from "@lightdotso/data";
 import jsonData from "./list.json";
 
-export const tokenListData = jsonData as readonly TokenData[];
+export const tokenListData = jsonData as TokenData[];

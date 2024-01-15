@@ -15,17 +15,17 @@
 
 "use client";
 
+import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { MixerHorizontalIcon } from "@radix-ui/react-icons";
+import type { Table } from "@tanstack/react-table";
+import { Button } from "../../components/ui/button";
 import {
-  Button,
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-} from "@lightdotso/ui";
-import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
-import { MixerHorizontalIcon } from "@radix-ui/react-icons";
-import type { Table } from "@tanstack/react-table";
+} from "../../components/ui/dropdown-menu";
 
 // -----------------------------------------------------------------------------
 // Props

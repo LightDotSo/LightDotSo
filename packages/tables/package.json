@@ -1,0 +1,43 @@
+{
+  "name": "@lightdotso/tables",
+  "version": "0.0.0",
+  "private": true,
+  "homepage": "https://github.com/LightDotSo/LightDotSo",
+  "bugs": {
+    "url": "https://github.com/LightDotSo/LightDotSo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LightDotSo/LightDotSo.git"
+  },
+  "license": "AGPL-3.0-or-later",
+  "author": "Light, Inc.",
+  "main": "./src/index.tsx",
+  "files": [
+    "dist/**",
+    "src/**"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "clean": "rimraf -rf dist",
+    "prepack": "clean-package",
+    "postpack": "clean-package restore",
+    "tsc": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@lightdotso/utils": "workspace:*",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@lightdotso/tsconfig": "workspace:*",
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.2.47",
+    "@types/react-dom": "^18.2.18",
+    "typescript": "^5.3.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "clean-package": "../../clean-package.config.json"
+}
