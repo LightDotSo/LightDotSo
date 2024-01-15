@@ -26,10 +26,6 @@
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
     "@lightdotso/const": "workspace:*",
-    "@lightdotso/data": "workspace:*",
-    "@lightdotso/demo": "workspace:*",
-    "@lightdotso/query": "workspace:*",
-    "@lightdotso/stores": "workspace:*",
     "@lightdotso/styles": "workspace:*",
     "@lightdotso/svg": "workspace:*",
     "@lightdotso/ui": "workspace:*",
@@ -124,7 +120,6 @@
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.33",
     "shadcn-ui": "^0.7.0",
-    "sonner": "^1.3.1",
     "storybook": "^7.6.8",
     "storybook-dark-mode": "^3.0.3",
     "tailwindcss": "^3.4.1",

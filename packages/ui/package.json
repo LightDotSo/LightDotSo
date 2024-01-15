@@ -28,11 +28,6 @@
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
     "@lightdotso/const": "workspace:*",
-    "@lightdotso/data": "workspace:*",
-    "@lightdotso/demo": "workspace:*",
-    "@lightdotso/query": "workspace:*",
-    "@lightdotso/stores": "workspace:*",
-    "@lightdotso/styles": "workspace:*",
     "@lightdotso/svg": "workspace:*",
     "@lightdotso/utils": "workspace:*",
     "@radix-ui/react-accordion": "^1.1.2",
@@ -69,7 +64,6 @@
     "@tanstack/react-query-next-experimental": "^5.17.10",
     "@tanstack/react-query-persist-client": "^5.17.11",
     "@tanstack/react-table": "^8.11.6",
-    "@tremor/react": "^3.13.1",
     "class-variance-authority": "^0.7.0",
     "cmdk": "^0.2.0",
     "date-fns": "^3.2.0",
@@ -87,7 +81,6 @@
     "superjson": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.8.0",
-    "vite": "^5.0.11",
     "zod": "^3.22.4"
   },
   "devDependencies": {

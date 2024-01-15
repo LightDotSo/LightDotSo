@@ -37,3 +37,6 @@ ignores:
   - storybook-dark-mode
   - "@emotion/is-prop-valid"
   - "@radix-ui/react-toast"
+  - "@lightdotso/"
+  - "@tanstack/react-table"
+  - "@tremor/react"

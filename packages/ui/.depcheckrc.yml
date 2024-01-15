@@ -16,3 +16,5 @@ ignores:
   - tailwindcss
   - "@emotion/is-prop-valid"
   - "@radix-ui/react-toast"
+  - "@types/node"
+  - vite

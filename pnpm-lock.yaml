@@ -952,18 +952,6 @@ importers:
       '@lightdotso/const':
         specifier: workspace:*
         version: link:../../packages/const
-      '@lightdotso/data':
-        specifier: workspace:*
-        version: link:../../packages/data
-      '@lightdotso/demo':
-        specifier: workspace:*
-        version: link:../../packages/demo
-      '@lightdotso/query':
-        specifier: workspace:*
-        version: link:../../packages/query
-      '@lightdotso/stores':
-        specifier: workspace:*
-        version: link:../../packages/stores
       '@lightdotso/styles':
         specifier: workspace:*
         version: link:../../configurations/styles
@@ -1244,9 +1232,6 @@ importers:
       shadcn-ui:
         specifier: ^0.7.0
         version: 0.7.0(typescript@5.3.3)
-      sonner:
-        specifier: ^1.3.1
-        version: 1.3.1(react-dom@18.2.0)(react@18.2.0)
       storybook:
         specifier: ^7.6.8
         version: 7.6.8
@@ -1293,325 +1278,6 @@ importers:
       wabt:
         specifier: ^1.0.32
         version: 1.0.32
-
-  apps/ui:
-    dependencies:
-      '@hookform/resolvers':
-        specifier: ^3.3.4
-        version: 3.3.4(react-hook-form@7.49.3)
-      '@lightdotso/const':
-        specifier: workspace:*
-        version: link:../../packages/const
-      '@lightdotso/data':
-        specifier: workspace:*
-        version: link:../../packages/data
-      '@lightdotso/demo':
-        specifier: workspace:*
-        version: link:../../packages/demo
-      '@lightdotso/query':
-        specifier: workspace:*
-        version: link:../../packages/query
-      '@lightdotso/stores':
-        specifier: workspace:*
-        version: link:../../packages/stores
-      '@lightdotso/styles':
-        specifier: workspace:*
-        version: link:../../configurations/styles
-      '@lightdotso/svg':
-        specifier: workspace:*
-        version: link:../../packages/svg
-      '@lightdotso/utils':
-        specifier: workspace:*
-        version: link:../../packages/utils
-      '@radix-ui/react-accordion':
-        specifier: ^1.1.2
-        version: 1.1.2(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-alert-dialog':
-        specifier: ^1.0.4
-        version: 1.0.4(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-aspect-ratio':
-        specifier: ^1.0.3
-        version: 1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-avatar':
-        specifier: ^1.0.4
-        version: 1.0.4(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-checkbox':
-        specifier: ^1.0.4
-        version: 1.0.4(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-collapsible':
-        specifier: ^1.0.3
-        version: 1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-context-menu':
-        specifier: ^2.1.5
-        version: 2.1.5(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-dialog':
-        specifier: ^1.0.4
-        version: 1.0.4(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-dropdown-menu':
-        specifier: ^2.0.6
-        version: 2.0.6(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-hover-card':
-        specifier: ^1.0.7
-        version: 1.0.7(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-icons':
-        specifier: ^1.3.0
-        version: 1.3.0(react@18.2.0)
-      '@radix-ui/react-label':
-        specifier: ^2.0.2
-        version: 2.0.2(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-menubar':
-        specifier: ^1.0.4
-        version: 1.0.4(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-navigation-menu':
-        specifier: ^1.1.4
-        version: 1.1.4(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-popover':
-        specifier: ^1.0.7
-        version: 1.0.7(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-progress':
-        specifier: ^1.0.3
-        version: 1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-radio-group':
-        specifier: ^1.1.3
-        version: 1.1.3(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-scroll-area':
-        specifier: ^1.0.5
-        version: 1.0.5(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-select':
-        specifier: ^2.0.0
-        version: 2.0.0(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-separator':
-        specifier: ^1.0.3
-        version: 1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-slider':
-        specifier: ^1.1.2
-        version: 1.1.2(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-slot':
-        specifier: ^1.0.2
-        version: 1.0.2(@types/react@18.2.47)(react@18.2.0)
-      '@radix-ui/react-switch':
-        specifier: ^1.0.3
-        version: 1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-tabs':
-        specifier: ^1.0.4
-        version: 1.0.4(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-toast':
-        specifier: ^1.1.5
-        version: 1.1.5(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-toggle':
-        specifier: ^1.0.3
-        version: 1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-toggle-group':
-        specifier: ^1.0.4
-        version: 1.0.4(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-tooltip':
-        specifier: ^1.0.7
-        version: 1.0.7(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/addon-styling':
-        specifier: ^1.3.7
-        version: 1.3.7(@types/react-dom@18.2.18)(@types/react@18.2.47)(less@4.2.0)(postcss@8.4.33)(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)(webpack@5.88.2)
-      '@tanstack/query-sync-storage-persister':
-        specifier: ^5.17.11
-        version: 5.17.11
-      '@tanstack/react-query':
-        specifier: ^5.17.10
-        version: 5.17.10(react@18.2.0)
-      '@tanstack/react-query-devtools':
-        specifier: ^5.17.10
-        version: 5.17.10(@tanstack/react-query@5.17.10)(react@18.2.0)
-      '@tanstack/react-query-next-experimental':
-        specifier: ^5.17.10
-        version: 5.17.10(@tanstack/react-query@5.17.10)(next@14.0.4)(react@18.2.0)
-      '@tanstack/react-query-persist-client':
-        specifier: ^5.17.11
-        version: 5.17.11(@tanstack/react-query@5.17.10)(react@18.2.0)
-      '@tanstack/react-table':
-        specifier: ^8.11.6
-        version: 8.11.6(react-dom@18.2.0)(react@18.2.0)
-      '@tremor/react':
-        specifier: ^3.13.1
-        version: 3.13.1(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.4.1)
-      class-variance-authority:
-        specifier: ^0.7.0
-        version: 0.7.0
-      cmdk:
-        specifier: ^0.2.0
-        version: 0.2.0(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      date-fns:
-        specifier: ^3.2.0
-        version: 3.2.0
-      embla-carousel-react:
-        specifier: ^8.0.0-rc17
-        version: 8.0.0-rc17(react@18.2.0)
-      esbuild:
-        specifier: ^0.17.3
-        version: 0.17.19
-      framer-motion:
-        specifier: ^10.18.0
-        version: 10.18.0(react-dom@18.2.0)(react@18.2.0)
-      lucide-react:
-        specifier: ^0.263.1
-        version: 0.263.1(react@18.2.0)
-      next:
-        specifier: 14.0.4
-        version: 14.0.4(@babel/core@7.23.7)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
-      next-themes:
-        specifier: ^0.2.1
-        version: 0.2.1(next@14.0.4)(react-dom@18.2.0)(react@18.2.0)
-      react:
-        specifier: ^18.2.0
-        version: 18.2.0
-      react-day-picker:
-        specifier: ^8.10.0
-        version: 8.10.0(date-fns@3.2.0)(react@18.2.0)
-      react-dom:
-        specifier: ^18.2.0
-        version: 18.2.0(react@18.2.0)
-      react-hook-form:
-        specifier: ^7.49.3
-        version: 7.49.3(react@18.2.0)
-      react-icons:
-        specifier: ^5.0.1
-        version: 5.0.1(react@18.2.0)
-      react-resizable-panels:
-        specifier: ^1.0.9
-        version: 1.0.9(react-dom@18.2.0)(react@18.2.0)
-      superjson:
-        specifier: ^2.2.1
-        version: 2.2.1
-      tailwindcss-animate:
-        specifier: ^1.0.7
-        version: 1.0.7(tailwindcss@3.4.1)
-      vaul:
-        specifier: ^0.8.0
-        version: 0.8.0(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      vite:
-        specifier: ^5.0.11
-        version: 5.0.11(@types/node@20.11.0)(less@4.2.0)
-      zod:
-        specifier: ^3.22.4
-        version: 3.22.4
-    devDependencies:
-      '@babel/core':
-        specifier: ^7.23.7
-        version: 7.23.7
-      '@lightdotso/eslint-config':
-        specifier: workspace:*
-        version: link:../../configurations/eslint
-      '@lightdotso/tailwindcss':
-        specifier: workspace:*
-        version: link:../../configurations/tailwindcss
-      '@lightdotso/tsconfig':
-        specifier: workspace:*
-        version: link:../../configurations/tsconfig
-      '@storybook/addon-actions':
-        specifier: ^7.6.8
-        version: 7.6.8
-      '@storybook/addon-backgrounds':
-        specifier: ^7.6.8
-        version: 7.6.8
-      '@storybook/addon-docs':
-        specifier: ^7.6.8
-        version: 7.6.8(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/addon-essentials':
-        specifier: ^7.6.8
-        version: 7.6.8(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/addon-interactions':
-        specifier: ^7.6.8
-        version: 7.6.8
-      '@storybook/addon-links':
-        specifier: ^7.6.8
-        version: 7.6.8(react@18.2.0)
-      '@storybook/addon-measure':
-        specifier: ^7.6.8
-        version: 7.6.8
-      '@storybook/addon-outline':
-        specifier: ^7.6.8
-        version: 7.6.8
-      '@storybook/addon-postcss':
-        specifier: ^2.0.0
-        version: 2.0.0(webpack@5.88.2)
-      '@storybook/addon-themes':
-        specifier: ^7.6.8
-        version: 7.6.8
-      '@storybook/addon-viewport':
-        specifier: ^7.6.8
-        version: 7.6.8
-      '@storybook/addons':
-        specifier: ^7.6.8
-        version: 7.6.8(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/blocks':
-        specifier: ^7.6.8
-        version: 7.6.8(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/channel-postmessage':
-        specifier: ^7.6.8
-        version: 7.6.8
-      '@storybook/channel-websocket':
-        specifier: ^7.6.8
-        version: 7.6.8
-      '@storybook/client-api':
-        specifier: ^7.6.8
-        version: 7.6.8
-      '@storybook/nextjs':
-        specifier: ^7.6.8
-        version: 7.6.8(@swc/core@1.3.102)(esbuild@0.17.19)(next@14.0.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)(webpack@5.88.2)
-      '@storybook/preview-api':
-        specifier: ^7.6.8
-        version: 7.6.8
-      '@storybook/preview-web':
-        specifier: ^7.6.8
-        version: 7.6.8
-      '@storybook/react':
-        specifier: ^7.6.8
-        version: 7.6.8(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
-      '@storybook/react-vite':
-        specifier: ^7.6.8
-        version: 7.6.8(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)(vite@5.0.11)
-      '@storybook/testing-library':
-        specifier: ^0.2.2
-        version: 0.2.2
-      '@storybook/theming':
-        specifier: ^7.6.8
-        version: 7.6.8(react-dom@18.2.0)(react@18.2.0)
-      '@types/node':
-        specifier: ^20.11.0
-        version: 20.11.0
-      '@types/react':
-        specifier: ^18.2.47
-        version: 18.2.47
-      '@types/react-dom':
-        specifier: ^18.2.18
-        version: 18.2.18
-      autoprefixer:
-        specifier: ^10.4.16
-        version: 10.4.16(postcss@8.4.33)
-      postcss:
-        specifier: ^8.4.33
-        version: 8.4.33
-      shadcn-ui:
-        specifier: ^0.7.0
-        version: 0.7.0(typescript@5.3.3)
-      sonner:
-        specifier: ^1.3.1
-        version: 1.3.1(react-dom@18.2.0)(react@18.2.0)
-      storybook:
-        specifier: ^7.6.8
-        version: 7.6.8
-      storybook-dark-mode:
-        specifier: ^3.0.3
-        version: 3.0.3(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      tailwindcss:
-        specifier: ^3.4.1
-        version: 3.4.1(ts-node@10.9.2)
-      typescript:
-        specifier: ^5.3.3
-        version: 5.3.3
-      unist-builder:
-        specifier: ^4.0.0
-        version: 4.0.0
-      unist-util-visit:
-        specifier: ^5.0.0
-        version: 5.0.0
 
   bin:
     dependencies:
@@ -2467,6 +2133,9 @@ importers:
       '@lightdotso/tsconfig':
         specifier: workspace:*
         version: link:../../configurations/tsconfig
+      '@storybook/blocks':
+        specifier: ^7.6.8
+        version: 7.6.8(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
       '@storybook/react':
         specifier: ^7.6.8
         version: 7.6.8(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
@@ -6601,6 +6270,7 @@ packages:
 
   /@juggle/resize-observer@3.4.0:
     resolution: {integrity: sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==}
+    dev: true
 
   /@koa/router@12.0.1:
     resolution: {integrity: sha512-ribfPYfHb+Uw3b27Eiw6NPqjhIhTpVFzEWLwyc/1Xp+DCdwRRyIlAUODX+9bPARF6aQtUu1+/PHzdNvRzcs/+Q==}
@@ -9604,6 +9274,7 @@ packages:
       '@types/react-dom': 18.2.18
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+    dev: true
 
   /@radix-ui/react-popper@1.1.3(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-cKpopj/5RHZWjrbF2846jBNacjQVwkP068DfmgrNJXpvVWrOvlAmE9xSiy5OqeE+Gi8D9fP+oDhUnPqNMY8/5w==}
@@ -9903,6 +9574,7 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-remove-scroll: 2.5.5(@types/react@18.2.47)(react@18.2.0)
+    dev: true
 
   /@radix-ui/react-select@2.0.0(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-RH5b7af4oHtkcHS7pG6Sgv5rk5Wxa7XI8W5gvB1N/yiuDGZxko1ynvOiVhFM7Cis2A8zxF9bTOUVbRDzPepe6w==}
@@ -10180,6 +9852,7 @@ packages:
       '@types/react-dom': 18.2.18
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+    dev: true
 
   /@radix-ui/react-tooltip@1.0.7(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-lPh5iKNFVQ/jav/j6ZrWq3blfDJ0OH9R6FlNUHPMqdLuQ9vwDgFsRxvl8b7Asuy5c8xmoojHUxKHQSOAvMHxyw==}
@@ -11609,6 +11282,7 @@ packages:
       - sass-embedded
       - supports-color
       - typescript
+    dev: true
 
   /@storybook/addon-themes@7.6.8:
     resolution: {integrity: sha512-Re/Un4E7ARae+pjqJ5tiaT+WJzZp4Hjc5XrMs90HPYF/1KCVb4rf8ngKSj/3I3f3bZMQ6aA+nC2gZ3FsXVDQDA==}
@@ -11652,6 +11326,7 @@ packages:
       '@storybook/manager-api': 7.2.2(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+    dev: true
 
   /@storybook/blocks@7.6.8(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-9cjwqj+VLmVHD8lU1xIGbZiu2xPQ3A+cAobmam045wvEB/wYhcrF0K0lBwHLqUWTcNdOzZy5uaoaCu/1G5AmDg==}
@@ -11831,6 +11506,7 @@ packages:
       qs: 6.11.2
       telejson: 7.2.0
       tiny-invariant: 1.3.1
+    dev: true
 
   /@storybook/channels@7.5.3:
     resolution: {integrity: sha512-dhWuV2o2lmxH0RKuzND8jxYzvSQTSmpE13P0IT/k8+I1up/rSNYOBQJT6SalakcNWXFAMXguo/8E7ApmnKKcEw==}
@@ -11916,6 +11592,7 @@ packages:
     resolution: {integrity: sha512-ULqPNTJsJdlWTQt5V/hEv4CUq7GgrLzLvcjhKB9IYbp4a0gjhinfq7jBFIcXRE8BSOQLui2PDGE3SzElzOp5/g==}
     dependencies:
       '@storybook/global': 5.0.0
+    dev: true
 
   /@storybook/client-logger@7.5.3:
     resolution: {integrity: sha512-vUFYALypjix5FoJ5M/XUP6KmyTnQJNW1poHdW7WXUVSg+lBM6E5eAtjTm0hdxNNDH8KSrdy24nCLra5h0X0BWg==}
@@ -11993,6 +11670,7 @@ packages:
     transitivePeerDependencies:
       - '@types/react'
       - '@types/react-dom'
+    dev: true
 
   /@storybook/core-client@7.6.8:
     resolution: {integrity: sha512-Avt0R0F9U+PEndPS23LHyIBxbwVCeF/VCIuIfD1eTYwE9nSLzvJXqlxARfFyhYV43LQcC5fIKjxfrsyUjM5vbQ==}
@@ -12032,6 +11710,7 @@ packages:
 
   /@storybook/core-events@7.2.2:
     resolution: {integrity: sha512-0MUsOygFSyYRIWHrVAA7Y7zBoehdILgK2AbnV42qescmPD48YyovkSRiGq0BwSWvuvMRq+094dp7sh2tkfSGHg==}
+    dev: true
 
   /@storybook/core-events@7.5.3:
     resolution: {integrity: sha512-DFOpyQ22JD5C1oeOFzL8wlqSWZzrqgDfDbUGP8xdO4wJu+FVTxnnWN6ZYLdTPB1u27DOhd7TzjQMfLDHLu7kbQ==}
@@ -12182,6 +11861,7 @@ packages:
       store2: 2.14.2
       telejson: 7.2.0
       ts-dedent: 2.2.0
+    dev: true
 
   /@storybook/manager-api@7.5.3(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-d8mVLr/5BEG4bAS2ZeqYTy/aX4jPEpZHdcLaWoB4mAM+PAL9wcWsirUyApKtDVYLITJf/hd8bb2Dm2ok6E45gA==}
@@ -12228,6 +11908,7 @@ packages:
     transitivePeerDependencies:
       - react
       - react-dom
+    dev: true
 
   /@storybook/manager@7.6.8:
     resolution: {integrity: sha512-INoXXoHXyw9PPMJAOAhwf9u2GNDDNdv1JAI1fhrbCAECzDabHT9lRVUo6v8I5XMc+YdMHLM1Vz38DbB+w18hFw==}
@@ -12523,6 +12204,7 @@ packages:
       qs: 6.11.2
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+    dev: true
 
   /@storybook/router@7.5.3(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-/iNYCFore7R5n6eFHbBYoB0P2/sybTVpA+uXTNUd3UEt7Ro6CEslTaFTEiH2RVQwOkceBp/NpyWon74xZuXhMg==}
@@ -12543,6 +12225,7 @@ packages:
       '@storybook/client-logger': 7.6.8
       memoizerific: 1.11.3
       qs: 6.11.2
+    dev: true
 
   /@storybook/telemetry@7.6.8:
     resolution: {integrity: sha512-hHUS3fyHjKR3ZdbG+/OVI+pwXXKOmS8L8GMuWKlpUovvCYBLm0/Q0MUQ9XaLuByOCzvAurqB3Owp3ZV7GiY30Q==}
@@ -12580,6 +12263,7 @@ packages:
       memoizerific: 1.11.3
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+    dev: true
 
   /@storybook/theming@7.5.3(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-Cjmthe1MAk0z4RKCZ7m72gAD8YD0zTAH97z5ryM1Qv84QXjiCQ143fGOmYz1xEQdNFpOThPcwW6FEccLHTkVcg==}
@@ -12607,6 +12291,7 @@ packages:
       memoizerific: 1.11.3
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+    dev: true
 
   /@storybook/types@7.2.2:
     resolution: {integrity: sha512-yrL0+KD+dsusQvDmNKQGv36WjvdhoiUxMDEBgsZkP047kRc3b8/zEbD3Tu7iMDsWnpgwip1Frgy29Ro3UtK57Q==}
@@ -12615,6 +12300,7 @@ packages:
       '@types/babel__core': 7.20.5
       '@types/express': 4.17.17
       file-system-cache: 2.3.0
+    dev: true
 
   /@storybook/types@7.5.3:
     resolution: {integrity: sha512-iu5W0Kdd6nysN5CPkY4GRl+0BpxRTdSfBIJak7mb6xCIHSB5t1tw4BOuqMQ5EgpikRY3MWJ4gY647QkWBX3MNQ==}
@@ -15290,6 +14976,7 @@ packages:
     dependencies:
       loader-utils: 2.0.4
       regex-parser: 2.2.11
+    dev: true
 
   /adm-zip@0.4.16:
     resolution: {integrity: sha512-TFi4HBKSGfIKsK5YCkKaaFG2m4PEDyViZmEwof3MTIgzimHLto6muaHVpbrljdIvIrFZzEq/p4nafOeLcYegrg==}
@@ -16164,6 +15851,7 @@ packages:
 
   /big.js@5.2.2:
     resolution: {integrity: sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==}
+    dev: true
 
   /bigint-crypto-utils@3.3.0:
     resolution: {integrity: sha512-jOTSb+drvEDxEq6OuUybOAv/xxoh3cuYRUIPyu8sSHQNKM303UQ2R1DAo45o1AkcIXw6fzbaFI1+xGGdaXs2lg==}
@@ -17838,6 +17526,7 @@ packages:
       parse-json: 5.2.0
       path-type: 4.0.0
       typescript: 5.3.3
+    dev: true
 
   /crc-32@1.2.2:
     resolution: {integrity: sha512-ROmzCKrTnOwybPcJApAA6WBWij23HVfGVNKqqrZpuyZOHqK2CwHSvpGuyt/UNNvaIjEd8X5IFGp4Mh+Ie1IHJQ==}
@@ -18028,6 +17717,7 @@ packages:
       postcss-value-parser: 4.2.0
       semver: 7.5.4
       webpack: 5.88.2(@swc/core@1.3.102)(esbuild@0.17.19)
+    dev: true
 
   /css-select@4.3.0:
     resolution: {integrity: sha512-wPpOYtnsVontu2mODhA19JrqWxNsfdatRKd64kmpRbQgh1KtItko5sTnEpPdpSaJszTOhEMlF/RPz28qj4HqhQ==}
@@ -19220,6 +18910,7 @@ packages:
   /emojis-list@3.0.0:
     resolution: {integrity: sha512-/kyM18EfinwXZbno9FyUGeFh87KC8HRQBQGildHZbEuRyWFOmv1U10o9BBp8XVZDVNNuQKyIGIu5ZYAAXJ0V2Q==}
     engines: {node: '>= 4'}
+    dev: true
 
   /encode-utf8@1.0.3:
     resolution: {integrity: sha512-ucAnuBEhUK4boH2HjVYG5Q2mQyPorvv0u/ocS+zhdw0S8AlHYY+GOFhP1Gio5z4icpP2ivFSvhtFjQi8+T9ppw==}
@@ -22945,6 +22636,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       postcss: 8.4.33
+    dev: true
 
   /idb-keyval@6.2.1:
     resolution: {integrity: sha512-8Sb3veuYCyrZL+VBt9LJfZjLUPWVvqn8tG28VqYNFCo43KHcKuq+b4EiXGeuaLAQWL2YmyDgMp2aSpH9JHsEQg==}
@@ -24681,6 +24373,7 @@ packages:
     dependencies:
       less: 4.2.0
       webpack: 5.88.2(@swc/core@1.3.102)(esbuild@0.17.19)
+    dev: true
 
   /less@4.2.0:
     resolution: {integrity: sha512-P3b3HJDBtSzsXUl0im2L7gTO5Ubg8mEN6G8qoTS77iXxXX4Hvu4Qj540PZDvQ8V6DmX6iXo98k7Md0Cm1PrLaA==}
@@ -24916,6 +24609,7 @@ packages:
       big.js: 5.2.2
       emojis-list: 3.0.0
       json5: 2.2.3
+    dev: true
 
   /loader-utils@3.2.1:
     resolution: {integrity: sha512-ZvFw1KWS3GVyYBYb7qkmRM/WwL2TQQBxgCK62rlvm4WpVQ23Nb4tYjApUlfjrEGvOs7KHEsmyUn75OHZrJMWPw==}
@@ -28919,6 +28613,7 @@ packages:
       webpack: 5.88.2(@swc/core@1.3.102)(esbuild@0.17.19)
     transitivePeerDependencies:
       - typescript
+    dev: true
 
   /postcss-modules-extract-imports@2.0.0:
     resolution: {integrity: sha512-LaYLDNS4SG8Q5WAWqIJgdHPJrDDr/Lv775rMBFUbgjTz6j34lUznACHcdRWroPvXANP2Vj7yNK57vp9eFqzLWQ==}
@@ -28934,6 +28629,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       postcss: 8.4.33
+    dev: true
 
   /postcss-modules-local-by-default@3.0.3:
     resolution: {integrity: sha512-e3xDq+LotiGesympRlKNgaJ0PCzoUIdpH0dj47iWAui/kyTgh3CiAr1qP54uodmJhl6p9rN6BoNcdEDVJx9RDw==}
@@ -28955,6 +28651,7 @@ packages:
       postcss: 8.4.33
       postcss-selector-parser: 6.0.13
       postcss-value-parser: 4.2.0
+    dev: true
 
   /postcss-modules-scope@2.2.0:
     resolution: {integrity: sha512-YyEgsTMRpNd+HmyC7H/mh3y+MeFWevy7V1evVhJWewmMbjDHIbZbOXICC2y+m1xI1UVfIT1HMW/O04Hxyu9oXQ==}
@@ -28972,6 +28669,7 @@ packages:
     dependencies:
       postcss: 8.4.33
       postcss-selector-parser: 6.0.13
+    dev: true
 
   /postcss-modules-values@3.0.0:
     resolution: {integrity: sha512-1//E5jCBrZ9DmRX+zCtmQtRSV6PV42Ix7Bzj9GbwJceduuf7IqP8MgeTXuRDHOWj2m0VzZD5+roFWDuU8RQjcg==}
@@ -28988,6 +28686,7 @@ packages:
     dependencies:
       icss-utils: 5.1.0(postcss@8.4.33)
       postcss: 8.4.33
+    dev: true
 
   /postcss-nested@6.0.1(postcss@8.4.33):
     resolution: {integrity: sha512-mEp4xPMi5bSWiMbsgoPfcP74lsWLHkQbZc3sY+jWYd65CUwXrUaTp0fmNpa01ZcETKlIgUdFN/MpS2xZtqL9dQ==}
@@ -29150,6 +28849,7 @@ packages:
     resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
     engines: {node: '>=10.13.0'}
     hasBin: true
+    dev: true
 
   /prettier@3.0.3:
     resolution: {integrity: sha512-L/4pUDMxcNa8R/EthV08Zt42WBO4h1rarVtK0K+QJG0X187OLo7l699jWw0GKuwzkPQ//jMFA/8Xm6Fh3J/DAg==}
@@ -30340,6 +30040,7 @@ packages:
 
   /regex-parser@2.2.11:
     resolution: {integrity: sha512-jbD/FT0+9MBU2XAZluI7w2OBs1RBi6p9M83nkoZayQXXU9e8Robt69FcZc7wU4eJD/YFTjn1JdCk3rbMJajz8Q==}
+    dev: true
 
   /regexp-to-ast@0.5.0:
     resolution: {integrity: sha512-tlbJqcMHnPKI9zSrystikWKwHkBqu2a/Sgw01h3zFjvYrMxEDYHzzoMZnUrbIfpTFEsoRnnviOXNCzFiSc54Qw==}
@@ -30699,6 +30400,7 @@ packages:
       loader-utils: 2.0.4
       postcss: 8.4.33
       source-map: 0.6.1
+    dev: true
 
   /resolve.exports@2.0.2:
     resolution: {integrity: sha512-X2UW6Nw3n/aMgDVy+0rSqgHlv39WZAlZrXCdnbyEiKm17DSqHX4MmQMaST3FbeWR5FTuRcUwYAziZajji0Y7mg==}
@@ -31031,6 +30733,7 @@ packages:
     dependencies:
       neo-async: 2.6.2
       webpack: 5.88.2(@swc/core@1.3.102)(esbuild@0.17.19)
+    dev: true
 
   /sax@1.2.4:
     resolution: {integrity: sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==}
@@ -31987,6 +31690,7 @@ packages:
 
   /store2@2.14.2:
     resolution: {integrity: sha512-siT1RiqlfQnGqgT/YzXVUNsom9S0H1OX+dpdGN1xkyYATo4I6sep5NmsRD/40s3IIOvlCq6akxkqG82urIZW1w==}
+    dev: true
 
   /storybook-dark-mode@3.0.3(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-ZLBLVpkuKTdtUv3DTuOjeP/bE7DHhOxVpDROKc0NtEYq9JHLUu6z05LLZinE3v6QPXQZ9TMQPm3Xe/0BcLEZlw==}
@@ -32346,6 +32050,7 @@ packages:
       webpack: ^5.0.0
     dependencies:
       webpack: 5.88.2(@swc/core@1.3.102)(esbuild@0.17.19)
+    dev: true
 
   /style-to-object@0.4.2:
     resolution: {integrity: sha512-1JGpfPB3lo42ZX8cuPrheZbfQ6kqPPnPHlKMyeRYtfKD+0jG+QsXgXN57O/dvJlzlB2elI6dGmrPnl5VPQFPaA==}
@@ -32743,6 +32448,7 @@ packages:
       serialize-javascript: 6.0.1
       terser: 5.19.2
       webpack: 5.88.2(@swc/core@1.3.102)(esbuild@0.17.19)
+    dev: true
 
   /terser-webpack-plugin@5.3.9(@swc/core@1.3.102)(esbuild@0.19.11)(webpack@5.88.2):
     resolution: {integrity: sha512-ZuXsqE07EcggTWQjXUj+Aot/OMcD0bMKGgF63f7UxYcu5/AJF53aIpK1YoP5xR9l6s/Hy2b+t1AM0bLNPRuhwA==}
@@ -34020,6 +33726,7 @@ packages:
       '@juggle/resize-observer': 3.4.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+    dev: true
 
   /use-sidecar@1.1.2(@types/react@18.2.47)(react@18.2.0):
     resolution: {integrity: sha512-epTbsLuzZ7lPClpz2TyryBfztm7m+28DlEv2ZCQ3MDr5ssiwyOwGH/e5F9CkfWjJ1t4clvI58yF822/GUkjjhw==}
@@ -34778,6 +34485,7 @@ packages:
       - '@swc/core'
       - esbuild
       - uglify-js
+    dev: true
 
   /webpack@5.88.2(@swc/core@1.3.102)(esbuild@0.19.11):
     resolution: {integrity: sha512-JmcgNZ1iKj+aiR0OvTYtWQqJwq37Pf683dY9bVORwVbUrDhLhdn/PlO2sHsFHPkj7sHNQF3JwaAkp49V+Sq1tQ==}
