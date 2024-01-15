@@ -87,6 +87,7 @@
     "@lightdotso/eslint-config": "workspace:*",
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
+    "@storybook/blocks": "^7.6.8",
     "@storybook/react": "^7.6.8",
     "@types/node": "^20.11.0",
     "@types/react": "^18.2.47",
