@@ -43,6 +43,7 @@ import {
   SelectValue,
   Separator,
   TooltipProvider,
+  PlaceholderOrb,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -67,7 +68,6 @@ import {
 } from "@/app/(authenticated)/new/(hooks)";
 import type { Owner, Owners } from "@/app/(authenticated)/new/(hooks)";
 import { publicClient } from "@/clients/public";
-import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import { MAX_THRESHOLD, MAX_WEIGHT } from "@/const";
 import { debounce, successToast } from "@/utils";
 

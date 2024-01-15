@@ -22,23 +22,10 @@ import type {
 } from "@lightdotso/data";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useTables } from "@lightdotso/stores";
-import { Table, TableBody, TableCell, TableRow } from "@lightdotso/ui";
+import { NftTable } from "@lightdotso/table";
 import { useQueryClient } from "@tanstack/react-query";
-import {
-  getCoreRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
 import type { FC } from "react";
 import type { Address } from "viem";
-import { columns } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/columns";
-import { NftCard } from "@/components/nft/nft-card";
-import { NftsWrapper } from "@/components/nft/nfts-wrapper";
-import { TableEmpty } from "@/components/state/table-empty";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -82,9 +69,7 @@ export const NftsList: FC<NftsListProps> = ({ address, limit }) => {
   // Table
   // ---------------------------------------------------------------------------
 
-  const table = useReactTable({
-    data: data && data.nfts ? data.nfts : ([] as NftData[]),
-    columns: columns,
+  const tableOptions = {
     state: {
       sorting: nftSorting,
       columnVisibility: nftColumnVisibility,
@@ -97,59 +82,16 @@ export const NftsList: FC<NftsListProps> = ({ address, limit }) => {
     },
     paginateExpandedRows: false,
     enableRowSelection: false,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-  });
+  };
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <NftsWrapper>
-      {table.getRowModel().rows?.length ? (
-        table
-          .getRowModel()
-          .rows.slice(0, limit || table.getRowModel().rows?.length)
-          .filter(row => row.getVisibleCells().length > 0)
-          .map(row => (
-            <NftCard
-              key={row.id}
-              nft={row.original}
-              showName={row
-                .getVisibleCells()
-                .some(cell => cell.column.id === "name")}
-              showDescription={row
-                .getVisibleCells()
-                .some(cell => cell.column.id === "description")}
-              showSpamScore={row
-                .getVisibleCells()
-                .some(cell => cell.column.id === "spam_score")}
-              showChain={row
-                .getVisibleCells()
-                .some(cell => cell.column.id === "chain")}
-            />
-          ))
-      ) : (
-        <div className="col-span-6">
-          <Table>
-            <TableBody>
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  <TableEmpty entity="nft" />
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </div>
-      )}
-    </NftsWrapper>
+    <NftTable
+      data={data && data.nfts ? data.nfts : ([] as NftData[])}
+      tableOptions={tableOptions}
+    />
   );
 };

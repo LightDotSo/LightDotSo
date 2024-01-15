@@ -1,0 +1,21 @@
+{
+  "id": "clop4lmma0003o69b8g8rt9rg",
+  "address": "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F",
+  "image_hash": "0x06eedcf823b5a64f8528accf0d78edb31b7715f351e4c9b6d8b3ac69a16e094e",
+  "checkpoint": 0,
+  "threshold": 1,
+  "owners": [
+    {
+      "id": "clop4ln4z0005o69bcej30xqy",
+      "index": 0,
+      "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
+      "weight": 1
+    },
+    {
+      "id": "clop4ln4z0006o69bjil2ndvs",
+      "index": 1,
+      "address": "0x7F4c8BD0aCc303599A1AE92414B055514FFb6F81",
+      "weight": 1
+    }
+  ]
+}

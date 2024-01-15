@@ -321,6 +321,9 @@ importers:
       '@lightdotso/data':
         specifier: workspace:*
         version: link:../../packages/data
+      '@lightdotso/hooks':
+        specifier: workspace:*
+        version: link:../../packages/hooks
       '@lightdotso/kysely':
         specifier: workspace:*
         version: link:../../configurations/kysely
@@ -1461,6 +1464,43 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
+  packages/hooks:
+    dependencies:
+      '@lightdotso/client':
+        specifier: workspace:*
+        version: link:../client
+      '@lightdotso/const':
+        specifier: workspace:*
+        version: link:../const
+      '@lightdotso/query':
+        specifier: workspace:*
+        version: link:../query
+      '@lightdotso/schemas':
+        specifier: workspace:*
+        version: link:../schemas
+      '@lightdotso/ui':
+        specifier: workspace:*
+        version: link:../ui
+      '@lightdotso/wagmi':
+        specifier: workspace:*
+        version: link:../wagmi
+      viem:
+        specifier: ^2.0.6
+        version: 2.0.6(typescript@5.3.3)(zod@3.22.4)
+      wagmi:
+        specifier: ^2.2.1
+        version: 2.2.1(@tanstack/react-query@5.17.10)(@types/react@18.2.47)(@upstash/redis@1.28.0)(immer@10.0.3)(react-dom@18.2.0)(react-native@0.73.2)(react@18.2.0)(typescript@5.3.3)(viem@2.0.6)(zod@3.22.4)
+    devDependencies:
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../../configurations/tsconfig
+      '@types/node':
+        specifier: ^20.11.0
+        version: 20.11.0
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
   packages/inpage:
     dependencies:
       '@metamask/eth-sig-util':
@@ -1738,6 +1778,9 @@ importers:
       '@lightdotso/demo':
         specifier: workspace:*
         version: link:../demo
+      '@lightdotso/hooks':
+        specifier: workspace:*
+        version: link:../hooks
       '@lightdotso/query':
         specifier: workspace:*
         version: link:../query
@@ -1753,6 +1796,9 @@ importers:
       '@lightdotso/utils':
         specifier: workspace:*
         version: link:../utils
+      '@radix-ui/react-icons':
+        specifier: ^1.3.0
+        version: 1.3.0(react@18.2.0)
       '@storybook/react':
         specifier: ^7.6.8
         version: 7.6.8(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
@@ -1943,6 +1989,9 @@ importers:
       react:
         specifier: ^18.2.0
         version: 18.2.0
+      react-blurhash:
+        specifier: ^0.3.0
+        version: 0.3.0(blurhash@2.0.5)(react@18.2.0)
       react-day-picker:
         specifier: ^8.10.0
         version: 8.10.0(date-fns@3.2.0)(react@18.2.0)
@@ -1964,6 +2013,9 @@ importers:
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.1)
+      timeago-react:
+        specifier: ^3.0.6
+        version: 3.0.6(react@18.2.0)
       vaul:
         specifier: ^0.8.0
         version: 0.8.0(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)

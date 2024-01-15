@@ -20,7 +20,7 @@ import type { FC } from "react";
 // Types
 // -----------------------------------------------------------------------------
 
-type Entity = "wallet" | "token" | "transaction" | "nft" | "activity";
+type Entity = "wallet" | "token" | "transaction" | "nft" | "activity" | "owner";
 
 // -----------------------------------------------------------------------------
 // Const
@@ -32,6 +32,7 @@ const entityDescription: Record<Entity, string> = {
   token: "tokens",
   transaction: "transactions",
   nft: "NFTs",
+  owner: "owners",
 };
 
 // -----------------------------------------------------------------------------

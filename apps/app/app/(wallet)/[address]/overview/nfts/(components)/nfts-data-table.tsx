@@ -17,10 +17,10 @@
 
 import type { NftDataPage, WalletSettingsData } from "@lightdotso/data";
 import { queryKeys } from "@lightdotso/query-keys";
+import { nftColumns } from "@lightdotso/table";
 import { useQueryClient } from "@tanstack/react-query";
 import { type FC } from "react";
 import type { Address } from "viem";
-import { columns } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/data-table";
 
 // -----------------------------------------------------------------------------
@@ -60,5 +60,5 @@ export const NftsDataTable: FC<NftsDataTableProps> = ({ address }) => {
     return null;
   }
 
-  return <DataTable data={nftPage.nfts ?? []} columns={columns} />;
+  return <DataTable data={nftPage.nfts ?? []} columns={nftColumns} />;
 };

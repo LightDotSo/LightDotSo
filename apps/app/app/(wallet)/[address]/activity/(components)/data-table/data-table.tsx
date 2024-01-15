@@ -17,29 +17,10 @@
 
 import type { ActivityData } from "@lightdotso/data";
 import { useTables } from "@lightdotso/stores";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@lightdotso/ui";
-import {
-  flexRender,
-  getCoreRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { TableEmpty } from "@/components/state/table-empty";
 import { usePaginationQueryState } from "@/queryStates";
+import { ActivityTable } from "@lightdotso/table";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -85,10 +66,10 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
   } = useTables();
 
   // ---------------------------------------------------------------------------
-  // Table
+  // Table Options
   // ---------------------------------------------------------------------------
 
-  const table = useReactTable({
+  const tableOptions = {
     data,
     columns,
     state: {
@@ -99,105 +80,23 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
       pagination: paginationState,
     },
     pageCount: pageCount,
-    paginateExpandedRows: false,
-    enableRowSelection: true,
-    manualPagination: true,
     onRowSelectionChange: setActivityRowSelection,
     onSortingChange: setActivitySorting,
     onColumnFiltersChange: setActivityColumnFilters,
     onColumnVisibilityChange: setActivityColumnVisibility,
     onPaginationChange: setPaginationState,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-  });
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
-
-  useEffect(() => {
-    setActivityTable(table);
-  }, [
-    table,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("address"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("address")?.getFilterValue(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("entity"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("entity")?.getFacetedUniqueValues(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("entity")?.getCanHide(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("entity")?.getIsVisible(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("operation"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("operation")?.getCanHide(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("operation")?.getIsVisible(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("timestamp"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("timestamp")?.getCanHide(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("timestamp")?.getIsVisible(),
-    setActivityTable,
-  ]);
+  };
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <Table>
-      <TableHeader>
-        {table.getHeaderGroups().map(headerGroup => (
-          <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map(header => {
-              return (
-                <TableHead key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
-                </TableHead>
-              );
-            })}
-          </TableRow>
-        ))}
-      </TableHeader>
-      <TableBody>
-        {table.getRowModel().rows?.length ? (
-          table.getRowModel().rows.map(row => (
-            <TableRow
-              key={row.id}
-              className="cursor-pointer"
-              data-state={row.getIsSelected() && "selected"}
-              onClick={() => router.push(`/${row.original.id}`)}
-            >
-              {row.getVisibleCells().map(cell => (
-                <TableCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))
-        ) : (
-          <TableRow>
-            <TableCell colSpan={columns.length} className="h-24 text-center">
-              <TableEmpty entity="activity" />
-            </TableCell>
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+    <ActivityTable
+      columns={columns}
+      data={data}
+      tableOptions={tableOptions}
+      setActivityTable={setActivityTable}
+    />
   );
 }

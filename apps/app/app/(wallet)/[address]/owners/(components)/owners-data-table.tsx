@@ -16,9 +16,9 @@
 "use client";
 
 import { useQueryConfiguration } from "@lightdotso/query";
+import { ownerColumns } from "@lightdotso/table";
 import { type FC } from "react";
 import type { Address } from "viem";
-import { columns } from "@/app/(wallet)/[address]/owners/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table";
 
 // -----------------------------------------------------------------------------
@@ -49,7 +49,7 @@ export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
   return (
     <div className="space-y-4">
       <div className="rounded-md border border-border bg-background">
-        <DataTable data={configuration?.owners ?? []} columns={columns} />
+        <DataTable data={configuration?.owners ?? []} columns={ownerColumns} />
       </div>
     </div>
   );

@@ -52,6 +52,7 @@ import {
   TabsList,
   TabsTrigger,
   TooltipProvider,
+  PlaceholderOrb,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -76,7 +77,6 @@ import { normalize } from "viem/ens";
 import * as z from "zod";
 import { useTransfersQueryState } from "@/app/(wallet)/[address]/send/(hooks)";
 import { publicClient } from "@/clients/public";
-import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import { debounce } from "@/utils";
 import { lightWalletAbi } from "@/wagmi";
 
