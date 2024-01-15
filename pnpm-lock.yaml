@@ -1478,6 +1478,9 @@ importers:
       '@lightdotso/schemas':
         specifier: workspace:*
         version: link:../schemas
+      '@lightdotso/stores':
+        specifier: workspace:*
+        version: link:../stores
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../ui

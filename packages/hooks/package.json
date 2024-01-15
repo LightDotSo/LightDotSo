@@ -29,6 +29,7 @@
     "@lightdotso/const": "workspace:*",
     "@lightdotso/query": "workspace:*",
     "@lightdotso/schemas": "workspace:*",
+    "@lightdotso/stores": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
     "viem": "^2.0.6",
