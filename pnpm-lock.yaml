@@ -1532,9 +1532,6 @@ importers:
       '@lightdotso/schemas':
         specifier: workspace:*
         version: link:../schemas
-      '@types/firefox-webext-browser':
-        specifier: ^120.0.0
-        version: 120.0.0
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
