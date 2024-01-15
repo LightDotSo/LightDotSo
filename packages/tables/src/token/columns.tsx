@@ -16,9 +16,9 @@
 "use client";
 
 import type { TokenData } from "@lightdotso/data";
+import { DataTableColumnHeader } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Suspense } from "react";
-import { DataTableColumnHeader } from "../../templates/data-table/data-table-column-header";
 import { TokenCardActions } from "./card/token-card-actions";
 import { TokenCardBalance } from "./card/token-card-balance";
 import { TokenCardChain } from "./card/token-card-chain";

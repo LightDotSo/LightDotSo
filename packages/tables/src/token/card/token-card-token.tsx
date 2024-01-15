@@ -20,7 +20,7 @@ import { ButtonIcon } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { ChevronRightIcon } from "lucide-react";
 import type { FC } from "react";
-import { TokenImage } from "@/components/token/token-image";
+// import { TokenImage } from "@/components/token/token-image";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -62,7 +62,7 @@ export const TokenCardToken: FC<TokenCardTokenProps> = ({
         </ButtonIcon>
       )}
       <div className="flex items-center space-x-3">
-        <TokenImage token={token} />
+        {/* <TokenImage token={token} /> */}
         <div className="flex flex-col space-y-0.5">
           <span className="text-sm text-text">
             {token.name ?? token.symbol}

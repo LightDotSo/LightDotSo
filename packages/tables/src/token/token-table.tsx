@@ -14,6 +14,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { TokenData } from "@lightdotso/data";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import {
   ColumnDef,
@@ -23,14 +31,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { FC } from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../../components/ui/table";
 
 type TokenTableProps = {
   data: TokenData[];

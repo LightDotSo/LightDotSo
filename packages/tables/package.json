@@ -25,7 +25,14 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
+    "@lightdotso/demo": "workspace:*",
+    "@lightdotso/query": "workspace:*",
+    "@lightdotso/svg": "workspace:*",
     "@lightdotso/utils": "workspace:*",
+    "@storybook/react": "^7.6.8",
+    "@tanstack/react-table": "^8.11.6",
+    "@tremor/react": "^3.13.1",
+    "lucide-react": "^0.309.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

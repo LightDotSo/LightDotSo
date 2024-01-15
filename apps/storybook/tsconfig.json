@@ -6,6 +6,6 @@
       "@lightdotso/storybook/*": ["src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["./storybook/**/*.ts", "./storybook/**/*.tsx"],
   "exclude": ["node_modules"]
 }

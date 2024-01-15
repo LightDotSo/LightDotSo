@@ -259,6 +259,12 @@ export {
   TooltipContent,
   TooltipProvider,
 } from "./src/components/ui/tooltip";
-export { Footer } from "./src/templates/footer";
 export { ThemeProvider } from "./src/providers/theme-provider";
 export { ReactQueryProvider } from "./src/providers/react-query";
+export {
+  DataTableColumnHeader,
+  DataTableFacetedFilter,
+  DataTablePagination,
+  DataTableViewOptions
+} from "./src/templates/data-table"
+export { Footer } from "./src/templates/footer";
