@@ -1934,21 +1934,6 @@ importers:
       '@lightdotso/const':
         specifier: workspace:*
         version: link:../const
-      '@lightdotso/data':
-        specifier: workspace:*
-        version: link:../data
-      '@lightdotso/demo':
-        specifier: workspace:*
-        version: link:../demo
-      '@lightdotso/query':
-        specifier: workspace:*
-        version: link:../query
-      '@lightdotso/stores':
-        specifier: workspace:*
-        version: link:../stores
-      '@lightdotso/styles':
-        specifier: workspace:*
-        version: link:../../configurations/styles
       '@lightdotso/svg':
         specifier: workspace:*
         version: link:../svg
@@ -2057,9 +2042,6 @@ importers:
       '@tanstack/react-table':
         specifier: ^8.11.6
         version: 8.11.6(react-dom@18.2.0)(react@18.2.0)
-      '@tremor/react':
-        specifier: ^3.13.1
-        version: 3.13.1(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.4.1)
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -2114,9 +2096,6 @@ importers:
       vaul:
         specifier: ^0.8.0
         version: 0.8.0(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
-      vite:
-        specifier: ^5.0.11
-        version: 5.0.11(@types/node@20.11.0)(less@4.2.0)
       zod:
         specifier: ^3.22.4
         version: 3.22.4
@@ -2133,9 +2112,6 @@ importers:
       '@lightdotso/tsconfig':
         specifier: workspace:*
         version: link:../../configurations/tsconfig
-      '@storybook/blocks':
-        specifier: ^7.6.8
-        version: 7.6.8(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
       '@storybook/react':
         specifier: ^7.6.8
         version: 7.6.8(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
@@ -2172,6 +2148,9 @@ importers:
       unist-util-visit:
         specifier: ^5.0.0
         version: 5.0.0
+      vite:
+        specifier: ^5.0.11
+        version: 5.0.11(@types/node@20.11.0)(less@4.2.0)
 
   packages/utils:
     dependencies:
