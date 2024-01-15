@@ -351,9 +351,9 @@ importers:
       '@lightdotso/svg':
         specifier: workspace:*
         version: link:../../packages/svg
-      '@lightdotso/tables':
+      '@lightdotso/table':
         specifier: workspace:*
-        version: link:../../packages/tables
+        version: link:../../packages/table
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -1730,7 +1730,7 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
-  packages/tables:
+  packages/table:
     dependencies:
       '@lightdotso/data':
         specifier: workspace:*
