@@ -23,14 +23,13 @@ import {
   TableRow,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
+import type { ColumnDef, TableOptions } from "@tanstack/react-table";
 import {
-  ColumnDef,
   flexRender,
   getCoreRowModel,
-  TableOptions,
   useReactTable,
 } from "@tanstack/react-table";
-import { FC } from "react";
+import type { FC } from "react";
 
 type TokenTableProps = {
   data: TokenData[];
