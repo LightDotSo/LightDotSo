@@ -9,7 +9,7 @@ import * as React from "react";
 
 export const decorators = [
   Story => (
-    <ReactQueryProvider>
+    <ReactQueryProvider showDevTools={false}>
       <Story />
       <Toaster />
     </ReactQueryProvider>

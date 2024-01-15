@@ -17,11 +17,23 @@
 
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 type ThemeProviderProps = Parameters<typeof NextThemesProvider>[0];
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 /// From: https://github.com/pacocoursey/next-themes/blob/cd67bfa20ef6ea78a814d65625c530baae4075ef/examples/with-app-dir/src/components/ThemeProvider.tsx
 function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
 }
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export { ThemeProvider };
