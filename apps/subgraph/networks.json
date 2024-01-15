@@ -59,6 +59,12 @@
       "startBlock": 63515111
     }
   },
+  "fantom-testnet": {
+    "EntryPointv0.6.0": {
+      "address": "0x5Ff137D4B0FDCD49DcA30c7CF57E578A026d2789",
+      "startBlock": 15987221
+    }
+  },
   "gnosis": {
     "EntryPointv0.6.0": {
       "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",

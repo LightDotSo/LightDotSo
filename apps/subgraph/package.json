@@ -29,6 +29,7 @@
     "deploy:hosted:bsc-chapel": "graph deploy --product hosted-service lightdotso/bsc-chapel --network chapel",
     "deploy:hosted:celo": "graph deploy --product hosted-service lightdotso/celo --network celo",
     "deploy:hosted:fantom": "graph deploy --product hosted-service lightdotso/fantom --network fantom",
+    "deploy:hosted:fantom-testnet": "graph deploy --product hosted-service lightdotso/fantom-testnet --network fantom-testnet",
     "deploy:hosted:gnosis": "graph deploy --product hosted-service lightdotso/gnosis --network gnosis",
     "deploy:hosted:mainnet": "graph deploy --product hosted-service lightdotso/mainnet --network mainnet",
     "deploy:hosted:matic": "graph deploy --product hosted-service lightdotso/matic --network matic",
