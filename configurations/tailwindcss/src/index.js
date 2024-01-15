@@ -25,9 +25,9 @@ module.exports = {
     "./src/**/*.{ts,tsx}",
     "./mdx/**/*.{mjs,mdx,js,ts,jsx,tsx}",
     "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}",
-    "../../apps/ui/src/**/*.{ts,tsx}",
-    "../../apps/ui/.storybook/**/*.{ts,tsx}",
-    "../../apps/ui/stories/**/*.{ts,tsx}",
+    "../../apps/storybook/.storybook/**/*.{ts,tsx}",
+    "../../packages/tables/src/**/*.{ts,tsx}",
+    "../../packages/ui/src/**/*.{ts,tsx}",
     "../../packages/svg/src/**/*.{ts,tsx}",
   ],
   theme: {
