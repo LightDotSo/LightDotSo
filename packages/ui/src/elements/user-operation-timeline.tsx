@@ -18,6 +18,7 @@ import { Check, Hourglass, PenLineIcon } from "lucide-react";
 import type { FC, ReactNode } from "react";
 import type { Address } from "viem";
 import { Avatar } from "../components/ui/avatar";
+import { TimeAgo } from "../components/ui/time-ago";
 import {
   Timeline,
   TimelineBody,
@@ -27,7 +28,6 @@ import {
   TimelineTitle,
 } from "../components/ui/timeline";
 import { PlaceholderOrb } from "./placeholder-orb";
-import { TimeAgo } from "../components/ui/time-ago";
 
 // -----------------------------------------------------------------------------
 // Wrapper

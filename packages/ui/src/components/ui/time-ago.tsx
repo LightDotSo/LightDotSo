@@ -16,7 +16,7 @@
 "use client";
 
 import { intlFormatDistance } from "date-fns";
-import { FC } from "react";
+import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Types
