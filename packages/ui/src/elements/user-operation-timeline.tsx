@@ -16,7 +16,6 @@
 import type { UserOperationData } from "@lightdotso/data";
 import { Check, Hourglass, PenLineIcon } from "lucide-react";
 import type { FC, ReactNode } from "react";
-import TimeAgo from "timeago-react";
 import type { Address } from "viem";
 import { Avatar } from "../components/ui/avatar";
 import {
@@ -28,6 +27,7 @@ import {
   TimelineTitle,
 } from "../components/ui/timeline";
 import { PlaceholderOrb } from "./placeholder-orb";
+import { TimeAgo } from "../components/ui/time-ago";
 
 // -----------------------------------------------------------------------------
 // Wrapper
@@ -92,7 +92,7 @@ export const UserOperationTimeline: FC<UserOperationTimelineProps> = ({
         <TimelineContent>
           <TimelineTitle size={size}>Created</TimelineTitle>
           <TimelineBody size={size}>
-            <TimeAgo datetime={created_at} />
+            <TimeAgo value={new Date(created_at)} />
           </TimelineBody>
         </TimelineContent>
       </TimelineItem>
@@ -110,7 +110,7 @@ export const UserOperationTimeline: FC<UserOperationTimelineProps> = ({
           <TimelineContent>
             <TimelineTitle size={size}>Signed</TimelineTitle>
             <TimelineBody size={size}>
-              <TimeAgo datetime={created_at} />
+              <TimeAgo value={new Date(created_at)} />
             </TimelineBody>
           </TimelineContent>
         </TimelineItem>
