@@ -12,14 +12,14 @@
   },
   "license": "AGPL-3.0-or-later",
   "author": "Light, Inc.",
-  "main": "./index.tsx",
+  "main": "./src/index.tsx",
   "files": [
     "dist/**",
     "src/**"
   ],
   "scripts": {
     "add": "shadcn-ui add",
-    "build": "tsup ./index.tsx",
+    "build": "tsup",
     "diff": "shadcn-ui diff",
     "prepack": "clean-package",
     "postpack": "clean-package restore"

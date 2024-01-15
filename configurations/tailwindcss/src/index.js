@@ -36,9 +36,9 @@ module.exports = {
     "../../apps/home/app/**/*.{ts,tsx}",
     "../../apps/home/src/**/*.{ts,tsx}",
     "../../apps/storybook/.storybook/**/*.{ts,tsx}",
+    "../../packages/svg/src/**/*.{ts,tsx}",
     "../../packages/tables/src/**/*.{ts,tsx}",
     "../../packages/ui/src/**/*.{ts,tsx}",
-    "../../packages/svg/src/**/*.{ts,tsx}",
   ],
   theme: {
     transparent: "transparent",

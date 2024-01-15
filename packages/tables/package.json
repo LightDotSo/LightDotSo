@@ -36,8 +36,10 @@
     "@tanstack/react-table": "^8.11.6",
     "@tremor/react": "^3.13.1",
     "lucide-react": "^0.309.0",
+    "next": "^14.0.4",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "viem": "^2.0.6"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
