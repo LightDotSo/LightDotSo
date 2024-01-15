@@ -20,7 +20,7 @@
     "wagmi": "cd ../.. && pnpm wagmi:generate"
   },
   "dependencies": {
-    "wagmi": "^2.2.0"
+    "wagmi": "^2.2.1"
   },
   "publishConfig": {
     "access": "restricted"

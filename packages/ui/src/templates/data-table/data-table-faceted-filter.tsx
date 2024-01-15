@@ -13,9 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { cn } from "@lightdotso/utils";
+import { CheckIcon, PlusCircledIcon } from "@radix-ui/react-icons";
+import type { Column } from "@tanstack/react-table";
+import type { ComponentType } from "react";
+import { Badge } from "../../components/ui/badge";
+import { Button } from "../../components/ui/button";
 import {
-  Badge,
-  Button,
   Command,
   CommandEmpty,
   CommandGroup,
@@ -23,15 +27,13 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
+} from "../../components/ui/command";
+import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-  Separator,
-} from "@lightdotso/ui";
-import { cn } from "@lightdotso/utils";
-import { CheckIcon, PlusCircledIcon } from "@radix-ui/react-icons";
-import type { Column } from "@tanstack/react-table";
-import type { ComponentType } from "react";
+} from "../../components/ui/popover";
+import { Separator } from "../../components/ui/separator";
 
 // -----------------------------------------------------------------------------
 // Props

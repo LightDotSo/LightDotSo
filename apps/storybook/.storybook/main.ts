@@ -1,9 +1,11 @@
 import type { StorybookConfig } from "@storybook/react-vite";
 import { mergeConfig } from "vite";
-import * as path from "path";
 
 const config: StorybookConfig = {
-  stories: ["../src/**/*.stories.@(js|jsx|ts|tsx|mdx)"],
+  stories: [
+    "../../../packages/tables/src/**/*.stories.@(js|jsx|ts|tsx|mdx)",
+    "../../../packages/ui/src/**/*.stories.@(js|jsx|ts|tsx|mdx)",
+  ],
   addons: [
     "@storybook/addon-viewport",
     "@storybook/addon-links",
@@ -19,11 +21,6 @@ const config: StorybookConfig = {
   viteFinal: async (config, { configType }) => {
     return mergeConfig(config, {
       define: { "process.env": {} },
-      resolve: {
-        alias: {
-          "@lightdotso/ui": path.resolve(__dirname, "../src/"),
-        },
-      },
     });
   },
   docs: {

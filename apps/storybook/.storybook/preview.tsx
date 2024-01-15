@@ -1,18 +1,18 @@
 import "@lightdotso/styles/global.css";
+import { Toaster, ReactQueryProvider } from "@lightdotso/ui";
 import type { Preview } from "@storybook/react";
 import {
   INITIAL_VIEWPORTS,
   MINIMAL_VIEWPORTS,
 } from "@storybook/addon-viewport";
 import * as React from "react";
-import { Toaster } from "../src/components/ui/toast";
 
 export const decorators = [
   Story => (
-    <>
+    <ReactQueryProvider>
       <Story />
       <Toaster />
-    </>
+    </ReactQueryProvider>
   ),
 ];
 

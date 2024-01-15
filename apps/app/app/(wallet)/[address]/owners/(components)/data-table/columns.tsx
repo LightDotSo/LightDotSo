@@ -16,10 +16,9 @@
 "use client";
 
 import type { ConfigurationOwnerData } from "@lightdotso/data";
-import { Avatar, Checkbox } from "@lightdotso/ui";
+import { Avatar, Checkbox, DataTableColumnHeader } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { DataTableRowActions } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table-row-actions";
-import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 
 // -----------------------------------------------------------------------------

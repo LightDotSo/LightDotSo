@@ -26,7 +26,6 @@
   },
   "dependencies": {
     "@lightdotso/schemas": "workspace:*",
-    "@types/firefox-webext-browser": "^120.0.0",
     "cross-env": "^7.0.3",
     "dotenv": "^16.3.1",
     "tailwind-merge": "^2.2.0",

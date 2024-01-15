@@ -31,3 +31,4 @@ ignores:
   - "@prisma/nextjs-monorepo-workaround-plugin"
   - "@lukemorales/query-key-factory"
   - zustand
+  - "@radix-ui/react-dropdown-menu"

@@ -16,10 +16,9 @@
 "use client";
 
 import type { UserOperationData } from "@lightdotso/data";
-import { ButtonIcon } from "@lightdotso/ui";
+import { ButtonIcon, DataTableColumnHeader } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ChevronDown } from "lucide-react";
-import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { UserOperationCardChain } from "@/components/user-operation/user-operation-card-chain";
 import { UserOperationCardHash } from "@/components/user-operation/user-operation-card-hash";
 import { UserOperationCardNonce } from "@/components/user-operation/user-operation-card-nonce";

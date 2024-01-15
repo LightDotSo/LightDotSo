@@ -16,15 +16,15 @@
 "use client";
 
 import type { TokenData } from "@lightdotso/data";
+import { DataTableColumnHeader } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Suspense } from "react";
-import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
-import { TokenCardActions } from "@/components/token/token-card-actions";
-import { TokenCardBalance } from "@/components/token/token-card-balance";
-import { TokenCardChain } from "@/components/token/token-card-chain";
-import { TokenCardPrice } from "@/components/token/token-card-price";
-import { TokenCardSparkline } from "@/components/token/token-card-sparkline";
-import { TokenCardToken } from "@/components/token/token-card-token";
+import { TokenCardActions } from "./card/token-card-actions";
+import { TokenCardBalance } from "./card/token-card-balance";
+import { TokenCardChain } from "./card/token-card-chain";
+import { TokenCardPrice } from "./card/token-card-price";
+import { TokenCardSparkline } from "./card/token-card-sparkline";
+import { TokenCardToken } from "./card/token-card-token";
 
 // -----------------------------------------------------------------------------
 // Definitions

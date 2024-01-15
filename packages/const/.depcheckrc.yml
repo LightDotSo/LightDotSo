@@ -1,5 +1,4 @@
 ignores:
-  - "@types/firefox-webext-browser"
   - "@types/node"
   - cross-env
   - dotenv
