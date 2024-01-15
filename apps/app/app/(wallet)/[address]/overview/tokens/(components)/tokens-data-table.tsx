@@ -18,10 +18,10 @@
 import type { WalletSettingsData } from "@lightdotso/data";
 import { useQueryTokens, useQueryTokensCount } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
+import { columns } from "@lightdotso/tables";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
-import { columns } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table";
 import { usePaginationQueryState } from "@/queryStates";
 

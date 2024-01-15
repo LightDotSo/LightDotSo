@@ -19,6 +19,7 @@ import type { TokenData, WalletSettingsData } from "@lightdotso/data";
 import { useSuspenseQueryTokens } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useTables } from "@lightdotso/stores";
+import { columns } from "@lightdotso/tables";
 import {
   Table,
   TableBody,
@@ -42,7 +43,6 @@ import {
 } from "@tanstack/react-table";
 import { useEffect, type FC } from "react";
 import type { Address } from "viem";
-import { columns } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/columns";
 import { TableEmpty } from "@/components/state/table-empty";
 
 // -----------------------------------------------------------------------------

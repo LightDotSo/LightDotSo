@@ -16,9 +16,8 @@
 "use client";
 
 import type { ActivityData } from "@lightdotso/data";
-import { Avatar } from "@lightdotso/ui";
+import { Avatar, DataTableColumnHeader } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
-import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 
 // -----------------------------------------------------------------------------

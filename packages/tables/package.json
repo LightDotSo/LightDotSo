@@ -28,6 +28,7 @@
     "@lightdotso/demo": "workspace:*",
     "@lightdotso/query": "workspace:*",
     "@lightdotso/svg": "workspace:*",
+    "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
     "@storybook/react": "^7.6.8",
     "@tanstack/react-table": "^8.11.6",
