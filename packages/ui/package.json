@@ -83,6 +83,7 @@
     "tailwindcss-animate": "^1.0.7",
     "timeago-react": "^3.0.6",
     "vaul": "^0.8.0",
+    "viem": "^2.0.6",
     "zod": "^3.22.4"
   },
   "devDependencies": {
