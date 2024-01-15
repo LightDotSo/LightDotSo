@@ -19,3 +19,4 @@ ignores:
   - "@types/node"
   - vite
   - "@storybook/blocks"
+  - tsup
