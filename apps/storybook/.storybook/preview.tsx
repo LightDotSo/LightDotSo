@@ -30,6 +30,11 @@ const preview: Preview = {
       lightClass: "light",
       stylePreview: true,
     },
+    options: {
+      storySort: {
+        order: ["Theme", "UI", "Template", "Footer"],
+      },
+    },
     viewport: {
       viewports: {
         ...INITIAL_VIEWPORTS,
