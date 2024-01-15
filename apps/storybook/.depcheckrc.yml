@@ -40,3 +40,4 @@ ignores:
   - "@lightdotso/"
   - "@tanstack/react-table"
   - "@tremor/react"
+  - "@lightdotso/svg"
