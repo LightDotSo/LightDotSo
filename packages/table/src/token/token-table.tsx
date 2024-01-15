@@ -27,14 +27,23 @@ import type { ColumnDef, TableOptions } from "@tanstack/react-table";
 import {
   flexRender,
   getCoreRowModel,
+  getExpandedRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import type { FC } from "react";
+import { useEffect, type FC } from "react";
 import { TableEmpty } from "../state/table-empty";
 
 type TokenTableProps = {
-  data: TokenData[];
-  tableOptions?: Omit<TableOptions<TokenData>, "columns">;
+  data: TokenData[] | null;
+  tableOptions?: Omit<
+    TableOptions<TokenData>,
+    "data" | "columns" | "getCoreRowModel"
+  >;
   columns: ColumnDef<TokenData>[];
   limit?: number;
 };
@@ -47,10 +56,32 @@ export const TokenTable: FC<TokenTableProps> = ({
 }) => {
   const table = useReactTable({
     ...tableOptions,
-    getCoreRowModel: getCoreRowModel(),
-    data,
+    data: data || [],
     columns,
+    getSubRows: row => row.group?.tokens,
+    getCoreRowModel: getCoreRowModel(),
+    getExpandedRowModel: getExpandedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
   });
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    if (!table.getIsAllRowsExpanded()) {
+      table.toggleAllRowsExpanded();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
   return (
     <Table>
