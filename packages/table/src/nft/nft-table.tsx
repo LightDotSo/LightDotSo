@@ -21,7 +21,6 @@ import type {
   Table as ReactTable,
 } from "@tanstack/react-table";
 import {
-  flexRender,
   getCoreRowModel,
   getExpandedRowModel,
   getFacetedRowModel,
@@ -132,7 +131,8 @@ export const NftTable: FC<NftTableProps> = ({
       {table.getRowModel().rows?.length ? (
         table
           .getRowModel()
-          .rows.map(row => (
+          .rows.slice(0, limit || table.getRowModel().rows?.length)
+          .map(row => (
             <NftCard
               key={row.id}
               nft={row.original}

@@ -52,7 +52,6 @@ type UserOperationTableProps = {
   >;
   columns?: ColumnDef<UserOperationData>[];
   setUserOperationTable?: (tableObject: ReactTable<UserOperationData>) => void;
-  limit?: number;
 };
 
 // -----------------------------------------------------------------------------
@@ -65,7 +64,6 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
   tableOptions,
   address,
   columns = userOperationColumns,
-  limit,
   setUserOperationTable,
 }) => {
   // ---------------------------------------------------------------------------

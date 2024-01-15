@@ -54,7 +54,6 @@ type OwnerTableProps = {
   >;
   columns?: ColumnDef<ConfigurationOwnerData>[];
   setOwnerTable?: (tableObject: ReactTable<ConfigurationOwnerData>) => void;
-  limit?: number;
 };
 
 // -----------------------------------------------------------------------------
@@ -65,7 +64,6 @@ export const OwnerTable: FC<OwnerTableProps> = ({
   data,
   tableOptions,
   columns = ownerColumns,
-  limit,
   setOwnerTable,
 }) => {
   // ---------------------------------------------------------------------------

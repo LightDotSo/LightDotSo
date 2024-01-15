@@ -54,7 +54,6 @@ type WalletTableProps = {
   >;
   columns?: ColumnDef<WalletData>[];
   setWalletTable?: (tableObject: ReactTable<WalletData>) => void;
-  limit?: number;
 };
 
 // -----------------------------------------------------------------------------
@@ -65,7 +64,6 @@ export const WalletTable: FC<WalletTableProps> = ({
   data,
   tableOptions,
   columns = walletColumns,
-  limit,
   setWalletTable,
 }) => {
   // ---------------------------------------------------------------------------

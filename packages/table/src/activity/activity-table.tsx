@@ -54,7 +54,6 @@ type ActivityTableProps = {
   >;
   columns?: ColumnDef<ActivityData>[];
   setActivityTable?: (tableObject: ReactTable<ActivityData>) => void;
-  limit?: number;
 };
 
 // -----------------------------------------------------------------------------
@@ -65,7 +64,6 @@ export const ActivityTable: FC<ActivityTableProps> = ({
   data,
   tableOptions,
   columns = activityColumns,
-  limit,
   setActivityTable,
 }) => {
   // ---------------------------------------------------------------------------
