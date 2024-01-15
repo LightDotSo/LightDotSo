@@ -15,8 +15,8 @@
 
 import { configurationGetData, userOperationListData } from "@lightdotso/demo";
 import type { Meta, StoryObj } from "@storybook/react";
-import { UserOperationTable } from "./user-operation-table";
 import type { Address } from "viem";
+import { UserOperationTable } from "./user-operation-table";
 
 // -----------------------------------------------------------------------------
 // Meta

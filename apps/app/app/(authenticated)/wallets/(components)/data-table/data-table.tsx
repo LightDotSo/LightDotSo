@@ -17,10 +17,10 @@
 
 import type { WalletData } from "@lightdotso/data";
 import { useTables } from "@lightdotso/stores";
+import { WalletTable } from "@lightdotso/table";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useRouter } from "next/navigation";
 import { usePaginationQueryState } from "@/queryStates";
-import { WalletTable } from "@lightdotso/table";
 
 // -----------------------------------------------------------------------------
 // Props

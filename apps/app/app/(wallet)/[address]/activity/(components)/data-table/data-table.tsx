@@ -17,10 +17,10 @@
 
 import type { ActivityData } from "@lightdotso/data";
 import { useTables } from "@lightdotso/stores";
+import { ActivityTable } from "@lightdotso/table";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useRouter } from "next/navigation";
 import { usePaginationQueryState } from "@/queryStates";
-import { ActivityTable } from "@lightdotso/table";
 
 // -----------------------------------------------------------------------------
 // Props
