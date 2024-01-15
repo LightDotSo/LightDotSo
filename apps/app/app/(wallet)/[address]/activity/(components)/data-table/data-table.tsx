@@ -19,7 +19,6 @@ import type { ActivityData } from "@lightdotso/data";
 import { useTables } from "@lightdotso/stores";
 import { ActivityTable } from "@lightdotso/table";
 import type { ColumnDef } from "@tanstack/react-table";
-import { useRouter } from "next/navigation";
 import { usePaginationQueryState } from "@/queryStates";
 
 // -----------------------------------------------------------------------------
@@ -37,12 +36,6 @@ interface DataTableProps {
 // -----------------------------------------------------------------------------
 
 export function DataTable({ columns, data, pageCount }: DataTableProps) {
-  // ---------------------------------------------------------------------------
-  // Next Hooks
-  // ---------------------------------------------------------------------------
-
-  const router = useRouter();
-
   // ---------------------------------------------------------------------------
   // Query State Hooks
   // ---------------------------------------------------------------------------

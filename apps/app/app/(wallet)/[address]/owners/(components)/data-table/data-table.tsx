@@ -81,6 +81,11 @@ export function DataTable({ columns, data }: DataTableProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <OwnerTable data={data} columns={columns} tableOptions={tableOptions} />
+    <OwnerTable
+      data={data}
+      columns={columns}
+      tableOptions={tableOptions}
+      setOwnerTable={setOwnerTable}
+    />
   );
 }
