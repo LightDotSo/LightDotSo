@@ -23,7 +23,7 @@ import { TokenTable } from "./token-table";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof TokenTable> = {
-  title: "tables/TokenTable",
+  title: "table/TokenTable",
   component: TokenTable,
   tags: ["autodocs"],
   argTypes: {},
