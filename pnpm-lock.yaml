@@ -1882,12 +1882,18 @@ importers:
 
   packages/tables:
     dependencies:
+      '@lightdotso/data':
+        specifier: workspace:*
+        version: link:../data
       '@lightdotso/demo':
         specifier: workspace:*
         version: link:../demo
       '@lightdotso/query':
         specifier: workspace:*
         version: link:../query
+      '@lightdotso/stores':
+        specifier: workspace:*
+        version: link:../stores
       '@lightdotso/svg':
         specifier: workspace:*
         version: link:../svg

@@ -25,8 +25,10 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
+    "@lightdotso/data": "workspace:*",
     "@lightdotso/demo": "workspace:*",
     "@lightdotso/query": "workspace:*",
+    "@lightdotso/stores": "workspace:*",
     "@lightdotso/svg": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",

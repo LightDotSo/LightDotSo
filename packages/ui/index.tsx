@@ -265,6 +265,6 @@ export {
   DataTableColumnHeader,
   DataTableFacetedFilter,
   DataTablePagination,
-  DataTableViewOptions
-} from "./src/templates/data-table"
+  DataTableViewOptions,
+} from "./src/templates/data-table";
 export { Footer } from "./src/templates/footer";

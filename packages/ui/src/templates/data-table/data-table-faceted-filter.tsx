@@ -17,12 +17,8 @@ import { cn } from "@lightdotso/utils";
 import { CheckIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 import type { Column } from "@tanstack/react-table";
 import type { ComponentType } from "react";
-import {
-  Badge,
-} from "../../components/ui/badge";
-import {
-  Button
-} from "../../components/ui/button";
+import { Badge } from "../../components/ui/badge";
+import { Button } from "../../components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -30,7 +26,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator
+  CommandSeparator,
 } from "../../components/ui/command";
 import {
   Popover,

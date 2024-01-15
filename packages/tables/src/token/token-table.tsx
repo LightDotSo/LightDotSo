@@ -34,12 +34,17 @@ import { FC } from "react";
 
 type TokenTableProps = {
   data: TokenData[];
-  tableOptions?: Omit<TableOptions<TokenData>, 'columns'>;
+  tableOptions?: Omit<TableOptions<TokenData>, "columns">;
   columns: ColumnDef<TokenData>[];
   limit?: number;
 };
 
-export const TokenTable: FC<TokenTableProps> = ({ data, tableOptions, columns, limit }) => {
+export const TokenTable: FC<TokenTableProps> = ({
+  data,
+  tableOptions,
+  columns,
+  limit,
+}) => {
   const table = useReactTable({
     ...tableOptions,
     getCoreRowModel: getCoreRowModel(),

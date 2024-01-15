@@ -13,7 +13,4 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { DataTableColumnHeader } from "./data-table-column-header";
-export { DataTableFacetedFilter } from "./data-table-faceted-filter";
-export { DataTablePagination } from "./data-table-pagination";
-export { DataTableViewOptions } from "./data-table-view-options";
+export { columns } from "./token/columns";

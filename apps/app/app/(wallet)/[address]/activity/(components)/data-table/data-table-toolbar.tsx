@@ -18,7 +18,11 @@
 import type { ActivityData } from "@lightdotso/data";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth, useTables } from "@lightdotso/stores";
-import { Button, DataTableFacetedFilter, DataTableViewOptions } from "@lightdotso/ui";
+import {
+  Button,
+  DataTableFacetedFilter,
+  DataTableViewOptions,
+} from "@lightdotso/ui";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { useQueryClient } from "@tanstack/react-query";
 import type { Table } from "@tanstack/react-table";

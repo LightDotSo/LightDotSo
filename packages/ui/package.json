@@ -19,8 +19,7 @@
   ],
   "scripts": {
     "add": "shadcn-ui add",
-    "build": "storybook build -o dist && tsup ./index.tsx",
-    "dev": "storybook dev -p 6006",
+    "build": "tsup ./index.tsx",
     "diff": "shadcn-ui diff",
     "prepack": "clean-package",
     "postpack": "clean-package restore"
