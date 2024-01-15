@@ -30,6 +30,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import type { FC } from "react";
+import { TableEmpty } from "../state/table-empty";
 
 type TokenTableProps = {
   data: TokenData[];
@@ -101,7 +102,7 @@ export const TokenTable: FC<TokenTableProps> = ({
         ) : (
           <TableRow>
             <TableCell colSpan={columns.length} className="h-24 text-center">
-              {/* <TableEmpty entity="token" /> */}
+              <TableEmpty entity="token" />
             </TableCell>
           </TableRow>
         )}
