@@ -19,7 +19,7 @@ import type { TokenData, WalletSettingsData } from "@lightdotso/data";
 import { useSuspenseQueryTokens } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useTables } from "@lightdotso/stores";
-import { columns } from "@lightdotso/tables";
+import { columns } from "@lightdotso/table";
 import {
   Table,
   TableBody,

@@ -18,7 +18,7 @@
 import type { WalletSettingsData } from "@lightdotso/data";
 import { useQueryTokens, useQueryTokensCount } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
-import { columns } from "@lightdotso/tables";
+import { columns } from "@lightdotso/table";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
