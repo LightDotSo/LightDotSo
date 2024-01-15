@@ -2467,6 +2467,9 @@ importers:
       '@lightdotso/tsconfig':
         specifier: workspace:*
         version: link:../../configurations/tsconfig
+      '@storybook/react':
+        specifier: ^7.6.8
+        version: 7.6.8(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
       '@types/node':
         specifier: ^20.11.0
         version: 20.11.0
