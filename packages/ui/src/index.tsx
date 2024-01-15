@@ -250,6 +250,7 @@ export {
   TooltipContent,
   TooltipProvider,
 } from "./components/ui/tooltip";
+export { TokenImage } from "./elements/token-image";
 export { ThemeProvider } from "./providers/theme-provider";
 export { ReactQueryProvider } from "./providers/react-query";
 export {

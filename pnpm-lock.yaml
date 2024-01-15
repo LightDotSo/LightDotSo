@@ -1802,6 +1802,9 @@ importers:
       '@lightdotso/const':
         specifier: workspace:*
         version: link:../const
+      '@lightdotso/data':
+        specifier: workspace:*
+        version: link:../data
       '@lightdotso/svg':
         specifier: workspace:*
         version: link:../svg
