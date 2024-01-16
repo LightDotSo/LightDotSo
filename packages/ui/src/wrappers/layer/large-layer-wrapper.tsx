@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { ReactNode } from "react";
-import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
+import { BaseLayerWrapper } from "./base-layer-wrapper";
 
 // -----------------------------------------------------------------------------
 // Props
