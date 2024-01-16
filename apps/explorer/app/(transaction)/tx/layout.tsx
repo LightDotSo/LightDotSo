@@ -16,10 +16,11 @@
 import {
   BaseLayerWrapper,
   MinimalPageWrapper,
-  HStackFull,
+  MiddleLayerWrapper,
 } from "@lightdotso/ui";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { TransactionsDataTableToolbar } from "@/app/(transaction)/(components)/transactions-data-table-toolbar";
 import { BannerSection } from "@/components/section/banner-section";
 
 // -----------------------------------------------------------------------------
@@ -45,12 +46,15 @@ interface SettingsLayoutProps {
 
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
-    <BannerSection title={"Transactions"} description={"Description"}>
-      <HStackFull>
-        <BaseLayerWrapper>
-          <MinimalPageWrapper>{children}</MinimalPageWrapper>
-        </BaseLayerWrapper>
-      </HStackFull>
-    </BannerSection>
+    <>
+      <BannerSection title={"Transactions"} description={"Description"}>
+        <MiddleLayerWrapper>
+          <TransactionsDataTableToolbar />
+        </MiddleLayerWrapper>
+      </BannerSection>
+      <BaseLayerWrapper>
+        <MinimalPageWrapper>{children}</MinimalPageWrapper>
+      </BaseLayerWrapper>
+    </>
   );
 }
