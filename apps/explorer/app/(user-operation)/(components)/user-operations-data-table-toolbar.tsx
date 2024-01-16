@@ -24,10 +24,7 @@ import { DataTableToolbar } from "@/app/(user-operation)/(components)/data-table
 // Props
 // -----------------------------------------------------------------------------
 
-export type UserOperationsDataTableToolbarProps = Pick<
-  DataTableToolbarProps,
-  "status"
->;
+export type UserOperationsDataTableToolbarProps = DataTableToolbarProps;
 
 // -----------------------------------------------------------------------------
 // Component
@@ -35,7 +32,7 @@ export type UserOperationsDataTableToolbarProps = Pick<
 
 export const UserOperationsDataTableToolbar: FC<
   UserOperationsDataTableToolbarProps
-> = ({ status }) => {
+> = () => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -56,5 +53,5 @@ export const UserOperationsDataTableToolbar: FC<
     return null;
   }
 
-  return <DataTableToolbar status={status} table={userOperationTable} />;
+  return <DataTableToolbar table={userOperationTable} />;
 };

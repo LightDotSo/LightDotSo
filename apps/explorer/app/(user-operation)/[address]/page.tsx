@@ -91,7 +91,6 @@ export default async function Page({ params, searchParams }: PageProps) {
       <UserOperationsDataTable
         address={params.address as Address}
         isTestnet={isTestnetState ?? false}
-        status="history"
       />
       <UserOperationsDataTablePagination />
     </HydrationBoundary>

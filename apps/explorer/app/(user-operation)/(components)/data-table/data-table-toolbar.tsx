@@ -36,7 +36,6 @@ import { usePaginationQueryState } from "@/queryStates";
 // -----------------------------------------------------------------------------
 
 export interface DataTableToolbarProps {
-  status: "proposed" | "history";
   table: Table<UserOperationData>;
 }
 
@@ -44,7 +43,7 @@ export interface DataTableToolbarProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export function DataTableToolbar({ status, table }: DataTableToolbarProps) {
+export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const { wallet } = useAuth();
   const { userOperationColumnFilters } = useTables();
 
@@ -76,8 +75,8 @@ export function DataTableToolbar({ status, table }: DataTableToolbarProps) {
   const currentData: UserOperationData[] | undefined = queryClient.getQueryData(
     queryKeys.user_operation.list({
       address: wallet as Address,
-      status: status,
-      order: status === "proposed" ? "asc" : "desc",
+      status: "history",
+      order: "asc",
       offset: offsetCount,
       limit: paginationState.pageSize,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,

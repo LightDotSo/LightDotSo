@@ -32,7 +32,6 @@ import { usePaginationQueryState } from "@/queryStates";
 interface UserOperationsDataTableProps {
   address: Address | null;
   isTestnet: boolean;
-  status: "proposed" | "history";
 }
 
 // -----------------------------------------------------------------------------
@@ -42,7 +41,6 @@ interface UserOperationsDataTableProps {
 export const UserOperationsDataTable: FC<UserOperationsDataTableProps> = ({
   address,
   isTestnet,
-  status,
 }) => {
   // ---------------------------------------------------------------------------
   // Query State Hooks
@@ -65,7 +63,7 @@ export const UserOperationsDataTable: FC<UserOperationsDataTableProps> = ({
   const { userOperations } = useQueryUserOperations({
     address: address,
     status: "history",
-    order: status === "proposed" ? "asc" : "desc",
+    order: "asc",
     limit: paginationState.pageSize,
     offset: offsetCount,
     is_testnet: isTestnet,
