@@ -13,59 +13,76 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { cn } from "@lightdotso/utils";
-import { cva, type VariantProps } from "class-variance-authority";
-import type { ReactNode } from "react";
+import type { Meta, StoryObj } from "@storybook/react";
+import { ChainLogo } from "./index";
 
 // -----------------------------------------------------------------------------
-// Styles
+// Meta
 // -----------------------------------------------------------------------------
 
-const baseLayerWrapperVariants = cva(["px-0"], {
-  variants: {
-    size: {
-      default: "max-w-7xl",
-      sm: "max-w-5xl",
-    },
+const meta: Meta<typeof ChainLogo> = {
+  title: "svg/ChainLogo",
+  component: ChainLogo,
+  tags: ["autodocs"],
+  argTypes: {},
+};
+export default meta;
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+type Story = StoryObj<typeof ChainLogo>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Ethereum: Story = {
+  render: args => <ChainLogo {...args} />,
+  args: {
+    chainId: 1,
   },
-  defaultVariants: {
-    size: "default",
+};
+export const Arbitrum: Story = {
+  render: args => <ChainLogo {...args} />,
+  args: {
+    chainId: 42161,
   },
-});
-
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-export interface BaseLayerWrapperProps
-  extends VariantProps<typeof baseLayerWrapperVariants> {
-  children: ReactNode;
-  className?: string;
-}
-
-// -----------------------------------------------------------------------------
-// Layout
-// -----------------------------------------------------------------------------
-
-export function BaseLayerWrapper({
-  children,
-  className,
-  size,
-}: BaseLayerWrapperProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <div
-      className={cn(
-        "flex w-full flex-row overflow-x-scroll px-2 md:visible md:px-4 lg:px-8",
-        className,
-      )}
-    >
-      <div className={cn("mx-auto flex-1", baseLayerWrapperVariants({ size }))}>
-        {children}
-      </div>
-    </div>
-  );
-}
+};
+export const Avalanche: Story = {
+  render: args => <ChainLogo {...args} />,
+  args: {
+    chainId: 43114,
+  },
+};
+export const Base: Story = {
+  render: args => <ChainLogo {...args} />,
+  args: {
+    chainId: 8453,
+  },
+};
+export const Bsc: Story = {
+  render: args => <ChainLogo {...args} />,
+  args: {
+    chainId: 56,
+  },
+};
+export const Gnosis: Story = {
+  render: args => <ChainLogo {...args} />,
+  args: {
+    chainId: 100,
+  },
+};
+export const Optimism: Story = {
+  render: args => <ChainLogo {...args} />,
+  args: {
+    chainId: 10,
+  },
+};
+export const Polygon: Story = {
+  render: args => <ChainLogo {...args} />,
+  args: {
+    chainId: 137,
+  },
+};

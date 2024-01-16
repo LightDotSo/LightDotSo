@@ -19,13 +19,13 @@ import type { FC, SVGProps } from "react";
 // Props
 // -----------------------------------------------------------------------------
 
-type LogoProps = SVGProps<SVGSVGElement>;
+type LightLogoProps = SVGProps<SVGSVGElement>;
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const Logo: FC<LogoProps> = ({ className, ...props }) => {
+export const LightLogo: FC<LightLogoProps> = ({ className, ...props }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------

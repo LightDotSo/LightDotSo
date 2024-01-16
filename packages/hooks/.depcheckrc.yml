@@ -4,3 +4,4 @@ ignores:
   - dotenv
   - "@lightdotso/tsconfig"
   - tsup
+  - "@types/react-dom"

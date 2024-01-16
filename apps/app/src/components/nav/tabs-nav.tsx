@@ -157,7 +157,7 @@ export const TabsNav: FC<TabNavProps> = ({
               ref={el => (anchorRefs[i] = el)}
               className={cn(
                 "relative z-20 mb-0.5 flex h-10 cursor-pointer select-none items-center rounded-md bg-transparent px-2.5 text-sm font-medium transition-colors hover:text-text-weak",
-                !isActive ? "text-text-weak" : "text-text",
+                !isActive ? "text-text-weak" : "text-text hover:text-text",
               )}
               onPointerEnter={() => {
                 setHoveredTabIndex(i);

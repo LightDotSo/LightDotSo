@@ -71,9 +71,10 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
     <BannerSection
       title={TITLES.Settings.title}
       description={TITLES.Settings.description}
+      size="sm"
     >
       <HStackFull>
-        <BaseLayerWrapper>
+        <BaseLayerWrapper size="sm">
           <SettingsPageWrapper
             nav={<SidebarNav baseRef items={sidebarNavItems} />}
           >

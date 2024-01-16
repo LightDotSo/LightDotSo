@@ -32,3 +32,4 @@ ignores:
   - "@lukemorales/query-key-factory"
   - zustand
   - "@radix-ui/react-dropdown-menu"
+  - react-blurhash

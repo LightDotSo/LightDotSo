@@ -13,59 +13,32 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { cn } from "@lightdotso/utils";
-import { cva, type VariantProps } from "class-variance-authority";
-import type { ReactNode } from "react";
+import type { Meta, StoryObj } from "@storybook/react";
+import { LightLogo } from "./light-logo";
 
 // -----------------------------------------------------------------------------
-// Styles
+// Meta
 // -----------------------------------------------------------------------------
 
-const baseLayerWrapperVariants = cva(["px-0"], {
-  variants: {
-    size: {
-      default: "max-w-7xl",
-      sm: "max-w-5xl",
-    },
-  },
-  defaultVariants: {
-    size: "default",
-  },
-});
+const meta: Meta<typeof LightLogo> = {
+  title: "svg/LightLogo",
+  component: LightLogo,
+  tags: ["autodocs"],
+  argTypes: {},
+};
+export default meta;
 
 // -----------------------------------------------------------------------------
-// Props
+// Types
 // -----------------------------------------------------------------------------
 
-export interface BaseLayerWrapperProps
-  extends VariantProps<typeof baseLayerWrapperVariants> {
-  children: ReactNode;
-  className?: string;
-}
+type Story = StoryObj<typeof LightLogo>;
 
 // -----------------------------------------------------------------------------
-// Layout
+// Story
 // -----------------------------------------------------------------------------
 
-export function BaseLayerWrapper({
-  children,
-  className,
-  size,
-}: BaseLayerWrapperProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <div
-      className={cn(
-        "flex w-full flex-row overflow-x-scroll px-2 md:visible md:px-4 lg:px-8",
-        className,
-      )}
-    >
-      <div className={cn("mx-auto flex-1", baseLayerWrapperVariants({ size }))}>
-        {children}
-      </div>
-    </div>
-  );
-}
+export const Base: Story = {
+  render: args => <LightLogo {...args} />,
+  args: {},
+};

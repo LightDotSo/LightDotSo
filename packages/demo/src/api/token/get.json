@@ -1,0 +1,11 @@
+{
+  "id": "clota6rxh0000l308gsist1ix",
+  "address": "0x0000000000000000000000000000000000000000",
+  "chain_id": 10,
+  "name": "Ether",
+  "symbol": "ETH",
+  "decimals": 18,
+  "amount": 1000000000000000,
+  "balance_usd": 2.6155005,
+  "group": null
+}

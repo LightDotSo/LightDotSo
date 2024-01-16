@@ -15,10 +15,10 @@
 
 "use client";
 
+import { LightLogo } from "@lightdotso/svg";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { FC } from "react";
-import { Logo } from "@/components/lightdotso/light-logo";
 import { usePathType } from "@/hooks";
 
 // -----------------------------------------------------------------------------
@@ -56,7 +56,7 @@ export const RootLogo: FC = () => {
       }
       className="hover:rounded-md hover:bg-background-stronger"
     >
-      <Logo className="m-2.5 h-8 w-8 fill-text" />
+      <LightLogo className="m-2.5 h-8 w-8 fill-text" />
     </Link>
   );
 };
