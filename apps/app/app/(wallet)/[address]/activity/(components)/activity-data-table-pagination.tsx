@@ -30,6 +30,10 @@ export const ActivityDataTablePagination: FC = () => {
 
   const { activityTable } = useTables();
 
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
   useEffect(() => {
     if (!useTables.persist.hasHydrated()) {
       useTables.persist.rehydrate();
