@@ -21,7 +21,6 @@ import {
   Footer,
   VercelToolbar,
 } from "@lightdotso/ui";
-import "@rainbow-me/rainbowkit/styles.css";
 import { Inter } from "next/font/google";
 import Script from "next/script";
 import { Suspense } from "react";
