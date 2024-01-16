@@ -49,8 +49,12 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { paginationState, userOperations, userOperationsCount } =
-    await handler(params, searchParams);
+  const {
+    isTestnetState,
+    paginationState,
+    userOperations,
+    userOperationsCount,
+  } = await handler(params, searchParams);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -61,19 +65,19 @@ export default async function Page({ params, searchParams }: PageProps) {
   queryClient.setQueryData(
     queryKeys.user_operation.list({
       address: params.address as Address,
-      status: "proposed",
+      status: "history",
       order: "asc",
       limit: paginationState.pageSize,
       offset: paginationState.pageIndex * paginationState.pageSize,
-      is_testnet: false,
+      is_testnet: isTestnetState ?? false,
     }).queryKey,
     userOperations,
   );
   queryClient.setQueryData(
     queryKeys.user_operation.listCount({
       address: params.address as Address,
-      status: "proposed",
-      is_testnet: false,
+      status: "history",
+      is_testnet: isTestnetState ?? false,
     }).queryKey,
     userOperationsCount,
   );
@@ -86,7 +90,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     <HydrationBoundary state={dehydrate(queryClient)}>
       <TransactionsDataTable
         address={params.address as Address}
-        status="proposed"
+        status="history"
       />
       <TransactionsDataTablePagination />
     </HydrationBoundary>

@@ -13,7 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { preloader as rootPreloader } from "@/preloaders/paths/preloader";
 import { isTestnetParser, paginationParser } from "@/queryStates";
 import { preload as preloadGetUserOperations } from "@/services/getUserOperations";
 import { preload as preloadGetUserOperationsCount } from "@/services/getUserOperationsCount";
@@ -43,7 +42,6 @@ export const preloader = async (
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  rootPreloader(params, searchParams);
   preloadGetUserOperations({
     address: null,
     offset: paginationState.pageIndex * paginationState.pageSize,

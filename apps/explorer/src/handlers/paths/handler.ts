@@ -39,7 +39,9 @@ export const handler = async (
   // Parsers
   // ---------------------------------------------------------------------------
 
-  const isTestnet = isTestnetParser.parseServerSide(searchParams.isTestnet);
+  const isTestnetState = isTestnetParser.parseServerSide(
+    searchParams.isTestnet,
+  );
 
   const paginationState = paginationParser.parseServerSide(
     searchParams.pagination,
@@ -55,13 +57,13 @@ export const handler = async (
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
     order: "asc",
-    is_testnet: isTestnet ?? false,
+    is_testnet: isTestnetState ?? false,
   });
 
   const userOperationsCountPromise = getUserOperationsCount({
     address: null,
     status: "history",
-    is_testnet: isTestnet ?? false,
+    is_testnet: isTestnetState ?? false,
   });
 
   const [userOperations, userOperationsCount] = await Promise.all([
@@ -81,6 +83,7 @@ export const handler = async (
   return res.match(
     ([userOperations, userOperationsCount]) => {
       return {
+        isTestnetState: isTestnetState,
         paginationState: paginationState,
         userOperations: userOperations,
         userOperationsCount: userOperationsCount,
@@ -88,6 +91,7 @@ export const handler = async (
     },
     () => {
       return {
+        isTestnetState: isTestnetState,
         paginationState: paginationState,
         userOperations: [],
         userOperationsCount: { count: 0 },
