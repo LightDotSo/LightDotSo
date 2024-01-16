@@ -14,15 +14,15 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { ChainLogo } from "./index";
+import { LightHorizontalLogo } from "./light-horizontal";
 
 // -----------------------------------------------------------------------------
 // Meta
 // -----------------------------------------------------------------------------
 
-const meta: Meta<typeof ChainLogo> = {
-  title: "svg/ChainLogo",
-  component: ChainLogo,
+const meta: Meta<typeof LightHorizontalLogo> = {
+  title: "svg/LightHorizontalLogo",
+  component: LightHorizontalLogo,
   tags: ["autodocs"],
   argTypes: {},
 };
@@ -32,57 +32,13 @@ export default meta;
 // Types
 // -----------------------------------------------------------------------------
 
-type Story = StoryObj<typeof ChainLogo>;
+type Story = StoryObj<typeof LightHorizontalLogo>;
 
 // -----------------------------------------------------------------------------
 // Story
 // -----------------------------------------------------------------------------
 
-export const Ethereum: Story = {
-  render: args => <ChainLogo {...args} />,
-  args: {
-    chainId: 1,
-  },
-};
-export const Arbitrum: Story = {
-  render: args => <ChainLogo {...args} />,
-  args: {
-    chainId: 42161,
-  },
-};
-export const Avalanche: Story = {
-  render: args => <ChainLogo {...args} />,
-  args: {
-    chainId: 43114,
-  },
-};
 export const Base: Story = {
-  render: args => <ChainLogo {...args} />,
-  args: {
-    chainId: 8453,
-  },
-};
-export const Bsc: Story = {
-  render: args => <ChainLogo {...args} />,
-  args: {
-    chainId: 56,
-  },
-};
-export const Gnosis: Story = {
-  render: args => <ChainLogo {...args} />,
-  args: {
-    chainId: 100,
-  },
-};
-export const Optimism: Story = {
-  render: args => <ChainLogo {...args} />,
-  args: {
-    chainId: 10,
-  },
-};
-export const Polygon: Story = {
-  render: args => <ChainLogo {...args} />,
-  args: {
-    chainId: 137,
-  },
+  render: args => <LightHorizontalLogo {...args} />,
+  args: {},
 };

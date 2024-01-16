@@ -92,6 +92,8 @@ export const ChainLogo: FC<ChainLogoProps> = ({
       return <GnosisLogo {...props} />;
     case 137:
       return <PolygonLogo {...props} />;
+    case 8453:
+      return <BaseLogo {...props} />;
     case 43114:
       return <AvalancheLogo {...props} />;
     case 42161:
