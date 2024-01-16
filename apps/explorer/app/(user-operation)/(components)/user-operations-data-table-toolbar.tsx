@@ -17,7 +17,6 @@
 
 import { useTables } from "@lightdotso/stores";
 import { useEffect, type FC } from "react";
-import type { DataTableToolbarProps } from "@/app/(user-operation)/(components)/data-table/data-table-toolbar";
 import { DataTableToolbar } from "@/app/(user-operation)/(components)/data-table/data-table-toolbar";
 
 // -----------------------------------------------------------------------------

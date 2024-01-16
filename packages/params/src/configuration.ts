@@ -20,5 +20,5 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export type ConfigurationParams = {
-  address: Address;
+  address: Address | null;
 };

@@ -29,7 +29,7 @@ export type UserOperationNonceParams = {
 };
 
 export type UserOperationListParams = {
-  address: Address | null;
+  address?: Address | null;
   status: "proposed" | "history" | null;
   order: "desc" | "asc";
   limit: number;

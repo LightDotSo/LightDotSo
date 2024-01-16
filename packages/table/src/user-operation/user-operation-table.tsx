@@ -14,13 +14,21 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
-import { Table, TableBody, TableCell, TableRow } from "@lightdotso/ui";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@lightdotso/ui";
 import type {
   ColumnDef,
   TableOptions,
   Table as ReactTable,
 } from "@tanstack/react-table";
 import {
+  flexRender,
   getCoreRowModel,
   getExpandedRowModel,
   getFacetedRowModel,
@@ -36,6 +44,7 @@ import { groupByDate } from "../group";
 import { TableEmpty } from "../state/table-empty";
 import { UserOperationCardTransaction } from "./card/user-operation-card-transaction";
 import { userOperationColumns } from "./user-operation-columns";
+import { cn } from "@lightdotso/utils";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -44,7 +53,7 @@ import { userOperationColumns } from "./user-operation-columns";
 type UserOperationTableProps = {
   data: UserOperationData[] | null;
   configuration?: ConfigurationData;
-  address: Address;
+  address: Address | null;
   tableOptions?: Omit<
     TableOptions<UserOperationData>,
     "data" | "columns" | "getCoreRowModel"
@@ -131,6 +140,69 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
+
+  if (address === null) {
+    return (
+      <Table>
+        <TableHeader>
+          {table.getHeaderGroups().map(headerGroup => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map(header => {
+                return (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                  </TableHead>
+                );
+              })}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {table.getRowModel().rows?.length ? (
+            table
+              .getRowModel()
+              .rows.slice(0, table.getRowModel().rows?.length)
+              .map(row => (
+                <TableRow
+                  key={row.id}
+                  className={cn(
+                    row.getCanExpand() && "cursor-pointer",
+                    row.getCanExpand() && row.getIsExpanded() && "border-b-0",
+                  )}
+                  data-state={row.getIsSelected() && "selected"}
+                  data-expanded={row.getParentRow() ? "true" : "false"}
+                  onClick={() => {
+                    if (row.getCanExpand()) {
+                      row.getToggleExpandedHandler()();
+                    }
+                  }}
+                >
+                  {row.getVisibleCells().map(cell => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableEmpty entity="transaction" />
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    );
+  }
 
   return (
     // eslint-disable-next-line react/jsx-no-useless-fragment

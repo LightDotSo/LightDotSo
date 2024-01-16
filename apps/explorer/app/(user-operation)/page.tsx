@@ -62,7 +62,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   queryClient.setQueryData(
     queryKeys.user_operation.list({
-      address: null,
+      address: undefined,
       status: "history",
       order: "asc",
       limit: paginationState.pageSize,
@@ -73,7 +73,7 @@ export default async function Page({ searchParams }: PageProps) {
   );
   queryClient.setQueryData(
     queryKeys.user_operation.listCount({
-      address: null,
+      address: undefined,
       status: "history",
       is_testnet: isTestnetState ?? false,
     }).queryKey,
@@ -86,10 +86,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <UserOperationsDataTable
-        address={null}
-        isTestnet={isTestnetState ?? false}
-      />
+      <UserOperationsDataTable isTestnet={isTestnetState ?? false} />
       <UserOperationsDataTablePagination />
     </HydrationBoundary>
   );

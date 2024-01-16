@@ -30,7 +30,6 @@ import { usePaginationQueryState } from "@/queryStates";
 // -----------------------------------------------------------------------------
 
 interface UserOperationsDataTableProps {
-  address: Address | null;
   isTestnet: boolean;
 }
 
@@ -39,7 +38,6 @@ interface UserOperationsDataTableProps {
 // -----------------------------------------------------------------------------
 
 export const UserOperationsDataTable: FC<UserOperationsDataTableProps> = ({
-  address,
   isTestnet,
 }) => {
   // ---------------------------------------------------------------------------
@@ -61,7 +59,7 @@ export const UserOperationsDataTable: FC<UserOperationsDataTableProps> = ({
   // ---------------------------------------------------------------------------
 
   const { userOperations } = useQueryUserOperations({
-    address: address,
+    address: undefined,
     status: "history",
     order: "asc",
     limit: paginationState.pageSize,
@@ -70,7 +68,7 @@ export const UserOperationsDataTable: FC<UserOperationsDataTableProps> = ({
   });
 
   const { userOperationsCount } = useQueryUserOperationsCount({
-    address: address,
+    address: undefined,
     status: "history",
     is_testnet: isTestnet,
   });
@@ -93,7 +91,6 @@ export const UserOperationsDataTable: FC<UserOperationsDataTableProps> = ({
   return (
     <DataTable
       data={userOperations ?? []}
-      address={address}
       columns={userOperationColumns}
       pageCount={pageCount ?? 0}
     />

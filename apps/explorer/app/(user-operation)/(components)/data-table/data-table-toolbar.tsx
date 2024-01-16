@@ -15,7 +15,7 @@
 
 "use client";
 
-import type { UserOperationData, WalletSettingsData } from "@lightdotso/data";
+import type { UserOperationData } from "@lightdotso/data";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth, useTables } from "@lightdotso/stores";
 import {
