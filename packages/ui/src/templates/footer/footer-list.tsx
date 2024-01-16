@@ -34,6 +34,10 @@ interface FooterListItemProps {
 // -----------------------------------------------------------------------------
 
 export const FooterListItem: FC<FooterListItemProps> = ({ items }) => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <>
       {items.map(item => {
@@ -57,6 +61,10 @@ export const FooterListItem: FC<FooterListItemProps> = ({ items }) => {
 // -----------------------------------------------------------------------------
 
 export const FooterList: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <ul className="grid grid-cols-2 gap-3 md:flex md:flex-row md:justify-between">
       <FooterListItem items={NAVIGATION_LINKS.resources} />

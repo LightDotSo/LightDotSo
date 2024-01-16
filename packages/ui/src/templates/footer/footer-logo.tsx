@@ -22,6 +22,10 @@ import { FooterCopy } from "./footer-copy";
 // -----------------------------------------------------------------------------
 
 export const FooterLogo: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <div className="flex shrink-0 items-center space-x-1">
       <LightHorizontalLogo className="block h-8" />

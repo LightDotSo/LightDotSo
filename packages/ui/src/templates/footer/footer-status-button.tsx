@@ -22,6 +22,10 @@ import { Button } from "../../components/ui/button";
 // -----------------------------------------------------------------------------
 
 export const FooterStatusButton: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <div className="flex items-center">
       <Button asChild size="xs" variant="ghost">
