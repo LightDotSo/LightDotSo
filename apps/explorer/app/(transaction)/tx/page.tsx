@@ -16,7 +16,7 @@
 import { queryKeys } from "@lightdotso/query-keys";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { TransactionsDataTable } from "@/app/(transaction)/(components)/transactions-data-table";
-// import { TransactionsDataTablePagination } from "@/app/(transaction)/(components)/transactions-data-table-pagination";
+import { TransactionsDataTablePagination } from "@/app/(transaction)/(components)/transactions-data-table-pagination";
 import { handler } from "@/handlers/paths/tx/handler";
 import { preloader } from "@/preloaders/paths/tx/preloader";
 import { getQueryClient } from "@/services";
@@ -80,7 +80,7 @@ export default async function Page({ searchParams }: PageProps) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <TransactionsDataTable isTestnet={isTestnetState ?? false} />
-      {/* <TransactionsDataTablePagination /> */}
+      <TransactionsDataTablePagination />
     </HydrationBoundary>
   );
 }
