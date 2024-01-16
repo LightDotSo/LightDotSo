@@ -30,6 +30,10 @@ export const TransactionsDataTablePagination: FC = () => {
 
   const { transactionTable } = useTables();
 
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
   useEffect(() => {
     if (!useTables.persist.hasHydrated()) {
       useTables.persist.rehydrate();

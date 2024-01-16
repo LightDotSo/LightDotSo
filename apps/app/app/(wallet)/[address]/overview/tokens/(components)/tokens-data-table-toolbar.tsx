@@ -30,6 +30,10 @@ export const TokensDataTableToolbar: FC = () => {
 
   const { tokenTable } = useTables();
 
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
   useEffect(() => {
     if (!useTables.persist.hasHydrated()) {
       useTables.persist.rehydrate();

@@ -30,6 +30,10 @@ export const OwnersDataTableToolbar: FC = () => {
 
   const { ownerTable } = useTables();
 
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
   useEffect(() => {
     if (!useTables.persist.hasHydrated()) {
       useTables.persist.rehydrate();

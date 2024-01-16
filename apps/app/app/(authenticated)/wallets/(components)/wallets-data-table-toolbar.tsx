@@ -30,6 +30,10 @@ export const WalletsDataTableToolbar: FC = () => {
 
   const { walletTable } = useTables();
 
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
   useEffect(() => {
     if (!useTables.persist.hasHydrated()) {
       useTables.persist.rehydrate();

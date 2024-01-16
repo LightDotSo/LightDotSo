@@ -16,10 +16,11 @@
 import {
   BaseLayerWrapper,
   MinimalPageWrapper,
-  HStackFull,
+  MiddleLayerWrapper,
 } from "@lightdotso/ui";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { UserOperationsDataTableToolbar } from "@/app/(user-operation)/(components)/user-operations-data-table-toolbar";
 import { BannerSection } from "@/components/section/banner-section";
 
 // -----------------------------------------------------------------------------
@@ -27,7 +28,7 @@ import { BannerSection } from "@/components/section/banner-section";
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: "Forms",
+  title: "User Operations",
   description: "Advanced form example using react-hook-form and Zod.",
 };
 
@@ -45,12 +46,15 @@ interface SettingsLayoutProps {
 
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
-    <BannerSection title={"Transactions"} description={"Description"}>
-      <HStackFull>
-        <BaseLayerWrapper>
-          <MinimalPageWrapper>{children}</MinimalPageWrapper>
-        </BaseLayerWrapper>
-      </HStackFull>
-    </BannerSection>
+    <>
+      <BannerSection title={"User Operations"} description={"Description"}>
+        <MiddleLayerWrapper>
+          <UserOperationsDataTableToolbar />
+        </MiddleLayerWrapper>
+      </BannerSection>
+      <BaseLayerWrapper>
+        <MinimalPageWrapper>{children}</MinimalPageWrapper>
+      </BaseLayerWrapper>
+    </>
   );
 }

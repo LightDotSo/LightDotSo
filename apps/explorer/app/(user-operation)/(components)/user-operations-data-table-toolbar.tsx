@@ -21,23 +21,19 @@ import type { DataTableToolbarProps } from "@/app/(user-operation)/(components)/
 import { DataTableToolbar } from "@/app/(user-operation)/(components)/data-table/data-table-toolbar";
 
 // -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-export type UserOperationsDataTableToolbarProps = DataTableToolbarProps;
-
-// -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const UserOperationsDataTableToolbar: FC<
-  UserOperationsDataTableToolbarProps
-> = () => {
+export const UserOperationsDataTableToolbar: FC = () => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
   const { userOperationTable } = useTables();
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   useEffect(() => {
     if (!useTables.persist.hasHydrated()) {
