@@ -41,7 +41,7 @@ export const Footer: FC = () => {
             <FooterLogo />
             <FooterStatusButton />
           </div>
-          <div className="flex flex-col space-y-6 md:flex-row md:items-center space-x-3 md:space-y-0">
+          <div className="flex flex-col space-x-0 space-y-4 md:flex-row md:items-center md:space-x-3 md:space-y-0">
             <FooterModeSelect />
             <span className="hidden text-text/60 md:inline-flex">/</span>
             <FooterSocial />
