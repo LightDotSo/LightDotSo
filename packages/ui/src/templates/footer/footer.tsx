@@ -36,12 +36,12 @@ export const Footer: FC = () => {
         Footer
       </h2>
       <div className="mx-auto max-w-7xl space-y-4 py-8 md:space-y-8">
-        <div className="flex flex-col justify-between space-y-6 md:flex-row md:items-center md:space-y-0">
+        <div className="flex flex-col justify-start md:justify-between space-y-6 md:flex-row md:items-center md:space-y-0">
           <div className="flex items-center justify-between space-x-3">
             <FooterLogo />
             <FooterStatusButton />
           </div>
-          <div className="flex flex-col md:flex-row items-center space-x-3">
+          <div className="flex flex-col space-y-6 md:flex-row md:items-center space-x-3 md:space-y-0">
             <FooterModeSelect />
             <span className="hidden text-text/60 md:inline-flex">/</span>
             <FooterSocial />
