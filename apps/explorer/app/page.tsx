@@ -29,6 +29,7 @@ import { getQueryClient } from "@/services";
 type PageProps = {
   params: { address: string };
   searchParams: {
+    isTestnet?: string;
     pagination?: string;
   };
 };

@@ -13,11 +13,18 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export {
-  isTestnetParser,
-  useIsTestnetQueryState,
-} from "./useIsTestnetQueryState";
-export {
-  paginationParser,
-  usePaginationQueryState,
-} from "./usePaginationQueryState";
+import { parseAsBoolean, useQueryState } from "nuqs";
+
+// -----------------------------------------------------------------------------
+// Parser
+// -----------------------------------------------------------------------------
+
+export const isTestnetParser = parseAsBoolean;
+
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
+
+export const useIsTestnetQueryState = () => {
+  return useQueryState("isTestnet", parseAsBoolean);
+};

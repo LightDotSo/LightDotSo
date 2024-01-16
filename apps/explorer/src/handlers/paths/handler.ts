@@ -15,7 +15,7 @@
 
 import { Result } from "neverthrow";
 import { validateAddress } from "@/handlers/validators/address";
-import { paginationParser } from "@/queryStates";
+import { isTestnetParser, paginationParser } from "@/queryStates";
 import { getUserOperations, getUserOperationsCount } from "@/services";
 
 // -----------------------------------------------------------------------------
@@ -25,6 +25,7 @@ import { getUserOperations, getUserOperationsCount } from "@/services";
 export const handler = async (
   params: { address: string },
   searchParams: {
+    isTestnet?: string;
     pagination?: string;
   },
 ) => {
@@ -37,6 +38,8 @@ export const handler = async (
   // ---------------------------------------------------------------------------
   // Parsers
   // ---------------------------------------------------------------------------
+
+  const isTestnet = isTestnetParser.parseServerSide(searchParams.isTestnet);
 
   const paginationState = paginationParser.parseServerSide(
     searchParams.pagination,
@@ -52,13 +55,13 @@ export const handler = async (
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
     order: "asc",
-    is_testnet: false,
+    is_testnet: isTestnet ?? false,
   });
 
   const userOperationsCountPromise = getUserOperationsCount({
     address: null,
     status: "history",
-    is_testnet: false,
+    is_testnet: isTestnet ?? false,
   });
 
   const [userOperations, userOperationsCount] = await Promise.all([

@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { preloader as rootPreloader } from "@/preloaders/paths/preloader";
-import { paginationParser } from "@/queryStates";
+import { isTestnetParser, paginationParser } from "@/queryStates";
 import { preload as preloadGetUserOperations } from "@/services/getUserOperations";
 import { preload as preloadGetUserOperationsCount } from "@/services/getUserOperationsCount";
 
@@ -25,12 +25,15 @@ import { preload as preloadGetUserOperationsCount } from "@/services/getUserOper
 export const preloader = async (
   params: { address: string },
   searchParams: {
+    isTestnet?: string;
     pagination?: string;
   },
 ) => {
   // ---------------------------------------------------------------------------
   // Parsers
   // ---------------------------------------------------------------------------
+
+  const isTestnet = isTestnetParser.parseServerSide(searchParams.isTestnet);
 
   const paginationState = paginationParser.parseServerSide(
     searchParams.pagination,
@@ -47,11 +50,11 @@ export const preloader = async (
     limit: paginationState.pageSize,
     order: "asc",
     status: "history",
-    is_testnet: false,
+    is_testnet: isTestnet ?? false,
   });
   preloadGetUserOperationsCount({
     address: null,
     status: "history",
-    is_testnet: false,
+    is_testnet: isTestnet ?? false,
   });
 };
