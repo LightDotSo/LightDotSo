@@ -13,26 +13,25 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { GITHUB_LINKS } from "@lightdotso/const";
+import { MonitorCheck } from "lucide-react";
 import type { FC } from "react";
+import { Button } from "../../components/ui/button";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const FooterCopy: FC = () => {
+export const FooterStatusButton: FC = () => {
   return (
-    <p className="text-xs text-text-weak/60 xl:text-center">
-      &copy; {new Date().getFullYear()}
-      <span className="hidden md:inline-flex">&nbsp;Light, Inc. - </span>{" "}
-      <a
-        className="hidden md:inline-flex text-text-weak hover:underline"
-        href={GITHUB_LINKS["License"]}
-        target="_blank"
-        rel="noreferrer"
-      >
-        AGPL v3.0
-      </a>
-    </p>
+    <div className="flex items-center">
+      <Button asChild size="xs" variant="ghost">
+        <a href="https://status.light.so" target="_blank" rel="noreferrer">
+          <MonitorCheck className="h-4 w-4 text-text-info" />
+          <span className="ml-2 text-xs text-text-info-strong">
+            All systems normal.
+          </span>
+        </a>
+      </Button>
+    </div>
   );
 };

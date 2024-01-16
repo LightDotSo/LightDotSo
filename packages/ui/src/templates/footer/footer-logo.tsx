@@ -25,23 +25,11 @@ import { FooterCopy } from "./footer-copy";
 
 export const FooterLogo: FC = () => {
   return (
-    <div className="flex items-center justify-between space-x-3">
-      <div className="flex shrink-0 items-center space-x-1">
-        <LightHorizontalLogo className="block h-8" />
-        <span className="md:hidden">
-          <FooterCopy />
-        </span>
-      </div>
-      <div className="flex items-center">
-        <Button asChild size="xs" variant="ghost">
-          <a href="https://status.light.so" target="_blank" rel="noreferrer">
-            <MonitorCheck className="h-4 w-4 text-text-info" />
-            <span className="ml-2 text-xs text-text-info-strong">
-              All systems normal.
-            </span>
-          </a>
-        </Button>
-      </div>
+    <div className="flex shrink-0 items-center space-x-1">
+      <LightHorizontalLogo className="block h-8" />
+      <span className="md:hidden">
+        <FooterCopy />
+      </span>
     </div>
   );
 };

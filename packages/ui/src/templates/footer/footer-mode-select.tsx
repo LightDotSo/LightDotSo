@@ -33,17 +33,15 @@ export const FooterModeSelect: FC = () => {
   const { theme, setTheme } = useTheme();
 
   return (
-    <div>
-      <Select value={theme} defaultValue={theme} onValueChange={setTheme}>
-        <SelectTrigger className="w-24">
-          <SelectValue placeholder="Select a theme" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="dark">Dark</SelectItem>
-          <SelectItem value="light">Light</SelectItem>
-          <SelectItem value="system">System</SelectItem>
-        </SelectContent>
-      </Select>
-    </div>
+    <Select value={theme} defaultValue={theme} onValueChange={setTheme}>
+      <SelectTrigger className="w-24">
+        <SelectValue placeholder="Select a theme" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="dark">Dark</SelectItem>
+        <SelectItem value="light">Light</SelectItem>
+        <SelectItem value="system">System</SelectItem>
+      </SelectContent>
+    </Select>
   );
 };
