@@ -35,6 +35,9 @@ const nextConfig = {
   env: {
     NEXT_PUBLIC_APP_VERSION: `@lightdotso/app@${packageJson.version}`,
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   experimental: {
     instrumentationHook: true,
     outputFileTracingExcludes: {
