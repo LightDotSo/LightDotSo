@@ -28,7 +28,7 @@ import { BannerSection } from "@/components/section/banner-section";
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: "Forms",
+  title: "User Operations",
   description: "Advanced form example using react-hook-form and Zod.",
 };
 
@@ -47,7 +47,7 @@ interface SettingsLayoutProps {
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
     <>
-      <BannerSection title={"Transactions"} description={"Description"}>
+      <BannerSection title={"User Operations"} description={"Description"}>
         <MiddleLayerWrapper>
           <UserOperationsDataTableToolbar />
         </MiddleLayerWrapper>

@@ -28,7 +28,7 @@ import { BannerSection } from "@/components/section/banner-section";
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: "Forms",
+  title: "Transactions",
   description: "Advanced form example using react-hook-form and Zod.",
 };
 
