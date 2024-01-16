@@ -83,17 +83,11 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <>
-      <div className="space-y-4">
-        <div className="rounded-md border border-border bg-background">
-          <WalletTable
-            data={data}
-            columns={columns}
-            tableOptions={tableOptions}
-            setWalletTable={setWalletTable}
-          />
-        </div>
-      </div>
-    </>
+    <WalletTable
+      data={data}
+      columns={columns}
+      tableOptions={tableOptions}
+      setWalletTable={setWalletTable}
+    />
   );
 }
