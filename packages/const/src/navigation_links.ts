@@ -21,6 +21,7 @@ export const NAVIGATION_LINKS = {
   resources: [
     { name: "Changelog", href: INTERNAL_LINKS.Changelog },
     { name: "Docs", href: INTERNAL_LINKS.Docs },
+    { name: "Explorer", href: INTERNAL_LINKS.Explorer },
     { name: "FAQ", href: NOTION_LINKS.Faq },
     { name: "Support", href: SOCIAL_LINKS.Discord },
   ],
