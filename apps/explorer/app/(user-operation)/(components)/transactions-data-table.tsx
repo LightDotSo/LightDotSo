@@ -25,7 +25,7 @@ import { userOperationColumns } from "@lightdotso/table";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
-import { DataTable } from "@/app/(components)/data-table/data-table";
+import { DataTable } from "@/app/(user-operation)/(components)/data-table/data-table";
 import { usePaginationQueryState } from "@/queryStates";
 
 // -----------------------------------------------------------------------------

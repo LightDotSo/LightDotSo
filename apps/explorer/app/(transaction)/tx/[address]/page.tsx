@@ -16,8 +16,8 @@
 import { queryKeys } from "@lightdotso/query-keys";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Address } from "viem";
-import { TransactionsDataTable } from "@/app/(components)/transactions-data-table";
-import { TransactionsDataTablePagination } from "@/app/(components)/transactions-data-table-pagination";
+import { TransactionsDataTable } from "@/app/(user-operation)/(components)/transactions-data-table";
+import { TransactionsDataTablePagination } from "@/app/(user-operation)/(components)/transactions-data-table-pagination";
 import { handler } from "@/handlers/paths/[address]/handler";
 import { preloader } from "@/preloaders/paths/[address]/preloader";
 import { getQueryClient } from "@/services";
