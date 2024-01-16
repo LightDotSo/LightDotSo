@@ -282,4 +282,5 @@ export {
 export {
   SettingsSectionWrapper,
   TableSectionWrapper,
+  ToolbarSectionWrapper,
 } from "./wrappers/section";

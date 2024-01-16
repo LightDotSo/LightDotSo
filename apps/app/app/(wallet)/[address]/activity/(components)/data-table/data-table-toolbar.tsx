@@ -22,6 +22,7 @@ import {
   Button,
   DataTableFacetedFilter,
   DataTableViewOptions,
+  ToolbarSectionWrapper,
 } from "@lightdotso/ui";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { useQueryClient } from "@tanstack/react-query";
@@ -92,7 +93,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="flex items-center justify-between">
+    <ToolbarSectionWrapper>
       <div className="flex flex-1 items-center space-x-2">
         {table.getColumn("entity") && (
           <DataTableFacetedFilter
@@ -125,6 +126,6 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
           timestmap: "Timestamp",
         }}
       />
-    </div>
+    </ToolbarSectionWrapper>
   );
 }

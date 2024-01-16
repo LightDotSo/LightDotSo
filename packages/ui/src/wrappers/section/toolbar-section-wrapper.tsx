@@ -13,6 +13,22 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { SettingsSectionWrapper } from "./settings-section-wrapper";
-export { TableSectionWrapper } from "./table-section-wrapper";
-export { ToolbarSectionWrapper } from "./toolbar-section-wrapper";
+import type { ReactNode } from "react";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+interface ToolbarSectionWrapperProps {
+  children: ReactNode;
+}
+
+// -----------------------------------------------------------------------------
+// Layout
+// -----------------------------------------------------------------------------
+
+export function ToolbarSectionWrapper({
+  children,
+}: ToolbarSectionWrapperProps) {
+  return <div className="flex items-center justify-between">{children}</div>;
+}

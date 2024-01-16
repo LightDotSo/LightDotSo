@@ -24,6 +24,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  ToolbarSectionWrapper,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import Link from "next/link";
@@ -117,7 +118,7 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
           </SelectContent>
         </Select>
       </div>
-      <div className="flex items-center justify-between">
+      <ToolbarSectionWrapper>
         <ButtonGroup
           variant="unstyled"
           className="hidden space-x-1 rounded-md border border-border bg-background-strong p-0.5 sm:block"
@@ -141,7 +142,7 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
           ))}
         </ButtonGroup>
         <div className="hidden items-center space-x-2 md:flex">{children}</div>
-      </div>
+      </ToolbarSectionWrapper>
     </>
   );
 };
