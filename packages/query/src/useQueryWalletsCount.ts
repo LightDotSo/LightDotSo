@@ -44,7 +44,7 @@ export const useQueryWalletsCount = (params: WalletListCountParams) => {
     queryKey: queryKeys.wallet.listCount({ address: params.address as Address })
       .queryKey,
     queryFn: async () => {
-      if (!params.address) {
+      if (params.address === null) {
         return null;
       }
 
