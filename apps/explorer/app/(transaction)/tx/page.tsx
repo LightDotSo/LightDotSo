@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+"use client";
+
 import { queryKeys } from "@lightdotso/query-keys";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { TransactionsDataTable } from "@/app/(transaction)/(components)/transactions-data-table";
