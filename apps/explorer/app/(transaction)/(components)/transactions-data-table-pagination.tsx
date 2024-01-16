@@ -28,7 +28,7 @@ export const TransactionsDataTablePagination: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { userOperationTable } = useTables();
+  const { transactionTable } = useTables();
 
   useEffect(() => {
     if (!useTables.persist.hasHydrated()) {
@@ -40,9 +40,9 @@ export const TransactionsDataTablePagination: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!userOperationTable || !useTables.persist.hasHydrated()) {
+  if (!transactionTable || !useTables.persist.hasHydrated()) {
     return null;
   }
 
-  return <DataTablePagination table={userOperationTable} />;
+  return <DataTablePagination table={transactionTable} />;
 };

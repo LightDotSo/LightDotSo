@@ -16,8 +16,8 @@
 import { queryKeys } from "@lightdotso/query-keys";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Address } from "viem";
-import { TransactionsDataTable } from "@/app/(user-operation)/(components)/transactions-data-table";
-import { TransactionsDataTablePagination } from "@/app/(user-operation)/(components)/transactions-data-table-pagination";
+import { UserOperationsDataTable } from "@/app/(user-operation)/(components)/user-operations-data-table";
+import { UserOperationsDataTablePagination } from "@/app/(user-operation)/(components)/user-operations-data-table-pagination";
 import { handler } from "@/handlers/paths/[address]/handler";
 import { preloader } from "@/preloaders/paths/[address]/preloader";
 import { getQueryClient } from "@/services";
@@ -88,12 +88,12 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <TransactionsDataTable
+      <UserOperationsDataTable
         address={params.address as Address}
         isTestnet={isTestnetState ?? false}
         status="history"
       />
-      <TransactionsDataTablePagination />
+      <UserOperationsDataTablePagination />
     </HydrationBoundary>
   );
 }

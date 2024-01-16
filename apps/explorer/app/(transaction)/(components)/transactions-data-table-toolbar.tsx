@@ -17,30 +17,18 @@
 
 import { useTables } from "@lightdotso/stores";
 import { useEffect, type FC } from "react";
-import type { DataTableToolbarProps } from "@/app/(user-operation)/(components)/data-table/data-table-toolbar";
-import { DataTableToolbar } from "@/app/(user-operation)/(components)/data-table/data-table-toolbar";
-
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-export type TransactionsDataTableToolbarProps = Pick<
-  DataTableToolbarProps,
-  "status"
->;
+import { DataTableToolbar } from "@/app/(transaction)/(components)/data-table/data-table-toolbar";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TransactionsDataTableToolbar: FC<
-  TransactionsDataTableToolbarProps
-> = ({ status }) => {
+export const TransactionsDataTableToolbar: FC = () => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { userOperationTable } = useTables();
+  const { transactionTable } = useTables();
 
   useEffect(() => {
     if (!useTables.persist.hasHydrated()) {
@@ -52,9 +40,9 @@ export const TransactionsDataTableToolbar: FC<
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!userOperationTable || !useTables.persist.hasHydrated()) {
+  if (!transactionTable || !useTables.persist.hasHydrated()) {
     return null;
   }
 
-  return <DataTableToolbar status={status} table={userOperationTable} />;
+  return <DataTableToolbar table={transactionTable} />;
 };

@@ -17,15 +17,16 @@
 
 import type { WalletSettingsData } from "@lightdotso/data";
 import {
-  useQueryUserOperations,
-  useQueryUserOperationsCount,
+  useQueryTransactions,
+  useQueryTransactionsCount,
 } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
-import { userOperationColumns } from "@lightdotso/table";
+import { transactionColumns } from "@lightdotso/table";
+import { TableSectionWrapper } from "@lightdotso/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
-import { DataTable } from "@/app/(user-operation)/(components)/data-table/data-table";
+import { DataTable } from "@/app/(transaction)/(components)/data-table/data-table";
 import { usePaginationQueryState } from "@/queryStates";
 
 // -----------------------------------------------------------------------------
@@ -33,9 +34,7 @@ import { usePaginationQueryState } from "@/queryStates";
 // -----------------------------------------------------------------------------
 
 interface TransactionsDataTableProps {
-  address: Address | null;
-  isTestnet: boolean;
-  status: "proposed" | "history";
+  address: Address;
 }
 
 // -----------------------------------------------------------------------------
@@ -44,8 +43,6 @@ interface TransactionsDataTableProps {
 
 export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   address,
-  isTestnet,
-  status,
 }) => {
   // ---------------------------------------------------------------------------
   // Query State Hooks
@@ -65,19 +62,21 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { userOperations } = useQueryUserOperations({
+  const queryClient = useQueryClient();
+
+  const walletSettings: WalletSettingsData | undefined =
+    queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
+
+  const { transactions } = useQueryTransactions({
     address: address,
-    status: "history",
-    order: status === "proposed" ? "asc" : "desc",
     limit: paginationState.pageSize,
     offset: offsetCount,
-    is_testnet: isTestnet,
+    is_testnet: walletSettings?.is_enabled_testnet ?? false,
   });
 
-  const { userOperationsCount } = useQueryUserOperationsCount({
+  const { transactionsCount } = useQueryTransactionsCount({
     address: address,
-    status: "history",
-    is_testnet: isTestnet,
+    is_testnet: walletSettings?.is_enabled_testnet ?? false,
   });
 
   // ---------------------------------------------------------------------------
@@ -85,22 +84,23 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   // ---------------------------------------------------------------------------
 
   const pageCount = useMemo(() => {
-    if (!userOperationsCount || !userOperationsCount?.count) {
+    if (!transactionsCount || !transactionsCount?.count) {
       return null;
     }
-    return Math.ceil(userOperationsCount.count / paginationState.pageSize);
-  }, [userOperationsCount, paginationState.pageSize]);
+    return Math.ceil(transactionsCount.count / paginationState.pageSize);
+  }, [transactionsCount, paginationState.pageSize]);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <DataTable
-      data={userOperations ?? []}
-      address={address}
-      columns={userOperationColumns}
-      pageCount={pageCount ?? 0}
-    />
+    <TableSectionWrapper>
+      <DataTable
+        data={transactions ?? []}
+        columns={transactionColumns}
+        pageCount={pageCount ?? 0}
+      />
+    </TableSectionWrapper>
   );
 };
