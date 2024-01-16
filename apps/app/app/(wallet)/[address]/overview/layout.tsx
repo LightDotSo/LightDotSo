@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { BaseLayerWrapper, LargeLayerWrapper, MiddleLayerWrapper, MinimalPageWrapper } from "@lightdotso/ui";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import type { Address } from "viem";
@@ -20,10 +21,6 @@ import { OverviewInvokeButton } from "@/app/(wallet)/[address]/overview/(compone
 import { WalletOverviewBanner } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner";
 import { OVERVIEW_NAV_ITEMS } from "@/app/(wallet)/[address]/overview/(const)/nav-items";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
-import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
-import { LargeLayerWrapper } from "@/components/wrapper/layer/large-layer-wrapper";
-import { MiddleLayerWrapper } from "@/components/wrapper/layer/middle-layer-wrapper";
-import { MinimalPageWrapper } from "@/components/wrapper/page/minimal-page-wrapper";
 import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------

@@ -17,7 +17,7 @@ import type { FC, ReactNode } from "react";
 import {
   MiddleLayerWrapper,
   type MiddleLayerWrapperProps,
-} from "@/components/wrapper/layer/middle-layer-wrapper";
+} from "@lightdotso/ui";
 
 // -----------------------------------------------------------------------------
 // Props

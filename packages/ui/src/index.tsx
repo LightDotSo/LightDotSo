@@ -268,6 +268,7 @@ export {
   LargeLayerWrapper,
   MiddleLayerWrapper,
 } from "./wrappers/layer";
+export type { BaseLayerWrapperProps, MiddleLayerWrapperProps } from "./wrappers/layer";
 export {
   BasicPageWrapper,
   MinimalPageWrapper,
