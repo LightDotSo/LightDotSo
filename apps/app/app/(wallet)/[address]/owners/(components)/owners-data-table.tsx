@@ -49,7 +49,7 @@ export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
 
   return (
     <TableSectionWrapper>
-        <DataTable data={configuration?.owners ?? []} columns={ownerColumns} />
+      <DataTable data={configuration?.owners ?? []} columns={ownerColumns} />
     </TableSectionWrapper>
   );
 };

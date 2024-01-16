@@ -27,8 +27,10 @@ interface TableSectionWrapperProps {
 // Layout
 // -----------------------------------------------------------------------------
 
-export function TableSectionWrapper({
-  children,
-}: TableSectionWrapperProps) {
-  return <div className="rounded-md border border-border bg-background p-4">{children}</div>;
+export function TableSectionWrapper({ children }: TableSectionWrapperProps) {
+  return (
+    <div className="rounded-md border border-border bg-background p-4">
+      {children}
+    </div>
+  );
 }
