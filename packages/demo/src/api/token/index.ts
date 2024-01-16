@@ -14,6 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { TokenData } from "@lightdotso/data";
-import jsonData from "./list.json";
+import getJsonData from "./get.json";
+import listJsonData from "./list.json";
 
-export const tokenListData = jsonData as TokenData[];
+export const tokenGetData = getJsonData as TokenData;
+export const tokenListData = listJsonData as TokenData[];
