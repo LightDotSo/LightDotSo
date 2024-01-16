@@ -62,7 +62,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   queryClient.setQueryData(
     queryKeys.user_operation.list({
-      address: undefined,
+      address: null,
       status: "history",
       order: "asc",
       limit: paginationState.pageSize,
@@ -73,7 +73,7 @@ export default async function Page({ searchParams }: PageProps) {
   );
   queryClient.setQueryData(
     queryKeys.user_operation.listCount({
-      address: undefined,
+      address: null,
       status: "history",
       is_testnet: isTestnetState ?? false,
     }).queryKey,

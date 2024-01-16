@@ -40,7 +40,7 @@ export const useQueryUser = (params: UserParams) => {
   const { data: user } = useQuery<UserData | null>({
     queryKey: queryKeys.user.get({ address: params.address }).queryKey,
     queryFn: async () => {
-      if (params.address === null) {
+      if (typeof params.address === "undefined") {
         return null;
       }
 

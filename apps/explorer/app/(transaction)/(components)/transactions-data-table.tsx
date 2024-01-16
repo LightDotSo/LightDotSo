@@ -62,14 +62,14 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   // ---------------------------------------------------------------------------
 
   const { transactions } = useQueryTransactions({
-    address: address ?? undefined,
+    address: address ?? null,
     limit: paginationState.pageSize,
     offset: offsetCount,
     is_testnet: isTestnet ?? false,
   });
 
   const { transactionsCount } = useQueryTransactionsCount({
-    address: address ?? undefined,
+    address: address ?? null,
     is_testnet: isTestnet ?? false,
   });
 

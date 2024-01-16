@@ -32,9 +32,9 @@ export const getNftsByOwner = async ({
   isTestnet,
 }: {
   address: string;
-  limit?: number;
-  cursor?: string;
-  isTestnet?: boolean;
+  limit: number | null;
+  cursor: string | null;
+  isTestnet: boolean | null;
 }) => {
   const chains = isTestnet
     ? simplehashChainSchema.options.join(",")

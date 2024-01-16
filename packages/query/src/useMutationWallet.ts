@@ -113,7 +113,11 @@ export const useMutationWallet = (params: WalletParams) => {
         queryKey: queryKeys.wallet.get({ address: params.address }).queryKey,
       });
       queryClient.invalidateQueries({
-        queryKey: queryKeys.wallet.list({ address: params.address }).queryKey,
+        queryKey: queryKeys.wallet.list({
+          address: params.address,
+          limit: Number.MAX_SAFE_INTEGER,
+          offset: 0,
+        }).queryKey,
       });
 
       // Invalidate the cache for the address

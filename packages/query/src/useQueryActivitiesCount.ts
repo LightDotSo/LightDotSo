@@ -41,7 +41,7 @@ export const useQueryActivitiesCount = (params: ActivityListCountParams) => {
     queryKey: queryKeys.activity.listCount({ address: params.address })
       .queryKey,
     queryFn: async () => {
-      if (params.address === null) {
+      if (typeof params.address === "undefined") {
         return null;
       }
 

@@ -38,13 +38,13 @@ export const preloader = async (searchParams: {
   // ---------------------------------------------------------------------------
 
   preloadGetTransactions({
-    address: undefined,
+    address: null,
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
     is_testnet: false,
   });
   preloadGetTransactionsCount({
-    address: undefined,
+    address: null,
     is_testnet: false,
   });
 };

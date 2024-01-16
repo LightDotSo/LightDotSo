@@ -123,6 +123,7 @@ export const SendDialog: FC<SendDialogProps> = ({
       address,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
       limit: Number.MAX_SAFE_INTEGER,
+      cursor: null,
     }).queryKey,
   );
 

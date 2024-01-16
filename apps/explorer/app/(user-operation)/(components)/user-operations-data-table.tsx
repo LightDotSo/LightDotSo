@@ -61,7 +61,7 @@ export const UserOperationsDataTable: FC<UserOperationsDataTableProps> = ({
   // ---------------------------------------------------------------------------
 
   const { userOperations } = useQueryUserOperations({
-    address: address ?? undefined,
+    address: address ?? null,
     status: "history",
     order: "asc",
     limit: paginationState.pageSize,
@@ -70,7 +70,7 @@ export const UserOperationsDataTable: FC<UserOperationsDataTableProps> = ({
   });
 
   const { userOperationsCount } = useQueryUserOperationsCount({
-    address: address ?? undefined,
+    address: address ?? null,
     status: "history",
     is_testnet: isTestnet,
   });

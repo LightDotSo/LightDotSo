@@ -43,14 +43,14 @@ export const handler = async (searchParams: {
   // ---------------------------------------------------------------------------
 
   const transactionsPromise = getTransactions({
-    address: undefined,
+    address: null,
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
     is_testnet: isTestnetState ?? false,
   });
 
   const transactionsCountPromise = getTransactionsCount({
-    address: undefined,
+    address: null,
     is_testnet: isTestnetState ?? false,
   });
 

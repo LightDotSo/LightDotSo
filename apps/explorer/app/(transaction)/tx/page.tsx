@@ -58,7 +58,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   queryClient.setQueryData(
     queryKeys.transaction.list({
-      address: undefined,
+      address: null,
       limit: paginationState.pageSize,
       offset: paginationState.pageIndex * paginationState.pageSize,
       is_testnet: isTestnetState ?? false,
@@ -67,7 +67,7 @@ export default async function Page({ searchParams }: PageProps) {
   );
   queryClient.setQueryData(
     queryKeys.transaction.listCount({
-      address: undefined,
+      address: null,
       is_testnet: isTestnetState ?? false,
     }).queryKey,
     transactionsCount,

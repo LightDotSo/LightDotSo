@@ -52,7 +52,7 @@ export const useSuspenseQueryPaymasterOperation = (
         valid_after: params.valid_after,
       }).queryKey,
       queryFn: async () => {
-        if (!params.address) {
+        if (typeof params.address === "undefined") {
           return null;
         }
 
@@ -60,7 +60,7 @@ export const useSuspenseQueryPaymasterOperation = (
           {
             params: {
               query: {
-                address: params.address,
+                address: params.address ?? undefined,
                 chain_id: params.chain_id,
                 valid_after: params.valid_after,
               },

@@ -13,7 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { WalletListParams, WalletParams } from "@lightdotso/params";
+import type {
+  WalletListParams,
+  WalletListCountParams,
+  WalletParams,
+} from "@lightdotso/params";
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
@@ -28,7 +32,7 @@ export const wallet = createQueryKeys("wallet", {
   list: (params: WalletListParams) => ({
     queryKey: [{ params }],
   }),
-  listCount: (params: WalletListParams) => ({
+  listCount: (params: WalletListCountParams) => ({
     queryKey: [{ params }],
   }),
   features: (params: WalletParams) => ({
