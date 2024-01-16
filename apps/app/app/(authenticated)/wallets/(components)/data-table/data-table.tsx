@@ -84,7 +84,6 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
 
   return (
     <>
-      {/* <DataTableToolbar table={table} /> */}
       <div className="space-y-4">
         <div className="rounded-md border border-border bg-background">
           <WalletTable
@@ -95,7 +94,6 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
           />
         </div>
       </div>
-      {/* <DataTablePagination table={table} /> */}
     </>
   );
 }
