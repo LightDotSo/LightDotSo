@@ -263,3 +263,17 @@ export {
   DataTableViewOptions,
 } from "./templates/data-table";
 export { Footer } from "./templates/footer";
+export {
+  BaseLayerWrapper,
+  LargeLayerWrapper,
+  MiddleLayerWrapper,
+} from "./wrappers/layer";
+export {
+  BasicPageWrapper,
+  MinimalPageWrapper,
+  SettingsPageWrapper,
+} from "./wrappers/page";
+export {
+  SettingsSectionWrapper,
+  TableSectionWrapper,
+} from "./wrappers/section";

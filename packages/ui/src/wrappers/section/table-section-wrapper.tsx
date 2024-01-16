@@ -13,27 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { BaseLayerWrapper, MinimalPageWrapper } from "@lightdotso/ui";
-import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { BannerSection } from "@/components/section/banner-section";
-import { HStackFull } from "@/components/stack/h-stack-full";
-import { TITLES } from "@/const";
-
-// -----------------------------------------------------------------------------
-// Metadata
-// -----------------------------------------------------------------------------
-
-export const metadata: Metadata = {
-  title: TITLES.New.title,
-  description: TITLES.New.description,
-};
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface NewLayoutProps {
+interface TableSectionWrapperProps {
   children: ReactNode;
 }
 
@@ -41,17 +27,8 @@ interface NewLayoutProps {
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function NewLayout({ children }: NewLayoutProps) {
-  return (
-    <BannerSection
-      title={TITLES.New.title}
-      description={TITLES.New.description}
-    >
-      <HStackFull>
-        <BaseLayerWrapper>
-          <MinimalPageWrapper>{children}</MinimalPageWrapper>
-        </BaseLayerWrapper>
-      </HStackFull>
-    </BannerSection>
-  );
+export function TableSectionWrapper({
+  children,
+}: TableSectionWrapperProps) {
+  return <div className="rounded-md border border-border bg-background p-4">{children}</div>;
 }

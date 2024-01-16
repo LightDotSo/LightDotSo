@@ -22,6 +22,7 @@ import {
 } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { transactionColumns } from "@lightdotso/table";
+import { TableSectionWrapper } from "@lightdotso/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
@@ -92,12 +93,12 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="rounded-md border border-border bg-background p-4">
+    <TableSectionWrapper>
       <DataTable
         data={transactions ?? []}
         columns={transactionColumns}
         pageCount={pageCount ?? 0}
       />
-    </div>
+    </TableSectionWrapper>
   );
 };

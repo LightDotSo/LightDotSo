@@ -19,6 +19,7 @@ import type { WalletSettingsData } from "@lightdotso/data";
 import { useQueryTokens, useQueryTokensCount } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { tokenColumns } from "@lightdotso/table";
+import { TableSectionWrapper } from "@lightdotso/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
@@ -92,12 +93,12 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="rounded-md border border-border bg-background p-4">
+    <TableSectionWrapper>
       <DataTable
         data={tokens ?? []}
         columns={tokenColumns}
         pageCount={pageCount ?? 0}
       />
-    </div>
+    </TableSectionWrapper>
   );
 };
