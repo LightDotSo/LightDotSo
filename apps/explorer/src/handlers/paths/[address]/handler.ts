@@ -17,15 +17,25 @@ import { Result } from "neverthrow";
 import { validateAddress } from "@/handlers/validators/address";
 import { isTestnetParser, paginationParser } from "@/queryStates";
 import { getUserOperations, getUserOperationsCount } from "@/services";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Handler
 // -----------------------------------------------------------------------------
 
-export const handler = async (searchParams: {
-  isTestnet?: string;
-  pagination?: string;
-}) => {
+export const handler = async (
+  params: { address: string },
+  searchParams: {
+    isTestnet?: string;
+    pagination?: string;
+  },
+) => {
+  // ---------------------------------------------------------------------------
+  // Validators
+  // ---------------------------------------------------------------------------
+
+  validateAddress(params.address);
+
   // ---------------------------------------------------------------------------
   // Parsers
   // ---------------------------------------------------------------------------
@@ -43,7 +53,7 @@ export const handler = async (searchParams: {
   // ---------------------------------------------------------------------------
 
   const userOperationsPromise = getUserOperations({
-    address: null,
+    address: params.address as Address,
     status: "history",
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
@@ -52,7 +62,7 @@ export const handler = async (searchParams: {
   });
 
   const userOperationsCountPromise = getUserOperationsCount({
-    address: null,
+    address: params.address as Address,
     status: "history",
     is_testnet: isTestnetState ?? false,
   });

@@ -33,7 +33,8 @@ import { usePaginationQueryState } from "@/queryStates";
 // -----------------------------------------------------------------------------
 
 interface TransactionsDataTableProps {
-  address: Address;
+  address: Address | null;
+  isTestnet: boolean;
   status: "proposed" | "history";
 }
 
@@ -43,6 +44,7 @@ interface TransactionsDataTableProps {
 
 export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   address,
+  isTestnet,
   status,
 }) => {
   // ---------------------------------------------------------------------------
@@ -63,24 +65,19 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
-
-  const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
-
   const { userOperations } = useQueryUserOperations({
-    address: null,
+    address: address,
     status: "history",
     order: status === "proposed" ? "asc" : "desc",
     limit: paginationState.pageSize,
     offset: offsetCount,
-    is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    is_testnet: isTestnet,
   });
 
   const { userOperationsCount } = useQueryUserOperationsCount({
-    address: null,
+    address: address,
     status: "history",
-    is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    is_testnet: isTestnet,
   });
 
   // ---------------------------------------------------------------------------

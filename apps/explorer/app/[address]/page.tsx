@@ -18,8 +18,8 @@ import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { TransactionsDataTable } from "@/app/(components)/transactions-data-table";
 import { TransactionsDataTablePagination } from "@/app/(components)/transactions-data-table-pagination";
-import { handler } from "@/handlers/paths/handler";
-import { preloader } from "@/preloaders/paths/preloader";
+import { handler } from "@/handlers/paths/[address]/handler";
+import { preloader } from "@/preloaders/paths/[address]/preloader";
 import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------
@@ -27,6 +27,7 @@ import { getQueryClient } from "@/services";
 // -----------------------------------------------------------------------------
 
 type PageProps = {
+  params: { address: string };
   searchParams: {
     isTestnet?: string;
     pagination?: string;
@@ -37,12 +38,12 @@ type PageProps = {
 // Page
 // -----------------------------------------------------------------------------
 
-export default async function Page({ searchParams }: PageProps) {
+export default async function Page({ params, searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(searchParams);
+  preloader(params, searchParams);
 
   // ---------------------------------------------------------------------------
   // Handlers
@@ -53,7 +54,7 @@ export default async function Page({ searchParams }: PageProps) {
     paginationState,
     userOperations,
     userOperationsCount,
-  } = await handler(searchParams);
+  } = await handler(params, searchParams);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -63,7 +64,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   queryClient.setQueryData(
     queryKeys.user_operation.list({
-      address: null,
+      address: params.address as Address,
       status: "history",
       order: "asc",
       limit: paginationState.pageSize,
@@ -74,7 +75,7 @@ export default async function Page({ searchParams }: PageProps) {
   );
   queryClient.setQueryData(
     queryKeys.user_operation.listCount({
-      address: null,
+      address: params.address as Address,
       status: "history",
       is_testnet: isTestnetState ?? false,
     }).queryKey,
@@ -88,7 +89,7 @@ export default async function Page({ searchParams }: PageProps) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <TransactionsDataTable
-        address={null}
+        address={params.address as Address}
         isTestnet={isTestnetState ?? false}
         status="history"
       />

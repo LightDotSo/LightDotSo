@@ -29,7 +29,7 @@ import { usePaginationQueryState } from "@/queryStates";
 
 interface DataTableProps {
   columns: ColumnDef<UserOperationData>[];
-  address: Address;
+  address: Address | null;
   data: UserOperationData[];
   pageCount: number;
 }
@@ -91,7 +91,7 @@ export function DataTable({
   // ---------------------------------------------------------------------------
 
   const { configuration } = useQueryConfiguration({
-    address: address,
+    address: address ?? "0x0000000000000000000000000000000000000000",
   });
 
   // ---------------------------------------------------------------------------
@@ -100,7 +100,7 @@ export function DataTable({
 
   return (
     <UserOperationTable
-      address={address}
+      address={address ?? "0x0000000000000000000000000000000000000000"}
       columns={columns}
       data={data}
       configuration={configuration ?? undefined}

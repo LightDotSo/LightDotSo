@@ -13,80 +13,47 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Result } from "neverthrow";
-import { validateAddress } from "@/handlers/validators/address";
 import { isTestnetParser, paginationParser } from "@/queryStates";
-import { getUserOperations, getUserOperationsCount } from "@/services";
+import { preload as preloadGetUserOperations } from "@/services/getUserOperations";
+import { preload as preloadGetUserOperationsCount } from "@/services/getUserOperationsCount";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
-// Handler
+// Preloader
 // -----------------------------------------------------------------------------
 
-export const handler = async (searchParams: {
-  isTestnet?: string;
-  pagination?: string;
-}) => {
+export const preloader = async (
+  params: { address: string },
+  searchParams: {
+    isTestnet?: string;
+    pagination?: string;
+  },
+) => {
   // ---------------------------------------------------------------------------
   // Parsers
   // ---------------------------------------------------------------------------
 
-  const isTestnetState = isTestnetParser.parseServerSide(
-    searchParams.isTestnet,
-  );
+  const isTestnet = isTestnetParser.parseServerSide(searchParams.isTestnet);
 
   const paginationState = paginationParser.parseServerSide(
     searchParams.pagination,
   );
 
   // ---------------------------------------------------------------------------
-  // Fetch
+  // Preloaders
   // ---------------------------------------------------------------------------
 
-  const userOperationsPromise = getUserOperations({
-    address: null,
-    status: "history",
+  preloadGetUserOperations({
+    address: params.address as Address,
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
     order: "asc",
-    is_testnet: isTestnetState ?? false,
-  });
-
-  const userOperationsCountPromise = getUserOperationsCount({
-    address: null,
     status: "history",
-    is_testnet: isTestnetState ?? false,
+    is_testnet: isTestnet ?? false,
   });
-
-  const [userOperations, userOperationsCount] = await Promise.all([
-    userOperationsPromise,
-    userOperationsCountPromise,
-  ]);
-
-  // ---------------------------------------------------------------------------
-  // Parse
-  // ---------------------------------------------------------------------------
-
-  const res = Result.combineWithAllErrors([
-    userOperations,
-    userOperationsCount,
-  ]);
-
-  return res.match(
-    ([userOperations, userOperationsCount]) => {
-      return {
-        isTestnetState: isTestnetState,
-        paginationState: paginationState,
-        userOperations: userOperations,
-        userOperationsCount: userOperationsCount,
-      };
-    },
-    () => {
-      return {
-        isTestnetState: isTestnetState,
-        paginationState: paginationState,
-        userOperations: [],
-        userOperationsCount: { count: 0 },
-      };
-    },
-  );
+  preloadGetUserOperationsCount({
+    address: params.address as Address,
+    status: "history",
+    is_testnet: isTestnet ?? false,
+  });
 };

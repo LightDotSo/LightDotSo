@@ -21,13 +21,10 @@ import { preload as preloadGetUserOperationsCount } from "@/services/getUserOper
 // Preloader
 // -----------------------------------------------------------------------------
 
-export const preloader = async (
-  params: { address: string },
-  searchParams: {
-    isTestnet?: string;
-    pagination?: string;
-  },
-) => {
+export const preloader = async (searchParams: {
+  isTestnet?: string;
+  pagination?: string;
+}) => {
   // ---------------------------------------------------------------------------
   // Parsers
   // ---------------------------------------------------------------------------
