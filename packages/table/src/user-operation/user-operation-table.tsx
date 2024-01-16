@@ -21,7 +21,6 @@ import type {
   Table as ReactTable,
 } from "@tanstack/react-table";
 import {
-  flexRender,
   getCoreRowModel,
   getExpandedRowModel,
   getFacetedRowModel,
