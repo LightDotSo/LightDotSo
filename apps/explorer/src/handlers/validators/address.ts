@@ -13,31 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Address, Hex } from "viem";
+import { notFound } from "next/navigation";
+import { isAddress } from "viem";
 
 // -----------------------------------------------------------------------------
-// Params
+// Validator
 // -----------------------------------------------------------------------------
 
-export type UserOperationGetParams = {
-  hash: Hex;
+export const validateAddress = (address: string) => {
+  if (!isAddress(address)) {
+    notFound();
+  }
 };
-
-export type UserOperationNonceParams = {
-  address: Address;
-  chain_id: number;
-};
-
-export type UserOperationListParams = {
-  address: Address | null;
-  status: "proposed" | "history" | null;
-  order: "desc" | "asc";
-  limit: number;
-  offset: number;
-  is_testnet: boolean;
-};
-
-export type UserOperationListCountParams = Omit<
-  UserOperationListParams,
-  "order" | "limit" | "offset"
->;

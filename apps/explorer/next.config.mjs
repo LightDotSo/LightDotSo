@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { withSentryConfig } from "@sentry/nextjs";
+import packageJson from "./package.json" assert { type: "json" };
 
 const sentryWebpackPluginOptions = {
   silent: false,
@@ -22,6 +23,12 @@ const sentryWebpackPluginOptions = {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  env: {
+    NEXT_PUBLIC_APP_VERSION: `@lightdotso/explorer@${packageJson.version}`,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   experimental: {
     // From: https://github.com/vercel/next.js/issues/42641
     outputFileTracingExcludes: {

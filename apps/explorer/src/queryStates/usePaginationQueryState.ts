@@ -13,22 +13,37 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import "@lightdotso/styles/global.css";
-import type { ReactNode } from "react";
-import { Root } from "@/components/root/root";
+import type { PaginationState } from "@tanstack/react-table";
+import { createParser, useQueryState } from "nuqs";
 
 // -----------------------------------------------------------------------------
-// Props
+// Parser
 // -----------------------------------------------------------------------------
 
-interface RootLayoutProps {
-  children: ReactNode;
-}
+export const paginationParser = createParser({
+  parse(value: string): PaginationState | null {
+    if (!value) {
+      return null;
+    }
+    const [pageIndex, pageSize] = value
+      .split(",")
+      .map(val => Number.parseInt(val));
+    if (isNaN(pageIndex) || isNaN(pageSize)) {
+      return null;
+    }
+    return { pageIndex, pageSize };
+  },
+  serialize(value: PaginationState): string {
+    return `${value.pageIndex},${value.pageSize}`;
+  },
+})
+  .withDefault({ pageIndex: 0, pageSize: 10 })
+  .withOptions({ shallow: false });
 
 // -----------------------------------------------------------------------------
-// Layout
+// Hook
 // -----------------------------------------------------------------------------
 
-export default function RootLayout({ children }: RootLayoutProps) {
-  return <Root>{children}</Root>;
-}
+export const usePaginationQueryState = () => {
+  return useQueryState("pagination", paginationParser);
+};

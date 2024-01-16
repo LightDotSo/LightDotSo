@@ -65,6 +65,7 @@
     "@tanstack/react-query-next-experimental": "^5.17.10",
     "@tanstack/react-query-persist-client": "^5.17.11",
     "@tanstack/react-table": "^8.11.6",
+    "@vercel/toolbar": "^0.1.10",
     "class-variance-authority": "^0.7.0",
     "cmdk": "^0.2.0",
     "date-fns": "^3.2.0",
