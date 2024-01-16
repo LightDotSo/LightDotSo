@@ -13,13 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import {
+  BaseLayerWrapper,
+  SettingsPageWrapper,
+  HStackFull,
+} from "@lightdotso/ui";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { SidebarNav } from "@/components/nav/sidebar-nav";
 import { BannerSection } from "@/components/section/banner-section";
-import { HStackFull } from "@/components/stack/h-stack-full";
-import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
-import { SettingsPageWrapper } from "@/components/wrapper/page/settings-page-wrapper";
 import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------

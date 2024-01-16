@@ -14,13 +14,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { queryKeys } from "@lightdotso/query-keys";
-import { Skeleton } from "@lightdotso/ui";
+import { Skeleton, SettingsSectionWrapper } from "@lightdotso/ui";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { Suspense } from "react";
 import type { Address } from "viem";
 import { SettingsNameCard } from "@/app/(wallet)/[address]/settings/(components)/settings-name-card";
 import { SettingsTestnetCard } from "@/app/(wallet)/[address]/settings/(components)/settings-testnet-card";
-import { SettingsSectionWrapper } from "@/components/wrapper/section/settings-section-wrapper";
 import { handler } from "@/handlers/paths/[address]/settings/handler";
 import { preloader } from "@/preloaders/paths/[address]/settings/preloader";
 import { getQueryClient } from "@/services";

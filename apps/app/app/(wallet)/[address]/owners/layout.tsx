@@ -13,13 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import {
+  BaseLayerWrapper,
+  MiddleLayerWrapper,
+  BasicPageWrapper,
+} from "@lightdotso/ui";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { OwnersDataTableToolbar } from "@/app/(wallet)/[address]/owners/(components)/owners-data-table-toolbar";
 import { BannerSection } from "@/components/section/banner-section";
-import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
-import { MiddleLayerWrapper } from "@/components/wrapper/layer/middle-layer-wrapper";
-import { BasicPageWrapper } from "@/components/wrapper/page/basic-page-wrapper";
 import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------

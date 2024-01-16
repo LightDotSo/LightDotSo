@@ -17,6 +17,7 @@
 
 import { useQueryActivities, useQueryActivitiesCount } from "@lightdotso/query";
 import { activityColumns } from "@lightdotso/table";
+import { TableSectionWrapper } from "@lightdotso/ui";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(wallet)/[address]/activity/(components)/data-table/data-table";
@@ -79,10 +80,12 @@ export const ActivityDataTable: FC<ActivityDataTableProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   return (
-    <DataTable
-      data={activities ?? []}
-      columns={activityColumns}
-      pageCount={pageCount ?? 0}
-    />
+    <TableSectionWrapper>
+      <DataTable
+        data={activities ?? []}
+        columns={activityColumns}
+        pageCount={pageCount ?? 0}
+      />
+    </TableSectionWrapper>
   );
 };

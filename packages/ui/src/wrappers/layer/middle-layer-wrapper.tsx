@@ -17,7 +17,7 @@ import type { ReactNode } from "react";
 import {
   BaseLayerWrapper,
   type BaseLayerWrapperProps,
-} from "@/components/wrapper/layer/base-layer-wrapper";
+} from "./base-layer-wrapper";
 
 // -----------------------------------------------------------------------------
 // Props

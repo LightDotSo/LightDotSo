@@ -13,26 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { BaseLayerWrapper, BasicPageWrapper, HStackFull } from "@lightdotso/ui";
-import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { BannerSection } from "@/components/section/banner-section";
-import { TITLES } from "@/const";
-
-// -----------------------------------------------------------------------------
-// Metadata
-// -----------------------------------------------------------------------------
-
-export const metadata: Metadata = {
-  title: TITLES.Send.title,
-  description: TITLES.Send.description,
-};
+import { BaseLayerWrapper } from "./base-layer-wrapper";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface SendLayoutProps {
+interface LargeLayerWrapperProps {
   children: ReactNode;
 }
 
@@ -40,17 +28,14 @@ interface SendLayoutProps {
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function SendLayout({ children }: SendLayoutProps) {
+export function LargeLayerWrapper({ children }: LargeLayerWrapperProps) {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
-    <BannerSection
-      title={TITLES.Send.title}
-      description={TITLES.Send.description}
-    >
-      <HStackFull>
-        <BaseLayerWrapper>
-          <BasicPageWrapper>{children}</BasicPageWrapper>
-        </BaseLayerWrapper>
-      </HStackFull>
-    </BannerSection>
+    <BaseLayerWrapper className="border-b border-border py-4 md:py-6">
+      {children}
+    </BaseLayerWrapper>
   );
 }

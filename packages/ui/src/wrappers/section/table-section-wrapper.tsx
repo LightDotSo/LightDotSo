@@ -14,13 +14,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { ReactNode } from "react";
-import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface LargeLayerWrapperProps {
+interface TableSectionWrapperProps {
   children: ReactNode;
 }
 
@@ -28,14 +27,10 @@ interface LargeLayerWrapperProps {
 // Layout
 // -----------------------------------------------------------------------------
 
-export function LargeLayerWrapper({ children }: LargeLayerWrapperProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
+export function TableSectionWrapper({ children }: TableSectionWrapperProps) {
   return (
-    <BaseLayerWrapper className="border-b border-border py-4 md:py-6">
+    <div className="rounded-md border border-border bg-background p-4">
       {children}
-    </BaseLayerWrapper>
+    </div>
   );
 }

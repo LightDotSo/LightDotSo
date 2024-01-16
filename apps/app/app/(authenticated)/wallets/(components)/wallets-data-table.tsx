@@ -18,6 +18,7 @@
 import { useQueryWallets, useQueryWalletsCount } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import { walletColumns } from "@lightdotso/table";
+import { TableSectionWrapper } from "@lightdotso/ui";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(authenticated)/wallets/(components)/data-table/data-table";
@@ -78,10 +79,12 @@ export const WalletsDataTable: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <DataTable
-      data={wallets ?? []}
-      columns={walletColumns}
-      pageCount={pageCount ?? 0}
-    />
+    <TableSectionWrapper>
+      <DataTable
+        data={wallets ?? []}
+        columns={walletColumns}
+        pageCount={pageCount ?? 0}
+      />
+    </TableSectionWrapper>
   );
 };
