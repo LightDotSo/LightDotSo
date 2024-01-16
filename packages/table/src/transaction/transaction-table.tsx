@@ -77,7 +77,7 @@ export const TransactionTable: FC<TransactionTableProps> = ({
     ...tableOptions,
     data: data || [],
     columns,
-    enableExpanding: true,
+    enableExpanding: false,
     enableRowSelection: false,
     manualPagination: true,
     paginateExpandedRows: true,
@@ -100,14 +100,14 @@ export const TransactionTable: FC<TransactionTableProps> = ({
     }
   }, [
     table,
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
-    // table.getColumn("chain_id"),
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
-    // table.getColumn("chain_id")?.getCanHide(),
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
-    // table.getColumn("chain_id")?.getFacetedUniqueValues(),
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
-    // table.getColumn("chain_id")?.getIsVisible(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("chain_id"),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("chain_id")?.getCanHide(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("chain_id")?.getFacetedUniqueValues(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("chain_id")?.getIsVisible(),
     // // eslint-disable-next-line react-hooks/exhaustive-deps
     // table.getColumn("sparkline"),
     // // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -122,13 +122,6 @@ export const TransactionTable: FC<TransactionTableProps> = ({
     // table.getColumn("actions")?.getIsVisible(),
     setTransactionTable,
   ]);
-
-  useEffect(() => {
-    if (!table.getIsAllRowsExpanded()) {
-      table.toggleAllRowsExpanded();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // ---------------------------------------------------------------------------
   // Render
