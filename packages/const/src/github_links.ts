@@ -13,26 +13,18 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { GITHUB_LINKS } from "@lightdotso/const";
-import type { FC } from "react";
+export enum Github {
+  ACKNOWLEDGEMENTS = "Acknowledgements",
+  AUDIT = "Audit",
+  LICENSE = "License",
+}
 
-// -----------------------------------------------------------------------------
-// Component
-// -----------------------------------------------------------------------------
-
-export const FooterCopy: FC = () => {
-  return (
-    <p className="text-xs text-text-weak xl:text-center">
-      &copy; {new Date().getFullYear()}
-      <span className="hidden md:inline-flex">&nbsp;Light, Inc.</span>{" "}
-      <a
-        className="text-text-weak hover:underline"
-        href={GITHUB_LINKS["License"]}
-        target="_blank"
-        rel="noreferrer"
-      >
-        AGPL v3.0
-      </a>
-    </p>
-  );
+export const GITHUB_LINKS: {
+  readonly [key in Github]: string;
+} = {
+  [Github.ACKNOWLEDGEMENTS]:
+    "https://github.com/LightDotSo/LightDotSo/blob/main/ACKNOWLEDGEMENTS.md",
+  [Github.AUDIT]: "https://github.com/LightDotSo/LightDotSo/blob/main/audits",
+  [Github.LICENSE]:
+    "https://github.com/LightDotSo/LightDotSo/blob/main/LICENSE.md",
 };
