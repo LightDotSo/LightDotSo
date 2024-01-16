@@ -64,8 +64,6 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
-
   const { transactions } = useQueryTransactions({
     address: address,
     limit: paginationState.pageSize,
