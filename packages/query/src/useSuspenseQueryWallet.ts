@@ -40,7 +40,7 @@ export const useSuspenseQueryWallet = (params: WalletParams) => {
   const { data: wallet } = useSuspenseQuery<WalletData | null>({
     queryKey: queryKeys.wallet.get({ address: params.address }).queryKey,
     queryFn: async () => {
-      if (!params.address) {
+      if (params.address === null) {
         return null;
       }
 

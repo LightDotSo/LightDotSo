@@ -20,7 +20,7 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export type TransactionListParams = {
-  address: Address;
+  address?: Address;
   limit: number;
   offset: number;
   is_testnet: boolean;

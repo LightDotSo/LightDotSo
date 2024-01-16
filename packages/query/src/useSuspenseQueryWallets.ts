@@ -48,7 +48,7 @@ export const useSuspenseQueryWallets = (params: WalletListParams) => {
       offset: params.offset,
     }).queryKey,
     queryFn: async () => {
-      if (!params.address) {
+      if (params.address === null) {
         return null;
       }
 
