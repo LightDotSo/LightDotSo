@@ -40,11 +40,7 @@ export const TransactionsDataTablePagination: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (
-    !transactionTable ||
-    typeof transactionTable === "undefined" ||
-    !useTables.persist.hasHydrated()
-  ) {
+  if (!transactionTable || !useTables.persist.hasHydrated()) {
     return null;
   }
 
