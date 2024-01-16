@@ -79,7 +79,10 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <TransactionsDataTable isTestnet={isTestnetState ?? false} />
+      <TransactionsDataTable
+        address={null}
+        isTestnet={isTestnetState ?? false}
+      />
       <TransactionsDataTablePagination />
     </HydrationBoundary>
   );

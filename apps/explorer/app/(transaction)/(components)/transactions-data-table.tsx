@@ -31,6 +31,7 @@ import { usePaginationQueryState } from "@/queryStates";
 // -----------------------------------------------------------------------------
 
 interface TransactionsDataTableProps {
+  address: Address | null;
   isTestnet: boolean;
 }
 
@@ -39,6 +40,7 @@ interface TransactionsDataTableProps {
 // -----------------------------------------------------------------------------
 
 export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
+  address,
   isTestnet,
 }) => {
   // ---------------------------------------------------------------------------
@@ -60,14 +62,14 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   // ---------------------------------------------------------------------------
 
   const { transactions } = useQueryTransactions({
-    address: undefined,
+    address: address ?? undefined,
     limit: paginationState.pageSize,
     offset: offsetCount,
     is_testnet: isTestnet ?? false,
   });
 
   const { transactionsCount } = useQueryTransactionsCount({
-    address: undefined,
+    address: address ?? undefined,
     is_testnet: isTestnet ?? false,
   });
 
