@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { Address } from "viem";
 import { isTestnetParser, paginationParser } from "@/queryStates";
 import { preload as preloadGetUserOperations } from "@/services/getUserOperations";
 import { preload as preloadGetUserOperationsCount } from "@/services/getUserOperationsCount";
-import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Preloader
