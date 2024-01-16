@@ -34,7 +34,8 @@ import { usePaginationQueryState } from "@/queryStates";
 // -----------------------------------------------------------------------------
 
 interface TransactionsDataTableProps {
-  address: Address;
+  address?: Address;
+  isTestnet: boolean;
 }
 
 // -----------------------------------------------------------------------------
@@ -43,6 +44,7 @@ interface TransactionsDataTableProps {
 
 export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   address,
+  isTestnet,
 }) => {
   // ---------------------------------------------------------------------------
   // Query State Hooks
@@ -64,19 +66,16 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
 
   const queryClient = useQueryClient();
 
-  const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
-
   const { transactions } = useQueryTransactions({
     address: address,
     limit: paginationState.pageSize,
     offset: offsetCount,
-    is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    is_testnet: isTestnet ?? false,
   });
 
   const { transactionsCount } = useQueryTransactionsCount({
     address: address,
-    is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    is_testnet: isTestnet ?? false,
   });
 
   // ---------------------------------------------------------------------------

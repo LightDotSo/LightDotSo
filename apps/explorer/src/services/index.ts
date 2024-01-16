@@ -16,3 +16,5 @@
 export { getQueryClient } from "./getQueryClient";
 export { getUserOperations } from "./getUserOperations";
 export { getUserOperationsCount } from "./getUserOperationsCount";
+export { getTransactions } from "./getTransactions";
+export { getTransactionsCount } from "./getTransactionsCount";

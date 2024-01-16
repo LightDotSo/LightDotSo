@@ -17,8 +17,8 @@ import { queryKeys } from "@lightdotso/query-keys";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { TransactionsDataTable } from "@/app/(transaction)/(components)/transactions-data-table";
 import { TransactionsDataTablePagination } from "@/app/(transaction)/(components)/transactions-data-table-pagination";
-import { handler } from "@/handlers/paths/handler";
-import { preloader } from "@/preloaders/paths/preloader";
+import { handler } from "@/handlers/paths/tx/handler";
+import { preloader } from "@/preloaders/paths/tx/preloader";
 import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------
@@ -47,12 +47,8 @@ export default async function Page({ searchParams }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const {
-    isTestnetState,
-    paginationState,
-    userOperations,
-    userOperationsCount,
-  } = await handler(searchParams);
+  const { isTestnetState, paginationState, transactions, transactionsCount } =
+    await handler(searchParams);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -61,23 +57,20 @@ export default async function Page({ searchParams }: PageProps) {
   const queryClient = getQueryClient();
 
   queryClient.setQueryData(
-    queryKeys.user_operation.list({
-      address: null,
-      status: "history",
-      order: "asc",
+    queryKeys.transaction.list({
+      address: undefined,
       limit: paginationState.pageSize,
       offset: paginationState.pageIndex * paginationState.pageSize,
       is_testnet: isTestnetState ?? false,
     }).queryKey,
-    userOperations,
+    transactions,
   );
   queryClient.setQueryData(
-    queryKeys.user_operation.listCount({
-      address: null,
-      status: "history",
+    queryKeys.transaction.listCount({
+      address: undefined,
       is_testnet: isTestnetState ?? false,
     }).queryKey,
-    userOperationsCount,
+    transactionsCount,
   );
 
   // ---------------------------------------------------------------------------
@@ -88,6 +81,7 @@ export default async function Page({ searchParams }: PageProps) {
     <HydrationBoundary state={dehydrate(queryClient)}>
       <TransactionsDataTable
         address={"0x0000000000000000000000000000000000000000"}
+        isTestnet={isTestnetState ?? false}
       />
       <TransactionsDataTablePagination />
     </HydrationBoundary>

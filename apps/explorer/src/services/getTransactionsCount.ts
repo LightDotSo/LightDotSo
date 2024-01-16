@@ -13,20 +13,34 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Address } from "viem";
+import { getTransactionsCount as getClientTransactionsCount } from "@lightdotso/client";
+import type { TransactionListCountParams } from "@lightdotso/params";
+import "server-only";
 
 // -----------------------------------------------------------------------------
-// Params
+// Pre
 // -----------------------------------------------------------------------------
 
-export type TransactionListParams = {
-  address?: Address;
-  limit: number;
-  offset: number;
-  is_testnet: boolean;
+export const preload = (params: TransactionListCountParams) => {
+  void getTransactionsCount(params);
 };
 
-export type TransactionListCountParams = Omit<
-  TransactionListParams,
-  "limit" | "offset"
->;
+// -----------------------------------------------------------------------------
+// Service
+// -----------------------------------------------------------------------------
+
+export const getTransactionsCount = async (
+  params: TransactionListCountParams,
+) => {
+  return getClientTransactionsCount(
+    {
+      params: {
+        query: {
+          address: params.address,
+          is_testnet: params.is_testnet,
+        },
+      },
+    },
+    "admin",
+  );
+};
