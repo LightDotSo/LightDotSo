@@ -38,6 +38,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { useRouter } from "next/navigation";
 import { useEffect, type FC } from "react";
 import { TableEmpty } from "../state/table-empty";
 import { walletColumns } from "./wallet-columns";
@@ -66,6 +67,12 @@ export const WalletTable: FC<WalletTableProps> = ({
   columns = walletColumns,
   setWalletTable,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
+  const router = useRouter();
+
   // ---------------------------------------------------------------------------
   // Table
   // ---------------------------------------------------------------------------
@@ -143,6 +150,7 @@ export const WalletTable: FC<WalletTableProps> = ({
               key={row.id}
               className="cursor-pointer"
               data-state={row.getIsSelected() && "selected"}
+              onClick={() => router.push(`/${row.original.address}`)}
             >
               {row.getVisibleCells().map(cell => (
                 <TableCell key={cell.id}>
