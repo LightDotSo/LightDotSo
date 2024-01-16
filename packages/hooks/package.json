@@ -30,6 +30,7 @@
     "@lightdotso/data": "workspace:*",
     "@lightdotso/query": "workspace:*",
     "@lightdotso/schemas": "workspace:*",
+    "@lightdotso/solutions": "workspace:*",
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
