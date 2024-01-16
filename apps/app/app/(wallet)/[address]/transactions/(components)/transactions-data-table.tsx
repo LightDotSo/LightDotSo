@@ -21,10 +21,10 @@ import {
   useQueryUserOperationsCount,
 } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
+import { userOperationColumns } from "@lightdotso/table";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
-import { columns } from "@/app/(wallet)/[address]/transactions/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/transactions/(components)/data-table/data-table";
 import { usePaginationQueryState } from "@/queryStates";
 
@@ -102,7 +102,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
     <DataTable
       data={userOperations ?? []}
       address={address}
-      columns={columns}
+      columns={userOperationColumns}
       pageCount={pageCount ?? 0}
     />
   );

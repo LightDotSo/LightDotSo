@@ -6,6 +6,6 @@
       "@lightdotso/storybook/*": ["src/*"]
     }
   },
-  "include": ["./storybook/main.ts", "./storybook/preview.tsx"],
+  "include": ["./storybook/main.ts", "./storybook/preview.tsx", "**/*.ts"],
   "exclude": ["node_modules"]
 }

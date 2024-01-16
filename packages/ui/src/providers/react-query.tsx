@@ -20,9 +20,13 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import dynamic from "next/dynamic";
-import type { ReactNode } from "react";
+import type { FC, ReactNode } from "react";
 import { useState, useEffect } from "react";
 import superjson from "superjson";
+
+// -----------------------------------------------------------------------------
+// Dynamic
+// -----------------------------------------------------------------------------
 
 const ReactQueryDevtoolsProduction = dynamic(() =>
   //@ts-expect-error
@@ -31,7 +35,23 @@ const ReactQueryDevtoolsProduction = dynamic(() =>
   })),
 );
 
-function ReactQueryProvider(props: { children: ReactNode }) {
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type ReactQueryProviderProps = {
+  children: ReactNode;
+  showDevTools?: boolean;
+};
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+const ReactQueryProvider: FC<ReactQueryProviderProps> = ({
+  children,
+  showDevTools = true,
+}) => {
   const [queryClient, setQueryClient] = useState<QueryClient | null>(null);
 
   useEffect(() => {
@@ -64,11 +84,15 @@ function ReactQueryProvider(props: { children: ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryStreamedHydration transformer={superjson}>
-        {props.children}
+        {children}
       </ReactQueryStreamedHydration>
-      <ReactQueryDevtoolsProduction />
+      {showDevTools && <ReactQueryDevtoolsProduction />}
     </QueryClientProvider>
   );
-}
+};
+
+// -----------------------------------------------------------------------------
+// Exports
+// -----------------------------------------------------------------------------
 
 export { ReactQueryProvider };

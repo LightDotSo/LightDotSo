@@ -21,10 +21,10 @@ import {
   useQueryTransactionsCount,
 } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
+import { transactionColumns } from "@lightdotso/table";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
-import { columns } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/data-table";
 import { usePaginationQueryState } from "@/queryStates";
 
@@ -95,7 +95,7 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
     <div className="rounded-md border border-border bg-background p-4">
       <DataTable
         data={transactions ?? []}
-        columns={columns}
+        columns={transactionColumns}
         pageCount={pageCount ?? 0}
       />
     </div>

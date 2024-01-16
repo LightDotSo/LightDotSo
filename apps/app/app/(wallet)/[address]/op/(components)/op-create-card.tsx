@@ -16,12 +16,12 @@
 "use client";
 
 import type { ConfigurationData } from "@lightdotso/data";
+import { useUserOperationCreate } from "@lightdotso/hooks";
 import type { UserOperation } from "@lightdotso/schemas";
 import { useDev } from "@lightdotso/stores";
 import { Button } from "@lightdotso/ui";
 import type { FC } from "react";
 import type { Address } from "viem";
-import { useUserOperationCreate } from "@/app/(wallet)/[address]/transactions/(hooks)/useUserOperationCreate";
 import { serializeBigInt } from "@/utils";
 
 // -----------------------------------------------------------------------------

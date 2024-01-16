@@ -250,6 +250,10 @@ export {
   TooltipContent,
   TooltipProvider,
 } from "./components/ui/tooltip";
+export { NftImage } from "./elements/nft-image";
+export { PlaceholderOrb } from "./elements/placeholder-orb";
+export { TokenImage } from "./elements/token-image";
+export { UserOperationTimeline } from "./elements/user-operation-timeline";
 export { ThemeProvider } from "./providers/theme-provider";
 export { ReactQueryProvider } from "./providers/react-query";
 export {

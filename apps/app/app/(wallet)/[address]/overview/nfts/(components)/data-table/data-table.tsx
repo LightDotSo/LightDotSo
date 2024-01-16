@@ -17,21 +17,8 @@
 
 import type { NftData } from "@lightdotso/data";
 import { useTables } from "@lightdotso/stores";
-import { Table, TableBody, TableCell, TableRow } from "@lightdotso/ui";
-import {
-  getCoreRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { NftTable } from "@lightdotso/table";
 import type { ColumnDef } from "@tanstack/react-table";
-import { useEffect } from "react";
-import { NftCard } from "@/components/nft/nft-card";
-import { NftsWrapper } from "@/components/nft/nfts-wrapper";
-import { TableEmpty } from "@/components/state/table-empty";
 import { usePaginationQueryState } from "@/queryStates";
 
 // -----------------------------------------------------------------------------
@@ -74,9 +61,7 @@ export function DataTable({ columns, data }: DataTableProps) {
   // Table
   // ---------------------------------------------------------------------------
 
-  const table = useReactTable({
-    data,
-    columns,
+  const tableOoptions = {
     state: {
       sorting: nftSorting,
       columnVisibility: nftColumnVisibility,
@@ -93,94 +78,18 @@ export function DataTable({ columns, data }: DataTableProps) {
     onColumnFiltersChange: setNftColumnFilters,
     onColumnVisibilityChange: setNftColumnVisibility,
     onPaginationChange: setPaginationState,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-  });
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
-
-  useEffect(() => {
-    setNftTable(table);
-  }, [
-    table,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("name"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("name")?.getCanHide(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("name")?.getIsVisible(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("description"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("description")?.getCanHide(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("description")?.getIsVisible(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("spam_score"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("spam_score")?.getCanHide(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("spam_score")?.getIsVisible(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("chain"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("chain")?.getFacetedUniqueValues(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("chain")?.getCanHide(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("chain")?.getIsVisible(),
-    setNftTable,
-  ]);
+  };
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <NftsWrapper>
-      {table.getRowModel().rows?.length ? (
-        table
-          .getRowModel()
-          .rows.map(row => (
-            <NftCard
-              key={row.id}
-              nft={row.original}
-              showName={row
-                .getVisibleCells()
-                .some(cell => cell.column.id === "name")}
-              showDescription={row
-                .getVisibleCells()
-                .some(cell => cell.column.id === "description")}
-              showSpamScore={row
-                .getVisibleCells()
-                .some(cell => cell.column.id === "spam_score")}
-              showChain={row
-                .getVisibleCells()
-                .some(cell => cell.column.id === "chain")}
-            />
-          ))
-      ) : (
-        <div className="col-span-6">
-          <Table>
-            <TableBody>
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  <TableEmpty entity="nft" />
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </div>
-      )}
-    </NftsWrapper>
+    <NftTable
+      data={data}
+      columns={columns}
+      tableOptions={tableOoptions}
+      setNftTable={setNftTable}
+    />
   );
 }

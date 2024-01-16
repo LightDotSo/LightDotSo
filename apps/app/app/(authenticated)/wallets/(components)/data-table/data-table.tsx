@@ -17,30 +17,8 @@
 
 import type { WalletData } from "@lightdotso/data";
 import { useTables } from "@lightdotso/stores";
-import {
-  DataTablePagination,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@lightdotso/ui";
-import {
-  flexRender,
-  getCoreRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { WalletTable } from "@lightdotso/table";
 import type { ColumnDef } from "@tanstack/react-table";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { DataTableToolbar } from "@/app/(authenticated)/wallets/(components)/data-table/data-table-toolbar";
-import { TableEmpty } from "@/components/state/table-empty";
 import { usePaginationQueryState } from "@/queryStates";
 
 // -----------------------------------------------------------------------------
@@ -58,12 +36,6 @@ interface DataTableProps {
 // -----------------------------------------------------------------------------
 
 export function DataTable({ columns, data, pageCount }: DataTableProps) {
-  // ---------------------------------------------------------------------------
-  // Next Hooks
-  // ---------------------------------------------------------------------------
-
-  const router = useRouter();
-
   // ---------------------------------------------------------------------------
   // Query State Hooks
   // ---------------------------------------------------------------------------
@@ -87,12 +59,10 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
   } = useTables();
 
   // ---------------------------------------------------------------------------
-  // Table
+  // Table Options
   // ---------------------------------------------------------------------------
 
-  const table = useReactTable({
-    data,
-    columns,
+  const tableOptions = {
     state: {
       sorting: walletSorting,
       columnVisibility: walletColumnVisibility,
@@ -101,107 +71,23 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
       pagination: paginationState,
     },
     pageCount: pageCount,
-    paginateExpandedRows: false,
-    enableRowSelection: true,
-    manualPagination: true,
     onRowSelectionChange: setWalletRowSelection,
     onSortingChange: setWalletSorting,
     onColumnFiltersChange: setWalletColumnFilters,
     onColumnVisibilityChange: setWalletColumnVisibility,
     onPaginationChange: setPaginationState,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-  });
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
-
-  useEffect(() => {
-    setWalletTable(table);
-  }, [
-    table,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("address"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("address")?.getFilterValue(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("name"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("name")?.getFacetedUniqueValues(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("name")?.getCanHide(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("name")?.getIsVisible(),
-    setWalletTable,
-  ]);
+  };
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <>
-      <DataTableToolbar table={table} />
-      <div className="space-y-4">
-        <div className="rounded-md border border-border bg-background">
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map(headerGroup => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map(header => {
-                    return (
-                      <TableHead key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
-                      </TableHead>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map(row => (
-                  <TableRow
-                    key={row.id}
-                    className="cursor-pointer"
-                    data-state={row.getIsSelected() && "selected"}
-                    onClick={() => router.push(`/${row.original.address}`)}
-                  >
-                    {row.getVisibleCells().map(cell => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    <TableEmpty entity="wallet" />
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-      </div>
-      <DataTablePagination table={table} />
-    </>
+    <WalletTable
+      data={data}
+      columns={columns}
+      tableOptions={tableOptions}
+      setWalletTable={setWalletTable}
+    />
   );
 }

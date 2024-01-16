@@ -15,35 +15,14 @@
 
 "use client";
 
-import type { TokenData, WalletSettingsData } from "@lightdotso/data";
+import type { WalletSettingsData } from "@lightdotso/data";
 import { useSuspenseQueryTokens } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useTables } from "@lightdotso/stores";
-import { columns } from "@lightdotso/table";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@lightdotso/ui";
-import { cn } from "@lightdotso/utils";
+import { TokenTable } from "@lightdotso/table";
 import { useQueryClient } from "@tanstack/react-query";
-import {
-  flexRender,
-  getCoreRowModel,
-  getExpandedRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import { useEffect, type FC } from "react";
+import { type FC } from "react";
 import type { Address } from "viem";
-import { TableEmpty } from "@/components/state/table-empty";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -91,12 +70,10 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
   });
 
   // ---------------------------------------------------------------------------
-  // Table
+  // Table Options
   // ---------------------------------------------------------------------------
 
-  const table = useReactTable({
-    data: tokens ?? ([] as TokenData[]),
-    columns: columns,
+  const tableOptions = {
     state: {
       sorting: tokenSorting,
       columnVisibility: tokenColumnVisibility,
@@ -113,86 +90,11 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
     manualPagination: true,
     paginateExpandedRows: true,
     onExpandedChange: setTokenExpandedState,
-    getSubRows: row => row.group?.tokens,
-    getCoreRowModel: getCoreRowModel(),
-    getExpandedRowModel: getExpandedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-  });
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
-
-  useEffect(() => {
-    if (!table.getIsAllRowsExpanded()) {
-      table.toggleAllRowsExpanded();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  };
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <Table>
-      <TableHeader>
-        {table.getHeaderGroups().map(headerGroup => (
-          <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map(header => {
-              return (
-                <TableHead key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
-                </TableHead>
-              );
-            })}
-          </TableRow>
-        ))}
-      </TableHeader>
-      <TableBody>
-        {table.getRowModel().rows?.length ? (
-          table
-            .getRowModel()
-            .rows.slice(0, limit || table.getRowModel().rows?.length)
-            .map(row => (
-              <TableRow
-                key={row.id}
-                className={cn(
-                  row.getCanExpand() && "cursor-pointer",
-                  row.getCanExpand() && row.getIsExpanded() && "border-b-0",
-                )}
-                data-state={row.getIsSelected() && "selected"}
-                data-expanded={row.getParentRow() ? "true" : "false"}
-                onClick={() => {
-                  if (row.getCanExpand()) {
-                    row.getToggleExpandedHandler()();
-                  }
-                }}
-              >
-                {row.getVisibleCells().map(cell => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-        ) : (
-          <TableRow>
-            <TableCell colSpan={columns.length} className="h-24 text-center">
-              <TableEmpty entity="token" />
-            </TableCell>
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
-  );
+  return <TokenTable data={tokens} tableOptions={tableOptions} />;
 };

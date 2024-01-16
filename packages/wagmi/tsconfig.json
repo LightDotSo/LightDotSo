@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "ES2021"
+    "outDir": "./dist"
   },
-  "include": ["src/generated.ts"]
+  "exclude": ["dist", "build", "node_modules"],
+  "extends": "@lightdotso/tsconfig/node.json",
+  "include": ["."]
 }

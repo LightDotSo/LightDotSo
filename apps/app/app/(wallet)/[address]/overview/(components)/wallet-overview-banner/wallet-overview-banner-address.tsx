@@ -30,13 +30,13 @@ import {
   TooltipContent,
   TooltipTrigger,
   TooltipProvider,
+  PlaceholderOrb,
 } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
 import { ChevronDown, Copy } from "lucide-react";
 import { useCallback, type FC } from "react";
 import type { Address } from "viem";
 import { useEnsName } from "wagmi";
-import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import { useCopy } from "@/hooks";
 import { successToast } from "@/utils";
 

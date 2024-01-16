@@ -23,33 +23,117 @@ import {
   TableRow,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
-import type { ColumnDef, TableOptions } from "@tanstack/react-table";
+import type {
+  ColumnDef,
+  TableOptions,
+  Table as ReactTable,
+} from "@tanstack/react-table";
 import {
   flexRender,
   getCoreRowModel,
+  getExpandedRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import type { FC } from "react";
+import { useEffect, type FC } from "react";
+import { TableEmpty } from "../state/table-empty";
+import { tokenColumns } from "./token-columns";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
 
 type TokenTableProps = {
-  data: TokenData[];
-  tableOptions?: Omit<TableOptions<TokenData>, "columns">;
-  columns: ColumnDef<TokenData>[];
+  data: TokenData[] | null;
+  tableOptions?: Omit<
+    TableOptions<TokenData>,
+    "data" | "columns" | "getCoreRowModel"
+  >;
+  columns?: ColumnDef<TokenData>[];
+  setTokenTable?: (tableObject: ReactTable<TokenData>) => void;
   limit?: number;
 };
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export const TokenTable: FC<TokenTableProps> = ({
   data,
   tableOptions,
-  columns,
+  columns = tokenColumns,
   limit,
+  setTokenTable,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Table
+  // ---------------------------------------------------------------------------
+
   const table = useReactTable({
     ...tableOptions,
-    getCoreRowModel: getCoreRowModel(),
-    data,
+    data: data || [],
     columns,
+    enableExpanding: true,
+    enableRowSelection: false,
+    manualPagination: true,
+    paginateExpandedRows: true,
+    getSubRows: row => row.group?.tokens,
+    getCoreRowModel: getCoreRowModel(),
+    getExpandedRowModel: getExpandedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
   });
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    if (setTokenTable) {
+      setTokenTable(table);
+    }
+  }, [
+    table,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("chain_id"),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("chain_id")?.getCanHide(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("chain_id")?.getFacetedUniqueValues(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("chain_id")?.getIsVisible(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("sparkline"),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("sparkline")?.getIsVisible(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("price"),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("price")?.getIsVisible(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("actions"),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("actions")?.getIsVisible(),
+    setTokenTable,
+  ]);
+
+  useEffect(() => {
+    if (!table.getIsAllRowsExpanded()) {
+      table.toggleAllRowsExpanded();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
   return (
     <Table>
@@ -101,7 +185,7 @@ export const TokenTable: FC<TokenTableProps> = ({
         ) : (
           <TableRow>
             <TableCell colSpan={columns.length} className="h-24 text-center">
-              {/* <TableEmpty entity="token" /> */}
+              <TableEmpty entity="token" />
             </TableCell>
           </TableRow>
         )}

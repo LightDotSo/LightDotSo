@@ -34,6 +34,7 @@ import {
   CommandList,
   CommandSeparator,
   Skeleton,
+  PlaceholderOrb,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import {
@@ -48,7 +49,6 @@ import { Suspense, useCallback, useEffect, useState } from "react";
 import type { UIEvent, FC, ComponentPropsWithoutRef } from "react";
 import { getAddress, isAddress } from "viem";
 import type { Address } from "viem";
-import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import { useIsMounted } from "@/hooks";
 
 // -----------------------------------------------------------------------------

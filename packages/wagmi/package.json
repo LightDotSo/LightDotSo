@@ -12,17 +12,24 @@
   },
   "license": "AGPL-3.0-or-later",
   "author": "Light, Inc.",
-  "main": "src/index.ts",
+  "main": "./src/index.ts",
   "files": [
-    "src/index.ts"
+    "dist/**",
+    "src/**"
   ],
   "scripts": {
+    "build": "tsup",
+    "clean": "rimraf -rf dist",
+    "prepack": "clean-package",
+    "postpack": "clean-package restore",
+    "tsc": "tsc --noEmit",
     "wagmi": "cd ../.. && pnpm wagmi:generate"
   },
   "dependencies": {
     "wagmi": "^2.2.1"
   },
   "publishConfig": {
-    "access": "restricted"
-  }
+    "access": "public"
+  },
+  "clean-package": "../../clean-package.config.json"
 }

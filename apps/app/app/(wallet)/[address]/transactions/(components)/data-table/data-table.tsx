@@ -18,23 +18,10 @@
 import type { UserOperationData } from "@lightdotso/data";
 import { useQueryConfiguration } from "@lightdotso/query";
 import { useTables } from "@lightdotso/stores";
-import { Table, TableBody, TableCell, TableRow } from "@lightdotso/ui";
-import {
-  getCoreRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { UserOperationTable } from "@lightdotso/table";
 import type { ColumnDef } from "@tanstack/react-table";
-import { useEffect } from "react";
 import type { Address } from "viem";
-import { TransactionCard } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transaction-card";
-import { TableEmpty } from "@/components/state/table-empty";
 import { usePaginationQueryState } from "@/queryStates";
-import { groupByDate } from "@/utils/group";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -83,9 +70,7 @@ export function DataTable({
   // Table
   // ---------------------------------------------------------------------------
 
-  const table = useReactTable({
-    data,
-    columns,
+  const tableOptions = {
     state: {
       sorting: userOperationSorting,
       columnVisibility: userOperationColumnVisibility,
@@ -94,44 +79,12 @@ export function DataTable({
       pagination: paginationState,
     },
     pageCount: pageCount,
-    paginateExpandedRows: false,
-    enableRowSelection: true,
-    manualPagination: true,
     onRowSelectionChange: setUserOperationRowSelection,
     onSortingChange: setUserOperationSorting,
     onColumnFiltersChange: setUserOperationColumnFilters,
     onColumnVisibilityChange: setUserOperationColumnVisibility,
     onPaginationChange: setPaginationState,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-  });
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
-
-  useEffect(() => {
-    setUserOperationTable(table);
-  }, [
-    table,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("chain_id"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("chain_id")?.getCanHide(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("chain_id")?.getIsVisible(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("chain_id")?.getFacetedUniqueValues(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("hash")?.getCanHide(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("hash")?.getIsVisible(),
-    setUserOperationTable,
-  ]);
+  };
 
   // ---------------------------------------------------------------------------
   // Query
@@ -142,56 +95,17 @@ export function DataTable({
   });
 
   // ---------------------------------------------------------------------------
-  // Local Variables
-  // ---------------------------------------------------------------------------
-
-  const items = table
-    .getRowModel()
-    .rows.map(row => ({ original: row.original, row }));
-
-  const groupedItems = groupByDate(items);
-
-  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    // eslint-disable-next-line react/jsx-no-useless-fragment
-    <>
-      {Object.keys(groupedItems).length > 0 && configuration ? (
-        <>
-          {Object.entries(groupedItems).map(([date, itemsInSameDate]) => (
-            <div key={date} className="mb-4 space-y-3">
-              <div className="text-text-weak">{date}</div>
-              <div className="rounded-md border border-border bg-background">
-                <Table>
-                  <TableBody className="overflow-hidden">
-                    {itemsInSameDate.map(({ original: userOperation, row }) => (
-                      <TransactionCard
-                        key={userOperation.hash}
-                        address={address}
-                        configuration={configuration}
-                        userOperation={userOperation}
-                        row={row}
-                      />
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </div>
-          ))}
-        </>
-      ) : (
-        <Table>
-          <TableBody>
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                <TableEmpty entity="transaction" />
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      )}
-    </>
+    <UserOperationTable
+      address={address}
+      columns={columns}
+      data={data}
+      configuration={configuration ?? undefined}
+      tableOptions={tableOptions}
+      setUserOperationTable={setUserOperationTable}
+    />
   );
 }

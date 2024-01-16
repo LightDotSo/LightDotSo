@@ -19,29 +19,10 @@ import type { TransactionData, WalletSettingsData } from "@lightdotso/data";
 import { useSuspenseQueryTransactions } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useTables } from "@lightdotso/stores";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@lightdotso/ui";
+import { TransactionTable, transactionColumns } from "@lightdotso/table";
 import { useQueryClient } from "@tanstack/react-query";
-import {
-  flexRender,
-  getCoreRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
 import type { FC } from "react";
 import type { Address } from "viem";
-import { columns } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/columns";
-import { TableEmpty } from "@/components/state/table-empty";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -90,12 +71,12 @@ export const TransactionsList: FC<TransactionsListProps> = ({
   });
 
   // ---------------------------------------------------------------------------
-  // Table
+  // Table Options
   // ---------------------------------------------------------------------------
 
-  const table = useReactTable({
+  const tableOptions = {
     data: transactions ?? ([] as TransactionData[]),
-    columns: columns,
+    columns: transactionColumns,
     state: {
       sorting: transactionSorting,
       columnVisibility: transactionColumnVisibility,
@@ -110,64 +91,11 @@ export const TransactionsList: FC<TransactionsListProps> = ({
     enableRowSelection: false,
     onSortingChange: setTransactionSorting,
     onColumnVisibilityChange: setTransactionColumnVisibility,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-  });
+  };
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <Table>
-      <TableHeader>
-        {table.getHeaderGroups().map(headerGroup => (
-          <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map(header => {
-              return (
-                <TableHead key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
-                </TableHead>
-              );
-            })}
-          </TableRow>
-        ))}
-      </TableHeader>
-      <TableBody>
-        {table.getRowModel().rows?.length ? (
-          table
-            .getRowModel()
-            .rows.slice(0, limit || table.getRowModel().rows?.length)
-            .filter(row => row.getVisibleCells().length > 0)
-            .map(row => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
-                {row.getVisibleCells().map(cell => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-        ) : (
-          <TableRow>
-            <TableCell colSpan={columns.length} className="h-24 text-center">
-              <TableEmpty entity="transaction" />
-            </TableCell>
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
-  );
+  return <TransactionTable data={transactions} tableOptions={tableOptions} />;
 };

@@ -9,7 +9,7 @@ import * as React from "react";
 
 export const decorators = [
   Story => (
-    <ReactQueryProvider>
+    <ReactQueryProvider showDevTools={false}>
       <Story />
       <Toaster />
     </ReactQueryProvider>
@@ -29,6 +29,11 @@ const preview: Preview = {
       darkClass: "dark",
       lightClass: "light",
       stylePreview: true,
+    },
+    options: {
+      storySort: {
+        order: ["theme", "ui", "template", "table"],
+      },
     },
     viewport: {
       viewports: {
