@@ -97,7 +97,7 @@ export function DataTableToolbar({ isTestnet, table }: DataTableToolbarProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <>
+    <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
         {table.getColumn("chain_id") && (
           <DataTableFacetedFilter
@@ -129,6 +129,6 @@ export function DataTableToolbar({ isTestnet, table }: DataTableToolbarProps) {
           status: "Status",
         }}
       />
-    </>
+    </div>
   );
 }
