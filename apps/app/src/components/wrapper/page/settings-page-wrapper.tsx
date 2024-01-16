@@ -37,7 +37,7 @@ export function SettingsPageWrapper({
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="mb-12 mt-8 flex flex-col space-y-8 lg:mt-12 lg:flex-row lg:space-x-32 lg:space-y-0">
+    <div className="mb-12 mt-8 flex flex-col space-y-8 lg:mt-12 lg:flex-row lg:space-x-16 lg:space-y-0">
       <aside className="lg:w-1/5">{nav}</aside>
       <div className="flex-1 lg:max-w-3xl">{children}</div>
     </div>

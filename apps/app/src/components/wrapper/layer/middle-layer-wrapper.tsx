@@ -14,13 +14,16 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { ReactNode } from "react";
-import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
+import {
+  BaseLayerWrapper,
+  type BaseLayerWrapperProps,
+} from "@/components/wrapper/layer/base-layer-wrapper";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface MiddleLayerWrapperProps {
+export interface MiddleLayerWrapperProps extends BaseLayerWrapperProps {
   children: ReactNode;
 }
 
@@ -28,13 +31,16 @@ interface MiddleLayerWrapperProps {
 // Layout
 // -----------------------------------------------------------------------------
 
-export function MiddleLayerWrapper({ children }: MiddleLayerWrapperProps) {
+export function MiddleLayerWrapper({
+  children,
+  size,
+}: MiddleLayerWrapperProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <BaseLayerWrapper className="border-b border-border py-4">
+    <BaseLayerWrapper size={size} className="border-b border-border py-4">
       {children}
     </BaseLayerWrapper>
   );

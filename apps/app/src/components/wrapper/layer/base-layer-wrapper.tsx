@@ -14,13 +14,31 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { cn } from "@lightdotso/utils";
+import { cva, type VariantProps } from "class-variance-authority";
 import type { ReactNode } from "react";
+
+// -----------------------------------------------------------------------------
+// Styles
+// -----------------------------------------------------------------------------
+
+const baseLayerWrapperVariants = cva(["px-0"], {
+  variants: {
+    size: {
+      default: "max-w-7xl",
+      sm: "max-w-5xl",
+    },
+  },
+  defaultVariants: {
+    size: "default",
+  },
+});
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface BaseLayerWrapperProps {
+export interface BaseLayerWrapperProps
+  extends VariantProps<typeof baseLayerWrapperVariants> {
   children: ReactNode;
   className?: string;
 }
@@ -32,6 +50,7 @@ interface BaseLayerWrapperProps {
 export function BaseLayerWrapper({
   children,
   className,
+  size,
 }: BaseLayerWrapperProps) {
   // ---------------------------------------------------------------------------
   // Render
@@ -44,7 +63,9 @@ export function BaseLayerWrapper({
         className,
       )}
     >
-      <div className="mx-auto max-w-7xl flex-1">{children}</div>
+      <div className={cn("mx-auto flex-1", baseLayerWrapperVariants({ size }))}>
+        {children}
+      </div>
     </div>
   );
 }
