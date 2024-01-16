@@ -22,6 +22,7 @@ import {
   TableHeader,
   TableRow,
 } from "@lightdotso/ui";
+import { cn } from "@lightdotso/utils";
 import type {
   ColumnDef,
   TableOptions,
@@ -44,7 +45,6 @@ import { groupByDate } from "../group";
 import { TableEmpty } from "../state/table-empty";
 import { UserOperationCardTransaction } from "./card/user-operation-card-transaction";
 import { userOperationColumns } from "./user-operation-columns";
-import { cn } from "@lightdotso/utils";
 
 // -----------------------------------------------------------------------------
 // Props
