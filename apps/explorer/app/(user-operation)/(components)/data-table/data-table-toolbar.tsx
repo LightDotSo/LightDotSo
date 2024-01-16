@@ -36,6 +36,7 @@ import { usePaginationQueryState } from "@/queryStates";
 // -----------------------------------------------------------------------------
 
 export interface DataTableToolbarProps {
+  isTestnet?: boolean;
   table: Table<UserOperationData>;
 }
 
@@ -43,7 +44,7 @@ export interface DataTableToolbarProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export function DataTableToolbar({ table }: DataTableToolbarProps) {
+export function DataTableToolbar({ isTestnet, table }: DataTableToolbarProps) {
   const { wallet } = useAuth();
   const { userOperationColumnFilters } = useTables();
 
@@ -67,11 +68,6 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
 
   const queryClient = useQueryClient();
 
-  const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(
-      queryKeys.wallet.settings({ address: wallet as Address }).queryKey,
-    );
-
   const currentData: UserOperationData[] | undefined = queryClient.getQueryData(
     queryKeys.user_operation.list({
       address: wallet as Address,
@@ -79,7 +75,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
       order: "asc",
       offset: offsetCount,
       limit: paginationState.pageSize,
-      is_testnet: walletSettings?.is_enabled_testnet ?? false,
+      is_testnet: isTestnet ?? false,
     }).queryKey,
   );
 

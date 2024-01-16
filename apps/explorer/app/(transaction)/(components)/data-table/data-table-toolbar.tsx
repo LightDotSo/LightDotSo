@@ -36,6 +36,7 @@ import { usePaginationQueryState } from "@/queryStates";
 // -----------------------------------------------------------------------------
 
 interface DataTableToolbarProps {
+  isTestnet?: boolean;
   table: Table<TransactionData>;
 }
 
@@ -43,7 +44,7 @@ interface DataTableToolbarProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export function DataTableToolbar({ table }: DataTableToolbarProps) {
+export function DataTableToolbar({ isTestnet, table }: DataTableToolbarProps) {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -71,17 +72,12 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
 
   const queryClient = useQueryClient();
 
-  const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(
-      queryKeys.wallet.settings({ address: wallet as Address }).queryKey,
-    );
-
   const currentData: TransactionData[] | undefined = queryClient.getQueryData(
     queryKeys.transaction.list({
       address: wallet as Address,
       offset: offsetCount,
       limit: paginationState.pageSize,
-      is_testnet: walletSettings?.is_enabled_testnet ?? false,
+      is_testnet: isTestnet ?? false,
     }).queryKey,
   );
 
