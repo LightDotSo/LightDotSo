@@ -40,6 +40,8 @@ type Story = StoryObj<typeof OwnerTable>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <OwnerTable data={configurationGetData.owners} />,
+  render: args => (
+    <OwnerTable isLoading={false} data={configurationGetData.owners} />
+  ),
   args: {},
 };

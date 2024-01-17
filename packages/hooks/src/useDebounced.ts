@@ -13,47 +13,41 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import { useQueryConfiguration } from "@lightdotso/query";
-import { ownerColumns } from "@lightdotso/table";
-import { TableSectionWrapper } from "@lightdotso/ui";
-import { type FC } from "react";
-import type { Address } from "viem";
-import { DataTable } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table";
+import { useState, useEffect } from "react";
 
 // -----------------------------------------------------------------------------
-// Props
+// Hook
 // -----------------------------------------------------------------------------
 
-interface OwnersDataTableProps {
-  address: Address;
+export function useDebounced(value: boolean, delay: number): boolean {
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    let handler: NodeJS.Timeout;
+
+    if (debouncedValue === true && value === false) {
+      handler = setTimeout(() => {
+        setDebouncedValue(value);
+      }, delay);
+    } else {
+      setDebouncedValue(value);
+    }
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay, debouncedValue]);
+
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
+  return debouncedValue;
 }
-
-// -----------------------------------------------------------------------------
-// Component
-// -----------------------------------------------------------------------------
-
-export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
-  // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
-
-  const { configuration, isConfigurationLoading } = useQueryConfiguration({
-    address: address,
-  });
-
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <TableSectionWrapper>
-      <DataTable
-        isLoading={isConfigurationLoading}
-        data={configuration?.owners ?? []}
-        columns={ownerColumns}
-      />
-    </TableSectionWrapper>
-  );
-};

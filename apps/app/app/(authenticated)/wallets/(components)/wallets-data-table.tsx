@@ -53,19 +53,23 @@ export const WalletsDataTable: FC = () => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const { wallets } = useQueryWallets({
+  const { wallets, isWalletsLoading } = useQueryWallets({
     address: address as Address,
     limit: paginationState.pageSize,
     offset: offsetCount,
   });
 
-  const { walletsCount } = useQueryWalletsCount({
+  const { walletsCount, isWalletsCountLoading } = useQueryWalletsCount({
     address: address as Address,
   });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
+
+  const isLoading = useMemo(() => {
+    return isWalletsLoading || isWalletsCountLoading;
+  }, [isWalletsLoading, isWalletsCountLoading]);
 
   const pageCount = useMemo(() => {
     if (!walletsCount || !walletsCount?.count) {
@@ -81,6 +85,7 @@ export const WalletsDataTable: FC = () => {
   return (
     <TableSectionWrapper>
       <DataTable
+        isLoading={isLoading}
         data={wallets ?? []}
         columns={walletColumns}
         pageCount={pageCount ?? 0}

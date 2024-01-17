@@ -24,7 +24,7 @@ import { TableSectionWrapper } from "@lightdotso/ui";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(user-operation)/(components)/data-table/data-table";
-import { usePaginationQueryState } from "@/queryStates";
+import { usePaginationQueryState, useIsTestnetQueryState } from "@/queryStates";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -32,7 +32,6 @@ import { usePaginationQueryState } from "@/queryStates";
 
 interface UserOperationsDataTableProps {
   address: Address | null;
-  isTestnet: boolean;
 }
 
 // -----------------------------------------------------------------------------
@@ -41,12 +40,12 @@ interface UserOperationsDataTableProps {
 
 export const UserOperationsDataTable: FC<UserOperationsDataTableProps> = ({
   address,
-  isTestnet,
 }) => {
   // ---------------------------------------------------------------------------
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
+  const [isTestnetState] = useIsTestnetQueryState();
   const [paginationState] = usePaginationQueryState();
 
   // ---------------------------------------------------------------------------
@@ -61,24 +60,29 @@ export const UserOperationsDataTable: FC<UserOperationsDataTableProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { userOperations } = useQueryUserOperations({
+  const { userOperations, isUserOperationsLoading } = useQueryUserOperations({
     address: address ?? null,
     status: "history",
     order: "asc",
     limit: paginationState.pageSize,
     offset: offsetCount,
-    is_testnet: isTestnet,
+    is_testnet: isTestnetState ?? false,
   });
 
-  const { userOperationsCount } = useQueryUserOperationsCount({
-    address: address ?? null,
-    status: "history",
-    is_testnet: isTestnet,
-  });
+  const { userOperationsCount, isUserOperationsCountLoading } =
+    useQueryUserOperationsCount({
+      address: address ?? null,
+      status: "history",
+      is_testnet: isTestnetState ?? false,
+    });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
+
+  const isLoading = useMemo(() => {
+    return isUserOperationsLoading || isUserOperationsCountLoading;
+  }, [isUserOperationsLoading, isUserOperationsCountLoading]);
 
   const pageCount = useMemo(() => {
     if (!userOperationsCount || !userOperationsCount?.count) {
@@ -94,6 +98,7 @@ export const UserOperationsDataTable: FC<UserOperationsDataTableProps> = ({
   return (
     <TableSectionWrapper>
       <DataTable
+        isLoading={isLoading}
         data={userOperations ?? []}
         columns={userOperationColumns}
         pageCount={pageCount ?? 0}

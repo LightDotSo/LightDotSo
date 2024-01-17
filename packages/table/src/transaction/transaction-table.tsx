@@ -14,7 +14,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { TransactionData } from "@lightdotso/data";
+import { useDebounced } from "@lightdotso/hooks";
 import {
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -55,6 +57,7 @@ type TransactionTableProps = {
   >;
   columns?: ColumnDef<TransactionData>[];
   setTransactionTable?: (tableObject: ReactTable<TransactionData>) => void;
+  isLoading: boolean;
   limit?: number;
 };
 
@@ -66,6 +69,7 @@ export const TransactionTable: FC<TransactionTableProps> = ({
   data,
   tableOptions,
   columns = transactionColumns,
+  isLoading,
   limit,
   setTransactionTable,
 }) => {
@@ -76,7 +80,7 @@ export const TransactionTable: FC<TransactionTableProps> = ({
   const table = useReactTable({
     ...tableOptions,
     data: data || [],
-    columns,
+    columns: columns,
     enableExpanding: false,
     enableRowSelection: false,
     manualPagination: true,
@@ -95,10 +99,11 @@ export const TransactionTable: FC<TransactionTableProps> = ({
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (setTransactionTable) {
+    if (!isLoading && setTransactionTable) {
       setTransactionTable(table);
     }
   }, [
+    isLoading,
     table,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table.getColumn("chain_id"),
@@ -122,6 +127,12 @@ export const TransactionTable: FC<TransactionTableProps> = ({
     // table.getColumn("actions")?.getIsVisible(),
     setTransactionTable,
   ]);
+
+  // ---------------------------------------------------------------------------
+  // Debounced Hooks
+  // ---------------------------------------------------------------------------
+
+  const delayedIsLoading = useDebounced(isLoading, 1000);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -170,6 +181,21 @@ export const TransactionTable: FC<TransactionTableProps> = ({
                 {row.getVisibleCells().map(cell => (
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+        ) : delayedIsLoading ? (
+          Array(10)
+            .fill(null)
+            .map((_, index) => (
+              <TableRow key={index}>
+                {table.getVisibleLeafColumns().map(column => (
+                  <TableCell
+                    key={column.id}
+                    style={{ width: column.getSize() }}
+                  >
+                    <Skeleton className="h-6 w-full" />
                   </TableCell>
                 ))}
               </TableRow>

@@ -44,7 +44,9 @@ export const useQueryUserOperations = (params: UserOperationListParams) => {
     }).queryKey,
   );
 
-  const { data: userOperations } = useQuery<UserOperationData[] | null>({
+  const { data: userOperations, isLoading: isUserOperationsLoading } = useQuery<
+    UserOperationData[] | null
+  >({
     queryKey: queryKeys.user_operation.list({
       address: params.address,
       limit: params.limit,
@@ -88,5 +90,6 @@ export const useQueryUserOperations = (params: UserOperationListParams) => {
 
   return {
     userOperations,
+    isUserOperationsLoading,
   };
 };

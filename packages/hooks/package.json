@@ -35,6 +35,7 @@
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
+    "lodash": "^4.17.21",
     "next": "^14.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -44,6 +45,7 @@
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
+    "@types/lodash": "^4.14.202",
     "@types/node": "^20.11.4",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",

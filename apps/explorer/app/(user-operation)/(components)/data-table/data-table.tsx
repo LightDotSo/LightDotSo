@@ -27,6 +27,7 @@ import { usePaginationQueryState } from "@/queryStates";
 // -----------------------------------------------------------------------------
 
 interface DataTableProps {
+  isLoading: boolean;
   columns: ColumnDef<UserOperationData>[];
   data: UserOperationData[];
   pageCount: number;
@@ -36,7 +37,12 @@ interface DataTableProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export function DataTable({ columns, data, pageCount }: DataTableProps) {
+export function DataTable({
+  isLoading,
+  columns,
+  data,
+  pageCount,
+}: DataTableProps) {
   // ---------------------------------------------------------------------------
   // Query State Hooks
   // ---------------------------------------------------------------------------
@@ -93,6 +99,7 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
 
   return (
     <UserOperationTable
+      isLoading={isLoading}
       address={null}
       columns={columns}
       data={data}

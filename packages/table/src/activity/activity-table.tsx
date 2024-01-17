@@ -14,7 +14,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { ActivityData } from "@lightdotso/data";
+import { useDebounced } from "@lightdotso/hooks";
 import {
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -47,6 +49,7 @@ import { activityColumns } from "./activity-columns";
 // -----------------------------------------------------------------------------
 
 type ActivityTableProps = {
+  isLoading: boolean;
   data: ActivityData[] | null;
   tableOptions?: Omit<
     TableOptions<ActivityData>,
@@ -61,6 +64,7 @@ type ActivityTableProps = {
 // -----------------------------------------------------------------------------
 
 export const ActivityTable: FC<ActivityTableProps> = ({
+  isLoading,
   data,
   tableOptions,
   columns = activityColumns,
@@ -125,6 +129,12 @@ export const ActivityTable: FC<ActivityTableProps> = ({
   ]);
 
   // ---------------------------------------------------------------------------
+  // Debounced Hooks
+  // ---------------------------------------------------------------------------
+
+  const delayedIsLoading = useDebounced(isLoading, 1000);
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -163,6 +173,21 @@ export const ActivityTable: FC<ActivityTableProps> = ({
               ))}
             </TableRow>
           ))
+        ) : delayedIsLoading ? (
+          Array(10)
+            .fill(null)
+            .map((_, index) => (
+              <TableRow key={index}>
+                {table.getVisibleLeafColumns().map(column => (
+                  <TableCell
+                    key={column.id}
+                    style={{ width: column.getSize() }}
+                  >
+                    <Skeleton className="h-6 w-full" />
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
         ) : (
           <TableRow>
             <TableCell colSpan={columns.length} className="h-24 text-center">

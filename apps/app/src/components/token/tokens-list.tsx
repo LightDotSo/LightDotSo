@@ -96,5 +96,7 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
   // Render
   // ---------------------------------------------------------------------------
 
-  return <TokenTable data={tokens} tableOptions={tableOptions} />;
+  return (
+    <TokenTable isLoading={false} data={tokens} tableOptions={tableOptions} />
+  );
 };

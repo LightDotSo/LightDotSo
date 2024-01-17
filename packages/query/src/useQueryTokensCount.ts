@@ -42,42 +42,44 @@ export const useQueryTokensCount = (params: TokenListCountParams) => {
     }).queryKey,
   );
 
-  const { data: tokensCount } = useQuery<TokenCountData | null>({
-    queryKey: queryKeys.token.listCount({
-      address: params.address as Address,
-      is_testnet: params.is_testnet,
-      chain_ids: null,
-    }).queryKey,
-    queryFn: async () => {
-      if (typeof params.address === "undefined") {
-        return null;
-      }
+  const { data: tokensCount, isLoading: isTokensCountLoading } =
+    useQuery<TokenCountData | null>({
+      queryKey: queryKeys.token.listCount({
+        address: params.address as Address,
+        is_testnet: params.is_testnet,
+        chain_ids: null,
+      }).queryKey,
+      queryFn: async () => {
+        if (typeof params.address === "undefined") {
+          return null;
+        }
 
-      const res = await getTokensCount(
-        {
-          params: {
-            query: {
-              address: params.address,
-              is_testnet: params.is_testnet,
+        const res = await getTokensCount(
+          {
+            params: {
+              query: {
+                address: params.address,
+                is_testnet: params.is_testnet,
+              },
             },
           },
-        },
-        clientType,
-      );
+          clientType,
+        );
 
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentCountData ?? null;
-        },
-      );
-    },
-  });
+        // Return if the response is 200
+        return res.match(
+          data => {
+            return data;
+          },
+          _ => {
+            return currentCountData ?? null;
+          },
+        );
+      },
+    });
 
   return {
     tokensCount,
+    isTokensCountLoading,
   };
 };

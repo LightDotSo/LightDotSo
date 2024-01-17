@@ -62,5 +62,11 @@ export const NftsDataTable: FC<NftsDataTableProps> = ({ address }) => {
     return null;
   }
 
-  return <DataTable data={nftPage.nfts ?? []} columns={nftColumns} />;
+  return (
+    <DataTable
+      isLoading={false}
+      data={nftPage.nfts ?? []}
+      columns={nftColumns}
+    />
+  );
 };

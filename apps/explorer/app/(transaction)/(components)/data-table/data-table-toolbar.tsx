@@ -22,6 +22,8 @@ import {
   Button,
   DataTableFacetedFilter,
   DataTableViewOptions,
+  Label,
+  Switch,
   ToolbarSectionWrapper,
 } from "@lightdotso/ui";
 import { getChainNameById } from "@lightdotso/utils";
@@ -30,14 +32,13 @@ import { useQueryClient } from "@tanstack/react-query";
 import type { Table } from "@tanstack/react-table";
 import { useMemo } from "react";
 import type { Address } from "viem";
-import { usePaginationQueryState } from "@/queryStates";
+import { useIsTestnetQueryState, usePaginationQueryState } from "@/queryStates";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
 interface DataTableToolbarProps {
-  isTestnet?: boolean;
   table: Table<TransactionData>;
 }
 
@@ -45,7 +46,7 @@ interface DataTableToolbarProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export function DataTableToolbar({ isTestnet, table }: DataTableToolbarProps) {
+export function DataTableToolbar({ table }: DataTableToolbarProps) {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -57,6 +58,7 @@ export function DataTableToolbar({ isTestnet, table }: DataTableToolbarProps) {
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
+  const [isTestnetState, setIsTestnetState] = useIsTestnetQueryState();
   const [paginationState] = usePaginationQueryState();
 
   // ---------------------------------------------------------------------------
@@ -78,7 +80,7 @@ export function DataTableToolbar({ isTestnet, table }: DataTableToolbarProps) {
       address: wallet as Address,
       offset: offsetCount,
       limit: paginationState.pageSize,
-      is_testnet: isTestnet ?? false,
+      is_testnet: isTestnetState ?? false,
     }).queryKey,
   );
 
@@ -123,14 +125,24 @@ export function DataTableToolbar({ isTestnet, table }: DataTableToolbarProps) {
           </Button>
         )}
       </div>
-      <DataTableViewOptions
-        table={table}
-        columnMapping={{
-          chain_id: "Chain",
-          hash: "Tx Hash",
-          timestamp: "Timestamp",
-        }}
-      />
+      <div className="flex items-center space-x-2">
+        <Switch
+          id="is-testnet"
+          checked={isTestnetState ?? false}
+          onCheckedChange={() => setIsTestnetState(!isTestnetState)}
+        />
+        <Label className="text-xs text-text-primary" htmlFor="is-testnet">
+          Include Testnet
+        </Label>
+        <DataTableViewOptions
+          table={table}
+          columnMapping={{
+            chain_id: "Chain",
+            hash: "Tx Hash",
+            timestamp: "Timestamp",
+          }}
+        />
+      </div>
     </ToolbarSectionWrapper>
   );
 }
