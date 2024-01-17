@@ -30,13 +30,13 @@ export enum Category {
 
 export const TITLES: Record<Category, CategoryObject> = {
   [Category.UserOperations]: {
-    title: "User Operations",
-    description: "See all user operations.",
+    title: "Light Explorer",
+    description: "See all Light transactions executed on our platform.",
     subcategories: {},
   },
   [Category.Transactions]: {
     title: "Transactions",
-    description: "See all transactions.",
+    description: "See all transactions to and from Light accounts.",
     subcategories: {},
   },
 };

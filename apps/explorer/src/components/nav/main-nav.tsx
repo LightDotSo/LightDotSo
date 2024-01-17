@@ -29,7 +29,7 @@ import { DashboardIcon, WidthIcon } from "@radix-ui/react-icons";
 
 const tabs: RawTab[] = [
   {
-    label: "User Operations",
+    label: "Explorer",
     id: "user-operations",
     href: "/",
     icon: (
