@@ -48,11 +48,11 @@ export const AddressPinPointer: FC<AddressPinPointerProps> = ({
 
   <span className="relative inline-block">
     <span className="relative">
-      <Avatar className="h-6 w-6">
+      <Avatar className="size-6">
         <PlaceholderOrb address={address} />
       </Avatar>
     </span>
-    <span className="absolute left-3 top-2 h-3 w-3">{children}</span>
+    <span className="absolute left-3 top-2 size-3">{children}</span>
   </span>
 );
 
@@ -85,7 +85,7 @@ export const UserOperationTimeline: FC<UserOperationTimelineProps> = ({
             address={"0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"}
           >
             <span className="inline-flex rounded-full border border-border-success bg-background-success p-1">
-              <Check className="h-2 w-2 text-text-inverse" />
+              <Check className="size-2 text-text-inverse" />
             </span>
           </AddressPinPointer>
         </TimelinePoint>
@@ -103,7 +103,7 @@ export const UserOperationTimeline: FC<UserOperationTimelineProps> = ({
               address={"0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"}
             >
               <span className="inline-flex rounded-full border border-border-info bg-background-info p-1">
-                <PenLineIcon className="h-2 w-2 text-text-inverse" />
+                <PenLineIcon className="size-2 text-text-inverse" />
               </span>
             </AddressPinPointer>
           </TimelinePoint>
@@ -118,8 +118,8 @@ export const UserOperationTimeline: FC<UserOperationTimelineProps> = ({
       <TimelineItem>
         <TimelinePoint size={size}>
           <span className="relative inline-block">
-            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-border-warning-weak bg-background-warning p-1">
-              <Hourglass className="h-2.5 w-2.5 text-text-inverse" />
+            <span className="inline-flex size-6 items-center justify-center rounded-full border border-border-warning-weak bg-background-warning p-1">
+              <Hourglass className="size-2.5 text-text-inverse" />
             </span>
           </span>
         </TimelinePoint>

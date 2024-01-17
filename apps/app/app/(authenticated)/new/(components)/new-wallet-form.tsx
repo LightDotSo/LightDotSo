@@ -260,7 +260,7 @@ export const NewWalletForm: FC = () => {
                               htmlFor="multi"
                               className="flex h-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-border bg-background-body p-4 hover:bg-background-stronger hover:text-text-weak peer-data-[state=checked]:border-border-primary [&:has([data-state=checked])]:border-border-primary"
                             >
-                              <BuildingLibraryIcon className="mb-3 h-6 w-6" />
+                              <BuildingLibraryIcon className="mb-3 size-6" />
                               Multi-sig
                             </Label>
                           </TooltipTrigger>
@@ -284,7 +284,7 @@ export const NewWalletForm: FC = () => {
                               htmlFor="personal"
                               className="flex h-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-border bg-background-body p-4 hover:bg-background-stronger hover:text-text-weak peer-data-[state=checked]:border-border-primary [&:has([data-state=checked])]:border-border-primary"
                             >
-                              <BanknotesIcon className="mb-3 h-6 w-6" />
+                              <BanknotesIcon className="mb-3 size-6" />
                               Personal Vault
                             </Label>
                           </TooltipTrigger>
@@ -309,7 +309,7 @@ export const NewWalletForm: FC = () => {
                               htmlFor="2fa"
                               className="flex h-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-border bg-background-body p-4 hover:bg-background-stronger hover:text-text-weak peer-data-[state=checked]:border-border-primary [&:has([data-state=checked])]:border-border-primary"
                             >
-                              <ShieldExclamationIcon className="mb-3 h-6 w-6" />
+                              <ShieldExclamationIcon className="mb-3 size-6" />
                               2FA (Coming Soon)
                             </Label>
                           </TooltipTrigger>
@@ -387,7 +387,7 @@ export const NewWalletForm: FC = () => {
                     rel="noreferrer"
                   >
                     term and conditions
-                    <ArrowUpRight className="mb-3 ml-1 inline h-2 w-2" />
+                    <ArrowUpRight className="mb-3 ml-1 inline size-2" />
                   </a>
                 </CardDescription>
               </div>

@@ -51,8 +51,8 @@ export const TestnetChainLogoWrapper: FC<TestnetChainLogoWrapperProps> = ({
     <Logo {...props} />
     <span
       className={cn(
-        "absolute bottom-0 right-0 inline-flex h-2 w-2 items-center justify-center rounded-full border border-border-primary-weak bg-background-stronger p-1 text-[6px]",
-        props.className?.includes("h-6 w-6") && "h-3 w-3 text-[8px]",
+        "absolute bottom-0 right-0 inline-flex size-2 items-center justify-center rounded-full border border-border-primary-weak bg-background-stronger p-1 text-[6px]",
+        props.className?.includes("h-6 w-6") && "size-3 text-[8px]",
       )}
     >
       {shortenName(getChainById(chainId).name)}

@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { getUserOperation } from "@lightdotso/services";
 import { notFound } from "next/navigation";
 import type { Hex } from "viem";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
@@ -20,7 +21,6 @@ import {
   validateAddress,
   validateUserOperationHash,
 } from "@/handlers/validators";
-import { getUserOperation } from "@/services/getUserOperation";
 
 // -----------------------------------------------------------------------------
 // Handler

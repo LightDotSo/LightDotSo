@@ -85,7 +85,7 @@ export const OverviewSection = ({
           <Button asChild size="sm" variant="outline">
             <Link href={href}>
               See All
-              <ChevronRightIcon className="ml-2 h-3 w-3" />
+              <ChevronRightIcon className="ml-2 size-3" />
             </Link>
           </Button>
         </div>

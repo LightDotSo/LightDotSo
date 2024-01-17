@@ -59,7 +59,7 @@ export const Base: Story = {
               The React Framework - created and maintained by @vercel.
             </p>
             <div className="flex items-center pt-2">
-              <CalendarDays className="mr-2 h-4 w-4 opacity-70" />{" "}
+              <CalendarDays className="mr-2 size-4 opacity-70" />{" "}
               <span className="text-xs text-text-primary">
                 Joined December 2021
               </span>

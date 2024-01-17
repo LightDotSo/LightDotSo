@@ -49,7 +49,7 @@ export const TransactionCardHash: FC<TransactionCardHashProps> = ({
       >
         {hash}
       </a>
-      <ArrowUpRight className="ml-2 h-4 w-4 shrink-0 opacity-50 group-hover:underline group-hover:opacity-100" />
+      <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50 group-hover:underline group-hover:opacity-100" />
     </div>
   );
 };

@@ -39,7 +39,7 @@ export const TransactionCardChain: FC<TransactionCardChainProps> = ({
 
   return (
     <div className="flex items-center space-x-1.5">
-      <ChainLogo className="h-6 w-6" chainId={chain_id} />
+      <ChainLogo className="size-6" chainId={chain_id} />
       <span className="text-sm font-medium text-text">
         {getChainById(chain_id).name}
       </span>

@@ -170,7 +170,7 @@ export const TabsNav: FC<TabNavProps> = ({
                 setSelectedTabIndex(i);
               }}
             >
-              {<item.icon className="mr-2 h-4 w-4" />}
+              {<item.icon className="mr-2 size-4" />}
               {item.label}
               {item.number > 0 && (
                 <Badge

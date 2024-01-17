@@ -53,7 +53,7 @@ export const Closed: Story = {
         </h4>
         <CollapsibleTrigger asChild>
           <Button variant="ghost" size="sm" className="w-9 p-0">
-            <ChevronsUpDown className="h-4 w-4" />
+            <ChevronsUpDown className="size-4" />
             <span className="sr-only">Toggle</span>
           </Button>
         </CollapsibleTrigger>
@@ -85,7 +85,7 @@ export const Open: Story = {
         </h4>
         <CollapsibleTrigger asChild>
           <Button variant="ghost" size="sm" className="w-9 p-0">
-            <ChevronsUpDown className="h-4 w-4" />
+            <ChevronsUpDown className="size-4" />
             <span className="sr-only">Toggle</span>
           </Button>
         </CollapsibleTrigger>

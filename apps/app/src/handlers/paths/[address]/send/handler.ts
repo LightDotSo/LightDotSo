@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { getNfts, getTokens } from "@lightdotso/services";
 import type { Address } from "viem";
 import { transferParser } from "@/app/(wallet)/[address]/send/(hooks)";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
-import { getNfts, getTokens } from "@/services";
 
 // -----------------------------------------------------------------------------
 // Handler

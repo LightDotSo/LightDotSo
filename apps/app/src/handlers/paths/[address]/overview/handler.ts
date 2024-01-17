@@ -13,17 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Address } from "viem";
-import { OVERVIEW_ROW_COUNT } from "@/const";
-import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
-import { validateAddress } from "@/handlers/validators/address";
 import {
   getPortfolio,
   getNfts,
   getNftValuation,
   getTransactions,
   getTokens,
-} from "@/services";
+} from "@lightdotso/services";
+import type { Address } from "viem";
+import { OVERVIEW_ROW_COUNT } from "@/const";
+import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
+import { validateAddress } from "@/handlers/validators/address";
 
 // -----------------------------------------------------------------------------
 // Handler

@@ -73,7 +73,7 @@ export const OverviewInvokeButton: FC<OverviewInvokeButtonProps> = ({
                 infoToast("Refreshing...");
               }}
             >
-              <RefreshCcw className="h-4 w-4" />
+              <RefreshCcw className="size-4" />
             </ButtonIcon>
           </span>
         </TooltipTrigger>

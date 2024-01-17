@@ -114,7 +114,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
             onClick={() => table.resetColumnFilters()}
           >
             Reset
-            <Cross2Icon className="ml-2 h-4 w-4" />
+            <Cross2Icon className="ml-2 size-4" />
           </Button>
         )}
       </div>

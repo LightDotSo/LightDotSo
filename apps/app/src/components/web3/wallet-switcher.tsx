@@ -199,7 +199,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
           router.push("/new");
         }}
       >
-        <PlusCircledIcon className="mr-2 h-5 w-5" />
+        <PlusCircledIcon className="mr-2 size-5" />
         New Wallet
       </Button>
     );
@@ -217,7 +217,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
         >
           {selectedWallet && (
             <>
-              <Avatar className="mr-3 h-7 w-7">
+              <Avatar className="mr-3 size-7">
                 {/* <AvatarImage
                     src={`https://avatar.vercel.sh/${selectedWallet.value}.png`}
                     alt={selectedWallet.label}
@@ -230,17 +230,17 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
           )}
           {!selectedWallet && wallets && wallets.length > 0 && (
             <>
-              <StackIcon className="mr-2 h-5 w-5" />
+              <StackIcon className="mr-2 size-5" />
               Select a wallet
             </>
           )}
           {selectedWallet && wallets && wallets.length === 0 && (
             <>
-              <PlusCircledIcon className="mr-2 h-5 w-5" />
+              <PlusCircledIcon className="mr-2 size-5" />
               New Wallet
             </>
           )}
-          <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <CaretSortIcon className="ml-2 size-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="ml-24 w-[300px] p-0">
@@ -265,12 +265,12 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
               </div>
               {selectedWallet && (
                 <CommandItem className="text-sm">
-                  <Avatar className="mr-2 h-5 w-5">
+                  <Avatar className="mr-2 size-5">
                     <PlaceholderOrb address={selectedWallet.address} />
                   </Avatar>
                   {selectedWallet.name}
                   <span className="hidden">{selectedWallet.address}</span>
-                  <CheckIcon className="ml-auto h-4 w-4" />
+                  <CheckIcon className="ml-auto size-4" />
                 </CommandItem>
               )}
               {wallets &&
@@ -297,7 +297,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
                         }
                       }}
                     >
-                      <Avatar className="mr-2 h-5 w-5">
+                      <Avatar className="mr-2 size-5">
                         {/* <AvatarImage
                         src={`https://avatar.vercel.sh/${wallet.value}.png`}
                         alt={wallet.label}
@@ -322,7 +322,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
                   router.push("/wallets");
                 }}
               >
-                <GridIcon className="mr-2 h-5 w-5" />
+                <GridIcon className="mr-2 size-5" />
                 All Wallets
               </CommandItem>
             </CommandGroup>
@@ -337,7 +337,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
                   router.push("/new");
                 }}
               >
-                <PlusCircledIcon className="mr-2 h-5 w-5" />
+                <PlusCircledIcon className="mr-2 size-5" />
                 New Wallet
               </CommandItem>
             </CommandGroup>

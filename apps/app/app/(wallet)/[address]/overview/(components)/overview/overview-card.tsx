@@ -68,7 +68,7 @@ export const OverviewCard = ({
       <div className="flex w-full items-center justify-between">
         <div className="flex items-center">
           <DragHandleDots2Icon
-            className="h-5 w-5 cursor-move text-text-icon-weaker"
+            className="size-5 cursor-move text-text-icon-weaker"
             onPointerDown={event => dragControls.start(event)}
           />
           <div className="ml-2 text-lg font-semibold text-text-primary">
@@ -80,7 +80,7 @@ export const OverviewCard = ({
           <Button asChild size="sm" variant="outline">
             <Link href={href}>
               See All
-              <ChevronRightIcon className="ml-2 h-3 w-3" />
+              <ChevronRightIcon className="ml-2 size-3" />
             </Link>
           </Button>
         </div>

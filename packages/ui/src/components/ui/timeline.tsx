@@ -43,8 +43,8 @@ const Timeline: FC<TimelineProps> = ({ children, className, ...props }) => {
 const timelinePointVariants = cva("", {
   variants: {
     size: {
-      xs: "left-[-0.5rem] h-4 w-4",
-      sm: "-left-3 h-6 w-6",
+      xs: "left-[-0.5rem] size-4",
+      sm: "-left-3 size-6",
     },
   },
   defaultVariants: {

@@ -100,7 +100,7 @@ export const NewRoot: FC<NewRootProps> = async ({
                     aria-hidden="true"
                   >
                     <svg
-                      className="h-full w-full text-border"
+                      className="size-full text-border"
                       viewBox="0 0 22 80"
                       fill="none"
                       preserveAspectRatio="none"

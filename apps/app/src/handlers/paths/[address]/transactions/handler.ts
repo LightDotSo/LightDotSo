@@ -13,12 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import {
+  getUserOperations,
+  getUserOperationsCount,
+} from "@lightdotso/services";
 import { Result } from "neverthrow";
 import type { Address } from "viem";
 import { TRANSACTION_ROW_COUNT } from "@/const";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
-import { getUserOperations, getUserOperationsCount } from "@/services";
 
 // -----------------------------------------------------------------------------
 // Handler

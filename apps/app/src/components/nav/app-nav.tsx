@@ -69,7 +69,7 @@ export const AppNav: FC = () => {
         <div className="ml-auto">
           <DrawerTrigger>
             <ButtonIcon variant="outline" size="sm">
-              <AlignRight className="h-4 w-4" />
+              <AlignRight className="size-4" />
             </ButtonIcon>
           </DrawerTrigger>
         </div>

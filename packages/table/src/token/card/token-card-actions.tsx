@@ -62,7 +62,7 @@ export const TokenCardActions: FC<TokenCardActionsProps> = ({
           <TooltipTrigger asChild>
             <span>
               <ButtonIcon disabled size="sm" variant="shadow">
-                <Shuffle className="h-4 w-4" />
+                <Shuffle className="size-4" />
                 <span className="sr-only">Open swap modal</span>
               </ButtonIcon>
             </span>
@@ -78,7 +78,7 @@ export const TokenCardActions: FC<TokenCardActionsProps> = ({
                 <Link
                   href={`/${wallet}/send?transfers=0:_:_:${chain_id}:erc20:${tokenAddress}|${decimals}|0`}
                 >
-                  <Send className="h-4 w-4" />
+                  <Send className="size-4" />
                   <span className="sr-only">Open send modal</span>
                 </Link>
               </ButtonIcon>
