@@ -54,19 +54,25 @@ export const ActivityDataTable: FC<ActivityDataTableProps> = ({ address }) => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const { activities } = useQueryActivities({
+  const { activities, isActivitiesLoading } = useQueryActivities({
     address: address as Address,
     limit: paginationState.pageSize,
     offset: offsetCount,
   });
 
-  const { activitiesCount } = useQueryActivitiesCount({
-    address: address as Address,
-  });
+  const { activitiesCount, isActivitiesCountLoading } = useQueryActivitiesCount(
+    {
+      address: address as Address,
+    },
+  );
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
+
+  const isLoading = useMemo(() => {
+    return isActivitiesLoading || isActivitiesCountLoading;
+  }, [isActivitiesLoading || isActivitiesCountLoading]);
 
   const pageCount = useMemo(() => {
     if (!activitiesCount || !activitiesCount?.count) {
@@ -82,6 +88,7 @@ export const ActivityDataTable: FC<ActivityDataTableProps> = ({ address }) => {
   return (
     <TableSectionWrapper>
       <DataTable
+        isLoading={isLoading}
         data={activities ?? []}
         columns={activityColumns}
         pageCount={pageCount ?? 0}

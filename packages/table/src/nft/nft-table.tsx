@@ -14,7 +14,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { NftData } from "@lightdotso/data";
-import { Skeleton, Table, TableBody, TableCell, TableRow } from "@lightdotso/ui";
+import {
+  Skeleton,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+} from "@lightdotso/ui";
 import type {
   ColumnDef,
   TableOptions,
@@ -159,13 +165,11 @@ export const NftTable: FC<NftTableProps> = ({
                 .some(cell => cell.column.id === "chain")}
             />
           ))
-        ) : delayedIsLoading ? (
-          Array(10)
-            .fill(null)
-            .map((_, index) => (
-              <Skeleton key={index} className="size-24" />
-            ))
-        ) : (
+      ) : delayedIsLoading ? (
+        Array(10)
+          .fill(null)
+          .map((_, index) => <Skeleton key={index} className="size-24" />)
+      ) : (
         <div className="col-span-6">
           <Table>
             <TableBody>

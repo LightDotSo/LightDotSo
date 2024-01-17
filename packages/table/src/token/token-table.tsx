@@ -134,7 +134,7 @@ export const TokenTable: FC<TokenTableProps> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
+
   // ---------------------------------------------------------------------------
   // Debounced Hooks
   // ---------------------------------------------------------------------------

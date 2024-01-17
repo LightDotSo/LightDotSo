@@ -60,7 +60,7 @@ export const UserOperationsDataTable: FC<UserOperationsDataTableProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { userOperations } = useQueryUserOperations({
+  const { userOperations, isUserOperationsLoading } = useQueryUserOperations({
     address: address ?? null,
     status: "history",
     order: "asc",
@@ -69,15 +69,20 @@ export const UserOperationsDataTable: FC<UserOperationsDataTableProps> = ({
     is_testnet: isTestnetState ?? false,
   });
 
-  const { userOperationsCount } = useQueryUserOperationsCount({
-    address: address ?? null,
-    status: "history",
-    is_testnet: isTestnetState ?? false,
-  });
+  const { userOperationsCount, isUserOperationsCountLoading } =
+    useQueryUserOperationsCount({
+      address: address ?? null,
+      status: "history",
+      is_testnet: isTestnetState ?? false,
+    });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
+
+  const isLoading = useMemo(() => {
+    return isUserOperationsLoading || isUserOperationsCountLoading;
+  }, [isUserOperationsLoading || isUserOperationsCountLoading]);
 
   const pageCount = useMemo(() => {
     if (!userOperationsCount || !userOperationsCount?.count) {
@@ -93,6 +98,7 @@ export const UserOperationsDataTable: FC<UserOperationsDataTableProps> = ({
   return (
     <TableSectionWrapper>
       <DataTable
+        isLoading={isLoading}
         data={userOperations ?? []}
         columns={userOperationColumns}
         pageCount={pageCount ?? 0}

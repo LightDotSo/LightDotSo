@@ -202,22 +202,22 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
                   ))}
                 </TableRow>
               ))
-        ) : delayedIsLoading ? (
-          Array(10)
-            .fill(null)
-            .map((_, index) => (
-              <TableRow key={index}>
-                {table.getVisibleLeafColumns().map(column => (
-                  <TableCell
-                    key={column.id}
-                    style={{ width: column.getSize() }}
-                  >
-                    <Skeleton className="h-6 w-full" />
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-        ) : (
+          ) : delayedIsLoading ? (
+            Array(10)
+              .fill(null)
+              .map((_, index) => (
+                <TableRow key={index}>
+                  {table.getVisibleLeafColumns().map(column => (
+                    <TableCell
+                      key={column.id}
+                      style={{ width: column.getSize() }}
+                    >
+                      <Skeleton className="h-6 w-full" />
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+          ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
                 <TableEmpty entity="transaction" />

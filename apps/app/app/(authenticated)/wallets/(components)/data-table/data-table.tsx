@@ -26,6 +26,7 @@ import { usePaginationQueryState } from "@/queryStates";
 // -----------------------------------------------------------------------------
 
 interface DataTableProps {
+  isLoading: boolean;
   columns: ColumnDef<WalletData>[];
   data: WalletData[];
   pageCount: number;
@@ -35,7 +36,12 @@ interface DataTableProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export function DataTable({ columns, data, pageCount }: DataTableProps) {
+export function DataTable({
+  isLoading,
+  columns,
+  data,
+  pageCount,
+}: DataTableProps) {
   // ---------------------------------------------------------------------------
   // Query State Hooks
   // ---------------------------------------------------------------------------
@@ -84,6 +90,7 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
 
   return (
     <WalletTable
+      isLoading={isLoading}
       data={data}
       columns={columns}
       tableOptions={tableOptions}

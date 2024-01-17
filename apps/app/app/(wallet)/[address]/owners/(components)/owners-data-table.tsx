@@ -39,7 +39,7 @@ export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const { configuration } = useQueryConfiguration({
+  const { configuration, isConfigurationLoading } = useQueryConfiguration({
     address: address,
   });
 
@@ -49,7 +49,11 @@ export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
 
   return (
     <TableSectionWrapper>
-      <DataTable data={configuration?.owners ?? []} columns={ownerColumns} />
+      <DataTable
+        isLoading={isConfigurationLoading}
+        data={configuration?.owners ?? []}
+        columns={ownerColumns}
+      />
     </TableSectionWrapper>
   );
 };

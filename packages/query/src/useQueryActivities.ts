@@ -41,7 +41,9 @@ export const useQueryActivities = (params: ActivityListParams) => {
     }).queryKey,
   );
 
-  const { data: activities } = useQuery<ActivityData[] | null>({
+  const { data: activities, isLoading: isActivitiesLoading } = useQuery<
+    ActivityData[] | null
+  >({
     queryKey: queryKeys.activity.list({
       address: params.address,
       limit: params.limit,
@@ -79,5 +81,6 @@ export const useQueryActivities = (params: ActivityListParams) => {
 
   return {
     activities,
+    isActivitiesLoading,
   };
 };

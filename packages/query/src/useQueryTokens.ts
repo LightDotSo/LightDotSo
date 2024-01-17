@@ -44,7 +44,9 @@ export const useQueryTokens = (params: TokenListParams) => {
     }).queryKey,
   );
 
-  const { data: tokens } = useQuery<TokenData[] | null>({
+  const { data: tokens, isLoading: isTokensLoading } = useQuery<
+    TokenData[] | null
+  >({
     queryKey: queryKeys.token.list({
       address: params.address,
       is_testnet: params.is_testnet,
@@ -88,5 +90,6 @@ export const useQueryTokens = (params: TokenListParams) => {
 
   return {
     tokens,
+    isTokensLoading,
   };
 };
