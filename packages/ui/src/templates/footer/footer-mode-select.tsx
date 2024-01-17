@@ -16,7 +16,8 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import type { FC } from "react";
+import type { FC, SVGProps } from "react";
+import { FaMoon, FaSun, FaRegLightbulb } from "react-icons/fa";
 import {
   Select,
   SelectContent,
@@ -25,6 +26,33 @@ import {
   SelectValue,
 } from "../../components/ui/select";
 
+// -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
+
+const themes = [
+  {
+    name: "Dark",
+    value: "dark",
+    icon: (props: SVGProps<SVGSVGElement>) => {
+      return <FaMoon className="text-contrast-medium" {...props} />;
+    },
+  },
+  {
+    name: "Light",
+    value: "light",
+    icon: (props: SVGProps<SVGSVGElement>) => {
+      return <FaSun className="text-contrast-medium" {...props} />;
+    },
+  },
+  {
+    name: "System",
+    value: "system",
+    icon: (props: SVGProps<SVGSVGElement>) => {
+      return <FaRegLightbulb className="text-contrast-medium" {...props} />;
+    },
+  },
+];
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
@@ -46,9 +74,16 @@ export const FooterModeSelect: FC = () => {
         <SelectValue placeholder="Select a theme" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="dark">Dark</SelectItem>
-        <SelectItem value="light">Light</SelectItem>
-        <SelectItem value="system">System</SelectItem>
+        {themes.map(item => (
+          <SelectItem
+            className="inline-flex items-center space-x-2"
+            key={item.name}
+            value={item.value}
+          >
+            <span>{item.name}</span>
+            <item.icon className="h-4 w-4 fill-text-weak" aria-hidden="true" />
+          </SelectItem>
+        ))}
       </SelectContent>
     </Select>
   );
