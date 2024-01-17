@@ -23,6 +23,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  toast,
 } from "@lightdotso/ui";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import type { Row } from "@tanstack/react-table";
@@ -59,13 +60,15 @@ export function TransactionTableRowActions({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuItem
-          onClick={() =>
-            createQueueInterpretation({
+          onClick={async () => {
+            const loadingToast = toast.loading("Loading transaction...");
+
+            await createQueueInterpretation({
               params: { query: { transaction_hash: row.original.hash } },
-            })
-          }
+            });
+          }}
         >
-          Queue Interpretation
+          Queue
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
