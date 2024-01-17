@@ -19,6 +19,7 @@ import type { RawTab } from "@lightdotso/types";
 import { BaseLayerWrapper } from "@lightdotso/ui";
 import { DashboardIcon, WidthIcon } from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
+import { ArrowUpRightFromSquare } from "lucide-react";
 import type { HTMLAttributes, ReactNode, RefAttributes, FC } from "react";
 import { RootLogo } from "../root/root-logo";
 import { AppNav } from "./app-nav";
@@ -50,7 +51,7 @@ const tabs: RawTab[] = [
     href: "https://app.light.so",
     icon: (
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
-    ) => <WidthIcon {...props} />,
+    ) => <ArrowUpRightFromSquare {...props} />,
   },
 ];
 

@@ -95,17 +95,18 @@ export const AppNav: FC<AppNavProps> = ({ tabs }) => {
   }
 
   return (
-    <div className="ml-auto hidden items-center space-x-2.5 md:flex">
+    <div className="ml-auto hidden items-center space-x-1 md:flex">
       {tabs.map(tab => {
         if (tab.id === "app") {
           return (
             <Button
               asChild
-              variant="ghost"
+              variant="link"
               size="sm"
               className="text-sm font-medium"
             >
               <a href={tab.href} target="_blank" rel="noreferrer">
+                {<tab.icon className="mr-2 size-4" />}
                 {tab.label}
               </a>
             </Button>
@@ -119,7 +120,10 @@ export const AppNav: FC<AppNavProps> = ({ tabs }) => {
             size="sm"
             className="text-sm font-medium"
           >
-            <Link href={tab.href}>{tab.label}</Link>
+            <Link href={tab.href}>
+              {<tab.icon className="mr-2 size-4" />}
+              {tab.label}
+            </Link>
           </Button>
         );
       })}
