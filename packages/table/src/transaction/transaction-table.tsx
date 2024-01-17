@@ -74,30 +74,13 @@ export const TransactionTable: FC<TransactionTableProps> = ({
   setTransactionTable,
 }) => {
   // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
-
-  const tableColumns = useMemo(
-    () =>
-      isLoading
-        ? columns.map(column => ({
-            ...column,
-            cell() {
-              return <Skeleton className="h-6 w-full" />;
-            },
-          }))
-        : columns,
-    [isLoading, columns],
-  );
-
-  // ---------------------------------------------------------------------------
   // Table
   // ---------------------------------------------------------------------------
 
   const table = useReactTable({
     ...tableOptions,
     data: data || [],
-    columns: tableColumns,
+    columns: columns,
     enableExpanding: false,
     enableRowSelection: false,
     manualPagination: true,
