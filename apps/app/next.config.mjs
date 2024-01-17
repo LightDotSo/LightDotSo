@@ -16,6 +16,7 @@
 import withBundleAnalyzer from "@next/bundle-analyzer";
 import { PrismaPlugin } from "@prisma/nextjs-monorepo-workaround-plugin";
 import { withSentryConfig } from "@sentry/nextjs";
+// import withSerwistInit from "@serwist/next";
 import packageJson from "./package.json" assert { type: "json" };
 
 // ---------------------------------------------------------------------------
@@ -120,6 +121,10 @@ const plugins = [
     enabled: process.env.ANALYZE === "true",
   }),
   withSentryConfig,
+  // withSerwistInit({
+  //   swSrc: "app/sw.ts",
+  //   swDest: "public/sw.js",
+  // }),
 ];
 
 // -----------------------------------------------------------------------------
