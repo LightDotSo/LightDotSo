@@ -16,7 +16,6 @@
 "use client";
 
 import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
-import { useAuth } from "@lightdotso/stores";
 import type { RawTab } from "@lightdotso/types";
 import {
   Button,
@@ -47,12 +46,6 @@ type AppNavProps = {
 // -----------------------------------------------------------------------------
 
 export const AppNav: FC<AppNavProps> = ({ tabs }) => {
-  // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { address } = useAuth();
-
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
@@ -100,6 +93,7 @@ export const AppNav: FC<AppNavProps> = ({ tabs }) => {
         if (tab.id === "app") {
           return (
             <Button
+              key="app"
               asChild
               variant="link"
               size="sm"
@@ -115,6 +109,7 @@ export const AppNav: FC<AppNavProps> = ({ tabs }) => {
 
         return (
           <Button
+            key={tab.id}
             asChild
             variant="ghost"
             size="sm"

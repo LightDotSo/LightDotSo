@@ -32,7 +32,7 @@ const preview: Preview = {
     },
     options: {
       storySort: {
-        order: ["theme", "ui", "element", "svg", "template", "table"],
+        order: ["theme", "component", "element", "svg", "table", "template"],
       },
     },
     viewport: {

@@ -13,31 +13,52 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import { ThemeProvider as NextThemesProvider } from "next-themes";
-
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-type ThemeProviderProps = Parameters<typeof NextThemesProvider>[0];
-
-// -----------------------------------------------------------------------------
-// Component
-// -----------------------------------------------------------------------------
-
-/// From: https://github.com/pacocoursey/next-themes/blob/cd67bfa20ef6ea78a814d65625c530baae4075ef/examples/with-app-dir/src/components/ThemeProvider.tsx
-function ThemeProvider({ children, ...props }: ThemeProviderProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
-}
+import type { Meta, StoryObj } from "@storybook/react";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "./sheet";
 
 // -----------------------------------------------------------------------------
-// Exports
+// Meta
 // -----------------------------------------------------------------------------
 
-export { ThemeProvider };
+const meta: Meta<typeof Sheet> = {
+  title: "component/Sheet",
+  component: Sheet,
+  tags: ["autodocs"],
+  argTypes: {},
+};
+export default meta;
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+type Story = StoryObj<typeof Sheet>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Base: Story = {
+  render: args => (
+    <Sheet>
+      <SheetTrigger>Open</SheetTrigger>
+      <SheetContent>
+        <SheetHeader>
+          <SheetTitle>Are you sure absolutely sure?</SheetTitle>
+          <SheetDescription>
+            This action cannot be undone. This will permanently delete your
+            account and remove your data from our servers.
+          </SheetDescription>
+        </SheetHeader>
+      </SheetContent>
+    </Sheet>
+  ),
+  args: {},
+};

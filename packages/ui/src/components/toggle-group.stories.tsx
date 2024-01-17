@@ -13,31 +13,38 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import { ThemeProvider as NextThemesProvider } from "next-themes";
-
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-type ThemeProviderProps = Parameters<typeof NextThemesProvider>[0];
+import type { Meta, StoryObj } from "@storybook/react";
+import { ToggleGroup, ToggleGroupItem } from "./toggle-group";
 
 // -----------------------------------------------------------------------------
-// Component
+// Meta
 // -----------------------------------------------------------------------------
 
-/// From: https://github.com/pacocoursey/next-themes/blob/cd67bfa20ef6ea78a814d65625c530baae4075ef/examples/with-app-dir/src/components/ThemeProvider.tsx
-function ThemeProvider({ children, ...props }: ThemeProviderProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
-}
+const meta: Meta<typeof ToggleGroup> = {
+  title: "component/ToggleGroup",
+  component: ToggleGroup,
+  tags: ["autodocs"],
+  argTypes: {},
+};
+export default meta;
 
 // -----------------------------------------------------------------------------
-// Exports
+// Types
 // -----------------------------------------------------------------------------
 
-export { ThemeProvider };
+type Story = StoryObj<typeof ToggleGroup>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Base: Story = {
+  render: args => (
+    <ToggleGroup type="single">
+      <ToggleGroupItem value="a">A</ToggleGroupItem>
+      <ToggleGroupItem value="b">B</ToggleGroupItem>
+      <ToggleGroupItem value="c">C</ToggleGroupItem>
+    </ToggleGroup>
+  ),
+  args: {},
+};

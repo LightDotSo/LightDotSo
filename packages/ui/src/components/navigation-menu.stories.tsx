@@ -13,31 +13,51 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import { ThemeProvider as NextThemesProvider } from "next-themes";
-
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-type ThemeProviderProps = Parameters<typeof NextThemesProvider>[0];
-
-// -----------------------------------------------------------------------------
-// Component
-// -----------------------------------------------------------------------------
-
-/// From: https://github.com/pacocoursey/next-themes/blob/cd67bfa20ef6ea78a814d65625c530baae4075ef/examples/with-app-dir/src/components/ThemeProvider.tsx
-function ThemeProvider({ children, ...props }: ThemeProviderProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
-}
+import type { Meta, StoryObj } from "@storybook/react";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "./navigation-menu";
 
 // -----------------------------------------------------------------------------
-// Exports
+// Meta
 // -----------------------------------------------------------------------------
 
-export { ThemeProvider };
+const meta: Meta<typeof NavigationMenu> = {
+  title: "component/NavigationMenu",
+  component: NavigationMenu,
+  tags: ["autodocs"],
+  argTypes: {},
+};
+
+export default meta;
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+type Story = StoryObj<typeof NavigationMenu>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Base: Story = {
+  render: () => (
+    <NavigationMenu>
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Item One</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <NavigationMenuLink>Link</NavigationMenuLink>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
+  ),
+  args: {},
+};

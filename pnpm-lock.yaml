@@ -1568,6 +1568,9 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
+      tailwindcss:
+        specifier: ^3.4.1
+        version: 3.4.1(ts-node@10.9.2)
       viem:
         specifier: ^2.1.1
         version: 2.1.1(typescript@5.3.3)(zod@3.22.4)

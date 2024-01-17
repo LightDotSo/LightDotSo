@@ -13,31 +13,59 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import { ThemeProvider as NextThemesProvider } from "next-themes";
-
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-type ThemeProviderProps = Parameters<typeof NextThemesProvider>[0];
+import type { Meta, StoryObj } from "@storybook/react";
+import { useState } from "react";
+import { Button } from "./button";
+import { Number } from "./number";
 
 // -----------------------------------------------------------------------------
-// Component
+// Meta
 // -----------------------------------------------------------------------------
 
-/// From: https://github.com/pacocoursey/next-themes/blob/cd67bfa20ef6ea78a814d65625c530baae4075ef/examples/with-app-dir/src/components/ThemeProvider.tsx
-function ThemeProvider({ children, ...props }: ThemeProviderProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
-}
+const meta: Meta<typeof Number> = {
+  title: "component/Number",
+  component: Number,
+  tags: ["autodocs"],
+  argTypes: {},
+};
+export default meta;
 
 // -----------------------------------------------------------------------------
-// Exports
+// Types
 // -----------------------------------------------------------------------------
 
-export { ThemeProvider };
+type Story = StoryObj<typeof Number>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Base: Story = {
+  render: args => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    let [value, setValue] = useState(300.0);
+
+    return (
+      <div className="space-x-3">
+        <Button onClick={() => setValue(value - 10)}>Decrease</Button>
+        <Button onClick={() => setValue(value + 10)}>Increment</Button>
+        <Number value={value} {...args} id="terms1" />
+      </div>
+    );
+  },
+  args: {},
+};
+export const Prefix: Story = {
+  render: args => <Number value={100_000_000} {...args} prefix="$" />,
+  args: {},
+};
+export const Large: Story = {
+  render: args => <Number value={100_000_000} {...args} size="xl" />,
+  args: {},
+};
+export const Neutral: Story = {
+  render: args => <Number value={300} {...args} />,
+  args: {
+    variant: "neutral",
+  },
+};

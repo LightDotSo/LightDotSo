@@ -13,31 +13,58 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import { ThemeProvider as NextThemesProvider } from "next-themes";
-
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-type ThemeProviderProps = Parameters<typeof NextThemesProvider>[0];
-
-// -----------------------------------------------------------------------------
-// Component
-// -----------------------------------------------------------------------------
-
-/// From: https://github.com/pacocoursey/next-themes/blob/cd67bfa20ef6ea78a814d65625c530baae4075ef/examples/with-app-dir/src/components/ThemeProvider.tsx
-function ThemeProvider({ children, ...props }: ThemeProviderProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
-}
+import type { Meta, StoryObj } from "@storybook/react";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./form";
+import { Input } from "./input";
 
 // -----------------------------------------------------------------------------
-// Exports
+// Meta
 // -----------------------------------------------------------------------------
 
-export { ThemeProvider };
+const meta: Meta<typeof Form> = {
+  title: "component/Form",
+  component: Form,
+  tags: ["autodocs"],
+  argTypes: {},
+};
+
+export default meta;
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+type Story = StoryObj<typeof Form>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Base: Story = {
+  render: () => (
+    <FormField
+      name="username"
+      render={({ field }) => {
+        return (
+          <FormItem>
+            <FormLabel>Username</FormLabel>
+            <FormControl>
+              <Input placeholder="shadcn" {...field} />
+            </FormControl>
+            <FormDescription>This is your public display name.</FormDescription>
+            <FormMessage />
+          </FormItem>
+        );
+      }}
+    />
+  ),
+  args: {},
+};

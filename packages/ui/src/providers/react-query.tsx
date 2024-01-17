@@ -52,7 +52,15 @@ const ReactQueryProvider: FC<ReactQueryProviderProps> = ({
   children,
   showDevTools = true,
 }) => {
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
   const [queryClient, setQueryClient] = useState<QueryClient | null>(null);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   useEffect(() => {
     const client = new QueryClient({
@@ -76,6 +84,10 @@ const ReactQueryProvider: FC<ReactQueryProviderProps> = ({
     setQueryClient(client);
   }, []);
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   // Ensure that rendering is blocked until useEffect initializes `queryClient`
   if (!queryClient) {
     return null;
@@ -86,7 +98,11 @@ const ReactQueryProvider: FC<ReactQueryProviderProps> = ({
       <ReactQueryStreamedHydration transformer={superjson}>
         {children}
       </ReactQueryStreamedHydration>
-      {showDevTools && <ReactQueryDevtoolsProduction />}
+      {showDevTools && (
+        <div className="hidden lg:block">
+          <ReactQueryDevtoolsProduction />
+        </div>
+      )}
     </QueryClientProvider>
   );
 };

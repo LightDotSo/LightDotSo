@@ -13,31 +13,50 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import { ThemeProvider as NextThemesProvider } from "next-themes";
-
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-type ThemeProviderProps = Parameters<typeof NextThemesProvider>[0];
+import type { Meta, StoryObj } from "@storybook/react";
+import { Fragment } from "react";
+import { ScrollArea } from "./scroll-area";
+import { Separator } from "./separator";
 
 // -----------------------------------------------------------------------------
-// Component
+// Meta
 // -----------------------------------------------------------------------------
 
-/// From: https://github.com/pacocoursey/next-themes/blob/cd67bfa20ef6ea78a814d65625c530baae4075ef/examples/with-app-dir/src/components/ThemeProvider.tsx
-function ThemeProvider({ children, ...props }: ThemeProviderProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
-}
+const meta: Meta<typeof ScrollArea> = {
+  title: "component/ScrollArea",
+  component: ScrollArea,
+  tags: ["autodocs"],
+  argTypes: {},
+};
+export default meta;
 
 // -----------------------------------------------------------------------------
-// Exports
+// Types
 // -----------------------------------------------------------------------------
 
-export { ThemeProvider };
+type Story = StoryObj<typeof ScrollArea>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Base: Story = {
+  render: args => (
+    <ScrollArea className="h-72 w-48 rounded-md border border-border text-text">
+      <div className="p-4">
+        <h4 className="mb-4 text-sm font-medium leading-none">Tags</h4>
+        {Array.from({ length: 50 })
+          .map((_, i, a) => `v1.2.0-beta.${a.length - i}`)
+          .map(tag => (
+            <Fragment key={tag}>
+              <div key={tag} className="text-sm">
+                {tag}
+              </div>
+              <Separator className="my-2" />
+            </Fragment>
+          ))}
+      </div>
+    </ScrollArea>
+  ),
+  args: {},
+};
