@@ -1959,25 +1959,6 @@ importers:
         version: 5.3.3
 
   packages/types:
-    dependencies:
-      '@lightdotso/const':
-        specifier: workspace:*
-        version: link:../const
-      clsx:
-        specifier: ^2.1.0
-        version: 2.1.0
-      cross-env:
-        specifier: ^7.0.3
-        version: 7.0.3
-      dotenv:
-        specifier: ^16.3.1
-        version: 16.3.1
-      tailwind-merge:
-        specifier: ^2.2.0
-        version: 2.2.0
-      viem:
-        specifier: ^2.1.1
-        version: 2.1.1(typescript@5.3.3)(zod@3.22.4)
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
