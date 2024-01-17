@@ -18,7 +18,7 @@
 import { useAuth } from "@lightdotso/stores";
 import { RawTab } from "@lightdotso/types";
 import { MobileAppDrawer } from "@lightdotso/ui";
-import type { FC } from "react";
+import type { FC, ReactNode } from "react";
 import { Suspense } from "react";
 import { ChainPopover } from "@/components/chain/chain-popover";
 import { FeedbackPopover } from "@/components/feedback/feedback-popover";
@@ -31,6 +31,7 @@ import { useIsMounted, useMediaQuery } from "@/hooks";
 // -----------------------------------------------------------------------------
 
 export type AppNavProps = {
+  mobile: ReactNode;
   tabs: RawTab[];
 };
 
@@ -38,7 +39,7 @@ export type AppNavProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const AppNav: FC<AppNavProps> = ({ tabs }) => {
+export const AppNav: FC<AppNavProps> = ({ mobile, tabs }) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -61,7 +62,7 @@ export const AppNav: FC<AppNavProps> = ({ tabs }) => {
   }
 
   if (!isDesktop) {
-    return <MobileAppDrawer tabs={tabs} />;
+    return <MobileAppDrawer tabs={tabs}>{mobile}</MobileAppDrawer>;
   }
 
   return (

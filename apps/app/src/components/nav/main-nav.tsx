@@ -34,6 +34,7 @@ import { TabsNav } from "@/components/nav/tabs-nav";
 import { RootLogo } from "@/components/root/root-logo";
 import { WalletSwitcher } from "@/components/web3/wallet-switcher";
 import { usePathType, useTabs } from "@/hooks";
+import { ConnectButton } from "../web3/connect-button";
 
 // -----------------------------------------------------------------------------
 // Const
@@ -173,7 +174,7 @@ export const MainNav: FC<MainNavProps> = ({ children, ...props }) => {
               <span className="ml-2 mr-1 text-text/60 last:hidden">/</span>
               <WalletSwitcher />
             </div>
-            <AppNav tabs={tabProps.tabs} />
+            <AppNav mobile={<ConnectButton />} tabs={tabProps.tabs} />
           </div>
           <Tabs />
         </div>
