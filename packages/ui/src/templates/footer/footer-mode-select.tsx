@@ -78,7 +78,7 @@ export const FooterModeSelect: FC = () => {
           <SelectItem key={item.name} value={item.value}>
             <span className="inline-flex items-center">
               <item.icon
-                className="mr-2 h-4 w-4 fill-text-weak"
+                className="mr-2 size-4 fill-text-weak"
                 aria-hidden="true"
               />
               <span className="mr-2">{item.name}</span>

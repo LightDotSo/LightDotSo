@@ -501,7 +501,7 @@ export const ConfigurationForm: FC = () => {
                                   }}
                                 />
                                 <div className="absolute inset-y-0 left-3 flex items-center">
-                                  <Avatar className="h-6 w-6">
+                                  <Avatar className="size-6">
                                     {/* If the address is valid, try resolving an ens Avatar */}
                                     <PlaceholderOrb
                                       address={
@@ -588,7 +588,7 @@ export const ConfigurationForm: FC = () => {
                             remove(index);
                           }}
                         >
-                          <Trash2Icon className="h-5 w-5" />
+                          <Trash2Icon className="size-5" />
                         </ButtonIcon>
                       </div>
                     </FormItem>
@@ -605,7 +605,7 @@ export const ConfigurationForm: FC = () => {
                     append({ addressOrEns: "", weight: 1 });
                   }}
                 >
-                  <UserPlus2 className="mr-2 h-5 w-5" />
+                  <UserPlus2 className="mr-2 size-5" />
                   {type === "personal" && "Add Backup Key"}
                   {type !== "personal" && "Add New Owner"}
                 </Button>

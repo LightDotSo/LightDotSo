@@ -41,7 +41,7 @@ export const RootWelcomeCards: FC = () => {
         <CardHeader>
           <div>
             <span className="inline-block rounded-full border border-border-warning bg-background-warning-weakest p-2">
-              <Wallet className="h-5 w-5 text-border-warning" />
+              <Wallet className="size-5 text-border-warning" />
             </span>
           </div>
           <CardTitle>Connect to Light</CardTitle>
@@ -57,7 +57,7 @@ export const RootWelcomeCards: FC = () => {
         <CardHeader>
           <div>
             <span className="inline-block rounded-full border border-border-purple bg-background-purple-weakest p-2">
-              <Gamepad className="h-5 w-5 text-border-purple" />
+              <Gamepad className="size-5 text-border-purple" />
             </span>
           </div>
           <CardTitle>Try demo mode</CardTitle>
@@ -68,7 +68,7 @@ export const RootWelcomeCards: FC = () => {
         <CardContent>
           <Button asChild size="sm" variant="outline">
             <Link href="/demo/overview">
-              <Gamepad className="mr-2 h-4 w-4" /> Start Demo
+              <Gamepad className="mr-2 size-4" /> Start Demo
             </Link>
           </Button>
         </CardContent>

@@ -67,7 +67,7 @@ export const ownerColumns: ColumnDef<ConfigurationOwnerData>[] = [
     ),
     cell: ({ row }) => (
       <div className="flex items-center">
-        <Avatar className="mr-3 h-7 w-7">
+        <Avatar className="mr-3 size-7">
           <PlaceholderOrb address={row.getValue("address") ?? "0x"} />
         </Avatar>
         {row.getValue("address")}

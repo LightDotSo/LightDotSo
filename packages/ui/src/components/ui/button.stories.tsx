@@ -82,7 +82,7 @@ export const Disabled: Story = {
 export const WithIcon: Story = {
   render: args => (
     <Button {...args}>
-      <Mail className="mr-2 h-4 w-4" /> Login with Email Button
+      <Mail className="mr-2 size-4" /> Login with Email Button
     </Button>
   ),
 };

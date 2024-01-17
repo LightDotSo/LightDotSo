@@ -51,7 +51,7 @@ export const Base: Story = {
 export const Destructive: Story = {
   render: args => (
     <Alert {...args}>
-      <Trash2Icon className="h-4 w-4" />
+      <Trash2Icon className="size-4" />
       <AlertTitle>Destructive</AlertTitle>
       <AlertDescription>Destructive Alert Description</AlertDescription>
     </Alert>
@@ -63,7 +63,7 @@ export const Destructive: Story = {
 export const Error: Story = {
   render: args => (
     <Alert {...args}>
-      <AlertCircle className="h-4 w-4" />
+      <AlertCircle className="size-4" />
       <AlertTitle>Error</AlertTitle>
       <AlertDescription>Error Alert Description</AlertDescription>
     </Alert>
@@ -75,7 +75,7 @@ export const Error: Story = {
 export const Warning: Story = {
   render: args => (
     <Alert {...args}>
-      <FileWarning className="h-4 w-4" />
+      <FileWarning className="size-4" />
       <AlertTitle>Warning</AlertTitle>
       <AlertDescription>Warning Alert Description</AlertDescription>
     </Alert>

@@ -56,7 +56,7 @@ export const RootLogo: FC = () => {
       }
       className="hover:rounded-md hover:bg-background-stronger"
     >
-      <LightLogo className="m-2.5 h-8 w-8 fill-text" />
+      <LightLogo className="m-2.5 size-8 fill-text" />
     </Link>
   );
 };

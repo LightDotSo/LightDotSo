@@ -70,7 +70,7 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
                   errorToast("Not implemented yet");
                 }}
               >
-                <PlusCircleIcon className="mr-2 h-5 w-5" />
+                <PlusCircleIcon className="mr-2 size-5" />
                 Deposit
               </Button>
             </TooltipTrigger>

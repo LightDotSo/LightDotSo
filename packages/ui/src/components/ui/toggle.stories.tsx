@@ -42,7 +42,7 @@ type Story = StoryObj<typeof Toggle>;
 export const Base: Story = {
   render: args => (
     <Toggle aria-label="Toggle italic">
-      <Bold className="h-4 w-4" />
+      <Bold className="size-4" />
     </Toggle>
   ),
   args: {},

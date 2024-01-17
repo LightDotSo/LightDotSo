@@ -156,32 +156,32 @@ export const CommandK: FC = () => {
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup heading="Suggestions">
           <CommandItem>
-            <Calendar className="mr-2 h-4 w-4" />
+            <Calendar className="mr-2 size-4" />
             <span>Calendar</span>
           </CommandItem>
           <CommandItem>
-            <Smile className="mr-2 h-4 w-4" />
+            <Smile className="mr-2 size-4" />
             <span>Search Emoji</span>
           </CommandItem>
           <CommandItem>
-            <Calculator className="mr-2 h-4 w-4" />
+            <Calculator className="mr-2 size-4" />
             <span>Calculator</span>
           </CommandItem>
         </CommandGroup>
         <CommandSeparator />
         <CommandGroup heading="Settings">
           <CommandItem>
-            <User className="mr-2 h-4 w-4" />
+            <User className="mr-2 size-4" />
             <span>Profile</span>
             <CommandShortcut>⌘⇧P</CommandShortcut>
           </CommandItem>
           <CommandItem>
-            <CreditCard className="mr-2 h-4 w-4" />
+            <CreditCard className="mr-2 size-4" />
             <span>Billing</span>
             <CommandShortcut>⌘⇧B</CommandShortcut>
           </CommandItem>
           <CommandItem>
-            <Settings className="mr-2 h-4 w-4" />
+            <Settings className="mr-2 size-4" />
             <span>Settings</span>
             <CommandShortcut>⌘⇧S</CommandShortcut>
           </CommandItem>
@@ -193,7 +193,7 @@ export const CommandK: FC = () => {
               setOpen(false);
             }}
           >
-            <Computer className="mr-2 h-4 w-4" />
+            <Computer className="mr-2 size-4" />
             <span>Toggle Dev</span>
             <CommandShortcut>⌘⇧V</CommandShortcut>
           </CommandItem>
@@ -203,7 +203,7 @@ export const CommandK: FC = () => {
               setOpen(false);
             }}
           >
-            <DeleteIcon className="mr-2 h-4 w-4" />
+            <DeleteIcon className="mr-2 size-4" />
             <span>Clear Search Params</span>
             <CommandShortcut>⌘⇧D</CommandShortcut>
           </CommandItem>
@@ -213,7 +213,7 @@ export const CommandK: FC = () => {
               setOpen(false);
             }}
           >
-            <CopyIcon className="mr-2 h-4 w-4" />
+            <CopyIcon className="mr-2 size-4" />
             <span>Copy Search Params</span>
             <CommandShortcut>⌘⇧C</CommandShortcut>
           </CommandItem>
@@ -223,7 +223,7 @@ export const CommandK: FC = () => {
               setOpen(false);
             }}
           >
-            <CopySlashIcon className="mr-2 h-4 w-4" />
+            <CopySlashIcon className="mr-2 size-4" />
             <span>Copy Decoded Search Params</span>
             <CommandShortcut>⌘⇧V</CommandShortcut>
           </CommandItem>

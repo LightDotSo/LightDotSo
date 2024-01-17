@@ -207,7 +207,7 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
       <span className="flex items-center px-4 py-2 text-sm font-medium md:px-6 md:py-4">
         <span
           className={cn(
-            "flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 bg-background-weak",
+            "flex size-10 shrink-0 items-center justify-center rounded-full border-2 bg-background-weak",
             step.status === "current"
               ? "border-border-primary"
               : "border-border",
@@ -215,7 +215,7 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
         >
           {step.status === "complete" ? (
             <CheckIcon
-              className="h-4 w-4 text-border [&>path]:stroke-[3]"
+              className="size-4 text-border [&>path]:stroke-[3]"
               aria-hidden="true"
             />
           ) : (

@@ -90,7 +90,7 @@ export const WalletOverviewBannerAddress: FC<
 
   return (
     <TooltipProvider>
-      <Avatar className="h-16 w-16">
+      <Avatar className="size-16">
         <PlaceholderOrb address={address ?? "0x"} />
       </Avatar>
       <div className="flex items-center space-x-3 overflow-hidden text-ellipsis p-1 text-left">
@@ -115,13 +115,13 @@ export const WalletOverviewBannerAddress: FC<
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <ButtonIcon variant="outline" size="xs">
-              <ChevronDown className="h-3 w-3" />
+              <ChevronDown className="size-3" />
             </ButtonIcon>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">
             <DropdownMenuGroup>
               <DropdownMenuItem onClick={handleAddressClick}>
-                <Copy className="mr-2 h-4 w-4" />
+                <Copy className="mr-2 size-4" />
                 <span>Copy Address</span>
                 <DropdownMenuShortcut>⇧⌘A</DropdownMenuShortcut>
               </DropdownMenuItem>

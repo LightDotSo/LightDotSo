@@ -175,7 +175,7 @@ export const UserOperationCardTransaction: FC<
                             >
                               {item.value}
                             </a>
-                            <ArrowUpRight className="ml-2 h-4 w-4 shrink-0 opacity-50 group-hover:underline group-hover:opacity-100" />
+                            <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50 group-hover:underline group-hover:opacity-100" />
                           </>
                         ) : (
                           // eslint-disable-next-line react/jsx-no-useless-fragment

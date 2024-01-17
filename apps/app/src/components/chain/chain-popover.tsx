@@ -94,16 +94,16 @@ export const ChainPopover: FC = () => {
           role="combobox"
           aria-expanded={open}
         >
-          <Globe className="mr-1 h-4 w-4 shrink-0" />
+          <Globe className="mr-1 size-4 shrink-0" />
           <div className="flex -space-x-1.5 overflow-hidden">
             {chains.slice(0, 3).map(chain => (
               <ChainLogo
                 key={chain.id}
                 chainId={chain.id}
-                className="h-6 w-6 rounded-lg bg-border"
+                className="size-6 rounded-lg bg-border"
               />
             ))}
-            <span className="flex h-6 w-6 items-center justify-center rounded-lg border border-border bg-background-strongest text-xs text-text">
+            <span className="flex size-6 items-center justify-center rounded-lg border border-border bg-background-strongest text-xs text-text">
               {chains.length > 3 ? `+${chains.length - 3}` : null}
             </span>
           </div>
@@ -125,9 +125,9 @@ export const ChainPopover: FC = () => {
                   className="flex items-center space-x-2"
                   value={chain.name.toString()}
                 >
-                  <ChainLogo chainId={chain.id} className="h-5 w-5" />
+                  <ChainLogo chainId={chain.id} className="size-5" />
                   <span>{chain.name}</span>
-                  <ArrowUpRight className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50" />
                 </CommandItem>
               </a>
             ))}

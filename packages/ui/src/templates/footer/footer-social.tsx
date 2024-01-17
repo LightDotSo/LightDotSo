@@ -64,10 +64,7 @@ export const FooterSocial: FC = () => {
           <ButtonIcon key={item.name} asChild variant="shadow" size="sm">
             <a href={item.href} target="_blank" rel="noreferrer">
               <span className="sr-only">{item.name}</span>
-              <item.icon
-                className="h-4 w-4 fill-text-weak"
-                aria-hidden="true"
-              />
+              <item.icon className="size-4 fill-text-weak" aria-hidden="true" />
             </a>
           </ButtonIcon>
         );

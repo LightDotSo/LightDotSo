@@ -41,7 +41,7 @@ export const ConnectButton = () => {
             size="sm"
             onClick={!account ? openConnectModal : openAccountModal}
           >
-            <Wallet className="mr-2 h-4 w-4" />
+            <Wallet className="mr-2 size-4" />
             {account
               ? account.ensName ?? shortenAddress(account.address as Address)
               : "Connect Wallet"}

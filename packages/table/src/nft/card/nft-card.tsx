@@ -74,7 +74,7 @@ export const NftCard: FC<NftCardProps> = ({
             <div className="flex items-center text-xs text-text-weak">
               {getChainIdBySimplehashChainName(nft.chain!) && (
                 <ChainLogo
-                  className="mr-1.5 h-4 w-4"
+                  className="mr-1.5 size-4"
                   chainId={getChainIdBySimplehashChainName(nft.chain!)}
                 />
               )}

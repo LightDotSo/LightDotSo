@@ -62,7 +62,7 @@ const NumericInputField = ({ focus, ...props }: NumericInputFieldProps) => {
   return (
     <Input
       ref={inputRef}
-      className="h-12 w-12 text-center"
+      className="size-12 text-center"
       type="text"
       autoComplete="off"
       maxLength={1}

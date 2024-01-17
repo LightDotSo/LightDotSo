@@ -55,7 +55,7 @@ export const TableEmpty: FC<TableEmptyProps> = ({ entity }) => {
   return (
     <div className="mt-3 space-y-3">
       <span className="inline-flex rounded-full border-2 border-border p-4">
-        <Wallet className="mx-auto h-10 w-10 text-lg text-border" />
+        <Wallet className="mx-auto size-10 text-lg text-border" />
       </span>
       <div className="text-text-weaker">
         No {entityDescription[entity]} in wallet.

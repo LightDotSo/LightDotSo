@@ -54,7 +54,7 @@ export const TokenCardToken: FC<TokenCardTokenProps> = ({
         >
           <ChevronRightIcon
             className={cn(
-              "h-4 w-4 transition-all duration-200",
+              "size-4 transition-all duration-200",
               isExpanded && "rotate-90 ",
             )}
           />

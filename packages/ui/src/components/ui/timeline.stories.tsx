@@ -89,7 +89,7 @@ export const Base: Story = {
       <TimelineItem>
         <TimelinePoint>
           <span className="inline-flex p-1">
-            <Wallet className="h-3 w-3 text-text" />
+            <Wallet className="size-3 text-text" />
           </span>
         </TimelinePoint>
         <TimelineContent>
