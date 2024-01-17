@@ -24,8 +24,6 @@ import {
   DrawerBody,
   DrawerContent,
   DrawerHeader,
-  DrawerTitle,
-  DrawerDescription,
   DrawerClose,
   DrawerFooter,
 } from "../../components/drawer";

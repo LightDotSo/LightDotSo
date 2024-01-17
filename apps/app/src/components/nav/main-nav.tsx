@@ -130,7 +130,7 @@ export const MainNav: FC<MainNavProps> = ({ children, ...props }) => {
   const [hookProps, setHookProps] = useState({
     tabs: typeTabs,
   });
-  const framer = useTabs(hookProps);
+  const { tabProps } = useTabs(hookProps);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -155,7 +155,7 @@ export const MainNav: FC<MainNavProps> = ({ children, ...props }) => {
         {...props}
       >
         {/* Render upon mount */}
-        <Suspense>{framer && <TabsNav {...framer.tabProps} />}</Suspense>
+        <Suspense>{tabProps && <TabsNav {...tabProps} />}</Suspense>
       </div>
     );
   };
@@ -174,7 +174,7 @@ export const MainNav: FC<MainNavProps> = ({ children, ...props }) => {
               <span className="ml-2 mr-1 text-text/60 last:hidden">/</span>
               <WalletSwitcher />
             </div>
-            <AppNav tabs={tabs} />
+            <AppNav tabs={tabProps.tabs} />
           </div>
           <Tabs />
         </div>
