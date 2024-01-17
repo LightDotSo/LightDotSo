@@ -22,14 +22,15 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { TransactionsDataTableToolbar } from "@/app/(transaction)/(components)/transactions-data-table-toolbar";
 import { BannerSection } from "@/components/section/banner-section";
+import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Metadata
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: "Transactions",
-  description: "Advanced form example using react-hook-form and Zod.",
+  title: TITLES["Transactions"].title,
+  description: TITLES["Transactions"].description,
 };
 
 // -----------------------------------------------------------------------------
@@ -47,7 +48,10 @@ interface SettingsLayoutProps {
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
     <>
-      <BannerSection title={"Transactions"} description={"Description"}>
+      <BannerSection
+        title={TITLES["Transactions"].title}
+        description={TITLES["Transactions"].description}
+      >
         <MiddleLayerWrapper>
           <TransactionsDataTableToolbar />
         </MiddleLayerWrapper>

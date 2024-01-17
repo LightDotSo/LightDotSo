@@ -32,6 +32,7 @@
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/styles": "workspace:*",
     "@lightdotso/table": "workspace:*",
+    "@lightdotso/types": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
     "@prisma/client": "^5.8.1",

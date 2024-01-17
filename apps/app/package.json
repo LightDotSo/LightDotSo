@@ -42,6 +42,7 @@
     "@lightdotso/styles": "workspace:*",
     "@lightdotso/svg": "workspace:*",
     "@lightdotso/table": "workspace:*",
+    "@lightdotso/types": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",

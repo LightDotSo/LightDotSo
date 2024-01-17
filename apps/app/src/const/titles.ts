@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { CategoryObject } from "@lightdotso/types";
+
 // -----------------------------------------------------------------------------
 // Main
 // -----------------------------------------------------------------------------
@@ -69,15 +71,6 @@ export enum SettingsSubCategory {
   Deployment = "Deployment",
   WalletSettings = "Wallet Settings",
 }
-
-export type SubCategory = string;
-
-export type CategoryObject = {
-  title: string;
-  description: string;
-  note?: string;
-  subcategories: Record<SubCategory, CategoryObject>;
-};
 
 // -----------------------------------------------------------------------------
 // All
