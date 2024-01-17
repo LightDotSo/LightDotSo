@@ -13,8 +13,22 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { useIsMounted } from "./useIsMounted";
-export { useMediaQuery } from "./useMediaQuery";
-export { useUserOperationCreate } from "./useUserOperationCreate";
-export { useUserOperationSign } from "./useUserOperationSign";
-export { useUserOperationSubmit } from "./useUserOperationSubmit";
+import { LightLogo } from "@lightdotso/svg";
+import Link from "next/link";
+import type { FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const RootLogo: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  return (
+    <Link href="/" className="hover:rounded-md hover:bg-background-stronger">
+      <LightLogo className="m-2.5 size-8 fill-text" />
+    </Link>
+  );
+};

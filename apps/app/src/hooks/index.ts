@@ -22,4 +22,3 @@ export { useIsMounted } from "./useIsMounted";
 export { useMediaQuery } from "./useMediaQuery";
 export { usePathType } from "./usePathType";
 export { useTabs } from "./useTabs";
-export type { Tab } from "./useTabs";

@@ -13,8 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { useIsMounted } from "./useIsMounted";
-export { useMediaQuery } from "./useMediaQuery";
-export { useUserOperationCreate } from "./useUserOperationCreate";
-export { useUserOperationSign } from "./useUserOperationSign";
-export { useUserOperationSubmit } from "./useUserOperationSubmit";
+export type SubCategory = string;
+
+export type CategoryObject = {
+  title: string;
+  description: string;
+  note?: string;
+  subcategories: Record<SubCategory, CategoryObject>;
+};

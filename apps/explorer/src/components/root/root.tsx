@@ -25,6 +25,7 @@ import { Inter } from "next/font/google";
 import Script from "next/script";
 import { Suspense } from "react";
 import type { FC, ReactNode } from "react";
+import { MainNav } from "../nav/main-nav";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -62,7 +63,7 @@ export const Root: FC<RootProps> = ({ children }) => {
       <body className="min-h-[100dvh] bg-background-body">
         <ThemeProvider attribute="class">
           <ReactQueryProvider>
-            {children}
+            <MainNav>{children}</MainNav>
             <Footer />
             {/* Utility Functions */}
             <Toaster />

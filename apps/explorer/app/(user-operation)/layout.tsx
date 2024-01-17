@@ -22,14 +22,15 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { UserOperationsDataTableToolbar } from "@/app/(user-operation)/(components)/user-operations-data-table-toolbar";
 import { BannerSection } from "@/components/section/banner-section";
+import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Metadata
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: "User Operations",
-  description: "Advanced form example using react-hook-form and Zod.",
+  title: TITLES["UserOperations"].title,
+  description: TITLES["UserOperations"].description,
 };
 
 // -----------------------------------------------------------------------------
@@ -47,7 +48,10 @@ interface SettingsLayoutProps {
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
     <>
-      <BannerSection title={"User Operations"} description={"Description"}>
+      <BannerSection
+        title={TITLES["UserOperations"].title}
+        description={TITLES["UserOperations"].description}
+      >
         <MiddleLayerWrapper>
           <UserOperationsDataTableToolbar />
         </MiddleLayerWrapper>

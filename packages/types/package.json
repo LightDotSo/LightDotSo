@@ -1,6 +1,6 @@
 {
-  "name": "@lightdotso/hooks",
-  "version": "0.0.1",
+  "name": "@lightdotso/types",
+  "version": "0.0.0",
   "private": true,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
@@ -25,21 +25,8 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@lightdotso/client": "workspace:*",
-    "@lightdotso/const": "workspace:*",
-    "@lightdotso/data": "workspace:*",
-    "@lightdotso/query": "workspace:*",
-    "@lightdotso/schemas": "workspace:*",
-    "@lightdotso/solutions": "workspace:*",
-    "@lightdotso/stores": "workspace:*",
-    "@lightdotso/tailwindcss": "workspace:*",
-    "@lightdotso/ui": "workspace:*",
-    "@lightdotso/wagmi": "workspace:*",
-    "next": "^14.0.4",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "viem": "^2.1.1",
-    "wagmi": "^2.2.1"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
