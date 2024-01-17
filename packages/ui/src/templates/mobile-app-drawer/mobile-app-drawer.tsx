@@ -67,7 +67,7 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
           {tabs.map(tab => {
             if (tab.href.startsWith("http")) {
               return (
-                <div className="border-b" key={tab.id}>
+                <div className="border-b border-border" key={tab.id}>
                   <Button className="w-full" asChild variant="link">
                     <a className="flex justify-between" href={tab.href}>
                       {tab.label}
@@ -78,7 +78,10 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
               );
             }
             return (
-              <div className="border-b" key={tab.id}>
+              <div
+                className="border-b border-border first:border-t"
+                key={tab.id}
+              >
                 <Button asChild variant="link">
                   <Link href={tab.href}>{tab.label}</Link>
                 </Button>

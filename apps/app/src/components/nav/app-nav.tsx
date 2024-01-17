@@ -16,19 +16,8 @@
 "use client";
 
 import { useAuth } from "@lightdotso/stores";
-import {
-  Button,
-  ButtonIcon,
-  Drawer,
-  DrawerTrigger,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerFooter,
-  DrawerClose,
-  DrawerDescription,
-} from "@lightdotso/ui";
-import { AlignRight } from "lucide-react";
+import { RawTab } from "@lightdotso/types";
+import { MobileAppDrawer } from "@lightdotso/ui";
 import type { FC } from "react";
 import { Suspense } from "react";
 import { ChainPopover } from "@/components/chain/chain-popover";
@@ -38,10 +27,18 @@ import { ConnectButton } from "@/components/web3/connect-button";
 import { useIsMounted, useMediaQuery } from "@/hooks";
 
 // -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+export type AppNavProps = {
+  tabs: RawTab[];
+};
+
+// -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const AppNav: FC = () => {
+export const AppNav: FC<AppNavProps> = ({ tabs }) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -64,29 +61,7 @@ export const AppNav: FC = () => {
   }
 
   if (!isDesktop) {
-    return (
-      <Drawer>
-        <div className="ml-auto">
-          <DrawerTrigger>
-            <ButtonIcon variant="outline" size="sm">
-              <AlignRight className="size-4" />
-            </ButtonIcon>
-          </DrawerTrigger>
-        </div>
-        <DrawerContent>
-          <DrawerHeader>
-            <DrawerTitle>Are you sure absolutely sure?</DrawerTitle>
-            <DrawerDescription>This action cannot be undone.</DrawerDescription>
-          </DrawerHeader>
-          <DrawerFooter>
-            <Button>Submit</Button>
-            <DrawerClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DrawerClose>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
-    );
+    return <MobileAppDrawer tabs={tabs} />;
   }
 
   return (

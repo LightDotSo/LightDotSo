@@ -97,7 +97,7 @@ const DrawerBody = ({
   className,
   ...props
 }: HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn("flex flex-col gap-2 p-4", className)} {...props} />
+  <div className={cn("flex flex-col p-4", className)} {...props} />
 );
 DrawerBody.displayName = "DrawerBody";
 

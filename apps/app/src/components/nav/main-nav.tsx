@@ -174,7 +174,7 @@ export const MainNav: FC<MainNavProps> = ({ children, ...props }) => {
               <span className="ml-2 mr-1 text-text/60 last:hidden">/</span>
               <WalletSwitcher />
             </div>
-            <AppNav />
+            <AppNav tabs={tabs} />
           </div>
           <Tabs />
         </div>
