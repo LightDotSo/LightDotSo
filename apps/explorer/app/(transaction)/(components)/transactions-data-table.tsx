@@ -24,7 +24,7 @@ import { TableSectionWrapper } from "@lightdotso/ui";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(transaction)/(components)/data-table/data-table";
-import { usePaginationQueryState } from "@/queryStates";
+import { usePaginationQueryState, useIsTestnetQueryState } from "@/queryStates";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -32,7 +32,6 @@ import { usePaginationQueryState } from "@/queryStates";
 
 interface TransactionsDataTableProps {
   address: Address | null;
-  isTestnet: boolean;
 }
 
 // -----------------------------------------------------------------------------
@@ -41,12 +40,12 @@ interface TransactionsDataTableProps {
 
 export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   address,
-  isTestnet,
 }) => {
   // ---------------------------------------------------------------------------
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
+  const [isTestnetQueryState] = useIsTestnetQueryState();
   const [paginationState] = usePaginationQueryState();
 
   // ---------------------------------------------------------------------------
@@ -65,12 +64,12 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
     address: address ?? null,
     limit: paginationState.pageSize,
     offset: offsetCount,
-    is_testnet: isTestnet ?? false,
+    is_testnet: isTestnetQueryState ?? false,
   });
 
   const { transactionsCount } = useQueryTransactionsCount({
     address: address ?? null,
-    is_testnet: isTestnet ?? false,
+    is_testnet: isTestnetQueryState ?? false,
   });
 
   // ---------------------------------------------------------------------------

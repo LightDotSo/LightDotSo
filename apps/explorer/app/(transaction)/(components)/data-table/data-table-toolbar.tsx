@@ -20,8 +20,11 @@ import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth, useTables } from "@lightdotso/stores";
 import {
   Button,
+  Checkbox,
   DataTableFacetedFilter,
   DataTableViewOptions,
+  Label,
+  Switch,
   ToolbarSectionWrapper,
 } from "@lightdotso/ui";
 import { getChainNameById } from "@lightdotso/utils";
@@ -30,7 +33,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import type { Table } from "@tanstack/react-table";
 import { useMemo } from "react";
 import type { Address } from "viem";
-import { usePaginationQueryState } from "@/queryStates";
+import { useIsTestnetQueryState, usePaginationQueryState } from "@/queryStates";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -57,6 +60,7 @@ export function DataTableToolbar({ isTestnet, table }: DataTableToolbarProps) {
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
+  const [isTestnetState, setIsTestnetState] = useIsTestnetQueryState();
   const [paginationState] = usePaginationQueryState();
 
   // ---------------------------------------------------------------------------
@@ -123,14 +127,22 @@ export function DataTableToolbar({ isTestnet, table }: DataTableToolbarProps) {
           </Button>
         )}
       </div>
-      <DataTableViewOptions
-        table={table}
-        columnMapping={{
-          chain_id: "Chain",
-          hash: "Tx Hash",
-          timestamp: "Timestamp",
-        }}
-      />
+      <div className="flex items-center space-x-2 text-text-primary">
+        <Switch
+          id="is-testnet"
+          checked={isTestnetState ?? false}
+          onCheckedChange={() => setIsTestnetState(!isTestnetState)}
+        />
+        <Label htmlFor="is-testnet">Include Testnet</Label>
+        <DataTableViewOptions
+          table={table}
+          columnMapping={{
+            chain_id: "Chain",
+            hash: "Tx Hash",
+            timestamp: "Timestamp",
+          }}
+        />
+      </div>
     </ToolbarSectionWrapper>
   );
 }
