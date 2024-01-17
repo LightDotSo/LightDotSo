@@ -13,6 +13,7 @@
   "license": "AGPL-3.0-or-later",
   "author": "Light, Inc.",
   "scripts": {
+    "analyze": "cross-env ANALYZE=true next build || true",
     "build": "dotenv -- next build || true",
     "dev": "concurrently \"pnpm:dev:*\"",
     "dev:inngest": "inngest dev -u http://localhost:3001/api/inngest",
@@ -46,6 +47,7 @@
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
+    "@next/bundle-analyzer": "^14.0.4",
     "@opentelemetry/exporter-trace-otlp-http": "^0.47.0",
     "@opentelemetry/resources": "^1.20.0",
     "@opentelemetry/sdk-node": "^0.47.0",

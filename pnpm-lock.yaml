@@ -372,6 +372,9 @@ importers:
       '@lightdotso/wagmi':
         specifier: workspace:*
         version: link:../../packages/wagmi
+      '@next/bundle-analyzer':
+        specifier: ^14.0.4
+        version: 14.0.4
       '@opentelemetry/exporter-trace-otlp-http':
         specifier: ^0.47.0
         version: 0.47.0(@opentelemetry/api@1.4.1)
@@ -706,6 +709,9 @@ importers:
       '@babel/core':
         specifier: ^7.23.7
         version: 7.23.7
+      '@next/bundle-analyzer':
+        specifier: ^14.0.4
+        version: 14.0.4
       '@sentry/integrations':
         specifier: ^7.93.0
         version: 7.93.0
@@ -815,6 +821,9 @@ importers:
       '@lightdotso/utils':
         specifier: workspace:*
         version: link:../../packages/utils
+      '@next/bundle-analyzer':
+        specifier: ^14.0.4
+        version: 14.0.4
       '@prisma/client':
         specifier: ^5.8.1
         version: 5.8.1(prisma@5.8.1)
@@ -958,6 +967,9 @@ importers:
       '@babel/core':
         specifier: ^7.23.7
         version: 7.23.7
+      '@next/bundle-analyzer':
+        specifier: ^14.0.4
+        version: 14.0.4
       '@sentry/integrations':
         specifier: ^7.93.0
         version: 7.93.0
@@ -1336,9 +1348,6 @@ importers:
       '@headlessui/tailwindcss':
         specifier: ^0.2.0
         version: 0.2.0(tailwindcss@3.4.1)
-      '@radix-ui/colors':
-        specifier: ^3.0.0
-        version: 3.0.0
       '@tailwindcss/aspect-ratio':
         specifier: ^0.4.2
         version: 0.4.2(tailwindcss@3.4.1)
@@ -1357,9 +1366,6 @@ importers:
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.1)
-      windy-radix-palette:
-        specifier: ^1.0.0
-        version: 1.0.0(@radix-ui/colors@3.0.0)(tailwindcss@3.4.1)
 
   configurations/tsconfig: {}
 
@@ -6703,6 +6709,15 @@ packages:
       tar-fs: 2.1.1
     dev: true
 
+  /@next/bundle-analyzer@14.0.4:
+    resolution: {integrity: sha512-Nn2PiCkFBJBlVmpSGVNItpISws0fuc9E8AkCafBz/moRv1cfASOpFBBVzSRfWLP9BPdAhfDkb6TafN0rvs2IJQ==}
+    dependencies:
+      webpack-bundle-analyzer: 4.7.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+    dev: false
+
   /@next/env@14.0.4:
     resolution: {integrity: sha512-irQnbMLbUNQpP1wcE5NstJtbuA/69kRfzBrpAD7Gsn8zm/CY6YQYc3HQBz8QPxwISG26tIm5afvvVbu508oBeQ==}
 
@@ -8125,7 +8140,6 @@ packages:
 
   /@polka/url@1.0.0-next.24:
     resolution: {integrity: sha512-2LuNTFBIO0m7kKIQvvPHN6UE63VjpmL9rnEEaOOaiSPbZK+zUOYIzBAWcED+3XYzhYsd/0mD57VdxAEqqV52CQ==}
-    dev: true
 
   /@popperjs/core@2.11.8:
     resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
@@ -8360,10 +8374,6 @@ packages:
 
   /@protobufjs/utf8@1.1.0:
     resolution: {integrity: sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==}
-    dev: false
-
-  /@radix-ui/colors@3.0.0:
-    resolution: {integrity: sha512-FUOsGBkHrYJwCSEtWRCIfQbZG7q1e6DgxCIOe1SUQzDe/7rXXeA47s8yCn6fuTNQAj1Zq4oTFi9Yjp3wzElcxg==}
     dev: false
 
   /@radix-ui/number@1.0.1:
@@ -18630,6 +18640,10 @@ packages:
     dev: true
     optional: true
 
+  /duplexer@0.1.2:
+    resolution: {integrity: sha512-jtD6YG370ZCIi/9GTaJKQxWTZD045+4R4hTk/x1UyoqadyJ9x9CgSi1RlVDQF8U2sxLLSnFkCaMihqljHIWgMg==}
+    dev: false
+
   /duplexify@3.7.1:
     resolution: {integrity: sha512-07z8uv2wMyS51kKhD1KsdXJg5WQ6t93RneqRxUHnskXVtlYYkLqM0gqStQZ3pj073g687jPCHrqNfCzawLYh5g==}
     dependencies:
@@ -21683,6 +21697,13 @@ packages:
       pumpify: 1.5.1
       through2: 2.0.5
     dev: true
+
+  /gzip-size@6.0.0:
+    resolution: {integrity: sha512-ax7ZYomf6jqPTQ4+XCpUGyXKHk5WweS+e05MBO4/y3WJ5RkmPXNKvX+bx1behVILVwr6JSQvZAku021CHPXG3Q==}
+    engines: {node: '>=10'}
+    dependencies:
+      duplexer: 0.1.2
+    dev: false
 
   /h3@1.8.2:
     resolution: {integrity: sha512-1Ca0orJJlCaiFY68BvzQtP2lKLk46kcLAxVM8JgYbtm2cUg6IY7pjpYgWMwUvDO9QI30N5JAukOKoT8KD3Q0PQ==}
@@ -26369,6 +26390,11 @@ packages:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
     engines: {node: '>=4'}
 
+  /mrmime@1.0.1:
+    resolution: {integrity: sha512-hzzEagAgDyoU1Q6yg5uI+AorQgdvMCur3FcKf7NhMKWsaYg+RnbTyHRa/9IlLF9rf455MOCtcqqrQQ83pPP7Uw==}
+    engines: {node: '>=10'}
+    dev: false
+
   /mrmime@2.0.0:
     resolution: {integrity: sha512-eu38+hdgojoyq63s+yTpN4XMBdt5l8HhMhc4VKLO9KM5caLIBvUm4thi7fFaxyTmCKeNnXZ5pAlBwCUnhA09uw==}
     engines: {node: '>=10'}
@@ -27558,6 +27584,11 @@ packages:
       undici: 5.28.2
       yargs-parser: 21.1.1
     dev: true
+
+  /opener@1.5.2:
+    resolution: {integrity: sha512-ur5UIdyw5Y7yEj9wLzhqXiy6GZ3Mwx0yGI+5sMn2r0N0v3cKJvUmFH5yPP+WXh9e0xfyzyJX95D8l088DNFj7A==}
+    hasBin: true
+    dev: false
 
   /optionator@0.8.3:
     resolution: {integrity: sha512-+IW9pACdk3XWmmTXG8m3upGUJst5XRGzxMRjXzAuJ1XnIFNvfhjjIuYkDvysnPQ7qzqVzLt78BCruntqRhWQbA==}
@@ -30989,6 +31020,15 @@ packages:
       semver: 7.5.4
     dev: true
 
+  /sirv@1.0.19:
+    resolution: {integrity: sha512-JuLThK3TnZG1TAKDwNIqNq6QA2afLOCcm+iE8D1Kj3GA40pSPsxQjjJl0J8X3tsR7T+CP1GavpzLwYkgVLWrZQ==}
+    engines: {node: '>= 10'}
+    dependencies:
+      '@polka/url': 1.0.0-next.24
+      mrmime: 1.0.1
+      totalist: 1.1.0
+    dev: false
+
   /sirv@2.0.4:
     resolution: {integrity: sha512-94Bdh3cC2PKrbgSOUqTiGPWVZeSiXfKOVZNJniWoqrWrRkB1CJzBU3NEbiTsPcYy1lDsANA/THzS+9WBiy5nfQ==}
     engines: {node: '>= 10'}
@@ -32490,6 +32530,11 @@ packages:
     resolution: {integrity: sha512-N6g8eQ1eerw6Y1pBhdgkubWIiPFwXa2POSUrlL8jth5CyyEWNWzoGKRkO3CaO7Jx27hlJP54muB3btIAbx4MPg==}
     engines: {node: '>=0.4.0'}
     dev: true
+
+  /totalist@1.1.0:
+    resolution: {integrity: sha512-gduQwd1rOdDMGxFG1gEvhV88Oirdo2p+KjoYFU7k2g+i7n6AFFbDQ5kMPUsW0pNbfQsB/cwXvT1i4Bue0s9g5g==}
+    engines: {node: '>=6'}
+    dev: false
 
   /totalist@3.0.1:
     resolution: {integrity: sha512-sf4i37nQ2LBx4m3wB74y+ubopq6W/dIzXg0FDGjsYnZHVa1Da8FH853wlL2gtUhg+xJXjfk3kUZS3BRoQeoQBQ==}
@@ -34218,6 +34263,25 @@ packages:
     resolution: {integrity: sha512-YQ+BmxuTgd6UXZW3+ICGfyqRyHXVlD5GtQr5+qjiNW7bF0cqrzX500HVXPBOvgXb5YnzDd+h0zqyv61KUD7+Sg==}
     dev: true
 
+  /webpack-bundle-analyzer@4.7.0:
+    resolution: {integrity: sha512-j9b8ynpJS4K+zfO5GGwsAcQX4ZHpWV+yRiHDiL+bE0XHJ8NiPYLTNVQdlFYWxtpg9lfAQNlwJg16J9AJtFSXRg==}
+    engines: {node: '>= 10.13.0'}
+    hasBin: true
+    dependencies:
+      acorn: 8.10.0
+      acorn-walk: 8.3.1
+      chalk: 4.1.2
+      commander: 7.2.0
+      gzip-size: 6.0.0
+      lodash: 4.17.21
+      opener: 1.5.2
+      sirv: 1.0.19
+      ws: 7.5.9
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+    dev: false
+
   /webpack-dev-middleware@6.1.1(webpack@5.88.2):
     resolution: {integrity: sha512-y51HrHaFeeWir0YO4f0g+9GwZawuigzcAdRNon6jErXy/SqV/+O6eaVAzDqE6t3e3NpGeR5CS+cCDaTC+V3yEQ==}
     engines: {node: '>= 14.15.0'}
@@ -34469,16 +34533,6 @@ packages:
     dependencies:
       string-width: 5.1.2
     dev: true
-
-  /windy-radix-palette@1.0.0(@radix-ui/colors@3.0.0)(tailwindcss@3.4.1):
-    resolution: {integrity: sha512-KrlmFaxiRDV3OnolcFJWBJLyeSJ/zHYyRn50e8LjO7ee4B3/Vh7vrRPkjDp43tTpCF1gvyXU4Hz5DBwP1s0Fgw==}
-    peerDependencies:
-      '@radix-ui/colors': '>=3.0.0'
-      tailwindcss: '>=3.0.0'
-    dependencies:
-      '@radix-ui/colors': 3.0.0
-      tailwindcss: 3.4.1(ts-node@10.9.2)
-    dev: false
 
   /winreg@0.0.12:
     resolution: {integrity: sha512-typ/+JRmi7RqP1NanzFULK36vczznSNN8kWVA9vIqXyv8GhghUlwhGp1Xj3Nms1FsPcNnsQrJOR10N58/nQ9hQ==}

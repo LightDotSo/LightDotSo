@@ -15,23 +15,16 @@
 
 import withBundleAnalyzer from "@next/bundle-analyzer";
 import { withSentryConfig } from "@sentry/nextjs";
-import packageJson from "./package.json" assert { type: "json" };
 
-// -----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 // Next Config
-// -----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  env: {
-    NEXT_PUBLIC_APP_VERSION: `@lightdotso/explorer@${packageJson.version}`,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   experimental: {
-    esmExternals: true,
+    instrumentationHook: true,
     // From: https://github.com/vercel/next.js/issues/42641
     outputFileTracingExcludes: {
       "*": [
@@ -45,24 +38,7 @@ const nextConfig = {
     },
   },
   outputFileTracing: true,
-  transpilePackages: [
-    "@lightdotso/client",
-    "@lightdotso/data",
-    "@lightdotso/hooks",
-    "@lightdotso/kysely",
-    "@lightdotso/params",
-    "@lightdotso/prisma",
-    "@lightdotso/query",
-    "@lightdotso/query-keys",
-    "@lightdotso/services",
-    "@lightdotso/stores",
-    "@lightdotso/styles",
-    "@lightdotso/svg",
-    "@lightdotso/table",
-    "@lightdotso/types",
-    "@lightdotso/ui",
-    "@lightdotso/utils",
-  ],
+  transpilePackages: ["@lightdotso/ui"],
   webpack: config => {
     config.externals.push("async_hooks", "pino-pretty", "lokijs", "encoding");
     config.resolve.fallback = { fs: false, net: false, tls: false };

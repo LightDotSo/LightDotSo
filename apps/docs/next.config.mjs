@@ -14,16 +14,62 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // eslint-disable-next-line import/default
-import nextra from "nextra";
+import withBundleAnalyzer from "@next/bundle-analyzer";
+import { withSentryConfig } from "@sentry/nextjs";
+import withNextraImport from "nextra";
 
-const withNextra = nextra({
+// ---------------------------------------------------------------------------
+// Next Config
+// ---------------------------------------------------------------------------
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  pageExtensions: ["js", "jsx", "ts", "tsx", "mdx"],
+};
+
+// -----------------------------------------------------------------------------
+// Nextra Config
+// -----------------------------------------------------------------------------
+
+/** @type {import('nextra').NextraConfig} */
+const nextra = withNextraImport({
   theme: "nextra-theme-docs",
   themeConfig: "./theme.config.tsx",
-  defaultShowCopyCode: true,
-  readingTime: true,
+  staticImage: true,
+  latex: true,
+  flexsearch: {
+    codeblock: false,
+  },
 });
 
-export default withNextra({
-  reactStrictMode: true,
-  cleanDistDir: true,
-});
+// -----------------------------------------------------------------------------
+// Sentry Config
+// -----------------------------------------------------------------------------
+
+const sentryWebpackPluginOptions = {
+  silent: false,
+};
+
+// -----------------------------------------------------------------------------
+// Plugins
+// -----------------------------------------------------------------------------
+
+const plugins = [
+  withBundleAnalyzer({
+    enabled: process.env.ANALYZE === "true",
+  }),
+  nextra,
+  withSentryConfig,
+];
+
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
+
+export default plugins.reduce((acc, next) => {
+  if (next.name === "withSentryConfig") {
+    return next(acc, sentryWebpackPluginOptions);
+  }
+
+  return next(acc);
+}, nextConfig);

@@ -456,7 +456,6 @@ module.exports = {
     },
   ],
   plugins: [
-    require("windy-radix-palette"),
     require("@headlessui/tailwindcss"),
     require("tailwindcss-animate"),
     require("@tailwindcss/aspect-ratio"),

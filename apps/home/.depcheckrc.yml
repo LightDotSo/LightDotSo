@@ -19,3 +19,4 @@ ignores:
   - critters
   - "@lightdotso/eslint-config"
   - "@lightdotso/styles"
+  - "@next/bundle-analyzer"

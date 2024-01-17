@@ -36,3 +36,4 @@ ignores:
   - class-variance-authority
   - "@vercel/toolbar"
   - "@lightdotso/params"
+  - "@next/bundle-analyzer"

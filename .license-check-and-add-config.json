@@ -84,7 +84,6 @@
     "**/.husky/**",
     "**/.github/**",
     "**/.mobiledev/**",
-    "**/.storybook/**",
     "**/_next/**",
     "**/*.appex/**",
     "**/*.xcframework/**",
