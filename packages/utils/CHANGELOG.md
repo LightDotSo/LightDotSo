@@ -1,5 +1,20 @@
 # @lightdotso/utils
 
+## 3.1.0
+
+### Minor Changes
+
+- [#1372](https://github.com/LightDotSo/LightDotSo/pull/1372) [`6351654`](https://github.com/LightDotSo/LightDotSo/commit/6351654eb5cb938a7eacc63d441c86736bf26a36) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Split packages into their respective peers
+
+- [#1355](https://github.com/LightDotSo/LightDotSo/pull/1355) [`35d2363`](https://github.com/LightDotSo/LightDotSo/commit/35d2363c6b0a35c14689033956b2507473643d92) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Upgrade core packages
+
+### Patch Changes
+
+- [#1382](https://github.com/LightDotSo/LightDotSo/pull/1382) [`b9454fd`](https://github.com/LightDotSo/LightDotSo/commit/b9454fdea76d0dc5d2f4e70f7eaa7b75ea1db612) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add utils data
+
+- Updated dependencies [[`78cede4`](https://github.com/LightDotSo/LightDotSo/commit/78cede4cb27b34a6087c9d7c96303c9aa461002b), [`35d2363`](https://github.com/LightDotSo/LightDotSo/commit/35d2363c6b0a35c14689033956b2507473643d92)]:
+  - @lightdotso/const@3.1.0
+
 ## 3.0.0
 
 ### Major Changes

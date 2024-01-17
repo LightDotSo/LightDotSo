@@ -1,5 +1,19 @@
 # @lightdotso/extension
 
+## 3.1.0
+
+### Minor Changes
+
+- [#1355](https://github.com/LightDotSo/LightDotSo/pull/1355) [`35d2363`](https://github.com/LightDotSo/LightDotSo/commit/35d2363c6b0a35c14689033956b2507473643d92) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Upgrade core packages
+
+### Patch Changes
+
+- Updated dependencies [[`35d2363`](https://github.com/LightDotSo/LightDotSo/commit/35d2363c6b0a35c14689033956b2507473643d92)]:
+  - @lightdotso/background@3.1.0
+  - @lightdotso/content@3.1.0
+  - @lightdotso/inpage@3.1.0
+  - @lightdotso/popup@3.1.0
+
 ## 3.0.0
 
 ### Major Changes
