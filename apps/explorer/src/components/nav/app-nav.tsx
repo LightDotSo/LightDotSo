@@ -17,7 +17,7 @@
 
 import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
 import { useAuth } from "@lightdotso/stores";
-import { RawTab } from "@lightdotso/types";
+import type { RawTab } from "@lightdotso/types";
 import {
   Button,
   ButtonIcon,

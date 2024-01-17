@@ -61,7 +61,7 @@ const nextConfig = {
     "@lightdotso/types",
     "@lightdotso/ui",
     "@lightdotso/utils",
-    "@lightdotso/ui"
+    "@lightdotso/ui",
   ],
   webpack: config => {
     config.externals.push("async_hooks", "pino-pretty", "lokijs", "encoding");

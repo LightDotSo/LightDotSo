@@ -15,13 +15,13 @@
 
 "use client";
 
-import { RawTab } from "@lightdotso/types";
+import type { RawTab } from "@lightdotso/types";
 import { BaseLayerWrapper } from "@lightdotso/ui";
-import { HTMLAttributes, type FC, ReactNode, RefAttributes } from "react";
+import { DashboardIcon, WidthIcon } from "@radix-ui/react-icons";
+import type { IconProps } from "@radix-ui/react-icons/dist/types";
+import type { HTMLAttributes, ReactNode, RefAttributes, type FC } from "react";
 import { RootLogo } from "../root/root-logo";
 import { AppNav } from "./app-nav";
-import { IconProps } from "@radix-ui/react-icons/dist/types";
-import { DashboardIcon, WidthIcon } from "@radix-ui/react-icons";
 
 // -----------------------------------------------------------------------------
 // Const
