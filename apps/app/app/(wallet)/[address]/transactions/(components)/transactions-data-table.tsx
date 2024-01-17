@@ -68,7 +68,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
-  const { userOperations } = useQueryUserOperations({
+  const { userOperations, isUserOperationsLoading } = useQueryUserOperations({
     address,
     status,
     order: status === "proposed" ? "asc" : "desc",
@@ -77,15 +77,20 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
   });
 
-  const { userOperationsCount } = useQueryUserOperationsCount({
-    address,
-    status,
-    is_testnet: walletSettings?.is_enabled_testnet ?? false,
-  });
+  const { userOperationsCount, isUserOperationsCountLoading } =
+    useQueryUserOperationsCount({
+      address,
+      status,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
+
+  const isLoading = useMemo(() => {
+    return isUserOperationsLoading || isUserOperationsCountLoading;
+  }, [isUserOperationsLoading, isUserOperationsCountLoading]);
 
   const pageCount = useMemo(() => {
     if (!userOperationsCount || !userOperationsCount?.count) {
@@ -100,6 +105,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
 
   return (
     <DataTable
+      isLoading={isLoading}
       data={userOperations ?? []}
       address={address}
       columns={userOperationColumns}

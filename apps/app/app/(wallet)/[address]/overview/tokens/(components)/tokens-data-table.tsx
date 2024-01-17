@@ -62,7 +62,7 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
-  const { tokens } = useQueryTokens({
+  const { tokens, isTokensLoading } = useQueryTokens({
     address: address,
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
     limit: paginationState.pageSize,
@@ -71,7 +71,7 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
     chain_ids: null,
   });
 
-  const { tokensCount } = useQueryTokensCount({
+  const { tokensCount, isTokensCountLoading } = useQueryTokensCount({
     address: address,
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
     chain_ids: null,
@@ -80,6 +80,10 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
+
+  const isLoading = useMemo(() => {
+    return isTokensLoading || isTokensCountLoading;
+  }, [isTokensLoading, isTokensCountLoading]);
 
   const pageCount = useMemo(() => {
     if (!tokensCount || !tokensCount?.count) {
@@ -95,6 +99,7 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
   return (
     <TableSectionWrapper>
       <DataTable
+        isLoading={isLoading}
         data={tokens ?? []}
         columns={tokenColumns}
         pageCount={pageCount ?? 0}

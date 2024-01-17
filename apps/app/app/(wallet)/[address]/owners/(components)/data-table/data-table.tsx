@@ -26,6 +26,7 @@ import { usePaginationQueryState } from "@/queryStates";
 // -----------------------------------------------------------------------------
 
 interface DataTableProps {
+  isLoading: boolean;
   columns: ColumnDef<ConfigurationOwnerData>[];
   data: ConfigurationOwnerData[];
 }
@@ -34,7 +35,7 @@ interface DataTableProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export function DataTable({ columns, data }: DataTableProps) {
+export function DataTable({ isLoading, columns, data }: DataTableProps) {
   // ---------------------------------------------------------------------------
   // Query State Hooks
   // ---------------------------------------------------------------------------
@@ -82,6 +83,7 @@ export function DataTable({ columns, data }: DataTableProps) {
 
   return (
     <OwnerTable
+      isLoading={isLoading}
       data={data}
       columns={columns}
       tableOptions={tableOptions}

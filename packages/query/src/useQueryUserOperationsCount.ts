@@ -45,8 +45,8 @@ export const useQueryUserOperationsCount = (
       }).queryKey,
     );
 
-  const { data: userOperationsCount } = useQuery<UserOperationCountData | null>(
-    {
+  const { data: userOperationsCount, isLoading: isUserOperationsCountLoading } =
+    useQuery<UserOperationCountData | null>({
       queryKey: queryKeys.user_operation.listCount({
         address: params.address as Address,
         status: params.status,
@@ -80,10 +80,10 @@ export const useQueryUserOperationsCount = (
           },
         );
       },
-    },
-  );
+    });
 
   return {
     userOperationsCount,
+    isUserOperationsCountLoading,
   };
 };

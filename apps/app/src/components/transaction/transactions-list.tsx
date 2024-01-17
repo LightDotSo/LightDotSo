@@ -97,5 +97,11 @@ export const TransactionsList: FC<TransactionsListProps> = ({
   // Render
   // ---------------------------------------------------------------------------
 
-  return <TransactionTable data={transactions} tableOptions={tableOptions} />;
+  return (
+    <TransactionTable
+      isLoading={false}
+      data={transactions}
+      tableOptions={tableOptions}
+    />
+  );
 };

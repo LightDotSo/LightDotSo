@@ -14,7 +14,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
+import { useDebounced } from "@lightdotso/hooks";
 import {
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -51,6 +53,7 @@ import { userOperationColumns } from "./user-operation-columns";
 // -----------------------------------------------------------------------------
 
 type UserOperationTableProps = {
+  isLoading: boolean;
   data: UserOperationData[] | null;
   configuration?: ConfigurationData;
   address: Address | null;
@@ -67,6 +70,7 @@ type UserOperationTableProps = {
 // -----------------------------------------------------------------------------
 
 export const UserOperationTable: FC<UserOperationTableProps> = ({
+  isLoading,
   data,
   configuration,
   tableOptions,
@@ -126,6 +130,12 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // ---------------------------------------------------------------------------
+  // Debounced Hooks
+  // ---------------------------------------------------------------------------
+
+  const delayedIsLoading = useDebounced(isLoading, 1000);
 
   // ---------------------------------------------------------------------------
   // Local Variables
@@ -188,6 +198,21 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
                         cell.column.columnDef.cell,
                         cell.getContext(),
                       )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+          ) : delayedIsLoading ? (
+            Array(10)
+              .fill(null)
+              .map((_, index) => (
+                <TableRow key={index}>
+                  {table.getVisibleLeafColumns().map(column => (
+                    <TableCell
+                      key={column.id}
+                      style={{ width: column.getSize() }}
+                    >
+                      <Skeleton className="h-6 w-full" />
                     </TableCell>
                   ))}
                 </TableRow>

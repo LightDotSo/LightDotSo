@@ -40,6 +40,6 @@ type Story = StoryObj<typeof WalletTable>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <WalletTable data={walletListData} />,
+  render: args => <WalletTable isLoading={false} data={walletListData} />,
   args: {},
 };

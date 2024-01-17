@@ -41,7 +41,9 @@ export const useQueryWallets = (params: WalletListParams) => {
     }).queryKey,
   );
 
-  const { data: wallets } = useQuery<WalletData[] | null>({
+  const { data: wallets, isLoading: isWalletsLoading } = useQuery<
+    WalletData[] | null
+  >({
     queryKey: queryKeys.wallet.list({
       address: params.address,
       limit: params.limit,
@@ -79,5 +81,6 @@ export const useQueryWallets = (params: WalletListParams) => {
 
   return {
     wallets,
+    isWalletsLoading,
   };
 };

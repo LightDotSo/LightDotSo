@@ -60,7 +60,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { transactions } = useQueryTransactions({
+  const { transactions, isTransactionsLoading } = useQueryTransactions({
     address: address ?? null,
     limit: paginationState.pageSize,
     offset: offsetCount,
@@ -76,6 +76,10 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
+  const isLoading = useMemo(() => {
+    return isTransactionsLoading || isTransactionsCountLoading;
+  }, [isTransactionsLoading, isTransactionsCountLoading]);
+
   const pageCount = useMemo(() => {
     if (!transactionsCount || !transactionsCount?.count) {
       return null;
@@ -90,6 +94,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   return (
     <TableSectionWrapper>
       <DataTable
+        isLoading={isLoading}
         data={transactions ?? []}
         columns={transactionColumns}
         pageCount={pageCount ?? 0}

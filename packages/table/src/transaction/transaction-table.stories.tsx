@@ -40,6 +40,8 @@ type Story = StoryObj<typeof TransactionTable>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <TransactionTable data={transactionListData} />,
+  render: args => (
+    <TransactionTable isLoading={false} data={transactionListData} />
+  ),
   args: {},
 };

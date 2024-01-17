@@ -14,7 +14,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { NftData } from "@lightdotso/data";
-import { Table, TableBody, TableCell, TableRow } from "@lightdotso/ui";
+import { useDebounced } from "@lightdotso/hooks";
+import {
+  Skeleton,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+} from "@lightdotso/ui";
 import type {
   ColumnDef,
   TableOptions,
@@ -41,6 +48,7 @@ import { NftsWrapper } from "./nfts-wrapper";
 // -----------------------------------------------------------------------------
 
 type NftTableProps = {
+  isLoading: boolean;
   data: NftData[] | null;
   tableOptions?: Omit<
     TableOptions<NftData>,
@@ -56,6 +64,7 @@ type NftTableProps = {
 // -----------------------------------------------------------------------------
 
 export const NftTable: FC<NftTableProps> = ({
+  isLoading,
   data,
   tableOptions,
   columns = nftColumns,
@@ -123,6 +132,12 @@ export const NftTable: FC<NftTableProps> = ({
   ]);
 
   // ---------------------------------------------------------------------------
+  // Debounced Hooks
+  // ---------------------------------------------------------------------------
+
+  const delayedIsLoading = useDebounced(isLoading, 1000);
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -150,6 +165,10 @@ export const NftTable: FC<NftTableProps> = ({
                 .some(cell => cell.column.id === "chain")}
             />
           ))
+      ) : delayedIsLoading ? (
+        Array(10)
+          .fill(null)
+          .map((_, index) => <Skeleton key={index} className="size-24" />)
       ) : (
         <div className="col-span-6">
           <Table>

@@ -39,6 +39,7 @@ export const transactionColumns: ColumnDef<TransactionData>[] = [
     },
     enableSorting: true,
     enableHiding: true,
+    size: 416,
   },
   {
     accessorKey: "hash",
@@ -51,6 +52,7 @@ export const transactionColumns: ColumnDef<TransactionData>[] = [
     },
     enableSorting: true,
     enableHiding: true,
+    size: 416,
   },
   {
     accessorKey: "timestamp",
@@ -63,6 +65,7 @@ export const transactionColumns: ColumnDef<TransactionData>[] = [
     },
     enableSorting: true,
     enableHiding: true,
+    size: 96,
   },
   {
     id: "actions",
