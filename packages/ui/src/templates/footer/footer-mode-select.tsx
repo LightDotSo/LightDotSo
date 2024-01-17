@@ -70,7 +70,7 @@ export const FooterModeSelect: FC = () => {
 
   return (
     <Select value={theme} defaultValue={theme} onValueChange={setTheme}>
-      <SelectTrigger size="sm" className="w-36 bg-background-stronger">
+      <SelectTrigger size="sm" className="bg-background-stronger">
         <SelectValue placeholder="Select a theme" />
       </SelectTrigger>
       <SelectContent>
@@ -81,7 +81,7 @@ export const FooterModeSelect: FC = () => {
                 className="h-4 w-4 fill-text-weak mr-2"
                 aria-hidden="true"
               />
-              {item.name}
+              <span className="mr-2">{item.name}</span>
             </span>
           </SelectItem>
         ))}
