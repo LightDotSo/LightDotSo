@@ -30,7 +30,7 @@ import { Input } from "./input";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Form> = {
-  title: "ui/Form",
+  title: "component/Form",
   component: Form,
   tags: ["autodocs"],
   argTypes: {},

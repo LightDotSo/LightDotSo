@@ -28,7 +28,7 @@ import {
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Sheet> = {
-  title: "ui/Sheet",
+  title: "component/Sheet",
   component: Sheet,
   tags: ["autodocs"],
   argTypes: {},

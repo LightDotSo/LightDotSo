@@ -21,7 +21,7 @@ import { Skeleton } from "./skeleton";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Skeleton> = {
-  title: "ui/Skeleton",
+  title: "component/Skeleton",
   component: Skeleton,
   tags: ["autodocs"],
   argTypes: {},

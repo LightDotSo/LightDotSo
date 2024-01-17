@@ -28,7 +28,7 @@ import {
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Carousel> = {
-  title: "ui/Carousel",
+  title: "component/Carousel",
   component: Carousel,
   tags: ["autodocs"],
   argTypes: {},

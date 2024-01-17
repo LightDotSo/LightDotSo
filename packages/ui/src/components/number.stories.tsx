@@ -23,7 +23,7 @@ import { Number } from "./number";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Number> = {
-  title: "ui/Number",
+  title: "component/Number",
   component: Number,
   tags: ["autodocs"],
   argTypes: {},

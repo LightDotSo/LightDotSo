@@ -21,7 +21,7 @@ import { Slider } from "./slider";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Slider> = {
-  title: "ui/Slider",
+  title: "component/Slider",
   component: Slider,
   tags: ["autodocs"],
   argTypes: {},

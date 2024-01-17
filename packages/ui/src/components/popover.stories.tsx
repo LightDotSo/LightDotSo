@@ -25,7 +25,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Popover> = {
-  title: "ui/Popover",
+  title: "component/Popover",
   component: Popover,
   tags: ["autodocs"],
   argTypes: {},

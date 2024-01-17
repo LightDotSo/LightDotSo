@@ -21,7 +21,7 @@ import { Label } from "./label";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Label> = {
-  title: "ui/Label",
+  title: "component/Label",
   component: Label,
   tags: ["autodocs"],
   argTypes: {},

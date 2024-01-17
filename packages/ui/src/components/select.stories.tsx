@@ -30,7 +30,7 @@ import {
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Select> = {
-  title: "ui/Select",
+  title: "component/Select",
   component: Select,
   tags: ["autodocs"],
   argTypes: {},

@@ -70,7 +70,7 @@ const ToastDemo = ({
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof ToastDemo> = {
-  title: "ui/Toast",
+  title: "component/Toast",
   component: ToastDemo,
   tags: ["autodocs"],
   argTypes: {},

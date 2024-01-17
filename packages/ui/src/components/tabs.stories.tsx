@@ -24,7 +24,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Tabs> = {
-  title: "ui/Tabs",
+  title: "component/Tabs",
   component: Tabs,
   tags: ["autodocs"],
   argTypes: {},

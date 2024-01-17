@@ -22,7 +22,7 @@ import { RadioGroup, RadioGroupItem } from "./radio-group";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof RadioGroup> = {
-  title: "ui/RadioGroup",
+  title: "component/RadioGroup",
   component: RadioGroup,
   tags: ["autodocs"],
   argTypes: {},

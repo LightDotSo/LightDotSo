@@ -22,7 +22,7 @@ import { ButtonIcon } from "./button-icon";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof ButtonIcon> = {
-  title: "ui/ButtonIcon",
+  title: "component/ButtonIcon",
   component: ButtonIcon,
   tags: ["autodocs"],
   argTypes: {},

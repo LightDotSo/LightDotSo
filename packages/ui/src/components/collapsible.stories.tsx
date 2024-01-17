@@ -27,7 +27,7 @@ import {
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Collapsible> = {
-  title: "ui/Collapsible",
+  title: "component/Collapsible",
   component: Collapsible,
   tags: ["autodocs"],
   argTypes: {},

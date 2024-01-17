@@ -22,7 +22,7 @@ import { AspectRatio } from "./aspect-ratio";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof AspectRatio> = {
-  title: "ui/AspectRatio",
+  title: "component/AspectRatio",
   component: AspectRatio,
   tags: ["autodocs"],
   argTypes: {},

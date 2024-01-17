@@ -29,7 +29,7 @@ import {
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Table> = {
-  title: "ui/Table",
+  title: "component/Table",
   component: Table,
   tags: ["autodocs"],
   argTypes: {},

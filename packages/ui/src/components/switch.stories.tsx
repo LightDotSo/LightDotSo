@@ -22,7 +22,7 @@ import { Switch } from "./switch";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Switch> = {
-  title: "ui/Switch",
+  title: "component/Switch",
   component: Switch,
   tags: ["autodocs"],
   argTypes: {},

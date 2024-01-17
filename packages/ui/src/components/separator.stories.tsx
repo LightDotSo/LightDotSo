@@ -21,7 +21,7 @@ import { Separator } from "./separator";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Separator> = {
-  title: "ui/Separator",
+  title: "component/Separator",
   component: Separator,
   tags: ["autodocs"],
   argTypes: {},

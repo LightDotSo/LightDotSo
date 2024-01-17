@@ -28,7 +28,7 @@ import {
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof NavigationMenu> = {
-  title: "ui/NavigationMenu",
+  title: "component/NavigationMenu",
   component: NavigationMenu,
   tags: ["autodocs"],
   argTypes: {},

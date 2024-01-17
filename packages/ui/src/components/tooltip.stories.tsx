@@ -29,7 +29,7 @@ import {
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Tooltip> = {
-  title: "ui/Tooltip",
+  title: "component/Tooltip",
   component: Tooltip,
   tags: ["autodocs"],
   argTypes: {},

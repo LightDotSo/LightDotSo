@@ -33,7 +33,7 @@ import {
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Timeline> = {
-  title: "ui/Timeline",
+  title: "component/Timeline",
   component: Timeline,
   tags: ["autodocs"],
   argTypes: {},

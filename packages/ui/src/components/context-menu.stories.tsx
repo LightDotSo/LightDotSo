@@ -35,7 +35,7 @@ import {
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof ContextMenu> = {
-  title: "ui/ContextMenu",
+  title: "component/ContextMenu",
   component: ContextMenu,
   tags: ["autodocs"],
   argTypes: {},

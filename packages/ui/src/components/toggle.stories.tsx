@@ -22,7 +22,7 @@ import { Toggle } from "./toggle";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Toggle> = {
-  title: "ui/Toggle",
+  title: "component/Toggle",
   component: Toggle,
   tags: ["autodocs"],
   argTypes: {},

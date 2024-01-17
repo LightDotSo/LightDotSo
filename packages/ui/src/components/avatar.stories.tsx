@@ -21,7 +21,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Avatar> = {
-  title: "ui/Avatar",
+  title: "component/Avatar",
   component: Avatar,
   tags: ["autodocs"],
   argTypes: {},

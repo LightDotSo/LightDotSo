@@ -21,7 +21,7 @@ import { Badge } from "./badge";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Badge> = {
-  title: "ui/Badge",
+  title: "component/Badge",
   component: Badge,
   tags: ["autodocs"],
   argTypes: {},

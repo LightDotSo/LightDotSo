@@ -21,7 +21,7 @@ import { Checkbox } from "./checkbox";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Checkbox> = {
-  title: "ui/Checkbox",
+  title: "component/Checkbox",
   component: Checkbox,
   tags: ["autodocs"],
   argTypes: {},

@@ -31,7 +31,7 @@ import {
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Drawer> = {
-  title: "ui/Drawer",
+  title: "component/Drawer",
   component: Drawer,
   tags: ["autodocs"],
   argTypes: {},

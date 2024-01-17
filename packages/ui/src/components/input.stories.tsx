@@ -23,7 +23,7 @@ import { Label } from "./label";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Input> = {
-  title: "ui/Input",
+  title: "component/Input",
   component: Input,
   tags: ["autodocs"],
   argTypes: {},

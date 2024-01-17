@@ -21,7 +21,7 @@ import { Progress } from "./progress";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Progress> = {
-  title: "ui/Progress",
+  title: "component/Progress",
   component: Progress,
   tags: ["autodocs"],
   argTypes: {},

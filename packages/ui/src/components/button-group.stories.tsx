@@ -22,7 +22,7 @@ import { ButtonGroup } from "./button-group";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof ButtonGroup> = {
-  title: "ui/ButtonGroup",
+  title: "component/ButtonGroup",
   component: ButtonGroup,
   tags: ["autodocs"],
   argTypes: {},

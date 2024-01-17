@@ -21,7 +21,7 @@ import { Calendar } from "./calendar";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Calendar> = {
-  title: "ui/Calendar",
+  title: "component/Calendar",
   component: Calendar,
   tags: ["autodocs"],
   argTypes: {},

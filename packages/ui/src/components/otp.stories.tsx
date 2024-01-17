@@ -21,7 +21,7 @@ import { OTP } from "./otp";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof OTP> = {
-  title: "ui/OTP",
+  title: "component/OTP",
   component: OTP,
   tags: ["autodocs"],
   argTypes: {},

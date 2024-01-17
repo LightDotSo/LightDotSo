@@ -34,7 +34,7 @@ import { Label } from "./label";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Dialog> = {
-  title: "ui/Dialog",
+  title: "component/Dialog",
   component: Dialog,
   tags: ["autodocs"],
   argTypes: {},

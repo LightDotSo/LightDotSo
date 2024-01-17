@@ -21,7 +21,7 @@ import { TimeAgo } from "./time-ago";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof TimeAgo> = {
-  title: "ui/TimeAgo",
+  title: "component/TimeAgo",
   component: TimeAgo,
   tags: ["autodocs"],
   argTypes: {},

@@ -29,7 +29,7 @@ import {
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Command> = {
-  title: "ui/Command",
+  title: "component/Command",
   component: Command,
   tags: ["autodocs"],
   argTypes: {},

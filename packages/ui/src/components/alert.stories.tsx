@@ -22,7 +22,7 @@ import { Alert, AlertTitle, AlertDescription } from "./alert";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Alert> = {
-  title: "ui/Alert",
+  title: "component/Alert",
   component: Alert,
   tags: ["autodocs"],
   argTypes: {},

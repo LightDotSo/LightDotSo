@@ -22,7 +22,7 @@ import { Button } from "./button";
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof Button> = {
-  title: "ui/Button",
+  title: "component/Button",
   component: Button,
   tags: ["autodocs"],
   argTypes: {},

@@ -51,7 +51,7 @@ import {
 // -----------------------------------------------------------------------------
 
 const meta: Meta<typeof DropdownMenu> = {
-  title: "ui/DropdownMenu",
+  title: "component/DropdownMenu",
   component: DropdownMenu,
   tags: ["autodocs"],
   argTypes: {},
