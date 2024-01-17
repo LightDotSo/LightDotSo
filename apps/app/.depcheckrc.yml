@@ -35,3 +35,4 @@ ignores:
   - react-blurhash
   - class-variance-authority
   - "@vercel/toolbar"
+  - "@lightdotso/params"

@@ -73,7 +73,7 @@
     "test:ui": "vitest dev --ui",
     "tsc": "tsc --noEmit",
     "tsc:lint": "pnpm run tsc:turbo",
-    "tsc:turbo": "turbo run tsc",
+    "tsc:turbo": "dotenv -- turbo run tsc",
     "wagmi:generate": "wagmi generate"
   },
   "dependencies": {
