@@ -40,7 +40,6 @@ import { useIsTestnetQueryState, usePaginationQueryState } from "@/queryStates";
 // -----------------------------------------------------------------------------
 
 interface DataTableToolbarProps {
-  isTestnet?: boolean;
   table: Table<TransactionData>;
 }
 
@@ -48,7 +47,7 @@ interface DataTableToolbarProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export function DataTableToolbar({ isTestnet, table }: DataTableToolbarProps) {
+export function DataTableToolbar({ table }: DataTableToolbarProps) {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -82,7 +81,7 @@ export function DataTableToolbar({ isTestnet, table }: DataTableToolbarProps) {
       address: wallet as Address,
       offset: offsetCount,
       limit: paginationState.pageSize,
-      is_testnet: isTestnet ?? false,
+      is_testnet: isTestnetState ?? false,
     }).queryKey,
   );
 
@@ -127,13 +126,15 @@ export function DataTableToolbar({ isTestnet, table }: DataTableToolbarProps) {
           </Button>
         )}
       </div>
-      <div className="flex items-center space-x-2 text-text-primary">
+      <div className="flex items-center space-x-2">
         <Switch
           id="is-testnet"
           checked={isTestnetState ?? false}
           onCheckedChange={() => setIsTestnetState(!isTestnetState)}
         />
-        <Label htmlFor="is-testnet">Include Testnet</Label>
+        <Label className="text-xs text-text-primary" htmlFor="is-testnet">
+          Include Testnet
+        </Label>
         <DataTableViewOptions
           table={table}
           columnMapping={{
