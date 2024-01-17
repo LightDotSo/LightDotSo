@@ -1,5 +1,20 @@
 # @lightdotso/bin
 
+## 3.1.0
+
+### Minor Changes
+
+- [#1311](https://github.com/LightDotSo/LightDotSo/pull/1311) [`74091f4`](https://github.com/LightDotSo/LightDotSo/commit/74091f4c523a893938dac8095e00c4b18903848a) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add prisma schema update
+
+- [#1296](https://github.com/LightDotSo/LightDotSo/pull/1296) [`2dce9f7`](https://github.com/LightDotSo/LightDotSo/commit/2dce9f791ae15d8524179b971a5324fcd62b19e7) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add interpreter
+
+### Patch Changes
+
+- [#1302](https://github.com/LightDotSo/LightDotSo/pull/1302) [`7b3d7d4`](https://github.com/LightDotSo/LightDotSo/commit/7b3d7d49949e8a7e4ec7f2fe42a5996bed46570f) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add changesets gha workflow fix
+
+- Updated dependencies [[`00f7230`](https://github.com/LightDotSo/LightDotSo/commit/00f72307c13feea6f23848a7c3375bce6023f350), [`817081d`](https://github.com/LightDotSo/LightDotSo/commit/817081d959e8d56378f64919164ccded5824e6f5), [`1181237`](https://github.com/LightDotSo/LightDotSo/commit/1181237d2aad0d17e3aee86fd83b4d3539c9fca9), [`5ecd136`](https://github.com/LightDotSo/LightDotSo/commit/5ecd136d33f8c4fb73548141ab18fe97fea1baea), [`e4340ce`](https://github.com/LightDotSo/LightDotSo/commit/e4340ce0b9f682a0fbff075b8c0adbd58cefa585), [`34f8438`](https://github.com/LightDotSo/LightDotSo/commit/34f8438e511a4b070f762bd86c22e972c8e3c01e), [`c803d33`](https://github.com/LightDotSo/LightDotSo/commit/c803d33a77f0f7b87c34808efa925bbf204a32e0), [`74ee0ea`](https://github.com/LightDotSo/LightDotSo/commit/74ee0ea2ff8cbeec129ddfb016a2fd0c80b53902), [`5a3c3e5`](https://github.com/LightDotSo/LightDotSo/commit/5a3c3e54f87eccc7f9aa338d252b85c36ff8de6d), [`39dcbd1`](https://github.com/LightDotSo/LightDotSo/commit/39dcbd1ffd23dcdbad339c455acf44ea4a046dea), [`74091f4`](https://github.com/LightDotSo/LightDotSo/commit/74091f4c523a893938dac8095e00c4b18903848a), [`06a17fd`](https://github.com/LightDotSo/LightDotSo/commit/06a17fd7fd5b02083071c88fa0a0d1e94a1d83b4), [`1a0cdbb`](https://github.com/LightDotSo/LightDotSo/commit/1a0cdbb8e2581dd46fdc963e2250eeb69aafc6c2), [`925bba6`](https://github.com/LightDotSo/LightDotSo/commit/925bba67ec00d393bc55d58bde6593db6bfa6104), [`1432da2`](https://github.com/LightDotSo/LightDotSo/commit/1432da23b88b70863d7fe6744e0ad53ac351831a), [`2dce9f7`](https://github.com/LightDotSo/LightDotSo/commit/2dce9f791ae15d8524179b971a5324fcd62b19e7), [`1432da2`](https://github.com/LightDotSo/LightDotSo/commit/1432da23b88b70863d7fe6744e0ad53ac351831a), [`df4260e`](https://github.com/LightDotSo/LightDotSo/commit/df4260ee6ab4c93bd67dc05c589eab611b9bc6d0), [`514cdc0`](https://github.com/LightDotSo/LightDotSo/commit/514cdc08a98e3d25f1ffd7ae859f64e53d90461b), [`833daa3`](https://github.com/LightDotSo/LightDotSo/commit/833daa37d821ff0eccecb19410dca4f36daf5440)]:
+  - @lightdotso/crates@3.1.0
+
 ## 3.0.0
 
 ### Major Changes

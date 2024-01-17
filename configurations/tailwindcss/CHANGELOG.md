@@ -1,5 +1,15 @@
 # @lightdotso/tailwindcss
 
+## 3.1.0
+
+### Minor Changes
+
+- [#1355](https://github.com/LightDotSo/LightDotSo/pull/1355) [`35d2363`](https://github.com/LightDotSo/LightDotSo/commit/35d2363c6b0a35c14689033956b2507473643d92) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Upgrade core packages
+
+### Patch Changes
+
+- [#1385](https://github.com/LightDotSo/LightDotSo/pull/1385) [`31cbdcb`](https://github.com/LightDotSo/LightDotSo/commit/31cbdcb1373e9b805a144bb58a31ad563d3c0cdc) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix tailwind config
+
 ## 3.0.0
 
 ### Major Changes
