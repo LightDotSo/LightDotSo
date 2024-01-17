@@ -40,6 +40,7 @@ const nextConfig = {
   },
   experimental: {
     instrumentationHook: true,
+    esmExternals: "loose",
     outputFileTracingExcludes: {
       "*": [
         "./node_modules/@swc/core-linux-x64-gnu",
