@@ -14,12 +14,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { queryKeys } from "@lightdotso/query-keys";
-import { getQueryClient } from "@lightdotso/services";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { OwnersDataTable } from "@/app/(wallet)/[address]/owners/(components)/owners-data-table";
 import { handler } from "@/handlers/paths/[address]/owners/handler";
 import { preloader } from "@/preloaders/paths/[address]/owners/preloader";
+import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------
 // Props

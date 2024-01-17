@@ -14,12 +14,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { queryKeys } from "@lightdotso/query-keys";
-import { getQueryClient } from "@lightdotso/services";
 import type { Address } from "viem";
 import { SendDialog } from "@/app/(wallet)/[address]/send/(components)/send-dialog";
 import { Modal } from "@/components/modal";
 import { handler } from "@/handlers/paths/[address]/send/handler";
 import { preloader } from "@/preloaders/paths/[address]/send/preloader";
+import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------
 // Props

@@ -14,7 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { queryKeys } from "@lightdotso/query-keys";
-import { getQueryClient } from "@lightdotso/services";
 import { Skeleton, SettingsSectionWrapper } from "@lightdotso/ui";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { Suspense } from "react";
@@ -23,6 +22,7 @@ import { SettingsNameCard } from "@/app/(wallet)/[address]/settings/(components)
 import { SettingsTestnetCard } from "@/app/(wallet)/[address]/settings/(components)/settings-testnet-card";
 import { handler } from "@/handlers/paths/[address]/settings/handler";
 import { preloader } from "@/preloaders/paths/[address]/settings/preloader";
+import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------
 // Props

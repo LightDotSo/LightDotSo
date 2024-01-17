@@ -13,12 +13,4 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { QueryClient } from "@tanstack/react-query";
-// @ts-expect-error
-import { cache } from "react";
-
-// -----------------------------------------------------------------------------
-// Service
-// -----------------------------------------------------------------------------
-
-export const getQueryClient = cache(() => new QueryClient());
+export { getQueryClient } from "./getQueryClient";
