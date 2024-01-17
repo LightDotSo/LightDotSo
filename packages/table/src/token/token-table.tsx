@@ -15,6 +15,7 @@
 
 import type { TokenData } from "@lightdotso/data";
 import {
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -42,12 +43,14 @@ import {
 import { useEffect, type FC } from "react";
 import { TableEmpty } from "../state/table-empty";
 import { tokenColumns } from "./token-columns";
+import { useDebounced } from "@lightdotso/hooks";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
 type TokenTableProps = {
+  isLoading: boolean;
   data: TokenData[] | null;
   tableOptions?: Omit<
     TableOptions<TokenData>,
@@ -63,6 +66,7 @@ type TokenTableProps = {
 // -----------------------------------------------------------------------------
 
 export const TokenTable: FC<TokenTableProps> = ({
+  isLoading,
   data,
   tableOptions,
   columns = tokenColumns,
@@ -130,6 +134,12 @@ export const TokenTable: FC<TokenTableProps> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  
+  // ---------------------------------------------------------------------------
+  // Debounced Hooks
+  // ---------------------------------------------------------------------------
+
+  const delayedIsLoading = useDebounced(isLoading, 1000);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -178,6 +188,21 @@ export const TokenTable: FC<TokenTableProps> = ({
                 {row.getVisibleCells().map(cell => (
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+        ) : delayedIsLoading ? (
+          Array(10)
+            .fill(null)
+            .map((_, index) => (
+              <TableRow key={index}>
+                {table.getVisibleLeafColumns().map(column => (
+                  <TableCell
+                    key={column.id}
+                    style={{ width: column.getSize() }}
+                  >
+                    <Skeleton className="h-6 w-full" />
                   </TableCell>
                 ))}
               </TableRow>

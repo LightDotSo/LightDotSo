@@ -43,6 +43,7 @@ type Story = StoryObj<typeof UserOperationTable>;
 export const Base: Story = {
   render: args => (
     <UserOperationTable
+      isLoading={false}
       address={"0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F" as Address}
       data={userOperationListData}
       configuration={configurationGetData}

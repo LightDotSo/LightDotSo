@@ -15,6 +15,7 @@
 
 import type { ConfigurationOwnerData } from "@lightdotso/data";
 import {
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -41,12 +42,14 @@ import {
 import { useEffect, type FC } from "react";
 import { TableEmpty } from "../state/table-empty";
 import { ownerColumns } from "./owner-columns";
+import { useDebounced } from "@lightdotso/hooks";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
 type OwnerTableProps = {
+  isLoading: boolean;
   data: ConfigurationOwnerData[] | null;
   tableOptions?: Omit<
     TableOptions<ConfigurationOwnerData>,
@@ -61,6 +64,7 @@ type OwnerTableProps = {
 // -----------------------------------------------------------------------------
 
 export const OwnerTable: FC<OwnerTableProps> = ({
+  isLoading,
   data,
   tableOptions,
   columns = ownerColumns,
@@ -111,6 +115,12 @@ export const OwnerTable: FC<OwnerTableProps> = ({
   ]);
 
   // ---------------------------------------------------------------------------
+  // Debounced Hooks
+  // ---------------------------------------------------------------------------
+
+  const delayedIsLoading = useDebounced(isLoading, 1000);
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -149,6 +159,21 @@ export const OwnerTable: FC<OwnerTableProps> = ({
               ))}
             </TableRow>
           ))
+        ) : delayedIsLoading ? (
+          Array(10)
+            .fill(null)
+            .map((_, index) => (
+              <TableRow key={index}>
+                {table.getVisibleLeafColumns().map(column => (
+                  <TableCell
+                    key={column.id}
+                    style={{ width: column.getSize() }}
+                  >
+                    <Skeleton className="h-6 w-full" />
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
         ) : (
           <TableRow>
             <TableCell colSpan={columns.length} className="h-24 text-center">

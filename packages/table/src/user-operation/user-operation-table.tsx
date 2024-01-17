@@ -15,6 +15,7 @@
 
 import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
 import {
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -45,12 +46,14 @@ import { groupByDate } from "../group";
 import { TableEmpty } from "../state/table-empty";
 import { UserOperationCardTransaction } from "./card/user-operation-card-transaction";
 import { userOperationColumns } from "./user-operation-columns";
+import { useDebounced } from "@lightdotso/hooks";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
 type UserOperationTableProps = {
+  isLoading: boolean;
   data: UserOperationData[] | null;
   configuration?: ConfigurationData;
   address: Address | null;
@@ -67,6 +70,7 @@ type UserOperationTableProps = {
 // -----------------------------------------------------------------------------
 
 export const UserOperationTable: FC<UserOperationTableProps> = ({
+  isLoading,
   data,
   configuration,
   tableOptions,
@@ -126,6 +130,12 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // ---------------------------------------------------------------------------
+  // Debounced Hooks
+  // ---------------------------------------------------------------------------
+
+  const delayedIsLoading = useDebounced(isLoading, 1000);
 
   // ---------------------------------------------------------------------------
   // Local Variables
@@ -192,7 +202,22 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
                   ))}
                 </TableRow>
               ))
-          ) : (
+        ) : delayedIsLoading ? (
+          Array(10)
+            .fill(null)
+            .map((_, index) => (
+              <TableRow key={index}>
+                {table.getVisibleLeafColumns().map(column => (
+                  <TableCell
+                    key={column.id}
+                    style={{ width: column.getSize() }}
+                  >
+                    <Skeleton className="h-6 w-full" />
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+        ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
                 <TableEmpty entity="transaction" />
