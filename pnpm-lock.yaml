@@ -1911,6 +1911,9 @@ importers:
 
   packages/table:
     dependencies:
+      '@lightdotso/client':
+        specifier: workspace:*
+        version: link:../client
       '@lightdotso/data':
         specifier: workspace:*
         version: link:../data
