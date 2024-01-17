@@ -145,6 +145,10 @@ export const TransactionTable: FC<TransactionTableProps> = ({
     setTransactionTable,
   ]);
 
+  // ---------------------------------------------------------------------------
+  // Debounced Hooks
+  // ---------------------------------------------------------------------------
+
   const delayedIsLoading = useDebounced(isLoading, 1000);
 
   // ---------------------------------------------------------------------------
@@ -203,9 +207,11 @@ export const TransactionTable: FC<TransactionTableProps> = ({
             .fill(null)
             .map((_, index) => (
               <TableRow key={index}>
-                <TableCell colSpan={columns.length}>
-                  <Skeleton className="h-6 w-full" />
-                </TableCell>
+                {columns.map(column => (
+                  <TableCell key={column.id} style={{ width: column.size }}>
+                    <Skeleton className="h-6 w-full" />
+                  </TableCell>
+                ))}
               </TableRow>
             ))
         ) : (
