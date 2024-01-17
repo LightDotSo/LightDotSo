@@ -96,16 +96,33 @@ export const AppNav: FC<AppNavProps> = ({ tabs }) => {
 
   return (
     <div className="ml-auto hidden items-center space-x-2.5 md:flex">
-      {tabs.map(tab => (
-        <Button
-          asChild
-          variant="ghost"
-          size="sm"
-          className="text-sm font-medium"
-        >
-          <Link href={tab.href}>{tab.label}</Link>
-        </Button>
-      ))}
+      {tabs.map(tab => {
+        if (tab.id === "app") {
+          return (
+            <Button
+              asChild
+              variant="ghost"
+              size="sm"
+              className="text-sm font-medium"
+            >
+              <a href={tab.href} target="_blank" rel="noreferrer">
+                {tab.label}
+              </a>
+            </Button>
+          );
+        }
+
+        return (
+          <Button
+            asChild
+            variant="ghost"
+            size="sm"
+            className="text-sm font-medium"
+          >
+            <Link href={tab.href}>{tab.label}</Link>
+          </Button>
+        );
+      })}
     </div>
   );
 };

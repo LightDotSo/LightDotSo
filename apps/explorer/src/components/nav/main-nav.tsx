@@ -19,7 +19,7 @@ import type { RawTab } from "@lightdotso/types";
 import { BaseLayerWrapper } from "@lightdotso/ui";
 import { DashboardIcon, WidthIcon } from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
-import type { HTMLAttributes, ReactNode, RefAttributes, type FC } from "react";
+import type { HTMLAttributes, ReactNode, RefAttributes, FC } from "react";
 import { RootLogo } from "../root/root-logo";
 import { AppNav } from "./app-nav";
 
@@ -40,6 +40,14 @@ const tabs: RawTab[] = [
     label: "Transactions",
     id: "transactions",
     href: "/transactions",
+    icon: (
+      props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
+    ) => <WidthIcon {...props} />,
+  },
+  {
+    label: "App",
+    id: "app",
+    href: "https://app.light.so",
     icon: (
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <WidthIcon {...props} />,
