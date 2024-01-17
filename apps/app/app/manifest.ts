@@ -13,24 +13,23 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { ReactNode } from "react";
+import type { MetadataRoute } from "next";
 
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-interface MinimalPageWrapperProps {
-  children: ReactNode;
-}
-
-// -----------------------------------------------------------------------------
-// Layout
-// -----------------------------------------------------------------------------
-
-export function MinimalPageWrapper({ children }: MinimalPageWrapperProps) {
-  return (
-    <div className="relative mb-12 mt-6 flex flex-col space-y-6">
-      {children}
-    </div>
-  );
+export default function manifest(): MetadataRoute.Manifest {
+  return {
+    name: "Light",
+    short_name: "Light",
+    description: "Light",
+    start_url: "/",
+    display: "standalone",
+    background_color: "#fff",
+    theme_color: "#fff",
+    icons: [
+      {
+        src: "/favicon.svg",
+        sizes: "any",
+        type: "image/x-icon",
+      },
+    ],
+  };
 }
