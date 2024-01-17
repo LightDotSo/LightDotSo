@@ -33,3 +33,4 @@ ignores:
   - eslint-plugin-turbo
   - "@lightdotso/client"
   - "@lightdotso/params"
+  - "@next/bundle-analyzer"
