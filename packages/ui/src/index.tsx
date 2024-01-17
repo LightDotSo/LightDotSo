@@ -106,6 +106,7 @@ export {
   DrawerClose,
   DrawerContent,
   DrawerHeader,
+  DrawerBody,
   DrawerFooter,
   DrawerTitle,
   DrawerDescription,
@@ -261,6 +262,7 @@ export {
   DataTableViewOptions,
 } from "./templates/data-table";
 export { Footer } from "./templates/footer";
+export { MobileAppDrawer } from "./templates/mobile-app-drawer";
 export {
   BaseLayerWrapper,
   LargeLayerWrapper,
