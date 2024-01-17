@@ -17,8 +17,8 @@ import type { UserOperationData } from "@lightdotso/data";
 import { Check, Hourglass, PenLineIcon } from "lucide-react";
 import type { FC, ReactNode } from "react";
 import type { Address } from "viem";
-import { Avatar } from "../components/ui/avatar";
-import { TimeAgo } from "../components/ui/time-ago";
+import { Avatar } from "../components/avatar";
+import { TimeAgo } from "../components/time-ago";
 import {
   Timeline,
   TimelineBody,
@@ -26,7 +26,7 @@ import {
   TimelineItem,
   TimelinePoint,
   TimelineTitle,
-} from "../components/ui/timeline";
+} from "../components/timeline";
 import { PlaceholderOrb } from "./placeholder-orb";
 
 // -----------------------------------------------------------------------------

@@ -15,7 +15,7 @@
 
 import { MonitorCheck } from "lucide-react";
 import type { FC } from "react";
-import { Button } from "../../components/ui/button";
+import { Button } from "../../components/button";
 
 // -----------------------------------------------------------------------------
 // Component

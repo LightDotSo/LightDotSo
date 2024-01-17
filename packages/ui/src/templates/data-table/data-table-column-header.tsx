@@ -22,14 +22,14 @@ import {
 } from "@radix-ui/react-icons";
 import type { Column } from "@tanstack/react-table";
 import type { HTMLAttributes } from "react";
-import { Button } from "../../components/ui/button";
+import { Button } from "../../components/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../../components/ui/dropdown-menu";
+} from "../../components/dropdown-menu";
 
 // -----------------------------------------------------------------------------
 // Props

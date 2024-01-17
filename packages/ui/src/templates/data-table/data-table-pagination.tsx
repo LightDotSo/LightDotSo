@@ -20,14 +20,14 @@ import {
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
 import type { Table } from "@tanstack/react-table";
-import { Button } from "../../components/ui/button";
+import { Button } from "../../components/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../../components/ui/select";
+} from "../../components/select";
 
 // -----------------------------------------------------------------------------
 // Props

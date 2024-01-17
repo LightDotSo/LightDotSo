@@ -18,7 +18,7 @@ export {
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
-} from "./components/ui/accordion";
+} from "./components/accordion";
 export {
   AlertDialog,
   AlertDialogTrigger,
@@ -29,15 +29,15 @@ export {
   AlertDialogDescription,
   AlertDialogAction,
   AlertDialogCancel,
-} from "./components/ui/alert-dialog";
-export { Alert, AlertTitle, AlertDescription } from "./components/ui/alert";
-export { AspectRatio } from "./components/ui/aspect-ratio";
-export { Avatar, AvatarImage, AvatarFallback } from "./components/ui/avatar";
-export { Badge, badgeVariants } from "./components/ui/badge";
-export { Button, buttonVariants } from "./components/ui/button";
-export { ButtonGroup } from "./components/ui/button-group";
-export { ButtonIcon } from "./components/ui/button-icon";
-export { Calendar } from "./components/ui/calendar";
+} from "./components/alert-dialog";
+export { Alert, AlertTitle, AlertDescription } from "./components/alert";
+export { AspectRatio } from "./components/aspect-ratio";
+export { Avatar, AvatarImage, AvatarFallback } from "./components/avatar";
+export { Badge, badgeVariants } from "./components/badge";
+export { Button, buttonVariants } from "./components/button";
+export { ButtonGroup } from "./components/button-group";
+export { ButtonIcon } from "./components/button-icon";
+export { Calendar } from "./components/calendar";
 export {
   Card,
   CardHeader,
@@ -45,20 +45,20 @@ export {
   CardTitle,
   CardDescription,
   CardContent,
-} from "./components/ui/card";
+} from "./components/card";
 export {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
-} from "./components/ui/carousel";
-export { Checkbox } from "./components/ui/checkbox";
+} from "./components/carousel";
+export { Checkbox } from "./components/checkbox";
 export {
   Collapsible,
   CollapsibleTrigger,
   CollapsibleContent,
-} from "./components/ui/collapsible";
+} from "./components/collapsible";
 export {
   Command,
   CommandDialog,
@@ -69,7 +69,7 @@ export {
   CommandItem,
   CommandShortcut,
   CommandSeparator,
-} from "./components/ui/command";
+} from "./components/command";
 export {
   ContextMenu,
   ContextMenuTrigger,
@@ -86,7 +86,7 @@ export {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
   ContextMenuRadioGroup,
-} from "./components/ui/context-menu";
+} from "./components/context-menu";
 export {
   Dialog,
   DialogTrigger,
@@ -97,7 +97,7 @@ export {
   DialogFooter,
   DialogTitle,
   DialogDescription,
-} from "./components/ui/dialog";
+} from "./components/dialog";
 export {
   Drawer,
   DrawerPortal,
@@ -109,7 +109,7 @@ export {
   DrawerFooter,
   DrawerTitle,
   DrawerDescription,
-} from "./components/ui/drawer";
+} from "./components/drawer";
 export {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -126,7 +126,7 @@ export {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuRadioGroup,
-} from "./components/ui/dropdown-menu";
+} from "./components/dropdown-menu";
 export {
   useFormField,
   Form,
@@ -136,15 +136,15 @@ export {
   FormDescription,
   FormMessage,
   FormField,
-} from "./components/ui/form";
+} from "./components/form";
 export {
   HoverCard,
   HoverCardTrigger,
   HoverCardContent,
-} from "./components/ui/hover-card";
-export { Input } from "./components/ui/input";
-export { Label } from "./components/ui/label";
-export { OTP } from "./components/ui/otp";
+} from "./components/hover-card";
+export { Input } from "./components/input";
+export { Label } from "./components/label";
+export { OTP } from "./components/otp";
 export {
   Menubar,
   MenubarMenu,
@@ -162,7 +162,7 @@ export {
   MenubarGroup,
   MenubarSub,
   MenubarShortcut,
-} from "./components/ui/menubar";
+} from "./components/menubar";
 export {
   navigationMenuTriggerStyle,
   NavigationMenu,
@@ -173,21 +173,17 @@ export {
   NavigationMenuLink,
   NavigationMenuIndicator,
   NavigationMenuViewport,
-} from "./components/ui/navigation-menu";
-export { Number } from "./components/ui/number";
-export {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "./components/ui/popover";
-export { Progress } from "./components/ui/progress";
-export { RadioGroup, RadioGroupItem } from "./components/ui/radio-group";
+} from "./components/navigation-menu";
+export { Number } from "./components/number";
+export { Popover, PopoverTrigger, PopoverContent } from "./components/popover";
+export { Progress } from "./components/progress";
+export { RadioGroup, RadioGroupItem } from "./components/radio-group";
 export {
   ResizablePanelGroup,
   ResizablePanel,
   ResizableHandle,
-} from "./components/ui/resizable";
-export { ScrollArea, ScrollBar } from "./components/ui/scroll-area";
+} from "./components/resizable";
+export { ScrollArea, ScrollBar } from "./components/scroll-area";
 export {
   Select,
   SelectGroup,
@@ -197,8 +193,8 @@ export {
   SelectLabel,
   SelectItem,
   SelectSeparator,
-} from "./components/ui/select";
-export { Separator } from "./components/ui/separator";
+} from "./components/select";
+export { Separator } from "./components/separator";
 export {
   Sheet,
   SheetTrigger,
@@ -208,10 +204,10 @@ export {
   SheetFooter,
   SheetTitle,
   SheetDescription,
-} from "./components/ui/sheet";
-export { Skeleton } from "./components/ui/skeleton";
-export { Slider } from "./components/ui/slider";
-export { Switch } from "./components/ui/switch";
+} from "./components/sheet";
+export { Skeleton } from "./components/skeleton";
+export { Slider } from "./components/slider";
+export { Switch } from "./components/switch";
 export {
   Table,
   TableHeader,
@@ -221,7 +217,7 @@ export {
   TableRow,
   TableCell,
   TableCaption,
-} from "./components/ui/table";
+} from "./components/table";
 export {
   Timeline,
   TimelineContent,
@@ -230,25 +226,25 @@ export {
   TimelineTitle,
   TimelineBody,
   TimelineTime,
-} from "./components/ui/timeline";
-export { Tabs, TabsList, TabsTrigger, TabsContent } from "./components/ui/tabs";
-export { Textarea } from "./components/ui/textarea";
+} from "./components/timeline";
+export { Tabs, TabsList, TabsTrigger, TabsContent } from "./components/tabs";
+export { Textarea } from "./components/textarea";
 export {
   toast,
   Toaster,
   errorToast,
   successToast,
   infoToast,
-} from "./components/ui/toast";
-export { Toggle, toggleVariants } from "./components/ui/toggle";
-export { ToggleGroup, ToggleGroupItem } from "./components/ui/toggle-group";
+} from "./components/toast";
+export { Toggle, toggleVariants } from "./components/toggle";
+export { ToggleGroup, ToggleGroupItem } from "./components/toggle-group";
 export {
   Tooltip,
   TooltipArrow,
   TooltipTrigger,
   TooltipContent,
   TooltipProvider,
-} from "./components/ui/tooltip";
+} from "./components/tooltip";
 export { VercelToolbar } from "./dev/vercel-toolbar";
 export { TailwindIndicator } from "./dev/tailwind-indicator";
 export { NftImage } from "./elements/nft-image";
