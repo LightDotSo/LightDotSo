@@ -14,12 +14,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { queryKeys } from "@lightdotso/query-keys";
+import { getQueryClient } from "@lightdotso/services";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { UserOperationsDataTable } from "@/app/(user-operation)/(components)/user-operations-data-table";
 import { UserOperationsDataTablePagination } from "@/app/(user-operation)/(components)/user-operations-data-table-pagination";
 import { handler } from "@/handlers/paths/handler";
 import { preloader } from "@/preloaders/paths/preloader";
-import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------
 // Props
