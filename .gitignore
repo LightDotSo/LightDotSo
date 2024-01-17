@@ -61,7 +61,8 @@ thunder-tests/collections/tc_col_apilightso-admin.json
 .env.production.local
 
 # turbo
-.turbo
+.turbo/*
+!.turbo/config.json
 
 # vercel
 .vercel
