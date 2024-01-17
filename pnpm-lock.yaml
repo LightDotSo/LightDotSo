@@ -709,6 +709,9 @@ importers:
       '@babel/core':
         specifier: ^7.23.7
         version: 7.23.7
+      '@next/bundle-analyzer':
+        specifier: ^14.0.4
+        version: 14.0.4
       '@sentry/integrations':
         specifier: ^7.93.0
         version: 7.93.0
@@ -964,6 +967,9 @@ importers:
       '@babel/core':
         specifier: ^7.23.7
         version: 7.23.7
+      '@next/bundle-analyzer':
+        specifier: ^14.0.4
+        version: 14.0.4
       '@sentry/integrations':
         specifier: ^7.93.0
         version: 7.93.0

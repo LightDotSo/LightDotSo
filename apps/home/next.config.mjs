@@ -13,10 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// eslint-disable-next-line import/default
 import withBundleAnalyzer from "@next/bundle-analyzer";
 import { withSentryConfig } from "@sentry/nextjs";
-import withNextraImport from "nextra";
 
 // ---------------------------------------------------------------------------
 // Next Config
@@ -24,23 +22,30 @@ import withNextraImport from "nextra";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  pageExtensions: ["js", "jsx", "ts", "tsx", "mdx"],
-};
-
-// -----------------------------------------------------------------------------
-// Nextra Config
-// -----------------------------------------------------------------------------
-
-/** @type {import('nextra').NextraConfig} */
-const nextra = withNextraImport({
-  theme: "nextra-theme-docs",
-  themeConfig: "./theme.config.tsx",
-  staticImage: true,
-  latex: true,
-  flexsearch: {
-    codeblock: false,
+  reactStrictMode: true,
+  experimental: {
+    instrumentationHook: true,
+    // From: https://github.com/vercel/next.js/issues/42641
+    outputFileTracingExcludes: {
+      "*": [
+        "./node_modules/@swc/core-linux-x64-gnu",
+        "./node_modules/@swc/core-linux-x64-musl",
+        "./node_modules/esbuild-linux-64/bin",
+        "./node_modules/webpack/lib",
+        "./node_modules/rollup",
+        "./node_modules/terser",
+      ],
+    },
   },
-});
+  outputFileTracing: true,
+  transpilePackages: ["@lightdotso/ui"],
+  webpack: config => {
+    config.externals.push("async_hooks", "pino-pretty", "lokijs", "encoding");
+    config.resolve.fallback = { fs: false, net: false, tls: false };
+
+    return config;
+  },
+};
 
 // -----------------------------------------------------------------------------
 // Sentry Config
@@ -58,7 +63,6 @@ const plugins = [
   withBundleAnalyzer({
     enabled: process.env.ANALYZE === "true",
   }),
-  nextra,
   withSentryConfig,
 ];
 
