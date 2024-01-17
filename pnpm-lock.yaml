@@ -372,6 +372,9 @@ importers:
       '@lightdotso/wagmi':
         specifier: workspace:*
         version: link:../../packages/wagmi
+      '@next/bundle-analyzer':
+        specifier: ^14.0.4
+        version: 14.0.4
       '@opentelemetry/exporter-trace-otlp-http':
         specifier: ^0.47.0
         version: 0.47.0(@opentelemetry/api@1.4.1)
@@ -1339,9 +1342,6 @@ importers:
       '@headlessui/tailwindcss':
         specifier: ^0.2.0
         version: 0.2.0(tailwindcss@3.4.1)
-      '@radix-ui/colors':
-        specifier: ^3.0.0
-        version: 3.0.0
       '@tailwindcss/aspect-ratio':
         specifier: ^0.4.2
         version: 0.4.2(tailwindcss@3.4.1)
@@ -1360,9 +1360,6 @@ importers:
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.1)
-      windy-radix-palette:
-        specifier: ^1.0.0
-        version: 1.0.0(@radix-ui/colors@3.0.0)(tailwindcss@3.4.1)
 
   configurations/tsconfig: {}
 
@@ -8371,10 +8368,6 @@ packages:
 
   /@protobufjs/utf8@1.1.0:
     resolution: {integrity: sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==}
-    dev: false
-
-  /@radix-ui/colors@3.0.0:
-    resolution: {integrity: sha512-FUOsGBkHrYJwCSEtWRCIfQbZG7q1e6DgxCIOe1SUQzDe/7rXXeA47s8yCn6fuTNQAj1Zq4oTFi9Yjp3wzElcxg==}
     dev: false
 
   /@radix-ui/number@1.0.1:
@@ -34534,16 +34527,6 @@ packages:
     dependencies:
       string-width: 5.1.2
     dev: true
-
-  /windy-radix-palette@1.0.0(@radix-ui/colors@3.0.0)(tailwindcss@3.4.1):
-    resolution: {integrity: sha512-KrlmFaxiRDV3OnolcFJWBJLyeSJ/zHYyRn50e8LjO7ee4B3/Vh7vrRPkjDp43tTpCF1gvyXU4Hz5DBwP1s0Fgw==}
-    peerDependencies:
-      '@radix-ui/colors': '>=3.0.0'
-      tailwindcss: '>=3.0.0'
-    dependencies:
-      '@radix-ui/colors': 3.0.0
-      tailwindcss: 3.4.1(ts-node@10.9.2)
-    dev: false
 
   /winreg@0.0.12:
     resolution: {integrity: sha512-typ/+JRmi7RqP1NanzFULK36vczznSNN8kWVA9vIqXyv8GhghUlwhGp1Xj3Nms1FsPcNnsQrJOR10N58/nQ9hQ==}
