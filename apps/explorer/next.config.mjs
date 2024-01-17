@@ -13,12 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import withBundleAnalyzer from "@next/bundle-analyzer";
 import { withSentryConfig } from "@sentry/nextjs";
 import packageJson from "./package.json" assert { type: "json" };
 
-const sentryWebpackPluginOptions = {
-  silent: false,
-};
+// -----------------------------------------------------------------------------
+// Next Config
+// -----------------------------------------------------------------------------
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -70,4 +71,33 @@ const nextConfig = {
   },
 };
 
-export default withSentryConfig(nextConfig, sentryWebpackPluginOptions);
+// -----------------------------------------------------------------------------
+// Sentry Config
+// -----------------------------------------------------------------------------
+
+const sentryWebpackPluginOptions = {
+  silent: false,
+};
+
+// -----------------------------------------------------------------------------
+// Plugins
+// -----------------------------------------------------------------------------
+
+const plugins = [
+  withBundleAnalyzer({
+    enabled: process.env.ANALYZE === "true",
+  }),
+  withSentryConfig,
+];
+
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
+
+export default plugins.reduce((acc, next) => {
+  if (next.name === "withSentryConfig") {
+    return next(acc, sentryWebpackPluginOptions);
+  }
+
+  return next(acc);
+}, nextConfig);

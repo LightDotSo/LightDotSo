@@ -1,6 +1,6 @@
 module.exports = {
   "*": ["pnpm run license:cmd add"],
-  "*.{js,ts,tsx}": [
+  "*.{js,mjs,ts,tsx}": [
     // "pnpm run eslint:cmd --fix",
     "pnpm run oxlint:cmd --fix",
     "pnpm run prettier:cmd --write",
