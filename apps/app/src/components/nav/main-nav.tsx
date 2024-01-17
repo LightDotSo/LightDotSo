@@ -154,7 +154,6 @@ export const MainNav: FC<MainNavProps> = ({ children, ...props }) => {
         className="flex h-10 items-center space-x-4 px-2 md:px-4 lg:space-x-6 lg:px-8"
         {...props}
       >
-        {/* Render upon mount */}
         <Suspense>{tabProps && <TabsNav {...tabProps} />}</Suspense>
       </div>
     );
