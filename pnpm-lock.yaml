@@ -782,6 +782,9 @@ importers:
       '@lightdotso/query-keys':
         specifier: workspace:*
         version: link:../../packages/query-keys
+      '@lightdotso/services':
+        specifier: workspace:*
+        version: link:../../packages/services
       '@lightdotso/stores':
         specifier: workspace:*
         version: link:../../packages/stores
@@ -1748,6 +1751,43 @@ importers:
       '@types/node':
         specifier: ^20.11.0
         version: 20.11.0
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
+  packages/services:
+    dependencies:
+      '@lightdotso/client':
+        specifier: workspace:*
+        version: link:../client
+      '@lightdotso/params':
+        specifier: workspace:*
+        version: link:../params
+      '@tanstack/react-query':
+        specifier: ^5.17.10
+        version: 5.17.12(react@18.2.0)
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+      server-only:
+        specifier: ^0.0.1
+        version: 0.0.1
+    devDependencies:
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../../configurations/tsconfig
+      '@types/node':
+        specifier: ^20.11.0
+        version: 20.11.0
+      '@types/react':
+        specifier: ^18.2.48
+        version: 18.2.48
+      '@types/react-dom':
+        specifier: ^18.2.18
+        version: 18.2.18
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
@@ -6358,7 +6398,7 @@ packages:
       react: '>=16'
     dependencies:
       '@types/mdx': 2.0.6
-      '@types/react': 18.2.47
+      '@types/react': 18.2.48
       react: 18.2.0
 
   /@metamask/abi-utils@2.0.2:
@@ -13408,6 +13448,13 @@ packages:
 
   /@types/react@18.2.47:
     resolution: {integrity: sha512-xquNkkOirwyCgoClNk85BjP+aqnIS+ckAJ8i37gAbDs14jfW/J23f2GItAf33oiUPQnqNMALiFeoM9Y5mbjpVQ==}
+    dependencies:
+      '@types/prop-types': 15.7.5
+      '@types/scheduler': 0.16.3
+      csstype: 3.1.2
+
+  /@types/react@18.2.48:
+    resolution: {integrity: sha512-qboRCl6Ie70DQQG9hhNREz81jqC1cs9EVNcjQ1AU+jH6NFfSAhVVbrrY/+nSF+Bsk4AOwm9Qa61InvMCyV+H3w==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.3

@@ -13,31 +13,32 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getUserOperationsCount as getClientUserOperationsCount } from "@lightdotso/client";
-import type { UserOperationListCountParams } from "@lightdotso/params";
+import { getTransactionsCount as getClientTransactionsCount } from "@lightdotso/client";
+import type { TransactionListCountParams } from "@lightdotso/params";
 import "server-only";
 
 // -----------------------------------------------------------------------------
 // Pre
 // -----------------------------------------------------------------------------
 
-export const preload = (params: UserOperationListCountParams) => {
-  void getUserOperationsCount(params);
+export const preloadGetTransactionsCount = (
+  params: TransactionListCountParams,
+) => {
+  void getTransactionsCount(params);
 };
 
 // -----------------------------------------------------------------------------
 // Service
 // -----------------------------------------------------------------------------
 
-export const getUserOperationsCount = async (
-  params: UserOperationListCountParams,
+export const getTransactionsCount = async (
+  params: TransactionListCountParams,
 ) => {
-  return getClientUserOperationsCount(
+  return getClientTransactionsCount(
     {
       params: {
         query: {
           address: params.address,
-          status: params.status,
           is_testnet: params.is_testnet,
         },
       },

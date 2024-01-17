@@ -13,8 +13,19 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { getQueryClient } from "./getQueryClient";
-export { getUserOperations } from "./getUserOperations";
-export { getUserOperationsCount } from "./getUserOperationsCount";
-export { getTransactions } from "./getTransactions";
-export { getTransactionsCount } from "./getTransactionsCount";
+import { getNftsByOwner as getClientNftsByOwner } from "@lightdotso/client";
+import type { NftListParams } from "@lightdotso/params";
+import "server-only";
+
+// -----------------------------------------------------------------------------
+// Service
+// -----------------------------------------------------------------------------
+
+export const getNfts = async (params: NftListParams) => {
+  return getClientNftsByOwner({
+    address: params.address,
+    limit: params.limit,
+    isTestnet: params.is_testnet,
+    cursor: params.cursor,
+  });
+};

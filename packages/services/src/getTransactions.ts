@@ -13,33 +13,31 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getUserOperations as getClientUserOperations } from "@lightdotso/client";
-import type { UserOperationListParams } from "@lightdotso/params";
+import { getTransactions as getClientTransactions } from "@lightdotso/client";
+import type { TransactionListParams } from "@lightdotso/params";
 import "server-only";
 
 // -----------------------------------------------------------------------------
 // Pre
 // -----------------------------------------------------------------------------
 
-export const preload = (params: UserOperationListParams) => {
-  void getUserOperations(params);
+export const preloadGetTransactions = (params: TransactionListParams) => {
+  void getTransactions(params);
 };
 
 // -----------------------------------------------------------------------------
 // Service
 // -----------------------------------------------------------------------------
 
-export const getUserOperations = async (params: UserOperationListParams) => {
-  return getClientUserOperations(
+export const getTransactions = async (params: TransactionListParams) => {
+  return getClientTransactions(
     {
       params: {
         query: {
           address: params.address,
-          status: params.status,
-          order: params.order,
+          is_testnet: params.is_testnet,
           limit: params.limit,
           offset: params.offset,
-          is_testnet: params.is_testnet,
         },
       },
     },

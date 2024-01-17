@@ -28,6 +28,7 @@
     "@lightdotso/prisma": "workspace:*",
     "@lightdotso/query": "workspace:*",
     "@lightdotso/query-keys": "workspace:*",
+    "@lightdotso/services": "workspace:*",
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/styles": "workspace:*",
     "@lightdotso/table": "workspace:*",
