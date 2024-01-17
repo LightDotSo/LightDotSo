@@ -70,18 +70,19 @@ export const FooterModeSelect: FC = () => {
 
   return (
     <Select value={theme} defaultValue={theme} onValueChange={setTheme}>
-      <SelectTrigger size="sm" className="w-24">
+      <SelectTrigger size="sm" className="w-36 bg-background-stronger">
         <SelectValue placeholder="Select a theme" />
       </SelectTrigger>
       <SelectContent>
         {themes.map(item => (
-          <SelectItem
-            className="inline-flex items-center space-x-2"
-            key={item.name}
-            value={item.value}
-          >
-            <span>{item.name}</span>
-            <item.icon className="h-4 w-4 fill-text-weak" aria-hidden="true" />
+          <SelectItem key={item.name} value={item.value}>
+            <span className="inline-flex items-center">
+              <item.icon
+                className="h-4 w-4 fill-text-weak mr-2"
+                aria-hidden="true"
+              />
+              {item.name}
+            </span>
           </SelectItem>
         ))}
       </SelectContent>
