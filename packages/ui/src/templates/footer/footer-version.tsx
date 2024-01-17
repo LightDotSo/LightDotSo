@@ -21,6 +21,10 @@ import type { FC } from "react";
 // -----------------------------------------------------------------------------
 
 export const FooterVersion: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <div className="flex items-center justify-between space-x-2">
       <span className="text-xs text-text-weak/60">

@@ -17,7 +17,12 @@
 
 import type { WalletData } from "@lightdotso/data";
 import { useTables } from "@lightdotso/stores";
-import { Button, Input, DataTableViewOptions } from "@lightdotso/ui";
+import {
+  Button,
+  Input,
+  DataTableViewOptions,
+  ToolbarSectionWrapper,
+} from "@lightdotso/ui";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import type { Table } from "@tanstack/react-table";
 
@@ -45,7 +50,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="flex items-center justify-between">
+    <ToolbarSectionWrapper>
       <div className="flex flex-1 items-center space-x-2">
         <Input
           placeholder="Filter name..."
@@ -74,6 +79,6 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
           actions: "Actions",
         }}
       />
-    </div>
+    </ToolbarSectionWrapper>
   );
 }

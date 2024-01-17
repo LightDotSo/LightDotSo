@@ -57,6 +57,7 @@ export const handler = async (params: { address: string }) => {
     address: params.address as Address,
     limit: OVERVIEW_ROW_COUNT,
     is_testnet: walletSettings.is_enabled_testnet,
+    cursor: null,
   });
 
   const nftValuationPromise = getNftValuation({

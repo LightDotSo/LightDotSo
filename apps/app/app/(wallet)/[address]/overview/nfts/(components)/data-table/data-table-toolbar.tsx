@@ -67,7 +67,9 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const currentData: NftDataPage | undefined = queryClient.getQueryData(
     queryKeys.nft.list({
       address: wallet as Address,
-      is_testnet: walletSettings?.is_enabled_testnet,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
+      limit: Number.MAX_SAFE_INTEGER,
+      cursor: null,
     }).queryKey,
   );
 

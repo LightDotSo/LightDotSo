@@ -51,6 +51,7 @@ export const handler = async (
     address: params.address as Address,
     limit: Number.MAX_SAFE_INTEGER,
     is_testnet: walletSettings.is_enabled_testnet,
+    cursor: null,
   });
 
   const tokensPromise = getTokens({

@@ -20,6 +20,7 @@ import {
   useQueryUserOperationsCount,
 } from "@lightdotso/query";
 import { userOperationColumns } from "@lightdotso/table";
+import { TableSectionWrapper } from "@lightdotso/ui";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(user-operation)/(components)/data-table/data-table";
@@ -61,7 +62,7 @@ export const UserOperationsDataTable: FC<UserOperationsDataTableProps> = ({
   // ---------------------------------------------------------------------------
 
   const { userOperations } = useQueryUserOperations({
-    address: address,
+    address: address ?? null,
     status: "history",
     order: "asc",
     limit: paginationState.pageSize,
@@ -70,7 +71,7 @@ export const UserOperationsDataTable: FC<UserOperationsDataTableProps> = ({
   });
 
   const { userOperationsCount } = useQueryUserOperationsCount({
-    address: address,
+    address: address ?? null,
     status: "history",
     is_testnet: isTestnet,
   });
@@ -91,11 +92,12 @@ export const UserOperationsDataTable: FC<UserOperationsDataTableProps> = ({
   // ---------------------------------------------------------------------------
 
   return (
-    <DataTable
-      data={userOperations ?? []}
-      address={address}
-      columns={userOperationColumns}
-      pageCount={pageCount ?? 0}
-    />
+    <TableSectionWrapper>
+      <DataTable
+        data={userOperations ?? []}
+        columns={userOperationColumns}
+        pageCount={pageCount ?? 0}
+      />
+    </TableSectionWrapper>
   );
 };

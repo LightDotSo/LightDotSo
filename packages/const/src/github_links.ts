@@ -13,12 +13,18 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Address } from "viem";
+export enum Github {
+  ACKNOWLEDGEMENTS = "Acknowledgements",
+  AUDIT = "Audit",
+  LICENSE = "License",
+}
 
-// -----------------------------------------------------------------------------
-// Params
-// -----------------------------------------------------------------------------
-
-export type ConfigurationParams = {
-  address: Address | null;
+export const GITHUB_LINKS: {
+  readonly [key in Github]: string;
+} = {
+  [Github.ACKNOWLEDGEMENTS]:
+    "https://github.com/LightDotSo/LightDotSo/blob/main/ACKNOWLEDGEMENTS.md",
+  [Github.AUDIT]: "https://github.com/LightDotSo/LightDotSo/blob/main/audits",
+  [Github.LICENSE]:
+    "https://github.com/LightDotSo/LightDotSo/blob/main/LICENSE.md",
 };

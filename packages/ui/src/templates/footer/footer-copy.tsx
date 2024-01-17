@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { GITHUB_LINKS } from "@lightdotso/const";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
@@ -20,10 +21,22 @@ import type { FC } from "react";
 // -----------------------------------------------------------------------------
 
 export const FooterCopy: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
-    <p className="text-sm text-text-weak xl:text-center">
+    <p className="text-xs text-text-weak/60 xl:text-center">
       &copy; {new Date().getFullYear()}
-      <span className="hidden md:inline-flex">&nbsp;Light.</span>
+      <span className="hidden md:inline-flex">&nbsp;Light, Inc. - </span>{" "}
+      <a
+        className="hidden text-text-weak hover:underline md:inline-flex"
+        href={GITHUB_LINKS["License"]}
+        target="_blank"
+        rel="noreferrer"
+      >
+        AGPL v3.0
+      </a>
     </p>
   );
 };

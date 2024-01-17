@@ -46,7 +46,7 @@ export const useSuspenseQueryTokenPrice = (params: TokenPriceParams) => {
       chain_id: params.chain_id,
     }).queryKey,
     queryFn: async () => {
-      if (params.address === null) {
+      if (typeof params.address === "undefined") {
         return null;
       }
 

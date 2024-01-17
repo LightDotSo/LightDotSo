@@ -91,6 +91,7 @@ export default async function Page({ params }: PageProps) {
       address: params.address as Address,
       is_testnet: walletSettings?.is_enabled_testnet,
       limit: OVERVIEW_ROW_COUNT,
+      cursor: null,
     }).queryKey,
     nfts,
   );

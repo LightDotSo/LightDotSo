@@ -17,7 +17,9 @@ import type { FC } from "react";
 import { FooterCopy } from "./footer-copy";
 import { FooterList } from "./footer-list";
 import { FooterLogo } from "./footer-logo";
+import { FooterModeSelect } from "./footer-mode-select";
 import { FooterSocial } from "./footer-social";
+import { FooterStatusButton } from "./footer-status-button";
 import { FooterVersion } from "./footer-version";
 
 // -----------------------------------------------------------------------------
@@ -25,6 +27,10 @@ import { FooterVersion } from "./footer-version";
 // -----------------------------------------------------------------------------
 
 export const Footer: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <footer
       className="border-t border-border px-2 md:px-4 lg:px-8"
@@ -34,9 +40,16 @@ export const Footer: FC = () => {
         Footer
       </h2>
       <div className="mx-auto max-w-7xl space-y-4 py-8 md:space-y-8">
-        <div className="flex flex-col justify-between space-y-6 md:flex-row md:items-center md:space-y-0">
-          <FooterLogo />
-          <FooterSocial />
+        <div className="flex flex-col justify-start space-y-6 md:flex-row md:items-center md:justify-between md:space-y-0">
+          <div className="flex items-center justify-between space-x-3">
+            <FooterLogo />
+            <FooterStatusButton />
+          </div>
+          <div className="flex flex-col space-x-0 space-y-4 md:flex-row md:items-center md:space-x-3 md:space-y-0">
+            <FooterModeSelect />
+            <span className="hidden text-text/60 md:inline-flex">/</span>
+            <FooterSocial />
+          </div>
         </div>
         <div>
           <FooterList />

@@ -15,13 +15,14 @@
 
 "use client";
 
-import type { UserOperationData, WalletSettingsData } from "@lightdotso/data";
+import type { UserOperationData } from "@lightdotso/data";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth, useTables } from "@lightdotso/stores";
 import {
   Button,
   DataTableFacetedFilter,
   DataTableViewOptions,
+  ToolbarSectionWrapper,
 } from "@lightdotso/ui";
 import { getChainNameById } from "@lightdotso/utils";
 import { Cross2Icon } from "@radix-ui/react-icons";
@@ -97,7 +98,7 @@ export function DataTableToolbar({ isTestnet, table }: DataTableToolbarProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <>
+    <ToolbarSectionWrapper>
       <div className="flex flex-1 items-center space-x-2">
         {table.getColumn("chain_id") && (
           <DataTableFacetedFilter
@@ -129,6 +130,6 @@ export function DataTableToolbar({ isTestnet, table }: DataTableToolbarProps) {
           status: "Status",
         }}
       />
-    </>
+    </ToolbarSectionWrapper>
   );
 }

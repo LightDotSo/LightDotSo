@@ -40,6 +40,8 @@ export const handler = async (params: { address: string }) => {
   const nftsPromise = getNfts({
     address: params.address as Address,
     is_testnet: walletSettings.is_enabled_testnet,
+    limit: Number.MAX_SAFE_INTEGER,
+    cursor: null,
   });
 
   const nftValuationPromise = getNftValuation({

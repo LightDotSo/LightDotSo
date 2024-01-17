@@ -14,7 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { Result } from "neverthrow";
-import { validateAddress } from "@/handlers/validators/address";
 import { isTestnetParser, paginationParser } from "@/queryStates";
 import { getUserOperations, getUserOperationsCount } from "@/services";
 

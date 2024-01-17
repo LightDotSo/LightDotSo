@@ -17,9 +17,29 @@
 
 import { cn } from "@lightdotso/utils";
 import * as SelectPrimitive from "@radix-ui/react-select";
+import { cva, type VariantProps } from "class-variance-authority";
 import { Check, ChevronDown } from "lucide-react";
 import type { ComponentPropsWithoutRef, ElementRef } from "react";
 import { forwardRef } from "react";
+
+// -----------------------------------------------------------------------------
+// Styles
+// -----------------------------------------------------------------------------
+
+const selectTriggerVariants = cva("", {
+  variants: {
+    size: {
+      default: "h-10 px-3 py-2",
+      xs: "h-6 px-2.5 py-1.5",
+      sm: "h-8 px-3 py-1.5",
+      lg: "h-10 px-8",
+      unsized: "",
+    },
+  },
+  defaultVariants: {
+    size: "default",
+  },
+});
 
 // -----------------------------------------------------------------------------
 // Components
@@ -33,12 +53,14 @@ const SelectValue = SelectPrimitive.Value;
 
 const SelectTrigger = forwardRef<
   ElementRef<typeof SelectPrimitive.Trigger>,
-  ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
+  ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> &
+    VariantProps<typeof selectTriggerVariants>
+>(({ className, children, size, ...props }, ref) => (
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      "flex h-10 w-full items-center justify-between rounded-md border border-border bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-text-weak focus:outline-none focus:ring-2 focus:ring-border-info focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+      "flex w-full items-center justify-between rounded-md border border-border bg-transparent text-sm ring-offset-background placeholder:text-text-weak focus:outline-none focus:ring-2 focus:ring-border-info focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+      selectTriggerVariants({ size }),
       className,
     )}
     {...props}

@@ -34,3 +34,4 @@ ignores:
   - "@radix-ui/react-dropdown-menu"
   - react-blurhash
   - class-variance-authority
+  - "@vercel/toolbar"

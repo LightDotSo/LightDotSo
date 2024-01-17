@@ -49,7 +49,7 @@ export const useQueryTransactionsCount = (
       is_testnet: params.is_testnet,
     }).queryKey,
     queryFn: async () => {
-      if (params.address === null) {
+      if (typeof params.address === "undefined") {
         return null;
       }
 
@@ -57,7 +57,7 @@ export const useQueryTransactionsCount = (
         {
           params: {
             query: {
-              address: params.address,
+              address: params.address ?? undefined,
             },
           },
         },

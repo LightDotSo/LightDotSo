@@ -50,7 +50,7 @@ export const useSuspenseQueryTransactions = (params: TransactionListParams) => {
       is_testnet: params.is_testnet,
     }).queryKey,
     queryFn: async () => {
-      if (params.address === null) {
+      if (typeof params.address === "undefined") {
         return null;
       }
 
@@ -58,7 +58,7 @@ export const useSuspenseQueryTransactions = (params: TransactionListParams) => {
         {
           params: {
             query: {
-              address: params.address,
+              address: params.address ?? undefined,
               limit: params.limit,
               offset: params.offset,
               is_testnet: params.is_testnet,

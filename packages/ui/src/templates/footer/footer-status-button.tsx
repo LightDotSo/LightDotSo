@@ -13,25 +13,29 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { LightHorizontalLogo } from "@lightdotso/svg";
+import { MonitorCheck } from "lucide-react";
 import type { FC } from "react";
-import { FooterCopy } from "./footer-copy";
+import { Button } from "../../components/ui/button";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const FooterLogo: FC = () => {
+export const FooterStatusButton: FC = () => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="flex shrink-0 items-center space-x-1">
-      <LightHorizontalLogo className="block h-8" />
-      <span className="md:hidden">
-        <FooterCopy />
-      </span>
+    <div className="flex items-center">
+      <Button asChild size="xs" variant="ghost">
+        <a href="https://status.light.so" target="_blank" rel="noreferrer">
+          <MonitorCheck className="h-4 w-4 text-text-info" />
+          <span className="ml-2 text-xs text-text-info-strong">
+            All systems normal.
+          </span>
+        </a>
+      </Button>
     </div>
   );
 };

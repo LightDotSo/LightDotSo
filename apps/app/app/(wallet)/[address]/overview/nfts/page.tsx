@@ -73,7 +73,9 @@ export default async function Page({ params, searchParams }: PageProps) {
   queryClient.setQueryData(
     queryKeys.nft.list({
       address: params.address as Address,
-      is_testnet: walletSettings?.is_enabled_testnet,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
+      limit: Number.MAX_SAFE_INTEGER,
+      cursor: null,
     }).queryKey,
     nfts,
   );

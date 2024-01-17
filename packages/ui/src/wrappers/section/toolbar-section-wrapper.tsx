@@ -13,25 +13,22 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getConfiguration as getClientConfiguration } from "@lightdotso/client";
-import type { ConfigurationParams } from "@lightdotso/params";
-import "server-only";
+import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
-// Pre
+// Props
 // -----------------------------------------------------------------------------
 
-export const preload = (params: ConfigurationParams) => {
-  void getConfiguration(params);
-};
+interface ToolbarSectionWrapperProps {
+  children: ReactNode;
+}
 
 // -----------------------------------------------------------------------------
-// Service
+// Layout
 // -----------------------------------------------------------------------------
 
-export const getConfiguration = async (params: ConfigurationParams) => {
-  return getClientConfiguration(
-    { params: { query: { address: params.address! } } },
-    "admin",
-  );
-};
+export function ToolbarSectionWrapper({
+  children,
+}: ToolbarSectionWrapperProps) {
+  return <div className="flex items-center justify-between">{children}</div>;
+}

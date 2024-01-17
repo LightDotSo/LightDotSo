@@ -13,7 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Address } from "viem";
 import { paginationParser } from "@/queryStates";
 import { preload as preloadGetTransactions } from "@/services/getTransactions";
 import { preload as preloadGetTransactionsCount } from "@/services/getTransactionsCount";
@@ -39,13 +38,13 @@ export const preloader = async (searchParams: {
   // ---------------------------------------------------------------------------
 
   preloadGetTransactions({
-    address: undefined,
+    address: null,
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
     is_testnet: false,
   });
   preloadGetTransactionsCount({
-    address: undefined,
+    address: null,
     is_testnet: false,
   });
 };

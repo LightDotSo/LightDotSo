@@ -48,7 +48,7 @@ export const useQueryActivities = (params: ActivityListParams) => {
       offset: params.offset,
     }).queryKey,
     queryFn: async () => {
-      if (params.address === null) {
+      if (typeof params.address === "undefined") {
         return null;
       }
 

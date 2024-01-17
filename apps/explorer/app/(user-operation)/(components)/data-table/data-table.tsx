@@ -20,7 +20,6 @@ import { useQueryConfiguration } from "@lightdotso/query";
 import { useTables } from "@lightdotso/stores";
 import { UserOperationTable } from "@lightdotso/table";
 import type { ColumnDef } from "@tanstack/react-table";
-import type { Address } from "viem";
 import { usePaginationQueryState } from "@/queryStates";
 
 // -----------------------------------------------------------------------------
@@ -29,7 +28,6 @@ import { usePaginationQueryState } from "@/queryStates";
 
 interface DataTableProps {
   columns: ColumnDef<UserOperationData>[];
-  address: Address | null;
   data: UserOperationData[];
   pageCount: number;
 }
@@ -38,12 +36,7 @@ interface DataTableProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export function DataTable({
-  columns,
-  address,
-  data,
-  pageCount,
-}: DataTableProps) {
+export function DataTable({ columns, data, pageCount }: DataTableProps) {
   // ---------------------------------------------------------------------------
   // Query State Hooks
   // ---------------------------------------------------------------------------
@@ -91,7 +84,7 @@ export function DataTable({
   // ---------------------------------------------------------------------------
 
   const { configuration } = useQueryConfiguration({
-    address: address ?? "0x0000000000000000000000000000000000000000",
+    address: null,
   });
 
   // ---------------------------------------------------------------------------
@@ -100,7 +93,7 @@ export function DataTable({
 
   return (
     <UserOperationTable
-      address={address ?? "0x0000000000000000000000000000000000000000"}
+      address={null}
       columns={columns}
       data={data}
       configuration={configuration ?? undefined}
