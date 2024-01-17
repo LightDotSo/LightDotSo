@@ -14,7 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { QueryClient } from "@tanstack/react-query";
-// @ts-expect-error
 import { cache } from "react";
 
 // -----------------------------------------------------------------------------
