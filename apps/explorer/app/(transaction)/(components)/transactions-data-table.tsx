@@ -25,7 +25,6 @@ import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(transaction)/(components)/data-table/data-table";
 import { usePaginationQueryState, useIsTestnetQueryState } from "@/queryStates";
-import { useDebounced } from "@lightdotso/hooks";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -80,7 +79,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
 
   const isLoading = useMemo(() => {
     return isTransactionsLoading || isTransactionsCountLoading;
-  }, [isTransactionsLoading || isTransactionsCountLoading]);
+  }, [isTransactionsLoading, isTransactionsCountLoading]);
 
   const pageCount = useMemo(() => {
     if (!transactionsCount || !transactionsCount?.count) {

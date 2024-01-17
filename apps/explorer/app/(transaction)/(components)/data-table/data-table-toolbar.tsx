@@ -20,7 +20,6 @@ import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth, useTables } from "@lightdotso/stores";
 import {
   Button,
-  Checkbox,
   DataTableFacetedFilter,
   DataTableViewOptions,
   Label,
