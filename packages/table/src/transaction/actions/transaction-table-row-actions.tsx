@@ -61,11 +61,24 @@ export function TransactionTableRowActions({
       <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuItem
           onClick={async () => {
-            const loadingToast = toast.loading("Loading transaction...");
-
-            await createQueueInterpretation({
+            const toastId = toast.loading("Queue has been created...");
+            const res = await createQueueInterpretation({
               params: { query: { transaction_hash: row.original.hash } },
             });
+            res.match(
+              () => {
+                toast.dismiss(toastId);
+                toast.success("Queue created!");
+              },
+              err => {
+                toast.dismiss(toastId);
+                if (err instanceof Error) {
+                  toast.error(err.message);
+                  return;
+                }
+                toast.error("Failed to create queue!");
+              },
+            );
           }}
         >
           Queue
