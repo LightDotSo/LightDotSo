@@ -15,6 +15,7 @@
 
 "use client";
 
+import { useDebounced } from "@lightdotso/hooks";
 import {
   useQueryTransactions,
   useQueryTransactionsCount,
@@ -25,7 +26,6 @@ import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(transaction)/(components)/data-table/data-table";
 import { usePaginationQueryState, useIsTestnetQueryState } from "@/queryStates";
-import { useDebounced } from "@lightdotso/hooks";
 
 // -----------------------------------------------------------------------------
 // Props
