@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { ActivityData } from "@lightdotso/data";
+import { useDebounced } from "@lightdotso/hooks";
 import {
   Skeleton,
   Table,
@@ -42,7 +43,6 @@ import {
 import { useEffect, type FC } from "react";
 import { TableEmpty } from "../state/table-empty";
 import { activityColumns } from "./activity-columns";
-import { useDebounced } from "@lightdotso/hooks";
 
 // -----------------------------------------------------------------------------
 // Props

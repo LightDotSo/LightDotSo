@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { WalletData } from "@lightdotso/data";
+import { useDebounced } from "@lightdotso/hooks";
 import {
   Skeleton,
   Table,
@@ -43,7 +44,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, type FC } from "react";
 import { TableEmpty } from "../state/table-empty";
 import { walletColumns } from "./wallet-columns";
-import { useDebounced } from "@lightdotso/hooks";
 
 // -----------------------------------------------------------------------------
 // Props

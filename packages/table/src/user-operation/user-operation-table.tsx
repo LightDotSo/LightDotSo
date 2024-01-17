@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
+import { useDebounced } from "@lightdotso/hooks";
 import {
   Skeleton,
   Table,
@@ -46,7 +47,6 @@ import { groupByDate } from "../group";
 import { TableEmpty } from "../state/table-empty";
 import { UserOperationCardTransaction } from "./card/user-operation-card-transaction";
 import { userOperationColumns } from "./user-operation-columns";
-import { useDebounced } from "@lightdotso/hooks";
 
 // -----------------------------------------------------------------------------
 // Props

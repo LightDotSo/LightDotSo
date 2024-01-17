@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { NftData } from "@lightdotso/data";
+import { useDebounced } from "@lightdotso/hooks";
 import {
   Skeleton,
   Table,
@@ -41,7 +42,6 @@ import { TableEmpty } from "../state/table-empty";
 import { NftCard } from "./card/nft-card";
 import { nftColumns } from "./nft-columns";
 import { NftsWrapper } from "./nfts-wrapper";
-import { useDebounced } from "@lightdotso/hooks";
 
 // -----------------------------------------------------------------------------
 // Props
