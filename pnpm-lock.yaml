@@ -773,6 +773,9 @@ importers:
       '@lightdotso/data':
         specifier: workspace:*
         version: link:../../packages/data
+      '@lightdotso/hooks':
+        specifier: workspace:*
+        version: link:../../packages/hooks
       '@lightdotso/kysely':
         specifier: workspace:*
         version: link:../../configurations/kysely
@@ -797,6 +800,9 @@ importers:
       '@lightdotso/styles':
         specifier: workspace:*
         version: link:../../configurations/styles
+      '@lightdotso/svg':
+        specifier: workspace:*
+        version: link:../../packages/svg
       '@lightdotso/table':
         specifier: workspace:*
         version: link:../../packages/table
@@ -842,6 +848,9 @@ importers:
       kysely-postgres-js:
         specifier: ^2.0.0
         version: 2.0.0(kysely@0.27.2)(postgres@3.4.3)
+      lucide-react:
+        specifier: ^0.311.0
+        version: 0.311.0(react@18.2.0)
       neverthrow:
         specifier: ^6.1.0
         version: 6.1.0
@@ -1541,6 +1550,9 @@ importers:
       '@lightdotso/stores':
         specifier: workspace:*
         version: link:../stores
+      '@lightdotso/tailwindcss':
+        specifier: workspace:*
+        version: link:../../configurations/tailwindcss
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../ui
@@ -1959,6 +1971,13 @@ importers:
         version: 5.3.3
 
   packages/types:
+    dependencies:
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
@@ -1966,6 +1985,12 @@ importers:
       '@types/node':
         specifier: ^20.11.4
         version: 20.11.4
+      '@types/react':
+        specifier: ^18.2.48
+        version: 18.2.48
+      '@types/react-dom':
+        specifier: ^18.2.18
+        version: 18.2.18
       typescript:
         specifier: ^5.3.3
         version: 5.3.3

@@ -32,6 +32,7 @@
     "@lightdotso/schemas": "workspace:*",
     "@lightdotso/solutions": "workspace:*",
     "@lightdotso/stores": "workspace:*",
+    "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
     "next": "^14.0.4",

@@ -24,12 +24,13 @@ import {
 } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
+import type { RawTab, Tab } from "@lightdotso/types";
 import { RadiobuttonIcon } from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
 import { useQueryClient } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useMemo } from "react";
-import type { ReactNode, RefAttributes } from "react";
+import type { RefAttributes } from "react";
 import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
@@ -44,20 +45,6 @@ const aiTab = {
     props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
   ) => <RadiobuttonIcon {...props} />,
 };
-
-// -----------------------------------------------------------------------------
-// Types
-// -----------------------------------------------------------------------------
-
-export type Tab = {
-  label: string;
-  id: string;
-  href: string;
-  number: number;
-  icon: (_props: { className?: string }) => ReactNode;
-};
-
-export type RawTab = Omit<Tab, "number">;
 
 // -----------------------------------------------------------------------------
 // Hook

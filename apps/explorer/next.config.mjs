@@ -30,6 +30,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   experimental: {
+    esmExternals: true,
     // From: https://github.com/vercel/next.js/issues/42641
     outputFileTracingExcludes: {
       "*": [
@@ -43,7 +44,25 @@ const nextConfig = {
     },
   },
   outputFileTracing: true,
-  transpilePackages: ["@lightdotso/ui"],
+  transpilePackages: [
+    "@lightdotso/client",
+    "@lightdotso/data",
+    "@lightdotso/hooks",
+    "@lightdotso/kysely",
+    "@lightdotso/params",
+    "@lightdotso/prisma",
+    "@lightdotso/query",
+    "@lightdotso/query-keys",
+    "@lightdotso/services",
+    "@lightdotso/stores",
+    "@lightdotso/styles",
+    "@lightdotso/svg",
+    "@lightdotso/table",
+    "@lightdotso/types",
+    "@lightdotso/ui",
+    "@lightdotso/utils",
+    "@lightdotso/ui"
+  ],
   webpack: config => {
     config.externals.push("async_hooks", "pino-pretty", "lokijs", "encoding");
     config.resolve.fallback = { fs: false, net: false, tls: false };

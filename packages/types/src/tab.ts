@@ -13,5 +13,18 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export type { SubCategory, CategoryObject } from "./category";
-export type { Tab, RawTab } from "./tab";
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+import type { ReactNode } from "react";
+
+export type Tab = {
+  label: string;
+  id: string;
+  href: string;
+  number: number;
+  icon: (_props: { className?: string }) => ReactNode;
+};
+
+export type RawTab = Omit<Tab, "number">;
