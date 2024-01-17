@@ -207,8 +207,11 @@ export const TransactionTable: FC<TransactionTableProps> = ({
             .fill(null)
             .map((_, index) => (
               <TableRow key={index}>
-                {columns.map(column => (
-                  <TableCell key={column.id} style={{ width: column.size }}>
+                {table.getVisibleLeafColumns().map(column => (
+                  <TableCell
+                    key={column.id}
+                    style={{ width: column.getSize() }}
+                  >
                     <Skeleton className="h-6 w-full" />
                   </TableCell>
                 ))}
