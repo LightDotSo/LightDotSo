@@ -75,7 +75,6 @@ const nextConfig = {
     "@lightdotso/utils",
     "@lightdotso/wagmi",
   ],
-  transpilePackages: ["@lightdotso/ui", "@lightdotso/wagmi"],
   // async rewrites() {
   //   return {
   //     beforeFiles: [

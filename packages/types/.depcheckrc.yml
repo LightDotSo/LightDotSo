@@ -2,3 +2,5 @@ ignores:
   - "@types/node"
   - "@lightdotso/tsconfig"
   - tsup
+  - react-dom
+  - "@types/react-dom"

@@ -101,6 +101,7 @@ export const AppNav: FC<AppNavProps> = ({ tabs }) => {
           return (
             <Button
               asChild
+              key="app"
               variant="link"
               size="sm"
               className="text-sm font-medium"
@@ -116,6 +117,7 @@ export const AppNav: FC<AppNavProps> = ({ tabs }) => {
         return (
           <Button
             asChild
+            key={tab.id}
             variant="ghost"
             size="sm"
             className="text-sm font-medium"
