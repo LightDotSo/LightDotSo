@@ -86,7 +86,11 @@ const ReactQueryProvider: FC<ReactQueryProviderProps> = ({
       <ReactQueryStreamedHydration transformer={superjson}>
         {children}
       </ReactQueryStreamedHydration>
-      {showDevTools && <ReactQueryDevtoolsProduction />}
+      {showDevTools && (
+        <div className="hidden lg:block">
+          <ReactQueryDevtoolsProduction />
+        </div>
+      )}
     </QueryClientProvider>
   );
 };

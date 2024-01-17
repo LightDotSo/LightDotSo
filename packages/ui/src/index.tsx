@@ -13,8 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { VercelToolbar } from "./components/dev/vercel-toolbar";
-export { TailwindIndicator } from "./components/dev/tailwind-indicator";
 export {
   Accordion,
   AccordionItem,
@@ -251,6 +249,8 @@ export {
   TooltipContent,
   TooltipProvider,
 } from "./components/ui/tooltip";
+export { VercelToolbar } from "./dev/vercel-toolbar";
+export { TailwindIndicator } from "./dev/tailwind-indicator";
 export { NftImage } from "./elements/nft-image";
 export { PlaceholderOrb } from "./elements/placeholder-orb";
 export { TokenImage } from "./elements/token-image";
