@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Meta, StoryObj } from "@storybook/react";
+import { Skeleton } from "./skeleton";
 import {
   Table,
   TableBody,
@@ -23,7 +24,6 @@ import {
   TableHeader,
   TableRow,
 } from "./table";
-import { Skeleton } from "./skeleton";
 
 // -----------------------------------------------------------------------------
 // Meta

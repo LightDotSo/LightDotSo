@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { TransactionData } from "@lightdotso/data";
+import { useDebounced } from "@lightdotso/hooks";
 import {
   Skeleton,
   Table,
@@ -43,7 +44,6 @@ import {
 import { useEffect, type FC, useMemo } from "react";
 import { TableEmpty } from "../state/table-empty";
 import { transactionColumns } from "./transaction-columns";
-import { useDebounced } from "@lightdotso/hooks";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -83,7 +83,7 @@ export const TransactionTable: FC<TransactionTableProps> = ({
         ? columns.map(column => ({
             ...column,
             cell() {
-              return <Skeleton className="w-full h-6" />;
+              return <Skeleton className="h-6 w-full" />;
             },
           }))
         : columns,
@@ -204,7 +204,7 @@ export const TransactionTable: FC<TransactionTableProps> = ({
             .map((_, index) => (
               <TableRow key={index}>
                 <TableCell colSpan={columns.length}>
-                  <Skeleton className="w-full h-6" />
+                  <Skeleton className="h-6 w-full" />
                 </TableCell>
               </TableRow>
             ))
