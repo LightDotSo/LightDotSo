@@ -120,10 +120,7 @@ export const AppNav: FC<AppNavProps> = ({ tabs }) => {
             size="sm"
             className="text-sm font-medium"
           >
-            <Link href={tab.href}>
-              {<tab.icon className="mr-2 size-4" />}
-              {tab.label}
-            </Link>
+            <Link href={tab.href}>{tab.label}</Link>
           </Button>
         );
       })}
