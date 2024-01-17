@@ -15,7 +15,6 @@
 
 "use client";
 
-import { useDebounced } from "@lightdotso/hooks";
 import {
   useQueryTransactions,
   useQueryTransactionsCount,
