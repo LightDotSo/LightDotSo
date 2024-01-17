@@ -342,6 +342,9 @@ importers:
       '@lightdotso/schemas':
         specifier: workspace:*
         version: link:../../packages/schemas
+      '@lightdotso/services':
+        specifier: workspace:*
+        version: link:../../packages/services
       '@lightdotso/solutions':
         specifier: workspace:*
         version: link:../../packages/solutions

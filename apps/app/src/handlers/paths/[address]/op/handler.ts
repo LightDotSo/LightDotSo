@@ -17,6 +17,11 @@ import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
 import { CONTRACT_ADDRESSES } from "@lightdotso/const";
 import type { ConfigurationData } from "@lightdotso/data";
 import type { UserOperation } from "@lightdotso/schemas";
+import {
+  getConfiguration,
+  getUserOperationNonce,
+  getWallet,
+} from "@lightdotso/services";
 import { calculateInitCode } from "@lightdotso/solutions";
 import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
@@ -27,7 +32,6 @@ import type { Address, Hex } from "viem";
 import { userOperationsParser } from "@/app/(wallet)/[address]/op/(hooks)";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
-import { getConfiguration, getUserOperationNonce, getWallet } from "@/services";
 
 // -----------------------------------------------------------------------------
 // Handler

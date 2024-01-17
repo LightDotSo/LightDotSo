@@ -13,10 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import {
+  preloadGetActivities,
+  preloadGetActivitiesCount,
+} from "@lightdotso/services";
 import type { Address } from "viem";
 import { paginationParser } from "@/queryStates";
-import { preload as preloadGetActivities } from "@/services/getActivities";
-import { preload as preloadGetActivitiesCount } from "@/services/getActivitiesCount";
 
 // -----------------------------------------------------------------------------
 // Preloader

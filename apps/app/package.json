@@ -36,6 +36,7 @@
     "@lightdotso/query": "workspace:*",
     "@lightdotso/query-keys": "workspace:*",
     "@lightdotso/schemas": "workspace:*",
+    "@lightdotso/services": "workspace:*",
     "@lightdotso/solutions": "workspace:*",
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/styles": "workspace:*",

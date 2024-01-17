@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { preloadGetUserOperation } from "@lightdotso/services";
 import type { Hex } from "viem";
 import { preloader as addressPreloader } from "@/preloaders/paths/[address]/preloader";
-import { preload as preloadGetUserOperation } from "@/services/getUserOperation";
 
 // -----------------------------------------------------------------------------
 // Preloader
