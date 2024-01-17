@@ -19,7 +19,7 @@ import { parseAsBoolean, useQueryState } from "nuqs";
 // Parser
 // -----------------------------------------------------------------------------
 
-export const isTestnetParser = parseAsBoolean;
+export const isTestnetParser = parseAsBoolean.withOptions({ shallow: false });
 
 // -----------------------------------------------------------------------------
 // Hook
