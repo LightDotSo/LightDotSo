@@ -15,6 +15,7 @@
 
 import type { TransactionData } from "@lightdotso/data";
 import {
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -39,9 +40,10 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useEffect, type FC } from "react";
+import { useEffect, type FC, useMemo } from "react";
 import { TableEmpty } from "../state/table-empty";
 import { transactionColumns } from "./transaction-columns";
+import { useDebounced } from "@lightdotso/hooks";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -55,6 +57,7 @@ type TransactionTableProps = {
   >;
   columns?: ColumnDef<TransactionData>[];
   setTransactionTable?: (tableObject: ReactTable<TransactionData>) => void;
+  isLoading: boolean;
   limit?: number;
 };
 
@@ -66,9 +69,27 @@ export const TransactionTable: FC<TransactionTableProps> = ({
   data,
   tableOptions,
   columns = transactionColumns,
+  isLoading,
   limit,
   setTransactionTable,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const tableColumns = useMemo(
+    () =>
+      isLoading
+        ? columns.map(column => ({
+            ...column,
+            cell() {
+              return <Skeleton className="w-full h-6" />;
+            },
+          }))
+        : columns,
+    [isLoading, columns],
+  );
+
   // ---------------------------------------------------------------------------
   // Table
   // ---------------------------------------------------------------------------
@@ -76,7 +97,7 @@ export const TransactionTable: FC<TransactionTableProps> = ({
   const table = useReactTable({
     ...tableOptions,
     data: data || [],
-    columns,
+    columns: tableColumns,
     enableExpanding: false,
     enableRowSelection: false,
     manualPagination: true,
@@ -95,10 +116,11 @@ export const TransactionTable: FC<TransactionTableProps> = ({
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (setTransactionTable) {
+    if (!isLoading && setTransactionTable) {
       setTransactionTable(table);
     }
   }, [
+    isLoading,
     table,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table.getColumn("chain_id"),
@@ -122,6 +144,8 @@ export const TransactionTable: FC<TransactionTableProps> = ({
     // table.getColumn("actions")?.getIsVisible(),
     setTransactionTable,
   ]);
+
+  const delayedIsLoading = useDebounced(isLoading, 1000);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -172,6 +196,16 @@ export const TransactionTable: FC<TransactionTableProps> = ({
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
+              </TableRow>
+            ))
+        ) : delayedIsLoading ? (
+          Array(10)
+            .fill(null)
+            .map((_, index) => (
+              <TableRow key={index}>
+                <TableCell colSpan={columns.length}>
+                  <Skeleton className="w-full h-6" />
+                </TableCell>
               </TableRow>
             ))
         ) : (

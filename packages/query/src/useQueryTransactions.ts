@@ -42,7 +42,9 @@ export const useQueryTransactions = (params: TransactionListParams) => {
     }).queryKey,
   );
 
-  const { data: transactions } = useQuery<TransactionData[] | null>({
+  const { data: transactions, isLoading: isTransactionsLoading } = useQuery<
+    TransactionData[] | null
+  >({
     queryKey: queryKeys.transaction.list({
       address: params.address,
       limit: params.limit,
@@ -82,5 +84,6 @@ export const useQueryTransactions = (params: TransactionListParams) => {
 
   return {
     transactions,
+    isTransactionsLoading,
   };
 };

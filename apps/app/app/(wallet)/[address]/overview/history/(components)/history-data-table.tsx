@@ -65,21 +65,26 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
-  const { transactions } = useQueryTransactions({
+  const { transactions, isTransactionsLoading } = useQueryTransactions({
     address: address,
     limit: paginationState.pageSize,
     offset: offsetCount,
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
   });
 
-  const { transactionsCount } = useQueryTransactionsCount({
-    address: address,
-    is_testnet: walletSettings?.is_enabled_testnet ?? false,
-  });
+  const { transactionsCount, isTransactionsCountLoading } =
+    useQueryTransactionsCount({
+      address: address,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
+
+  const isLoading = useMemo(() => {
+    return isTransactionsLoading || isTransactionsCountLoading;
+  }, [isTransactionsLoading || isTransactionsCountLoading]);
 
   const pageCount = useMemo(() => {
     if (!transactionsCount || !transactionsCount?.count) {
@@ -95,6 +100,7 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
   return (
     <TableSectionWrapper>
       <DataTable
+        isLoading={isLoading}
         data={transactions ?? []}
         columns={transactionColumns}
         pageCount={pageCount ?? 0}

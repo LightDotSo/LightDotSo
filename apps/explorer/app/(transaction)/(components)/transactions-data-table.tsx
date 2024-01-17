@@ -25,6 +25,7 @@ import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(transaction)/(components)/data-table/data-table";
 import { usePaginationQueryState, useIsTestnetQueryState } from "@/queryStates";
+import { useDebounced } from "@lightdotso/hooks";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -60,21 +61,26 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { transactions } = useQueryTransactions({
+  const { transactions, isTransactionsLoading } = useQueryTransactions({
     address: address ?? null,
     limit: paginationState.pageSize,
     offset: offsetCount,
     is_testnet: isTestnetQueryState ?? false,
   });
 
-  const { transactionsCount } = useQueryTransactionsCount({
-    address: address ?? null,
-    is_testnet: isTestnetQueryState ?? false,
-  });
+  const { transactionsCount, isTransactionsCountLoading } =
+    useQueryTransactionsCount({
+      address: address ?? null,
+      is_testnet: isTestnetQueryState ?? false,
+    });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
+
+  const isLoading = useMemo(() => {
+    return isTransactionsLoading || isTransactionsCountLoading;
+  }, [isTransactionsLoading || isTransactionsCountLoading]);
 
   const pageCount = useMemo(() => {
     if (!transactionsCount || !transactionsCount?.count) {
@@ -90,6 +96,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   return (
     <TableSectionWrapper>
       <DataTable
+        isLoading={isLoading}
         data={transactions ?? []}
         columns={transactionColumns}
         pageCount={pageCount ?? 0}

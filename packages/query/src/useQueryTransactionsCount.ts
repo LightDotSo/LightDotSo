@@ -43,40 +43,42 @@ export const useQueryTransactionsCount = (
       }).queryKey,
     );
 
-  const { data: transactionsCount } = useQuery<TransactionCountData | null>({
-    queryKey: queryKeys.transaction.listCount({
-      address: params.address,
-      is_testnet: params.is_testnet,
-    }).queryKey,
-    queryFn: async () => {
-      if (typeof params.address === "undefined") {
-        return null;
-      }
+  const { data: transactionsCount, isLoading: isTransactionsCountLoading } =
+    useQuery<TransactionCountData | null>({
+      queryKey: queryKeys.transaction.listCount({
+        address: params.address,
+        is_testnet: params.is_testnet,
+      }).queryKey,
+      queryFn: async () => {
+        if (typeof params.address === "undefined") {
+          return null;
+        }
 
-      const res = await getTransactionsCount(
-        {
-          params: {
-            query: {
-              address: params.address ?? undefined,
+        const res = await getTransactionsCount(
+          {
+            params: {
+              query: {
+                address: params.address ?? undefined,
+              },
             },
           },
-        },
-        clientType,
-      );
+          clientType,
+        );
 
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
-  });
+        // Return if the response is 200
+        return res.match(
+          data => {
+            return data;
+          },
+          _ => {
+            return currentData ?? null;
+          },
+        );
+      },
+    });
 
   return {
     transactionsCount,
+    isTransactionsCountLoading,
   };
 };

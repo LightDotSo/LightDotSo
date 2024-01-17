@@ -15,8 +15,7 @@
 
 export { useAuthModal } from "./useAuthModal";
 export { useCopy } from "./useCopy";
-export { useDebouncedValue } from "./useDebouncedValue";
-export { useDelayedValue } from "./useDelayedValue";
+export { useDebouncedValue } from "@lightdotso/hooks/src/useDebouncedValue";
 export { useEdgeFlag } from "./useEdgeFlag";
 export { useIsMounted } from "./useIsMounted";
 export { useMediaQuery } from "./useMediaQuery";
