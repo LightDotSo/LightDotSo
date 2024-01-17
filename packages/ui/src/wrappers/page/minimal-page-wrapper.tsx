@@ -28,5 +28,9 @@ interface MinimalPageWrapperProps {
 // -----------------------------------------------------------------------------
 
 export function MinimalPageWrapper({ children }: MinimalPageWrapperProps) {
-  return <div className="mb-12 mt-6 flex flex-col space-y-6">{children}</div>;
+  return (
+    <div className="relative mb-12 mt-6 flex flex-col space-y-6">
+      {children}
+    </div>
+  );
 }
