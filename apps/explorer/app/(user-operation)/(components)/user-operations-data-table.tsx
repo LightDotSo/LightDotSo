@@ -82,7 +82,7 @@ export const UserOperationsDataTable: FC<UserOperationsDataTableProps> = ({
 
   const isLoading = useMemo(() => {
     return isUserOperationsLoading || isUserOperationsCountLoading;
-  }, [isUserOperationsLoading || isUserOperationsCountLoading]);
+  }, [isUserOperationsLoading, isUserOperationsCountLoading]);
 
   const pageCount = useMemo(() => {
     if (!userOperationsCount || !userOperationsCount?.count) {

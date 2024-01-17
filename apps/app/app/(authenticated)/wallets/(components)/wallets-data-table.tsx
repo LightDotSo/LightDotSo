@@ -69,7 +69,7 @@ export const WalletsDataTable: FC = () => {
 
   const isLoading = useMemo(() => {
     return isWalletsLoading || isWalletsCountLoading;
-  }, [isWalletsLoading || isWalletsCountLoading]);
+  }, [isWalletsLoading, isWalletsCountLoading]);
 
   const pageCount = useMemo(() => {
     if (!walletsCount || !walletsCount?.count) {

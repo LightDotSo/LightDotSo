@@ -41,7 +41,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useEffect, type FC, useMemo } from "react";
+import { useEffect, type FC } from "react";
 import { TableEmpty } from "../state/table-empty";
 import { transactionColumns } from "./transaction-columns";
 

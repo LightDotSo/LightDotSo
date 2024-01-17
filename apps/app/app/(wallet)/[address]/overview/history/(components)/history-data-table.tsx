@@ -84,7 +84,7 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
 
   const isLoading = useMemo(() => {
     return isTransactionsLoading || isTransactionsCountLoading;
-  }, [isTransactionsLoading || isTransactionsCountLoading]);
+  }, [isTransactionsLoading, isTransactionsCountLoading]);
 
   const pageCount = useMemo(() => {
     if (!transactionsCount || !transactionsCount?.count) {

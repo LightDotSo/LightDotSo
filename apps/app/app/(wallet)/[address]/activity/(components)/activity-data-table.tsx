@@ -72,7 +72,7 @@ export const ActivityDataTable: FC<ActivityDataTableProps> = ({ address }) => {
 
   const isLoading = useMemo(() => {
     return isActivitiesLoading || isActivitiesCountLoading;
-  }, [isActivitiesLoading || isActivitiesCountLoading]);
+  }, [isActivitiesLoading, isActivitiesCountLoading]);
 
   const pageCount = useMemo(() => {
     if (!activitiesCount || !activitiesCount?.count) {

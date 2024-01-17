@@ -83,7 +83,7 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
 
   const isLoading = useMemo(() => {
     return isTokensLoading || isTokensCountLoading;
-  }, [isTokensLoading || isTokensCountLoading]);
+  }, [isTokensLoading, isTokensCountLoading]);
 
   const pageCount = useMemo(() => {
     if (!tokensCount || !tokensCount?.count) {

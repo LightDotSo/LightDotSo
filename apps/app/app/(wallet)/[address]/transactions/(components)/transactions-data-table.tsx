@@ -90,7 +90,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
 
   const isLoading = useMemo(() => {
     return isUserOperationsLoading || isUserOperationsCountLoading;
-  }, [isUserOperationsLoading || isUserOperationsCountLoading]);
+  }, [isUserOperationsLoading, isUserOperationsCountLoading]);
 
   const pageCount = useMemo(() => {
     if (!userOperationsCount || !userOperationsCount?.count) {

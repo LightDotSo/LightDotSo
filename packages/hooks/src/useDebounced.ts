@@ -43,7 +43,7 @@ export function useDebounced(value: boolean, delay: number): boolean {
     return () => {
       clearTimeout(handler);
     };
-  }, [value, delay]);
+  }, [value, delay, debouncedValue]);
 
   // ---------------------------------------------------------------------------
   // Return
