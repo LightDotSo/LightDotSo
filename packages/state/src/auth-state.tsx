@@ -180,5 +180,6 @@ export const AuthState: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  return null; // or return children if there are children to render
+  // or return children if there are children to render
+  return null;
 };

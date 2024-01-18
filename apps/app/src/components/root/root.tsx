@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { AuthState } from "@lightdotso/state";
 import {
   TailwindIndicator,
   ThemeProvider,
@@ -27,7 +28,6 @@ import { Inter } from "next/font/google";
 import Script from "next/script";
 import { Suspense } from "react";
 import type { FC, ReactNode } from "react";
-import { AuthState } from "@/components/auth/auth-state";
 import { MainNav } from "@/components/nav/main-nav";
 import { Web3Provider } from "@/components/web3/web3-provider";
 import { WssState } from "@/components/wss/wss-state";

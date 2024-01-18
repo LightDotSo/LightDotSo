@@ -348,6 +348,9 @@ importers:
       '@lightdotso/solutions':
         specifier: workspace:*
         version: link:../../packages/solutions
+      '@lightdotso/state':
+        specifier: workspace:*
+        version: link:../../packages/state
       '@lightdotso/stores':
         specifier: workspace:*
         version: link:../../packages/stores
@@ -800,6 +803,9 @@ importers:
       '@lightdotso/services':
         specifier: workspace:*
         version: link:../../packages/services
+      '@lightdotso/state':
+        specifier: workspace:*
+        version: link:../../packages/state
       '@lightdotso/stores':
         specifier: workspace:*
         version: link:../../packages/stores
@@ -1840,6 +1846,58 @@ importers:
       '@types/node':
         specifier: ^20.11.4
         version: 20.11.4
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
+  packages/state:
+    dependencies:
+      '@lightdotso/client':
+        specifier: workspace:*
+        version: link:../client
+      '@lightdotso/data':
+        specifier: workspace:*
+        version: link:../data
+      '@lightdotso/query':
+        specifier: workspace:*
+        version: link:../query
+      '@lightdotso/query-keys':
+        specifier: workspace:*
+        version: link:../query-keys
+      '@lightdotso/stores':
+        specifier: workspace:*
+        version: link:../stores
+      '@tanstack/react-query':
+        specifier: ^5.17.15
+        version: 5.17.15(react@18.2.0)
+      next:
+        specifier: 14.0.4
+        version: 14.0.4(@babel/core@7.23.7)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+      viem:
+        specifier: ^2.1.1
+        version: 2.1.1(typescript@5.3.3)(zod@3.22.4)
+      wagmi:
+        specifier: ^2.2.1
+        version: 2.2.1(@tanstack/react-query@5.17.15)(@types/react@18.2.48)(@upstash/redis@1.28.1)(immer@10.0.3)(react-dom@18.2.0)(react-native@0.73.2)(react@18.2.0)(typescript@5.3.3)(viem@2.1.1)(zod@3.22.4)
+    devDependencies:
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../../configurations/tsconfig
+      '@types/node':
+        specifier: ^20.11.4
+        version: 20.11.4
+      '@types/react':
+        specifier: ^18.2.48
+        version: 18.2.48
+      '@types/react-dom':
+        specifier: ^18.2.18
+        version: 18.2.18
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
