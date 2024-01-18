@@ -16,7 +16,7 @@
 "use client";
 
 import { CHAINS } from "@lightdotso/const";
-import { createWeb3Modal } from "@web3modal/wagmi";
+import { createWeb3Modal } from "@web3modal/wagmi/react";
 import { useTheme } from "next-themes";
 import { useState, type ReactNode, useEffect } from "react";
 import type { State } from "wagmi";
