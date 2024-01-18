@@ -42,7 +42,7 @@ import {
 } from "@tanstack/react-table";
 import { useRouter } from "next/navigation";
 import { useEffect, type FC } from "react";
-import { TableEmpty } from "../state/table-empty";
+import { TableEmpty } from "../table-empty";
 import { walletColumns } from "./wallet-columns";
 
 // -----------------------------------------------------------------------------
@@ -51,6 +51,7 @@ import { walletColumns } from "./wallet-columns";
 
 type WalletTableProps = {
   isLoading: boolean;
+  pageSize: number;
   data: WalletData[] | null;
   tableOptions?: Omit<
     TableOptions<WalletData>,
@@ -66,6 +67,7 @@ type WalletTableProps = {
 
 export const WalletTable: FC<WalletTableProps> = ({
   isLoading,
+  pageSize,
   data,
   tableOptions,
   columns = walletColumns,
@@ -170,7 +172,7 @@ export const WalletTable: FC<WalletTableProps> = ({
             </TableRow>
           ))
         ) : delayedIsLoading ? (
-          Array(10)
+          Array(pageSize)
             .fill(null)
             .map((_, index) => (
               <TableRow key={index}>

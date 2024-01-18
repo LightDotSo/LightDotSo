@@ -92,6 +92,7 @@ export const NftsList: FC<NftsListProps> = ({ address, limit }) => {
   return (
     <NftTable
       isLoading={false}
+      pageSize={limit}
       data={data && data.nfts ? data.nfts : ([] as NftData[])}
       tableOptions={tableOptions}
     />

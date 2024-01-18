@@ -41,7 +41,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, type FC } from "react";
-import { TableEmpty } from "../state/table-empty";
+import { TableEmpty } from "../table-empty";
 import { ownerColumns } from "./owner-columns";
 
 // -----------------------------------------------------------------------------
@@ -50,6 +50,7 @@ import { ownerColumns } from "./owner-columns";
 
 type OwnerTableProps = {
   isLoading: boolean;
+  pageSize: number;
   data: OwnerData[] | null;
   tableOptions?: Omit<
     TableOptions<OwnerData>,
@@ -65,6 +66,7 @@ type OwnerTableProps = {
 
 export const OwnerTable: FC<OwnerTableProps> = ({
   isLoading,
+  pageSize,
   data,
   tableOptions,
   columns = ownerColumns,
@@ -160,7 +162,7 @@ export const OwnerTable: FC<OwnerTableProps> = ({
             </TableRow>
           ))
         ) : delayedIsLoading ? (
-          Array(10)
+          Array(pageSize)
             .fill(null)
             .map((_, index) => (
               <TableRow key={index}>

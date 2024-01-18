@@ -40,6 +40,8 @@ type Story = StoryObj<typeof NftTable>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <NftTable isLoading={false} data={nftListData.nfts} />,
+  render: args => (
+    <NftTable isLoading={false} pageSize={10} data={nftListData.nfts} />
+  ),
   args: {},
 };

@@ -100,6 +100,7 @@ export const TransactionsList: FC<TransactionsListProps> = ({
   return (
     <TransactionTable
       isLoading={false}
+      pageSize={limit}
       data={transactions}
       tableOptions={tableOptions}
     />

@@ -88,6 +88,7 @@ export function DataTable({ isLoading, columns, data }: DataTableProps) {
   return (
     <NftTable
       isLoading={isLoading}
+      pageSize={50}
       data={data}
       columns={columns}
       tableOptions={tableOoptions}

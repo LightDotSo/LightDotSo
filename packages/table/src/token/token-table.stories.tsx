@@ -40,6 +40,8 @@ type Story = StoryObj<typeof TokenTable>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <TokenTable isLoading={false} data={tokenListData} />,
+  render: args => (
+    <TokenTable isLoading={false} pageSize={10} data={tokenListData} />
+  ),
   args: {},
 };

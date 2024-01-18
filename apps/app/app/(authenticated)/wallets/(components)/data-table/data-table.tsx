@@ -91,6 +91,7 @@ export function DataTable({
   return (
     <WalletTable
       isLoading={isLoading}
+      pageSize={paginationState.pageSize}
       data={data}
       columns={columns}
       tableOptions={tableOptions}

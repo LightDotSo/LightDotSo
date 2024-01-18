@@ -93,6 +93,7 @@ export function DataTable({
   return (
     <ActivityTable
       isLoading={isLoading}
+      pageSize={paginationState.pageSize}
       columns={columns}
       data={data}
       tableOptions={tableOptions}

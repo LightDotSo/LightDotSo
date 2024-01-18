@@ -95,6 +95,7 @@ export function DataTable({
   return (
     <TokenTable
       isLoading={isLoading}
+      pageSize={paginationState.pageSize}
       columns={columns}
       data={data}
       tableOptions={tableOptions}

@@ -41,7 +41,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, type FC } from "react";
-import { TableEmpty } from "../state/table-empty";
+import { TableEmpty } from "../table-empty";
 import { activityColumns } from "./activity-columns";
 
 // -----------------------------------------------------------------------------
@@ -50,6 +50,7 @@ import { activityColumns } from "./activity-columns";
 
 type ActivityTableProps = {
   isLoading: boolean;
+  pageSize: number;
   data: ActivityData[] | null;
   tableOptions?: Omit<
     TableOptions<ActivityData>,
@@ -65,6 +66,7 @@ type ActivityTableProps = {
 
 export const ActivityTable: FC<ActivityTableProps> = ({
   isLoading,
+  pageSize,
   data,
   tableOptions,
   columns = activityColumns,
@@ -174,7 +176,7 @@ export const ActivityTable: FC<ActivityTableProps> = ({
             </TableRow>
           ))
         ) : delayedIsLoading ? (
-          Array(10)
+          Array(pageSize)
             .fill(null)
             .map((_, index) => (
               <TableRow key={index}>

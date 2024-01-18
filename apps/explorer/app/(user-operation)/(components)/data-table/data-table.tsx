@@ -100,6 +100,7 @@ export function DataTable({
   return (
     <UserOperationTable
       isLoading={isLoading}
+      pageSize={paginationState.pageSize}
       address={null}
       columns={columns}
       data={data}
