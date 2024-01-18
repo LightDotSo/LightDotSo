@@ -73,7 +73,7 @@ pub async fn upsert_transaction_with_log_receipt(
     let logs_clone = logs.clone();
 
     let mut transaction_params = vec![
-        transaction::nonce::set(transaction.nonce.as_u64() as i64),
+        transaction::nonce::set(transaction.nonce.low_u64() as i64),
         transaction::input::set(Some(transaction.input.0.to_vec())),
         transaction::block_number::set(transaction.block_number.map(|n| n.as_u32() as i32)),
         transaction::to::set(transaction.to.map(|to| to_checksum(&to, None))),
@@ -103,14 +103,14 @@ pub async fn upsert_transaction_with_log_receipt(
         ))
     }
     if transaction.gas != 0.into() {
-        transaction_params.push(transaction::gas::set(Some(transaction.gas.as_u64() as i64)))
+        transaction_params.push(transaction::gas::set(Some(transaction.gas.low_u64() as i64)))
     }
     if transaction.value != 0.into() {
-        transaction_params.push(transaction::value::set(Some(transaction.value.as_u64() as i64)))
+        transaction_params.push(transaction::value::set(Some(transaction.value.low_u64() as i64)))
     }
     if transaction.gas_price.is_some() {
         transaction_params
-            .push(transaction::gas_price::set(transaction.gas_price.map(|gp| gp.as_u64() as i64)))
+            .push(transaction::gas_price::set(transaction.gas_price.map(|gp| gp.low_u64() as i64)))
     }
     if transaction.transaction_type.is_some() {
         transaction_params.push(transaction::transaction_type::set(
@@ -119,12 +119,12 @@ pub async fn upsert_transaction_with_log_receipt(
     }
     if transaction.max_fee_per_gas.is_some() {
         transaction_params.push(transaction::max_fee_per_gas::set(
-            transaction.max_fee_per_gas.map(|mfpg| mfpg.as_u64() as i64),
+            transaction.max_fee_per_gas.map(|mfpg| mfpg.low_u64() as i64),
         ))
     }
     if transaction.max_priority_fee_per_gas.is_some() {
         transaction_params.push(transaction::max_priority_fee_per_gas::set(
-            transaction.max_priority_fee_per_gas.map(|mpfpg| mpfpg.as_u64() as i64),
+            transaction.max_priority_fee_per_gas.map(|mpfpg| mpfpg.low_u64() as i64),
         ))
     }
 
@@ -134,7 +134,7 @@ pub async fn upsert_transaction_with_log_receipt(
             transaction::hash::equals(format!("{:?}", transaction.hash)),
             transaction::create(
                 DateTime::<FixedOffset>::from_utc(
-                    NaiveDateTime::from_timestamp_opt(timestamp.as_u64() as i64, 0).unwrap(),
+                    NaiveDateTime::from_timestamp_opt(timestamp.low_u64() as i64, 0).unwrap(),
                     FixedOffset::east_opt(0).unwrap(),
                 ),
                 chain_id,
@@ -142,7 +142,7 @@ pub async fn upsert_transaction_with_log_receipt(
                     .clone()
                     .map_or(json!({}), |t| serde_json::to_value(t).unwrap_or_else(|_| (json!({})))),
                 format!("{:?}", transaction.hash),
-                transaction.nonce.as_u64() as i64,
+                transaction.nonce.low_u64() as i64,
                 to_checksum(&transaction.from, None),
                 transaction_params.clone(),
             ),
@@ -160,7 +160,7 @@ pub async fn upsert_transaction_with_log_receipt(
         receipt::transaction_hash::set(format!("{:?}", receipt.transaction_hash)),
         receipt::transaction_index::set(receipt.transaction_index.as_u32() as i32),
         receipt::from::set(to_checksum(&receipt.from, None)),
-        receipt::cumulative_gas_used::set(receipt.cumulative_gas_used.as_u64() as i64),
+        receipt::cumulative_gas_used::set(receipt.cumulative_gas_used.low_u64() as i64),
     ];
 
     if receipt.block_hash.is_some() {
@@ -169,10 +169,10 @@ pub async fn upsert_transaction_with_log_receipt(
     }
     if receipt.cumulative_gas_used != 0.into() {
         receipt_params
-            .push(receipt::cumulative_gas_used::set(receipt.cumulative_gas_used.as_u64() as i64))
+            .push(receipt::cumulative_gas_used::set(receipt.cumulative_gas_used.low_u64() as i64))
     }
     if receipt.gas_used.is_some() {
-        receipt_params.push(receipt::gas_used::set(receipt.gas_used.map(|gu| gu.as_u64() as i64)))
+        receipt_params.push(receipt::gas_used::set(receipt.gas_used.map(|gu| gu.low_u64() as i64)))
     }
     if receipt.contract_address.is_some() {
         receipt_params.push(receipt::contract_address::set(
@@ -198,7 +198,7 @@ pub async fn upsert_transaction_with_log_receipt(
     }
     if receipt.effective_gas_price.is_some() {
         receipt_params.push(receipt::effective_gas_price::set(
-            receipt.effective_gas_price.map(|egp| egp.as_u64() as i64),
+            receipt.effective_gas_price.map(|egp| egp.low_u64() as i64),
         ))
     }
 
@@ -210,7 +210,7 @@ pub async fn upsert_transaction_with_log_receipt(
                 format!("{:?}", receipt.transaction_hash),
                 receipt.transaction_index.as_u32() as i32,
                 to_checksum(&receipt.from, None),
-                receipt.cumulative_gas_used.as_u64() as i64,
+                receipt.cumulative_gas_used.low_u64() as i64,
                 receipt_params.clone(),
             ),
             receipt_params.clone(),
@@ -227,7 +227,7 @@ pub async fn upsert_transaction_with_log_receipt(
             .upsert(
                 log::UniqueWhereParam::TransactionHashLogIndexEquals(
                     format!("{:?}", transaction.hash),
-                    log.log_index.unwrap().as_u64() as i64,
+                    log.log_index.unwrap().low_u64() as i64,
                 ),
                 log::create(
                     to_checksum(&log.address, None),
@@ -241,9 +241,9 @@ pub async fn upsert_transaction_with_log_receipt(
                         log::transaction_index::set(
                             log.transaction_index.map(|ti| ti.as_u32() as i32),
                         ),
-                        log::log_index::set(log.log_index.map(|li| li.as_u64() as i64)),
+                        log::log_index::set(log.log_index.map(|li| li.low_u64() as i64)),
                         log::transaction_log_index::set(
-                            log.transaction_log_index.map(|lti| lti.as_u64() as i64),
+                            log.transaction_log_index.map(|lti| lti.low_u64() as i64),
                         ),
                         log::log_type::set(log.clone().log_type),
                         log::removed::set(log.removed),

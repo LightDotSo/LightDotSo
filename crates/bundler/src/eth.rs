@@ -176,7 +176,7 @@ impl EthApi {
         Ok(Some(RichUserOperation {
             user_operation: user_operation.into(),
             entry_point: event.address.into(),
-            block_number: tx.block_number.map(|n| U256::from(n.as_u64())).unwrap_or_default(),
+            block_number: tx.block_number.map(|n| U256::from(n.low_u64())).unwrap_or_default(),
             block_hash: tx.block_hash.unwrap_or_default(),
             transaction_hash,
         }))

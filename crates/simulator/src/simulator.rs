@@ -66,7 +66,7 @@ pub async fn simulate(transaction: SimulationRequest) -> Result<SimulationRespon
     let latest_block_number = provider.get_block_number().await?;
 
     // Get the block number
-    let block_number = transaction.block_number.unwrap_or(latest_block_number.as_u64());
+    let block_number = transaction.block_number.unwrap_or(latest_block_number.low_u64());
 
     // Construct the EVM
     let mut evm = Evm::new(None, fork_url, Some(block_number), transaction.gas_limit, true).await;
@@ -95,7 +95,7 @@ pub async fn simulate_bundle(
     let latest_block_number = provider.get_block_number().await?;
 
     // Get the block number
-    let block_number = first_block_number.unwrap_or(latest_block_number.as_u64());
+    let block_number = first_block_number.unwrap_or(latest_block_number.low_u64());
 
     // Construct the EVM
     let mut evm =
