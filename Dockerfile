@@ -80,6 +80,11 @@ FROM debian:bookworm-slim AS runtime
 # Switch to the runtime directory.
 WORKDIR /app
 
+# Specify the runtime related environment variables.
+ENV \
+  RUST_BACKTRACE=1 \
+  RUST_FLAGS="-C overflow-checks=yes"
+
 # sqlx depends on native TLS, which is missing in buster-slim.
 RUN apt update && apt install -y libsasl2-dev libssl3 ca-certificates
 
