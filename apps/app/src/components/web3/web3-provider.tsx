@@ -20,8 +20,8 @@ import { createWeb3Modal } from "@web3modal/wagmi";
 import { useTheme } from "next-themes";
 import type { ReactNode } from "react";
 import { Chain, createClient } from "viem";
+import type { State } from "wagmi";
 import {
-  State,
   WagmiProvider,
   cookieStorage,
   createConfig,

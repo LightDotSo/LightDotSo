@@ -23,15 +23,15 @@ import {
   VercelToolbar,
 } from "@lightdotso/ui";
 import dynamic from "next/dynamic";
-import { headers } from "next/headers";
 import { Inter } from "next/font/google";
+import { headers } from "next/headers";
 import Script from "next/script";
 import { Suspense } from "react";
 import type { FC, ReactNode } from "react";
+import { cookieToInitialState } from "wagmi";
 import { MainNav } from "@/components/nav/main-nav";
 import { Web3Provider, wagmiConfig } from "@/components/web3/web3-provider";
 import { WssState } from "@/components/wss/wss-state";
-import { cookieToInitialState } from "wagmi";
 
 // -----------------------------------------------------------------------------
 // Dynamic
