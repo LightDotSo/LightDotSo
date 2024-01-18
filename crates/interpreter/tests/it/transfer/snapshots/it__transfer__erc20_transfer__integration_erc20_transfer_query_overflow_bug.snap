@@ -1,0 +1,96 @@
+---
+source: crates/interpreter/tests/it/transfer/erc20_transfer.rs
+expression: res
+---
+InterpretationResponse {
+    chain_id: 137,
+    gas_used: 0,
+    block_number: 51517461,
+    success: true,
+    traces: [],
+    logs: [
+        Log {
+            address: 0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789,
+            topics: [
+                0xbb47ee3e183a558b1a2ff0874b079f3fc5478b7454eacf2bfc5af2ff5878f972,
+            ],
+            data: Bytes(0x),
+            block_hash: None,
+            block_number: None,
+            transaction_hash: None,
+            transaction_index: None,
+            log_index: None,
+            transaction_log_index: None,
+            log_type: None,
+            removed: None,
+        },
+        Log {
+            address: 0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789,
+            topics: [
+                0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
+                0x000000000000000000000000fbd80fe5ce1ece895845fd131bd621e2b6a1345f,
+                0x000000000000000000000000e8a0e8466df96ec769a02adaa969abe67c70ec68,
+            ],
+            data: Bytes(0x00000000000000000000000000000000000000000000000000000000000493e0),
+            block_hash: None,
+            block_number: None,
+            transaction_hash: None,
+            transaction_index: None,
+            log_index: None,
+            transaction_log_index: None,
+            log_type: None,
+            removed: None,
+        },
+    ],
+    exit_reason: Stop,
+    actions: [
+        InterpretationAction {
+            action_type: ERC20Send,
+            address: Some(
+                0xfbd80fe5ce1ece895845fd131bd621e2b6a1345f,
+            ),
+        },
+        InterpretationAction {
+            action_type: ERC20Receive,
+            address: Some(
+                0xe8a0e8466df96ec769a02adaa969abe67c70ec68,
+            ),
+        },
+    ],
+    asset_changes: [
+        AssetChange {
+            address: 0xfbd80fe5ce1ece895845fd131bd621e2b6a1345f,
+            before_amount: None,
+            after_amount: None,
+            amount: 300000,
+            action: InterpretationAction {
+                action_type: ERC20Send,
+                address: Some(
+                    0xfbd80fe5ce1ece895845fd131bd621e2b6a1345f,
+                ),
+            },
+            token: AssetToken {
+                address: 0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789,
+                token_id: None,
+                token_type: Erc20,
+            },
+        },
+        AssetChange {
+            address: 0xe8a0e8466df96ec769a02adaa969abe67c70ec68,
+            before_amount: None,
+            after_amount: None,
+            amount: 300000,
+            action: InterpretationAction {
+                action_type: ERC20Receive,
+                address: Some(
+                    0xe8a0e8466df96ec769a02adaa969abe67c70ec68,
+                ),
+            },
+            token: AssetToken {
+                address: 0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789,
+                token_id: None,
+                token_type: Erc20,
+            },
+        },
+    ],
+}

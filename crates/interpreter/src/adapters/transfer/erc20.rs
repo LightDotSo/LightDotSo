@@ -29,6 +29,7 @@ use ethers_main::{
 };
 use eyre::Result;
 use lightdotso_simulator::evm::Evm;
+use lightdotso_tracing::tracing::info;
 
 #[derive(Clone)]
 pub(crate) struct ERC20Adapter {
@@ -80,6 +81,7 @@ impl Adapter for ERC20Adapter {
             .iter()
             .filter(|log| log.topics.len() == 3 && log.topics[0] == *TRANSFER_EVENT_TOPIC)
             .collect::<Vec<_>>();
+        info!("logs: {:?}", logs);
 
         let mut actions = Vec::new();
         let mut asset_changes = Vec::new();
@@ -94,16 +96,28 @@ impl Adapter for ERC20Adapter {
             let token_address = log.address;
 
             // Get the token balance of the `from` address
-            let before_from_balance = &self.get_erc20_balance(evm, from, token_address).await.ok();
+            let mut before_from_balance =
+                self.get_erc20_balance(evm, from, token_address).await.ok();
 
             // Get the token balance of the `to` address
-            let before_to_balance = &self.get_erc20_balance(evm, to, token_address).await.ok();
+            let mut before_to_balance = self.get_erc20_balance(evm, to, token_address).await.ok();
 
-            // Get the after balance of the `from` address
-            let after_from_balance = before_from_balance.map(|b| b - value);
+            // Check if the value does not overflow
+            let (after_from_balance, after_to_balance) = before_from_balance
+                .and_then(|before_balance| {
+                    if value <= before_balance {
+                        Some((Some(before_balance - value), before_to_balance.map(|b| b + value)))
+                    } else {
+                        // If the value overflows, set the before balances to `None`
+                        before_from_balance = None;
+                        before_to_balance = None;
+
+                        None
+                    }
+                })
+                .unwrap_or((None, None));
 
             // Get the after balance of the `to` address
-            let after_to_balance = before_to_balance.map(|b| b + value);
 
             // Get the actions for the `from` address
             let from_action = InterpretationAction {
@@ -126,7 +140,7 @@ impl Adapter for ERC20Adapter {
                     token_id: None,
                     token_type: AssetTokenType::Erc20,
                 },
-                before_amount: *before_from_balance,
+                before_amount: before_from_balance,
                 after_amount: after_from_balance,
                 amount: value,
             };
@@ -140,7 +154,7 @@ impl Adapter for ERC20Adapter {
                     token_id: None,
                     token_type: AssetTokenType::Erc20,
                 },
-                before_amount: *before_to_balance,
+                before_amount: before_to_balance,
                 after_amount: after_to_balance,
                 amount: value,
             };
