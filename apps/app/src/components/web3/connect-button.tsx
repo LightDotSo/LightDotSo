@@ -15,9 +15,10 @@
 
 "use client";
 
+import { useAuth } from "@lightdotso/stores";
 import { Button } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
-import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { Wallet } from "lucide-react";
 import type { Address } from "viem";
 
@@ -29,25 +30,24 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export const ConnectButton = () => {
+  const { address, ens } = useAuth();
+  const { open } = useWeb3Modal();
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <RainbowConnectButton.Custom>
-      {({ account, openAccountModal, openConnectModal }) => {
-        return (
-          <Button
-            size="sm"
-            onClick={!account ? openConnectModal : openAccountModal}
-          >
-            <Wallet className="mr-2 size-4" />
-            {account
-              ? account.ensName ?? shortenAddress(account.address as Address)
-              : "Connect Wallet"}
-          </Button>
-        );
-      }}
-    </RainbowConnectButton.Custom>
+    <Button
+      size="sm"
+      onClick={
+        !address
+          ? () => open({ view: "Connect" })
+          : () => open({ view: "Account" })
+      }
+    >
+      <Wallet className="mr-2 size-4" />
+      {address ? ens ?? shortenAddress(address as Address) : "Connect Wallet"}
+    </Button>
   );
 };

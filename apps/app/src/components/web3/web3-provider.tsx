@@ -16,48 +16,39 @@
 "use client";
 
 import { CHAINS } from "@lightdotso/const";
-import {
-  RainbowKitProvider,
-  lightTheme,
-  darkTheme,
-  getDefaultWallets,
-  connectorsForWallets,
-} from "@rainbow-me/rainbowkit";
+import { createWeb3Modal } from "@web3modal/wagmi";
+import { headers } from "next/headers";
 import { useTheme } from "next-themes";
 import type { ReactNode } from "react";
 import { createClient } from "viem";
 import {
   WagmiProvider,
   cookieStorage,
+  cookieToInitialState,
   createConfig,
   createStorage,
   http,
 } from "wagmi";
+import { walletConnect, injected, coinbaseWallet } from "wagmi/connectors";
 import { safe } from "wagmi/connectors";
 
-// -----------------------------------------------------------------------------
-// Rainbow
-// -----------------------------------------------------------------------------
-
-const walletList = getDefaultWallets();
-
-const connectors = connectorsForWallets(walletList.wallets, {
-  projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
-  appName: "Light",
-  appUrl: "https://app.light.so",
-});
+const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!;
 
 // -----------------------------------------------------------------------------
 // Wagmi
 // -----------------------------------------------------------------------------
 
 // Set up wagmi config
-export const config = createConfig({
+export const wagmiConfig = createConfig({
   chains: CHAINS,
   client({ chain }) {
     return createClient({ chain, transport: http() });
   },
-  connectors: [safe(), ...connectors],
+  connectors: [
+    walletConnect({ projectId, showQrModal: false }),
+    safe(),
+    injected({ shimDisconnect: true }),
+  ],
   ssr: true,
   storage: createStorage({
     storage: cookieStorage,
@@ -69,23 +60,30 @@ export const config = createConfig({
 // -----------------------------------------------------------------------------
 
 function Web3Provider({ children }: { children: ReactNode }) {
+  const initialState = cookieToInitialState(
+    wagmiConfig,
+    headers().get("cookie"),
+  );
+
   // ---------------------------------------------------------------------------
   // Operation Hooks
   // ---------------------------------------------------------------------------
 
   const { theme } = useTheme();
 
+  createWeb3Modal({
+    wagmiConfig,
+    projectId,
+    themeMode: theme === "light" ? "light" : "dark",
+  });
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <WagmiProvider config={config}>
-      <RainbowKitProvider
-        theme={theme === "light" ? lightTheme() : darkTheme()}
-      >
-        {children}
-      </RainbowKitProvider>
+    <WagmiProvider config={wagmiConfig} initialState={initialState}>
+      {children}
     </WagmiProvider>
   );
 }
