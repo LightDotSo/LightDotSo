@@ -29,8 +29,12 @@ import {
   createStorage,
   http,
 } from "wagmi";
-import { walletConnect, injected, coinbaseWallet } from "wagmi/connectors";
-import { safe } from "wagmi/connectors";
+import {
+  walletConnect,
+  injected,
+  coinbaseWallet,
+  safe,
+} from "wagmi/connectors";
 
 const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!;
 
