@@ -67,10 +67,11 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
     is_testnet: isTestnetQueryState ?? false,
   });
 
-  const { transactionsCount } = useQueryTransactionsCount({
-    address: address ?? null,
-    is_testnet: isTestnetQueryState ?? false,
-  });
+  const { transactionsCount, isTransactionsCountLoading } =
+    useQueryTransactionsCount({
+      address: address ?? null,
+      is_testnet: isTestnetQueryState ?? false,
+    });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
