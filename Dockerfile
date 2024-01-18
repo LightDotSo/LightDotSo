@@ -56,6 +56,7 @@ ENV \
   DOCKER=true \
   RUST_LOG="sccache=trace" \
   RUST_BACKTRACE=1 \
+  RUSTFLAGS="-C overflow-checks=yes" \
   # RUSTFLAGS="-D warnings" \
   RUSTC_WRAPPER="/usr/local/bin/sccache" \
   SCCACHE_BUCKET="sccache" \
