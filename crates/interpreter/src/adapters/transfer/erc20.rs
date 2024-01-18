@@ -50,15 +50,12 @@ impl ERC20Adapter {
     ) -> Result<U256> {
         // Encode the method and parameters to call
         let calldata = self.abi.encode("balanceOf", address)?;
-        info!("calldata: {:?}", calldata);
 
         // Call the contract method
         let res = evm.call_raw(address, token_address, Some(0.into()), Some(calldata)).await?;
-        info!("res: {:?}", res);
 
         // Decode the output
         let balance: U256 = self.abi.decode_output("balanceOf", res.return_data)?;
-        info!("balance: {:?}", balance);
 
         // Return the balance
         Ok(balance)
@@ -94,8 +91,6 @@ impl Adapter for ERC20Adapter {
             // Get the `from` and `to` addresses from the log
             let (from, to, value): (Address, Address, U256) =
                 self.abi.decode_event("Transfer", log.clone().topics, log.clone().data)?;
-
-            info!("from: {}, to: {}, value: {}", from, to, value);
 
             // Get the token address from the log
             let token_address = log.address;
