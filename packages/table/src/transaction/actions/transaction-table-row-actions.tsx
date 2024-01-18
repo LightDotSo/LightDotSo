@@ -15,14 +15,15 @@
 
 "use client";
 
-import type { OwnerData } from "@lightdotso/data";
+import { createQueueInterpretation } from "@lightdotso/client";
+import type { TransactionData } from "@lightdotso/data";
 import {
   Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
+  toast,
 } from "@lightdotso/ui";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import type { Row } from "@tanstack/react-table";
@@ -31,15 +32,17 @@ import type { Row } from "@tanstack/react-table";
 // Props
 // -----------------------------------------------------------------------------
 
-interface OwnerTableRowActionsProps {
-  row: Row<OwnerData>;
+interface TransactionTableRowActionsProps {
+  row: Row<TransactionData>;
 }
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export function OwnerTableRowActions({ row: _ }: OwnerTableRowActionsProps) {
+export function TransactionTableRowActions({
+  row,
+}: TransactionTableRowActionsProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -56,10 +59,29 @@ export function OwnerTableRowActions({ row: _ }: OwnerTableRowActionsProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem>Copy Address</DropdownMenuItem>
-        <DropdownMenuItem>
-          Delete
-          <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+        <DropdownMenuItem
+          onClick={async () => {
+            const toastId = toast.loading("Queue has been created...");
+            const res = await createQueueInterpretation({
+              params: { query: { transaction_hash: row.original.hash } },
+            });
+            res.match(
+              () => {
+                toast.dismiss(toastId);
+                toast.success("Queue created!");
+              },
+              err => {
+                toast.dismiss(toastId);
+                if (err instanceof Error) {
+                  toast.error(err.message);
+                  return;
+                }
+                toast.error("Failed to create queue!");
+              },
+            );
+          }}
+        >
+          Queue
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

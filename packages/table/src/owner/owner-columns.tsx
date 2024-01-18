@@ -15,7 +15,7 @@
 
 "use client";
 
-import type { ConfigurationOwnerData } from "@lightdotso/data";
+import type { OwnerData } from "@lightdotso/data";
 import {
   Avatar,
   DataTableColumnHeader,
@@ -29,7 +29,7 @@ import { OwnerTableRowActions } from "./actions/owner-table-row-actions";
 // Definitions
 // -----------------------------------------------------------------------------
 
-export const ownerColumns: ColumnDef<ConfigurationOwnerData>[] = [
+export const ownerColumns: ColumnDef<OwnerData>[] = [
   {
     id: "select",
     header: ({ table }) => (

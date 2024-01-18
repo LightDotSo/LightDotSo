@@ -29,6 +29,7 @@ import {
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
 import { Suspense, useMemo, useState, useEffect } from "react";
 import type { FC, HTMLAttributes, ReactNode, RefAttributes } from "react";
+import { ConnectButton } from "../web3/connect-button";
 import { AppNav } from "@/components/nav/app-nav";
 import { TabsNav } from "@/components/nav/tabs-nav";
 import { RootLogo } from "@/components/root/root-logo";
@@ -130,7 +131,7 @@ export const MainNav: FC<MainNavProps> = ({ children, ...props }) => {
   const [hookProps, setHookProps] = useState({
     tabs: typeTabs,
   });
-  const framer = useTabs(hookProps);
+  const { tabProps } = useTabs(hookProps);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -154,8 +155,7 @@ export const MainNav: FC<MainNavProps> = ({ children, ...props }) => {
         className="flex h-10 items-center space-x-4 px-2 md:px-4 lg:space-x-6 lg:px-8"
         {...props}
       >
-        {/* Render upon mount */}
-        <Suspense>{framer && <TabsNav {...framer.tabProps} />}</Suspense>
+        <Suspense>{tabProps && <TabsNav {...tabProps} />}</Suspense>
       </div>
     );
   };
@@ -174,7 +174,7 @@ export const MainNav: FC<MainNavProps> = ({ children, ...props }) => {
               <span className="ml-2 mr-1 text-text/60 last:hidden">/</span>
               <WalletSwitcher />
             </div>
-            <AppNav />
+            <AppNav mobile={<ConnectButton />} tabs={tabProps.tabs} />
           </div>
           <Tabs />
         </div>

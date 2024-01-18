@@ -28,6 +28,7 @@ import {
   DrawerFooter,
   DrawerClose,
   DrawerDescription,
+  MobileAppDrawer,
 } from "@lightdotso/ui";
 import { AlignRight } from "lucide-react";
 import Link from "next/link";
@@ -62,29 +63,7 @@ export const AppNav: FC<AppNavProps> = ({ tabs }) => {
   }
 
   if (!isDesktop) {
-    return (
-      <Drawer>
-        <div className="ml-auto">
-          <DrawerTrigger>
-            <ButtonIcon variant="outline" size="sm">
-              <AlignRight className="size-4" />
-            </ButtonIcon>
-          </DrawerTrigger>
-        </div>
-        <DrawerContent>
-          <DrawerHeader>
-            <DrawerTitle>Are you sure absolutely sure?</DrawerTitle>
-            <DrawerDescription>This action cannot be undone.</DrawerDescription>
-          </DrawerHeader>
-          <DrawerFooter>
-            <Button>Submit</Button>
-            <DrawerClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DrawerClose>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
-    );
+    return <MobileAppDrawer tabs={tabs} />;
   }
 
   return (

@@ -13,19 +13,19 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { InterpretationData } from "./interpretation";
+import type { TokenData } from "./token";
 
-// -----------------------------------------------------------------------------
-// Data
-// -----------------------------------------------------------------------------
-
-export type TransactionData = {
-  chain_id: number;
-  hash: string;
-  timestamp: string;
-  interpretation: InterpretationData;
+export type InterpretationData = {
+  id: string;
+  actions: string[];
+  asset_changes: InterpretationAssetChangeData[];
 };
 
-export type TransactionCountData = {
-  count: number;
+export type InterpretationAssetChangeData = {
+  address: string;
+  after_amount?: number | null;
+  amount: number;
+  before_amount?: number | null;
+  id: string;
+  token?: TokenData;
 };

@@ -73,7 +73,7 @@ export const useQueryTransactions = (params: TransactionListParams) => {
       // Return if the response is 200
       return res.match(
         data => {
-          return data;
+          return data as TransactionData[];
         },
         _ => {
           return currentData ?? null;

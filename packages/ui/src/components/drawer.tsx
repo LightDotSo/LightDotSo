@@ -93,6 +93,14 @@ const DrawerHeader = ({
 );
 DrawerHeader.displayName = "DrawerHeader";
 
+const DrawerBody = ({
+  className,
+  ...props
+}: HTMLAttributes<HTMLDivElement>) => (
+  <div className={cn("flex flex-col p-4", className)} {...props} />
+);
+DrawerBody.displayName = "DrawerBody";
+
 const DrawerFooter = ({
   className,
   ...props
@@ -143,6 +151,7 @@ export {
   DrawerClose,
   DrawerContent,
   DrawerHeader,
+  DrawerBody,
   DrawerFooter,
   DrawerTitle,
   DrawerDescription,

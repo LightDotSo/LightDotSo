@@ -68,3 +68,30 @@ export const createQueueToken = async (
     return response.status === 200 && data ? ok(data) : err(error);
   });
 };
+
+export const createQueueInterpretation = async (
+  {
+    params,
+  }: {
+    params: {
+      query: {
+        transaction_hash?: string | null;
+        user_operation_hash?: string | null;
+      };
+    };
+  },
+  clientType?: ClientType,
+) => {
+  const client = getClient(clientType);
+
+  return ResultAsync.fromPromise(
+    client.POST("/queue/interpretation", {
+      // @ts-ignore
+      next: { revalidate: 0 },
+      params,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};

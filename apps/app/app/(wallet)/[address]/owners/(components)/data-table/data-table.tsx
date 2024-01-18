@@ -15,7 +15,7 @@
 
 "use client";
 
-import type { ConfigurationOwnerData } from "@lightdotso/data";
+import type { OwnerData } from "@lightdotso/data";
 import { useTables } from "@lightdotso/stores";
 import { OwnerTable } from "@lightdotso/table";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -27,8 +27,8 @@ import { usePaginationQueryState } from "@/queryStates";
 
 interface DataTableProps {
   isLoading: boolean;
-  columns: ColumnDef<ConfigurationOwnerData>[];
-  data: ConfigurationOwnerData[];
+  columns: ColumnDef<OwnerData>[];
+  data: OwnerData[];
 }
 
 // -----------------------------------------------------------------------------

@@ -15,7 +15,7 @@
 
 import type {
   TokenData,
-  ConfigurationOwnerData,
+  OwnerData,
   NftData,
   WalletData,
   TransactionData,
@@ -68,12 +68,12 @@ type TablesStore = {
   ownerColumnVisibility: VisibilityState;
   ownerRowSelection: RowSelectionState;
   ownerSorting: SortingState;
-  ownerTable: Table<ConfigurationOwnerData> | null;
+  ownerTable: Table<OwnerData> | null;
   setOwnerColumnFilters: OnChangeFn<ColumnFiltersState>;
   setOwnerColumnVisibility: OnChangeFn<VisibilityState>;
   setOwnerRowSelection: OnChangeFn<RowSelectionState>;
   setOwnerSorting: OnChangeFn<SortingState>;
-  setOwnerTable: (tableObject: Table<ConfigurationOwnerData>) => void;
+  setOwnerTable: (tableObject: Table<OwnerData>) => void;
   userOperationColumnFilters: ColumnFiltersState;
   userOperationColumnVisibility: VisibilityState;
   userOperationRowSelection: RowSelectionState;
