@@ -19,49 +19,9 @@ import { CHAINS } from "@lightdotso/const";
 import { createWeb3Modal } from "@web3modal/wagmi";
 import { useTheme } from "next-themes";
 import type { ReactNode } from "react";
-import { Chain, createClient } from "viem";
 import type { State } from "wagmi";
-import {
-  WagmiProvider,
-  cookieStorage,
-  createConfig,
-  createStorage,
-  http,
-} from "wagmi";
-import {
-  walletConnect,
-  injected,
-  coinbaseWallet,
-  safe,
-} from "wagmi/connectors";
-
-// -----------------------------------------------------------------------------
-// Config
-// -----------------------------------------------------------------------------
-
-const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!;
-
-// -----------------------------------------------------------------------------
-// Wagmi
-// -----------------------------------------------------------------------------
-
-// Set up wagmi config
-export const wagmiConfig = createConfig({
-  chains: CHAINS,
-  client({ chain }) {
-    return createClient({ chain, transport: http() });
-  },
-  connectors: [
-    coinbaseWallet({ appName: "Light" }),
-    walletConnect({ projectId, showQrModal: false }),
-    safe(),
-    injected({ shimDisconnect: true }),
-  ],
-  ssr: true,
-  storage: createStorage({
-    storage: cookieStorage,
-  }),
-});
+import { WagmiProvider } from "wagmi";
+import { projectId, wagmiConfig } from "./wagmi";
 
 // -----------------------------------------------------------------------------
 // Component

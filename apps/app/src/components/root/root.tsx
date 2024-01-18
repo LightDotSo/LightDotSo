@@ -30,7 +30,8 @@ import { Suspense } from "react";
 import type { FC, ReactNode } from "react";
 import { cookieToInitialState } from "wagmi";
 import { MainNav } from "@/components/nav/main-nav";
-import { Web3Provider, wagmiConfig } from "@/components/web3/web3-provider";
+import { wagmiConfig } from "@/components/web3/wagmi";
+import { Web3Provider } from "@/components/web3/web3-provider";
 import { WssState } from "@/components/wss/wss-state";
 
 // -----------------------------------------------------------------------------
