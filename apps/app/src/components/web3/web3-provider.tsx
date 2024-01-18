@@ -18,7 +18,7 @@
 import { CHAINS } from "@lightdotso/const";
 import { createWeb3Modal } from "@web3modal/wagmi/react";
 import { useTheme } from "next-themes";
-import { useState, type ReactNode, useEffect } from "react";
+import { useState, type ReactNode, useEffect, useMemo } from "react";
 import type { State } from "wagmi";
 import { WagmiProvider } from "wagmi";
 import { projectId, wagmiConfig } from "./wagmi";
@@ -47,10 +47,10 @@ function Web3Provider({
   const { theme } = useTheme();
 
   // ---------------------------------------------------------------------------
-  // Web3Modal
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  useEffect(() => {
+  const modal = useMemo(() => {
     const modal = createWeb3Modal({
       // @ts-expect-error
       chains: CHAINS,
@@ -58,9 +58,15 @@ function Web3Provider({
       projectId,
       themeMode: theme === "light" ? "light" : "dark",
     });
-
-    setWeb3Modal(modal);
+    return modal;
   }, [theme]);
+  // ---------------------------------------------------------------------------
+  // Web3Modal
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    setWeb3Modal(modal);
+  }, [modal]);
 
   // ---------------------------------------------------------------------------
   // Render
