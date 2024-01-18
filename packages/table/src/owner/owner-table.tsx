@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { ConfigurationOwnerData } from "@lightdotso/data";
+import type { OwnerData } from "@lightdotso/data";
 import { useDebounced } from "@lightdotso/hooks";
 import {
   Skeleton,
@@ -50,13 +50,13 @@ import { ownerColumns } from "./owner-columns";
 
 type OwnerTableProps = {
   isLoading: boolean;
-  data: ConfigurationOwnerData[] | null;
+  data: OwnerData[] | null;
   tableOptions?: Omit<
-    TableOptions<ConfigurationOwnerData>,
+    TableOptions<OwnerData>,
     "data" | "columns" | "getCoreRowModel"
   >;
-  columns?: ColumnDef<ConfigurationOwnerData>[];
-  setOwnerTable?: (tableObject: ReactTable<ConfigurationOwnerData>) => void;
+  columns?: ColumnDef<OwnerData>[];
+  setOwnerTable?: (tableObject: ReactTable<OwnerData>) => void;
 };
 
 // -----------------------------------------------------------------------------

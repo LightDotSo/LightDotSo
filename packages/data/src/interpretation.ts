@@ -13,17 +13,19 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { OwnerData } from "./owner";
+import { TokenData } from "./token";
 
-// -----------------------------------------------------------------------------
-// Data
-// -----------------------------------------------------------------------------
-
-export type ConfigurationData = {
-  address: string;
-  checkpoint: number;
+export type InterpretationData = {
   id: string;
-  image_hash: string;
-  owners: OwnerData[];
-  threshold: number;
+  actions: string[];
+  asset_changes: InterpretationAssetChangeData[];
+};
+
+export type InterpretationAssetChangeData = {
+  address: string;
+  after_amount?: number | null;
+  amount: number;
+  before_amount?: number | null;
+  id: string;
+  token?: TokenData;
 };

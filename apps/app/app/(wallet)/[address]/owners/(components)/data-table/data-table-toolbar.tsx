@@ -15,10 +15,7 @@
 
 "use client";
 
-import type {
-  ConfigurationData,
-  ConfigurationOwnerData,
-} from "@lightdotso/data";
+import type { ConfigurationData, OwnerData } from "@lightdotso/data";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth, useTables } from "@lightdotso/stores";
 import {
@@ -39,7 +36,7 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 interface DataTableToolbarProps {
-  table: Table<ConfigurationOwnerData>;
+  table: Table<OwnerData>;
 }
 
 // -----------------------------------------------------------------------------

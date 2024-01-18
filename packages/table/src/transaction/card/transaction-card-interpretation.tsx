@@ -15,53 +15,33 @@
 
 "use client";
 
-import type { OwnerData } from "@lightdotso/data";
-import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from "@lightdotso/ui";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import type { Row } from "@tanstack/react-table";
+import type { TransactionData } from "@lightdotso/data";
+import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface OwnerTableRowActionsProps {
-  row: Row<OwnerData>;
-}
+type TransactionCardInterpretationProps = { transaction: TransactionData };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export function OwnerTableRowActions({ row: _ }: OwnerTableRowActionsProps) {
+export const TransactionCardInterpretation: FC<
+  TransactionCardInterpretationProps
+> = ({ transaction: { interpretation } }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          className="flex size-8 p-0 data-[state=open]:bg-background-stronger"
-        >
-          <DotsHorizontalIcon className="size-4" />
-          <span className="sr-only">Open menu</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem>Copy Address</DropdownMenuItem>
-        <DropdownMenuItem>
-          Delete
-          <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className="flex items-center space-x-1.5">
+      {interpretation.actions.map((action, index) => (
+        <div key={index} className="flex items-center space-x-1.5">
+          <span className="text-xs font-medium text-gray-400">{action}</span>
+        </div>
+      ))}
+    </div>
   );
-}
+};

@@ -13,17 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { OwnerData } from "./owner";
-
-// -----------------------------------------------------------------------------
-// Data
-// -----------------------------------------------------------------------------
-
-export type ConfigurationData = {
+export type OwnerData = {
   address: string;
-  checkpoint: number;
   id: string;
-  image_hash: string;
-  owners: OwnerData[];
-  threshold: number;
+  weight: number;
 };

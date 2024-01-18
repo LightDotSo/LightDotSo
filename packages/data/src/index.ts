@@ -15,11 +15,10 @@
 
 export type { ActivityData, ActivityCountData } from "./activity";
 export type { AuthNonceData, AuthSessionData } from "./auth";
-export type {
-  ConfigurationData,
-  ConfigurationOwnerData,
-} from "./configuration";
+export type { ConfigurationData } from "./configuration";
+export type { InterpretationData } from "./interpretation";
 export type { NftData, NftDataPage } from "./nft";
+export type { OwnerData } from "./owner";
 export type { PaymasterOperationData } from "./paymasterOperation";
 export type { TokenPortfolioData, NftPortfolioData } from "./portfolio";
 export type { TokenData, TokenCountData } from "./token";
