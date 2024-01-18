@@ -3,16 +3,16 @@
   "compilerOptions": {
     "plugins": [
       {
-        "name": "next"
-      }
+        "name": "next",
+      },
     ],
     "strict": true,
     "paths": {
       "@/app/*": ["./app/*"],
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
     },
-    "target": "es2020"
+    "target": "es2020",
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
 }
