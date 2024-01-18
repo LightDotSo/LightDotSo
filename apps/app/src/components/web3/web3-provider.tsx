@@ -17,20 +17,23 @@
 
 import { CHAINS } from "@lightdotso/const";
 import { createWeb3Modal } from "@web3modal/wagmi";
-import { headers } from "next/headers";
 import { useTheme } from "next-themes";
 import type { ReactNode } from "react";
-import { createClient } from "viem";
+import { Chain, createClient } from "viem";
 import {
+  State,
   WagmiProvider,
   cookieStorage,
-  cookieToInitialState,
   createConfig,
   createStorage,
   http,
 } from "wagmi";
 import { walletConnect, injected, coinbaseWallet } from "wagmi/connectors";
 import { safe } from "wagmi/connectors";
+
+// -----------------------------------------------------------------------------
+// Config
+// -----------------------------------------------------------------------------
 
 const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!;
 
@@ -60,19 +63,26 @@ export const wagmiConfig = createConfig({
 // Component
 // -----------------------------------------------------------------------------
 
-function Web3Provider({ children }: { children: ReactNode }) {
-  const initialState = cookieToInitialState(
-    wagmiConfig,
-    headers().get("cookie"),
-  );
-
+function Web3Provider({
+  children,
+  initialState,
+}: {
+  children: ReactNode;
+  initialState?: State;
+}) {
   // ---------------------------------------------------------------------------
   // Operation Hooks
   // ---------------------------------------------------------------------------
 
   const { theme } = useTheme();
 
+  // ---------------------------------------------------------------------------
+  // Web3Modal
+  // ---------------------------------------------------------------------------
+
   createWeb3Modal({
+    // @ts-expect-error
+    chains: CHAINS,
     wagmiConfig,
     projectId,
     themeMode: theme === "light" ? "light" : "dark",

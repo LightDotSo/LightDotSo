@@ -61,7 +61,4 @@ export const TESTNET_CHAINS = [
 // All
 // -----------------------------------------------------------------------------
 
-export const CHAINS = [...MAINNET_CHAINS, ...TESTNET_CHAINS] as readonly [
-  Chain,
-  ...Chain[],
-];
+export const CHAINS = [...MAINNET_CHAINS, ...TESTNET_CHAINS] as const;
