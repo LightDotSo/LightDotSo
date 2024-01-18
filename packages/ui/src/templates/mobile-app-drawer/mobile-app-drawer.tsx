@@ -15,6 +15,7 @@
 
 import type { RawTab } from "@lightdotso/types";
 import { AlignRight } from "lucide-react";
+import Link from "next/link";
 import type { FC, ReactNode } from "react";
 import { Button } from "../../components/button";
 import { ButtonIcon } from "../../components/button-icon";
@@ -27,7 +28,6 @@ import {
   DrawerClose,
   DrawerFooter,
 } from "../../components/drawer";
-import Link from "next/link";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -65,8 +65,8 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
           {tabs.map(tab => {
             if (tab.href.startsWith("http")) {
               return (
-                <div className="border-b border-border" key={tab.id}>
-                  <Button className="w-full" asChild variant="link">
+                <div key={tab.id} className="border-b border-border">
+                  <Button asChild className="w-full" variant="link">
                     <a className="flex justify-between" href={tab.href}>
                       {tab.label}
                       <tab.icon className="size-4" />
@@ -77,8 +77,8 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
             }
             return (
               <div
-                className="border-b border-border first:border-t"
                 key={tab.id}
+                className="border-b border-border first:border-t"
               >
                 <Button asChild variant="link">
                   <Link href={tab.href}>{tab.label}</Link>

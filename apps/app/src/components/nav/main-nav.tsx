@@ -29,12 +29,12 @@ import {
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
 import { Suspense, useMemo, useState, useEffect } from "react";
 import type { FC, HTMLAttributes, ReactNode, RefAttributes } from "react";
+import { ConnectButton } from "../web3/connect-button";
 import { AppNav } from "@/components/nav/app-nav";
 import { TabsNav } from "@/components/nav/tabs-nav";
 import { RootLogo } from "@/components/root/root-logo";
 import { WalletSwitcher } from "@/components/web3/wallet-switcher";
 import { usePathType, useTabs } from "@/hooks";
-import { ConnectButton } from "../web3/connect-button";
 
 // -----------------------------------------------------------------------------
 // Const
