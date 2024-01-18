@@ -32,12 +32,12 @@ type ToasterProps = ComponentProps<typeof SonnerToaster>;
 // -----------------------------------------------------------------------------
 
 const toastVariants = cva(
-  "pointer-events-auto relative flex w-full items-center space-x-4 overflow-hidden rounded-md border p-4 shadow-xl transition-all",
+  "pointer-events-auto relative flex w-full items-center space-x-4 overflow-hidden rounded-md p-4 shadow-xl transition-all",
   {
     variants: {
       intent: {
         default:
-          "border bg-background [&>button]:data-[visible=true]:ring-border",
+          "border border-border bg-background [&>button]:data-[visible=true]:ring-border",
         destructive:
           "border-4 border-border-destructive-weaker bg-background-destructive text-text-inverse [&>button]:data-[type=destructive]:bg-background-destructive [&>button]:data-[type=destructive]:ring-border-destructive-weak",
         success:
