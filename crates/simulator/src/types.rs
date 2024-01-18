@@ -109,7 +109,7 @@ impl From<UserOperationRequest> for SimulationRequest {
             from: uo.sender,
             to: uo.entrypoint.unwrap_or_default(),
             data: uo.call_data,
-            gas_limit: uo.call_gas_limit.unwrap_or_default().as_u64(),
+            gas_limit: uo.call_gas_limit.unwrap_or_default().low_u64(),
             value: None,
             block_number: uo.block_number,
         }

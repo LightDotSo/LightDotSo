@@ -53,7 +53,7 @@ pub async fn upsert_interpretation_with_actions(
                 to_checksum(&change.token.address, None),
                 res.chain_id as i64,
                 vec![
-                    token::token_id::set(change.token.token_id.map(|id| id.as_u64() as i64)),
+                    token::token_id::set(change.token.token_id.map(|id| id.low_u64() as i64)),
                     token::r#type::set(if change.token.token_type == AssetTokenType::Erc20 {
                         TokenType::Erc20
                     } else if change.token.token_type == AssetTokenType::Erc721 {
@@ -124,7 +124,7 @@ pub async fn upsert_interpretation_with_actions(
             token_params.push(token::address_chain_id_token_id(
                 to_checksum(&change.token.address, None),
                 res.chain_id as i64,
-                change.token.token_id.unwrap().as_u64() as i64,
+                change.token.token_id.unwrap().low_u64() as i64,
             ))
         } else {
             token_params.push(token::address_chain_id(
@@ -200,14 +200,14 @@ pub async fn upsert_interpretation_with_actions(
         .map(|change| {
             (
                 to_checksum(&change.address, None),
-                change.amount.as_u64() as i64,
+                change.amount.low_u64() as i64,
                 interpretation::id::equals(interpretation.clone().id),
                 vec![
                     asset_change::before_amount::set(
-                        change.before_amount.map(|bm| bm.as_u64() as i64),
+                        change.before_amount.map(|bm| bm.low_u64() as i64),
                     ),
                     asset_change::after_amount::set(
-                        change.after_amount.map(|am| am.as_u64() as i64),
+                        change.after_amount.map(|am| am.low_u64() as i64),
                     ),
                     asset_change::interpretation_action::connect(
                         interpretation_action::id::equals(
@@ -238,7 +238,10 @@ pub async fn upsert_interpretation_with_actions(
                                     token.chain_id == res.chain_id as i64 &&
                                         token.address == to_checksum(&change.token.address, None) &&
                                         token.token_id ==
-                                            change.token.token_id.map(|id| id.as_u64() as i64)
+                                            change
+                                                .token
+                                                .token_id
+                                                .map(|id| id.low_u64() as i64)
                                 })
                                 .unwrap()
                                 .id,

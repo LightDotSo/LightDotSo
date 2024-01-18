@@ -60,7 +60,7 @@
 //     // Check the websocket provider
 //     let provider = handle.ws_provider().await;
 //     let num = provider.get_block_number().await.unwrap();
-//     assert_eq!(num, block_num.as_u64().into());
+//     assert_eq!(num, block_num.low_u64().into());
 
 //     // Set the env vars
 //     env::set_var("CHAIN_ID", "31337");
