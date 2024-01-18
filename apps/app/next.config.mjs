@@ -47,6 +47,11 @@ const nextConfig = {
     },
     serverComponentsExternalPackages: [],
   },
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
   outputFileTracing: true,
   transpilePackages: [
     "@lightdotso/client",
