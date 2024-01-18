@@ -45,6 +45,7 @@ export const wagmiConfig = createConfig({
     return createClient({ chain, transport: http() });
   },
   connectors: [
+    coinbaseWallet({ appName: "Light" }),
     walletConnect({ projectId, showQrModal: false }),
     safe(),
     injected({ shimDisconnect: true }),
