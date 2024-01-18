@@ -94,6 +94,7 @@ export function DataTable({
   return (
     <TransactionTable
       isLoading={isLoading}
+      pageSize={paginationState.pageSize}
       data={data}
       columns={columns}
       tableOptions={tableOptions}

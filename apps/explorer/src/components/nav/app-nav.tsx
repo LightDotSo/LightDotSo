@@ -17,20 +17,7 @@
 
 import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
 import type { RawTab } from "@lightdotso/types";
-import {
-  Button,
-  ButtonIcon,
-  Drawer,
-  DrawerTrigger,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerFooter,
-  DrawerClose,
-  DrawerDescription,
-  MobileAppDrawer,
-} from "@lightdotso/ui";
-import { AlignRight } from "lucide-react";
+import { Button, MobileAppDrawer } from "@lightdotso/ui";
 import Link from "next/link";
 import type { FC } from "react";
 

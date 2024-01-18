@@ -42,7 +42,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, type FC } from "react";
-import { TableEmpty } from "../state/table-empty";
+import { TableEmpty } from "../table-empty";
 import { tokenColumns } from "./token-columns";
 
 // -----------------------------------------------------------------------------
@@ -51,6 +51,7 @@ import { tokenColumns } from "./token-columns";
 
 type TokenTableProps = {
   isLoading: boolean;
+  pageSize: number;
   data: TokenData[] | null;
   tableOptions?: Omit<
     TableOptions<TokenData>,
@@ -67,6 +68,7 @@ type TokenTableProps = {
 
 export const TokenTable: FC<TokenTableProps> = ({
   isLoading,
+  pageSize,
   data,
   tableOptions,
   columns = tokenColumns,
@@ -193,7 +195,7 @@ export const TokenTable: FC<TokenTableProps> = ({
               </TableRow>
             ))
         ) : delayedIsLoading ? (
-          Array(10)
+          Array(pageSize)
             .fill(null)
             .map((_, index) => (
               <TableRow key={index}>

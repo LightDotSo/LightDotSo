@@ -84,6 +84,7 @@ export function DataTable({ isLoading, columns, data }: DataTableProps) {
   return (
     <OwnerTable
       isLoading={isLoading}
+      pageSize={paginationState.pageSize}
       data={data}
       columns={columns}
       tableOptions={tableOptions}

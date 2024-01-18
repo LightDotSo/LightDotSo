@@ -97,6 +97,11 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
   // ---------------------------------------------------------------------------
 
   return (
-    <TokenTable isLoading={false} data={tokens} tableOptions={tableOptions} />
+    <TokenTable
+      isLoading={false}
+      pageSize={limit}
+      data={tokens}
+      tableOptions={tableOptions}
+    />
   );
 };

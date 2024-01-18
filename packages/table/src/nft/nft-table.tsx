@@ -38,7 +38,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, type FC } from "react";
-import { TableEmpty } from "../state/table-empty";
+import { TableEmpty } from "../table-empty";
 import { NftCard } from "./card/nft-card";
 import { nftColumns } from "./nft-columns";
 import { NftsWrapper } from "./nfts-wrapper";
@@ -49,6 +49,7 @@ import { NftsWrapper } from "./nfts-wrapper";
 
 type NftTableProps = {
   isLoading: boolean;
+  pageSize: number;
   data: NftData[] | null;
   tableOptions?: Omit<
     TableOptions<NftData>,
@@ -65,6 +66,7 @@ type NftTableProps = {
 
 export const NftTable: FC<NftTableProps> = ({
   isLoading,
+  pageSize,
   data,
   tableOptions,
   columns = nftColumns,
@@ -166,7 +168,7 @@ export const NftTable: FC<NftTableProps> = ({
             />
           ))
       ) : delayedIsLoading ? (
-        Array(10)
+        Array(pageSize)
           .fill(null)
           .map((_, index) => <Skeleton key={index} className="size-24" />)
       ) : (

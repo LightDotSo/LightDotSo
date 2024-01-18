@@ -40,6 +40,8 @@ type Story = StoryObj<typeof ActivityTable>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <ActivityTable isLoading={false} data={activityListData} />,
+  render: args => (
+    <ActivityTable isLoading={false} pageSize={10} data={activityListData} />
+  ),
   args: {},
 };

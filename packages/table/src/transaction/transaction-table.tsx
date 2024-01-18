@@ -42,7 +42,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, type FC } from "react";
-import { TableEmpty } from "../state/table-empty";
+import { TableEmpty } from "../table-empty";
 import { transactionColumns } from "./transaction-columns";
 
 // -----------------------------------------------------------------------------
@@ -51,6 +51,7 @@ import { transactionColumns } from "./transaction-columns";
 
 type TransactionTableProps = {
   data: TransactionData[] | null;
+  pageSize: number;
   tableOptions?: Omit<
     TableOptions<TransactionData>,
     "data" | "columns" | "getCoreRowModel"
@@ -70,6 +71,7 @@ export const TransactionTable: FC<TransactionTableProps> = ({
   tableOptions,
   columns = transactionColumns,
   isLoading,
+  pageSize,
   limit,
   setTransactionTable,
 }) => {
@@ -186,7 +188,7 @@ export const TransactionTable: FC<TransactionTableProps> = ({
               </TableRow>
             ))
         ) : delayedIsLoading ? (
-          Array(10)
+          Array(pageSize)
             .fill(null)
             .map((_, index) => (
               <TableRow key={index}>

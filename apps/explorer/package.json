@@ -31,6 +31,7 @@
     "@lightdotso/query": "workspace:*",
     "@lightdotso/query-keys": "workspace:*",
     "@lightdotso/services": "workspace:*",
+    "@lightdotso/state": "workspace:*",
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/styles": "workspace:*",
     "@lightdotso/svg": "workspace:*",

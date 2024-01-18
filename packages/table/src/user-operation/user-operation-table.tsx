@@ -44,7 +44,7 @@ import {
 import { useEffect, type FC } from "react";
 import type { Address } from "viem";
 import { groupByDate } from "../group";
-import { TableEmpty } from "../state/table-empty";
+import { TableEmpty } from "../table-empty";
 import { UserOperationCardTransaction } from "./card/user-operation-card-transaction";
 import { userOperationColumns } from "./user-operation-columns";
 
@@ -54,6 +54,7 @@ import { userOperationColumns } from "./user-operation-columns";
 
 type UserOperationTableProps = {
   isLoading: boolean;
+  pageSize: number;
   data: UserOperationData[] | null;
   configuration?: ConfigurationData;
   address: Address | null;
@@ -71,6 +72,7 @@ type UserOperationTableProps = {
 
 export const UserOperationTable: FC<UserOperationTableProps> = ({
   isLoading,
+  pageSize,
   data,
   configuration,
   tableOptions,
@@ -203,7 +205,7 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
                 </TableRow>
               ))
           ) : delayedIsLoading ? (
-            Array(10)
+            Array(pageSize)
               .fill(null)
               .map((_, index) => (
                 <TableRow key={index}>
