@@ -92,7 +92,10 @@ pub async fn covalent_consumer(
                     .iter()
                     .map(|item| {
                         (
-                            item.contract_address.clone().unwrap(),
+                            to_checksum(
+                                &(item.contract_address.clone().unwrap().parse().unwrap()),
+                                None,
+                            ),
                             payload.chain_id as i64,
                             vec![
                                 token::symbol::set(Some(
