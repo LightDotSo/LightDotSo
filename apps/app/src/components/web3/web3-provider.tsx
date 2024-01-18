@@ -18,7 +18,7 @@
 import { CHAINS } from "@lightdotso/const";
 import { createWeb3Modal } from "@web3modal/wagmi";
 import { useTheme } from "next-themes";
-import type { ReactNode } from "react";
+import { useState, type ReactNode, useEffect } from "react";
 import type { State } from "wagmi";
 import { WagmiProvider } from "wagmi";
 import { projectId, wagmiConfig } from "./wagmi";
@@ -35,6 +35,12 @@ function Web3Provider({
   initialState?: State;
 }) {
   // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [web3Modal, setWeb3Modal] = useState<any | null>(null);
+
+  // ---------------------------------------------------------------------------
   // Operation Hooks
   // ---------------------------------------------------------------------------
 
@@ -44,17 +50,25 @@ function Web3Provider({
   // Web3Modal
   // ---------------------------------------------------------------------------
 
-  createWeb3Modal({
-    // @ts-expect-error
-    chains: CHAINS,
-    wagmiConfig,
-    projectId,
-    themeMode: theme === "light" ? "light" : "dark",
-  });
+  useEffect(() => {
+    const modal = createWeb3Modal({
+      // @ts-expect-error
+      chains: CHAINS,
+      wagmiConfig,
+      projectId,
+      themeMode: theme === "light" ? "light" : "dark",
+    });
+
+    setWeb3Modal(modal);
+  }, [theme]);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
+
+  if (!web3Modal) {
+    return null;
+  }
 
   return (
     <WagmiProvider config={wagmiConfig} initialState={initialState}>
