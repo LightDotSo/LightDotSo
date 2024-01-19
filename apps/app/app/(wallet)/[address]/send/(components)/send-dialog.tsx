@@ -16,7 +16,7 @@
 "use client";
 
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
-import type { NftDataPage, WalletSettingsData } from "@lightdotso/data";
+import type { WalletSettingsData } from "@lightdotso/data";
 import {
   useSuspenseQueryNfts,
   useSuspenseQueryTokens,
