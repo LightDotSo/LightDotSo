@@ -16,13 +16,25 @@
 import createClient from "openapi-fetch";
 import type { paths as ApiPaths } from "./types/api/v1";
 import type { paths as LifiPaths } from "./types/lifi/v1";
-import type { paths as SocketPaths } from "./types/socket/v1";
+import type { paths as SocketPaths } from "./types/socket/v2";
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
 
 export type ClientType = "admin" | "authenticated" | "public";
+
+// -----------------------------------------------------------------------------
+// Simplehash
+// -----------------------------------------------------------------------------
+
+export const getSimplehashClient = (clientType?: ClientType) => {
+  if (clientType === "admin") {
+    return "https://api.simplehash.com/api/v0";
+  }
+
+  return "https://api.light.so/simplehash";
+};
 
 // -----------------------------------------------------------------------------
 // Lifi
@@ -37,10 +49,52 @@ export const lifiClient: ReturnType<typeof createClient<LifiPaths>> =
 // Socket
 // -----------------------------------------------------------------------------
 
-export const socketClient: ReturnType<typeof createClient<SocketPaths>> =
-  createClient<LifiPaths>({
-    baseUrl: "https://api.socket.tech",
+export const officialSocketClient: ReturnType<
+  typeof createClient<SocketPaths>
+> = createClient<SocketPaths>({
+  baseUrl: "https://api.socket.tech",
+});
+
+export const localSocketClient: ReturnType<typeof createClient<SocketPaths>> =
+  createClient<SocketPaths>({
+    baseUrl: "http://localhost:3000",
   });
+
+export const publicSocketClient: ReturnType<typeof createClient<SocketPaths>> =
+  createClient<SocketPaths>({
+    baseUrl: "https://api.light.so",
+    credentials: "include",
+  });
+
+export const authenticatedSocketClient: ReturnType<
+  typeof createClient<SocketPaths>
+> = createClient<SocketPaths>({
+  baseUrl: "https://api.light.so/authenticated",
+  credentials: "include",
+});
+
+export const adminSocketClient: ReturnType<typeof createClient<SocketPaths>> =
+  createClient<SocketPaths>({
+    baseUrl: "https://api.light.so/admin",
+    headers: {
+      Authorization: `Bearer ${process.env.LIGHT_ADMIN_TOKEN}`,
+    },
+    credentials: "include",
+  });
+
+export const getSocketClient: (
+  clientType?: "admin" | "authenticated" | "public",
+) => ReturnType<typeof createClient<SocketPaths>> = clientType =>
+  clientType === "public"
+    ? publicSocketClient
+    : process.env.LOCAL_ENV === "dev" ||
+        process.env.NEXT_PUBLIC_LOCAL_ENV === "dev"
+      ? localSocketClient
+      : clientType === undefined
+        ? publicSocketClient
+        : clientType === "authenticated"
+          ? authenticatedSocketClient
+          : adminSocketClient;
 
 // -----------------------------------------------------------------------------
 // Light
