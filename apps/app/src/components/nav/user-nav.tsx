@@ -17,7 +17,7 @@
 
 import { useAuth } from "@lightdotso/stores";
 import {
-  ButtonIcon,
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
@@ -29,11 +29,15 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@lightdotso/ui";
-import { GearIcon } from "@radix-ui/react-icons";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import type { FC } from "react";
 import { useIsMounted } from "@/hooks";
+import { shortenAddress } from "@lightdotso/utils";
+import { Address } from "viem";
+import { Wallet } from "lucide-react";
+import { useDisconnect } from "wagmi";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -56,7 +60,14 @@ export const UserNav: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address } = useAuth();
+  const { address, ens } = useAuth();
+
+  // ---------------------------------------------------------------------------
+  // Web3Modal
+  // ---------------------------------------------------------------------------
+
+  const { open } = useWeb3Modal();
+  const { disconnect } = useDisconnect();
 
   // ---------------------------------------------------------------------------
   // Render
@@ -70,12 +81,35 @@ export const UserNav: FC = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <ButtonIcon variant="outline" className="rounded-full">
-          <GearIcon />
-          <span className="sr-only">Open user settings</span>
-        </ButtonIcon>
+        <Button size="sm">
+          <Wallet className="mr-2 size-4" />
+          {address
+            ? ens ?? shortenAddress(address as Address)
+            : "Connect Wallet"}
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent forceMount className="w-56" align="end">
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>Wallet</DropdownMenuLabel>
+          <DropdownMenuItem
+            onClick={() => {
+              open({ view: "Account" });
+            }}
+          >
+            Account
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              open({ view: "Networks" });
+            }}
+          >
+            Networks
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => disconnect()}>
+            Disconnect
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuLabel>Change Theme</DropdownMenuLabel>
           <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>

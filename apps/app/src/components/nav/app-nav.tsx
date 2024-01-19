@@ -23,7 +23,6 @@ import { Suspense } from "react";
 import { ChainPopover } from "@/components/chain/chain-popover";
 import { FeedbackPopover } from "@/components/feedback/feedback-popover";
 import { UserNav } from "@/components/nav/user-nav";
-import { ConnectButton } from "@/components/web3/connect-button";
 import { useIsMounted, useMediaQuery } from "@/hooks";
 
 // -----------------------------------------------------------------------------
@@ -76,7 +75,6 @@ export const AppNav: FC<AppNavProps> = ({ mobile, tabs }) => {
           <UserNav />
         </>
       )}
-      <ConnectButton />
     </div>
   );
 };

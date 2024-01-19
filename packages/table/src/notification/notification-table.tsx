@@ -40,7 +40,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useRouter } from "next/navigation";
 import { useEffect, type FC } from "react";
 import { TableEmpty } from "../table-empty";
 import { notificationColumns } from "./notification-columns";
@@ -73,12 +72,6 @@ export const NotificationTable: FC<NotificationTableProps> = ({
   columns = notificationColumns,
   setNotificationTable,
 }) => {
-  // ---------------------------------------------------------------------------
-  // Next Hooks
-  // ---------------------------------------------------------------------------
-
-  const router = useRouter();
-
   // ---------------------------------------------------------------------------
   // Table
   // ---------------------------------------------------------------------------
