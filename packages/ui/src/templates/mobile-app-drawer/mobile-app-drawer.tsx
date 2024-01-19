@@ -13,10 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { RawTab } from "@lightdotso/types";
-import { AlignRight } from "lucide-react";
+import type { Tab } from "@lightdotso/types";
+import { AlignRight, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import type { FC, ReactNode } from "react";
+import { Badge } from "../../components/badge";
 import { Button } from "../../components/button";
 import { ButtonIcon } from "../../components/button-icon";
 import {
@@ -35,7 +36,7 @@ import {
 
 export interface MobileAppDrawerProps {
   children?: ReactNode;
-  tabs: RawTab[];
+  tabs: Tab[];
 }
 
 // -----------------------------------------------------------------------------
@@ -65,11 +66,14 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
           {tabs.map(tab => {
             if (tab.href.startsWith("http")) {
               return (
-                <div key={tab.id} className="border-b border-border">
+                <div key={tab.id} className="border-b border-border py-1.5">
                   <Button asChild className="w-full" variant="link">
                     <a className="flex justify-between" href={tab.href}>
-                      {tab.label}
-                      <tab.icon className="size-4" />
+                      <span className="flex">
+                        <tab.icon className="mr-2 size-4" />
+                        {tab.label}
+                      </span>
+                      <ArrowUpRight className="size-4 text-text-weak" />
                     </a>
                   </Button>
                 </div>
@@ -78,10 +82,22 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
             return (
               <div
                 key={tab.id}
-                className="border-b border-border first:border-t"
+                className="border-b border-border py-1.5 first:border-t"
               >
-                <Button asChild variant="link">
-                  <Link href={tab.href}>{tab.label}</Link>
+                <Button asChild className="w-full justify-start" variant="link">
+                  <Link href={tab.href}>
+                    <tab.icon className="mr-2 size-4" />
+                    {tab.label}
+                    {tab?.number && tab?.number > 0 && (
+                      <Badge
+                        type="number"
+                        variant="outline"
+                        className="font-sm ml-2 rounded-full border-0 bg-background-strong text-text-weak no-underline"
+                      >
+                        {tab?.number}
+                      </Badge>
+                    )}
+                  </Link>
                 </Button>
               </div>
             );

@@ -24,7 +24,7 @@ import {
 } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
-import type { RawTab, Tab } from "@lightdotso/types";
+import type { Tab } from "@lightdotso/types";
 import { RadiobuttonIcon } from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
 import { useQueryClient } from "@tanstack/react-query";
@@ -50,7 +50,7 @@ const aiTab = {
 // Hook
 // -----------------------------------------------------------------------------
 
-export function useTabs({ tabs }: { tabs: RawTab[] }) {
+export function useTabs({ tabs }: { tabs: Tab[] }) {
   // ---------------------------------------------------------------------------
   // Next Hooks
   // ---------------------------------------------------------------------------
@@ -137,10 +137,6 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
 
   // Inside useTabs function
   const transformedTabs: Tab[] = useMemo(() => {
-    if (!configuration || !userOperationsCount) {
-      return tabs.map(tab => ({ ...tab, number: 0 }));
-    }
-
     if (walletFeatures?.is_enabled_ai) {
       // If AI not yet in tabs, add it
       if (!tabs.find(tab => tab.id === aiTab.id)) {
@@ -153,16 +149,19 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
     }
 
     return tabs.map(tab => {
-      let number = 0;
       if (tab.id === "owners") {
-        number = configuration.owners.length;
+        if (configuration?.owners) {
+          tab.number = configuration.owners.length;
+        }
       } else if (tab.id === "transactions") {
-        number = userOperationsCount.count;
+        if (userOperationsCount?.count && userOperationsCount?.count !== 0) {
+          tab.number = userOperationsCount?.count;
+        }
       }
       // else if (tab.id === "activity") {
       //   number = data.transaction_count;
       // }
-      return { ...tab, number };
+      return tab;
     });
   }, [configuration, userOperationsCount, walletFeatures?.is_enabled_ai, tabs]);
 

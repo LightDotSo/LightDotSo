@@ -23,8 +23,6 @@ export type Tab = {
   label: string;
   id: string;
   href: string;
-  number: number;
+  number?: number;
   icon: (_props: { className?: string }) => ReactNode;
 };
-
-export type RawTab = Omit<Tab, "number">;

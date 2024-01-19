@@ -28,6 +28,14 @@ export const getNftValuation = async (
 ) => {
   const chains = simplehashMainnetChainSchema.options.join(",");
 
+  const headers: HeadersInit = {
+    "content-type": "application/json",
+  };
+
+  if (clientType === "admin") {
+    headers["X-API-KEY"] = process.env.SIMPLEHASH_API_KEY!;
+  }
+
   return ResultAsync.fromPromise(
     zodFetch(
       `${getSimplehashClient(clientType)}/v0/nfts/owners/value?chains=${chains}&wallet_addresses=${address}`,
@@ -37,9 +45,7 @@ export const getNftValuation = async (
         revalidate: 300,
         tags: [address],
       },
-      {
-        "X-API-KEY": process.env.SIMPLEHASH_API_KEY!,
-      },
+      headers,
     ),
     err => {
       if (err instanceof Error) {

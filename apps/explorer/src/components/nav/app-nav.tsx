@@ -16,7 +16,7 @@
 "use client";
 
 import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
-import type { RawTab } from "@lightdotso/types";
+import type { Tab } from "@lightdotso/types";
 import { Button, MobileAppDrawer } from "@lightdotso/ui";
 import Link from "next/link";
 import type { FC } from "react";
@@ -26,7 +26,7 @@ import type { FC } from "react";
 // -----------------------------------------------------------------------------
 
 type AppNavProps = {
-  tabs: RawTab[];
+  tabs: Tab[];
 };
 
 // -----------------------------------------------------------------------------

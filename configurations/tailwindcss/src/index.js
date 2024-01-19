@@ -13,8 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-const defaultTheme = require("tailwindcss/defaultTheme");
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: "class",
@@ -385,7 +383,6 @@ module.exports = {
         container: "80rem",
       },
       fontFamily: {
-        clash: ["ClashGrotesk-Semibold", ...defaultTheme.fontFamily.sans],
         sans: ["var(--font-inter)"],
         mono: ["var(--font-roboto-mono)"],
         display: "var(--font-mona-sans)",

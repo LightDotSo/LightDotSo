@@ -15,6 +15,10 @@
 
 import type { z } from "zod";
 
+// -----------------------------------------------------------------------------
+// Fetch
+// -----------------------------------------------------------------------------
+
 // From: https://stackoverflow.com/questions/74616841/how-to-implement-a-generic-fetch-function-that-validates-the-query-parameter-and
 export const zodFetch = async <TResponseSchema extends z.Schema>(
   url: string,
@@ -38,8 +42,16 @@ export const zodFetch = async <TResponseSchema extends z.Schema>(
 
   const data = (await response.json()) as JsonResponseSchema;
 
+  if (data?.error) {
+    throw new Error(data.error.message);
+  }
+
   return responseSchema.parse(data);
 };
+
+// -----------------------------------------------------------------------------
+// JsonRpc
+// -----------------------------------------------------------------------------
 
 interface JsonResponseSchema {
   jsonrpc: string;
