@@ -41,7 +41,8 @@ pub async fn socket_proxy_handler(
     *req.uri_mut() = Uri::try_from(uri).unwrap();
 
     let mut headers = HeaderMap::new();
-    let token = std::env::var("SOCKET_API_KEY").unwrap_or_else(|_| panic!("API_TOKEN not set"));
+    let token =
+        std::env::var("SOCKET_API_KEY").unwrap_or_else(|_| panic!("SOCKET_API_KEY not set"));
     headers.insert("API-KEY", HeaderValue::from_str(&token).unwrap());
 
     *req.headers_mut() = headers;
