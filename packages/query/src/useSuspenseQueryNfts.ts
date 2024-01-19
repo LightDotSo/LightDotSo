@@ -42,7 +42,7 @@ export const useSuspenseQueryNfts = (params: NftListParams) => {
     }).queryKey,
   );
 
-  const { data: tokens } = useSuspenseQuery<NftDataPage | null>({
+  const { data: nftPage } = useSuspenseQuery<NftDataPage | null>({
     queryKey: queryKeys.nft.list({
       address: params.address,
       is_testnet: params.is_testnet,
@@ -77,6 +77,6 @@ export const useSuspenseQueryNfts = (params: NftListParams) => {
   });
 
   return {
-    tokens,
+    nftPage,
   };
 };

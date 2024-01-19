@@ -15,11 +15,8 @@
 
 "use client";
 
-import type {
-  NftData,
-  NftDataPage,
-  WalletSettingsData,
-} from "@lightdotso/data";
+import type { NftData, WalletSettingsData } from "@lightdotso/data";
+import { useSuspenseQueryNfts } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useTables } from "@lightdotso/stores";
 import { NftTable } from "@lightdotso/table";
@@ -57,14 +54,12 @@ export const NftsList: FC<NftsListProps> = ({ address, limit }) => {
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
-  const data: NftDataPage | undefined = queryClient.getQueryData(
-    queryKeys.nft.list({
-      address,
-      is_testnet: walletSettings?.is_enabled_testnet ?? false,
-      limit: limit,
-      cursor: null,
-    }).queryKey,
-  );
+  const { nftPage } = useSuspenseQueryNfts({
+    address: address,
+    limit: limit,
+    is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    cursor: null,
+  });
 
   // ---------------------------------------------------------------------------
   // Table
@@ -93,7 +88,7 @@ export const NftsList: FC<NftsListProps> = ({ address, limit }) => {
     <NftTable
       isLoading={false}
       pageSize={limit}
-      data={data && data.nfts ? data.nfts : ([] as NftData[])}
+      data={nftPage && nftPage.nfts ? nftPage.nfts : ([] as NftData[])}
       tableOptions={tableOptions}
     />
   );

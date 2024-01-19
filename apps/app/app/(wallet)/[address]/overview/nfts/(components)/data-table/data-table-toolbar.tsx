@@ -15,6 +15,7 @@
 
 "use client";
 
+import { usePaginationQueryState } from "@/queryStates";
 import type {
   NftData,
   NftDataPage,
@@ -54,6 +55,12 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const { nftColumnFilters } = useTables();
 
   // ---------------------------------------------------------------------------
+  // Query State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [paginationState] = usePaginationQueryState();
+
+  // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
@@ -68,7 +75,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
     queryKeys.nft.list({
       address: wallet as Address,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
-      limit: Number.MAX_SAFE_INTEGER,
+      limit: paginationState.pageSize,
       cursor: null,
     }).queryKey,
   );

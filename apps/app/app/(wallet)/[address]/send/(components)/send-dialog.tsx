@@ -17,7 +17,10 @@
 
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
 import type { NftDataPage, WalletSettingsData } from "@lightdotso/data";
-import { useSuspenseQueryTokens } from "@lightdotso/query";
+import {
+  useSuspenseQueryNfts,
+  useSuspenseQueryTokens,
+} from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { sendFormConfigurationSchema } from "@lightdotso/schemas";
 import type {
@@ -118,14 +121,12 @@ export const SendDialog: FC<SendDialogProps> = ({
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
-  const currentNftData: NftDataPage | undefined = queryClient.getQueryData(
-    queryKeys.nft.list({
-      address,
-      is_testnet: walletSettings?.is_enabled_testnet ?? false,
-      limit: Number.MAX_SAFE_INTEGER,
-      cursor: null,
-    }).queryKey,
-  );
+  const { nftPage } = useSuspenseQueryNfts({
+    address,
+    is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    limit: Number.MAX_SAFE_INTEGER,
+    cursor: null,
+  });
 
   const { tokens } = useSuspenseQueryTokens({
     address,
@@ -461,12 +462,12 @@ export const SendDialog: FC<SendDialogProps> = ({
       ) {
         // Get the matching nft
         const nft =
-          currentNftData &&
-          currentNftData.nfts?.length > 0 &&
+          nftPage &&
+          nftPage.nfts?.length > 0 &&
           transfer &&
           transfer.asset &&
           "address" in transfer.asset &&
-          currentNftData.nfts?.find(
+          nftPage.nfts?.find(
             nft =>
               // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
               nft.contract_address === transfer.asset?.address! &&
@@ -897,8 +898,8 @@ export const SendDialog: FC<SendDialogProps> = ({
         transfers &&
         transfers?.length > 0 &&
         transfers[index]?.asset?.address &&
-        currentNftData &&
-        currentNftData?.nfts?.find(
+        nftPage &&
+        nftPage?.nfts?.find(
           nft =>
             nft.contract_address === (transfers?.[index]?.asset?.address || ""),
         );
@@ -1385,7 +1386,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                               onClick={() => {
                                                 // Set the value of key quantity to the token balance
                                                 const nft =
-                                                  currentNftData &&
+                                                  nftPage &&
                                                   transfers &&
                                                   transfers?.length > 0 &&
                                                   transfers[index].asset &&
@@ -1394,7 +1395,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                   "tokenId" in
                                                     // eslint-disable-next-line no-unsafe-optional-chaining, @typescript-eslint/no-non-null-asserted-optional-chain
                                                     transfers[index]?.asset! &&
-                                                  currentNftData.nfts?.find(
+                                                  nftPage.nfts?.find(
                                                     nft =>
                                                       nft.contract_address ===
                                                         (transfers?.[index]
@@ -1471,9 +1472,9 @@ export const SendDialog: FC<SendDialogProps> = ({
 
                                             // Set the chainId of the token
                                             const nft =
-                                              currentNftData &&
-                                              currentNftData.nfts?.length > 0 &&
-                                              currentNftData.nfts?.find(
+                                              nftPage &&
+                                              nftPage.nfts?.length > 0 &&
+                                              nftPage.nfts?.find(
                                                 nft =>
                                                   nft.contract_address ===
                                                     address &&
@@ -1511,8 +1512,8 @@ export const SendDialog: FC<SendDialogProps> = ({
                                             </SelectTrigger>
                                           </FormControl>
                                           <SelectContent>
-                                            {currentNftData &&
-                                              currentNftData.nfts?.map(nft => (
+                                            {nftPage &&
+                                              nftPage.nfts?.map(nft => (
                                                 <SelectItem
                                                   key={`${
                                                     nft.contract_address
