@@ -30,7 +30,7 @@ export const RootLogo: FC = () => {
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const type = usePathType();
+  const pathType = usePathType();
 
   // ---------------------------------------------------------------------------
   // Next Hooks
@@ -45,14 +45,14 @@ export const RootLogo: FC = () => {
   return (
     <Link
       href={
-        type === "unauthenticated" || type === "demo"
+        pathType === "unauthenticated" || pathType === "demo"
           ? "/"
-          : type === "authenticated"
+          : pathType === "authenticated"
             ? "/wallets"
             : // Get the wallet address from the path
               // Address is the first part of the path
               // e.g. /0x1234
-              `/${pathname.split("/")[1]}`
+              `/${pathname.split("/")[1]}/overview`
       }
       className="hover:rounded-md hover:bg-background-stronger"
     >
