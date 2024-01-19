@@ -13,11 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Address } from "viem";
-import { OpCreateDialog } from "@/app/(wallet)/[address]/op/(components)/op-create-dialog";
+import OriginalPage from "@/app/(wallet)/[address]/op/page";
 import { Modal } from "@/components/modal";
-import { handler } from "@/handlers/paths/[address]/op/handler";
-import { preloader } from "@/preloaders/paths/[address]/op/preloader";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -36,28 +33,12 @@ type PageProps = {
 
 export default async function Page({ params, searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
-  // Preloaders
-  // ---------------------------------------------------------------------------
-
-  preloader(params, searchParams);
-
-  // ---------------------------------------------------------------------------
-  // Handlers
-  // ---------------------------------------------------------------------------
-
-  const { config, userOperations } = await handler(params, searchParams);
-
-  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
     <Modal>
-      <OpCreateDialog
-        config={config}
-        address={params.address as Address}
-        userOperations={userOperations}
-      />
+      <OriginalPage params={params} searchParams={searchParams} />
     </Modal>
   );
 }

@@ -13,13 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { queryKeys } from "@lightdotso/query-keys";
-import { getQueryClient } from "@lightdotso/services";
-import type { Address } from "viem";
-import { SendDialog } from "@/app/(wallet)/[address]/send/(components)/send-dialog";
+import OriginalPage from "@/app/(wallet)/[address]/send/page";
 import { Modal } from "@/components/modal";
-import { handler } from "@/handlers/paths/[address]/send/handler";
-import { preloader } from "@/preloaders/paths/[address]/send/preloader";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -38,60 +33,12 @@ type PageProps = {
 
 export default async function Page({ params, searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
-  // Preloaders
-  // ---------------------------------------------------------------------------
-
-  preloader(params);
-
-  // ---------------------------------------------------------------------------
-  // Handlers
-  // ---------------------------------------------------------------------------
-
-  const { transfers, tokens, nfts, walletSettings } = await handler(
-    params,
-    searchParams,
-  );
-
-  // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
-
-  const queryClient = getQueryClient();
-
-  queryClient.setQueryData(
-    queryKeys.wallet.settings({ address: params.address as Address }).queryKey,
-    walletSettings,
-  );
-  queryClient.setQueryData(
-    queryKeys.token.list({
-      address: params.address as Address,
-      limit: Number.MAX_SAFE_INTEGER,
-      offset: 0,
-      is_testnet: walletSettings?.is_enabled_testnet,
-      group: false,
-      chain_ids: null,
-    }).queryKey,
-    tokens,
-  );
-  queryClient.setQueryData(
-    queryKeys.nft.list({
-      address: params.address as Address,
-      is_testnet: walletSettings?.is_enabled_testnet,
-      limit: Number.MAX_SAFE_INTEGER,
-      cursor: null,
-    }).queryKey,
-    nfts,
-  );
-  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
     <Modal>
-      <SendDialog
-        address={params.address as Address}
-        initialTransfers={transfers ?? []}
-      />
+      <OriginalPage params={params} searchParams={searchParams} />
     </Modal>
   );
 }
