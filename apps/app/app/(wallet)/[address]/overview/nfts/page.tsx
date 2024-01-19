@@ -53,7 +53,10 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { walletSettings, nfts, nftValuation } = await handler(params);
+  const { paginationState, walletSettings, nfts, nftValuation } = await handler(
+    params,
+    searchParams,
+  );
 
   // ---------------------------------------------------------------------------
   // Query
@@ -74,7 +77,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     queryKeys.nft.list({
       address: params.address as Address,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
-      limit: Number.MAX_SAFE_INTEGER,
+      limit: paginationState.pageSize,
       cursor: null,
     }).queryKey,
     nfts,

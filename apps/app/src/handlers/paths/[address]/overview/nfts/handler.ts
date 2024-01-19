@@ -19,17 +19,31 @@ import { notFound } from "next/navigation";
 import type { Address } from "viem";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
+import { paginationParser } from "@/queryStates";
 
 // -----------------------------------------------------------------------------
 // Handler
 // -----------------------------------------------------------------------------
 
-export const handler = async (params: { address: string }) => {
+export const handler = async (
+  params: { address: string },
+  searchParams: {
+    pagination?: string;
+  },
+) => {
   // ---------------------------------------------------------------------------
   // Validators
   // ---------------------------------------------------------------------------
 
   validateAddress(params.address);
+
+  // ---------------------------------------------------------------------------
+  // Parsers
+  // ---------------------------------------------------------------------------
+
+  const paginationState = paginationParser.parseServerSide(
+    searchParams.pagination,
+  );
 
   // ---------------------------------------------------------------------------
   // Fetch
@@ -40,7 +54,7 @@ export const handler = async (params: { address: string }) => {
   const nftsPromise = getNfts({
     address: params.address as Address,
     is_testnet: walletSettings.is_enabled_testnet,
-    limit: Number.MAX_SAFE_INTEGER,
+    limit: paginationState.pageSize,
     cursor: null,
   });
 
@@ -62,6 +76,7 @@ export const handler = async (params: { address: string }) => {
   return res.match(
     ([nfts, nftValuation]) => {
       return {
+        paginationState: paginationState,
         walletSettings: walletSettings,
         nfts: nfts,
         nftValuation: nftValuation,

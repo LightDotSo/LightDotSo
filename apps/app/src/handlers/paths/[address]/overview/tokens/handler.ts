@@ -83,6 +83,7 @@ export const handler = async (
   return res.match(
     ([tokens, tokensCount, portfolio]) => {
       return {
+        paginationState: paginationState,
         walletSettings: walletSettings,
         tokens: tokens,
         tokensCount: tokensCount,

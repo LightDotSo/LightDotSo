@@ -42,7 +42,7 @@ export const useQueryNfts = (params: NftListParams) => {
     }).queryKey,
   );
 
-  const { data: tokens, isLoading: isTokensLoading } =
+  const { data: nftPage, isLoading: isNftsLoading } =
     useQuery<NftDataPage | null>({
       queryKey: queryKeys.nft.list({
         address: params.address,
@@ -78,7 +78,7 @@ export const useQueryNfts = (params: NftListParams) => {
     });
 
   return {
-    tokens,
-    isTokensLoading,
+    nftPage,
+    isNftsLoading,
   };
 };
