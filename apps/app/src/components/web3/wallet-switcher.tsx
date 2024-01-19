@@ -292,7 +292,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
                         setOpen(false);
                         // Replace the current wallet address with the new one
                         if (!pathname) return;
-                        if (pathname && pathname.split("/").length > 1) {
+                        if (pathType === "wallet") {
                           router.push(
                             `${pathname.replace(
                               pathname.split("/")[1],
@@ -301,6 +301,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
                                 `,
                           );
                         }
+                        router.push(`/${wallet.address}`);
                       }}
                     >
                       <Avatar className="mr-2 size-5">
