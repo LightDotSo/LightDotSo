@@ -23,10 +23,14 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuPortal,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
@@ -115,9 +119,6 @@ export const UserNav: FC = () => {
           >
             Change Networks
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => disconnect()}>
-            Disconnect
-          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
@@ -130,6 +131,17 @@ export const UserNav: FC = () => {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>Invite users</DropdownMenuSubTrigger>
+            <DropdownMenuPortal>
+              <DropdownMenuSubContent>
+                <DropdownMenuItem>Email</DropdownMenuItem>
+                <DropdownMenuItem>Message</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>More...</DropdownMenuItem>
+              </DropdownMenuSubContent>
+            </DropdownMenuPortal>
+          </DropdownMenuSub>
           <DropdownMenuItem asChild>
             <Link href="/settings">
               Settings
@@ -138,6 +150,12 @@ export const UserNav: FC = () => {
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link href="/new">New Wallet</Link>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem onClick={() => disconnect()}>
+            Disconnect
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
