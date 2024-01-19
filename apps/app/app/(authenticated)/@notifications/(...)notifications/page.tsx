@@ -13,33 +13,31 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { ReactNode } from "react";
+import OriginalPage from "@/app/(authenticated)/notifications/page";
+import { Modal } from "@/components/modal";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface RootLayoutProps {
-  children: ReactNode;
-  notifications: ReactNode;
-}
+type PageProps = {
+  searchParams: {
+    pagination?: string;
+  };
+};
 
 // -----------------------------------------------------------------------------
-// Layout
+// Page
 // -----------------------------------------------------------------------------
 
-export default function RootLayout({
-  children,
-  notifications,
-}: RootLayoutProps) {
+export default async function Page({ searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <>
-      {children}
-      {notifications}
-    </>
+    <Modal>
+      <OriginalPage searchParams={searchParams} />
+    </Modal>
   );
 }

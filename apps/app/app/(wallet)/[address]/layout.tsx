@@ -29,16 +29,16 @@ type RootLayoutProps = {
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function RootLayout(props: RootLayoutProps) {
+export default function RootLayout({ children, op, send }: RootLayoutProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
     <>
-      {props.children}
-      {props.op}
-      {props.send}
+      {children}
+      {op}
+      {send}
     </>
   );
 }

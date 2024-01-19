@@ -30,7 +30,7 @@ type RootLayoutProps = {
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function RootLayout(props: RootLayoutProps) {
+export default function RootLayout({ children, op, send }: RootLayoutProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -38,9 +38,9 @@ export default function RootLayout(props: RootLayoutProps) {
   return (
     <>
       <MSWState />
-      {props.children}
-      {props.op}
-      {props.send}
+      {children}
+      {op}
+      {send}
     </>
   );
 }
