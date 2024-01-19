@@ -49,7 +49,7 @@ import { Suspense, useCallback, useEffect, useState } from "react";
 import type { UIEvent, FC, ComponentPropsWithoutRef } from "react";
 import { getAddress, isAddress } from "viem";
 import type { Address } from "viem";
-import { useIsMounted } from "@/hooks";
+import { useIsMounted, usePathType } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -112,6 +112,12 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   const pathname = usePathname();
 
   // ---------------------------------------------------------------------------
+  // Custom Hooks
+  // ---------------------------------------------------------------------------
+
+  const pathType = usePathType();
+
+  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
@@ -138,7 +144,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
       const slug = pathname.split("/")[1];
 
       // If the slug is `/new` or `/wallets`, set the selected wallet to undefined
-      if (slug === "new" || slug === "wallets") {
+      if (pathType === "authenticated") {
         setSelectedWallet(undefined);
         return;
       }
@@ -161,7 +167,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
 
       setSelectedWallet(wallet);
     }
-  }, [wallets, address, pathname]);
+  }, [wallets, address, pathname, pathType]);
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -286,7 +292,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
                         setOpen(false);
                         // Replace the current wallet address with the new one
                         if (!pathname) return;
-                        if (pathname && pathname.split("/").length > 1) {
+                        if (pathType === "wallet") {
                           router.push(
                             `${pathname.replace(
                               pathname.split("/")[1],
@@ -295,6 +301,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
                                 `,
                           );
                         }
+                        router.push(`/${wallet.address}`);
                       }}
                     >
                       <Avatar className="mr-2 size-5">

@@ -181,7 +181,7 @@ export const NotificationTable: FC<NotificationTableProps> = ({
         ) : (
           <TableRow>
             <TableCell colSpan={columns.length} className="h-24 text-center">
-              <TableEmpty entity="activity" />
+              <TableEmpty entity="notification" />
             </TableCell>
           </TableRow>
         )}
