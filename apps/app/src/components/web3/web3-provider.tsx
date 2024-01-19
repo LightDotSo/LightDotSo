@@ -21,7 +21,7 @@ import { useTheme } from "next-themes";
 import { useState, type ReactNode, useEffect, useMemo } from "react";
 import type { State } from "wagmi";
 import { WagmiProvider } from "wagmi";
-import { projectId, wagmiConfig } from "./wagmi";
+import { projectId, wagmiConfig } from "@/components/web3/wagmi";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -60,6 +60,7 @@ function Web3Provider({
     });
     return modal;
   }, [theme]);
+
   // ---------------------------------------------------------------------------
   // Web3Modal
   // ---------------------------------------------------------------------------
