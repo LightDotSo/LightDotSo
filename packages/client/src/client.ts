@@ -28,13 +28,17 @@ export type ClientType = "admin" | "authenticated" | "public";
 // Simplehash
 // -----------------------------------------------------------------------------
 
-export const getSimplehashClient = (clientType?: ClientType) => {
-  if (clientType === "admin") {
-    return "https://api.simplehash.com/api/v0";
-  }
-
-  return "https://api.light.so/simplehash";
-};
+export const getSimplehashClient = (clientType?: ClientType) =>
+  clientType === "public"
+    ? "https://api.light.so/simplehash"
+    : process.env.LOCAL_ENV === "dev" ||
+        process.env.NEXT_PUBLIC_LOCAL_ENV === "dev"
+      ? clientType === "authenticated"
+        ? "https://api.light.so/authenticated/simplehash"
+        : clientType === "admin"
+          ? "https://api.light.so/admin/simplehash"
+          : "https://api.light.so/simplehash"
+      : "https://api.light.so/simplehash";
 
 // -----------------------------------------------------------------------------
 // Lifi
