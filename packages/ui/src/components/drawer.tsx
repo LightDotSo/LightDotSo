@@ -87,7 +87,7 @@ const DrawerHeader = ({
   ...props
 }: HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn("grid gap-1.5 p-4 text-center sm:text-left", className)}
+    className={cn("grid gap-1.5 px-2 py-4 text-center sm:text-left", className)}
     {...props}
   />
 );
@@ -97,7 +97,7 @@ const DrawerBody = ({
   className,
   ...props
 }: HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn("flex flex-col p-4", className)} {...props} />
+  <div className={cn("flex flex-col px-2 py-4", className)} {...props} />
 );
 DrawerBody.displayName = "DrawerBody";
 
@@ -106,7 +106,7 @@ const DrawerFooter = ({
   ...props
 }: HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn("mt-auto flex flex-col gap-2 p-4", className)}
+    className={cn("mt-auto flex flex-col gap-2 px-2 py-4", className)}
     {...props}
   />
 );

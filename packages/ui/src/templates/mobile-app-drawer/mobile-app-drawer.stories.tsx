@@ -12,11 +12,12 @@
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 import type { RawTab } from "@lightdotso/types";
 import { DashboardIcon, WidthIcon } from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
 import type { Meta, StoryObj } from "@storybook/react";
-import type { HTMLAttributes, ReactNode, RefAttributes, FC } from "react";
+import type { RefAttributes } from "react";
 import { MobileAppDrawer } from "./mobile-app-drawer";
 
 // -----------------------------------------------------------------------------

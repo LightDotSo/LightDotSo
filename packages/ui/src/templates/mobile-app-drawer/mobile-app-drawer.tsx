@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { RawTab } from "@lightdotso/types";
-import { AlignRight } from "lucide-react";
+import { AlignRight, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import type { FC, ReactNode } from "react";
 import { Button } from "../../components/button";
@@ -69,10 +69,10 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
                   <Button asChild className="w-full" variant="link">
                     <a className="flex justify-between" href={tab.href}>
                       <span className="flex">
-                        <tab.icon className="size-4 mr-3" />
+                        <tab.icon className="size-4 mr-2" />
                         {tab.label}
                       </span>
-                      <tab.icon className="size-4 fill-text-weak" />
+                      <ArrowUpRight className="size-4" />
                     </a>
                   </Button>
                 </div>
@@ -83,9 +83,9 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
                 key={tab.id}
                 className="border-b border-border first:border-t py-1.5"
               >
-                <Button asChild variant="link">
+                <Button asChild className="w-full justify-start" variant="link">
                   <Link href={tab.href}>
-                    <tab.icon className="size-4 mr-3" />
+                    <tab.icon className="size-4 mr-2" />
                     {tab.label}
                   </Link>
                 </Button>
