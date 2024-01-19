@@ -30,5 +30,5 @@ export const preloadGetNftValuation = (params: NftValuationParams) => {
 // -----------------------------------------------------------------------------
 
 export const getNftValuation = async (params: NftValuationParams) => {
-  return getClientNftValuation(params.address);
+  return getClientNftValuation(params.address, "admin");
 };

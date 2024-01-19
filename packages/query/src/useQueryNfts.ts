@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getNftsByOwner, getTokens } from "@lightdotso/client";
+import { getNftsByOwner } from "@lightdotso/client";
 import type { NftDataPage } from "@lightdotso/data";
 import type { NftListParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
