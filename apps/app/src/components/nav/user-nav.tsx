@@ -29,15 +29,15 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@lightdotso/ui";
+import { shortenAddress } from "@lightdotso/utils";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
+import { Wallet } from "lucide-react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import type { FC } from "react";
-import { useIsMounted } from "@/hooks";
-import { shortenAddress } from "@lightdotso/utils";
-import { Wallet } from "lucide-react";
-import { Address } from "viem";
+import type { Address } from "viem";
 import { useDisconnect } from "wagmi";
+import { useIsMounted } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Component
