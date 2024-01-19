@@ -49,7 +49,7 @@ import { Suspense, useCallback, useEffect, useState } from "react";
 import type { UIEvent, FC, ComponentPropsWithoutRef } from "react";
 import { getAddress, isAddress } from "viem";
 import type { Address } from "viem";
-import { useIsMounted } from "@/hooks";
+import { useIsMounted, usePathType } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -112,6 +112,12 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   const pathname = usePathname();
 
   // ---------------------------------------------------------------------------
+  // Custom Hooks
+  // ---------------------------------------------------------------------------
+
+  const pathType = usePathType();
+
+  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
@@ -138,7 +144,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
       const slug = pathname.split("/")[1];
 
       // If the slug is `/new` or `/wallets`, set the selected wallet to undefined
-      if (slug === "new" || slug === "wallets") {
+      if (pathType === "authenticated") {
         setSelectedWallet(undefined);
         return;
       }
