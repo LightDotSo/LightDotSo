@@ -167,7 +167,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
 
       setSelectedWallet(wallet);
     }
-  }, [wallets, address, pathname]);
+  }, [wallets, address, pathname, pathType]);
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
