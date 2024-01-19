@@ -30,13 +30,13 @@ export type ClientType = "admin" | "authenticated" | "public";
 
 export const getSimplehashClient = (clientType?: ClientType) =>
   clientType === "public"
-    ? "https://api.light.so/simplehash"
+    ? "https://api.light.so/simplehash/api"
     : process.env.LOCAL_ENV === "dev" ||
         process.env.NEXT_PUBLIC_LOCAL_ENV === "dev"
       ? clientType === "authenticated"
         ? "https://api.light.so/authenticated/simplehash"
         : clientType === "admin"
-          ? "https://api.light.so/admin/simplehash"
+          ? "https://api.simplehash.com/api"
           : "https://api.light.so/simplehash"
       : "https://api.light.so/simplehash";
 

@@ -21,7 +21,7 @@ export {
 export { preloadGetConfiguration, getConfiguration } from "./getConfiguration";
 export { preloadGetPortfolio, getPortfolio } from "./getPortfolio";
 export { getQueryClient } from "./getQueryClient";
-export { getNfts } from "./getNfts";
+export { preloadGetNfts, getNfts } from "./getNfts";
 export { preloadGetNftValuation, getNftValuation } from "./getNftValuation";
 export { preloadGetTokens, getTokens } from "./getTokens";
 export { preloadGetTokensCount, getTokensCount } from "./getTokensCount";
