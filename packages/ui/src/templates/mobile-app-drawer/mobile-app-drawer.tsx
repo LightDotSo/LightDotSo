@@ -88,7 +88,7 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
                   <Link href={tab.href}>
                     <tab.icon className="size-4 mr-2" />
                     {tab.label}
-                    {tab?.number && (
+                    {tab?.number && tab?.number > 0 && (
                       <Badge
                         type="number"
                         variant="outline"
