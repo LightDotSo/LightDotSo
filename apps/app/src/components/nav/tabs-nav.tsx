@@ -16,7 +16,6 @@
 // Full complete example from: https://github.com/hqasmei/youtube-tutorials/blob/ee44df8fbf6ab4f4c2f7675f17d67813947a7f61/vercel-animated-tabs/src/components/tabs.tsx
 // License: MIT
 
-import { usePathType } from "@/hooks";
 import type { Tab } from "@lightdotso/types";
 import { Badge } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
@@ -26,6 +25,7 @@ import { usePathname } from "next/navigation";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import type { FC } from "react";
 import { isAddress } from "viem";
+import { usePathType } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Const
