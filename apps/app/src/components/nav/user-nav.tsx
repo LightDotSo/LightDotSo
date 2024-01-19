@@ -41,8 +41,8 @@ import { useTheme } from "next-themes";
 import type { FC } from "react";
 import type { Address } from "viem";
 import { useDisconnect } from "wagmi";
-import { useIsMounted } from "@/hooks";
 import { ConnectButton } from "../web3/connect-button";
+import { useIsMounted } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Component
