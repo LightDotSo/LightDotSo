@@ -38,6 +38,7 @@ import type { FC } from "react";
 import type { Address } from "viem";
 import { useDisconnect } from "wagmi";
 import { useIsMounted } from "@/hooks";
+import { ConnectButton } from "../web3/connect-button";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -79,8 +80,12 @@ export const UserNav: FC = () => {
   // ---------------------------------------------------------------------------
 
   // If the address is empty, return null
-  if (!isMounted || !address) {
+  if (!isMounted) {
     return null;
+  }
+
+  if (!address) {
+    return <ConnectButton />;
   }
 
   return (
