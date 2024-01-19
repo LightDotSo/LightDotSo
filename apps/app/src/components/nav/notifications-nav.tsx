@@ -15,9 +15,9 @@
 
 "use client";
 
-import { ButtonIcon, MobileAppDrawer } from "@lightdotso/ui";
-import type { FC, ReactNode } from "react";
-import { useIsMounted, useMediaQuery } from "@/hooks";
+import { ButtonIcon } from "@lightdotso/ui";
+import type { FC } from "react";
+import { useIsMounted } from "@/hooks";
 import { BellIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
@@ -25,7 +25,7 @@ import Link from "next/link";
 // Component
 // -----------------------------------------------------------------------------
 
-export const AppNav: FC = () => {
+export const NotificationsNav: FC = () => {
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------

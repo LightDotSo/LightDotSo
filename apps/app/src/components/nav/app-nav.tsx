@@ -22,6 +22,7 @@ import type { FC, ReactNode } from "react";
 import { Suspense } from "react";
 import { ChainPopover } from "@/components/chain/chain-popover";
 import { FeedbackPopover } from "@/components/feedback/feedback-popover";
+import { NotificationsNav } from "@/components/nav/notifications-nav";
 import { UserNav } from "@/components/nav/user-nav";
 import { useIsMounted, useMediaQuery } from "@/hooks";
 
@@ -72,6 +73,7 @@ export const AppNav: FC<AppNavProps> = ({ mobile, tabs }) => {
             <ChainPopover />
           </Suspense>
           <FeedbackPopover />
+          <NotificationsNav />
         </>
       )}
       <UserNav />
