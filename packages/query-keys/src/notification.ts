@@ -13,34 +13,28 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { ReactNode } from "react";
-import { MSWState } from "@/components/msw/msw-state";
+import type {
+  NotificationListParams,
+  NotificationListCountParams,
+} from "@lightdotso/params";
+import { createQueryKeys } from "@lukemorales/query-key-factory";
+import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
 // -----------------------------------------------------------------------------
-// Props
+// Keys
 // -----------------------------------------------------------------------------
 
-type RootLayoutProps = {
-  children: ReactNode;
-  op: ReactNode;
-  send: ReactNode;
-};
+export const notification = createQueryKeys("notification", {
+  list: (params: NotificationListParams) => ({
+    queryKey: [{ params }],
+  }),
+  listCount: (params: NotificationListCountParams) => ({
+    queryKey: [{ params }],
+  }),
+});
 
 // -----------------------------------------------------------------------------
-// Layout
+// Infer
 // -----------------------------------------------------------------------------
 
-export default function RootLayout(props: RootLayoutProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <>
-      <MSWState />
-      {props.children}
-      {props.op}
-      {props.send}
-    </>
-  );
-}
+export type NotificationKeys = inferQueryKeys<typeof notification>;

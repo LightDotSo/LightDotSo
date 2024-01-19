@@ -15,47 +15,37 @@
 
 "use client";
 
-import { useAuth } from "@lightdotso/stores";
-import { Button } from "@lightdotso/ui";
-import { shortenAddress } from "@lightdotso/utils";
-import { useWeb3Modal } from "@web3modal/wagmi/react";
-import { Wallet } from "lucide-react";
-import type { Address } from "viem";
-
-// From: https://www.rainbowkit.com/docs/custom-connect-button
-// Customizes the ConnectKit button to use the UI Button component.
+import { ButtonIcon } from "@lightdotso/ui";
+import { BellIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
+import type { FC } from "react";
+import { useIsMounted } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const ConnectButton = () => {
+export const NotificationsNav: FC = () => {
   // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { address, ens } = useAuth();
-  // ---------------------------------------------------------------------------
-  // Web3Modal
+  // Hooks
   // ---------------------------------------------------------------------------
 
-  const { open } = useWeb3Modal();
+  const isMounted = useIsMounted();
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
+  if (!isMounted) {
+    return null;
+  }
+
   return (
-    <Button
-      size="sm"
-      onClick={
-        !address
-          ? () => open({ view: "Connect" })
-          : () => open({ view: "Account" })
-      }
-    >
-      <Wallet className="mr-2 size-4" />
-      {address ? ens ?? shortenAddress(address as Address) : "Connect Wallet"}
-    </Button>
+    <ButtonIcon variant="outline" className="rounded-full">
+      <Link href="/notifications">
+        <BellIcon />
+        <span className="sr-only">Open notificaitons</span>
+      </Link>
+    </ButtonIcon>
   );
 };

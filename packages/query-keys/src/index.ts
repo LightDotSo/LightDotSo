@@ -20,6 +20,7 @@ import { auth } from "./auth";
 import { configuration } from "./configuration";
 import { nft } from "./nft";
 import { nft_valuation } from "./nft_valation";
+import { notification } from "./notification";
 import { paymaster_operation } from "./paymaster_operation";
 import { portfolio } from "./portfolio";
 import { token } from "./token";
@@ -35,6 +36,7 @@ export const queryKeys = mergeQueryKeys(
   configuration,
   nft,
   nft_valuation,
+  notification,
   paymaster_operation,
   portfolio,
   transaction,

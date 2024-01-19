@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/img-redundant-alt */
-/* eslint-disable @next/next/no-img-element */
 // Copyright (C) 2023 Light, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -15,26 +13,36 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import OriginalPage from "@/app/(wallet)/[address]/@send/(.)send/page";
-import { DEMO_WALLET_ADDRESS } from "@/const";
+import { NotificationsDataTable } from "@/app/(authenticated)/notifications/(components)/notifications-data-table";
+import { NotificationsDataTablePagination } from "@/app/(authenticated)/notifications/(components)/notifications-data-table-pagination";
+import { NotificationsDataTableToolbar } from "@/app/(authenticated)/notifications/(components)/notifications-data-table-toolbar";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface PageProps {
+type PageProps = {
   searchParams: {
-    transfers?: string;
+    pagination?: string;
   };
-}
+};
 
 // -----------------------------------------------------------------------------
-// Original Page
+// Page
 // -----------------------------------------------------------------------------
 
+// TODO: Add implement session based search params handler
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default async function Page({ searchParams }: PageProps) {
-  return OriginalPage({
-    params: { address: DEMO_WALLET_ADDRESS },
-    searchParams,
-  });
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  return (
+    <>
+      <NotificationsDataTableToolbar />
+      <NotificationsDataTable />
+      <NotificationsDataTablePagination />
+    </>
+  );
 }

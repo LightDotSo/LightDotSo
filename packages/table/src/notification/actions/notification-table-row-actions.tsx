@@ -13,49 +13,57 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { BaseLayerWrapper, BasicPageWrapper, HStackFull } from "@lightdotso/ui";
-import type { Metadata } from "next";
-import type { ReactNode } from "react";
-import { BannerSection } from "@/components/section/banner-section";
-import { TITLES } from "@/const";
+"use client";
 
-// -----------------------------------------------------------------------------
-// Metadata
-// -----------------------------------------------------------------------------
-
-export const metadata: Metadata = {
-  title: TITLES.Send.title,
-  description: TITLES.Send.description,
-};
+import type { NotificationData } from "@lightdotso/data";
+import {
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from "@lightdotso/ui";
+import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import type { Row } from "@tanstack/react-table";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface SendLayoutProps {
-  children: ReactNode;
+interface NotificationTableRowActionsProps {
+  row: Row<NotificationData>;
 }
 
 // -----------------------------------------------------------------------------
-// Layout
+// Component
 // -----------------------------------------------------------------------------
 
-export default function SendLayout({ children }: SendLayoutProps) {
+export function NotificationTableRowActions({
+  row: _,
+}: NotificationTableRowActionsProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <BannerSection
-      title={TITLES.Send.title}
-      description={TITLES.Send.description}
-      size="sm"
-    >
-      <HStackFull>
-        <BaseLayerWrapper size="sm">
-          <BasicPageWrapper>{children}</BasicPageWrapper>
-        </BaseLayerWrapper>
-      </HStackFull>
-    </BannerSection>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          className="flex size-8 p-0 data-[state=open]:bg-background-stronger"
+        >
+          <DotsHorizontalIcon className="size-4" />
+          <span className="sr-only">Open menu</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-[160px]">
+        <DropdownMenuItem>Copy Address</DropdownMenuItem>
+        <DropdownMenuItem>
+          Delete
+          <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

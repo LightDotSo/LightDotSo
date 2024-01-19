@@ -13,32 +13,54 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import {
+  BaseLayerWrapper,
+  MinimalPageWrapper,
+  HStackFull,
+} from "@lightdotso/ui";
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { BannerSection } from "@/components/section/banner-section";
+import { TITLES } from "@/const";
+
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
+export const metadata: Metadata = {
+  title: TITLES.Notifications.title,
+  description: TITLES.Notifications.description,
+};
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type RootLayoutProps = {
+interface NotificationsLayoutProps {
   children: ReactNode;
-  op: ReactNode;
-  send: ReactNode;
-};
+}
 
 // -----------------------------------------------------------------------------
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function RootLayout(props: RootLayoutProps) {
+export default function NotificationsLayout({
+  children,
+}: NotificationsLayoutProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <>
-      {props.children}
-      {props.op}
-      {props.send}
-    </>
+    <BannerSection
+      title={TITLES.Notifications.title}
+      description={TITLES.Notifications.description}
+    >
+      <HStackFull>
+        <BaseLayerWrapper>
+          <MinimalPageWrapper>{children}</MinimalPageWrapper>
+        </BaseLayerWrapper>
+      </HStackFull>
+    </BannerSection>
   );
 }

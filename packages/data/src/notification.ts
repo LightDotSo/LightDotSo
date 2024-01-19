@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/img-redundant-alt */
-/* eslint-disable @next/next/no-img-element */
 // Copyright (C) 2023 Light, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -15,26 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import OriginalPage from "@/app/(wallet)/[address]/@op/(.)op/page";
-import { DEMO_WALLET_ADDRESS } from "@/const";
-
 // -----------------------------------------------------------------------------
-// Props
+// Data
 // -----------------------------------------------------------------------------
 
-interface PageProps {
-  searchParams: {
-    userOperations?: string;
-  };
-}
+export type NotificationData = {
+  id: string;
+};
 
-// -----------------------------------------------------------------------------
-// Original Page
-// -----------------------------------------------------------------------------
-
-export default async function Page({ searchParams }: PageProps) {
-  return OriginalPage({
-    params: { address: DEMO_WALLET_ADDRESS },
-    searchParams,
-  });
-}
+export type NotificationCountData = {
+  count: number;
+};

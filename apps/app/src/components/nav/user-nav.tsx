@@ -17,22 +17,31 @@
 
 import { useAuth } from "@lightdotso/stores";
 import {
-  ButtonIcon,
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuPortal,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@lightdotso/ui";
-import { GearIcon } from "@radix-ui/react-icons";
+import { shortenAddress } from "@lightdotso/utils";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
+import { Wallet } from "lucide-react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import type { FC } from "react";
+import type { Address } from "viem";
+import { useDisconnect } from "wagmi";
+import { ConnectButton } from "@/components/web3/connect-button";
 import { useIsMounted } from "@/hooks";
 
 // -----------------------------------------------------------------------------
@@ -56,26 +65,62 @@ export const UserNav: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address } = useAuth();
+  const { address, ens } = useAuth();
+
+  // ---------------------------------------------------------------------------
+  // Web3Modal
+  // ---------------------------------------------------------------------------
+
+  const { open } = useWeb3Modal();
+
+  // ---------------------------------------------------------------------------
+  // Wagmi Hooks
+  // ---------------------------------------------------------------------------
+
+  const { disconnect } = useDisconnect();
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  // If the address is empty, return null
-  if (!isMounted || !address) {
+  if (!isMounted) {
     return null;
+  }
+
+  if (!address) {
+    return <ConnectButton />;
   }
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <ButtonIcon variant="outline" className="rounded-full">
-          <GearIcon />
-          <span className="sr-only">Open user settings</span>
-        </ButtonIcon>
+        <Button size="sm">
+          <Wallet className="mr-2 size-4" />
+          {address
+            ? ens ?? shortenAddress(address as Address)
+            : "Connect Wallet"}
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent forceMount className="w-56" align="end">
+        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem
+            onClick={() => {
+              open({ view: "Account" });
+            }}
+          >
+            Account
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              open({ view: "Networks" });
+            }}
+          >
+            Change Networks
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuLabel>Change Theme</DropdownMenuLabel>
           <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>
@@ -86,6 +131,17 @@ export const UserNav: FC = () => {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>Invite users</DropdownMenuSubTrigger>
+            <DropdownMenuPortal>
+              <DropdownMenuSubContent>
+                <DropdownMenuItem>Email</DropdownMenuItem>
+                <DropdownMenuItem>Message</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>More...</DropdownMenuItem>
+              </DropdownMenuSubContent>
+            </DropdownMenuPortal>
+          </DropdownMenuSub>
           <DropdownMenuItem asChild>
             <Link href="/settings">
               Settings
@@ -94,6 +150,12 @@ export const UserNav: FC = () => {
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link href="/new">New Wallet</Link>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem onClick={() => disconnect()}>
+            Disconnect
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>

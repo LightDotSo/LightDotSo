@@ -19,6 +19,8 @@ export { useQueryActivities } from "./useQueryActivities";
 export { useQueryActivitiesCount } from "./useQueryActivitiesCount";
 export { useQueryAuthSession } from "./useQueryAuthSession";
 export { useQueryConfiguration } from "./useQueryConfiguration";
+export { useQueryNotifications } from "./useQueryNotifications";
+export { useQueryNotificationsCount } from "./useQueryNotificationsCount";
 export { useQueryNfts } from "./useQueryNfts";
 export { useQueryTokens } from "./useQueryTokens";
 export { useQueryTokensCount } from "./useQueryTokensCount";

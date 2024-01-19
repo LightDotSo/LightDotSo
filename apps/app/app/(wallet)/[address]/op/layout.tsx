@@ -16,6 +16,7 @@
 import { BaseLayerWrapper, BasicPageWrapper, HStackFull } from "@lightdotso/ui";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { BannerSection } from "@/components/section/banner-section";
 import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
@@ -47,10 +48,16 @@ export default function UserOperationLayout({
   // ---------------------------------------------------------------------------
 
   return (
-    <HStackFull>
-      <BaseLayerWrapper>
-        <BasicPageWrapper>{children}</BasicPageWrapper>
-      </BaseLayerWrapper>
-    </HStackFull>
+    <BannerSection
+      title={TITLES.UserOperation.title}
+      description={TITLES.UserOperation.description}
+      size="sm"
+    >
+      <HStackFull>
+        <BaseLayerWrapper size="sm">
+          <BasicPageWrapper>{children}</BasicPageWrapper>
+        </BaseLayerWrapper>
+      </HStackFull>
+    </BannerSection>
   );
 }

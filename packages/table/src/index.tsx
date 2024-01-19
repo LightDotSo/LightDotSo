@@ -15,6 +15,7 @@
 
 export { activityColumns, ActivityTable } from "./activity";
 export { nftColumns, NftTable } from "./nft";
+export { notificationColumns, NotificationTable } from "./notification";
 export { ownerColumns, OwnerTable } from "./owner";
 export { tokenColumns, TokenTable } from "./token";
 export { TableEmpty } from "./table-empty";

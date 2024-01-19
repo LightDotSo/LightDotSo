@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
+/* eslint-disable @next/next/no-img-element */
 // Copyright (C) 2023 Light, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -13,31 +15,26 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import "@lightdotso/styles/global.css";
-import type { ReactNode } from "react";
-import { Root } from "@/components/root/root";
+import OriginalPage from "@/app/(wallet)/@send/(.)[address]/send/page";
+import { DEMO_WALLET_ADDRESS } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface RootLayoutProps {
-  children: ReactNode;
-  notifications: ReactNode;
+interface PageProps {
+  searchParams: {
+    transfers?: string;
+  };
 }
 
 // -----------------------------------------------------------------------------
-// Layout
+// Original Page
 // -----------------------------------------------------------------------------
 
-export default function RootLayout({
-  children,
-  notifications,
-}: RootLayoutProps) {
-  return (
-    <Root>
-      {children}
-      {notifications}
-    </Root>
-  );
+export default async function Page({ searchParams }: PageProps) {
+  return OriginalPage({
+    params: { address: DEMO_WALLET_ADDRESS },
+    searchParams,
+  });
 }

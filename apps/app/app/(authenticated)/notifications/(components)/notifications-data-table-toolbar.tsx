@@ -15,47 +15,38 @@
 
 "use client";
 
-import { useAuth } from "@lightdotso/stores";
-import { Button } from "@lightdotso/ui";
-import { shortenAddress } from "@lightdotso/utils";
-import { useWeb3Modal } from "@web3modal/wagmi/react";
-import { Wallet } from "lucide-react";
-import type { Address } from "viem";
-
-// From: https://www.rainbowkit.com/docs/custom-connect-button
-// Customizes the ConnectKit button to use the UI Button component.
+import { useTables } from "@lightdotso/stores";
+import { useEffect, type FC } from "react";
+import { DataTableToolbar } from "@/app/(authenticated)/notifications/(components)/data-table/data-table-toolbar";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const ConnectButton = () => {
+export const NotificationsDataTableToolbar: FC = () => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address, ens } = useAuth();
+  const { notificationTable } = useTables();
+
   // ---------------------------------------------------------------------------
-  // Web3Modal
+  // Effect Hooks
   // ---------------------------------------------------------------------------
 
-  const { open } = useWeb3Modal();
+  useEffect(() => {
+    if (!useTables.persist.hasHydrated()) {
+      useTables.persist.rehydrate();
+    }
+  }, []);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <Button
-      size="sm"
-      onClick={
-        !address
-          ? () => open({ view: "Connect" })
-          : () => open({ view: "Account" })
-      }
-    >
-      <Wallet className="mr-2 size-4" />
-      {address ? ens ?? shortenAddress(address as Address) : "Connect Wallet"}
-    </Button>
-  );
+  if (!notificationTable || !useTables.persist.hasHydrated()) {
+    return null;
+  }
+
+  return <DataTableToolbar table={notificationTable} />;
 };

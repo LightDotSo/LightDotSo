@@ -15,68 +15,70 @@
 
 "use client";
 
-import { useAuth } from "@lightdotso/stores";
-import type { Tab } from "@lightdotso/types";
-import { MobileAppDrawer } from "@lightdotso/ui";
-import type { FC, ReactNode } from "react";
-import { Suspense } from "react";
-import { ChainPopover } from "@/components/chain/chain-popover";
-import { FeedbackPopover } from "@/components/feedback/feedback-popover";
-import { NotificationsNav } from "@/components/nav/notifications-nav";
-import { UserNav } from "@/components/nav/user-nav";
-import { useIsMounted, useMediaQuery } from "@/hooks";
+import type { NotificationData } from "@lightdotso/data";
+import { useTables } from "@lightdotso/stores";
+import {
+  Button,
+  Input,
+  DataTableViewOptions,
+  ToolbarSectionWrapper,
+} from "@lightdotso/ui";
+import { Cross2Icon } from "@radix-ui/react-icons";
+import type { Table } from "@tanstack/react-table";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-export type AppNavProps = {
-  mobile: ReactNode;
-  tabs: Tab[];
-};
+interface DataTableToolbarProps {
+  table: Table<NotificationData>;
+}
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const AppNav: FC<AppNavProps> = ({ mobile, tabs }) => {
+export function DataTableToolbar({ table }: DataTableToolbarProps) {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address } = useAuth();
-
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const isMounted = useIsMounted();
-  const isDesktop = useMediaQuery("md");
+  const { notificationColumnFilters } = useTables();
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!isMounted) {
-    return null;
-  }
-
-  if (!isDesktop) {
-    return <MobileAppDrawer tabs={tabs}>{mobile}</MobileAppDrawer>;
-  }
-
   return (
-    <div className="ml-auto hidden items-center space-x-2.5 md:flex">
-      {address && (
-        <>
-          <Suspense>
-            <ChainPopover />
-          </Suspense>
-          <FeedbackPopover />
-          <NotificationsNav />
-        </>
-      )}
-      <UserNav />
-    </div>
+    <ToolbarSectionWrapper>
+      <div className="flex flex-1 items-center space-x-2">
+        <Input
+          placeholder="Filter name..."
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          className="h-8 w-[150px] lg:w-[400px]"
+          onChange={event =>
+            table.getColumn("name")?.setFilterValue(event.target.value)
+          }
+        />
+        {notificationColumnFilters.length > 0 && (
+          <Button
+            variant="outline"
+            className="h-8 px-2 lg:px-3"
+            onClick={() => table.resetColumnFilters()}
+          >
+            Reset
+            <Cross2Icon className="ml-2 size-4" />
+          </Button>
+        )}
+      </div>
+      <DataTableViewOptions
+        table={table}
+        columnMapping={{
+          name: "Name",
+          address: "Address",
+          actions: "Actions",
+        }}
+      />
+    </ToolbarSectionWrapper>
   );
-};
+}
