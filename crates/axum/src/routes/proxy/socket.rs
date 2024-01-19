@@ -13,22 +13,38 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub(crate) mod simplehash;
-pub(crate) mod socket;
+#![allow(clippy::unwrap_used)]
 
 use crate::state::AppState;
-use axum::{routing::get, Router};
-use hyper::Body;
-
-use simplehash::simplehash_proxy_handler;
-use socket::socket_proxy_handler;
+use autometrics::autometrics;
+use axum::{
+    extract::{Path, State},
+    response::Response,
+};
+use http::{HeaderMap, HeaderValue};
+use hyper::{Body, Request, Uri};
+use lightdotso_tracing::tracing::info;
 
 // -----------------------------------------------------------------------------
-// Router
+// Handler
 // -----------------------------------------------------------------------------
 
-pub(crate) fn router() -> Router<AppState, Body> {
-    Router::new()
-        .route("/socket/*path", get(socket_proxy_handler))
-        .route("/simplehash/*path", get(simplehash_proxy_handler))
+#[autometrics]
+pub async fn socket_proxy_handler(
+    Path(path): Path<String>,
+    State(state): State<AppState>,
+    mut req: Request<Body>,
+) -> Response<Body> {
+    let uri = format!("https://api.socket.tech/{}", path);
+    info!("uri: {}", uri);
+
+    *req.uri_mut() = Uri::try_from(uri).unwrap();
+
+    let mut headers = HeaderMap::new();
+    let token = std::env::var("SOCKET_API_KEY").unwrap_or_else(|_| panic!("API_TOKEN not set"));
+    headers.insert("API-KEY", HeaderValue::from_str(&token).unwrap());
+
+    *req.headers_mut() = headers;
+
+    state.hyper.request(req).await.unwrap()
 }
