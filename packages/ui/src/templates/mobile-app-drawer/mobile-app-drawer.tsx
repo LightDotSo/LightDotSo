@@ -72,7 +72,7 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
                         <tab.icon className="size-4 mr-2" />
                         {tab.label}
                       </span>
-                      <ArrowUpRight className="size-4" />
+                      <ArrowUpRight className="size-4 text-text-weak" />
                     </a>
                   </Button>
                 </div>
