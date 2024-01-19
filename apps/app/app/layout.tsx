@@ -23,12 +23,20 @@ import { Root } from "@/components/root/root";
 
 interface RootLayoutProps {
   children: ReactNode;
+  notifications: ReactNode;
 }
 
 // -----------------------------------------------------------------------------
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function RootLayout({ children }: RootLayoutProps) {
-  return <Root>{children}</Root>;
+export default function RootLayout({
+  children,
+  notifications,
+}: RootLayoutProps) {
+  return;
+  <Root>
+    {children}
+    {notifications}
+  </Root>;
 }
