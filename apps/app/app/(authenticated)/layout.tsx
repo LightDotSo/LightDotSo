@@ -21,25 +21,16 @@ import type { ReactNode } from "react";
 
 interface RootLayoutProps {
   children: ReactNode;
-  notifications: ReactNode;
 }
 
 // -----------------------------------------------------------------------------
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function RootLayout({
-  children,
-  notifications,
-}: RootLayoutProps) {
+export default function RootLayout({ children }: RootLayoutProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <>
-      {children}
-      {notifications}
-    </>
-  );
+  return <>{children}</>;
 }
