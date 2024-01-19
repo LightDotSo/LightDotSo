@@ -22,7 +22,7 @@ use crate::{
     routes::{
         activity, asset_change, auth, check, configuration, feedback, health, interpretation,
         invite_code, metrics, notification, owner, paymaster, paymaster_operation, portfolio,
-        protocol, protocol_group, queue, signature, simulation, support_request, token,
+        protocol, protocol_group, proxy, queue, signature, simulation, support_request, token,
         token_group, token_price, transaction, user, user_operation, wallet, wallet_features,
         wallet_settings,
     },
@@ -36,6 +36,7 @@ use http::{
     header::{ACCEPT, AUTHORIZATION, CONTENT_TYPE},
     HeaderValue,
 };
+use hyper::client;
 use lightdotso_db::db::create_client;
 use lightdotso_kafka::get_producer;
 use lightdotso_redis::get_redis_client;
@@ -277,10 +278,19 @@ pub async fn start_api_server() -> Result<()> {
     info!("Starting API server");
 
     // Create a shared client
+    let https = hyper_rustls::HttpsConnectorBuilder::new()
+        .with_native_roots()
+        .https_only()
+        .enable_http1()
+        .build();
+    // Build the hyper client from the HTTPS connector.
+    let hyper: client::Client<_, hyper::Body> = client::Client::builder().build(https);
+
     let db = Arc::new(create_client().await?);
     let producer = Arc::new(get_producer()?);
     let redis = get_redis_client()?;
-    let state = AppState { client: db, producer, redis: Arc::new(redis.clone()) };
+    let state =
+        AppState { hyper: Arc::new(hyper), client: db, producer, redis: Arc::new(redis.clone()) };
 
     // Allow CORS
     // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L85
@@ -363,6 +373,7 @@ pub async fn start_api_server() -> Result<()> {
         .merge(portfolio::router())
         .merge(protocol::router())
         .merge(protocol_group::router())
+        .merge(proxy::router())
         .merge(queue::router())
         .merge(signature::router())
         .merge(simulation::router())

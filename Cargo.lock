@@ -6029,6 +6029,7 @@ dependencies = [
  "lightdotso-solutions",
  "lightdotso-tracing",
  "prisma-client-rust",
+ "reqwest",
  "rundler-types",
  "rustc-hex",
  "serde",

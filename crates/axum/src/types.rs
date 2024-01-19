@@ -13,16 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::types::Hyper;
-use lightdotso_kafka::rdkafka::producer::FutureProducer;
-use lightdotso_prisma::PrismaClient;
-use lightdotso_redis::redis::Client;
-use std::sync::Arc;
+use hyper::{client::HttpConnector, Body, Client};
+use hyper_rustls::HttpsConnector;
 
-#[derive(Clone)]
-pub struct AppState {
-    pub hyper: Arc<Hyper>,
-    pub client: Arc<PrismaClient>,
-    pub producer: Arc<FutureProducer>,
-    pub redis: Arc<Client>,
-}
+pub type Hyper = Client<HttpsConnector<HttpConnector>, Body>;

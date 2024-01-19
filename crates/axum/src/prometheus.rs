@@ -15,6 +15,7 @@
 
 #![allow(clippy::unwrap_used)]
 
+use crate::types::Hyper;
 use autometrics::autometrics;
 use axum::{
     extract::{Path, State},
@@ -23,16 +24,13 @@ use axum::{
     Router,
 };
 use eyre::Result;
-use hyper::{client, client::HttpConnector, header::HeaderValue, Body, HeaderMap};
-use hyper_rustls::HttpsConnector;
+use hyper::{client, header::HeaderValue, Body, HeaderMap};
 use lightdotso_tracing::tracing::info;
-
-type Client = hyper::client::Client<HttpsConnector<HttpConnector>, Body>;
 
 #[autometrics]
 async fn handler(
     Path(path): Path<String>,
-    State(state): State<Client>,
+    State(state): State<Hyper>,
     mut req: Request<Body>,
 ) -> Response<Body> {
     let org_slug = "lightdotso";

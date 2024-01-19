@@ -70,7 +70,7 @@ export function DataTable({ isLoading, columns, data }: DataTableProps) {
       columnFilters: nftColumnFilters,
       pagination: paginationState,
     },
-    pageCount: 50,
+    pageCount: paginationState.pageIndex + 2,
     paginateExpandedRows: false,
     enableRowSelection: true,
     manualPagination: true,
@@ -88,7 +88,7 @@ export function DataTable({ isLoading, columns, data }: DataTableProps) {
   return (
     <NftTable
       isLoading={isLoading}
-      pageSize={50}
+      pageSize={paginationState.pageSize}
       data={data}
       columns={columns}
       tableOptions={tableOoptions}
