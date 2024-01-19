@@ -18,7 +18,8 @@ import {
   simplehashMainnetChainSchema,
 } from "@lightdotso/schemas";
 import { ResultAsync } from "neverthrow";
-import { ClientType, getSimplehashClient } from "../client";
+import type { ClientType } from "../client";
+import { getSimplehashClient } from "../client";
 import { zodFetch } from "../zod";
 
 export const getNftValuation = async (

@@ -15,7 +15,6 @@
 
 "use client";
 
-import { usePaginationQueryState } from "@/queryStates";
 import type {
   NftData,
   NftDataPage,
@@ -33,6 +32,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import type { Table } from "@tanstack/react-table";
 import { useMemo } from "react";
 import type { Address } from "viem";
+import { usePaginationQueryState } from "@/queryStates";
 
 // -----------------------------------------------------------------------------
 // Props
