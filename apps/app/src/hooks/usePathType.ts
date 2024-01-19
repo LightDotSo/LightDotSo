@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { usePathname, useSelectedLayoutSegment } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -63,25 +63,16 @@ export const usePathType = (): RootType => {
   const selectedLayoutSegement = useSelectedLayoutSegment();
 
   // ---------------------------------------------------------------------------
-  // State Hooks
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const [layoutSegement, setLayoutSegement] = useState<string | null>(null);
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
-
-  useEffect(() => {
+  const layoutSegement = useMemo(() => {
     if (!selectedLayoutSegement) {
-      return;
+      return null;
     }
-    setLayoutSegement(selectedLayoutSegement);
-  }, [selectedLayoutSegement]);
 
-  // ---------------------------------------------------------------------------
-  // Return
-  // ---------------------------------------------------------------------------
+    return selectedLayoutSegement;
+  }, [selectedLayoutSegement]);
 
   const pathType = useMemo(() => {
     if (
