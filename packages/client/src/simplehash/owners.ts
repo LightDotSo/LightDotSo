@@ -14,12 +14,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import {
+  nftsByOwnerSchema,
   simplehashChainSchema,
   simplehashMainnetChainSchema,
 } from "@lightdotso/schemas";
 import { ResultAsync } from "neverthrow";
 import type { ClientType } from "../client";
 import { getSimplehashClient } from "../client";
+import { zodFetch } from "../zod";
 
 export const getNftsByOwner = async (
   {
@@ -39,21 +41,28 @@ export const getNftsByOwner = async (
     ? simplehashChainSchema.options.join(",")
     : simplehashMainnetChainSchema.options.join(",");
 
+  const headers: HeadersInit = {};
+
+  if (clientType === "admin") {
+    headers["X-API-KEY"] = process.env.SIMPLEHASH_API_KEY!;
+  }
+
   return ResultAsync.fromPromise(
-    fetch(
+    zodFetch(
       `${getSimplehashClient(clientType)}/v0/nfts/owners?chains=${chains}&wallet_addresses=${address}&limit=${limit}${
         cursor ? `&cursor=${cursor}` : ""
       }`,
+      nftsByOwnerSchema,
+      "GET",
       {
-        method: "GET",
-        headers: {
-          "content-type": "application/json",
-          "X-API-KEY": process.env.SIMPLEHASH_API_KEY!,
-        },
+        revalidate: 300,
+        tags: [address],
       },
+      headers,
     ),
-    err => err as Error,
-  ).andThen(response => {
-    return ResultAsync.fromPromise(response.json(), err => err as Error);
-  });
+    err => {
+      console.error(err);
+      return err as Error;
+    },
+  );
 };

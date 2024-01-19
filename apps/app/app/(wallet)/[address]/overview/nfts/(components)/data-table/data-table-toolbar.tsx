@@ -87,7 +87,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const uniqueChainValues = useMemo(() => {
     // Get all unique weight values from current data
     const uniqueChainValues = new Set<string>();
-    currentData?.nfts.forEach(nft => {
+    currentData?.nfts?.forEach(nft => {
       uniqueChainValues.add(nft.chain!);
     });
     return uniqueChainValues;
