@@ -35,8 +35,8 @@ import { useTheme } from "next-themes";
 import type { FC } from "react";
 import { useIsMounted } from "@/hooks";
 import { shortenAddress } from "@lightdotso/utils";
-import { Address } from "viem";
 import { Wallet } from "lucide-react";
+import { Address } from "viem";
 import { useDisconnect } from "wagmi";
 
 // -----------------------------------------------------------------------------
@@ -89,8 +89,9 @@ export const UserNav: FC = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent forceMount className="w-56" align="end">
+        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuLabel>Wallet</DropdownMenuLabel>
           <DropdownMenuItem
             onClick={() => {
               open({ view: "Account" });
@@ -103,7 +104,7 @@ export const UserNav: FC = () => {
               open({ view: "Networks" });
             }}
           >
-            Networks
+            Change Networks
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => disconnect()}>
             Disconnect
