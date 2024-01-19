@@ -169,7 +169,7 @@
     "typescript": "^5.3.3",
     "vercel": "^33.1.0",
     "viem": "^2.3.1",
-    "vite": "^5.0.11",
+    "vite": "^5.0.12",
     "vite-tsconfig-paths": "^4.3.1",
     "vitest": "^1.2.1",
     "vitest-solidity-coverage": "^0.1.5"
