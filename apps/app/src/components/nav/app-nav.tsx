@@ -72,9 +72,9 @@ export const AppNav: FC<AppNavProps> = ({ mobile, tabs }) => {
             <ChainPopover />
           </Suspense>
           <FeedbackPopover />
-          <UserNav />
         </>
       )}
+      <UserNav />
     </div>
   );
 };

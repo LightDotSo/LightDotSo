@@ -79,7 +79,6 @@ export const UserNav: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  // If the address is empty, return null
   if (!isMounted) {
     return null;
   }
