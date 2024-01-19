@@ -21,7 +21,7 @@ import { Badge } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import type { FC } from "react";
 import { isAddress } from "viem";
