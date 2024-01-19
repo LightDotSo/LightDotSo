@@ -16,6 +16,7 @@
 // Full complete example from: https://github.com/hqasmei/youtube-tutorials/blob/ee44df8fbf6ab4f4c2f7675f17d67813947a7f61/vercel-animated-tabs/src/components/tabs.tsx
 // License: MIT
 
+import { usePathType } from "@/hooks";
 import type { Tab } from "@lightdotso/types";
 import { Badge } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
@@ -71,21 +72,27 @@ export const TabsNav: FC<TabNavProps> = ({
   const pathname = usePathname();
 
   // ---------------------------------------------------------------------------
+  // Custom Hooks
+  // ---------------------------------------------------------------------------
+
+  const pathType = usePathType();
+
+  // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const firstSlug = useMemo(() => {
-    // Split the path using '/' as delimiter and remove empty strings
-    const slugs = pathname.split("/").filter(slug => slug);
-
-    // If the first slug is `demo`, return `/demo`
-    if (slugs.length > 0 && slugs[0] === "demo") {
+    // If the pathType is `demo`, return the first slug
+    if (pathType === "demo") {
       return "/demo";
     }
 
+    // Split the path using '/' as delimiter and remove empty strings
+    const slugs = pathname.split("/").filter(slug => slug);
+
     // Return the first slug if it is an address
     return slugs.length > 0 && isAddress(slugs[0]) ? "/" + slugs[0] : "";
-  }, [pathname]);
+  }, [pathname, pathType]);
 
   // ---------------------------------------------------------------------------
   // Ref Hooks
