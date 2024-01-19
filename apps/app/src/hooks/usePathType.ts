@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { usePathname, useSelectedLayoutSegment } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -83,23 +83,33 @@ export const usePathType = (): RootType => {
   // Return
   // ---------------------------------------------------------------------------
 
-  if (
-    unauthenticatedPaths.some(path => pathname.startsWith(path)) ||
-    pathname === "/"
-  ) {
-    return "unauthenticated";
-  }
+  const pathType = useMemo(() => {
+    if (
+      unauthenticatedPaths.some(path => pathname.startsWith(path)) ||
+      pathname === "/"
+    ) {
+      return "unauthenticated";
+    }
 
-  if (
-    authenticatedPaths.some(path => pathname.startsWith(path)) &&
-    layoutSegement !== "(wallet)"
-  ) {
-    return "authenticated";
-  }
+    if (
+      authenticatedPaths.some(path => pathname.startsWith(path)) &&
+      layoutSegement !== "(wallet)"
+    ) {
+      return "authenticated";
+    }
 
-  if (demoPaths.some(path => pathname.startsWith(path))) {
-    return "demo";
-  }
+    if (demoPaths.some(path => pathname.startsWith(path))) {
+      return "demo";
+    }
 
-  return "wallet";
+    return "wallet";
+  }, [
+    unauthenticatedPaths,
+    authenticatedPaths,
+    demoPaths,
+    pathname,
+    layoutSegement,
+  ]);
+
+  return pathType;
 };
