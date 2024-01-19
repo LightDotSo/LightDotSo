@@ -70,7 +70,7 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
                   <Button asChild className="w-full" variant="link">
                     <a className="flex justify-between" href={tab.href}>
                       <span className="flex">
-                        <tab.icon className="size-4 mr-2" />
+                        <tab.icon className="mr-2 size-4" />
                         {tab.label}
                       </span>
                       <ArrowUpRight className="size-4 text-text-weak" />
@@ -82,11 +82,11 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
             return (
               <div
                 key={tab.id}
-                className="border-b border-border first:border-t py-1.5"
+                className="border-b border-border py-1.5 first:border-t"
               >
                 <Button asChild className="w-full justify-start" variant="link">
                   <Link href={tab.href}>
-                    <tab.icon className="size-4 mr-2" />
+                    <tab.icon className="mr-2 size-4" />
                     {tab.label}
                     {tab?.number && (
                       <Badge
