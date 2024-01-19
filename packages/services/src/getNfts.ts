@@ -18,14 +18,25 @@ import type { NftListParams } from "@lightdotso/params";
 import "server-only";
 
 // -----------------------------------------------------------------------------
+// Pre
+// -----------------------------------------------------------------------------
+
+export const preloadGetNfts = (params: NftListParams) => {
+  void getNfts(params);
+};
+
+// -----------------------------------------------------------------------------
 // Service
 // -----------------------------------------------------------------------------
 
 export const getNfts = async (params: NftListParams) => {
-  return getClientNftsByOwner({
-    address: params.address,
-    limit: params.limit,
-    isTestnet: params.is_testnet,
-    cursor: params.cursor,
-  });
+  return getClientNftsByOwner(
+    {
+      address: params.address,
+      limit: params.limit,
+      isTestnet: params.is_testnet,
+      cursor: params.cursor,
+    },
+    "admin",
+  );
 };

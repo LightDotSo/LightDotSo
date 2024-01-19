@@ -13,22 +13,36 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getNftValuation as getClientNftValuation } from "@lightdotso/client";
-import type { NftValuationParams } from "@lightdotso/params";
-import "server-only";
+import { ResultAsync, err, ok } from "neverthrow";
+import type { ClientType } from "../client";
+import { getSocketClient } from "../client";
 
 // -----------------------------------------------------------------------------
-// Pre
+// GET
 // -----------------------------------------------------------------------------
 
-export const preloadGetNftValuation = (params: NftValuationParams) => {
-  void getClientNftValuation(params.address);
-};
+export const getBalances = async (
+  {
+    parameters,
+  }: {
+    parameters: {
+      query?: {
+        userAddress?: string;
+      };
+    };
+  },
+  clientType?: ClientType,
+) => {
+  const client = getSocketClient(clientType);
 
-// -----------------------------------------------------------------------------
-// Service
-// -----------------------------------------------------------------------------
-
-export const getNftValuation = async (params: NftValuationParams) => {
-  return getClientNftValuation(params.address, "admin");
+  return ResultAsync.fromPromise(
+    client.GET("/v2/balances", {
+      // @ts-ignore
+      next: { revalidate: 300, tags: [params?.query?.address] },
+      parameters,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
 };

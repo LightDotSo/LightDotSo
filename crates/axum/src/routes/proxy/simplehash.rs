@@ -35,7 +35,9 @@ pub async fn simplehash_proxy_handler(
     State(state): State<AppState>,
     mut req: Request<Body>,
 ) -> Response<Body> {
-    let uri = format!("https://api.simplehash.com/api/{}", path);
+    let query = req.uri().query().map(ToString::to_string).unwrap_or_default();
+
+    let uri = format!("https://api.simplehash.com/api/{}?{}", path, query);
     info!("uri: {}", uri);
 
     *req.uri_mut() = Uri::try_from(uri).unwrap();

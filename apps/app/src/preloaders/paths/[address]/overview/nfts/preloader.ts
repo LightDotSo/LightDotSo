@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { preloadGetNftValuation } from "@lightdotso/services";
+import { preloadGetNfts, preloadGetNftValuation } from "@lightdotso/services";
 import type { Address } from "viem";
 import { preloader as addressPreloader } from "@/preloaders/paths/[address]/preloader";
 import { paginationParser } from "@/queryStates";
@@ -32,8 +32,7 @@ export const preloader = async (
   // Parsers
   // ---------------------------------------------------------------------------
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const _paginationState = paginationParser.parseServerSide(
+  const paginationState = paginationParser.parseServerSide(
     searchParams.pagination,
   );
 
@@ -42,5 +41,11 @@ export const preloader = async (
   // ---------------------------------------------------------------------------
 
   addressPreloader(params);
+  preloadGetNfts({
+    address: params.address as Address,
+    limit: paginationState.pageSize,
+    is_testnet: false,
+    cursor: null,
+  });
   preloadGetNftValuation({ address: params.address as Address });
 };

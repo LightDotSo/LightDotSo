@@ -77,6 +77,7 @@ export const handler = async (
   return res.match(
     ([transactions, transactionsCount]) => {
       return {
+        paginationState: paginationState,
         walletSettings: walletSettings,
         transactions: transactions,
         transactionsCount: transactionsCount,

@@ -24,7 +24,6 @@ import { TokensDataTable } from "@/app/(wallet)/[address]/overview/tokens/(compo
 import { TokensDataTablePagination } from "@/app/(wallet)/[address]/overview/tokens/(components)/tokens-data-table-pagination";
 import { PortfolioSection } from "@/components/section/portfolio-section";
 import { TokenPortfolio } from "@/components/token/token-portfolio";
-import { OVERVIEW_ROW_COUNT } from "@/const";
 import { handler } from "@/handlers/paths/[address]/overview/tokens/handler";
 import { preloader } from "@/preloaders/paths/[address]/overview/tokens/preloader";
 
@@ -54,10 +53,8 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { walletSettings, tokens, tokensCount, portfolio } = await handler(
-    params,
-    searchParams,
-  );
+  const { paginationState, walletSettings, tokens, tokensCount, portfolio } =
+    await handler(params, searchParams);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -76,8 +73,8 @@ export default async function Page({ params, searchParams }: PageProps) {
   queryClient.setQueryData(
     queryKeys.token.list({
       address: params.address as Address,
-      limit: OVERVIEW_ROW_COUNT,
-      offset: 0,
+      limit: paginationState.pageSize,
+      offset: paginationState.pageIndex * paginationState.pageSize,
       is_testnet: walletSettings?.is_enabled_testnet,
       group: true,
       chain_ids: null,

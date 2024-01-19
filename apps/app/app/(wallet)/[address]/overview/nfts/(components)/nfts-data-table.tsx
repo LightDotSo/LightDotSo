@@ -15,7 +15,8 @@
 
 "use client";
 
-import type { NftDataPage, WalletSettingsData } from "@lightdotso/data";
+import type { WalletSettingsData } from "@lightdotso/data";
+import { useQueryNfts } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { nftColumns } from "@lightdotso/table";
 import { useQueryClient } from "@tanstack/react-query";
@@ -52,14 +53,12 @@ export const NftsDataTable: FC<NftsDataTableProps> = ({ address }) => {
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
-  const nftPage: NftDataPage | undefined = queryClient.getQueryData(
-    queryKeys.nft.list({
-      address,
-      is_testnet: walletSettings?.is_enabled_testnet ?? false,
-      limit: paginationState.pageSize,
-      cursor: null,
-    }).queryKey,
-  );
+  const { nftPage, isNftsLoading } = useQueryNfts({
+    address: address,
+    is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    limit: paginationState.pageSize,
+    cursor: null,
+  });
 
   // ---------------------------------------------------------------------------
   // Render
@@ -71,7 +70,7 @@ export const NftsDataTable: FC<NftsDataTableProps> = ({ address }) => {
 
   return (
     <DataTable
-      isLoading={false}
+      isLoading={isNftsLoading}
       data={nftPage.nfts ?? []}
       columns={nftColumns}
     />

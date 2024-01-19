@@ -32,6 +32,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import type { Table } from "@tanstack/react-table";
 import { useMemo } from "react";
 import type { Address } from "viem";
+import { usePaginationQueryState } from "@/queryStates";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -54,6 +55,12 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const { nftColumnFilters } = useTables();
 
   // ---------------------------------------------------------------------------
+  // Query State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [paginationState] = usePaginationQueryState();
+
+  // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
@@ -68,7 +75,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
     queryKeys.nft.list({
       address: wallet as Address,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
-      limit: Number.MAX_SAFE_INTEGER,
+      limit: paginationState.pageSize,
       cursor: null,
     }).queryKey,
   );
