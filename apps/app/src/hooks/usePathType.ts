@@ -24,6 +24,7 @@ const authenticatedPaths = [
   "/new",
   "/new/configuration",
   "/new/confirm",
+  "/notifications",
   "/wallet",
   "/settings",
   "/settings",
