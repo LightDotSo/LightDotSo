@@ -13,7 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { BaseLayerWrapper, BasicPageWrapper, HStackFull } from "@lightdotso/ui";
+import {
+  BaseLayerWrapper,
+  MinimalPageWrapper,
+  HStackFull,
+} from "@lightdotso/ui";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { BannerSection } from "@/components/section/banner-section";
@@ -24,15 +28,15 @@ import { TITLES } from "@/const";
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: TITLES.Send.title,
-  description: TITLES.Send.description,
+  title: TITLES.Notifications.title,
+  description: TITLES.Notifications.description,
 };
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface SendLayoutProps {
+interface NotificationsLayoutProps {
   children: ReactNode;
 }
 
@@ -40,20 +44,21 @@ interface SendLayoutProps {
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function SendLayout({ children }: SendLayoutProps) {
+export default function NotificationsLayout({
+  children,
+}: NotificationsLayoutProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
     <BannerSection
-      title={TITLES.Send.title}
-      description={TITLES.Send.description}
-      size="sm"
+      title={TITLES.Notifications.title}
+      description={TITLES.Notifications.description}
     >
       <HStackFull>
-        <BaseLayerWrapper size="sm">
-          <BasicPageWrapper>{children}</BasicPageWrapper>
+        <BaseLayerWrapper>
+          <MinimalPageWrapper>{children}</MinimalPageWrapper>
         </BaseLayerWrapper>
       </HStackFull>
     </BannerSection>

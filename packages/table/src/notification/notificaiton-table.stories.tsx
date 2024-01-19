@@ -13,49 +13,39 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { BaseLayerWrapper, BasicPageWrapper, HStackFull } from "@lightdotso/ui";
-import type { Metadata } from "next";
-import type { ReactNode } from "react";
-import { BannerSection } from "@/components/section/banner-section";
-import { TITLES } from "@/const";
+import { notificationListData } from "@lightdotso/demo";
+import type { Meta, StoryObj } from "@storybook/react";
+import { NotificationTable } from "./notification-table";
 
 // -----------------------------------------------------------------------------
-// Metadata
+// Meta
 // -----------------------------------------------------------------------------
 
-export const metadata: Metadata = {
-  title: TITLES.Send.title,
-  description: TITLES.Send.description,
+const meta: Meta<typeof NotificationTable> = {
+  title: "table/NotificationTable",
+  component: NotificationTable,
+  tags: ["autodocs"],
+  argTypes: {},
 };
+export default meta;
 
 // -----------------------------------------------------------------------------
-// Props
+// Types
 // -----------------------------------------------------------------------------
 
-interface SendLayoutProps {
-  children: ReactNode;
-}
+type Story = StoryObj<typeof NotificationTable>;
 
 // -----------------------------------------------------------------------------
-// Layout
+// Story
 // -----------------------------------------------------------------------------
 
-export default function SendLayout({ children }: SendLayoutProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <BannerSection
-      title={TITLES.Send.title}
-      description={TITLES.Send.description}
-      size="sm"
-    >
-      <HStackFull>
-        <BaseLayerWrapper size="sm">
-          <BasicPageWrapper>{children}</BasicPageWrapper>
-        </BaseLayerWrapper>
-      </HStackFull>
-    </BannerSection>
-  );
-}
+export const Base: Story = {
+  render: args => (
+    <NotificationTable
+      isLoading={false}
+      pageSize={10}
+      data={notificationListData}
+    />
+  ),
+  args: {},
+};

@@ -15,6 +15,7 @@
 
 export * from "./activity";
 export * from "./configuration";
+export * from "./notification";
 export * from "./token";
 export * from "./transaction";
 export * from "./user-operation";

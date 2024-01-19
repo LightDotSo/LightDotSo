@@ -13,49 +13,36 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { BaseLayerWrapper, BasicPageWrapper, HStackFull } from "@lightdotso/ui";
-import type { Metadata } from "next";
-import type { ReactNode } from "react";
-import { BannerSection } from "@/components/section/banner-section";
-import { TITLES } from "@/const";
-
-// -----------------------------------------------------------------------------
-// Metadata
-// -----------------------------------------------------------------------------
-
-export const metadata: Metadata = {
-  title: TITLES.Send.title,
-  description: TITLES.Send.description,
-};
+import { NotificationsDataTable } from "@/app/(authenticated)/notifications/(components)/notifications-data-table";
+import { NotificationsDataTablePagination } from "@/app/(authenticated)/notifications/(components)/notifications-data-table-pagination";
+import { NotificationsDataTableToolbar } from "@/app/(authenticated)/notifications/(components)/notifications-data-table-toolbar";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface SendLayoutProps {
-  children: ReactNode;
-}
+type PageProps = {
+  searchParams: {
+    pagination?: string;
+  };
+};
 
 // -----------------------------------------------------------------------------
-// Layout
+// Page
 // -----------------------------------------------------------------------------
 
-export default function SendLayout({ children }: SendLayoutProps) {
+// TODO: Add implement session based search params handler
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default async function Page({ searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <BannerSection
-      title={TITLES.Send.title}
-      description={TITLES.Send.description}
-      size="sm"
-    >
-      <HStackFull>
-        <BaseLayerWrapper size="sm">
-          <BasicPageWrapper>{children}</BasicPageWrapper>
-        </BaseLayerWrapper>
-      </HStackFull>
-    </BannerSection>
+    <>
+      <NotificationsDataTableToolbar />
+      <NotificationsDataTable />
+      <NotificationsDataTablePagination />
+    </>
   );
 }

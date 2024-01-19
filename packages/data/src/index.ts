@@ -17,6 +17,7 @@ export type { ActivityData, ActivityCountData } from "./activity";
 export type { AuthNonceData, AuthSessionData } from "./auth";
 export type { ConfigurationData } from "./configuration";
 export type { InterpretationData } from "./interpretation";
+export type { NotificationData, NotificationCountData } from "./notification";
 export type { NftData, NftDataPage } from "./nft";
 export type { OwnerData } from "./owner";
 export type { PaymasterOperationData } from "./paymasterOperation";

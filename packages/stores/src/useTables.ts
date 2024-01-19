@@ -17,6 +17,7 @@ import type {
   TokenData,
   OwnerData,
   NftData,
+  NotificationData,
   WalletData,
   TransactionData,
   UserOperationData,
@@ -64,6 +65,16 @@ type TablesStore = {
   setNftRowSelection: OnChangeFn<RowSelectionState>;
   setNftSorting: OnChangeFn<SortingState>;
   setNftTable: (tableObject: Table<NftData>) => void;
+  notificationColumnFilters: ColumnFiltersState;
+  notificationColumnVisibility: VisibilityState;
+  notificationRowSelection: RowSelectionState;
+  notificationSorting: SortingState;
+  notificationTable: Table<NotificationData> | null;
+  setNotificationColumnFilters: OnChangeFn<ColumnFiltersState>;
+  setNotificationColumnVisibility: OnChangeFn<VisibilityState>;
+  setNotificationRowSelection: OnChangeFn<RowSelectionState>;
+  setNotificationSorting: OnChangeFn<SortingState>;
+  setNotificationTable: (tableObject: Table<NotificationData>) => void;
   ownerColumnFilters: ColumnFiltersState;
   ownerColumnVisibility: VisibilityState;
   ownerRowSelection: RowSelectionState;
@@ -168,6 +179,7 @@ export const useTables = create(
             activityTable: tableObject,
             ownerTable: null,
             nftTable: null,
+            notificationTable: null,
             userOperationTable: null,
             tokenTable: null,
             transactionTable: null,
@@ -219,6 +231,55 @@ export const useTables = create(
           set({
             nftTable: tableObject,
             activityTable: null,
+            notificationTable: null,
+            ownerTable: null,
+            tokenTable: null,
+            userOperationTable: null,
+            transactionTable: null,
+            walletTable: null,
+          }),
+        notificationColumnFilters: [],
+        notificationColumnVisibility: {},
+        notificationRowSelection: {},
+        notificationSorting: [],
+        notificationTable: null,
+        setNotificationColumnFilters: columnFilters =>
+          set(prevState => ({
+            ...prevState,
+            notificationColumnFilters:
+              columnFilters instanceof Function
+                ? columnFilters(prevState.notificationColumnFilters)
+                : columnFilters,
+          })),
+        setNotificationColumnVisibility: columnVisibility =>
+          set(prevState => ({
+            ...prevState,
+            notificationColumnVisibility:
+              columnVisibility instanceof Function
+                ? columnVisibility(prevState.notificationColumnVisibility)
+                : columnVisibility,
+          })),
+        setNotificationRowSelection: rowSelection =>
+          set(prevState => ({
+            ...prevState,
+            notificationRowSelection:
+              rowSelection instanceof Function
+                ? rowSelection(prevState.notificationRowSelection)
+                : rowSelection,
+          })),
+        setNotificationSorting: sorting =>
+          set(prevState => ({
+            ...prevState,
+            notificationSorting:
+              sorting instanceof Function
+                ? sorting(prevState.notificationSorting)
+                : sorting,
+          })),
+        setNotificationTable: tableObject =>
+          set({
+            notificationTable: tableObject,
+            activityTable: null,
+            nftTable: null,
             ownerTable: null,
             tokenTable: null,
             userOperationTable: null,
@@ -267,6 +328,7 @@ export const useTables = create(
             ownerTable: tableObject,
             activityTable: null,
             nftTable: null,
+            notificationTable: null,
             userOperationTable: null,
             tokenTable: null,
             transactionTable: null,
@@ -315,6 +377,7 @@ export const useTables = create(
             activityTable: null,
             ownerTable: null,
             nftTable: null,
+            notificationTable: null,
             transactionTable: null,
             tokenTable: null,
             walletTable: null,
@@ -363,6 +426,7 @@ export const useTables = create(
             activityTable: null,
             ownerTable: null,
             nftTable: null,
+            notificationTable: null,
             userOperationTable: null,
             transactionTable: null,
             walletTable: null,
@@ -418,6 +482,7 @@ export const useTables = create(
             activityTable: null,
             ownerTable: null,
             nftTable: null,
+            notificationTable: null,
             userOperationTable: null,
             tokenTable: null,
             walletTable: null,
@@ -465,6 +530,7 @@ export const useTables = create(
             activityTable: null,
             ownerTable: null,
             nftTable: null,
+            notificationTable: null,
             userOperationTable: null,
             tokenTable: null,
             transactionTable: null,

@@ -18,6 +18,10 @@ export type { AuthParams } from "./auth";
 export type { ConfigurationParams } from "./configuration";
 export type { NftListParams } from "./nft";
 export type { NftValuationParams } from "./nftValuation";
+export type {
+  NotificationListParams,
+  NotificationListCountParams,
+} from "./notification";
 export type { PaymasterOperationGetParams } from "./paymasterOperation";
 export type { PortfolioParams } from "./portfolio";
 export type { TokenListParams, TokenListCountParams } from "./token";
