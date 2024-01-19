@@ -34,9 +34,10 @@ export default function RootLayout({
   children,
   notifications,
 }: RootLayoutProps) {
-  return;
-  <Root>
-    {children}
-    {notifications}
-  </Root>;
+  return (
+    <Root>
+      {children}
+      {notifications}
+    </Root>
+  );
 }
