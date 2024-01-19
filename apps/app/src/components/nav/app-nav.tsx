@@ -16,7 +16,7 @@
 "use client";
 
 import { useAuth } from "@lightdotso/stores";
-import type { RawTab } from "@lightdotso/types";
+import type { Tab } from "@lightdotso/types";
 import { MobileAppDrawer } from "@lightdotso/ui";
 import type { FC, ReactNode } from "react";
 import { Suspense } from "react";
@@ -32,7 +32,7 @@ import { useIsMounted, useMediaQuery } from "@/hooks";
 
 export type AppNavProps = {
   mobile: ReactNode;
-  tabs: RawTab[];
+  tabs: Tab[];
 };
 
 // -----------------------------------------------------------------------------

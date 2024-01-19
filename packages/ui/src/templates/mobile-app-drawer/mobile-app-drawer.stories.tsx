@@ -13,10 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { RawTab } from "@lightdotso/types";
+import type { Tab } from "@lightdotso/types";
 import { DashboardIcon, WidthIcon } from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
 import type { Meta, StoryObj } from "@storybook/react";
+import { FileIcon } from "lucide-react";
 import type { RefAttributes } from "react";
 import { MobileAppDrawer } from "./mobile-app-drawer";
 
@@ -24,7 +25,7 @@ import { MobileAppDrawer } from "./mobile-app-drawer";
 // Const
 // -----------------------------------------------------------------------------
 
-const tabs: RawTab[] = [
+const tabs: Tab[] = [
   {
     label: "Explorer",
     id: "user-operations",
@@ -37,6 +38,7 @@ const tabs: RawTab[] = [
     label: "Transactions",
     id: "transactions",
     href: "/transactions",
+    number: 4,
     icon: (
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <WidthIcon {...props} />,
@@ -47,7 +49,7 @@ const tabs: RawTab[] = [
     href: "https://light.so",
     icon: (
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
-    ) => <WidthIcon {...props} />,
+    ) => <FileIcon {...props} />,
   },
 ];
 

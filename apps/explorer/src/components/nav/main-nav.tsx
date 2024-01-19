@@ -15,7 +15,7 @@
 
 "use client";
 
-import type { RawTab } from "@lightdotso/types";
+import type { Tab } from "@lightdotso/types";
 import { BaseLayerWrapper } from "@lightdotso/ui";
 import { DashboardIcon, WidthIcon } from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
@@ -28,7 +28,7 @@ import { AppNav } from "./app-nav";
 // Const
 // -----------------------------------------------------------------------------
 
-const tabs: RawTab[] = [
+const tabs: Tab[] = [
   {
     label: "Explorer",
     id: "user-operations",

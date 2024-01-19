@@ -24,7 +24,7 @@ import {
 } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
-import type { RawTab, Tab } from "@lightdotso/types";
+import type { Tab } from "@lightdotso/types";
 import { RadiobuttonIcon } from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
 import { useQueryClient } from "@tanstack/react-query";
@@ -50,7 +50,7 @@ const aiTab = {
 // Hook
 // -----------------------------------------------------------------------------
 
-export function useTabs({ tabs }: { tabs: RawTab[] }) {
+export function useTabs({ tabs }: { tabs: Tab[] }) {
   // ---------------------------------------------------------------------------
   // Next Hooks
   // ---------------------------------------------------------------------------

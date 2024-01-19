@@ -172,13 +172,13 @@ export const TabsNav: FC<TabNavProps> = ({
             >
               {<item.icon className="mr-2 size-4" />}
               {item.label}
-              {item.number > 0 && (
+              {item?.number && (
                 <Badge
                   type="number"
                   variant="outline"
                   className="font-sm ml-2 rounded-full border-0 bg-background-strong text-text-weak"
                 >
-                  {item.number}
+                  {item?.number}
                 </Badge>
               )}
             </motion.a>

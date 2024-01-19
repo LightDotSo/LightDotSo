@@ -13,10 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { RawTab } from "@lightdotso/types";
+import type { Tab } from "@lightdotso/types";
 import { AlignRight, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import type { FC, ReactNode } from "react";
+import { Badge } from "../../components/badge";
 import { Button } from "../../components/button";
 import { ButtonIcon } from "../../components/button-icon";
 import {
@@ -35,7 +36,7 @@ import {
 
 export interface MobileAppDrawerProps {
   children?: ReactNode;
-  tabs: RawTab[];
+  tabs: Tab[];
 }
 
 // -----------------------------------------------------------------------------
@@ -87,6 +88,15 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
                   <Link href={tab.href}>
                     <tab.icon className="size-4 mr-2" />
                     {tab.label}
+                    {tab?.number && (
+                      <Badge
+                        type="number"
+                        variant="outline"
+                        className="font-sm ml-2 rounded-full border-0 bg-background-strong text-text-weak no-underline"
+                      >
+                        {tab?.number}
+                      </Badge>
+                    )}
                   </Link>
                 </Button>
               </div>
