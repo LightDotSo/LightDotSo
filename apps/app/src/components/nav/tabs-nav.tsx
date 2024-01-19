@@ -172,7 +172,7 @@ export const TabsNav: FC<TabNavProps> = ({
             >
               {<item.icon className="mr-2 size-4" />}
               {item.label}
-              {item?.number && item?.number > 0 && (
+              {item?.number && item?.number !== 0 && (
                 <Badge
                   type="number"
                   variant="outline"
