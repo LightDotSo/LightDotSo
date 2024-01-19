@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { useAuth, useModals } from "@lightdotso/stores";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { useCallback, useMemo } from "react";
 
 // -----------------------------------------------------------------------------
@@ -32,7 +32,7 @@ export const useAuthModal = () => {
   // ConnectKit
   // ---------------------------------------------------------------------------
 
-  const { openConnectModal } = useConnectModal();
+  const { open } = useWeb3Modal();
   const { showAuthModal } = useModals();
 
   // ---------------------------------------------------------------------------
@@ -40,12 +40,12 @@ export const useAuthModal = () => {
   // ---------------------------------------------------------------------------
 
   const openAuthModal = useCallback(() => {
-    if (!address && openConnectModal) {
-      openConnectModal();
+    if (!address && open) {
+      open();
     } else if (typeof sessionId !== "string") {
       showAuthModal();
     }
-  }, [address, openConnectModal, sessionId, showAuthModal]);
+  }, [address, open, sessionId, showAuthModal]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks

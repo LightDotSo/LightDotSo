@@ -22,13 +22,15 @@ import {
   Footer,
   VercelToolbar,
 } from "@lightdotso/ui";
-import "@rainbow-me/rainbowkit/styles.css";
 import dynamic from "next/dynamic";
 import { Inter } from "next/font/google";
+import { headers } from "next/headers";
 import Script from "next/script";
 import { Suspense } from "react";
 import type { FC, ReactNode } from "react";
+import { cookieToInitialState } from "wagmi";
 import { MainNav } from "@/components/nav/main-nav";
+import { wagmiConfig } from "@/components/web3/wagmi";
 import { Web3Provider } from "@/components/web3/web3-provider";
 import { WssState } from "@/components/wss/wss-state";
 
@@ -67,6 +69,11 @@ interface RootProps {
 // -----------------------------------------------------------------------------
 
 export const Root: FC<RootProps> = ({ children }) => {
+  const initialState = cookieToInitialState(
+    wagmiConfig,
+    headers().get("cookie"),
+  );
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -80,7 +87,7 @@ export const Root: FC<RootProps> = ({ children }) => {
       <body className="min-h-[100dvh] bg-background-body">
         <ThemeProvider attribute="class">
           <ReactQueryProvider>
-            <Web3Provider>
+            <Web3Provider initialState={initialState}>
               <MainNav>{children}</MainNav>
               <Footer />
               {/* Utility Functions */}

@@ -13,52 +13,40 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { CHAINS } from "@lightdotso/const";
+import { createClient } from "viem";
+import { cookieStorage, createConfig, createStorage, http } from "wagmi";
 import {
-  mainnet,
-  base,
-  polygon,
-  optimism,
-  sepolia,
-  polygonMumbai,
-  arbitrum,
-  gnosis,
-  bsc,
-  avalanche,
-  baseSepolia,
-  optimismSepolia,
-  arbitrumSepolia,
-} from "viem/chains";
-import type { Chain } from "viem/chains";
+  walletConnect,
+  injected,
+  coinbaseWallet,
+  safe,
+} from "wagmi/connectors";
 
 // -----------------------------------------------------------------------------
-// Mainnet
+// Config
 // -----------------------------------------------------------------------------
 
-export const MAINNET_CHAINS = [
-  mainnet,
-  optimism,
-  bsc,
-  gnosis,
-  polygon,
-  base,
-  avalanche,
-  arbitrum,
-] as readonly [Chain, ...Chain[]];
+export const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!;
 
 // -----------------------------------------------------------------------------
-// Testnet
+// Wagmi
 // -----------------------------------------------------------------------------
 
-export const TESTNET_CHAINS = [
-  sepolia,
-  polygonMumbai,
-  baseSepolia,
-  optimismSepolia,
-  arbitrumSepolia,
-] as readonly [Chain, ...Chain[]];
-
-// -----------------------------------------------------------------------------
-// All
-// -----------------------------------------------------------------------------
-
-export const CHAINS = [...MAINNET_CHAINS, ...TESTNET_CHAINS] as const;
+// Set up wagmi config
+export const wagmiConfig = createConfig({
+  chains: CHAINS,
+  client({ chain }) {
+    return createClient({ chain, transport: http() });
+  },
+  connectors: [
+    coinbaseWallet({ appName: "Light" }),
+    walletConnect({ projectId, showQrModal: false }),
+    safe(),
+    injected({ shimDisconnect: true }),
+  ],
+  ssr: true,
+  storage: createStorage({
+    storage: cookieStorage,
+  }),
+});

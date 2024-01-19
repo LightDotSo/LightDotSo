@@ -31,13 +31,13 @@
     "@tanstack/react-table": "^8.11.6",
     "@types/lodash": "^4.14.202",
     "lodash": "^4.17.21",
-    "viem": "^2.1.1",
+    "viem": "^2.3.1",
     "zod": "^3.22.4",
     "zustand": "^4.4.7"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.11.4",
+    "@types/node": "^20.11.5",
     "typescript": "^5.3.3"
   },
   "publishConfig": {

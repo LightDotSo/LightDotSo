@@ -16,59 +16,30 @@
 "use client";
 
 import { CHAINS } from "@lightdotso/const";
-import {
-  RainbowKitProvider,
-  lightTheme,
-  darkTheme,
-  getDefaultWallets,
-  connectorsForWallets,
-} from "@rainbow-me/rainbowkit";
+import { createWeb3Modal } from "@web3modal/wagmi/react";
 import { useTheme } from "next-themes";
-import type { ReactNode } from "react";
-import { createClient } from "viem";
-import {
-  WagmiProvider,
-  cookieStorage,
-  createConfig,
-  createStorage,
-  http,
-} from "wagmi";
-import { safe } from "wagmi/connectors";
-
-// -----------------------------------------------------------------------------
-// Rainbow
-// -----------------------------------------------------------------------------
-
-const walletList = getDefaultWallets();
-
-const connectors = connectorsForWallets(walletList.wallets, {
-  projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
-  appName: "Light",
-  appUrl: "https://app.light.so",
-});
-
-// -----------------------------------------------------------------------------
-// Wagmi
-// -----------------------------------------------------------------------------
-
-// Set up wagmi config
-export const config = createConfig({
-  chains: CHAINS,
-  client({ chain }) {
-    return createClient({ chain, transport: http() });
-  },
-  connectors: [safe(), ...connectors],
-  ssr: true,
-  storage: createStorage({
-    storage: cookieStorage,
-  }),
-});
+import { useState, type ReactNode, useEffect, useMemo } from "react";
+import type { State } from "wagmi";
+import { WagmiProvider } from "wagmi";
+import { projectId, wagmiConfig } from "@/components/web3/wagmi";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-function Web3Provider({ children }: { children: ReactNode }) {
+function Web3Provider({
+  children,
+  initialState,
+}: {
+  children: ReactNode;
+  initialState?: State;
+}) {
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [web3Modal, setWeb3Modal] = useState<any | null>(null);
+
   // ---------------------------------------------------------------------------
   // Operation Hooks
   // ---------------------------------------------------------------------------
@@ -76,16 +47,39 @@ function Web3Provider({ children }: { children: ReactNode }) {
   const { theme } = useTheme();
 
   // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const modal = useMemo(() => {
+    const modal = createWeb3Modal({
+      // @ts-expect-error
+      chains: CHAINS,
+      wagmiConfig,
+      projectId,
+      themeMode: theme === "light" ? "light" : "dark",
+    });
+    return modal;
+  }, [theme]);
+
+  // ---------------------------------------------------------------------------
+  // Web3Modal
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    setWeb3Modal(modal);
+  }, [modal]);
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
+  if (!web3Modal) {
+    return null;
+  }
+
   return (
-    <WagmiProvider config={config}>
-      <RainbowKitProvider
-        theme={theme === "light" ? lightTheme() : darkTheme()}
-      >
-        {children}
-      </RainbowKitProvider>
+    <WagmiProvider config={wagmiConfig} initialState={initialState}>
+      {children}
     </WagmiProvider>
   );
 }
