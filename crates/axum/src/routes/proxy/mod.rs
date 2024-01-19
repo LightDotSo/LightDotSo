@@ -23,6 +23,7 @@ use axum::{
     routing::get,
     Router,
 };
+use http::{HeaderMap, HeaderValue};
 use hyper::{Body, Request, Uri};
 use lightdotso_tracing::tracing::info;
 
@@ -32,17 +33,16 @@ async fn proxy_handler(
     State(state): State<AppState>,
     mut req: Request<Body>,
 ) -> Response<Body> {
-    let uri = format!("https://pokeapi.co/api/v2/{}", path);
+    let uri = format!("https://api.socket.tech/{}", path);
     info!("uri: {}", uri);
 
     *req.uri_mut() = Uri::try_from(uri).unwrap();
 
-    // let mut headers = HeaderMap::new();
-    // let token = std::env::var("API_TOKEN").unwrap_or_else(|_| panic!("API_TOKEN not set"));
-    // headers.insert("Authorization", HeaderValue::from_str(&format!("Bearer {}",
-    // token)).unwrap());
+    let mut headers = HeaderMap::new();
+    let token = std::env::var("SOCKET_API_KEY").unwrap_or_else(|_| panic!("API_TOKEN not set"));
+    headers.insert("API-KEY", HeaderValue::from_str(&token).unwrap());
 
-    // *req.headers_mut() = headers;
+    *req.headers_mut() = headers;
 
     state.hyper.request(req).await.unwrap()
 }
@@ -52,5 +52,5 @@ async fn proxy_handler(
 // -----------------------------------------------------------------------------
 
 pub(crate) fn router() -> Router<AppState, Body> {
-    Router::new().route("/pokemon/*path", get(proxy_handler))
+    Router::new().route("/socket/*path", get(proxy_handler))
 }
