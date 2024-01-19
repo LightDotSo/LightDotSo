@@ -38,6 +38,7 @@
   lightdotso-solutions = { workspace = true }
   lightdotso-tracing = { workspace = true }
   prisma-client-rust = { workspace = true }
+  reqwest = { workspace = true }
   rundler-types = { workspace = true }
   rustc-hex = { workspace = true }
   serde = { workspace = true, features = ["derive"] }

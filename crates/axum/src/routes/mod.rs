@@ -30,6 +30,7 @@ pub(crate) mod paymaster_operation;
 pub(crate) mod portfolio;
 pub(crate) mod protocol;
 pub(crate) mod protocol_group;
+pub(crate) mod proxy;
 pub(crate) mod queue;
 pub(crate) mod signature;
 pub(crate) mod simulation;

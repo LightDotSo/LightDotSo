@@ -22,6 +22,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { type FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/data-table";
+import { usePaginationQueryState } from "@/queryStates";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -37,6 +38,12 @@ interface NftsDataTableProps {
 
 export const NftsDataTable: FC<NftsDataTableProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
+  // Query State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [paginationState] = usePaginationQueryState();
+
+  // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
@@ -49,7 +56,7 @@ export const NftsDataTable: FC<NftsDataTableProps> = ({ address }) => {
     queryKeys.nft.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
-      limit: Number.MAX_SAFE_INTEGER,
+      limit: paginationState.pageSize,
       cursor: null,
     }).queryKey,
   );
