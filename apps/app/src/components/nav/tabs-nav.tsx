@@ -68,7 +68,6 @@ export const TabsNav: FC<TabNavProps> = ({
   // Next Hooks
   // ---------------------------------------------------------------------------
 
-  const router = useRouter();
   const pathname = usePathname();
 
   // ---------------------------------------------------------------------------
@@ -143,8 +142,7 @@ export const TabsNav: FC<TabNavProps> = ({
     <nav
       ref={navRef}
       className="relative z-0 mb-1.5 mt-2 flex max-w-full shrink-0 items-center overflow-x-auto overflow-y-visible py-2"
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-      onPointerLeave={e => setHoveredTabIndex(null)}
+      onPointerLeave={() => setHoveredTabIndex(null)}
     >
       {tabs.map((item, i) => {
         const isActive =
@@ -161,7 +159,6 @@ export const TabsNav: FC<TabNavProps> = ({
               )}
               onPointerEnter={() => {
                 setHoveredTabIndex(i);
-                router.prefetch(href);
               }}
               onFocus={() => {
                 setHoveredTabIndex(i);

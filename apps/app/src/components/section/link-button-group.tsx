@@ -83,7 +83,7 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
     items.forEach(item => {
       router.prefetch(`/${address}${item.href}`);
     });
-  }, [address, items, router]);
+  }, []);
 
   // ---------------------------------------------------------------------------
   // Render
