@@ -73,7 +73,7 @@ export const Modal: FC<ModalProps> = ({ children }) => {
   if (isDesktop) {
     return (
       <Drawer open={true} onOpenChange={onDismiss}>
-        <Suspense fallback={<Skeleton className="w-full h-64" />}>
+        <Suspense fallback={<Skeleton className="h-64 w-full" />}>
           {children}
         </Suspense>
       </Drawer>
@@ -85,7 +85,7 @@ export const Modal: FC<ModalProps> = ({ children }) => {
       <DialogPortal>
         <DialogOverlay />
         <DialogContent className="w-full overflow-scroll sm:max-h-[80%] sm:max-w-3xl">
-          <Suspense fallback={<Skeleton className="w-full h-64" />}>
+          <Suspense fallback={<Skeleton className="h-64 w-full" />}>
             {children}
           </Suspense>
         </DialogContent>
