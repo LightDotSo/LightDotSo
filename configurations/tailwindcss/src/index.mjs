@@ -13,6 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import headlessPlugin from "@headlessui/tailwindcss";
+import animatePlugin from "tailwindcss-animate";
+import aspectRatioPlugin from "@tailwindcss/aspect-ratio";
+import formsPlugin from "@tailwindcss/forms";
+import typographyPlugin from "@tailwindcss/typography";
+
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: "class",
@@ -453,10 +459,10 @@ export default {
     },
   ],
   plugins: [
-    (await import("@headlessui/tailwindcss")).default,
-    (await import("tailwindcss-animate")).default,
-    (await import("@tailwindcss/aspect-ratio")).default,
-    (await import("@tailwindcss/forms")).default,
-    (await import("@tailwindcss/typography")).default,
+    headlessPlugin,
+    animatePlugin,
+    aspectRatioPlugin,
+    formsPlugin,
+    typographyPlugin,
   ],
 };
