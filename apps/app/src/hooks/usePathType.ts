@@ -85,7 +85,7 @@ export const usePathType = (): RootType => {
     }
 
     return "wallet";
-  }, [unauthenticatedPaths, authenticatedPaths, demoPaths, pathname]);
+  }, [pathname]);
 
   // ---------------------------------------------------------------------------
   // Return

@@ -15,7 +15,7 @@
 
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
-import { Skeleton, SettingsSectionWrapper } from "@lightdotso/ui";
+import { SettingsSectionWrapper } from "@lightdotso/ui";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { Suspense } from "react";
 import type { Address } from "viem";
