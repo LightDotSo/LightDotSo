@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { useAuth } from "@lightdotso/stores";
 import { usePathname } from "next/navigation";
 // import { usePathname, useSelectedLayoutSegment } from "next/navigation";
 import { useMemo } from "react";
@@ -57,11 +58,16 @@ export type RootType = "authenticated" | "unauthenticated" | "wallet" | "demo";
 
 export const usePathType = (): RootType => {
   // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { wallet } = useAuth();
+
+  // ---------------------------------------------------------------------------
   // Next Hooks
   // ---------------------------------------------------------------------------
 
   const pathname = usePathname();
-  // const selectedLayoutSegement = useSelectedLayoutSegment();
 
   // ---------------------------------------------------------------------------
   // Return
@@ -75,10 +81,7 @@ export const usePathType = (): RootType => {
       return "unauthenticated";
     }
 
-    if (
-      authenticatedPaths.some(path => pathname.startsWith(path))
-      // selectedLayoutSegement !== "(wallet)"
-    ) {
+    if (authenticatedPaths.some(path => pathname.startsWith(path)) && !wallet) {
       return "authenticated";
     }
 

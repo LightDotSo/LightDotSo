@@ -108,6 +108,7 @@ export function useTabs() {
     const indexOfInitialTab = tabs.findIndex(tab => tab.id === mountId);
     // Set the initial tab
     setSelectedTabIndex(indexOfInitialTab === -1 ? 0 : indexOfInitialTab);
+
     // Only run on initial render
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
