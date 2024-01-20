@@ -65,7 +65,7 @@ export const usePathType = (): RootType => {
   // Return
   // ---------------------------------------------------------------------------
 
-  const layout = useMemo(() => {
+  const pathType = useMemo(() => {
     if (
       unauthenticatedPaths.some(path => pathname.startsWith(path)) ||
       pathname === "/"
@@ -91,5 +91,5 @@ export const usePathType = (): RootType => {
   // Return
   // ---------------------------------------------------------------------------
 
-  return "wallet";
+  return pathType;
 };
