@@ -36,6 +36,8 @@ pub(crate) struct AssetChange {
     before_amount: Option<i64>,
     /// The after amount of the asset change.
     after_amount: Option<i64>,
+    /// The action id of the asset change.
+    action: Option<String>,
     /// The token id of the asset change.
     token: Option<Token>,
 }
@@ -53,6 +55,9 @@ impl From<asset_change::Data> for AssetChange {
             amount: asset_change.amount,
             before_amount: asset_change.before_amount,
             after_amount: asset_change.after_amount,
+            action: asset_change
+                .interpretation_action
+                .and_then(|maybe_action| maybe_action.map(|action| action.action)),
             token: asset_change
                 .token
                 .and_then(|maybe_token| maybe_token.map(|token| Token::from(*token))),

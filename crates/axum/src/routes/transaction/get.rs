@@ -81,7 +81,9 @@ pub(crate) async fn v1_transaction_get_handler(
         .find_unique(transaction::hash::equals(query.transaction_hash))
         .with(
             transaction::interpretation::fetch().with(interpretation::actions::fetch(vec![])).with(
-                interpretation::asset_changes::fetch(vec![]).with(asset_change::token::fetch()),
+                interpretation::asset_changes::fetch(vec![])
+                    .with(asset_change::interpretation_action::fetch())
+                    .with(asset_change::token::fetch()),
             ),
         )
         .exec()
