@@ -20,6 +20,8 @@ use autometrics::autometrics;
 use axum::{
     extract::{Path, State},
     response::Response,
+    routing::get,
+    Router,
 };
 use http::{HeaderMap, HeaderValue};
 use hyper::{Body, Request, Uri};
@@ -50,4 +52,12 @@ pub async fn simplehash_proxy_handler(
     *req.headers_mut() = headers;
 
     state.hyper.request(req).await.unwrap()
+}
+
+// -----------------------------------------------------------------------------
+// Router
+// -----------------------------------------------------------------------------
+
+pub(crate) fn router() -> Router<AppState, Body> {
+    Router::new().route("/simplehash/*path", get(simplehash_proxy_handler))
 }

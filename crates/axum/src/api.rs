@@ -22,8 +22,9 @@ use crate::{
     routes::{
         activity, asset_change, auth, check, configuration, feedback, health, interpretation,
         invite_code, notification, owner, paymaster, paymaster_operation, portfolio, protocol,
-        protocol_group, proxy, queue, signature, simulation, support_request, token, token_group,
-        token_price, transaction, user, user_operation, wallet, wallet_features, wallet_settings,
+        protocol_group, queue, signature, simplehash, simulation, socket, support_request, token,
+        token_group, token_price, transaction, user, user_operation, wallet, wallet_features,
+        wallet_settings,
     },
     sessions::{authenticated, RedisStore},
     state::AppState,
@@ -373,10 +374,10 @@ pub async fn start_api_server() -> Result<()> {
         .merge(portfolio::router())
         .merge(protocol::router())
         .merge(protocol_group::router())
-        .merge(proxy::router())
         .merge(queue::router())
         .merge(signature::router())
         .merge(simulation::router())
+        .merge(socket::router())
         .merge(support_request::router())
         .merge(token::router())
         .merge(token_group::router())
@@ -387,6 +388,9 @@ pub async fn start_api_server() -> Result<()> {
         .merge(wallet::router())
         .merge(wallet_features::router())
         .merge(wallet_settings::router());
+
+    // Create the simplehash api
+    let simplehash_api = Router::new().merge(simplehash::router());
 
     // Create the session store
     let session_store = RedisStore::new(redis);
@@ -403,6 +407,10 @@ pub async fn start_api_server() -> Result<()> {
                 .with_same_site(tower_sessions_core::cookie::SameSite::Lax);
         }
     }
+
+    // Create the concurrent limit layer
+    let concurrency_layer =
+        tower::ServiceBuilder::new().load_shed().concurrency_limit(2).into_inner();
 
     // Create the cookie manager
     let cookie_manager_layer = CookieManagerLayer::new();
@@ -425,6 +433,19 @@ pub async fn start_api_server() -> Result<()> {
 
     // Create the app for the server
     let app = Router::new()
+        .merge(simplehash_api.clone())
+        .layer(
+            ServiceBuilder::new()
+                .layer(HandleErrorLayer::new(handle_error))
+                .layer(cookie_manager_layer.clone())
+                .layer(session_manager_layer.clone())
+                .layer(concurrency_layer)
+                .layer(metrics.clone())
+                .layer(OtelInResponseLayer)
+                .layer(OtelAxumLayer::default())
+                .layer(cors.clone())
+                .into_inner(),
+        )
         .route("/", get("api.light.so"))
         .merge(api.clone())
         .merge(metrics.routes())
