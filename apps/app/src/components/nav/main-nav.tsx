@@ -18,78 +18,14 @@
 
 "use client";
 
-import {
-  ActivityLogIcon,
-  DashboardIcon,
-  WidthIcon,
-  PersonIcon,
-  MixerVerticalIcon,
-  ChatBubbleIcon,
-} from "@radix-ui/react-icons";
-import type { IconProps } from "@radix-ui/react-icons/dist/types";
-import { Suspense, useMemo, useState, useEffect } from "react";
-import type { FC, HTMLAttributes, ReactNode, RefAttributes } from "react";
+import { Suspense } from "react";
+import type { FC, HTMLAttributes, ReactNode } from "react";
 import { AppNav } from "@/components/nav/app-nav";
 import { TabsNav } from "@/components/nav/tabs-nav";
 import { RootLogo } from "@/components/root/root-logo";
 import { ConnectButton } from "@/components/web3/connect-button";
 import { WalletSwitcher } from "@/components/web3/wallet-switcher";
 import { usePathType, useTabs } from "@/hooks";
-
-// -----------------------------------------------------------------------------
-// Const
-// -----------------------------------------------------------------------------
-
-const tabs = [
-  {
-    label: "Overview",
-    id: "overview",
-    href: "/overview",
-    icon: (
-      props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
-    ) => <DashboardIcon {...props} />,
-  },
-  {
-    label: "Transactions",
-    id: "transactions",
-    href: "/transactions",
-    icon: (
-      props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
-    ) => <WidthIcon {...props} />,
-  },
-  {
-    label: "Owners",
-    id: "owners",
-    href: "/owners",
-    icon: (
-      props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
-    ) => <PersonIcon {...props} />,
-  },
-  {
-    label: "Activity",
-    id: "activity",
-    href: "/activity",
-    icon: (
-      props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
-    ) => <ActivityLogIcon {...props} />,
-  },
-  {
-    label: "Settings",
-    id: "settings",
-    href: "/settings",
-    icon: (
-      props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
-    ) => <MixerVerticalIcon {...props} />,
-  },
-  {
-    label: "Support",
-    id: "support",
-    href: "/support",
-    icon: (
-      props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
-    ) => <ChatBubbleIcon {...props} />,
-  },
-];
 
 // -----------------------------------------------------------------------------
 // Props
@@ -111,41 +47,17 @@ export const MainNav: FC<MainNavProps> = ({ children, ...props }) => {
   const pathType = usePathType();
 
   // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
-
-  const typeTabs = useMemo(() => {
-    if (pathType === "demo") {
-      return tabs.filter(tab => {
-        // Don't return `settings` and `support` tabs
-        return tab.id !== "settings" && tab.id !== "support";
-      });
-    }
-    return tabs;
-  }, [pathType]);
-
-  // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
 
-  const [hookProps, setHookProps] = useState({
-    tabs: typeTabs,
-  });
-  const { tabProps } = useTabs(hookProps);
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
-
-  useEffect(() => {
-    setHookProps({ tabs: typeTabs });
-  }, [typeTabs]);
+  const { tabProps } = useTabs();
 
   // ---------------------------------------------------------------------------
   // Component
   // ---------------------------------------------------------------------------
 
   const Tabs = () => {
+    // Don't render tabs on unauthenticated or authenticated paths
     if (pathType === "unauthenticated" || pathType === "authenticated") {
       return null;
     }

@@ -25,32 +25,18 @@ import {
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import type { Tab } from "@lightdotso/types";
-import { RadiobuttonIcon } from "@radix-ui/react-icons";
-import type { IconProps } from "@radix-ui/react-icons/dist/types";
 import { useQueryClient } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useMemo } from "react";
-import type { RefAttributes } from "react";
 import type { Address } from "viem";
-
-// -----------------------------------------------------------------------------
-// Const
-// -----------------------------------------------------------------------------
-
-const aiTab = {
-  label: "AI",
-  id: "ai",
-  href: "/ai",
-  icon: (
-    props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
-  ) => <RadiobuttonIcon {...props} />,
-};
+import { usePathType } from "./usePathType";
+import { AI_TAB, DEFAULT_TABS } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Hook
 // -----------------------------------------------------------------------------
 
-export function useTabs({ tabs }: { tabs: Tab[] }) {
+export function useTabs() {
   // ---------------------------------------------------------------------------
   // Next Hooks
   // ---------------------------------------------------------------------------
@@ -62,6 +48,26 @@ export function useTabs({ tabs }: { tabs: Tab[] }) {
   // ---------------------------------------------------------------------------
 
   const { wallet: walletAddress } = useAuth();
+
+  // ---------------------------------------------------------------------------
+  // Operation Hooks
+  // ---------------------------------------------------------------------------
+
+  const pathType = usePathType();
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const tabs = useMemo(() => {
+    if (pathType === "demo") {
+      return DEFAULT_TABS.filter(tab => {
+        // Don't return `settings` and `support` tabs
+        return tab.id !== "settings" && tab.id !== "support";
+      });
+    }
+    return DEFAULT_TABS;
+  }, [pathType]);
 
   // ---------------------------------------------------------------------------
   // Local Variables
@@ -102,6 +108,7 @@ export function useTabs({ tabs }: { tabs: Tab[] }) {
     const indexOfInitialTab = tabs.findIndex(tab => tab.id === mountId);
     // Set the initial tab
     setSelectedTabIndex(indexOfInitialTab === -1 ? 0 : indexOfInitialTab);
+
     // Only run on initial render
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -139,12 +146,12 @@ export function useTabs({ tabs }: { tabs: Tab[] }) {
   const transformedTabs: Tab[] = useMemo(() => {
     if (walletFeatures?.is_enabled_ai) {
       // If AI not yet in tabs, add it
-      if (!tabs.find(tab => tab.id === aiTab.id)) {
+      if (!tabs.find(tab => tab.id === AI_TAB.id)) {
         // Add it after the id `activity`
         const indexOfTransactions = tabs.findIndex(
           tab => tab.id === "activity",
         );
-        tabs.splice(indexOfTransactions + 1, 0, aiTab);
+        tabs.splice(indexOfTransactions + 1, 0, AI_TAB);
       }
     }
 
