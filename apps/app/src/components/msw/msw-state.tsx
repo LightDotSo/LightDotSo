@@ -41,7 +41,7 @@ export const MSWState = () => {
       if (type === "demo") {
         if (typeof window !== "undefined") {
           if (!worker) {
-            const { worker } = await import("@/msw/browser");
+            const { worker } = await import("@lightdotso/msw");
             worker.start();
             setWorker(worker);
           }

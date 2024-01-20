@@ -327,6 +327,9 @@ importers:
       '@lightdotso/kysely':
         specifier: workspace:*
         version: link:../../configurations/kysely
+      '@lightdotso/msw':
+        specifier: workspace:*
+        version: link:../../packages/msw
       '@lightdotso/params':
         specifier: workspace:*
         version: link:../../packages/params
@@ -458,7 +461,7 @@ importers:
         version: 2.3.1(@types/react@18.2.48)(immer@10.0.3)(react@18.2.0)(typescript@5.3.3)(viem@2.4.0)(zod@3.22.4)
       '@web3modal/wagmi':
         specifier: ^4.0.0-alpha.0
-        version: 4.0.0-alpha.0(@types/react@18.2.48)(@wagmi/connectors@4.1.4)(@wagmi/core@2.3.1)(typescript@5.3.3)(viem@2.4.0)
+        version: 4.0.0-alpha.0(@types/react@18.2.48)(@wagmi/connectors@4.1.6)(@wagmi/core@2.3.1)(typescript@5.3.3)(viem@2.4.0)
       blurhash:
         specifier: ^2.0.5
         version: 2.0.5
@@ -1636,6 +1639,28 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
     devDependencies:
+      '@types/node':
+        specifier: ^20.11.5
+        version: 20.11.5
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
+  packages/msw:
+    dependencies:
+      '@lightdotso/const':
+        specifier: workspace:*
+        version: link:../const
+      '@lightdotso/demo':
+        specifier: workspace:*
+        version: link:../demo
+      msw:
+        specifier: ^2.1.2
+        version: 2.1.2(typescript@5.3.3)
+    devDependencies:
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../../configurations/tsconfig
       '@types/node':
         specifier: ^20.11.5
         version: 20.11.5
@@ -14278,50 +14303,6 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@wagmi/connectors@4.1.4(@types/react@18.2.48)(@upstash/redis@1.28.1)(@wagmi/core@2.3.1)(react-dom@18.2.0)(react-native@0.73.2)(react@18.2.0)(typescript@5.3.3)(viem@2.4.0)(zod@3.22.4):
-    resolution: {integrity: sha512-Mk/JnVs9pPd9cN/b5F+kHZMRU13yVf1zJwXNzSKpt7BOJQBqiFxJtmuZdRsNboEGEiPDFoEnzOzeAFi2xk3UGw==}
-    peerDependencies:
-      '@wagmi/core': 2.2.1
-      typescript: '>=5.0.4'
-      viem: 2.x
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-    dependencies:
-      '@coinbase/wallet-sdk': 3.9.1
-      '@metamask/sdk': 0.14.1(@types/react@18.2.48)(react-dom@18.2.0)(react-native@0.73.2)(react@18.2.0)
-      '@safe-global/safe-apps-provider': 0.18.1(typescript@5.3.3)(zod@3.22.4)
-      '@safe-global/safe-apps-sdk': 8.1.0(typescript@5.3.3)(zod@3.22.4)
-      '@wagmi/core': 2.3.1(@types/react@18.2.48)(immer@10.0.3)(react@18.2.0)(typescript@5.3.3)(viem@2.4.0)(zod@3.22.4)
-      '@walletconnect/ethereum-provider': 2.11.0(@types/react@18.2.48)(@upstash/redis@1.28.1)(react@18.2.0)
-      '@walletconnect/modal': 2.6.2(@types/react@18.2.48)(react@18.2.0)
-      typescript: 5.3.3
-      viem: 2.4.0(typescript@5.3.3)(zod@3.22.4)
-    transitivePeerDependencies:
-      - '@azure/app-configuration'
-      - '@azure/cosmos'
-      - '@azure/data-tables'
-      - '@azure/identity'
-      - '@azure/keyvault-secrets'
-      - '@azure/storage-blob'
-      - '@capacitor/preferences'
-      - '@netlify/blobs'
-      - '@planetscale/database'
-      - '@react-native-async-storage/async-storage'
-      - '@types/react'
-      - '@upstash/redis'
-      - '@vercel/kv'
-      - bufferutil
-      - encoding
-      - react
-      - react-dom
-      - react-native
-      - rollup
-      - supports-color
-      - utf-8-validate
-      - zod
-    dev: false
-
   /@wagmi/connectors@4.1.6(@types/react@18.2.48)(@upstash/redis@1.28.1)(@wagmi/core@2.3.1)(react-dom@18.2.0)(react-native@0.73.2)(react@18.2.0)(typescript@5.3.3)(viem@2.4.0)(zod@3.22.4):
     resolution: {integrity: sha512-Kew/4K3AFMF4eNwg5ZEDMDu0R2MaLWwkgzWTPNwIp3Jjm8jtxSJ2Qyg23wS0YxaaGGefXX4/9K9MAN2Vjpsowg==}
     peerDependencies:
@@ -14860,7 +14841,7 @@ packages:
       qrcode: 1.5.3
     dev: false
 
-  /@web3modal/wagmi@4.0.0-alpha.0(@types/react@18.2.48)(@wagmi/connectors@4.1.4)(@wagmi/core@2.3.1)(typescript@5.3.3)(viem@2.4.0):
+  /@web3modal/wagmi@4.0.0-alpha.0(@types/react@18.2.48)(@wagmi/connectors@4.1.6)(@wagmi/core@2.3.1)(typescript@5.3.3)(viem@2.4.0):
     resolution: {integrity: sha512-+6UPdL5MFZmWZhNCe0PBFv4jWfMAzsXVVa8gGe78RonYKb2QcMtNJhYn6dglG/s8v36Ym6Dzq2+foIFK2HeUZg==}
     peerDependencies:
       '@wagmi/connectors': '>=4.0.0'
@@ -14876,7 +14857,7 @@ packages:
       vue:
         optional: true
     dependencies:
-      '@wagmi/connectors': 4.1.4(@types/react@18.2.48)(@upstash/redis@1.28.1)(@wagmi/core@2.3.1)(react-dom@18.2.0)(react-native@0.73.2)(react@18.2.0)(typescript@5.3.3)(viem@2.4.0)(zod@3.22.4)
+      '@wagmi/connectors': 4.1.6(@types/react@18.2.48)(@upstash/redis@1.28.1)(@wagmi/core@2.3.1)(react-dom@18.2.0)(react-native@0.73.2)(react@18.2.0)(typescript@5.3.3)(viem@2.4.0)(zod@3.22.4)
       '@wagmi/core': 2.3.1(@types/react@18.2.48)(immer@10.0.3)(react@18.2.0)(typescript@5.3.3)(viem@2.4.0)(zod@3.22.4)
       '@web3modal/polyfills': 4.0.0-alpha.0
       '@web3modal/scaffold': 4.0.0-alpha.0(@types/react@18.2.48)(react@18.2.0)
