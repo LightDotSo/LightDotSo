@@ -86,7 +86,8 @@ export const usePathType = (): RootType => {
     }
 
     return "wallet";
-  }, [pathname, selectedLayoutSegement]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   // ---------------------------------------------------------------------------
   // Return
