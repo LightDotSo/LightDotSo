@@ -15,4 +15,5 @@
 
 pub mod consumer;
 pub mod custom;
+pub mod middleware;
 pub mod polling;

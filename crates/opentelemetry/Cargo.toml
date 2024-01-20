@@ -11,11 +11,16 @@
 [dependencies]
   axum = { workspace = true }
   futures = { workspace = true }
+  futures-util = { workspace = true }
+  http = { workspace = true }
+  http-body = { workspace = true }
   lazy_static = { workspace = true }
   once_cell = { workspace = true }
   opentelemetry = { workspace = true }
   opentelemetry-prometheus = { workspace = true }
+  opentelemetry-semantic-conventions = { workspace = true }
   opentelemetry_sdk = { workspace = true }
+  pin-project-lite = { workspace = true }
   prometheus = { workspace = true }
   time = { workspace = true }
   tokio = { workspace = true }

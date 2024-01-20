@@ -21,10 +21,9 @@ use crate::{
     handle_error,
     routes::{
         activity, asset_change, auth, check, configuration, feedback, health, interpretation,
-        invite_code, metrics, notification, owner, paymaster, paymaster_operation, portfolio,
-        protocol, protocol_group, proxy, queue, signature, simulation, support_request, token,
-        token_group, token_price, transaction, user, user_operation, wallet, wallet_features,
-        wallet_settings,
+        invite_code, notification, owner, paymaster, paymaster_operation, portfolio, protocol,
+        protocol_group, proxy, queue, signature, simulation, support_request, token, token_group,
+        token_price, transaction, user, user_operation, wallet, wallet_features, wallet_settings,
     },
     sessions::{authenticated, RedisStore},
     state::AppState,
@@ -39,6 +38,7 @@ use http::{
 use hyper::client;
 use lightdotso_db::db::create_client;
 use lightdotso_kafka::get_producer;
+use lightdotso_opentelemetry::middleware::HttpMetricsLayerBuilder;
 use lightdotso_redis::get_redis_client;
 use lightdotso_tracing::tracing::info;
 use std::{net::SocketAddr, sync::Arc, time::Duration};
@@ -365,7 +365,7 @@ pub async fn start_api_server() -> Result<()> {
         .merge(health::router())
         .merge(interpretation::router())
         .merge(invite_code::router())
-        .merge(metrics::router())
+        // .merge(metrics::router())
         .merge(notification::router())
         .merge(owner::router())
         .merge(paymaster::router())
@@ -407,6 +407,14 @@ pub async fn start_api_server() -> Result<()> {
     // Create the cookie manager
     let cookie_manager_layer = CookieManagerLayer::new();
 
+    // Create the otlp middleware
+    let metrics = HttpMetricsLayerBuilder::new()
+        .with_service_name(
+            std::env::var("FLY_APP_NAME").unwrap_or(env!("CARGO_PKG_NAME").to_string()),
+        )
+        .with_service_version(env!("CARGO_PKG_VERSION").to_string())
+        .build();
+
     // Create the api doc
     let mut open_api = ApiDoc::openapi();
     let components = open_api.components.get_or_insert(Components::new());
@@ -419,6 +427,7 @@ pub async fn start_api_server() -> Result<()> {
     let app = Router::new()
         .route("/", get("api.light.so"))
         .merge(api.clone())
+        .merge(metrics.routes())
         .merge(SwaggerUi::new("/v1/swagger-ui").url("/api-docs/openapi.json", open_api.clone()))
         .merge(Redoc::with_url("/v1/redoc", open_api.clone()))
         // There is no need to create `RapiDoc::with_openapi` because the OpenApi is served
@@ -435,6 +444,7 @@ pub async fn start_api_server() -> Result<()> {
                 .layer(cookie_manager_layer.clone())
                 .layer(session_manager_layer.clone())
                 // .layer(SetSensitiveRequestHeadersLayer::from_shared(Arc::clone(&headers)))
+                .layer(metrics.clone())
                 .layer(OtelInResponseLayer)
                 .layer(OtelAxumLayer::default())
                 .layer(cors.clone())
@@ -449,6 +459,7 @@ pub async fn start_api_server() -> Result<()> {
                     .layer(cookie_manager_layer.clone())
                     .layer(session_manager_layer.clone())
                     .layer(middleware::from_fn(authenticated))
+                    .layer(metrics.clone())
                     .layer(OtelInResponseLayer)
                     .layer(OtelAxumLayer::default())
                     .layer(cors.clone())
@@ -463,6 +474,7 @@ pub async fn start_api_server() -> Result<()> {
                     .layer(cookie_manager_layer.clone())
                     .layer(session_manager_layer.clone())
                     .layer(middleware::from_fn(admin))
+                    .layer(metrics.clone())
                     .layer(OtelInResponseLayer)
                     .layer(OtelAxumLayer::default())
                     .into_inner(),
