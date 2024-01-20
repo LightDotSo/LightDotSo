@@ -13,8 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { usePathname } from "next/navigation";
-// import { usePathname, useSelectedLayoutSegment } from "next/navigation";
+import { usePathname, useSelectedLayoutSegment } from "next/navigation";
 import { useMemo } from "react";
 
 // ---------------------------------------------------------------------------
@@ -61,7 +60,7 @@ export const usePathType = (): RootType => {
   // ---------------------------------------------------------------------------
 
   const pathname = usePathname();
-  // const selectedLayoutSegement = useSelectedLayoutSegment();
+  const walletLayout = useSelectedLayoutSegment("wallet");
 
   // ---------------------------------------------------------------------------
   // Return
@@ -76,8 +75,8 @@ export const usePathType = (): RootType => {
     }
 
     if (
-      authenticatedPaths.some(path => pathname.startsWith(path))
-      // selectedLayoutSegement !== "(wallet)"
+      authenticatedPaths.some(path => pathname.startsWith(path)) &&
+      walletLayout !== null
     ) {
       return "authenticated";
     }
