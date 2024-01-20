@@ -39,6 +39,14 @@ type Story = StoryObj<typeof ActionLogo>;
 // Story
 // -----------------------------------------------------------------------------
 
+export const NATIVE_RECEIVE: Story = {
+  render: args => <ActionLogo action={Action.NATIVE_RECEIVE} />,
+  args: {},
+};
+export const NATIVE_SEND: Story = {
+  render: args => <ActionLogo action={Action.NATIVE_SEND} />,
+  args: {},
+};
 export const ERC20_APPROVE: Story = {
   render: args => <ActionLogo action={Action.ERC20_APPROVE} />,
   args: {},
@@ -47,8 +55,16 @@ export const ERC20_RECEIVE: Story = {
   render: args => <ActionLogo action={Action.ERC20_RECEIVE} />,
   args: {},
 };
-export const ERC20_TRANSFER: Story = {
-  render: args => <ActionLogo action={Action.ERC20_TRANSFER} />,
+export const ERC20_SEND: Story = {
+  render: args => <ActionLogo action={Action.ERC20_SEND} />,
+  args: {},
+};
+export const ERC20_MINT: Story = {
+  render: args => <ActionLogo action={Action.ERC20_MINT} />,
+  args: {},
+};
+export const ERC20_BURN: Story = {
+  render: args => <ActionLogo action={Action.ERC20_BURN} />,
   args: {},
 };
 export const ERC721_APPROVE: Story = {
@@ -59,8 +75,16 @@ export const ERC721_RECEIVE: Story = {
   render: args => <ActionLogo action={Action.ERC721_RECEIVE} />,
   args: {},
 };
-export const ERC721_TRANSFER: Story = {
-  render: args => <ActionLogo action={Action.ERC721_TRANSFER} />,
+export const ERC721_SEND: Story = {
+  render: args => <ActionLogo action={Action.ERC721_SEND} />,
+  args: {},
+};
+export const ERC721_MINT: Story = {
+  render: args => <ActionLogo action={Action.ERC721_MINT} />,
+  args: {},
+};
+export const ERC721_BURN: Story = {
+  render: args => <ActionLogo action={Action.ERC721_BURN} />,
   args: {},
 };
 export const ERC1155_APPROVE: Story = {
@@ -71,19 +95,15 @@ export const ERC1155_RECEIVE: Story = {
   render: args => <ActionLogo action={Action.ERC1155_RECEIVE} />,
   args: {},
 };
-export const ERC1155_TRANSFER: Story = {
-  render: args => <ActionLogo action={Action.ERC1155_TRANSFER} />,
+export const ERC1155_SEND: Story = {
+  render: args => <ActionLogo action={Action.ERC1155_SEND} />,
   args: {},
 };
-export const ERC1155_BATCH_APPROVE: Story = {
-  render: args => <ActionLogo action={Action.ERC1155_BATCH_APPROVE} />,
+export const ERC1155_MINT: Story = {
+  render: args => <ActionLogo action={Action.ERC1155_MINT} />,
   args: {},
 };
-export const ERC1155_BATCH_RECEIVE: Story = {
-  render: args => <ActionLogo action={Action.ERC1155_BATCH_RECEIVE} />,
-  args: {},
-};
-export const ERC1155_BATCH_TRANSFER: Story = {
-  render: args => <ActionLogo action={Action.ERC1155_BATCH_TRANSFER} />,
+export const ERC1155_BURN: Story = {
+  render: args => <ActionLogo action={Action.ERC1155_BURN} />,
   args: {},
 };
