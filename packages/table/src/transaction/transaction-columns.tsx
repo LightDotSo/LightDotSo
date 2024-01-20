@@ -19,6 +19,7 @@ import type { TransactionData } from "@lightdotso/data";
 import { DataTableColumnHeader } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { TransactionTableRowActions } from "./actions/transaction-table-row-actions";
+import { TransactionCardActions } from "./card/transaction-card-actions";
 import { TransactionCardChain } from "./card/transaction-card-chain";
 import { TransactionCardHash } from "./card/transaction-card-hash";
 import { TransactionCardInterpretation } from "./card/transaction-card-interpretation";
@@ -29,6 +30,16 @@ import { TransactionCardTimestamp } from "./card/transaction-card-timestamp";
 // -----------------------------------------------------------------------------
 
 export const transactionColumns: ColumnDef<TransactionData>[] = [
+  {
+    accessorKey: "actions",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Action" />
+    ),
+    cell: ({ row }) => <TransactionCardActions transaction={row.original} />,
+    enableSorting: false,
+    enableHiding: false,
+    size: 30,
+  },
   {
     accessorKey: "chain_id",
     header: ({ column }) => (

@@ -89,7 +89,7 @@ export const ActionLogo: FC<ActionLogoProps> = ({ action }) => {
   const intent = ActionLogoIntents[action];
   const Logo = ActionLogos[action];
   return (
-    <BadgeIcon intent={intent} variant="shadow">
+    <BadgeIcon intent={intent} variant="shadow" size="sm">
       <Logo />
     </BadgeIcon>
   );

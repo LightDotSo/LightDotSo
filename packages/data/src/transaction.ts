@@ -20,6 +20,7 @@ import type { InterpretationData } from "./interpretation";
 // -----------------------------------------------------------------------------
 
 export type TransactionData = {
+  actions: string[];
   chain_id: number;
   hash: string;
   timestamp: string;
