@@ -41,7 +41,7 @@ export const NotificationsNav: FC = () => {
   }
 
   return (
-    <ButtonIcon variant="outline" className="rounded-full">
+    <ButtonIcon asChild variant="outline" className="rounded-full">
       <Link href="/notifications">
         <BellIcon />
         <span className="sr-only">Open notificaitons</span>
