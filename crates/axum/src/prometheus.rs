@@ -68,7 +68,9 @@ pub async fn start_prometheus_server() -> Result<()> {
     let client: client::Client<_, hyper::Body> = client::Client::builder().build(https);
 
     let app = Router::new()
-        .route("/api/:anything", get(handler)) // fallback route that will handle all other paths
+        .route("/", get(health_check))
+        // .route("/:anything", get(handler)) // fallback route that will handle all other paths
+        .route("/api/*anything", get(handler)) // fallback route that will handle all other paths
         .with_state(client);
 
     let socket_addr = "0.0.0.0:3002".parse()?;

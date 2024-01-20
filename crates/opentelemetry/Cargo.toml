@@ -9,8 +9,14 @@
   repository.workspace = true
 
 [dependencies]
+  axum = { workspace = true }
+  futures = { workspace = true }
   lazy_static = { workspace = true }
   once_cell = { workspace = true }
   opentelemetry = { workspace = true }
   opentelemetry-prometheus = { workspace = true }
   opentelemetry_sdk = { workspace = true }
+  prometheus = { workspace = true }
+  time = { workspace = true }
+  tokio = { workspace = true }
+  tower = { workspace = true }
