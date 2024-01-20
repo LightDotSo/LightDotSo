@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { Action } from "@lightdotso/const";
+import type { VariantProps } from "class-variance-authority";
 import {
   ArrowDown,
   ArrowUp,
@@ -21,10 +22,9 @@ import {
   PlusCircle,
   UnlockIcon,
 } from "lucide-react";
-import { FC } from "react";
-import { badgeVariants } from "../components/badge";
+import type { FC } from "react";
+import type { badgeVariants } from "../components/badge";
 import { BadgeIcon } from "../components/badge-icon";
-import { VariantProps } from "class-variance-authority";
 
 // -----------------------------------------------------------------------------
 // Const
