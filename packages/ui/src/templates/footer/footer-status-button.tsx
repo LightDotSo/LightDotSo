@@ -16,6 +16,7 @@
 import { MonitorCheck } from "lucide-react";
 import type { FC } from "react";
 import { Button } from "../../components/button";
+import { INTERNAL_LINKS } from "@lightdotso/const";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -29,7 +30,7 @@ export const FooterStatusButton: FC = () => {
   return (
     <div className="flex items-center">
       <Button asChild size="xs" variant="ghost">
-        <a href="https://status.light.so" target="_blank" rel="noreferrer">
+        <a href={INTERNAL_LINKS["Status"]} target="_blank" rel="noreferrer">
           <MonitorCheck className="size-4 text-text-info" />
           <span className="ml-2 text-xs text-text-info-strong">
             All systems normal.
