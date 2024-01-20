@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { Action } from "@lightdotso/const";
 import type { Meta, StoryObj } from "@storybook/react";
 import { ActionLogo } from "./action-logo";
-import { Action } from "@lightdotso/const";
 
 // -----------------------------------------------------------------------------
 // Meta
