@@ -16,6 +16,7 @@
     "langsmith>=0.0.78",
     "langserve[all]>=0.0.39",
     "langchain-community>=0.0.13",
+    "gunicorn>=21.2.0",
   ]
 
   [project.scripts]

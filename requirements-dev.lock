@@ -50,6 +50,7 @@ fastapi==0.109.0
 fastjsonschema==2.19.1
 fqdn==1.5.1
 frozenlist==1.4.1
+gunicorn==21.2.0
 h11==0.14.0
 halmos==0.0.8
 hexbytes==0.3.1
