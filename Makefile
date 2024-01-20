@@ -230,6 +230,15 @@ prisma: cargo-generate ## Add clippy ignore.
 	./scripts/add_recursive_flag.sh
 	./scripts/add_clippy_ignore.sh
 
+#@ Procfile
+.PHONY: uvicorn
+uvicorn: ## Run uvicorn
+	rye run uvicorn src.lightdotso.server:app
+
+.PHONY: requirements
+requirements: ## Install requirements
+	sed -i '' '/-e/d' requirements.lock > fly/ai/requirements.txt
+
 ##@ Ruff
 
 .PHONY: ruff-fmt

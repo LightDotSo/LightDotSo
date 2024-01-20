@@ -33,6 +33,7 @@ eth-typing==3.5.2
 eth-utils==2.3.1
 fastapi==0.109.0
 frozenlist==1.4.1
+gunicorn==21.2.0
 h11==0.14.0
 halmos==0.0.8
 hexbytes==0.3.1
