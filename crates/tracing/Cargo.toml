@@ -16,6 +16,7 @@
   metrics = "0.21.1"
   opentelemetry = { workspace = true }
   opentelemetry-otlp = { workspace = true }
+  opentelemetry-prometheus = { workspace = true }
   opentelemetry_sdk = { workspace = true }
   pyroscope = "0.5.7"
   pyroscope_pprofrs = "0.2.7"

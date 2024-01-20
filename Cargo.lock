@@ -6020,6 +6020,7 @@ dependencies = [
  "lightdotso-indexer",
  "lightdotso-interpreter",
  "lightdotso-kafka",
+ "lightdotso-opentelemetry",
  "lightdotso-paymaster",
  "lightdotso-prisma",
  "lightdotso-prometheus",
@@ -6375,11 +6376,17 @@ dependencies = [
 name = "lightdotso-opentelemetry"
 version = "0.1.0"
 dependencies = [
+ "axum 0.6.20",
+ "futures",
  "lazy_static",
  "once_cell",
  "opentelemetry 0.20.0",
  "opentelemetry-prometheus",
  "opentelemetry_sdk",
+ "prometheus",
+ "time 0.3.30",
+ "tokio",
+ "tower",
 ]
 
 [[package]]
@@ -6580,6 +6587,7 @@ dependencies = [
  "metrics 0.21.1",
  "opentelemetry 0.20.0",
  "opentelemetry-otlp",
+ "opentelemetry-prometheus",
  "opentelemetry_sdk",
  "pyroscope",
  "pyroscope_pprofrs",
