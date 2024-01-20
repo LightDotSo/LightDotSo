@@ -86,7 +86,7 @@ export const usePathType = (): RootType => {
     }
 
     return "wallet";
-  }, [pathname]);
+  }, [pathname, selectedLayoutSegement]);
 
   // ---------------------------------------------------------------------------
   // Return
