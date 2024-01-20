@@ -59,7 +59,8 @@ function Web3Provider({
       themeMode: theme === "light" ? "light" : "dark",
     });
     return modal;
-  }, [theme]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // ---------------------------------------------------------------------------
   // Web3Modal

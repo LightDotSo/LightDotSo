@@ -13,8 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { usePathname, useSelectedLayoutSegment } from "next/navigation";
-import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -60,24 +59,6 @@ export const usePathType = (): RootType => {
   // ---------------------------------------------------------------------------
 
   const pathname = usePathname();
-  const selectedLayoutSegement = useSelectedLayoutSegment();
-
-  // ---------------------------------------------------------------------------
-  // State Hooks
-  // ---------------------------------------------------------------------------
-
-  const [layoutSegement, setLayoutSegement] = useState<string | null>(null);
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
-
-  useEffect(() => {
-    if (!selectedLayoutSegement) {
-      return;
-    }
-    setLayoutSegement(selectedLayoutSegement);
-  }, [selectedLayoutSegement]);
 
   // ---------------------------------------------------------------------------
   // Return
@@ -90,10 +71,7 @@ export const usePathType = (): RootType => {
     return "unauthenticated";
   }
 
-  if (
-    authenticatedPaths.some(path => pathname.startsWith(path)) &&
-    layoutSegement !== "(wallet)"
-  ) {
+  if (authenticatedPaths.some(path => pathname.startsWith(path))) {
     return "authenticated";
   }
 
