@@ -277,8 +277,6 @@ pub(crate) async fn v1_token_list_handler(
             // Modify the root token to be the culmative sum of the token group.
             token.balance_usd = total_balance;
             token.amount = total_amount;
-            // Modify the chain id to be 0, since the token group is not associated with a chain.
-            token.chain_id = 0;
         }
     }
 

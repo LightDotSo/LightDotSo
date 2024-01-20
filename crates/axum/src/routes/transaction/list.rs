@@ -115,7 +115,9 @@ pub(crate) async fn v1_transaction_list_handler(
             transaction::interpretation::fetch()
                 .with(interpretation::actions::fetch(interpretaion_action_params))
                 .with(
-                    interpretation::asset_changes::fetch(vec![]).with(asset_change::token::fetch()),
+                    interpretation::asset_changes::fetch(vec![])
+                        .with(asset_change::interpretation_action::fetch())
+                        .with(asset_change::token::fetch()),
                 ),
         )
         .skip(query.offset.unwrap_or(0))
