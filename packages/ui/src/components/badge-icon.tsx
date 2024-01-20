@@ -29,7 +29,7 @@ import { badgeVariants } from "./badge";
 // Styles
 // -----------------------------------------------------------------------------
 
-const badgeIconVariants = cva(["rounded-md"], {
+export const badgeIconVariants = cva(["rounded-md"], {
   variants: {
     shape: {
       rounded: "rounded-full",

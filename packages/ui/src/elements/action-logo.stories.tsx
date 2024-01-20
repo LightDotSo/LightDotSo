@@ -43,3 +43,47 @@ export const ERC20_APPROVE: Story = {
   render: args => <ActionLogo action={Action.ERC20_APPROVE} />,
   args: {},
 };
+export const ERC20_RECEIVE: Story = {
+  render: args => <ActionLogo action={Action.ERC20_RECEIVE} />,
+  args: {},
+};
+export const ERC20_TRANSFER: Story = {
+  render: args => <ActionLogo action={Action.ERC20_TRANSFER} />,
+  args: {},
+};
+export const ERC721_APPROVE: Story = {
+  render: args => <ActionLogo action={Action.ERC721_APPROVE} />,
+  args: {},
+};
+export const ERC721_RECEIVE: Story = {
+  render: args => <ActionLogo action={Action.ERC721_RECEIVE} />,
+  args: {},
+};
+export const ERC721_TRANSFER: Story = {
+  render: args => <ActionLogo action={Action.ERC721_TRANSFER} />,
+  args: {},
+};
+export const ERC1155_APPROVE: Story = {
+  render: args => <ActionLogo action={Action.ERC1155_APPROVE} />,
+  args: {},
+};
+export const ERC1155_RECEIVE: Story = {
+  render: args => <ActionLogo action={Action.ERC1155_RECEIVE} />,
+  args: {},
+};
+export const ERC1155_TRANSFER: Story = {
+  render: args => <ActionLogo action={Action.ERC1155_TRANSFER} />,
+  args: {},
+};
+export const ERC1155_BATCH_APPROVE: Story = {
+  render: args => <ActionLogo action={Action.ERC1155_BATCH_APPROVE} />,
+  args: {},
+};
+export const ERC1155_BATCH_RECEIVE: Story = {
+  render: args => <ActionLogo action={Action.ERC1155_BATCH_RECEIVE} />,
+  args: {},
+};
+export const ERC1155_BATCH_TRANSFER: Story = {
+  render: args => <ActionLogo action={Action.ERC1155_BATCH_TRANSFER} />,
+  args: {},
+};

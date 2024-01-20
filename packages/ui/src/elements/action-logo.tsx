@@ -14,75 +14,57 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { Action } from "@lightdotso/const";
-import { ArrowDownLeft, ArrowUpRight } from "lucide-react";
-import { SVGProps, RefAttributes, JSX, FC } from "react";
+import { ArrowDown, ArrowUp, UnlockIcon } from "lucide-react";
+import { FC } from "react";
+import { badgeVariants } from "../components/badge";
 import { BadgeIcon } from "../components/badge-icon";
+import { VariantProps } from "class-variance-authority";
 
 // -----------------------------------------------------------------------------
 // Const
 // -----------------------------------------------------------------------------
 
+export const ActionLogoIntents: Record<
+  Action,
+  Extract<VariantProps<typeof badgeVariants>["intent"], string>
+> = {
+  [Action.NATIVE_RECEIVE]: "info",
+  [Action.NATIVE_SEND]: "info",
+  [Action.ERC20_APPROVE]: "info",
+  [Action.ERC20_RECEIVE]: "info",
+  [Action.ERC20_SEND]: "info",
+  [Action.ERC20_MINT]: "info",
+  [Action.ERC20_BURN]: "info",
+  [Action.ERC721_APPROVE]: "info",
+  [Action.ERC721_RECEIVE]: "info",
+  [Action.ERC721_SEND]: "info",
+  [Action.ERC721_MINT]: "info",
+  [Action.ERC721_BURN]: "info",
+  [Action.ERC1155_APPROVE]: "info",
+  [Action.ERC1155_RECEIVE]: "info",
+  [Action.ERC1155_SEND]: "info",
+  [Action.ERC1155_MINT]: "info",
+  [Action.ERC1155_BURN]: "info",
+};
+
 export const ActionLogos: Record<Action, React.ElementType> = {
-  [Action.ERC20_APPROVE]: (
-    props: JSX.IntrinsicAttributes &
-      SVGProps<SVGSVGElement> &
-      RefAttributes<SVGSVGElement>,
-  ) => <ArrowUpRight className="w-6 h-6 text-gray-600" {...props} />,
-  [Action.ERC20_RECEIVE]: (
-    props: JSX.IntrinsicAttributes &
-      SVGProps<SVGSVGElement> &
-      RefAttributes<SVGSVGElement>,
-  ) => <ArrowDownLeft className="w-6 h-6 text-gray-600" {...props} />,
-  [Action.ERC20_TRANSFER]: (
-    props: JSX.IntrinsicAttributes &
-      SVGProps<SVGSVGElement> &
-      RefAttributes<SVGSVGElement>,
-  ) => <ArrowUpRight className="w-6 h-6 text-gray-600" {...props} />,
-  [Action.ERC721_APPROVE]: (
-    props: JSX.IntrinsicAttributes &
-      SVGProps<SVGSVGElement> &
-      RefAttributes<SVGSVGElement>,
-  ) => <ArrowUpRight className="w-6 h-6 text-gray-600" {...props} />,
-  [Action.ERC721_RECEIVE]: (
-    props: JSX.IntrinsicAttributes &
-      SVGProps<SVGSVGElement> &
-      RefAttributes<SVGSVGElement>,
-  ) => <ArrowDownLeft className="w-6 h-6 text-gray-600" {...props} />,
-  [Action.ERC721_TRANSFER]: (
-    props: JSX.IntrinsicAttributes &
-      SVGProps<SVGSVGElement> &
-      RefAttributes<SVGSVGElement>,
-  ) => <ArrowUpRight className="w-6 h-6 text-gray-600" {...props} />,
-  [Action.ERC1155_APPROVE]: (
-    props: JSX.IntrinsicAttributes &
-      SVGProps<SVGSVGElement> &
-      RefAttributes<SVGSVGElement>,
-  ) => <ArrowUpRight className="w-6 h-6 text-gray-600" {...props} />,
-  [Action.ERC1155_RECEIVE]: (
-    props: JSX.IntrinsicAttributes &
-      SVGProps<SVGSVGElement> &
-      RefAttributes<SVGSVGElement>,
-  ) => <ArrowDownLeft className="w-6 h-6 text-gray-600" {...props} />,
-  [Action.ERC1155_TRANSFER]: (
-    props: JSX.IntrinsicAttributes &
-      SVGProps<SVGSVGElement> &
-      RefAttributes<SVGSVGElement>,
-  ) => <ArrowUpRight className="w-6 h-6 text-gray-600" {...props} />,
-  [Action.ERC1155_BATCH_APPROVE]: (
-    props: JSX.IntrinsicAttributes &
-      SVGProps<SVGSVGElement> &
-      RefAttributes<SVGSVGElement>,
-  ) => <ArrowUpRight className="w-6 h-6 text-gray-600" {...props} />,
-  [Action.ERC1155_BATCH_RECEIVE]: (
-    props: JSX.IntrinsicAttributes &
-      SVGProps<SVGSVGElement> &
-      RefAttributes<SVGSVGElement>,
-  ) => <ArrowDownLeft className="w-6 h-6 text-gray-600" {...props} />,
-  [Action.ERC1155_BATCH_TRANSFER]: (
-    props: JSX.IntrinsicAttributes &
-      SVGProps<SVGSVGElement> &
-      RefAttributes<SVGSVGElement>,
-  ) => <ArrowUpRight className="w-6 h-6 text-gray-600" {...props} />,
+  [Action.NATIVE_RECEIVE]: ArrowDown,
+  [Action.NATIVE_SEND]: ArrowUp,
+  [Action.ERC20_APPROVE]: UnlockIcon,
+  [Action.ERC20_RECEIVE]: ArrowDown,
+  [Action.ERC20_MINT]: ArrowUp,
+  [Action.ERC20_SEND]: ArrowUp,
+  [Action.ERC20_BURN]: ArrowDown,
+  [Action.ERC721_APPROVE]: UnlockIcon,
+  [Action.ERC721_RECEIVE]: ArrowDown,
+  [Action.ERC721_SEND]: ArrowUp,
+  [Action.ERC721_MINT]: ArrowUp,
+  [Action.ERC721_BURN]: ArrowDown,
+  [Action.ERC1155_APPROVE]: UnlockIcon,
+  [Action.ERC1155_RECEIVE]: ArrowDown,
+  [Action.ERC1155_SEND]: ArrowUp,
+  [Action.ERC1155_MINT]: ArrowUp,
+  [Action.ERC1155_BURN]: ArrowDown,
 };
 
 // -----------------------------------------------------------------------------
@@ -98,9 +80,10 @@ export interface ActionLogoProps {
 // -----------------------------------------------------------------------------
 
 export const ActionLogo: FC<ActionLogoProps> = ({ action }) => {
+  const intent = ActionLogoIntents[action];
   const Logo = ActionLogos[action];
   return (
-    <BadgeIcon variant="shadow">
+    <BadgeIcon intent={intent} variant="shadow">
       <Logo />
     </BadgeIcon>
   );

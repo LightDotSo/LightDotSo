@@ -72,7 +72,7 @@ impl Adapter for ERC721Adapter {
 
             // Get the actions for the `from` address
             let from_action_type = if from == Address::zero() {
-                InterpretationActionType::ERC721Minted
+                InterpretationActionType::ERC721Mint
             } else {
                 InterpretationActionType::ERC721Send
             };
@@ -81,7 +81,7 @@ impl Adapter for ERC721Adapter {
 
             // Get the actions for the `to` address
             let to_action_type = if to == Address::zero() {
-                InterpretationActionType::ERC721Burned
+                InterpretationActionType::ERC721Burn
             } else {
                 InterpretationActionType::ERC721Receive
             };
