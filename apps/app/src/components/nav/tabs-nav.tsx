@@ -21,11 +21,10 @@ import { Badge } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import type { FC } from "react";
 import { isAddress } from "viem";
-import { usePathType } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Const
@@ -69,30 +68,25 @@ export const TabsNav: FC<TabNavProps> = ({
   // Next Hooks
   // ---------------------------------------------------------------------------
 
+  const router = useRouter();
   const pathname = usePathname();
-
-  // ---------------------------------------------------------------------------
-  // Custom Hooks
-  // ---------------------------------------------------------------------------
-
-  const pathType = usePathType();
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const firstSlug = useMemo(() => {
-    // If the pathType is `demo`, return the first slug
-    if (pathType === "demo") {
-      return "/demo";
-    }
-
     // Split the path using '/' as delimiter and remove empty strings
     const slugs = pathname.split("/").filter(slug => slug);
 
+    // If the first slug is `demo`, return `/demo`
+    if (slugs.length > 0 && slugs[0] === "demo") {
+      return "/demo";
+    }
+
     // Return the first slug if it is an address
     return slugs.length > 0 && isAddress(slugs[0]) ? "/" + slugs[0] : "";
-  }, [pathname, pathType]);
+  }, [pathname]);
 
   // ---------------------------------------------------------------------------
   // Ref Hooks
@@ -167,6 +161,7 @@ export const TabsNav: FC<TabNavProps> = ({
               )}
               onPointerEnter={() => {
                 setHoveredTabIndex(i);
+                router.prefetch(href);
               }}
               onFocus={() => {
                 setHoveredTabIndex(i);

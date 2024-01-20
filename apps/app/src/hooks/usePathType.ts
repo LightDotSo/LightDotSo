@@ -13,8 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { usePathname, useSelectedLayoutSegment } from "next/navigation";
-import { useMemo } from "react";
+import { usePathname } from "next/navigation";
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -60,47 +59,25 @@ export const usePathType = (): RootType => {
   // ---------------------------------------------------------------------------
 
   const pathname = usePathname();
-  const selectedLayoutSegement = useSelectedLayoutSegment();
 
   // ---------------------------------------------------------------------------
-  // Memoized Hooks
+  // Return
   // ---------------------------------------------------------------------------
 
-  const layoutSegement = useMemo(() => {
-    if (!selectedLayoutSegement) {
-      return null;
-    }
+  if (
+    unauthenticatedPaths.some(path => pathname.startsWith(path)) ||
+    pathname === "/"
+  ) {
+    return "unauthenticated";
+  }
 
-    return selectedLayoutSegement;
-  }, [selectedLayoutSegement]);
+  if (authenticatedPaths.some(path => pathname.startsWith(path))) {
+    return "authenticated";
+  }
 
-  const pathType = useMemo(() => {
-    if (
-      unauthenticatedPaths.some(path => pathname.startsWith(path)) ||
-      pathname === "/"
-    ) {
-      return "unauthenticated";
-    }
+  if (demoPaths.some(path => pathname.startsWith(path))) {
+    return "demo";
+  }
 
-    if (
-      authenticatedPaths.some(path => pathname.startsWith(path)) &&
-      layoutSegement !== "(wallet)"
-    ) {
-      return "authenticated";
-    }
-
-    if (demoPaths.some(path => pathname.startsWith(path))) {
-      return "demo";
-    }
-
-    return "wallet";
-  }, [
-    unauthenticatedPaths,
-    authenticatedPaths,
-    demoPaths,
-    pathname,
-    layoutSegement,
-  ]);
-
-  return pathType;
+  return "wallet";
 };
