@@ -25,3 +25,4 @@ export {
   SettingsSubCategory,
   TITLES,
 } from "./titles";
+export { DEFAULT_TABS, AI_TAB } from "./tabs";
