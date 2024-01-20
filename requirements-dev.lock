@@ -27,6 +27,7 @@ cbor2==5.5.1
 certifi==2023.11.17
 cffi==1.16.0
 charset-normalizer==3.3.2
+click==8.1.7
 comm==0.2.1
 cryptography==41.0.7
 crytic-compile==0.3.5
@@ -45,6 +46,7 @@ eth-rlp==1.0.0
 eth-typing==3.5.2
 eth-utils==2.3.1
 executing==2.0.1
+fastapi==0.109.0
 fastjsonschema==2.19.1
 fqdn==1.5.1
 frozenlist==1.4.1
@@ -53,6 +55,7 @@ halmos==0.0.8
 hexbytes==0.3.1
 httpcore==1.0.2
 httpx==0.26.0
+httpx-sse==0.4.0
 idna==3.6
 ipykernel==6.28.0
 ipython==8.20.0
@@ -74,8 +77,9 @@ jupyterlab==4.0.10
 jupyterlab-pygments==0.3.0
 jupyterlab-server==2.25.2
 langchain==0.1.0
-langchain-community==0.0.10
-langchain-core==0.1.8
+langchain-community==0.0.13
+langchain-core==0.1.12
+langserve==0.0.39
 langsmith==0.0.78
 lru-dict==1.2.0
 markupsafe==2.1.3
@@ -94,6 +98,7 @@ notebook==7.0.6
 notebook-shim==0.2.3
 numpy==1.26.3
 openai==1.7.0
+orjson==3.9.12
 overrides==7.4.0
 packaging==23.2
 pandocfilters==1.5.0
@@ -138,7 +143,9 @@ sniffio==1.3.0
 solc-select==1.0.4
 soupsieve==2.5
 sqlalchemy==2.0.25
+sse-starlette==1.8.2
 stack-data==0.6.3
+starlette==0.35.1
 tenacity==8.2.3
 terminado==0.18.0
 tinycss2==1.2.1
@@ -154,6 +161,7 @@ typing-extensions==4.9.0
 typing-inspect==0.9.0
 uri-template==1.3.0
 urllib3==2.1.0
+uvicorn==0.26.0
 wcwidth==0.2.12
 web3==6.12.0
 webcolors==1.13
