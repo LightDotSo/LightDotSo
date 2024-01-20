@@ -15,14 +15,18 @@
 
 "use client";
 
+import { useIsMounted } from "@lightdotso/hooks";
+// import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
 import {
   Dialog,
   DialogContent,
   DialogPortal,
   DialogOverlay,
+  Skeleton,
+  // Drawer,
 } from "@lightdotso/ui";
 import { useRouter } from "next/navigation";
-import { useCallback } from "react";
+import { Suspense, useCallback } from "react";
 import type { FC, ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
@@ -38,6 +42,13 @@ interface ModalProps {
 // -----------------------------------------------------------------------------
 
 export const Modal: FC<ModalProps> = ({ children }) => {
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const isMounted = useIsMounted();
+  // const isDesktop = useMediaQuery("md");
+
   // ---------------------------------------------------------------------------
   // Next Hooks
   // ---------------------------------------------------------------------------
@@ -56,12 +67,28 @@ export const Modal: FC<ModalProps> = ({ children }) => {
   // Render
   // ---------------------------------------------------------------------------
 
+  if (!isMounted) {
+    return null;
+  }
+
+  // if (!isDesktop) {
+  //   return (
+  //     <Drawer open={true} onClose={onDismiss}>
+  //       <Suspense fallback={<Skeleton className="h-64 w-full" />}>
+  //         {children}
+  //       </Suspense>
+  //     </Drawer>
+  //   );
+  // }
+
   return (
     <Dialog open={true} defaultOpen={true} onOpenChange={onDismiss}>
       <DialogPortal>
         <DialogOverlay />
         <DialogContent className="w-full overflow-scroll sm:max-h-[80%] sm:max-w-3xl">
-          {children}
+          <Suspense fallback={<Skeleton className="h-64 w-full" />}>
+            {children}
+          </Suspense>
         </DialogContent>
       </DialogPortal>
     </Dialog>

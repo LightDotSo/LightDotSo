@@ -30,6 +30,7 @@ export const NAVIGATION_LINKS = {
     { name: "Home", href: INTERNAL_LINKS.Home },
     { name: "Open", href: SOCIAL_LINKS.Plausible },
     { name: "Notion", href: SOCIAL_LINKS.Notion },
+    { name: "Status", href: INTERNAL_LINKS.Status },
   ],
   legal: [
     {
