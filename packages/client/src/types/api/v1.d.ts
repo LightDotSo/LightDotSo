@@ -565,6 +565,8 @@ export interface components {
     };
     /** @description AssetChange root type. */
     AssetChange: {
+      /** @description The action id of the asset change. */
+      action?: string | null;
       /** @description The address of the asset change. */
       address: string;
       /**
