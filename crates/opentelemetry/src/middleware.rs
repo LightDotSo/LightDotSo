@@ -292,9 +292,6 @@ impl HttpMetricsLayerBuilder {
             ],
         );
 
-        // let res = if !resource.is_empty() { res.merge(&mut Resource::new(resource)) } else { res
-        // };
-
         let registry = if let Some(prefix) = self.prefix {
             Registry::new_custom(Some(prefix), self.labels).expect("create prometheus registry")
         } else {
