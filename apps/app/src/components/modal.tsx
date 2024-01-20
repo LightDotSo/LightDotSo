@@ -15,7 +15,8 @@
 
 "use client";
 
-import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
+import { useIsMounted } from "@lightdotso/hooks";
+// import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
 import {
   Dialog,
   DialogContent,
@@ -46,7 +47,7 @@ export const Modal: FC<ModalProps> = ({ children }) => {
   // ---------------------------------------------------------------------------
 
   const isMounted = useIsMounted();
-  const isDesktop = useMediaQuery("md");
+  // const isDesktop = useMediaQuery("md");
 
   // ---------------------------------------------------------------------------
   // Next Hooks
@@ -70,15 +71,15 @@ export const Modal: FC<ModalProps> = ({ children }) => {
     return null;
   }
 
-  if (!isDesktop) {
-    return (
-      <Drawer open={true} onOpenChange={onDismiss}>
-        <Suspense fallback={<Skeleton className="h-64 w-full" />}>
-          {children}
-        </Suspense>
-      </Drawer>
-    );
-  }
+  // if (!isDesktop) {
+  //   return (
+  //     <Drawer open={true} onClose={onDismiss}>
+  //       <Suspense fallback={<Skeleton className="h-64 w-full" />}>
+  //         {children}
+  //       </Suspense>
+  //     </Drawer>
+  //   );
+  // }
 
   return (
     <Dialog open={true} defaultOpen={true} onOpenChange={onDismiss}>
