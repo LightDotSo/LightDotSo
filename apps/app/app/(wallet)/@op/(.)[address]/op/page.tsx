@@ -42,3 +42,9 @@ export default async function Page({ params, searchParams }: PageProps) {
     </Modal>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Config
+// -----------------------------------------------------------------------------
+
+export const runtime = "edge";
