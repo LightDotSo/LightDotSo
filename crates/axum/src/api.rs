@@ -410,7 +410,7 @@ pub async fn start_api_server() -> Result<()> {
 
     // Create the concurrent limit layer
     let concurrency_layer =
-        tower::ServiceBuilder::new().load_shed().concurrency_limit(2).into_inner();
+        tower::ServiceBuilder::new().load_shed().concurrency_limit(10).into_inner();
 
     // Create the cookie manager
     let cookie_manager_layer = CookieManagerLayer::new();
