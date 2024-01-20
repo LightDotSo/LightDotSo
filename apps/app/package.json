@@ -14,7 +14,7 @@
   "author": "Light, Inc.",
   "scripts": {
     "analyze": "cross-env ANALYZE=true next build || true",
-    "build": "dotenv -- next build || true",
+    "build": "dotenv -- turbo run build || true",
     "dev": "concurrently \"pnpm:dev:*\"",
     "dev:inngest": "inngest dev -u http://localhost:3001/api/inngest",
     "dev:next": "next dev -p 3001",
