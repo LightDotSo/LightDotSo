@@ -184,12 +184,14 @@ impl PathSkipper {
 
 impl Default for PathSkipper {
     /// Returns a `PathSkipper` that skips any path which
-    /// starts with `/metrics` or `/favicon.ico``.
+    /// starts with `/metrics` or `/favicon.ico` or contains `/swagger-ui`.
     ///
     /// This is the default implementation used when
     /// building an HttpMetricsLayerBuilder from scratch.
     fn default() -> Self {
-        Self::new(|s| s.starts_with("/metrics") || s.starts_with("/favicon.ico"))
+        Self::new(|s| {
+            s.starts_with("/metrics") || s.starts_with("/favicon.ico") || s.contains("/swagger-ui")
+        })
     }
 }
 

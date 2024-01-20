@@ -408,7 +408,12 @@ pub async fn start_api_server() -> Result<()> {
     let cookie_manager_layer = CookieManagerLayer::new();
 
     // Create the otlp middleware
-    let metrics = HttpMetricsLayerBuilder::new().build();
+    let metrics = HttpMetricsLayerBuilder::new()
+        .with_service_name(
+            std::env::var("FLY_APP_NAME").unwrap_or(env!("CARGO_PKG_NAME").to_string()),
+        )
+        .with_service_version(env!("CARGO_PKG_VERSION").to_string())
+        .build();
 
     // Create the api doc
     let mut open_api = ApiDoc::openapi();
