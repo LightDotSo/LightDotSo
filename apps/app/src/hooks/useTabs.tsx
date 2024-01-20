@@ -29,8 +29,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useMemo } from "react";
 import type { Address } from "viem";
-import { usePathType } from "./usePathType";
 import { AI_TAB, DEFAULT_TABS } from "@/const";
+import { usePathType } from "@/hooks/usePathType";
 
 // -----------------------------------------------------------------------------
 // Hook
