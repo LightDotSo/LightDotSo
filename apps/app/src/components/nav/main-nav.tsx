@@ -57,6 +57,7 @@ export const MainNav: FC<MainNavProps> = ({ children, ...props }) => {
   // ---------------------------------------------------------------------------
 
   const Tabs = () => {
+    // Don't render tabs on unauthenticated or authenticated paths
     if (pathType === "unauthenticated" || pathType === "authenticated") {
       return null;
     }
