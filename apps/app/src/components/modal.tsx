@@ -70,7 +70,7 @@ export const Modal: FC<ModalProps> = ({ children }) => {
     return null;
   }
 
-  if (isDesktop) {
+  if (!isDesktop) {
     return (
       <Drawer open={true} onOpenChange={onDismiss}>
         <Suspense fallback={<Skeleton className="h-64 w-full" />}>
