@@ -28,7 +28,7 @@ export default async function Page() {
 
   return (
     <Modal>
-      <div className="flex flex-col items-center justify-center w-full h-96">
+      <div className="flex h-96 w-full flex-col items-center justify-center">
         Hi
       </div>
     </Modal>
