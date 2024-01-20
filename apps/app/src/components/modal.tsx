@@ -15,15 +15,15 @@
 
 "use client";
 
-import { useIsMounted } from "@lightdotso/hooks";
-// import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
+import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
 import {
   Dialog,
   DialogContent,
   DialogPortal,
   DialogOverlay,
   Skeleton,
-  // Drawer,
+  Drawer,
+  DrawerContent,
 } from "@lightdotso/ui";
 import { useRouter } from "next/navigation";
 import { Suspense, useCallback } from "react";
@@ -47,7 +47,7 @@ export const Modal: FC<ModalProps> = ({ children }) => {
   // ---------------------------------------------------------------------------
 
   const isMounted = useIsMounted();
-  // const isDesktop = useMediaQuery("md");
+  const isDesktop = useMediaQuery("md");
 
   // ---------------------------------------------------------------------------
   // Next Hooks
@@ -71,15 +71,17 @@ export const Modal: FC<ModalProps> = ({ children }) => {
     return null;
   }
 
-  // if (!isDesktop) {
-  //   return (
-  //     <Drawer open={true} onClose={onDismiss}>
-  //       <Suspense fallback={<Skeleton className="h-64 w-full" />}>
-  //         {children}
-  //       </Suspense>
-  //     </Drawer>
-  //   );
-  // }
+  if (!isDesktop) {
+    return (
+      <Drawer shouldScaleBackground open={true} onClose={onDismiss}>
+        <DrawerContent>
+          <Suspense fallback={<Skeleton className="h-64 w-full" />}>
+            {children}
+          </Suspense>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
 
   return (
     <Dialog open={true} defaultOpen={true} onOpenChange={onDismiss}>
