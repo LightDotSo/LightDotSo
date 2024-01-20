@@ -13,7 +13,21 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { setupServer } from "msw/node";
-import { handlers } from "@/msw/handlers";
+import {
+  BASE_API_AUTHENTICATED_URL,
+  BASE_API_URL,
+  BASE_LOCAL_ADMIN_URL,
+} from "@lightdotso/const";
+import { walletListData } from "@lightdotso/demo";
+import { HttpResponse, http } from "msw";
 
-export const server = setupServer(...handlers);
+export const getWallets = (url: string) =>
+  http.get(`${url}/v1/wallet/list`, () => {
+    return HttpResponse.json(walletListData);
+  });
+
+export const handlers = [
+  getWallets(BASE_LOCAL_ADMIN_URL),
+  getWallets(BASE_API_AUTHENTICATED_URL),
+  getWallets(BASE_API_URL),
+];

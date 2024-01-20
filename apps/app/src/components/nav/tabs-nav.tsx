@@ -21,7 +21,7 @@ import { Badge } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import type { FC } from "react";
 import { isAddress } from "viem";
@@ -68,7 +68,6 @@ export const TabsNav: FC<TabNavProps> = ({
   // Next Hooks
   // ---------------------------------------------------------------------------
 
-  const router = useRouter();
   const pathname = usePathname();
 
   // ---------------------------------------------------------------------------
@@ -161,7 +160,6 @@ export const TabsNav: FC<TabNavProps> = ({
               )}
               onPointerEnter={() => {
                 setHoveredTabIndex(i);
-                router.prefetch(href);
               }}
               onFocus={() => {
                 setHoveredTabIndex(i);

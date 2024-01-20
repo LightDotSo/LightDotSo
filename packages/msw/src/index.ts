@@ -13,7 +13,5 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { setupWorker } from "msw/browser";
-import { handlers } from "@/msw/handlers";
-
-export const worker = setupWorker(...handlers);
+export { worker } from "./browser";
+// export { server } from "./node";

@@ -108,21 +108,21 @@ export const MainNav: FC<MainNavProps> = ({ children, ...props }) => {
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const type = usePathType();
+  const pathType = usePathType();
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const typeTabs = useMemo(() => {
-    if (type === "demo") {
+    if (pathType === "demo") {
       return tabs.filter(tab => {
         // Don't return `settings` and `support` tabs
         return tab.id !== "settings" && tab.id !== "support";
       });
     }
     return tabs;
-  }, [type]);
+  }, [pathType]);
 
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -146,7 +146,7 @@ export const MainNav: FC<MainNavProps> = ({ children, ...props }) => {
   // ---------------------------------------------------------------------------
 
   const Tabs = () => {
-    if (type === "unauthenticated" || type === "authenticated") {
+    if (pathType === "unauthenticated" || pathType === "authenticated") {
       return null;
     }
 

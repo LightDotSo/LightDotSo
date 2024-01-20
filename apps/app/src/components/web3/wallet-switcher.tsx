@@ -285,7 +285,9 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
                         setSelectedWallet(wallet);
                         setOpen(false);
                         // Replace the current wallet address with the new one
-                        if (!pathname) return;
+                        if (!pathname) {
+                          return;
+                        }
                         if (pathname && pathname.split("/").length > 1) {
                           router.push(
                             `${pathname.replace(

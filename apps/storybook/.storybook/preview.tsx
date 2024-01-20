@@ -21,6 +21,9 @@ import {
   MINIMAL_VIEWPORTS,
 } from "@storybook/addon-viewport";
 import * as React from "react";
+import { initialize, mswLoader } from "msw-storybook-addon";
+
+initialize();
 
 export const decorators = [
   Story => (
@@ -57,6 +60,7 @@ const preview: Preview = {
       },
     },
   },
+  loaders: [mswLoader],
 };
 
 export default preview;

@@ -37,3 +37,5 @@ ignores:
   - "@vercel/toolbar"
   - "@lightdotso/params"
   - "@next/bundle-analyzer"
+  - "@lightdotso/const"
+  - "@lightdotso/demo"

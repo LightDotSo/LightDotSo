@@ -13,15 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { MAX_WEIGHT, MAX_THRESHOLD } from "./configuration";
-export { DEMO_WALLET_ADDRESS } from "./demo";
-export { OVERVIEW_ROW_COUNT, TRANSACTION_ROW_COUNT } from "./numbers";
-export {
-  Category,
-  DemoSubCategory,
-  UserOperationSubCategory,
-  OverviewSubCategory,
-  TransactionsSubCategory,
-  SettingsSubCategory,
-  TITLES,
-} from "./titles";
+import { setupWorker } from "msw/browser";
+import { handlers } from "./handlers";
+
+export const worker = setupWorker(...handlers);

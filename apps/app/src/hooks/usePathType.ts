@@ -14,6 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { usePathname } from "next/navigation";
+// import { usePathname, useSelectedLayoutSegment } from "next/navigation";
+import { useMemo } from "react";
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -59,25 +61,38 @@ export const usePathType = (): RootType => {
   // ---------------------------------------------------------------------------
 
   const pathname = usePathname();
+  // const selectedLayoutSegement = useSelectedLayoutSegment();
 
   // ---------------------------------------------------------------------------
   // Return
   // ---------------------------------------------------------------------------
 
-  if (
-    unauthenticatedPaths.some(path => pathname.startsWith(path)) ||
-    pathname === "/"
-  ) {
-    return "unauthenticated";
-  }
+  const pathType = useMemo(() => {
+    if (
+      unauthenticatedPaths.some(path => pathname.startsWith(path)) ||
+      pathname === "/"
+    ) {
+      return "unauthenticated";
+    }
 
-  if (authenticatedPaths.some(path => pathname.startsWith(path))) {
-    return "authenticated";
-  }
+    if (
+      authenticatedPaths.some(path => pathname.startsWith(path))
+      // selectedLayoutSegement !== "(wallet)"
+    ) {
+      return "authenticated";
+    }
 
-  if (demoPaths.some(path => pathname.startsWith(path))) {
-    return "demo";
-  }
+    if (demoPaths.some(path => pathname.startsWith(path))) {
+      return "demo";
+    }
 
-  return "wallet";
+    return "wallet";
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
+
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
+  return pathType;
 };

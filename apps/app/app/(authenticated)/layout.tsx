@@ -32,5 +32,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
   // Render
   // ---------------------------------------------------------------------------
 
+  // eslint-disable-nextline react/jsx-no-useless-fragment
   return <>{children}</>;
 }

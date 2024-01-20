@@ -83,6 +83,7 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
     items.forEach(item => {
       router.prefetch(`/${address}${item.href}`);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // ---------------------------------------------------------------------------

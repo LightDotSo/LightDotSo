@@ -37,7 +37,11 @@ ignores:
   - storybook-dark-mode
   - "@emotion/is-prop-valid"
   - "@radix-ui/react-toast"
-  - "@lightdotso/"
+  - "@lightdotso/client"
+  - "@lightdotso/const"
+  - "@lightdotso/demo"
   - "@tanstack/react-table"
   - "@tremor/react"
   - "@lightdotso/svg"
+  - vite
+  - css-loader

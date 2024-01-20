@@ -25,6 +25,8 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
+    "@lightdotso/const": "workspace:*",
+    "@lightdotso/demo": "workspace:*",
     "@lightdotso/styles": "workspace:*",
     "@lightdotso/svg": "workspace:*",
     "@lightdotso/ui": "workspace:*",
@@ -68,6 +70,8 @@
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
     "autoprefixer": "^10.4.17",
+    "css-loader": "^6.9.1",
+    "msw-storybook-addon": "^1.10.0",
     "postcss": "^8.4.33",
     "shadcn-ui": "^0.8.0",
     "storybook": "^7.6.10",

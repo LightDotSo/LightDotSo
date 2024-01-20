@@ -15,7 +15,7 @@
 
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
-import { Skeleton, SettingsSectionWrapper } from "@lightdotso/ui";
+import { SettingsSectionWrapper } from "@lightdotso/ui";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { Suspense } from "react";
 import type { Address } from "viem";
@@ -67,10 +67,10 @@ export default async function Page({ params }: PageProps) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <SettingsSectionWrapper>
-        <Suspense fallback={<Skeleton className="h-8 w-32" />}>
+        <Suspense>
           <SettingsNameCard address={params.address as Address} />
         </Suspense>
-        <Suspense fallback={<Skeleton className="h-8 w-32" />}>
+        <Suspense>
           <SettingsTestnetCard address={params.address as Address} />
         </Suspense>
       </SettingsSectionWrapper>
