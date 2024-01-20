@@ -80,7 +80,7 @@ export default async function Page({ params }: PageProps) {
     <HydrationBoundary state={dehydrate(queryClient)}>
       <SettingsSectionWrapper>
         {wallet_chains.map(chain => (
-          <Suspense key={chain.id} fallback={<Skeleton className="h-8 w-32" />}>
+          <Suspense key={chain.id}>
             <SettingsDeploymentCard
               chain={JSON.stringify(chain)}
               address={params.address as Address}

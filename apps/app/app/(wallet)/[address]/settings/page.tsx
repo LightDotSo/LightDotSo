@@ -67,10 +67,10 @@ export default async function Page({ params }: PageProps) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <SettingsSectionWrapper>
-        <Suspense fallback={<Skeleton className="h-8 w-32" />}>
+        <Suspense>
           <SettingsNameCard address={params.address as Address} />
         </Suspense>
-        <Suspense fallback={<Skeleton className="h-8 w-32" />}>
+        <Suspense>
           <SettingsTestnetCard address={params.address as Address} />
         </Suspense>
       </SettingsSectionWrapper>
