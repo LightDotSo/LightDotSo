@@ -1,1 +1,1 @@
-web: uvicorn src.lightdotso.server:app --host [::]
+web: uvicorn src.lightdotso.server:app
