@@ -41,3 +41,4 @@ ignores:
   - "@tanstack/react-table"
   - "@tremor/react"
   - "@lightdotso/svg"
+  - vite
