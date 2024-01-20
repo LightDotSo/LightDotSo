@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   darkMode: "class",
   content: [
     // "./app/**/*.{ts,tsx}",
@@ -453,10 +453,10 @@ module.exports = {
     },
   ],
   plugins: [
-    require("@headlessui/tailwindcss"),
-    require("tailwindcss-animate"),
-    require("@tailwindcss/aspect-ratio"),
-    require("@tailwindcss/forms"),
-    require("@tailwindcss/typography"),
+    (await import("@headlessui/tailwindcss")).default,
+    (await import("tailwindcss-animate")).default,
+    (await import("@tailwindcss/aspect-ratio")).default,
+    (await import("@tailwindcss/forms")).default,
+    (await import("@tailwindcss/typography")).default,
   ],
 };
