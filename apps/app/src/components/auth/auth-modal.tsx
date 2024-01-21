@@ -26,12 +26,12 @@ import {
   DialogPortal,
   DialogOverlay,
   DialogTitle,
+  toast,
 } from "@lightdotso/ui";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { SiweMessage } from "siwe";
 import { useSignMessage, useAccount } from "wagmi";
-import { errorToast, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -85,33 +85,42 @@ export function AuthModal() {
         signMessageAsync({
           message: message.prepareMessage(),
         }).then(signature => {
+          const loadingToast = toast.loading("Signing in...");
+
           postAuthVerify(
             {
               params: { query: { user_address: address } },
               body: { message: messageToSign, signature },
             },
             clientType,
-          ).then(res => {
-            res.match(
-              _ => {
-                successToast("Successfully signed in!");
-                router.back();
-              },
-              _ => {
-                errorToast("Failed to sign in!");
-              },
-            );
-          });
+          )
+            .then(res => {
+              toast.dismiss(loadingToast);
+              res.match(
+                _ => {
+                  toast.success("Successfully signed in!");
+                  router.back();
+                },
+                _ => {
+                  toast.error("Failed to sign in!");
+                },
+              );
+            })
+            .catch(err => {
+              toast.dismiss(loadingToast);
+              if (err instanceof Error) {
+                toast.error(err.message);
+              } else {
+                toast.error("Failed to sign in!");
+              }
+            });
         });
       },
       err => {
         if (err instanceof Error) {
-          errorToast(err.message);
-          return;
-        }
-        if (typeof err === "string") {
-          errorToast(err);
-          return;
+          toast.error(err.message);
+        } else {
+          toast.error("Failed to sign in!");
         }
       },
     );

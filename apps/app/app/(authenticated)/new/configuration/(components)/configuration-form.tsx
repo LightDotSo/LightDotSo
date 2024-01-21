@@ -44,6 +44,7 @@ import {
   Separator,
   TooltipProvider,
   PlaceholderOrb,
+  toast,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -69,7 +70,7 @@ import {
 import type { Owner, Owners } from "@/app/(authenticated)/new/(hooks)";
 import { publicClient } from "@/clients/public";
 import { MAX_THRESHOLD, MAX_WEIGHT } from "@/const";
-import { debounce, successToast } from "@/utils";
+import { debounce } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -340,7 +341,7 @@ export const ConfigurationForm: FC = () => {
 
   const onSubmit = useCallback(
     (_data: NewFormValues) => {
-      successToast("Configuration updated.");
+      toast.success("Configuration updated.");
       navigateToStep();
     },
     [navigateToStep],

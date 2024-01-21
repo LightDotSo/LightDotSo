@@ -14,5 +14,4 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 export { debounce } from "./debounce";
-export { errorToast, successToast, infoToast } from "./toast";
 export { serializeBigInt } from "./bigint";

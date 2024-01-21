@@ -18,7 +18,7 @@ import type { WalletData } from "@lightdotso/data";
 import type { WalletParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
-import { errorToast, successToast } from "@lightdotso/ui";
+import { toast } from "@lightdotso/ui";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 
 export const useMutationWallet = (params: WalletParams) => {
@@ -36,6 +36,8 @@ export const useMutationWallet = (params: WalletParams) => {
 
   const { mutate, isPending, isSuccess, isError } = useMutation({
     mutationFn: async (data: Partial<WalletData>) => {
+      const loadingToast = toast.loading("Updating name...");
+
       const res = await updateWallet(
         {
           params: {
@@ -50,20 +52,20 @@ export const useMutationWallet = (params: WalletParams) => {
         clientType,
       );
 
+      toast.dismiss(loadingToast);
+
       // Return if the response is 200
       res.match(
         _ => {
-          successToast("Successfully updated name.");
+          toast.success("Successfully updated name.");
         },
         err => {
           if (err instanceof Error) {
-            errorToast(err.message);
-            return;
+            toast.error(err.message);
+          } else {
+            toast.error("Failed to update name.");
           }
-          if (typeof err === "string") {
-            errorToast(err);
-            return;
-          }
+
           throw err;
         },
       );
@@ -100,12 +102,9 @@ export const useMutationWallet = (params: WalletParams) => {
       );
 
       if (err instanceof Error) {
-        errorToast(err.message);
-        return;
-      }
-      if (typeof err === "string") {
-        errorToast(err);
-        return;
+        toast.error(err.message);
+      } else {
+        toast.error("Failed to update name.");
       }
     },
     onSettled: () => {

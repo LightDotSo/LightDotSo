@@ -85,17 +85,7 @@ const Toaster = () => {
 };
 
 // -----------------------------------------------------------------------------
-// Utils
-// -----------------------------------------------------------------------------
-
-const errorToast = (err: string) => toast.error(err);
-
-const successToast = (data: any) => toast.success(data);
-
-const infoToast = (title: string) => toast.info(title);
-
-// -----------------------------------------------------------------------------
 // Exports
 // -----------------------------------------------------------------------------
 
-export { toast, Toaster, errorToast, successToast, infoToast };
+export { toast, Toaster };

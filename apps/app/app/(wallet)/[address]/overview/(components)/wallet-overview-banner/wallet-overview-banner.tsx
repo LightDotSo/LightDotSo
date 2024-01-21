@@ -21,6 +21,7 @@ import {
   TooltipContent,
   TooltipTrigger,
   TooltipProvider,
+  toast,
 } from "@lightdotso/ui";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { Suspense } from "react";
@@ -28,7 +29,6 @@ import type { FC } from "react";
 import type { Address } from "viem";
 import { WalletOverviewBannerAddress } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner-address";
 import { WalletOverviewBannerSparkline } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner-sparkline";
-import { errorToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -67,7 +67,7 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
                 type="button"
                 className="w-full md:w-28"
                 onClick={() => {
-                  errorToast("Not implemented yet");
+                  toast.error("Not implemented yet");
                 }}
               >
                 <PlusCircleIcon className="mr-2 size-5" />

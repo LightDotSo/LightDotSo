@@ -13,43 +13,33 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import type { TransactionData } from "@lightdotso/data";
-import { getChainById } from "@lightdotso/utils";
-import { ArrowUpRight } from "lucide-react";
-import type { FC } from "react";
+import { assetChangeGetData } from "@lightdotso/demo";
+import type { Meta, StoryObj } from "@storybook/react";
+import { AssetChange } from "./asset-change";
 
 // -----------------------------------------------------------------------------
-// Props
+// Meta
 // -----------------------------------------------------------------------------
 
-type TransactionCardHashProps = { transaction: TransactionData };
+const meta: Meta<typeof AssetChange> = {
+  title: "element/AssetChange",
+  component: AssetChange,
+  tags: ["autodocs"],
+  argTypes: {},
+};
+export default meta;
 
 // -----------------------------------------------------------------------------
-// Component
+// Types
 // -----------------------------------------------------------------------------
 
-export const TransactionCardHash: FC<TransactionCardHashProps> = ({
-  transaction: { chain_id, hash },
-}) => {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
+type Story = StoryObj<typeof AssetChange>;
 
-  return (
-    <div className="group flex items-center space-x-1.5">
-      <a
-        className="group-hover:underline"
-        target="_blank"
-        rel="noreferrer"
-        href={`${
-          getChainById(chain_id)?.blockExplorers?.default.url
-        }/tx/${hash}`}
-      >
-        {hash}
-      </a>
-      <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50 group-hover:underline group-hover:opacity-100" />
-    </div>
-  );
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Base: Story = {
+  render: args => <AssetChange assetChange={assetChangeGetData} />,
+  args: {},
 };

@@ -37,6 +37,7 @@ import {
   FormControl,
   FormLabel,
   TooltipProvider,
+  toast,
 } from "@lightdotso/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { backOff } from "exponential-backoff";
@@ -57,7 +58,6 @@ import {
   useTypeQueryState,
 } from "@/app/(authenticated)/new/(hooks)";
 import { publicClient } from "@/clients/public";
-import { errorToast, infoToast, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -141,12 +141,13 @@ export const ConfirmForm: FC = () => {
   const onSubmit = useCallback(
     () => {
       // Navigate to the next step
-      infoToast("Success!");
+      const loadingToast = toast.loading("Creating wallet...");
       // Set the form values
       // setFormValues(values);
       fetchToCreate(true)
         .then(() => {
-          successToast("You can now use your wallet.");
+          toast.dismiss(loadingToast);
+          toast.success("You can now use your wallet.");
 
           backOff(() =>
             getWallet(
@@ -158,19 +159,20 @@ export const ConfirmForm: FC = () => {
               if (res) {
                 router.push(`/${address}`);
               } else {
-                errorToast("There was a problem with your request.");
+                toast.error("There was a problem with your request.");
                 router.push("/");
               }
             })
             .catch(() => {
-              errorToast(
+              toast.error(
                 "There was a problem with your request while creating.",
               );
               router.push("/");
             });
         })
         .catch(() => {
-          errorToast(
+          toast.dismiss(loadingToast);
+          toast.error(
             "There was a problem with your request (invalid request likely).",
           );
         });

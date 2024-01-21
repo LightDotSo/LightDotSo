@@ -17,7 +17,7 @@ import { updateWalletSettings } from "@lightdotso/client";
 import type { WalletSettingsData } from "@lightdotso/data";
 import type { WalletParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
-import { errorToast, successToast } from "@lightdotso/ui";
+import { toast } from "@lightdotso/ui";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 
 export const useMutationWalletSettings = (params: WalletParams) => {
@@ -29,6 +29,8 @@ export const useMutationWalletSettings = (params: WalletParams) => {
 
   const { mutate, isPending, isSuccess, isError } = useMutation({
     mutationFn: async (data: WalletSettingsData) => {
+      const loadingToast = toast.loading("Updating wallet settings...");
+
       const res = await updateWalletSettings({
         params: {
           query: {
@@ -42,14 +44,18 @@ export const useMutationWalletSettings = (params: WalletParams) => {
         },
       });
 
+      toast.dismiss(loadingToast);
+
       // Return if the response is 200
       res.match(
         _ => {
-          successToast("Successfully updated wallet settings.");
+          toast.success("Successfully updated wallet settings.");
         },
         err => {
           if (err instanceof Error) {
-            errorToast(err.message);
+            toast.error(err.message);
+          } else {
+            toast.error("Something went wrong.");
           }
         },
       );
@@ -88,7 +94,9 @@ export const useMutationWalletSettings = (params: WalletParams) => {
       );
 
       if (err instanceof Error) {
-        errorToast(err.message);
+        toast.error(err.message);
+      } else {
+        toast.error("Something went wrong.");
       }
     },
     onSettled: () => {

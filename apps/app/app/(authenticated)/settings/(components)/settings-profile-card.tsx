@@ -31,6 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
   Textarea,
+  toast,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -40,7 +41,6 @@ import { useFieldArray, useForm } from "react-hook-form";
 import * as z from "zod";
 import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const";
-import { successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -107,7 +107,7 @@ export const SettingsProfileCard: FC = () => {
   // ---------------------------------------------------------------------------
 
   function onSubmit(_data: ProfileFormValues) {
-    successToast("Profile updated.");
+    toast.success("Profile updated.");
   }
 
   // ---------------------------------------------------------------------------

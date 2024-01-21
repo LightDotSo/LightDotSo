@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 export type { ActivityData, ActivityCountData } from "./activity";
+export type { AssetChangeData } from "./assetChange";
 export type { AuthNonceData, AuthSessionData } from "./auth";
 export type { ConfigurationData } from "./configuration";
 export type { InterpretationData } from "./interpretation";

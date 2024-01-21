@@ -20,7 +20,7 @@ import type { ConfigurationData } from "@lightdotso/data";
 import type { UserOperation } from "@lightdotso/schemas";
 import { subdigestOf } from "@lightdotso/solutions";
 import { useAuth } from "@lightdotso/stores";
-import { errorToast, successToast } from "@lightdotso/ui";
+import { toast } from "@lightdotso/ui";
 import {
   lightWalletAbi,
   lightWalletFactoryAbi,
@@ -186,6 +186,8 @@ export const useUserOperationCreate = ({
         return;
       }
 
+      const loadingToast = toast.loading("Submitting the userOperation result");
+
       const res = await createUserOperation({
         params: {
           query: {
@@ -217,16 +219,20 @@ export const useUserOperationCreate = ({
         },
       });
 
+      toast.dismiss(loadingToast);
+
       res.match(
         _ => {
-          successToast("You submitted the userOperation result");
+          toast.success("You submitted the userOperation result");
           if (threshold >= owner.weight) {
             router.push(`/${address}/op/${userOperation.hash}`);
           }
         },
         err => {
           if (err instanceof Error) {
-            errorToast(err.message);
+            toast.error(err.message);
+          } else {
+            toast.error("Failed to submit the userOperation result");
           }
         },
       );

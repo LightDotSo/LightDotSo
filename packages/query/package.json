@@ -31,7 +31,7 @@
     "@lightdotso/query-keys": "workspace:*",
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/ui": "workspace:*",
-    "@tanstack/react-query": "^5.17.15",
+    "@tanstack/react-query": "^5.17.19",
     "viem": "^2.4.0"
   },
   "devDependencies": {

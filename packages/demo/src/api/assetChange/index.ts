@@ -13,14 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { toast } from "@lightdotso/ui";
+import type { AssetChangeData } from "@lightdotso/data";
+import getJsonData from "./get.json";
+import listJsonData from "./list.json";
 
-// -----------------------------------------------------------------------------
-// Utils
-// -----------------------------------------------------------------------------
-
-export const errorToast = (err: string) => toast.error(err);
-
-export const successToast = (data: any) => toast.success(data);
-
-export const infoToast = (title: string) => toast.info(title);
+export const assetChangeGetData = getJsonData as AssetChangeData;
+export const assetChangeListData = listJsonData as AssetChangeData[];

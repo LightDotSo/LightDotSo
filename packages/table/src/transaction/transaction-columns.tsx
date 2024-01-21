@@ -21,7 +21,6 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { TransactionTableRowActions } from "./actions/transaction-table-row-actions";
 import { TransactionCardActions } from "./card/transaction-card-actions";
 import { TransactionCardChain } from "./card/transaction-card-chain";
-import { TransactionCardHash } from "./card/transaction-card-hash";
 import { TransactionCardInterpretation } from "./card/transaction-card-interpretation";
 import { TransactionCardTimestamp } from "./card/transaction-card-timestamp";
 
@@ -54,7 +53,7 @@ export const transactionColumns: ColumnDef<TransactionData>[] = [
     },
     enableSorting: true,
     enableHiding: true,
-    size: 416,
+    size: 128,
   },
   {
     accessorKey: "interpretation",
@@ -66,19 +65,6 @@ export const transactionColumns: ColumnDef<TransactionData>[] = [
     ),
     enableSorting: false,
     enableHiding: false,
-    size: 416,
-  },
-  {
-    accessorKey: "hash",
-    cell: ({ row }) => <TransactionCardHash transaction={row.original} />,
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Tx Hash" />
-    ),
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-    enableSorting: true,
-    enableHiding: true,
     size: 416,
   },
   {

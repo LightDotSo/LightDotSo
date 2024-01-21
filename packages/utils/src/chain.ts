@@ -15,18 +15,14 @@
 
 import { CHAINS, SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
 import type { Chain } from "viem";
-import { mainnet } from "viem/chains";
+import { extractChain } from "viem";
 
 export function getChainById(chainId: number): Chain {
-  const chain = CHAINS.find(chain => chain.id === chainId);
-  if (!chain) {
-    return mainnet;
-  }
-  return chain;
+  return extractChain({ chains: CHAINS, id: chainId });
 }
 
 export function getChainNameById(chainId: number): string {
-  const chain = CHAINS.find(chain => chain.id === chainId);
+  const chain = getChainById(chainId);
   return chain?.name ?? "Unknown";
 }
 

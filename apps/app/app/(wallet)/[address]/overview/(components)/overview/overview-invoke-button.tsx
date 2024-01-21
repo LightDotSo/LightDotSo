@@ -23,12 +23,12 @@ import {
   TooltipContent,
   TooltipTrigger,
   TooltipProvider,
+  toast,
 } from "@lightdotso/ui";
 import { RefreshCcw } from "lucide-react";
 import type { FC } from "react";
 import type { Address } from "viem";
 import invokePortfolioAction from "@/actions/invokePortfolioAction";
-import { infoToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -62,15 +62,40 @@ export const OverviewInvokeButton: FC<OverviewInvokeButtonProps> = ({
           <span>
             <ButtonIcon
               variant="shadow"
-              onClick={() => {
+              onClick={async () => {
+                const loadingToast = toast.loading("Refreshing...");
+
                 invokePortfolioAction(address as Address);
+
                 createQueueToken(
                   {
                     params: { query: { address: address as Address } },
                   },
                   clientType,
-                );
-                infoToast("Refreshing...");
+                )
+                  .then(res => {
+                    toast.dismiss(loadingToast);
+                    res.match(
+                      _success => {
+                        toast.success("Operation updated");
+                      },
+                      err => {
+                        if (err instanceof Error) {
+                          toast.error(err.message);
+                        } else {
+                          toast.error("Unknown error");
+                        }
+                      },
+                    );
+                  })
+                  .catch(err => {
+                    toast.dismiss(loadingToast);
+                    if (err instanceof Error) {
+                      toast.error(err.message);
+                    } else {
+                      toast.error("Unknown error");
+                    }
+                  });
               }}
             >
               <RefreshCcw className="size-4" />

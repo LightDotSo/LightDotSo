@@ -13,38 +13,39 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import type { TransactionData } from "@lightdotso/data";
+import type { AssetChangeData } from "@lightdotso/data";
 import type { FC } from "react";
+import { TokenImage } from "./token-image";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type TransactionCardInterpretationProps = { transaction: TransactionData };
+export interface AssetChangeProps {
+  assetChange: AssetChangeData;
+}
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TransactionCardInterpretation: FC<
-  TransactionCardInterpretationProps
-> = ({ transaction: { interpretation } }) => {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
+export const AssetChange: FC<AssetChangeProps> = ({ assetChange }) => {
   return (
-    <div className="flex items-center space-x-1.5">
-      {interpretation?.actions &&
-        interpretation.actions.map((action, index) => (
-          <div key={index} className="flex items-center space-x-1.5">
-            <span className="text-xs font-medium text-gray-400">
-              {action.id}
-            </span>
-          </div>
-        ))}
+    <div className="flex items-center space-x-3">
+      {assetChange?.token && <TokenImage size="xs" token={assetChange.token} />}
+      {assetChange?.token && (
+        <span className="text-sm text-text">
+          {assetChange?.token.name ?? assetChange?.token.symbol}{" "}
+          <span className="text-xs text-text-weak">
+            (
+            {(
+              assetChange?.token.amount /
+              10 ** assetChange?.token.decimals
+            ).toFixed(3)}{" "}
+            {assetChange?.token.symbol})
+          </span>
+        </span>
+      )}
     </div>
   );
 };

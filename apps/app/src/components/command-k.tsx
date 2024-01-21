@@ -25,6 +25,7 @@ import {
   CommandList,
   CommandSeparator,
   CommandShortcut,
+  toast,
 } from "@lightdotso/ui";
 import {
   Calculator,
@@ -42,7 +43,6 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
 import type { FC } from "react";
 import { useCopy } from "@/hooks";
-import { successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -113,7 +113,7 @@ export const CommandK: FC = () => {
         e.preventDefault();
         if (wallet) {
           copy(wallet);
-          successToast("Copied to clipboard");
+          toast.success("Copied to clipboard");
         }
       }
       if (e.key === "v" && e.shiftKey && (e.metaKey || e.ctrlKey)) {
