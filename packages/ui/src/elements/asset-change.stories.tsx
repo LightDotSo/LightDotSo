@@ -13,37 +13,33 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import type { TransactionData } from "@lightdotso/data";
-import { AssetChange } from "@lightdotso/ui";
-import type { FC } from "react";
+import { assetChangeGetData } from "@lightdotso/demo";
+import type { Meta, StoryObj } from "@storybook/react";
+import { AssetChange } from "./asset-change";
 
 // -----------------------------------------------------------------------------
-// Props
+// Meta
 // -----------------------------------------------------------------------------
 
-type TransactionCardInterpretationProps = { transaction: TransactionData };
+const meta: Meta<typeof AssetChange> = {
+  title: "element/AssetChange",
+  component: AssetChange,
+  tags: ["autodocs"],
+  argTypes: {},
+};
+export default meta;
 
 // -----------------------------------------------------------------------------
-// Component
+// Types
 // -----------------------------------------------------------------------------
 
-export const TransactionCardInterpretation: FC<
-  TransactionCardInterpretationProps
-> = ({ transaction: { interpretation } }) => {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
+type Story = StoryObj<typeof AssetChange>;
 
-  return (
-    <div className="flex items-center space-x-1.5">
-      {interpretation?.asset_changes &&
-        interpretation.asset_changes
-          .splice(0, 1)
-          .map((assetChange, index) => (
-            <AssetChange key={index} assetChange={assetChange} />
-          ))}
-    </div>
-  );
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Base: Story = {
+  render: args => <AssetChange assetChange={assetChangeGetData} />,
+  args: {},
 };

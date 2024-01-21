@@ -13,11 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export * from "./activity";
-export * from "./asset-change";
-export * from "./configuration";
-export * from "./notification";
-export * from "./token";
-export * from "./transaction";
-export * from "./user-operation";
-export * from "./wallet";
+import type { AssetChangeData } from "@lightdotso/data";
+import getJsonData from "./get.json";
+import listJsonData from "./list.json";
+
+export const assetChangeGetData = getJsonData as AssetChangeData;
+export const assetChangeListData = listJsonData as AssetChangeData[];

@@ -1,0 +1,48 @@
+[
+  {
+    "id": "clrjrg8g4001xsf8hacv15np5",
+    "address": "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F",
+    "amount": 100000,
+    "before_amount": 155815,
+    "after_amount": 55815,
+    "action": {
+      "id": "clrakvzt3002pps8h7l9va4vv",
+      "action": "ERC20_SEND",
+      "address": "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F"
+    },
+    "token": {
+      "id": "cloupmjv60002jy08hud4y7mb",
+      "address": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
+      "chain_id": 137,
+      "name": null,
+      "symbol": "USDT",
+      "decimals": 6,
+      "amount": 0,
+      "balance_usd": 0,
+      "group": null
+    }
+  },
+  {
+    "id": "clrjrg8w7001zsf8h1w8aotj8",
+    "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
+    "amount": 100000,
+    "before_amount": 100000,
+    "after_amount": 200000,
+    "action": {
+      "id": "clrakw02i002rps8hz3jq5g92",
+      "action": "ERC20_RECEIVE",
+      "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
+    },
+    "token": {
+      "id": "cloupmjv60002jy08hud4y7mb",
+      "address": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
+      "chain_id": 137,
+      "name": null,
+      "symbol": "USDT",
+      "decimals": 6,
+      "amount": 0,
+      "balance_usd": 0,
+      "group": null
+    }
+  }
+]

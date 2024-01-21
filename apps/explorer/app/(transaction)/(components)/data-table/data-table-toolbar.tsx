@@ -125,13 +125,13 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
           </Button>
         )}
       </div>
-      <div className="flex items-center space-x-2 text-text-primary">
+      <div className="flex items-center space-x-3 text-text-primary">
         <Switch
           id="is-testnet"
           checked={isTestnetState ?? false}
           onCheckedChange={() => setIsTestnetState(!isTestnetState)}
         />
-        <Label htmlFor="is-testnet">Include Testnet</Label>
+        <Label htmlFor="is-testnet">Include Testnets</Label>
         <DataTableViewOptions
           table={table}
           columnMapping={{
