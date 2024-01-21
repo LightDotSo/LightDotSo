@@ -32,3 +32,23 @@ export enum Action {
   ERC1155_MINT,
   ERC1155_BURN,
 }
+
+export const ACTION_LABELS: Record<Action, string> = {
+  [Action.NATIVE_RECEIVE]: "Receive",
+  [Action.NATIVE_SEND]: "Send",
+  [Action.ERC20_APPROVE]: "Approve",
+  [Action.ERC20_RECEIVE]: "Receive",
+  [Action.ERC20_MINT]: "Mint",
+  [Action.ERC20_SEND]: "Send",
+  [Action.ERC20_BURN]: "Burn",
+  [Action.ERC721_APPROVE]: "Approve",
+  [Action.ERC721_RECEIVE]: "Receive",
+  [Action.ERC721_SEND]: "Send",
+  [Action.ERC721_MINT]: "Mint",
+  [Action.ERC721_BURN]: "Burn",
+  [Action.ERC1155_APPROVE]: "Approve",
+  [Action.ERC1155_RECEIVE]: "Receive",
+  [Action.ERC1155_SEND]: "Send",
+  [Action.ERC1155_MINT]: "Mint",
+  [Action.ERC1155_BURN]: "Burn",
+};

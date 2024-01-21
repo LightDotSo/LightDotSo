@@ -15,7 +15,7 @@
 
 "use client";
 
-import { Action } from "@lightdotso/const";
+import { ACTION_LABELS, Action } from "@lightdotso/const";
 import type { TransactionData } from "@lightdotso/data";
 import { ActionLogo } from "@lightdotso/ui";
 import { useMemo, type FC } from "react";
@@ -68,5 +68,12 @@ export const TransactionCardActions: FC<TransactionCardActionsProps> = ({
     return null;
   }
 
-  return <ActionLogo action={action} />;
+  return (
+    <div className="flex items-center space-x-3">
+      <ActionLogo action={action} />
+      <span className="text-text text-sm font-medium ">
+        {ACTION_LABELS[action]}
+      </span>
+    </div>
+  );
 };

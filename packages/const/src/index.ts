@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { Action } from "./actions";
+export { Action, ACTION_LABELS } from "./actions";
 export {
   BASE_API_AUTHENTICATED_URL,
   BASE_API_URL,
