@@ -16,8 +16,8 @@
 "use client";
 
 import { Action } from "@lightdotso/const";
-import { ActionLogo } from "@lightdotso/ui";
 import type { TransactionData } from "@lightdotso/data";
+import { ActionLogo } from "@lightdotso/ui";
 import { useMemo, type FC } from "react";
 
 // -----------------------------------------------------------------------------
