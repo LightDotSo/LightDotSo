@@ -33,7 +33,7 @@ export const transactionColumns: ColumnDef<TransactionData>[] = [
   {
     accessorKey: "actions",
     accessorFn: row => {
-      return row.interpretation?.actions;
+      return row?.interpretation?.actions;
     },
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Action" />
