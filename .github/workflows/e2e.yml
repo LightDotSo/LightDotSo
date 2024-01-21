@@ -33,6 +33,8 @@ jobs:
           filters: |
             app:
               - 'apps/app/**'
+            explorer:
+              - 'apps/explorer/**'
   e2e-app:
     if: needs.e2e-filter.outputs.app == 'true'
     needs:
@@ -58,16 +60,39 @@ jobs:
       - name: Run E2E App
         run: |
           pnpm run e2e:app:dev
+  e2e-explorer:
+    if: needs.e2e-filter.outputs.explorer == 'true'
+    needs:
+      - e2e-filter
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    permissions:
+      contents: read
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v4
+      - name: Node Install
+        uses: wallet-rs/wallet-rs/.github/actions/node-install@main
+      - name: Playwright Install
+        run: |
+          npx playwright install
+      - name: Docker Compose Up
+        run: |
+          docker-compose up -d --build
+      - name: Run E2E Explorer
+        run: |
+          pnpm run e2e:explorer:dev
   e2e-check:
     if: always()
     needs:
       - e2e-filter
       - e2e-app
+      - e2e-explorer
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: e2e-app
+          allowed-skips: e2e-app,e2e-explorer
           jobs: ${{ toJSON(needs) }}

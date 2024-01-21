@@ -50,7 +50,7 @@ const preview: Preview = {
     },
     options: {
       storySort: {
-        order: ["theme", "component", "element", "svg", "table", "template"],
+        order: ["theme", "component", "svg", "element", "template", "table"],
       },
     },
     viewport: {
