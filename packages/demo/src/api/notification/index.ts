@@ -14,6 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { NotificationData } from "@lightdotso/data";
-import jsonData from "./list.json";
+import listJsonData from "./list.json";
 
-export const notificationListData = jsonData as NotificationData[];
+export const notificationListData = listJsonData as NotificationData[];

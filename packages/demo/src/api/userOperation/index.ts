@@ -14,6 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { UserOperationData } from "@lightdotso/data";
-import jsonData from "./list.json";
+import listJsonData from "./list.json";
 
-export const userOperationListData = jsonData as UserOperationData[];
+export const userOperationListData = listJsonData as UserOperationData[];

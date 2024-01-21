@@ -14,6 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { ConfigurationData } from "@lightdotso/data";
-import jsonData from "./get.json";
+import listJsonData from "./get.json";
 
-export const configurationGetData = jsonData as ConfigurationData;
+export const configurationGetData = listJsonData as ConfigurationData;
