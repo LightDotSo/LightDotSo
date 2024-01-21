@@ -16,7 +16,6 @@
 "use client";
 
 import type { TransactionData } from "@lightdotso/data";
-import { AssetChange } from "@lightdotso/ui";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
@@ -38,12 +37,14 @@ export const TransactionCardInterpretation: FC<
 
   return (
     <div className="flex items-center space-x-1.5">
-      {interpretation?.asset_changes &&
-        interpretation.asset_changes
-          .splice(0, 1)
-          .map((assetChange, index) => (
-            <AssetChange key={index} assetChange={assetChange} />
-          ))}
+      {interpretation?.actions &&
+        interpretation.actions.map((action, index) => (
+          <div key={index} className="flex items-center space-x-1.5">
+            <span className="text-xs font-medium text-gray-400">
+              {action.id}
+            </span>
+          </div>
+        ))}
     </div>
   );
 };

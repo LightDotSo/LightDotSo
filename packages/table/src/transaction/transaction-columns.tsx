@@ -53,7 +53,7 @@ export const transactionColumns: ColumnDef<TransactionData>[] = [
     },
     enableSorting: true,
     enableHiding: true,
-    size: 416,
+    size: 128,
   },
   {
     accessorKey: "interpretation",
