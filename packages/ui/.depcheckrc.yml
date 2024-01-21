@@ -20,3 +20,12 @@ ignores:
   - vite
   - "@storybook/blocks"
   - tsup
+  - "@lightdotso/const"
+  - "@lightdotso/data"
+  - "@lightdotso/demo"
+  - "@lightdotso/svg"
+  - "@lightdotso/types"
+  - "@tanstack/react-table"
+  - react-blurhash
+  - react-icons
+  - viem
