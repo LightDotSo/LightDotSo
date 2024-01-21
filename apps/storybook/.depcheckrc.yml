@@ -45,3 +45,6 @@ ignores:
   - "@lightdotso/svg"
   - vite
   - css-loader
+  - "@lightdotso/element"
+  - "@lightdotso/table"
+  - "@lightdotso/template"
