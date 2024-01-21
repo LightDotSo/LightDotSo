@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { AssetChangeData } from "@lightdotso/data";
+import type { AssetChangeData } from "@lightdotso/data";
 import type { FC } from "react";
 import { TokenImage } from "./token-image";
 
