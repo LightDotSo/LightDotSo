@@ -16,9 +16,8 @@
 "use client";
 
 import type { TokenData } from "@lightdotso/data";
-import { ChainLogo } from "@lightdotso/svg";
-import { getChainById } from "@lightdotso/utils";
 import type { FC } from "react";
+import { ChainCard } from "../../(components)/card/chain-card";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -37,16 +36,5 @@ export const TokenCardChain: FC<TokenCardChainProps> = ({
   // Render
   // ---------------------------------------------------------------------------
 
-  if (chain_id === 0) {
-    return null;
-  }
-
-  return (
-    <div className="flex items-center space-x-1.5">
-      <ChainLogo className="size-6" chainId={chain_id} />
-      <span className="text-sm font-medium text-text">
-        {getChainById(chain_id).name}
-      </span>
-    </div>
-  );
+  return <ChainCard chain_id={chain_id} />;
 };
