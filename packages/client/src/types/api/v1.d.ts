@@ -122,6 +122,27 @@ export interface paths {
      */
     get: operations["v1_interpretation_list_handler"];
   };
+  "/interpretation_action/get": {
+    /**
+     * Get a paymaster
+     * @description Get a paymaster
+     */
+    get: operations["v1_interpretation_action_get_handler"];
+  };
+  "/interpretation_action/list": {
+    /**
+     * Returns a list of interpretation actions.
+     * @description Returns a list of interpretation actions.
+     */
+    get: operations["v1_interpretation_action_list_handler"];
+  };
+  "/interpretation_action/list/count": {
+    /**
+     * Returns a count of list of interpretation actions.
+     * @description Returns a count of list of interpretation actions.
+     */
+    get: operations["v1_interpretation_action_list_count_handler"];
+  };
   "/invite_code/create": {
     /**
      * Create an invite code
@@ -693,11 +714,36 @@ export interface components {
     /** @description Interpretation root type. */
     Interpretation: {
       /** @description The array of actions of the interpretation. */
-      actions: string[];
+      actions: components["schemas"]["InterpretationAction"][];
       /** @description The array of asset changes of the interpretation. */
       asset_changes: components["schemas"]["AssetChange"][];
       /** @description The id of the interpretation to read for. */
       id: string;
+    };
+    /** @description InterpretationAction root type. */
+    InterpretationAction: {
+      /** @description The action of the interpretation action. */
+      action: string;
+      /** @description The status of the interpretation action. */
+      address: string;
+      /** @description The id of the interpretation action. */
+      id: string;
+    };
+    /** @description InterpretationAction errors */
+    InterpretationActionError: OneOf<[{
+      /** @description InterpretationAction query error. */
+      BadRequest: string;
+    }, {
+      /** @description InterpretationAction not found by id. */
+      NotFound: string;
+    }]>;
+    /** @description Count of list of interpretation actions. */
+    InterpretationActionListCount: {
+      /**
+       * Format: int64
+       * @description The count of the list of interpretation actions.
+       */
+      count: number;
     };
     /** @description Interpretation operation errors */
     InterpretationError: OneOf<[{
@@ -1800,6 +1846,96 @@ export interface operations {
       500: {
         content: {
           "application/json": components["schemas"]["InterpretationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a paymaster
+   * @description Get a paymaster
+   */
+  v1_interpretation_action_get_handler: {
+    parameters: {
+      query: {
+        /** @description The id of the interpretation action. */
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Interpretation action returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["InterpretationAction"];
+        };
+      };
+      /** @description Interpretation action not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["InterpretationActionError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of interpretation actions.
+   * @description Returns a list of interpretation actions.
+   */
+  v1_interpretation_action_list_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first interpretation action to return. */
+        offset?: number | null;
+        /** @description The maximum number of interpretation actions to return. */
+        limit?: number | null;
+        /** @description The action to filter by. */
+        action?: string | null;
+        /** @description The address to filter by. */
+        address?: string | null;
+      };
+    };
+    responses: {
+      /** @description Interpretation Actions returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["InterpretationAction"][];
+        };
+      };
+      /** @description Interpretation Action bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["InterpretationActionError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a count of list of interpretation actions.
+   * @description Returns a count of list of interpretation actions.
+   */
+  v1_interpretation_action_list_count_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first interpretation action to return. */
+        offset?: number | null;
+        /** @description The maximum number of interpretation actions to return. */
+        limit?: number | null;
+        /** @description The action to filter by. */
+        action?: string | null;
+        /** @description The address to filter by. */
+        address?: string | null;
+      };
+    };
+    responses: {
+      /** @description Interpretation actions returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["InterpretationActionListCount"];
+        };
+      };
+      /** @description InterpretationAction bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["InterpretationActionError"];
         };
       };
     };

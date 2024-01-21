@@ -37,10 +37,12 @@ export const TransactionCardInterpretation: FC<
 
   return (
     <div className="flex items-center space-x-1.5">
-      {interpretation?.actions &&
-        interpretation.actions.map((action, index) => (
+      {interpretation?.asset_changes &&
+        interpretation.asset_changes.map((asset_change, index) => (
           <div key={index} className="flex items-center space-x-1.5">
-            <span className="text-xs font-medium text-gray-400">{action}</span>
+            <span className="text-xs font-medium text-gray-400">
+              {asset_change.id}
+            </span>
           </div>
         ))}
     </div>

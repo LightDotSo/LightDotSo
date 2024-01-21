@@ -13,7 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::routes::asset_change::types::AssetChange;
+use crate::routes::{
+    asset_change::types::AssetChange, interpretation_action::types::InterpretationAction,
+};
 use lightdotso_prisma::interpretation;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
@@ -29,7 +31,7 @@ pub(crate) struct Interpretation {
     /// The id of the interpretation to read for.
     id: String,
     /// The array of actions of the interpretation.
-    actions: Vec<String>,
+    actions: Vec<InterpretationAction>,
     /// The array of asset changes of the interpretation.
     asset_changes: Vec<AssetChange>,
 }
@@ -47,7 +49,7 @@ impl From<interpretation::Data> for Interpretation {
                 .actions
                 .unwrap_or_default()
                 .into_iter()
-                .map(|action| action.action)
+                .map(InterpretationAction::from)
                 .collect(),
             asset_changes: interpretation
                 .asset_changes
