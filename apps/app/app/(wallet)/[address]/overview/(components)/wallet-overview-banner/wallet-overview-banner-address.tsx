@@ -31,6 +31,7 @@ import {
   TooltipTrigger,
   TooltipProvider,
   PlaceholderOrb,
+  toast,
 } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
 import { ChevronDown, Copy } from "lucide-react";
@@ -38,7 +39,6 @@ import { useCallback, type FC } from "react";
 import type { Address } from "viem";
 import { useEnsName } from "wagmi";
 import { useCopy } from "@/hooks";
-import { successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -75,7 +75,7 @@ export const WalletOverviewBannerAddress: FC<
 
   const handleAddressClick = useCallback(() => {
     copy(address);
-    successToast("Copied to clipboard");
+    toast.success("Copied to clipboard");
   }, [address, copy]);
 
   // ---------------------------------------------------------------------------

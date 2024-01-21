@@ -74,9 +74,9 @@ export function TransactionTableRowActions({
                 toast.dismiss(toastId);
                 if (err instanceof Error) {
                   toast.error(err.message);
-                  return;
+                } else {
+                  toast.error("Failed to create queue!");
                 }
-                toast.error("Failed to create queue!");
               },
             );
           }}

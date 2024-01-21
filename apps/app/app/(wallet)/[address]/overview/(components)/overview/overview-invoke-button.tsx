@@ -23,12 +23,12 @@ import {
   TooltipContent,
   TooltipTrigger,
   TooltipProvider,
+  toast,
 } from "@lightdotso/ui";
 import { RefreshCcw } from "lucide-react";
 import type { FC } from "react";
 import type { Address } from "viem";
 import invokePortfolioAction from "@/actions/invokePortfolioAction";
-import { infoToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -62,15 +62,20 @@ export const OverviewInvokeButton: FC<OverviewInvokeButtonProps> = ({
           <span>
             <ButtonIcon
               variant="shadow"
-              onClick={() => {
+              onClick={async () => {
+                const toastId = toast.info("Refreshing...");
+
                 invokePortfolioAction(address as Address);
+
                 createQueueToken(
                   {
                     params: { query: { address: address as Address } },
                   },
                   clientType,
                 );
-                infoToast("Refreshing...");
+
+                toast.dismiss(toastId);
+                toast.success("Refreshed!");
               }}
             >
               <RefreshCcw className="size-4" />

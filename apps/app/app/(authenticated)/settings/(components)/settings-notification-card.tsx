@@ -28,6 +28,7 @@ import {
   RadioGroup,
   RadioGroupItem,
   Switch,
+  toast,
 } from "@lightdotso/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
@@ -36,7 +37,6 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const";
-import { successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -86,7 +86,7 @@ export const SettingsNotificationCard: FC = () => {
   // ---------------------------------------------------------------------------
 
   function onSubmit(_data: SettingsNotificationCardValues) {
-    successToast("Notifications updated.");
+    toast.success("Notifications updated.");
   }
 
   // ---------------------------------------------------------------------------

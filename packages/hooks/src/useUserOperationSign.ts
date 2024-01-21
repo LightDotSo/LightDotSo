@@ -19,7 +19,7 @@ import { createSignature } from "@lightdotso/client";
 import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
 import { subdigestOf } from "@lightdotso/solutions";
 import { useAuth } from "@lightdotso/stores";
-import { errorToast, successToast } from "@lightdotso/ui";
+import { toast } from "@lightdotso/ui";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   hexToBytes,
@@ -129,6 +129,8 @@ export const useUserOperationSign = ({
         return;
       }
 
+      const toastId = toast.loading("Submitting the userOperation result");
+
       const res = await createSignature({
         params: {
           query: {
@@ -144,13 +146,17 @@ export const useUserOperationSign = ({
         },
       });
 
+      toast.dismiss(toastId);
+
       res.match(
         _ => {
-          successToast("You submitted the userOperation result");
+          toast.success("You submitted the userOperation result");
         },
         err => {
           if (err instanceof Error) {
-            errorToast(err.message);
+            toast.error(err.message);
+          } else {
+            toast.error("An unknown error occurred");
           }
         },
       );

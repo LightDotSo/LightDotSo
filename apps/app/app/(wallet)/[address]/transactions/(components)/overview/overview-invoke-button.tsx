@@ -23,11 +23,11 @@ import {
   TooltipContent,
   TooltipTrigger,
   TooltipProvider,
+  toast,
 } from "@lightdotso/ui";
 import { RefreshCcw } from "lucide-react";
 import type { FC } from "react";
 import type { Address } from "viem";
-import { errorToast, infoToast, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -62,20 +62,21 @@ export const OverviewInvokeButton: FC<InvokeUserOperationProps> = ({
             <ButtonIcon
               variant="shadow"
               onClick={() => {
+                const toastId = toast.info("Updating operation...");
                 updateUserOperation(
                   {
                     params: { query: { address: address } },
                   },
                   clientType,
                 ).then(res => {
-                  infoToast("Updating operation...");
+                  toast.dismiss(toastId);
                   res.match(
                     _success => {
-                      successToast("Operation updated");
+                      toast.success("Operation updated");
                     },
                     err => {
                       if (err instanceof Error) {
-                        errorToast(err.message);
+                        toast.error(err.message);
                       }
                     },
                   );

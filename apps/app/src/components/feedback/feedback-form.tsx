@@ -30,12 +30,12 @@ import {
   RadioGroup,
   RadioGroupItem,
   Textarea,
+  toast,
 } from "@lightdotso/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { FC } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { errorToast, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -88,8 +88,9 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
 
   function onSubmit(data: FeedbackFormValues) {
     if (!userId) {
-      return errorToast("Sorry, something went wrong.");
+      return toast.error("Sorry, something went wrong.");
     }
+    const toastId = toast.loading("Sending feedback...");
     createFeedback(
       {
         params: {
@@ -103,11 +104,12 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
       },
       clientType,
     ).then(res => {
+      toast.dismiss(toastId);
       if (res.isOk()) {
-        successToast("Thanks for your feedback!");
+        toast.success("Thanks for your feedback!");
         form.reset();
       } else {
-        errorToast("Sorry, something went wrong.");
+        toast.error("Sorry, something went wrong.");
       }
       onClose();
     });

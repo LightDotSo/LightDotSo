@@ -22,7 +22,7 @@ import {
 import { CONTRACT_ADDRESSES } from "@lightdotso/const";
 import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
 import { useSuspenseQueryPaymasterOperation } from "@lightdotso/query";
-import { errorToast, successToast } from "@lightdotso/ui";
+import { toast } from "@lightdotso/ui";
 import {
   useReadLightVerifyingPaymasterGetHash,
   useReadLightVerifyingPaymasterSenderNonce,
@@ -164,6 +164,8 @@ export const useUserOperationSubmit = ({
     setIsLoading(true);
 
     const processSignature = async () => {
+      const toastId = toast.loading("Submitting the userOperation result");
+
       // Get the sig as bytes from caller
       const sigRes = await getSignatureUserOperation({
         params: { query: { user_operation_hash: userOperation.hash } },
@@ -193,17 +195,26 @@ export const useUserOperationSubmit = ({
 
           res.match(
             _ => {
-              successToast("You submitted the userOperation result");
+              toast.dismiss(toastId);
+              toast.success("You submitted the userOperation result");
             },
             err => {
+              toast.dismiss(toastId);
               if (err instanceof Error) {
-                errorToast(err.message);
+                toast.error(err.message);
+              } else {
+                toast.error("Failed to submit the userOperation result");
               }
             },
           );
         },
         async err => {
-          errorToast(JSON.stringify(err, null, 2));
+          toast.dismiss(toastId);
+          if (err instanceof Error) {
+            toast.error(err.message);
+          } else {
+            toast.error("Failed to get signature");
+          }
         },
       );
     };
