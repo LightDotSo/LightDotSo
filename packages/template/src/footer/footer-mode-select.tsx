@@ -24,7 +24,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../../components/select";
+} from "@lightdotso/ui";
 
 // -----------------------------------------------------------------------------
 // Const

@@ -16,7 +16,7 @@
 import { Social, SOCIAL_LINKS } from "@lightdotso/const";
 import type { FC, SVGProps } from "react";
 import { FaDiscord, FaGithub, FaTwitter } from "react-icons/fa";
-import { ButtonIcon } from "../../components/button-icon";
+import { ButtonIcon } from "@lightdotso/ui";
 
 // -----------------------------------------------------------------------------
 // Const

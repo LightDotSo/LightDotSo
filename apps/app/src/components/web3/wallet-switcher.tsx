@@ -18,6 +18,7 @@
 
 "use client";
 
+import { PlaceholderOrb } from "@lightdotso/element";
 import { useSuspenseQueryWallets } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import {
@@ -34,7 +35,6 @@ import {
   CommandList,
   CommandSeparator,
   Skeleton,
-  PlaceholderOrb,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import {

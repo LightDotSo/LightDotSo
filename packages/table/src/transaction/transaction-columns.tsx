@@ -16,7 +16,7 @@
 "use client";
 
 import type { TransactionData } from "@lightdotso/data";
-import { DataTableColumnHeader } from "@lightdotso/ui";
+import { DataTableColumnHeader } from "@lightdotso/template";
 import type { ColumnDef } from "@tanstack/react-table";
 import { TransactionTableRowActions } from "./actions/transaction-table-row-actions";
 import { TransactionCardActions } from "./card/transaction-card-actions";

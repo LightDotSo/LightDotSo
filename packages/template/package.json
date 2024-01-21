@@ -1,6 +1,6 @@
 {
-  "name": "@lightdotso/table",
-  "version": "0.1.0",
+  "name": "@lightdotso/template",
+  "version": "0.0.0",
   "private": true,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
@@ -12,7 +12,7 @@
   },
   "license": "AGPL-3.0-or-later",
   "author": "Light, Inc.",
-  "main": "./src/index.tsx",
+  "main": "./src/index.ts",
   "files": [
     "dist/**",
     "src/**"
@@ -25,30 +25,22 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@lightdotso/client": "workspace:*",
     "@lightdotso/const": "workspace:*",
-    "@lightdotso/data": "workspace:*",
-    "@lightdotso/demo": "workspace:*",
-    "@lightdotso/element": "workspace:*",
-    "@lightdotso/hooks": "workspace:*",
-    "@lightdotso/query": "workspace:*",
-    "@lightdotso/stores": "workspace:*",
     "@lightdotso/svg": "workspace:*",
-    "@lightdotso/template": "workspace:*",
+    "@lightdotso/types": "workspace:*",
     "@lightdotso/ui": "workspace:*",
-    "@lightdotso/utils": "workspace:*",
+    "@radix-ui/react-dropdown-menu": "^2.0.6",
     "@radix-ui/react-icons": "^1.3.0",
-    "@storybook/react": "^7.6.10",
     "@tanstack/react-table": "^8.11.7",
-    "@tremor/react": "^3.13.2",
     "lucide-react": "^0.312.0",
-    "next": "^14.1.0",
+    "next-themes": "^0.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "viem": "^2.4.0"
+    "react-icons": "^5.0.1"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
+    "@storybook/react": "^7.6.10",
     "@types/node": "^20.11.5",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",

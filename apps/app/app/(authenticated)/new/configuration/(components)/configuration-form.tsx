@@ -17,6 +17,7 @@
 
 import { newFormSchema, newFormConfigurationSchema } from "@lightdotso/schemas";
 import { useAuth, useNewForm } from "@lightdotso/stores";
+import { PlaceholderOrb } from "@lightdotso/element";
 import {
   Avatar,
   Button,
@@ -43,7 +44,6 @@ import {
   SelectValue,
   Separator,
   TooltipProvider,
-  PlaceholderOrb,
   toast,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";

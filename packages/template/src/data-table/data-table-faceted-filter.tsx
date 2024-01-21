@@ -17,9 +17,9 @@ import { cn } from "@lightdotso/utils";
 import { CheckIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 import type { Column } from "@tanstack/react-table";
 import type { ComponentType } from "react";
-import { Badge } from "../../components/badge";
-import { Button } from "../../components/button";
 import {
+  Badge,
+  Button,
   Command,
   CommandEmpty,
   CommandGroup,
@@ -27,13 +27,11 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "../../components/command";
-import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "../../components/popover";
-import { Separator } from "../../components/separator";
+  Separator,
+} from "@lightdotso/ui";
 
 // -----------------------------------------------------------------------------
 // Props

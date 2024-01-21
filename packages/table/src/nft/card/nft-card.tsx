@@ -16,9 +16,10 @@
 /* eslint-disable @next/next/no-img-element */
 
 import type { NftData } from "@lightdotso/data";
+import { NftImage } from "@lightdotso/element";
 import { useAuth } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
-import { Button, NftImage } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui";
 import {
   cn,
   getChainBySimplehashChainName,

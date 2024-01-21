@@ -17,10 +17,10 @@ import type { Tab } from "@lightdotso/types";
 import { AlignRight, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import type { FC, ReactNode } from "react";
-import { Badge } from "../../components/badge";
-import { Button } from "../../components/button";
-import { ButtonIcon } from "../../components/button-icon";
 import {
+  Badge,
+  Button,
+  ButtonIcon,
   Drawer,
   DrawerTrigger,
   DrawerBody,
@@ -28,7 +28,7 @@ import {
   DrawerHeader,
   DrawerClose,
   DrawerFooter,
-} from "../../components/drawer";
+} from "@lightdotso/ui";
 
 // -----------------------------------------------------------------------------
 // Props

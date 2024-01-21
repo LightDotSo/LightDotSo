@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
+import { UserOperationTimeline } from "@lightdotso/element";
 import {
   Button,
   Card,
@@ -28,7 +29,6 @@ import {
   Progress,
   TableCell,
   TableRow,
-  UserOperationTimeline,
 } from "@lightdotso/ui";
 import { getChainById, shortenBytes32 } from "@lightdotso/utils";
 import type { Row } from "@tanstack/react-table";

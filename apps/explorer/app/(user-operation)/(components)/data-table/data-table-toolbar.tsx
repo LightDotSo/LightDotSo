@@ -19,13 +19,10 @@ import type { UserOperationData } from "@lightdotso/data";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth, useTables } from "@lightdotso/stores";
 import {
-  Button,
   DataTableFacetedFilter,
   DataTableViewOptions,
-  ToolbarSectionWrapper,
-  Switch,
-  Label,
-} from "@lightdotso/ui";
+} from "@lightdotso/template";
+import { Button, ToolbarSectionWrapper, Switch, Label } from "@lightdotso/ui";
 import { getChainNameById } from "@lightdotso/utils";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { useQueryClient } from "@tanstack/react-query";

@@ -17,16 +17,16 @@ import type { UserOperationData } from "@lightdotso/data";
 import { Check, Hourglass, PenLineIcon } from "lucide-react";
 import type { FC, ReactNode } from "react";
 import type { Address } from "viem";
-import { Avatar } from "../components/avatar";
-import { TimeAgo } from "../components/time-ago";
 import {
+  Avatar,
+  TimeAgo,
   Timeline,
   TimelineBody,
   TimelineContent,
   TimelineItem,
   TimelinePoint,
   TimelineTitle,
-} from "../components/timeline";
+} from "@lightdotso/ui";
 import { PlaceholderOrb } from "./placeholder-orb";
 
 // -----------------------------------------------------------------------------

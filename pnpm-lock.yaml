@@ -321,6 +321,9 @@ importers:
       '@lightdotso/data':
         specifier: workspace:*
         version: link:../../packages/data
+      '@lightdotso/element':
+        specifier: workspace:*
+        version: link:../../packages/element
       '@lightdotso/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks
@@ -366,6 +369,9 @@ importers:
       '@lightdotso/table':
         specifier: workspace:*
         version: link:../../packages/table
+      '@lightdotso/template':
+        specifier: workspace:*
+        version: link:../../packages/template
       '@lightdotso/types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -821,6 +827,9 @@ importers:
       '@lightdotso/table':
         specifier: workspace:*
         version: link:../../packages/table
+      '@lightdotso/template':
+        specifier: workspace:*
+        version: link:../../packages/template
       '@lightdotso/types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -1554,6 +1563,55 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
+  packages/element:
+    dependencies:
+      '@lightdotso/const':
+        specifier: workspace:*
+        version: link:../const
+      '@lightdotso/demo':
+        specifier: workspace:*
+        version: link:../demo
+      '@lightdotso/ui':
+        specifier: workspace:*
+        version: link:../ui
+      '@lightdotso/utils':
+        specifier: workspace:*
+        version: link:../utils
+      class-variance-authority:
+        specifier: ^0.7.0
+        version: 0.7.0
+      lucide-react:
+        specifier: ^0.312.0
+        version: 0.312.0(react@18.2.0)
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-blurhash:
+        specifier: ^0.3.0
+        version: 0.3.0(blurhash@2.0.5)(react@18.2.0)
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+    devDependencies:
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../../configurations/tsconfig
+      '@storybook/react':
+        specifier: ^7.6.10
+        version: 7.6.10(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
+      '@types/node':
+        specifier: ^20.11.5
+        version: 20.11.5
+      '@types/react':
+        specifier: ^18.2.48
+        version: 18.2.48
+      '@types/react-dom':
+        specifier: ^18.2.18
+        version: 18.2.18
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
   packages/hooks:
     dependencies:
       '@lightdotso/client':
@@ -1798,7 +1856,7 @@ importers:
         version: link:../params
       '@lukemorales/query-key-factory':
         specifier: ^1.3.2
-        version: 1.3.2(@tanstack/query-core@5.17.15)(@tanstack/react-query@5.17.19)
+        version: 1.3.2(@tanstack/query-core@5.17.19)(@tanstack/react-query@5.17.19)
       '@tanstack/react-query':
         specifier: ^5.17.19
         version: 5.17.19(react@18.2.0)
@@ -2024,6 +2082,9 @@ importers:
       '@lightdotso/demo':
         specifier: workspace:*
         version: link:../demo
+      '@lightdotso/element':
+        specifier: workspace:*
+        version: link:../element
       '@lightdotso/hooks':
         specifier: workspace:*
         version: link:../hooks
@@ -2036,6 +2097,9 @@ importers:
       '@lightdotso/svg':
         specifier: workspace:*
         version: link:../svg
+      '@lightdotso/template':
+        specifier: workspace:*
+        version: link:../template
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../ui
@@ -2073,6 +2137,64 @@ importers:
       '@lightdotso/tsconfig':
         specifier: workspace:*
         version: link:../../configurations/tsconfig
+      '@types/node':
+        specifier: ^20.11.5
+        version: 20.11.5
+      '@types/react':
+        specifier: ^18.2.48
+        version: 18.2.48
+      '@types/react-dom':
+        specifier: ^18.2.18
+        version: 18.2.18
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
+  packages/template:
+    dependencies:
+      '@lightdotso/const':
+        specifier: workspace:*
+        version: link:../const
+      '@lightdotso/svg':
+        specifier: workspace:*
+        version: link:../svg
+      '@lightdotso/types':
+        specifier: workspace:*
+        version: link:../types
+      '@lightdotso/ui':
+        specifier: workspace:*
+        version: link:../ui
+      '@radix-ui/react-dropdown-menu':
+        specifier: ^2.0.6
+        version: 2.0.6(@types/react-dom@18.2.18)(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-icons':
+        specifier: ^1.3.0
+        version: 1.3.0(react@18.2.0)
+      '@tanstack/react-table':
+        specifier: ^8.11.7
+        version: 8.11.7(react-dom@18.2.0)(react@18.2.0)
+      lucide-react:
+        specifier: ^0.312.0
+        version: 0.312.0(react@18.2.0)
+      next-themes:
+        specifier: ^0.2.1
+        version: 0.2.1(next@14.1.0)(react-dom@18.2.0)(react@18.2.0)
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+      react-icons:
+        specifier: ^5.0.1
+        version: 5.0.1(react@18.2.0)
+    devDependencies:
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../../configurations/tsconfig
+      '@storybook/react':
+        specifier: ^7.6.10
+        version: 7.6.10(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
       '@types/node':
         specifier: ^20.11.5
         version: 20.11.5
@@ -6287,14 +6409,14 @@ packages:
       '@lit-labs/ssr-dom-shim': 1.1.2
     dev: false
 
-  /@lukemorales/query-key-factory@1.3.2(@tanstack/query-core@5.17.15)(@tanstack/react-query@5.17.19):
+  /@lukemorales/query-key-factory@1.3.2(@tanstack/query-core@5.17.19)(@tanstack/react-query@5.17.19):
     resolution: {integrity: sha512-SFOWcB5ec+RhlKjLjZxTAbOPF2uXNED6lqXiMu3TUt2twKzxE/QLhnYkdbxOBMK5Wwc2Ia+WP3yqCPRKWywnwQ==}
     engines: {node: '>=14'}
     peerDependencies:
       '@tanstack/query-core': '>= 4.0.0'
       '@tanstack/react-query': '>= 4.0.0'
     dependencies:
-      '@tanstack/query-core': 5.17.15
+      '@tanstack/query-core': 5.17.19
       '@tanstack/react-query': 5.17.19(react@18.2.0)
     dev: false
 
@@ -12611,10 +12733,6 @@ packages:
       tailwindcss: 3.4.1(ts-node@10.9.2)
     dev: false
 
-  /@tanstack/query-core@5.17.15:
-    resolution: {integrity: sha512-QURxpu77/ICA4d61aPvV7EcJ2MwmksxUejKBaq/xLcO2TUJAlXf4PFKHC/WxnVFI/7F1jeLx85AO3Vpk0+uBXw==}
-    dev: false
-
   /@tanstack/query-core@5.17.19:
     resolution: {integrity: sha512-Lzw8FUtnLCc9Jwz0sw9xOjZB+/mCCmJev38v2wHMUl/ioXNIhnNWeMxu0NKUjIhAd62IRB3eAtvxAGDJ55UkyA==}
     dev: false
@@ -15227,11 +15345,11 @@ packages:
   /acorn-walk@8.3.1:
     resolution: {integrity: sha512-TgUZgYvqZprrl7YldZNoa9OciCAyZR+Ejm9eXzKCmjsF5IKp/wgQ7Z/ZpjpGTIUPwrHQIcYeI8qDh4PsEwxMbw==}
     engines: {node: '>=0.4.0'}
+    dev: false
 
   /acorn-walk@8.3.2:
     resolution: {integrity: sha512-cjkyv4OtNCIeqhHrfS81QWXoCBPExR/J62oyEqepVw8WaQeSqpW2uhuLPh1m9eWhDuOo/jUXVTlifvesOWp/4A==}
     engines: {node: '>=0.4.0'}
-    dev: true
 
   /acorn@7.4.1:
     resolution: {integrity: sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==}
@@ -26474,7 +26592,7 @@ packages:
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       acorn: 8.10.0
-      acorn-walk: 8.3.1
+      acorn-walk: 8.3.2
       capnp-ts: 0.7.0
       exit-hook: 2.2.1
       glob-to-regexp: 0.4.1
@@ -33144,7 +33262,7 @@ packages:
       '@tsconfig/node16': 1.0.4
       '@types/node': 20.11.5
       acorn: 8.10.0
-      acorn-walk: 8.3.1
+      acorn-walk: 8.3.2
       arg: 4.1.3
       create-require: 1.1.1
       diff: 4.0.2

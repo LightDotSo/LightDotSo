@@ -16,7 +16,9 @@
 "use client";
 
 import type { NotificationData } from "@lightdotso/data";
-import { Avatar, DataTableColumnHeader, PlaceholderOrb } from "@lightdotso/ui";
+import { PlaceholderOrb } from "@lightdotso/element";
+import { DataTableColumnHeader } from "@lightdotso/template";
+import { Avatar } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { NotificationTableRowActions } from "./actions/notification-table-row-actions";
 

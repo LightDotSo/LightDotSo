@@ -34,6 +34,7 @@ export { Alert, AlertTitle, AlertDescription } from "./components/alert";
 export { AspectRatio } from "./components/aspect-ratio";
 export { Avatar, AvatarImage, AvatarFallback } from "./components/avatar";
 export { Badge, badgeVariants } from "./components/badge";
+export { BadgeIcon } from "./components/badge-icon";
 export { Button, buttonVariants } from "./components/button";
 export { ButtonGroup } from "./components/button-group";
 export { ButtonIcon } from "./components/button-icon";
@@ -219,6 +220,7 @@ export {
   TableCell,
   TableCaption,
 } from "./components/table";
+export { TimeAgo } from "./components/time-ago";
 export {
   Timeline,
   TimelineContent,
@@ -242,23 +244,9 @@ export {
 } from "./components/tooltip";
 export { VercelToolbar } from "./dev/vercel-toolbar";
 export { TailwindIndicator } from "./dev/tailwind-indicator";
-export { ActionLogo } from "./elements/action-logo";
-export { AssetChange } from "./elements/asset-change";
-export { NftImage } from "./elements/nft-image";
-export { PlaceholderOrb } from "./elements/placeholder-orb";
-export { TokenImage } from "./elements/token-image";
-export { UserOperationTimeline } from "./elements/user-operation-timeline";
 export { ThemeProvider } from "./providers/theme-provider";
 export { HStackFull } from "./stacks/h-stack-full";
 export { ReactQueryProvider } from "./providers/react-query";
-export {
-  DataTableColumnHeader,
-  DataTableFacetedFilter,
-  DataTablePagination,
-  DataTableViewOptions,
-} from "./templates/data-table";
-export { Footer } from "./templates/footer";
-export { MobileAppDrawer } from "./templates/mobile-app-drawer";
 export {
   BaseLayerWrapper,
   LargeLayerWrapper,

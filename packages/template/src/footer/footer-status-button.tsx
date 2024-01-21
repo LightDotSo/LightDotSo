@@ -16,7 +16,7 @@
 import { INTERNAL_LINKS } from "@lightdotso/const";
 import { MonitorCheck } from "lucide-react";
 import type { FC } from "react";
-import { Button } from "../../components/button";
+import { Button } from "@lightdotso/ui";
 
 // -----------------------------------------------------------------------------
 // Component

@@ -14,12 +14,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { AuthState } from "@lightdotso/state";
+import { Footer } from "@lightdotso/template";
 import {
   TailwindIndicator,
   ThemeProvider,
   ReactQueryProvider,
   Toaster,
-  Footer,
   VercelToolbar,
 } from "@lightdotso/ui";
 import dynamic from "next/dynamic";

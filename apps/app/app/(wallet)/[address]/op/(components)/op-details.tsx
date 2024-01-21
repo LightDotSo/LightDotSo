@@ -16,7 +16,7 @@
 "use client";
 
 import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
-import { UserOperationTimeline } from "@lightdotso/ui";
+import { UserOperationTimeline } from "@lightdotso/element";
 import type { FC } from "react";
 import type { Address } from "viem";
 
