@@ -25,6 +25,7 @@ import {
   DropdownMenuTrigger,
   toast,
 } from "@lightdotso/ui";
+import { getChainById } from "@lightdotso/utils";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import type { Row } from "@tanstack/react-table";
 
@@ -59,6 +60,17 @@ export function TransactionTableRowActions({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
+        <DropdownMenuItem asChild>
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href={`${
+              getChainById(row.original.chain_id)?.blockExplorers?.default.url
+            }/tx/${row.original.hash}`}
+          >
+            Open in Explorer
+          </a>
+        </DropdownMenuItem>
         <DropdownMenuItem
           onClick={async () => {
             const loadingToast = toast.loading("Queue has been created...");
