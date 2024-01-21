@@ -129,7 +129,7 @@ export const useUserOperationSign = ({
         return;
       }
 
-      const toastId = toast.loading("Submitting the userOperation result");
+      const loadingToast = toast.loading("Submitting the userOperation result");
 
       const res = await createSignature({
         params: {
@@ -146,7 +146,7 @@ export const useUserOperationSign = ({
         },
       });
 
-      toast.dismiss(toastId);
+      toast.dismiss(loadingToast);
 
       res.match(
         _ => {

@@ -141,12 +141,12 @@ export const ConfirmForm: FC = () => {
   const onSubmit = useCallback(
     () => {
       // Navigate to the next step
-      const toastId = toast.loading("Creating wallet...");
+      const loadingToast = toast.loading("Creating wallet...");
       // Set the form values
       // setFormValues(values);
       fetchToCreate(true)
         .then(() => {
-          toast.dismiss(toastId);
+          toast.dismiss(loadingToast);
           toast.success("You can now use your wallet.");
 
           backOff(() =>
@@ -171,7 +171,7 @@ export const ConfirmForm: FC = () => {
             });
         })
         .catch(() => {
-          toast.dismiss(toastId);
+          toast.dismiss(loadingToast);
           toast.error(
             "There was a problem with your request (invalid request likely).",
           );

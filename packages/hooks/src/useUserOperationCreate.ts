@@ -186,7 +186,7 @@ export const useUserOperationCreate = ({
         return;
       }
 
-      const toastId = toast.loading("Submitting the userOperation result");
+      const loadingToast = toast.loading("Submitting the userOperation result");
 
       const res = await createUserOperation({
         params: {
@@ -219,7 +219,7 @@ export const useUserOperationCreate = ({
         },
       });
 
-      toast.dismiss(toastId);
+      toast.dismiss(loadingToast);
 
       res.match(
         _ => {

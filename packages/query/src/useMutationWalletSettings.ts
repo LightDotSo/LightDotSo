@@ -29,7 +29,7 @@ export const useMutationWalletSettings = (params: WalletParams) => {
 
   const { mutate, isPending, isSuccess, isError } = useMutation({
     mutationFn: async (data: WalletSettingsData) => {
-      const toastId = toast.loading("Updating wallet settings...");
+      const loadingToast = toast.loading("Updating wallet settings...");
 
       const res = await updateWalletSettings({
         params: {
@@ -44,7 +44,7 @@ export const useMutationWalletSettings = (params: WalletParams) => {
         },
       });
 
-      toast.dismiss(toastId);
+      toast.dismiss(loadingToast);
 
       // Return if the response is 200
       res.match(

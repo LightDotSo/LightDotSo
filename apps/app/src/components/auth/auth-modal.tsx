@@ -85,7 +85,7 @@ export function AuthModal() {
         signMessageAsync({
           message: message.prepareMessage(),
         }).then(signature => {
-          const toastId = toast.loading("Signing in...");
+          const loadingToast = toast.loading("Signing in...");
 
           postAuthVerify(
             {
@@ -95,7 +95,7 @@ export function AuthModal() {
             clientType,
           )
             .then(res => {
-              toast.dismiss(toastId);
+              toast.dismiss(loadingToast);
               res.match(
                 _ => {
                   toast.success("Successfully signed in!");
@@ -107,7 +107,7 @@ export function AuthModal() {
               );
             })
             .catch(err => {
-              toast.dismiss(toastId);
+              toast.dismiss(loadingToast);
               if (err instanceof Error) {
                 toast.error(err.message);
               } else {

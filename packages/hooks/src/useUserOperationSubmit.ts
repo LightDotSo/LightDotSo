@@ -164,7 +164,7 @@ export const useUserOperationSubmit = ({
     setIsLoading(true);
 
     const processSignature = async () => {
-      const toastId = toast.loading("Submitting the userOperation result");
+      const loadingToast = toast.loading("Submitting the userOperation result");
 
       // Get the sig as bytes from caller
       const sigRes = await getSignatureUserOperation({
@@ -195,11 +195,11 @@ export const useUserOperationSubmit = ({
 
           res.match(
             _ => {
-              toast.dismiss(toastId);
+              toast.dismiss(loadingToast);
               toast.success("You submitted the userOperation result");
             },
             err => {
-              toast.dismiss(toastId);
+              toast.dismiss(loadingToast);
               if (err instanceof Error) {
                 toast.error(err.message);
               } else {
@@ -209,7 +209,7 @@ export const useUserOperationSubmit = ({
           );
         },
         async err => {
-          toast.dismiss(toastId);
+          toast.dismiss(loadingToast);
           if (err instanceof Error) {
             toast.error(err.message);
           } else {

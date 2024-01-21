@@ -90,7 +90,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
     if (!userId) {
       return toast.error("Sorry, something went wrong.");
     }
-    const toastId = toast.loading("Sending feedback...");
+    const loadingToast = toast.loading("Sending feedback...");
     createFeedback(
       {
         params: {
@@ -104,7 +104,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
       },
       clientType,
     ).then(res => {
-      toast.dismiss(toastId);
+      toast.dismiss(loadingToast);
       if (res.isOk()) {
         toast.success("Thanks for your feedback!");
         form.reset();

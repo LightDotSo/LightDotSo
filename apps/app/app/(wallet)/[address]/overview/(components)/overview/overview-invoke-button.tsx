@@ -63,7 +63,7 @@ export const OverviewInvokeButton: FC<OverviewInvokeButtonProps> = ({
             <ButtonIcon
               variant="shadow"
               onClick={async () => {
-                const toastId = toast.info("Refreshing...");
+                const loadingToast = toast.loading("Refreshing...");
 
                 invokePortfolioAction(address as Address);
 
@@ -74,8 +74,8 @@ export const OverviewInvokeButton: FC<OverviewInvokeButtonProps> = ({
                   clientType,
                 );
 
-                toast.dismiss(toastId);
-                toast.success("Refreshed!");
+                toast.dismiss(loadingToast);
+                toast.success("Successfully refreshed.");
               }}
             >
               <RefreshCcw className="size-4" />

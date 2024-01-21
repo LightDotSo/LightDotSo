@@ -62,14 +62,14 @@ export const OverviewInvokeButton: FC<InvokeUserOperationProps> = ({
             <ButtonIcon
               variant="shadow"
               onClick={() => {
-                const toastId = toast.info("Updating operation...");
+                const loadingToast = toast.info("Updating operation...");
                 updateUserOperation(
                   {
                     params: { query: { address: address } },
                   },
                   clientType,
                 ).then(res => {
-                  toast.dismiss(toastId);
+                  toast.dismiss(loadingToast);
                   res.match(
                     _success => {
                       toast.success("Operation updated");
