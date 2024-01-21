@@ -80,7 +80,11 @@ pub(crate) async fn v1_interpretation_get_handler(
         .interpretation()
         .find_unique(interpretation::id::equals(query.id))
         .with(interpretation::actions::fetch(vec![]))
-        .with(interpretation::asset_changes::fetch(vec![]).with(asset_change::token::fetch()))
+        .with(
+            interpretation::asset_changes::fetch(vec![])
+                .with(asset_change::interpretation_action::fetch())
+                .with(asset_change::token::fetch()),
+        )
         .exec()
         .await?;
     info!(?interpretation);
