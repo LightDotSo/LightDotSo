@@ -49,15 +49,15 @@ async fn test_integration_upsert_interpretation_with_actions() -> Result<()> {
         actions: vec![
             InterpretationAction {
                 address: Some(Address::zero()),
-                action_type: InterpretationActionType::ERC1155Burned,
+                action_type: InterpretationActionType::ERC1155Burn,
             },
             InterpretationAction {
                 address: Some(Address::zero()),
-                action_type: InterpretationActionType::ERC1155Burned,
+                action_type: InterpretationActionType::ERC1155Burn,
             },
             InterpretationAction {
                 address: Some("0x6144d927ee371de7e7f8221b596f3432e7a8e6d9".parse().unwrap()),
-                action_type: InterpretationActionType::ERC1155Minted,
+                action_type: InterpretationActionType::ERC1155Mint,
             },
         ],
         asset_changes: vec![
@@ -68,7 +68,7 @@ async fn test_integration_upsert_interpretation_with_actions() -> Result<()> {
                 amount: 0.into(),
                 action: InterpretationAction {
                     address: Some(Address::zero()),
-                    action_type: InterpretationActionType::ERC1155Burned,
+                    action_type: InterpretationActionType::ERC1155Burn,
                 },
                 token: AssetToken {
                     address: Address::zero(),
@@ -83,7 +83,7 @@ async fn test_integration_upsert_interpretation_with_actions() -> Result<()> {
                 amount: 0.into(),
                 action: InterpretationAction {
                     address: Some(Address::zero()),
-                    action_type: InterpretationActionType::ERC1155Burned,
+                    action_type: InterpretationActionType::ERC1155Burn,
                 },
                 token: AssetToken {
                     address: "0x6144d927ee371de7e7f8221b596f3432e7a8e6d9".parse().unwrap(),
@@ -98,7 +98,7 @@ async fn test_integration_upsert_interpretation_with_actions() -> Result<()> {
                 amount: 0.into(),
                 action: InterpretationAction {
                     address: Some("0x6144d927ee371de7e7f8221b596f3432e7a8e6d9".parse().unwrap()),
-                    action_type: InterpretationActionType::ERC1155Minted,
+                    action_type: InterpretationActionType::ERC1155Mint,
                 },
                 token: AssetToken {
                     address: "0x6144d927ee371de7e7f8221b596f3432e7a8e6d9".parse().unwrap(),

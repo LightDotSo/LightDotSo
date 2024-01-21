@@ -42,7 +42,7 @@ const badgeVariants = cva(
           ["data-[variant=default]:bg-background-primary"],
           ["data-[variant=default]:text-text-weakest"],
           // Shadow
-          ["data-[variant=shadow]:border-border-primary"],
+          ["data-[variant=shadow]:border-border-primary-weaker"],
           ["data-[variant=shadow]:bg-background-primary-weakest"],
           ["data-[variant=shadow]:text-text-inverse-weakest"],
         ],
@@ -51,7 +51,7 @@ const badgeVariants = cva(
           ["data-[variant=default]:bg-background-destructive"],
           ["data-[variant=default]:text-text-inverse"],
           // Shadow
-          ["data-[variant=shadow]:border-border-destructive"],
+          ["data-[variant=shadow]:border-border-destructive-weaker"],
           ["data-[variant=shadow]:bg-background-destructive-weakest"],
           ["data-[variant=shadow]:text-text-destructive"],
         ],
@@ -60,7 +60,7 @@ const badgeVariants = cva(
           ["data-[variant=default]:bg-background-error"],
           ["data-[variant=default]:text-text-inverse"],
           // Shadow
-          ["data-[variant=shadow]:border-border-error"],
+          ["data-[variant=shadow]:border-border-error-weaker"],
           ["data-[variant=shadow]:bg-background-error-weakest"],
           ["data-[variant=shadow]:text-text-error"],
         ],
@@ -69,7 +69,7 @@ const badgeVariants = cva(
           ["data-[variant=default]:bg-background-warning"],
           ["data-[variant=default]:text-text-inverse"],
           // Shadow
-          ["data-[variant=shadow]:border-border-warning"],
+          ["data-[variant=shadow]:border-border-warning-weaker"],
           ["data-[variant=shadow]:bg-background-warning-weakest"],
           ["data-[variant=shadow]:text-text-warning"],
         ],
@@ -78,7 +78,7 @@ const badgeVariants = cva(
           ["data-[variant=default]:bg-background-info"],
           ["data-[variant=default]:text-text-inverse"],
           // Shadow
-          ["data-[variant=shadow]:border-border-info"],
+          ["data-[variant=shadow]:border-border-info-weaker"],
           ["data-[variant=shadow]:bg-background-info-weakest"],
           ["data-[variant=shadow]:text-text-info"],
         ],
@@ -87,7 +87,7 @@ const badgeVariants = cva(
           ["data-[variant=default]:bg-background-success"],
           ["data-[variant=default]:text-text-inverse"],
           // Shadow
-          ["data-[variant=shadow]:border-border-success"],
+          ["data-[variant=shadow]:border-border-success-weaker"],
           ["data-[variant=shadow]:bg-background-success-weakest"],
           ["data-[variant=shadow]:text-text-success"],
         ],
@@ -96,7 +96,7 @@ const badgeVariants = cva(
           ["data-[variant=default]:bg-background-indigo"],
           ["data-[variant=default]:text-text-inverse"],
           // Shadow
-          ["data-[variant=shadow]:border-border-indigo"],
+          ["data-[variant=shadow]:border-border-indigo-weaker"],
           ["data-[variant=shadow]:bg-background-indigo-weakest"],
           ["data-[variant=shadow]:text-text-indigo"],
         ],
@@ -105,7 +105,7 @@ const badgeVariants = cva(
           ["data-[variant=default]:bg-background-pink"],
           ["data-[variant=default]:text-text-inverse"],
           // Shadow
-          ["data-[variant=shadow]:border-border-pink"],
+          ["data-[variant=shadow]:border-border-pink-weaker"],
           ["data-[variant=shadow]:bg-background-pink-weakest"],
           ["data-[variant=shadow]:text-text-pink"],
         ],
@@ -114,7 +114,7 @@ const badgeVariants = cva(
           ["data-[variant=default]:bg-background-purple"],
           ["data-[variant=default]:text-text-inverse"],
           // Shadow
-          ["data-[variant=shadow]:border-border-purple"],
+          ["data-[variant=shadow]:border-border-purple-weaker"],
           ["data-[variant=shadow]:bg-background-purple-weakest"],
           ["data-[variant=shadow]:text-text-purple"],
         ],

@@ -113,7 +113,7 @@ impl Adapter for ERC1155Adapter {
 
             // Get the actions for the `from` address
             let from_action_type = if from == Address::zero() {
-                InterpretationActionType::ERC1155Minted
+                InterpretationActionType::ERC1155Mint
             } else {
                 InterpretationActionType::ERC1155Send
             };
@@ -123,7 +123,7 @@ impl Adapter for ERC1155Adapter {
 
             // Get the actions for the `to` address
             let to_action_type = if to == Address::zero() {
-                InterpretationActionType::ERC1155Burned
+                InterpretationActionType::ERC1155Burn
             } else {
                 InterpretationActionType::ERC1155Receive
             };
@@ -206,7 +206,7 @@ impl Adapter for ERC1155Adapter {
 
             // Get the actions for the `from` address
             let from_action_type = if from == Address::zero() {
-                InterpretationActionType::ERC1155Minted
+                InterpretationActionType::ERC1155Mint
             } else {
                 InterpretationActionType::ERC1155Send
             };
@@ -217,7 +217,7 @@ impl Adapter for ERC1155Adapter {
 
             // Get the actions for the `to` address
             let to_action_type = if to == Address::zero() {
-                InterpretationActionType::ERC1155Burned
+                InterpretationActionType::ERC1155Burn
             } else {
                 InterpretationActionType::ERC1155Receive
             };

@@ -78,6 +78,7 @@ pub(crate) async fn v1_asset_change_get_handler(
         .client
         .asset_change()
         .find_unique(asset_change::id::equals(query.id))
+        .with(asset_change::interpretation_action::fetch())
         .with(asset_change::token::fetch())
         .exec()
         .await?;

@@ -75,6 +75,7 @@ pub(crate) async fn v1_asset_change_list_handler(
         .client
         .asset_change()
         .find_many(vec![])
+        .with(asset_change::interpretation_action::fetch())
         .with(asset_change::token::fetch())
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))

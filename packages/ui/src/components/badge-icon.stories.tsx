@@ -13,38 +13,41 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import type { TransactionData } from "@lightdotso/data";
-import type { FC } from "react";
-
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-type TransactionCardInterpretationProps = { transaction: TransactionData };
+import type { Meta, StoryObj } from "@storybook/react";
+import { Mail } from "lucide-react";
+import { BadgeIcon } from "./badge-icon";
 
 // -----------------------------------------------------------------------------
-// Component
+// Meta
 // -----------------------------------------------------------------------------
 
-export const TransactionCardInterpretation: FC<
-  TransactionCardInterpretationProps
-> = ({ transaction: { interpretation } }) => {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
+const meta: Meta<typeof BadgeIcon> = {
+  title: "component/BadgeIcon",
+  component: BadgeIcon,
+  tags: ["autodocs"],
+  argTypes: {},
+};
+export default meta;
 
-  return (
-    <div className="flex items-center space-x-1.5">
-      {interpretation?.asset_changes &&
-        interpretation.asset_changes.map((asset_change, index) => (
-          <div key={index} className="flex items-center space-x-1.5">
-            <span className="text-xs font-medium text-gray-400">
-              {asset_change.id}
-            </span>
-          </div>
-        ))}
-    </div>
-  );
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+type Story = StoryObj<typeof BadgeIcon>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Base: Story = {
+  render: args => (
+    <BadgeIcon {...args}>
+      <Mail className="size-5" />
+    </BadgeIcon>
+  ),
+  args: {
+    variant: "default",
+    size: "md",
+    intent: "default",
+  },
 };

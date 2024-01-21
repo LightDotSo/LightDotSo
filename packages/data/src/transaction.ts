@@ -23,7 +23,7 @@ export type TransactionData = {
   chain_id: number;
   hash: string;
   timestamp: string;
-  interpretation: InterpretationData;
+  interpretation?: InterpretationData | null;
 };
 
 export type TransactionCountData = {

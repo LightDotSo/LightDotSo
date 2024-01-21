@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::routes::token::types::Token;
+use crate::routes::{interpretation_action::types::InterpretationAction, token::types::Token};
 use lightdotso_prisma::asset_change;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
@@ -37,7 +37,7 @@ pub(crate) struct AssetChange {
     /// The after amount of the asset change.
     after_amount: Option<i64>,
     /// The action id of the asset change.
-    action: Option<String>,
+    action: Option<InterpretationAction>,
     /// The token id of the asset change.
     token: Option<Token>,
 }
@@ -55,9 +55,9 @@ impl From<asset_change::Data> for AssetChange {
             amount: asset_change.amount,
             before_amount: asset_change.before_amount,
             after_amount: asset_change.after_amount,
-            action: asset_change
-                .interpretation_action
-                .and_then(|maybe_action| maybe_action.map(|action| action.action)),
+            action: asset_change.interpretation_action.and_then(|maybe_action| {
+                maybe_action.map(|action| InterpretationAction::from(*action))
+            }),
             token: asset_change
                 .token
                 .and_then(|maybe_token| maybe_token.map(|token| Token::from(*token))),

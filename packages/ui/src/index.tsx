@@ -248,6 +248,7 @@ export {
 } from "./components/tooltip";
 export { VercelToolbar } from "./dev/vercel-toolbar";
 export { TailwindIndicator } from "./dev/tailwind-indicator";
+export { ActionLogo } from "./elements/action-logo";
 export { NftImage } from "./elements/nft-image";
 export { PlaceholderOrb } from "./elements/placeholder-orb";
 export { TokenImage } from "./elements/token-image";

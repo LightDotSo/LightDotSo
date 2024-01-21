@@ -40,7 +40,7 @@ InterpretationResponse {
     exit_reason: Stop,
     actions: [
         InterpretationAction {
-            action_type: ERC721Minted,
+            action_type: ERC721Mint,
             address: Some(
                 0x0000000000000000000000000000000000000000,
             ),
@@ -63,7 +63,7 @@ InterpretationResponse {
             ),
             amount: 1,
             action: InterpretationAction {
-                action_type: ERC721Minted,
+                action_type: ERC721Mint,
                 address: Some(
                     0x0000000000000000000000000000000000000000,
                 ),

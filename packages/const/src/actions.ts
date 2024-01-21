@@ -13,11 +13,22 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { AssetChangeData } from "./assetChange";
-import type { InterpretationActionData } from "./interpretationAction";
-
-export type InterpretationData = {
-  id: string;
-  actions: InterpretationActionData[];
-  asset_changes: AssetChangeData[];
-};
+export enum Action {
+  NATIVE_SEND,
+  NATIVE_RECEIVE,
+  ERC20_APPROVE,
+  ERC20_RECEIVE,
+  ERC20_SEND,
+  ERC20_MINT,
+  ERC20_BURN,
+  ERC721_APPROVE,
+  ERC721_RECEIVE,
+  ERC721_SEND,
+  ERC721_MINT,
+  ERC721_BURN,
+  ERC1155_APPROVE,
+  ERC1155_RECEIVE,
+  ERC1155_SEND,
+  ERC1155_MINT,
+  ERC1155_BURN,
+}

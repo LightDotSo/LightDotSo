@@ -5,7 +5,13 @@
     "timestamp": "2024-01-05T20:38:45+00:00",
     "interpretation": {
       "id": "clrakug1e000tps8hgq8eauql",
-      "actions": ["NATIVE_RECEIVE"],
+      "actions": [
+        {
+          "id": "clrakug1e000tps8hgq8eauql",
+          "action": "NATIVE_RECEIVE",
+          "address": "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F"
+        }
+      ],
       "asset_changes": [
         {
           "id": "clrakugxw000vps8hbj32jy2v",
@@ -52,7 +58,13 @@
     "timestamp": "2023-12-30T03:35:01+00:00",
     "interpretation": {
       "id": "clrakw0wy002vps8hohxvtn1s",
-      "actions": ["ERC20_SEND"],
+      "actions": [
+        {
+          "id": "clrakw0wy002vps8hohxvtn1s",
+          "action": "ERC20_RECEIVE",
+          "address": "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F"
+        }
+      ],
       "asset_changes": [
         {
           "id": "clrakw1fq002xps8h5rox9fh1",

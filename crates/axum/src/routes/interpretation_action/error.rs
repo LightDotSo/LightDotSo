@@ -13,11 +13,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { AssetChangeData } from "./assetChange";
-import type { InterpretationActionData } from "./interpretationAction";
+use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
 
-export type InterpretationData = {
-  id: string;
-  actions: InterpretationActionData[];
-  asset_changes: AssetChangeData[];
-};
+// -----------------------------------------------------------------------------
+// Error
+// -----------------------------------------------------------------------------
+
+/// InterpretationAction errors
+#[derive(Serialize, Deserialize, ToSchema)]
+pub(crate) enum InterpretationActionError {
+    /// InterpretationAction query error.
+    #[schema(example = "Bad request")]
+    BadRequest(String),
+    /// InterpretationAction not found by id.
+    #[schema(example = "id = 1")]
+    NotFound(String),
+}

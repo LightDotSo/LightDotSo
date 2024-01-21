@@ -13,18 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use super::types::Interpretation;
+use super::types::InterpretationAction;
 use crate::{
-    error::RouteError, result::AppJsonResult, routes::interpretation::error::InterpretationError,
-    state::AppState,
+    error::RouteError, result::AppJsonResult,
+    routes::interpretation_action::error::InterpretationActionError, state::AppState,
 };
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use lightdotso_prisma::{asset_change, interpretation};
-use lightdotso_tracing::tracing::info;
+use lightdotso_prisma::interpretation_action;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -35,8 +34,8 @@ use utoipa::IntoParams;
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
-pub(crate) struct GetQuery {
-    /// The id of the interpretation to get.
+pub struct GetQuery {
+    /// The id of the interpretation action.
     pub id: String,
 }
 
@@ -44,23 +43,23 @@ pub(crate) struct GetQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Get a interpretation
+/// Get a paymaster
 #[utoipa::path(
         get,
-        path = "/interpretation/get",
+        path = "/interpretation_action/get",
         params(
             GetQuery
         ),
         responses(
-            (status = 200, description = "Interpretation returned successfully", body = Interpretation),
-            (status = 404, description = "Interpretation not found", body = InterpretationError),
+            (status = 200, description = "Interpretation action returned successfully", body = InterpretationAction),
+            (status = 404, description = "Interpretation action not found", body = InterpretationActionError),
         )
     )]
 #[autometrics]
-pub(crate) async fn v1_interpretation_get_handler(
+pub(crate) async fn v1_interpretation_action_get_handler(
     get_query: Query<GetQuery>,
     State(state): State<AppState>,
-) -> AppJsonResult<Interpretation> {
+) -> AppJsonResult<InterpretationAction> {
     // -------------------------------------------------------------------------
     // Parse
     // -------------------------------------------------------------------------
@@ -68,38 +67,30 @@ pub(crate) async fn v1_interpretation_get_handler(
     // Get the get query.
     let Query(query) = get_query;
 
-    info!("Get interpretation for address: {:?}", query);
-
     // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
 
-    // Get the interpretations from the database.
-    let interpretation = state
+    // Get the interpreation action from the database.
+    let interpretation_action = state
         .client
-        .interpretation()
-        .find_unique(interpretation::id::equals(query.id))
-        .with(interpretation::actions::fetch(vec![]))
-        .with(
-            interpretation::asset_changes::fetch(vec![])
-                .with(asset_change::interpretation_action::fetch())
-                .with(asset_change::token::fetch()),
-        )
+        .interpretation_action()
+        .find_unique(interpretation_action::id::equals(query.id))
         .exec()
         .await?;
-    info!(?interpretation);
 
-    // If the interpretation is not found, return a 404.
-    let interpretation = interpretation.ok_or(RouteError::InterpretationError(
-        InterpretationError::NotFound("Interpretation not found".to_string()),
-    ))?;
+    // If the paymaster is not found, return a 404.
+    let interpretation_action =
+        interpretation_action.ok_or(RouteError::InterpretationActionError(
+            InterpretationActionError::NotFound("Interpretation action not found".to_string()),
+        ))?;
 
     // -------------------------------------------------------------------------
     // Return
     // -------------------------------------------------------------------------
 
-    // Change the interpretation to the format that the API expects.
-    let interpretation: Interpretation = interpretation.into();
+    // Change the interpretation action to the format that the API expects.
+    let interpretation_action: InterpretationAction = interpretation_action.into();
 
-    Ok(Json::from(interpretation))
+    Ok(Json::from(interpretation_action))
 }

@@ -32,26 +32,36 @@ pub enum InterpretationActionType {
     NativeReceive,
     #[strum(serialize = "NATIVE_SEND")]
     NativeSend,
+    #[strum(serialize = "ERC20_APPROVE")]
+    ERC20Approve,
     #[strum(serialize = "ERC20_RECEIVE")]
     ERC20Receive,
     #[strum(serialize = "ERC20_SEND")]
     ERC20Send,
+    #[strum(serialize = "ERC20_MINT")]
+    ERC20Mint,
+    #[strum(serialize = "ERC20_BURN")]
+    ERC20Burn,
+    #[strum(serialize = "ERC721_APPROVE")]
+    ERC721Approve,
     #[strum(serialize = "ERC721_RECEIVE")]
     ERC721Receive,
     #[strum(serialize = "ERC721_SEND")]
     ERC721Send,
-    #[strum(serialize = "ERC721_MINTED")]
-    ERC721Minted,
-    #[strum(serialize = "ERC721_BURNED")]
-    ERC721Burned,
+    #[strum(serialize = "ERC721_MINT")]
+    ERC721Mint,
+    #[strum(serialize = "ERC721_BURN")]
+    ERC721Burn,
+    #[strum(serialize = "ERC1155_APPROVE")]
+    ERC1155Approve,
     #[strum(serialize = "ERC1155_RECEIVE")]
     ERC1155Receive,
     #[strum(serialize = "ERC1155_SEND")]
     ERC1155Send,
-    #[strum(serialize = "ERC1155_MINTED")]
-    ERC1155Minted,
-    #[strum(serialize = "ERC1155_BURNED")]
-    ERC1155Burned,
+    #[strum(serialize = "ERC1155_MINT")]
+    ERC1155Mint,
+    #[strum(serialize = "ERC1155_BURN")]
+    ERC1155Burn,
 }
 
 #[cfg(test)]
