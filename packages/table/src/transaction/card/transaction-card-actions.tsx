@@ -71,7 +71,7 @@ export const TransactionCardActions: FC<TransactionCardActionsProps> = ({
   return (
     <div className="flex items-center space-x-3">
       <ActionLogo action={action} />
-      <span className="text-text text-sm font-medium ">
+      <span className="text-sm font-medium text-text ">
         {ACTION_LABELS[action]}
       </span>
     </div>
