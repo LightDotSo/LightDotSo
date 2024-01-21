@@ -19,7 +19,7 @@ import type { NftData, WalletSettingsData } from "@lightdotso/data";
 import { useSuspenseQueryNfts } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useTables } from "@lightdotso/stores";
-import { NftTable } from "@lightdotso/table";
+import { NftTable } from "@lightdotso/tables";
 import { useQueryClient } from "@tanstack/react-query";
 import type { FC } from "react";
 import type { Address } from "viem";

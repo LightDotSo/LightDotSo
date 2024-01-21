@@ -16,7 +16,7 @@
 "use client";
 
 import { useAuth } from "@lightdotso/stores";
-import { MobileAppDrawer } from "@lightdotso/template";
+import { MobileAppDrawer } from "@lightdotso/templates";
 import type { Tab } from "@lightdotso/types";
 import type { FC, ReactNode } from "react";
 import { Suspense } from "react";

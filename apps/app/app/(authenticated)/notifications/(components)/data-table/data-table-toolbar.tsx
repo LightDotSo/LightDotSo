@@ -17,7 +17,7 @@
 
 import type { NotificationData } from "@lightdotso/data";
 import { useTables } from "@lightdotso/stores";
-import { DataTableViewOptions } from "@lightdotso/template";
+import { DataTableViewOptions } from "@lightdotso/templates";
 import { Button, Input, ToolbarSectionWrapper } from "@lightdotso/ui";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import type { Table } from "@tanstack/react-table";

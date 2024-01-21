@@ -1,8 +1,8 @@
 ---
 "@lightdotso/tailwindcss": patch
-"@lightdotso/template": patch
-"@lightdotso/element": patch
-"@lightdotso/table": patch
+"@lightdotso/templates": patch
+"@lightdotso/elements": patch
+"@lightdotso/tables": patch
 "@lightdotso/explorer": patch
 "@lightdotso/ui": patch
 "@lightdotso/app": patch

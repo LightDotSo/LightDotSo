@@ -16,7 +16,7 @@
 "use client";
 
 import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
-import { MobileAppDrawer } from "@lightdotso/template";
+import { MobileAppDrawer } from "@lightdotso/templates";
 import type { Tab } from "@lightdotso/types";
 import { Button } from "@lightdotso/ui";
 import Link from "next/link";

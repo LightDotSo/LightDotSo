@@ -68,7 +68,7 @@ const nextConfig = {
     "@lightdotso/stores",
     "@lightdotso/styles",
     "@lightdotso/svg",
-    "@lightdotso/table",
+    "@lightdotso/tables",
     "@lightdotso/types",
     "@lightdotso/ui",
     "@lightdotso/utils",

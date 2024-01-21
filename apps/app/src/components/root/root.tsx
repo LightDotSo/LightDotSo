@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { AuthState } from "@lightdotso/state";
-import { Footer } from "@lightdotso/template";
+import { AuthState } from "@lightdotso/states";
+import { Footer } from "@lightdotso/templates";
 import {
   TailwindIndicator,
   ThemeProvider,

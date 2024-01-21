@@ -321,9 +321,9 @@ importers:
       '@lightdotso/data':
         specifier: workspace:*
         version: link:../../packages/data
-      '@lightdotso/element':
+      '@lightdotso/elements':
         specifier: workspace:*
-        version: link:../../packages/element
+        version: link:../../packages/elements
       '@lightdotso/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks
@@ -354,9 +354,9 @@ importers:
       '@lightdotso/solutions':
         specifier: workspace:*
         version: link:../../packages/solutions
-      '@lightdotso/state':
+      '@lightdotso/states':
         specifier: workspace:*
-        version: link:../../packages/state
+        version: link:../../packages/states
       '@lightdotso/stores':
         specifier: workspace:*
         version: link:../../packages/stores
@@ -366,12 +366,12 @@ importers:
       '@lightdotso/svg':
         specifier: workspace:*
         version: link:../../packages/svg
-      '@lightdotso/table':
+      '@lightdotso/tables':
         specifier: workspace:*
-        version: link:../../packages/table
-      '@lightdotso/template':
+        version: link:../../packages/tables
+      '@lightdotso/templates':
         specifier: workspace:*
-        version: link:../../packages/template
+        version: link:../../packages/templates
       '@lightdotso/types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -812,9 +812,9 @@ importers:
       '@lightdotso/services':
         specifier: workspace:*
         version: link:../../packages/services
-      '@lightdotso/state':
+      '@lightdotso/states':
         specifier: workspace:*
-        version: link:../../packages/state
+        version: link:../../packages/states
       '@lightdotso/stores':
         specifier: workspace:*
         version: link:../../packages/stores
@@ -824,12 +824,12 @@ importers:
       '@lightdotso/svg':
         specifier: workspace:*
         version: link:../../packages/svg
-      '@lightdotso/table':
+      '@lightdotso/tables':
         specifier: workspace:*
-        version: link:../../packages/table
-      '@lightdotso/template':
+        version: link:../../packages/tables
+      '@lightdotso/templates':
         specifier: workspace:*
-        version: link:../../packages/template
+        version: link:../../packages/templates
       '@lightdotso/types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -1054,21 +1054,21 @@ importers:
       '@lightdotso/demo':
         specifier: workspace:*
         version: link:../../packages/demo
-      '@lightdotso/element':
+      '@lightdotso/elements':
         specifier: workspace:*
-        version: link:../../packages/element
+        version: link:../../packages/elements
       '@lightdotso/styles':
         specifier: workspace:*
         version: link:../../configurations/styles
       '@lightdotso/svg':
         specifier: workspace:*
         version: link:../../packages/svg
-      '@lightdotso/table':
+      '@lightdotso/tables':
         specifier: workspace:*
-        version: link:../../packages/table
-      '@lightdotso/template':
+        version: link:../../packages/tables
+      '@lightdotso/templates':
         specifier: workspace:*
-        version: link:../../packages/template
+        version: link:../../packages/templates
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -1572,7 +1572,7 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
-  packages/element:
+  packages/elements:
     dependencies:
       '@lightdotso/const':
         specifier: workspace:*
@@ -1604,6 +1604,9 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
+      viem:
+        specifier: ^2.4.0
+        version: 2.4.0(typescript@5.3.3)(zod@3.22.4)
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
@@ -1957,7 +1960,7 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
-  packages/state:
+  packages/states:
     dependencies:
       '@lightdotso/client':
         specifier: workspace:*
@@ -2080,7 +2083,7 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
-  packages/table:
+  packages/tables:
     dependencies:
       '@lightdotso/client':
         specifier: workspace:*
@@ -2094,9 +2097,9 @@ importers:
       '@lightdotso/demo':
         specifier: workspace:*
         version: link:../demo
-      '@lightdotso/element':
+      '@lightdotso/elements':
         specifier: workspace:*
-        version: link:../element
+        version: link:../elements
       '@lightdotso/hooks':
         specifier: workspace:*
         version: link:../hooks
@@ -2109,9 +2112,9 @@ importers:
       '@lightdotso/svg':
         specifier: workspace:*
         version: link:../svg
-      '@lightdotso/template':
+      '@lightdotso/templates':
         specifier: workspace:*
-        version: link:../template
+        version: link:../templates
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../ui
@@ -2162,7 +2165,7 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
-  packages/template:
+  packages/templates:
     dependencies:
       '@lightdotso/const':
         specifier: workspace:*

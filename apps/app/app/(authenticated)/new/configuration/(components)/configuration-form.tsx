@@ -15,7 +15,7 @@
 
 "use client";
 
-import { PlaceholderOrb } from "@lightdotso/element";
+import { PlaceholderOrb } from "@lightdotso/elements";
 import { newFormSchema, newFormConfigurationSchema } from "@lightdotso/schemas";
 import { useAuth, useNewForm } from "@lightdotso/stores";
 import {

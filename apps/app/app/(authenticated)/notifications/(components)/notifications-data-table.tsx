@@ -20,7 +20,7 @@ import {
   useQueryNotificationsCount,
 } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
-import { notificationColumns } from "@lightdotso/table";
+import { notificationColumns } from "@lightdotso/tables";
 import { TableSectionWrapper } from "@lightdotso/ui";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";

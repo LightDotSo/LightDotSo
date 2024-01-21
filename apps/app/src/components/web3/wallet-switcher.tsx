@@ -18,7 +18,7 @@
 
 "use client";
 
-import { PlaceholderOrb } from "@lightdotso/element";
+import { PlaceholderOrb } from "@lightdotso/elements";
 import { useSuspenseQueryWallets } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import {

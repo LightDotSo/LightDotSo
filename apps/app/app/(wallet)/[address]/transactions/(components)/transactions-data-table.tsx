@@ -21,7 +21,7 @@ import {
   useQueryUserOperationsCount,
 } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
-import { userOperationColumns } from "@lightdotso/table";
+import { userOperationColumns } from "@lightdotso/tables";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";

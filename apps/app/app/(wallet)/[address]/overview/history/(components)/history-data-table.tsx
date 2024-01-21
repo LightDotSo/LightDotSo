@@ -21,7 +21,7 @@ import {
   useQueryTransactionsCount,
 } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
-import { transactionColumns } from "@lightdotso/table";
+import { transactionColumns } from "@lightdotso/tables";
 import { TableSectionWrapper } from "@lightdotso/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, type FC } from "react";
