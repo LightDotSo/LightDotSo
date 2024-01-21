@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { InterpretationActionData } from "./interpretationAction";
 import type { TokenData } from "./token";
 
 export type AssetChangeData = {
@@ -21,5 +22,6 @@ export type AssetChangeData = {
   amount: number;
   before_amount?: number | null;
   id: string;
+  action?: InterpretationActionData;
   token?: TokenData;
 };
