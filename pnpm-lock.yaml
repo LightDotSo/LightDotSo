@@ -1054,12 +1054,21 @@ importers:
       '@lightdotso/demo':
         specifier: workspace:*
         version: link:../../packages/demo
+      '@lightdotso/element':
+        specifier: workspace:*
+        version: link:../../packages/element
       '@lightdotso/styles':
         specifier: workspace:*
         version: link:../../configurations/styles
       '@lightdotso/svg':
         specifier: workspace:*
         version: link:../../packages/svg
+      '@lightdotso/table':
+        specifier: workspace:*
+        version: link:../../packages/table
+      '@lightdotso/template':
+        specifier: workspace:*
+        version: link:../../packages/template
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -1568,6 +1577,9 @@ importers:
       '@lightdotso/const':
         specifier: workspace:*
         version: link:../const
+      '@lightdotso/data':
+        specifier: workspace:*
+        version: link:../data
       '@lightdotso/demo':
         specifier: workspace:*
         version: link:../demo
