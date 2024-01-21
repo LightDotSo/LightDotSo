@@ -17,7 +17,7 @@
 
 import type { TransactionData } from "@lightdotso/data";
 import { useTables } from "@lightdotso/stores";
-import { TransactionTable } from "@lightdotso/table";
+import { TransactionTable } from "@lightdotso/tables";
 import type { ColumnDef } from "@tanstack/react-table";
 import { usePaginationQueryState } from "@/queryStates";
 

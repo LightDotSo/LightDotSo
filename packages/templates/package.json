@@ -1,0 +1,55 @@
+{
+  "name": "@lightdotso/templates",
+  "version": "0.0.0",
+  "private": true,
+  "homepage": "https://github.com/LightDotSo/LightDotSo",
+  "bugs": {
+    "url": "https://github.com/LightDotSo/LightDotSo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LightDotSo/LightDotSo.git"
+  },
+  "license": "AGPL-3.0-or-later",
+  "author": "Light, Inc.",
+  "main": "./src/index.ts",
+  "files": [
+    "dist/**",
+    "src/**"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "clean": "rimraf -rf dist",
+    "prepack": "clean-package",
+    "postpack": "clean-package restore",
+    "tsc": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@lightdotso/const": "workspace:*",
+    "@lightdotso/svg": "workspace:*",
+    "@lightdotso/types": "workspace:*",
+    "@lightdotso/ui": "workspace:*",
+    "@lightdotso/utils": "workspace:*",
+    "@radix-ui/react-dropdown-menu": "^2.0.6",
+    "@radix-ui/react-icons": "^1.3.0",
+    "@tanstack/react-table": "^8.11.7",
+    "lucide-react": "^0.312.0",
+    "next": "^14.1.0",
+    "next-themes": "^0.2.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^5.0.1"
+  },
+  "devDependencies": {
+    "@lightdotso/tsconfig": "workspace:*",
+    "@storybook/react": "^7.6.10",
+    "@types/node": "^20.11.5",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "typescript": "^5.3.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "clean-package": "../../clean-package.config.json"
+}

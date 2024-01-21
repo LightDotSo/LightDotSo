@@ -15,6 +15,7 @@
 
 "use client";
 
+import { PlaceholderOrb } from "@lightdotso/elements";
 import { useSuspenseQueryWallet } from "@lightdotso/query";
 import {
   Avatar,
@@ -30,7 +31,6 @@ import {
   TooltipContent,
   TooltipTrigger,
   TooltipProvider,
-  PlaceholderOrb,
   toast,
 } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";

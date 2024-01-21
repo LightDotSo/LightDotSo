@@ -23,10 +23,10 @@ import type {
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth, useTables } from "@lightdotso/stores";
 import {
-  Button,
   DataTableFacetedFilter,
   DataTableViewOptions,
-} from "@lightdotso/ui";
+} from "@lightdotso/templates";
+import { Button } from "@lightdotso/ui";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { useQueryClient } from "@tanstack/react-query";
 import type { Table } from "@tanstack/react-table";

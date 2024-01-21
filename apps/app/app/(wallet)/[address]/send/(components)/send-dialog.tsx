@@ -17,6 +17,7 @@
 
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
 import type { WalletSettingsData } from "@lightdotso/data";
+import { PlaceholderOrb } from "@lightdotso/elements";
 import {
   useSuspenseQueryNfts,
   useSuspenseQueryTokens,
@@ -55,7 +56,6 @@ import {
   TabsList,
   TabsTrigger,
   TooltipProvider,
-  PlaceholderOrb,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { zodResolver } from "@hookform/resolvers/zod";

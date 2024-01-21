@@ -16,8 +16,8 @@
 "use client";
 
 import { useAuth } from "@lightdotso/stores";
+import { MobileAppDrawer } from "@lightdotso/templates";
 import type { Tab } from "@lightdotso/types";
-import { MobileAppDrawer } from "@lightdotso/ui";
 import type { FC, ReactNode } from "react";
 import { Suspense } from "react";
 import { ChainPopover } from "@/components/chain/chain-popover";

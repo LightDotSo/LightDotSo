@@ -1,5 +1,5 @@
 ---
-"@lightdotso/table": patch
+"@lightdotso/tables": patch
 ---
 
 Add loading state

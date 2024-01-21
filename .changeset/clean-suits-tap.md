@@ -1,5 +1,5 @@
 ---
-"@lightdotso/state": patch
+"@lightdotso/states": patch
 ---
 
 Add root changeset

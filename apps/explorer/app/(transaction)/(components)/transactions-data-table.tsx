@@ -19,7 +19,7 @@ import {
   useQueryTransactions,
   useQueryTransactionsCount,
 } from "@lightdotso/query";
-import { transactionColumns } from "@lightdotso/table";
+import { transactionColumns } from "@lightdotso/tables";
 import { TableSectionWrapper } from "@lightdotso/ui";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";

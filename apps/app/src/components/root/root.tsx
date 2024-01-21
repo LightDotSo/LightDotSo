@@ -13,13 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { AuthState } from "@lightdotso/state";
+import { AuthState } from "@lightdotso/states";
+import { Footer } from "@lightdotso/templates";
 import {
   TailwindIndicator,
   ThemeProvider,
   ReactQueryProvider,
   Toaster,
-  Footer,
   VercelToolbar,
 } from "@lightdotso/ui";
 import dynamic from "next/dynamic";

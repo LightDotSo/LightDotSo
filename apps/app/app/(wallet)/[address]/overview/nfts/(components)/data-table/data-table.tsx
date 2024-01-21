@@ -17,7 +17,7 @@
 
 import type { NftData } from "@lightdotso/data";
 import { useTables } from "@lightdotso/stores";
-import { NftTable } from "@lightdotso/table";
+import { NftTable } from "@lightdotso/tables";
 import type { ColumnDef } from "@tanstack/react-table";
 import { usePaginationQueryState } from "@/queryStates";
 

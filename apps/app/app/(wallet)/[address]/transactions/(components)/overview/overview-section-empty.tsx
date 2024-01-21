@@ -20,7 +20,7 @@ import type {
   WalletSettingsData,
 } from "@lightdotso/data";
 import { queryKeys } from "@lightdotso/query-keys";
-import { TableEmpty } from "@lightdotso/table";
+import { TableEmpty } from "@lightdotso/tables";
 import { Table, TableBody, TableCell, TableRow } from "@lightdotso/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";

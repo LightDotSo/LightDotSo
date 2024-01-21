@@ -19,7 +19,7 @@ import type { TransactionData, WalletSettingsData } from "@lightdotso/data";
 import { useSuspenseQueryTransactions } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useTables } from "@lightdotso/stores";
-import { TransactionTable, transactionColumns } from "@lightdotso/table";
+import { TransactionTable, transactionColumns } from "@lightdotso/tables";
 import { useQueryClient } from "@tanstack/react-query";
 import type { FC } from "react";
 import type { Address } from "viem";

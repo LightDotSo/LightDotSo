@@ -16,7 +16,7 @@
 "use client";
 
 import { useTables } from "@lightdotso/stores";
-import { DataTablePagination } from "@lightdotso/ui";
+import { DataTablePagination } from "@lightdotso/templates";
 import { useEffect, type FC } from "react";
 
 // -----------------------------------------------------------------------------

@@ -18,7 +18,7 @@
 import type { UserOperationData } from "@lightdotso/data";
 import { useQueryConfiguration } from "@lightdotso/query";
 import { useTables } from "@lightdotso/stores";
-import { UserOperationTable } from "@lightdotso/table";
+import { UserOperationTable } from "@lightdotso/tables";
 import type { ColumnDef } from "@tanstack/react-table";
 import type { Address } from "viem";
 import { usePaginationQueryState } from "@/queryStates";

@@ -16,7 +16,7 @@
 "use client";
 
 import { useQueryActivities, useQueryActivitiesCount } from "@lightdotso/query";
-import { activityColumns } from "@lightdotso/table";
+import { activityColumns } from "@lightdotso/tables";
 import { TableSectionWrapper } from "@lightdotso/ui";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";

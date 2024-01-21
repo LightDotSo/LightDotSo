@@ -15,6 +15,7 @@
 
 "use client";
 
+import { PlaceholderOrb } from "@lightdotso/elements";
 import { newFormSchema, newFormConfigurationSchema } from "@lightdotso/schemas";
 import { useAuth, useNewForm } from "@lightdotso/stores";
 import {
@@ -43,7 +44,6 @@ import {
   SelectValue,
   Separator,
   TooltipProvider,
-  PlaceholderOrb,
   toast,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";

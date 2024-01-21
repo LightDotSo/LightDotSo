@@ -34,4 +34,4 @@ ignores:
   - "@lightdotso/client"
   - "@lightdotso/params"
   - "@next/bundle-analyzer"
-  - "@lightdotso/state"
+  - "@lightdotso/states"
