@@ -17,8 +17,8 @@
 
 import type { OwnerData } from "@lightdotso/data";
 import { PlaceholderOrb } from "@lightdotso/element";
-import { Avatar, Checkbox } from "@lightdotso/ui";
 import { DataTableColumnHeader } from "@lightdotso/template";
+import { Avatar, Checkbox } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { OwnerTableRowActions } from "./actions/owner-table-row-actions";
 

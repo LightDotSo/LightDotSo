@@ -14,9 +14,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { INTERNAL_LINKS } from "@lightdotso/const";
+import { Button } from "@lightdotso/ui";
 import { MonitorCheck } from "lucide-react";
 import type { FC } from "react";
-import { Button } from "@lightdotso/ui";
 
 // -----------------------------------------------------------------------------
 // Component

@@ -39,8 +39,10 @@ export default {
     "../../apps/home/app/**/*.{ts,tsx}",
     "../../apps/home/src/components/**/*.{ts,tsx}",
     "../../apps/storybook/.storybook/**/*.{ts,tsx}",
+    "../../packages/element/src/**/*.{ts,tsx}",
     "../../packages/svg/src/**/*.{ts,tsx}",
     "../../packages/table/src/**/*.{ts,tsx}",
+    "../../packages/template/src/**/*.{ts,tsx}",
     "../../packages/ui/src/**/*.{ts,tsx}",
   ],
   theme: {

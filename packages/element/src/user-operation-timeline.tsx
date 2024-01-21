@@ -14,9 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { UserOperationData } from "@lightdotso/data";
-import { Check, Hourglass, PenLineIcon } from "lucide-react";
-import type { FC, ReactNode } from "react";
-import type { Address } from "viem";
 import {
   Avatar,
   TimeAgo,
@@ -27,6 +24,9 @@ import {
   TimelinePoint,
   TimelineTitle,
 } from "@lightdotso/ui";
+import { Check, Hourglass, PenLineIcon } from "lucide-react";
+import type { FC, ReactNode } from "react";
+import type { Address } from "viem";
 import { PlaceholderOrb } from "./placeholder-orb";
 
 // -----------------------------------------------------------------------------

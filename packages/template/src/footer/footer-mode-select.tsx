@@ -15,9 +15,6 @@
 
 "use client";
 
-import { useTheme } from "next-themes";
-import type { FC, SVGProps } from "react";
-import { FaMoon, FaSun, FaRegLightbulb } from "react-icons/fa";
 import {
   Select,
   SelectContent,
@@ -25,6 +22,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@lightdotso/ui";
+import { useTheme } from "next-themes";
+import type { FC, SVGProps } from "react";
+import { FaMoon, FaSun, FaRegLightbulb } from "react-icons/fa";
 
 // -----------------------------------------------------------------------------
 // Const

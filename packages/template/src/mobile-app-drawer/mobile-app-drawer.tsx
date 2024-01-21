@@ -14,9 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Tab } from "@lightdotso/types";
-import { AlignRight, ArrowUpRight } from "lucide-react";
-import Link from "next/link";
-import type { FC, ReactNode } from "react";
 import {
   Badge,
   Button,
@@ -29,6 +26,9 @@ import {
   DrawerClose,
   DrawerFooter,
 } from "@lightdotso/ui";
+import { AlignRight, ArrowUpRight } from "lucide-react";
+import Link from "next/link";
+import type { FC, ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
 // Props

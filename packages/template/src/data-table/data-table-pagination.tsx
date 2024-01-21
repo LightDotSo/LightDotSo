@@ -14,13 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  DoubleArrowLeftIcon,
-  DoubleArrowRightIcon,
-} from "@radix-ui/react-icons";
-import type { Table } from "@tanstack/react-table";
-import {
   Button,
   Select,
   SelectContent,
@@ -28,6 +21,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@lightdotso/ui";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  DoubleArrowLeftIcon,
+  DoubleArrowRightIcon,
+} from "@radix-ui/react-icons";
+import type { Table } from "@tanstack/react-table";
 
 // -----------------------------------------------------------------------------
 // Props

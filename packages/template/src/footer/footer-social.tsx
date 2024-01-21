@@ -14,9 +14,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { Social, SOCIAL_LINKS } from "@lightdotso/const";
+import { ButtonIcon } from "@lightdotso/ui";
 import type { FC, SVGProps } from "react";
 import { FaDiscord, FaGithub, FaTwitter } from "react-icons/fa";
-import { ButtonIcon } from "@lightdotso/ui";
 
 // -----------------------------------------------------------------------------
 // Const
