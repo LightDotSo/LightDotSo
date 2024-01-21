@@ -62,25 +62,37 @@ export const OverviewInvokeButton: FC<InvokeUserOperationProps> = ({
             <ButtonIcon
               variant="shadow"
               onClick={() => {
-                const loadingToast = toast.info("Updating operation...");
+                const loadingToast = toast.loading("Updating operation...");
+
                 updateUserOperation(
                   {
                     params: { query: { address: address } },
                   },
                   clientType,
-                ).then(res => {
-                  toast.dismiss(loadingToast);
-                  res.match(
-                    _success => {
-                      toast.success("Operation updated");
-                    },
-                    err => {
-                      if (err instanceof Error) {
-                        toast.error(err.message);
-                      }
-                    },
-                  );
-                });
+                )
+                  .then(res => {
+                    toast.dismiss(loadingToast);
+                    res.match(
+                      _success => {
+                        toast.success("Operation updated");
+                      },
+                      err => {
+                        if (err instanceof Error) {
+                          toast.error(err.message);
+                        } else {
+                          toast.error("Unknown error");
+                        }
+                      },
+                    );
+                  })
+                  .catch(err => {
+                    toast.dismiss(loadingToast);
+                    if (err instanceof Error) {
+                      toast.error(err.message);
+                    } else {
+                      toast.error("Unknown error");
+                    }
+                  });
               }}
             >
               <RefreshCcw className="size-4" />

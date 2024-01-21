@@ -72,10 +72,30 @@ export const OverviewInvokeButton: FC<OverviewInvokeButtonProps> = ({
                     params: { query: { address: address as Address } },
                   },
                   clientType,
-                );
-
-                toast.dismiss(loadingToast);
-                toast.success("Successfully refreshed.");
+                )
+                  .then(res => {
+                    toast.dismiss(loadingToast);
+                    res.match(
+                      _success => {
+                        toast.success("Operation updated");
+                      },
+                      err => {
+                        if (err instanceof Error) {
+                          toast.error(err.message);
+                        } else {
+                          toast.error("Unknown error");
+                        }
+                      },
+                    );
+                  })
+                  .catch(err => {
+                    toast.dismiss(loadingToast);
+                    if (err instanceof Error) {
+                      toast.error(err.message);
+                    } else {
+                      toast.error("Unknown error");
+                    }
+                  });
               }}
             >
               <RefreshCcw className="size-4" />
