@@ -31,7 +31,7 @@ type TransactionCardActionsProps = { transaction: TransactionData };
 // -----------------------------------------------------------------------------
 
 export const TransactionCardActions: FC<TransactionCardActionsProps> = ({
-  transaction: { actions },
+  transaction: { interpretation },
 }) => {
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -39,18 +39,34 @@ export const TransactionCardActions: FC<TransactionCardActionsProps> = ({
 
   // Get the first matching action from the `Action` enum
   const action: Action | undefined = useMemo(() => {
-    // Convert actions to a set for efficient lookup
-    const actionSet = new Set(actions);
+    if (!interpretation?.actions) {
+      return undefined;
+    }
 
-    // Get the first matching action from the `Action` enum which is not numeric
-    return Object.keys(Action)
-      .filter(action => isNaN(Number(action)))
-      .find(action => actionSet.has(action)) as Action | undefined;
-  }, [actions]);
+    // Flatten actions to just be an array of action keys
+    const flattenedActions = interpretation?.actions.map(a => a.action);
+
+    // Get the keys of the Action enum
+    const actionKeys = Object.keys(Action).filter(key => isNaN(Number(key)));
+
+    // Find the first action from flattenedActions that is a key in Action enum
+    const matchedAction = flattenedActions.find(action =>
+      actionKeys.includes(action),
+    );
+
+    // If an action is found, convert it to Action type
+    return matchedAction
+      ? Action[matchedAction as keyof typeof Action]
+      : undefined;
+  }, [interpretation?.actions]);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return <ActionLogo action={action ?? Action.ERC20_RECEIVE} />;
+  if (!action) {
+    return null;
+  }
+
+  return <ActionLogo action={action} />;
 };

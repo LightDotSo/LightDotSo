@@ -32,6 +32,9 @@ import { TransactionCardTimestamp } from "./card/transaction-card-timestamp";
 export const transactionColumns: ColumnDef<TransactionData>[] = [
   {
     accessorKey: "actions",
+    accessorFn: row => {
+      return row.interpretation?.actions;
+    },
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Action" />
     ),
@@ -92,7 +95,7 @@ export const transactionColumns: ColumnDef<TransactionData>[] = [
     size: 96,
   },
   {
-    id: "actions",
+    id: "row_actions",
     cell: ({ row }) => <TransactionTableRowActions row={row} />,
   },
 ];
