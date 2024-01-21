@@ -14,10 +14,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 export * from "./activity";
-export * from "./asset-change";
+export * from "./assetChange";
 export * from "./configuration";
 export * from "./notification";
 export * from "./token";
 export * from "./transaction";
-export * from "./user-operation";
+export * from "./userOperation";
 export * from "./wallet";
