@@ -21,10 +21,10 @@ use crate::{
     handle_error,
     routes::{
         activity, asset_change, auth, check, configuration, feedback, health, interpretation,
-        invite_code, notification, owner, paymaster, paymaster_operation, portfolio, protocol,
-        protocol_group, queue, signature, simplehash, simulation, socket, support_request, token,
-        token_group, token_price, transaction, user, user_operation, wallet, wallet_features,
-        wallet_settings,
+        interpretation_action, invite_code, notification, owner, paymaster, paymaster_operation,
+        portfolio, protocol, protocol_group, queue, signature, simplehash, simulation, socket,
+        support_request, token, token_group, token_price, transaction, user, user_operation,
+        wallet, wallet_features, wallet_settings,
     },
     sessions::{authenticated, RedisStore},
     state::AppState,
@@ -86,6 +86,9 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(feedback::types::Feedback),
         schemas(interpretation::error::InterpretationError),
         schemas(interpretation::types::Interpretation),
+        schemas(interpretation_action::error::InterpretationActionError),
+        schemas(interpretation_action::list::InterpretationActionListCount),
+        schemas(interpretation_action::types::InterpretationAction),
         schemas(invite_code::error::InviteCodeError),
         schemas(invite_code::list::InviteCodeListCount),
         schemas(invite_code::types::InviteCode),
@@ -173,6 +176,9 @@ use utoipa_swagger_ui::SwaggerUi;
         feedback::v1_feedback_create_handler,
         interpretation::v1_interpretation_get_handler,
         interpretation::v1_interpretation_list_handler,
+        interpretation_action::v1_interpretation_action_get_handler,
+        interpretation_action::v1_interpretation_action_list_handler,
+        interpretation_action::v1_interpretation_action_list_count_handler,
         invite_code::v1_invite_code_create_handler,
         invite_code::v1_invite_code_get_handler,
         invite_code::v1_invite_code_list_handler,
@@ -365,6 +371,7 @@ pub async fn start_api_server() -> Result<()> {
         .merge(feedback::router())
         .merge(health::router())
         .merge(interpretation::router())
+        .merge(interpretation_action::router())
         .merge(invite_code::router())
         // .merge(metrics::router())
         .merge(notification::router())

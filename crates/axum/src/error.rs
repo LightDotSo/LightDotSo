@@ -16,7 +16,8 @@
 use crate::routes::{
     activity::error::ActivityError, asset_change::error::AssetChangeError, auth::error::AuthError,
     configuration::error::ConfigurationError, feedback::error::FeedbackError,
-    interpretation::error::InterpretationError, invite_code::error::InviteCodeError,
+    interpretation::error::InterpretationError,
+    interpretation_action::error::InterpretationActionError, invite_code::error::InviteCodeError,
     notification::error::NotificationError, owner::error::OwnerError,
     paymaster::error::PaymasterError, paymaster_operation::error::PaymasterOperationError,
     portfolio::error::PortfolioError, protocol::error::ProtocolError,
@@ -39,6 +40,7 @@ pub(crate) enum RouteError {
     ConfigurationError(ConfigurationError),
     FeedbackError(FeedbackError),
     InterpretationError(InterpretationError),
+    InterpretationActionError(InterpretationActionError),
     InviteCodeError(InviteCodeError),
     NotificationError(NotificationError),
     OwnerError(OwnerError),
@@ -118,6 +120,17 @@ impl RouteErrorStatusCodeAndMsg for InterpretationError {
         match self {
             InterpretationError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
             InterpretationError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+        }
+    }
+}
+
+impl RouteErrorStatusCodeAndMsg for InterpretationActionError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            InterpretationActionError::BadRequest(msg) => {
+                (StatusCode::BAD_REQUEST, msg.to_string())
+            }
+            InterpretationActionError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
         }
     }
 }
@@ -327,6 +340,7 @@ impl RouteErrorStatusCodeAndMsg for RouteError {
             RouteError::ConfigurationError(err) => err.error_status_code_and_msg(),
             RouteError::FeedbackError(err) => err.error_status_code_and_msg(),
             RouteError::InterpretationError(err) => err.error_status_code_and_msg(),
+            RouteError::InterpretationActionError(err) => err.error_status_code_and_msg(),
             RouteError::InviteCodeError(err) => err.error_status_code_and_msg(),
             RouteError::NotificationError(err) => err.error_status_code_and_msg(),
             RouteError::OwnerError(err) => err.error_status_code_and_msg(),
