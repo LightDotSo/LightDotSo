@@ -104,6 +104,9 @@ export const useMutationWalletSettings = (params: WalletParams) => {
         queryKey: queryKeys.wallet.settings({ address: params.address })
           .queryKey,
       });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.auth.session({ address: params.address }).queryKey,
+      });
 
       // Invalidate the cache for the address
       fetch(`/api/revalidate/tag?tag=${params.address}`);
