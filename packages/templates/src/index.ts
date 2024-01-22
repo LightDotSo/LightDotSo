@@ -22,4 +22,4 @@ export {
 export { Footer } from "./footer";
 export { MobileAppDrawer } from "./mobile-app-drawer";
 export { Modal } from "./modal";
-export { ModalIntercepting } from "./modal-intercepting";
+export { ModalInterception } from "./modal-intercepting";

@@ -24,7 +24,7 @@ import { Modal } from "../modal";
 // Props
 // -----------------------------------------------------------------------------
 
-interface ModalInterceptingProps {
+interface ModalInterceptionProps {
   children: ReactNode;
 }
 
@@ -32,7 +32,7 @@ interface ModalInterceptingProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export const ModalIntercepting: FC<ModalInterceptingProps> = ({ children }) => {
+export const ModalInterception: FC<ModalInterceptionProps> = ({ children }) => {
   // ---------------------------------------------------------------------------
   // Next Hooks
   // ---------------------------------------------------------------------------

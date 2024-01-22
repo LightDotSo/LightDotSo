@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { ModalIntercepting } from "@lightdotso/templates";
+import { ModalInterception } from "@lightdotso/templates";
 import OriginalPage from "@/app/(wallet)/[address]/send/page";
 
 // -----------------------------------------------------------------------------
@@ -37,9 +37,9 @@ export default async function Page({ params, searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <ModalIntercepting>
+    <ModalInterception>
       <OriginalPage params={params} searchParams={searchParams} />
-    </ModalIntercepting>
+    </ModalInterception>
   );
 }
 
