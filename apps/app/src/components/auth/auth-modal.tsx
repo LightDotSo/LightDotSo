@@ -131,6 +131,7 @@ export function AuthModal() {
     return (
       <Modal
         open
+        onClose={hideAuthModal}
         footerContent={
           <Button
             type="submit"
