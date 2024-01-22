@@ -24,9 +24,9 @@ import { UserOperationTableRowActions } from "./actions";
 import {
   UserOperationCardInterpretationAction,
   UserOperationCardChain,
-  UserOperationCardHash,
   UserOperationCardNonce,
   UserOperationCardStatus,
+  UserOperationCardInterpretation,
 } from "./card";
 
 // -----------------------------------------------------------------------------
@@ -62,16 +62,16 @@ export const userOperationColumns: ColumnDef<UserOperationData>[] = [
     enableHiding: true,
   },
   {
-    accessorKey: "hash",
-    cell: ({ row }) => <UserOperationCardHash userOperation={row.original} />,
+    accessorKey: "interpretation",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="User Operation Hash" />
+      <DataTableColumnHeader column={column} title="Interpretation" />
     ),
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-    enableSorting: true,
-    enableHiding: true,
+    cell: ({ row }) => (
+      <UserOperationCardInterpretation userOperation={row.original} />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+    size: 416,
   },
   {
     accessorKey: "nonce",
