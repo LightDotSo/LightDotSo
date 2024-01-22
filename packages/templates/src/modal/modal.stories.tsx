@@ -13,38 +13,36 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Modal } from "@lightdotso/templates";
-import OriginalPage from "@/app/(wallet)/[address]/op/page";
+import type { Meta, StoryObj } from "@storybook/react";
+import { Modal } from "./modal";
 
 // -----------------------------------------------------------------------------
-// Props
+// Meta
 // -----------------------------------------------------------------------------
 
-type PageProps = {
-  params: { address: string };
-  searchParams: {
-    userOperations?: string;
-  };
+const meta: Meta<typeof Modal> = {
+  title: "template/Modal",
+  component: Modal,
+  tags: ["autodocs"],
+  argTypes: {},
 };
+export default meta;
 
 // -----------------------------------------------------------------------------
-// Page
+// Types
 // -----------------------------------------------------------------------------
 
-export default async function Page({ params, searchParams }: PageProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
+type Story = StoryObj<typeof Modal>;
 
-  return (
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Base: Story = {
+  render: args => (
     <Modal>
-      <OriginalPage params={params} searchParams={searchParams} />
+      <></>
     </Modal>
-  );
-}
-
-// -----------------------------------------------------------------------------
-// Config
-// -----------------------------------------------------------------------------
-
-export const runtime = "edge";
+  ),
+  args: {},
+};
