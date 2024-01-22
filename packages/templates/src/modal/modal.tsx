@@ -34,6 +34,7 @@ import type { FC, ReactNode } from "react";
 
 interface ModalProps {
   children: ReactNode;
+  open?: boolean;
   onClose?: () => void;
 }
 
@@ -41,7 +42,7 @@ interface ModalProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export const Modal: FC<ModalProps> = ({ children, onClose }) => {
+export const Modal: FC<ModalProps> = ({ children, open, onClose }) => {
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
@@ -59,7 +60,7 @@ export const Modal: FC<ModalProps> = ({ children, onClose }) => {
 
   if (!isDesktop) {
     return (
-      <Drawer shouldScaleBackground open={true} onClose={onClose}>
+      <Drawer shouldScaleBackground open={open} onClose={onClose}>
         <DrawerContent>
           <Suspense fallback={<Skeleton className="h-64 w-full" />}>
             {children}
@@ -70,7 +71,7 @@ export const Modal: FC<ModalProps> = ({ children, onClose }) => {
   }
 
   return (
-    <Dialog open={true} defaultOpen={true} onOpenChange={onClose}>
+    <Dialog open={open} defaultOpen={open} onOpenChange={onClose}>
       <DialogPortal>
         <DialogOverlay />
         <DialogContent className="w-full overflow-scroll sm:max-h-[80%] sm:max-w-3xl">

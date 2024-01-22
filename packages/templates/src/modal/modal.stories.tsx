@@ -13,6 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import {
+  Button,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@lightdotso/ui";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Modal } from "./modal";
 
@@ -41,7 +47,16 @@ type Story = StoryObj<typeof Modal>;
 export const Base: Story = {
   render: args => (
     <Modal>
-      <></>
+      <DialogHeader>
+        <DialogTitle>Login</DialogTitle>
+        <DialogDescription>
+          Login with your wallet to access your account.
+        </DialogDescription>
+      </DialogHeader>
+      <Button type="submit" size="sm" className="px-3">
+        <span className="sr-only">Login</span>
+        Login
+      </Button>
     </Modal>
   ),
   args: {},

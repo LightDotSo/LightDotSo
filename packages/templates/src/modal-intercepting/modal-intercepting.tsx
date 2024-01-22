@@ -51,5 +51,9 @@ export const ModalIntercepting: FC<ModalInterceptingProps> = ({ children }) => {
   // Render
   // ---------------------------------------------------------------------------
 
-  return <Modal onClose={onDismiss}>{children}</Modal>;
+  return (
+    <Modal open={true} onClose={onDismiss}>
+      {children}
+    </Modal>
+  );
 };
