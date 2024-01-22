@@ -55,7 +55,14 @@ export const TokenCardPrice: FC<TokenCardPriceProps> = ({
 
   return (
     <div className="flex flex-col space-y-1.5">
-      <span className="text-sm text-text">${token_price.price.toFixed(2)}</span>
+      <span className="text-sm text-text">
+        $
+        {token_price.price.toLocaleString("en-US", {
+          style: "decimal",
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}
+      </span>
       <span
         className={cn(
           token_price.price_change_24h && token_price.price_change_24h > 0

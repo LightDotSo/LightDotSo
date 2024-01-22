@@ -68,7 +68,12 @@ export const TokenCardToken: FC<TokenCardTokenProps> = ({
             {token.name ?? token.symbol}
           </span>
           <span className="text-sm text-text-weak">
-            {(token.amount / 10 ** token.decimals).toFixed(3)} {token.symbol}
+            {(token.amount / 10 ** token.decimals).toLocaleString("en-US", {
+              style: "decimal",
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}{" "}
+            {token.symbol}
           </span>
         </div>
       </div>

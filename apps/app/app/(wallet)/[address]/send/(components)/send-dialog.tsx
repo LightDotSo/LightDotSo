@@ -1207,7 +1207,11 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                           ))) *
                                                       // Get the form value
                                                       (field.value ?? 0)
-                                                    ).toFixed(2)
+                                                    ).toLocaleString("en-US", {
+                                                      style: "decimal",
+                                                      minimumFractionDigits: 2,
+                                                      maximumFractionDigits: 2,
+                                                    })
                                                 : "";
                                             })()}
                                         </div>

@@ -78,7 +78,11 @@ export const WalletOverviewBannerSparkline: FC<
             {portfolio.balance_change_24h && portfolio.balance_change_24h
               ? `(${portfolio.balance_change_24h < 0 ? "-" : "+"}$${Math.abs(
                   portfolio.balance_change_24h,
-                ).toFixed(3)})`
+                ).toLocaleString("en-US", {
+                  style: "decimal",
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })})`
               : ""}
           </span>
         </span>

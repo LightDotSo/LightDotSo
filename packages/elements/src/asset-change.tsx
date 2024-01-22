@@ -41,7 +41,11 @@ export const AssetChange: FC<AssetChangeProps> = ({ assetChange }) => {
             {(
               assetChange?.token.amount /
               10 ** assetChange?.token.decimals
-            ).toFixed(3)}{" "}
+            ).toLocaleString("en-US", {
+              style: "decimal",
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}{" "}
             {assetChange?.token.symbol})
           </span>
         </span>
