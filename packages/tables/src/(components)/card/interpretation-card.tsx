@@ -44,7 +44,7 @@ export const InterpretationCard: FC<InterpretationCardProps> = ({
     <div className="flex items-center space-x-1.5">
       {interpretation?.asset_changes &&
         interpretation.asset_changes
-          .slice(0, 2)
+          .slice(0, 1)
           .map((assetChange, index) => (
             <AssetChange key={index} assetChange={assetChange} />
           ))}

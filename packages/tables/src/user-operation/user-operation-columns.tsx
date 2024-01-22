@@ -20,6 +20,7 @@ import { DataTableColumnHeader } from "@lightdotso/templates";
 import { ButtonIcon } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ChevronDown } from "lucide-react";
+import { UserOperationTableRowActions } from "./actions";
 import {
   UserOperationCardInterpretationAction,
   UserOperationCardChain,
@@ -110,5 +111,9 @@ export const userOperationColumns: ColumnDef<UserOperationData>[] = [
       </div>
     ),
     enableHiding: false,
+  },
+  {
+    id: "row_actions",
+    cell: ({ row }) => <UserOperationTableRowActions row={row} />,
   },
 ];
