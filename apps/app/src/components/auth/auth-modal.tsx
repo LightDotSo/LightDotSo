@@ -131,7 +131,6 @@ export function AuthModal() {
     return (
       <Modal
         open
-        onClose={hideAuthModal}
         footerContent={
           <Button
             type="submit"
@@ -143,6 +142,7 @@ export function AuthModal() {
             Login
           </Button>
         }
+        onClose={hideAuthModal}
       >
         <DialogBody>
           <DialogTitle>Login</DialogTitle>
