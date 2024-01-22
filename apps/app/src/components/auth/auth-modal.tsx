@@ -20,8 +20,8 @@ import { useAuth, useModals } from "@lightdotso/stores";
 import { Modal } from "@lightdotso/templates";
 import {
   Button,
+  DialogBody,
   DialogDescription,
-  DialogHeader,
   DialogTitle,
   toast,
 } from "@lightdotso/ui";
@@ -129,14 +129,8 @@ export function AuthModal() {
 
   if (isAuthModalVisible) {
     return (
-      <Modal open>
-        <>
-          <DialogHeader>
-            <DialogTitle>Login</DialogTitle>
-            <DialogDescription>
-              Login with your wallet to access your account.
-            </DialogDescription>
-          </DialogHeader>
+      <Modal
+        footerContent={
           <Button
             type="submit"
             size="sm"
@@ -146,7 +140,15 @@ export function AuthModal() {
             <span className="sr-only">Login</span>
             Login
           </Button>
-        </>
+        }
+        open
+      >
+        <DialogBody>
+          <DialogTitle>Login</DialogTitle>
+          <DialogDescription>
+            Login with your wallet to access your account.
+          </DialogDescription>
+        </DialogBody>
       </Modal>
     );
   }

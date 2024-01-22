@@ -18,22 +18,46 @@
 import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
 import {
   Dialog,
+  DialogBody,
   DialogContent,
   DialogPortal,
   DialogOverlay,
   Skeleton,
   Drawer,
   DrawerContent,
+  DialogFooter,
+  DialogHeader,
+  ButtonIcon,
 } from "@lightdotso/ui";
+import { cn } from "@lightdotso/utils";
+import { cva, type VariantProps } from "class-variance-authority";
+import { X } from "lucide-react";
 import { Suspense } from "react";
 import type { FC, ReactNode } from "react";
+
+// -----------------------------------------------------------------------------
+// Styles
+// -----------------------------------------------------------------------------
+
+const modalDialogVariants = cva(["max-h-[80%]"], {
+  variants: {
+    size: {
+      default: "max-w-3xl",
+      sm: "max-w-md",
+    },
+  },
+  defaultVariants: {
+    size: "default",
+  },
+});
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface ModalProps {
+interface ModalProps extends VariantProps<typeof modalDialogVariants> {
   children: ReactNode;
+  footerContent?: ReactNode;
   open?: boolean;
   onClose?: () => void;
 }
@@ -42,7 +66,13 @@ interface ModalProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export const Modal: FC<ModalProps> = ({ children, open, onClose }) => {
+export const Modal: FC<ModalProps> = ({
+  children,
+  open,
+  size,
+  footerContent,
+  onClose,
+}) => {
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
@@ -74,10 +104,23 @@ export const Modal: FC<ModalProps> = ({ children, open, onClose }) => {
     <Dialog open={open} defaultOpen={open} onOpenChange={onClose}>
       <DialogPortal>
         <DialogOverlay />
-        <DialogContent className="w-full overflow-scroll sm:max-h-[80%] sm:max-w-3xl">
-          <Suspense fallback={<Skeleton className="h-64 w-full" />}>
-            {children}
-          </Suspense>
+        <DialogContent
+          className={cn(
+            "w-full overflow-scroll",
+            modalDialogVariants({ size }),
+          )}
+        >
+          <DialogHeader>
+            <ButtonIcon size="sm" variant="shadow">
+              <X />
+            </ButtonIcon>
+          </DialogHeader>
+          <DialogBody>
+            <Suspense fallback={<Skeleton className="h-64 w-full" />}>
+              {children}
+            </Suspense>
+          </DialogBody>
+          {footerContent && <DialogFooter>{footerContent}</DialogFooter>}
         </DialogContent>
       </DialogPortal>
     </Dialog>
