@@ -117,7 +117,7 @@ const DialogTitle = forwardRef<
   <DialogPrimitive.Title
     ref={ref}
     className={cn(
-      "text-lg font-semibold leading-none tracking-tight py-2",
+      "py-2 text-lg font-semibold leading-none tracking-tight",
       className,
     )}
     {...props}
