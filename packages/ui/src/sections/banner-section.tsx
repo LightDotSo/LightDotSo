@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { FC, ReactNode } from "react";
 import {
   MiddleLayerWrapper,
   type MiddleLayerWrapperProps,
-} from "@lightdotso/ui";
-import type { FC, ReactNode } from "react";
+} from "../wrappers/layer";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -48,7 +48,7 @@ export const BannerSection: FC<BannerSectionProps> = ({
   return (
     <>
       <MiddleLayerWrapper size={size}>
-        <div className="py-4 sm:py-8 lg:flex lg:items-center lg:justify-between">
+        <div className="py-4 sm:py-6 md:py-8 lg:flex lg:items-center lg:justify-between">
           <div className="flex flex-col justify-between gap-2">
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl">
               {title}

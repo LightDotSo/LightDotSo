@@ -17,10 +17,10 @@ import {
   BaseLayerWrapper,
   MinimalPageWrapper,
   HStackFull,
+  BannerSection,
 } from "@lightdotso/ui";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { BannerSection } from "@/components/section/banner-section";
 import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------

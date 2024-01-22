@@ -14,25 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { cn } from "@lightdotso/utils";
-import type { ReactNode } from "react";
-import { baseHeightWrapper } from "../base";
 
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-interface MinimalPageWrapperProps {
-  children: ReactNode;
-}
-
-// -----------------------------------------------------------------------------
-// Layout
-// -----------------------------------------------------------------------------
-
-export function MinimalPageWrapper({ children }: MinimalPageWrapperProps) {
-  return (
-    <div className={cn("relative flex flex-col space-y-6", baseHeightWrapper)}>
-      {children}
-    </div>
-  );
-}
+export const baseWidthWrapper = cn("px-4 md:px-6 lg:px-8");
+export const baseHeightWrapper = cn("mb-6 mt-4 md:mb-10 md:mt-8 lg:my-12");
