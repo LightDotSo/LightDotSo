@@ -2170,6 +2170,9 @@ importers:
       '@lightdotso/const':
         specifier: workspace:*
         version: link:../const
+      '@lightdotso/hooks':
+        specifier: workspace:*
+        version: link:../hooks
       '@lightdotso/svg':
         specifier: workspace:*
         version: link:../svg
@@ -2191,6 +2194,9 @@ importers:
       '@tanstack/react-table':
         specifier: ^8.11.7
         version: 8.11.7(react-dom@18.2.0)(react@18.2.0)
+      class-variance-authority:
+        specifier: ^0.7.0
+        version: 0.7.0
       lucide-react:
         specifier: ^0.312.0
         version: 0.312.0(react@18.2.0)

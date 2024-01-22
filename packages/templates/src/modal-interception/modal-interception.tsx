@@ -15,25 +15,16 @@
 
 "use client";
 
-import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
-import {
-  Dialog,
-  DialogContent,
-  DialogPortal,
-  DialogOverlay,
-  Skeleton,
-  Drawer,
-  DrawerContent,
-} from "@lightdotso/ui";
 import { useRouter } from "next/navigation";
-import { Suspense, useCallback } from "react";
+import { useCallback } from "react";
 import type { FC, ReactNode } from "react";
+import { Modal } from "../modal";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface ModalProps {
+interface ModalInterceptionProps {
   children: ReactNode;
 }
 
@@ -41,14 +32,7 @@ interface ModalProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export const Modal: FC<ModalProps> = ({ children }) => {
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const isMounted = useIsMounted();
-  const isDesktop = useMediaQuery("md");
-
+export const ModalInterception: FC<ModalInterceptionProps> = ({ children }) => {
   // ---------------------------------------------------------------------------
   // Next Hooks
   // ---------------------------------------------------------------------------
@@ -67,32 +51,9 @@ export const Modal: FC<ModalProps> = ({ children }) => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!isMounted) {
-    return null;
-  }
-
-  if (!isDesktop) {
-    return (
-      <Drawer shouldScaleBackground open={true} onClose={onDismiss}>
-        <DrawerContent>
-          <Suspense fallback={<Skeleton className="h-64 w-full" />}>
-            {children}
-          </Suspense>
-        </DrawerContent>
-      </Drawer>
-    );
-  }
-
   return (
-    <Dialog open={true} defaultOpen={true} onOpenChange={onDismiss}>
-      <DialogPortal>
-        <DialogOverlay />
-        <DialogContent className="w-full overflow-scroll sm:max-h-[80%] sm:max-w-3xl">
-          <Suspense fallback={<Skeleton className="h-64 w-full" />}>
-            {children}
-          </Suspense>
-        </DialogContent>
-      </DialogPortal>
-    </Dialog>
+    <Modal open={true} onClose={onDismiss}>
+      {children}
+    </Modal>
   );
 };

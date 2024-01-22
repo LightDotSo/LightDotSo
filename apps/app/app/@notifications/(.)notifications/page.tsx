@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { ModalInterception } from "@lightdotso/templates";
 import OriginalPage from "@/app/(authenticated)/notifications/page";
-import { Modal } from "@/components/modal";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -36,9 +36,9 @@ export default async function Page({ searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <Modal>
+    <ModalInterception>
       <OriginalPage searchParams={searchParams} />
-    </Modal>
+    </ModalInterception>
   );
 }
 

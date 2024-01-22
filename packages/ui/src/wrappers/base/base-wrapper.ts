@@ -13,13 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export {
-  DataTableColumnHeader,
-  DataTableFacetedFilter,
-  DataTablePagination,
-  DataTableViewOptions,
-} from "./data-table";
-export { Footer } from "./footer";
-export { MobileAppDrawer } from "./mobile-app-drawer";
-export { Modal } from "./modal";
-export { ModalInterception } from "./modal-interception";
+import { cn } from "@lightdotso/utils";
+
+export const baseWidthWrapper = cn("px-4 md:px-6 lg:px-8");
+export const baseHeightWrapper = cn("mb-8 mt-4 md:mb-10 md:mt-6 lg:mb-12");

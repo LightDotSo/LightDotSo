@@ -17,14 +17,11 @@
 
 import { getNonce, postAuthVerify } from "@lightdotso/client";
 import { useAuth, useModals } from "@lightdotso/stores";
+import { Modal } from "@lightdotso/templates";
 import {
   Button,
-  Dialog,
-  DialogContent,
+  DialogBody,
   DialogDescription,
-  DialogHeader,
-  DialogPortal,
-  DialogOverlay,
   DialogTitle,
   toast,
 } from "@lightdotso/ui";
@@ -132,31 +129,28 @@ export function AuthModal() {
 
   if (isAuthModalVisible) {
     return (
-      <Dialog open>
-        <DialogPortal>
-          <DialogOverlay onClick={hideAuthModal} />
-          <DialogContent
-            className="sm:max-w-md"
-            onEscapeKeyDown={hideAuthModal}
+      <Modal
+        open
+        footerContent={
+          <Button
+            type="submit"
+            size="sm"
+            className="px-3"
+            onClick={handleSignIn}
           >
-            <DialogHeader>
-              <DialogTitle>Login</DialogTitle>
-              <DialogDescription>
-                Login with your wallet to access your account.
-              </DialogDescription>
-            </DialogHeader>
-            <Button
-              type="submit"
-              size="sm"
-              className="px-3"
-              onClick={handleSignIn}
-            >
-              <span className="sr-only">Login</span>
-              Login
-            </Button>
-          </DialogContent>
-        </DialogPortal>
-      </Dialog>
+            <span className="sr-only">Login</span>
+            Login
+          </Button>
+        }
+        onClose={hideAuthModal}
+      >
+        <DialogBody>
+          <DialogTitle>Login</DialogTitle>
+          <DialogDescription>
+            Login with your wallet to access your account.
+          </DialogDescription>
+        </DialogBody>
+      </Modal>
     );
   }
 
