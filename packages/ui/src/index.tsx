@@ -90,6 +90,7 @@ export {
 } from "./components/context-menu";
 export {
   Dialog,
+  DialogClose,
   DialogTrigger,
   DialogPortal,
   DialogOverlay,

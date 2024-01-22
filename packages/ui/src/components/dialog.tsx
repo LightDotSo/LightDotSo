@@ -17,7 +17,6 @@
 
 import { cn } from "@lightdotso/utils";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { X } from "lucide-react";
 import type {
   ComponentPropsWithoutRef,
   ElementRef,
@@ -30,6 +29,8 @@ import { forwardRef } from "react";
 // -----------------------------------------------------------------------------
 
 const Dialog = DialogPrimitive.Root;
+
+const DialogClose = DialogPrimitive.Close;
 
 const DialogTrigger = DialogPrimitive.Trigger;
 
@@ -69,10 +70,6 @@ const DialogContent = forwardRef<
     {...props}
   >
     {children}
-    <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-border-info focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-background-stronger data-[state=open]:text-text-weak">
-      <X className="size-4" />
-      <span className="sr-only">Close</span>
-    </DialogPrimitive.Close>
   </DialogPrimitive.Content>
 ));
 DialogContent.displayName = DialogPrimitive.Content.displayName;
@@ -138,6 +135,7 @@ DialogDescription.displayName = DialogPrimitive.Description.displayName;
 
 export {
   Dialog,
+  DialogClose,
   DialogPortal,
   DialogOverlay,
   DialogTrigger,
