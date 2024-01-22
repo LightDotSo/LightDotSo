@@ -13,24 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { TokenGroupData } from "./tokenGroup";
+import { TokenData } from "./token";
 
 // -----------------------------------------------------------------------------
 // Data
 // -----------------------------------------------------------------------------
 
-export type TokenData = {
+export type TokenGroupData = {
   id: string;
-  address: string;
-  amount: number;
-  balance_usd: number;
-  chain_id: number;
-  decimals: number;
-  name?: string | null;
-  symbol: string;
-  group?: TokenGroupData | null;
-};
-
-export type TokenCountData = {
-  count: number;
+  tokens?: TokenData[];
 };
