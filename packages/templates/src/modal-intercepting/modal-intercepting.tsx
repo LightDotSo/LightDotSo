@@ -13,38 +13,43 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { ModalIntercepting } from "@lightdotso/templates";
-import OriginalPage from "@/app/(wallet)/[address]/op/page";
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useCallback } from "react";
+import type { FC, ReactNode } from "react";
+import { Modal } from "../modal";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type PageProps = {
-  params: { address: string };
-  searchParams: {
-    userOperations?: string;
-  };
-};
+interface ModalInterceptingProps {
+  children: ReactNode;
+}
 
 // -----------------------------------------------------------------------------
-// Page
+// Component
 // -----------------------------------------------------------------------------
 
-export default async function Page({ params, searchParams }: PageProps) {
+export const ModalIntercepting: FC<ModalInterceptingProps> = ({ children }) => {
+  // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
+  const router = useRouter();
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  const onDismiss = useCallback(() => {
+    router.back();
+  }, [router]);
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <ModalIntercepting>
-      <OriginalPage params={params} searchParams={searchParams} />
-    </ModalIntercepting>
-  );
-}
-
-// -----------------------------------------------------------------------------
-// Config
-// -----------------------------------------------------------------------------
-
-export const runtime = "edge";
+  return <Modal onClose={onDismiss}>{children}</Modal>;
+};

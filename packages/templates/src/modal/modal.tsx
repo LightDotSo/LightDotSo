@@ -25,8 +25,7 @@ import {
   Drawer,
   DrawerContent,
 } from "@lightdotso/ui";
-import { useRouter } from "next/navigation";
-import { Suspense, useCallback } from "react";
+import { Suspense } from "react";
 import type { FC, ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
@@ -35,33 +34,20 @@ import type { FC, ReactNode } from "react";
 
 interface ModalProps {
   children: ReactNode;
+  onClose?: () => void;
 }
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const Modal: FC<ModalProps> = ({ children }) => {
+export const Modal: FC<ModalProps> = ({ children, onClose }) => {
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
 
   const isMounted = useIsMounted();
   const isDesktop = useMediaQuery("md");
-
-  // ---------------------------------------------------------------------------
-  // Next Hooks
-  // ---------------------------------------------------------------------------
-
-  const router = useRouter();
-
-  // ---------------------------------------------------------------------------
-  // Callback Hooks
-  // ---------------------------------------------------------------------------
-
-  const onDismiss = useCallback(() => {
-    router.back();
-  }, [router]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -73,7 +59,7 @@ export const Modal: FC<ModalProps> = ({ children }) => {
 
   if (!isDesktop) {
     return (
-      <Drawer shouldScaleBackground open={true} onClose={onDismiss}>
+      <Drawer shouldScaleBackground open={true} onClose={onClose}>
         <DrawerContent>
           <Suspense fallback={<Skeleton className="h-64 w-full" />}>
             {children}
@@ -84,7 +70,7 @@ export const Modal: FC<ModalProps> = ({ children }) => {
   }
 
   return (
-    <Dialog open={true} defaultOpen={true} onOpenChange={onDismiss}>
+    <Dialog open={true} defaultOpen={true} onOpenChange={onClose}>
       <DialogPortal>
         <DialogOverlay />
         <DialogContent className="w-full overflow-scroll sm:max-h-[80%] sm:max-w-3xl">

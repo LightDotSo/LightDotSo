@@ -13,13 +13,4 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export {
-  DataTableColumnHeader,
-  DataTableFacetedFilter,
-  DataTablePagination,
-  DataTableViewOptions,
-} from "./data-table";
-export { Footer } from "./footer";
-export { MobileAppDrawer } from "./mobile-app-drawer";
-export { Modal } from "./modal";
 export { ModalIntercepting } from "./modal-intercepting";
