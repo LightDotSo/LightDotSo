@@ -49,6 +49,7 @@ export const ownerColumns: ColumnDef<OwnerData>[] = [
     enableHiding: false,
   },
   {
+    id: "index",
     accessorKey: "index",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Index" />
@@ -58,6 +59,7 @@ export const ownerColumns: ColumnDef<OwnerData>[] = [
     enableHiding: false,
   },
   {
+    id: "address",
     accessorKey: "address",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Owner" />
@@ -74,6 +76,7 @@ export const ownerColumns: ColumnDef<OwnerData>[] = [
     enableHiding: false,
   },
   {
+    id: "weight",
     accessorKey: "weight",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Weight" />

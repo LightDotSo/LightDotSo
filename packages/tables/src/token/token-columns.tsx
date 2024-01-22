@@ -34,6 +34,7 @@ import {
 
 export const tokenColumns: ColumnDef<TokenData>[] = [
   {
+    id: "name",
     accessorKey: "name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Name" />
@@ -50,6 +51,7 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
     size: 416,
   },
   {
+    id: "balance_usd",
     accessorKey: "balance_usd",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Balance" />
@@ -60,6 +62,7 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
     size: 416,
   },
   {
+    id: "chain_id",
     accessorKey: "chain_id",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Chain" />
@@ -73,6 +76,7 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
     size: 208,
   },
   {
+    id: "sparkline",
     accessorKey: "sparkline",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Last 7 Days" />
@@ -87,6 +91,7 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
     size: 146,
   },
   {
+    id: "price",
     accessorKey: "price",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Price" />
@@ -101,6 +106,7 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
     size: 96,
   },
   {
+    id: "actions",
     accessorKey: "actions",
     header: ({ column }) => (
       <DataTableColumnHeader

@@ -28,6 +28,7 @@ import { NotificationTableRowActions } from "./actions";
 
 export const notificationColumns: ColumnDef<NotificationData>[] = [
   {
+    id: "name",
     accessorKey: "name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Name" />
@@ -39,6 +40,7 @@ export const notificationColumns: ColumnDef<NotificationData>[] = [
     enableHiding: false,
   },
   {
+    id: "address",
     accessorKey: "address",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Address" />

@@ -35,6 +35,7 @@ import {
 
 export const userOperationColumns: ColumnDef<UserOperationData>[] = [
   {
+    id: "actions",
     accessorKey: "actions",
     accessorFn: row => {
       return row?.interpretation?.actions;
@@ -50,6 +51,7 @@ export const userOperationColumns: ColumnDef<UserOperationData>[] = [
     size: 30,
   },
   {
+    id: "chain_id",
     accessorKey: "chain_id",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Chain" />
@@ -62,6 +64,7 @@ export const userOperationColumns: ColumnDef<UserOperationData>[] = [
     enableHiding: true,
   },
   {
+    id: "interpretation",
     accessorKey: "interpretation",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Interpretation" />
@@ -74,6 +77,7 @@ export const userOperationColumns: ColumnDef<UserOperationData>[] = [
     size: 416,
   },
   {
+    id: "nonce",
     accessorKey: "nonce",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Nonce" />
@@ -86,6 +90,7 @@ export const userOperationColumns: ColumnDef<UserOperationData>[] = [
     enableHiding: true,
   },
   {
+    id: "status",
     accessorKey: "status",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Status" />

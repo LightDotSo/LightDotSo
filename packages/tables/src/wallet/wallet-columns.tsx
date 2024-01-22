@@ -28,6 +28,7 @@ import { WalletTableRowActions } from "./actions";
 
 export const walletColumns: ColumnDef<WalletData>[] = [
   {
+    id: "name",
     accessorKey: "name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Name" />
@@ -39,6 +40,7 @@ export const walletColumns: ColumnDef<WalletData>[] = [
     enableHiding: false,
   },
   {
+    id: "address",
     accessorKey: "address",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Address" />

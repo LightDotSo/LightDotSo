@@ -32,6 +32,7 @@ import {
 
 export const transactionColumns: ColumnDef<TransactionData>[] = [
   {
+    id: "actions",
     accessorKey: "actions",
     accessorFn: row => {
       return row?.interpretation?.actions;
@@ -47,6 +48,7 @@ export const transactionColumns: ColumnDef<TransactionData>[] = [
     size: 30,
   },
   {
+    id: "chain_id",
     accessorKey: "chain_id",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Chain" />
@@ -60,6 +62,7 @@ export const transactionColumns: ColumnDef<TransactionData>[] = [
     size: 128,
   },
   {
+    id: "interpretation",
     accessorKey: "interpretation",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Interpretation" />
@@ -72,6 +75,7 @@ export const transactionColumns: ColumnDef<TransactionData>[] = [
     size: 416,
   },
   {
+    id: "timestamp",
     accessorKey: "timestamp",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Timestamp" />
