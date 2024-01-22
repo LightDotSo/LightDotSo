@@ -73,7 +73,7 @@ export const MainNav: FC<MainNavProps> = ({ children }) => {
     <main>
       <div className="flex flex-col">
         <div className="overflow-y-visible border-b border-b-border py-2">
-          <div className={cn("flex h-16 items-center", baseWidthWrapper)}>
+          <div className="flex h-16 items-center">
             <BaseLayerWrapper>
               <div className="flex items-center justify-between">
                 <RootLogo />
