@@ -17,24 +17,28 @@
 
 import type { TransactionData } from "@lightdotso/data";
 import type { FC } from "react";
-import { InterpretationCard } from "../../(components)/card";
+import { InterpretationActionCard } from "../../(components)/card";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type UserOperationCardInterpretationProps = { transaction: TransactionData };
+type TransactionCardInterpretationActionProps = {
+  transaction: TransactionData;
+};
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const UserOperationCardInterpretation: FC<
-  UserOperationCardInterpretationProps
-> = ({ transaction: { interpretation } }) => {
+export const TransactionCardInterpretationAction: FC<
+  TransactionCardInterpretationActionProps
+> = ({ transaction }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return <InterpretationCard interpretation={interpretation} />;
+  return (
+    <InterpretationActionCard interpretation={transaction?.interpretation} />
+  );
 };

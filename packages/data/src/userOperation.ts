@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { InterpretationData } from "./interpretation";
+
 // -----------------------------------------------------------------------------
 // Data
 // -----------------------------------------------------------------------------
@@ -42,6 +44,7 @@ export type UserOperationData = {
   verification_gas_limit: number;
   created_at: string;
   updated_at: string;
+  interpretation?: InterpretationData | null;
 };
 
 export type UserOperationCountData = {

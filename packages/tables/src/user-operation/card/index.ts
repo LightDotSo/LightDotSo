@@ -17,4 +17,6 @@ export { UserOperationCardChain } from "./user-operation-card-chain";
 export { UserOperationCardHash } from "./user-operation-card-hash";
 export { UserOperationCardNonce } from "./user-operation-card-nonce";
 export { UserOperationCardStatus } from "./user-operation-card-status";
+export { UserOperationCardInterpretationAction } from "./user-operation-card-interpretation-action";
+export { UserOperationCardInterpretation } from "./user-operation-card-interpretation";
 export { UserOperationCardTransaction } from "./user-operation-card-transaction";

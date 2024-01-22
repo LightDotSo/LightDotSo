@@ -79,7 +79,7 @@ export const useQueryUserOperations = (params: UserOperationListParams) => {
       // Return if the response is 200
       return res.match(
         data => {
-          return data;
+          return data as UserOperationData[];
         },
         _ => {
           return currentData ?? null;

@@ -31,7 +31,7 @@ export type TokenData = {
 
 export type TokenGroupData = {
   id: string;
-  tokens: TokenData[];
+  tokens?: TokenData[];
 };
 
 export type TokenCountData = {

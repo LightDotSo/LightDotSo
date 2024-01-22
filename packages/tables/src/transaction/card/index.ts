@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { TransactionCardActions } from "./transaction-card-actions";
 export { TransactionCardChain } from "./transaction-card-chain";
+export { TransactionCardInterpretationAction } from "./transaction-card-interpretation-action";
 export { TransactionCardInterpretation } from "./transaction-card-interpretation";
 export { TransactionCardTimestamp } from "./transaction-card-timestamp";

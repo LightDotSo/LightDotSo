@@ -16,7 +16,7 @@
 "use client";
 
 import { ACTION_LABELS, Action } from "@lightdotso/const";
-import type { TransactionData } from "@lightdotso/data";
+import type { InterpretationData } from "@lightdotso/data";
 import { ActionLogo } from "@lightdotso/elements";
 import { useMemo, type FC } from "react";
 
@@ -24,14 +24,16 @@ import { useMemo, type FC } from "react";
 // Props
 // -----------------------------------------------------------------------------
 
-type TransactionCardActionsProps = { transaction: TransactionData };
+type InterpretationActionCardProps = {
+  interpretation?: InterpretationData | null;
+};
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TransactionCardActions: FC<TransactionCardActionsProps> = ({
-  transaction: { interpretation },
+export const InterpretationActionCard: FC<InterpretationActionCardProps> = ({
+  interpretation,
 }) => {
   // ---------------------------------------------------------------------------
   // Memoized Hooks

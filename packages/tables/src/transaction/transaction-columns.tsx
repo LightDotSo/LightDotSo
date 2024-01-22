@@ -20,7 +20,7 @@ import { DataTableColumnHeader } from "@lightdotso/templates";
 import type { ColumnDef } from "@tanstack/react-table";
 import { TransactionTableRowActions } from "./actions";
 import {
-  TransactionCardActions,
+  TransactionCardInterpretationAction,
   TransactionCardChain,
   TransactionCardInterpretation,
   TransactionCardTimestamp,
@@ -39,7 +39,9 @@ export const transactionColumns: ColumnDef<TransactionData>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Action" />
     ),
-    cell: ({ row }) => <TransactionCardActions transaction={row.original} />,
+    cell: ({ row }) => (
+      <TransactionCardInterpretationAction transaction={row.original} />
+    ),
     enableSorting: false,
     enableHiding: false,
     size: 30,

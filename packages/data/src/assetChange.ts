@@ -22,6 +22,6 @@ export type AssetChangeData = {
   amount: number;
   before_amount?: number | null;
   id: string;
-  action?: InterpretationActionData;
-  token?: TokenData;
+  action?: InterpretationActionData | null;
+  token?: TokenData | null;
 };
