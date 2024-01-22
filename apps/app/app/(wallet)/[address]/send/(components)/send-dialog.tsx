@@ -82,6 +82,7 @@ import { useTransfersQueryState } from "@/app/(wallet)/[address]/send/(hooks)";
 import { publicClient } from "@/clients/public";
 import { debounce } from "@/utils";
 import { lightWalletAbi } from "@/wagmi";
+import { isEmpty } from "lodash";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -768,6 +769,10 @@ export const SendDialog: FC<SendDialogProps> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transfers, tokens, form.formState]);
+
+  const isFormValid = useMemo(() => {
+    return form.formState.isValid && isEmpty(form.formState.errors);
+  }, [form.formState]);
 
   // ---------------------------------------------------------------------------
   // Validation
@@ -1584,11 +1589,8 @@ export const SendDialog: FC<SendDialogProps> = ({
               </Button>
               <Button
                 asChild
-                disabled={
-                  !form.formState.isValid &&
-                  typeof userOperationsParams !== "undefined"
-                }
-                variant={form.formState.isValid ? "default" : "outline"}
+                disabled={!isFormValid}
+                variant={isFormValid ? "default" : "outline"}
                 type="submit"
               >
                 {form.formState.isValid ? (
