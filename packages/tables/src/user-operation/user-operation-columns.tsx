@@ -48,7 +48,6 @@ export const userOperationColumns: ColumnDef<UserOperationData>[] = [
     ),
     enableSorting: false,
     enableHiding: false,
-    size: 30,
   },
   {
     id: "chain_id",
@@ -74,7 +73,6 @@ export const userOperationColumns: ColumnDef<UserOperationData>[] = [
     ),
     enableSorting: false,
     enableHiding: false,
-    size: 416,
   },
   {
     id: "nonce",

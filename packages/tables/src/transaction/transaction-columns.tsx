@@ -45,7 +45,6 @@ export const transactionColumns: ColumnDef<TransactionData>[] = [
     ),
     enableSorting: false,
     enableHiding: false,
-    size: 30,
   },
   {
     id: "chain_id",
@@ -59,7 +58,6 @@ export const transactionColumns: ColumnDef<TransactionData>[] = [
     },
     enableSorting: true,
     enableHiding: true,
-    size: 128,
   },
   {
     id: "interpretation",
@@ -72,7 +70,6 @@ export const transactionColumns: ColumnDef<TransactionData>[] = [
     ),
     enableSorting: false,
     enableHiding: false,
-    size: 416,
   },
   {
     id: "timestamp",
@@ -86,7 +83,6 @@ export const transactionColumns: ColumnDef<TransactionData>[] = [
     },
     enableSorting: true,
     enableHiding: true,
-    size: 96,
   },
   {
     id: "row_actions",
