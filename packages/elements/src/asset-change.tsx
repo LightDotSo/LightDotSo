@@ -39,7 +39,7 @@ export const AssetChange: FC<AssetChangeProps> = ({ assetChange }) => {
           <span className="text-xs text-text-weak">
             (
             {(
-              assetChange?.token.amount /
+              assetChange?.amount /
               10 ** assetChange?.token.decimals
             ).toLocaleString("en-US", {
               style: "decimal",

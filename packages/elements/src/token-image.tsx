@@ -19,7 +19,8 @@
 
 import type { TokenData } from "@lightdotso/data";
 import { Skeleton } from "@lightdotso/ui";
-import { cn, shortenName } from "@lightdotso/utils";
+import { cn, getChainById, shortenName } from "@lightdotso/utils";
+import { getChainLabelById } from "@lightdotso/utils/src/chain";
 import { cva, type VariantProps } from "class-variance-authority";
 import { useState, type FC, useEffect } from "react";
 
@@ -81,6 +82,7 @@ export const TokenImage: FC<TokenImageProps> = ({ token, size }) => {
 
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isImageError, setIsImageError] = useState(false);
+  const [currentUrlIndex, setCurrentUrlIndex] = useState(0);
   const [tokenChainId, tokenAddress] = parseTokenAddress(token);
 
   // ---------------------------------------------------------------------------
@@ -88,18 +90,31 @@ export const TokenImage: FC<TokenImageProps> = ({ token, size }) => {
   // ---------------------------------------------------------------------------
 
   const className = tokenImageVariants({ size });
-  const imageSrc = `https://logos.covalenthq.com/tokens/${tokenChainId}/${tokenAddress}.png`;
+  const urls = [
+    `https://logos.covalenthq.com/tokens/${tokenChainId}/${tokenAddress}.png`,
+    `https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/${getChainLabelById(token.chain_id)}/assets/${token.address.toLowerCase()}/logo.png`,
+    `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${getChainLabelById(token.chain_id)}/assets/${token.address.toLowerCase()}/logo.png`,
+  ];
+  const currentUrl = urls[currentUrlIndex];
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    const image = new Image();
-    image.src = imageSrc;
-    image.onload = () => setIsImageLoaded(true);
-    image.onerror = () => setIsImageError(true);
-  }, [imageSrc]);
+    const img = new Image();
+    img.src = currentUrl;
+    img.onload = () => setIsImageLoaded(true);
+    img.onerror = () => {
+      if (currentUrlIndex < urls.length - 1) {
+        setCurrentUrlIndex(prevUrlIndex => prevUrlIndex + 1);
+        setIsImageLoaded(false);
+      } else {
+        setIsImageLoaded(true);
+        setIsImageError(true);
+      }
+    };
+  }, [currentUrl, currentUrlIndex]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -113,7 +128,7 @@ export const TokenImage: FC<TokenImageProps> = ({ token, size }) => {
     return (
       <img
         className={className}
-        src={imageSrc}
+        src={currentUrl}
         alt={token.name ?? token.symbol}
         onLoad={() => setIsImageLoaded(true)}
         onErrorCapture={() => setIsImageError(true)}

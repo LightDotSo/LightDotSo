@@ -19,7 +19,7 @@ export {
   BASE_API_URL,
   BASE_LOCAL_ADMIN_URL,
 } from "./api_urls";
-export { CHAIN_IDS } from "./chain_ids";
+export { CHAIN_IDS, CHAIN_ID_LABELS } from "./chain_ids";
 export { CHAINS, MAINNET_CHAINS, TESTNET_CHAINS } from "./chains";
 export { CONTRACT_ADDRESSES } from "./contract_addresses";
 export { GITHUB_LINKS } from "./github_links";

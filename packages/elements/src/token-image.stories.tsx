@@ -43,3 +43,14 @@ export const Base: Story = {
   render: args => <TokenImage token={tokenGetData} />,
   args: {},
 };
+export const NotFound: Story = {
+  render: args => (
+    <TokenImage
+      token={{
+        ...tokenGetData,
+        address: "0x59b8eF31a1F76d17bc67C18a304E967B34fd7100",
+      }}
+    />
+  ),
+  args: {},
+};
