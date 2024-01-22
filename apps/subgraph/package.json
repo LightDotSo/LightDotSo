@@ -65,7 +65,7 @@
     "test": "./test.sh"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "^0.67.1",
+    "@graphprotocol/graph-cli": "^0.67.2",
     "@graphprotocol/graph-ts": "^0.32.0"
   },
   "devDependencies": {

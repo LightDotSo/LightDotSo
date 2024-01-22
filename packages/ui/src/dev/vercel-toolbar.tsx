@@ -26,6 +26,8 @@ export const VercelToolbar: FC = () => {
   // ---------------------------------------------------------------------------
 
   return process.env.NEXT_PUBLIC_VERCEL_ENV === "preview" ? (
-    <VercelNextToolbar />
+    <div className="hidden lg:block">
+      <VercelNextToolbar />
+    </div>
   ) : null;
 };
