@@ -57,9 +57,10 @@ import {
   TabsTrigger,
   TooltipProvider,
 } from "@lightdotso/ui";
-import { cn } from "@lightdotso/utils";
+import { cn, refineNumberFormat } from "@lightdotso/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
+import { isEmpty } from "lodash";
 import { Trash2Icon, UserPlus2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -769,6 +770,10 @@ export const SendDialog: FC<SendDialogProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transfers, tokens, form.formState]);
 
+  const isFormValid = useMemo(() => {
+    return form.formState.isValid && isEmpty(form.formState.errors);
+  }, [form.formState]);
+
   // ---------------------------------------------------------------------------
   // Validation
   // ---------------------------------------------------------------------------
@@ -1198,20 +1203,16 @@ export const SendDialog: FC<SendDialogProps> = ({
                                               return token
                                                 ? "~ $" +
                                                     // Get the current selected token balance in USD
-                                                    (
+                                                    refineNumberFormat(
                                                       (token?.balance_usd /
                                                         (token.amount /
                                                           Math.pow(
                                                             10,
                                                             token?.decimals,
                                                           ))) *
-                                                      // Get the form value
-                                                      (field.value ?? 0)
-                                                    ).toLocaleString("en-US", {
-                                                      style: "decimal",
-                                                      minimumFractionDigits: 2,
-                                                      maximumFractionDigits: 2,
-                                                    })
+                                                        // Get the form value
+                                                        (field.value ?? 0),
+                                                    )
                                                 : "";
                                             })()}
                                         </div>
@@ -1584,11 +1585,8 @@ export const SendDialog: FC<SendDialogProps> = ({
               </Button>
               <Button
                 asChild
-                disabled={
-                  !form.formState.isValid &&
-                  typeof userOperationsParams !== "undefined"
-                }
-                variant={form.formState.isValid ? "default" : "outline"}
+                disabled={!isFormValid}
+                variant={isFormValid ? "default" : "outline"}
                 type="submit"
               >
                 {form.formState.isValid ? (

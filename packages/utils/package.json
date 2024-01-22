@@ -29,8 +29,8 @@
     "clsx": "^2.1.0",
     "cross-env": "^7.0.3",
     "dotenv": "^16.3.2",
-    "tailwind-merge": "^2.2.0",
-    "viem": "^2.4.0"
+    "tailwind-merge": "^2.2.1",
+    "viem": "^2.4.1"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",

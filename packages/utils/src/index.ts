@@ -20,4 +20,5 @@ export {
   getChainIdBySimplehashChainName,
 } from "./chain";
 export { cn } from "./cn";
+export { refineNumberFormat } from "./number";
 export { shortenAddress, shortenBytes32, shortenName } from "./shorten";

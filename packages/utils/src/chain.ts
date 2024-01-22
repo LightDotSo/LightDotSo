@@ -13,7 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { CHAINS, SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
+import {
+  CHAINS,
+  SIMPLEHASH_CHAIN_ID_MAPPING,
+  CHAIN_ID_LABELS,
+} from "@lightdotso/const";
 import type { Chain } from "viem";
 import { extractChain } from "viem";
 
@@ -24,6 +28,14 @@ export function getChainById(chainId: number): Chain {
 export function getChainNameById(chainId: number): string {
   const chain = getChainById(chainId);
   return chain?.name ?? "Unknown";
+}
+
+export function getChainLabelById(chainId: number): string {
+  if (chainId in CHAIN_ID_LABELS) {
+    const chain = CHAIN_ID_LABELS[chainId];
+    return chain;
+  }
+  return "ethereum";
 }
 
 export function getChainIdBySimplehashChainName(chain: string): number {

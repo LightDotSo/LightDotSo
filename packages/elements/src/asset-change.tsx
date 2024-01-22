@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { AssetChangeData } from "@lightdotso/data";
+import { refineNumberFormat } from "@lightdotso/utils";
 import type { FC } from "react";
 import { TokenImage } from "./token-image";
 
@@ -32,22 +33,21 @@ export interface AssetChangeProps {
 export const AssetChange: FC<AssetChangeProps> = ({ assetChange }) => {
   return (
     <div className="flex items-center space-x-3">
-      {assetChange?.token && <TokenImage size="xs" token={assetChange.token} />}
-      {assetChange?.token && (
+      {assetChange?.token && assetChange?.token?.decimals !== 0 && (
+        <TokenImage size="xs" token={assetChange.token} />
+      )}
+      {assetChange?.token && assetChange?.token?.decimals !== 0 && (
         <span className="text-sm text-text">
           {assetChange?.token.name ?? assetChange?.token.symbol}{" "}
-          <span className="text-xs text-text-weak">
-            (
-            {(
-              assetChange?.token.amount /
-              10 ** assetChange?.token.decimals
-            ).toLocaleString("en-US", {
-              style: "decimal",
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}{" "}
-            {assetChange?.token.symbol})
-          </span>
+          {
+            <span className="text-xs text-text-weak">
+              (
+              {refineNumberFormat(
+                assetChange?.amount / 10 ** assetChange?.token.decimals,
+              )}{" "}
+              {assetChange?.token.symbol})
+            </span>
+          }
         </span>
       )}
     </div>

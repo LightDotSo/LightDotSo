@@ -36,3 +36,12 @@ export const CHAIN_IDS: { readonly [key in Chain]: number } = {
   [Chain.CELO]: 42220,
   [Chain.SEPOLIA]: 11155111,
 };
+
+export const CHAIN_ID_LABELS: { readonly [key: number]: Chain } =
+  Object.entries(CHAIN_IDS).reduce(
+    (acc, [chain, id]) => {
+      acc[id] = chain as Chain;
+      return acc;
+    },
+    {} as { [key: number]: Chain },
+  );

@@ -48,11 +48,11 @@
     "@sentry/nextjs": "^7.94.1",
     "@sentry/react": "^7.94.1",
     "@tanstack/react-query": "^5.17.19",
-    "@tanstack/react-query-devtools": "^5.17.19",
+    "@tanstack/react-query-devtools": "^5.17.21",
     "@tanstack/react-query-next-experimental": "^5.17.19",
     "@tanstack/react-table": "^8.11.7",
     "kysely-postgres-js": "^2.0.0",
-    "lucide-react": "^0.312.0",
+    "lucide-react": "^0.314.0",
     "neverthrow": "^6.1.0",
     "next": "^14.1.0",
     "nuqs": "^1.15.4",
@@ -63,7 +63,7 @@
     "react-error-boundary": "^4.0.12",
     "server-only": "^0.0.1",
     "superjson": "^2.2.1",
-    "viem": "^2.4.0",
+    "viem": "^2.4.1",
     "wagmi": "^2.3.1"
   },
   "devDependencies": {

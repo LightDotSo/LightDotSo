@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { WalletData } from "@lightdotso/data";
-import { useDebounced } from "@lightdotso/hooks";
+import { useDebounced, useMediaQuery } from "@lightdotso/hooks";
 import {
   Skeleton,
   Table,
@@ -41,7 +41,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useRouter } from "next/navigation";
-import { useEffect, type FC } from "react";
+import { useEffect, type FC, useMemo } from "react";
 import { TableEmpty } from "../table-empty";
 import { walletColumns } from "./wallet-columns";
 
@@ -74,10 +74,27 @@ export const WalletTable: FC<WalletTableProps> = ({
   setWalletTable,
 }) => {
   // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const isDesktop = useMediaQuery("md");
+
+  // ---------------------------------------------------------------------------
   // Next Hooks
   // ---------------------------------------------------------------------------
 
   const router = useRouter();
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const tableColumns = useMemo(() => {
+    if (isDesktop) {
+      return columns;
+    }
+    return columns.filter(column => column.id !== "actions");
+  }, [columns, isDesktop]);
 
   // ---------------------------------------------------------------------------
   // Table
@@ -86,7 +103,7 @@ export const WalletTable: FC<WalletTableProps> = ({
   const table = useReactTable({
     ...tableOptions,
     data: data || [],
-    columns,
+    columns: tableColumns,
     enableExpanding: true,
     enableRowSelection: false,
     manualPagination: true,

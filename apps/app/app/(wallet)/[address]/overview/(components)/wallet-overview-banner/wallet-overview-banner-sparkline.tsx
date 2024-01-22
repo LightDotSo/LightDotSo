@@ -17,7 +17,7 @@
 
 import { useSuspenseQueryPortfolio } from "@lightdotso/query";
 import { Number } from "@lightdotso/ui";
-import { cn } from "@lightdotso/utils";
+import { cn, refineNumberFormat } from "@lightdotso/utils";
 import { SparkAreaChart } from "@tremor/react";
 import type { FC } from "react";
 import type { Address } from "viem";
@@ -76,13 +76,9 @@ export const WalletOverviewBannerSparkline: FC<
           %&nbsp;
           <span className="text-xs">
             {portfolio.balance_change_24h && portfolio.balance_change_24h
-              ? `(${portfolio.balance_change_24h < 0 ? "-" : "+"}$${Math.abs(
-                  portfolio.balance_change_24h,
-                ).toLocaleString("en-US", {
-                  style: "decimal",
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })})`
+              ? `(${portfolio.balance_change_24h < 0 ? "-" : "+"}$${refineNumberFormat(
+                  Math.abs(portfolio.balance_change_24h),
+                )})`
               : ""}
           </span>
         </span>

@@ -17,7 +17,7 @@
 
 import type { TokenData } from "@lightdotso/data";
 import { useSuspenseQueryTokenPrice } from "@lightdotso/query";
-import { cn } from "@lightdotso/utils";
+import { cn, refineNumberFormat } from "@lightdotso/utils";
 import type { FC } from "react";
 import type { Address } from "viem";
 
@@ -56,12 +56,7 @@ export const TokenCardPrice: FC<TokenCardPriceProps> = ({
   return (
     <div className="flex flex-col space-y-1.5">
       <span className="text-sm text-text">
-        $
-        {token_price.price.toLocaleString("en-US", {
-          style: "decimal",
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })}
+        ${refineNumberFormat(token_price.price)}
       </span>
       <span
         className={cn(

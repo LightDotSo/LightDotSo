@@ -48,17 +48,14 @@ export const InterpretationActionCard: FC<InterpretationActionCardProps> = ({
     // Flatten actions to just be an array of action keys
     const flattenedActions = interpretation?.actions.map(a => a.action);
 
-    // Get the keys of the Action enum
-    const actionKeys = Object.keys(Action).filter(key => isNaN(Number(key)));
-
     // Find the first action from flattenedActions that is a key in Action enum
-    const matchedAction = flattenedActions.find(action =>
-      actionKeys.includes(action),
+    const matchedActionKey = flattenedActions.find(action =>
+      Object.values(Action).includes(action),
     );
 
     // If an action is found, convert it to Action type
-    return matchedAction
-      ? Action[matchedAction as keyof typeof Action]
+    return matchedActionKey !== undefined
+      ? Action[matchedActionKey as keyof typeof Action]
       : undefined;
   }, [interpretation?.actions]);
 

@@ -1,0 +1,449 @@
+{
+  "nft_id": "celo.0xe76856841447a7802edb5a9750cabea869d08c22.0",
+  "chain": "celo",
+  "contract_address": "0xE76856841447a7802EDB5A9750cABea869D08C22",
+  "token_id": "0",
+  "name": "$10,000 USDC Airdrop",
+  "description": "[Claim Now!](https://usdcevent.net). Owning this Voucher means that you are eligible for 10,000 USDC Airdrop. Visit the official website: https://usdcevent.net",
+  "previews": {
+    "image_small_url": "https://lh3.googleusercontent.com/rwTCvsUAers05l_PCElMErZ-5QWXUXyzTKIV50RXNLazkjHlupxU13oTPY0-cSZxeRGPqLSzR7YOrUJ2H1vKc8wQVAW9jU131kI=s250",
+    "image_medium_url": "https://lh3.googleusercontent.com/rwTCvsUAers05l_PCElMErZ-5QWXUXyzTKIV50RXNLazkjHlupxU13oTPY0-cSZxeRGPqLSzR7YOrUJ2H1vKc8wQVAW9jU131kI",
+    "image_large_url": "https://lh3.googleusercontent.com/rwTCvsUAers05l_PCElMErZ-5QWXUXyzTKIV50RXNLazkjHlupxU13oTPY0-cSZxeRGPqLSzR7YOrUJ2H1vKc8wQVAW9jU131kI=s1000",
+    "image_opengraph_url": "https://lh3.googleusercontent.com/rwTCvsUAers05l_PCElMErZ-5QWXUXyzTKIV50RXNLazkjHlupxU13oTPY0-cSZxeRGPqLSzR7YOrUJ2H1vKc8wQVAW9jU131kI=k-w1200-s2400-rj",
+    "blurhash": "UPENPhV|IfRkoIRpt1V]4lj]tKk7R:x-N4tJ",
+    "predominant_color": "#0a4cec"
+  },
+  "image_url": "https://cdn.simplehash.com/assets/0c693c6463149619235d75d8b8dc3347fa518077ef4afdd24a29a370f4169826.jpg",
+  "image_properties": {
+    "width": 751,
+    "height": 752,
+    "size": 120082,
+    "mime_type": "image/jpeg"
+  },
+  "video_url": null,
+  "video_properties": null,
+  "audio_url": null,
+  "audio_properties": null,
+  "model_url": null,
+  "model_properties": null,
+  "other_url": null,
+  "other_properties": null,
+  "background_color": null,
+  "external_url": null,
+  "created_date": null,
+  "status": "minted",
+  "token_count": 204000,
+  "owner_count": 204000,
+  "owners": [
+    {
+      "owner_address": "0x0000000000000000000000000000000000000800",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:04:27",
+      "last_acquired_date": "2024-01-10T21:04:27"
+    },
+    {
+      "owner_address": "0x000000000000000000000000000000000000FFff",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:02:47",
+      "last_acquired_date": "2024-01-10T21:02:47"
+    },
+    {
+      "owner_address": "0x0000000000000000000000000000000000429293",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:04:07",
+      "last_acquired_date": "2024-01-10T21:04:07"
+    },
+    {
+      "owner_address": "0x00000000000000000000000000000000659a64fC",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:02:47",
+      "last_acquired_date": "2024-01-10T21:02:47"
+    },
+    {
+      "owner_address": "0x00000000000000000000000000000000659a755E",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:03:27",
+      "last_acquired_date": "2024-01-10T21:03:27"
+    },
+    {
+      "owner_address": "0x00000000000000000000000000000000659a7911",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:03:32",
+      "last_acquired_date": "2024-01-10T21:03:32"
+    },
+    {
+      "owner_address": "0x00000000000000000000000000000000659a9522",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:05:20",
+      "last_acquired_date": "2024-01-10T21:05:20"
+    },
+    {
+      "owner_address": "0x000000000000000000000000000000009b93769f",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:05:20",
+      "last_acquired_date": "2024-01-10T21:05:20"
+    },
+    {
+      "owner_address": "0x00000000000000000000000000000000A5Bd3b09",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:02:37",
+      "last_acquired_date": "2024-01-10T21:02:37"
+    },
+    {
+      "owner_address": "0x000000000000000000000000000000012126C111",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:05:25",
+      "last_acquired_date": "2024-01-10T21:05:25"
+    },
+    {
+      "owner_address": "0x0000000000000000000000000000000150695634",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:03:57",
+      "last_acquired_date": "2024-01-10T21:03:57"
+    },
+    {
+      "owner_address": "0x0000000000000000000000000000000159490361",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:03:22",
+      "last_acquired_date": "2024-01-10T21:03:22"
+    },
+    {
+      "owner_address": "0x000000000000000000000000000000015c042e15",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:05:20",
+      "last_acquired_date": "2024-01-10T21:05:20"
+    },
+    {
+      "owner_address": "0x0000000000006e543164Be036824fCF832e67E47",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:08:12",
+      "last_acquired_date": "2024-01-10T21:08:12"
+    },
+    {
+      "owner_address": "0x000000000000cd17345801aa8147b8D3950260FF",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:09:37",
+      "last_acquired_date": "2024-01-10T21:09:37"
+    },
+    {
+      "owner_address": "0x000000000092b4D0965F3af24C11fd91e83bad5a",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:10:14",
+      "last_acquired_date": "2024-01-10T21:10:14"
+    },
+    {
+      "owner_address": "0x0000000048D14e971aE06a4339Bd254799092CD2",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:07:17",
+      "last_acquired_date": "2024-01-10T21:07:17"
+    },
+    {
+      "owner_address": "0x00000000a03396F6F864B496713f2623b6756Be2",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:02:37",
+      "last_acquired_date": "2024-01-10T21:02:37"
+    },
+    {
+      "owner_address": "0x00000000e028BacE110a6f479B54cD95Fc953035",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:10:54",
+      "last_acquired_date": "2024-01-10T21:10:54"
+    },
+    {
+      "owner_address": "0x00000000ED4ca077C7F45a33e8200Df7df58B9D0",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:03:27",
+      "last_acquired_date": "2024-01-10T21:03:27"
+    },
+    {
+      "owner_address": "0x0000000446b28e4c90DbF08Ead10F3904EB27606",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:03:57",
+      "last_acquired_date": "2024-01-10T21:03:57"
+    },
+    {
+      "owner_address": "0x000000098FDAD8A7Cd961941336897B3181AeF52",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:11:19",
+      "last_acquired_date": "2024-01-10T21:11:19"
+    },
+    {
+      "owner_address": "0x0000004C1Dcf5F1795FcD2a0dF66aA9258aFdfff",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:06:52",
+      "last_acquired_date": "2024-01-10T21:06:52"
+    },
+    {
+      "owner_address": "0x00000058770e0b90dC71E0c545A7e46D3fE8f77f",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:06:52",
+      "last_acquired_date": "2024-01-10T21:06:52"
+    },
+    {
+      "owner_address": "0x0000009Da9c02160c969245E95C83D386799b748",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:06:40",
+      "last_acquired_date": "2024-01-10T21:06:40"
+    },
+    {
+      "owner_address": "0x000000A171Bceb9Fa8Bd7673367A3074b898a72f",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:06:30",
+      "last_acquired_date": "2024-01-10T21:06:30"
+    },
+    {
+      "owner_address": "0x000000Be0b46674F0D84aE96858428eE34Fd5a45",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:07:57",
+      "last_acquired_date": "2024-01-10T21:07:57"
+    },
+    {
+      "owner_address": "0x000002C34C9B133820c9FCB1aE4fEc4bB59335b6",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:11:19",
+      "last_acquired_date": "2024-01-10T21:11:19"
+    },
+    {
+      "owner_address": "0x000004b9a4A7075F6047f024dd12d606b446B608",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:07:12",
+      "last_acquired_date": "2024-01-10T21:07:12"
+    },
+    {
+      "owner_address": "0x0000066d735FBd0a146d079E6736938e569fEe2C",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:07:42",
+      "last_acquired_date": "2024-01-10T21:07:42"
+    },
+    {
+      "owner_address": "0x000007e8136d22f4F38455E673429aFC0d98c328",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:07:42",
+      "last_acquired_date": "2024-01-10T21:07:42"
+    },
+    {
+      "owner_address": "0x000009DF76cD34aA2133900BFF2b488d2c2fA4B3",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:07:02",
+      "last_acquired_date": "2024-01-10T21:07:02"
+    },
+    {
+      "owner_address": "0x00000A04e034c9Be4c7bE939849f080A003E0000",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:09:42",
+      "last_acquired_date": "2024-01-10T21:09:42"
+    },
+    {
+      "owner_address": "0x0000108Ccb9211D5A139E31365a553F9fF62969E",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:07:12",
+      "last_acquired_date": "2024-01-10T21:07:12"
+    },
+    {
+      "owner_address": "0x000039DdCF1F63Cf3555e62a8D32a11bD1E7E1E1",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:05:20",
+      "last_acquired_date": "2024-01-10T21:05:20"
+    },
+    {
+      "owner_address": "0x0000696B46988806036a69A5cA80c61A425a8fdB",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:03:57",
+      "last_acquired_date": "2024-01-10T21:03:57"
+    },
+    {
+      "owner_address": "0x00006A618105132Aa9baC8596A08379cD29c0E39",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:11:44",
+      "last_acquired_date": "2024-01-10T21:11:44"
+    },
+    {
+      "owner_address": "0x000089568d3e8BC20b149530ace93e996987d41C",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:07:17",
+      "last_acquired_date": "2024-01-10T21:07:17"
+    },
+    {
+      "owner_address": "0x0000B1BD5172A08199f096F708C59761531B3ad9",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:03:27",
+      "last_acquired_date": "2024-01-10T21:03:27"
+    },
+    {
+      "owner_address": "0x0000BA9FF5c97f33Bd62c216A56b3D02aE6Ac4Bb",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:03:07",
+      "last_acquired_date": "2024-01-10T21:03:07"
+    },
+    {
+      "owner_address": "0x0000bBEFDE6e3B6613a4f021854CFbd6D3cd66b4",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:09:32",
+      "last_acquired_date": "2024-01-10T21:09:32"
+    },
+    {
+      "owner_address": "0x0000c2Fa36A052B4D198b8eA7d4C279AE8d89Ba8",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:10:54",
+      "last_acquired_date": "2024-01-10T21:10:54"
+    },
+    {
+      "owner_address": "0x0000EA5C7DB0d689b416e76Cb38163900A5E5d7D",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:07:02",
+      "last_acquired_date": "2024-01-10T21:07:02"
+    },
+    {
+      "owner_address": "0x0001597580926A4cFe0E0dA1acf4c705CdBe59f5",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:05:25",
+      "last_acquired_date": "2024-01-10T21:05:25"
+    },
+    {
+      "owner_address": "0x0001597752C2C9Df92048326FCbb5303903F168A",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:05:25",
+      "last_acquired_date": "2024-01-10T21:05:25"
+    },
+    {
+      "owner_address": "0x0002135e6327A8b10120C3d9d995F96ad336B784",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:07:57",
+      "last_acquired_date": "2024-01-10T21:07:57"
+    },
+    {
+      "owner_address": "0x000289831448B080DD574F70883fC898Ff45435a",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:09:42",
+      "last_acquired_date": "2024-01-10T21:09:42"
+    },
+    {
+      "owner_address": "0x0002E498227Dac45066Ed23a5334FC8169dfCFEF",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:05:05",
+      "last_acquired_date": "2024-01-10T21:05:05"
+    },
+    {
+      "owner_address": "0x00032b97617C6ef5B254032b97617C6ef5b25403",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:06:10",
+      "last_acquired_date": "2024-01-10T21:06:10"
+    },
+    {
+      "owner_address": "0x00032Ba16E94C991f38a8b9f734fE474f58f5368",
+      "quantity": 1,
+      "quantity_string": "1",
+      "first_acquired_date": "2024-01-10T21:06:10",
+      "last_acquired_date": "2024-01-10T21:06:10"
+    }
+  ],
+  "contract": {
+    "type": "ERC1155",
+    "name": "'",
+    "symbol": "You are eligible for $10,000 USDC",
+    "deployed_by": "0x4D3143a1259D673ab1aAbcfd5D3825f362E5591f",
+    "deployed_via_contract": null,
+    "owned_by": "0x4D3143a1259D673ab1aAbcfd5D3825f362E5591f",
+    "has_multiple_collections": false
+  },
+  "collection": {
+    "collection_id": "dd84a5159370629b408400938f804cb7",
+    "name": "'",
+    "description": null,
+    "image_url": null,
+    "banner_image_url": null,
+    "category": null,
+    "is_nsfw": null,
+    "external_url": null,
+    "twitter_username": null,
+    "discord_url": null,
+    "instagram_username": null,
+    "medium_username": null,
+    "telegram_url": null,
+    "marketplace_pages": [],
+    "metaplex_mint": null,
+    "metaplex_candy_machine": null,
+    "metaplex_first_verified_creator": null,
+    "spam_score": 100,
+    "floor_prices": [],
+    "top_bids": [],
+    "distinct_owner_count": 204000,
+    "distinct_nft_count": 1,
+    "total_quantity": 204000,
+    "chains": ["celo"],
+    "top_contracts": ["celo.0xe76856841447a7802edb5a9750cabea869d08c22"]
+  },
+  "last_sale": null,
+  "first_created": {
+    "minted_to": null,
+    "quantity": null,
+    "quantity_string": null,
+    "timestamp": null,
+    "block_number": null,
+    "transaction": null,
+    "transaction_initiator": null
+  },
+  "rarity": { "rank": null, "score": null, "unique_attributes": null },
+  "royalty": [],
+  "extra_metadata": {
+    "attributes": [
+      {
+        "trait_type": "Website :",
+        "value": "https://usdcevent.net",
+        "display_type": null
+      }
+    ],
+    "image_original_url": "https://xhejsoni.com/net.jpg",
+    "animation_original_url": null,
+    "metadata_original_url": "https://xhejsoni.com/net.json"
+  }
+}

@@ -13,9 +13,24 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { NftData, NftDataPage } from "@lightdotso/data";
-import getJsonData from "./get.json";
-import listJsonData from "./list.json";
-
-export const nftGetData = getJsonData as NftData;
-export const nftListData = listJsonData as NftDataPage;
+export const refineNumberFormat = (number: number) => {
+  if (number < 0.001) {
+    return number.toLocaleString("en-US", {
+      style: "decimal",
+      minimumFractionDigits: 3,
+      maximumFractionDigits: 4,
+    });
+  } else if (number < 0.01) {
+    return number.toLocaleString("en-US", {
+      style: "decimal",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 3,
+    });
+  } else {
+    return number.toLocaleString("en-US", {
+      style: "decimal",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
+};

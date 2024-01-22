@@ -13,21 +13,33 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { VercelToolbar as VercelNextToolbar } from "@vercel/toolbar/next";
-import type { FC } from "react";
+import { nftGetData } from "@lightdotso/demo";
+import type { Meta, StoryObj } from "@storybook/react";
+import { NftImage } from "./nft-image";
 
 // -----------------------------------------------------------------------------
-// Component
+// Meta
 // -----------------------------------------------------------------------------
 
-export const VercelToolbar: FC = () => {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
+const meta: Meta<typeof NftImage> = {
+  title: "element/NftImage",
+  component: NftImage,
+  tags: ["autodocs"],
+  argTypes: {},
+};
+export default meta;
 
-  return process.env.NEXT_PUBLIC_VERCEL_ENV === "preview" ? (
-    <div className="hidden lg:block">
-      <VercelNextToolbar />
-    </div>
-  ) : null;
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+type Story = StoryObj<typeof NftImage>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Base: Story = {
+  render: args => <NftImage nft={nftGetData} />,
+  args: {},
 };

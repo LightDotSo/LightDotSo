@@ -24,6 +24,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 
 export const nftColumns: ColumnDef<NftData>[] = [
   {
+    id: "chain",
     accessorKey: "chain",
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -32,6 +33,7 @@ export const nftColumns: ColumnDef<NftData>[] = [
     enableHiding: true,
   },
   {
+    id: "spam_score",
     accessorKey: "spam_score",
     accessorFn: row => {
       return row.collection?.spam_score;
@@ -48,6 +50,7 @@ export const nftColumns: ColumnDef<NftData>[] = [
     enableHiding: true,
   },
   {
+    id: "name",
     accessorKey: "name",
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -56,6 +59,7 @@ export const nftColumns: ColumnDef<NftData>[] = [
     enableHiding: true,
   },
   {
+    id: "description",
     accessorKey: "description",
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));

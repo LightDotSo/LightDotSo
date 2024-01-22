@@ -14,8 +14,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 export enum Action {
-  NATIVE_SEND,
+  UNKNOWN,
   NATIVE_RECEIVE,
+  NATIVE_SEND,
   ERC20_APPROVE,
   ERC20_RECEIVE,
   ERC20_SEND,
@@ -34,6 +35,7 @@ export enum Action {
 }
 
 export const ACTION_LABELS: Record<Action, string> = {
+  [Action.UNKNOWN]: "Unknown",
   [Action.NATIVE_RECEIVE]: "Receive",
   [Action.NATIVE_SEND]: "Send",
   [Action.ERC20_APPROVE]: "Approve",

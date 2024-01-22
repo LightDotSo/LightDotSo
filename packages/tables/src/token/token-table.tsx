@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { TokenData } from "@lightdotso/data";
-import { useDebounced } from "@lightdotso/hooks";
+import { useDebounced, useMediaQuery } from "@lightdotso/hooks";
 import {
   Skeleton,
   Table,
@@ -41,7 +41,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useEffect, type FC } from "react";
+import { useEffect, type FC, useMemo } from "react";
 import { TableEmpty } from "../table-empty";
 import { tokenColumns } from "./token-columns";
 
@@ -76,13 +76,32 @@ export const TokenTable: FC<TokenTableProps> = ({
   setTokenTable,
 }) => {
   // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const isDesktop = useMediaQuery("md");
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const tableColumns = useMemo(() => {
+    if (isDesktop) {
+      return columns;
+    }
+    return columns.filter(
+      column => column.id !== "sparkline" && column.id !== "price",
+    );
+  }, [columns, isDesktop]);
+
+  // ---------------------------------------------------------------------------
   // Table
   // ---------------------------------------------------------------------------
 
   const table = useReactTable({
     ...tableOptions,
     data: data || [],
-    columns,
+    columns: tableColumns,
     enableExpanding: true,
     enableRowSelection: false,
     manualPagination: true,

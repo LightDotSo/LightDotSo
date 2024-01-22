@@ -31,11 +31,11 @@
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
     "class-variance-authority": "^0.7.0",
-    "lucide-react": "^0.312.0",
+    "lucide-react": "^0.314.0",
     "react": "^18.2.0",
     "react-blurhash": "^0.3.0",
     "react-dom": "^18.2.0",
-    "viem": "^2.4.0"
+    "viem": "^2.4.1"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",

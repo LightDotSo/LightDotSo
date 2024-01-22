@@ -27,6 +27,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 
 export const activityColumns: ColumnDef<ActivityData>[] = [
   {
+    id: "address",
     accessorKey: "address",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Owner" />
@@ -43,6 +44,7 @@ export const activityColumns: ColumnDef<ActivityData>[] = [
     enableHiding: false,
   },
   {
+    id: "entity",
     accessorKey: "entity",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Entity" />
@@ -54,6 +56,7 @@ export const activityColumns: ColumnDef<ActivityData>[] = [
     ),
   },
   {
+    id: "operation",
     accessorKey: "operation",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Operation" />
@@ -65,6 +68,7 @@ export const activityColumns: ColumnDef<ActivityData>[] = [
     ),
   },
   {
+    id: "timestamp",
     accessorKey: "timestamp",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Timestamp" />
