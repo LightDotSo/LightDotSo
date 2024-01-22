@@ -41,7 +41,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useEffect, type FC } from "react";
+import { useEffect, type FC, useMemo } from "react";
 import type { Address } from "viem";
 import { groupByDate } from "../group";
 import { TableEmpty } from "../table-empty";
@@ -81,13 +81,25 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
   setUserOperationTable,
 }) => {
   // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const tableColumns = useMemo(() => {
+    if (address === null) {
+      return columns;
+    }
+    // Filter out columns w/ id `row_actions`
+    return columns.filter(column => column.id !== "row_actions");
+  }, [address, columns]);
+
+  // ---------------------------------------------------------------------------
   // Table
   // ---------------------------------------------------------------------------
 
   const table = useReactTable({
     ...tableOptions,
     data: data || [],
-    columns,
+    columns: tableColumns,
     enableExpanding: true,
     enableRowSelection: false,
     manualPagination: true,
