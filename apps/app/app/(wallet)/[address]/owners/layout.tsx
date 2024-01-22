@@ -17,11 +17,11 @@ import {
   BaseLayerWrapper,
   MiddleLayerWrapper,
   BasicPageWrapper,
+  BannerSection,
 } from "@lightdotso/ui";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { OwnersDataTableToolbar } from "@/app/(wallet)/[address]/owners/(components)/owners-data-table-toolbar";
-import { BannerSection } from "@/components/section/banner-section";
 import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------

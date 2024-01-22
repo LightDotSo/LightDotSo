@@ -17,12 +17,12 @@ import {
   BaseLayerWrapper,
   MiddleLayerWrapper,
   BasicPageWrapper,
+  BannerSection,
 } from "@lightdotso/ui";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import type { Address } from "viem";
 import { OverviewInvokeButton } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-invoke-button";
-import { BannerSection } from "@/components/section/banner-section";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
 import { TITLES } from "@/const";
 
