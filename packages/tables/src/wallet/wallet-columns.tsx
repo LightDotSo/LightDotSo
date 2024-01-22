@@ -20,7 +20,7 @@ import { PlaceholderOrb } from "@lightdotso/elements";
 import { DataTableColumnHeader } from "@lightdotso/templates";
 import { Avatar } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
-import { WalletTableRowActions } from "./actions/wallet-table-row-actions";
+import { WalletTableRowActions } from "./actions";
 
 // -----------------------------------------------------------------------------
 // Definitions

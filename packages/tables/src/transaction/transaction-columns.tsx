@@ -18,11 +18,13 @@
 import type { TransactionData } from "@lightdotso/data";
 import { DataTableColumnHeader } from "@lightdotso/templates";
 import type { ColumnDef } from "@tanstack/react-table";
-import { TransactionTableRowActions } from "./actions/transaction-table-row-actions";
-import { TransactionCardActions } from "./card/transaction-card-actions";
-import { TransactionCardChain } from "./card/transaction-card-chain";
-import { TransactionCardInterpretation } from "./card/transaction-card-interpretation";
-import { TransactionCardTimestamp } from "./card/transaction-card-timestamp";
+import { TransactionTableRowActions } from "./actions";
+import {
+  TransactionCardActions,
+  TransactionCardChain,
+  TransactionCardInterpretation,
+  TransactionCardTimestamp,
+} from "./card";
 
 // -----------------------------------------------------------------------------
 // Definitions

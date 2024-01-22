@@ -17,7 +17,7 @@
 
 import type { UserOperationData } from "@lightdotso/data";
 import type { FC } from "react";
-import { ChainCard } from "../../(components)/card/chain-card";
+import { ChainCard } from "../../(components)/card";
 
 // -----------------------------------------------------------------------------
 // Props

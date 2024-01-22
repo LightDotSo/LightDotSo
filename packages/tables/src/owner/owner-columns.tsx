@@ -20,7 +20,7 @@ import { PlaceholderOrb } from "@lightdotso/elements";
 import { DataTableColumnHeader } from "@lightdotso/templates";
 import { Avatar, Checkbox } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
-import { OwnerTableRowActions } from "./actions/owner-table-row-actions";
+import { OwnerTableRowActions } from "./actions";
 
 // -----------------------------------------------------------------------------
 // Definitions

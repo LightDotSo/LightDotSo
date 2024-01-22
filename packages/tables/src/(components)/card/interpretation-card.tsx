@@ -15,26 +15,39 @@
 
 "use client";
 
-import type { TransactionData } from "@lightdotso/data";
+import type { InterpretationData } from "@lightdotso/data";
+import { AssetChange } from "@lightdotso/elements";
 import type { FC } from "react";
-import { ChainCard } from "../../(components)/card";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type TransactionCardChainProps = { transaction: TransactionData };
+type InterpretationCardProps = { interpretation?: InterpretationData | null };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TransactionCardChain: FC<TransactionCardChainProps> = ({
-  transaction: { chain_id },
+export const InterpretationCard: FC<InterpretationCardProps> = ({
+  interpretation,
 }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return <ChainCard chain_id={chain_id} />;
+  if (!interpretation) {
+    return null;
+  }
+
+  return (
+    <div className="flex items-center space-x-1.5">
+      {interpretation?.asset_changes &&
+        interpretation.asset_changes
+          .slice(0, 2)
+          .map((assetChange, index) => (
+            <AssetChange key={index} assetChange={assetChange} />
+          ))}
+    </div>
+  );
 };
