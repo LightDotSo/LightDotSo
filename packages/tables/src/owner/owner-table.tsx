@@ -87,7 +87,7 @@ export const OwnerTable: FC<OwnerTableProps> = ({
       return columns;
     }
     return columns.filter(column => column.id !== "index");
-  }, [columns]);
+  }, [columns, isDesktop]);
 
   // ---------------------------------------------------------------------------
   // Table

@@ -87,7 +87,7 @@ export const ActivityTable: FC<ActivityTableProps> = ({
       return columns;
     }
     return columns.filter(column => column.id !== "timestamp");
-  }, [columns]);
+  }, [columns, isDesktop]);
 
   // ---------------------------------------------------------------------------
   // Table

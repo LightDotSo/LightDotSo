@@ -89,8 +89,10 @@ export const TokenTable: FC<TokenTableProps> = ({
     if (isDesktop) {
       return columns;
     }
-    return columns.filter(column => column.id !== "sparkline");
-  }, [columns]);
+    return columns.filter(
+      column => column.id !== "sparkline" && column.id !== "price",
+    );
+  }, [columns, isDesktop]);
 
   // ---------------------------------------------------------------------------
   // Table

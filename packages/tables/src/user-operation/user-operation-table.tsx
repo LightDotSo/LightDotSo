@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
-import { useDebounced } from "@lightdotso/hooks";
+import { useDebounced, useMediaQuery } from "@lightdotso/hooks";
 import {
   Skeleton,
   Table,
@@ -81,6 +81,12 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
   setUserOperationTable,
 }) => {
   // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const isDesktop = useMediaQuery("md");
+
+  // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
@@ -88,9 +94,12 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
     if (address === null) {
       return columns;
     }
+    if (isDesktop) {
+      return columns;
+    }
     // Filter out columns w/ id `row_actions`
     return columns.filter(column => column.id !== "row_actions");
-  }, [address, columns]);
+  }, [address, columns, isDesktop]);
 
   // ---------------------------------------------------------------------------
   // Table

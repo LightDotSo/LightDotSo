@@ -94,7 +94,7 @@ export const WalletTable: FC<WalletTableProps> = ({
       return columns;
     }
     return columns.filter(column => column.id !== "actions");
-  }, [columns]);
+  }, [columns, isDesktop]);
 
   // ---------------------------------------------------------------------------
   // Table

@@ -37,7 +37,7 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
     id: "name",
     accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Name" />
+      <DataTableColumnHeader className="w-20" column={column} title="Name" />
     ),
     cell: ({ row }) => (
       <TokenCardToken
@@ -48,7 +48,6 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
     ),
     enableSorting: false,
     enableHiding: false,
-    size: 416,
   },
   {
     id: "balance_usd",
@@ -59,7 +58,6 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
     cell: ({ row }) => <TokenCardBalance token={row.original} />,
     enableSorting: false,
     enableHiding: false,
-    size: 416,
   },
   {
     id: "chain_id",
@@ -73,7 +71,6 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
     },
     enableSorting: false,
     enableHiding: true,
-    size: 208,
   },
   {
     id: "sparkline",
@@ -88,7 +85,6 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
     ),
     enableSorting: false,
     enableHiding: true,
-    size: 146,
   },
   {
     id: "price",
@@ -103,7 +99,6 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
     ),
     enableSorting: false,
     enableHiding: true,
-    size: 96,
   },
   {
     id: "actions",
@@ -122,6 +117,5 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
     ),
     enableSorting: false,
     enableHiding: true,
-    size: 96,
   },
 ];

@@ -90,7 +90,7 @@ export const TransactionTable: FC<TransactionTableProps> = ({
       return columns;
     }
     return columns.filter(column => column.id !== "timestamp");
-  }, [columns]);
+  }, [columns, isDesktop]);
 
   // ---------------------------------------------------------------------------
   // Table
