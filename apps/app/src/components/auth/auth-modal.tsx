@@ -18,13 +18,7 @@
 import { getNonce, postAuthVerify } from "@lightdotso/client";
 import { useAuth, useModals } from "@lightdotso/stores";
 import { Modal } from "@lightdotso/templates";
-import {
-  Button,
-  DialogBody,
-  DialogDescription,
-  DialogTitle,
-  toast,
-} from "@lightdotso/ui";
+import { Button, DialogDescription, DialogTitle, toast } from "@lightdotso/ui";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { SiweMessage } from "siwe";
@@ -39,7 +33,7 @@ export function AuthModal() {
   // Wagmi Hooks
   // ---------------------------------------------------------------------------
 
-  const { signMessageAsync } = useSignMessage();
+  const { isPending, signMessageAsync } = useSignMessage();
   const { chain } = useAccount();
 
   // ---------------------------------------------------------------------------
@@ -131,8 +125,10 @@ export function AuthModal() {
     return (
       <Modal
         open
+        size="sm"
         footerContent={
           <Button
+            isLoading={isPending}
             type="submit"
             size="sm"
             className="px-3"
@@ -144,12 +140,10 @@ export function AuthModal() {
         }
         onClose={hideAuthModal}
       >
-        <DialogBody>
-          <DialogTitle>Login</DialogTitle>
-          <DialogDescription>
-            Login with your wallet to access your account.
-          </DialogDescription>
-        </DialogBody>
+        <DialogTitle>Login</DialogTitle>
+        <DialogDescription>
+          Login with your wallet to access your account.
+        </DialogDescription>
       </Modal>
     );
   }
