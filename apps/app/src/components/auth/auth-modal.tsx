@@ -130,6 +130,7 @@ export function AuthModal() {
   if (isAuthModalVisible) {
     return (
       <Modal
+        open
         footerContent={
           <Button
             type="submit"
@@ -141,7 +142,6 @@ export function AuthModal() {
             Login
           </Button>
         }
-        open
       >
         <DialogBody>
           <DialogTitle>Login</DialogTitle>

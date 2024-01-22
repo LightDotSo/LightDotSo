@@ -88,7 +88,7 @@ const DialogHeader = ({
 }: HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      "flex flex-row items-center justify-end py-2 px-4 border-b border-border",
+      "flex flex-row items-center justify-end border-b border-border px-4 py-2",
       className,
     )}
     {...props}
@@ -102,7 +102,7 @@ const DialogFooter = ({
 }: HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      "flex flex-row justify-end space-x-2 py-2 px-4 border-t border-border",
+      "flex flex-row justify-end space-x-2 border-t border-border px-4 py-2",
       className,
     )}
     {...props}
