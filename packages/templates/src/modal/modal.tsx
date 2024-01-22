@@ -28,6 +28,8 @@ import {
   DialogFooter,
   DialogHeader,
   ButtonIcon,
+  DrawerBody,
+  DrawerFooter,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { cva, type VariantProps } from "class-variance-authority";
@@ -92,9 +94,12 @@ export const Modal: FC<ModalProps> = ({
     return (
       <Drawer shouldScaleBackground open={open} onClose={onClose}>
         <DrawerContent>
-          <Suspense fallback={<Skeleton className="h-64 w-full" />}>
-            {children}
-          </Suspense>
+          <DrawerBody>
+            <Suspense fallback={<Skeleton className="h-64 w-full" />}>
+              {children}
+            </Suspense>
+          </DrawerBody>
+          {footerContent && <DrawerFooter>{footerContent}</DrawerFooter>}
         </DrawerContent>
       </Drawer>
     );
