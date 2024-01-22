@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@lightdotso/const": "workspace:*",
+    "@lightdotso/hooks": "workspace:*",
     "@lightdotso/svg": "workspace:*",
     "@lightdotso/types": "workspace:*",
     "@lightdotso/ui": "workspace:*",

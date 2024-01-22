@@ -2170,6 +2170,9 @@ importers:
       '@lightdotso/const':
         specifier: workspace:*
         version: link:../const
+      '@lightdotso/hooks':
+        specifier: workspace:*
+        version: link:../hooks
       '@lightdotso/svg':
         specifier: workspace:*
         version: link:../svg

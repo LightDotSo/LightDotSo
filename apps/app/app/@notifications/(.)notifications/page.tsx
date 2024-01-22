@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import OriginalPage from "@/app/(authenticated)/notifications/page";
-import { Modal } from "@/components/modal";
+import { Modal } from "@lightdotso/templates";
 
 // -----------------------------------------------------------------------------
 // Props
