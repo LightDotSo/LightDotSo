@@ -40,10 +40,10 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useRouter } from "next/navigation";
 import { useEffect, type FC, useMemo } from "react";
 import { TableEmpty } from "../table-empty";
 import { walletColumns } from "./wallet-columns";
+import Link from "next/link";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -78,12 +78,6 @@ export const WalletTable: FC<WalletTableProps> = ({
   // ---------------------------------------------------------------------------
 
   const isDesktop = useMediaQuery("md");
-
-  // ---------------------------------------------------------------------------
-  // Next Hooks
-  // ---------------------------------------------------------------------------
-
-  const router = useRouter();
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -175,18 +169,19 @@ export const WalletTable: FC<WalletTableProps> = ({
       <TableBody>
         {table.getRowModel().rows?.length ? (
           table.getRowModel().rows.map(row => (
-            <TableRow
-              key={row.id}
-              className="cursor-pointer"
-              data-state={row.getIsSelected() && "selected"}
-              onClick={() => router.push(`/${row.original.address}`)}
-            >
-              {row.getVisibleCells().map(cell => (
-                <TableCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
+            <Link href={`/${row.original.address}`}>
+              <TableRow
+                key={row.id}
+                className="cursor-pointer"
+                data-state={row.getIsSelected() && "selected"}
+              >
+                {row.getVisibleCells().map(cell => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </Link>
           ))
         ) : delayedIsLoading ? (
           Array(pageSize)

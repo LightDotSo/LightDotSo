@@ -50,6 +50,9 @@ export function WalletTableRowActions({ row: _ }: WalletTableRowActionsProps) {
         <Button
           variant="ghost"
           className="flex size-8 p-0 data-[state=open]:bg-background-stronger"
+          onClick={event => {
+            event.stopPropagation();
+          }}
         >
           <DotsHorizontalIcon className="size-4" />
           <span className="sr-only">Open menu</span>
