@@ -13,7 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { NftDataPage } from "@lightdotso/data";
+import type { NftData, NftDataPage } from "@lightdotso/data";
+import getJsonData from "./get.json";
 import listJsonData from "./list.json";
 
+export const nftGetData = getJsonData as NftData;
 export const nftListData = listJsonData as NftDataPage;

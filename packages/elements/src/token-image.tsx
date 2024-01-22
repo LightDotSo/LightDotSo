@@ -19,7 +19,7 @@
 
 import type { TokenData } from "@lightdotso/data";
 import { Skeleton } from "@lightdotso/ui";
-import { cn, getChainById, shortenName } from "@lightdotso/utils";
+import { cn, shortenName } from "@lightdotso/utils";
 import { getChainLabelById } from "@lightdotso/utils/src/chain";
 import { cva, type VariantProps } from "class-variance-authority";
 import { useState, type FC, useEffect } from "react";
