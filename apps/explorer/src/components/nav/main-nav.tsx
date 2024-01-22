@@ -15,8 +15,9 @@
 
 "use client";
 
+import { BaseLayerWrapper, baseWrapper } from "@lightdotso/ui";
+import { cn } from "@lightdotso/utils";
 import type { Tab } from "@lightdotso/types";
-import { BaseLayerWrapper } from "@lightdotso/ui";
 import { DashboardIcon, WidthIcon } from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
 import { ArrowUpRightFromSquare } from "lucide-react";
@@ -72,7 +73,7 @@ export const MainNav: FC<MainNavProps> = ({ children }) => {
     <main>
       <div className="flex flex-col">
         <div className="overflow-y-visible border-b border-b-border py-2">
-          <div className="flex h-16 items-center px-2 md:px-4 lg:px-8">
+          <div className={cn("flex h-16 items-center", baseWrapper)}>
             <BaseLayerWrapper>
               <div className="flex items-center justify-between">
                 <RootLogo />

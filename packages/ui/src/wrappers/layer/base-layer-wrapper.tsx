@@ -16,6 +16,7 @@
 import { cn } from "@lightdotso/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 import type { ReactNode } from "react";
+import { baseWrapper } from "../base";
 
 // -----------------------------------------------------------------------------
 // Styles
@@ -59,7 +60,8 @@ export function BaseLayerWrapper({
   return (
     <div
       className={cn(
-        "flex w-full flex-row overflow-x-scroll px-2 md:visible md:px-4 lg:px-8",
+        "flex w-full flex-row overflow-x-scroll md:visible",
+        baseWrapper,
         className,
       )}
     >

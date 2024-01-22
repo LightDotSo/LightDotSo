@@ -18,6 +18,8 @@
 
 "use client";
 
+import { baseWrapper } from "@lightdotso/ui";
+import { cn } from "@lightdotso/utils";
 import { Suspense } from "react";
 import type { FC, HTMLAttributes, ReactNode } from "react";
 import { AppNav } from "@/components/nav/app-nav";
@@ -64,7 +66,10 @@ export const MainNav: FC<MainNavProps> = ({ children, ...props }) => {
 
     return (
       <div
-        className="flex h-10 items-center space-x-4 px-2 md:px-4 lg:space-x-6 lg:px-8"
+        className={cn(
+          "flex h-10 items-center space-x-4 lg:space-x-6",
+          baseWrapper,
+        )}
         {...props}
       >
         <Suspense>{tabProps && <TabsNav {...tabProps} />}</Suspense>
@@ -80,7 +85,7 @@ export const MainNav: FC<MainNavProps> = ({ children, ...props }) => {
     <main>
       <div className="flex flex-col">
         <div className="overflow-y-visible border-b border-b-border py-2">
-          <div className="flex h-16 items-center px-2 md:px-4 lg:px-8">
+          <div className={cn("flex h-16 items-center", baseWrapper)}>
             <div className="flex items-center">
               <RootLogo />
               <span className="ml-2 mr-1 text-text/60 last:hidden">/</span>
