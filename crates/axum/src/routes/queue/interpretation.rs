@@ -114,11 +114,11 @@ pub(crate) async fn v1_queue_interpretation_handler(
         if user_operation.status != UserOperationStatus::Invalid &&
             user_operation.status != UserOperationStatus::Pending &&
             user_operation.status != UserOperationStatus::Proposed &&
-            // Also, if the user operation's transaction hash is not `None`, return an error.
-            user_operation.transaction_hash.is_some()
+            // Also, if the user operation's transaction hash is `None`, return an error.
+            user_operation.transaction_hash.is_none()
         {
             return Err(AppError::RouteError(RouteError::QueueError(QueueError::BadRequest(
-                "User operation is not executed or reverted".to_string(),
+                "User operation is invalid, pending, proposed, or not executed yet".to_string(),
             ))));
         }
     }

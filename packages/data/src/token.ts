@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { TokenGroupData } from "./tokenGroup";
+
 // -----------------------------------------------------------------------------
 // Data
 // -----------------------------------------------------------------------------
@@ -27,11 +29,6 @@ export type TokenData = {
   name?: string | null;
   symbol: string;
   group?: TokenGroupData | null;
-};
-
-export type TokenGroupData = {
-  id: string;
-  tokens: TokenData[];
 };
 
 export type TokenCountData = {

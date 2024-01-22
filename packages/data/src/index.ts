@@ -24,6 +24,7 @@ export type { OwnerData } from "./owner";
 export type { PaymasterOperationData } from "./paymasterOperation";
 export type { TokenPortfolioData, NftPortfolioData } from "./portfolio";
 export type { TokenData, TokenCountData } from "./token";
+export type { TokenGroupData } from "./tokenGroup";
 export type { TokenPriceData } from "./tokenPrice";
 export type { TransactionData, TransactionCountData } from "./transaction";
 export type { UserData } from "./user";

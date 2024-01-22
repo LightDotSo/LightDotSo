@@ -15,26 +15,30 @@
 
 "use client";
 
-import type { TransactionData } from "@lightdotso/data";
+import type { UserOperationData } from "@lightdotso/data";
 import type { FC } from "react";
-import { ChainCard } from "../../(components)/card";
+import { InterpretationActionCard } from "../../(components)/card";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type TransactionCardChainProps = { transaction: TransactionData };
+type UserOperationCardInterpretationActionProps = {
+  userOperation: UserOperationData;
+};
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TransactionCardChain: FC<TransactionCardChainProps> = ({
-  transaction: { chain_id },
-}) => {
+export const UserOperationCardInterpretationAction: FC<
+  UserOperationCardInterpretationActionProps
+> = ({ userOperation }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return <ChainCard chain_id={chain_id} />;
+  return (
+    <InterpretationActionCard interpretation={userOperation?.interpretation} />
+  );
 };

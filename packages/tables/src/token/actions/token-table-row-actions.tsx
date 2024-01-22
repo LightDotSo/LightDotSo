@@ -32,13 +32,13 @@ import type { FC } from "react";
 // Props
 // -----------------------------------------------------------------------------
 
-type TokenCardActionsProps = { token: TokenData };
+type TokenTableRowActionsProps = { token: TokenData };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TokenCardActions: FC<TokenCardActionsProps> = ({
+export const TokenTableRowActions: FC<TokenTableRowActionsProps> = ({
   token: { address: tokenAddress, chain_id, decimals, symbol },
 }) => {
   // ---------------------------------------------------------------------------

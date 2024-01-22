@@ -20,16 +20,35 @@ import { DataTableColumnHeader } from "@lightdotso/templates";
 import { ButtonIcon } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ChevronDown } from "lucide-react";
-import { UserOperationCardChain } from "./card/user-operation-card-chain";
-import { UserOperationCardHash } from "./card/user-operation-card-hash";
-import { UserOperationCardNonce } from "./card/user-operation-card-nonce";
-import { UserOperationCardStatus } from "./card/user-operation-card-status";
+import { UserOperationTableRowActions } from "./actions";
+import {
+  UserOperationCardInterpretationAction,
+  UserOperationCardChain,
+  UserOperationCardHash,
+  UserOperationCardNonce,
+  UserOperationCardStatus,
+} from "./card";
 
 // -----------------------------------------------------------------------------
 // Definitions
 // -----------------------------------------------------------------------------
 
 export const userOperationColumns: ColumnDef<UserOperationData>[] = [
+  {
+    accessorKey: "actions",
+    accessorFn: row => {
+      return row?.interpretation?.actions;
+    },
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Action" />
+    ),
+    cell: ({ row }) => (
+      <UserOperationCardInterpretationAction userOperation={row.original} />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+    size: 30,
+  },
   {
     accessorKey: "chain_id",
     header: ({ column }) => (
@@ -92,5 +111,9 @@ export const userOperationColumns: ColumnDef<UserOperationData>[] = [
       </div>
     ),
     enableHiding: false,
+  },
+  {
+    id: "row_actions",
+    cell: ({ row }) => <UserOperationTableRowActions row={row} />,
   },
 ];

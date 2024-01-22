@@ -13,28 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import type { TransactionData } from "@lightdotso/data";
-import type { FC } from "react";
-import { ChainCard } from "../../(components)/card";
+import type { TokenData } from "./token";
 
 // -----------------------------------------------------------------------------
-// Props
+// Data
 // -----------------------------------------------------------------------------
 
-type TransactionCardChainProps = { transaction: TransactionData };
-
-// -----------------------------------------------------------------------------
-// Component
-// -----------------------------------------------------------------------------
-
-export const TransactionCardChain: FC<TransactionCardChainProps> = ({
-  transaction: { chain_id },
-}) => {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return <ChainCard chain_id={chain_id} />;
+export type TokenGroupData = {
+  id: string;
+  tokens?: TokenData[];
 };

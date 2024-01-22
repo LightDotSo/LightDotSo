@@ -19,12 +19,14 @@ import type { TokenData } from "@lightdotso/data";
 import { DataTableColumnHeader } from "@lightdotso/templates";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Suspense } from "react";
-import { TokenCardActions } from "./card/token-card-actions";
-import { TokenCardBalance } from "./card/token-card-balance";
-import { TokenCardChain } from "./card/token-card-chain";
-import { TokenCardPrice } from "./card/token-card-price";
-import { TokenCardSparkline } from "./card/token-card-sparkline";
-import { TokenCardToken } from "./card/token-card-token";
+import { TokenTableRowActions } from "./actions";
+import {
+  TokenCardBalance,
+  TokenCardChain,
+  TokenCardPrice,
+  TokenCardSparkline,
+  TokenCardToken,
+} from "./card";
 
 // -----------------------------------------------------------------------------
 // Definitions
@@ -109,7 +111,7 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
     ),
     cell: ({ row }) => (
       <Suspense fallback={null}>
-        <TokenCardActions token={row.original} />
+        <TokenTableRowActions token={row.original} />
       </Suspense>
     ),
     enableSorting: false,

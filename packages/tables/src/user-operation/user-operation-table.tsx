@@ -45,7 +45,7 @@ import { useEffect, type FC } from "react";
 import type { Address } from "viem";
 import { groupByDate } from "../group";
 import { TableEmpty } from "../table-empty";
-import { UserOperationCardTransaction } from "./card/user-operation-card-transaction";
+import { UserOperationCardTransaction } from "./card";
 import { userOperationColumns } from "./user-operation-columns";
 
 // -----------------------------------------------------------------------------

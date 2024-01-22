@@ -39,7 +39,7 @@ import {
 } from "@tanstack/react-table";
 import { useEffect, type FC } from "react";
 import { TableEmpty } from "../table-empty";
-import { NftCard } from "./card/nft-card";
+import { NftCard } from "./card";
 import { nftColumns } from "./nft-columns";
 import { NftsWrapper } from "./nfts-wrapper";
 
