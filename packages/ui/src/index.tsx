@@ -247,7 +247,7 @@ export { TailwindIndicator } from "./dev/tailwind-indicator";
 export { ThemeProvider } from "./providers/theme-provider";
 export { HStackFull } from "./stacks/h-stack-full";
 export { ReactQueryProvider } from "./providers/react-query";
-export { baseWrapper } from "./wrappers/base";
+export { baseWidthWrapper } from "./wrappers/base";
 export {
   BaseLayerWrapper,
   LargeLayerWrapper,

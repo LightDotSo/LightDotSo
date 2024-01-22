@@ -13,7 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { cn } from "@lightdotso/utils";
 import type { ReactNode } from "react";
+import { baseHeightWrapper } from "../base";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -29,7 +31,7 @@ interface MinimalPageWrapperProps {
 
 export function MinimalPageWrapper({ children }: MinimalPageWrapperProps) {
   return (
-    <div className="relative mb-12 mt-6 flex flex-col space-y-6">
+    <div className={cn("relative flex flex-col space-y-6", baseHeightWrapper)}>
       {children}
     </div>
   );

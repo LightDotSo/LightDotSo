@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { baseWrapper } from "@lightdotso/ui";
+import { baseWidthWrapper } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import type { FC } from "react";
 import { FooterCopy } from "./footer-copy";
@@ -35,7 +35,7 @@ export const Footer: FC = () => {
 
   return (
     <footer
-      className={cn("border-t border-border", baseWrapper)}
+      className={cn("border-t border-border", baseWidthWrapper)}
       aria-labelledby="footer-heading"
     >
       <h2 id="footer-heading" className="sr-only">

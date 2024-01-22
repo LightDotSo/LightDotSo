@@ -18,7 +18,7 @@
 
 "use client";
 
-import { baseWrapper } from "@lightdotso/ui";
+import { baseWidthWrapper } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { Suspense } from "react";
 import type { FC, HTMLAttributes, ReactNode } from "react";
@@ -68,7 +68,7 @@ export const MainNav: FC<MainNavProps> = ({ children, ...props }) => {
       <div
         className={cn(
           "flex h-10 items-center space-x-4 lg:space-x-6",
-          baseWrapper,
+          baseWidthWrapper,
         )}
         {...props}
       >
@@ -85,7 +85,7 @@ export const MainNav: FC<MainNavProps> = ({ children, ...props }) => {
     <main>
       <div className="flex flex-col">
         <div className="overflow-y-visible border-b border-b-border py-2">
-          <div className={cn("flex h-16 items-center", baseWrapper)}>
+          <div className={cn("flex h-16 items-center", baseWidthWrapper)}>
             <div className="flex items-center">
               <RootLogo />
               <span className="ml-2 mr-1 text-text/60 last:hidden">/</span>
