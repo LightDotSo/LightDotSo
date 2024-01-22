@@ -128,6 +128,7 @@ export function AuthModal() {
         size="sm"
         footerContent={
           <Button
+            disabled={isPending}
             isLoading={isPending}
             type="submit"
             size="sm"
