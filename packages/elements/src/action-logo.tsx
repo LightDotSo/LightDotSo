@@ -21,6 +21,7 @@ import {
   ArrowDown,
   ArrowUp,
   Flame,
+  HelpCircle,
   PlusCircle,
   UnlockIcon,
 } from "lucide-react";
@@ -34,6 +35,7 @@ export const ActionLogoIntents: Record<
   Action,
   Extract<VariantProps<typeof badgeVariants>["intent"], string>
 > = {
+  [Action.UNKNOWN]: "default",
   [Action.NATIVE_RECEIVE]: "pink",
   [Action.NATIVE_SEND]: "info",
   [Action.ERC20_APPROVE]: "purple",
@@ -54,6 +56,7 @@ export const ActionLogoIntents: Record<
 };
 
 export const ActionLogos: Record<Action, React.ElementType> = {
+  [Action.UNKNOWN]: HelpCircle,
   [Action.NATIVE_RECEIVE]: ArrowDown,
   [Action.NATIVE_SEND]: ArrowUp,
   [Action.ERC20_APPROVE]: UnlockIcon,
