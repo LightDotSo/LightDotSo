@@ -57,7 +57,7 @@ import {
   TabsTrigger,
   TooltipProvider,
 } from "@lightdotso/ui";
-import { cn } from "@lightdotso/utils";
+import { cn, refineNumberFormat } from "@lightdotso/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
@@ -1203,20 +1203,16 @@ export const SendDialog: FC<SendDialogProps> = ({
                                               return token
                                                 ? "~ $" +
                                                     // Get the current selected token balance in USD
-                                                    (
+                                                    refineNumberFormat(
                                                       (token?.balance_usd /
                                                         (token.amount /
                                                           Math.pow(
                                                             10,
                                                             token?.decimals,
                                                           ))) *
-                                                      // Get the form value
-                                                      (field.value ?? 0)
-                                                    ).toLocaleString("en-US", {
-                                                      style: "decimal",
-                                                      minimumFractionDigits: 2,
-                                                      maximumFractionDigits: 2,
-                                                    })
+                                                        // Get the form value
+                                                        (field.value ?? 0),
+                                                    )
                                                 : "";
                                             })()}
                                         </div>

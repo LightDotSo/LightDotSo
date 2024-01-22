@@ -18,7 +18,7 @@
 import type { TokenData } from "@lightdotso/data";
 import { TokenImage } from "@lightdotso/elements";
 import { ButtonIcon } from "@lightdotso/ui";
-import { cn } from "@lightdotso/utils";
+import { cn, refineNumberFormat } from "@lightdotso/utils";
 import { ChevronRightIcon } from "lucide-react";
 import type { FC } from "react";
 
@@ -68,11 +68,7 @@ export const TokenCardToken: FC<TokenCardTokenProps> = ({
             {token.name ?? token.symbol}
           </span>
           <span className="text-sm text-text-weak">
-            {(token.amount / 10 ** token.decimals).toLocaleString("en-US", {
-              style: "decimal",
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}{" "}
+            {refineNumberFormat(token.amount / 10 ** token.decimals)}{" "}
             {token.symbol}
           </span>
         </div>

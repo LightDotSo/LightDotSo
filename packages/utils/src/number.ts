@@ -13,12 +13,24 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export {
-  getChainById,
-  getChainNameById,
-  getChainBySimplehashChainName,
-  getChainIdBySimplehashChainName,
-} from "./chain";
-export { cn } from "./cn";
-export { refineNumberFormat } from "./number";
-export { shortenAddress, shortenBytes32, shortenName } from "./shorten";
+export const refineNumberFormat = (number: number) => {
+  if (number < 0.001) {
+    return number.toLocaleString("en-US", {
+      style: "decimal",
+      minimumFractionDigits: 3,
+      maximumFractionDigits: 4,
+    });
+  } else if (number < 0.01) {
+    return number.toLocaleString("en-US", {
+      style: "decimal",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 3,
+    });
+  } else {
+    return number.toLocaleString("en-US", {
+      style: "decimal",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
+};

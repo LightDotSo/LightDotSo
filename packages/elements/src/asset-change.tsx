@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { AssetChangeData } from "@lightdotso/data";
+import { refineNumberFormat } from "@lightdotso/utils";
 import type { FC } from "react";
 import { TokenImage } from "./token-image";
 
@@ -38,14 +39,9 @@ export const AssetChange: FC<AssetChangeProps> = ({ assetChange }) => {
           {assetChange?.token.name ?? assetChange?.token.symbol}{" "}
           <span className="text-xs text-text-weak">
             (
-            {(
-              assetChange?.amount /
-              10 ** assetChange?.token.decimals
-            ).toLocaleString("en-US", {
-              style: "decimal",
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}{" "}
+            {refineNumberFormat(
+              assetChange?.amount / 10 ** assetChange?.token.decimals,
+            )}{" "}
             {assetChange?.token.symbol})
           </span>
         </span>
