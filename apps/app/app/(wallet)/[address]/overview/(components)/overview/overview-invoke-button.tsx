@@ -77,7 +77,7 @@ export const OverviewInvokeButton: FC<OverviewInvokeButtonProps> = ({
                     toast.dismiss(loadingToast);
                     res.match(
                       _success => {
-                        toast.success("Operation updated");
+                        toast.success("Portfolio updated");
                       },
                       err => {
                         if (err instanceof Error) {
