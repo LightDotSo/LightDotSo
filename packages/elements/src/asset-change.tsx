@@ -37,13 +37,15 @@ export const AssetChange: FC<AssetChangeProps> = ({ assetChange }) => {
       {assetChange?.token && (
         <span className="text-sm text-text">
           {assetChange?.token.name ?? assetChange?.token.symbol}{" "}
-          <span className="text-xs text-text-weak">
-            (
-            {refineNumberFormat(
-              assetChange?.amount / 10 ** assetChange?.token.decimals,
-            )}{" "}
-            {assetChange?.token.symbol})
-          </span>
+          {assetChange?.token.decimals && (
+            <span className="text-xs text-text-weak">
+              (
+              {refineNumberFormat(
+                assetChange?.amount / 10 ** assetChange?.token.decimals,
+              )}{" "}
+              {assetChange?.token.symbol})
+            </span>
+          )}
         </span>
       )}
     </div>
