@@ -557,7 +557,7 @@ export interface components {
   schemas: {
     /** @description Activity root type. */
     Activity: {
-      /** @description The actor wallet address of the activity. */
+      /** @description The wallet address of the activity. */
       address?: string | null;
       /** @description The entity id of the activity. */
       entity: string;
@@ -567,6 +567,7 @@ export interface components {
       operation: string;
       /** @description The timestamp of the activity. */
       timestamp: string;
+      user_address?: components["schemas"]["User"] | null;
     };
     /** @description Activity errors */
     ActivityError: OneOf<[{
@@ -1079,6 +1080,8 @@ export interface components {
       name?: string | null;
       /** @description The symbol of the token. */
       symbol: string;
+      /** @description The type of the token. */
+      token_type?: string | null;
     };
     /** @description Token error. */
     TokenError: OneOf<[{
@@ -1180,6 +1183,9 @@ export interface components {
     };
     /** @description User root type. */
     User: {
+      /** @description The wallet address of the user. */
+      address: string;
+      /** @description The id of the user. */
       id: string;
     };
     /** @description User operation errors */

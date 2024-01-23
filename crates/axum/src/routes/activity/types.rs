@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use crate::routes::user::types::User;
 use lightdotso_prisma::activity;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
@@ -33,8 +34,10 @@ pub(crate) struct Activity {
     operation: String,
     /// The timestamp of the activity.
     timestamp: String,
-    /// The actor wallet address of the activity.
+    /// The wallet address of the activity.
     address: Option<String>,
+    /// The user that created the activity.
+    user_address: Option<User>,
 }
 
 // -----------------------------------------------------------------------------
@@ -50,6 +53,7 @@ impl From<activity::Data> for Activity {
             operation: activity.operation.to_string(),
             timestamp: activity.timestamp.to_rfc3339(),
             address: activity.wallet_address.map(|addr| addr.to_string()),
+            user_address: activity.user.and_then(|user| user.map(|data| User::from(*data))),
         }
     }
 }
