@@ -40,10 +40,10 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import Link from "next/link";
 import { useEffect, type FC, useMemo } from "react";
 import { TableEmpty } from "../table-empty";
 import { walletColumns } from "./wallet-columns";
-import Link from "next/link";
 
 // -----------------------------------------------------------------------------
 // Props
