@@ -29,7 +29,7 @@ import { buttonVariants } from "./button";
 // Styles
 // -----------------------------------------------------------------------------
 
-const buttonIconVariants = cva([], {
+const buttonIconVariants = cva(["px-0"], {
   variants: {
     size: {
       default: "w-9",
