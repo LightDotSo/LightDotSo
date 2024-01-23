@@ -128,15 +128,25 @@ export function useTabs() {
     address: walletAddress as Address,
   });
 
-  const { walletFeatures } = useSuspenseQueryWalletFeatures({
-    address: walletAddress as Address,
-  });
+  const { walletFeatures, refetchWalletFeatures } =
+    useSuspenseQueryWalletFeatures({
+      address: walletAddress as Address,
+    });
 
   const { userOperationsCount } = useQueryUserOperationsCount({
     address: walletAddress as Address,
     status: "proposed",
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
   });
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // Refetch the wallet features when the wallet address changes
+  useEffect(() => {
+    refetchWalletFeatures();
+  }, [refetchWalletFeatures, walletAddress]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
