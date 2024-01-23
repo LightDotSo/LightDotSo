@@ -966,17 +966,17 @@ export const SendDialog: FC<SendDialogProps> = ({
             <div className="space-y-4">
               {fields.map((field, index) => (
                 <Accordion
-                  defaultValue="value-0"
                   key={index}
                   collapsible
+                  defaultValue="value-0"
                   className="rounded-md border border-border bg-background-weak p-4"
                   type="single"
                 >
                   <AccordionItem className="border-0" value={`value-${index}`}>
-                    <AccordionTrigger className="font-medium text-xl md:text-2xl py-0 px-1">
+                    <AccordionTrigger className="px-1 py-0 text-xl font-medium md:text-2xl">
                       Transfer #{index}
                     </AccordionTrigger>
-                    <AccordionContent className="pt-4 px-1">
+                    <AccordionContent className="px-1 pt-4">
                       <FormItem
                         key={field.id}
                         className="grid grid-cols-8 gap-4 space-y-0"
