@@ -46,6 +46,13 @@ const AuthModal = dynamic(() => import("@/components/auth/auth-modal"), {
   ssr: false,
 });
 
+const DepositModal = dynamic(
+  () => import("@/components/deposit/deposit-modal"),
+  {
+    ssr: false,
+  },
+);
+
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
@@ -95,6 +102,7 @@ export const Root: FC<RootProps> = ({ children }) => {
               <Toaster />
               {/* Modals */}
               <AuthModal />
+              <DepositModal />
               {/* States */}
               <AuthState />
               <WssState />
