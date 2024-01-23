@@ -87,6 +87,12 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
   const isDesktop = useMediaQuery("md");
 
   // ---------------------------------------------------------------------------
+  // Debounced Hooks
+  // ---------------------------------------------------------------------------
+
+  const delayedIsLoading = useDebounced(isLoading, 1000);
+
+  // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
@@ -99,7 +105,7 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
     }
     // Filter out columns w/ id `row_actions`
     return columns.filter(column => column.id !== "row_actions");
-  }, [address, columns, isDesktop, isLoading]);
+  }, [address, columns, isDesktop, delayedIsLoading]);
 
   // ---------------------------------------------------------------------------
   // Table
@@ -153,12 +159,6 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // ---------------------------------------------------------------------------
-  // Debounced Hooks
-  // ---------------------------------------------------------------------------
-
-  const delayedIsLoading = useDebounced(isLoading, 1000);
 
   // ---------------------------------------------------------------------------
   // Local Variables
