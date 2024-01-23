@@ -52,9 +52,9 @@ impl From<asset_change::Data> for AssetChange {
         Self {
             id: asset_change.id,
             address: asset_change.address,
-            amount: asset_change.amount,
-            before_amount: asset_change.before_amount,
-            after_amount: asset_change.after_amount,
+            amount: asset_change.amount.parse().unwrap_or_default(),
+            before_amount: asset_change.before_amount.and_then(|s| s.parse::<i64>().ok()),
+            after_amount: asset_change.after_amount.and_then(|s| s.parse::<i64>().ok()),
             action: asset_change.interpretation_action.and_then(|maybe_action| {
                 maybe_action.map(|action| InterpretationAction::from(*action))
             }),

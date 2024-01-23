@@ -106,7 +106,7 @@ pub async fn upsert_transaction_with_log_receipt(
         transaction_params.push(transaction::gas::set(Some(transaction.gas.low_u64() as i64)))
     }
     if transaction.value != 0.into() {
-        transaction_params.push(transaction::value::set(Some(transaction.value.low_u64() as i64)))
+        transaction_params.push(transaction::value::set(Some(format!("{}", transaction.value))))
     }
     if transaction.gas_price.is_some() {
         transaction_params
