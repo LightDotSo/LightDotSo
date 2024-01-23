@@ -200,14 +200,14 @@ pub async fn upsert_interpretation_with_actions(
         .map(|change| {
             (
                 to_checksum(&change.address, None),
-                change.amount.low_u64() as i64,
+                format!("{}", change.amount),
                 interpretation::id::equals(interpretation.clone().id),
                 vec![
                     asset_change::before_amount::set(
-                        change.before_amount.map(|bm| bm.low_u64() as i64),
+                        change.before_amount.map(|bm| format!("{}", bm)),
                     ),
                     asset_change::after_amount::set(
-                        change.after_amount.map(|am| am.low_u64() as i64),
+                        change.after_amount.map(|am| format!("{}", am)),
                     ),
                     asset_change::interpretation_action::connect(
                         interpretation_action::id::equals(

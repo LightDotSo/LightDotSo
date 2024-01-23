@@ -600,7 +600,7 @@ model Transaction {
   /// Transferred value
   /// pub value: U256
   /// WARNING: Converting this as optional due to the graph limitations
-  value                BigInt?
+  value                String?
   /// Gas Price, null for Type 2 transactions
   /// pub gas_price: Option<U256>
   gas_price            BigInt?
@@ -1056,9 +1056,9 @@ model AssetChange {
   // ---------------------------------------------------------------------------
 
   address      String
-  amount       BigInt
-  beforeAmount BigInt?
-  afterAmount  BigInt?
+  amount       String
+  beforeAmount String?
+  afterAmount  String?
 
   // ---------------------------------------------------------------------------
   // One-to-many
@@ -1493,7 +1493,7 @@ model WalletBalance {
   // collateralUSD Float?
 
   chainId   BigInt
-  amount    BigInt?
+  amount    String?
   stable    Boolean?
   isLatest  Boolean  @default(false)
   isSpam    Boolean  @default(false)

@@ -95,7 +95,10 @@ impl From<wallet_balance::Data> for Token {
             name: balance.token.clone().unwrap().unwrap().name,
             symbol: balance.token.clone().unwrap().unwrap().symbol.unwrap_or("".to_string()),
             decimals: balance.token.clone().unwrap().unwrap().decimals.unwrap_or(0),
-            amount: balance.amount.unwrap(),
+            amount: balance
+                .amount
+                .and_then(|amount_str| amount_str.parse::<i64>().ok())
+                .unwrap_or_default(),
             balance_usd: balance.balance_usd,
             token_type: None,
             group: balance.token.clone().unwrap().unwrap().group.and_then(|group| {

@@ -71,7 +71,11 @@ pub async fn interpretation_consumer(
                     .clone()
                     .input
                     .map(|input| input.into()),
-                value: transaction_with_logs.transaction.clone().value.map(|value| value as u64),
+                value: transaction_with_logs
+                    .transaction
+                    .clone()
+                    .value
+                    .and_then(|value| value.parse::<u64>().ok()),
                 traces: vec![],
                 logs: transaction_with_logs.logs,
             };

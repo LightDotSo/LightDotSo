@@ -66,3 +66,29 @@ pub struct UserOperationWithTransactionAndReceiptLogs {
     /// Flag to indicate whether it's reverted
     pub is_reverted: bool,
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_u256_to_string() {
+        let number = U256::from(12345);
+        let result = format!("{}", number);
+        assert_eq!(result, "12345");
+    }
+
+    #[test]
+    fn test_u256_to_string_zero() {
+        let number = U256::from(0);
+        let result = format!("{}", number);
+        assert_eq!(result, "0");
+    }
+
+    #[test]
+    fn test_u256_to_string_large_number() {
+        let number = U256::from(1_000_000_000_000_000_000_000_000_u128);
+        let result = format!("{}", number);
+        assert_eq!(result, "1000000000000000000000000");
+    }
+}
