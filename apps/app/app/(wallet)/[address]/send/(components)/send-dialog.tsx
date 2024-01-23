@@ -1092,7 +1092,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                             <TabsTrigger value="nft">NFT</TabsTrigger>
                           </TabsList>
                           <TabsContent value="token">
-                            <div className="grid grid-cols-4 md:grid-cols-8 gap-y-2">
+                            <div className="grid grid-cols-4 gap-y-2 md:grid-cols-8">
                               <div className="relative col-span-4 inline-block w-full">
                                 <FormField
                                   control={form.control}
@@ -1332,7 +1332,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                             </div>
                           </TabsContent>
                           <TabsContent value="nft">
-                            <div className="grid grid-cols-4 md:grid-cols-8 gap-y-2">
+                            <div className="grid grid-cols-4 gap-y-2 md:grid-cols-8">
                               <div className="relative col-span-4 inline-block w-full">
                                 <FormField
                                   control={form.control}
