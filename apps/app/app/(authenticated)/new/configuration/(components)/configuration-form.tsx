@@ -666,8 +666,9 @@ export const ConfigurationForm: FC = () => {
                   </FormItem>
                 )}
               />
-              <CardFooter className="flex justify-between p-0 pt-4">
+              <CardFooter className="flex flex-col space-y-4 p-0 pt-4 md:flex-row md:items-center md:justify-between">
                 <Button
+                  className="w-full md:w-auto"
                   variant="outline"
                   onClick={() => {
                     router.back();
@@ -676,6 +677,7 @@ export const ConfigurationForm: FC = () => {
                   Go Back
                 </Button>
                 <Button
+                  className="w-full md:w-auto"
                   disabled={!isFormValid}
                   type="submit"
                   onClick={() => navigateToStep()}

@@ -393,6 +393,7 @@ export const NewWalletForm: FC = () => {
               </div>
               <CardFooter className="justify-end p-0">
                 <Button
+                  className="w-full md:w-auto"
                   disabled={!isFormValid}
                   type="submit"
                   onClick={() => navigateToStep()}

@@ -116,7 +116,7 @@ export const Modal: FC<ModalProps> = ({
           )}
         >
           <DialogHeader>
-            <ButtonIcon size="sm" variant="shadow">
+            <ButtonIcon size="sm" variant="shadow" onClick={onClose}>
               <X />
             </ButtonIcon>
           </DialogHeader>

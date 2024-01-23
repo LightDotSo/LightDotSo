@@ -17,7 +17,7 @@
 
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
 import type { WalletSettingsData } from "@lightdotso/data";
-import { PlaceholderOrb } from "@lightdotso/elements";
+import { NftImage, PlaceholderOrb, TokenImage } from "@lightdotso/elements";
 import {
   useSuspenseQueryNfts,
   useSuspenseQueryTokens,
@@ -968,12 +968,15 @@ export const SendDialog: FC<SendDialogProps> = ({
                 <Accordion
                   key={index}
                   collapsible
-                  className="rounded-md border border-border bg-background-weak p-6"
+                  defaultValue="value-0"
+                  className="rounded-md border border-border bg-background-weak p-4"
                   type="single"
                 >
                   <AccordionItem className="border-0" value={`value-${index}`}>
-                    <AccordionTrigger>Transfer #{index}</AccordionTrigger>
-                    <AccordionContent className="p-2">
+                    <AccordionTrigger className="px-1 py-0 text-xl font-medium md:text-2xl">
+                      Transfer #{index}
+                    </AccordionTrigger>
+                    <AccordionContent className="px-1 pt-4">
                       <FormItem
                         key={field.id}
                         className="grid grid-cols-8 gap-4 space-y-0"
@@ -982,7 +985,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                           control={form.control}
                           name={`transfers.${index}.addressOrEns`}
                           render={({ field }) => (
-                            <div className="col-span-7 space-y-2">
+                            <div className="col-span-8 space-y-2">
                               <Label htmlFor="address">
                                 Recepient Address or ENS
                               </Label>
@@ -1046,37 +1049,38 @@ export const SendDialog: FC<SendDialogProps> = ({
                                     </Avatar>
                                   </div>
                                 </div>
+                                <div
+                                  className={cn(
+                                    "flex h-full flex-col",
+                                    // If there is error, justify center, else end
+                                    form.formState.errors.transfers &&
+                                      form.formState.errors.transfers[index] &&
+                                      form.formState.errors.transfers[index]
+                                        ?.addressOrEns
+                                      ? "justify-center"
+                                      : "justify-end",
+                                  )}
+                                >
+                                  <ButtonIcon
+                                    disabled={fields.length < 2}
+                                    variant="outline"
+                                    className="mt-1.5 rounded-full"
+                                    onClick={() => {
+                                      remove(index);
+                                      form.trigger();
+                                    }}
+                                  >
+                                    <Trash2Icon className="size-5" />
+                                  </ButtonIcon>
+                                </div>
                               </div>
                               <FormMessage />
                             </div>
                           )}
                         />
-                        <div
-                          className={cn(
-                            "col-span-1 flex h-full flex-col",
-                            // If there is error, justify center, else end
-                            form.formState.errors.transfers &&
-                              form.formState.errors.transfers[index] &&
-                              form.formState.errors.transfers[index]
-                                ?.addressOrEns
-                              ? "justify-center"
-                              : "justify-end",
-                          )}
-                        >
-                          <ButtonIcon
-                            disabled={fields.length < 2}
-                            variant="outline"
-                            className="mt-1.5 rounded-full"
-                            onClick={() => {
-                              remove(index);
-                              form.trigger();
-                            }}
-                          >
-                            <Trash2Icon className="size-5" />
-                          </ButtonIcon>
-                        </div>
+
                         <Tabs
-                          className="col-span-7"
+                          className="col-span-8"
                           defaultValue={
                             transfers[index]?.assetType === "erc20"
                               ? "token"
@@ -1088,7 +1092,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                             <TabsTrigger value="nft">NFT</TabsTrigger>
                           </TabsList>
                           <TabsContent value="token">
-                            <div className="flex space-x-3">
+                            <div className="grid grid-cols-4 gap-x-3 gap-y-2 md:grid-cols-8">
                               <div className="relative col-span-4 inline-block w-full">
                                 <FormField
                                   control={form.control}
@@ -1246,7 +1250,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                   )}
                                 />
                               </div>
-                              <div className="relative col-span-3 inline-block w-full">
+                              <div className="relative col-span-4 inline-block w-full">
                                 <FormField
                                   key={field.id}
                                   control={form.control}
@@ -1307,7 +1311,14 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                 key={`${token.address}-${token.chain_id}`}
                                                 value={`${token.address}-${token.chain_id}`}
                                               >
-                                                {token.symbol}
+                                                <div className="flex items-center">
+                                                  <TokenImage
+                                                    size="xs"
+                                                    className="mr-2"
+                                                    token={token}
+                                                  />
+                                                  {token.symbol}
+                                                </div>
                                               </SelectItem>
                                             ))}
                                           </SelectContent>
@@ -1321,7 +1332,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                             </div>
                           </TabsContent>
                           <TabsContent value="nft">
-                            <div className="flex space-x-3">
+                            <div className="grid grid-cols-4 gap-x-3 gap-y-2 md:grid-cols-8">
                               <div className="relative col-span-4 inline-block w-full">
                                 <FormField
                                   control={form.control}
@@ -1447,7 +1458,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                   )}
                                 />
                               </div>
-                              <div className="relative col-span-3 inline-block w-full">
+                              <div className="relative col-span-4 inline-block w-full">
                                 <FormField
                                   key={field.id}
                                   control={form.control}
@@ -1539,7 +1550,15 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                     ]
                                                   }`}
                                                 >
-                                                  {nft.name ?? nft.token_id}
+                                                  <div className="flex items-center">
+                                                    <div className="mr-2 size-6">
+                                                      <NftImage
+                                                        className="rounded-md"
+                                                        nft={nft}
+                                                      />
+                                                    </div>
+                                                    {nft.name ?? nft.token_id}
+                                                  </div>
                                                 </SelectItem>
                                               ))}
                                           </SelectContent>
@@ -1559,12 +1578,11 @@ export const SendDialog: FC<SendDialogProps> = ({
                 </Accordion>
               ))}
             </div>
-            <div>
+            <div className="pt-6">
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
-                className="mt-6"
                 onClick={() => {
                   append({ address: "", addressOrEns: "" });
                   form.trigger();
@@ -1574,8 +1592,9 @@ export const SendDialog: FC<SendDialogProps> = ({
                 Add Transfer
               </Button>
             </div>
-            <CardFooter className="flex justify-between px-0 pt-12">
+            <CardFooter className="flex flex-col space-y-4 px-0 pt-6 md:flex-row md:items-center md:justify-between">
               <Button
+                className="w-full md:w-auto"
                 variant="outline"
                 onClick={() => {
                   router.back();
@@ -1583,17 +1602,23 @@ export const SendDialog: FC<SendDialogProps> = ({
               >
                 Cancel
               </Button>
-              <Button asChild disabled={!isFormValid} type="submit">
-                {form.formState.isValid ? (
+              {!isFormValid ? (
+                <Button
+                  className="w-full md:w-auto"
+                  disabled={!isFormValid}
+                  type="submit"
+                >
+                  Continue
+                </Button>
+              ) : (
+                <Button asChild className="w-full md:w-auto" type="submit">
                   <Link
                     href={`/${address}/op?userOperations=${userOperationsParams!}`}
                   >
                     Continue
                   </Link>
-                ) : (
-                  <span className="cursor-not-allowed">Continue</span>
-                )}
-              </Button>
+                </Button>
+              )}
             </CardFooter>
           </form>
         </Form>

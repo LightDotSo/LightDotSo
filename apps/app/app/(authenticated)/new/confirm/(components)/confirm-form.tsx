@@ -43,7 +43,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { backOff } from "exponential-backoff";
 import { isEmpty } from "lodash";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { FC } from "react";
 import { useForm } from "react-hook-form";
 import { isAddress } from "viem";
@@ -82,6 +82,12 @@ export const ConfirmForm: FC = () => {
 
   const { clientType } = useAuth();
   const { address, setFormValues, fetchToCreate } = useNewForm();
+
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [isLoading, setIsLoading] = useState(false);
 
   // ---------------------------------------------------------------------------
   // Query State Hooks
@@ -140,12 +146,15 @@ export const ConfirmForm: FC = () => {
   // Create a function to submit the form
   const onSubmit = useCallback(
     () => {
+      // Set the loading state
+      setIsLoading(true);
       // Navigate to the next step
       const loadingToast = toast.loading("Creating wallet...");
       // Set the form values
       // setFormValues(values);
       fetchToCreate(true)
         .then(() => {
+          setIsLoading(false);
           toast.dismiss(loadingToast);
           toast.success("You can now use your wallet.");
 
@@ -171,6 +180,7 @@ export const ConfirmForm: FC = () => {
             });
         })
         .catch(() => {
+          setIsLoading(false);
           toast.dismiss(loadingToast);
           toast.error(
             "There was a problem with your request (invalid request likely).",
@@ -235,8 +245,10 @@ export const ConfirmForm: FC = () => {
   // ---------------------------------------------------------------------------
 
   const isFormValid = useMemo(() => {
-    return form.formState.isValid && isEmpty(form.formState.errors);
-  }, [form.formState]);
+    return (
+      form.formState.isValid && isEmpty(form.formState.errors) && !isLoading
+    );
+  }, [form.formState, isLoading]);
 
   // ---------------------------------------------------------------------------
   // Utils
@@ -305,8 +317,9 @@ export const ConfirmForm: FC = () => {
                   </FormItem>
                 )}
               />
-              <CardFooter className="flex justify-between p-0 pt-4">
+              <CardFooter className="flex flex-col space-y-4 p-0 pt-4 md:flex-row md:items-center md:justify-between">
                 <Button
+                  className="w-full md:w-auto"
                   variant="outline"
                   onClick={() => {
                     router.back();
@@ -314,7 +327,12 @@ export const ConfirmForm: FC = () => {
                 >
                   Go Back
                 </Button>
-                <Button disabled={!isFormValid} type="submit">
+                <Button
+                  className="w-full md:w-auto"
+                  disabled={!isFormValid}
+                  isLoading={isLoading}
+                  type="submit"
+                >
                   Create Wallet
                 </Button>
               </CardFooter>

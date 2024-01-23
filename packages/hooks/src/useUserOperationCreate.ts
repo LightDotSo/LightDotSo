@@ -248,7 +248,7 @@ export const useUserOperationCreate = ({
 
   return {
     isLoading,
-    isCreatable: typeof owner !== "undefined",
+    isCreatable: typeof owner !== "undefined" || isLoading,
     decodedCallData,
     decodedInitCode,
     paymasterHash,

@@ -23,6 +23,7 @@ import { useMemo } from "react";
 // ---------------------------------------------------------------------------
 
 const unauthenticatedPaths = ["/activity", "/owners", "/transactions"];
+const interceptionPaths = ["/notifications"];
 const authenticatedPaths = [
   "/new",
   "/new/configuration",
@@ -50,7 +51,12 @@ const demoPaths = [
 // Types
 // -----------------------------------------------------------------------------
 
-export type RootType = "authenticated" | "unauthenticated" | "wallet" | "demo";
+export type RootType =
+  | "authenticated"
+  | "unauthenticated"
+  | "interception"
+  | "wallet"
+  | "demo";
 
 // -----------------------------------------------------------------------------
 // Hook
@@ -74,6 +80,10 @@ export const usePathType = (): RootType => {
   // ---------------------------------------------------------------------------
 
   const pathType = useMemo(() => {
+    if (interceptionPaths.some(path => pathname.startsWith(path)) && wallet) {
+      return "interception";
+    }
+
     if (
       unauthenticatedPaths.some(path => pathname.startsWith(path)) ||
       pathname === "/"
@@ -81,7 +91,7 @@ export const usePathType = (): RootType => {
       return "unauthenticated";
     }
 
-    if (authenticatedPaths.some(path => pathname.startsWith(path)) && !wallet) {
+    if (authenticatedPaths.some(path => pathname.startsWith(path))) {
       return "authenticated";
     }
 
