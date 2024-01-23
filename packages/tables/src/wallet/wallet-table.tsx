@@ -169,19 +169,19 @@ export const WalletTable: FC<WalletTableProps> = ({
       <TableBody>
         {table.getRowModel().rows?.length ? (
           table.getRowModel().rows.map(row => (
-            <Link href={`/${row.original.address}`}>
-              <TableRow
-                key={row.id}
-                className="cursor-pointer"
-                data-state={row.getIsSelected() && "selected"}
-              >
-                {row.getVisibleCells().map(cell => (
-                  <TableCell key={cell.id}>
+            <TableRow
+              key={row.id}
+              className="cursor-pointer"
+              data-state={row.getIsSelected() && "selected"}
+            >
+              {row.getVisibleCells().map(cell => (
+                <TableCell key={cell.id}>
+                  <Link href={`/${row.original.address}`}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </Link>
+                  </Link>
+                </TableCell>
+              ))}
+            </TableRow>
           ))
         ) : delayedIsLoading ? (
           Array(pageSize)
