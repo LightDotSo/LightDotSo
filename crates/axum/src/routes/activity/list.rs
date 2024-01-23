@@ -102,6 +102,7 @@ pub(crate) async fn v1_activity_list_handler(
         .find_many(query_params)
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
+        .with(activity::user::fetch())
         .order_by(activity::timestamp::order(Direction::Desc))
         .exec()
         .await?;

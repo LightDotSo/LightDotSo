@@ -1592,7 +1592,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                 Add Transfer
               </Button>
             </div>
-            <CardFooter className="flex flex-col space-y-4 px-0 pt-6 md:flex-row md:items-center md:justify-between">
+            <CardFooter className="flex flex-col space-y-4 pt-6 md:flex-row md:items-center md:justify-between md:space-y-0">
               <Button
                 className="w-full md:w-auto"
                 variant="outline"

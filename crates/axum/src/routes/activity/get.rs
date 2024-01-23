@@ -72,8 +72,13 @@ pub(crate) async fn v1_activity_get_handler(
     // -------------------------------------------------------------------------
 
     // Get the activitys from the database.
-    let activity =
-        state.client.activity().find_unique(activity::id::equals(query.id)).exec().await?;
+    let activity = state
+        .client
+        .activity()
+        .find_unique(activity::id::equals(query.id))
+        .with(activity::user::fetch())
+        .exec()
+        .await?;
 
     // If the activity is not found, return a 404.
     let activity = activity.ok_or(RouteError::ActivityError(ActivityError::NotFound(

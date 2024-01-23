@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { UserData } from "./user";
+
 // -----------------------------------------------------------------------------
 // Data
 // -----------------------------------------------------------------------------
@@ -23,6 +25,7 @@ export type ActivityData = {
   operation: string;
   timestamp: string;
   address?: string | null;
+  user?: UserData | null;
 };
 
 export type ActivityCountData = {

@@ -121,7 +121,7 @@ export const TokenImage: FC<TokenImageProps> = ({ className, token, size }) => {
   // ---------------------------------------------------------------------------
 
   if (!isImageLoaded) {
-    return <Skeleton className={className} />;
+    return <Skeleton className={cn(tokenImageVariants({ size }), className)} />;
   }
 
   if (isImageLoaded && !isImageError) {
@@ -140,6 +140,7 @@ export const TokenImage: FC<TokenImageProps> = ({ className, token, size }) => {
     <span
       className={cn(
         "mr-1.5 items-center justify-center text-ellipsis border border-border-primary-weak bg-background-stronger text-xs leading-none text-text-weak",
+        tokenImageVariants({ size }),
         className,
       )}
     >

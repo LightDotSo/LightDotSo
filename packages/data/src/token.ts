@@ -28,6 +28,7 @@ export type TokenData = {
   decimals: number;
   name?: string | null;
   symbol: string;
+  token_type?: string | null;
   group?: TokenGroupData | null;
 };
 

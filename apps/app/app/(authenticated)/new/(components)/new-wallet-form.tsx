@@ -228,11 +228,11 @@ export const NewWalletForm: FC = () => {
 
   return (
     <Card className="flex flex-col space-y-6 p-4 lg:px-6 lg:pt-6">
-      <CardHeader className="gap-3 p-0">
+      <CardHeader className="gap-3">
         <CardTitle>Create a New Wallet</CardTitle>
         <CardDescription>Select a name for your new wallet.</CardDescription>
       </CardHeader>
-      <CardContent className="grid gap-10 p-0">
+      <CardContent className="grid gap-10">
         <TooltipProvider delayDuration={300}>
           <Form {...form}>
             <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
@@ -391,7 +391,7 @@ export const NewWalletForm: FC = () => {
                   </a>
                 </CardDescription>
               </div>
-              <CardFooter className="justify-end p-0">
+              <CardFooter className="justify-end">
                 <Button
                   className="w-full md:w-auto"
                   disabled={!isFormValid}

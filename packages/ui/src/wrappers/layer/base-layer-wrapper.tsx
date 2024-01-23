@@ -22,7 +22,7 @@ import { baseWidthWrapper } from "../base";
 // Styles
 // -----------------------------------------------------------------------------
 
-const baseLayerWrapperVariants = cva(["px-0"], {
+const baseLayerWrapperVariants = cva([], {
   variants: {
     size: {
       default: "max-w-7xl",

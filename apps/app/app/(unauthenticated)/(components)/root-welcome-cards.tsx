@@ -37,7 +37,7 @@ export const RootWelcomeCards: FC = () => {
 
   return (
     <div className="grid w-full gap-6 md:grid-cols-2">
-      <Card className="col-span-1">
+      <Card className="col-span-1 p-6">
         <CardHeader>
           <div>
             <span className="inline-block rounded-full border border-border-warning bg-background-warning-weakest p-2">
@@ -49,11 +49,11 @@ export const RootWelcomeCards: FC = () => {
             Connect your wallet to Light to get started.
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-6">
           <ConnectButton />
         </CardContent>
       </Card>
-      <Card className="col-span-1">
+      <Card className="col-span-1 p-6">
         <CardHeader>
           <div>
             <span className="inline-block rounded-full border border-border-purple bg-background-purple-weakest p-2">
@@ -65,7 +65,7 @@ export const RootWelcomeCards: FC = () => {
             Experience Light in demo mode. No wallet required.
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-6">
           <Button asChild size="sm" variant="outline">
             <Link href="/demo/overview">
               <Gamepad className="mr-2 size-4" /> Start Demo
