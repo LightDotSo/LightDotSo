@@ -40,7 +40,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useEffect, type FC, useMemo } from "react";
 import { TableEmpty } from "../table-empty";
 import { walletColumns } from "./wallet-columns";
@@ -78,12 +78,6 @@ export const WalletTable: FC<WalletTableProps> = ({
   // ---------------------------------------------------------------------------
 
   const isDesktop = useMediaQuery("md");
-
-  // ---------------------------------------------------------------------------
-  // Next Hooks
-  // ---------------------------------------------------------------------------
-
-  const router = useRouter();
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -179,11 +173,12 @@ export const WalletTable: FC<WalletTableProps> = ({
               key={row.id}
               className="cursor-pointer"
               data-state={row.getIsSelected() && "selected"}
-              onClick={() => router.push(`/${row.original.address}`)}
             >
               {row.getVisibleCells().map(cell => (
                 <TableCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  <Link href={`/${row.original.address}`}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </Link>
                 </TableCell>
               ))}
             </TableRow>
@@ -192,7 +187,7 @@ export const WalletTable: FC<WalletTableProps> = ({
           Array(pageSize)
             .fill(null)
             .map((_, index) => (
-              <TableRow key={index}>
+              <TableRow key={`loading-${index}`}>
                 {table.getVisibleLeafColumns().map(column => (
                   <TableCell
                     key={column.id}

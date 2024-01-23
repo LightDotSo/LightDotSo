@@ -32,5 +32,5 @@ export function HStackFull({ children }: HStackFullProps) {
   // Render
   // ---------------------------------------------------------------------------
 
-  return <div className="mx-auto flex w-full flex-1 flex-col">{children}</div>;
+  return <div className="min-h-full w-full">{children}</div>;
 }

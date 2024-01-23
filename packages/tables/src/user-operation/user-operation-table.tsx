@@ -87,6 +87,12 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
   const isDesktop = useMediaQuery("md");
 
   // ---------------------------------------------------------------------------
+  // Debounced Hooks
+  // ---------------------------------------------------------------------------
+
+  const delayedIsLoading = useDebounced(isLoading, 1000);
+
+  // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
@@ -153,12 +159,6 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // ---------------------------------------------------------------------------
-  // Debounced Hooks
-  // ---------------------------------------------------------------------------
-
-  const delayedIsLoading = useDebounced(isLoading, 1000);
 
   // ---------------------------------------------------------------------------
   // Local Variables
@@ -229,7 +229,7 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
             Array(pageSize)
               .fill(null)
               .map((_, index) => (
-                <TableRow key={index}>
+                <TableRow key={`loading-${index}`}>
                   {table.getVisibleLeafColumns().map(column => (
                     <TableCell
                       key={column.id}

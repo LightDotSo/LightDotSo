@@ -314,11 +314,7 @@ export const ConfirmForm: FC = () => {
                 >
                   Go Back
                 </Button>
-                <Button
-                  disabled={!isFormValid}
-                  variant={isFormValid ? "default" : "outline"}
-                  type="submit"
-                >
+                <Button disabled={!isFormValid} type="submit">
                   Create Wallet
                 </Button>
               </CardFooter>

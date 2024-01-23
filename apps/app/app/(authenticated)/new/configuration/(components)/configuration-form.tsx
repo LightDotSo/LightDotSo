@@ -677,7 +677,6 @@ export const ConfigurationForm: FC = () => {
                 </Button>
                 <Button
                   disabled={!isFormValid}
-                  variant={isFormValid ? "default" : "outline"}
                   type="submit"
                   onClick={() => navigateToStep()}
                 >

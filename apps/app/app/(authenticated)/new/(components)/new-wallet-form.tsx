@@ -394,7 +394,6 @@ export const NewWalletForm: FC = () => {
               <CardFooter className="justify-end p-0">
                 <Button
                   disabled={!isFormValid}
-                  variant={isFormValid ? "default" : "outline"}
                   type="submit"
                   onClick={() => navigateToStep()}
                 >

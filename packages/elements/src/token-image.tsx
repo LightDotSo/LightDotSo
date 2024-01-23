@@ -114,7 +114,7 @@ export const TokenImage: FC<TokenImageProps> = ({ token, size }) => {
         setIsImageError(true);
       }
     };
-  }, [currentUrl, currentUrlIndex]);
+  }, [currentUrl, currentUrlIndex, urls.length]);
 
   // ---------------------------------------------------------------------------
   // Render

@@ -1583,12 +1583,7 @@ export const SendDialog: FC<SendDialogProps> = ({
               >
                 Cancel
               </Button>
-              <Button
-                asChild
-                disabled={!isFormValid}
-                variant={isFormValid ? "default" : "outline"}
-                type="submit"
-              >
+              <Button asChild disabled={!isFormValid} type="submit">
                 {form.formState.isValid ? (
                   <Link
                     href={`/${address}/op?userOperations=${userOperationsParams!}`}

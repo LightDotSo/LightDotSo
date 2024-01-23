@@ -60,7 +60,7 @@ export function BaseLayerWrapper({
   return (
     <div
       className={cn(
-        "flex w-full flex-row overflow-x-scroll md:visible",
+        "flex w-full flex-row overflow-x-scroll",
         baseWidthWrapper,
         className,
       )}
