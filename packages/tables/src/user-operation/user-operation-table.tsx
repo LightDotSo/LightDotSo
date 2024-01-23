@@ -99,7 +99,7 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
     }
     // Filter out columns w/ id `row_actions`
     return columns.filter(column => column.id !== "row_actions");
-  }, [address, columns, isDesktop]);
+  }, [address, columns, isDesktop, isLoading]);
 
   // ---------------------------------------------------------------------------
   // Table
