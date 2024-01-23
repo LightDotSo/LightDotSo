@@ -229,7 +229,7 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
             Array(pageSize)
               .fill(null)
               .map((_, index) => (
-                <TableRow key={index}>
+                <TableRow key={`loading-${index}`}>
                   {table.getVisibleLeafColumns().map(column => (
                     <TableCell
                       key={`loading-${column.id}`}
