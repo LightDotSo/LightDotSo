@@ -232,7 +232,7 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
                 <TableRow key={`loading-${index}`}>
                   {table.getVisibleLeafColumns().map(column => (
                     <TableCell
-                      key={`loading-${column.id}`}
+                      key={column.id}
                       style={{ width: column.getSize() }}
                     >
                       <Skeleton className="h-6 w-full" />

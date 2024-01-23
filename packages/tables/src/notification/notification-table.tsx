@@ -184,7 +184,7 @@ export const NotificationTable: FC<NotificationTableProps> = ({
           Array(pageSize)
             .fill(null)
             .map((_, index) => (
-              <TableRow key={index}>
+              <TableRow key={`loading-${index}`}>
                 {table.getVisibleLeafColumns().map(column => (
                   <TableCell
                     key={column.id}
