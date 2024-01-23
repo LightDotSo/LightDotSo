@@ -17,7 +17,7 @@
 
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
 import type { WalletSettingsData } from "@lightdotso/data";
-import { PlaceholderOrb } from "@lightdotso/elements";
+import { NftImage, PlaceholderOrb, TokenImage } from "@lightdotso/elements";
 import {
   useSuspenseQueryNfts,
   useSuspenseQueryTokens,
@@ -1311,7 +1311,14 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                 key={`${token.address}-${token.chain_id}`}
                                                 value={`${token.address}-${token.chain_id}`}
                                               >
-                                                {token.symbol}
+                                                <div className="flex items-center">
+                                                  <TokenImage
+                                                    size="xs"
+                                                    className="mr-2"
+                                                    token={token}
+                                                  />
+                                                  {token.symbol}
+                                                </div>
                                               </SelectItem>
                                             ))}
                                           </SelectContent>
@@ -1543,7 +1550,15 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                     ]
                                                   }`}
                                                 >
-                                                  {nft.name ?? nft.token_id}
+                                                  <div className="flex items-center">
+                                                    <div className="size-6 mr-2">
+                                                      <NftImage
+                                                        className="rounded-md"
+                                                        nft={nft}
+                                                      />
+                                                    </div>
+                                                    {nft.name ?? nft.token_id}
+                                                  </div>
                                                 </SelectItem>
                                               ))}
                                           </SelectContent>

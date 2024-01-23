@@ -67,6 +67,7 @@ const tokenImageVariants = cva("inline-flex overflow-hidden rounded-full", {
 // -----------------------------------------------------------------------------
 
 type TokenImageProps = {
+  className?: string;
   token: TokenData;
   size?: VariantProps<typeof tokenImageVariants>["size"];
 };
@@ -75,7 +76,7 @@ type TokenImageProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const TokenImage: FC<TokenImageProps> = ({ token, size }) => {
+export const TokenImage: FC<TokenImageProps> = ({ className, token, size }) => {
   // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
@@ -89,7 +90,6 @@ export const TokenImage: FC<TokenImageProps> = ({ token, size }) => {
   // Local Variables
   // ---------------------------------------------------------------------------
 
-  const className = tokenImageVariants({ size });
   const urls = [
     `https://logos.covalenthq.com/tokens/${tokenChainId}/${tokenAddress}.png`,
     `https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/${getChainLabelById(token.chain_id)}/assets/${token.address.toLowerCase()}/logo.png`,
@@ -127,7 +127,7 @@ export const TokenImage: FC<TokenImageProps> = ({ token, size }) => {
   if (isImageLoaded && !isImageError) {
     return (
       <img
-        className={className}
+        className={cn(tokenImageVariants({ size }), className)}
         src={currentUrl}
         alt={token.name ?? token.symbol}
         onLoad={() => setIsImageLoaded(true)}
@@ -139,8 +139,8 @@ export const TokenImage: FC<TokenImageProps> = ({ token, size }) => {
   return (
     <span
       className={cn(
-        className,
         "mr-1.5 items-center justify-center text-ellipsis border border-border-primary-weak bg-background-stronger text-xs leading-none text-text-weak",
+        className,
       )}
     >
       {shortenName(token.name ?? token.symbol)}
