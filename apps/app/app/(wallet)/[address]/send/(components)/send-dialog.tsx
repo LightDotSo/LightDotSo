@@ -1583,17 +1583,19 @@ export const SendDialog: FC<SendDialogProps> = ({
               >
                 Cancel
               </Button>
-              <Button asChild disabled={!isFormValid} type="submit">
-                {form.formState.isValid ? (
+              {!isFormValid ? (
+                <Button disabled={!isFormValid} type="submit">
+                  Continue
+                </Button>
+              ) : (
+                <Button disabled={!isFormValid} type="submit">
                   <Link
                     href={`/${address}/op?userOperations=${userOperationsParams!}`}
                   >
                     Continue
                   </Link>
-                ) : (
-                  <span className="cursor-not-allowed">Continue</span>
-                )}
-              </Button>
+                </Button>
+              )}
             </CardFooter>
           </form>
         </Form>
