@@ -1588,7 +1588,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                   Continue
                 </Button>
               ) : (
-                <Button asChild disabled={!isFormValid} type="submit">
+                <Button asChild type="submit">
                   <Link
                     href={`/${address}/op?userOperations=${userOperationsParams!}`}
                   >
