@@ -1592,7 +1592,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                 Add Transfer
               </Button>
             </div>
-            <CardFooter className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between px-0 pt-6">
+            <CardFooter className="flex flex-col space-y-4 px-0 pt-6 md:flex-row md:items-center md:justify-between">
               <Button
                 className="w-full md:w-auto"
                 variant="outline"
@@ -1611,7 +1611,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                   Continue
                 </Button>
               ) : (
-                <Button className="w-full md:w-auto" asChild type="submit">
+                <Button asChild className="w-full md:w-auto" type="submit">
                   <Link
                     href={`/${address}/op?userOperations=${userOperationsParams!}`}
                   >
