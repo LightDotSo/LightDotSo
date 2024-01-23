@@ -147,7 +147,7 @@ export const UserOperationCardTransaction: FC<
           <TableCell className="p-0" colSpan={row.getAllCells().length}>
             <div className="m-4 grid gap-4 md:grid-cols-2">
               <Card className="col-span-1 flex h-full flex-col justify-between space-y-4 border border-border-weak bg-background-strong p-4">
-                <CardHeader className="p-0">
+                <CardHeader>
                   <CardTitle className="text-lg">
                     Transaction Information
                   </CardTitle>
@@ -155,7 +155,7 @@ export const UserOperationCardTransaction: FC<
                     Get more information about this transaction.
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="grow p-0">
+                <CardContent className="grow">
                   {informationItems.map((item, index) => (
                     <div
                       key={index}
@@ -185,7 +185,7 @@ export const UserOperationCardTransaction: FC<
                     </div>
                   ))}
                 </CardContent>
-                <CardFooter className="p-0">
+                <CardFooter>
                   <Button
                     asChild
                     variant="ghost"
@@ -200,13 +200,13 @@ export const UserOperationCardTransaction: FC<
                 </CardFooter>
               </Card>
               <Card className="col-span-1 flex flex-col justify-between space-y-4 border border-border-weak bg-background-strong p-4">
-                <CardHeader className="p-0">
+                <CardHeader>
                   <CardTitle className="text-lg">Progress</CardTitle>
                   <CardDescription>
                     View the progress of this transaction.
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="grow p-0">
+                <CardContent className="grow">
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="col-span-2 flex items-center">
                       <Progress
@@ -234,7 +234,7 @@ export const UserOperationCardTransaction: FC<
                   </div>
                 </CardContent>
                 {userOperation.status === "PROPOSED" && (
-                  <CardFooter className="grid w-full grid-cols-2 items-center gap-3 p-0">
+                  <CardFooter className="grid w-full grid-cols-2 items-center gap-3">
                     <UserOperationCardTransactionSignButton
                       address={address}
                       config={configuration}

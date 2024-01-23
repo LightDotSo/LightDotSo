@@ -278,13 +278,13 @@ export const ConfirmForm: FC = () => {
 
   return (
     <Card className="flex flex-col space-y-6 p-4 lg:px-6 lg:pt-6">
-      <CardHeader className="gap-3 p-0">
+      <CardHeader className="gap-3">
         <CardTitle>Confirm</CardTitle>
         <CardDescription>
           Confirm the details of your new wallet.
         </CardDescription>
       </CardHeader>
-      <CardContent className="grid gap-10 p-0">
+      <CardContent className="grid gap-10">
         <TooltipProvider delayDuration={300}>
           <Form {...form}>
             <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
@@ -317,7 +317,7 @@ export const ConfirmForm: FC = () => {
                   </FormItem>
                 )}
               />
-              <CardFooter className="flex flex-col space-y-4 p-0 pt-4 md:flex-row md:items-center md:justify-between md:space-y-0">
+              <CardFooter className="flex flex-col space-y-4 pt-6 md:flex-row md:items-center md:justify-between md:space-y-0">
                 <Button
                   className="w-full md:w-auto"
                   variant="outline"
