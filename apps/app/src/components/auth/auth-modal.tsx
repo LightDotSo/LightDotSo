@@ -16,12 +16,13 @@
 "use client";
 
 import { getNonce, postAuthVerify } from "@lightdotso/client";
+import { useQueryAuthSession } from "@lightdotso/query";
 import { useAuth, useModals } from "@lightdotso/stores";
 import { Modal } from "@lightdotso/templates";
 import { Button, DialogDescription, DialogTitle, toast } from "@lightdotso/ui";
-import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { SiweMessage } from "siwe";
+import type { Address } from "viem";
 import { useSignMessage, useAccount } from "wagmi";
 
 // -----------------------------------------------------------------------------
@@ -29,6 +30,7 @@ import { useSignMessage, useAccount } from "wagmi";
 // -----------------------------------------------------------------------------
 
 export function AuthModal() {
+
   // ---------------------------------------------------------------------------
   // Wagmi Hooks
   // ---------------------------------------------------------------------------
@@ -37,17 +39,17 @@ export function AuthModal() {
   const { chain } = useAccount();
 
   // ---------------------------------------------------------------------------
-  // Next Hooks
-  // ---------------------------------------------------------------------------
-
-  const router = useRouter();
-
-  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
   const { address, clientType, sessionId } = useAuth();
   const { isAuthModalVisible, hideAuthModal } = useModals();
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { refetchAuthSession } = useQueryAuthSession({address: address as Address});
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -90,7 +92,8 @@ export function AuthModal() {
               res.match(
                 _ => {
                   toast.success("Successfully signed in!");
-                  router.back();
+                  hideAuthModal();
+                  refetchAuthSession(); 
                 },
                 _ => {
                   toast.error("Failed to sign in!");
@@ -115,7 +118,7 @@ export function AuthModal() {
         }
       },
     );
-  }, [address, chain, clientType, router, sessionId, signMessageAsync]);
+  }, [address, chain, clientType, sessionId, signMessageAsync]);
 
   // ---------------------------------------------------------------------------
   // Render

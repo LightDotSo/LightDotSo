@@ -37,7 +37,7 @@ export const useQueryAuthSession = (params: AuthParams) => {
     queryKeys.auth.session({ address: params.address }).queryKey,
   );
 
-  const { data: authSession } = useQuery<AuthSessionData | null>({
+  const { data: authSession, refetch: refetchAuthSession } = useQuery<AuthSessionData | null>({
     queryKey: queryKeys.auth.session({ address: params.address }).queryKey,
     queryFn: async () => {
       if (typeof params.address === "undefined") {
@@ -69,5 +69,6 @@ export const useQueryAuthSession = (params: AuthParams) => {
 
   return {
     authSession,
+    refetchAuthSession 
   };
 };
