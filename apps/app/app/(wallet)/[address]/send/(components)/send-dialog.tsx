@@ -1578,12 +1578,11 @@ export const SendDialog: FC<SendDialogProps> = ({
                 </Accordion>
               ))}
             </div>
-            <div>
+            <div className="pt-6">
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
-                className="mt-6"
                 onClick={() => {
                   append({ address: "", addressOrEns: "" });
                   form.trigger();
@@ -1593,8 +1592,9 @@ export const SendDialog: FC<SendDialogProps> = ({
                 Add Transfer
               </Button>
             </div>
-            <CardFooter className="flex justify-between px-0 pt-12">
+            <CardFooter className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between px-0 pt-6">
               <Button
+                className="w-full md:w-auto"
                 variant="outline"
                 onClick={() => {
                   router.back();
@@ -1603,11 +1603,15 @@ export const SendDialog: FC<SendDialogProps> = ({
                 Cancel
               </Button>
               {!isFormValid ? (
-                <Button disabled={!isFormValid} type="submit">
+                <Button
+                  className="w-full md:w-auto"
+                  disabled={!isFormValid}
+                  type="submit"
+                >
                   Continue
                 </Button>
               ) : (
-                <Button asChild type="submit">
+                <Button className="w-full md:w-auto" asChild type="submit">
                   <Link
                     href={`/${address}/op?userOperations=${userOperationsParams!}`}
                   >
