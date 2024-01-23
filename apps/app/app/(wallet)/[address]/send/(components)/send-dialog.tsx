@@ -1551,7 +1551,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                   }`}
                                                 >
                                                   <div className="flex items-center">
-                                                    <div className="size-6 mr-2">
+                                                    <div className="mr-2 size-6">
                                                       <NftImage
                                                         className="rounded-md"
                                                         nft={nft}
