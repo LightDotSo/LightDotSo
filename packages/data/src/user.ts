@@ -19,4 +19,5 @@
 
 export type UserData = {
   id: string;
+  address: string;
 };
