@@ -305,8 +305,9 @@ export const ConfirmForm: FC = () => {
                   </FormItem>
                 )}
               />
-              <CardFooter className="flex justify-between p-0 pt-4">
+              <CardFooter className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between p-0 pt-4">
                 <Button
+                  className="w-full md:w-auto"
                   variant="outline"
                   onClick={() => {
                     router.back();
@@ -314,7 +315,11 @@ export const ConfirmForm: FC = () => {
                 >
                   Go Back
                 </Button>
-                <Button disabled={!isFormValid} type="submit">
+                <Button
+                  className="w-full md:w-auto"
+                  disabled={!isFormValid}
+                  type="submit"
+                >
                   Create Wallet
                 </Button>
               </CardFooter>
