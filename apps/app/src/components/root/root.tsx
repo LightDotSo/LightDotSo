@@ -33,6 +33,7 @@ import { MainNav } from "@/components/nav/main-nav";
 import { wagmiConfig } from "@/components/web3/wagmi";
 import { Web3Provider } from "@/components/web3/web3-provider";
 import { WssState } from "@/components/wss/wss-state";
+import { N } from "@upstash/redis/zmscore-a4ec4c2a";
 
 // -----------------------------------------------------------------------------
 // Dynamic
@@ -52,6 +53,14 @@ const DepositModal = dynamic(
     ssr: false,
   },
 );
+
+const NftModal = dynamic(() => import("@/components/nft/nft-modal"), {
+  ssr: false,
+});
+
+const TokenModal = dynamic(() => import("@/components/token/token-modal"), {
+  ssr: false,
+});
 
 // -----------------------------------------------------------------------------
 // Component
@@ -103,6 +112,8 @@ export const Root: FC<RootProps> = ({ children }) => {
               {/* Modals */}
               <AuthModal />
               <DepositModal />
+              <NftModal />
+              <TokenModal />
               {/* States */}
               <AuthState />
               <WssState />
