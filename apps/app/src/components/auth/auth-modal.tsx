@@ -30,7 +30,6 @@ import { useSignMessage, useAccount } from "wagmi";
 // -----------------------------------------------------------------------------
 
 export function AuthModal() {
-
   // ---------------------------------------------------------------------------
   // Wagmi Hooks
   // ---------------------------------------------------------------------------
@@ -49,7 +48,9 @@ export function AuthModal() {
   // Query
   // ---------------------------------------------------------------------------
 
-  const { refetchAuthSession } = useQueryAuthSession({address: address as Address});
+  const { refetchAuthSession } = useQueryAuthSession({
+    address: address as Address,
+  });
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -93,7 +94,7 @@ export function AuthModal() {
                 _ => {
                   toast.success("Successfully signed in!");
                   hideAuthModal();
-                  refetchAuthSession(); 
+                  refetchAuthSession();
                 },
                 _ => {
                   toast.error("Failed to sign in!");
