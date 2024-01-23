@@ -966,14 +966,17 @@ export const SendDialog: FC<SendDialogProps> = ({
             <div className="space-y-4">
               {fields.map((field, index) => (
                 <Accordion
+                  defaultValue="value-0"
                   key={index}
                   collapsible
-                  className="rounded-md border border-border bg-background-weak p-6"
+                  className="rounded-md border border-border bg-background-weak p-4"
                   type="single"
                 >
                   <AccordionItem className="border-0" value={`value-${index}`}>
-                    <AccordionTrigger>Transfer #{index}</AccordionTrigger>
-                    <AccordionContent className="p-2">
+                    <AccordionTrigger className="font-medium text-xl md:text-2xl py-0 px-1">
+                      Transfer #{index}
+                    </AccordionTrigger>
+                    <AccordionContent className="pt-4 px-1">
                       <FormItem
                         key={field.id}
                         className="grid grid-cols-8 gap-4 space-y-0"
@@ -982,7 +985,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                           control={form.control}
                           name={`transfers.${index}.addressOrEns`}
                           render={({ field }) => (
-                            <div className="col-span-7 space-y-2">
+                            <div className="col-span-8 space-y-2">
                               <Label htmlFor="address">
                                 Recepient Address or ENS
                               </Label>
@@ -1046,37 +1049,38 @@ export const SendDialog: FC<SendDialogProps> = ({
                                     </Avatar>
                                   </div>
                                 </div>
+                                <div
+                                  className={cn(
+                                    "flex h-full flex-col",
+                                    // If there is error, justify center, else end
+                                    form.formState.errors.transfers &&
+                                      form.formState.errors.transfers[index] &&
+                                      form.formState.errors.transfers[index]
+                                        ?.addressOrEns
+                                      ? "justify-center"
+                                      : "justify-end",
+                                  )}
+                                >
+                                  <ButtonIcon
+                                    disabled={fields.length < 2}
+                                    variant="outline"
+                                    className="mt-1.5 rounded-full"
+                                    onClick={() => {
+                                      remove(index);
+                                      form.trigger();
+                                    }}
+                                  >
+                                    <Trash2Icon className="size-5" />
+                                  </ButtonIcon>
+                                </div>
                               </div>
                               <FormMessage />
                             </div>
                           )}
                         />
-                        <div
-                          className={cn(
-                            "col-span-1 flex h-full flex-col",
-                            // If there is error, justify center, else end
-                            form.formState.errors.transfers &&
-                              form.formState.errors.transfers[index] &&
-                              form.formState.errors.transfers[index]
-                                ?.addressOrEns
-                              ? "justify-center"
-                              : "justify-end",
-                          )}
-                        >
-                          <ButtonIcon
-                            disabled={fields.length < 2}
-                            variant="outline"
-                            className="mt-1.5 rounded-full"
-                            onClick={() => {
-                              remove(index);
-                              form.trigger();
-                            }}
-                          >
-                            <Trash2Icon className="size-5" />
-                          </ButtonIcon>
-                        </div>
+
                         <Tabs
-                          className="col-span-7"
+                          className="col-span-8"
                           defaultValue={
                             transfers[index]?.assetType === "erc20"
                               ? "token"
@@ -1246,7 +1250,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                   )}
                                 />
                               </div>
-                              <div className="relative col-span-3 inline-block w-full">
+                              <div className="relative col-span-4 inline-block w-full">
                                 <FormField
                                   key={field.id}
                                   control={form.control}
