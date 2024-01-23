@@ -31,7 +31,12 @@ interface MinimalPageWrapperProps {
 
 export function MinimalPageWrapper({ children }: MinimalPageWrapperProps) {
   return (
-    <div className={cn("relative flex flex-col space-y-6", baseHeightWrapper)}>
+    <div
+      className={cn(
+        "relative flex flex-col space-y-6 overflow-y-hidden",
+        baseHeightWrapper,
+      )}
+    >
       {children}
     </div>
   );
