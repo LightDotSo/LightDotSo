@@ -666,7 +666,7 @@ export const ConfigurationForm: FC = () => {
                   </FormItem>
                 )}
               />
-              <CardFooter className="flex flex-col space-y-4 p-0 pt-4 md:space-y-0 md:flex-row md:items-center md:justify-between">
+              <CardFooter className="flex flex-col space-y-4 p-0 pt-4 md:flex-row md:items-center md:justify-between md:space-y-0">
                 <Button
                   className="w-full md:w-auto"
                   variant="outline"
