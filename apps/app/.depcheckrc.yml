@@ -39,3 +39,4 @@ ignores:
   - "@next/bundle-analyzer"
   - "@lightdotso/const"
   - "@lightdotso/demo"
+  - wagmi
