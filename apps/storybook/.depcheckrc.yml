@@ -49,3 +49,4 @@ ignores:
   - "@lightdotso/tables"
   - "@lightdotso/templates"
   - wagmi
+  - "@lightdotso/wagmi"
