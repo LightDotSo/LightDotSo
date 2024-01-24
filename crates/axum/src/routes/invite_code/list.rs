@@ -14,11 +14,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use super::types::InviteCode;
-use crate::{result::AppJsonResult, sessions::get_user_id, state::AppState};
+use crate::{auth::authenticate_user, result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
-    Json,
+    headers::{authorization::Bearer, Authorization},
+    Json, TypedHeader,
 };
 use lightdotso_prisma::invite_code::{self, WhereParam};
 use serde::{Deserialize, Serialize};
@@ -72,6 +73,7 @@ pub(crate) async fn v1_invite_code_list_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
     mut session: Session,
+    TypedHeader(auth): TypedHeader<Authorization<Bearer>>,
 ) -> AppJsonResult<Vec<InviteCode>> {
     // -------------------------------------------------------------------------
     // Parse
@@ -81,11 +83,12 @@ pub(crate) async fn v1_invite_code_list_handler(
     let Query(query) = list_query;
 
     // -------------------------------------------------------------------------
-    // Session
+    // Authentication
     // -------------------------------------------------------------------------
 
     // Get the authenticated user id.
-    let auth_user_id = get_user_id(&mut session)?;
+    let auth_user_id =
+        authenticate_user(&state, &mut session, &auth.token().to_string(), &None).await?;
 
     // -------------------------------------------------------------------------
     // Params
@@ -134,13 +137,15 @@ pub(crate) async fn v1_invite_code_list_handler(
 pub(crate) async fn v1_invite_code_list_count_handler(
     State(state): State<AppState>,
     mut session: Session,
+    TypedHeader(auth): TypedHeader<Authorization<Bearer>>,
 ) -> AppJsonResult<InviteCodeListCount> {
     // -------------------------------------------------------------------------
-    // Session
+    // Authentication
     // -------------------------------------------------------------------------
 
     // Get the authenticated user id.
-    let auth_user_id = get_user_id(&mut session)?;
+    let auth_user_id =
+        authenticate_user(&state, &mut session, &auth.token().to_string(), &None).await?;
 
     // -------------------------------------------------------------------------
     // Params

@@ -16,14 +16,86 @@
 #![allow(clippy::unwrap_used)]
 
 use crate::{
-    error::RouteError, result::AppResult, routes::wallet::error::WalletError,
-    sessions::get_user_id, state::AppState,
+    admin::token_is_valid,
+    error::RouteError,
+    result::{AppError, AppResult},
+    routes::{auth::error::AuthError, user::error::UserError, wallet::error::WalletError},
+    sessions::get_user_id,
+    state::AppState,
 };
 use ethers_main::{types::Address, utils::to_checksum};
-use lightdotso_prisma::{configuration, wallet};
+use lightdotso_prisma::{configuration, user, wallet};
 use lightdotso_tracing::tracing::info;
 use tower_sessions_core::Session;
 
+/// Authenticate the user.
+/// Returns the user id of the authenticated user.
+/// If the user is not authenticated, return a 401.
+pub(crate) async fn authenticate_user(
+    state: &AppState,
+    session: &mut Session,
+    token: &String,
+    user: &Option<Address>,
+) -> AppResult<String> {
+    // -------------------------------------------------------------------------
+    // Admin
+    // -------------------------------------------------------------------------
+
+    if !token.is_empty() {
+        let is_admin = token_is_valid(token);
+
+        // If the token is not valid, return a 401.
+        if !is_admin {
+            return Err(AppError::RouteError(RouteError::AuthError(AuthError::Unauthorized(
+                "Unauthorized Admin Token".to_string(),
+            ))));
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Session
+    // -------------------------------------------------------------------------
+
+    // Get the authenticated user id from the session.
+    let auth_user_id = get_user_id(session)?;
+    info!(?auth_user_id);
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
+    if let Some(user_address) = user {
+        // Get the user from the database.
+        let user = state
+            .client
+            .user()
+            .find_unique(user::address::equals(to_checksum(user_address, None)))
+            .exec()
+            .await?;
+
+        // If the user is not found, return a 404.
+        let user = user
+            .clone()
+            .ok_or(RouteError::UserError(UserError::NotFound("User not found".to_string())))?;
+
+        // Check to see if the user is the same as the authenticated user.
+        if user.id != auth_user_id {
+            return Err(AppError::RouteError(RouteError::UserError(UserError::BadRequest(
+                "User is not the same as the authenticated user".to_string(),
+            ))));
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
+
+    Ok(auth_user_id)
+}
+
+/// Authenticate the wallet user.
+/// Returns the user id of the authenticated user, if the user is an owner of the wallet.
+/// If the user is not authenticated, return a 401.
 pub(crate) async fn authenticate_wallet_user(
     state: &AppState,
     session: &mut Session,
