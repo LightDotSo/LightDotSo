@@ -16,9 +16,8 @@
 "use client";
 
 import type { OwnerData } from "@lightdotso/data";
-import { PlaceholderOrb } from "@lightdotso/elements";
 import { DataTableColumnHeader } from "@lightdotso/templates";
-import { Avatar, Checkbox } from "@lightdotso/ui";
+import { Checkbox } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { OwnerTableRowActions } from "./actions";
 import { OwnerCardAddress } from "./card";

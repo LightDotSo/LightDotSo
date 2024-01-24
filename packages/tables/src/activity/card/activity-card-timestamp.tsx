@@ -17,7 +17,6 @@
 
 import type { ActivityData } from "@lightdotso/data";
 import type { FC } from "react";
-import type { Address } from "viem";
 import { TimestampCard } from "../../(components)/card";
 
 // -----------------------------------------------------------------------------
