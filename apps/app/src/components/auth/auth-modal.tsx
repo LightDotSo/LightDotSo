@@ -119,6 +119,7 @@ export function AuthModal() {
         }
       },
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address, chain, clientType, sessionId, signMessageAsync]);
 
   // ---------------------------------------------------------------------------
