@@ -18,9 +18,9 @@
 import { PlaceholderOrb } from "@lightdotso/elements";
 import { Avatar } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
+import { useEnsName } from "@lightdotso/wagmi";
 import type { FC } from "react";
 import type { Address } from "viem";
-import { useEnsName } from "wagmi";
 
 // -----------------------------------------------------------------------------
 // Props

@@ -2124,6 +2124,9 @@ importers:
       '@lightdotso/utils':
         specifier: workspace:*
         version: link:../utils
+      '@lightdotso/wagmi':
+        specifier: workspace:*
+        version: link:../wagmi
       '@radix-ui/react-icons':
         specifier: ^1.3.0
         version: 1.3.0(react@18.2.0)

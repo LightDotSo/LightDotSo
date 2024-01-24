@@ -25,3 +25,5 @@ export {
   useReadLightVerifyingPaymasterSenderNonce,
   useReadLightVerifyingPaymasterVerifyingSigner,
 } from "./generated";
+
+export * from "wagmi";
