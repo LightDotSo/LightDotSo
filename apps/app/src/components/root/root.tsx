@@ -46,6 +46,21 @@ const AuthModal = dynamic(() => import("@/components/auth/auth-modal"), {
   ssr: false,
 });
 
+const DepositModal = dynamic(
+  () => import("@/components/deposit/deposit-modal"),
+  {
+    ssr: false,
+  },
+);
+
+const NftModal = dynamic(() => import("@/components/nft/nft-modal"), {
+  ssr: false,
+});
+
+const TokenModal = dynamic(() => import("@/components/token/token-modal"), {
+  ssr: false,
+});
+
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
@@ -95,6 +110,9 @@ export const Root: FC<RootProps> = ({ children }) => {
               <Toaster />
               {/* Modals */}
               <AuthModal />
+              <DepositModal />
+              <NftModal />
+              <TokenModal />
               {/* States */}
               <AuthState />
               <WssState />

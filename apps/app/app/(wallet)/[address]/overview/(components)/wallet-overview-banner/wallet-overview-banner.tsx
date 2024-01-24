@@ -15,13 +15,13 @@
 
 "use client";
 
+import { useModals } from "@lightdotso/stores";
 import {
   Button,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
   TooltipProvider,
-  toast,
 } from "@lightdotso/ui";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { Suspense } from "react";
@@ -46,6 +46,12 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
   address,
 }) => {
   // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { showDepositModal } = useModals();
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -66,9 +72,7 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
               <Button
                 type="button"
                 className="w-full md:w-28"
-                onClick={() => {
-                  toast.error("Not implemented yet");
-                }}
+                onClick={showDepositModal}
               >
                 <PlusCircleIcon className="mr-2 size-5" />
                 Deposit

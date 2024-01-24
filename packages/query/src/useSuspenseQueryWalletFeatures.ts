@@ -39,37 +39,39 @@ export const useSuspenseQueryWalletFeatures = (
     queryKeys.wallet.features({ address: params.address }).queryKey,
   );
 
-  const { data: walletFeatures } = useSuspenseQuery<WalletFeaturesData | null>({
-    queryKey: queryKeys.wallet.features({ address: params.address }).queryKey,
-    queryFn: async () => {
-      if (typeof params.address === "undefined") {
-        return null;
-      }
+  const { data: walletFeatures, refetch: refetchWalletFeatures } =
+    useSuspenseQuery<WalletFeaturesData | null>({
+      queryKey: queryKeys.wallet.features({ address: params.address }).queryKey,
+      queryFn: async () => {
+        if (typeof params.address === "undefined") {
+          return null;
+        }
 
-      const res = await getWalletFeatures(
-        {
-          params: {
-            query: {
-              address: params.address,
+        const res = await getWalletFeatures(
+          {
+            params: {
+              query: {
+                address: params.address,
+              },
             },
           },
-        },
-        clientType,
-      );
+          clientType,
+        );
 
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
-  });
+        // Return if the response is 200
+        return res.match(
+          data => {
+            return data;
+          },
+          _ => {
+            return currentData ?? null;
+          },
+        );
+      },
+    });
 
   return {
     walletFeatures,
+    refetchWalletFeatures,
   };
 };
