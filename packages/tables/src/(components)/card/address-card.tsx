@@ -19,7 +19,7 @@ import { PlaceholderOrb } from "@lightdotso/elements";
 import { Avatar } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
 import type { FC } from "react";
-import { Address } from "viem";
+import type { Address } from "viem";
 import { useEnsName } from "wagmi";
 
 // -----------------------------------------------------------------------------
@@ -44,7 +44,7 @@ export const AddressCard: FC<ChainCardProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="flex items-center overflow-ellipsis">
+    <div className="flex items-center text-ellipsis">
       <Avatar className="mr-3 size-7">
         <PlaceholderOrb address={address} />
       </Avatar>
