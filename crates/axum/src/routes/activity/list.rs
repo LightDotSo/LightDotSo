@@ -201,16 +201,8 @@ async fn authenticate_user_id(
     session: &mut Session,
     auth_token: String,
 ) -> AppResult<String> {
-    // -------------------------------------------------------------------------
-    // Parse
-    // -------------------------------------------------------------------------
-
     // Parse the address.
     let query_address: Option<H160> = query.clone().address.as_ref().and_then(|s| s.parse().ok());
-
-    // -------------------------------------------------------------------------
-    // Authentication
-    // -------------------------------------------------------------------------
 
     // If the user id is provided, authenticate the user.
     let auth_user_id = if query.user_id.is_some() {
@@ -222,10 +214,6 @@ async fn authenticate_user_id(
             "Unauthorized".to_string(),
         ))));
     };
-
-    // -------------------------------------------------------------------------
-    // Return
-    // -------------------------------------------------------------------------
 
     Ok(auth_user_id)
 }

@@ -14,15 +14,24 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use super::types::Notification;
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{
+    authentication::{authenticate_user, authenticate_wallet_user},
+    error::RouteError,
+    result::{AppError, AppJsonResult, AppResult},
+    routes::auth::error::AuthError,
+    state::AppState,
+};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
-    Json,
+    headers::{authorization::Bearer, Authorization},
+    Json, TypedHeader,
 };
+use ethers_main::types::H160;
 use lightdotso_prisma::notification::{self, WhereParam};
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
+use tower_sessions_core::Session;
 use utoipa::{IntoParams, ToSchema};
 
 // -----------------------------------------------------------------------------
@@ -75,6 +84,8 @@ pub(crate) struct NotificationListCount {
 pub(crate) async fn v1_notification_list_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
+    mut session: Session,
+    TypedHeader(auth): TypedHeader<Authorization<Bearer>>,
 ) -> AppJsonResult<Vec<Notification>> {
     // -------------------------------------------------------------------------
     // Parse
@@ -84,11 +95,18 @@ pub(crate) async fn v1_notification_list_handler(
     let Query(query) = list_query;
 
     // -------------------------------------------------------------------------
+    // Authentication
+    // -------------------------------------------------------------------------
+
+    let auth_user_id =
+        authenticate_user_id(&query, &state, &mut session, auth.token().to_string()).await?;
+
+    // -------------------------------------------------------------------------
     // Params
     // -------------------------------------------------------------------------
 
     // If the address is provided, add it to the query.
-    let query_params = construct_notification_list_query_params(&query);
+    let query_params = construct_activity_list_query_params(&query, auth_user_id);
 
     // -------------------------------------------------------------------------
     // DB
@@ -131,6 +149,8 @@ pub(crate) async fn v1_notification_list_handler(
 pub(crate) async fn v1_notification_list_count_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
+    mut session: Session,
+    TypedHeader(auth): TypedHeader<Authorization<Bearer>>,
 ) -> AppJsonResult<NotificationListCount> {
     // -------------------------------------------------------------------------
     // Parse
@@ -141,11 +161,18 @@ pub(crate) async fn v1_notification_list_count_handler(
     info!(?query);
 
     // -------------------------------------------------------------------------
+    // Authentication
+    // -------------------------------------------------------------------------
+
+    let auth_user_id =
+        authenticate_user_id(&query, &state, &mut session, auth.token().to_string()).await?;
+
+    // -------------------------------------------------------------------------
     // Params
     // -------------------------------------------------------------------------
 
     // If the address is provided, add it to the query.
-    let query_params = construct_notification_list_query_params(&query);
+    let query_params = construct_activity_list_query_params(&query, auth_user_id);
 
     // -------------------------------------------------------------------------
     // DB
@@ -165,8 +192,32 @@ pub(crate) async fn v1_notification_list_count_handler(
 // Utils
 // -----------------------------------------------------------------------------
 
+/// Authenticates the user and returns the user id.
+async fn authenticate_user_id(
+    query: &ListQuery,
+    state: &AppState,
+    session: &mut Session,
+    auth_token: String,
+) -> AppResult<String> {
+    // Parse the address.
+    let query_address: Option<H160> = query.wallet_address.as_ref().and_then(|s| s.parse().ok());
+
+    // If the user id is provided, authenticate the user.
+    let auth_user_id = if query.user_id.is_some() {
+        authenticate_user(state, session, Some(auth_token), query.user_id.clone()).await?
+    } else if let Some(addr) = query_address {
+        authenticate_wallet_user(state, session, &addr).await?
+    } else {
+        return Err(AppError::RouteError(RouteError::AuthError(AuthError::Unauthorized(
+            "Unauthorized".to_string(),
+        ))));
+    };
+
+    Ok(auth_user_id)
+}
+
 /// Constructs a query for notifications.
-fn construct_notification_list_query_params(query: &ListQuery) -> Vec<WhereParam> {
+fn construct_activity_list_query_params(query: &ListQuery, user_id: String) -> Vec<WhereParam> {
     let mut query_exp = match &query.wallet_address {
         Some(addr) => {
             vec![notification::wallet_address::equals(Some(addr.clone()))]
@@ -174,9 +225,7 @@ fn construct_notification_list_query_params(query: &ListQuery) -> Vec<WhereParam
         None => vec![],
     };
 
-    if let Some(id) = &query.user_id {
-        query_exp.push(notification::user_id::equals(Some(id.clone())));
-    }
+    query_exp.push(notification::user_id::equals(Some(user_id.clone())));
 
     query_exp
 }
