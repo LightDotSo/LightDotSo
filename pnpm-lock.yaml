@@ -330,6 +330,9 @@ importers:
       '@lightdotso/kysely':
         specifier: workspace:*
         version: link:../../configurations/kysely
+      '@lightdotso/modals':
+        specifier: workspace:*
+        version: link:../../packages/modals
       '@lightdotso/msw':
         specifier: workspace:*
         version: link:../../packages/msw
@@ -1721,6 +1724,58 @@ importers:
       '@types/node':
         specifier: ^20.11.5
         version: 20.11.5
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
+  packages/modals:
+    dependencies:
+      '@lightdotso/client':
+        specifier: workspace:*
+        version: link:../client
+      '@lightdotso/query':
+        specifier: workspace:*
+        version: link:../query
+      '@lightdotso/stores':
+        specifier: workspace:*
+        version: link:../stores
+      '@lightdotso/templates':
+        specifier: workspace:*
+        version: link:../templates
+      '@lightdotso/ui':
+        specifier: workspace:*
+        version: link:../ui
+      '@lightdotso/wagmi':
+        specifier: workspace:*
+        version: link:../wagmi
+      '@storybook/react':
+        specifier: ^7.6.10
+        version: 7.6.10(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+      siwe:
+        specifier: ^2.1.4
+        version: 2.1.4(ethers@6.7.0)
+      viem:
+        specifier: ^2.5.0
+        version: 2.5.0(typescript@5.3.3)(zod@3.22.4)
+    devDependencies:
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../../configurations/tsconfig
+      '@types/node':
+        specifier: ^20.11.5
+        version: 20.11.5
+      '@types/react':
+        specifier: ^18.2.48
+        version: 18.2.48
+      '@types/react-dom':
+        specifier: ^18.2.18
+        version: 18.2.18
       typescript:
         specifier: ^5.3.3
         version: 5.3.3

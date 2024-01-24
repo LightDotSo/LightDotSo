@@ -52,7 +52,15 @@ const preview: Preview = {
     },
     options: {
       storySort: {
-        order: ["theme", "component", "svg", "element", "template", "table"],
+        order: [
+          "theme",
+          "component",
+          "svg",
+          "element",
+          "modal",
+          "template",
+          "table",
+        ],
       },
     },
     viewport: {
