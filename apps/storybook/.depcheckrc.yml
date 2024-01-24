@@ -48,3 +48,5 @@ ignores:
   - "@lightdotso/elements"
   - "@lightdotso/tables"
   - "@lightdotso/templates"
+  - wagmi
+  - "@lightdotso/wagmi"

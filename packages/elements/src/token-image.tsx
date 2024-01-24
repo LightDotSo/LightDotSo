@@ -139,7 +139,7 @@ export const TokenImage: FC<TokenImageProps> = ({ className, token, size }) => {
   return (
     <span
       className={cn(
-        "mr-1.5 items-center justify-center text-ellipsis border border-border-primary-weak bg-background-stronger text-xs leading-none text-text-weak",
+        "items-center justify-center text-ellipsis border border-border-primary-weak bg-background-stronger text-xs leading-none text-text-weak",
         tokenImageVariants({ size }),
         className,
       )}

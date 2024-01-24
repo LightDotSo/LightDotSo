@@ -13,18 +13,4 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { projectId, wagmiConfig } from "./config";
-export {
-  lightWalletAbi,
-  lightWalletFactoryAbi,
-  useReadLightVerifyingPaymaster,
-  useReadLightVerifyingPaymasterEntryPoint,
-  useReadLightVerifyingPaymasterGetDeposit,
-  useReadLightVerifyingPaymasterGetHash,
-  useReadLightVerifyingPaymasterOwner,
-  useReadLightVerifyingPaymasterParsePaymasterAndData,
-  useReadLightVerifyingPaymasterSenderNonce,
-  useReadLightVerifyingPaymasterVerifyingSigner,
-} from "./generated";
-
-export * from "wagmi";
+export { OwnerCardAddress } from "./owner-card-address";

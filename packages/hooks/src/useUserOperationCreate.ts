@@ -22,6 +22,7 @@ import { subdigestOf } from "@lightdotso/solutions";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import {
+  useSignMessage,
   lightWalletAbi,
   lightWalletFactoryAbi,
   useReadLightVerifyingPaymasterGetHash,
@@ -38,7 +39,6 @@ import {
   fromHex,
   decodeFunctionData,
 } from "viem";
-import { useSignMessage } from "wagmi";
 
 // -----------------------------------------------------------------------------
 // Props

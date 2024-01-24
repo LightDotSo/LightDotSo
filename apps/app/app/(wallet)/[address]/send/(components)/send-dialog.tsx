@@ -58,6 +58,7 @@ import {
   TooltipProvider,
 } from "@lightdotso/ui";
 import { cn, refineNumberFormat } from "@lightdotso/utils";
+import { lightWalletAbi } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
@@ -82,7 +83,6 @@ import * as z from "zod";
 import { useTransfersQueryState } from "@/app/(wallet)/[address]/send/(hooks)";
 import { publicClient } from "@/clients/public";
 import { debounce } from "@/utils";
-import { lightWalletAbi } from "@/wagmi";
 
 // -----------------------------------------------------------------------------
 // Types

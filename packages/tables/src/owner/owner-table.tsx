@@ -168,7 +168,6 @@ export const OwnerTable: FC<OwnerTableProps> = ({
           table.getRowModel().rows.map(row => (
             <TableRow
               key={row.id}
-              className="cursor-pointer"
               data-state={row.getIsSelected() && "selected"}
             >
               {row.getVisibleCells().map(cell => (

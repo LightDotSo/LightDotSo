@@ -20,10 +20,10 @@ import { useQueryAuthSession } from "@lightdotso/query";
 import { useAuth, useModals } from "@lightdotso/stores";
 import { Modal } from "@lightdotso/templates";
 import { Button, DialogDescription, DialogTitle, toast } from "@lightdotso/ui";
+import { useSignMessage, useAccount } from "@lightdotso/wagmi";
 import { useCallback } from "react";
 import { SiweMessage } from "siwe";
 import type { Address } from "viem";
-import { useSignMessage, useAccount } from "wagmi";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -119,6 +119,7 @@ export function AuthModal() {
         }
       },
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address, chain, clientType, sessionId, signMessageAsync]);
 
   // ---------------------------------------------------------------------------

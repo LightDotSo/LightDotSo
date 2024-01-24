@@ -34,10 +34,10 @@ import {
   toast,
 } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
+import { useEnsName } from "@lightdotso/wagmi";
 import { ChevronDown, Copy } from "lucide-react";
 import { useCallback, type FC } from "react";
 import type { Address } from "viem";
-import { useEnsName } from "wagmi";
 import { useCopy } from "@/hooks";
 
 // -----------------------------------------------------------------------------

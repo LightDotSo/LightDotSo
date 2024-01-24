@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+export { AddressCard } from "./address-card";
 export { ChainCard } from "./chain-card";
 export { InterpretationActionCard } from "./interpretation-action-card";
 export { InterpretationCard } from "./interpretation-card";
+export { TimestampCard } from "./timestamp-card";

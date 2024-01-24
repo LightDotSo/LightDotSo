@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import "@lightdotso/styles/global.css";
-import { Toaster, ReactQueryProvider } from "@lightdotso/ui";
+import { Toaster, ReactQueryProvider, Web3Provider } from "@lightdotso/ui";
 import type { Preview } from "@storybook/react";
 import {
   INITIAL_VIEWPORTS,
@@ -28,7 +28,9 @@ initialize();
 export const decorators = [
   Story => (
     <ReactQueryProvider showDevTools={false}>
-      <Story />
+      <Web3Provider>
+        <Story />
+      </Web3Provider>
       <Toaster />
     </ReactQueryProvider>
   ),

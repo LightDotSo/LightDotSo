@@ -34,13 +34,13 @@ import {
   DropdownMenuTrigger,
 } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
+import { useDisconnect } from "@lightdotso/wagmi";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { Wallet } from "lucide-react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import type { FC } from "react";
 import type { Address } from "viem";
-import { useDisconnect } from "wagmi";
 import { ConnectButton } from "@/components/web3/connect-button";
 import { useIsMounted } from "@/hooks";
 

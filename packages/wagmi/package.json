@@ -26,6 +26,7 @@
     "wagmi": "cd ../.. && pnpm wagmi:generate"
   },
   "dependencies": {
+    "@lightdotso/const": "workspace:*",
     "wagmi": "^2.5.1"
   },
   "publishConfig": {

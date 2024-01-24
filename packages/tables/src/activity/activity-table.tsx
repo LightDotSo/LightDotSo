@@ -121,9 +121,9 @@ export const ActivityTable: FC<ActivityTableProps> = ({
   }, [
     table,
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("address"),
+    table.getColumn("user_address"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("address")?.getFilterValue(),
+    table.getColumn("user_address")?.getFilterValue(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table.getColumn("entity"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -182,7 +182,6 @@ export const ActivityTable: FC<ActivityTableProps> = ({
           table.getRowModel().rows.map(row => (
             <TableRow
               key={row.id}
-              className="cursor-pointer"
               data-state={row.getIsSelected() && "selected"}
             >
               {row.getVisibleCells().map(cell => (

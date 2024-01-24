@@ -21,17 +21,16 @@ import {
   ReactQueryProvider,
   Toaster,
   VercelToolbar,
+  Web3Provider,
 } from "@lightdotso/ui";
+import { cookieToInitialState, wagmiConfig } from "@lightdotso/wagmi";
 import dynamic from "next/dynamic";
 import { Inter } from "next/font/google";
 import { headers } from "next/headers";
 import Script from "next/script";
 import { Suspense } from "react";
 import type { FC, ReactNode } from "react";
-import { cookieToInitialState } from "wagmi";
 import { MainNav } from "@/components/nav/main-nav";
-import { wagmiConfig } from "@/components/web3/wagmi";
-import { Web3Provider } from "@/components/web3/web3-provider";
 import { WssState } from "@/components/wss/wss-state";
 
 // -----------------------------------------------------------------------------
@@ -103,6 +102,7 @@ export const Root: FC<RootProps> = ({ children }) => {
         <ThemeProvider attribute="class">
           <ReactQueryProvider>
             <Web3Provider initialState={initialState}>
+              {/* Layout */}
               <MainNav>{children}</MainNav>
               <Footer />
               {/* Utility Functions */}

@@ -37,7 +37,7 @@ pub(crate) struct Activity {
     /// The wallet address of the activity.
     address: Option<String>,
     /// The user that created the activity.
-    user_address: Option<User>,
+    user: Option<User>,
 }
 
 // -----------------------------------------------------------------------------
@@ -53,7 +53,7 @@ impl From<activity::Data> for Activity {
             operation: activity.operation.to_string(),
             timestamp: activity.timestamp.to_rfc3339(),
             address: activity.wallet_address.map(|addr| addr.to_string()),
-            user_address: activity.user.and_then(|user| user.map(|data| User::from(*data))),
+            user: activity.user.and_then(|user| user.map(|data| User::from(*data))),
         }
     }
 }
