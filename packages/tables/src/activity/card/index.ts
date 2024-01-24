@@ -16,3 +16,4 @@
 export { ActivityCardAddress } from "./activity-card-address";
 export { ActivityCardEntity } from "./activity-card-entity";
 export { ActivityCardOperation } from "./activity-card-operation";
+export { ActivityCardTimestamp } from "./activity-card-timestamp";

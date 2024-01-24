@@ -22,6 +22,7 @@ import {
   ActivityCardAddress,
   ActivityCardEntity,
   ActivityCardOperation,
+  ActivityCardTimestamp,
 } from "./card";
 
 // -----------------------------------------------------------------------------
@@ -71,9 +72,7 @@ export const activityColumns: ColumnDef<ActivityData>[] = [
         title="Timestamp"
       />
     ),
-    cell: ({ row }) => (
-      <div>{new Date(row.original.timestamp).toLocaleString()}</div>
-    ),
+    cell: ({ row }) => <ActivityCardTimestamp activity={row.original} />,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
