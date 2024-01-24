@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import "@lightdotso/styles/global.css";
-import { Toaster, ReactQueryProvider } from "@lightdotso/ui";
+import { Toaster, ReactQueryProvider, Web3Provider } from "@lightdotso/ui";
 import type { Preview } from "@storybook/react";
 import {
   INITIAL_VIEWPORTS,
@@ -22,24 +22,15 @@ import {
 } from "@storybook/addon-viewport";
 import * as React from "react";
 import { initialize, mswLoader } from "msw-storybook-addon";
-import { WagmiProvider, createConfig, http } from "@lightdotso/wagmi";
-import { mainnet, sepolia } from "wagmi/chains";
-
-export const config = createConfig({
-  chains: [mainnet],
-  transports: {
-    [mainnet.id]: http(),
-  },
-});
 
 initialize();
 
 export const decorators = [
   Story => (
     <ReactQueryProvider showDevTools={false}>
-      <WagmiProvider config={config}>
+      <Web3Provider>
         <Story />
-      </WagmiProvider>
+      </Web3Provider>
       <Toaster />
     </ReactQueryProvider>
   ),
