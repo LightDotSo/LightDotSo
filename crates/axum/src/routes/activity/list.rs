@@ -37,7 +37,7 @@ use utoipa::{IntoParams, ToSchema};
 // Query
 // -----------------------------------------------------------------------------
 
-#[derive(Clone, Debug, Deserialize, Default, IntoParams)]
+#[derive(Debug, Deserialize, Default, IntoParams)]
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct ListQuery {
@@ -198,7 +198,7 @@ async fn authenticate_user_id(
     auth_token: String,
 ) -> AppResult<()> {
     // Parse the address.
-    let query_address: Option<H160> = query.clone().address.as_ref().and_then(|s| s.parse().ok());
+    let query_address: Option<H160> = query.address.as_ref().and_then(|s| s.parse().ok());
 
     // Authenticate the user
     if query.user_id.is_some() {
