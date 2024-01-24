@@ -16,16 +16,21 @@
 #![allow(clippy::unwrap_used)]
 
 use super::types::{WalletSettings, WalletSettingsOptional};
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{auth::authenticate_wallet_user, result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
 use ethers_main::{types::H160, utils::to_checksum};
-use lightdotso_prisma::{wallet, wallet_settings};
+use lightdotso_db::models::activity::CustomParams;
+use lightdotso_kafka::{
+    topics::activity::produce_activity_message, types::activity::ActivityMessage,
+};
+use lightdotso_prisma::{wallet, wallet_settings, ActivityEntity, ActivityOperation};
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
+use tower_sessions_core::Session;
 use utoipa::{IntoParams, ToSchema};
 
 // -----------------------------------------------------------------------------
@@ -74,6 +79,7 @@ pub struct WalletSettingsUpdateRequestParams {
 pub(crate) async fn v1_wallet_settings_update_handler(
     post_query: Query<PostQuery>,
     State(state): State<AppState>,
+    mut session: Session,
     Json(params): Json<WalletSettingsUpdateRequestParams>,
 ) -> AppJsonResult<WalletSettings> {
     // -------------------------------------------------------------------------
@@ -89,6 +95,14 @@ pub(crate) async fn v1_wallet_settings_update_handler(
 
     // Get the wallet_settings from the post body.
     let wallet_settings = params.wallet_settings;
+
+    // -------------------------------------------------------------------------
+    // Authentication
+    // -------------------------------------------------------------------------
+
+    // Check to see if the user is one of the owners of the wallet configurations.
+    let auth_user_id =
+        authenticate_wallet_user(&state, &mut session, &parsed_query_address).await?;
 
     // -------------------------------------------------------------------------
     // Params
@@ -123,6 +137,26 @@ pub(crate) async fn v1_wallet_settings_update_handler(
         .exec()
         .await?;
     info!(?wallet_settings);
+
+    // -------------------------------------------------------------------------
+    // Kafka
+    // -------------------------------------------------------------------------
+
+    // Produce an activity message.
+    produce_activity_message(
+        state.producer.clone(),
+        ActivityEntity::WalletSettings,
+        &ActivityMessage {
+            operation: ActivityOperation::Update,
+            log: serde_json::to_value(&wallet_settings)?,
+            params: CustomParams {
+                user_id: Some(auth_user_id),
+                wallet_address: Some(checksum_address.clone()),
+                ..Default::default()
+            },
+        },
+    )
+    .await?;
 
     // -------------------------------------------------------------------------
     // Return

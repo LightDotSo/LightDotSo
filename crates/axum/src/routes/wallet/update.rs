@@ -17,10 +17,7 @@
 
 use super::types::Wallet;
 use crate::{
-    error::RouteError,
-    result::AppJsonResult,
-    routes::wallet::error::WalletError,
-    sessions::{get_user_id, verify_session},
+    auth::authenticate_wallet_user, result::AppJsonResult, sessions::verify_session,
     state::AppState,
 };
 use autometrics::autometrics;
@@ -33,7 +30,7 @@ use lightdotso_db::models::activity::CustomParams;
 use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
-use lightdotso_prisma::{configuration, wallet, ActivityEntity, ActivityOperation};
+use lightdotso_prisma::{wallet, ActivityEntity, ActivityOperation};
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use tower_sessions_core::Session;
@@ -103,51 +100,12 @@ pub(crate) async fn v1_wallet_update_handler(
     let checksum_address = to_checksum(&parsed_query_address, None);
 
     // -------------------------------------------------------------------------
-    // DB
-    // -------------------------------------------------------------------------
-
-    // Get the wallets from the database.
-    let wallet = state
-        .client
-        .wallet()
-        .find_unique(wallet::address::equals(checksum_address.clone()))
-        .with(wallet::configurations::fetch(vec![]).with(configuration::owners::fetch(vec![])))
-        .exec()
-        .await?;
-
-    // If the wallet is not found, return a 404.
-    let wallet = wallet
-        .clone()
-        .ok_or(RouteError::WalletError(WalletError::NotFound("Wallet not found".to_string())))?;
-
-    // -------------------------------------------------------------------------
-    // Session
-    // -------------------------------------------------------------------------
-
-    // Get the authenticated user id from the session.
-    let auth_user_id = get_user_id(&mut session)?;
-    info!(?auth_user_id);
-
-    // -------------------------------------------------------------------------
-    // DB
+    // Authentication
     // -------------------------------------------------------------------------
 
     // Check to see if the user is one of the owners of the wallet configurations.
-    let _ = wallet
-        .configurations
-        .unwrap()
-        .iter()
-        .find(|configuration| {
-            configuration
-                .owners
-                .as_ref()
-                .unwrap()
-                .iter()
-                .any(|owner| owner.clone().user_id.as_ref().unwrap() == &auth_user_id)
-        })
-        .ok_or(RouteError::WalletError(WalletError::BadRequest(
-            "User is not an owner of the wallet".to_string(),
-        )))?;
+    let auth_user_id =
+        authenticate_wallet_user(&state, &mut session, &parsed_query_address).await?;
 
     // -------------------------------------------------------------------------
     // Params

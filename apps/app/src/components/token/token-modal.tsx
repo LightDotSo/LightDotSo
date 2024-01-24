@@ -29,7 +29,7 @@ export function TokenModal() {
   // ---------------------------------------------------------------------------
 
   const { address } = useAuth();
-  const { hideTokenModal } = useModals();
+  const { isTokenModalVisible, hideTokenModal } = useModals();
 
   // ---------------------------------------------------------------------------
   // Render
@@ -38,14 +38,16 @@ export function TokenModal() {
     return null;
   }
 
-  return (
-    <Modal open size="sm" onClose={hideTokenModal}>
-      <DialogTitle>Login</DialogTitle>
-      <DialogDescription>
-        Login with your wallet to access your account.
-      </DialogDescription>
-    </Modal>
-  );
+  if (isTokenModalVisible) {
+    return (
+      <Modal open size="sm" onClose={hideTokenModal}>
+        <DialogTitle>Token</DialogTitle>
+        <DialogDescription>Token for {address}</DialogDescription>
+      </Modal>
+    );
+  }
+
+  return null;
 }
 
 // -----------------------------------------------------------------------------

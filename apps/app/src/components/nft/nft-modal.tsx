@@ -29,7 +29,7 @@ export function NftModal() {
   // ---------------------------------------------------------------------------
 
   const { address } = useAuth();
-  const { hideNftModal } = useModals();
+  const { isNftModalVisible, hideNftModal } = useModals();
 
   // ---------------------------------------------------------------------------
   // Render
@@ -38,14 +38,16 @@ export function NftModal() {
     return null;
   }
 
-  return (
-    <Modal open size="sm" onClose={hideNftModal}>
-      <DialogTitle>Login</DialogTitle>
-      <DialogDescription>
-        Login with your wallet to access your account.
-      </DialogDescription>
-    </Modal>
-  );
+  if (isNftModalVisible) {
+    return (
+      <Modal open size="sm" onClose={hideNftModal}>
+        <DialogTitle>NFT</DialogTitle>
+        <DialogDescription>NFT for {address}</DialogDescription>
+      </Modal>
+    );
+  }
+
+  return null;
 }
 
 // -----------------------------------------------------------------------------

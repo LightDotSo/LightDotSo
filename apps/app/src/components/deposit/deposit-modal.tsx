@@ -29,7 +29,7 @@ export function DepositModal() {
   // ---------------------------------------------------------------------------
 
   const { address } = useAuth();
-  const { hideDepositModal } = useModals();
+  const { isDepositModalVisible, hideDepositModal } = useModals();
 
   // ---------------------------------------------------------------------------
   // Render
@@ -38,14 +38,16 @@ export function DepositModal() {
     return null;
   }
 
-  return (
-    <Modal open size="sm" onClose={hideDepositModal}>
-      <DialogTitle>Login</DialogTitle>
-      <DialogDescription>
-        Login with your wallet to access your account.
-      </DialogDescription>
-    </Modal>
-  );
+  if (isDepositModalVisible) {
+    return (
+      <Modal open size="sm" onClose={hideDepositModal}>
+        <DialogTitle>Deposit</DialogTitle>
+        <DialogDescription>Deposit for {address}</DialogDescription>
+      </Modal>
+    );
+  }
+
+  return null;
 }
 
 // -----------------------------------------------------------------------------
