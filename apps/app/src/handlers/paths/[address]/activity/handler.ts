@@ -78,7 +78,13 @@ export const handler = async (
       };
     },
     () => {
-      return notFound();
+      return {
+        paginationState: paginationState,
+        activities: [],
+        activitiesCount: {
+          count: 0,
+        },
+      };
     },
   );
 };

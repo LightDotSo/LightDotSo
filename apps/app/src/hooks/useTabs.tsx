@@ -62,8 +62,10 @@ export function useTabs() {
   const tabs = useMemo(() => {
     if (pathType === "demo") {
       return DEFAULT_TABS.filter(tab => {
-        // Don't return `settings` and `support` tabs
-        return tab.id !== "settings" && tab.id !== "support";
+        // Don't return `settings` and `support` and `activity` tabs
+        return (
+          tab.id !== "settings" && tab.id !== "support" && tab.id !== "activity"
+        );
       });
     }
     return DEFAULT_TABS;
