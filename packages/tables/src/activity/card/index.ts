@@ -14,3 +14,5 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 export { ActivityCardAddress } from "./activity-card-address";
+export { ActivityCardEntity } from "./activity-card-entity";
+export { ActivityCardOperation } from "./activity-card-operation";

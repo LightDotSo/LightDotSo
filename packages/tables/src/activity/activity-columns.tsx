@@ -16,12 +16,13 @@
 "use client";
 
 import type { ActivityData } from "@lightdotso/data";
-import { PlaceholderOrb } from "@lightdotso/elements";
 import { DataTableColumnHeader } from "@lightdotso/templates";
-import { Avatar } from "@lightdotso/ui";
-import { shortenAddress } from "@lightdotso/utils";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ActivityCardAddress } from "./card";
+import {
+  ActivityCardAddress,
+  ActivityCardEntity,
+  ActivityCardOperation,
+} from "./card";
 
 // -----------------------------------------------------------------------------
 // Definitions
@@ -46,11 +47,7 @@ export const activityColumns: ColumnDef<ActivityData>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader className="w-3" column={column} title="Entity" />
     ),
-    cell: ({ row }) => (
-      <div className="flex items-center">
-        <span>{row.getValue("entity")}</span>
-      </div>
-    ),
+    cell: ({ row }) => <ActivityCardEntity activity={row.original} />,
   },
   {
     id: "operation",
@@ -62,11 +59,7 @@ export const activityColumns: ColumnDef<ActivityData>[] = [
         title="Operation"
       />
     ),
-    cell: ({ row }) => (
-      <div className="flex items-center">
-        <span>{row.getValue("operation")}</span>
-      </div>
-    ),
+    cell: ({ row }) => <ActivityCardOperation activity={row.original} />,
   },
   {
     id: "timestamp",
