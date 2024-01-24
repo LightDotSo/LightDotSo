@@ -34,7 +34,6 @@
     "@lightdotso/elements": "workspace:*",
     "@lightdotso/hooks": "workspace:*",
     "@lightdotso/kysely": "workspace:*",
-    "@lightdotso/modals": "workspace:*",
     "@lightdotso/msw": "workspace:*",
     "@lightdotso/params": "workspace:*",
     "@lightdotso/prisma": "workspace:*",

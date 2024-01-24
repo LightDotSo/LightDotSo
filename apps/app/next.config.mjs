@@ -65,6 +65,7 @@ const nextConfig = {
     "@lightdotso/query-keys",
     "@lightdotso/schemas",
     "@lightdotso/services",
+    "@lightdotso/states",
     "@lightdotso/stores",
     "@lightdotso/styles",
     "@lightdotso/svg",
