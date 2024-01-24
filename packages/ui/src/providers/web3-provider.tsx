@@ -37,7 +37,7 @@ function Web3Provider({
   // State Hooks
   // ---------------------------------------------------------------------------
 
-  const [web3Modal, setWeb3Modal] = useState<any | null>(null);
+  const [web3Modal, setWeb3Modal] = useState<any | null | undefined>(undefined);
 
   // ---------------------------------------------------------------------------
   // Operation Hooks
@@ -50,6 +50,10 @@ function Web3Provider({
   // ---------------------------------------------------------------------------
 
   const modal = useMemo(() => {
+    if (process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID === undefined) {
+      return null;
+    }
+
     const modal = createWeb3Modal({
       // @ts-expect-error
       chains: CHAINS,
@@ -73,7 +77,7 @@ function Web3Provider({
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!web3Modal) {
+  if (typeof web3Modal === "undefined") {
     return null;
   }
 
