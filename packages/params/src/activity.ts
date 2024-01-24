@@ -23,6 +23,7 @@ export type ActivityListParams = {
   address: Address;
   limit: number;
   offset: number;
+  user_id?: string;
 };
 
 export type ActivityListCountParams = Omit<

@@ -37,6 +37,7 @@ export const getActivities = async (params: ActivityListParams) => {
           address: params.address,
           limit: params.limit,
           offset: params.offset,
+          user_id: params.user_id,
         },
       },
     },

@@ -35,6 +35,7 @@ export const getActivitiesCount = async (params: ActivityListCountParams) => {
       params: {
         query: {
           address: params.address,
+          user_id: params.user_id,
         },
       },
     },
