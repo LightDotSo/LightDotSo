@@ -64,6 +64,11 @@ pub(crate) async fn authenticate_user(
 
             return Ok(user.id);
         }
+
+        // Should be unreachable (token provided, but no user id).
+        return Err(AppError::RouteError(RouteError::AuthError(AuthError::Unauthorized(
+            "Unauthorized Admin Token".to_string(),
+        ))));
     }
 
     // -------------------------------------------------------------------------
@@ -86,11 +91,25 @@ pub(crate) async fn authenticate_user(
 /// If the user is not authenticated, return a 401.
 /// Make sure to check to see if the user is an owner of the wallet (for mainly data changes that
 /// are invoked from a particular user).
+/// If a token is provided, authenticate the user w/ the user id.
 pub(crate) async fn authenticate_wallet_user(
     state: &AppState,
     session: &mut Session,
     wallet: &Address,
+    token: Option<String>,
+    user_id: Option<String>,
 ) -> AppResult<String> {
+    // -------------------------------------------------------------------------
+    // Auth + Session
+    // -------------------------------------------------------------------------
+
+    // If the token is provided, authenticate the user.
+    let auth_user_id = if token.is_some() {
+        authenticate_user(state, session, token, user_id).await?
+    } else {
+        get_user_id(session)?
+    };
+
     // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
@@ -108,14 +127,6 @@ pub(crate) async fn authenticate_wallet_user(
     let wallet = wallet
         .clone()
         .ok_or(RouteError::WalletError(WalletError::NotFound("Wallet not found".to_string())))?;
-
-    // -------------------------------------------------------------------------
-    // Session
-    // -------------------------------------------------------------------------
-
-    // Get the authenticated user id from the session.
-    let auth_user_id = get_user_id(session)?;
-    info!(?auth_user_id);
 
     // -------------------------------------------------------------------------
     // DB

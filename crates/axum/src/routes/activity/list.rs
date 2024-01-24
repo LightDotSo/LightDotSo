@@ -16,9 +16,7 @@
 use super::types::Activity;
 use crate::{
     authentication::{authenticate_user, authenticate_wallet_user},
-    error::RouteError,
-    result::{AppError, AppJsonResult, AppResult},
-    routes::auth::error::AuthError,
+    result::{AppJsonResult, AppResult},
     state::AppState,
 };
 use autometrics::autometrics;
@@ -99,15 +97,14 @@ pub(crate) async fn v1_activity_list_handler(
     // Authentication
     // -------------------------------------------------------------------------
 
-    let auth_user_id =
-        authenticate_user_id(&query, &state, &mut session, auth.token().to_string()).await?;
+    authenticate_user_id(&query, &state, &mut session, auth.token().to_string()).await?;
 
     // -------------------------------------------------------------------------
     // Params
     // -------------------------------------------------------------------------
 
     // If the address is provided, add it to the query.
-    let query_params = construct_activity_list_query_params(&query, auth_user_id);
+    let query_params = construct_activity_list_query_params(&query);
 
     // -------------------------------------------------------------------------
     // DB
@@ -166,15 +163,14 @@ pub(crate) async fn v1_activity_list_count_handler(
     // Authentication
     // -------------------------------------------------------------------------
 
-    let auth_user_id =
-        authenticate_user_id(&query, &state, &mut session, auth.token().to_string()).await?;
+    authenticate_user_id(&query, &state, &mut session, auth.token().to_string()).await?;
 
     // -------------------------------------------------------------------------
     // Params
     // -------------------------------------------------------------------------
 
     // If the address is provided, add it to the query.
-    let query_params = construct_activity_list_query_params(&query, auth_user_id);
+    let query_params = construct_activity_list_query_params(&query);
 
     // -------------------------------------------------------------------------
     // DB
@@ -200,26 +196,32 @@ async fn authenticate_user_id(
     state: &AppState,
     session: &mut Session,
     auth_token: String,
-) -> AppResult<String> {
+) -> AppResult<()> {
     // Parse the address.
     let query_address: Option<H160> = query.clone().address.as_ref().and_then(|s| s.parse().ok());
 
-    // If the user id is provided, authenticate the user.
-    let auth_user_id = if query.user_id.is_some() {
-        authenticate_user(state, session, Some(auth_token), query.user_id.clone()).await?
-    } else if let Some(addr) = query_address {
-        authenticate_wallet_user(state, session, &addr).await?
-    } else {
-        return Err(AppError::RouteError(RouteError::AuthError(AuthError::Unauthorized(
-            "Unauthorized".to_string(),
-        ))));
-    };
+    // Authenticate the user
+    if query.user_id.is_some() {
+        authenticate_user(state, session, Some(auth_token.clone()), query.user_id.clone()).await?;
+    }
 
-    Ok(auth_user_id)
+    // If the wallet is specified, check to see if the user is an owner of the wallet.
+    if let Some(addr) = query_address {
+        authenticate_wallet_user(
+            state,
+            session,
+            &addr,
+            Some(auth_token.clone()),
+            query.user_id.clone(),
+        )
+        .await?;
+    }
+
+    Ok(())
 }
 
 /// Constructs a query for activities.
-fn construct_activity_list_query_params(query: &ListQuery, user_id: String) -> Vec<WhereParam> {
+fn construct_activity_list_query_params(query: &ListQuery) -> Vec<WhereParam> {
     let mut query_exp = match &query.address {
         Some(addr) => {
             vec![activity::wallet_address::equals(Some(addr.clone()))]
@@ -227,7 +229,9 @@ fn construct_activity_list_query_params(query: &ListQuery, user_id: String) -> V
         None => vec![],
     };
 
-    query_exp.push(activity::user_id::equals(Some(user_id.clone())));
+    if let Some(id) = &query.user_id {
+        query_exp.push(activity::user_id::equals(Some(id.clone())));
+    }
 
     query_exp
 }

@@ -206,7 +206,7 @@ async fn authenticate_user_id(
     let auth_user_id = if query.user_id.is_some() {
         authenticate_user(state, session, Some(auth_token), query.user_id.clone()).await?
     } else if let Some(addr) = query_address {
-        authenticate_wallet_user(state, session, &addr).await?
+        authenticate_wallet_user(state, session, &addr, None, None).await?
     } else {
         return Err(AppError::RouteError(RouteError::AuthError(AuthError::Unauthorized(
             "Unauthorized".to_string(),
