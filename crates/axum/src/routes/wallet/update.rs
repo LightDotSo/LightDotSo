@@ -17,7 +17,7 @@
 
 use super::types::Wallet;
 use crate::{
-    auth::authenticate_wallet_user, result::AppJsonResult, sessions::verify_session,
+    authentication::authenticate_wallet_user, result::AppJsonResult, sessions::verify_session,
     state::AppState,
 };
 use autometrics::autometrics;
@@ -105,7 +105,7 @@ pub(crate) async fn v1_wallet_update_handler(
 
     // Check to see if the user is one of the owners of the wallet configurations.
     let auth_user_id =
-        authenticate_wallet_user(&state, &mut session, &parsed_query_address).await?;
+        authenticate_wallet_user(&state, &mut session, &parsed_query_address, None, None).await?;
 
     // -------------------------------------------------------------------------
     // Params

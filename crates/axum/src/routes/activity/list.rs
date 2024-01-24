@@ -14,16 +14,23 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use super::types::Activity;
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{
+    authentication::{authenticate_user, authenticate_wallet_user},
+    result::{AppJsonResult, AppResult},
+    state::AppState,
+};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
-    Json,
+    headers::{authorization::Bearer, Authorization},
+    Json, TypedHeader,
 };
+use ethers_main::types::H160;
 use lightdotso_prisma::activity::{self, WhereParam};
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::Direction;
 use serde::{Deserialize, Serialize};
+use tower_sessions_core::Session;
 use utoipa::{IntoParams, ToSchema};
 
 // -----------------------------------------------------------------------------
@@ -76,6 +83,8 @@ pub(crate) struct ActivityListCount {
 pub(crate) async fn v1_activity_list_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
+    mut session: Session,
+    TypedHeader(auth): TypedHeader<Authorization<Bearer>>,
 ) -> AppJsonResult<Vec<Activity>> {
     // -------------------------------------------------------------------------
     // Parse
@@ -83,6 +92,12 @@ pub(crate) async fn v1_activity_list_handler(
 
     // Get the list query.
     let Query(query) = list_query;
+
+    // -------------------------------------------------------------------------
+    // Authentication
+    // -------------------------------------------------------------------------
+
+    authenticate_user_id(&query, &state, &mut session, auth.token().to_string()).await?;
 
     // -------------------------------------------------------------------------
     // Params
@@ -133,6 +148,8 @@ pub(crate) async fn v1_activity_list_handler(
 pub(crate) async fn v1_activity_list_count_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
+    mut session: Session,
+    TypedHeader(auth): TypedHeader<Authorization<Bearer>>,
 ) -> AppJsonResult<ActivityListCount> {
     // -------------------------------------------------------------------------
     // Parse
@@ -141,6 +158,12 @@ pub(crate) async fn v1_activity_list_count_handler(
     // Get the list query.
     let Query(query) = list_query;
     info!(?query);
+
+    // -------------------------------------------------------------------------
+    // Authentication
+    // -------------------------------------------------------------------------
+
+    authenticate_user_id(&query, &state, &mut session, auth.token().to_string()).await?;
 
     // -------------------------------------------------------------------------
     // Params
@@ -166,6 +189,36 @@ pub(crate) async fn v1_activity_list_count_handler(
 // -----------------------------------------------------------------------------
 // Utils
 // -----------------------------------------------------------------------------
+
+/// Authenticates the user and returns the user id.
+async fn authenticate_user_id(
+    query: &ListQuery,
+    state: &AppState,
+    session: &mut Session,
+    auth_token: String,
+) -> AppResult<()> {
+    // Parse the address.
+    let query_address: Option<H160> = query.address.as_ref().and_then(|s| s.parse().ok());
+
+    // Authenticate the user
+    if query.user_id.is_some() {
+        authenticate_user(state, session, Some(auth_token.clone()), query.user_id.clone()).await?;
+    }
+
+    // If the wallet is specified, check to see if the user is an owner of the wallet.
+    if let Some(addr) = query_address {
+        authenticate_wallet_user(
+            state,
+            session,
+            &addr,
+            Some(auth_token.clone()),
+            query.user_id.clone(),
+        )
+        .await?;
+    }
+
+    Ok(())
+}
 
 /// Constructs a query for activities.
 fn construct_activity_list_query_params(query: &ListQuery) -> Vec<WhereParam> {

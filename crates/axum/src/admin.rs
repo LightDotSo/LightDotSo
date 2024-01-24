@@ -41,7 +41,7 @@ pub async fn admin<B>(
     }
 }
 
-fn token_is_valid(token: &str) -> bool {
+pub fn token_is_valid(token: &str) -> bool {
     let admin_secret_env = std::env::var("ADMIN_SECRET_ENV");
 
     match admin_secret_env {

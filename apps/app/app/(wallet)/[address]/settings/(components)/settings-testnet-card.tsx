@@ -155,7 +155,7 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
       <Button
         type="submit"
         form="walletTestnetForm"
-        variant={isPending ? "loading" : "default"}
+        isLoading={isPending}
         disabled={
           delayedIsSuccess ||
           !isFormChanged ||

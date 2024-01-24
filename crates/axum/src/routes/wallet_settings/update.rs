@@ -16,7 +16,7 @@
 #![allow(clippy::unwrap_used)]
 
 use super::types::{WalletSettings, WalletSettingsOptional};
-use crate::{auth::authenticate_wallet_user, result::AppJsonResult, state::AppState};
+use crate::{authentication::authenticate_wallet_user, result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -102,7 +102,7 @@ pub(crate) async fn v1_wallet_settings_update_handler(
 
     // Check to see if the user is one of the owners of the wallet configurations.
     let auth_user_id =
-        authenticate_wallet_user(&state, &mut session, &parsed_query_address).await?;
+        authenticate_wallet_user(&state, &mut session, &parsed_query_address, None, None).await?;
 
     // -------------------------------------------------------------------------
     // Params
