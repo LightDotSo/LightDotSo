@@ -42,9 +42,12 @@ const CommandK = dynamic(() => import("@/components/command-k"), {
   ssr: false,
 });
 
-const AuthModal = dynamic(() => import("@/components/auth/auth-modal"), {
-  ssr: false,
-});
+const AuthModal = dynamic(
+  () => import("@lightdotso/modals").then(m => m.AuthModal),
+  {
+    ssr: false,
+  },
+);
 
 const DepositModal = dynamic(
   () => import("@/components/deposit/deposit-modal"),
