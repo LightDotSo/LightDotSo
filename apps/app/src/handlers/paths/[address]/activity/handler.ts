@@ -58,12 +58,12 @@ export const handler = async (
     address: params.address as Address,
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
-    user_id: cookieStore.get("lightdotso.wallet")?.value,
+    user_id: cookieStore.get("lightdotso.user")?.value,
   });
 
   const activitiesCountPromise = getActivitiesCount({
     address: params.address as Address,
-    user_id: cookieStore.get("lightdotso.wallet")?.value,
+    user_id: cookieStore.get("lightdotso.user")?.value,
   });
 
   const [activities, activitiesCount] = await Promise.all([
