@@ -22,13 +22,24 @@ import {
 } from "@storybook/addon-viewport";
 import * as React from "react";
 import { initialize, mswLoader } from "msw-storybook-addon";
+import { WagmiProvider, createConfig, http } from "wagmi";
+import { mainnet, sepolia } from "wagmi/chains";
+
+export const config = createConfig({
+  chains: [mainnet],
+  transports: {
+    [mainnet.id]: http(),
+  },
+});
 
 initialize();
 
 export const decorators = [
   Story => (
     <ReactQueryProvider showDevTools={false}>
-      <Story />
+      <WagmiProvider config={config}>
+        <Story />
+      </WagmiProvider>
       <Toaster />
     </ReactQueryProvider>
   ),

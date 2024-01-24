@@ -1,72 +1,112 @@
 [
   {
-    "id": "clr9y4rm40003re8h7irefr13",
-    "entity": "USER_OPERATION",
-    "operation": "CREATE",
-    "timestamp": "2024-01-12T01:14:54.029+00:00",
-    "address": "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F"
+    "id": "clrr945dc000jo78h2uqszcm6",
+    "entity": "WALLET_SETTINGS",
+    "operation": "UPDATE",
+    "timestamp": "2024-01-24T03:54:25.968+00:00",
+    "address": "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F",
+    "user": {
+      "id": "clnmo4k820000og9agq9kto92",
+      "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
+    }
   },
   {
-    "id": "clr9y44is0001re8hbssu82mb",
-    "entity": "SIGNATURE",
-    "operation": "CREATE",
-    "timestamp": "2024-01-12T01:14:24.100+00:00",
-    "address": "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F"
+    "id": "clrr940q3000ho78hdfc9gjvg",
+    "entity": "WALLET_SETTINGS",
+    "operation": "UPDATE",
+    "timestamp": "2024-01-24T03:54:19.948+00:00",
+    "address": "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F",
+    "user": {
+      "id": "clnmo4k820000og9agq9kto92",
+      "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
+    }
   },
   {
-    "id": "clr12co490003ol8ipshssdxo",
+    "id": "clrr93wqd000fo78h875wp7lx",
     "entity": "WALLET",
     "operation": "UPDATE",
-    "timestamp": "2024-01-05T20:03:05.625+00:00",
-    "address": "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F"
+    "timestamp": "2024-01-24T03:54:14.773+00:00",
+    "address": "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F",
+    "user": {
+      "id": "clnmo4k820000og9agq9kto92",
+      "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
+    }
   },
   {
-    "id": "clr12c7i20001ol8igrvombxd",
+    "id": "clrr4o97b000do78hqo5m36y7",
     "entity": "WALLET",
     "operation": "UPDATE",
-    "timestamp": "2024-01-05T20:02:44.091+00:00",
-    "address": "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F"
+    "timestamp": "2024-01-24T01:50:05.975+00:00",
+    "address": "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F",
+    "user": {
+      "id": "clnmo4k820000og9agq9kto92",
+      "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
+    }
   },
   {
-    "id": "clqzwb8zu001hqy8izuapvleu",
+    "id": "clrr3glkx000bo78hhr2farnk",
     "entity": "WALLET",
     "operation": "UPDATE",
-    "timestamp": "2024-01-05T00:26:15.498+00:00",
-    "address": "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F"
+    "timestamp": "2024-01-24T01:16:09.153+00:00",
+    "address": "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F",
+    "user": {
+      "id": "clnmo4k820000og9agq9kto92",
+      "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
+    }
   },
   {
-    "id": "clqzwb350001fqy8imipzps51",
+    "id": "clrr3ggjl0009o78h062qj8hp",
     "entity": "WALLET",
     "operation": "UPDATE",
-    "timestamp": "2024-01-05T00:26:07.908+00:00",
-    "address": "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F"
+    "timestamp": "2024-01-24T01:16:02.625+00:00",
+    "address": "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F",
+    "user": {
+      "id": "clnmo4k820000og9agq9kto92",
+      "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
+    }
   },
   {
-    "id": "clqozjcg00015qy8i7tjebh8n",
-    "entity": "WALLET",
+    "id": "clrr2uhua0007o78hcugmxrci",
+    "entity": "WALLET_SETTINGS",
     "operation": "UPDATE",
-    "timestamp": "2023-12-28T09:11:04.129+00:00",
-    "address": "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F"
+    "timestamp": "2024-01-24T00:58:57.875+00:00",
+    "address": "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F",
+    "user": {
+      "id": "clnmo4k820000og9agq9kto92",
+      "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
+    }
   },
   {
-    "id": "clqozj59b0013qy8ixwrbcw2c",
-    "entity": "WALLET",
+    "id": "clrr2uczn0005o78hoyvs6g1f",
+    "entity": "WALLET_SETTINGS",
     "operation": "UPDATE",
-    "timestamp": "2023-12-28T09:10:54.815+00:00",
-    "address": "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F"
+    "timestamp": "2024-01-24T00:58:51.588+00:00",
+    "address": "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F",
+    "user": {
+      "id": "clnmo4k820000og9agq9kto92",
+      "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
+    }
   },
   {
-    "id": "clqofitsl000zqy8ipgsnsv2q",
+    "id": "clrr2u1o10003o78h7pi3763j",
     "entity": "WALLET",
     "operation": "UPDATE",
-    "timestamp": "2023-12-27T23:50:47.637+00:00",
-    "address": "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F"
+    "timestamp": "2024-01-24T00:58:36.913+00:00",
+    "address": "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F",
+    "user": {
+      "id": "clnmo4k820000og9agq9kto92",
+      "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
+    }
   },
   {
-    "id": "clqofipfc000xqy8itvwhsaw3",
+    "id": "clrr2tv280001o78hwowzd837",
     "entity": "WALLET",
     "operation": "UPDATE",
-    "timestamp": "2023-12-27T23:50:41.977+00:00",
-    "address": "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F"
+    "timestamp": "2024-01-24T00:58:28.352+00:00",
+    "address": "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F",
+    "user": {
+      "id": "clnmo4k820000og9agq9kto92",
+      "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
+    }
   }
 ]

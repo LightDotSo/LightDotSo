@@ -19,7 +19,9 @@ import type { ActivityData } from "@lightdotso/data";
 import { PlaceholderOrb } from "@lightdotso/elements";
 import { DataTableColumnHeader } from "@lightdotso/templates";
 import { Avatar } from "@lightdotso/ui";
+import { shortenAddress } from "@lightdotso/utils";
 import type { ColumnDef } from "@tanstack/react-table";
+import { ActivityCardAddress } from "./card";
 
 // -----------------------------------------------------------------------------
 // Definitions
@@ -27,19 +29,14 @@ import type { ColumnDef } from "@tanstack/react-table";
 
 export const activityColumns: ColumnDef<ActivityData>[] = [
   {
-    id: "address",
-    accessorKey: "address",
+    id: "user_address",
+    accessorFn: row => {
+      return row.user?.address;
+    },
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Owner" />
+      <DataTableColumnHeader className="w-fit" column={column} title="User" />
     ),
-    cell: ({ row }) => (
-      <div className="flex items-center">
-        <Avatar className="mr-3 size-7">
-          <PlaceholderOrb address={row.getValue("address") ?? "0x"} />
-        </Avatar>
-        {row.getValue("address")}
-      </div>
-    ),
+    cell: ({ row }) => <ActivityCardAddress activity={row.original} />,
     enableSorting: false,
     enableHiding: false,
   },
@@ -47,7 +44,7 @@ export const activityColumns: ColumnDef<ActivityData>[] = [
     id: "entity",
     accessorKey: "entity",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Entity" />
+      <DataTableColumnHeader className="w-3" column={column} title="Entity" />
     ),
     cell: ({ row }) => (
       <div className="flex items-center">
@@ -59,7 +56,11 @@ export const activityColumns: ColumnDef<ActivityData>[] = [
     id: "operation",
     accessorKey: "operation",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Operation" />
+      <DataTableColumnHeader
+        className="w-10"
+        column={column}
+        title="Operation"
+      />
     ),
     cell: ({ row }) => (
       <div className="flex items-center">
@@ -71,7 +72,11 @@ export const activityColumns: ColumnDef<ActivityData>[] = [
     id: "timestamp",
     accessorKey: "timestamp",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Timestamp" />
+      <DataTableColumnHeader
+        className="w-10"
+        column={column}
+        title="Timestamp"
+      />
     ),
     cell: ({ row }) => (
       <div>{new Date(row.original.timestamp).toLocaleString()}</div>

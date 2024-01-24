@@ -45,7 +45,8 @@
     "next": "^14.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "viem": "^2.5.0"
+    "viem": "^2.5.0",
+    "wagmi": "^2.5.1"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
