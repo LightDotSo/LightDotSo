@@ -18,9 +18,9 @@
 import { createSignature } from "@lightdotso/client";
 import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
 import { subdigestOf } from "@lightdotso/solutions";
-import { useSignMessage } from "@lightdotso/wagmi";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
+import { useSignMessage } from "@lightdotso/wagmi";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   hexToBytes,
