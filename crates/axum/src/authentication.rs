@@ -31,24 +31,38 @@ use tower_sessions_core::Session;
 /// Authenticate the user.
 /// Returns the user id of the authenticated user.
 /// If the user is not authenticated, return a 401.
+/// Can bypass the authentication by passing in a token. (for admin routes)
+/// Expects for the admin endpoint to specify a user address.
 pub(crate) async fn authenticate_user(
     state: &AppState,
     session: &mut Session,
-    token: &String,
-    user: &Option<Address>,
+    token: Option<String>,
+    user_id: Option<String>,
 ) -> AppResult<String> {
     // -------------------------------------------------------------------------
     // Admin
     // -------------------------------------------------------------------------
 
-    if !token.is_empty() {
-        let is_admin = token_is_valid(token);
+    if let Some(token) = token {
+        let is_admin = token_is_valid(&token);
 
         // If the token is not valid, return a 401.
         if !is_admin {
             return Err(AppError::RouteError(RouteError::AuthError(AuthError::Unauthorized(
                 "Unauthorized Admin Token".to_string(),
             ))));
+        }
+
+        if let Some(id) = user_id {
+            // Get the user from the database.
+            let user = state.client.user().find_unique(user::id::equals(id)).exec().await?;
+
+            // If the user is not found, return a 404.
+            let user = user
+                .clone()
+                .ok_or(RouteError::UserError(UserError::NotFound("User not found".to_string())))?;
+
+            return Ok(user.id);
         }
     }
 
@@ -61,32 +75,6 @@ pub(crate) async fn authenticate_user(
     info!(?auth_user_id);
 
     // -------------------------------------------------------------------------
-    // DB
-    // -------------------------------------------------------------------------
-
-    if let Some(user_address) = user {
-        // Get the user from the database.
-        let user = state
-            .client
-            .user()
-            .find_unique(user::address::equals(to_checksum(user_address, None)))
-            .exec()
-            .await?;
-
-        // If the user is not found, return a 404.
-        let user = user
-            .clone()
-            .ok_or(RouteError::UserError(UserError::NotFound("User not found".to_string())))?;
-
-        // Check to see if the user is the same as the authenticated user.
-        if user.id != auth_user_id {
-            return Err(AppError::RouteError(RouteError::UserError(UserError::BadRequest(
-                "User is not the same as the authenticated user".to_string(),
-            ))));
-        }
-    }
-
-    // -------------------------------------------------------------------------
     // Return
     // -------------------------------------------------------------------------
 
@@ -96,6 +84,8 @@ pub(crate) async fn authenticate_user(
 /// Authenticate the wallet user.
 /// Returns the user id of the authenticated user, if the user is an owner of the wallet.
 /// If the user is not authenticated, return a 401.
+/// Make sure to check to see if the user is an owner of the wallet (for mainly data changes that
+/// are invoked from a particular user).
 pub(crate) async fn authenticate_wallet_user(
     state: &AppState,
     session: &mut Session,

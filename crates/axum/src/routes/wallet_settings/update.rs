@@ -16,7 +16,7 @@
 #![allow(clippy::unwrap_used)]
 
 use super::types::{WalletSettings, WalletSettingsOptional};
-use crate::{auth::authenticate_wallet_user, result::AppJsonResult, state::AppState};
+use crate::{authentication::authenticate_wallet_user, result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},

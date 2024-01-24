@@ -17,7 +17,7 @@
 
 use super::types::Wallet;
 use crate::{
-    auth::authenticate_wallet_user, result::AppJsonResult, sessions::verify_session,
+    authentication::authenticate_wallet_user, result::AppJsonResult, sessions::verify_session,
     state::AppState,
 };
 use autometrics::autometrics;

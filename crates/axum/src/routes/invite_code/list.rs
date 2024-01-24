@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use super::types::InviteCode;
-use crate::{auth::authenticate_user, result::AppJsonResult, state::AppState};
+use crate::{authentication::authenticate_user, result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -38,6 +38,8 @@ pub struct ListQuery {
     pub offset: Option<i64>,
     /// The maximum number of invite codes to return.
     pub limit: Option<i64>,
+    /// The id of the user to return invite codes for.
+    pub user_id: Option<String>,
 }
 
 // -----------------------------------------------------------------------------
@@ -88,7 +90,8 @@ pub(crate) async fn v1_invite_code_list_handler(
 
     // Get the authenticated user id.
     let auth_user_id =
-        authenticate_user(&state, &mut session, &auth.token().to_string(), &None).await?;
+        authenticate_user(&state, &mut session, Some(auth.token().to_string()), query.user_id)
+            .await?;
 
     // -------------------------------------------------------------------------
     // Params
@@ -135,17 +138,26 @@ pub(crate) async fn v1_invite_code_list_handler(
     )]
 #[autometrics]
 pub(crate) async fn v1_invite_code_list_count_handler(
+    list_query: Query<ListQuery>,
     State(state): State<AppState>,
     mut session: Session,
     TypedHeader(auth): TypedHeader<Authorization<Bearer>>,
 ) -> AppJsonResult<InviteCodeListCount> {
+    // -------------------------------------------------------------------------
+    // Parse
+    // -------------------------------------------------------------------------
+
+    // Get the list query.
+    let Query(query) = list_query;
+
     // -------------------------------------------------------------------------
     // Authentication
     // -------------------------------------------------------------------------
 
     // Get the authenticated user id.
     let auth_user_id =
-        authenticate_user(&state, &mut session, &auth.token().to_string(), &None).await?;
+        authenticate_user(&state, &mut session, Some(auth.token().to_string()), query.user_id)
+            .await?;
 
     // -------------------------------------------------------------------------
     // Params
