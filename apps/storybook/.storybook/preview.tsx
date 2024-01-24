@@ -22,7 +22,7 @@ import {
 } from "@storybook/addon-viewport";
 import * as React from "react";
 import { initialize, mswLoader } from "msw-storybook-addon";
-import { WagmiProvider, createConfig, http } from "wagmi";
+import { WagmiProvider, createConfig, http } from "@lightdotso/wagmi";
 import { mainnet, sepolia } from "wagmi/chains";
 
 export const config = createConfig({

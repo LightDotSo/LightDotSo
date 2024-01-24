@@ -23,7 +23,7 @@ import { Button, DialogDescription, DialogTitle, toast } from "@lightdotso/ui";
 import { useCallback } from "react";
 import { SiweMessage } from "siwe";
 import type { Address } from "viem";
-import { useSignMessage, useAccount } from "wagmi";
+import { useSignMessage, useAccount } from "@lightdotso/wagmi";
 
 // -----------------------------------------------------------------------------
 // Component

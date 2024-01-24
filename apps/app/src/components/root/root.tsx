@@ -22,13 +22,13 @@ import {
   Toaster,
   VercelToolbar,
 } from "@lightdotso/ui";
+import { cookieToInitialState } from "@lightdotso/wagmi";
 import dynamic from "next/dynamic";
 import { Inter } from "next/font/google";
 import { headers } from "next/headers";
 import Script from "next/script";
 import { Suspense } from "react";
 import type { FC, ReactNode } from "react";
-import { cookieToInitialState } from "wagmi";
 import { MainNav } from "@/components/nav/main-nav";
 import { wagmiConfig } from "@/components/web3/wagmi";
 import { Web3Provider } from "@/components/web3/web3-provider";
