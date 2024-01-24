@@ -84,7 +84,7 @@ pub(crate) async fn v1_activity_list_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
     mut session: Session,
-    TypedHeader(auth): TypedHeader<Authorization<Bearer>>,
+    auth: Option<TypedHeader<Authorization<Bearer>>>,
 ) -> AppJsonResult<Vec<Activity>> {
     // -------------------------------------------------------------------------
     // Parse
@@ -97,7 +97,8 @@ pub(crate) async fn v1_activity_list_handler(
     // Authentication
     // -------------------------------------------------------------------------
 
-    authenticate_user_id(&query, &state, &mut session, auth.token().to_string()).await?;
+    authenticate_user_id(&query, &state, &mut session, auth.map(|auth| auth.token().to_string()))
+        .await?;
 
     // -------------------------------------------------------------------------
     // Params
@@ -149,7 +150,7 @@ pub(crate) async fn v1_activity_list_count_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
     mut session: Session,
-    TypedHeader(auth): TypedHeader<Authorization<Bearer>>,
+    auth: Option<TypedHeader<Authorization<Bearer>>>,
 ) -> AppJsonResult<ActivityListCount> {
     // -------------------------------------------------------------------------
     // Parse
@@ -163,7 +164,8 @@ pub(crate) async fn v1_activity_list_count_handler(
     // Authentication
     // -------------------------------------------------------------------------
 
-    authenticate_user_id(&query, &state, &mut session, auth.token().to_string()).await?;
+    authenticate_user_id(&query, &state, &mut session, auth.map(|auth| auth.token().to_string()))
+        .await?;
 
     // -------------------------------------------------------------------------
     // Params
@@ -195,26 +197,20 @@ async fn authenticate_user_id(
     query: &ListQuery,
     state: &AppState,
     session: &mut Session,
-    auth_token: String,
+    auth_token: Option<String>,
 ) -> AppResult<()> {
     // Parse the address.
     let query_address: Option<H160> = query.address.as_ref().and_then(|s| s.parse().ok());
 
     // Authenticate the user
     if query.user_id.is_some() {
-        authenticate_user(state, session, Some(auth_token.clone()), query.user_id.clone()).await?;
+        authenticate_user(state, session, auth_token.clone(), query.user_id.clone()).await?;
     }
 
     // If the wallet is specified, check to see if the user is an owner of the wallet.
     if let Some(addr) = query_address {
-        authenticate_wallet_user(
-            state,
-            session,
-            &addr,
-            Some(auth_token.clone()),
-            query.user_id.clone(),
-        )
-        .await?;
+        authenticate_wallet_user(state, session, &addr, auth_token.clone(), query.user_id.clone())
+            .await?;
     }
 
     Ok(())

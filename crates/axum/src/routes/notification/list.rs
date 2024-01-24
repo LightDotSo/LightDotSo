@@ -85,7 +85,7 @@ pub(crate) async fn v1_notification_list_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
     mut session: Session,
-    TypedHeader(auth): TypedHeader<Authorization<Bearer>>,
+    auth: Option<TypedHeader<Authorization<Bearer>>>,
 ) -> AppJsonResult<Vec<Notification>> {
     // -------------------------------------------------------------------------
     // Parse
@@ -98,8 +98,13 @@ pub(crate) async fn v1_notification_list_handler(
     // Authentication
     // -------------------------------------------------------------------------
 
-    let auth_user_id =
-        authenticate_user_id(&query, &state, &mut session, auth.token().to_string()).await?;
+    let auth_user_id = authenticate_user_id(
+        &query,
+        &state,
+        &mut session,
+        auth.map(|auth| auth.token().to_string()),
+    )
+    .await?;
 
     // -------------------------------------------------------------------------
     // Params
@@ -150,7 +155,7 @@ pub(crate) async fn v1_notification_list_count_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
     mut session: Session,
-    TypedHeader(auth): TypedHeader<Authorization<Bearer>>,
+    auth: Option<TypedHeader<Authorization<Bearer>>>,
 ) -> AppJsonResult<NotificationListCount> {
     // -------------------------------------------------------------------------
     // Parse
@@ -164,8 +169,13 @@ pub(crate) async fn v1_notification_list_count_handler(
     // Authentication
     // -------------------------------------------------------------------------
 
-    let auth_user_id =
-        authenticate_user_id(&query, &state, &mut session, auth.token().to_string()).await?;
+    let auth_user_id = authenticate_user_id(
+        &query,
+        &state,
+        &mut session,
+        auth.map(|auth| auth.token().to_string()),
+    )
+    .await?;
 
     // -------------------------------------------------------------------------
     // Params
@@ -197,14 +207,14 @@ async fn authenticate_user_id(
     query: &ListQuery,
     state: &AppState,
     session: &mut Session,
-    auth_token: String,
+    auth_token: Option<String>,
 ) -> AppResult<String> {
     // Parse the address.
     let query_address: Option<H160> = query.wallet_address.as_ref().and_then(|s| s.parse().ok());
 
     // If the user id is provided, authenticate the user.
     let auth_user_id = if query.user_id.is_some() {
-        authenticate_user(state, session, Some(auth_token), query.user_id.clone()).await?
+        authenticate_user(state, session, auth_token, query.user_id.clone()).await?
     } else if let Some(addr) = query_address {
         authenticate_wallet_user(state, session, &addr, None, None).await?
     } else {

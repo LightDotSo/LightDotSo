@@ -75,7 +75,7 @@ pub(crate) async fn v1_invite_code_list_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
     mut session: Session,
-    TypedHeader(auth): TypedHeader<Authorization<Bearer>>,
+    auth: Option<TypedHeader<Authorization<Bearer>>>,
 ) -> AppJsonResult<Vec<InviteCode>> {
     // -------------------------------------------------------------------------
     // Parse
@@ -89,9 +89,13 @@ pub(crate) async fn v1_invite_code_list_handler(
     // -------------------------------------------------------------------------
 
     // Get the authenticated user id.
-    let auth_user_id =
-        authenticate_user(&state, &mut session, Some(auth.token().to_string()), query.user_id)
-            .await?;
+    let auth_user_id = authenticate_user(
+        &state,
+        &mut session,
+        auth.map(|auth| auth.token().to_string()),
+        query.user_id,
+    )
+    .await?;
 
     // -------------------------------------------------------------------------
     // Params
@@ -141,7 +145,7 @@ pub(crate) async fn v1_invite_code_list_count_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
     mut session: Session,
-    TypedHeader(auth): TypedHeader<Authorization<Bearer>>,
+    auth: Option<TypedHeader<Authorization<Bearer>>>,
 ) -> AppJsonResult<InviteCodeListCount> {
     // -------------------------------------------------------------------------
     // Parse
@@ -155,9 +159,13 @@ pub(crate) async fn v1_invite_code_list_count_handler(
     // -------------------------------------------------------------------------
 
     // Get the authenticated user id.
-    let auth_user_id =
-        authenticate_user(&state, &mut session, Some(auth.token().to_string()), query.user_id)
-            .await?;
+    let auth_user_id = authenticate_user(
+        &state,
+        &mut session,
+        auth.map(|auth| auth.token().to_string()),
+        query.user_id,
+    )
+    .await?;
 
     // -------------------------------------------------------------------------
     // Params
