@@ -19,6 +19,7 @@ import { mergeConfig } from "vite";
 const config: StorybookConfig = {
   stories: [
     "../../../packages/elements/src/**/*.stories.@(js|jsx|ts|tsx|mdx)",
+    "../../../packages/modals/src/**/*.stories.@(js|jsx|ts|tsx|mdx)",
     "../../../packages/states/src/**/*.stories.@(js|jsx|ts|tsx|mdx)",
     "../../../packages/svg/src/**/*.stories.@(js|jsx|ts|tsx|mdx)",
     "../../../packages/tables/src/**/*.stories.@(js|jsx|ts|tsx|mdx)",
