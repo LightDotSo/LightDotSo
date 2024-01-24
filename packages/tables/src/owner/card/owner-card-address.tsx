@@ -15,41 +15,25 @@
 
 "use client";
 
-import { PlaceholderOrb } from "@lightdotso/elements";
-import { Avatar } from "@lightdotso/ui";
-import { shortenAddress } from "@lightdotso/utils";
+import type { OwnerData } from "@lightdotso/data";
 import type { FC } from "react";
-import { Address } from "viem";
-import { useEnsName } from "wagmi";
+import type { Address } from "viem";
+import { AddressCard } from "../../(components)/card";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type ChainCardProps = { address: Address };
+type OwnerCardAddressProps = { owner: OwnerData };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const AddressCard: FC<ChainCardProps> = ({ address }) => {
-  // ---------------------------------------------------------------------------
-  // Wagmi
-  // ---------------------------------------------------------------------------
-
-  const { data: ens } = useEnsName({ address: address, chainId: 1 });
-
+export const OwnerCardAddress: FC<OwnerCardAddressProps> = ({ owner }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <div className="flex items-center overflow-ellipsis">
-      <Avatar className="mr-3 size-7">
-        <PlaceholderOrb address={address} />
-      </Avatar>
-      {ens && <span className="mr-3">{ens}</span>}
-      {shortenAddress(address)}
-    </div>
-  );
+  return <AddressCard address={owner.address as Address} />;
 };

@@ -21,6 +21,7 @@ import { DataTableColumnHeader } from "@lightdotso/templates";
 import { Avatar, Checkbox } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { OwnerTableRowActions } from "./actions";
+import { OwnerCardAddress } from "./card";
 
 // -----------------------------------------------------------------------------
 // Definitions
@@ -64,14 +65,7 @@ export const ownerColumns: ColumnDef<OwnerData>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Owner" />
     ),
-    cell: ({ row }) => (
-      <div className="flex items-center">
-        <Avatar className="mr-3 size-7">
-          <PlaceholderOrb address={row.getValue("address") ?? "0x"} />
-        </Avatar>
-        {row.getValue("address")}
-      </div>
-    ),
+    cell: ({ row }) => <OwnerCardAddress owner={row.original} />,
     enableSorting: false,
     enableHiding: false,
   },
