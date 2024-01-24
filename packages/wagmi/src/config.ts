@@ -14,13 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { CHAINS } from "@lightdotso/const";
-import {
-  cookieStorage,
-  createConfig,
-  createStorage,
-  http,
-} from "@lightdotso/wagmi";
 import { createClient } from "viem";
+import { cookieStorage, createConfig, createStorage, http } from "wagmi";
 import {
   walletConnect,
   injected,

@@ -246,10 +246,11 @@ export {
 } from "./components/tooltip";
 export { VercelToolbar } from "./dev/vercel-toolbar";
 export { TailwindIndicator } from "./dev/tailwind-indicator";
+export { ReactQueryProvider } from "./providers/react-query";
 export { ThemeProvider } from "./providers/theme-provider";
+export { Web3Provider } from "./providers/web3-provider";
 export { BannerSection } from "./sections/banner-section";
 export { HStackFull } from "./stacks/h-stack-full";
-export { ReactQueryProvider } from "./providers/react-query";
 export { baseWidthWrapper } from "./wrappers/base";
 export {
   BaseLayerWrapper,
