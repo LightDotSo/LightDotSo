@@ -100,9 +100,9 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   return (
     <>
       <div className="flex flex-1 items-center space-x-2">
-        {table && table.getColumn("chain") && (
+        {table && table?.getColumn("chain") && (
           <DataTableFacetedFilter
-            column={table.getColumn("chain")}
+            column={table?.getColumn("chain")}
             title="Chain"
             options={Array.from(uniqueChainValues).map(chain => ({
               value: chain,
@@ -110,9 +110,9 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
             }))}
           />
         )}
-        {table && table.getColumn("spam_score") && (
+        {table && table?.getColumn("spam_score") && (
           <DataTableFacetedFilter
-            column={table.getColumn("spam_score")}
+            column={table?.getColumn("spam_score")}
             title="Spam"
             options={["Yes", "No"].map(value => ({
               value: value === "No" ? "0" : "70",

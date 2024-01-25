@@ -121,15 +121,15 @@ export const OwnerTable: FC<OwnerTableProps> = ({
   }, [
     table,
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("address")?.getFilterValue(),
+    table?.getColumn("address")?.getFilterValue(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("weight"),
+    table?.getColumn("weight"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("weight")?.getFacetedUniqueValues(),
+    table?.getColumn("weight")?.getFacetedUniqueValues(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("weight")?.getCanHide(),
+    table?.getColumn("weight")?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("weight")?.getIsVisible(),
+    table?.getColumn("weight")?.getIsVisible(),
     setOwnerTable,
   ]);
 

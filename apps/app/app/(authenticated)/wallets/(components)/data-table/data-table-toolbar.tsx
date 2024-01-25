@@ -50,10 +50,10 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
       <div className="flex flex-1 items-center space-x-2">
         <Input
           placeholder="Filter name..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          value={(table?.getColumn("name")?.getFilterValue() as string) ?? ""}
           className="h-8 w-[150px] lg:w-[400px]"
           onChange={event =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table?.getColumn("name")?.setFilterValue(event.target.value)
           }
         />
         {walletColumnFilters.length > 0 && (

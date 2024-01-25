@@ -94,9 +94,9 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   return (
     <ToolbarSectionWrapper>
       <div className="flex flex-1 items-center space-x-2">
-        {table.getColumn("entity") && (
+        {table?.getColumn("entity") && (
           <DataTableFacetedFilter
-            column={table.getColumn("entity")}
+            column={table?.getColumn("entity")}
             title="Entity"
             options={Array.from(uniqueEntityValues).map(entity => ({
               value: entity,

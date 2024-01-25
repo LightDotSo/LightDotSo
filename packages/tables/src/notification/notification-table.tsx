@@ -121,17 +121,17 @@ export const NotificationTable: FC<NotificationTableProps> = ({
   }, [
     table,
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("address"),
+    table?.getColumn("address"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("address")?.getFilterValue(),
+    table?.getColumn("address")?.getFilterValue(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("name"),
+    table?.getColumn("name"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("name")?.getFacetedUniqueValues(),
+    table?.getColumn("name")?.getFacetedUniqueValues(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("name")?.getCanHide(),
+    table?.getColumn("name")?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("name")?.getIsVisible(),
+    table?.getColumn("name")?.getIsVisible(),
     setNotificationTable,
   ]);
 
