@@ -17,6 +17,7 @@ pub(crate) mod error;
 pub(crate) mod logout;
 pub(crate) mod nonce;
 pub(crate) mod session;
+pub(crate) mod types;
 pub(crate) mod verify;
 
 use crate::state::AppState;
