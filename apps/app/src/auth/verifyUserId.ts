@@ -14,8 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { USER_COOKIE_ID } from "@lightdotso/const";
-import { getSession } from "./getSession";
 import { cookies } from "next/headers";
+import { getSession } from "./getSession";
 
 // -----------------------------------------------------------------------------
 // Auth
