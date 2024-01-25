@@ -52,8 +52,8 @@ export const InterpretationCard: FC<InterpretationCardProps> = ({
           .slice(0, 1)
           .map((assetChange, index) => (
             <AssetChange
-              className={cn(isCenter && "justify-center")}
               key={index}
+              className={cn(isCenter && "justify-center")}
               assetChange={assetChange}
             />
           ))}
