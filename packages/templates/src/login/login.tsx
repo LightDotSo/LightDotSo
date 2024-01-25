@@ -16,23 +16,17 @@
 "use client";
 
 import { useSignInWithSiwe } from "@lightdotso/hooks";
-import { useModals } from "@lightdotso/stores";
-import { Modal } from "@lightdotso/templates";
-import { Button, DialogDescription, DialogTitle } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui";
+import { UserIcon } from "lucide-react";
+import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export function AuthModal() {
+export const Login: FC = () => {
   // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { isAuthModalVisible, hideAuthModal } = useModals();
-
-  // ---------------------------------------------------------------------------
-  // Callback Hooks
+  // Hooks
   // ---------------------------------------------------------------------------
 
   const { isPending, handleSignIn } = useSignInWithSiwe();
@@ -41,39 +35,20 @@ export function AuthModal() {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (isAuthModalVisible) {
-    return (
-      <Modal
-        open
-        size="sm"
-        footerContent={
-          <Button
-            disabled={isPending}
-            isLoading={isPending}
-            type="submit"
-            size="sm"
-            className="px-3"
-            onClick={handleSignIn}
-          >
-            <span className="sr-only">Login</span>
-            Login
-          </Button>
-        }
-        onClose={hideAuthModal}
-      >
-        <DialogTitle>Login</DialogTitle>
-        <DialogDescription>
-          Login with your wallet to access your account.
-        </DialogDescription>
-      </Modal>
-    );
-  }
-
-  return null;
-}
-
-// -----------------------------------------------------------------------------
-// Export
-// -----------------------------------------------------------------------------
-
-export default AuthModal;
+  return (
+    <div className="text-center">
+      <UserIcon className="mx-auto size-8 rounded-full border border-border p-2 text-text" />
+      <h3 className="mt-2 text-sm font-semibold text-text">Login</h3>
+      <p className="mt-1 text-sm text-text-weak">Get started by logging in.</p>
+      <div className="mt-6">
+        <Button
+          isLoading={isPending}
+          disabled={isPending}
+          onClick={handleSignIn}
+        >
+          Login
+        </Button>
+      </div>
+    </div>
+  );
+};

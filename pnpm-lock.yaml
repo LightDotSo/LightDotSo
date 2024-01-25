@@ -1668,6 +1668,9 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
+      siwe:
+        specifier: ^2.1.4
+        version: 2.1.4(ethers@6.7.0)
       tailwindcss:
         specifier: ^3.4.1
         version: 3.4.1(ts-node@10.9.2)
@@ -1727,12 +1730,9 @@ importers:
 
   packages/modals:
     dependencies:
-      '@lightdotso/client':
+      '@lightdotso/hooks':
         specifier: workspace:*
-        version: link:../client
-      '@lightdotso/query':
-        specifier: workspace:*
-        version: link:../query
+        version: link:../hooks
       '@lightdotso/stores':
         specifier: workspace:*
         version: link:../stores
@@ -1742,9 +1742,6 @@ importers:
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../ui
-      '@lightdotso/wagmi':
-        specifier: workspace:*
-        version: link:../wagmi
       '@storybook/react':
         specifier: ^7.6.10
         version: 7.6.10(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
@@ -1754,12 +1751,6 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
-      siwe:
-        specifier: ^2.1.4
-        version: 2.1.4(ethers@6.7.0)
-      viem:
-        specifier: ^2.5.0
-        version: 2.5.0(typescript@5.3.3)(zod@3.22.4)
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*

@@ -13,41 +13,38 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import type { InterpretationData } from "@lightdotso/data";
-import { AssetChange } from "@lightdotso/elements";
-import type { FC } from "react";
+import type { Meta, StoryObj } from "@storybook/react";
+import { NftModal } from "./nft-modal";
 
 // -----------------------------------------------------------------------------
-// Props
+// Meta
 // -----------------------------------------------------------------------------
 
-type InterpretationCardProps = { interpretation?: InterpretationData | null };
+const meta: Meta<typeof NftModal> = {
+  title: "modal/NftModal",
+  component: NftModal,
+  tags: ["autodocs"],
+  argTypes: {},
+};
+
+export default meta;
 
 // -----------------------------------------------------------------------------
-// Component
+// Types
 // -----------------------------------------------------------------------------
 
-export const InterpretationCard: FC<InterpretationCardProps> = ({
-  interpretation,
-}) => {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
+type Story = StoryObj<typeof NftModal>;
 
-  if (!interpretation) {
-    return <div className="flex w-48" />;
-  }
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
 
-  return (
-    <div className="flex max-w-48 shrink-0 items-center space-x-1.5">
-      {interpretation?.asset_changes &&
-        interpretation.asset_changes
-          .slice(0, 1)
-          .map((assetChange, index) => (
-            <AssetChange key={index} assetChange={assetChange} />
-          ))}
-    </div>
-  );
+export const Base: Story = {
+  render: () => (
+    // eslint-disable-nextline react/jsx-no-useless-fragment
+    <>
+      <NftModal />
+    </>
+  ),
+  args: {},
 };

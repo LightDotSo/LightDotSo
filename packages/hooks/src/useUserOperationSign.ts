@@ -88,12 +88,12 @@ export const useUserOperationSign = ({
     return userOperation.signatures.some(
       signature => signature.owner_id === userOwnerId,
     );
-  }, [owners, userOperation.signatures, userAddress, userOwnerId]);
+  }, [userAddress, userOperation.signatures, userOwnerId]);
 
   const isSignable = useMemo(() => {
-    // Check if the user is signed and is an owner
-    return isSigned && isOwner && !isLoading;
-  }, [isSigned, isLoading]);
+    // Check if the user has not yet signed and is an owner
+    return !isSigned && isOwner && !isLoading;
+  }, [isSigned, isOwner, isLoading]);
 
   const subdigest = useMemo(
     () =>
