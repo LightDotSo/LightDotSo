@@ -13,26 +13,23 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
+"use server";
 
-import { ButtonIcon } from "@lightdotso/ui";
-import { ChevronDown } from "lucide-react";
-import type { FC } from "react";
+import {
+  SESSION_COOKIE_ID,
+  USER_COOKIE_ID,
+  WALLETS_COOKIE_ID,
+} from "@lightdotso/const";
+import { cookies } from "next/headers";
 
 // -----------------------------------------------------------------------------
-// Component
+// Action
 // -----------------------------------------------------------------------------
 
-export const UserOperationCardToggle: FC = () => {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
+export default async function action() {
+  const cookieStore = cookies();
 
-  return (
-    <div className="flex items-center justify-end">
-      <ButtonIcon className="bg-background-strong" variant="ghost" size="sm">
-        <ChevronDown className="size-4 transition-all duration-200" />
-      </ButtonIcon>
-    </div>
-  );
-};
+  cookieStore.delete(USER_COOKIE_ID);
+  cookieStore.delete(WALLETS_COOKIE_ID);
+  cookieStore.delete(SESSION_COOKIE_ID);
+}

@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { tokenListData } from "@lightdotso/demo";
+import { handlers } from "@lightdotso/msw";
 import type { Meta, StoryObj } from "@storybook/react";
 import { TokenTable } from "./token-table";
 
@@ -40,6 +41,11 @@ type Story = StoryObj<typeof TokenTable>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
+  parameters: {
+    msw: {
+      handlers: handlers,
+    },
+  },
   render: args => (
     <TokenTable isLoading={false} pageSize={10} data={tokenListData} />
   ),

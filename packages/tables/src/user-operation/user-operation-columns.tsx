@@ -110,7 +110,7 @@ export const userOperationColumns: ColumnDef<UserOperationData>[] = [
   },
   {
     id: "toggle",
-    cell: ({ row }) => <UserOperationCardToggle userOperation={row.original} />,
+    cell: () => <UserOperationCardToggle />,
     enableHiding: false,
     size: 32,
   },

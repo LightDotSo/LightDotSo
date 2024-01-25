@@ -17,7 +17,7 @@
 
 import type { TokenData } from "@lightdotso/data";
 import { useSuspenseQueryTokenPrice } from "@lightdotso/query";
-import { cn, refineNumberFormat } from "@lightdotso/utils";
+import { cn, isTestnet, refineNumberFormat } from "@lightdotso/utils";
 import type { FC } from "react";
 import type { Address } from "viem";
 
@@ -51,6 +51,15 @@ export const TokenCardPrice: FC<TokenCardPriceProps> = ({
 
   if (!token_price || chain_id === 0) {
     return null;
+  }
+
+  if (isTestnet(chain_id)) {
+    return (
+      <div className="flex flex-col space-y-1.5">
+        <span className="text-sm text-text">-</span>
+        <span className="text-sm text-text">-</span>
+      </div>
+    );
   }
 
   return (

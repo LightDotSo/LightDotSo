@@ -18,16 +18,19 @@ import {
   BASE_API_URL,
   BASE_LOCAL_ADMIN_URL,
 } from "@lightdotso/const";
-import { walletListData } from "@lightdotso/demo";
+import { tokenPriceGetData } from "@lightdotso/demo";
 import { HttpResponse, http } from "msw";
 
-export const getWallets = (url: string) =>
-  http.get(`${url}/v1/wallet/list`, () => {
-    return HttpResponse.json(walletListData);
-  });
+export const getTokenPrice = (url: string) =>
+  http.get(
+    `${url}/v1/token_price/get?address=0xc2132D05D31c914a87C6611C10748AEb04B58e8F&chain_id=137`,
+    () => {
+      return HttpResponse.json(tokenPriceGetData);
+    },
+  );
 
-export const walletHandlers = [
-  getWallets(BASE_LOCAL_ADMIN_URL),
-  getWallets(BASE_API_AUTHENTICATED_URL),
-  getWallets(BASE_API_URL),
+export const tokenPriceHandlers = [
+  getTokenPrice(BASE_LOCAL_ADMIN_URL),
+  getTokenPrice(BASE_API_AUTHENTICATED_URL),
+  getTokenPrice(BASE_API_URL),
 ];
