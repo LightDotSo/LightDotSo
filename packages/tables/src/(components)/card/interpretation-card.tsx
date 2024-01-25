@@ -17,6 +17,7 @@
 
 import type { InterpretationData } from "@lightdotso/data";
 import { AssetChange } from "@lightdotso/elements";
+import { cn } from "@lightdotso/utils";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
@@ -25,6 +26,7 @@ import type { FC } from "react";
 
 type InterpretationCardProps = {
   interpretation?: InterpretationData | null;
+  className?: string;
 };
 
 // -----------------------------------------------------------------------------
@@ -33,17 +35,23 @@ type InterpretationCardProps = {
 
 export const InterpretationCard: FC<InterpretationCardProps> = ({
   interpretation,
+  className,
 }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   if (!interpretation) {
-    return <div className="min-w-32 grow" />;
+    return <div className={cn("min-w-32 grow", className)} />;
   }
 
   return (
-    <div className="min-w-32 grow items-center space-x-2 md:space-x-3">
+    <div
+      className={cn(
+        "min-w-32 grow items-center space-x-2 md:space-x-3",
+        className,
+      )}
+    >
       {interpretation?.asset_changes &&
         interpretation.asset_changes
           .slice(0, 1)
