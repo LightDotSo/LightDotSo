@@ -80,7 +80,10 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
     ),
     cell: ({ row }) => (
       <Suspense fallback={null}>
-        <TokenCardSparkline token={row.original} />
+        <TokenCardSparkline
+          token={row.original}
+          isExpanded={typeof row.getParentRow() !== "undefined"}
+        />
       </Suspense>
     ),
     enableSorting: false,
@@ -94,7 +97,10 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
     ),
     cell: ({ row }) => (
       <Suspense fallback={null}>
-        <TokenCardPrice token={row.original} />
+        <TokenCardPrice
+          token={row.original}
+          isExpanded={typeof row.getParentRow() !== "undefined"}
+        />
       </Suspense>
     ),
     enableSorting: false,

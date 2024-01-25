@@ -39,7 +39,7 @@ export const UserOperationCardStatus: FC<UserOperationCardStatusProps> = ({
   return (
     <div
       className={cn(
-        "w-12 text-right font-medium",
+        "flex items-center justify-end text-right font-medium",
         status === "EXECUTED"
           ? "text-text-success"
           : status === "PROPOSED"

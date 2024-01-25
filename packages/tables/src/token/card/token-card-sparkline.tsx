@@ -25,7 +25,7 @@ import type { Address } from "viem";
 // Props
 // -----------------------------------------------------------------------------
 
-type TokenCardSparklineProps = { token: TokenData };
+type TokenCardSparklineProps = { token: TokenData; isExpanded?: boolean };
 
 // -----------------------------------------------------------------------------
 // Component
@@ -33,6 +33,7 @@ type TokenCardSparklineProps = { token: TokenData };
 
 export const TokenCardSparkline: FC<TokenCardSparklineProps> = ({
   token: { address, chain_id },
+  isExpanded,
 }) => {
   // ---------------------------------------------------------------------------
   // Query
@@ -47,7 +48,7 @@ export const TokenCardSparkline: FC<TokenCardSparklineProps> = ({
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!token_price || chain_id === 0) {
+  if (!token_price || chain_id === 0 || isExpanded) {
     return null;
   }
 

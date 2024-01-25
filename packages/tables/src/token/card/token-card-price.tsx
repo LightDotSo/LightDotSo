@@ -27,6 +27,7 @@ import type { Address } from "viem";
 
 type TokenCardPriceProps = {
   token: TokenData;
+  isExpanded?: boolean;
 };
 
 // -----------------------------------------------------------------------------
@@ -35,6 +36,7 @@ type TokenCardPriceProps = {
 
 export const TokenCardPrice: FC<TokenCardPriceProps> = ({
   token: { address, chain_id },
+  isExpanded,
 }) => {
   // ---------------------------------------------------------------------------
   // Query
@@ -49,15 +51,14 @@ export const TokenCardPrice: FC<TokenCardPriceProps> = ({
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!token_price || chain_id === 0) {
+  if (!token_price || chain_id === 0 || isExpanded) {
     return null;
   }
 
   if (isTestnet(chain_id)) {
     return (
       <div className="flex flex-col space-y-1.5">
-        <span className="text-sm text-text">-</span>
-        <span className="text-sm text-text">-</span>
+        <span className="text-sm text-text-weak">N/A</span>
       </div>
     );
   }

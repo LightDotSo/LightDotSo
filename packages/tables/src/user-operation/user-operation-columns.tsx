@@ -22,7 +22,6 @@ import { UserOperationTableRowActions } from "./actions";
 import {
   UserOperationCardInterpretationAction,
   UserOperationCardChain,
-  UserOperationCardNonce,
   UserOperationCardStatus,
   UserOperationCardInterpretation,
   UserOperationCardToggle,
@@ -78,20 +77,6 @@ export const userOperationColumns: ColumnDef<UserOperationData>[] = [
     ),
     enableSorting: false,
     enableHiding: false,
-    size: 32,
-  },
-  {
-    id: "nonce",
-    accessorKey: "nonce",
-    header: ({ column }) => (
-      <DataTableColumnHeader className="w-10" column={column} title="Nonce" />
-    ),
-    cell: ({ row }) => <UserOperationCardNonce userOperation={row.original} />,
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-    enableSorting: true,
-    enableHiding: true,
     size: 32,
   },
   {
