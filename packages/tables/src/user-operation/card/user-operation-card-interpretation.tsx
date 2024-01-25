@@ -39,6 +39,9 @@ export const UserOperationCardInterpretation: FC<
   // ---------------------------------------------------------------------------
 
   return (
-    <InterpretationCard className="pl-4" interpretation={interpretation} />
+    <InterpretationCard
+      className="group-[.transaction]:pl-4"
+      interpretation={interpretation}
+    />
   );
 };
