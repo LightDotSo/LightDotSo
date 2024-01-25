@@ -17,7 +17,13 @@
 
 import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
 import { useUserOperationSign } from "@lightdotso/hooks";
-import { Button } from "@lightdotso/ui";
+import {
+  Button,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@lightdotso/ui";
 import type { FC } from "react";
 import type { Address } from "viem";
 
@@ -53,14 +59,25 @@ export const UserOperationCardTransactionSignButton: FC<
   // ---------------------------------------------------------------------------
 
   return (
-    <Button
-      disabled={!isSignable}
-      isLoading={isLoading}
-      variant={isSignable ? "default" : "outline"}
-      className="w-full"
-      onClick={signUserOperation}
-    >
-      Sign
-    </Button>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            disabled={!isSignable}
+            isLoading={isLoading}
+            variant={isSignable ? "default" : "outline"}
+            className="w-full"
+            onClick={signUserOperation}
+          >
+            Sign
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          {isSignable
+            ? "Sign this transaction"
+            : "This transaction is not signable"}
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
