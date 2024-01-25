@@ -159,7 +159,7 @@ export const UserNav: FC = () => {
         <DropdownMenuGroup>
           <DropdownMenuItem
             onClick={async () => {
-              const loadingToast = toast.loading("Sending feedback...");
+              const loadingToast = toast.loading("Disconnecting...");
 
               disconnect();
 
@@ -167,7 +167,7 @@ export const UserNav: FC = () => {
               postAuthLogout().then(res => {
                 toast.dismiss(loadingToast);
                 if (res.isOk()) {
-                  toast.success("Sucessfully logged out!");
+                  toast.success("Successfully logged out!");
                 } else {
                   toast.error("Sorry, something went wrong.");
                 }
