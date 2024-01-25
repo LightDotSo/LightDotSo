@@ -47,20 +47,23 @@ export const parseTokenAddress = (token: TokenData) => {
 // Cva
 // -----------------------------------------------------------------------------
 
-const tokenImageVariants = cva("inline-flex overflow-hidden rounded-full", {
-  variants: {
-    size: {
-      xs: "size-6",
-      sm: "size-8",
-      md: "size-12",
-      lg: "size-16",
-      xl: "size-24",
+const tokenImageVariants = cva(
+  "inline-flex overflow-hidden rounded-full flex-shrink-0",
+  {
+    variants: {
+      size: {
+        xs: "size-6",
+        sm: "size-8",
+        md: "size-12",
+        lg: "size-16",
+        xl: "size-24",
+      },
+    },
+    defaultVariants: {
+      size: "sm",
     },
   },
-  defaultVariants: {
-    size: "sm",
-  },
-});
+);
 
 // -----------------------------------------------------------------------------
 // Props
