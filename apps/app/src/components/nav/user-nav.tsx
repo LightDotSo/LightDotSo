@@ -16,6 +16,7 @@
 "use client";
 
 import { postAuthLogout } from "@lightdotso/client";
+import { useIsMounted } from "@lightdotso/hooks";
 import { useAuth } from "@lightdotso/stores";
 import {
   Button,
@@ -45,7 +46,6 @@ import type { FC } from "react";
 import type { Address } from "viem";
 import deleteCookiesAction from "@/actions/deleteCookiesAction";
 import { ConnectButton } from "@/components/web3/connect-button";
-import { useIsMounted } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Component

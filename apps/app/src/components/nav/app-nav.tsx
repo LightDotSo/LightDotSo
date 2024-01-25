@@ -15,6 +15,7 @@
 
 "use client";
 
+import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
 import { useAuth } from "@lightdotso/stores";
 import { MobileAppDrawer } from "@lightdotso/templates";
 import type { Tab } from "@lightdotso/types";
@@ -24,7 +25,6 @@ import { ChainPopover } from "@/components/chain/chain-popover";
 import { FeedbackPopover } from "@/components/feedback/feedback-popover";
 import { NotificationsNav } from "@/components/nav/notifications-nav";
 import { UserNav } from "@/components/nav/user-nav";
-import { useIsMounted, useMediaQuery } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Props

@@ -19,6 +19,7 @@
 "use client";
 
 import { PlaceholderOrb } from "@lightdotso/elements";
+import { useIsMounted } from "@lightdotso/hooks";
 import { useSuspenseQueryWallets } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import {
@@ -49,7 +50,6 @@ import { Suspense, useCallback, useEffect, useState } from "react";
 import type { UIEvent, FC, ComponentPropsWithoutRef } from "react";
 import { getAddress, isAddress } from "viem";
 import type { Address } from "viem";
-import { useIsMounted } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Props

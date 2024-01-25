@@ -15,6 +15,7 @@
 
 "use client";
 
+import { useIsMounted } from "@lightdotso/hooks";
 import { useAuth } from "@lightdotso/stores";
 import {
   Popover,
@@ -26,7 +27,6 @@ import { Megaphone } from "lucide-react";
 import { useState } from "react";
 import type { FC } from "react";
 import { FeedbackForm } from "@/components/feedback/feedback-form";
-import { useIsMounted } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Component

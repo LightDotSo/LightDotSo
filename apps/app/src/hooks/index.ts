@@ -16,7 +16,5 @@
 export { useAuthModal } from "./useAuthModal";
 export { useDebouncedValue } from "@lightdotso/hooks/src/useDebouncedValue";
 export { useEdgeFlag } from "./useEdgeFlag";
-export { useIsMounted } from "./useIsMounted";
-export { useMediaQuery } from "./useMediaQuery";
 export { usePathType } from "./usePathType";
 export { useTabs } from "./useTabs";

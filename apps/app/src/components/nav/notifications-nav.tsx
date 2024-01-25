@@ -15,11 +15,11 @@
 
 "use client";
 
+import { useIsMounted } from "@lightdotso/hooks";
 import { ButtonIcon } from "@lightdotso/ui";
 import { BellIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import type { FC } from "react";
-import { useIsMounted } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Component
