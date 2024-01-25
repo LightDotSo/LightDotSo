@@ -16,7 +16,7 @@
 import { getTransactions, getTransactionsCount } from "@lightdotso/services";
 import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
-import { isTestnetParser, paginationParser } from "@/queryStates";
+import { isTestnetParser, paginationParser } from "@lightdotso/nuqs";
 
 // -----------------------------------------------------------------------------
 // Handler

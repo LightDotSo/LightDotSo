@@ -21,7 +21,7 @@ import { useTables } from "@lightdotso/stores";
 import { UserOperationTable } from "@lightdotso/tables";
 import type { ColumnDef } from "@tanstack/react-table";
 import type { Address } from "viem";
-import { usePaginationQueryState } from "@/queryStates";
+import { usePaginationQueryState } from "@lightdotso/nuqs";
 
 // -----------------------------------------------------------------------------
 // Props

@@ -27,7 +27,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/data-table";
-import { usePaginationQueryState } from "@/queryStates";
+import { usePaginationQueryState } from "@lightdotso/nuqs";
 
 // -----------------------------------------------------------------------------
 // Props

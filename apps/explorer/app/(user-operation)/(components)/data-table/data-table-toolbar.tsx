@@ -29,7 +29,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import type { Table } from "@tanstack/react-table";
 import { useMemo } from "react";
 import type { Address } from "viem";
-import { usePaginationQueryState, useIsTestnetQueryState } from "@/queryStates";
+import {
+  usePaginationQueryState,
+  useIsTestnetQueryState,
+} from "@lightdotso/nuqs";
 
 // -----------------------------------------------------------------------------
 // Props

@@ -20,7 +20,7 @@ import { useQueryConfiguration } from "@lightdotso/query";
 import { useTables } from "@lightdotso/stores";
 import { UserOperationTable } from "@lightdotso/tables";
 import type { ColumnDef } from "@tanstack/react-table";
-import { usePaginationQueryState } from "@/queryStates";
+import { usePaginationQueryState } from "@lightdotso/nuqs";
 
 // -----------------------------------------------------------------------------
 // Props

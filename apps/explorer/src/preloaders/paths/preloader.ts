@@ -17,7 +17,7 @@ import {
   preloadGetUserOperations,
   preloadGetUserOperationsCount,
 } from "@lightdotso/services";
-import { isTestnetParser, paginationParser } from "@/queryStates";
+import { isTestnetParser, paginationParser } from "@lightdotso/nuqs";
 
 // -----------------------------------------------------------------------------
 // Preloader

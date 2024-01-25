@@ -18,7 +18,7 @@ import {
   preloadGetUserOperationsCount,
 } from "@lightdotso/services";
 import type { Address } from "viem";
-import { isTestnetParser, paginationParser } from "@/queryStates";
+import { isTestnetParser, paginationParser } from "@lightdotso/nuqs";
 
 // -----------------------------------------------------------------------------
 // Preloader

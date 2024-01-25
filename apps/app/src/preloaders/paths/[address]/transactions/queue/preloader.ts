@@ -19,7 +19,7 @@ import {
 } from "@lightdotso/services";
 import type { Address } from "viem";
 import { preloader as addressPreloader } from "@/preloaders/paths/[address]/preloader";
-import { paginationParser } from "@/queryStates";
+import { paginationParser } from "@lightdotso/nuqs";
 
 // -----------------------------------------------------------------------------
 // Preloader

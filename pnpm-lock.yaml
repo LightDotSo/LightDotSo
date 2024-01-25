@@ -336,6 +336,9 @@ importers:
       '@lightdotso/msw':
         specifier: workspace:*
         version: link:../../packages/msw
+      '@lightdotso/nuqs':
+        specifier: workspace:*
+        version: link:../../packages/nuqs
       '@lightdotso/params':
         specifier: workspace:*
         version: link:../../packages/params
@@ -797,6 +800,9 @@ importers:
       '@lightdotso/kysely':
         specifier: workspace:*
         version: link:../../configurations/kysely
+      '@lightdotso/nuqs':
+        specifier: workspace:*
+        version: link:../../packages/nuqs
       '@lightdotso/params':
         specifier: workspace:*
         version: link:../../packages/params
@@ -1791,6 +1797,25 @@ importers:
       msw:
         specifier: ^2.1.4
         version: 2.1.4(typescript@5.3.3)
+    devDependencies:
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../../configurations/tsconfig
+      '@types/node':
+        specifier: ^20.11.5
+        version: 20.11.5
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
+  packages/nuqs:
+    dependencies:
+      '@tanstack/react-table':
+        specifier: ^8.11.7
+        version: 8.11.7(react-dom@18.2.0)(react@18.2.0)
+      nuqs:
+        specifier: ^1.15.4
+        version: 1.15.4(next@14.1.0)
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*

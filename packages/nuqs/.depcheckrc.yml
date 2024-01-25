@@ -1,0 +1,6 @@
+ignores:
+  - "@types/node"
+  - cross-env
+  - dotenv
+  - "@lightdotso/tsconfig"
+  - tsup

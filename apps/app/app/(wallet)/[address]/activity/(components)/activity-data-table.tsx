@@ -21,7 +21,7 @@ import { TableSectionWrapper } from "@lightdotso/ui";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(wallet)/[address]/activity/(components)/data-table/data-table";
-import { usePaginationQueryState } from "@/queryStates";
+import { usePaginationQueryState } from "@lightdotso/nuqs";
 
 // -----------------------------------------------------------------------------
 // Props

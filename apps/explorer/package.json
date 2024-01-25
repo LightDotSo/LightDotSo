@@ -26,6 +26,7 @@
     "@lightdotso/data": "workspace:*",
     "@lightdotso/hooks": "workspace:*",
     "@lightdotso/kysely": "workspace:*",
+    "@lightdotso/nuqs": "workspace:*",
     "@lightdotso/params": "workspace:*",
     "@lightdotso/prisma": "workspace:*",
     "@lightdotso/query": "workspace:*",

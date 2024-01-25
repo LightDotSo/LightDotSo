@@ -36,6 +36,7 @@
     "@lightdotso/kysely": "workspace:*",
     "@lightdotso/modals": "workspace:*",
     "@lightdotso/msw": "workspace:*",
+    "@lightdotso/nuqs": "workspace:*",
     "@lightdotso/params": "workspace:*",
     "@lightdotso/prisma": "workspace:*",
     "@lightdotso/query": "workspace:*",

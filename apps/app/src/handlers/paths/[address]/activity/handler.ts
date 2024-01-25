@@ -18,7 +18,7 @@ import { Result } from "neverthrow";
 import { cookies } from "next/headers";
 import type { Address } from "viem";
 import { validateAddress } from "@/handlers/validators/address";
-import { paginationParser } from "@/queryStates";
+import { paginationParser } from "@lightdotso/nuqs";
 
 // -----------------------------------------------------------------------------
 // Handler

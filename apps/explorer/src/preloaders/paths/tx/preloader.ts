@@ -17,7 +17,7 @@ import {
   preloadGetTransactions,
   preloadGetTransactionsCount,
 } from "@lightdotso/services";
-import { paginationParser } from "@/queryStates";
+import { paginationParser } from "@lightdotso/nuqs";
 
 // -----------------------------------------------------------------------------
 // Preloader

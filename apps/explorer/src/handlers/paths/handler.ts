@@ -18,7 +18,7 @@ import {
   getUserOperationsCount,
 } from "@lightdotso/services";
 import { Result } from "neverthrow";
-import { isTestnetParser, paginationParser } from "@/queryStates";
+import { isTestnetParser, paginationParser } from "@lightdotso/nuqs";
 
 // -----------------------------------------------------------------------------
 // Handler

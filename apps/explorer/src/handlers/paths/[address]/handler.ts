@@ -20,7 +20,7 @@ import {
 import { Result } from "neverthrow";
 import type { Address } from "viem";
 import { validateAddress } from "@/handlers/validators/address";
-import { isTestnetParser, paginationParser } from "@/queryStates";
+import { isTestnetParser, paginationParser } from "@lightdotso/nuqs";
 // -----------------------------------------------------------------------------
 // Handler
 // -----------------------------------------------------------------------------
