@@ -72,23 +72,28 @@ export const useUserOperationSign = ({
     return owners.find(owner => owner.address === userAddress)?.id;
   }, [owners, userAddress]);
 
-  const isSignable = useMemo(() => {
+  const isOwner = useMemo(() => {
+    // Check if the user is an owner
+    return owners.some(
+      owner => owner.address === getAddress(userAddress as Address),
+    );
+  }, [owners, userAddress]);
+
+  const isSigned = useMemo(() => {
     if (!userAddress || (userAddress && !isAddress(userAddress as Address))) {
       return;
     }
 
-    // Check if the user is an owner
-    const isOwner = owners.some(
-      owner => owner.address === getAddress(userAddress as Address),
-    );
-
     // Check if the user has already signed
-    const isSigned = userOperation.signatures.some(
+    return userOperation.signatures.some(
       signature => signature.owner_id === userOwnerId,
     );
-
-    return isOwner && !isSigned;
   }, [owners, userOperation.signatures, userAddress, userOwnerId]);
+
+  const isSignable = useMemo(() => {
+    // Check if the user is signed and is an owner
+    return isSigned && isOwner && !isLoading;
+  }, [isSigned, isLoading]);
 
   const subdigest = useMemo(
     () =>
@@ -182,6 +187,8 @@ export const useUserOperationSign = ({
 
   return {
     isLoading,
+    isOwner,
+    isSigned,
     isSignable,
     signedMessage,
     signUserOperation,

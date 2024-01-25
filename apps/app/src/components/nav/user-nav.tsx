@@ -41,6 +41,7 @@ import Link from "next/link";
 import { useTheme } from "next-themes";
 import type { FC } from "react";
 import type { Address } from "viem";
+import deleteCookiesAction from "@/actions/deleteCookiesAction";
 import { ConnectButton } from "@/components/web3/connect-button";
 import { useIsMounted } from "@/hooks";
 
@@ -154,7 +155,12 @@ export const UserNav: FC = () => {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem onClick={() => disconnect()}>
+          <DropdownMenuItem
+            onClick={() => {
+              disconnect();
+              deleteCookiesAction();
+            }}
+          >
             Disconnect
           </DropdownMenuItem>
         </DropdownMenuGroup>
