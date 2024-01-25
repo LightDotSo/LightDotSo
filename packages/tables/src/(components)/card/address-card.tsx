@@ -16,7 +16,13 @@
 "use client";
 
 import { PlaceholderOrb } from "@lightdotso/elements";
-import { Avatar } from "@lightdotso/ui";
+import {
+  Avatar,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
 import { useEnsName } from "@lightdotso/wagmi";
 import type { FC } from "react";
@@ -44,12 +50,23 @@ export const AddressCard: FC<ChainCardProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="flex items-center text-ellipsis">
-      <Avatar className="mr-3 size-7">
-        <PlaceholderOrb address={address} />
-      </Avatar>
-      {ens && <span className="mr-3">{ens}</span>}
-      {shortenAddress(address)}
-    </div>
+    <TooltipProvider>
+      <Tooltip>
+        <div className="flex items-center text-ellipsis">
+          <Avatar className="mr-3 size-7">
+            <PlaceholderOrb address={address} />
+          </Avatar>
+          {ens && <span className="mr-3">{ens}</span>}
+          <TooltipTrigger asChild>
+            <span className="text-xs text-text-weak">
+              {shortenAddress(address)}
+            </span>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{address}</p>
+          </TooltipContent>
+        </div>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
