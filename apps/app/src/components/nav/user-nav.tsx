@@ -15,6 +15,7 @@
 
 "use client";
 
+import { postAuthLogout } from "@lightdotso/client";
 import { useAuth } from "@lightdotso/stores";
 import {
   Button,
@@ -32,6 +33,7 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
+  toast,
 } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
 import { useDisconnect } from "@lightdotso/wagmi";
@@ -156,9 +158,20 @@ export const UserNav: FC = () => {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem
-            onClick={() => {
+            onClick={async () => {
+              const loadingToast = toast.loading("Disconnecting...");
+
               disconnect();
+
               deleteCookiesAction();
+              postAuthLogout().then(res => {
+                toast.dismiss(loadingToast);
+                if (res.isOk()) {
+                  toast.success("Successfully logged out!");
+                } else {
+                  toast.error("Sorry, something went wrong.");
+                }
+              });
             }}
           >
             Disconnect

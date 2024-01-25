@@ -15,7 +15,7 @@
 
 "use client";
 
-import { useTables } from "@lightdotso/stores";
+import { useAuth, useTables } from "@lightdotso/stores";
 import { DataTablePagination } from "@lightdotso/templates";
 import { useEffect, type FC } from "react";
 
@@ -28,6 +28,7 @@ export const ActivityDataTablePagination: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
+  const { sessionId } = useAuth();
   const { activityTable } = useTables();
 
   // ---------------------------------------------------------------------------
@@ -38,13 +39,12 @@ export const ActivityDataTablePagination: FC = () => {
     if (!useTables.persist.hasHydrated()) {
       useTables.persist.rehydrate();
     }
-  }, []);
+  }, [sessionId]);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
-
-  if (!activityTable || !useTables.persist.hasHydrated()) {
+  if (!sessionId || !activityTable || !useTables.persist.hasHydrated()) {
     return null;
   }
 
