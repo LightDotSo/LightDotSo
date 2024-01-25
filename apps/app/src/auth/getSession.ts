@@ -38,12 +38,20 @@ type Session = {
 };
 
 // -----------------------------------------------------------------------------
+// Cookie
+// -----------------------------------------------------------------------------
+
+export const getSessionCookie = () => {
+  const cookieStore = cookies();
+  return cookieStore.get(SESSION_COOKIE_ID)?.value;
+};
+
+// -----------------------------------------------------------------------------
 // Auth
 // -----------------------------------------------------------------------------
 
 export const getSession = async (): Promise<Session | null | undefined> => {
-  const cookieStore = cookies();
-  const sessionId = cookieStore.get(SESSION_COOKIE_ID)?.value;
+  const sessionId = getSessionCookie();
 
   if (!sessionId) {
     return undefined;

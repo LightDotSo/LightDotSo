@@ -20,9 +20,10 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export type NotificationListParams = {
-  address: Address;
+  address: Address | null;
   limit: number;
   offset: number;
+  user_id?: string | null | undefined;
 };
 
 export type NotificationListCountParams = Omit<

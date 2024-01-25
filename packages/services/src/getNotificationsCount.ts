@@ -13,21 +13,36 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Address } from "viem";
+import { getNotificationsCount as getClientNotificationsCount } from "@lightdotso/client";
+import type { NotificationListCountParams } from "@lightdotso/params";
+import "server-only";
 
 // -----------------------------------------------------------------------------
-// Params
+// Pre
 // -----------------------------------------------------------------------------
 
-export type WalletParams = {
-  address: Address;
+export const preloadGetNotificationsCount = (
+  params: NotificationListCountParams,
+) => {
+  void getNotificationsCount(params);
 };
 
-export type WalletListParams = {
-  address: Address | null;
-  limit: number;
-  offset: number;
-  user_id?: string;
-};
+// -----------------------------------------------------------------------------
+// Service
+// -----------------------------------------------------------------------------
 
-export type WalletListCountParams = Omit<WalletListParams, "limit" | "offset">;
+export const getNotificationsCount = async (
+  params: NotificationListCountParams,
+) => {
+  return getClientNotificationsCount(
+    {
+      params: {
+        query: {
+          owner: params.address,
+          user_id: params.user_id,
+        },
+      },
+    },
+    "admin",
+  );
+};

@@ -14,33 +14,22 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { paginationParser } from "@lightdotso/nuqs";
-import { getWallets, getWalletsCount } from "@lightdotso/services";
-import { Result } from "neverthrow";
-import type { Address } from "viem";
-import { verifyUserId } from "@/auth";
-import { validateAddress } from "@/handlers/validators/address";
+import {
+  preloadGetWallets,
+  preloadGetWalletsCount,
+} from "@lightdotso/services";
+import { getUserIdCookie } from "@/auth";
 
 // -----------------------------------------------------------------------------
-// Handler
+// Preloader
 // -----------------------------------------------------------------------------
 
-export const handler = async (
-  params: { address: string },
-  searchParams: {
-    pagination?: string;
-  },
-) => {
+export const preloader = async (searchParams: { pagination?: string }) => {
   // ---------------------------------------------------------------------------
   // Auth
   // ---------------------------------------------------------------------------
 
-  const userId = await verifyUserId();
-
-  // ---------------------------------------------------------------------------
-  // Validators
-  // ---------------------------------------------------------------------------
-
-  validateAddress(params.address);
+  const userId = getUserIdCookie();
 
   // ---------------------------------------------------------------------------
   // Parsers
@@ -51,48 +40,17 @@ export const handler = async (
   );
 
   // ---------------------------------------------------------------------------
-  // Fetch
+  // Preloaders
   // ---------------------------------------------------------------------------
 
-  const walletsPromise = getWallets({
-    address: params.address as Address,
+  preloadGetWallets({
+    address: null,
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
     user_id: userId,
   });
-
-  const walletsCountPromise = getWalletsCount({
-    address: params.address as Address,
+  preloadGetWalletsCount({
+    address: null,
     user_id: userId,
   });
-
-  const [wallets, walletsCount] = await Promise.all([
-    walletsPromise,
-    walletsCountPromise,
-  ]);
-
-  // ---------------------------------------------------------------------------
-  // Parse
-  // ---------------------------------------------------------------------------
-
-  const res = Result.combineWithAllErrors([wallets, walletsCount]);
-
-  return res.match(
-    ([wallets, walletsCount]) => {
-      return {
-        paginationState: paginationState,
-        wallets: wallets,
-        walletsCount: walletsCount,
-      };
-    },
-    () => {
-      return {
-        paginationState: paginationState,
-        wallets: [],
-        walletsCount: {
-          count: 0,
-        },
-      };
-    },
-  );
 };

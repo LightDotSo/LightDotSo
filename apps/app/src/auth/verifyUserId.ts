@@ -18,12 +18,20 @@ import { cookies } from "next/headers";
 import { getSession } from "./getSession";
 
 // -----------------------------------------------------------------------------
+// Cookie
+// -----------------------------------------------------------------------------
+
+export const getUserIdCookie = () => {
+  const cookieStore = cookies();
+  return cookieStore.get(USER_COOKIE_ID)?.value;
+};
+
+// -----------------------------------------------------------------------------
 // Auth
 // -----------------------------------------------------------------------------
 
 export const verifyUserId = async () => {
-  const cookieStore = cookies();
-  const userId = cookieStore.get(USER_COOKIE_ID)?.value;
+  const userId = getUserIdCookie();
   const session = await getSession();
 
   if (!session) {

@@ -23,6 +23,11 @@ export { preloadGetPortfolio, getPortfolio } from "./getPortfolio";
 export { getQueryClient } from "./getQueryClient";
 export { preloadGetNfts, getNfts } from "./getNfts";
 export { preloadGetNftValuation, getNftValuation } from "./getNftValuation";
+export { preloadGetNotifications, getNotifications } from "./getNotifications";
+export {
+  preloadGetNotificationsCount,
+  getNotificationsCount,
+} from "./getNotificationsCount";
 export { preloadGetTokens, getTokens } from "./getTokens";
 export { preloadGetTokensCount, getTokensCount } from "./getTokensCount";
 export { preloadGetTransactions, getTransactions } from "./getTransactions";

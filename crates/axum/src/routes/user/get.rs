@@ -36,7 +36,10 @@ use utoipa::IntoParams;
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct GetQuery {
-    pub address: String,
+    /// The address of the user.
+    pub address: Option<String>,
+    /// The user id.
+    pub user_id: Option<String>,
 }
 
 // -----------------------------------------------------------------------------
@@ -69,19 +72,25 @@ pub(crate) async fn v1_user_get_handler(
 
     info!("Get user for address: {:?}", query);
 
-    let parsed_query_address: H160 = query.address.parse()?;
+    let query_address: Option<H160> = query.address.as_ref().and_then(|s| s.parse().ok());
 
     // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
 
-    // Get the users from the database.
-    let user = state
-        .client
-        .user()
-        .find_unique(user::address::equals(to_checksum(&parsed_query_address, None)))
-        .exec()
-        .await?;
+    // Get the user from the database.
+    let user = if let Some(addr) = query_address {
+        state
+            .client
+            .user()
+            .find_unique(user::address::equals(to_checksum(&addr, None)))
+            .exec()
+            .await?
+    } else if let Some(user_id) = query.user_id {
+        state.client.user().find_unique(user::id::equals(user_id)).exec().await?
+    } else {
+        None
+    };
 
     // If the user is not found, return a 404.
     let user =

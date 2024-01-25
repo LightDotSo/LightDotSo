@@ -14,14 +14,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getWalletsCount as getClientWalletsCount } from "@lightdotso/client";
-import type { WalletListParams } from "@lightdotso/params";
+import type { WalletListCountParams } from "@lightdotso/params";
 import "server-only";
 
 // -----------------------------------------------------------------------------
 // Pre
 // -----------------------------------------------------------------------------
 
-export const preloadGetWalletsCount = (params: WalletListParams) => {
+export const preloadGetWalletsCount = (params: WalletListCountParams) => {
   void getWalletsCount(params);
 };
 
@@ -29,7 +29,7 @@ export const preloadGetWalletsCount = (params: WalletListParams) => {
 // Service
 // -----------------------------------------------------------------------------
 
-export const getWalletsCount = async (params: WalletListParams) => {
+export const getWalletsCount = async (params: WalletListCountParams) => {
   return getClientWalletsCount(
     {
       params: {

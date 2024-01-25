@@ -14,33 +14,20 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { paginationParser } from "@lightdotso/nuqs";
-import { getWallets, getWalletsCount } from "@lightdotso/services";
+import { getNotifications, getNotificationsCount } from "@lightdotso/services";
 import { Result } from "neverthrow";
-import type { Address } from "viem";
 import { verifyUserId } from "@/auth";
-import { validateAddress } from "@/handlers/validators/address";
 
 // -----------------------------------------------------------------------------
 // Handler
 // -----------------------------------------------------------------------------
 
-export const handler = async (
-  params: { address: string },
-  searchParams: {
-    pagination?: string;
-  },
-) => {
+export const handler = async (searchParams: { pagination?: string }) => {
   // ---------------------------------------------------------------------------
   // Auth
   // ---------------------------------------------------------------------------
 
   const userId = await verifyUserId();
-
-  // ---------------------------------------------------------------------------
-  // Validators
-  // ---------------------------------------------------------------------------
-
-  validateAddress(params.address);
 
   // ---------------------------------------------------------------------------
   // Parsers
@@ -54,42 +41,42 @@ export const handler = async (
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const walletsPromise = getWallets({
-    address: params.address as Address,
+  const notificationsPromise = getNotifications({
+    address: null,
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
     user_id: userId,
   });
 
-  const walletsCountPromise = getWalletsCount({
-    address: params.address as Address,
+  const notificationsCountPromise = getNotificationsCount({
+    address: null,
     user_id: userId,
   });
 
-  const [wallets, walletsCount] = await Promise.all([
-    walletsPromise,
-    walletsCountPromise,
+  const [notifications, notificationsCount] = await Promise.all([
+    notificationsPromise,
+    notificationsCountPromise,
   ]);
 
   // ---------------------------------------------------------------------------
   // Parse
   // ---------------------------------------------------------------------------
 
-  const res = Result.combineWithAllErrors([wallets, walletsCount]);
+  const res = Result.combineWithAllErrors([notifications, notificationsCount]);
 
   return res.match(
-    ([wallets, walletsCount]) => {
+    ([notifications, notificationsCount]) => {
       return {
         paginationState: paginationState,
-        wallets: wallets,
-        walletsCount: walletsCount,
+        notifications: notifications,
+        notificationsCount: notificationsCount,
       };
     },
     () => {
       return {
         paginationState: paginationState,
-        wallets: [],
-        walletsCount: {
+        notifications: [],
+        notificationsCount: {
           count: 0,
         },
       };
