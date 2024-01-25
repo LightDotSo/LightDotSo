@@ -16,6 +16,7 @@
 "use client";
 
 import type { WalletData } from "@lightdotso/data";
+import { useCopy } from "@lightdotso/hooks";
 import {
   Button,
   DropdownMenu,
@@ -83,7 +84,4 @@ export function WalletTableRowActions({ row }: WalletTableRowActionsProps) {
       </DropdownMenu>
     </div>
   );
-}
-function useCopy(): [any, any] {
-  throw new Error("Function not implemented.");
 }
