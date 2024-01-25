@@ -15,7 +15,7 @@
 
 "use client";
 
-import { useAuth, useModals } from "@lightdotso/stores";
+import { useModals } from "@lightdotso/stores";
 import { Modal } from "@lightdotso/templates";
 import { DialogDescription, DialogTitle } from "@lightdotso/ui";
 

@@ -13,10 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Meta, StoryObj } from "@storybook/react";
-import { DepositModal } from "./deposit-modal";
+// eslint-disable react-hooks/rules-of-hooks
+
 import { useModals } from "@lightdotso/stores";
+import type { Meta, StoryObj } from "@storybook/react";
 import { useEffect } from "react";
+import { DepositModal } from "./deposit-modal";
 
 // -----------------------------------------------------------------------------
 // Meta
@@ -47,6 +49,7 @@ export const Base: Story = {
 
     useEffect(() => {
       showDepositModal();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return <DepositModal />;
