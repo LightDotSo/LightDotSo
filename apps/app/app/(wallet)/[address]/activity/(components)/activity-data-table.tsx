@@ -18,10 +18,12 @@
 import { usePaginationQueryState } from "@lightdotso/nuqs";
 import { useQueryActivities, useQueryActivitiesCount } from "@lightdotso/query";
 import { activityColumns } from "@lightdotso/tables";
+import { Login } from "@lightdotso/templates";
 import { TableSectionWrapper } from "@lightdotso/ui";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(wallet)/[address]/activity/(components)/data-table/data-table";
+import { useAuth } from "@lightdotso/stores";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -36,6 +38,12 @@ interface ActivityDataTableProps {
 // -----------------------------------------------------------------------------
 
 export const ActivityDataTable: FC<ActivityDataTableProps> = ({ address }) => {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { sessionId } = useAuth();
+
   // ---------------------------------------------------------------------------
   // Query State Hooks
   // ---------------------------------------------------------------------------
@@ -84,6 +92,10 @@ export const ActivityDataTable: FC<ActivityDataTableProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
+
+  if (!sessionId) {
+    return <Login />;
+  }
 
   return (
     <TableSectionWrapper>

@@ -22,6 +22,7 @@ import {
 } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import { notificationColumns } from "@lightdotso/tables";
+import { Login } from "@lightdotso/templates";
 import { TableSectionWrapper } from "@lightdotso/ui";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
@@ -36,7 +37,7 @@ export const NotificationsDataTable: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address } = useAuth();
+  const { address, sessionId } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Query State Hooks
@@ -85,6 +86,10 @@ export const NotificationsDataTable: FC = () => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
+
+  if (!sessionId) {
+    return <Login />;
+  }
 
   return (
     <TableSectionWrapper>
