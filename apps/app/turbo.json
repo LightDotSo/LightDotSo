@@ -24,7 +24,7 @@
         "NEXT_RUNTIME",
         "SENTRY_DSN",
         "SIMPLEHASH_API_KEY",
-        "UPSTASH_REST_API_DOMAIN",
+        "UPSTASH_REDIS_REST_URL",
         "UPSTASH_REST_API_TOKEN",
         "VERCEL_ENV"
       ],
