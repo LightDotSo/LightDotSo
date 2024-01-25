@@ -261,19 +261,15 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
             <div key={date} className="mb-4 space-y-3">
               <div className="text-text-weak">{date}</div>
               <div className="rounded-md border border-border bg-background">
-                <Table>
-                  <TableBody className="overflow-hidden">
-                    {itemsInSameDate.map(({ original: userOperation, row }) => (
-                      <UserOperationCardTransaction
-                        key={userOperation.hash}
-                        address={address}
-                        configuration={configuration}
-                        userOperation={userOperation}
-                        row={row}
-                      />
-                    ))}
-                  </TableBody>
-                </Table>
+                {itemsInSameDate.map(({ original: userOperation, row }) => (
+                  <UserOperationCardTransaction
+                    key={userOperation.hash}
+                    address={address}
+                    configuration={configuration}
+                    userOperation={userOperation}
+                    row={row}
+                  />
+                ))}
               </div>
             </div>
           ))}

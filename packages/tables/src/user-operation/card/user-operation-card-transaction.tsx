@@ -27,8 +27,6 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
   Progress,
-  TableCell,
-  TableRow,
 } from "@lightdotso/ui";
 import { cn, getChainById, shortenBytes32 } from "@lightdotso/utils";
 import type { Row } from "@tanstack/react-table";
@@ -36,7 +34,7 @@ import { flexRender } from "@tanstack/react-table";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import type { FC } from "react";
-import { useMemo } from "react";
+import { Fragment, useMemo } from "react";
 import type { Address } from "viem";
 import { UserOperationCardTransactionExecuteButton } from "./user-operation-card-transaction-execute-button";
 import { UserOperationCardTransactionSignButton } from "./user-operation-card-transaction-sign-button";
@@ -135,17 +133,17 @@ export const UserOperationCardTransaction: FC<
           className="cursor-pointer [&[data-state=open]>td>div>button>svg]:rotate-180"
           type={undefined}
         >
-          <TableRow>
+          <div className="flex w-full items-center border-b border-b-border p-3 transition-colors hover:bg-background-stronger/50">
             {row.getVisibleCells().map(cell => (
-              <TableCell key={cell.id}>
+              <Fragment key={cell.id}>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </TableCell>
+              </Fragment>
             ))}
-          </TableRow>
+          </div>
         </CollapsibleTrigger>
         <CollapsibleContent asChild>
-          <TableCell className="p-0" colSpan={row.getAllCells().length}>
-            <div className="m-4 grid gap-4 md:m-0 md:grid-cols-2">
+          <div className="p-4">
+            <div className="grid gap-4 md:grid-cols-2">
               <Card className="col-span-1 flex h-full flex-col justify-between space-y-4 border border-border-weak bg-background-strong p-4">
                 <CardHeader>
                   <CardTitle className="text-lg">
@@ -159,7 +157,7 @@ export const UserOperationCardTransaction: FC<
                   {informationItems.map((item, index) => (
                     <div
                       key={index}
-                      className="my-1 flex items-center justify-between"
+                      className="my-1 flex items-center justify-between text-xs"
                     >
                       <div>
                         <div className="text-text-weak">{item.title}</div>
@@ -256,7 +254,7 @@ export const UserOperationCardTransaction: FC<
                 </CardFooter>
               </Card>
             </div>
-          </TableCell>
+          </div>
         </CollapsibleContent>
       </>
     </Collapsible>

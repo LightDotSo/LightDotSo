@@ -46,13 +46,12 @@ export const userOperationColumns: ColumnDef<UserOperationData>[] = [
     ),
     enableSorting: false,
     enableHiding: false,
-    size: 32,
   },
   {
     id: "chain_id",
     accessorKey: "chain_id",
     header: ({ column }) => (
-      <DataTableColumnHeader className="w-10" column={column} title="Chain" />
+      <DataTableColumnHeader column={column} title="Chain" />
     ),
     cell: ({ row }) => <UserOperationCardChain userOperation={row.original} />,
     filterFn: (row, id, value) => {
@@ -60,30 +59,28 @@ export const userOperationColumns: ColumnDef<UserOperationData>[] = [
     },
     enableSorting: true,
     enableHiding: true,
-    size: 32,
   },
   {
     id: "interpretation",
     accessorKey: "interpretation",
     header: ({ column }) => (
-      <DataTableColumnHeader
-        className="w-10"
-        column={column}
-        title="Interpretation"
-      />
+      <DataTableColumnHeader column={column} title="Interpretation" />
     ),
     cell: ({ row }) => (
       <UserOperationCardInterpretation userOperation={row.original} />
     ),
     enableSorting: false,
     enableHiding: false,
-    size: 32,
   },
   {
     id: "status",
     accessorKey: "status",
     header: ({ column }) => (
-      <DataTableColumnHeader className="w-10" column={column} title="Status" />
+      <DataTableColumnHeader
+        className="justify-end"
+        column={column}
+        title="Status"
+      />
     ),
     cell: ({ row }) => <UserOperationCardStatus userOperation={row.original} />,
     filterFn: (row, id, value) => {
@@ -91,17 +88,14 @@ export const userOperationColumns: ColumnDef<UserOperationData>[] = [
     },
     enableSorting: true,
     enableHiding: true,
-    size: 32,
   },
   {
     id: "toggle",
     cell: () => <UserOperationCardToggle />,
     enableHiding: false,
-    size: 32,
   },
   {
     id: "row_actions",
     cell: ({ row }) => <UserOperationTableRowActions row={row} />,
-    size: 32,
   },
 ];

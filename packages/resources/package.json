@@ -33,6 +33,6 @@
     "cp:locales:ios": "cp -r ./_locales ../../ios/LightWalletSafariExtension/Resources"
   },
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   }
 }

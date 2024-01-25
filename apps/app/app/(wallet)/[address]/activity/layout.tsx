@@ -18,10 +18,13 @@ import {
   MiddleLayerWrapper,
   BasicPageWrapper,
   BannerSection,
+  HStackFull,
+  MinimalPageWrapper,
 } from "@lightdotso/ui";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { ActivityDataTableToolbar } from "@/app/(wallet)/[address]/activity/(components)/activity-data-table-toolbar";
+import { verifyUserId } from "@/auth";
 import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
@@ -45,10 +48,31 @@ interface ActivityLayoutProps {
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function ActivityLayout({ children }: ActivityLayoutProps) {
+export default async function ActivityLayout({
+  children,
+}: ActivityLayoutProps) {
+  // ---------------------------------------------------------------------------
+  // Auth
+  // ---------------------------------------------------------------------------
+
+  const userId = await verifyUserId();
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
+
+  if (!userId) {
+    <BannerSection
+      title={TITLES.Activity.title}
+      description={TITLES.Activity.description}
+    >
+      <HStackFull>
+        <BaseLayerWrapper>
+          <MinimalPageWrapper>{children}</MinimalPageWrapper>
+        </BaseLayerWrapper>
+      </HStackFull>
+    </BannerSection>;
+  }
 
   return (
     <>

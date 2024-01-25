@@ -13,6 +13,6 @@
   "license": "AGPL-3.0-or-later",
   "author": "Light, Inc.",
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   }
 }

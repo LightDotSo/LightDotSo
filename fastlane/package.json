@@ -20,6 +20,6 @@
     "@lightdotso/ios": "workspace:*"
   },
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   }
 }
