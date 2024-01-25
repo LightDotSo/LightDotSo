@@ -29,7 +29,7 @@ export const UserOperationCardToggle: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="flex-initial">
+    <div className="flex-initial pl-4">
       <div className="flex items-center justify-end">
         <ButtonIcon className="bg-background-strong" variant="ghost" size="sm">
           <ChevronDown className="size-4 transition-all duration-200" />

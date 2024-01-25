@@ -130,7 +130,7 @@ export const UserOperationCardTransaction: FC<
       <>
         <CollapsibleTrigger
           asChild
-          className="cursor-pointer [&[data-state=open]>td>div>button>svg]:rotate-180"
+          className="cursor-pointer [&[data-state=open]>div>div>button>svg]:rotate-180"
           type={undefined}
         >
           <div className="flex w-full items-center border-b border-b-border p-3 transition-colors last:border-b-0 hover:bg-background-stronger/50">
