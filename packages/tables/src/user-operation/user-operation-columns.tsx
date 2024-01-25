@@ -17,9 +17,7 @@
 
 import type { UserOperationData } from "@lightdotso/data";
 import { DataTableColumnHeader } from "@lightdotso/templates";
-import { ButtonIcon } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ChevronDown } from "lucide-react";
 import { UserOperationTableRowActions } from "./actions";
 import {
   UserOperationCardInterpretationAction,
@@ -27,6 +25,7 @@ import {
   UserOperationCardNonce,
   UserOperationCardStatus,
   UserOperationCardInterpretation,
+  UserOperationCardToggle,
 } from "./card";
 
 // -----------------------------------------------------------------------------
@@ -53,7 +52,7 @@ export const userOperationColumns: ColumnDef<UserOperationData>[] = [
     id: "chain_id",
     accessorKey: "chain_id",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Chain" />
+      <DataTableColumnHeader className="w-10" column={column} title="Chain" />
     ),
     cell: ({ row }) => <UserOperationCardChain userOperation={row.original} />,
     filterFn: (row, id, value) => {
@@ -66,7 +65,11 @@ export const userOperationColumns: ColumnDef<UserOperationData>[] = [
     id: "interpretation",
     accessorKey: "interpretation",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Interpretation" />
+      <DataTableColumnHeader
+        className="w-10"
+        column={column}
+        title="Interpretation"
+      />
     ),
     cell: ({ row }) => (
       <UserOperationCardInterpretation userOperation={row.original} />
@@ -78,7 +81,7 @@ export const userOperationColumns: ColumnDef<UserOperationData>[] = [
     id: "nonce",
     accessorKey: "nonce",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Nonce" />
+      <DataTableColumnHeader className="w-10" column={column} title="Nonce" />
     ),
     cell: ({ row }) => <UserOperationCardNonce userOperation={row.original} />,
     filterFn: (row, id, value) => {
@@ -91,13 +94,9 @@ export const userOperationColumns: ColumnDef<UserOperationData>[] = [
     id: "status",
     accessorKey: "status",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
+      <DataTableColumnHeader className="w-10" column={column} title="Status" />
     ),
-    cell: ({ row }) => (
-      <div className="flex items-center justify-end">
-        <UserOperationCardStatus userOperation={row.original} />
-      </div>
-    ),
+    cell: ({ row }) => <UserOperationCardStatus userOperation={row.original} />,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
@@ -105,14 +104,8 @@ export const userOperationColumns: ColumnDef<UserOperationData>[] = [
     enableHiding: true,
   },
   {
-    id: "actions",
-    cell: ({ row: _ }) => (
-      <div className="flex items-center justify-end">
-        <ButtonIcon className="bg-background-strong" variant="ghost" size="sm">
-          <ChevronDown className="size-4 transition-all duration-200" />
-        </ButtonIcon>
-      </div>
-    ),
+    id: "toggle",
+    cell: ({ row }) => <UserOperationCardToggle userOperation={row.original} />,
     enableHiding: false,
   },
   {

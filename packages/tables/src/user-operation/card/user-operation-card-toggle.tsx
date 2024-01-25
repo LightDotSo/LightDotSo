@@ -16,46 +16,32 @@
 "use client";
 
 import type { UserOperationData } from "@lightdotso/data";
-import { Badge } from "@lightdotso/ui";
+import { ButtonIcon } from "@lightdotso/ui";
+import { ChevronDown } from "lucide-react";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type UserOperationCardStatusProps = { userOperation: UserOperationData };
+type UserOperationCardToggleProps = { userOperation: UserOperationData };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const UserOperationCardStatus: FC<UserOperationCardStatusProps> = ({
-  userOperation: { status },
+export const UserOperationCardToggle: FC<UserOperationCardToggleProps> = ({
+  userOperation: { nonce },
 }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="group flex items-center justify-end  space-x-1.5">
-      <Badge
-        variant="shadow"
-        intent={
-          status === "EXECUTED"
-            ? "success"
-            : status === "PROPOSED"
-              ? "warning"
-              : status === "PENDING"
-                ? "info"
-                : status === "INVALID"
-                  ? "destructive"
-                  : status === "REVERTED"
-                    ? "error"
-                    : "error"
-        }
-      >
-        {status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()}
-      </Badge>
+    <div className="flex items-center justify-end">
+      <ButtonIcon className="bg-background-strong" variant="ghost" size="sm">
+        <ChevronDown className="size-4 transition-all duration-200" />
+      </ButtonIcon>
     </div>
   );
 };
