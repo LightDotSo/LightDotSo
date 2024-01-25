@@ -52,3 +52,15 @@ export const Base: Story = {
   ),
   args: {},
 };
+export const Null: Story = {
+  render: args => (
+    <UserOperationTable
+      isLoading={false}
+      pageSize={10}
+      address={null}
+      data={userOperationListData}
+      configuration={configurationGetData}
+    />
+  ),
+  args: {},
+};

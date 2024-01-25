@@ -64,7 +64,7 @@ export const InterpretationActionCard: FC<InterpretationActionCardProps> = ({
   // ---------------------------------------------------------------------------
 
   if (!action) {
-    return null;
+    return <div className="w-10" />;
   }
 
   return (

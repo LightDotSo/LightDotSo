@@ -98,10 +98,10 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
 
   const tableColumns = useMemo(() => {
     if (address === null) {
-      return columns;
+      return columns.filter(column => column.id !== "toggle");
     }
     if (isDesktop) {
-      return columns;
+      return columns.filter(column => column.id !== "row_actions");
     }
     // Filter out columns w/ id `row_actions`
     return columns.filter(column => column.id !== "row_actions");

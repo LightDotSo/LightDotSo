@@ -16,44 +16,32 @@
 "use client";
 
 import type { UserOperationData } from "@lightdotso/data";
-import { cn } from "@lightdotso/utils";
+import { ButtonIcon } from "@lightdotso/ui";
+import { ChevronDown } from "lucide-react";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type UserOperationCardStatusProps = { userOperation: UserOperationData };
+type UserOperationCardToggleProps = { userOperation: UserOperationData };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const UserOperationCardStatus: FC<UserOperationCardStatusProps> = ({
-  userOperation: { status },
+export const UserOperationCardToggle: FC<UserOperationCardToggleProps> = ({
+  userOperation: { nonce },
 }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <div
-      className={cn(
-        "text-right font-medium w-12",
-        status === "EXECUTED"
-          ? "text-text-success"
-          : status === "PROPOSED"
-            ? "text-text-indigo"
-            : status === "PENDING"
-              ? "text-text-info"
-              : status === "INVALID"
-                ? "text-text-destructive"
-                : status === "REVERTED"
-                  ? "text-text-error"
-                  : "text-text-error",
-      )}
-    >
-      {status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()}
+    <div className="flex items-center justify-end">
+      <ButtonIcon className="bg-background-strong" variant="ghost" size="sm">
+        <ChevronDown className="size-4 transition-all duration-200" />
+      </ButtonIcon>
     </div>
   );
 };

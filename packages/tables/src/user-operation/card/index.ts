@@ -18,4 +18,5 @@ export { UserOperationCardNonce } from "./user-operation-card-nonce";
 export { UserOperationCardStatus } from "./user-operation-card-status";
 export { UserOperationCardInterpretationAction } from "./user-operation-card-interpretation-action";
 export { UserOperationCardInterpretation } from "./user-operation-card-interpretation";
+export { UserOperationCardToggle } from "./user-operation-card-toggle";
 export { UserOperationCardTransaction } from "./user-operation-card-transaction";

@@ -90,10 +90,10 @@ export const WalletOverviewBannerAddress: FC<
 
   return (
     <TooltipProvider>
-      <Avatar className="size-16">
+      <Avatar className="size-10 sm:size-12 md:size-16">
         <PlaceholderOrb address={address ?? "0x"} />
       </Avatar>
-      <div className="flex items-center space-x-3 overflow-hidden text-ellipsis p-1 text-left">
+      <div className="flex items-center space-x-3 overflow-hidden text-ellipsis p-1 text-left text-sm md:text-base">
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
