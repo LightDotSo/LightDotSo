@@ -16,8 +16,8 @@
 import { paginationParser } from "@lightdotso/nuqs";
 import { getActivities, getActivitiesCount } from "@lightdotso/services";
 import { Result } from "neverthrow";
-import { cookies } from "next/headers";
 import type { Address } from "viem";
+import { verifyUserId } from "@/auth";
 import { validateAddress } from "@/handlers/validators/address";
 
 // -----------------------------------------------------------------------------
@@ -31,10 +31,10 @@ export const handler = async (
   },
 ) => {
   // ---------------------------------------------------------------------------
-  // Cookies
+  // Auth
   // ---------------------------------------------------------------------------
 
-  const cookieStore = cookies();
+  const userId = await verifyUserId();
 
   // ---------------------------------------------------------------------------
   // Validators
@@ -58,12 +58,12 @@ export const handler = async (
     address: params.address as Address,
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
-    user_id: cookieStore.get("lightdotso.user")?.value,
+    user_id: userId,
   });
 
   const activitiesCountPromise = getActivitiesCount({
     address: params.address as Address,
-    user_id: cookieStore.get("lightdotso.user")?.value,
+    user_id: userId,
   });
 
   const [activities, activitiesCount] = await Promise.all([
