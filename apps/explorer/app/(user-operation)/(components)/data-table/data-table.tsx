@@ -16,11 +16,11 @@
 "use client";
 
 import type { UserOperationData } from "@lightdotso/data";
+import { usePaginationQueryState } from "@lightdotso/nuqs";
 import { useQueryConfiguration } from "@lightdotso/query";
 import { useTables } from "@lightdotso/stores";
 import { UserOperationTable } from "@lightdotso/tables";
 import type { ColumnDef } from "@tanstack/react-table";
-import { usePaginationQueryState } from "@lightdotso/nuqs";
 
 // -----------------------------------------------------------------------------
 // Props

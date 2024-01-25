@@ -15,6 +15,7 @@
 
 "use client";
 
+import { usePaginationQueryState } from "@lightdotso/nuqs";
 import {
   useQueryNotifications,
   useQueryNotificationsCount,
@@ -25,7 +26,6 @@ import { TableSectionWrapper } from "@lightdotso/ui";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(authenticated)/notifications/(components)/data-table/data-table";
-import { usePaginationQueryState } from "@lightdotso/nuqs";
 
 // -----------------------------------------------------------------------------
 // Component

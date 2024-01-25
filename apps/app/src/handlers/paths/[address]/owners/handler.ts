@@ -13,12 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { paginationParser } from "@lightdotso/nuqs";
 import { getConfiguration } from "@lightdotso/services";
 import { notFound } from "next/navigation";
 import type { Address } from "viem";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
-import { paginationParser } from "@lightdotso/nuqs";
 
 // -----------------------------------------------------------------------------
 // Handler

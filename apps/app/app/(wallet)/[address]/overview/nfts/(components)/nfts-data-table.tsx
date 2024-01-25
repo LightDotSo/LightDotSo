@@ -16,6 +16,7 @@
 "use client";
 
 import type { WalletSettingsData } from "@lightdotso/data";
+import { usePaginationQueryState } from "@lightdotso/nuqs";
 import { useQueryNfts } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { nftColumns } from "@lightdotso/tables";
@@ -23,7 +24,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { type FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/data-table";
-import { usePaginationQueryState } from "@lightdotso/nuqs";
 
 // -----------------------------------------------------------------------------
 // Props
