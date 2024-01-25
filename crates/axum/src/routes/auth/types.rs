@@ -13,36 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use super::types::AuthSuccess;
-use crate::{cookies::CookieUtility, result::AppJsonResult};
-use axum::Json;
-use lightdotso_tracing::tracing::info;
-use tower_cookies::Cookies;
-use tower_sessions::Session;
+use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
 
 // -----------------------------------------------------------------------------
-// Handler
+// Types
 // -----------------------------------------------------------------------------
 
-/// Logout a session
-#[utoipa::path(
-        post,
-        path = "/auth/logout",
-        responses(
-            (status = 200, description = "Auth logout returned successfully", body = AuthSuccess),
-            (status = 404, description = "Auth logout not succeeded", body = AuthError),
-        )
-    )]
-pub(crate) async fn v1_auth_logout_handler(
-    cookies: Cookies,
-    session: Session,
-) -> AppJsonResult<AuthSuccess> {
-    info!(?session);
-
-    cookies.remove_wallet_cookie().await;
-
-    session.clear();
-    session.delete();
-
-    Ok(Json::from(AuthSuccess::Logout("Logout Success".to_string())))
+/// Auth success response.
+#[derive(Serialize, Deserialize, ToSchema)]
+pub(crate) enum AuthSuccess {
+    /// User logged out successfully.
+    #[schema(example = "Auth Success")]
+    Logout(String),
 }

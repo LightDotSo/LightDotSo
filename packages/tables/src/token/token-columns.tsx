@@ -37,7 +37,11 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
     id: "name",
     accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader className="w-48" column={column} title="Name" />
+      <DataTableColumnHeader
+        className="w-20 md:w-48"
+        column={column}
+        title="Name"
+      />
     ),
     cell: ({ row }) => (
       <TokenCardToken
@@ -53,7 +57,11 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
     id: "balance_usd",
     accessorKey: "balance_usd",
     header: ({ column }) => (
-      <DataTableColumnHeader className="w-64" column={column} title="Balance" />
+      <DataTableColumnHeader
+        className="w-16 md:w-64"
+        column={column}
+        title="Balance"
+      />
     ),
     cell: ({ row }) => <TokenCardBalance token={row.original} />,
     enableSorting: false,
