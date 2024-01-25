@@ -15,7 +15,7 @@
 
 "use client";
 
-import { useAuth, useModals } from "@lightdotso/stores";
+import { useModals } from "@lightdotso/stores";
 import { Modal } from "@lightdotso/templates";
 import { DialogDescription, DialogTitle } from "@lightdotso/ui";
 
@@ -28,21 +28,17 @@ export function TokenModal() {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address } = useAuth();
   const { isTokenModalVisible, hideTokenModal } = useModals();
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
-  if (!address) {
-    return null;
-  }
 
   if (isTokenModalVisible) {
     return (
       <Modal open size="sm" onClose={hideTokenModal}>
         <DialogTitle>Token</DialogTitle>
-        <DialogDescription>Token for {address}</DialogDescription>
+        <DialogDescription>Token for </DialogDescription>
       </Modal>
     );
   }
