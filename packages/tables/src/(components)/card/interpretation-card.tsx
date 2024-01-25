@@ -41,7 +41,7 @@ export const InterpretationCard: FC<InterpretationCardProps> = ({
   }
 
   return (
-    <div className="min-w-32 grow items-center space-x-1.5">
+    <div className="min-w-32 grow items-center justify-center space-x-1.5">
       {interpretation?.asset_changes &&
         interpretation.asset_changes
           .slice(0, 1)
