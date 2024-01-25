@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// eslint-disable react-hooks/rules-of-hooks
+/* eslint-disable react-hooks/rules-of-hooks */
 
 import { useModals } from "@lightdotso/stores";
 import type { Meta, StoryObj } from "@storybook/react";
