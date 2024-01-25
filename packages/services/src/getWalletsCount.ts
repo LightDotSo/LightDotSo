@@ -13,37 +13,32 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { ResultAsync, err, ok } from "neverthrow";
-import type { ClientType } from "../client";
-import { getClient } from "../client";
+import { getWalletsCount as getClientWalletsCount } from "@lightdotso/client";
+import type { WalletListCountParams } from "@lightdotso/params";
+import "server-only";
 
 // -----------------------------------------------------------------------------
-// GET
+// Pre
 // -----------------------------------------------------------------------------
 
-export const getUser = async (
-  {
-    params,
-  }: {
-    params: {
-      query: {
-        address?: string | null | undefined;
-        user_id?: string | null | undefined;
-      };
-    };
-  },
-  clientType?: ClientType,
-) => {
-  const client = getClient(clientType);
+export const preloadGetWalletsCount = (params: WalletListCountParams) => {
+  void getWalletsCount(params);
+};
 
-  return ResultAsync.fromPromise(
-    client.GET("/user/get", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [params?.query?.address] },
-      params,
-    }),
-    () => new Error("Database error"),
-  ).andThen(({ data, response, error }) => {
-    return response.status === 200 && data ? ok(data) : err(error);
-  });
+// -----------------------------------------------------------------------------
+// Service
+// -----------------------------------------------------------------------------
+
+export const getWalletsCount = async (params: WalletListCountParams) => {
+  return getClientWalletsCount(
+    {
+      params: {
+        query: {
+          owner: params.address,
+          user_id: params.user_id,
+        },
+      },
+    },
+    "admin",
+  );
 };

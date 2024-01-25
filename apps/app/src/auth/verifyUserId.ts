@@ -13,37 +13,40 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { ResultAsync, err, ok } from "neverthrow";
-import type { ClientType } from "../client";
-import { getClient } from "../client";
+import { USER_COOKIE_ID } from "@lightdotso/const";
+import { cookies } from "next/headers";
+import { getSession } from "@/auth/getSession";
 
 // -----------------------------------------------------------------------------
-// GET
+// Cookie
 // -----------------------------------------------------------------------------
 
-export const getUser = async (
-  {
-    params,
-  }: {
-    params: {
-      query: {
-        address?: string | null | undefined;
-        user_id?: string | null | undefined;
-      };
-    };
-  },
-  clientType?: ClientType,
-) => {
-  const client = getClient(clientType);
+export const getUserIdCookie = () => {
+  const cookieStore = cookies();
+  return cookieStore.get(USER_COOKIE_ID)?.value;
+};
 
-  return ResultAsync.fromPromise(
-    client.GET("/user/get", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [params?.query?.address] },
-      params,
-    }),
-    () => new Error("Database error"),
-  ).andThen(({ data, response, error }) => {
-    return response.status === 200 && data ? ok(data) : err(error);
-  });
+// -----------------------------------------------------------------------------
+// Auth
+// -----------------------------------------------------------------------------
+
+export const verifyUserId = async () => {
+  const userId = getUserIdCookie();
+  const session = await getSession();
+
+  if (!session) {
+    return undefined;
+  }
+
+  const sessionUserId = session?.inner?.data?.userId;
+
+  if (!sessionUserId) {
+    return undefined;
+  }
+
+  if (sessionUserId !== userId) {
+    return undefined;
+  }
+
+  return userId;
 };

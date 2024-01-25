@@ -55,6 +55,7 @@ export const getWallets = async (
             offset?: number | null | undefined;
             limit?: number | null | undefined;
             owner?: string | null | undefined;
+            user_id?: string | null | undefined;
           }
         | undefined;
     };
@@ -85,6 +86,7 @@ export const getWalletsCount = async (
             offset?: number | null | undefined;
             limit?: number | null | undefined;
             owner?: string | null | undefined;
+            user_id?: string | null | undefined;
           }
         | undefined;
     };

@@ -14,17 +14,23 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use super::types::Wallet;
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{
+    authentication::authenticate_user,
+    result::{AppJsonResult, AppResult},
+    state::AppState,
+};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
-    Json,
+    headers::{authorization::Bearer, Authorization},
+    Json, TypedHeader,
 };
 use lightdotso_prisma::{
     user,
     wallet::{self, WhereParam},
 };
 use serde::{Deserialize, Serialize};
+use tower_sessions_core::Session;
 use utoipa::{IntoParams, ToSchema};
 
 // -----------------------------------------------------------------------------
@@ -41,6 +47,8 @@ pub struct ListQuery {
     pub limit: Option<i64>,
     /// A filter to return wallets w/ a given owner.
     pub owner: Option<String>,
+    /// The user id to filter by.
+    pub user_id: Option<String>,
 }
 
 // -----------------------------------------------------------------------------
@@ -75,6 +83,8 @@ pub(crate) struct WalletListCount {
 pub(crate) async fn v1_wallet_list_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
+    mut session: Session,
+    auth: Option<TypedHeader<Authorization<Bearer>>>,
 ) -> AppJsonResult<Vec<Wallet>> {
     // -------------------------------------------------------------------------
     // Parse
@@ -83,8 +93,28 @@ pub(crate) async fn v1_wallet_list_handler(
     // Get the list query.
     let Query(query) = list_query;
 
+    // -------------------------------------------------------------------------
+    // Authentication
+    // -------------------------------------------------------------------------
+
+    let user_id = authenticate_user_id(
+        &query,
+        &state,
+        &mut session,
+        auth.map(|auth| auth.token().to_string()),
+    )
+    .await?;
+
+    // -------------------------------------------------------------------------
+    // Params
+    // -------------------------------------------------------------------------
+
     // Construct the query.
-    let query_params = construct_wallet_list_query_params(&query);
+    let query_params = construct_wallet_list_query_params(&query, user_id);
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // Get the wallets from the database.
     let wallets = state
@@ -122,6 +152,8 @@ pub(crate) async fn v1_wallet_list_handler(
 pub(crate) async fn v1_wallet_list_count_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
+    mut session: Session,
+    auth: Option<TypedHeader<Authorization<Bearer>>>,
 ) -> AppJsonResult<WalletListCount> {
     // -------------------------------------------------------------------------
     // Parse
@@ -130,8 +162,28 @@ pub(crate) async fn v1_wallet_list_count_handler(
     // Get the query.
     let Query(query) = list_query;
 
+    // -------------------------------------------------------------------------
+    // Authentication
+    // -------------------------------------------------------------------------
+
+    let user_id = authenticate_user_id(
+        &query,
+        &state,
+        &mut session,
+        auth.map(|auth| auth.token().to_string()),
+    )
+    .await?;
+
+    // -------------------------------------------------------------------------
+    // Params
+    // -------------------------------------------------------------------------
+
     // Construct the query.
-    let query_params = construct_wallet_list_query_params(&query);
+    let query_params = construct_wallet_list_query_params(&query, user_id);
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // Get the wallets from the database.
     let count = state.client.wallet().count(query_params).exec().await?;
@@ -147,10 +199,36 @@ pub(crate) async fn v1_wallet_list_count_handler(
 // Utils
 // -----------------------------------------------------------------------------
 
+/// Authenticates the user and returns the user id.
+async fn authenticate_user_id(
+    query: &ListQuery,
+    state: &AppState,
+    session: &mut Session,
+    auth_token: Option<String>,
+) -> AppResult<Option<String>> {
+    // If the user id is provided, authenticate the user.
+    let user_id = if query.user_id.is_some() {
+        Some(authenticate_user(state, session, auth_token, query.user_id.clone()).await?)
+    } else {
+        None
+    };
+
+    Ok(user_id)
+}
+
 /// Constructs a query for the database.
-fn construct_wallet_list_query_params(query: &ListQuery) -> Vec<WhereParam> {
-    match &query.owner {
+fn construct_wallet_list_query_params(
+    query: &ListQuery,
+    user_id: Option<String>,
+) -> Vec<WhereParam> {
+    let mut query_exp = match &query.owner {
         Some(owner) => vec![wallet::users::some(vec![user::address::equals(owner.to_string())])],
         None => vec![],
+    };
+
+    if let Some(user_id) = user_id {
+        query_exp.push(wallet::users::some(vec![user::id::equals(user_id)]));
     }
+
+    query_exp
 }

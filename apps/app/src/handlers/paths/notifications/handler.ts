@@ -14,33 +14,24 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { paginationParser } from "@lightdotso/nuqs";
-import { getActivities, getActivitiesCount } from "@lightdotso/services";
+import {
+  getNotifications,
+  getNotificationsCount,
+  getUser,
+} from "@lightdotso/services";
 import { Result } from "neverthrow";
-import type { Address } from "viem";
 import { verifyUserId } from "@/auth";
-import { validateAddress } from "@/handlers/validators/address";
 
 // -----------------------------------------------------------------------------
 // Handler
 // -----------------------------------------------------------------------------
 
-export const handler = async (
-  params: { address: string },
-  searchParams: {
-    pagination?: string;
-  },
-) => {
+export const handler = async (searchParams: { pagination?: string }) => {
   // ---------------------------------------------------------------------------
   // Auth
   // ---------------------------------------------------------------------------
 
   const userId = await verifyUserId();
-
-  // ---------------------------------------------------------------------------
-  // Validators
-  // ---------------------------------------------------------------------------
-
-  validateAddress(params.address);
 
   // ---------------------------------------------------------------------------
   // Parsers
@@ -54,42 +45,57 @@ export const handler = async (
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const activitiesPromise = getActivities({
-    address: params.address as Address,
+  const userPromise = getUser({
+    address: undefined,
+    user_id: userId,
+  });
+
+  const notificationsPromise = getNotifications({
+    address: null,
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
     user_id: userId,
   });
 
-  const activitiesCountPromise = getActivitiesCount({
-    address: params.address as Address,
+  const notificationsCountPromise = getNotificationsCount({
+    address: null,
     user_id: userId,
   });
 
-  const [activities, activitiesCount] = await Promise.all([
-    activitiesPromise,
-    activitiesCountPromise,
+  const [user, notifications, notificationsCount] = await Promise.all([
+    userPromise,
+    notificationsPromise,
+    notificationsCountPromise,
   ]);
 
   // ---------------------------------------------------------------------------
   // Parse
   // ---------------------------------------------------------------------------
 
-  const res = Result.combineWithAllErrors([activities, activitiesCount]);
+  const res = Result.combineWithAllErrors([
+    user,
+    notifications,
+    notificationsCount,
+  ]);
 
   return res.match(
-    ([activities, activitiesCount]) => {
+    ([user, notifications, notificationsCount]) => {
       return {
         paginationState: paginationState,
-        activities: activities,
-        activitiesCount: activitiesCount,
+        user: user,
+        notifications: notifications,
+        notificationsCount: notificationsCount,
       };
     },
     () => {
       return {
         paginationState: paginationState,
-        activities: [],
-        activitiesCount: {
+        user: {
+          address: "",
+          id: "",
+        },
+        notifications: [],
+        notificationsCount: {
           count: 0,
         },
       };

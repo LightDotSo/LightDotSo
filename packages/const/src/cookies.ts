@@ -13,21 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Address } from "viem";
+export const SESSION_COOKIE_ID = "lightdotso.sid";
 
-// -----------------------------------------------------------------------------
-// Params
-// -----------------------------------------------------------------------------
+export const WALLETS_COOKIE_ID = "lightdotso.wallet";
 
-export type WalletParams = {
-  address: Address;
-};
-
-export type WalletListParams = {
-  address: Address | null;
-  limit: number;
-  offset: number;
-  user_id?: string;
-};
-
-export type WalletListCountParams = Omit<WalletListParams, "limit" | "offset">;
+export const USER_COOKIE_ID = "lightdotso.user";

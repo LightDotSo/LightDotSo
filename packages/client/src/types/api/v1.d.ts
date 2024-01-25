@@ -567,7 +567,7 @@ export interface components {
       operation: string;
       /** @description The timestamp of the activity. */
       timestamp: string;
-      user_address?: components["schemas"]["User"] | null;
+      user?: components["schemas"]["User"] | null;
     };
     /** @description Activity errors */
     ActivityError: OneOf<[{
@@ -2002,6 +2002,8 @@ export interface operations {
         offset?: number | null;
         /** @description The maximum number of invite codes to return. */
         limit?: number | null;
+        /** @description The id of the user to return invite codes for. */
+        user_id?: string | null;
       };
     };
     responses: {
@@ -2030,6 +2032,8 @@ export interface operations {
         offset?: number | null;
         /** @description The maximum number of invite codes to return. */
         limit?: number | null;
+        /** @description The id of the user to return invite codes for. */
+        user_id?: string | null;
       };
     };
     responses: {
@@ -3120,8 +3124,11 @@ export interface operations {
    */
   v1_user_get_handler: {
     parameters: {
-      query: {
-        address: string;
+      query?: {
+        /** @description The address of the user. */
+        address?: string | null;
+        /** @description The user id. */
+        user_id?: string | null;
       };
     };
     responses: {
@@ -3520,6 +3527,8 @@ export interface operations {
         limit?: number | null;
         /** @description A filter to return wallets w/ a given owner. */
         owner?: string | null;
+        /** @description The user id to filter by. */
+        user_id?: string | null;
       };
     };
     responses: {
@@ -3550,6 +3559,8 @@ export interface operations {
         limit?: number | null;
         /** @description A filter to return wallets w/ a given owner. */
         owner?: string | null;
+        /** @description The user id to filter by. */
+        user_id?: string | null;
       };
     };
     responses: {

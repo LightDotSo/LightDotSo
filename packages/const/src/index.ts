@@ -22,6 +22,11 @@ export {
 export { CHAIN_IDS, CHAIN_ID_LABELS } from "./chain_ids";
 export { CHAINS, MAINNET_CHAINS, TESTNET_CHAINS } from "./chains";
 export { CONTRACT_ADDRESSES } from "./contract_addresses";
+export {
+  SESSION_COOKIE_ID,
+  USER_COOKIE_ID,
+  WALLETS_COOKIE_ID,
+} from "./cookies";
 export { GITHUB_LINKS } from "./github_links";
 export { INTERNAL_LINKS } from "./internal_links";
 export { REDIRECT_PREFIXES } from "./redirect_prefixes";

@@ -20,5 +20,6 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export type UserParams = {
-  address: Address;
+  address?: Address;
+  user_id?: string;
 };

@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { WALLETS_COOKIE_ID } from "@lightdotso/const";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { isAddress } from "viem";
@@ -23,7 +24,7 @@ import { isAddress } from "viem";
 
 export async function middleware(req: NextRequest) {
   // Get the wallet cookie
-  const wallet_cookie = req.cookies.get("lightdotso.wallet");
+  const wallet_cookie = req.cookies.get(WALLETS_COOKIE_ID);
 
   // Paths to redirect to if the user is logged in
   let pathArray = ["/"];
