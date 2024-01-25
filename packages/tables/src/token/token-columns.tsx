@@ -37,7 +37,7 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
     id: "name",
     accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader className="w-20" column={column} title="Name" />
+      <DataTableColumnHeader className="w-32" column={column} title="Name" />
     ),
     cell: ({ row }) => (
       <TokenCardToken
@@ -53,7 +53,7 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
     id: "balance_usd",
     accessorKey: "balance_usd",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Balance" />
+      <DataTableColumnHeader className="w-64" column={column} title="Balance" />
     ),
     cell: ({ row }) => <TokenCardBalance token={row.original} />,
     enableSorting: false,
@@ -63,7 +63,7 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
     id: "chain_id",
     accessorKey: "chain_id",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Chain" />
+      <DataTableColumnHeader className="w-16" column={column} title="Chain" />
     ),
     cell: ({ row }) => <TokenCardChain token={row.original} />,
     filterFn: (row, id, value) => {
@@ -76,7 +76,11 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
     id: "sparkline",
     accessorKey: "sparkline",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Last 7 Days" />
+      <DataTableColumnHeader
+        className="w-24"
+        column={column}
+        title="Last 7 Days"
+      />
     ),
     cell: ({ row }) => (
       <Suspense fallback={null}>
@@ -93,7 +97,7 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
     id: "price",
     accessorKey: "price",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Price" />
+      <DataTableColumnHeader className="w-10" column={column} title="Price" />
     ),
     cell: ({ row }) => (
       <Suspense fallback={null}>
