@@ -73,6 +73,10 @@ export const useUserOperationSign = ({
   }, [owners, userAddress]);
 
   const isOwner = useMemo(() => {
+    if (!userAddress || (userAddress && !isAddress(userAddress as Address))) {
+      return false;
+    }
+
     // Check if the user is an owner
     return owners.some(
       owner => owner.address === getAddress(userAddress as Address),
@@ -81,7 +85,7 @@ export const useUserOperationSign = ({
 
   const isSigned = useMemo(() => {
     if (!userAddress || (userAddress && !isAddress(userAddress as Address))) {
-      return;
+      return false;
     }
 
     // Check if the user has already signed

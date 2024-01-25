@@ -268,6 +268,7 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
                     configuration={configuration}
                     userOperation={userOperation}
                     row={row}
+                    opType={table.getPageCount() === 1}
                   />
                 ))}
               </div>

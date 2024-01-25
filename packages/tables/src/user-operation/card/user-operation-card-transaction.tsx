@@ -40,15 +40,8 @@ import { UserOperationCardTransactionExecuteButton } from "./user-operation-card
 import { UserOperationCardTransactionSignButton } from "./user-operation-card-transaction-sign-button";
 
 // -----------------------------------------------------------------------------
-// Props
+// Types
 // -----------------------------------------------------------------------------
-
-type UserOperationCardTransactionProps = {
-  address: Address;
-  configuration: ConfigurationData;
-  userOperation: UserOperationData;
-  row: Row<UserOperationData>;
-};
 
 interface TransactionInformationItem {
   title: string;
@@ -57,12 +50,24 @@ interface TransactionInformationItem {
 }
 
 // -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type UserOperationCardTransactionProps = {
+  address: Address;
+  configuration: ConfigurationData;
+  userOperation: UserOperationData;
+  row: Row<UserOperationData>;
+  opType?: boolean;
+};
+
+// -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
 export const UserOperationCardTransaction: FC<
   UserOperationCardTransactionProps
-> = ({ address, configuration, userOperation, row }) => {
+> = ({ address, configuration, userOperation, row, opType = false }) => {
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
@@ -126,7 +131,7 @@ export const UserOperationCardTransaction: FC<
   // ---------------------------------------------------------------------------
 
   return (
-    <Collapsible key={userOperation.hash} asChild>
+    <Collapsible key={userOperation.hash} defaultOpen={opType} asChild>
       <>
         <CollapsibleTrigger
           asChild
@@ -184,17 +189,19 @@ export const UserOperationCardTransaction: FC<
                   ))}
                 </CardContent>
                 <CardFooter>
-                  <Button
-                    asChild
-                    variant="ghost"
-                    className="w-full bg-background-stronger"
-                  >
-                    <Link
-                      href={`/${userOperation.sender}/op/${userOperation.hash}`}
+                  {!opType && (
+                    <Button
+                      asChild
+                      variant="ghost"
+                      className="w-full bg-background-stronger"
                     >
-                      See Details
-                    </Link>
-                  </Button>
+                      <Link
+                        href={`/${userOperation.sender}/op/${userOperation.hash}`}
+                      >
+                        See Details
+                      </Link>
+                    </Button>
+                  )}
                 </CardFooter>
               </Card>
               <Card className="col-span-1 flex flex-col justify-between space-y-4 border border-border-weak bg-background-strong p-4">
