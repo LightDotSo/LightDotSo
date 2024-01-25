@@ -15,6 +15,7 @@
 
 "use client";
 
+import { usePaginationQueryState } from "@lightdotso/nuqs";
 import { useQueryWallets, useQueryWalletsCount } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import { walletColumns } from "@lightdotso/tables";
@@ -22,7 +23,6 @@ import { TableSectionWrapper } from "@lightdotso/ui";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(authenticated)/wallets/(components)/data-table/data-table";
-import { usePaginationQueryState } from "@/queryStates";
 
 // -----------------------------------------------------------------------------
 // Component

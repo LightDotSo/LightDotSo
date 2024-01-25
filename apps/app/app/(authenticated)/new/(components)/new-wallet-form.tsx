@@ -17,6 +17,12 @@
 
 import { getInviteCode } from "@lightdotso/client";
 import { NOTION_LINKS } from "@lightdotso/const";
+import {
+  useInviteCodeQueryState,
+  useNameQueryState,
+  useTypeQueryState,
+} from "@lightdotso/nuqs";
+import type { WalletType } from "@lightdotso/nuqs";
 import { newFormSchema } from "@lightdotso/schemas";
 import { useNewForm } from "@lightdotso/stores";
 import {
@@ -57,12 +63,6 @@ import type { FC } from "react";
 import { useForm } from "react-hook-form";
 import type * as z from "zod";
 import { steps } from "@/app/(authenticated)/new/(components)/root/root";
-import {
-  useInviteCodeQueryState,
-  useNameQueryState,
-  useTypeQueryState,
-} from "@/app/(authenticated)/new/(hooks)";
-import type { WalletType } from "@/app/(authenticated)/new/(hooks)";
 
 // -----------------------------------------------------------------------------
 // Types

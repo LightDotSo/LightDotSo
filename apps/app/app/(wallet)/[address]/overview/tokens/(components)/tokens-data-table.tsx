@@ -16,6 +16,7 @@
 "use client";
 
 import type { WalletSettingsData } from "@lightdotso/data";
+import { usePaginationQueryState } from "@lightdotso/nuqs";
 import { useQueryTokens, useQueryTokensCount } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { tokenColumns } from "@lightdotso/tables";
@@ -24,7 +25,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table";
-import { usePaginationQueryState } from "@/queryStates";
 
 // -----------------------------------------------------------------------------
 // Props

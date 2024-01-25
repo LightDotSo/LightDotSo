@@ -16,6 +16,7 @@
 import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
 import { CONTRACT_ADDRESSES } from "@lightdotso/const";
 import type { ConfigurationData } from "@lightdotso/data";
+import { userOperationsParser } from "@lightdotso/nuqs";
 import type { UserOperation } from "@lightdotso/schemas";
 import {
   getConfiguration,
@@ -29,7 +30,6 @@ import { getUserOperationHash } from "permissionless";
 import type { UserOperation as PermissionlessUserOperation } from "permissionless";
 import { toHex, fromHex } from "viem";
 import type { Address, Hex } from "viem";
-import { userOperationsParser } from "@/app/(wallet)/[address]/op/(hooks)";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
 

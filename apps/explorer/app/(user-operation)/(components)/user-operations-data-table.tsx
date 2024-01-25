@@ -16,6 +16,10 @@
 "use client";
 
 import {
+  usePaginationQueryState,
+  useIsTestnetQueryState,
+} from "@lightdotso/nuqs";
+import {
   useQueryUserOperations,
   useQueryUserOperationsCount,
 } from "@lightdotso/query";
@@ -24,7 +28,6 @@ import { TableSectionWrapper } from "@lightdotso/ui";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(user-operation)/(components)/data-table/data-table";
-import { usePaginationQueryState, useIsTestnetQueryState } from "@/queryStates";
 
 // -----------------------------------------------------------------------------
 // Props

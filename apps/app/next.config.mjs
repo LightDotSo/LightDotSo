@@ -60,6 +60,7 @@ const nextConfig = {
     "@lightdotso/hooks",
     "@lightdotso/kysely",
     "@lightdotso/modals",
+    "@lightdotso/nuqs",
     "@lightdotso/params",
     "@lightdotso/prisma",
     "@lightdotso/query",

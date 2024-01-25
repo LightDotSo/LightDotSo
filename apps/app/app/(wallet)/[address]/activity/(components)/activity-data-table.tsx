@@ -15,13 +15,13 @@
 
 "use client";
 
+import { usePaginationQueryState } from "@lightdotso/nuqs";
 import { useQueryActivities, useQueryActivitiesCount } from "@lightdotso/query";
 import { activityColumns } from "@lightdotso/tables";
 import { TableSectionWrapper } from "@lightdotso/ui";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(wallet)/[address]/activity/(components)/data-table/data-table";
-import { usePaginationQueryState } from "@/queryStates";
 
 // -----------------------------------------------------------------------------
 // Props

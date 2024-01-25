@@ -15,6 +15,15 @@
 
 "use client";
 
+import {
+  ownerParser,
+  useInviteCodeQueryState,
+  useNameQueryState,
+  useOwnersQueryState,
+  useSaltQueryState,
+  useThresholdQueryState,
+  useTypeQueryState,
+} from "@lightdotso/nuqs";
 import { cn } from "@lightdotso/utils";
 import { CheckIcon } from "@heroicons/react/24/outline";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -26,15 +35,6 @@ import {
   StepsEnum,
 } from "@/app/(authenticated)/new/(components)/root/root";
 import type { Step } from "@/app/(authenticated)/new/(components)/root/root";
-import {
-  ownerParser,
-  useInviteCodeQueryState,
-  useNameQueryState,
-  useOwnersQueryState,
-  useSaltQueryState,
-  useThresholdQueryState,
-  useTypeQueryState,
-} from "@/app/(authenticated)/new/(hooks)";
 
 // -----------------------------------------------------------------------------
 // Props

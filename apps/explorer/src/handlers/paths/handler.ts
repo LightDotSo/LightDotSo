@@ -13,12 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { isTestnetParser, paginationParser } from "@lightdotso/nuqs";
 import {
   getUserOperations,
   getUserOperationsCount,
 } from "@lightdotso/services";
 import { Result } from "neverthrow";
-import { isTestnetParser, paginationParser } from "@/queryStates";
 
 // -----------------------------------------------------------------------------
 // Handler
