@@ -27,8 +27,6 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
   Progress,
-  TableCell,
-  TableRow,
 } from "@lightdotso/ui";
 import { cn, getChainById, shortenBytes32 } from "@lightdotso/utils";
 import type { Row } from "@tanstack/react-table";
@@ -36,7 +34,7 @@ import { flexRender } from "@tanstack/react-table";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import type { FC } from "react";
-import { useMemo } from "react";
+import { Fragment, useMemo } from "react";
 import type { Address } from "viem";
 import { UserOperationCardTransactionExecuteButton } from "./user-operation-card-transaction-execute-button";
 import { UserOperationCardTransactionSignButton } from "./user-operation-card-transaction-sign-button";
@@ -135,9 +133,11 @@ export const UserOperationCardTransaction: FC<
           className="cursor-pointer [&[data-state=open]>td>div>button>svg]:rotate-180"
           type={undefined}
         >
-          <div className="flex items-center w-full p-3 border-b border-b-border transition-colors hover:bg-background-stronger/50">
+          <div className="flex w-full items-center border-b border-b-border p-3 transition-colors hover:bg-background-stronger/50">
             {row.getVisibleCells().map(cell => (
-              <>{flexRender(cell.column.columnDef.cell, cell.getContext())}</>
+              <Fragment key={cell.id}>
+                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+              </Fragment>
             ))}
           </div>
         </CollapsibleTrigger>

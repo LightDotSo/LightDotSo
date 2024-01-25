@@ -37,7 +37,7 @@ export const InterpretationCard: FC<InterpretationCardProps> = ({
   // ---------------------------------------------------------------------------
 
   if (!interpretation) {
-    return <div className="grow shrink-0 w-auto" />;
+    return <div className="w-auto shrink-0 grow" />;
   }
 
   return (
