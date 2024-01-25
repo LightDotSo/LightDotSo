@@ -37,7 +37,7 @@ export const AssetChange: FC<AssetChangeProps> = ({ assetChange }) => {
         <TokenImage size="xs" token={assetChange.token} />
       )}
       {assetChange?.token && assetChange?.token?.decimals !== 0 && (
-        <span className="text-sm text-text">
+        <span className="text-xs md:text-sm text-text">
           {assetChange?.token.name ?? assetChange?.token.symbol}{" "}
           {
             <span className="text-xs text-text-weak">
