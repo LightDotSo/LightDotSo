@@ -15,7 +15,7 @@
 
 "use client";
 
-import { useTables } from "@lightdotso/stores";
+import { useAuth, useTables } from "@lightdotso/stores";
 import { useEffect, type FC } from "react";
 import { DataTableToolbar } from "@/app/(wallet)/[address]/activity/(components)/data-table/data-table-toolbar";
 
@@ -28,6 +28,7 @@ export const ActivityDataTableToolbar: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
+  const { sessionId } = useAuth();
   const { activityTable } = useTables();
 
   // ---------------------------------------------------------------------------
@@ -38,13 +39,13 @@ export const ActivityDataTableToolbar: FC = () => {
     if (!useTables.persist.hasHydrated()) {
       useTables.persist.rehydrate();
     }
-  }, []);
+  }, [sessionId]);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!activityTable || !useTables.persist.hasHydrated()) {
+  if (!sessionId || !activityTable || !useTables.persist.hasHydrated()) {
     return null;
   }
 

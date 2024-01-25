@@ -39,7 +39,7 @@ export const ActivityDataTablePagination: FC = () => {
     if (!useTables.persist.hasHydrated()) {
       useTables.persist.rehydrate();
     }
-  }, []);
+  }, [sessionId]);
 
   // ---------------------------------------------------------------------------
   // Render
