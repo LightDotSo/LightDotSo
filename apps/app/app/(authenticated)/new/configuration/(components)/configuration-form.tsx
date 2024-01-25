@@ -16,6 +16,16 @@
 "use client";
 
 import { PlaceholderOrb } from "@lightdotso/elements";
+import {
+  ownerParser,
+  useInviteCodeQueryState,
+  useNameQueryState,
+  useOwnersQueryState,
+  useSaltQueryState,
+  useThresholdQueryState,
+  useTypeQueryState,
+} from "@lightdotso/nuqs";
+import type { Owner, Owners } from "@lightdotso/nuqs";
 import { newFormSchema, newFormConfigurationSchema } from "@lightdotso/schemas";
 import { useAuth, useNewForm } from "@lightdotso/stores";
 import {
@@ -58,16 +68,6 @@ import { isAddress } from "viem";
 import { normalize } from "viem/ens";
 import * as z from "zod";
 import { steps } from "@/app/(authenticated)/new/(components)/root/root";
-import {
-  ownerParser,
-  useInviteCodeQueryState,
-  useNameQueryState,
-  useOwnersQueryState,
-  useSaltQueryState,
-  useThresholdQueryState,
-  useTypeQueryState,
-} from "@/app/(authenticated)/new/(hooks)";
-import type { Owner, Owners } from "@/app/(authenticated)/new/(hooks)";
 import { publicClient } from "@/clients/public";
 import { MAX_THRESHOLD, MAX_WEIGHT } from "@/const";
 import { debounce } from "@/utils";

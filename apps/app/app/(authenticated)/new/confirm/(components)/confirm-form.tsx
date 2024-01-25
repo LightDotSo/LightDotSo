@@ -17,6 +17,14 @@
 
 import { getWallet } from "@lightdotso/client";
 import {
+  useNameQueryState,
+  useInviteCodeQueryState,
+  useOwnersQueryState,
+  useSaltQueryState,
+  useThresholdQueryState,
+  useTypeQueryState,
+} from "@lightdotso/nuqs";
+import {
   newFormSchema,
   newFormConfigurationSchema,
   newFormStoreSchema,
@@ -49,14 +57,6 @@ import { useForm } from "react-hook-form";
 import { isAddress } from "viem";
 import { normalize } from "viem/ens";
 import type * as z from "zod";
-import {
-  useNameQueryState,
-  useInviteCodeQueryState,
-  useOwnersQueryState,
-  useSaltQueryState,
-  useThresholdQueryState,
-  useTypeQueryState,
-} from "@/app/(authenticated)/new/(hooks)";
 import { publicClient } from "@/clients/public";
 
 // -----------------------------------------------------------------------------

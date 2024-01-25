@@ -18,6 +18,7 @@
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
 import type { WalletSettingsData } from "@lightdotso/data";
 import { NftImage, PlaceholderOrb, TokenImage } from "@lightdotso/elements";
+import { useTransfersQueryState } from "@lightdotso/nuqs";
 import {
   useSuspenseQueryNfts,
   useSuspenseQueryTokens,
@@ -80,7 +81,6 @@ import {
 import type { Address, Hex } from "viem";
 import { normalize } from "viem/ens";
 import * as z from "zod";
-import { useTransfersQueryState } from "@/app/(wallet)/[address]/send/(hooks)";
 import { publicClient } from "@/clients/public";
 import { debounce } from "@/utils";
 

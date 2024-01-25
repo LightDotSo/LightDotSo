@@ -41,6 +41,7 @@ type Story = StoryObj<typeof AuthModal>;
 
 export const Base: Story = {
   render: () => (
+    // eslint-disable-nextline react/jsx-no-useless-fragment
     <>
       <AuthModal />
     </>
