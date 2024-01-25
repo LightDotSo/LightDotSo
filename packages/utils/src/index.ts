@@ -18,6 +18,7 @@ export {
   getChainNameById,
   getChainBySimplehashChainName,
   getChainIdBySimplehashChainName,
+  isTestnet,
 } from "./chain";
 export { cn } from "./cn";
 export { refineNumberFormat } from "./number";

@@ -17,6 +17,8 @@ import {
   CHAINS,
   SIMPLEHASH_CHAIN_ID_MAPPING,
   CHAIN_ID_LABELS,
+  TESTNET_CHAINS,
+  MAINNET_CHAINS,
 } from "@lightdotso/const";
 import type { Chain } from "viem";
 import { extractChain } from "viem";
@@ -54,4 +56,11 @@ export function getChainBySimplehashChainName(chain: string): Chain {
   const chainId = getChainIdBySimplehashChainName(chain);
   const chainInfo = getChainById(chainId);
   return chainInfo;
+}
+
+export function isTestnet(chainId: number): boolean {
+  return (
+    TESTNET_CHAINS.some(chain => chain.id === chainId) ||
+    !MAINNET_CHAINS.some(chain => chain.id === chainId)
+  );
 }

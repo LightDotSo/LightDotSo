@@ -18,6 +18,7 @@ export * from "./assetChange";
 export * from "./configuration";
 export * from "./notification";
 export * from "./token";
+export * from "./tokenPrice";
 export * from "./transaction";
 export * from "./userOperation";
 export * from "./wallet";
