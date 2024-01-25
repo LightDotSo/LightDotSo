@@ -41,7 +41,7 @@ export const ChainCard: FC<ChainCardProps> = ({ chain_id }) => {
   return (
     <div className="flex items-center space-x-1.5">
       <ChainLogo className="size-6" chainId={chain_id} />
-      <span className="text-xs md:text-sm font-medium text-text">
+      <span className="text-xs font-medium text-text md:text-sm">
         {getChainById(chain_id).name}
       </span>
     </div>
