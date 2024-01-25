@@ -34,6 +34,17 @@ pub(crate) struct TokenPrice {
     pub prices: Vec<TokenPriceDate>,
 }
 
+impl Default for TokenPrice {
+    fn default() -> Self {
+        Self {
+            price: 0.0,
+            price_change_24h: 0.0,
+            price_change_24h_percentage: 0.0,
+            prices: Vec::new(),
+        }
+    }
+}
+
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
 pub(crate) struct TokenPriceDate {
