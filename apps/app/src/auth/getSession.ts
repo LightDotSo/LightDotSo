@@ -15,7 +15,7 @@
 
 import { SESSION_COOKIE_ID } from "@lightdotso/const";
 import { cookies } from "next/headers";
-import { redis } from "@/clients/redis";
+import { redis } from "@/client/redis";
 
 // -----------------------------------------------------------------------------
 // Types

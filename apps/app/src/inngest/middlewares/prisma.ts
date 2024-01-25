@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { InngestMiddleware } from "inngest";
-import { prisma } from "@/clients/prisma";
+import { prisma } from "@/client/prisma";
 
 // -----------------------------------------------------------------------------
 // Middleware
