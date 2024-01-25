@@ -49,53 +49,55 @@ export function TransactionTableRowActions({
   // ---------------------------------------------------------------------------
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          className="flex size-8 p-0 data-[state=open]:bg-background-stronger"
-        >
-          <DotsHorizontalIcon className="size-4" />
-          <span className="sr-only">Open menu</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem asChild>
-          <a
-            target="_blank"
-            rel="noreferrer"
-            href={`${
-              getChainById(row.original.chain_id)?.blockExplorers?.default.url
-            }/tx/${row.original.hash}`}
+    <div className="flex items-center justify-end">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            className="flex size-8 p-0 data-[state=open]:bg-background-stronger"
           >
-            Open in Explorer
-          </a>
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={async () => {
-            const loadingToast = toast.loading("Queue has been created...");
-            const res = await createQueueInterpretation({
-              params: { query: { transaction_hash: row.original.hash } },
-            });
-            res.match(
-              () => {
-                toast.dismiss(loadingToast);
-                toast.success("Queue created!");
-              },
-              err => {
-                toast.dismiss(loadingToast);
-                if (err instanceof Error) {
-                  toast.error(err.message);
-                } else {
-                  toast.error("Failed to create queue!");
-                }
-              },
-            );
-          }}
-        >
-          Queue
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+            <DotsHorizontalIcon className="size-4" />
+            <span className="sr-only">Open menu</span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-[160px]">
+          <DropdownMenuItem asChild>
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href={`${
+                getChainById(row.original.chain_id)?.blockExplorers?.default.url
+              }/tx/${row.original.hash}`}
+            >
+              Open in Explorer
+            </a>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={async () => {
+              const loadingToast = toast.loading("Queue has been created...");
+              const res = await createQueueInterpretation({
+                params: { query: { transaction_hash: row.original.hash } },
+              });
+              res.match(
+                () => {
+                  toast.dismiss(loadingToast);
+                  toast.success("Queue created!");
+                },
+                err => {
+                  toast.dismiss(loadingToast);
+                  if (err instanceof Error) {
+                    toast.error(err.message);
+                  } else {
+                    toast.error("Failed to create queue!");
+                  }
+                },
+              );
+            }}
+          >
+            Queue
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 }
