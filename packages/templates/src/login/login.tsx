@@ -15,39 +15,44 @@
 
 "use client";
 
-import type { InterpretationData } from "@lightdotso/data";
-import { AssetChange } from "@lightdotso/elements";
+import {
+  useIsMounted,
+  useMediaQuery,
+  useSignInWithSiwe,
+} from "@lightdotso/hooks";
+import { Button } from "@lightdotso/ui";
+import { UserIcon } from "lucide-react";
 import type { FC } from "react";
-
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-type InterpretationCardProps = { interpretation?: InterpretationData | null };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const InterpretationCard: FC<InterpretationCardProps> = ({
-  interpretation,
-}) => {
+export const Login: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const { isPending, handleSignIn } = useSignInWithSiwe();
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!interpretation) {
-    return <div className="flex w-32" />;
-  }
-
   return (
-    <div className="flex w-32 shrink-0 items-center space-x-1.5">
-      {interpretation?.asset_changes &&
-        interpretation.asset_changes
-          .slice(0, 1)
-          .map((assetChange, index) => (
-            <AssetChange key={index} assetChange={assetChange} />
-          ))}
+    <div className="text-center">
+      <UserIcon className="mx-auto h-8 w-8 border rounded-full border-border p-2 text-text" />
+      <h3 className="mt-2 text-sm font-semibold text-text">Login</h3>
+      <p className="mt-1 text-sm text-text-weak">Get started by logging in.</p>
+      <div className="mt-6">
+        <Button
+          isLoading={isPending}
+          disabled={isPending}
+          onClick={handleSignIn}
+        >
+          Login
+        </Button>
+      </div>
     </div>
   );
 };

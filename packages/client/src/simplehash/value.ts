@@ -38,7 +38,7 @@ export const getNftValuation = async (
 
   return ResultAsync.fromPromise(
     zodFetch(
-      `${getSimplehashClient(clientType)}/v0/nfts/owners/value?chains=${chains}&wallet_addresses=${address}`,
+      `${getSimplehashClient()}/v0/nfts/owners/value?chains=${chains}&wallet_addresses=${address}`,
       nftWalletValuationsSchema,
       "GET",
       {

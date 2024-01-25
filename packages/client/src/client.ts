@@ -28,17 +28,10 @@ export type ClientType = "admin" | "authenticated" | "public";
 // Simplehash
 // -----------------------------------------------------------------------------
 
-export const getSimplehashClient = (clientType?: ClientType) =>
-  clientType === "public"
-    ? "https://api.light.so/v1/simplehash"
-    : clientType === "admin"
-      ? "https://api.simplehash.com/api"
-      : process.env.LOCAL_ENV === "dev" ||
-          process.env.NEXT_PUBLIC_LOCAL_ENV === "dev"
-        ? "http://localhost:3000/simplehash"
-        : clientType === "authenticated"
-          ? "https://api.light.so/authenticated/simplehash"
-          : "https://api.light.so/simplehash";
+export const getSimplehashClient = () =>
+  process.env.LOCAL_ENV === "dev" || process.env.NEXT_PUBLIC_LOCAL_ENV === "dev"
+    ? "http://localhost:3000/simplehash"
+    : "https://api.light.so/simplehash";
 
 // -----------------------------------------------------------------------------
 // Lifi

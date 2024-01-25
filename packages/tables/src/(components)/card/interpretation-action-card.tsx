@@ -68,7 +68,7 @@ export const InterpretationActionCard: FC<InterpretationActionCardProps> = ({
   }
 
   return (
-    <div className="flex items-center space-x-3 max-w-12">
+    <div className="flex max-w-12 items-center space-x-3">
       <ActionLogo action={action} />
       <span className="text-xs font-medium text-text md:text-sm ">
         {ACTION_LABELS[action]}

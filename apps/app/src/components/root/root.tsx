@@ -49,19 +49,22 @@ const AuthModal = dynamic(
 );
 
 const DepositModal = dynamic(
-  () => import("@/components/deposit/deposit-modal"),
+  () => import("@lightdotso/modals/src/deposit/deposit-modal"),
   {
     ssr: false,
   },
 );
 
-const NftModal = dynamic(() => import("@/components/nft/nft-modal"), {
+const NftModal = dynamic(() => import("@lightdotso/modals/src/nft/nft-modal"), {
   ssr: false,
 });
 
-const TokenModal = dynamic(() => import("@/components/token/token-modal"), {
-  ssr: false,
-});
+const TokenModal = dynamic(
+  () => import("@lightdotso/modals/src/token/token-modal"),
+  {
+    ssr: false,
+  },
+);
 
 // -----------------------------------------------------------------------------
 // Component

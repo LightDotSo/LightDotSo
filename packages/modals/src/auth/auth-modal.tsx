@@ -15,15 +15,10 @@
 
 "use client";
 
-import { getNonce, postAuthVerify } from "@lightdotso/client";
-import { useQueryAuthSession } from "@lightdotso/query";
-import { useAuth, useModals } from "@lightdotso/stores";
+import { useModals } from "@lightdotso/stores";
+import { useSignInWithSiwe } from "@lightdotso/hooks";
 import { Modal } from "@lightdotso/templates";
-import { Button, DialogDescription, DialogTitle, toast } from "@lightdotso/ui";
-import { useSignMessage, useAccount } from "@lightdotso/wagmi";
-import { useCallback } from "react";
-import { SiweMessage } from "siwe";
-import type { Address } from "viem";
+import { Button, DialogDescription, DialogTitle } from "@lightdotso/ui";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -31,96 +26,16 @@ import type { Address } from "viem";
 
 export function AuthModal() {
   // ---------------------------------------------------------------------------
-  // Wagmi Hooks
-  // ---------------------------------------------------------------------------
-
-  const { isPending, signMessageAsync } = useSignMessage();
-  const { chain } = useAccount();
-
-  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address, clientType, sessionId } = useAuth();
   const { isAuthModalVisible, hideAuthModal } = useModals();
-
-  // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
-
-  const { refetchAuthSession } = useQueryAuthSession({
-    address: address as Address,
-  });
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
-  const handleSignIn = useCallback(async () => {
-    if (!address || !chain || sessionId) {
-      return;
-    }
-
-    const res = await getNonce();
-
-    res.match(
-      _ => {
-        const message = new SiweMessage({
-          domain: window.location.host,
-          address,
-          statement: "Sign in with Ethereum to light.so",
-          uri: window.location.origin,
-          version: "1",
-          chainId: chain.id,
-          nonce: res._unsafeUnwrap().nonce!,
-        });
-        const messageToSign = message.prepareMessage();
-
-        signMessageAsync({
-          message: message.prepareMessage(),
-        }).then(signature => {
-          const loadingToast = toast.loading("Signing in...");
-
-          postAuthVerify(
-            {
-              params: { query: { user_address: address } },
-              body: { message: messageToSign, signature },
-            },
-            clientType,
-          )
-            .then(res => {
-              toast.dismiss(loadingToast);
-              res.match(
-                _ => {
-                  toast.success("Successfully signed in!");
-                  hideAuthModal();
-                  refetchAuthSession();
-                },
-                _ => {
-                  toast.error("Failed to sign in!");
-                },
-              );
-            })
-            .catch(err => {
-              toast.dismiss(loadingToast);
-              if (err instanceof Error) {
-                toast.error(err.message);
-              } else {
-                toast.error("Failed to sign in!");
-              }
-            });
-        });
-      },
-      err => {
-        if (err instanceof Error) {
-          toast.error(err.message);
-        } else {
-          toast.error("Failed to sign in!");
-        }
-      },
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address, chain, clientType, sessionId, signMessageAsync]);
+  const { isPending, handleSignIn } = useSignInWithSiwe();
 
   // ---------------------------------------------------------------------------
   // Render

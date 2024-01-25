@@ -13,41 +13,32 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import type { InterpretationData } from "@lightdotso/data";
-import { AssetChange } from "@lightdotso/elements";
-import type { FC } from "react";
+import type { Meta, StoryObj } from "@storybook/react";
+import { Login } from "./login";
 
 // -----------------------------------------------------------------------------
-// Props
+// Meta
 // -----------------------------------------------------------------------------
 
-type InterpretationCardProps = { interpretation?: InterpretationData | null };
+const meta: Meta<typeof Login> = {
+  title: "template/Login",
+  component: Login,
+  tags: ["autodocs"],
+  argTypes: {},
+};
+export default meta;
 
 // -----------------------------------------------------------------------------
-// Component
+// Types
 // -----------------------------------------------------------------------------
 
-export const InterpretationCard: FC<InterpretationCardProps> = ({
-  interpretation,
-}) => {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
+type Story = StoryObj<typeof Login>;
 
-  if (!interpretation) {
-    return <div className="flex w-32" />;
-  }
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
 
-  return (
-    <div className="flex w-32 shrink-0 items-center space-x-1.5">
-      {interpretation?.asset_changes &&
-        interpretation.asset_changes
-          .slice(0, 1)
-          .map((assetChange, index) => (
-            <AssetChange key={index} assetChange={assetChange} />
-          ))}
-    </div>
-  );
+export const Base: Story = {
+  render: args => <Login />,
+  args: {},
 };

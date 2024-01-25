@@ -49,7 +49,7 @@ export const getNftsByOwner = async (
 
   return ResultAsync.fromPromise(
     zodFetch(
-      `${getSimplehashClient(clientType)}/v0/nfts/owners?chains=${chains}&wallet_addresses=${address}&limit=${limit}${
+      `${getSimplehashClient()}/v0/nfts/owners?chains=${chains}&wallet_addresses=${address}&limit=${limit}${
         cursor ? `&cursor=${cursor}` : ""
       }`,
       nftsByOwnerSchema,

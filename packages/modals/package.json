@@ -26,17 +26,13 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@lightdotso/client": "workspace:*",
-    "@lightdotso/query": "workspace:*",
+    "@lightdotso/hooks": "workspace:*",
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/templates": "workspace:*",
     "@lightdotso/ui": "workspace:*",
-    "@lightdotso/wagmi": "workspace:*",
     "@storybook/react": "^7.6.10",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "siwe": "^2.1.4",
-    "viem": "^2.5.0"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
