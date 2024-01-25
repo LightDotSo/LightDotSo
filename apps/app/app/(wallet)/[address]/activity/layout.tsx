@@ -62,16 +62,16 @@ export default async function ActivityLayout({
   // ---------------------------------------------------------------------------
 
   if (!userId) {
-    <BannerSection
-      title={TITLES.Activity.title}
-      description={TITLES.Activity.description}
-    >
-      <HStackFull>
+    return (
+      <BannerSection
+        title={TITLES.Activity.title}
+        description={TITLES.Activity.description}
+      >
         <BaseLayerWrapper>
           <MinimalPageWrapper>{children}</MinimalPageWrapper>
         </BaseLayerWrapper>
-      </HStackFull>
-    </BannerSection>;
+      </BannerSection>
+    );
   }
 
   return (
