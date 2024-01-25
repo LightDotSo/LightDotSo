@@ -64,10 +64,10 @@ export const TokenCardToken: FC<TokenCardTokenProps> = ({
       <div className="flex items-center space-x-3">
         <TokenImage token={token} />
         <div className="flex flex-col space-y-0.5">
-          <span className="text-sm text-text">
+          <span className="text-xs md:text-sm text-text">
             {token.name ?? token.symbol}
           </span>
-          <span className="text-sm text-text-weak">
+          <span className="text-xs text-text-weak">
             {refineNumberFormat(token.amount / 10 ** token.decimals)}{" "}
             {token.symbol}
           </span>

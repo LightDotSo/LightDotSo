@@ -52,6 +52,7 @@ const tokenImageVariants = cva(
   {
     variants: {
       size: {
+        default: "size-6 md:size-8",
         xs: "size-6",
         sm: "size-8",
         md: "size-12",
@@ -60,7 +61,7 @@ const tokenImageVariants = cva(
       },
     },
     defaultVariants: {
-      size: "sm",
+      size: "default",
     },
   },
 );
