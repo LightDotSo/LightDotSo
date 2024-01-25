@@ -13,21 +13,34 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Address } from "viem";
+import { getWallets as getClientWallets } from "@lightdotso/client";
+import type { WalletListParams } from "@lightdotso/params";
+import "server-only";
 
 // -----------------------------------------------------------------------------
-// Params
+// Pre
 // -----------------------------------------------------------------------------
 
-export type WalletParams = {
-  address: Address;
+export const preloadGetWallets = (params: WalletListParams) => {
+  void getWallets(params);
 };
 
-export type WalletListParams = {
-  address: Address;
-  limit: number;
-  offset: number;
-  user_id?: string;
-};
+// -----------------------------------------------------------------------------
+// Service
+// -----------------------------------------------------------------------------
 
-export type WalletListCountParams = Omit<WalletListParams, "limit" | "offset">;
+export const getWallets = async (params: WalletListParams) => {
+  return getClientWallets(
+    {
+      params: {
+        query: {
+          owner: params.address,
+          limit: params.limit,
+          offset: params.offset,
+          user_id: params.user_id,
+        },
+      },
+    },
+    "admin",
+  );
+};

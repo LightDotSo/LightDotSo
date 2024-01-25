@@ -44,6 +44,8 @@ export {
   getUserOperationsCount,
 } from "./getUserOperationsCount";
 export { preloadGetWallet, getWallet } from "./getWallet";
+export { preloadGetWallets, getWallets } from "./getWallets";
+export { preloadGetWalletsCount, getWalletsCount } from "./getWalletsCount";
 export {
   preloadGetWalletFeatures,
   getWalletFeatures,
