@@ -15,39 +15,25 @@
 
 "use client";
 
-import type { InterpretationData } from "@lightdotso/data";
-import { AssetChange } from "@lightdotso/elements";
+import type { WalletData } from "@lightdotso/data";
 import type { FC } from "react";
+import type { Address } from "viem";
+import { AddressCard } from "../../(components)/card";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type InterpretationCardProps = { interpretation?: InterpretationData | null };
+type WalletCardAddressProps = { wallet: WalletData };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const InterpretationCard: FC<InterpretationCardProps> = ({
-  interpretation,
-}) => {
+export const WalletCardAddress: FC<WalletCardAddressProps> = ({ wallet }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!interpretation) {
-    return null;
-  }
-
-  return (
-    <div className="flex shrink-0 items-center space-x-1.5">
-      {interpretation?.asset_changes &&
-        interpretation.asset_changes
-          .slice(0, 1)
-          .map((assetChange, index) => (
-            <AssetChange key={index} assetChange={assetChange} />
-          ))}
-    </div>
-  );
+  return <AddressCard address={wallet.address as Address} />;
 };

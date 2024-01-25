@@ -98,7 +98,7 @@ export const OwnerTable: FC<OwnerTableProps> = ({
     data: data || [],
     columns: tableColumns,
     enableExpanding: true,
-    enableRowSelection: false,
+    enableRowSelection: true,
     manualPagination: true,
     paginateExpandedRows: true,
     getCoreRowModel: getCoreRowModel(),
