@@ -12,7 +12,8 @@
   },
   "license": "AGPL-3.0-or-later",
   "author": "Light, Inc.",
-  "main": "./src/index.tsx",
+  "sideEffects": false,
+  "main": "./src/index.ts",
   "files": [
     "dist/**",
     "src/**"
@@ -50,7 +51,7 @@
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.11.5",
+    "@types/node": "^20.11.6",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
     "typescript": "^5.3.3"

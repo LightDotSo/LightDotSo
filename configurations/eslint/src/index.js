@@ -180,7 +180,7 @@ module.exports = {
       },
     },
     {
-      files: ["**/apps/app/**/index.ts", "**/apps/app/**/index.tsx"],
+      files: ["**/apps/app/**/index.ts"],
       rules: {
         "no-restricted-imports": "off",
       },

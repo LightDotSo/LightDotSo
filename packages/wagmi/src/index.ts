@@ -27,4 +27,12 @@ export {
   useReadLightVerifyingPaymasterVerifyingSigner,
 } from "./generated";
 
-export * from "wagmi";
+export type { State } from "wagmi";
+export {
+  WagmiProvider,
+  useDisconnect,
+  useEnsName,
+  cookieToInitialState,
+  useSignMessage,
+  useAccount,
+} from "wagmi";

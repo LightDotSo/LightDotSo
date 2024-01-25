@@ -25,7 +25,6 @@ ignores:
   - eslint-plugin-turbo
   - immer
   - "@lightdotso/wagmi"
-  - "@wagmi/core"
   - blurhash
   - sonner
   - "@prisma/nextjs-monorepo-workaround-plugin"
