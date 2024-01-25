@@ -17,7 +17,6 @@
 
 import type { InterpretationData } from "@lightdotso/data";
 import { AssetChange } from "@lightdotso/elements";
-import { cn } from "@lightdotso/utils";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
@@ -26,7 +25,6 @@ import type { FC } from "react";
 
 type InterpretationCardProps = {
   interpretation?: InterpretationData | null;
-  isCenter?: boolean;
 };
 
 // -----------------------------------------------------------------------------
@@ -35,7 +33,6 @@ type InterpretationCardProps = {
 
 export const InterpretationCard: FC<InterpretationCardProps> = ({
   interpretation,
-  isCenter,
 }) => {
   // ---------------------------------------------------------------------------
   // Render
@@ -46,16 +43,12 @@ export const InterpretationCard: FC<InterpretationCardProps> = ({
   }
 
   return (
-    <div className="min-w-32 grow items-center space-x-1.5">
+    <div className="min-w-32 grow items-center space-x-2 md:space-x-3">
       {interpretation?.asset_changes &&
         interpretation.asset_changes
           .slice(0, 1)
           .map((assetChange, index) => (
-            <AssetChange
-              key={index}
-              className={cn(isCenter && "justify-center")}
-              assetChange={assetChange}
-            />
+            <AssetChange key={index} assetChange={assetChange} />
           ))}
     </div>
   );

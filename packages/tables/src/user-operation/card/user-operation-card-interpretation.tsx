@@ -38,5 +38,5 @@ export const UserOperationCardInterpretation: FC<
   // Render
   // ---------------------------------------------------------------------------
 
-  return <InterpretationCard isCenter interpretation={interpretation} />;
+  return <InterpretationCard interpretation={interpretation} />;
 };
