@@ -37,11 +37,11 @@ export const InterpretationCard: FC<InterpretationCardProps> = ({
   // ---------------------------------------------------------------------------
 
   if (!interpretation) {
-    return <div className="w-auto shrink-0 grow" />;
+    return <div className="min-w-32 grow" />;
   }
 
   return (
-    <div className="grow items-center space-x-1.5">
+    <div className="min-w-32 grow items-center space-x-1.5">
       {interpretation?.asset_changes &&
         interpretation.asset_changes
           .slice(0, 1)
