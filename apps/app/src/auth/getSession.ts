@@ -52,7 +52,6 @@ export const getSessionCookie = () => {
 
 export const getSession = async (): Promise<Session | null | undefined> => {
   const sessionId = getSessionCookie();
-  console.log("sessionId", sessionId);
 
   if (!sessionId) {
     return undefined;
