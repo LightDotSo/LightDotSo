@@ -30,7 +30,7 @@ import {
   TableCell,
   TableRow,
 } from "@lightdotso/ui";
-import { getChainById, shortenBytes32 } from "@lightdotso/utils";
+import { cn, getChainById, shortenBytes32 } from "@lightdotso/utils";
 import type { Row } from "@tanstack/react-table";
 import { flexRender } from "@tanstack/react-table";
 import { ArrowUpRight } from "lucide-react";
@@ -145,7 +145,7 @@ export const UserOperationCardTransaction: FC<
         </CollapsibleTrigger>
         <CollapsibleContent asChild>
           <TableCell className="p-0" colSpan={row.getAllCells().length}>
-            <div className="m-4 grid gap-4 md:grid-cols-2">
+            <div className="grid gap-4 md:grid-cols-2">
               <Card className="col-span-1 flex h-full flex-col justify-between space-y-4 border border-border-weak bg-background-strong p-4">
                 <CardHeader>
                   <CardTitle className="text-lg">
@@ -233,20 +233,27 @@ export const UserOperationCardTransaction: FC<
                     </div>
                   </div>
                 </CardContent>
-                {userOperation.status === "PROPOSED" && (
-                  <CardFooter className="grid w-full grid-cols-2 items-center gap-3">
+                <CardFooter
+                  className={cn(
+                    "grid w-full items-center gap-3",
+                    userOperation.status === "PROPOSED"
+                      ? "grid-cols-2"
+                      : "grid-cols-1",
+                  )}
+                >
+                  {userOperation.status === "PROPOSED" && (
                     <UserOperationCardTransactionSignButton
                       address={address}
                       config={configuration}
                       userOperation={userOperation}
                     />
-                    <UserOperationCardTransactionExecuteButton
-                      address={address}
-                      config={configuration}
-                      userOperation={userOperation}
-                    />
-                  </CardFooter>
-                )}
+                  )}
+                  <UserOperationCardTransactionExecuteButton
+                    address={address}
+                    config={configuration}
+                    userOperation={userOperation}
+                  />
+                </CardFooter>
               </Card>
             </div>
           </TableCell>

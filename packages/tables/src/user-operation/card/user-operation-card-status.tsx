@@ -37,7 +37,7 @@ export const UserOperationCardStatus: FC<UserOperationCardStatusProps> = ({
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="group flex items-center justify-end  space-x-1.5">
+    <div className="group flex items-center space-x-1.5">
       <Badge
         variant="shadow"
         intent={

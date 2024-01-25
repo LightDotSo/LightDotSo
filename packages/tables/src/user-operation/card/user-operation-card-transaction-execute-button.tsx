@@ -17,7 +17,13 @@
 
 import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
 import { useUserOperationSubmit } from "@lightdotso/hooks";
-import { Button } from "@lightdotso/ui";
+import {
+  Button,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@lightdotso/ui";
 import type { FC } from "react";
 import type { Address } from "viem";
 
@@ -53,14 +59,34 @@ export const UserOperationCardTransactionExecuteButton: FC<
   // ---------------------------------------------------------------------------
 
   return (
-    <Button
-      disabled={!isValid}
-      isLoading={isLoading}
-      variant={isValid ? "default" : "outline"}
-      className="w-full"
-      onClick={handleConfirm}
-    >
-      Execute
-    </Button>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            disabled={
+              !isValid || isLoading || userOperation.status === "EXECUTED"
+            }
+            isLoading={isLoading}
+            variant={isValid ? "default" : "outline"}
+            className="w-full"
+            onClick={handleConfirm}
+          >
+            {userOperation.status === "PROPOSED"
+              ? "Execute"
+              : "Already executed"}
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          {userOperation.status === "EXECUTED" ? (
+            <span>
+              Already executed on{" "}
+              {new Date(userOperation.updated_at).toLocaleDateString()}
+            </span>
+          ) : (
+            <span>Execute this transaction</span>
+          )}
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };

@@ -47,6 +47,7 @@ export const userOperationColumns: ColumnDef<UserOperationData>[] = [
     ),
     enableSorting: false,
     enableHiding: false,
+    size: 32,
   },
   {
     id: "chain_id",
@@ -60,6 +61,7 @@ export const userOperationColumns: ColumnDef<UserOperationData>[] = [
     },
     enableSorting: true,
     enableHiding: true,
+    size: 32,
   },
   {
     id: "interpretation",
@@ -76,6 +78,7 @@ export const userOperationColumns: ColumnDef<UserOperationData>[] = [
     ),
     enableSorting: false,
     enableHiding: false,
+    size: 32,
   },
   {
     id: "nonce",
@@ -89,6 +92,7 @@ export const userOperationColumns: ColumnDef<UserOperationData>[] = [
     },
     enableSorting: true,
     enableHiding: true,
+    size: 32,
   },
   {
     id: "status",
@@ -102,14 +106,17 @@ export const userOperationColumns: ColumnDef<UserOperationData>[] = [
     },
     enableSorting: true,
     enableHiding: true,
+    size: 32,
   },
   {
     id: "toggle",
     cell: ({ row }) => <UserOperationCardToggle userOperation={row.original} />,
     enableHiding: false,
+    size: 32,
   },
   {
     id: "row_actions",
     cell: ({ row }) => <UserOperationTableRowActions row={row} />,
+    size: 32,
   },
 ];
