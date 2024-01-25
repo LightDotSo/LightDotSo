@@ -15,24 +15,15 @@
 
 "use client";
 
-import type { UserOperationData } from "@lightdotso/data";
 import { ButtonIcon } from "@lightdotso/ui";
 import { ChevronDown } from "lucide-react";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-type UserOperationCardToggleProps = { userOperation: UserOperationData };
-
-// -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const UserOperationCardToggle: FC<UserOperationCardToggleProps> = ({
-  userOperation: { nonce },
-}) => {
+export const UserOperationCardToggle: FC = () => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------

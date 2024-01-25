@@ -145,7 +145,7 @@ export const UserOperationCardTransaction: FC<
         </CollapsibleTrigger>
         <CollapsibleContent asChild>
           <TableCell className="p-0" colSpan={row.getAllCells().length}>
-            <div className="m-4 md:m-0 grid gap-4 md:grid-cols-2">
+            <div className="m-4 grid gap-4 md:m-0 md:grid-cols-2">
               <Card className="col-span-1 flex h-full flex-col justify-between space-y-4 border border-border-weak bg-background-strong p-4">
                 <CardHeader>
                   <CardTitle className="text-lg">
