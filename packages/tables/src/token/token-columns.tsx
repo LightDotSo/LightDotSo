@@ -37,7 +37,7 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
     id: "name",
     accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader className="w-32" column={column} title="Name" />
+      <DataTableColumnHeader className="w-48" column={column} title="Name" />
     ),
     cell: ({ row }) => (
       <TokenCardToken
