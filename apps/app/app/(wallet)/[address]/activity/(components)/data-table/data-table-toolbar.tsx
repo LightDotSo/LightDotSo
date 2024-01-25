@@ -100,9 +100,13 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
             title="Entity"
             options={Array.from(uniqueEntityValues).map(entity => ({
               value: entity,
-              label: `${entity.charAt(0).toUpperCase()}${entity
-                .slice(1)
-                .toLowerCase()}`,
+              label: `${entity
+                .split("_")
+                .map(
+                  word =>
+                    word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
+                )
+                .join(" ")}`,
             }))}
           />
         )}
@@ -122,7 +126,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
         columnMapping={{
           entity: "Entity",
           operation: "Operation",
-          timestmap: "Timestamp",
+          timestamp: "Timestamp",
         }}
       />
     </ToolbarSectionWrapper>

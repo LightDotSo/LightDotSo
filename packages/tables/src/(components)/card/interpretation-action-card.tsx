@@ -18,6 +18,7 @@
 import { ACTION_LABELS, Action } from "@lightdotso/const";
 import type { InterpretationData } from "@lightdotso/data";
 import { ActionLogo } from "@lightdotso/elements";
+import { cn } from "@lightdotso/utils";
 import { useMemo, type FC } from "react";
 
 // -----------------------------------------------------------------------------
@@ -26,6 +27,7 @@ import { useMemo, type FC } from "react";
 
 type InterpretationActionCardProps = {
   interpretation?: InterpretationData | null;
+  className?: string;
 };
 
 // -----------------------------------------------------------------------------
@@ -34,6 +36,7 @@ type InterpretationActionCardProps = {
 
 export const InterpretationActionCard: FC<InterpretationActionCardProps> = ({
   interpretation,
+  className,
 }) => {
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -64,11 +67,11 @@ export const InterpretationActionCard: FC<InterpretationActionCardProps> = ({
   // ---------------------------------------------------------------------------
 
   if (!action) {
-    return <div className="min-w-20 pr-2" />;
+    return <div className={cn("min-w-20", className)} />;
   }
 
   return (
-    <div className="flex min-w-20 items-center space-x-3 pr-2">
+    <div className={cn("flex min-w-20 items-center space-x-3", className)}>
       <ActionLogo action={action} />
       <span className="text-xs font-medium text-text md:text-sm ">
         {ACTION_LABELS[action]}

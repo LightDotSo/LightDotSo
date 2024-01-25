@@ -39,6 +39,9 @@ export const UserOperationCardInterpretationAction: FC<
   // ---------------------------------------------------------------------------
 
   return (
-    <InterpretationActionCard interpretation={userOperation?.interpretation} />
+    <InterpretationActionCard
+      className="pr-4"
+      interpretation={userOperation?.interpretation}
+    />
   );
 };

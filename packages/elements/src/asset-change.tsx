@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { AssetChangeData } from "@lightdotso/data";
-import { refineNumberFormat } from "@lightdotso/utils";
+import { cn, refineNumberFormat } from "@lightdotso/utils";
 import type { FC } from "react";
 import { TokenImage } from "./token-image";
 
@@ -24,15 +24,19 @@ import { TokenImage } from "./token-image";
 
 export interface AssetChangeProps {
   assetChange: AssetChangeData;
+  className?: string;
 }
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const AssetChange: FC<AssetChangeProps> = ({ assetChange }) => {
+export const AssetChange: FC<AssetChangeProps> = ({
+  assetChange,
+  className,
+}) => {
   return (
-    <div className="flex items-center space-x-2 md:space-x-3">
+    <div className={cn("flex items-center space-x-2 md:space-x-3", className)}>
       {assetChange?.token && assetChange?.token?.decimals !== 0 && (
         <TokenImage size="xs" token={assetChange.token} />
       )}
