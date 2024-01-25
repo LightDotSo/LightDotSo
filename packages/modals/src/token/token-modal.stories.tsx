@@ -15,6 +15,8 @@
 
 import type { Meta, StoryObj } from "@storybook/react";
 import { TokenModal } from "./token-modal";
+import { useModals } from "@lightdotso/stores";
+import { useEffect } from "react";
 
 // -----------------------------------------------------------------------------
 // Meta
@@ -40,11 +42,14 @@ type Story = StoryObj<typeof TokenModal>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: () => (
-    // eslint-disable-nextline react/jsx-no-useless-fragment
-    <>
-      <TokenModal />
-    </>
-  ),
+  render: () => {
+    const { showTokenModal } = useModals();
+
+    useEffect(() => {
+      showTokenModal();
+    }, []);
+
+    return <TokenModal />;
+  },
   args: {},
 };

@@ -15,6 +15,8 @@
 
 import type { Meta, StoryObj } from "@storybook/react";
 import { DepositModal } from "./deposit-modal";
+import { useModals } from "@lightdotso/stores";
+import { useEffect } from "react";
 
 // -----------------------------------------------------------------------------
 // Meta
@@ -40,11 +42,14 @@ type Story = StoryObj<typeof DepositModal>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: () => (
-    // eslint-disable-nextline react/jsx-no-useless-fragment
-    <>
-      <DepositModal />
-    </>
-  ),
+  render: () => {
+    const { showDepositModal } = useModals();
+
+    useEffect(() => {
+      showDepositModal();
+    }, []);
+
+    return <DepositModal />;
+  },
   args: {},
 };

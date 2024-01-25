@@ -17,13 +17,13 @@
 
 import { usePaginationQueryState } from "@lightdotso/nuqs";
 import { useQueryActivities, useQueryActivitiesCount } from "@lightdotso/query";
+import { useAuth } from "@lightdotso/stores";
 import { activityColumns } from "@lightdotso/tables";
 import { Login } from "@lightdotso/templates";
 import { TableSectionWrapper } from "@lightdotso/ui";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(wallet)/[address]/activity/(components)/data-table/data-table";
-import { useAuth } from "@lightdotso/stores";
 
 // -----------------------------------------------------------------------------
 // Props

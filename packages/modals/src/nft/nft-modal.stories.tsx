@@ -15,6 +15,8 @@
 
 import type { Meta, StoryObj } from "@storybook/react";
 import { NftModal } from "./nft-modal";
+import { useModals } from "@lightdotso/stores";
+import { useEffect } from "react";
 
 // -----------------------------------------------------------------------------
 // Meta
@@ -40,11 +42,14 @@ type Story = StoryObj<typeof NftModal>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: () => (
-    // eslint-disable-nextline react/jsx-no-useless-fragment
-    <>
-      <NftModal />
-    </>
-  ),
+  render: () => {
+    const { showNftModal } = useModals();
+
+    useEffect(() => {
+      showNftModal();
+    }, []);
+
+    return <NftModal />;
+  },
   args: {},
 };

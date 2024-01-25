@@ -15,6 +15,8 @@
 
 import type { Meta, StoryObj } from "@storybook/react";
 import { AuthModal } from "./auth-modal";
+import { useModals } from "@lightdotso/stores";
+import { useEffect } from "react";
 
 // -----------------------------------------------------------------------------
 // Meta
@@ -40,11 +42,14 @@ type Story = StoryObj<typeof AuthModal>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: () => (
-    // eslint-disable-nextline react/jsx-no-useless-fragment
-    <>
-      <AuthModal />
-    </>
-  ),
+  render: () => {
+    const { showAuthModal } = useModals();
+
+    useEffect(() => {
+      showAuthModal();
+    }, []);
+
+    return <AuthModal />;
+  },
   args: {},
 };
