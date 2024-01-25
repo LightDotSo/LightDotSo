@@ -142,7 +142,7 @@ export const UserOperationCardTransaction: FC<
           </div>
         </CollapsibleTrigger>
         <CollapsibleContent asChild>
-          <div className="p-4 border-b border-b-border">
+          <div className="border-b border-b-border p-4">
             <div className="grid gap-4 md:grid-cols-2">
               <Card className="col-span-1 flex h-full flex-col justify-between space-y-4 border border-border-weak bg-background-strong p-4">
                 <CardHeader>
