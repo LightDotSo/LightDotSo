@@ -31,6 +31,7 @@ export {
 export { preloadGetTokens, getTokens } from "./getTokens";
 export { preloadGetTokensCount, getTokensCount } from "./getTokensCount";
 export { preloadGetTransactions, getTransactions } from "./getTransactions";
+export { preloadGetUser, getUser } from "./getUser";
 export {
   preloadGetTransactionsCount,
   getTransactionsCount,

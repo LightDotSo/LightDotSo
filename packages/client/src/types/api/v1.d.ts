@@ -3124,8 +3124,11 @@ export interface operations {
    */
   v1_user_get_handler: {
     parameters: {
-      query: {
-        address: string;
+      query?: {
+        /** @description The address of the user. */
+        address?: string | null;
+        /** @description The user id. */
+        user_id?: string | null;
       };
     };
     responses: {

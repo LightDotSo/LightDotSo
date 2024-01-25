@@ -14,7 +14,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { paginationParser } from "@lightdotso/nuqs";
-import { getNotifications, getNotificationsCount } from "@lightdotso/services";
+import {
+  getNotifications,
+  getNotificationsCount,
+  getUser,
+} from "@lightdotso/services";
 import { Result } from "neverthrow";
 import { verifyUserId } from "@/auth";
 
@@ -41,6 +45,11 @@ export const handler = async (searchParams: { pagination?: string }) => {
   // Fetch
   // ---------------------------------------------------------------------------
 
+  const userPromise = getUser({
+    address: undefined,
+    user_id: userId,
+  });
+
   const notificationsPromise = getNotifications({
     address: null,
     offset: paginationState.pageIndex * paginationState.pageSize,
@@ -53,7 +62,8 @@ export const handler = async (searchParams: { pagination?: string }) => {
     user_id: userId,
   });
 
-  const [notifications, notificationsCount] = await Promise.all([
+  const [user, notifications, notificationsCount] = await Promise.all([
+    userPromise,
     notificationsPromise,
     notificationsCountPromise,
   ]);
@@ -62,12 +72,17 @@ export const handler = async (searchParams: { pagination?: string }) => {
   // Parse
   // ---------------------------------------------------------------------------
 
-  const res = Result.combineWithAllErrors([notifications, notificationsCount]);
+  const res = Result.combineWithAllErrors([
+    user,
+    notifications,
+    notificationsCount,
+  ]);
 
   return res.match(
-    ([notifications, notificationsCount]) => {
+    ([user, notifications, notificationsCount]) => {
       return {
         paginationState: paginationState,
+        user: user,
         notifications: notifications,
         notificationsCount: notificationsCount,
       };
@@ -75,6 +90,10 @@ export const handler = async (searchParams: { pagination?: string }) => {
     () => {
       return {
         paginationState: paginationState,
+        user: {
+          address: "",
+          id: "",
+        },
         notifications: [],
         notificationsCount: {
           count: 0,

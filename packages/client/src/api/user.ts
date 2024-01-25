@@ -26,7 +26,10 @@ export const getUser = async (
     params,
   }: {
     params: {
-      query: { address: string };
+      query: {
+        address?: string | null | undefined;
+        user_id?: string | null | undefined;
+      };
     };
   },
   clientType?: ClientType,

@@ -13,25 +13,25 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getWallet as getClientWallet } from "@lightdotso/client";
-import type { WalletParams } from "@lightdotso/params";
+import { getUser as getClientUser } from "@lightdotso/client";
+import type { UserParams } from "@lightdotso/params";
 import "server-only";
 
 // -----------------------------------------------------------------------------
 // Pre
 // -----------------------------------------------------------------------------
 
-export const preloadGetWallet = (params: WalletParams) => {
-  void getWallet(params);
+export const preloadGetUser = (params: UserParams) => {
+  void getUser(params);
 };
 
 // -----------------------------------------------------------------------------
 // Service
 // -----------------------------------------------------------------------------
 
-export const getWallet = async (params: WalletParams) => {
-  return getClientWallet(
-    { params: { query: { address: params.address } } },
+export const getUser = async (params: UserParams) => {
+  return getClientUser(
+    { params: { query: { address: params.address, user_id: params.user_id } } },
     "admin",
   );
 };

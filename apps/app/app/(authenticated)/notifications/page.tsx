@@ -21,6 +21,7 @@ import { NotificationsDataTablePagination } from "@/app/(authenticated)/notifica
 import { NotificationsDataTableToolbar } from "@/app/(authenticated)/notifications/(components)/notifications-data-table-toolbar";
 import { handler } from "@/handlers/paths/notifications/handler";
 import { preloader } from "@/preloaders/paths/notifications/preloader";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -47,7 +48,7 @@ export default async function Page({ searchParams }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { paginationState, notifications, notificationsCount } =
+  const { paginationState, user, notifications, notificationsCount } =
     await handler(searchParams);
 
   // ---------------------------------------------------------------------------
@@ -58,18 +59,21 @@ export default async function Page({ searchParams }: PageProps) {
 
   queryClient.setQueryData(
     queryKeys.notification.list({
-      address: null,
+      address: user.id === "" ? null : (user.address as Address),
       limit: paginationState.pageSize,
       offset: paginationState.pageIndex * paginationState.pageSize,
+      user_id: null,
     }).queryKey,
     notifications,
   );
   queryClient.setQueryData(
     queryKeys.notification.listCount({
-      address: null,
+      address: user.id === "" ? null : (user.address as Address),
+      user_id: null,
     }).queryKey,
     notificationsCount,
   );
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------

@@ -13,9 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { queryKeys } from "@lightdotso/query-keys";
+import { getQueryClient } from "@lightdotso/services";
 import { WalletsDataTable } from "@/app/(authenticated)/wallets/(components)/wallets-data-table";
 import { WalletsDataTablePagination } from "@/app/(authenticated)/wallets/(components)/wallets-data-table-pagination";
 import { WalletsDataTableToolbar } from "@/app/(authenticated)/wallets/(components)/wallets-data-table-toolbar";
+import { handler } from "@/handlers/paths/wallets/handler";
+import { preloader } from "@/preloaders/paths/wallets/preloader";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -35,8 +40,40 @@ type PageProps = {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default async function Page({ searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
-  // Render
+  // Preloaders
   // ---------------------------------------------------------------------------
+
+  preloader(searchParams);
+
+  // ---------------------------------------------------------------------------
+  // Handlers
+  // ---------------------------------------------------------------------------
+
+  const { paginationState, user, wallets, walletsCount } =
+    await handler(searchParams);
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const queryClient = getQueryClient();
+
+  queryClient.setQueryData(
+    queryKeys.wallet.list({
+      address: user.id === "" ? null : (user.address as Address),
+      limit: paginationState.pageSize,
+      offset: paginationState.pageIndex * paginationState.pageSize,
+      user_id: undefined,
+    }).queryKey,
+    wallets,
+  );
+  queryClient.setQueryData(
+    queryKeys.wallet.listCount({
+      address: user.id === "" ? null : (user.address as Address),
+      user_id: undefined,
+    }).queryKey,
+    walletsCount,
+  );
 
   return (
     <>

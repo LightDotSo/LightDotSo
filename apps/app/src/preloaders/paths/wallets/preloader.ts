@@ -15,8 +15,8 @@
 
 import { paginationParser } from "@lightdotso/nuqs";
 import {
-  preloadGetNotifications,
-  preloadGetNotificationsCount,
+  preloadGetWallets,
+  preloadGetWalletsCount,
 } from "@lightdotso/services";
 import { getUserIdCookie } from "@/auth";
 
@@ -43,13 +43,13 @@ export const preloader = async (searchParams: { pagination?: string }) => {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloadGetNotifications({
+  preloadGetWallets({
     address: null,
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
     user_id: userId,
   });
-  preloadGetNotificationsCount({
+  preloadGetWalletsCount({
     address: null,
     user_id: userId,
   });
