@@ -15,8 +15,8 @@
 
 "use client";
 
-import { useModals } from "@lightdotso/stores";
 import { useSignInWithSiwe } from "@lightdotso/hooks";
+import { useModals } from "@lightdotso/stores";
 import { Modal } from "@lightdotso/templates";
 import { Button, DialogDescription, DialogTitle } from "@lightdotso/ui";
 

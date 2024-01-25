@@ -64,11 +64,11 @@ export const InterpretationActionCard: FC<InterpretationActionCardProps> = ({
   // ---------------------------------------------------------------------------
 
   if (!action) {
-    return <div className="w-12" />;
+    return <div className="w-32" />;
   }
 
   return (
-    <div className="flex max-w-12 items-center space-x-3">
+    <div className="flex max-w-32 items-center space-x-3">
       <ActionLogo action={action} />
       <span className="text-xs font-medium text-text md:text-sm ">
         {ACTION_LABELS[action]}

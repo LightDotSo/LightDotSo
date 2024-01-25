@@ -15,11 +15,7 @@
 
 "use client";
 
-import {
-  useIsMounted,
-  useMediaQuery,
-  useSignInWithSiwe,
-} from "@lightdotso/hooks";
+import { useSignInWithSiwe } from "@lightdotso/hooks";
 import { Button } from "@lightdotso/ui";
 import { UserIcon } from "lucide-react";
 import type { FC } from "react";
@@ -41,7 +37,7 @@ export const Login: FC = () => {
 
   return (
     <div className="text-center">
-      <UserIcon className="mx-auto h-8 w-8 border rounded-full border-border p-2 text-text" />
+      <UserIcon className="mx-auto size-8 rounded-full border border-border p-2 text-text" />
       <h3 className="mt-2 text-sm font-semibold text-text">Login</h3>
       <p className="mt-1 text-sm text-text-weak">Get started by logging in.</p>
       <div className="mt-6">
