@@ -22,7 +22,7 @@ import { Redis } from "@upstash/redis";
 // -----------------------------------------------------------------------------
 
 export const redis = new Redis({
-  url: `https://${process.env.UPSTASH_REST_API_DOMAIN!}`,
+  url: `https://${process.env.UPSTASH_REDIS_REST_URL!}`,
   token: process.env.UPSTASH_REST_API_TOKEN!,
 });
 
