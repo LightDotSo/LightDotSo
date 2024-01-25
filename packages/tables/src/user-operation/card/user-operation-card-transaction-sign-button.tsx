@@ -48,11 +48,12 @@ export const UserOperationCardTransactionSignButton: FC<
   // App Hooks
   // ---------------------------------------------------------------------------
 
-  const { isLoading, isSignable, signUserOperation } = useUserOperationSign({
-    address: address,
-    config: config,
-    userOperation: userOperation,
-  });
+  const { isLoading, isSigned, isSignable, signUserOperation } =
+    useUserOperationSign({
+      address: address,
+      config: config,
+      userOperation: userOperation,
+    });
 
   // ---------------------------------------------------------------------------
   // Render
@@ -75,7 +76,9 @@ export const UserOperationCardTransactionSignButton: FC<
         <TooltipContent>
           {isSignable
             ? "Sign this transaction"
-            : "This transaction is not signable"}
+            : isSigned
+              ? "You have already signed this transaction"
+              : "This transaction is not signable"}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
