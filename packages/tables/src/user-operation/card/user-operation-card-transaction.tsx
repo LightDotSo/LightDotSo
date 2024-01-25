@@ -157,7 +157,7 @@ export const UserOperationCardTransaction: FC<
                   {informationItems.map((item, index) => (
                     <div
                       key={index}
-                      className="my-1 flex items-center justify-between"
+                      className="my-1 flex items-center justify-between text-xs"
                     >
                       <div>
                         <div className="text-text-weak">{item.title}</div>
