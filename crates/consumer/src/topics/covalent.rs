@@ -17,7 +17,7 @@
 
 use ethers::utils::to_checksum;
 use eyre::Result;
-use lightdotso_contracts::constants::MAINNET_CHAIN_IDS;
+use lightdotso_contracts::utils::is_testnet;
 use lightdotso_covalent::get_token_balances;
 use lightdotso_kafka::{
     topics::portfolio::produce_portfolio_message,
@@ -207,10 +207,9 @@ pub async fn covalent_consumer(
                                         wallet_balance::token_id::set(Some(token.id.to_string())),
                                         wallet_balance::is_spam::set(item.is_spam),
                                         wallet_balance::is_latest::set(true),
-                                        wallet_balance::is_testnet::set(
-                                            !MAINNET_CHAIN_IDS
-                                                .contains_key(&(payload.chain_id as u64)),
-                                        ),
+                                        wallet_balance::is_testnet::set(is_testnet(
+                                            payload.chain_id as u64,
+                                        )),
                                     ],
                                 )
                             })
