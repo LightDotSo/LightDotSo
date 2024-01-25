@@ -15,12 +15,12 @@
 
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
+import type { Address } from "viem";
 import { WalletsDataTable } from "@/app/(authenticated)/wallets/(components)/wallets-data-table";
 import { WalletsDataTablePagination } from "@/app/(authenticated)/wallets/(components)/wallets-data-table-pagination";
 import { WalletsDataTableToolbar } from "@/app/(authenticated)/wallets/(components)/wallets-data-table-toolbar";
 import { handler } from "@/handlers/paths/wallets/handler";
 import { preloader } from "@/preloaders/paths/wallets/preloader";
-import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props

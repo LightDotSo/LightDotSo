@@ -16,12 +16,12 @@
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import type { Address } from "viem";
 import { NotificationsDataTable } from "@/app/(authenticated)/notifications/(components)/notifications-data-table";
 import { NotificationsDataTablePagination } from "@/app/(authenticated)/notifications/(components)/notifications-data-table-pagination";
 import { NotificationsDataTableToolbar } from "@/app/(authenticated)/notifications/(components)/notifications-data-table-toolbar";
 import { handler } from "@/handlers/paths/notifications/handler";
 import { preloader } from "@/preloaders/paths/notifications/preloader";
-import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
