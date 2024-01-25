@@ -16,11 +16,10 @@
 "use client";
 
 import type { WalletData } from "@lightdotso/data";
-import { PlaceholderOrb } from "@lightdotso/elements";
 import { DataTableColumnHeader } from "@lightdotso/templates";
-import { Avatar } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { WalletTableRowActions } from "./actions";
+import { WalletCardAddress } from "./card";
 
 // -----------------------------------------------------------------------------
 // Definitions
@@ -45,14 +44,7 @@ export const walletColumns: ColumnDef<WalletData>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Address" />
     ),
-    cell: ({ row }) => (
-      <div className="flex items-center">
-        <Avatar className="mr-3 size-7">
-          <PlaceholderOrb address={row.getValue("address") ?? "0x"} />
-        </Avatar>
-        {row.getValue("address")}
-      </div>
-    ),
+    cell: ({ row }) => <WalletCardAddress wallet={row.original} />,
     enableSorting: false,
     enableHiding: false,
   },

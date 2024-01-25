@@ -57,14 +57,19 @@ export const AddressCard: FC<ChainCardProps> = ({ address }) => {
             <PlaceholderOrb address={address} />
           </Avatar>
           {ens && <span className="mr-3">{ens}</span>}
-          <TooltipTrigger asChild>
-            <span className="text-xs text-text-weak">
-              {shortenAddress(address)}
-            </span>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>{address}</p>
-          </TooltipContent>
+          {!ens && shortenAddress(address)}
+          {ens && (
+            <>
+              <TooltipTrigger asChild>
+                <span className="text-xs text-text-weak">
+                  {shortenAddress(address)}
+                </span>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{address}</p>
+              </TooltipContent>
+            </>
+          )}
         </div>
       </Tooltip>
     </TooltipProvider>
