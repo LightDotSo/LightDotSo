@@ -24,6 +24,7 @@ use axum::{
     Json,
 };
 use ethers_main::{types::H160, utils::to_checksum};
+use lightdotso_contracts::utils::is_testnet;
 use lightdotso_prisma::token;
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::{raw, PrismaValue};
@@ -96,6 +97,16 @@ pub(crate) async fn v1_token_price_get_handler(
     info!("Get token for address: {:?}", query);
     let parsed_query_address: H160 = query.address.parse()?;
     let checksum_address = to_checksum(&parsed_query_address, None);
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
+
+    // If the chain id is a testnet, return a default token_price (empty)
+    if is_testnet(query.chain_id as u64) {
+        let token_price = TokenPrice::default();
+        return Ok(Json::from(token_price));
+    }
 
     // -------------------------------------------------------------------------
     // DB

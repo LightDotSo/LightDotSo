@@ -13,9 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod constants;
-pub mod erc1271;
-pub mod paymaster;
-pub mod provider;
-pub mod types;
-pub mod utils;
+use crate::constants::{MAINNET_CHAIN_IDS, TESTNET_CHAIN_IDS};
+
+/// Returns `true` if the chain ID is a testnet chain ID.
+/// Falls back to `true` if the chain ID is not a mainnet chain ID.
+pub fn is_testnet(chain_id: u64) -> bool {
+    TESTNET_CHAIN_IDS.contains_key(&chain_id) || !MAINNET_CHAIN_IDS.contains_key(&chain_id)
+}

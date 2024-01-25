@@ -32,7 +32,9 @@ export const getUserIdCookie = () => {
 
 export const verifyUserId = async () => {
   const userId = getUserIdCookie();
+  console.log("userId", userId);
   const session = await getSession();
+  console.log("session", session);
 
   if (!session) {
     return undefined;

@@ -48,7 +48,7 @@ export const parseTokenAddress = (token: TokenData) => {
 // -----------------------------------------------------------------------------
 
 const tokenImageVariants = cva(
-  "inline-flex overflow-hidden rounded-full flex-shrink-0",
+  "inline-flex shrink-0 overflow-hidden rounded-full",
   {
     variants: {
       size: {

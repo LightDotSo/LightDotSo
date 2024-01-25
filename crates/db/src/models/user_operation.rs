@@ -25,9 +25,8 @@ use axum::extract::Json;
 use ethers::{types::U256, utils::to_checksum};
 use eyre::Result;
 use lightdotso_contracts::{
-    constants::{LIGHT_PAYMASTER_ADDRESSES, MAINNET_CHAIN_IDS},
-    paymaster::decode_paymaster_and_data,
-    types::UserOperationWithTransactionAndReceiptLogs,
+    constants::LIGHT_PAYMASTER_ADDRESSES, paymaster::decode_paymaster_and_data,
+    types::UserOperationWithTransactionAndReceiptLogs, utils::is_testnet,
 };
 use lightdotso_prisma::{
     log, paymaster, paymaster_operation, transaction, user_operation, wallet, UserOperationStatus,
@@ -169,9 +168,7 @@ pub async fn upsert_user_operation_logs(
                 user_operation::hash::equals(format!("{:?}", uow.hash)),
                 vec![
                     user_operation::logs::connect(vec![log::id::equals(log.id.clone())]),
-                    user_operation::is_testnet::set(
-                        !MAINNET_CHAIN_IDS.contains_key(&(uow.chain_id as u64)),
-                    ),
+                    user_operation::is_testnet::set(is_testnet(uow.chain_id as u64)),
                 ],
             )
             .exec()

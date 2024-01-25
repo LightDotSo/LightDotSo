@@ -33,9 +33,7 @@ use ethers_main::{
 use eyre::{Report, Result};
 use lightdotso_common::{traits::HexToBytes, utils::hex_to_bytes};
 use lightdotso_contracts::{
-    constants::{ENTRYPOINT_V060_ADDRESS, MAINNET_CHAIN_IDS},
-    // constants::{ENTRYPOINT_V060_ADDRESS, LIGHT_PAYMASTER_ADDRESSES},
-    paymaster::decode_paymaster_and_data,
+    constants::ENTRYPOINT_V060_ADDRESS, paymaster::decode_paymaster_and_data, utils::is_testnet,
 };
 use lightdotso_db::models::activity::CustomParams;
 use lightdotso_kafka::{
@@ -289,8 +287,7 @@ pub(crate) async fn v1_user_operation_create_handler(
     }
 
     // The optional params to connect paymaster to user_operation.
-    let mut params =
-        vec![user_operation::is_testnet::set(!MAINNET_CHAIN_IDS.contains_key(&(chain_id as u64)))];
+    let mut params = vec![user_operation::is_testnet::set(is_testnet(chain_id as u64))];
 
     // Parse the paymaster_and_data for the paymaster data if the paymaster is provided.
     if user_operation.paymaster_and_data.len() > 2 {
