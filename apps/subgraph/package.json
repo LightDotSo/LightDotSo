@@ -77,6 +77,6 @@
     "wabt": "^1.0.32"
   },
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   }
 }

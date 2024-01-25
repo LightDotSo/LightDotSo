@@ -37,6 +37,6 @@
     "next": "^14.1.0"
   },
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   }
 }
