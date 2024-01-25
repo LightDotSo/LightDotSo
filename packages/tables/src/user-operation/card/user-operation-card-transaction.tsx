@@ -133,7 +133,7 @@ export const UserOperationCardTransaction: FC<
           className="cursor-pointer [&[data-state=open]>div>div>button>svg]:rotate-180"
           type={undefined}
         >
-          <div className="flex w-full items-center border-b border-b-border p-3 transition-colors last:border-b-0 hover:bg-background-stronger/50">
+          <div className="transaction group flex w-full items-center border-b border-b-border p-3 transition-colors last:border-b-0 hover:bg-background-stronger/50">
             {row.getVisibleCells().map(cell => (
               <Fragment key={cell.id}>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
