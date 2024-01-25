@@ -15,29 +15,48 @@
 
 "use client";
 
-import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
-import { UserOperationTimeline } from "@lightdotso/elements";
-import type { FC } from "react";
-import type { Address } from "viem";
+import { useQueryUserOperation } from "@lightdotso/query";
+import { userOperationColumns } from "@lightdotso/tables";
+import { type FC } from "react";
+import type { Address, Hex } from "viem";
+import { DataTable } from "@/app/(wallet)/[address]/transactions/(components)/data-table/data-table";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type OpDetailsProps = {
-  address: Address;
-  config: ConfigurationData;
-  userOperation: UserOperationData;
-};
+interface OpDataTableProps {
+  userOperationHash: Hex;
+}
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const OpDetails: FC<OpDetailsProps> = ({ userOperation }) => {
+export const OpDataTable: FC<OpDataTableProps> = ({ userOperationHash }) => {
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { userOperation, isUserOperationLoading } = useQueryUserOperation({
+    hash: userOperationHash,
+  });
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return <UserOperationTimeline userOperation={userOperation} />;
+  if (!userOperation) {
+    return null;
+  }
+
+  return (
+    <DataTable
+      isLoading={isUserOperationLoading}
+      data={userOperation ? [userOperation] : []}
+      address={userOperation.sender as Address}
+      columns={userOperationColumns}
+      pageCount={1}
+    />
+  );
 };

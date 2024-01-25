@@ -28,6 +28,7 @@ export { useQueryTransactions } from "./useQueryTransactions";
 export { useQueryTransactionsCount } from "./useQueryTransactionsCount";
 export { useQueryUser } from "./useQueryUser";
 export { useQueryUserOperations } from "./useQueryUserOperations";
+export { useQueryUserOperation } from "./useQueryUserOperation";
 export { useQueryUserOperationsCount } from "./useQueryUserOperationsCount";
 export { useQueryWallets } from "./useQueryWallets";
 export { useQueryWalletsCount } from "./useQueryWalletsCount";
