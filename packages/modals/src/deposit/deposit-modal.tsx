@@ -28,21 +28,17 @@ export function DepositModal() {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address } = useAuth();
   const { isDepositModalVisible, hideDepositModal } = useModals();
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
-  if (!address) {
-    return null;
-  }
 
   if (isDepositModalVisible) {
     return (
       <Modal open size="sm" onClose={hideDepositModal}>
         <DialogTitle>Deposit</DialogTitle>
-        <DialogDescription>Deposit for {address}</DialogDescription>
+        <DialogDescription>Deposit for </DialogDescription>
       </Modal>
     );
   }

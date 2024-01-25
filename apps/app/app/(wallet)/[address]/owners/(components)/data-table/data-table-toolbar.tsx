@@ -81,15 +81,17 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
       <div className="flex flex-1 items-center space-x-2">
         <Input
           placeholder="Filter owners..."
-          value={(table.getColumn("address")?.getFilterValue() as string) ?? ""}
+          value={
+            (table?.getColumn("address")?.getFilterValue() as string) ?? ""
+          }
           className="h-8 w-[150px] lg:w-[250px]"
           onChange={event =>
-            table.getColumn("address")?.setFilterValue(event.target.value)
+            table?.getColumn("address")?.setFilterValue(event.target.value)
           }
         />
-        {table.getColumn("weight") && (
+        {table?.getColumn("weight") && (
           <DataTableFacetedFilter
-            column={table.getColumn("weight")}
+            column={table?.getColumn("weight")}
             title="Weight"
             options={Array.from(uniqueWeightValues).map(i => ({
               value: i.toString(),

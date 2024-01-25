@@ -121,29 +121,29 @@ export const ActivityTable: FC<ActivityTableProps> = ({
   }, [
     table,
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("user_address"),
+    table?.getColumn("user_address"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("user_address")?.getFilterValue(),
+    table?.getColumn("user_address")?.getFilterValue(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("entity"),
+    table?.getColumn("entity"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("entity")?.getFacetedUniqueValues(),
+    table?.getColumn("entity")?.getFacetedUniqueValues(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("entity")?.getCanHide(),
+    table?.getColumn("entity")?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("entity")?.getIsVisible(),
+    table?.getColumn("entity")?.getIsVisible(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("operation"),
+    table?.getColumn("operation"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("operation")?.getCanHide(),
+    table?.getColumn("operation")?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("operation")?.getIsVisible(),
+    table?.getColumn("operation")?.getIsVisible(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("timestamp"),
+    table?.getColumn("timestamp"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("timestamp")?.getCanHide(),
+    table?.getColumn("timestamp")?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("timestamp")?.getIsVisible(),
+    table?.getColumn("timestamp")?.getIsVisible(),
     setActivityTable,
   ]);
 

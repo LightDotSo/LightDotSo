@@ -112,9 +112,9 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   return (
     <>
       <div className="flex flex-1 items-center space-x-2">
-        {table && table.getColumn("chain_id") && (
+        {table && table?.getColumn("chain_id") && (
           <DataTableFacetedFilter
-            column={table.getColumn("chain_id")}
+            column={table?.getColumn("chain_id")}
             title="Chain"
             options={Array.from(uniqueChainIdValues).map(i => ({
               value: i.toString(),

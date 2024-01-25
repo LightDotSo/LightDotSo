@@ -15,7 +15,7 @@
 
 "use client";
 
-import { useAuth, useModals } from "@lightdotso/stores";
+import { useModals } from "@lightdotso/stores";
 import { Modal } from "@lightdotso/templates";
 import { DialogDescription, DialogTitle } from "@lightdotso/ui";
 
@@ -28,21 +28,17 @@ export function NftModal() {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address } = useAuth();
   const { isNftModalVisible, hideNftModal } = useModals();
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
-  if (!address) {
-    return null;
-  }
 
   if (isNftModalVisible) {
     return (
       <Modal open size="sm" onClose={hideNftModal}>
         <DialogTitle>NFT</DialogTitle>
-        <DialogDescription>NFT for {address}</DialogDescription>
+        <DialogDescription>NFT for</DialogDescription>
       </Modal>
     );
   }

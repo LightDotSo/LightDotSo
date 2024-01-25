@@ -13,7 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { useModals } from "@lightdotso/stores";
 import type { Meta, StoryObj } from "@storybook/react";
+import { useEffect } from "react";
 import { NftModal } from "./nft-modal";
 
 // -----------------------------------------------------------------------------
@@ -40,11 +42,14 @@ type Story = StoryObj<typeof NftModal>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: () => (
-    // eslint-disable-nextline react/jsx-no-useless-fragment
-    <>
-      <NftModal />
-    </>
-  ),
+  render: () => {
+    const { showNftModal } = useModals();
+
+    useEffect(() => {
+      showNftModal();
+    }, []);
+
+    return <NftModal />;
+  },
   args: {},
 };

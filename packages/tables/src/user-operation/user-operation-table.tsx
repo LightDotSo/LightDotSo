@@ -139,17 +139,17 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
   }, [
     table,
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("chain_id"),
+    table?.getColumn("chain_id"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("chain_id")?.getCanHide(),
+    table?.getColumn("chain_id")?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("chain_id")?.getIsVisible(),
+    table?.getColumn("chain_id")?.getIsVisible(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("chain_id")?.getFacetedUniqueValues(),
+    table?.getColumn("chain_id")?.getFacetedUniqueValues(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("hash")?.getCanHide(),
+    table?.getColumn("hash")?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("hash")?.getIsVisible(),
+    table?.getColumn("hash")?.getIsVisible(),
     setUserOperationTable,
   ]);
 
