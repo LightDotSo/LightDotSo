@@ -15,7 +15,7 @@
 
 import { USER_COOKIE_ID } from "@lightdotso/const";
 import { cookies } from "next/headers";
-import { getSession } from "./getSession";
+import { getSession } from "@/auth/getSession";
 
 // -----------------------------------------------------------------------------
 // Cookie
