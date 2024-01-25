@@ -23,9 +23,11 @@ import {
   DropdownMenuItem,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
+  toast,
 } from "@lightdotso/ui";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import type { Row } from "@tanstack/react-table";
+import { useCallback } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -39,7 +41,22 @@ interface WalletTableRowActionsProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export function WalletTableRowActions({ row: _ }: WalletTableRowActionsProps) {
+export function WalletTableRowActions({ row }: WalletTableRowActionsProps) {
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const [, copy] = useCopy();
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  const handleAddressClick = useCallback(() => {
+    copy(row.original.address);
+    toast.success("Copied to clipboard");
+  }, [row.original.address, copy]);
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -60,13 +77,14 @@ export function WalletTableRowActions({ row: _ }: WalletTableRowActionsProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[160px]">
-          <DropdownMenuItem>Copy Address</DropdownMenuItem>
-          <DropdownMenuItem>
-            Delete
-            <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+          <DropdownMenuItem onClick={handleAddressClick}>
+            Copy Address
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
   );
+}
+function useCopy(): [any, any] {
+  throw new Error("Function not implemented.");
 }
