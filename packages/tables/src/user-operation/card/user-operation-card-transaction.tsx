@@ -130,10 +130,10 @@ export const UserOperationCardTransaction: FC<
       <>
         <CollapsibleTrigger
           asChild
-          className="cursor-pointer [&[data-state=open]>td>div>button>svg]:rotate-180"
+          className="cursor-pointer [&[data-state=open]>div>div>button>svg]:rotate-180"
           type={undefined}
         >
-          <div className="flex w-full items-center border-b border-b-border last:border-b-0 p-3 transition-colors hover:bg-background-stronger/50">
+          <div className="flex w-full items-center border-b border-b-border p-3 transition-colors last:border-b-0 hover:bg-background-stronger/50">
             {row.getVisibleCells().map(cell => (
               <Fragment key={cell.id}>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -142,7 +142,7 @@ export const UserOperationCardTransaction: FC<
           </div>
         </CollapsibleTrigger>
         <CollapsibleContent asChild>
-          <div className="p-4">
+          <div className="border-b border-b-border p-4">
             <div className="grid gap-4 md:grid-cols-2">
               <Card className="col-span-1 flex h-full flex-col justify-between space-y-4 border border-border-weak bg-background-strong p-4">
                 <CardHeader>

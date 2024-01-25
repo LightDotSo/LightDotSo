@@ -38,5 +38,7 @@ export const UserOperationCardInterpretation: FC<
   // Render
   // ---------------------------------------------------------------------------
 
-  return <InterpretationCard interpretation={interpretation} />;
+  return (
+    <InterpretationCard className="pl-4" interpretation={interpretation} />
+  );
 };

@@ -16,16 +16,18 @@
 "use client";
 
 import type { WalletData } from "@lightdotso/data";
+import { useCopy } from "@lightdotso/hooks";
 import {
   Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
+  toast,
 } from "@lightdotso/ui";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import type { Row } from "@tanstack/react-table";
+import { useCallback } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -39,32 +41,47 @@ interface WalletTableRowActionsProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export function WalletTableRowActions({ row: _ }: WalletTableRowActionsProps) {
+export function WalletTableRowActions({ row }: WalletTableRowActionsProps) {
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const [, copy] = useCopy();
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  const handleAddressClick = useCallback(() => {
+    copy(row.original.address);
+    toast.success("Copied to clipboard");
+  }, [row.original.address, copy]);
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          className="flex size-8 p-0 data-[state=open]:bg-background-stronger"
-          onClick={event => {
-            event.stopPropagation();
-          }}
-        >
-          <DotsHorizontalIcon className="size-4" />
-          <span className="sr-only">Open menu</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem>Copy Address</DropdownMenuItem>
-        <DropdownMenuItem>
-          Delete
-          <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className="flex items-center justify-end">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            className="flex size-8 p-0 data-[state=open]:bg-background-stronger"
+            onClick={event => {
+              event.stopPropagation();
+            }}
+          >
+            <DotsHorizontalIcon className="size-4" />
+            <span className="sr-only">Open menu</span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-[160px]">
+          <DropdownMenuItem onClick={handleAddressClick}>
+            Copy Address
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 }

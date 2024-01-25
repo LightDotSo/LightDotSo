@@ -16,6 +16,7 @@
 "use client";
 
 import { PlaceholderOrb } from "@lightdotso/elements";
+import { useCopy } from "@lightdotso/hooks";
 import { useSuspenseQueryWallet } from "@lightdotso/query";
 import {
   Avatar,
@@ -38,7 +39,6 @@ import { useEnsName } from "@lightdotso/wagmi";
 import { ChevronDown, Copy } from "lucide-react";
 import { useCallback, type FC } from "react";
 import type { Address } from "viem";
-import { useCopy } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Props

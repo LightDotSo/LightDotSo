@@ -32,16 +32,13 @@ export interface AssetChangeProps {
 
 export const AssetChange: FC<AssetChangeProps> = ({ assetChange }) => {
   return (
-    <div className="flex items-center space-x-2 md:space-x-3">
+    <>
       {assetChange?.token && assetChange?.token?.decimals !== 0 && (
         <TokenImage size="xs" token={assetChange.token} />
       )}
       {assetChange?.token && assetChange?.token?.decimals !== 0 && (
         <span className="text-xs text-text md:text-sm">
           {assetChange?.token.name ?? assetChange?.token.symbol}{" "}
-          <span className="md:hidden">
-            <br />
-          </span>
           {
             <span className="text-xs text-text-weak">
               (
@@ -53,6 +50,6 @@ export const AssetChange: FC<AssetChangeProps> = ({ assetChange }) => {
           }
         </span>
       )}
-    </div>
+    </>
   );
 };

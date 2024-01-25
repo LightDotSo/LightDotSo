@@ -35,11 +35,11 @@ export const ChainCard: FC<ChainCardProps> = ({ chain_id }) => {
   // ---------------------------------------------------------------------------
 
   if (chain_id === 0) {
-    return <div className="min-w-20 shrink md:w-40" />;
+    return <div className="w-24 min-w-20 shrink sm:w-32 md:w-40" />;
   }
 
   return (
-    <div className="min-w-20 shrink md:w-40">
+    <div className="w-24 min-w-20 shrink sm:w-32 md:w-40">
       <div className="flex items-center justify-start space-x-1.5">
         <ChainLogo className="size-6" chainId={chain_id} />
         <span className="text-xs font-medium text-text md:text-sm">

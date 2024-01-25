@@ -17,13 +17,17 @@
 
 import type { InterpretationData } from "@lightdotso/data";
 import { AssetChange } from "@lightdotso/elements";
+import { cn } from "@lightdotso/utils";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type InterpretationCardProps = { interpretation?: InterpretationData | null };
+type InterpretationCardProps = {
+  interpretation?: InterpretationData | null;
+  className?: string;
+};
 
 // -----------------------------------------------------------------------------
 // Component
@@ -31,17 +35,23 @@ type InterpretationCardProps = { interpretation?: InterpretationData | null };
 
 export const InterpretationCard: FC<InterpretationCardProps> = ({
   interpretation,
+  className,
 }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   if (!interpretation) {
-    return <div className="min-w-32 grow" />;
+    return <div className={cn("min-w-32 grow", className)} />;
   }
 
   return (
-    <div className="min-w-32 grow items-center justify-center space-x-1.5">
+    <div
+      className={cn(
+        "min-w-32 grow items-center space-x-2 md:space-x-3",
+        className,
+      )}
+    >
       {interpretation?.asset_changes &&
         interpretation.asset_changes
           .slice(0, 1)
