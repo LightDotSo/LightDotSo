@@ -57,7 +57,7 @@ import { useForm } from "react-hook-form";
 import { isAddress } from "viem";
 import { normalize } from "viem/ens";
 import type * as z from "zod";
-import { publicClient } from "@/clients/public";
+import { publicClient } from "@/client/public";
 
 // -----------------------------------------------------------------------------
 // Types

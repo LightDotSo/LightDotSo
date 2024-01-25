@@ -17,7 +17,7 @@
 
 import { useEffect } from "react";
 import type { FC } from "react";
-import { pusherClient } from "@/clients/pusher";
+import { pusherClient } from "@/client/pusher";
 
 // -----------------------------------------------------------------------------
 // Component

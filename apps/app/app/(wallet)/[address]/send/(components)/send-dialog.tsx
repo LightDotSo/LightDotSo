@@ -81,7 +81,7 @@ import {
 import type { Address, Hex } from "viem";
 import { normalize } from "viem/ens";
 import * as z from "zod";
-import { publicClient } from "@/clients/public";
+import { publicClient } from "@/client/public";
 import { debounce } from "@/utils";
 
 // -----------------------------------------------------------------------------

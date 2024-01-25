@@ -68,7 +68,7 @@ import { isAddress } from "viem";
 import { normalize } from "viem/ens";
 import * as z from "zod";
 import { steps } from "@/app/(authenticated)/new/(components)/root/root";
-import { publicClient } from "@/clients/public";
+import { publicClient } from "@/client/public";
 import { MAX_THRESHOLD, MAX_WEIGHT } from "@/const";
 import { debounce } from "@/utils";
 

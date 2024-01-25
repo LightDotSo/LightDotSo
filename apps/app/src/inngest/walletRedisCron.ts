@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { redis } from "@/clients/redis";
+import { redis } from "@/client/redis";
 import { inngest } from "@/inngest/client";
 
 // -----------------------------------------------------------------------------
