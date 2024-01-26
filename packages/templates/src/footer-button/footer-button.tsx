@@ -29,6 +29,7 @@ export interface FooterButtonProps {
   cancelDisabled?: boolean;
   isLoading?: boolean;
   href?: string;
+  isModal?: boolean;
   successClick?: () => void;
   cancelClick?: () => void;
 }
@@ -42,6 +43,7 @@ export const FooterButton: FC<FooterButtonProps> = ({
   cancelDisabled,
   isLoading,
   href,
+  isModal,
   successClick,
   cancelClick,
 }) => {
@@ -83,15 +85,25 @@ export const FooterButton: FC<FooterButtonProps> = ({
           <Link href={href}>Continue</Link>
         </Button>
       )}
-      <span className="inline-flex justify-center md:hidden">
-        <ButtonIcon
-          className="rounded-full"
+      {isModal ? (
+        <span className="inline-flex justify-center md:hidden">
+          <ButtonIcon
+            className="rounded-full"
+            variant="outline"
+            onClick={cancelClick}
+          >
+            <XIcon />
+          </ButtonIcon>
+        </span>
+      ) : (
+        <Button
+          className="block md:hidden w-auto"
           variant="outline"
           onClick={cancelClick}
         >
-          <XIcon />
-        </ButtonIcon>
-      </span>
+          Cancel
+        </Button>
+      )}
     </div>
   );
 };
