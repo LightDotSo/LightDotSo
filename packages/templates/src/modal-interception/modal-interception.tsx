@@ -15,7 +15,8 @@
 
 "use client";
 
-import { useModalInterception } from "@lightdotso/hooks";
+import { useRouter } from "next/navigation";
+import { useCallback } from "react";
 import type { FC, ReactNode } from "react";
 import { Modal } from "../modal";
 
@@ -33,17 +34,25 @@ interface ModalInterceptionProps {
 
 export const ModalInterception: FC<ModalInterceptionProps> = ({ children }) => {
   // ---------------------------------------------------------------------------
-  // Hooks
+  // Next Hooks
   // ---------------------------------------------------------------------------
 
-  const modalDismiss = useModalInterception();
+  const router = useRouter();
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  const onDismiss = useCallback(() => {
+    router.back();
+  }, [router]);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <Modal open={true} onClose={modalDismiss}>
+    <Modal open={true} onClose={onDismiss}>
       {children}
     </Modal>
   );

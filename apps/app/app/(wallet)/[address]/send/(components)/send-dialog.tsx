@@ -18,7 +18,6 @@
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
 import type { WalletSettingsData } from "@lightdotso/data";
 import { NftImage, PlaceholderOrb, TokenImage } from "@lightdotso/elements";
-import { useModalInterception } from "@lightdotso/hooks";
 import { useTransfersQueryState } from "@lightdotso/nuqs";
 import {
   useSuspenseQueryNfts,
@@ -111,12 +110,6 @@ export const SendDialog: FC<SendDialogProps> = ({
   // ---------------------------------------------------------------------------
 
   const isInsideModal = useIsInsideModal();
-
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const modalDismiss = useModalInterception();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -1601,7 +1594,6 @@ export const SendDialog: FC<SendDialogProps> = ({
               cancelDisabled={!isInsideModal}
               href={`/${address}/op?userOperations=${userOperationsParams!}`}
               disabled={!isFormValid}
-              cancelClick={modalDismiss}
             />
           </form>
         </Form>
