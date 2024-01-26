@@ -112,6 +112,7 @@ export const SendDialog: FC<SendDialogProps> = ({
 
   const router = useRouter();
   const isIntercepted = useSelectedLayoutSegment("send");
+  console.log("isIntercepted", isIntercepted);
 
   // ---------------------------------------------------------------------------
   // Query
