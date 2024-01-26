@@ -27,17 +27,19 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
   Progress,
+  toast,
 } from "@lightdotso/ui";
 import { cn, getChainById, shortenBytes32 } from "@lightdotso/utils";
 import type { Row } from "@tanstack/react-table";
 import { flexRender } from "@tanstack/react-table";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ShareIcon } from "lucide-react";
 import Link from "next/link";
 import type { FC } from "react";
-import { Fragment, useMemo } from "react";
+import { Fragment, useCallback, useMemo } from "react";
 import type { Address } from "viem";
 import { UserOperationCardTransactionExecuteButton } from "./user-operation-card-transaction-execute-button";
 import { UserOperationCardTransactionSignButton } from "./user-operation-card-transaction-sign-button";
+import { useCopy } from "@lightdotso/hooks";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -68,6 +70,27 @@ type UserOperationCardTransactionProps = {
 export const UserOperationCardTransaction: FC<
   UserOperationCardTransactionProps
 > = ({ address, configuration, userOperation, row, opType = false }) => {
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const [, copy] = useCopy();
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  const handleLinkCopy = useCallback(() => {
+    // Get the current URL
+    const url = new URL(window.location.href);
+    // Set the pathname to the current user operation
+    url.pathname = `/${userOperation.sender}/op/${userOperation.hash}`;
+    // Copy the URL to the clipboard
+    copy(url.toString());
+
+    toast.success("Copied to clipboard");
+  }, [address, copy]);
+
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
@@ -189,7 +212,7 @@ export const UserOperationCardTransaction: FC<
                   ))}
                 </CardContent>
                 <CardFooter>
-                  {!opType && (
+                  {!opType ? (
                     <Button
                       asChild
                       variant="ghost"
@@ -200,6 +223,15 @@ export const UserOperationCardTransaction: FC<
                       >
                         See Details
                       </Link>
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={handleLinkCopy}
+                      variant="ghost"
+                      className="w-full bg-background-stronger"
+                    >
+                      <ShareIcon className="mr-2 size-3" />
+                      Share Link
                     </Button>
                   )}
                 </CardFooter>
