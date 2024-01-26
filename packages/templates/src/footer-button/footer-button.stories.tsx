@@ -42,3 +42,7 @@ export const Base: Story = {
   render: args => <FooterButton />,
   args: {},
 };
+export const Modal: Story = {
+  render: args => <FooterButton isModal />,
+  args: {},
+};

@@ -88,6 +88,7 @@ export const FooterButton: FC<FooterButtonProps> = ({
       {isModal ? (
         <span className="inline-flex justify-center md:hidden">
           <ButtonIcon
+            size="sm"
             className="rounded-full"
             variant="outline"
             onClick={cancelClick}
@@ -97,7 +98,7 @@ export const FooterButton: FC<FooterButtonProps> = ({
         </span>
       ) : (
         <Button
-          className="block md:hidden w-auto"
+          className="block w-auto md:hidden"
           variant="outline"
           onClick={cancelClick}
         >
