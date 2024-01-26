@@ -31,6 +31,7 @@ import type {
   Transfer,
   Transfers,
 } from "@lightdotso/schemas";
+import { useFormRef } from "@lightdotso/stores";
 import { FooterButton, useIsInsideModal } from "@lightdotso/templates";
 import {
   Accordion,
@@ -64,7 +65,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
 import { Trash2Icon, UserPlus2 } from "lucide-react";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import type { FC } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import {
@@ -72,7 +73,7 @@ import {
   encodeFunctionData,
   encodeAbiParameters,
   concat,
-  getFunctionSelector,
+  toFunctionSelector,
   toHex,
   fromHex,
 } from "viem";
@@ -106,10 +107,30 @@ export const SendDialog: FC<SendDialogProps> = ({
   initialTransfers,
 }) => {
   // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { setFormRef } = useFormRef();
+
+  // ---------------------------------------------------------------------------
+  // Ref Hooks
+  // ---------------------------------------------------------------------------
+
+  const formRef = useRef<HTMLFormElement>(null);
+
+  // ---------------------------------------------------------------------------
   // Template Hooks
   // ---------------------------------------------------------------------------
 
   const isInsideModal = useIsInsideModal();
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    setFormRef(formRef);
+  }, [setFormRef]);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -418,10 +439,7 @@ export const SendDialog: FC<SendDialogProps> = ({
           0n,
           toHex(
             concat([
-              fromHex(
-                getFunctionSelector("transfer(address,uint256)"),
-                "bytes",
-              ),
+              fromHex(toFunctionSelector("transfer(address,uint256)"), "bytes"),
               fromHex(
                 encodeAbiParameters(
                   [
@@ -491,7 +509,7 @@ export const SendDialog: FC<SendDialogProps> = ({
             toHex(
               concat([
                 fromHex(
-                  getFunctionSelector(
+                  toFunctionSelector(
                     "safeTransferFrom(address,address,uint256,uint256,bytes)",
                   ),
                   "bytes",
@@ -549,7 +567,7 @@ export const SendDialog: FC<SendDialogProps> = ({
             toHex(
               concat([
                 fromHex(
-                  getFunctionSelector(
+                  toFunctionSelector(
                     "safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)",
                   ),
                   "bytes",
@@ -601,7 +619,7 @@ export const SendDialog: FC<SendDialogProps> = ({
             toHex(
               concat([
                 fromHex(
-                  getFunctionSelector("transferFrom(address,address,uint256)"),
+                  toFunctionSelector("transferFrom(address,address,uint256)"),
                   "bytes",
                 ),
                 fromHex(
@@ -960,7 +978,7 @@ export const SendDialog: FC<SendDialogProps> = ({
     <div className="grid gap-10">
       <TooltipProvider delayDuration={300}>
         <Form {...form}>
-          <form className="space-y-4">
+          <form className="space-y-4" ref={formRef}>
             <div className="space-y-4">
               {fields.map((field, index) => (
                 <Accordion

@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { encodePacked, getFunctionSelector } from "viem";
+import { encodePacked, toFunctionSelector } from "viem";
 import type { Address, Hex } from "viem";
 
 export const calculateInitCode = (
@@ -28,7 +28,7 @@ export const calculateInitCode = (
       encodePacked(
         ["bytes4", "bytes32", "bytes32"],
         [
-          getFunctionSelector("createAccount(bytes32,bytes32)"),
+          toFunctionSelector("createAccount(bytes32,bytes32)"),
           image_hash,
           salt,
         ],

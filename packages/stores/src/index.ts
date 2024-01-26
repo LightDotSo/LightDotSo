@@ -15,6 +15,7 @@
 
 export { useAuth } from "./useAuth";
 export { useDev } from "./useDev";
+export { useFormRef } from "./useFormRef";
 export { useModals } from "./useModals";
 export { useNewForm } from "./useNewForm";
 export { useSettings } from "./useSettings";
