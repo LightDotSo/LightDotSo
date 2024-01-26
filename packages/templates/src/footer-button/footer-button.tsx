@@ -16,7 +16,8 @@
 "use client";
 
 import { Button, ButtonIcon } from "@lightdotso/ui";
-import { Link, XIcon } from "lucide-react";
+import { XIcon } from "lucide-react";
+import Link from "next/link";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
