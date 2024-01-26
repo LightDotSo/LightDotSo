@@ -19,6 +19,7 @@ export { useDebounced } from "./useDebounced";
 export { useDebouncedValue } from "./useDebouncedValue";
 export { useIsMounted } from "./useIsMounted";
 export { useMediaQuery } from "./useMediaQuery";
+export { useModalDismiss } from "./useModalDismiss";
 export { useSignInWithSiwe } from "./useSignInWithSiwe";
 export { useUserOperationCreate } from "./useUserOperationCreate";
 export { useUserOperationSign } from "./useUserOperationSign";

@@ -18,6 +18,7 @@
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
 import type { WalletSettingsData } from "@lightdotso/data";
 import { NftImage, PlaceholderOrb, TokenImage } from "@lightdotso/elements";
+import { useModalDismiss } from "@lightdotso/hooks";
 import { useTransfersQueryState } from "@lightdotso/nuqs";
 import {
   useSuspenseQueryNfts,
@@ -64,8 +65,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
 import { Trash2Icon, UserPlus2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import type { FC } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import {
@@ -113,18 +113,10 @@ export const SendDialog: FC<SendDialogProps> = ({
   const isInsideModal = useIsInsideModal();
 
   // ---------------------------------------------------------------------------
-  // Next Hooks
+  // Hooks
   // ---------------------------------------------------------------------------
 
-  const router = useRouter();
-
-  // ---------------------------------------------------------------------------
-  // Callback Hooks
-  // ---------------------------------------------------------------------------
-
-  const onDismiss = useCallback(() => {
-    router.back();
-  }, [router]);
+  const modalDismiss = useModalDismiss();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -1609,7 +1601,7 @@ export const SendDialog: FC<SendDialogProps> = ({
               cancelDisabled={!isInsideModal}
               href={`/${address}/op?userOperations=${userOperationsParams!}`}
               disabled={!isFormValid}
-              cancelClick={onDismiss}
+              cancelClick={modalDismiss}
             />
           </form>
         </Form>

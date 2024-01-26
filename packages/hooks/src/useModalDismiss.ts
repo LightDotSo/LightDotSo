@@ -13,38 +13,31 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import { useModalDismiss } from "@lightdotso/hooks";
-import type { FC, ReactNode } from "react";
-import { Modal } from "../modal";
+import { useRouter } from "next/navigation";
+import { useCallback } from "react";
 
 // -----------------------------------------------------------------------------
-// Props
+// Hook
 // -----------------------------------------------------------------------------
 
-interface ModalInterceptionProps {
-  children: ReactNode;
+export function useModalDismiss() {
+  // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
+  const router = useRouter();
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  const modalDismiss = useCallback(() => {
+    router.back();
+  }, [router]);
+
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
+  return modalDismiss;
 }
-
-// -----------------------------------------------------------------------------
-// Component
-// -----------------------------------------------------------------------------
-
-export const ModalInterception: FC<ModalInterceptionProps> = ({ children }) => {
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const modalDismiss = useModalDismiss();
-
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <Modal open={true} onClose={modalDismiss}>
-      {children}
-    </Modal>
-  );
-};
