@@ -40,7 +40,6 @@ import {
   Avatar,
   Button,
   ButtonIcon,
-  CardFooter,
   Form,
   FormControl,
   FormField,

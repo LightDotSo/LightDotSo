@@ -27,11 +27,9 @@ import { newFormSchema } from "@lightdotso/schemas";
 import { useNewForm } from "@lightdotso/stores";
 import { FooterButton } from "@lightdotso/templates";
 import {
-  Button,
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
   Form,
