@@ -26,6 +26,7 @@ import type { FC } from "react";
 
 export interface FooterButtonProps {
   disabled?: boolean;
+  cancelDisabled?: boolean;
   isLoading?: boolean;
   href?: string;
   successClick?: () => void;
@@ -38,6 +39,7 @@ export interface FooterButtonProps {
 
 export const FooterButton: FC<FooterButtonProps> = ({
   disabled,
+  cancelDisabled,
   isLoading,
   href,
   successClick,
@@ -50,7 +52,12 @@ export const FooterButton: FC<FooterButtonProps> = ({
   return (
     <div className="flex flex-col space-y-4 pt-4 md:flex-row md:items-center md:justify-between md:space-y-0">
       <span className="hidden md:block">
-        <Button className="w-auto" variant="outline" onClick={cancelClick}>
+        <Button
+          disabled={cancelDisabled}
+          className="w-auto"
+          variant="outline"
+          onClick={cancelClick}
+        >
           Cancel
         </Button>
       </span>
