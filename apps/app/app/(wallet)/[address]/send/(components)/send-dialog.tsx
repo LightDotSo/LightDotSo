@@ -31,6 +31,7 @@ import type {
   Transfer,
   Transfers,
 } from "@lightdotso/schemas";
+import { FooterButton } from "@lightdotso/templates";
 import {
   Accordion,
   AccordionContent,
@@ -82,7 +83,6 @@ import { normalize } from "viem/ens";
 import * as z from "zod";
 import { publicClient } from "@/client/public";
 import { debounce } from "@/utils";
-import { FooterButton } from "@lightdotso/templates";
 
 // -----------------------------------------------------------------------------
 // Types

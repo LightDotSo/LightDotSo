@@ -30,6 +30,7 @@ import {
   newFormStoreSchema,
 } from "@lightdotso/schemas";
 import { useAuth, useNewForm } from "@lightdotso/stores";
+import { FooterButton } from "@lightdotso/templates";
 import {
   Button,
   Card,
@@ -58,7 +59,6 @@ import { isAddress } from "viem";
 import { normalize } from "viem/ens";
 import type * as z from "zod";
 import { publicClient } from "@/client/public";
-import { FooterButton } from "@lightdotso/templates";
 
 // -----------------------------------------------------------------------------
 // Types

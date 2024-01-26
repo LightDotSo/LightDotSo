@@ -28,6 +28,7 @@ import {
 import type { Owner, Owners } from "@lightdotso/nuqs";
 import { newFormSchema, newFormConfigurationSchema } from "@lightdotso/schemas";
 import { useAuth, useNewForm } from "@lightdotso/stores";
+import { FooterButton } from "@lightdotso/templates";
 import {
   Avatar,
   Button,
@@ -71,7 +72,6 @@ import { steps } from "@/app/(authenticated)/new/(components)/root/root";
 import { publicClient } from "@/client/public";
 import { MAX_THRESHOLD, MAX_WEIGHT } from "@/const";
 import { debounce } from "@/utils";
-import { FooterButton } from "@lightdotso/templates";
 
 // -----------------------------------------------------------------------------
 // Types

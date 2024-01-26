@@ -25,6 +25,7 @@ import {
 import type { WalletType } from "@lightdotso/nuqs";
 import { newFormSchema } from "@lightdotso/schemas";
 import { useNewForm } from "@lightdotso/stores";
+import { FooterButton } from "@lightdotso/templates";
 import {
   Button,
   Card,
@@ -63,7 +64,6 @@ import type { FC } from "react";
 import { useForm } from "react-hook-form";
 import type * as z from "zod";
 import { steps } from "@/app/(authenticated)/new/(components)/root/root";
-import { FooterButton } from "@lightdotso/templates";
 
 // -----------------------------------------------------------------------------
 // Types
