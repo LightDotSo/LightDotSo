@@ -67,9 +67,11 @@ export default async function ActivityLayout({
         title={TITLES.Activity.title}
         description={TITLES.Activity.description}
       >
-        <BaseLayerWrapper>
-          <MinimalPageWrapper>{children}</MinimalPageWrapper>
-        </BaseLayerWrapper>
+        <HStackFull>
+          <BaseLayerWrapper>
+            <MinimalPageWrapper>{children}</MinimalPageWrapper>
+          </BaseLayerWrapper>
+        </HStackFull>
       </BannerSection>
     );
   }
