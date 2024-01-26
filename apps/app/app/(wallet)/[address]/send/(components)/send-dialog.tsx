@@ -1609,6 +1609,7 @@ export const SendDialog: FC<SendDialogProps> = ({
               </Button>
             </div>
             <FooterButton
+              isModal={isInsideModal}
               cancelDisabled={!isInsideModal}
               href={`/${address}/op?userOperations=${userOperationsParams!}`}
               disabled={!isFormValid}

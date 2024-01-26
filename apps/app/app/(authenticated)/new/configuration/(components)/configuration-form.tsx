@@ -675,6 +675,7 @@ export const ConfigurationForm: FC = () => {
               <FooterButton
                 disabled={!isFormValid}
                 cancelDisabled={!isInsideModal}
+                isModal={isInsideModal}
                 successClick={navigateToStep}
                 cancelClick={() => router.back()}
               />

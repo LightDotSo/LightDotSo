@@ -397,6 +397,7 @@ export const NewWalletForm: FC = () => {
                 </CardDescription>
               </div>
               <FooterButton
+                isModal={isInsideModal}
                 cancelDisabled={!isInsideModal}
                 disabled={!isFormValid}
                 successClick={navigateToStep}

@@ -326,6 +326,7 @@ export const ConfirmForm: FC = () => {
                 cancelDisabled={!isInsideModal}
                 disabled={!isFormValid}
                 isLoading={isLoading}
+                isModal={isInsideModal}
                 cancelClick={() => router.back()}
               />
               {/* Show all errors for debugging */}
