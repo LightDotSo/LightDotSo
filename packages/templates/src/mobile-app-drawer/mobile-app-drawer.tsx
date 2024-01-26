@@ -26,7 +26,7 @@ import {
   DrawerClose,
   DrawerFooter,
 } from "@lightdotso/ui";
-import { AlignRight, ArrowUpRight } from "lucide-react";
+import { AlignRight, ArrowUpRight, XIcon } from "lucide-react";
 import Link from "next/link";
 import type { FC, ReactNode } from "react";
 
@@ -103,9 +103,11 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
             );
           })}
         </DrawerBody>
-        <DrawerFooter>
+        <DrawerFooter className="flex items-center">
           <DrawerClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <ButtonIcon size="sm" className="rounded-full" variant="outline">
+              <XIcon />
+            </ButtonIcon>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>

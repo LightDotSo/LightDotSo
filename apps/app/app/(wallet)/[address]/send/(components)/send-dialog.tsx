@@ -64,7 +64,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
 import { Trash2Icon, UserPlus2 } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import type { FC } from "react";
@@ -83,6 +82,7 @@ import { normalize } from "viem/ens";
 import * as z from "zod";
 import { publicClient } from "@/client/public";
 import { debounce } from "@/utils";
+import { FooterButton } from "@lightdotso/templates";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -1592,34 +1592,11 @@ export const SendDialog: FC<SendDialogProps> = ({
                 Add Transfer
               </Button>
             </div>
-            <CardFooter className="flex flex-col space-y-4 pt-6 md:flex-row md:items-center md:justify-between md:space-y-0">
-              <Button
-                className="w-full md:w-auto"
-                variant="outline"
-                onClick={() => {
-                  router.back();
-                }}
-              >
-                Cancel
-              </Button>
-              {!isFormValid ? (
-                <Button
-                  className="w-full md:w-auto"
-                  disabled={!isFormValid}
-                  type="submit"
-                >
-                  Continue
-                </Button>
-              ) : (
-                <Button asChild className="w-full md:w-auto" type="submit">
-                  <Link
-                    href={`/${address}/op?userOperations=${userOperationsParams!}`}
-                  >
-                    Continue
-                  </Link>
-                </Button>
-              )}
-            </CardFooter>
+            <FooterButton
+              href={`/${address}/op?userOperations=${userOperationsParams!}`}
+              disabled={!isFormValid}
+              cancelClick={() => router.back()}
+            />
           </form>
         </Form>
       </TooltipProvider>

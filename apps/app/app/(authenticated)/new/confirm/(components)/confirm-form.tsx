@@ -58,6 +58,7 @@ import { isAddress } from "viem";
 import { normalize } from "viem/ens";
 import type * as z from "zod";
 import { publicClient } from "@/client/public";
+import { FooterButton } from "@lightdotso/templates";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -317,25 +318,11 @@ export const ConfirmForm: FC = () => {
                   </FormItem>
                 )}
               />
-              <CardFooter className="flex flex-col space-y-4 pt-6 md:flex-row md:items-center md:justify-between md:space-y-0">
-                <Button
-                  className="w-full md:w-auto"
-                  variant="outline"
-                  onClick={() => {
-                    router.back();
-                  }}
-                >
-                  Go Back
-                </Button>
-                <Button
-                  className="w-full md:w-auto"
-                  disabled={!isFormValid}
-                  isLoading={isLoading}
-                  type="submit"
-                >
-                  Create Wallet
-                </Button>
-              </CardFooter>
+              <FooterButton
+                disabled={!isFormValid}
+                isLoading={isLoading}
+                cancelClick={() => router.back()}
+              />
               {/* Show all errors for debugging */}
               {/* <pre>{JSON.stringify(defaultValues, null, 2)}</pre> */}
               {/* <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre> */}

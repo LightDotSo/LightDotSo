@@ -63,6 +63,7 @@ import type { FC } from "react";
 import { useForm } from "react-hook-form";
 import type * as z from "zod";
 import { steps } from "@/app/(authenticated)/new/(components)/root/root";
+import { FooterButton } from "@lightdotso/templates";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -391,16 +392,10 @@ export const NewWalletForm: FC = () => {
                   </a>
                 </CardDescription>
               </div>
-              <CardFooter className="justify-end">
-                <Button
-                  className="w-full md:w-auto"
-                  disabled={!isFormValid}
-                  type="submit"
-                  onClick={() => navigateToStep()}
-                >
-                  Continue
-                </Button>
-              </CardFooter>
+              <FooterButton
+                disabled={!isFormValid}
+                successClick={navigateToStep}
+              />
             </form>
           </Form>
         </TooltipProvider>

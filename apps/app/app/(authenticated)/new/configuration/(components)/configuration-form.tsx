@@ -71,6 +71,7 @@ import { steps } from "@/app/(authenticated)/new/(components)/root/root";
 import { publicClient } from "@/client/public";
 import { MAX_THRESHOLD, MAX_WEIGHT } from "@/const";
 import { debounce } from "@/utils";
+import { FooterButton } from "@lightdotso/templates";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -666,25 +667,11 @@ export const ConfigurationForm: FC = () => {
                   </FormItem>
                 )}
               />
-              <CardFooter className="flex flex-col space-y-4 pt-4 md:flex-row md:items-center md:justify-between md:space-y-0">
-                <Button
-                  className="w-full md:w-auto"
-                  variant="outline"
-                  onClick={() => {
-                    router.back();
-                  }}
-                >
-                  Go Back
-                </Button>
-                <Button
-                  className="w-full md:w-auto"
-                  disabled={!isFormValid}
-                  type="submit"
-                  onClick={() => navigateToStep()}
-                >
-                  Continue
-                </Button>
-              </CardFooter>
+              <FooterButton
+                disabled={!isFormValid}
+                successClick={navigateToStep}
+                cancelClick={() => router.back()}
+              />
             </form>
           </Form>
         </TooltipProvider>
