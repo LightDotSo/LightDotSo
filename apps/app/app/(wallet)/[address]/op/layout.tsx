@@ -55,10 +55,9 @@ export default function UserOperationLayout({
     <BannerSection
       title={TITLES.UserOperation.title}
       description={TITLES.UserOperation.description}
-      size="sm"
     >
       <HStackFull>
-        <BaseLayerWrapper size="sm">
+        <BaseLayerWrapper>
           <BasicPageWrapper>{children}</BasicPageWrapper>
         </BaseLayerWrapper>
       </HStackFull>

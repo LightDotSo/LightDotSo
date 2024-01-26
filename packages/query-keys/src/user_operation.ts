@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type {
+  UserOperationGetParams,
   UserOperationListCountParams,
   UserOperationListParams,
 } from "@lightdotso/params";
@@ -25,6 +26,9 @@ import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 // -----------------------------------------------------------------------------
 
 export const user_operation = createQueryKeys("user_operation", {
+  get: (params: UserOperationGetParams) => ({
+    queryKey: [{ params }],
+  }),
   list: (params: UserOperationListParams) => ({
     queryKey: [{ params }],
   }),

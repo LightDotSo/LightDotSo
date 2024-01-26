@@ -27,17 +27,29 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
   Progress,
+  toast,
 } from "@lightdotso/ui";
 import { cn, getChainById, shortenBytes32 } from "@lightdotso/utils";
 import type { Row } from "@tanstack/react-table";
 import { flexRender } from "@tanstack/react-table";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ShareIcon } from "lucide-react";
 import Link from "next/link";
 import type { FC } from "react";
-import { Fragment, useMemo } from "react";
+import { Fragment, useCallback, useMemo } from "react";
 import type { Address } from "viem";
 import { UserOperationCardTransactionExecuteButton } from "./user-operation-card-transaction-execute-button";
 import { UserOperationCardTransactionSignButton } from "./user-operation-card-transaction-sign-button";
+import { useCopy } from "@lightdotso/hooks";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+interface TransactionInformationItem {
+  title: string;
+  value: string | number;
+  href?: string;
+}
 
 // -----------------------------------------------------------------------------
 // Props
@@ -48,13 +60,8 @@ type UserOperationCardTransactionProps = {
   configuration: ConfigurationData;
   userOperation: UserOperationData;
   row: Row<UserOperationData>;
+  opType?: boolean;
 };
-
-interface TransactionInformationItem {
-  title: string;
-  value: string | number;
-  href?: string;
-}
 
 // -----------------------------------------------------------------------------
 // Component
@@ -62,7 +69,28 @@ interface TransactionInformationItem {
 
 export const UserOperationCardTransaction: FC<
   UserOperationCardTransactionProps
-> = ({ address, configuration, userOperation, row }) => {
+> = ({ address, configuration, userOperation, row, opType = false }) => {
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const [, copy] = useCopy();
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  const handleLinkCopy = useCallback(() => {
+    // Get the current URL
+    const url = new URL(window.location.href);
+    // Set the pathname to the current user operation
+    url.pathname = `/${userOperation.sender}/op/${userOperation.hash}`;
+    // Copy the URL to the clipboard
+    copy(url.toString());
+
+    toast.success("Copied to clipboard");
+  }, [address, copy]);
+
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
@@ -126,7 +154,7 @@ export const UserOperationCardTransaction: FC<
   // ---------------------------------------------------------------------------
 
   return (
-    <Collapsible key={userOperation.hash} asChild>
+    <Collapsible key={userOperation.hash} defaultOpen={opType} asChild>
       <>
         <CollapsibleTrigger
           asChild
@@ -184,17 +212,28 @@ export const UserOperationCardTransaction: FC<
                   ))}
                 </CardContent>
                 <CardFooter>
-                  <Button
-                    asChild
-                    variant="ghost"
-                    className="w-full bg-background-stronger"
-                  >
-                    <Link
-                      href={`/${userOperation.sender}/op/${userOperation.hash}`}
+                  {!opType ? (
+                    <Button
+                      asChild
+                      variant="ghost"
+                      className="w-full bg-background-stronger"
                     >
-                      See Details
-                    </Link>
-                  </Button>
+                      <Link
+                        href={`/${userOperation.sender}/op/${userOperation.hash}`}
+                      >
+                        See Details
+                      </Link>
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={handleLinkCopy}
+                      variant="ghost"
+                      className="w-full bg-background-stronger"
+                    >
+                      <ShareIcon className="mr-2 size-3" />
+                      Share Link
+                    </Button>
+                  )}
                 </CardFooter>
               </Card>
               <Card className="col-span-1 flex flex-col justify-between space-y-4 border border-border-weak bg-background-strong p-4">

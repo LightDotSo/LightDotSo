@@ -13,10 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Address } from "viem";
-import { OpDetails } from "@/app/(wallet)/[address]/op/(components)/op-details";
+import { queryKeys } from "@lightdotso/query-keys";
+import { getQueryClient } from "@lightdotso/services";
+import type { Hex } from "viem";
+import { OpDataTable } from "@/app/(wallet)/[address]/op/(components)/op-data-table";
 import { handler } from "@/handlers/paths/[address]/op/[userOperationHash]/handler";
 import { preloader } from "@/preloaders/paths/[address]/op/[userOperationHash]/preloader";
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -41,17 +44,28 @@ export default async function Page({ params }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { config, userOperation } = await handler(params);
+  const { userOperation } = await handler(params);
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const queryClient = getQueryClient();
+
+  queryClient.setQueryData(
+    queryKeys.user_operation.get({
+      hash: params.userOperationHash as Hex,
+    }).queryKey,
+    userOperation,
+  );
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <OpDetails
-      config={config}
-      address={params.address as Address}
-      userOperation={userOperation}
-    />
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <OpDataTable userOperationHash={params.userOperationHash as Hex} />
+    </HydrationBoundary>
   );
 }
