@@ -28,7 +28,7 @@ import {
 import type { Owner, Owners } from "@lightdotso/nuqs";
 import { newFormSchema, newFormConfigurationSchema } from "@lightdotso/schemas";
 import { useAuth, useNewForm } from "@lightdotso/stores";
-import { FooterButton } from "@lightdotso/templates";
+import { FooterButton, useIsInsideModal } from "@lightdotso/templates";
 import {
   Avatar,
   Button,
@@ -96,6 +96,12 @@ function timestampToBytes32(timestamp: number): string {
 // -----------------------------------------------------------------------------
 
 export const ConfigurationForm: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Template Hooks
+  // ---------------------------------------------------------------------------
+
+  const isInsideModal = useIsInsideModal();
+
   // ---------------------------------------------------------------------------
   // Next Hooks
   // ---------------------------------------------------------------------------
@@ -668,6 +674,7 @@ export const ConfigurationForm: FC = () => {
               />
               <FooterButton
                 disabled={!isFormValid}
+                cancelDisabled={!isInsideModal}
                 successClick={navigateToStep}
                 cancelClick={() => router.back()}
               />

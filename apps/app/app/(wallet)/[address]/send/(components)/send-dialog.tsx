@@ -31,7 +31,7 @@ import type {
   Transfer,
   Transfers,
 } from "@lightdotso/schemas";
-import { FooterButton } from "@lightdotso/templates";
+import { FooterButton, useIsInsideModal } from "@lightdotso/templates";
 import {
   Accordion,
   AccordionContent,
@@ -110,6 +110,12 @@ export const SendDialog: FC<SendDialogProps> = ({
   address,
   initialTransfers,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Template Hooks
+  // ---------------------------------------------------------------------------
+
+  const isInsideModal = useIsInsideModal();
+
   // ---------------------------------------------------------------------------
   // Next Hooks
   // ---------------------------------------------------------------------------
@@ -1603,6 +1609,7 @@ export const SendDialog: FC<SendDialogProps> = ({
               </Button>
             </div>
             <FooterButton
+              cancelDisabled={!isInsideModal}
               href={`/${address}/op?userOperations=${userOperationsParams!}`}
               disabled={!isFormValid}
               cancelClick={() => router.back()}
