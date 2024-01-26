@@ -13,27 +13,45 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { useRouter } from "next/navigation";
-import { useCallback } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 
 // -----------------------------------------------------------------------------
 // Hook
 // -----------------------------------------------------------------------------
 
-export function useModalDismiss() {
+export function useModalInterception() {
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [isBackCalled, setIsBackCalled] = useState(false);
+
   // ---------------------------------------------------------------------------
   // Next Hooks
   // ---------------------------------------------------------------------------
 
   const router = useRouter();
+  const pathname = usePathname();
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
   const modalDismiss = useCallback(() => {
-    router.back();
-  }, [router]);
+    if (!isBackCalled) {
+      router.back();
+      setIsBackCalled(true);
+    }
+  }, [router, isBackCalled]);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    setIsBackCalled(false);
+  }, [pathname]);
 
   // ---------------------------------------------------------------------------
   // Return

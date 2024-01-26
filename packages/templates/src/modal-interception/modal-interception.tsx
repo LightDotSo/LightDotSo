@@ -15,7 +15,7 @@
 
 "use client";
 
-import { useModalDismiss } from "@lightdotso/hooks";
+import { useModalInterception } from "@lightdotso/hooks";
 import type { FC, ReactNode } from "react";
 import { Modal } from "../modal";
 
@@ -36,7 +36,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({ children }) => {
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const modalDismiss = useModalDismiss();
+  const modalDismiss = useModalInterception();
 
   // ---------------------------------------------------------------------------
   // Render
