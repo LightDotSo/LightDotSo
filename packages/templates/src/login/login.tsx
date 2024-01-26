@@ -39,14 +39,14 @@ export const Login: FC = () => {
 
   return (
     <div className={cn("text-center", baseHeightWrapper)}>
-      <UserIcon className="mx-auto size-8 md:size-10 rounded-full border border-border p-2 text-text" />
-      <h3 className="mt-2 md:mt-4 text-sm font-semibold tracking-tight text-xl md:text-2xl">
+      <UserIcon className="mx-auto size-8 rounded-full border border-border p-2 text-text md:size-10" />
+      <h3 className="mt-2 text-xl font-semibold tracking-tight md:mt-4 md:text-2xl">
         Login
       </h3>
-      <p className="mt-1 text-sm md:text-base text-text-weak">
+      <p className="mt-1 text-sm text-text-weak md:text-base">
         Get started first by logging in.
       </p>
-      <div className="flex justify-center mt-6">
+      <div className="mt-6 flex justify-center">
         <Button
           className="w-full md:w-32"
           isLoading={isPending}

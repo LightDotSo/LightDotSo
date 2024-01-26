@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getUserOperation, getUserOperations } from "@lightdotso/client";
+import { getUserOperation } from "@lightdotso/client";
 import type { UserOperationData } from "@lightdotso/data";
 import type { UserOperationGetParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
