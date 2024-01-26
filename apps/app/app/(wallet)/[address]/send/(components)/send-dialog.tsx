@@ -64,7 +64,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
 import { Trash2Icon, UserPlus2 } from "lucide-react";
-import { useRouter, useSelectedLayoutSegment } from "next/navigation";
+import {
+  useRouter,
+  useSelectedLayoutSegment,
+  useSelectedLayoutSegments,
+} from "next/navigation";
 import { useEffect, useMemo } from "react";
 import type { FC } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -111,8 +115,14 @@ export const SendDialog: FC<SendDialogProps> = ({
   // ---------------------------------------------------------------------------
 
   const router = useRouter();
-  const isIntercepted = useSelectedLayoutSegment("send");
-  console.log("isIntercepted", isIntercepted);
+  const segment = useSelectedLayoutSegment();
+  console.log("segment", segment);
+  const sendSegment = useSelectedLayoutSegment("send");
+  console.log("sendSegment", sendSegment);
+  const segments = useSelectedLayoutSegments();
+  console.log("segments", segments);
+  const sendSegments = useSelectedLayoutSegments("send");
+  console.log("sendSegments", sendSegments);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -1593,7 +1603,6 @@ export const SendDialog: FC<SendDialogProps> = ({
               </Button>
             </div>
             <FooterButton
-              cancelDisabled={!isIntercepted}
               href={`/${address}/op?userOperations=${userOperationsParams!}`}
               disabled={!isFormValid}
               cancelClick={() => router.back()}
