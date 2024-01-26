@@ -64,12 +64,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
 import { Trash2Icon, UserPlus2 } from "lucide-react";
-import {
-  useRouter,
-  useSelectedLayoutSegment,
-  useSelectedLayoutSegments,
-} from "next/navigation";
-import { useEffect, useMemo } from "react";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useMemo } from "react";
 import type { FC } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import {
@@ -121,14 +117,14 @@ export const SendDialog: FC<SendDialogProps> = ({
   // ---------------------------------------------------------------------------
 
   const router = useRouter();
-  const segment = useSelectedLayoutSegment();
-  console.log("segment", segment);
-  const sendSegment = useSelectedLayoutSegment("send");
-  console.log("sendSegment", sendSegment);
-  const segments = useSelectedLayoutSegments();
-  console.log("segments", segments);
-  const sendSegments = useSelectedLayoutSegments("send");
-  console.log("sendSegments", sendSegments);
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  const onDismiss = useCallback(() => {
+    router.back();
+  }, [router]);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -1613,7 +1609,7 @@ export const SendDialog: FC<SendDialogProps> = ({
               cancelDisabled={!isInsideModal}
               href={`/${address}/op?userOperations=${userOperationsParams!}`}
               disabled={!isFormValid}
-              cancelClick={() => router.back()}
+              cancelClick={onDismiss}
             />
           </form>
         </Form>
