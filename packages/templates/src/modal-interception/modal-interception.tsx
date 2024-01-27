@@ -20,6 +20,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect } from "react";
 import type { FC, ReactNode } from "react";
 import { Modal } from "../modal";
+import { useIsMounted } from "@lightdotso/hooks";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -47,6 +48,12 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     showInterceptionModal,
     hideInterceptionModal,
   } = useModals();
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const isMounted = useIsMounted();
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -82,7 +89,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (isModalInterceptionVisible) {
+    if (isMounted && isModalInterceptionVisible) {
       hideInterceptionModal();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
