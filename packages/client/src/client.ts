@@ -54,25 +54,25 @@ export const officialSocketClient: ReturnType<
 
 export const localSocketClient: ReturnType<typeof createClient<SocketPaths>> =
   createClient<SocketPaths>({
-    baseUrl: "http://localhost:3000",
+    baseUrl: "http://localhost:3000/socket",
   });
 
 export const publicSocketClient: ReturnType<typeof createClient<SocketPaths>> =
   createClient<SocketPaths>({
-    baseUrl: "https://api.light.so",
+    baseUrl: "https://api.light.so/socket",
     credentials: "include",
   });
 
 export const authenticatedSocketClient: ReturnType<
   typeof createClient<SocketPaths>
 > = createClient<SocketPaths>({
-  baseUrl: "https://api.light.so/authenticated",
+  baseUrl: "https://api.light.so/authenticated/socket",
   credentials: "include",
 });
 
 export const adminSocketClient: ReturnType<typeof createClient<SocketPaths>> =
   createClient<SocketPaths>({
-    baseUrl: "https://api.light.so/admin",
+    baseUrl: "https://api.light.so/admin/socket",
     headers: {
       Authorization: `Bearer ${process.env.LIGHT_ADMIN_TOKEN}`,
     },
@@ -82,16 +82,13 @@ export const adminSocketClient: ReturnType<typeof createClient<SocketPaths>> =
 export const getSocketClient: (
   clientType?: "admin" | "authenticated" | "public",
 ) => ReturnType<typeof createClient<SocketPaths>> = clientType =>
-  clientType === "public"
-    ? publicSocketClient
-    : process.env.LOCAL_ENV === "dev" ||
-        process.env.NEXT_PUBLIC_LOCAL_ENV === "dev"
-      ? localSocketClient
-      : clientType === undefined
-        ? publicSocketClient
-        : clientType === "authenticated"
-          ? authenticatedSocketClient
-          : adminSocketClient;
+  process.env.LOCAL_ENV === "dev" || process.env.NEXT_PUBLIC_LOCAL_ENV === "dev"
+    ? localSocketClient
+    : clientType === undefined
+      ? publicSocketClient
+      : clientType === "authenticated"
+        ? authenticatedSocketClient
+        : adminSocketClient;
 
 // -----------------------------------------------------------------------------
 // Light
