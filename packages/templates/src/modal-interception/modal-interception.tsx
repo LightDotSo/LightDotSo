@@ -15,7 +15,6 @@
 
 "use client";
 
-import { useIsMounted } from "@lightdotso/hooks";
 import { useModals } from "@lightdotso/stores";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -50,27 +49,10 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   } = useModals();
 
   // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const isMounted = useIsMounted();
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
-
-  useEffect(() => {
-    if (!isModalInterceptionVisible) {
-      showInterceptionModal();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
 
-  const [currentPathname, setCurrentPathname] = useState<string>("/");
+  const [modalOnMount, setModalOnMount] = useState(false);
 
   // ---------------------------------------------------------------------------
   // Next Hooks
@@ -95,14 +77,15 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (isMounted) {
-      setCurrentPathname(pathname);
+    if (!isModalInterceptionVisible) {
+      showInterceptionModal();
+      setModalOnMount(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, []);
 
   useEffect(() => {
-    if (currentPathname !== pathname && isModalInterceptionVisible) {
+    if (modalOnMount && isModalInterceptionVisible) {
       hideInterceptionModal();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
