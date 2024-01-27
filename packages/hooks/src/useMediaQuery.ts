@@ -13,7 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// @ts-nocheck
+"use client";
+
+// @ts-expect-error
 import * as config from "@lightdotso/tailwindcss";
 import { useEffect, useState } from "react";
 import resolveConfig from "tailwindcss/resolveConfig";
