@@ -15,8 +15,9 @@
 
 "use client";
 
+import { useModals } from "@lightdotso/stores";
 import { useRouter } from "next/navigation";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import type { FC, ReactNode } from "react";
 import { Modal } from "../modal";
 
@@ -38,6 +39,26 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   footerContent,
 }) => {
   // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const {
+    isModalInterceptionVisible,
+    showInterceptionModal,
+    hideInterceptionModal,
+  } = useModals();
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    if (!isModalInterceptionVisible) {
+      showInterceptionModal();
+    }
+  }, [isModalInterceptionVisible, showInterceptionModal]);
+
+  // ---------------------------------------------------------------------------
   // Next Hooks
   // ---------------------------------------------------------------------------
 
@@ -48,6 +69,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // ---------------------------------------------------------------------------
 
   const onDismiss = useCallback(() => {
+    hideInterceptionModal();
     router.back();
   }, [router]);
 
@@ -56,7 +78,11 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // ---------------------------------------------------------------------------
 
   return (
-    <Modal footerContent={footerContent} open={true} onClose={onDismiss}>
+    <Modal
+      footerContent={footerContent}
+      open={isModalInterceptionVisible}
+      onClose={onDismiss}
+    >
       {children}
     </Modal>
   );

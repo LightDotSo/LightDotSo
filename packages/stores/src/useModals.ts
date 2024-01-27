@@ -25,6 +25,7 @@ type ModalsStore = {
   isDepositModalVisible: boolean;
   isNftModalVisible: boolean;
   isTokenModalVisible: boolean;
+  isModalInterceptionVisible: boolean;
   showAuthModal: () => void;
   hideAuthModal: () => void;
   showDepositModal: () => void;
@@ -33,6 +34,8 @@ type ModalsStore = {
   hideNftModal: () => void;
   showTokenModal: () => void;
   hideTokenModal: () => void;
+  showInterceptionModal: () => void;
+  hideInterceptionModal: () => void;
 };
 
 // -----------------------------------------------------------------------------
@@ -46,6 +49,7 @@ export const useModals = create(
       isDepositModalVisible: false,
       isNftModalVisible: false,
       isTokenModalVisible: false,
+      isModalInterceptionVisible: false,
       showAuthModal: () => set({ isAuthModalVisible: true }),
       hideAuthModal: () => set({ isAuthModalVisible: false }),
       showDepositModal: () => set({ isDepositModalVisible: true }),
@@ -54,6 +58,8 @@ export const useModals = create(
       hideNftModal: () => set({ isNftModalVisible: false }),
       showTokenModal: () => set({ isTokenModalVisible: true }),
       hideTokenModal: () => set({ isTokenModalVisible: false }),
+      showInterceptionModal: () => set({ isModalInterceptionVisible: true }),
+      hideInterceptionModal: () => set({ isModalInterceptionVisible: false }),
     }),
     {
       anonymousActionType: "useModals",
