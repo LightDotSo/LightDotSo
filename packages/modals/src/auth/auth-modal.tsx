@@ -47,17 +47,19 @@ export function AuthModal() {
         open
         size="sm"
         footerContent={
-          <Button
-            disabled={isPending}
-            isLoading={isPending}
-            type="submit"
-            size="sm"
-            className="px-3"
-            onClick={handleSignIn}
-          >
-            <span className="sr-only">Login</span>
-            Login
-          </Button>
+          <div className="flex justify-end">
+            <Button
+              disabled={isPending}
+              isLoading={isPending}
+              type="submit"
+              size="sm"
+              className="px-3"
+              onClick={handleSignIn}
+            >
+              <span className="sr-only">Login</span>
+              Login
+            </Button>
+          </div>
         }
         onClose={hideAuthModal}
       >

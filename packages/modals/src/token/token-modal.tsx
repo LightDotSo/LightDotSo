@@ -44,7 +44,7 @@ export function TokenModal() {
           <div className="flex flex-row space-x-2">
             <Button variant="shadow">All Chains</Button>
             {MAINNET_CHAINS.map(chain => (
-              <ButtonIcon variant="shadow">
+              <ButtonIcon key={chain.id} variant="shadow">
                 <ChainLogo chainId={chain.id} />
               </ButtonIcon>
             ))}

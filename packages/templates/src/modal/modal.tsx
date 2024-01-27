@@ -139,9 +139,11 @@ export const Modal: FC<ModalProps> = ({
               <X />
             </ButtonIcon>
           </DialogHeader>
-          <DialogHeader className="block w-full justify-start space-x-0">
-            {headerContent}
-          </DialogHeader>
+          {headerContent && (
+            <DialogHeader className="block w-full justify-start space-x-0">
+              {headerContent}
+            </DialogHeader>
+          )}
           <DialogBody>
             <ModalContext.Provider value={true}>
               <Suspense fallback={<Skeleton className="h-64 w-full" />}>
