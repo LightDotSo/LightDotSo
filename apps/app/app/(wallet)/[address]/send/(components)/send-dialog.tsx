@@ -1607,12 +1607,14 @@ export const SendDialog: FC<SendDialogProps> = ({
                 Add Transfer
               </Button>
             </div>
-            <FooterButton
-              isModal={isInsideModal}
-              cancelDisabled={!isInsideModal}
-              href={`/${address}/op?userOperations=${userOperationsParams!}`}
-              disabled={!isFormValid}
-            />
+            {isInsideModal && (
+              <FooterButton
+                isModal={true}
+                cancelDisabled={true}
+                href={`/${address}/op?userOperations=${userOperationsParams!}`}
+                disabled={!isFormValid}
+              />
+            )}
           </form>
         </Form>
       </TooltipProvider>

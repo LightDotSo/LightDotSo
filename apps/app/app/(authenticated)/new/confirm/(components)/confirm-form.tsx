@@ -30,7 +30,7 @@ import {
   newFormStoreSchema,
 } from "@lightdotso/schemas";
 import { useAuth, useNewForm } from "@lightdotso/stores";
-import { FooterButton, useIsInsideModal } from "@lightdotso/templates";
+import { FooterButton } from "@lightdotso/templates";
 import {
   Card,
   CardContent,
@@ -69,12 +69,6 @@ type NewFormValues = z.infer<typeof newFormStoreSchema>;
 // -----------------------------------------------------------------------------
 
 export const ConfirmForm: FC = () => {
-  // ---------------------------------------------------------------------------
-  // Template Hooks
-  // ---------------------------------------------------------------------------
-
-  const isInsideModal = useIsInsideModal();
-
   // ---------------------------------------------------------------------------
   // Next Hooks
   // ---------------------------------------------------------------------------
@@ -323,10 +317,9 @@ export const ConfirmForm: FC = () => {
                 )}
               />
               <FooterButton
-                cancelDisabled={!isInsideModal}
+                isModal={false}
                 disabled={!isFormValid}
                 isLoading={isLoading}
-                isModal={isInsideModal}
                 cancelClick={() => router.back()}
               />
               {/* Show all errors for debugging */}

@@ -26,13 +26,17 @@ import { Modal } from "../modal";
 
 interface ModalInterceptionProps {
   children: ReactNode;
+  footerContent?: ReactNode;
 }
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const ModalInterception: FC<ModalInterceptionProps> = ({ children }) => {
+export const ModalInterception: FC<ModalInterceptionProps> = ({
+  children,
+  footerContent,
+}) => {
   // ---------------------------------------------------------------------------
   // Next Hooks
   // ---------------------------------------------------------------------------
@@ -52,7 +56,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({ children }) => {
   // ---------------------------------------------------------------------------
 
   return (
-    <Modal open={true} onClose={onDismiss}>
+    <Modal footerContent={footerContent} open={true} onClose={onDismiss}>
       {children}
     </Modal>
   );

@@ -25,7 +25,7 @@ import {
 import type { WalletType } from "@lightdotso/nuqs";
 import { newFormSchema } from "@lightdotso/schemas";
 import { useNewForm } from "@lightdotso/stores";
-import { FooterButton, useIsInsideModal } from "@lightdotso/templates";
+import { FooterButton } from "@lightdotso/templates";
 import {
   Card,
   CardContent,
@@ -74,12 +74,6 @@ type NewFormValues = z.infer<typeof newFormSchema>;
 // -----------------------------------------------------------------------------
 
 export const NewWalletForm: FC = () => {
-  // ---------------------------------------------------------------------------
-  // Template Hooks
-  // ---------------------------------------------------------------------------
-
-  const isInsideModal = useIsInsideModal();
-
   // ---------------------------------------------------------------------------
   // Next Hooks
   // ---------------------------------------------------------------------------
@@ -397,8 +391,8 @@ export const NewWalletForm: FC = () => {
                 </CardDescription>
               </div>
               <FooterButton
-                isModal={isInsideModal}
-                cancelDisabled={!isInsideModal}
+                isModal={false}
+                cancelDisabled={true}
                 disabled={!isFormValid}
                 successClick={navigateToStep}
               />
