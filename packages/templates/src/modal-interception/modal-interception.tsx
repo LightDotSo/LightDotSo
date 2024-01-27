@@ -15,12 +15,12 @@
 
 "use client";
 
+import { useIsMounted } from "@lightdotso/hooks";
 import { useModals } from "@lightdotso/stores";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect } from "react";
 import type { FC, ReactNode } from "react";
 import { Modal } from "../modal";
-import { useIsMounted } from "@lightdotso/hooks";
 
 // -----------------------------------------------------------------------------
 // Props
