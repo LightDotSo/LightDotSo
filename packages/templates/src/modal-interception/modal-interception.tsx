@@ -15,6 +15,7 @@
 
 "use client";
 
+import { useIsMounted } from "@lightdotso/hooks";
 import { useModals } from "@lightdotso/stores";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo } from "react";
@@ -55,6 +56,12 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     hideOpModal,
     hideSendModal,
   } = useModals();
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const isMounted = useIsMounted();
 
   // ---------------------------------------------------------------------------
   // Next Hooks
@@ -121,7 +128,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
         break;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isMounted]);
 
   useEffect(() => {
     onDismiss();
@@ -131,6 +138,10 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
+
+  if (!isOpen) {
+    return null;
+  }
 
   return (
     <Modal footerContent={footerContent} open={isOpen} onClose={onDismiss}>
