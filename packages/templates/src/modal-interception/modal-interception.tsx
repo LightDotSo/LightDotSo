@@ -70,8 +70,9 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   const onDismiss = useCallback(() => {
     if (!isModalInterceptionVisible) {
       hideInterceptionModal();
+      router.back();
     }
-    router.back();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   // ---------------------------------------------------------------------------

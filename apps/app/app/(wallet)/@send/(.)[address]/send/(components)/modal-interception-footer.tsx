@@ -44,7 +44,7 @@ export const ModalInterceptionFooter: FC = () => {
 
   const href = useMemo(() => {
     return `/${wallet}/send/${callData}`;
-  }, [callData]);
+  }, [wallet, callData]);
 
   // ---------------------------------------------------------------------------
   // Render
