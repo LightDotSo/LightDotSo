@@ -15,6 +15,7 @@
 
 import { ModalInterception } from "@lightdotso/templates";
 import OriginalPage from "@/app/(wallet)/[address]/op/page";
+import { ModalInterceptionFooter } from "@/app/(wallet)/@op/(.)[address]/op/(components)/modal-interception-footer";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -37,7 +38,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <ModalInterception>
+    <ModalInterception footerContent={<ModalInterceptionFooter />}>
       <OriginalPage params={params} searchParams={searchParams} />
     </ModalInterception>
   );

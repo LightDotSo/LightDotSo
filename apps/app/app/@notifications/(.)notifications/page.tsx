@@ -15,6 +15,7 @@
 
 import { ModalInterception } from "@lightdotso/templates";
 import OriginalPage from "@/app/(authenticated)/notifications/page";
+import { ModalInterceptionFooter } from "@/app/@notifications/(.)notifications/(components)/modal-interception-footer";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -36,7 +37,7 @@ export default async function Page({ searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <ModalInterception>
+    <ModalInterception footerContent={<ModalInterceptionFooter />}>
       <OriginalPage searchParams={searchParams} />
     </ModalInterception>
   );
