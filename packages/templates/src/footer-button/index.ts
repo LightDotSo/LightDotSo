@@ -13,10 +13,4 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { useAuth } from "./useAuth";
-export { useDev } from "./useDev";
-export { useFormRef } from "./useFormRef";
-export { useModals } from "./useModals";
-export { useNewForm } from "./useNewForm";
-export { useSettings } from "./useSettings";
-export { useTables } from "./useTables";
+export { FooterButton } from "./footer-button";

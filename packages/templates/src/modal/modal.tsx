@@ -34,7 +34,7 @@ import {
 import { cn } from "@lightdotso/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 import { X } from "lucide-react";
-import { Suspense } from "react";
+import { Suspense, createContext, useContext } from "react";
 import type { FC, ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
@@ -62,6 +62,20 @@ interface ModalProps extends VariantProps<typeof modalDialogVariants> {
   footerContent?: ReactNode;
   open?: boolean;
   onClose?: () => void;
+}
+
+// -----------------------------------------------------------------------------
+// Context
+// -----------------------------------------------------------------------------
+
+const ModalContext = createContext(false);
+
+// -----------------------------------------------------------------------------
+// Hooks
+// -----------------------------------------------------------------------------
+
+export function useIsInsideModal() {
+  return useContext(ModalContext);
 }
 
 // -----------------------------------------------------------------------------
@@ -95,9 +109,11 @@ export const Modal: FC<ModalProps> = ({
       <Drawer shouldScaleBackground open={open} onClose={onClose}>
         <DrawerContent>
           <DrawerBody>
-            <Suspense fallback={<Skeleton className="h-64 w-full" />}>
-              {children}
-            </Suspense>
+            <ModalContext.Provider value={true}>
+              <Suspense fallback={<Skeleton className="h-64 w-full" />}>
+                {children}
+              </Suspense>
+            </ModalContext.Provider>
           </DrawerBody>
           {footerContent && <DrawerFooter>{footerContent}</DrawerFooter>}
         </DrawerContent>
@@ -121,9 +137,11 @@ export const Modal: FC<ModalProps> = ({
             </ButtonIcon>
           </DialogHeader>
           <DialogBody>
-            <Suspense fallback={<Skeleton className="h-64 w-full" />}>
-              {children}
-            </Suspense>
+            <ModalContext.Provider value={true}>
+              <Suspense fallback={<Skeleton className="h-64 w-full" />}>
+                {children}
+              </Suspense>
+            </ModalContext.Provider>
           </DialogBody>
           {footerContent && <DialogFooter>{footerContent}</DialogFooter>}
         </DialogContent>

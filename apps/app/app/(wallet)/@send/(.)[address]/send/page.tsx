@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { ModalInterception } from "@lightdotso/templates";
+import { ModalInterceptionFooter } from "@/app/(wallet)/@send/(.)[address]/send/(components)/modal-interception-footer";
 import OriginalPage from "@/app/(wallet)/[address]/send/page";
 
 // -----------------------------------------------------------------------------
@@ -37,7 +38,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <ModalInterception>
+    <ModalInterception footerContent={<ModalInterceptionFooter />}>
       <OriginalPage params={params} searchParams={searchParams} />
     </ModalInterception>
   );

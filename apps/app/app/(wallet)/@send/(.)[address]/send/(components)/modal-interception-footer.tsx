@@ -15,77 +15,40 @@
 
 "use client";
 
-import { useModals } from "@lightdotso/stores";
-import { useRouter } from "next/navigation";
-import { useCallback, useEffect } from "react";
-import type { FC, ReactNode } from "react";
-import { Modal } from "../modal";
-
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-interface ModalInterceptionProps {
-  children: ReactNode;
-  footerContent?: ReactNode;
-}
+import { useCallDataQueryState } from "@lightdotso/nuqs";
+import { useAuth, useFormRef } from "@lightdotso/stores";
+import { FooterButton } from "@lightdotso/templates";
+import { useMemo, type FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const ModalInterception: FC<ModalInterceptionProps> = ({
-  children,
-  footerContent,
-}) => {
+export const ModalInterceptionFooter: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Nuqs
+  // ---------------------------------------------------------------------------
+
+  const [callData] = useCallDataQueryState();
+
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
-  const {
-    isModalInterceptionVisible,
-    showInterceptionModal,
-    hideInterceptionModal,
-  } = useModals();
+  const { wallet } = useAuth();
+  const { isFormDisabled } = useFormRef();
 
   // ---------------------------------------------------------------------------
-  // Effect Hooks
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  useEffect(() => {
-    showInterceptionModal();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // ---------------------------------------------------------------------------
-  // Next Hooks
-  // ---------------------------------------------------------------------------
-
-  const router = useRouter();
-
-  // ---------------------------------------------------------------------------
-  // Callback Hooks
-  // ---------------------------------------------------------------------------
-
-  const onDismiss = useCallback(() => {
-    if (!isModalInterceptionVisible) {
-      hideInterceptionModal();
-      router.back();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router]);
+  const href = useMemo(() => {
+    return `/${wallet}/send/${callData}`;
+  }, [wallet, callData]);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <Modal
-      footerContent={footerContent}
-      open={isModalInterceptionVisible}
-      onClose={onDismiss}
-    >
-      {children}
-    </Modal>
-  );
+  return <FooterButton isModal={true} disabled={isFormDisabled} href={href} />;
 };

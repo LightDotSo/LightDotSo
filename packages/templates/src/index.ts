@@ -20,7 +20,8 @@ export {
   DataTableViewOptions,
 } from "./data-table";
 export { Footer } from "./footer";
+export { FooterButton } from "./footer-button";
 export { MobileAppDrawer } from "./mobile-app-drawer";
 export { Login } from "./login";
-export { Modal } from "./modal";
+export { Modal, useIsInsideModal } from "./modal";
 export { ModalInterception } from "./modal-interception";

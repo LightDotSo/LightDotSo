@@ -15,47 +15,21 @@
 
 "use client";
 
-import { useModals } from "@lightdotso/stores";
+import { useFormRef, useModals } from "@lightdotso/stores";
+import { FooterButton } from "@lightdotso/templates";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect } from "react";
-import type { FC, ReactNode } from "react";
-import { Modal } from "../modal";
-
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-interface ModalInterceptionProps {
-  children: ReactNode;
-  footerContent?: ReactNode;
-}
+import { type FC, useCallback } from "react";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const ModalInterception: FC<ModalInterceptionProps> = ({
-  children,
-  footerContent,
-}) => {
+export const ModalInterceptionFooter: FC = () => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
-  const {
-    isModalInterceptionVisible,
-    showInterceptionModal,
-    hideInterceptionModal,
-  } = useModals();
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
-
-  useEffect(() => {
-    showInterceptionModal();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { hideInterceptionModal } = useModals();
 
   // ---------------------------------------------------------------------------
   // Next Hooks
@@ -68,24 +42,25 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // ---------------------------------------------------------------------------
 
   const onDismiss = useCallback(() => {
-    if (!isModalInterceptionVisible) {
-      hideInterceptionModal();
-      router.back();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    hideInterceptionModal();
+    router.back();
   }, [router]);
+
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { isFormDisabled } = useFormRef();
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <Modal
-      footerContent={footerContent}
-      open={isModalInterceptionVisible}
-      onClose={onDismiss}
-    >
-      {children}
-    </Modal>
+    <FooterButton
+      isModal={true}
+      disabled={isFormDisabled}
+      cancelClick={onDismiss}
+    />
   );
 };

@@ -15,6 +15,7 @@
 
 import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
 import { UserOperationTimeline } from "@lightdotso/elements";
+import { useCopy } from "@lightdotso/hooks";
 import {
   Button,
   Card,
@@ -39,7 +40,6 @@ import { Fragment, useCallback, useMemo } from "react";
 import type { Address } from "viem";
 import { UserOperationCardTransactionExecuteButton } from "./user-operation-card-transaction-execute-button";
 import { UserOperationCardTransactionSignButton } from "./user-operation-card-transaction-sign-button";
-import { useCopy } from "@lightdotso/hooks";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -89,7 +89,7 @@ export const UserOperationCardTransaction: FC<
     copy(url.toString());
 
     toast.success("Copied to clipboard");
-  }, [address, copy]);
+  }, [copy, userOperation.hash, userOperation.sender]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -154,7 +154,7 @@ export const UserOperationCardTransaction: FC<
   // ---------------------------------------------------------------------------
 
   return (
-    <Collapsible key={userOperation.hash} defaultOpen={opType} asChild>
+    <Collapsible key={userOperation.hash} asChild defaultOpen={opType}>
       <>
         <CollapsibleTrigger
           asChild
@@ -226,9 +226,9 @@ export const UserOperationCardTransaction: FC<
                     </Button>
                   ) : (
                     <Button
-                      onClick={handleLinkCopy}
                       variant="ghost"
                       className="w-full bg-background-stronger"
+                      onClick={handleLinkCopy}
                     >
                       <ShareIcon className="mr-2 size-3" />
                       Share Link

@@ -25,12 +25,11 @@ import {
 import type { WalletType } from "@lightdotso/nuqs";
 import { newFormSchema } from "@lightdotso/schemas";
 import { useNewForm } from "@lightdotso/stores";
+import { FooterButton } from "@lightdotso/templates";
 import {
-  Button,
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
   Form,
@@ -391,16 +390,12 @@ export const NewWalletForm: FC = () => {
                   </a>
                 </CardDescription>
               </div>
-              <CardFooter className="justify-end">
-                <Button
-                  className="w-full md:w-auto"
-                  disabled={!isFormValid}
-                  type="submit"
-                  onClick={() => navigateToStep()}
-                >
-                  Continue
-                </Button>
-              </CardFooter>
+              <FooterButton
+                isModal={false}
+                cancelDisabled={true}
+                disabled={!isFormValid}
+                successClick={navigateToStep}
+              />
             </form>
           </Form>
         </TooltipProvider>

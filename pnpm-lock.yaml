@@ -2094,6 +2094,12 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
       viem:
         specifier: ^2.5.0
         version: 2.5.0(typescript@5.3.3)(zod@3.22.4)
@@ -2110,6 +2116,12 @@ importers:
       '@types/node':
         specifier: ^20.11.6
         version: 20.11.6
+      '@types/react':
+        specifier: ^18.2.48
+        version: 18.2.48
+      '@types/react-dom':
+        specifier: ^18.2.18
+        version: 18.2.18
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
@@ -2241,6 +2253,9 @@ importers:
       '@lightdotso/hooks':
         specifier: workspace:*
         version: link:../hooks
+      '@lightdotso/stores':
+        specifier: workspace:*
+        version: link:../stores
       '@lightdotso/svg':
         specifier: workspace:*
         version: link:../svg

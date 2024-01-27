@@ -13,39 +13,36 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { ModalInterception } from "@lightdotso/templates";
-import { ModalInterceptionFooter } from "@/app/(wallet)/@op/(.)[address]/op/(components)/modal-interception-footer";
-import OriginalPage from "@/app/(wallet)/[address]/op/page";
+import type { Meta, StoryObj } from "@storybook/react";
+import { FooterButton } from "./footer-button";
 
 // -----------------------------------------------------------------------------
-// Props
+// Meta
 // -----------------------------------------------------------------------------
 
-type PageProps = {
-  params: { address: string };
-  searchParams: {
-    userOperations?: string;
-  };
+const meta: Meta<typeof FooterButton> = {
+  title: "template/FooterButton",
+  component: FooterButton,
+  tags: ["autodocs"],
+  argTypes: {},
 };
+export default meta;
 
 // -----------------------------------------------------------------------------
-// Page
+// Types
 // -----------------------------------------------------------------------------
 
-export default async function Page({ params, searchParams }: PageProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <ModalInterception footerContent={<ModalInterceptionFooter />}>
-      <OriginalPage params={params} searchParams={searchParams} />
-    </ModalInterception>
-  );
-}
+type Story = StoryObj<typeof FooterButton>;
 
 // -----------------------------------------------------------------------------
-// Config
+// Story
 // -----------------------------------------------------------------------------
 
-export const runtime = "edge";
+export const Base: Story = {
+  render: args => <FooterButton />,
+  args: {},
+};
+export const Modal: Story = {
+  render: args => <FooterButton isModal />,
+  args: {},
+};

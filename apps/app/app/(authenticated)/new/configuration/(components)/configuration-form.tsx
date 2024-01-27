@@ -28,6 +28,7 @@ import {
 import type { Owner, Owners } from "@lightdotso/nuqs";
 import { newFormSchema, newFormConfigurationSchema } from "@lightdotso/schemas";
 import { useAuth, useNewForm } from "@lightdotso/stores";
+import { FooterButton } from "@lightdotso/templates";
 import {
   Avatar,
   Button,
@@ -35,7 +36,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
   Form,
@@ -666,25 +666,12 @@ export const ConfigurationForm: FC = () => {
                   </FormItem>
                 )}
               />
-              <CardFooter className="flex flex-col space-y-4 pt-4 md:flex-row md:items-center md:justify-between md:space-y-0">
-                <Button
-                  className="w-full md:w-auto"
-                  variant="outline"
-                  onClick={() => {
-                    router.back();
-                  }}
-                >
-                  Go Back
-                </Button>
-                <Button
-                  className="w-full md:w-auto"
-                  disabled={!isFormValid}
-                  type="submit"
-                  onClick={() => navigateToStep()}
-                >
-                  Continue
-                </Button>
-              </CardFooter>
+              <FooterButton
+                isModal={false}
+                disabled={!isFormValid}
+                successClick={navigateToStep}
+                cancelClick={() => router.back()}
+              />
             </form>
           </Form>
         </TooltipProvider>

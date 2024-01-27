@@ -18,7 +18,10 @@
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
 import type { WalletSettingsData } from "@lightdotso/data";
 import { NftImage, PlaceholderOrb, TokenImage } from "@lightdotso/elements";
-import { useTransfersQueryState } from "@lightdotso/nuqs";
+import {
+  useTransfersQueryState,
+  // useCallDataQueryState,
+} from "@lightdotso/nuqs";
 import {
   useSuspenseQueryNfts,
   useSuspenseQueryTokens,
@@ -31,6 +34,8 @@ import type {
   Transfer,
   Transfers,
 } from "@lightdotso/schemas";
+// import { useFormRef } from "@lightdotso/stores";
+import { FooterButton, useIsInsideModal } from "@lightdotso/templates";
 import {
   Accordion,
   AccordionContent,
@@ -39,7 +44,6 @@ import {
   Avatar,
   Button,
   ButtonIcon,
-  CardFooter,
   Form,
   FormControl,
   FormField,
@@ -64,9 +68,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
 import { Trash2Icon, UserPlus2 } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import type { FC } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import {
@@ -74,7 +76,7 @@ import {
   encodeFunctionData,
   encodeAbiParameters,
   concat,
-  getFunctionSelector,
+  toFunctionSelector,
   toHex,
   fromHex,
 } from "viem";
@@ -108,10 +110,30 @@ export const SendDialog: FC<SendDialogProps> = ({
   initialTransfers,
 }) => {
   // ---------------------------------------------------------------------------
-  // Next Hooks
+  // Stores
   // ---------------------------------------------------------------------------
 
-  const router = useRouter();
+  // const { setFormRef, setIsFormDisabled } = useFormRef();
+
+  // ---------------------------------------------------------------------------
+  // Ref Hooks
+  // ---------------------------------------------------------------------------
+
+  const formRef = useRef<HTMLFormElement>(null);
+
+  // ---------------------------------------------------------------------------
+  // Template Hooks
+  // ---------------------------------------------------------------------------
+
+  const isInsideModal = useIsInsideModal();
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // useEffect(() => {
+  //   setFormRef(formRef);
+  // }, [setFormRef]);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -145,6 +167,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   const [transfers, setTransfers] = useTransfersQueryState(
     initialTransfers ?? [],
   );
+  // const [, setCallData] = useCallDataQueryState();
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -420,10 +443,7 @@ export const SendDialog: FC<SendDialogProps> = ({
           0n,
           toHex(
             concat([
-              fromHex(
-                getFunctionSelector("transfer(address,uint256)"),
-                "bytes",
-              ),
+              fromHex(toFunctionSelector("transfer(address,uint256)"), "bytes"),
               fromHex(
                 encodeAbiParameters(
                   [
@@ -493,7 +513,7 @@ export const SendDialog: FC<SendDialogProps> = ({
             toHex(
               concat([
                 fromHex(
-                  getFunctionSelector(
+                  toFunctionSelector(
                     "safeTransferFrom(address,address,uint256,uint256,bytes)",
                   ),
                   "bytes",
@@ -551,7 +571,7 @@ export const SendDialog: FC<SendDialogProps> = ({
             toHex(
               concat([
                 fromHex(
-                  getFunctionSelector(
+                  toFunctionSelector(
                     "safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)",
                   ),
                   "bytes",
@@ -603,7 +623,7 @@ export const SendDialog: FC<SendDialogProps> = ({
             toHex(
               concat([
                 fromHex(
-                  getFunctionSelector("transferFrom(address,address,uint256)"),
+                  toFunctionSelector("transferFrom(address,address,uint256)"),
                   "bytes",
                 ),
                 fromHex(
@@ -773,6 +793,20 @@ export const SendDialog: FC<SendDialogProps> = ({
   const isFormValid = useMemo(() => {
     return form.formState.isValid && isEmpty(form.formState.errors);
   }, [form.formState]);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // useEffect(() => {
+  //   setIsFormDisabled(!isFormValid);
+  // }, [isFormValid, setIsFormDisabled]);
+
+  // useEffect(() => {
+  //   if (userOperationsParams) {
+  //     setCallData(userOperationsParams);
+  //   }
+  // }, [userOperationsParams, setCallData]);
 
   // ---------------------------------------------------------------------------
   // Validation
@@ -962,7 +996,7 @@ export const SendDialog: FC<SendDialogProps> = ({
     <div className="grid gap-10">
       <TooltipProvider delayDuration={300}>
         <Form {...form}>
-          <form className="space-y-4">
+          <form ref={formRef} className="space-y-4">
             <div className="space-y-4">
               {fields.map((field, index) => (
                 <Accordion
@@ -1078,7 +1112,6 @@ export const SendDialog: FC<SendDialogProps> = ({
                             </div>
                           )}
                         />
-
                         <Tabs
                           className="col-span-8"
                           defaultValue={
@@ -1592,34 +1625,14 @@ export const SendDialog: FC<SendDialogProps> = ({
                 Add Transfer
               </Button>
             </div>
-            <CardFooter className="flex flex-col space-y-4 pt-6 md:flex-row md:items-center md:justify-between md:space-y-0">
-              <Button
-                className="w-full md:w-auto"
-                variant="outline"
-                onClick={() => {
-                  router.back();
-                }}
-              >
-                Cancel
-              </Button>
-              {!isFormValid ? (
-                <Button
-                  className="w-full md:w-auto"
-                  disabled={!isFormValid}
-                  type="submit"
-                >
-                  Continue
-                </Button>
-              ) : (
-                <Button asChild className="w-full md:w-auto" type="submit">
-                  <Link
-                    href={`/${address}/op?userOperations=${userOperationsParams!}`}
-                  >
-                    Continue
-                  </Link>
-                </Button>
-              )}
-            </CardFooter>
+            {!isInsideModal && (
+              <FooterButton
+                isModal={false}
+                cancelDisabled={true}
+                href={`/${address}/op?userOperations=${userOperationsParams!}`}
+                disabled={!isFormValid}
+              />
+            )}
           </form>
         </Form>
       </TooltipProvider>
