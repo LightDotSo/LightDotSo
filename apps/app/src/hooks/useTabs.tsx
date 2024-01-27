@@ -29,8 +29,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useMemo } from "react";
 import type { Address } from "viem";
-import { AI_TAB, DEFAULT_TABS } from "@/const";
-import { usePathType } from "@/hooks/usePathType";
+import { AI_TAB, DEFAULT_TABS, HOME_TABS } from "@/const";
+import { usePathType } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Hook
@@ -187,6 +187,21 @@ export function useTabs() {
   // ---------------------------------------------------------------------------
   // Return
   // ---------------------------------------------------------------------------
+
+  if (pathType === "unauthenticated" || pathType === "authenticated") {
+    return {
+      tabProps: {
+        tabs: HOME_TABS,
+        selectedTabIndex: undefined,
+        setSelectedTabIndex,
+      },
+      selectedTab: null,
+      contentProps: {
+        order: 0,
+        selectedTabIndex: undefined,
+      },
+    };
+  }
 
   return {
     tabProps: {

@@ -16,9 +16,10 @@
 "use client";
 
 import { useCallDataQueryState } from "@lightdotso/nuqs";
-import { useAuth, useFormRef } from "@lightdotso/stores";
+import { useAuth, useFormRef, useModals } from "@lightdotso/stores";
 import { FooterButton } from "@lightdotso/templates";
-import { useMemo, type FC } from "react";
+import { useRouter } from "next/navigation";
+import { useMemo, type FC, useCallback } from "react";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -37,13 +38,30 @@ export const ModalInterceptionFooter: FC = () => {
 
   const { wallet } = useAuth();
   const { isFormDisabled } = useFormRef();
+  const { hideInterceptionModal } = useModals();
+
+  // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
+  const router = useRouter();
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  const onDismiss = useCallback(() => {
+    hideInterceptionModal();
+    router.back();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const href = useMemo(() => {
-    return `/${wallet}/send/${callData}`;
+    return `/${wallet}/op/${callData}`;
   }, [wallet, callData]);
 
   // ---------------------------------------------------------------------------
@@ -54,6 +72,7 @@ export const ModalInterceptionFooter: FC = () => {
     <FooterButton
       isModal
       className="pt-0"
+      cancelClick={onDismiss}
       disabled={isFormDisabled}
       href={href}
     />

@@ -15,6 +15,7 @@
 
 "use client";
 
+import { useMediaQuery } from "@lightdotso/hooks";
 import { useAuth } from "@lightdotso/stores";
 import { Button } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
@@ -35,6 +36,13 @@ export const ConnectButton = () => {
   // ---------------------------------------------------------------------------
 
   const { address, ens } = useAuth();
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const isDesktop = useMediaQuery("md");
+
   // ---------------------------------------------------------------------------
   // Web3Modal
   // ---------------------------------------------------------------------------
@@ -47,7 +55,7 @@ export const ConnectButton = () => {
 
   return (
     <Button
-      size="sm"
+      size={isDesktop ? "sm" : "lg"}
       onClick={
         !address
           ? () => open({ view: "Connect" })

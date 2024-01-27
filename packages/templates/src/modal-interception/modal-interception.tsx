@@ -53,7 +53,9 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    showInterceptionModal();
+    if (!isModalInterceptionVisible) {
+      showInterceptionModal();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -68,12 +70,11 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // ---------------------------------------------------------------------------
 
   const onDismiss = useCallback(() => {
-    if (!isModalInterceptionVisible) {
+    if (isModalInterceptionVisible) {
       hideInterceptionModal();
       router.back();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router]);
+  }, [isModalInterceptionVisible, hideInterceptionModal, router]);
 
   // ---------------------------------------------------------------------------
   // Render

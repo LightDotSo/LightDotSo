@@ -15,29 +15,41 @@
 
 "use client";
 
-import { debounce } from "lodash";
-import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useMemo } from "react";
+import { isAddress } from "viem";
 
-export function useDebouncedValue<T>(value: T, delay: number): T {
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
+
+export const useBaseSlug = () => {
   // ---------------------------------------------------------------------------
-  // State Hooks
+  // Next Hooks
   // ---------------------------------------------------------------------------
 
-  const [debouncedValue, setDebouncedValue] = useState<T>(value);
+  const pathname = usePathname();
 
   // ---------------------------------------------------------------------------
-  // Effect Hooks
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  useEffect(() => {
-    const handler = debounce(() => setDebouncedValue(value), delay);
-    handler();
-    return handler.cancel;
-  }, [value, delay]);
+  const baseSlug = useMemo(() => {
+    // Split the path using '/' as delimiter and remove empty strings
+    const slugs = pathname.split("/").filter(slug => slug);
+
+    // If the first slug is `demo`, return `/demo`
+    if (slugs.length > 0 && slugs[0] === "demo") {
+      return "/demo";
+    }
+
+    // Return the first slug if it is an address
+    return slugs.length > 0 && isAddress(slugs[0]) ? "/" + slugs[0] : "";
+  }, [pathname]);
 
   // ---------------------------------------------------------------------------
   // Return
   // ---------------------------------------------------------------------------
 
-  return debouncedValue;
-}
+  return baseSlug;
+};

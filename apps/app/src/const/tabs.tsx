@@ -81,6 +81,17 @@ export const DEFAULT_TABS: Tab[] = [
   },
 ];
 
+export const HOME_TABS: Tab[] = [
+  {
+    label: "New",
+    id: "new",
+    href: "/new",
+    icon: (
+      props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
+    ) => <RadiobuttonIcon {...props} />,
+  },
+];
+
 export const AI_TAB = {
   label: "AI",
   id: "ai",

@@ -52,6 +52,7 @@ export const OpDataTable: FC<OpDataTableProps> = ({ userOperationHash }) => {
 
   return (
     <DataTable
+      isDefaultOpen
       isLoading={isUserOperationLoading}
       data={userOperation ? [userOperation] : []}
       address={userOperation.sender as Address}

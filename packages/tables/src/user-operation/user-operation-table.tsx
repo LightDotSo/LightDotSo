@@ -53,6 +53,7 @@ import { userOperationColumns } from "./user-operation-columns";
 // -----------------------------------------------------------------------------
 
 type UserOperationTableProps = {
+  isDefaultOpen?: boolean;
   isLoading: boolean;
   pageSize: number;
   data: UserOperationData[] | null;
@@ -71,6 +72,7 @@ type UserOperationTableProps = {
 // -----------------------------------------------------------------------------
 
 export const UserOperationTable: FC<UserOperationTableProps> = ({
+  isDefaultOpen = false,
   isLoading,
   pageSize,
   data,
@@ -264,11 +266,11 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
                 {itemsInSameDate.map(({ original: userOperation, row }) => (
                   <UserOperationCardTransaction
                     key={userOperation.hash}
+                    isDefaultOpen={isDefaultOpen}
                     address={address}
                     configuration={configuration}
                     userOperation={userOperation}
                     row={row}
-                    opType={table.getPageCount() === 1}
                   />
                 ))}
               </div>
