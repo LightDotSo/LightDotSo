@@ -31,6 +31,7 @@ import { useState, useEffect, useMemo } from "react";
 import type { Address } from "viem";
 import { AI_TAB, DEFAULT_TABS } from "@/const";
 import { usePathType } from "@/hooks/usePathType";
+import { HOME_TABS } from "@/const/tabs";
 
 // -----------------------------------------------------------------------------
 // Hook
@@ -187,6 +188,21 @@ export function useTabs() {
   // ---------------------------------------------------------------------------
   // Return
   // ---------------------------------------------------------------------------
+
+  if (pathType === "unauthenticated" || pathType === "authenticated") {
+    return {
+      tabProps: {
+        tabs: HOME_TABS,
+        selectedTabIndex: undefined,
+        setSelectedTabIndex,
+      },
+      selectedTab: null,
+      contentProps: {
+        order: 0,
+        selectedTabIndex: undefined,
+      },
+    };
+  }
 
   return {
     tabProps: {

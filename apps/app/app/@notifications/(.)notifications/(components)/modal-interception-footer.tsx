@@ -15,7 +15,7 @@
 
 "use client";
 
-import { useFormRef, useModals } from "@lightdotso/stores";
+import { useModals } from "@lightdotso/stores";
 import { FooterButton } from "@lightdotso/templates";
 import { useRouter } from "next/navigation";
 import { type FC, useCallback } from "react";
@@ -48,21 +48,10 @@ export const ModalInterceptionFooter: FC = () => {
   }, [router]);
 
   // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { isFormDisabled } = useFormRef();
-
-  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <FooterButton
-      isModal
-      className="pt-0"
-      disabled={isFormDisabled}
-      cancelClick={onDismiss}
-    />
+    <FooterButton disabled isModal className="pt-0" cancelClick={onDismiss} />
   );
 };
