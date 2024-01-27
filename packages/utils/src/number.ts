@@ -14,6 +14,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 export const refineNumberFormat = (number: number) => {
+  if (number === 0) {
+    return number.toLocaleString("en-US", {
+      style: "decimal",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
   if (number < 0.001) {
     return number.toLocaleString("en-US", {
       style: "decimal",
