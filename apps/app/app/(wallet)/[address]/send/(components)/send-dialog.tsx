@@ -399,6 +399,10 @@ export const SendDialog: FC<SendDialogProps> = ({
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
+  const isFormValid = useMemo(() => {
+    return form.formState.isValid && isEmpty(form.formState.errors);
+  }, [form.formState]);
+
   const userOperationsParams = useMemo(() => {
     const encodeTransfer = (transfer: Transfer): [Address, bigint, Hex] => {
       if (
@@ -798,12 +802,9 @@ export const SendDialog: FC<SendDialogProps> = ({
       // Return the user operations params
       return userOperationsParams;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [transfers, tokens, form.formState]);
 
-  const isFormValid = useMemo(() => {
-    return form.formState.isValid && isEmpty(form.formState.errors);
-  }, [form.formState]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [transfers, tokens, isFormValid]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -818,7 +819,7 @@ export const SendDialog: FC<SendDialogProps> = ({
       setUserOperations(userOperationsParams);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFormValid]);
+  }, [isFormValid, userOperationsParams]);
 
   // ---------------------------------------------------------------------------
   // Validation
@@ -1641,7 +1642,7 @@ export const SendDialog: FC<SendDialogProps> = ({
               <FooterButton
                 isModal={false}
                 cancelDisabled={true}
-                href={`/${address}/op?userOperations=${userOperationsParser.serialize(userOperationsParams!)}`}
+                // href={`/${address}/op?userOperations=${userOperationsParser.serialize(userOperationsParams!)}`}
                 disabled={!isFormValid}
               />
             )}
