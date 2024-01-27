@@ -41,7 +41,7 @@ export const ModalInterceptionFooter: FC = () => {
 
   const { wallet } = useAuth();
   const { isFormDisabled } = useFormRef();
-  const { hideInterceptionModal } = useModals();
+  const { hideSendModal } = useModals();
 
   // ---------------------------------------------------------------------------
   // Next Hooks
@@ -54,7 +54,7 @@ export const ModalInterceptionFooter: FC = () => {
   // ---------------------------------------------------------------------------
 
   const onDismiss = useCallback(() => {
-    hideInterceptionModal();
+    hideSendModal();
     router.back();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);

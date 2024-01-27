@@ -17,7 +17,7 @@
 
 import { useModals } from "@lightdotso/stores";
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import type { FC, ReactNode } from "react";
 import { Modal } from "../modal";
 
@@ -27,6 +27,7 @@ import { Modal } from "../modal";
 
 interface ModalInterceptionProps {
   children: ReactNode;
+  type: "op" | "notifications" | "send";
   footerContent?: ReactNode;
 }
 
@@ -37,22 +38,23 @@ interface ModalInterceptionProps {
 export const ModalInterception: FC<ModalInterceptionProps> = ({
   children,
   footerContent,
+  type,
 }) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
   const {
-    isModalInterceptionVisible,
-    showInterceptionModal,
-    hideInterceptionModal,
+    isNotificationsModalVisible,
+    isOpModalVisible,
+    isSendModalVisible,
+    showNotificationsModal,
+    showOpModal,
+    showSendModal,
+    hideNotificationsModal,
+    hideOpModal,
+    hideSendModal,
   } = useModals();
-
-  // ---------------------------------------------------------------------------
-  // State Hooks
-  // ---------------------------------------------------------------------------
-
-  const [modalOnMount, setModalOnMount] = useState(false);
 
   // ---------------------------------------------------------------------------
   // Next Hooks
@@ -62,32 +64,67 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   const pathname = usePathname();
 
   // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const isOpen = useMemo(() => {
+    switch (type) {
+      case "op":
+        return isOpModalVisible;
+      case "notifications":
+        return isNotificationsModalVisible;
+      case "send":
+        return isSendModalVisible;
+    }
+  }, [isNotificationsModalVisible, isOpModalVisible, isSendModalVisible, type]);
+
+  // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
   const onDismiss = useCallback(() => {
-    if (isModalInterceptionVisible) {
-      hideInterceptionModal();
-      router.back();
+    if (!isOpen) {
+      return;
     }
-  }, [isModalInterceptionVisible, hideInterceptionModal, router]);
+
+    switch (type) {
+      case "op":
+        hideOpModal();
+        router.back();
+        break;
+      case "notifications":
+        hideNotificationsModal();
+        router.back();
+        break;
+      case "send":
+        hideSendModal();
+        router.back();
+        break;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, router]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (!isModalInterceptionVisible) {
-      showInterceptionModal();
-      setModalOnMount(true);
+    switch (type) {
+      case "op":
+        showOpModal();
+        break;
+      case "notifications":
+        showNotificationsModal();
+        break;
+      case "send":
+        showSendModal();
+        break;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (modalOnMount && isModalInterceptionVisible) {
-      hideInterceptionModal();
-    }
+    onDismiss();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
@@ -96,11 +133,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // ---------------------------------------------------------------------------
 
   return (
-    <Modal
-      footerContent={footerContent}
-      open={isModalInterceptionVisible}
-      onClose={onDismiss}
-    >
+    <Modal footerContent={footerContent} open={isOpen} onClose={onDismiss}>
       {children}
     </Modal>
   );

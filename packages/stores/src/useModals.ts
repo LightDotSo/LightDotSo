@@ -24,18 +24,24 @@ type ModalsStore = {
   isAuthModalVisible: boolean;
   isDepositModalVisible: boolean;
   isNftModalVisible: boolean;
+  isNotificationsModalVisible: boolean;
+  isOpModalVisible: boolean;
+  isSendModalVisible: boolean;
   isTokenModalVisible: boolean;
-  isModalInterceptionVisible: boolean;
   showAuthModal: () => void;
   hideAuthModal: () => void;
   showDepositModal: () => void;
   hideDepositModal: () => void;
   showNftModal: () => void;
   hideNftModal: () => void;
+  showNotificationsModal: () => void;
+  hideNotificationsModal: () => void;
+  showOpModal: () => void;
+  hideOpModal: () => void;
+  showSendModal: () => void;
+  hideSendModal: () => void;
   showTokenModal: () => void;
   hideTokenModal: () => void;
-  showInterceptionModal: () => void;
-  hideInterceptionModal: () => void;
 };
 
 // -----------------------------------------------------------------------------
@@ -48,18 +54,24 @@ export const useModals = create(
       isAuthModalVisible: false,
       isDepositModalVisible: false,
       isNftModalVisible: false,
+      isNotificationsModalVisible: false,
+      isOpModalVisible: false,
+      isSendModalVisible: false,
       isTokenModalVisible: false,
-      isModalInterceptionVisible: false,
       showAuthModal: () => set({ isAuthModalVisible: true }),
       hideAuthModal: () => set({ isAuthModalVisible: false }),
       showDepositModal: () => set({ isDepositModalVisible: true }),
       hideDepositModal: () => set({ isDepositModalVisible: false }),
+      showNotificationsModal: () => set({ isNotificationsModalVisible: true }),
+      hideNotificationsModal: () => set({ isNotificationsModalVisible: false }),
+      showOpModal: () => set({ isOpModalVisible: true }),
+      hideOpModal: () => set({ isOpModalVisible: false }),
       showNftModal: () => set({ isNftModalVisible: true }),
       hideNftModal: () => set({ isNftModalVisible: false }),
+      showSendModal: () => set({ isSendModalVisible: true }),
+      hideSendModal: () => set({ isSendModalVisible: false }),
       showTokenModal: () => set({ isTokenModalVisible: true }),
       hideTokenModal: () => set({ isTokenModalVisible: false }),
-      showInterceptionModal: () => set({ isModalInterceptionVisible: true }),
-      hideInterceptionModal: () => set({ isModalInterceptionVisible: false }),
     }),
     {
       anonymousActionType: "useModals",

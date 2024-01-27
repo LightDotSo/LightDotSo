@@ -29,7 +29,7 @@ export const ModalInterceptionFooter: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { hideInterceptionModal } = useModals();
+  const { hideNotificationsModal } = useModals();
 
   // ---------------------------------------------------------------------------
   // Next Hooks
@@ -42,7 +42,7 @@ export const ModalInterceptionFooter: FC = () => {
   // ---------------------------------------------------------------------------
 
   const onDismiss = useCallback(() => {
-    hideInterceptionModal();
+    hideNotificationsModal();
     router.back();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
