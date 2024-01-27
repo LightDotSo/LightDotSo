@@ -47,6 +47,9 @@ const config: StorybookConfig = {
   docs: {
     autodocs: true,
   },
+  env: config => ({
+    LOCAL_ENV: "dev",
+  }),
   staticDirs: ["../public"],
 };
 

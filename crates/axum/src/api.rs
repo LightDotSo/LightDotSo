@@ -324,6 +324,9 @@ pub async fn start_api_server() -> Result<()> {
             if let Ok(localhost_origin) = "http://localhost:3001".parse() {
                 origins.push(localhost_origin);
             }
+            if let Ok(localhost_origin) = "http://localhost:6006".parse() {
+                origins.push(localhost_origin);
+            }
         }
     }
     let cors = CorsLayer::new()
