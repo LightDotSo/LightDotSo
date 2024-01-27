@@ -685,11 +685,6 @@ export const SendDialog: FC<SendDialogProps> = ({
           }),
         },
       ];
-      // return `${transfers[0].chainId}:_:${encodeFunctionData({
-      //   abi: lightWalletAbi,
-      //   functionName: "execute",
-      //   args: encodeTransfer(transfers[0]) as [Address, bigint, Hex],
-      // })}`;
     }
 
     if (transfers?.length > 1) {
@@ -708,22 +703,14 @@ export const SendDialog: FC<SendDialogProps> = ({
       // If the transfer count is one, encode as `execute`
       for (const [chainId, transfers] of transfersByChainId.entries()) {
         if (transfers.length === 1) {
-          userOperationsParams.push(
-            {
-              chainId: BigInt(chainId),
-              callData: encodeFunctionData({
-                abi: lightWalletAbi,
-                functionName: "execute",
-                args: encodeTransfer(transfers[0]) as [Address, bigint, Hex],
-              }),
-            },
-            // userOperationsParams.push({}
-            //   `${chainId}:_:${encodeFunctionData({
-            //     abi: lightWalletAbi,
-            //     functionName: "execute",
-            //     args: encodeTransfer(transfers[0]) as [Address, bigint, Hex],
-            //   })}`,
-          );
+          userOperationsParams.push({
+            chainId: BigInt(chainId),
+            callData: encodeFunctionData({
+              abi: lightWalletAbi,
+              functionName: "execute",
+              args: encodeTransfer(transfers[0]) as [Address, bigint, Hex],
+            }),
+          });
         } else {
           let transformedTransfers = transfers;
 
@@ -805,17 +792,6 @@ export const SendDialog: FC<SendDialogProps> = ({
               ] as [Address[], bigint[], Hex[]],
             }),
           });
-          // userOperationsParams.push(
-          //   `${chainId}:_:${encodeFunctionData({
-          //     abi: lightWalletAbi,
-          //     functionName: "executeBatch",
-          //     args: [
-          //       encodedTransfers.map(transfer => transfer[0]),
-          //       encodedTransfers.map(transfer => transfer[1]),
-          //       encodedTransfers.map(transfer => transfer[2]),
-          //     ] as [Address[], bigint[], Hex[]],
-          //   })}`,
-          // );
         }
       }
 
