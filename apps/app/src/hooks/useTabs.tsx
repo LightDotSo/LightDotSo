@@ -29,8 +29,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useMemo } from "react";
 import type { Address } from "viem";
-import { AI_TAB, DEFAULT_TABS } from "@/const";
-import { HOME_TABS } from "@/const/tabs";
+import { AI_TAB, DEFAULT_TABS, HOME_TABS } from "@/const";
 import { usePathType } from "@/hooks";
 
 // -----------------------------------------------------------------------------

@@ -158,7 +158,7 @@ export const UserOperationCardTransaction: FC<
       key={userOperation.hash}
       asChild
       defaultOpen={isDefaultOpen}
-      disabled={!isDefaultOpen}
+      disabled={isDefaultOpen}
     >
       <>
         <CollapsibleTrigger
