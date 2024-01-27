@@ -43,7 +43,7 @@ export const useFormRef = create(
       setFormRef: (
         formRef: MutableRefObject<HTMLFormElement | null> | undefined,
       ) => set({ formRef }),
-      isFormDisabled: false,
+      isFormDisabled: true,
       setIsFormDisabled: (isFormDisabled: boolean) => set({ isFormDisabled }),
       isFormLoading: false,
       setIsFormLoading: (isFormLoading: boolean) => set({ isFormLoading }),
