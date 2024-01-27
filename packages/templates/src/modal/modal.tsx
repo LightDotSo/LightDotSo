@@ -25,6 +25,7 @@ import {
   Skeleton,
   Drawer,
   DrawerContent,
+  DialogFooter,
   DialogHeader,
   ButtonIcon,
   DrawerBody,
@@ -142,7 +143,11 @@ export const Modal: FC<ModalProps> = ({
               </Suspense>
             </ModalContext.Provider>
           </DialogBody>
-          {footerContent && footerContent}
+          {footerContent && (
+            <DialogFooter className="block justify-start space-x-0">
+              {footerContent}
+            </DialogFooter>
+          )}
         </DialogContent>
       </DialogPortal>
     </Dialog>
