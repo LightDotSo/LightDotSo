@@ -28,6 +28,7 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 interface DataTableProps {
+  isDefaultOpen?: boolean;
   isLoading: boolean;
   columns: ColumnDef<UserOperationData>[];
   address: Address;
@@ -40,6 +41,7 @@ interface DataTableProps {
 // -----------------------------------------------------------------------------
 
 export function DataTable({
+  isDefaultOpen = false,
   isLoading,
   columns,
   address,
@@ -102,6 +104,7 @@ export function DataTable({
 
   return (
     <UserOperationTable
+      isDefaultOpen={isDefaultOpen}
       isLoading={isLoading}
       pageSize={paginationState.pageSize}
       address={address}

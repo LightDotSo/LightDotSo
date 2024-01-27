@@ -60,7 +60,7 @@ type UserOperationCardTransactionProps = {
   configuration: ConfigurationData;
   userOperation: UserOperationData;
   row: Row<UserOperationData>;
-  opType?: boolean;
+  isDefaultOpen?: boolean;
 };
 
 // -----------------------------------------------------------------------------
@@ -69,7 +69,7 @@ type UserOperationCardTransactionProps = {
 
 export const UserOperationCardTransaction: FC<
   UserOperationCardTransactionProps
-> = ({ address, configuration, userOperation, row, opType = false }) => {
+> = ({ address, configuration, userOperation, row, isDefaultOpen = false }) => {
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
@@ -154,7 +154,12 @@ export const UserOperationCardTransaction: FC<
   // ---------------------------------------------------------------------------
 
   return (
-    <Collapsible key={userOperation.hash} asChild defaultOpen={opType}>
+    <Collapsible
+      key={userOperation.hash}
+      asChild
+      defaultOpen={isDefaultOpen}
+      disabled={!isDefaultOpen}
+    >
       <>
         <CollapsibleTrigger
           asChild
@@ -212,7 +217,7 @@ export const UserOperationCardTransaction: FC<
                   ))}
                 </CardContent>
                 <CardFooter>
-                  {!opType ? (
+                  {!isDefaultOpen ? (
                     <Button
                       asChild
                       variant="ghost"
