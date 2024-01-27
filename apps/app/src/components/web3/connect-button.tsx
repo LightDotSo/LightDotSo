@@ -19,7 +19,7 @@ import { useMediaQuery } from "@lightdotso/hooks";
 import { useAuth } from "@lightdotso/stores";
 import { Button } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
-import { useWeb3Modal } from "@web3modal/wagmi/react";
+import { useWeb3Modal, useWeb3ModalState } from "@web3modal/wagmi/react";
 import { Wallet } from "lucide-react";
 import type { Address } from "viem";
 
@@ -48,6 +48,7 @@ export const ConnectButton = () => {
   // ---------------------------------------------------------------------------
 
   const { open } = useWeb3Modal();
+  const { open: isOpen } = useWeb3ModalState();
 
   // ---------------------------------------------------------------------------
   // Render
@@ -55,6 +56,7 @@ export const ConnectButton = () => {
 
   return (
     <Button
+      disabled={isOpen}
       size={isDesktop ? "sm" : "lg"}
       onClick={
         !address
