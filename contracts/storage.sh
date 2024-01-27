@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 # Copyright (C) 2023 Light, Inc.
 #
 # This program is free software: you can redistribute it and/or modify
@@ -14,6 +13,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#!/usr/bin/env bash
 
 # Code from: nocturne-xyz
 # Link: https://socket.dev/npm/package/@nocturne-xyz/contracts/files/1.0.32-alpha/storage_inspect.sh
