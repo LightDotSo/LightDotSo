@@ -125,7 +125,11 @@ export const TokenImage: FC<TokenImageProps> = ({ className, token, size }) => {
   // ---------------------------------------------------------------------------
 
   if (!isImageLoaded) {
-    return <Skeleton className={cn(tokenImageVariants({ size }), className)} />;
+    return (
+      <span>
+        <Skeleton className={cn(tokenImageVariants({ size }), className)} />
+      </span>
+    );
   }
 
   if (isImageLoaded && !isImageError) {
