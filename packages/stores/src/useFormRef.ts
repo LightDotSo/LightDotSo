@@ -15,7 +15,7 @@
 
 import type { MutableRefObject } from "react";
 import { create } from "zustand";
-import { createJSONStorage, devtools, persist } from "zustand/middleware";
+import { devtools } from "zustand/middleware";
 
 // -----------------------------------------------------------------------------
 // State
@@ -37,24 +37,17 @@ export interface FormRefState {
 // -----------------------------------------------------------------------------
 
 export const useFormRef = create(
-  devtools(
-    persist<FormRefState>(
-      set => ({
-        formRef: undefined,
-        setFormRef: (
-          formRef: MutableRefObject<HTMLFormElement | null> | undefined,
-        ) => set({ formRef }),
-        isFormDisabled: false,
-        setIsFormDisabled: (isFormDisabled: boolean) => set({ isFormDisabled }),
-        isFormLoading: false,
-        setIsFormLoading: (isFormLoading: boolean) => set({ isFormLoading }),
-      }),
-      {
-        name: "form-ref-state-v1",
-        storage: createJSONStorage(() => sessionStorage),
-        skipHydration: true,
-      },
-    ),
+  devtools<FormRefState>(
+    set => ({
+      formRef: undefined,
+      setFormRef: (
+        formRef: MutableRefObject<HTMLFormElement | null> | undefined,
+      ) => set({ formRef }),
+      isFormDisabled: false,
+      setIsFormDisabled: (isFormDisabled: boolean) => set({ isFormDisabled }),
+      isFormLoading: false,
+      setIsFormLoading: (isFormLoading: boolean) => set({ isFormLoading }),
+    }),
     {
       anonymousActionType: "useFormRef",
       name: "FormRefState",
