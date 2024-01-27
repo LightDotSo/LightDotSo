@@ -796,7 +796,6 @@ export const SendDialog: FC<SendDialogProps> = ({
       }
 
       // Return the user operations params
-      // return userOperationsParams.join(";");
       return userOperationsParams;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

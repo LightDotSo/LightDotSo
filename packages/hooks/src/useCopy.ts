@@ -15,7 +15,7 @@
 
 "use client";
 
-import copy from "copy-to-clipboard";
+import copyText from "copy-to-clipboard";
 import { useCallback, useRef, useState } from "react";
 
 // -----------------------------------------------------------------------------
@@ -40,7 +40,7 @@ export const useCopy = (): [boolean, (text: string) => void] => {
   // ---------------------------------------------------------------------------
 
   const copy = useCallback((text: string): void => {
-    copy(text);
+    copyText(text);
     setIsCopying(true);
 
     if (timeoutRef.current != null) {
