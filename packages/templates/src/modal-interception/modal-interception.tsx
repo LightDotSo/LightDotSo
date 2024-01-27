@@ -18,7 +18,7 @@
 import { useIsMounted } from "@lightdotso/hooks";
 import { useModals } from "@lightdotso/stores";
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { FC, ReactNode } from "react";
 import { Modal } from "../modal";
 
@@ -67,6 +67,12 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   }, []);
 
   // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [currentPathname, setCurrentPathname] = useState<string>("/");
+
+  // ---------------------------------------------------------------------------
   // Next Hooks
   // ---------------------------------------------------------------------------
 
@@ -90,10 +96,17 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
 
   useEffect(() => {
     if (isMounted) {
+      setCurrentPathname(pathname);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
+
+  useEffect(() => {
+    if (currentPathname !== pathname && isModalInterceptionVisible) {
       hideInterceptionModal();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname, isMounted]);
+  }, [pathname, isMounted, currentPathname]);
 
   // ---------------------------------------------------------------------------
   // Render
