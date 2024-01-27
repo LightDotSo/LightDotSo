@@ -17,7 +17,7 @@
 
 import { useModals } from "@lightdotso/stores";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { FC, ReactNode } from "react";
 import { Modal } from "../modal";
 
@@ -63,6 +63,12 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   const router = useRouter();
 
   // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [isVisible, setIsVisible] = useState(false);
+
+  // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
@@ -83,20 +89,24 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
 
   const onDismiss = useCallback(() => {
     if (!isOpen) {
+      setIsVisible(false);
       return;
     }
 
     switch (type) {
       case "op":
         hideOpModal();
+        setIsVisible(false);
         router.back();
         break;
       case "notifications":
         hideNotificationsModal();
+        setIsVisible(false);
         router.back();
         break;
       case "send":
         hideSendModal();
+        setIsVisible(false);
         router.back();
         break;
     }
@@ -108,19 +118,21 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    switch (type) {
-      case "op":
-        showOpModal();
-        break;
-      case "notifications":
-        showNotificationsModal();
-        break;
-      case "send":
-        showSendModal();
-        break;
+    if (!isVisible) {
+      switch (type) {
+        case "op":
+          showOpModal();
+          break;
+        case "notifications":
+          showNotificationsModal();
+          break;
+        case "send":
+          showSendModal();
+          break;
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isVisible]);
 
   // ---------------------------------------------------------------------------
   // Render
