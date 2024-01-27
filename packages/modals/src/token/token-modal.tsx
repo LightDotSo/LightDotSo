@@ -16,6 +16,7 @@
 "use client";
 
 import { MAINNET_CHAINS } from "@lightdotso/const";
+import { useQuerySocketBalances } from "@lightdotso/query";
 import { useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import { Modal } from "@lightdotso/templates";
@@ -26,6 +27,14 @@ import { Button, ButtonIcon } from "@lightdotso/ui";
 // -----------------------------------------------------------------------------
 
 export function TokenModal() {
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { balances } = useQuerySocketBalances({
+    address: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
+  });
+
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -52,7 +61,7 @@ export function TokenModal() {
         }
         onClose={hideTokenModal}
       >
-        <></>
+        <>{JSON.stringify(balances)}</>
       </Modal>
     );
   }

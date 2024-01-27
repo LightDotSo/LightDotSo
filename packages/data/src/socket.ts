@@ -13,36 +13,22 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { ResultAsync, err, ok } from "neverthrow";
-import type { ClientType } from "../client";
-import { getSocketClient } from "../client";
-
 // -----------------------------------------------------------------------------
-// GET
+// Data
 // -----------------------------------------------------------------------------
 
-export const getSocketBalances = async (
-  {
-    parameters,
-  }: {
-    parameters: {
-      query: {
-        userAddress: string;
-      };
-    };
-  },
-  clientType?: ClientType,
-) => {
-  const client = getSocketClient(clientType);
+export type SocketBalanceData = {
+  chainId: number;
+  address: string;
+  name: string;
+  symbol: string;
+  decimals: number;
+  price: number;
+  amount: number;
+  currency: string;
+};
 
-  return ResultAsync.fromPromise(
-    client.GET("/v2/balances", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [parameters?.query?.address] },
-      params: parameters,
-    }),
-    () => new Error("Database error"),
-  ).andThen(({ data, response, error }) => {
-    return response.status === 200 && data ? ok(data) : err(error);
-  });
+export type SocketBalancePageData = {
+  success: boolean;
+  result: SocketBalanceData[];
 };

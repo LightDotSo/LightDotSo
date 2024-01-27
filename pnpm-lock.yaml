@@ -1739,6 +1739,9 @@ importers:
       '@lightdotso/hooks':
         specifier: workspace:*
         version: link:../hooks
+      '@lightdotso/query':
+        specifier: workspace:*
+        version: link:../query
       '@lightdotso/stores':
         specifier: workspace:*
         version: link:../stores

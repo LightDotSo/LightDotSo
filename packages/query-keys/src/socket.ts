@@ -13,36 +13,22 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { ResultAsync, err, ok } from "neverthrow";
-import type { ClientType } from "../client";
-import { getSocketClient } from "../client";
+import type { SocketBalanceParams } from "@lightdotso/params";
+import { createQueryKeys } from "@lukemorales/query-key-factory";
+import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
 // -----------------------------------------------------------------------------
-// GET
+// Keys
 // -----------------------------------------------------------------------------
 
-export const getSocketBalances = async (
-  {
-    parameters,
-  }: {
-    parameters: {
-      query: {
-        userAddress: string;
-      };
-    };
-  },
-  clientType?: ClientType,
-) => {
-  const client = getSocketClient(clientType);
+export const socket = createQueryKeys("socket", {
+  balance: (params: SocketBalanceParams) => ({
+    queryKey: [{ params }],
+  }),
+});
 
-  return ResultAsync.fromPromise(
-    client.GET("/v2/balances", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [parameters?.query?.address] },
-      params: parameters,
-    }),
-    () => new Error("Database error"),
-  ).andThen(({ data, response, error }) => {
-    return response.status === 200 && data ? ok(data) : err(error);
-  });
-};
+// -----------------------------------------------------------------------------
+// Infer
+// -----------------------------------------------------------------------------
+
+export type SocketKeys = inferQueryKeys<typeof socket>;
