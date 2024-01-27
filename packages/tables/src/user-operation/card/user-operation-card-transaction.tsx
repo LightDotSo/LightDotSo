@@ -33,7 +33,7 @@ import {
 import { cn, getChainById, shortenBytes32 } from "@lightdotso/utils";
 import type { Row } from "@tanstack/react-table";
 import { flexRender } from "@tanstack/react-table";
-import { ArrowUpRight, ShareIcon } from "lucide-react";
+import { ArrowUpRight, CopyCheckIcon, ShareIcon } from "lucide-react";
 import Link from "next/link";
 import type { FC } from "react";
 import { Fragment, useCallback, useMemo } from "react";
@@ -74,7 +74,7 @@ export const UserOperationCardTransaction: FC<
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const [, copy] = useCopy();
+  const [isCopying, copy] = useCopy();
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -235,7 +235,11 @@ export const UserOperationCardTransaction: FC<
                       className="w-full bg-background-stronger"
                       onClick={handleLinkCopy}
                     >
-                      <ShareIcon className="mr-2 size-3" />
+                      {isCopying ? (
+                        <CopyCheckIcon className="mr-2 size-3" />
+                      ) : (
+                        <ShareIcon className="mr-2 size-3" />
+                      )}
                       Share Link
                     </Button>
                   )}

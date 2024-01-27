@@ -159,10 +159,7 @@ export const useUserOperationSubmit = ({
   // ---------------------------------------------------------------------------
 
   // A `useCallback` handler for confirming the operation
-  const handleConfirm = useCallback(() => {
-    // Set loading state
-    setIsLoading(true);
-
+  const handleConfirm = useCallback(async () => {
     const processSignature = async () => {
       const loadingToast = toast.loading("Submitting the userOperation result");
 
@@ -219,7 +216,10 @@ export const useUserOperationSubmit = ({
       );
     };
 
-    processSignature();
+    // Set loading state
+    setIsLoading(true);
+
+    await processSignature();
 
     // Unset loading state
     setIsLoading(false);

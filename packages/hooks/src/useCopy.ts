@@ -27,7 +27,7 @@ export const useCopy = (): [boolean, (text: string) => void] => {
   // State Hooks
   // ---------------------------------------------------------------------------
 
-  const [showCopied, setShowCopied] = useState(false);
+  const [isCopying, setIsCopying] = useState(false);
 
   // ---------------------------------------------------------------------------
   // Ref Hooks
@@ -39,16 +39,16 @@ export const useCopy = (): [boolean, (text: string) => void] => {
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
-  const copyText = useCallback((text: string): void => {
+  const copy = useCallback((text: string): void => {
     copy(text);
-    setShowCopied(true);
+    setIsCopying(true);
 
     if (timeoutRef.current != null) {
       clearTimeout(timeoutRef.current);
     }
 
     timeoutRef.current = window.setTimeout(() => {
-      setShowCopied(false);
+      setIsCopying(false);
       timeoutRef.current = null;
     }, 1500);
   }, []);
@@ -57,5 +57,5 @@ export const useCopy = (): [boolean, (text: string) => void] => {
   // Return
   // ---------------------------------------------------------------------------
 
-  return [showCopied, copyText];
+  return [isCopying, copy];
 };
