@@ -16,7 +16,7 @@
 "use client";
 
 import { useModals } from "@lightdotso/stores";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect } from "react";
 import type { FC, ReactNode } from "react";
 import { Modal } from "../modal";
@@ -64,6 +64,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // ---------------------------------------------------------------------------
 
   const router = useRouter();
+  const pathname = usePathname();
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -75,6 +76,17 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
       router.back();
     }
   }, [isModalInterceptionVisible, hideInterceptionModal, router]);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    if (isModalInterceptionVisible) {
+      hideInterceptionModal();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   // ---------------------------------------------------------------------------
   // Render
