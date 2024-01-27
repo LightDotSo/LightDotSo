@@ -16,7 +16,7 @@
 "use client";
 
 import { useModals } from "@lightdotso/stores";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { FC, ReactNode } from "react";
 import { Modal } from "../modal";
@@ -61,7 +61,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // ---------------------------------------------------------------------------
 
   const router = useRouter();
-  const pathname = usePathname();
+  // const pathname = usePathname();
 
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -89,11 +89,6 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // ---------------------------------------------------------------------------
 
   const onDismiss = useCallback(() => {
-    if (!isOpen) {
-      setIsVisible(false);
-      return;
-    }
-
     switch (type) {
       case "op":
         hideOpModal();
@@ -111,14 +106,24 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
         router.back();
         break;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen]);
+  }, [
+    setIsVisible,
+    hideNotificationsModal,
+    hideOpModal,
+    hideSendModal,
+    router,
+    type,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
+    if (isVisible) {
+      return;
+    }
+
     switch (type) {
       case "op":
         showOpModal();
