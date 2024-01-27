@@ -89,11 +89,11 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (isMounted && isModalInterceptionVisible) {
+    if (isMounted) {
       hideInterceptionModal();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [pathname, isMounted]);
 
   // ---------------------------------------------------------------------------
   // Render
