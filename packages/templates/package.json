@@ -28,6 +28,7 @@
   "dependencies": {
     "@lightdotso/const": "workspace:*",
     "@lightdotso/hooks": "workspace:*",
+    "@lightdotso/stores": "workspace:*",
     "@lightdotso/svg": "workspace:*",
     "@lightdotso/types": "workspace:*",
     "@lightdotso/ui": "workspace:*",

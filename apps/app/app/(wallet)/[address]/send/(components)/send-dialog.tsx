@@ -18,7 +18,10 @@
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
 import type { WalletSettingsData } from "@lightdotso/data";
 import { NftImage, PlaceholderOrb, TokenImage } from "@lightdotso/elements";
-import { useTransfersQueryState } from "@lightdotso/nuqs";
+import {
+  useTransfersQueryState,
+  useCallDataQueryState,
+} from "@lightdotso/nuqs";
 import {
   useSuspenseQueryNfts,
   useSuspenseQueryTokens,
@@ -110,7 +113,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { setFormRef } = useFormRef();
+  const { setFormRef, setIsFormDisabled } = useFormRef();
 
   // ---------------------------------------------------------------------------
   // Ref Hooks
@@ -164,6 +167,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   const [transfers, setTransfers] = useTransfersQueryState(
     initialTransfers ?? [],
   );
+  const [, setCallData] = useCallDataQueryState();
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -789,6 +793,20 @@ export const SendDialog: FC<SendDialogProps> = ({
   const isFormValid = useMemo(() => {
     return form.formState.isValid && isEmpty(form.formState.errors);
   }, [form.formState]);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    setIsFormDisabled(!isFormValid);
+  }, [isFormValid, setIsFormDisabled]);
+
+  useEffect(() => {
+    if (userOperationsParams) {
+      setCallData(userOperationsParams);
+    }
+  }, [userOperationsParams, setCallData]);
 
   // ---------------------------------------------------------------------------
   // Validation

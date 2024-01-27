@@ -13,39 +13,18 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { ModalInterception } from "@lightdotso/templates";
-import OriginalPage from "@/app/(wallet)/[address]/send/page";
-import { ModalInterceptionFooter } from "@/app/(wallet)/@send/(.)[address]/send/(components)/modal-interception-footer";
+import { parseAsString, useQueryState } from "nuqs";
 
 // -----------------------------------------------------------------------------
-// Props
+// Parser
 // -----------------------------------------------------------------------------
 
-type PageProps = {
-  params: { address: string };
-  searchParams: {
-    transfers?: string;
-  };
+export const callDataParser = parseAsString.withDefault("");
+
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
+
+export const useCallDataQueryState = () => {
+  return useQueryState("callData", callDataParser);
 };
-
-// -----------------------------------------------------------------------------
-// Page
-// -----------------------------------------------------------------------------
-
-export default async function Page({ params, searchParams }: PageProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <ModalInterception footerContent={<ModalInterceptionFooter />}>
-      <OriginalPage params={params} searchParams={searchParams} />
-    </ModalInterception>
-  );
-}
-
-// -----------------------------------------------------------------------------
-// Config
-// -----------------------------------------------------------------------------
-
-export const runtime = "edge";

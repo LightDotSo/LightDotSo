@@ -17,12 +17,24 @@ import { MutableRefObject } from "react";
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
+// -----------------------------------------------------------------------------
+// State
+// -----------------------------------------------------------------------------
+
 export interface FormRefState {
   formRef: MutableRefObject<HTMLFormElement | null> | undefined;
   setFormRef: (
     formRef: MutableRefObject<HTMLFormElement | null> | undefined,
   ) => void;
+  isFormDisabled: boolean;
+  setIsFormDisabled: (isFormDisabled: boolean) => void;
+  isFormLoading: boolean;
+  setIsFormLoading: (isFormLoading: boolean) => void;
 }
+
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
 
 export const useFormRef = create(
   devtools(
@@ -32,6 +44,10 @@ export const useFormRef = create(
         setFormRef: (
           formRef: MutableRefObject<HTMLFormElement | null> | undefined,
         ) => set({ formRef }),
+        isFormDisabled: false,
+        setIsFormDisabled: (isFormDisabled: boolean) => set({ isFormDisabled }),
+        isFormLoading: false,
+        setIsFormLoading: (isFormLoading: boolean) => set({ isFormLoading }),
       }),
       {
         name: "form-ref-state-v1",
