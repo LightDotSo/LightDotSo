@@ -53,9 +53,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (!isModalInterceptionVisible) {
-      showInterceptionModal();
-    }
+    showInterceptionModal();
   }, [isModalInterceptionVisible, showInterceptionModal]);
 
   // ---------------------------------------------------------------------------
