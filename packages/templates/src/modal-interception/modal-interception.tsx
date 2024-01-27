@@ -15,9 +15,8 @@
 
 "use client";
 
-import { useIsMounted } from "@lightdotso/hooks";
 import { useModals } from "@lightdotso/stores";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo } from "react";
 import type { FC, ReactNode } from "react";
 import { Modal } from "../modal";
@@ -58,17 +57,10 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   } = useModals();
 
   // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const isMounted = useIsMounted();
-
-  // ---------------------------------------------------------------------------
   // Next Hooks
   // ---------------------------------------------------------------------------
 
   const router = useRouter();
-  const pathname = usePathname();
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -128,12 +120,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
         break;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMounted]);
-
-  useEffect(() => {
-    onDismiss();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, []);
 
   // ---------------------------------------------------------------------------
   // Render
