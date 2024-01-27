@@ -1577,6 +1577,9 @@ importers:
       '@lightdotso/demo':
         specifier: workspace:*
         version: link:../demo
+      '@lightdotso/svg':
+        specifier: workspace:*
+        version: link:../svg
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../ui

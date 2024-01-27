@@ -68,9 +68,11 @@ export const useModals = create(
       hideOpModal: () => set({ isOpModalVisible: false }),
       showNftModal: () => set({ isNftModalVisible: true }),
       hideNftModal: () => set({ isNftModalVisible: false }),
-      showSendModal: () => set({ isSendModalVisible: true }),
+      showSendModal: () =>
+        set({ isSendModalVisible: true, isTokenModalVisible: false }),
       hideSendModal: () => set({ isSendModalVisible: false }),
-      showTokenModal: () => set({ isTokenModalVisible: true }),
+      showTokenModal: () =>
+        set({ isTokenModalVisible: true, isSendModalVisible: false }),
       hideTokenModal: () => set({ isTokenModalVisible: false }),
     }),
     {

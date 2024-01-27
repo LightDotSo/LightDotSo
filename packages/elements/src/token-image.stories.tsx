@@ -54,3 +54,7 @@ export const NotFound: Story = {
   ),
   args: {},
 };
+export const WithChainLogo: Story = {
+  render: args => <TokenImage withChainLogo token={tokenGetData} />,
+  args: {},
+};

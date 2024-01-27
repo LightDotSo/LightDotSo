@@ -18,6 +18,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import type { TokenData } from "@lightdotso/data";
+import { ChainLogo } from "@lightdotso/svg";
 import { Skeleton } from "@lightdotso/ui";
 import { cn, shortenName } from "@lightdotso/utils";
 import { getChainLabelById } from "@lightdotso/utils/src/chain";
@@ -47,7 +48,7 @@ export const parseTokenAddress = (token: TokenData) => {
 // Cva
 // -----------------------------------------------------------------------------
 
-const tokenImageVariants = cva(
+const tokenImageBaseVariants = cva(
   "inline-flex shrink-0 overflow-hidden rounded-full",
   {
     variants: {
@@ -70,17 +71,59 @@ const tokenImageVariants = cva(
 // Props
 // -----------------------------------------------------------------------------
 
-type TokenImageProps = {
+type TokenImageProps = TokenImageBaseProps & {
+  withChainLogo?: boolean;
+};
+
+type TokenImageBaseProps = {
   className?: string;
   token: TokenData;
-  size?: VariantProps<typeof tokenImageVariants>["size"];
+  size?: VariantProps<typeof tokenImageBaseVariants>["size"];
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TokenImage: FC<TokenImageProps> = ({ className, token, size }) => {
+export const TokenImage: FC<TokenImageProps> = ({
+  className,
+  token,
+  size,
+  withChainLogo,
+}) => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  if (withChainLogo) {
+    return (
+      <div className={cn("relative inline-block", className)}>
+        <TokenImageBase
+          className={cn(tokenImageBaseVariants({ size }), className)}
+          token={token}
+          size={size}
+        />
+        <span className="absolute bottom-0 right-0 inline-flex size-2.5 items-center justify-center rounded-md">
+          <ChainLogo chainId={token.chain_id} />
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <TokenImageBase
+      className={cn(tokenImageBaseVariants({ size }), className)}
+      token={token}
+      size={size}
+    />
+  );
+};
+
+export const TokenImageBase: FC<TokenImageBaseProps> = ({
+  className,
+  token,
+  size,
+}) => {
   // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
@@ -125,13 +168,15 @@ export const TokenImage: FC<TokenImageProps> = ({ className, token, size }) => {
   // ---------------------------------------------------------------------------
 
   if (!isImageLoaded) {
-    return <Skeleton className={cn(tokenImageVariants({ size }), className)} />;
+    return (
+      <Skeleton className={cn(tokenImageBaseVariants({ size }), className)} />
+    );
   }
 
   if (isImageLoaded && !isImageError) {
     return (
       <img
-        className={cn(tokenImageVariants({ size }), className)}
+        className={cn(tokenImageBaseVariants({ size }), className)}
         src={currentUrl}
         alt={token.name ?? token.symbol}
         onLoad={() => setIsImageLoaded(true)}
@@ -144,7 +189,7 @@ export const TokenImage: FC<TokenImageProps> = ({ className, token, size }) => {
     <span
       className={cn(
         "items-center justify-center text-ellipsis border border-border-primary-weak bg-background-stronger text-xs leading-none text-text-weak",
-        tokenImageVariants({ size }),
+        tokenImageBaseVariants({ size }),
         className,
       )}
     >
