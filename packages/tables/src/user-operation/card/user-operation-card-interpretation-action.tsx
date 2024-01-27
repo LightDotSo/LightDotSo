@@ -40,7 +40,7 @@ export const UserOperationCardInterpretationAction: FC<
 
   return (
     <InterpretationActionCard
-      className="pr-4"
+      className="group-[.transaction]:w-24 group-[.transaction]:pr-4 group-[.transaction]:sm:w-32 group-[.transaction]:md:w-48"
       interpretation={userOperation?.interpretation}
     />
   );

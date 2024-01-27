@@ -36,5 +36,10 @@ export const UserOperationCardChain: FC<UserOperationCardChainProps> = ({
   // Render
   // ---------------------------------------------------------------------------
 
-  return <ChainCard chain_id={chain_id} />;
+  return (
+    <ChainCard
+      className="group-[.transaction]:w-24 group-[.transaction]:sm:w-32 group-[.transaction]:md:w-40"
+      chain_id={chain_id}
+    />
+  );
 };
