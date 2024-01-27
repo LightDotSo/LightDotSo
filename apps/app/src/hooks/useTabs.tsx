@@ -31,7 +31,7 @@ import { useState, useEffect, useMemo } from "react";
 import type { Address } from "viem";
 import { AI_TAB, DEFAULT_TABS } from "@/const";
 import { HOME_TABS } from "@/const/tabs";
-import { usePathType } from "@/hooks/usePathType";
+import { usePathType } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Hook

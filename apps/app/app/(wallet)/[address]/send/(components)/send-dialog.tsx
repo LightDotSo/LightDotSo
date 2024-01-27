@@ -20,7 +20,7 @@ import type { WalletSettingsData } from "@lightdotso/data";
 import { NftImage, PlaceholderOrb, TokenImage } from "@lightdotso/elements";
 import {
   useTransfersQueryState,
-  // useCallDataQueryState,
+  useCallDataQueryState,
 } from "@lightdotso/nuqs";
 import {
   useSuspenseQueryNfts,
@@ -34,7 +34,7 @@ import type {
   Transfer,
   Transfers,
 } from "@lightdotso/schemas";
-// import { useFormRef } from "@lightdotso/stores";
+import { useFormRef } from "@lightdotso/stores";
 import { FooterButton, useIsInsideModal } from "@lightdotso/templates";
 import {
   Accordion,
@@ -113,7 +113,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   // Stores
   // ---------------------------------------------------------------------------
 
-  // const { setFormRef, setIsFormDisabled } = useFormRef();
+  const { setIsFormDisabled } = useFormRef();
 
   // ---------------------------------------------------------------------------
   // Ref Hooks
@@ -167,7 +167,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   const [transfers, setTransfers] = useTransfersQueryState(
     initialTransfers ?? [],
   );
-  // const [, setCallData] = useCallDataQueryState();
+  const [, setCallData] = useCallDataQueryState();
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -798,15 +798,15 @@ export const SendDialog: FC<SendDialogProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
-  // useEffect(() => {
-  //   setIsFormDisabled(!isFormValid);
-  // }, [isFormValid, setIsFormDisabled]);
+  useEffect(() => {
+    setIsFormDisabled(!isFormValid);
+  }, [isFormValid, setIsFormDisabled]);
 
-  // useEffect(() => {
-  //   if (userOperationsParams) {
-  //     setCallData(userOperationsParams);
-  //   }
-  // }, [userOperationsParams, setCallData]);
+  useEffect(() => {
+    if (userOperationsParams) {
+      setCallData(userOperationsParams);
+    }
+  }, [userOperationsParams, setCallData]);
 
   // ---------------------------------------------------------------------------
   // Validation
