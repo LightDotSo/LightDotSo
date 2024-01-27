@@ -44,6 +44,7 @@ export const ModalInterceptionFooter: FC = () => {
   const onDismiss = useCallback(() => {
     hideInterceptionModal();
     router.back();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   // ---------------------------------------------------------------------------
@@ -58,7 +59,8 @@ export const ModalInterceptionFooter: FC = () => {
 
   return (
     <FooterButton
-      isModal={true}
+      isModal
+      className="pt-0"
       disabled={isFormDisabled}
       cancelClick={onDismiss}
     />

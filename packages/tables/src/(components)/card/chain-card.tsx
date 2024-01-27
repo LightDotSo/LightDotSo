@@ -16,30 +16,30 @@
 "use client";
 
 import { ChainLogo } from "@lightdotso/svg";
-import { getChainById } from "@lightdotso/utils";
+import { cn, getChainById } from "@lightdotso/utils";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type ChainCardProps = { chain_id: number };
+type ChainCardProps = { chain_id: number; className?: string };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const ChainCard: FC<ChainCardProps> = ({ chain_id }) => {
+export const ChainCard: FC<ChainCardProps> = ({ chain_id, className }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   if (chain_id === 0) {
-    return <div className="w-24 min-w-20 shrink sm:w-32 md:w-40" />;
+    return <div className={cn("min-w-20 shrink", className)} />;
   }
 
   return (
-    <div className="w-24 min-w-20 shrink sm:w-32 md:w-40">
+    <div className={cn("min-w-20 shrink", className)}>
       <div className="flex items-center justify-start space-x-1.5">
         <ChainLogo className="size-6" chainId={chain_id} />
         <span className="text-xs font-medium text-text md:text-sm">

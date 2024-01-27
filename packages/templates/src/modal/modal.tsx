@@ -143,7 +143,11 @@ export const Modal: FC<ModalProps> = ({
               </Suspense>
             </ModalContext.Provider>
           </DialogBody>
-          {footerContent && <DialogFooter>{footerContent}</DialogFooter>}
+          {footerContent && (
+            <DialogFooter className="block w-full justify-start space-x-0">
+              {footerContent}
+            </DialogFooter>
+          )}
         </DialogContent>
       </DialogPortal>
     </Dialog>

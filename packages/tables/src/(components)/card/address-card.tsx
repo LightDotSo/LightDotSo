@@ -23,7 +23,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@lightdotso/ui";
-import { shortenAddress } from "@lightdotso/utils";
+import { cn, shortenAddress } from "@lightdotso/utils";
 import { useEnsName } from "@lightdotso/wagmi";
 import type { FC } from "react";
 import type { Address } from "viem";
@@ -32,13 +32,13 @@ import type { Address } from "viem";
 // Props
 // -----------------------------------------------------------------------------
 
-type ChainCardProps = { address: Address };
+type ChainCardProps = { address: Address; className?: string };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const AddressCard: FC<ChainCardProps> = ({ address }) => {
+export const AddressCard: FC<ChainCardProps> = ({ address, className }) => {
   // ---------------------------------------------------------------------------
   // Wagmi
   // ---------------------------------------------------------------------------
@@ -52,7 +52,7 @@ export const AddressCard: FC<ChainCardProps> = ({ address }) => {
   return (
     <TooltipProvider>
       <Tooltip>
-        <div className="flex items-center text-ellipsis">
+        <div className={cn("flex items-center text-ellipsis", className)}>
           <Avatar className="mr-3 size-7">
             <PlaceholderOrb address={address} />
           </Avatar>

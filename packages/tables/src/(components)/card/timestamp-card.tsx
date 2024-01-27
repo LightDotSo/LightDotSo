@@ -21,16 +21,21 @@ import type { FC } from "react";
 // Props
 // -----------------------------------------------------------------------------
 
-type TimestampCardProps = { timestamp: string };
+type TimestampCardProps = { timestamp: string; className?: string };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TimestampCard: FC<TimestampCardProps> = ({ timestamp }) => {
+export const TimestampCard: FC<TimestampCardProps> = ({
+  timestamp,
+  className,
+}) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return <div>{new Date(timestamp).toLocaleString()}</div>;
+  return (
+    <div className={className}>{new Date(timestamp).toLocaleString()}</div>
+  );
 };

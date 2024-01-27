@@ -50,5 +50,12 @@ export const ModalInterceptionFooter: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  return <FooterButton isModal={true} disabled={isFormDisabled} href={href} />;
+  return (
+    <FooterButton
+      isModal
+      className="pt-0"
+      disabled={isFormDisabled}
+      href={href}
+    />
+  );
 };
