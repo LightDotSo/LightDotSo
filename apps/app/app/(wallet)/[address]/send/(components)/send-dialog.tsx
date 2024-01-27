@@ -839,10 +839,11 @@ export const SendDialog: FC<SendDialogProps> = ({
   }, [isFormValid, setIsFormDisabled]);
 
   useEffect(() => {
-    if (userOperationsParams) {
+    if (isFormValid && userOperationsParams) {
       setUserOperations(userOperationsParams);
     }
-  }, [userOperationsParams, setUserOperations]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFormValid]);
 
   // ---------------------------------------------------------------------------
   // Validation
