@@ -59,11 +59,11 @@ export const userOperationsParser = createParser({
 // Hook
 // -----------------------------------------------------------------------------
 
-export const useUserOperationsState = (
-  initialUserOperations: PartialUserOperations,
+export const useUserOperationsQueryState = (
+  initialUserOperations?: PartialUserOperations,
 ) => {
   return useQueryState(
     "userOperations",
-    userOperationsParser.withDefault(initialUserOperations),
+    userOperationsParser.withDefault(initialUserOperations ?? [{}]),
   );
 };

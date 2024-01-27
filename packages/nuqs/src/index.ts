@@ -13,7 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { callDataParser, useCallDataQueryState } from "./useCallDataQueryState";
 export {
   inviteCodeParser,
   useInviteCodeQueryState,
@@ -42,5 +41,5 @@ export { typeParser, useTypeQueryState } from "./useTypeQueryState";
 export type { WalletType } from "./useTypeQueryState";
 export {
   userOperationsParser,
-  useUserOperationsState,
-} from "./useUserOperationsState";
+  useUserOperationsQueryState,
+} from "./useUserOperationsQueryState";

@@ -27,6 +27,7 @@ import type { FC } from "react";
 import type { Address, Chain, Hex } from "viem";
 import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const";
+import { userOperationsParser } from "@lightdotso/nuqs";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -97,7 +98,9 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
         form="walletNameForm"
         disabled={typeof deployed_op !== "undefined"}
       >
-        <Link href={`/${address}/op?userOperations=${chain.id}:${initCode}:_`}>
+        <Link
+          href={`/${address}/op?userOperations=${userOperationsParser.serialize([{ chainId: BigInt(chain.id), initCode: initCode }])}`}
+        >
           {typeof deployed_op !== "undefined" ? "Already Deployed" : "Deploy"}
         </Link>
       </Button>
