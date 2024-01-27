@@ -70,7 +70,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // ---------------------------------------------------------------------------
 
   const onDismiss = useCallback(() => {
-    if (!isModalInterceptionVisible) {
+    if (isModalInterceptionVisible) {
       hideInterceptionModal();
       router.back();
     }
