@@ -34,7 +34,7 @@ import type {
   Transfer,
   Transfers,
 } from "@lightdotso/schemas";
-import { useFormRef } from "@lightdotso/stores";
+// import { useFormRef } from "@lightdotso/stores";
 import { FooterButton, useIsInsideModal } from "@lightdotso/templates";
 import {
   Accordion,
@@ -113,7 +113,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { setFormRef, setIsFormDisabled } = useFormRef();
+  // const { setFormRef, setIsFormDisabled } = useFormRef();
 
   // ---------------------------------------------------------------------------
   // Ref Hooks
@@ -131,9 +131,9 @@ export const SendDialog: FC<SendDialogProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
-  useEffect(() => {
-    setFormRef(formRef);
-  }, [setFormRef]);
+  // useEffect(() => {
+  //   setFormRef(formRef);
+  // }, [setFormRef]);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -798,9 +798,9 @@ export const SendDialog: FC<SendDialogProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
-  useEffect(() => {
-    setIsFormDisabled(!isFormValid);
-  }, [isFormValid, setIsFormDisabled]);
+  // useEffect(() => {
+  //   setIsFormDisabled(!isFormValid);
+  // }, [isFormValid, setIsFormDisabled]);
 
   // useEffect(() => {
   //   if (userOperationsParams) {
