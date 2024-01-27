@@ -137,7 +137,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
         break;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isVisible, pathname, searchParams]);
+  }, [isVisible, pathname, searchParams, type]);
 
   // ---------------------------------------------------------------------------
   // Render
