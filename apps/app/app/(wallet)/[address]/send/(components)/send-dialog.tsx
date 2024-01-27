@@ -996,7 +996,7 @@ export const SendDialog: FC<SendDialogProps> = ({
     <div className="grid gap-10">
       <TooltipProvider delayDuration={300}>
         <Form {...form}>
-          <form className="space-y-4" ref={formRef}>
+          <form ref={formRef} className="space-y-4">
             <div className="space-y-4">
               {fields.map((field, index) => (
                 <Accordion
