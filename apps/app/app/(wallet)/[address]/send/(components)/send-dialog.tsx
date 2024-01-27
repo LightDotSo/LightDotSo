@@ -20,7 +20,7 @@ import type { WalletSettingsData } from "@lightdotso/data";
 import { NftImage, PlaceholderOrb, TokenImage } from "@lightdotso/elements";
 import {
   useTransfersQueryState,
-  useCallDataQueryState,
+  // useCallDataQueryState,
 } from "@lightdotso/nuqs";
 import {
   useSuspenseQueryNfts,
@@ -167,7 +167,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   const [transfers, setTransfers] = useTransfersQueryState(
     initialTransfers ?? [],
   );
-  const [, setCallData] = useCallDataQueryState();
+  // const [, setCallData] = useCallDataQueryState();
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -802,11 +802,11 @@ export const SendDialog: FC<SendDialogProps> = ({
     setIsFormDisabled(!isFormValid);
   }, [isFormValid, setIsFormDisabled]);
 
-  useEffect(() => {
-    if (userOperationsParams) {
-      setCallData(userOperationsParams);
-    }
-  }, [userOperationsParams, setCallData]);
+  // useEffect(() => {
+  //   if (userOperationsParams) {
+  //     setCallData(userOperationsParams);
+  //   }
+  // }, [userOperationsParams, setCallData]);
 
   // ---------------------------------------------------------------------------
   // Validation
