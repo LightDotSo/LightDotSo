@@ -144,7 +144,7 @@ export const Modal: FC<ModalProps> = ({
             </ModalContext.Provider>
           </DialogBody>
           {footerContent && (
-            <DialogFooter className="block justify-start space-x-0">
+            <DialogFooter className="block w-full justify-start space-x-0">
               {footerContent}
             </DialogFooter>
           )}
