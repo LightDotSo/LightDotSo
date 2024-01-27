@@ -48,7 +48,7 @@ export const InterpretationCard: FC<InterpretationCardProps> = ({
   return (
     <div
       className={cn(
-        "min-w-32 grow items-center space-x-2 md:space-x-3",
+        "min-w-32 flex grow items-center space-x-2 md:space-x-3",
         className,
       )}
     >
