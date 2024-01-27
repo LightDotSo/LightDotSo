@@ -14,8 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { ModalInterception } from "@lightdotso/templates";
-import OriginalPage from "@/app/(wallet)/[address]/op/page";
 import { ModalInterceptionFooter } from "@/app/(wallet)/@op/(.)[address]/op/(components)/modal-interception-footer";
+import OriginalPage from "@/app/(wallet)/[address]/op/page";
 
 // -----------------------------------------------------------------------------
 // Props
