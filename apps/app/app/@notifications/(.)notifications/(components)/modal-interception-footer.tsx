@@ -58,7 +58,8 @@ export const ModalInterceptionFooter: FC = () => {
 
   return (
     <FooterButton
-      isModal={true}
+      isModal
+      className="pt-0"
       disabled={isFormDisabled}
       cancelClick={onDismiss}
     />

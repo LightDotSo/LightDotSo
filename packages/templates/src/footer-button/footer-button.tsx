@@ -15,6 +15,7 @@
 
 "use client";
 
+import { cn } from "@lightdotso/utils";
 import { Button, ButtonIcon } from "@lightdotso/ui";
 import { XIcon } from "lucide-react";
 import Link from "next/link";
@@ -25,6 +26,7 @@ import type { FC } from "react";
 // -----------------------------------------------------------------------------
 
 export interface FooterButtonProps {
+  className?: string;
   disabled?: boolean;
   cancelDisabled?: boolean;
   isLoading?: boolean;
@@ -39,6 +41,7 @@ export interface FooterButtonProps {
 // -----------------------------------------------------------------------------
 
 export const FooterButton: FC<FooterButtonProps> = ({
+  className,
   disabled,
   cancelDisabled,
   isLoading,
@@ -52,7 +55,12 @@ export const FooterButton: FC<FooterButtonProps> = ({
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="flex flex-col space-y-4 pt-4 md:flex-row md:items-center md:justify-between md:space-y-0">
+    <div
+      className={cn(
+        "flex flex-col space-y-4 pt-4 md:flex-row md:items-center md:justify-between md:space-y-0",
+        className,
+      )}
+    >
       <span className="hidden md:block">
         <Button
           disabled={cancelDisabled}
