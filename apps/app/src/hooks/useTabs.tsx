@@ -30,8 +30,8 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect, useMemo } from "react";
 import type { Address } from "viem";
 import { AI_TAB, DEFAULT_TABS } from "@/const";
-import { usePathType } from "@/hooks/usePathType";
 import { HOME_TABS } from "@/const/tabs";
+import { usePathType } from "@/hooks/usePathType";
 
 // -----------------------------------------------------------------------------
 // Hook
