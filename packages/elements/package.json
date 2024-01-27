@@ -29,6 +29,7 @@
     "@lightdotso/const": "workspace:*",
     "@lightdotso/data": "workspace:*",
     "@lightdotso/demo": "workspace:*",
+    "@lightdotso/svg": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
     "class-variance-authority": "^0.7.0",

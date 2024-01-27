@@ -15,10 +15,9 @@
 
 "use client";
 
-import { useIsMounted } from "@lightdotso/hooks";
 import { useModals } from "@lightdotso/stores";
-import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { FC, ReactNode } from "react";
 import { Modal } from "../modal";
 
@@ -28,6 +27,7 @@ import { Modal } from "../modal";
 
 interface ModalInterceptionProps {
   children: ReactNode;
+  type: "op" | "notifications" | "send";
   footerContent?: ReactNode;
 }
 
@@ -38,73 +38,116 @@ interface ModalInterceptionProps {
 export const ModalInterception: FC<ModalInterceptionProps> = ({
   children,
   footerContent,
+  type,
 }) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
   const {
-    isModalInterceptionVisible,
-    showInterceptionModal,
-    hideInterceptionModal,
+    isNotificationsModalVisible,
+    isOpModalVisible,
+    isSendModalVisible,
+    showNotificationsModal,
+    showOpModal,
+    showSendModal,
+    hideNotificationsModal,
+    hideOpModal,
+    hideSendModal,
   } = useModals();
-
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const isMounted = useIsMounted();
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
-
-  useEffect(() => {
-    if (!isModalInterceptionVisible) {
-      showInterceptionModal();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // ---------------------------------------------------------------------------
   // Next Hooks
   // ---------------------------------------------------------------------------
 
   const router = useRouter();
-  const pathname = usePathname();
+  // const pathname = usePathname();
+
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [isVisible, setIsVisible] = useState(false);
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const isOpen = useMemo(() => {
+    switch (type) {
+      case "op":
+        return isOpModalVisible;
+      case "notifications":
+        return isNotificationsModalVisible;
+      case "send":
+        return isSendModalVisible;
+    }
+  }, [isNotificationsModalVisible, isOpModalVisible, isSendModalVisible, type]);
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
   const onDismiss = useCallback(() => {
-    if (isModalInterceptionVisible) {
-      hideInterceptionModal();
-      router.back();
+    switch (type) {
+      case "op":
+        hideOpModal();
+        setIsVisible(false);
+        router.back();
+        break;
+      case "notifications":
+        hideNotificationsModal();
+        setIsVisible(false);
+        router.back();
+        break;
+      case "send":
+        hideSendModal();
+        setIsVisible(false);
+        router.back();
+        break;
     }
-  }, [isModalInterceptionVisible, hideInterceptionModal, router]);
+  }, [
+    setIsVisible,
+    hideNotificationsModal,
+    hideOpModal,
+    hideSendModal,
+    router,
+    type,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (isMounted && isModalInterceptionVisible) {
-      hideInterceptionModal();
+    if (isVisible) {
+      return;
+    }
+
+    switch (type) {
+      case "op":
+        showOpModal();
+        break;
+      case "notifications":
+        showNotificationsModal();
+        break;
+      case "send":
+        showSendModal();
+        break;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, []);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
+  if (!isOpen) {
+    return null;
+  }
+
   return (
-    <Modal
-      footerContent={footerContent}
-      open={isModalInterceptionVisible}
-      onClose={onDismiss}
-    >
+    <Modal footerContent={footerContent} open={isOpen} onClose={onDismiss}>
       {children}
     </Modal>
   );

@@ -22,6 +22,7 @@ export type { NotificationData, NotificationCountData } from "./notification";
 export type { NftData, NftDataPage } from "./nft";
 export type { OwnerData } from "./owner";
 export type { PaymasterOperationData } from "./paymasterOperation";
+export type { SocketBalanceData, SocketBalancePageData } from "./socket";
 export type { TokenPortfolioData, NftPortfolioData } from "./portfolio";
 export type { TokenData, TokenCountData } from "./token";
 export type { TokenGroupData } from "./tokenGroup";

@@ -1577,6 +1577,9 @@ importers:
       '@lightdotso/demo':
         specifier: workspace:*
         version: link:../demo
+      '@lightdotso/svg':
+        specifier: workspace:*
+        version: link:../svg
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../ui
@@ -1730,12 +1733,21 @@ importers:
 
   packages/modals:
     dependencies:
+      '@lightdotso/const':
+        specifier: workspace:*
+        version: link:../const
       '@lightdotso/hooks':
         specifier: workspace:*
         version: link:../hooks
+      '@lightdotso/query':
+        specifier: workspace:*
+        version: link:../query
       '@lightdotso/stores':
         specifier: workspace:*
         version: link:../stores
+      '@lightdotso/svg':
+        specifier: workspace:*
+        version: link:../svg
       '@lightdotso/templates':
         specifier: workspace:*
         version: link:../templates

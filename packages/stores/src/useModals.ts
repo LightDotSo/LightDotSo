@@ -24,18 +24,24 @@ type ModalsStore = {
   isAuthModalVisible: boolean;
   isDepositModalVisible: boolean;
   isNftModalVisible: boolean;
+  isNotificationsModalVisible: boolean;
+  isOpModalVisible: boolean;
+  isSendModalVisible: boolean;
   isTokenModalVisible: boolean;
-  isModalInterceptionVisible: boolean;
   showAuthModal: () => void;
   hideAuthModal: () => void;
   showDepositModal: () => void;
   hideDepositModal: () => void;
   showNftModal: () => void;
   hideNftModal: () => void;
+  showNotificationsModal: () => void;
+  hideNotificationsModal: () => void;
+  showOpModal: () => void;
+  hideOpModal: () => void;
+  showSendModal: () => void;
+  hideSendModal: () => void;
   showTokenModal: () => void;
   hideTokenModal: () => void;
-  showInterceptionModal: () => void;
-  hideInterceptionModal: () => void;
 };
 
 // -----------------------------------------------------------------------------
@@ -48,18 +54,87 @@ export const useModals = create(
       isAuthModalVisible: false,
       isDepositModalVisible: false,
       isNftModalVisible: false,
+      isNotificationsModalVisible: false,
+      isOpModalVisible: false,
+      isSendModalVisible: false,
       isTokenModalVisible: false,
-      isModalInterceptionVisible: false,
-      showAuthModal: () => set({ isAuthModalVisible: true }),
+      showAuthModal: () =>
+        set({
+          isAuthModalVisible: true,
+          isDepositModalVisible: false,
+          isNftModalVisible: false,
+          isNotificationsModalVisible: false,
+          isOpModalVisible: false,
+          isSendModalVisible: false,
+          isTokenModalVisible: false,
+        }),
       hideAuthModal: () => set({ isAuthModalVisible: false }),
-      showDepositModal: () => set({ isDepositModalVisible: true }),
+      showDepositModal: () =>
+        set({
+          isDepositModalVisible: true,
+          isAuthModalVisible: false,
+          isNftModalVisible: false,
+          isNotificationsModalVisible: false,
+          isOpModalVisible: false,
+          isSendModalVisible: false,
+          isTokenModalVisible: false,
+        }),
       hideDepositModal: () => set({ isDepositModalVisible: false }),
-      showNftModal: () => set({ isNftModalVisible: true }),
+      showNotificationsModal: () =>
+        set({
+          isNotificationsModalVisible: true,
+          isAuthModalVisible: false,
+          isDepositModalVisible: false,
+          isNftModalVisible: false,
+          isOpModalVisible: false,
+          isSendModalVisible: false,
+          isTokenModalVisible: false,
+        }),
+      hideNotificationsModal: () => set({ isNotificationsModalVisible: false }),
+      showOpModal: () =>
+        set({
+          isOpModalVisible: true,
+          isAuthModalVisible: false,
+          isDepositModalVisible: false,
+          isNftModalVisible: false,
+          isNotificationsModalVisible: false,
+          isSendModalVisible: false,
+          isTokenModalVisible: false,
+        }),
+      hideOpModal: () => set({ isOpModalVisible: false }),
+      showNftModal: () =>
+        set({
+          isNftModalVisible: true,
+          isAuthModalVisible: false,
+          isDepositModalVisible: false,
+          isNotificationsModalVisible: false,
+          isOpModalVisible: false,
+          isSendModalVisible: false,
+          isTokenModalVisible: false,
+        }),
       hideNftModal: () => set({ isNftModalVisible: false }),
-      showTokenModal: () => set({ isTokenModalVisible: true }),
+      showSendModal: () =>
+        set({
+          isSendModalVisible: true,
+          isAuthModalVisible: false,
+          isDepositModalVisible: false,
+          isNftModalVisible: false,
+          isNotificationsModalVisible: false,
+          isOpModalVisible: false,
+          isTokenModalVisible: false,
+        }),
+      hideSendModal: () => set({ isSendModalVisible: false }),
+      showTokenModal: () =>
+        set({
+          isTokenModalVisible: true,
+          isAuthModalVisible: false,
+          isDepositModalVisible: false,
+          isNftModalVisible: false,
+          isNotificationsModalVisible: false,
+          isOpModalVisible: false,
+          isSendModalVisible: false,
+        }),
       hideTokenModal: () => set({ isTokenModalVisible: false }),
-      showInterceptionModal: () => set({ isModalInterceptionVisible: true }),
-      hideInterceptionModal: () => set({ isModalInterceptionVisible: false }),
     }),
     {
       anonymousActionType: "useModals",

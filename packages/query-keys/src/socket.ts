@@ -13,48 +13,22 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { tokenGetData } from "@lightdotso/demo";
-import type { Meta, StoryObj } from "@storybook/react";
-import { TokenImage } from "./token-image";
+import type { SocketBalanceParams } from "@lightdotso/params";
+import { createQueryKeys } from "@lukemorales/query-key-factory";
+import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
 // -----------------------------------------------------------------------------
-// Meta
+// Keys
 // -----------------------------------------------------------------------------
 
-const meta: Meta<typeof TokenImage> = {
-  title: "element/TokenImage",
-  component: TokenImage,
-  tags: ["autodocs"],
-  argTypes: {},
-};
-export default meta;
+export const socket = createQueryKeys("socket", {
+  balance: (params: SocketBalanceParams) => ({
+    queryKey: [{ params }],
+  }),
+});
 
 // -----------------------------------------------------------------------------
-// Types
+// Infer
 // -----------------------------------------------------------------------------
 
-type Story = StoryObj<typeof TokenImage>;
-
-// -----------------------------------------------------------------------------
-// Story
-// -----------------------------------------------------------------------------
-
-export const Base: Story = {
-  render: args => <TokenImage token={tokenGetData} />,
-  args: {},
-};
-export const NotFound: Story = {
-  render: args => (
-    <TokenImage
-      token={{
-        ...tokenGetData,
-        address: "0x59b8eF31a1F76d17bc67C18a304E967B34fd7100",
-      }}
-    />
-  ),
-  args: {},
-};
-export const WithChainLogo: Story = {
-  render: args => <TokenImage withChainLogo token={tokenGetData} />,
-  args: {},
-};
+export type SocketKeys = inferQueryKeys<typeof socket>;

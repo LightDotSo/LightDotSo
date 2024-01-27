@@ -37,7 +37,10 @@ export default async function Page({ searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <ModalInterception footerContent={<ModalInterceptionFooter />}>
+    <ModalInterception
+      footerContent={<ModalInterceptionFooter />}
+      type="notifications"
+    >
       <OriginalPage searchParams={searchParams} />
     </ModalInterception>
   );

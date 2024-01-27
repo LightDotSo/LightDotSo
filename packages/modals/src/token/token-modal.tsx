@@ -15,15 +15,26 @@
 
 "use client";
 
+import { MAINNET_CHAINS } from "@lightdotso/const";
+import { useQuerySocketBalances } from "@lightdotso/query";
 import { useModals } from "@lightdotso/stores";
+import { ChainLogo } from "@lightdotso/svg";
 import { Modal } from "@lightdotso/templates";
-import { DialogDescription, DialogTitle } from "@lightdotso/ui";
+import { Button, ButtonIcon } from "@lightdotso/ui";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
 export function TokenModal() {
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { balances } = useQuerySocketBalances({
+    address: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
+  });
+
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -36,9 +47,21 @@ export function TokenModal() {
 
   if (isTokenModalVisible) {
     return (
-      <Modal open size="sm" onClose={hideTokenModal}>
-        <DialogTitle>Token</DialogTitle>
-        <DialogDescription>Token for </DialogDescription>
+      <Modal
+        open
+        headerContent={
+          <div className="flex flex-row space-x-2">
+            <Button variant="shadow">All Chains</Button>
+            {MAINNET_CHAINS.map(chain => (
+              <ButtonIcon key={chain.id} variant="shadow">
+                <ChainLogo chainId={chain.id} />
+              </ButtonIcon>
+            ))}
+          </div>
+        }
+        onClose={hideTokenModal}
+      >
+        <>{JSON.stringify(balances)}</>
       </Modal>
     );
   }

@@ -23,6 +23,7 @@ import { nft_valuation } from "./nft_valation";
 import { notification } from "./notification";
 import { paymaster_operation } from "./paymaster_operation";
 import { portfolio } from "./portfolio";
+import { socket } from "./socket";
 import { token } from "./token";
 import { token_price } from "./token_price";
 import { transaction } from "./transaction";
@@ -39,6 +40,7 @@ export const queryKeys = mergeQueryKeys(
   notification,
   paymaster_operation,
   portfolio,
+  socket,
   transaction,
   user_operation,
   user,

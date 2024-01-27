@@ -26,8 +26,11 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
+    "@lightdotso/const": "workspace:*",
     "@lightdotso/hooks": "workspace:*",
+    "@lightdotso/query": "workspace:*",
     "@lightdotso/stores": "workspace:*",
+    "@lightdotso/svg": "workspace:*",
     "@lightdotso/templates": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@storybook/react": "^7.6.10",
