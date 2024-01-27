@@ -13,6 +13,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Copyright 2017-present Horizon Blockchain Games Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 use ethers::types::Address;
 use eyre::Result;
 use lightdotso_common::traits::VecU8ToHex;
@@ -24,6 +38,7 @@ use lightdotso_solutions::{
 
 // Signatures and testcases brought from: https://github.com/0xsequence/go-sequence/blob/659864efe21b1ead7615434a5075c35d4e85abde/core/v2/v2_test.go#L21
 // License: Apache-2.0
+
 // Also from: https://github.com/0xsequence/sequence.js/blob/e5659ab1a304ae48b28c843b0d99fb3b3f6bc0b1/packages/core/tests/v2/signature.spec.ts
 // License: Apache-2.0
 const SIGNATURES: &[&str] = &[
