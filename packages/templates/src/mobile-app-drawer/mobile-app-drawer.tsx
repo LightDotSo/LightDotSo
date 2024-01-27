@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { useBaseSlug } from "@lightdotso/hooks";
 import type { Tab } from "@lightdotso/types";
 import {
   Badge,
@@ -47,6 +48,12 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
   tabs,
   children,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const baseSlug = useBaseSlug();
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -85,7 +92,7 @@ export const MobileAppDrawer: FC<MobileAppDrawerProps> = ({
                 className="border-b border-border py-1.5 first:border-t"
               >
                 <Button asChild className="w-full justify-start" variant="link">
-                  <Link href={tab.href}>
+                  <Link href={`${baseSlug}${tab.href}`}>
                     <tab.icon className="mr-2 size-4" />
                     {tab.label}
                     {tab?.number && tab?.number > 0 && (

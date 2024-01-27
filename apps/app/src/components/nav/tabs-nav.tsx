@@ -16,15 +16,14 @@
 // Full complete example from: https://github.com/hqasmei/youtube-tutorials/blob/ee44df8fbf6ab4f4c2f7675f17d67813947a7f61/vercel-animated-tabs/src/components/tabs.tsx
 // License: MIT
 
+import { useBaseSlug } from "@lightdotso/hooks";
 import type { Tab } from "@lightdotso/types";
 import { Badge } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import type { FC } from "react";
-import { isAddress } from "viem";
 
 // -----------------------------------------------------------------------------
 // Const
@@ -65,33 +64,16 @@ export const TabsNav: FC<TabNavProps> = ({
   const [isAnimated, setIsAnimated] = useState(false);
 
   // ---------------------------------------------------------------------------
-  // Next Hooks
-  // ---------------------------------------------------------------------------
-
-  const pathname = usePathname();
-
-  // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
-
-  const firstSlug = useMemo(() => {
-    // Split the path using '/' as delimiter and remove empty strings
-    const slugs = pathname.split("/").filter(slug => slug);
-
-    // If the first slug is `demo`, return `/demo`
-    if (slugs.length > 0 && slugs[0] === "demo") {
-      return "/demo";
-    }
-
-    // Return the first slug if it is an address
-    return slugs.length > 0 && isAddress(slugs[0]) ? "/" + slugs[0] : "";
-  }, [pathname]);
-
-  // ---------------------------------------------------------------------------
   // Ref Hooks
   // ---------------------------------------------------------------------------
 
   const navRef = useRef<HTMLDivElement>(null);
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const baseSlug = useBaseSlug();
 
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -148,10 +130,14 @@ export const TabsNav: FC<TabNavProps> = ({
       {tabs.map((item, i) => {
         const isActive =
           hoveredTabIndex === i || selectedTabIndex === i || false;
-        const href = firstSlug + item.href;
 
         return (
-          <Link key={i} passHref legacyBehavior href={href}>
+          <Link
+            key={i}
+            passHref
+            legacyBehavior
+            href={`${baseSlug}${item.href}`}
+          >
             <motion.a
               ref={el => (anchorRefs[i] = el)}
               className={cn(

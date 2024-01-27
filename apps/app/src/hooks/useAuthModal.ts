@@ -55,5 +55,9 @@ export const useAuthModal = () => {
     return typeof sessionId === "string" && !!address;
   }, [sessionId, address]);
 
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
+
   return { isAuthValid, openAuthModal };
 };

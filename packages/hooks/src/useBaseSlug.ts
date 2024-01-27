@@ -13,57 +13,41 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import { useMediaQuery } from "@lightdotso/hooks";
-import { useAuth } from "@lightdotso/stores";
-import { Button } from "@lightdotso/ui";
-import { shortenAddress } from "@lightdotso/utils";
-import { useWeb3Modal } from "@web3modal/wagmi/react";
-import { Wallet } from "lucide-react";
-import type { Address } from "viem";
-
-// From: https://www.rainbowkit.com/docs/custom-connect-button
-// Customizes the ConnectKit button to use the UI Button component.
+import { usePathname } from "next/navigation";
+import { useMemo } from "react";
+import { isAddress } from "viem";
 
 // -----------------------------------------------------------------------------
-// Component
+// Hook
 // -----------------------------------------------------------------------------
 
-export const ConnectButton = () => {
+export const useBaseSlug = () => {
   // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { address, ens } = useAuth();
-
-  // ---------------------------------------------------------------------------
-  // Hooks
+  // Next Hooks
   // ---------------------------------------------------------------------------
 
-  const isDesktop = useMediaQuery("md");
+  const pathname = usePathname();
 
   // ---------------------------------------------------------------------------
-  // Web3Modal
+  // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const { open } = useWeb3Modal();
+  const baseSlug = useMemo(() => {
+    // Split the path using '/' as delimiter and remove empty strings
+    const slugs = pathname.split("/").filter(slug => slug);
+
+    // If the first slug is `demo`, return `/demo`
+    if (slugs.length > 0 && slugs[0] === "demo") {
+      return "/demo";
+    }
+
+    // Return the first slug if it is an address
+    return slugs.length > 0 && isAddress(slugs[0]) ? "/" + slugs[0] : "";
+  }, [pathname]);
 
   // ---------------------------------------------------------------------------
-  // Render
+  // Return
   // ---------------------------------------------------------------------------
 
-  return (
-    <Button
-      size={isDesktop ? "sm" : "lg"}
-      onClick={
-        !address
-          ? () => open({ view: "Connect" })
-          : () => open({ view: "Account" })
-      }
-    >
-      <Wallet className="mr-2 size-4" />
-      {address ? ens ?? shortenAddress(address as Address) : "Connect Wallet"}
-    </Button>
-  );
+  return baseSlug;
 };
