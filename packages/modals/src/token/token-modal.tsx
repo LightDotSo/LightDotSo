@@ -38,15 +38,21 @@ export function TokenModal() {
 
   if (isTokenModalVisible) {
     return (
-      <Modal open onClose={hideTokenModal}>
-        <div className="flex flex-row space-x-2">
-          <Button variant="shadow">All Chains</Button>
-          {MAINNET_CHAINS.map(chain => (
-            <ButtonIcon variant="shadow">
-              <ChainLogo chainId={chain.id} />
-            </ButtonIcon>
-          ))}
-        </div>
+      <Modal
+        open
+        headerContent={
+          <div className="flex flex-row space-x-2">
+            <Button variant="shadow">All Chains</Button>
+            {MAINNET_CHAINS.map(chain => (
+              <ButtonIcon variant="shadow">
+                <ChainLogo chainId={chain.id} />
+              </ButtonIcon>
+            ))}
+          </div>
+        }
+        onClose={hideTokenModal}
+      >
+        <></>
       </Modal>
     );
   }

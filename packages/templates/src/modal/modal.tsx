@@ -59,6 +59,7 @@ const modalDialogVariants = cva(["max-h-[80%]"], {
 
 interface ModalProps extends VariantProps<typeof modalDialogVariants> {
   children: ReactNode;
+  headerContent?: ReactNode;
   footerContent?: ReactNode;
   open?: boolean;
   onClose?: () => void;
@@ -86,6 +87,7 @@ export const Modal: FC<ModalProps> = ({
   children,
   open,
   size,
+  headerContent,
   footerContent,
   onClose,
 }) => {
@@ -108,6 +110,7 @@ export const Modal: FC<ModalProps> = ({
     return (
       <Drawer shouldScaleBackground open={open} onClose={onClose}>
         <DrawerContent>
+          {headerContent && <DialogHeader>{headerContent}</DialogHeader>}
           <DrawerBody>
             <ModalContext.Provider value={true}>
               <Suspense fallback={<Skeleton className="h-64 w-full" />}>
@@ -135,6 +138,9 @@ export const Modal: FC<ModalProps> = ({
             <ButtonIcon size="sm" variant="shadow" onClick={onClose}>
               <X />
             </ButtonIcon>
+          </DialogHeader>
+          <DialogHeader className="block w-full justify-start space-x-0">
+            {headerContent}
           </DialogHeader>
           <DialogBody>
             <ModalContext.Provider value={true}>
