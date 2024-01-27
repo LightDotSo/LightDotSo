@@ -15,7 +15,10 @@
 
 "use client";
 
-import { useCallDataQueryState } from "@lightdotso/nuqs";
+import {
+  useUserOperationsQueryState,
+  userOperationsParser,
+} from "@lightdotso/nuqs";
 import { useAuth, useFormRef, useModals } from "@lightdotso/stores";
 import { FooterButton } from "@lightdotso/templates";
 import { useRouter } from "next/navigation";
@@ -30,7 +33,7 @@ export const ModalInterceptionFooter: FC = () => {
   // Nuqs
   // ---------------------------------------------------------------------------
 
-  const [callData] = useCallDataQueryState();
+  const [userOperations] = useUserOperationsQueryState();
 
   // ---------------------------------------------------------------------------
   // Stores
@@ -61,8 +64,8 @@ export const ModalInterceptionFooter: FC = () => {
   // ---------------------------------------------------------------------------
 
   const href = useMemo(() => {
-    return `/${wallet}/op/${callData}`;
-  }, [wallet, callData]);
+    return `/${wallet}/op?userOperations=${userOperationsParser.serialize(userOperations)}`;
+  }, [wallet, userOperations]);
 
   // ---------------------------------------------------------------------------
   // Render

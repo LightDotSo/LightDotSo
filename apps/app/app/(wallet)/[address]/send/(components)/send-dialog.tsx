@@ -20,7 +20,8 @@ import type { WalletSettingsData } from "@lightdotso/data";
 import { NftImage, PlaceholderOrb, TokenImage } from "@lightdotso/elements";
 import {
   useTransfersQueryState,
-  useCallDataQueryState,
+  useUserOperationsQueryState,
+  userOperationsParser,
 } from "@lightdotso/nuqs";
 import {
   useSuspenseQueryNfts,
@@ -167,7 +168,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   const [transfers, setTransfers] = useTransfersQueryState(
     initialTransfers ?? [],
   );
-  const [, setCallData] = useCallDataQueryState();
+  const [, setUserOperations] = useUserOperationsQueryState();
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -397,6 +398,10 @@ export const SendDialog: FC<SendDialogProps> = ({
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
+
+  const isFormValid = useMemo(() => {
+    return form.formState.isValid && isEmpty(form.formState.errors);
+  }, [form.formState]);
 
   const userOperationsParams = useMemo(() => {
     const encodeTransfer = (transfer: Transfer): [Address, bigint, Hex] => {
@@ -662,7 +667,7 @@ export const SendDialog: FC<SendDialogProps> = ({
 
     // Get the call data of the first transfer
     if (!transfers || transfers?.length === 0 || !form.formState.isValid) {
-      return "0x";
+      return [];
     }
 
     if (
@@ -671,11 +676,19 @@ export const SendDialog: FC<SendDialogProps> = ({
       isAddress(transfers[0].address) &&
       transfers[0].asset
     ) {
-      return `${transfers[0].chainId}:_:${encodeFunctionData({
-        abi: lightWalletAbi,
-        functionName: "execute",
-        args: encodeTransfer(transfers[0]) as [Address, bigint, Hex],
-      })}`;
+      return [
+        {
+          chainId:
+            transfers[0].chainId !== undefined
+              ? BigInt(transfers[0].chainId)
+              : undefined,
+          callData: encodeFunctionData({
+            abi: lightWalletAbi,
+            functionName: "execute",
+            args: encodeTransfer(transfers[0]) as [Address, bigint, Hex],
+          }),
+        },
+      ];
     }
 
     if (transfers?.length > 1) {
@@ -694,13 +707,14 @@ export const SendDialog: FC<SendDialogProps> = ({
       // If the transfer count is one, encode as `execute`
       for (const [chainId, transfers] of transfersByChainId.entries()) {
         if (transfers.length === 1) {
-          userOperationsParams.push(
-            `${chainId}:_:${encodeFunctionData({
+          userOperationsParams.push({
+            chainId: BigInt(chainId),
+            callData: encodeFunctionData({
               abi: lightWalletAbi,
               functionName: "execute",
               args: encodeTransfer(transfers[0]) as [Address, bigint, Hex],
-            })}`,
-          );
+            }),
+          });
         } else {
           let transformedTransfers = transfers;
 
@@ -770,8 +784,9 @@ export const SendDialog: FC<SendDialogProps> = ({
             encodeTransfer(transfer),
           );
           // If the transfer count is more than one, encode as `executeBatch`
-          userOperationsParams.push(
-            `${chainId}:_:${encodeFunctionData({
+          userOperationsParams.push({
+            chainId: BigInt(chainId),
+            callData: encodeFunctionData({
               abi: lightWalletAbi,
               functionName: "executeBatch",
               args: [
@@ -779,20 +794,17 @@ export const SendDialog: FC<SendDialogProps> = ({
                 encodedTransfers.map(transfer => transfer[1]),
                 encodedTransfers.map(transfer => transfer[2]),
               ] as [Address[], bigint[], Hex[]],
-            })}`,
-          );
+            }),
+          });
         }
       }
 
       // Return the user operations params
-      return userOperationsParams.join(";");
+      return userOperationsParams;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [transfers, tokens, form.formState]);
 
-  const isFormValid = useMemo(() => {
-    return form.formState.isValid && isEmpty(form.formState.errors);
-  }, [form.formState]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [transfers, tokens, isFormValid]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -803,10 +815,11 @@ export const SendDialog: FC<SendDialogProps> = ({
   }, [isFormValid, setIsFormDisabled]);
 
   useEffect(() => {
-    if (userOperationsParams) {
-      setCallData(userOperationsParams);
+    if (isFormValid && userOperationsParams) {
+      setUserOperations(userOperationsParams);
     }
-  }, [userOperationsParams, setCallData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFormValid, userOperationsParams]);
 
   // ---------------------------------------------------------------------------
   // Validation
@@ -1629,7 +1642,7 @@ export const SendDialog: FC<SendDialogProps> = ({
               <FooterButton
                 isModal={false}
                 cancelDisabled={true}
-                href={`/${address}/op?userOperations=${userOperationsParams!}`}
+                // href={`/${address}/op?userOperations=${userOperationsParser.serialize(userOperationsParams!)}`}
                 disabled={!isFormValid}
               />
             )}

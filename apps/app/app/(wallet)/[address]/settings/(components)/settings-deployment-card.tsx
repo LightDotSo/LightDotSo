@@ -17,6 +17,7 @@
 
 import { CONTRACT_ADDRESSES } from "@lightdotso/const";
 import type { WalletSettingsData } from "@lightdotso/data";
+import { userOperationsParser } from "@lightdotso/nuqs";
 import { useSuspenseQueryUserOperations } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { calculateInitCode } from "@lightdotso/solutions";
@@ -97,7 +98,9 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
         form="walletNameForm"
         disabled={typeof deployed_op !== "undefined"}
       >
-        <Link href={`/${address}/op?userOperations=${chain.id}:${initCode}:_`}>
+        <Link
+          href={`/${address}/op?userOperations=${userOperationsParser.serialize([{ chainId: BigInt(chain.id), initCode: initCode }])}`}
+        >
           {typeof deployed_op !== "undefined" ? "Already Deployed" : "Deploy"}
         </Link>
       </Button>
