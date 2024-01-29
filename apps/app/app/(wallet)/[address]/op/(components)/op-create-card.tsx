@@ -144,18 +144,20 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
 
   return (
     <>
-      {isDev && <Dev />}
       <ModalSwiper>
         {pageIndex === 0 && (
-          <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-            <Button
-              disabled={!isCreatable}
-              isLoading={isLoading}
-              onClick={signUserOperation}
-            >
-              Sign Transaction
-            </Button>
-          </div>
+          <>
+            {isDev && <Dev />}
+            <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
+              <Button
+                disabled={!isCreatable}
+                isLoading={isLoading}
+                onClick={signUserOperation}
+              >
+                Sign Transaction
+              </Button>
+            </div>
+          </>
         )}
         {pageIndex === 1 && <Loading />}
       </ModalSwiper>
