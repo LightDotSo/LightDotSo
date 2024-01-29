@@ -22,6 +22,7 @@ export { useQueryConfiguration } from "./useQueryConfiguration";
 export { useQueryNotifications } from "./useQueryNotifications";
 export { useQueryNotificationsCount } from "./useQueryNotificationsCount";
 export { useQueryNfts } from "./useQueryNfts";
+export { useQuerySimulation } from "./useQuerySimulation";
 export { useQuerySocketBalances } from "./useQuerySocketBalances";
 export { useQueryTokens } from "./useQueryTokens";
 export { useQueryTokensCount } from "./useQueryTokensCount";

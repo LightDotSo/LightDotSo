@@ -15,22 +15,23 @@
 
 "use client";
 
-import { useSignInWithSiwe } from "@lightdotso/hooks";
-import { Button, StateInfoSection } from "@lightdotso/ui";
-import { UserIcon } from "lucide-react";
-import type { FC } from "react";
+import { StateInfoSection } from "@lightdotso/ui";
+import { LoaderIcon } from "lucide-react";
+import type { FC, ReactNode } from "react";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+interface LoadingProps {
+  children?: ReactNode;
+}
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const Login: FC = () => {
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const { isPending, handleSignIn } = useSignInWithSiwe();
-
+export const Loading: FC<LoadingProps> = ({ children }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -38,19 +39,12 @@ export const Login: FC = () => {
   return (
     <StateInfoSection
       icon={
-        <UserIcon className="mx-auto size-8 rounded-full border border-border p-2 text-text md:size-10" />
+        <LoaderIcon className="mx-auto size-8 animate-spin rounded-full border border-border p-2 text-text-weak duration-1000 md:size-10" />
       }
-      title="Login"
-      description="Get started first by logging in."
+      title="Loading"
+      description="Please wait while we handle your request..."
     >
-      <Button
-        className="w-full md:w-32"
-        isLoading={isPending}
-        disabled={isPending}
-        onClick={handleSignIn}
-      >
-        Login
-      </Button>
+      {children}
     </StateInfoSection>
   );
 };

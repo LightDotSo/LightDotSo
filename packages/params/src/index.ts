@@ -25,6 +25,7 @@ export type {
 export type { PaymasterOperationGetParams } from "./paymasterOperation";
 export type { PortfolioParams } from "./portfolio";
 export type { SocketBalanceParams } from "./socket";
+export type { SimulationParams } from "./simulation";
 export type { TokenListParams, TokenListCountParams } from "./token";
 export type { TokenPriceParams } from "./tokenPrice";
 export type {

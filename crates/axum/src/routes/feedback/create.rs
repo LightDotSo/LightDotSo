@@ -95,7 +95,7 @@ pub(crate) async fn v1_feedback_create_handler(
     // -------------------------------------------------------------------------
 
     // Produce an activity message.
-    produce_activity_message(
+    let _ = produce_activity_message(
         state.producer.clone(),
         ActivityEntity::Feedback,
         &ActivityMessage {
@@ -108,7 +108,7 @@ pub(crate) async fn v1_feedback_create_handler(
             },
         },
     )
-    .await?;
+    .await;
 
     // -------------------------------------------------------------------------
     // Return

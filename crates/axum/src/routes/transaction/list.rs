@@ -100,7 +100,8 @@ pub(crate) async fn v1_transaction_list_handler(
     // -------------------------------------------------------------------------
 
     // Get the interpretation action params.
-    let mut interpretaion_action_params = vec![];
+    let mut interpretaion_action_params =
+        vec![or![interpretation_action::address::equals("".to_string())]];
     if let Some(addr) = &query.address {
         interpretaion_action_params.push(or![interpretation_action::address::equals(addr.clone())]);
     }

@@ -21,7 +21,10 @@ pub(crate) mod types;
 
 use crate::state::AppState;
 use autometrics::autometrics;
-use axum::{routing::get, Router};
+use axum::{
+    routing::{get, post},
+    Router,
+};
 
 pub(crate) use create::{__path_v1_simulation_create_handler, v1_simulation_create_handler};
 pub(crate) use get::{__path_v1_simulation_get_handler, v1_simulation_get_handler};
@@ -37,7 +40,7 @@ pub(crate) use list::{
 #[autometrics]
 pub(crate) fn router() -> Router<AppState> {
     Router::new()
-        .route("/simulation/create", get(v1_simulation_create_handler))
+        .route("/simulation/create", post(v1_simulation_create_handler))
         .route("/simulation/get", get(v1_simulation_get_handler))
         .route("/simulation/list", get(v1_simulation_list_handler))
         .route("/simulation/list/count", get(v1_simulation_list_count_handler))

@@ -23,7 +23,7 @@ use axum::{
     extract::{Query, State},
     Json,
 };
-use lightdotso_prisma::simulation;
+use lightdotso_prisma::{asset_change, interpretation, simulation};
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -79,6 +79,13 @@ pub(crate) async fn v1_simulation_get_handler(
         .client
         .simulation()
         .find_unique(simulation::id::equals(query.simulation_id))
+        .with(
+            simulation::interpretation::fetch().with(interpretation::actions::fetch(vec![])).with(
+                interpretation::asset_changes::fetch(vec![])
+                    .with(asset_change::interpretation_action::fetch())
+                    .with(asset_change::token::fetch()),
+            ),
+        )
         .exec()
         .await?;
 

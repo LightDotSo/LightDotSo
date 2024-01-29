@@ -2292,6 +2292,9 @@ importers:
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
+      framer-motion:
+        specifier: ^11.0.3
+        version: 11.0.3(react-dom@18.2.0)(react@18.2.0)
       lucide-react:
         specifier: ^0.316.0
         version: 0.316.0(react@18.2.0)
@@ -4091,6 +4094,7 @@ packages:
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
+    dev: true
 
   /@babel/traverse@7.23.9:
     resolution: {integrity: sha512-I/4UJ9vs90OkBtY6iiiTORVMyIhJ4kAVmsKo9KFc8UOxMeUfi2hvtIBsET5u9GizXE6/GFSuKCTNfgCswuEjRg==}
@@ -11032,7 +11036,7 @@ packages:
       '@babel/plugin-transform-sticky-regex': 7.23.3(@babel/core@7.23.9)
       '@babel/plugin-transform-typescript': 7.23.4(@babel/core@7.23.9)
       '@babel/plugin-transform-unicode-regex': 7.23.3(@babel/core@7.23.9)
-      '@babel/template': 7.22.15
+      '@babel/template': 7.23.9
       '@react-native/babel-plugin-codegen': 0.73.2(@babel/preset-env@7.23.3)
       babel-plugin-transform-flow-enums: 0.0.2(@babel/core@7.23.9)
       react-refresh: 0.14.0
@@ -11047,7 +11051,7 @@ packages:
     peerDependencies:
       '@babel/preset-env': ^7.1.6
     dependencies:
-      '@babel/parser': 7.23.6
+      '@babel/parser': 7.23.9
       '@babel/preset-env': 7.23.3(@babel/core@7.23.9)
       flow-parser: 0.206.0
       glob: 7.2.3
@@ -25124,7 +25128,7 @@ packages:
       '@babel/preset-env': ^7.1.6
     dependencies:
       '@babel/core': 7.23.9
-      '@babel/parser': 7.23.6
+      '@babel/parser': 7.23.9
       '@babel/plugin-proposal-class-properties': 7.18.6(@babel/core@7.23.9)
       '@babel/plugin-proposal-nullish-coalescing-operator': 7.18.6(@babel/core@7.23.9)
       '@babel/plugin-proposal-optional-chaining': 7.21.0(@babel/core@7.23.9)
@@ -26765,8 +26769,8 @@ packages:
     resolution: {integrity: sha512-x+0By55ml6IcGqY9x9HE0hyU0S+uDssrTQ0bPvuydG+iKCX85DzGnlT8k0Vs+EYgZl3KMWcvQ9TpGHW4LRL4GQ==}
     engines: {node: '>=18'}
     dependencies:
-      '@babel/traverse': 7.23.7
-      '@babel/types': 7.23.6
+      '@babel/traverse': 7.23.9
+      '@babel/types': 7.23.9
       invariant: 2.2.4
       metro-symbolicate: 0.80.4
       nullthrows: 1.1.1
@@ -26798,8 +26802,8 @@ packages:
     dependencies:
       '@babel/core': 7.23.9
       '@babel/generator': 7.23.6
-      '@babel/template': 7.22.15
-      '@babel/traverse': 7.23.7
+      '@babel/template': 7.23.9
+      '@babel/traverse': 7.23.9
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - supports-color
@@ -26811,8 +26815,8 @@ packages:
     dependencies:
       '@babel/core': 7.23.9
       '@babel/generator': 7.23.6
-      '@babel/parser': 7.23.6
-      '@babel/types': 7.23.6
+      '@babel/parser': 7.23.9
+      '@babel/types': 7.23.9
       metro: 0.80.4
       metro-babel-transformer: 0.80.4
       metro-cache: 0.80.4
@@ -26835,10 +26839,10 @@ packages:
       '@babel/code-frame': 7.23.5
       '@babel/core': 7.23.9
       '@babel/generator': 7.23.6
-      '@babel/parser': 7.23.6
-      '@babel/template': 7.22.15
-      '@babel/traverse': 7.23.7
-      '@babel/types': 7.23.6
+      '@babel/parser': 7.23.9
+      '@babel/template': 7.23.9
+      '@babel/traverse': 7.23.9
+      '@babel/types': 7.23.9
       accepts: 1.3.8
       chalk: 4.1.2
       ci-info: 2.0.0

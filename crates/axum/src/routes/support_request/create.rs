@@ -120,7 +120,7 @@ pub(crate) async fn v1_support_request_create_handler(
     // -------------------------------------------------------------------------
 
     // Produce an activity message.
-    produce_activity_message(
+    let _ = produce_activity_message(
         state.producer.clone(),
         ActivityEntity::SupportRequest,
         &ActivityMessage {
@@ -134,7 +134,7 @@ pub(crate) async fn v1_support_request_create_handler(
             },
         },
     )
-    .await?;
+    .await;
 
     // -------------------------------------------------------------------------
     // Return

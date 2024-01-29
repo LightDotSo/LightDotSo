@@ -30,7 +30,7 @@ pub struct InterpreterArgs {
 }
 
 impl InterpreterArgs {
-    pub async fn run(self, request: SimulationRequest) -> Result<InterpretationResponse> {
+    pub async fn run(self, requests: Vec<SimulationRequest>) -> Result<InterpretationResponse> {
         // Add info
         info!("InterpreterArgs run, starting...");
 
@@ -38,12 +38,16 @@ impl InterpreterArgs {
         info!("Config: {:?}", self);
 
         // Construct the interpreter
-        let mut interpreter = Interpreter::new(&self, request.chain_id).await;
+        let mut interpreter = Interpreter::new(
+            &self,
+            requests.first().and_then(|request| request.block_number).unwrap_or(1),
+        )
+        .await;
 
         info!("InterpreterArgs run, starting simulate...");
 
         // Simulate the user operation
-        let res = interpreter.run_with_simulate(request).await?;
+        let res = interpreter.run_with_simulate_bundle(requests).await?;
 
         info!("res: {:?}", res);
 

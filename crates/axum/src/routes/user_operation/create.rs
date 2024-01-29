@@ -390,7 +390,7 @@ pub(crate) async fn v1_user_operation_create_handler(
     // -------------------------------------------------------------------------
 
     // Produce an activity message.
-    produce_activity_message(
+    let _ = produce_activity_message(
         state.producer.clone(),
         ActivityEntity::Signature,
         &ActivityMessage {
@@ -404,10 +404,10 @@ pub(crate) async fn v1_user_operation_create_handler(
             },
         },
     )
-    .await?;
+    .await;
 
     // Produce an activity message.
-    produce_activity_message(
+    let _ = produce_activity_message(
         state.producer.clone(),
         ActivityEntity::UserOperation,
         &ActivityMessage {
@@ -421,7 +421,7 @@ pub(crate) async fn v1_user_operation_create_handler(
             },
         },
     )
-    .await?;
+    .await;
 
     // -------------------------------------------------------------------------
     // Return

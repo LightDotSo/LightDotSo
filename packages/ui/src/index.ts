@@ -179,6 +179,15 @@ export {
   NavigationMenuViewport,
 } from "./components/navigation-menu";
 export { Number } from "./components/number";
+export {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "./components/pagination";
 export { Popover, PopoverTrigger, PopoverContent } from "./components/popover";
 export { Progress } from "./components/progress";
 export { RadioGroup, RadioGroupItem } from "./components/radio-group";
@@ -250,6 +259,7 @@ export { ReactQueryProvider } from "./providers/react-query";
 export { ThemeProvider } from "./providers/theme-provider";
 export { Web3Provider } from "./providers/web3-provider";
 export { BannerSection } from "./sections/banner-section";
+export { StateInfoSection } from "./sections/state-info-section";
 export { HStackFull } from "./stacks/h-stack-full";
 export { baseWidthWrapper } from "./wrappers/base";
 export {

@@ -13,55 +13,32 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import {
-  BaseLayerWrapper,
-  BasicPageWrapper,
-  HStackFull,
-  BannerSection,
-} from "@lightdotso/ui";
-import type { Metadata } from "next";
-import type { ReactNode } from "react";
-import { TITLES } from "@/const";
+import type { Meta, StoryObj } from "@storybook/react";
+import { Loading } from "./loading";
 
 // -----------------------------------------------------------------------------
-// Metadata
+// Meta
 // -----------------------------------------------------------------------------
 
-export const metadata: Metadata = {
-  title: TITLES.UserOperation.title,
-  description: TITLES.UserOperation.description,
+const meta: Meta<typeof Loading> = {
+  title: "template/Loading",
+  component: Loading,
+  tags: ["autodocs"],
+  argTypes: {},
 };
+export default meta;
 
 // -----------------------------------------------------------------------------
-// Props
+// Types
 // -----------------------------------------------------------------------------
 
-interface UserOperationLayoutProps {
-  children: ReactNode;
-}
+type Story = StoryObj<typeof Loading>;
 
 // -----------------------------------------------------------------------------
-// Layout
+// Story
 // -----------------------------------------------------------------------------
 
-export default function UserOperationLayout({
-  children,
-}: UserOperationLayoutProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <BannerSection
-      title={TITLES.UserOperation.title}
-      description={TITLES.UserOperation.description}
-      size="sm"
-    >
-      <HStackFull>
-        <BaseLayerWrapper size="sm">
-          <BasicPageWrapper>{children}</BasicPageWrapper>
-        </BaseLayerWrapper>
-      </HStackFull>
-    </BannerSection>
-  );
-}
+export const Base: Story = {
+  render: args => <Loading />,
+  args: {},
+};

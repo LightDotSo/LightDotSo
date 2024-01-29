@@ -20,7 +20,10 @@ use axum::{
     extract::{Query, State},
     Json,
 };
-use lightdotso_prisma::simulation::{self, WhereParam};
+use lightdotso_prisma::{
+    asset_change, interpretation,
+    simulation::{self, WhereParam},
+};
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
@@ -97,6 +100,13 @@ pub(crate) async fn v1_simulation_list_handler(
         .client
         .simulation()
         .find_many(query_params)
+        .with(
+            simulation::interpretation::fetch().with(interpretation::actions::fetch(vec![])).with(
+                interpretation::asset_changes::fetch(vec![])
+                    .with(asset_change::interpretation_action::fetch())
+                    .with(asset_change::token::fetch()),
+            ),
+        )
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
         .exec()

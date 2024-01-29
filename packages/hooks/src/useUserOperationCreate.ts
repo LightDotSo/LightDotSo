@@ -25,8 +25,8 @@ import {
   useSignMessage,
   lightWalletAbi,
   lightWalletFactoryAbi,
-  useReadLightVerifyingPaymasterGetHash,
-  useReadLightVerifyingPaymasterSenderNonce,
+  // useReadLightVerifyingPaymasterGetHash,
+  // useReadLightVerifyingPaymasterSenderNonce,
 } from "@lightdotso/wagmi";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -36,7 +36,7 @@ import {
   toBytes,
   hexToBytes,
   toHex,
-  fromHex,
+  // fromHex,
   decodeFunctionData,
 } from "viem";
 
@@ -93,33 +93,33 @@ export const useUserOperationCreate = ({
 
   const { data, signMessage, isPending: isSignLoading } = useSignMessage();
 
-  const { data: paymasterNonce } = useReadLightVerifyingPaymasterSenderNonce({
-    address: userOperation.paymasterAndData.slice(0, 42) as Address,
-    chainId: Number(userOperation.chainId),
-    args: [userOperation.sender as Address],
-  });
+  // const { data: paymasterNonce } = useReadLightVerifyingPaymasterSenderNonce({
+  //   address: userOperation.paymasterAndData.slice(0, 42) as Address,
+  //   chainId: Number(userOperation.chainId),
+  //   args: [userOperation.sender as Address],
+  // });
 
-  const { data: paymasterHash } = useReadLightVerifyingPaymasterGetHash({
-    address: userOperation.paymasterAndData.slice(0, 42) as Address,
-    chainId: Number(userOperation.chainId),
-    args: [
-      {
-        sender: userOperation.sender as Address,
-        nonce: userOperation.nonce,
-        initCode: userOperation.initCode as Hex,
-        callData: userOperation.callData as Hex,
-        callGasLimit: userOperation.callGasLimit,
-        verificationGasLimit: userOperation.verificationGasLimit,
-        preVerificationGas: userOperation.preVerificationGas,
-        maxFeePerGas: userOperation.maxFeePerGas,
-        maxPriorityFeePerGas: userOperation.maxPriorityFeePerGas,
-        paymasterAndData: userOperation.paymasterAndData as Hex,
-        signature: toHex(new Uint8Array([2])),
-      },
-      fromHex(`0x${userOperation.paymasterAndData.slice(154, 162)}`, "number"),
-      fromHex(`0x${userOperation.paymasterAndData.slice(162, 170)}`, "number"),
-    ],
-  });
+  // const { data: paymasterHash } = useReadLightVerifyingPaymasterGetHash({
+  //   address: userOperation.paymasterAndData.slice(0, 42) as Address,
+  //   chainId: Number(userOperation.chainId),
+  //   args: [
+  //     {
+  //       sender: userOperation.sender as Address,
+  //       nonce: userOperation.nonce,
+  //       initCode: userOperation.initCode as Hex,
+  //       callData: userOperation.callData as Hex,
+  //       callGasLimit: userOperation.callGasLimit,
+  //       verificationGasLimit: userOperation.verificationGasLimit,
+  //       preVerificationGas: userOperation.preVerificationGas,
+  //       maxFeePerGas: userOperation.maxFeePerGas,
+  //       maxPriorityFeePerGas: userOperation.maxPriorityFeePerGas,
+  //       paymasterAndData: userOperation.paymasterAndData as Hex,
+  //       signature: toHex(new Uint8Array([2])),
+  //     },
+  //     fromHex(`0x${userOperation.paymasterAndData.slice(154, 162)}`, "number"),
+  //     fromHex(`0x${userOperation.paymasterAndData.slice(162, 170)}`, "number"),
+  //   ],
+  // });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -251,8 +251,8 @@ export const useUserOperationCreate = ({
     isCreatable: typeof owner !== "undefined" && !isLoading,
     decodedCallData,
     decodedInitCode,
-    paymasterHash,
-    paymasterNonce,
+    // paymasterHash,
+    // paymasterNonce,
     signUserOperation,
     subdigest,
     threshold,

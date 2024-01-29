@@ -13,17 +13,16 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export {
-  DataTableColumnHeader,
-  DataTableFacetedFilter,
-  DataTablePagination,
-  DataTableViewOptions,
-} from "./data-table";
-export { Footer } from "./footer";
-export { FooterButton } from "./footer-button";
-export { MobileAppDrawer } from "./mobile-app-drawer";
-export { Loading } from "./loading";
-export { Login } from "./login";
-export { Modal, useIsInsideModal } from "./modal";
-export { ModalInterception } from "./modal-interception";
-export { ModalSwiper } from "./modal-swiper";
+import type { Address, Hex } from "viem";
+
+// -----------------------------------------------------------------------------
+// Params
+// -----------------------------------------------------------------------------
+
+export type SimulationParams = {
+  chain_id: number;
+  nonce: number;
+  sender: Address;
+  call_data: Hex;
+  init_code: Hex;
+};

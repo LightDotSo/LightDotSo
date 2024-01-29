@@ -13,55 +13,49 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import {
-  BaseLayerWrapper,
-  BasicPageWrapper,
-  HStackFull,
-  BannerSection,
-} from "@lightdotso/ui";
-import type { Metadata } from "next";
-import type { ReactNode } from "react";
-import { TITLES } from "@/const";
+import { useModalSwiper } from "@lightdotso/stores";
+import { Button } from "@lightdotso/ui";
+import type { Meta, StoryObj } from "@storybook/react";
+import { ModalSwiper } from "../modal-swiper/modal-swiper";
 
 // -----------------------------------------------------------------------------
-// Metadata
+// Meta
 // -----------------------------------------------------------------------------
 
-export const metadata: Metadata = {
-  title: TITLES.UserOperation.title,
-  description: TITLES.UserOperation.description,
+const meta: Meta<typeof ModalSwiper> = {
+  title: "template/ModalSwiper",
+  component: ModalSwiper,
+  tags: ["autodocs"],
+  argTypes: {},
 };
+export default meta;
 
 // -----------------------------------------------------------------------------
-// Props
+// Types
 // -----------------------------------------------------------------------------
 
-interface UserOperationLayoutProps {
-  children: ReactNode;
-}
+type Story = StoryObj<typeof ModalSwiper>;
 
 // -----------------------------------------------------------------------------
-// Layout
+// Story
 // -----------------------------------------------------------------------------
 
-export default function UserOperationLayout({
-  children,
-}: UserOperationLayoutProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
+export const Base: Story = {
+  render: () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { pageIndex, setPageIndex } = useModalSwiper();
 
-  return (
-    <BannerSection
-      title={TITLES.UserOperation.title}
-      description={TITLES.UserOperation.description}
-      size="sm"
-    >
-      <HStackFull>
-        <BaseLayerWrapper size="sm">
-          <BasicPageWrapper>{children}</BasicPageWrapper>
-        </BaseLayerWrapper>
-      </HStackFull>
-    </BannerSection>
-  );
-}
+    return (
+      <>
+        <ModalSwiper>
+          {Array.from({ length: 3 }).map(
+            (_, i) => pageIndex === i && <div key={i}>Page {i}</div>,
+          )}
+        </ModalSwiper>
+        <Button onClick={() => setPageIndex(pageIndex - 1)}>Previous</Button>
+        <Button onClick={() => setPageIndex(pageIndex + 1)}>Next</Button>
+      </>
+    );
+  },
+  args: {},
+};
