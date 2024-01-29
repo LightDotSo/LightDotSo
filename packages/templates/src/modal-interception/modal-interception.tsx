@@ -17,7 +17,7 @@
 
 import { useModals } from "@lightdotso/stores";
 import { useRouter, usePathname } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import type { FC, ReactNode } from "react";
 import { Modal } from "../modal";
 
@@ -64,12 +64,6 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   const pathname = usePathname();
 
   // ---------------------------------------------------------------------------
-  // State Hooks
-  // ---------------------------------------------------------------------------
-
-  const [isVisible, setIsVisible] = useState(false);
-
-  // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
@@ -92,51 +86,44 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     switch (type) {
       case "op":
         hideOpModal();
-        setIsVisible(false);
         router.back();
         break;
       case "notifications":
         hideNotificationsModal();
-        setIsVisible(false);
         router.back();
         break;
       case "send":
         hideSendModal();
-        setIsVisible(false);
         router.back();
         break;
     }
-  }, [
-    setIsVisible,
-    hideNotificationsModal,
-    hideOpModal,
-    hideSendModal,
-    router,
-    type,
-  ]);
+  }, [hideNotificationsModal, hideOpModal, hideSendModal, router, type]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (!isOpen) {
+    if (isOpen) {
       return;
     }
 
     switch (type) {
       case "op":
-        showOpModal();
-        setIsVisible(true);
-        break;
+        if (pathname.includes("op")) {
+          showOpModal();
+          break;
+        }
       case "notifications":
-        showNotificationsModal();
-        setIsVisible(true);
-        break;
+        if (pathname.includes("notifications")) {
+          showNotificationsModal();
+          break;
+        }
       case "send":
-        showSendModal();
-        setIsVisible(true);
-        break;
+        if (pathname.includes("send")) {
+          showSendModal();
+          break;
+        }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, pathname, type]);
