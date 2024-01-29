@@ -145,7 +145,7 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="flex items-center max-w-lg">
+    <div className="flex max-w-lg items-center">
       <ModalSwiper>
         {pageIndex === 0 && (
           <>

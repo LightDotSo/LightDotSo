@@ -18,17 +18,17 @@
 import type { ConfigurationData } from "@lightdotso/data";
 import type { UserOperation } from "@lightdotso/schemas";
 import { useAuth } from "@lightdotso/stores";
-import { useMemo, useState } from "react";
-import type { FC } from "react";
-import { isAddressEqual } from "viem";
-import type { Address } from "viem";
-import { OpCreateCard } from "@/app/(wallet)/[address]/op/(components)/op-create-card";
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
   PaginationLink,
 } from "@lightdotso/ui";
+import { useMemo, useState } from "react";
+import type { FC } from "react";
+import { isAddressEqual } from "viem";
+import type { Address } from "viem";
+import { OpCreateCard } from "@/app/(wallet)/[address]/op/(components)/op-create-card";
 
 // -----------------------------------------------------------------------------
 // Props
