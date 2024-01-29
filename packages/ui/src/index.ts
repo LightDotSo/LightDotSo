@@ -179,6 +179,15 @@ export {
   NavigationMenuViewport,
 } from "./components/navigation-menu";
 export { Number } from "./components/number";
+export {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "./components/pagination";
 export { Popover, PopoverTrigger, PopoverContent } from "./components/popover";
 export { Progress } from "./components/progress";
 export { RadioGroup, RadioGroupItem } from "./components/radio-group";

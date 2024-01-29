@@ -18,11 +18,17 @@
 import type { ConfigurationData } from "@lightdotso/data";
 import type { UserOperation } from "@lightdotso/schemas";
 import { useAuth } from "@lightdotso/stores";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import type { FC } from "react";
 import { isAddressEqual } from "viem";
 import type { Address } from "viem";
 import { OpCreateCard } from "@/app/(wallet)/[address]/op/(components)/op-create-card";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+} from "@lightdotso/ui";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -43,6 +49,12 @@ export const OpCreateDialog: FC<OpCreateDialogProps> = ({
   config,
   userOperations,
 }) => {
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [selectedOpIndex, setSelectedOpIndex] = useState<number>(0);
+
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -67,21 +79,29 @@ export const OpCreateDialog: FC<OpCreateDialogProps> = ({
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="mt-4 flex flex-col space-y-3 text-center sm:text-left">
-      <header className="text-lg font-semibold leading-none tracking-tight">
-        Transaction
-      </header>
-      <p className="text-sm text-text-weak">
-        Are you sure you want to sign this transaction?
-      </p>
-      {userOperations?.map((userOperation, index) => (
+    <div>
+      {userOperations && userOperations.length > 0 && (
+        <Pagination>
+          <PaginationContent>
+            {userOperations.map((_, index) => (
+              <PaginationItem
+                key={index}
+                onClick={() => setSelectedOpIndex(index)}
+              >
+                <PaginationLink>{index + 1}</PaginationLink>
+              </PaginationItem>
+            ))}
+          </PaginationContent>
+        </Pagination>
+      )}
+      {userOperations && userOperations.length > 0 && (
         <OpCreateCard
-          key={index}
+          key={selectedOpIndex}
           address={address}
           config={config}
-          userOperation={userOperation}
+          userOperation={userOperations[selectedOpIndex]}
         />
-      ))}
+      )}
     </div>
   );
 };
