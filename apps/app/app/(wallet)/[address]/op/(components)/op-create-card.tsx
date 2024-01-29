@@ -93,7 +93,7 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
     } else {
       setPageIndex(0);
     }
-  }, [isLoading]);
+  }, [isLoading, setPageIndex]);
 
   // ---------------------------------------------------------------------------
   // Dev Component
