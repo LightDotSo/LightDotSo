@@ -62,8 +62,8 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
     signUserOperation,
     decodedCallData,
     decodedInitCode,
-    paymasterHash,
-    paymasterNonce,
+    // paymasterHash,
+    // paymasterNonce,
     subdigest,
   } = useUserOperationCreate({
     address: address,
@@ -77,8 +77,8 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
 
   const { simulation } = useQuerySimulation({
     sender: address as Address,
-    nonce: 0,
-    chain_id: 137,
+    nonce: Number(userOperation.nonce),
+    chain_id: Number(userOperation.chainId),
     call_data: userOperation.callData as Hex,
     init_code: userOperation.initCode as Hex,
   });
@@ -129,16 +129,16 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
             userOpHash: {userOperation.hash}
           </code>
         </pre>
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+        {/* <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-text">
             paymasterNonce: {serializeBigInt(paymasterNonce)}
           </code>
-        </pre>
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+        </pre> */}
+        {/* <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-text">
             paymasterHash: {paymasterHash}
           </code>
-        </pre>
+        </pre> */}
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-text">subdigest: {subdigest}</code>
         </pre>
