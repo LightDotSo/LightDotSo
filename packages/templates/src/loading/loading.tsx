@@ -15,22 +15,23 @@
 
 "use client";
 
-import { useSignInWithSiwe } from "@lightdotso/hooks";
-import { Button, StateInfoSection } from "@lightdotso/ui";
+import { StateInfoSection } from "@lightdotso/ui";
 import { LoaderIcon } from "lucide-react";
-import type { FC } from "react";
+import type { FC, ReactNode } from "react";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+interface LoadingProps {
+  children?: ReactNode;
+}
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const Loading: FC = () => {
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const { isPending, handleSignIn } = useSignInWithSiwe();
-
+export const Loading: FC<LoadingProps> = ({ children }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -43,14 +44,7 @@ export const Loading: FC = () => {
       title="Loading"
       description="Please wait while we handle your request..."
     >
-      <Button
-        className="w-full md:w-32"
-        isLoading={isPending}
-        disabled={isPending}
-        onClick={handleSignIn}
-      >
-        Login
-      </Button>
+      {children}
     </StateInfoSection>
   );
 };
