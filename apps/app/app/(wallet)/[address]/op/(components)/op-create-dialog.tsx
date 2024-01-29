@@ -79,7 +79,7 @@ export const OpCreateDialog: FC<OpCreateDialogProps> = ({
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="flex flex-col justify-center items-center mt-4">
+    <div className="mt-4 flex flex-col items-center justify-center">
       {userOperations && userOperations.length > 1 && (
         <Pagination>
           <PaginationContent>
