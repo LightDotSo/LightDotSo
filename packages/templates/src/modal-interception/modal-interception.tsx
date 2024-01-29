@@ -121,19 +121,22 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (isVisible) {
+    if (!isOpen) {
       return;
     }
 
     switch (type) {
       case "op":
         showOpModal();
+        setIsVisible(true);
         break;
       case "notifications":
         showNotificationsModal();
+        setIsVisible(true);
         break;
       case "send":
         showSendModal();
+        setIsVisible(true);
         break;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
