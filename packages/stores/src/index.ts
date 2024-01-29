@@ -17,6 +17,7 @@ export { useAuth } from "./useAuth";
 export { useDev } from "./useDev";
 export { useFormRef } from "./useFormRef";
 export { useModals } from "./useModals";
+export { useModalSwiper } from "./useModalSwiper";
 export { useNewForm } from "./useNewForm";
 export { useSettings } from "./useSettings";
 export { useTables } from "./useTables";
