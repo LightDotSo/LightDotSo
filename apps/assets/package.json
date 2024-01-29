@@ -17,7 +17,7 @@
     "dev": "wrangler pages dev . functions --r2=ASSETS"
   },
   "dependencies": {
-    "@cloudflare/workers-types": "^4.20240117.0"
+    "@cloudflare/workers-types": "^4.20240129.0"
   },
   "devDependencies": {
     "typescript": "^5.3.3",
