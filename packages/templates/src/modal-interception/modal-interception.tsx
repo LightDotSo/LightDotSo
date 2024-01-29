@@ -112,18 +112,18 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
       case "op":
         if (pathname.includes("op")) {
           showOpModal();
-          break;
         }
+        break;
       case "notifications":
         if (pathname.includes("notifications")) {
           showNotificationsModal();
-          break;
         }
+        break;
       case "send":
         if (pathname.includes("send")) {
           showSendModal();
-          break;
         }
+        break;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, pathname, type]);
