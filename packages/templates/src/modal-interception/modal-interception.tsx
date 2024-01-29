@@ -112,16 +112,22 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
       case "op":
         if (pathname.includes("op")) {
           showOpModal();
+          hideNotificationsModal();
+          hideSendModal();
         }
         break;
       case "notifications":
         if (pathname.includes("notifications")) {
           showNotificationsModal();
+          hideOpModal();
+          hideSendModal();
         }
         break;
       case "send":
         if (pathname.includes("send")) {
           showSendModal();
+          hideNotificationsModal();
+          hideOpModal();
         }
         break;
     }
