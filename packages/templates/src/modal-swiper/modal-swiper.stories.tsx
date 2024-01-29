@@ -47,9 +47,9 @@ export const Base: Story = {
     return (
       <>
         <ModalSwiper>
-          {Array.from({ length: 3 }).map((_, i) => (
-            <>{pageIndex === i && <div>Page {i}</div>}</>
-          ))}
+          {Array.from({ length: 3 }).map(
+            (_, i) => pageIndex === i && <div key={i}>Page {i}</div>,
+          )}
         </ModalSwiper>
         <Button onClick={() => setPageIndex(pageIndex - 1)}>Previous</Button>
         <Button onClick={() => setPageIndex(pageIndex + 1)}>Next</Button>
