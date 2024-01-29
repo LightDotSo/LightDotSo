@@ -250,6 +250,7 @@ export { ReactQueryProvider } from "./providers/react-query";
 export { ThemeProvider } from "./providers/theme-provider";
 export { Web3Provider } from "./providers/web3-provider";
 export { BannerSection } from "./sections/banner-section";
+export { StateInfoSection } from "./sections/state-info-section";
 export { HStackFull } from "./stacks/h-stack-full";
 export { baseWidthWrapper } from "./wrappers/base";
 export {

@@ -16,9 +16,7 @@
 "use client";
 
 import { useSignInWithSiwe } from "@lightdotso/hooks";
-import { Button } from "@lightdotso/ui";
-import { baseHeightWrapper } from "@lightdotso/ui/src/wrappers/base";
-import { cn } from "@lightdotso/utils";
+import { Button, StateInfoSection } from "@lightdotso/ui";
 import { UserIcon } from "lucide-react";
 import type { FC } from "react";
 
@@ -38,24 +36,21 @@ export const Login: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className={cn("text-center", baseHeightWrapper)}>
-      <UserIcon className="mx-auto size-8 rounded-full border border-border p-2 text-text md:size-10" />
-      <h3 className="mt-2 text-xl font-semibold tracking-tight md:mt-4 md:text-2xl">
+    <StateInfoSection
+      icon={
+        <UserIcon className="mx-auto size-8 rounded-full border border-border p-2 text-text md:size-10" />
+      }
+      title="Login"
+      description="Get started first by logging in."
+    >
+      <Button
+        className="w-full md:w-32"
+        isLoading={isPending}
+        disabled={isPending}
+        onClick={handleSignIn}
+      >
         Login
-      </h3>
-      <p className="mt-1 text-sm text-text-weak md:text-base">
-        Get started first by logging in.
-      </p>
-      <div className="mt-6 flex justify-center">
-        <Button
-          className="w-full md:w-32"
-          isLoading={isPending}
-          disabled={isPending}
-          onClick={handleSignIn}
-        >
-          Login
-        </Button>
-      </div>
-    </div>
+      </Button>
+    </StateInfoSection>
   );
 };
