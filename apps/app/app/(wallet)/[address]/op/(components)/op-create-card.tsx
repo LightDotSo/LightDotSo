@@ -18,8 +18,7 @@
 import type { ConfigurationData } from "@lightdotso/data";
 import { useUserOperationCreate } from "@lightdotso/hooks";
 import type { UserOperation } from "@lightdotso/schemas";
-import { useModalSwiper } from "@lightdotso/stores";
-import { useDev } from "@lightdotso/stores";
+import { useModalSwiper, useDev } from "@lightdotso/stores";
 import { Loading, ModalSwiper } from "@lightdotso/templates";
 import { Button } from "@lightdotso/ui";
 import { useEffect, type FC } from "react";

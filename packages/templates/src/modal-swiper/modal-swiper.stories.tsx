@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { useModalSwiper } from "@lightdotso/stores";
 import { Button } from "@lightdotso/ui";
 import type { Meta, StoryObj } from "@storybook/react";
 import { ModalSwiper } from "../modal-swiper/modal-swiper";
-import { useModalSwiper } from "@lightdotso/stores";
 
 // -----------------------------------------------------------------------------
 // Meta

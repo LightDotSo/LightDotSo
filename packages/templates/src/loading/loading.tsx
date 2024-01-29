@@ -39,7 +39,7 @@ export const Loading: FC<LoadingProps> = ({ children }) => {
   return (
     <StateInfoSection
       icon={
-        <LoaderIcon className="mx-auto size-8 rounded-full border border-border p-2 text-text-weak animate-spin duration-1000 md:size-10" />
+        <LoaderIcon className="mx-auto size-8 animate-spin rounded-full border border-border p-2 text-text-weak duration-1000 md:size-10" />
       }
       title="Loading"
       description="Please wait while we handle your request..."
