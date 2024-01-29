@@ -13,7 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{result::AppJsonResult, routes::simulation::types::Simulation, state::AppState};
+use crate::{
+    error::RouteError,
+    result::AppJsonResult,
+    routes::simulation::{error::SimulationError, types::Simulation},
+    state::AppState,
+};
 use autometrics::autometrics;
 use axum::{extract::State, Json};
 use clap::Parser;
@@ -26,7 +31,9 @@ use lightdotso_interpreter::config::InterpreterArgs;
 use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
-use lightdotso_prisma::{interpretation, wallet, ActivityEntity, ActivityOperation};
+use lightdotso_prisma::{
+    asset_change, interpretation, simulation, wallet, ActivityEntity, ActivityOperation,
+};
 use lightdotso_simulator::types::{SimulationRequest, SimulationUserOperationRequest};
 use lightdotso_tracing::tracing::info;
 // use lightdotso_tracing::tracing::info;
@@ -140,12 +147,32 @@ pub(crate) async fn v1_simulation_create_handler(
         .exec()
         .await?;
 
+    // Get the simulation from the database.
+    let simulation = state
+        .client
+        .simulation()
+        .find_unique(simulation::id::equals(simulation.id.clone()))
+        .with(
+            simulation::interpretation::fetch().with(interpretation::actions::fetch(vec![])).with(
+                interpretation::asset_changes::fetch(vec![])
+                    .with(asset_change::interpretation_action::fetch())
+                    .with(asset_change::token::fetch()),
+            ),
+        )
+        .exec()
+        .await?;
+
+    // If the simulation is not found, return a 404.
+    let simulation = simulation.ok_or(RouteError::SimulationError(SimulationError::NotFound(
+        "Simulation not found".to_string(),
+    )))?;
+
     // -------------------------------------------------------------------------
     // Kafka
     // -------------------------------------------------------------------------
 
     // Produce an activity message.
-    produce_activity_message(
+    let _ = produce_activity_message(
         state.producer.clone(),
         ActivityEntity::Simulation,
         &ActivityMessage {
@@ -158,7 +185,7 @@ pub(crate) async fn v1_simulation_create_handler(
             },
         },
     )
-    .await?;
+    .await;
 
     // -------------------------------------------------------------------------
     // Return

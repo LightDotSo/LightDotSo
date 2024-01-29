@@ -23,7 +23,7 @@ import { useModalSwiper, useDev } from "@lightdotso/stores";
 import { Loading, ModalSwiper } from "@lightdotso/templates";
 import { Button } from "@lightdotso/ui";
 import { useEffect, type FC } from "react";
-import { toHex, type Address, Hex } from "viem";
+import { type Address, Hex } from "viem";
 import { serializeBigInt } from "@/utils";
 
 // -----------------------------------------------------------------------------
@@ -75,10 +75,10 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { simulation, isSimulationLoading } = useQuerySimulation({
+  const { simulation } = useQuerySimulation({
     sender: address as Address,
-    nonce: Number(userOperation.nonce),
-    chain_id: Number(userOperation.chainId),
+    nonce: 0,
+    chain_id: 137,
     call_data: userOperation.callData as Hex,
     init_code: userOperation.initCode as Hex,
   });
@@ -147,6 +147,11 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
             owners: {config.owners && JSON.stringify(config.owners, null, 2)}
           </code>
         </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">
+            simulation: {simulation && JSON.stringify(simulation, null, 2)}
+          </code>
+        </pre>
       </div>
     );
   };
@@ -170,7 +175,6 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
                 Sign Transaction
               </Button>
             </div>
-            {serializeBigInt(simulation)}
           </>
         )}
         {pageIndex === 1 && <Loading />}

@@ -143,7 +143,7 @@ pub(crate) async fn v1_wallet_settings_update_handler(
     // -------------------------------------------------------------------------
 
     // Produce an activity message.
-    produce_activity_message(
+    let _ = produce_activity_message(
         state.producer.clone(),
         ActivityEntity::WalletSettings,
         &ActivityMessage {
@@ -156,7 +156,7 @@ pub(crate) async fn v1_wallet_settings_update_handler(
             },
         },
     )
-    .await?;
+    .await;
 
     // -------------------------------------------------------------------------
     // Return

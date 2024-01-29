@@ -103,7 +103,7 @@ pub(crate) async fn v1_notification_read_handler(
 
     for notification in notifications {
         // Produce an activity message.
-        produce_activity_message(
+        let _ = produce_activity_message(
             state.producer.clone(),
             ActivityEntity::Notification,
             &ActivityMessage {
@@ -116,7 +116,7 @@ pub(crate) async fn v1_notification_read_handler(
                 },
             },
         )
-        .await?;
+        .await;
     }
 
     Ok(Json::from(notifications_count))
