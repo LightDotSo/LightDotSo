@@ -13,13 +13,30 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use ethers::abi::AbiDecode;
 use ethers_main::{
     abi::Address,
+    contract::abigen,
     types::{Bytes, Log, U256},
 };
 use foundry_evm::trace::CallTraceArena;
 use revm::interpreter::InstructionResult;
 use serde::{Deserialize, Serialize};
+
+abigen!(
+    LightWalletFactory,
+    r#"[
+        createAccount(bytes32 hash, bytes32 salt)
+    ]"#,
+);
+
+abigen!(
+    LightWallet,
+    r#"[
+        execute(address dest, uint256 value, bytes calldata func)
+        executeBatch(address[] calldata dest, uint256[] calldata value, bytes[] calldata func)
+    ]"#,
+);
 
 // Entire file is derived from https://github.com/EnsoFinance/transaction-simulator/blob/42bc679fb171de760838457820d5c6622e53ab15/src/simulation.rs
 // License: MIT
@@ -124,11 +141,64 @@ impl TryFrom<SimulationUserOperationRequest> for Vec<SimulationRequest> {
     type Error = eyre::Report;
 
     fn try_from(params: SimulationUserOperationRequest) -> Result<Self, Self::Error> {
+        let mut requests = vec![];
+
+        if let Some(init_code) = params.clone().init_code {
+            // Try decoding for `createAccount`
+            // Omit the first 20 bytes (the address of the contract)
+            let factory_addr = Address::from_slice(&init_code.0[..20]);
+            let _: CreateAccountCall = CreateAccountCall::decode(&init_code.0.slice(20..))?;
+
+            requests.push(SimulationRequest {
+                chain_id: params.chain_id,
+                from: params.sender,
+                to: factory_addr,
+                data: Some(init_code),
+                gas_limit: u64::MAX,
+                value: None,
+                block_number: None,
+            });
+        }
+
+        if let Some(call_data) = params.clone().call_data {
+            // Try decoding for `execute`
+            let decoded: ExecuteCall = ExecuteCall::decode(&call_data)?;
+
+            requests.push(SimulationRequest {
+                chain_id: params.chain_id,
+                from: params.sender,
+                to: decoded.dest,
+                data: Some(decoded.func.0.into()),
+                gas_limit: u64::MAX,
+                value: Some(decoded.value.low_u64()),
+                block_number: None,
+            });
+        }
+
+        if let Some(call_data) = params.clone().call_data {
+            // Try decoding for `executeBatch`
+            let decoded: ExecuteBatchCall = ExecuteBatchCall::decode(&call_data)?;
+
+            for ((dest, value), func) in
+                decoded.dest.into_iter().zip(decoded.value).zip(decoded.func)
+            {
+                requests.push(SimulationRequest {
+                    chain_id: params.chain_id,
+                    from: params.sender,
+                    to: dest,
+                    data: Some(func.0.into()),
+                    gas_limit: u64::MAX,
+                    value: Some(value.low_u64()),
+                    block_number: None,
+                });
+            }
+        }
+
         Ok(vec![SimulationRequest {
             chain_id: params.chain_id,
             from: params.sender,
             to: Address::zero(),
-            data: params.init_code,
+            data: Some(vec![].into()),
             gas_limit: u64::MAX,
             value: None,
             block_number: None,
