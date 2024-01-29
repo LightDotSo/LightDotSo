@@ -20,10 +20,9 @@ import type { Address, Hex } from "viem";
 // -----------------------------------------------------------------------------
 
 export type SimulationParams = {
-  block_number: number;
   chain_id: number;
-  data: Hex;
-  from: Address;
-  to: Address;
-  value: number;
+  nonce: number;
+  sender: Address;
+  call_data: Hex;
+  init_code: Hex;
 };

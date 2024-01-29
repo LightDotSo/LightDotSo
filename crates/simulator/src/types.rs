@@ -129,7 +129,7 @@ impl TryFrom<SimulationUserOperationRequest> for Vec<SimulationRequest> {
             from: params.sender,
             to: Address::zero(),
             data: params.init_code,
-            gas_limit: 0,
+            gas_limit: u64::MAX,
             value: None,
             block_number: None,
         }])

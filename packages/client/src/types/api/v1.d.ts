@@ -985,28 +985,22 @@ export interface components {
       interpretation?: components["schemas"]["Interpretation"] | null;
     };
     SimulationCreateRequestParams: {
-      /**
-       * Format: int64
-       * @description The block number of the simulation to update for.
-       * If not provided, the latest block number will be used.
-       */
-      block_number?: number | null;
+      /** @description The call data of the simulation to update for. */
+      call_data: string;
       /**
        * Format: int64
        * @description The chain id of the simulation to update for.
        */
       chain_id: number;
-      /** @description The data of the simulation to update for. */
-      data?: string | null;
-      /** @description The from address of the simulation to update for. */
-      from: string;
-      /** @description The to address of the simulation to update for. */
-      to: string;
+      /** @description The init code of the simulation to update for. */
+      init_code: string;
       /**
        * Format: int64
-       * @description The value of the simulation to update for.
+       * @description The nonce of the simulation to update for.
        */
-      value?: number | null;
+      nonce: number;
+      /** @description The from address of the simulation to update for. */
+      sender: string;
     };
     /** @description Simulation operation errors */
     SimulationError: OneOf<[{

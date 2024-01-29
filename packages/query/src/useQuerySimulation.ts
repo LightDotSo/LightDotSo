@@ -35,34 +35,31 @@ export const useQuerySimulation = (params: SimulationParams) => {
 
   const currentData: SimulationData | undefined = queryClient.getQueryData(
     queryKeys.simulation.create({
-      block_number: params.block_number,
       chain_id: params.chain_id,
-      data: params.data,
-      from: params.from,
-      to: params.to,
-      value: params.value,
+      sender: params.sender,
+      nonce: params.nonce,
+      call_data: params.call_data,
+      init_code: params.init_code,
     }).queryKey,
   );
 
   const { data: token_price } = useQuery<SimulationData | null>({
     queryKey: queryKeys.simulation.create({
-      block_number: params.block_number,
       chain_id: params.chain_id,
-      data: params.data,
-      from: params.from,
-      to: params.to,
-      value: params.value,
+      sender: params.sender,
+      nonce: params.nonce,
+      call_data: params.call_data,
+      init_code: params.init_code,
     }).queryKey,
     queryFn: async () => {
       const res = await postCreateSimulation(
         {
           body: {
-            block_number: params.block_number,
             chain_id: params.chain_id,
-            data: params.data,
-            from: params.from,
-            to: params.to,
-            value: params.value,
+            sender: params.sender,
+            nonce: params.nonce,
+            call_data: params.call_data,
+            init_code: params.init_code,
           },
         },
         clientType,

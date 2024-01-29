@@ -26,12 +26,11 @@ export const postCreateSimulation = async (
     body,
   }: {
     body: {
-      block_number: number;
       chain_id: number;
-      data: string;
-      from: string;
-      to: string;
-      value: number;
+      sender: string;
+      nonce: number;
+      call_data: string;
+      init_code: string;
     };
   },
   clientType?: ClientType,

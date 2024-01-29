@@ -44,9 +44,12 @@ pub(crate) struct SimulationCreateRequestParams {
     /// The chain id of the simulation to update for.
     pub chain_id: u64,
     /// The from address of the simulation to update for.
-    pub from: String,
+    pub sender: String,
+    /// The nonce of the simulation to update for.
     pub nonce: u64,
+    /// The init code of the simulation to update for.
     pub init_code: String,
+    /// The call data of the simulation to update for.
     pub call_data: String,
 }
 
@@ -60,7 +63,7 @@ impl TryFrom<SimulationCreateRequestParams> for SimulationUserOperationRequest {
     fn try_from(params: SimulationCreateRequestParams) -> Result<Self, Self::Error> {
         Ok(Self {
             chain_id: params.chain_id,
-            sender: params.from.parse()?,
+            sender: params.sender.parse()?,
             nonce: params.nonce,
             init_code: Some(hex_to_bytes(&params.init_code).unwrap_or_default().into()),
             call_data: Some(hex_to_bytes(&params.call_data).unwrap_or_default().into()),
