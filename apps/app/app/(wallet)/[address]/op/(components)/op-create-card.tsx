@@ -170,7 +170,7 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
                 Sign Transaction
               </Button>
             </div>
-            {JSON.stringify(simulation, null, 2)}
+            {serializeBigInt(simulation)}
           </>
         )}
         {pageIndex === 1 && <Loading />}

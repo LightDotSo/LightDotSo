@@ -115,6 +115,7 @@ pub(crate) async fn v1_simulation_create_handler(
     // Upsert the interpretation
     let interpretation =
         upsert_interpretation_with_actions(state.client.clone(), res.clone(), None, None).await?;
+    info!(?interpretation);
 
     // -------------------------------------------------------------------------
     // DB
