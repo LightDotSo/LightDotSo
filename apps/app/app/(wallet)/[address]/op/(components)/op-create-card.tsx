@@ -18,9 +18,10 @@
 import type { ConfigurationData } from "@lightdotso/data";
 import { useUserOperationCreate } from "@lightdotso/hooks";
 import type { UserOperation } from "@lightdotso/schemas";
+import { useModalSwiper } from "@lightdotso/stores";
 import { useDev } from "@lightdotso/stores";
 import { Button } from "@lightdotso/ui";
-import type { FC } from "react";
+import { useEffect, type FC } from "react";
 import type { Address } from "viem";
 import { serializeBigInt } from "@/utils";
 
@@ -48,6 +49,7 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
   // ---------------------------------------------------------------------------
 
   const { isDev } = useDev();
+  const { setPageIndex } = useModalSwiper();
 
   // ---------------------------------------------------------------------------
   // App Hooks
@@ -67,6 +69,18 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
     userOperation: userOperation,
     config: config,
   });
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    if (isLoading) {
+      setPageIndex(1);
+    } else {
+      setPageIndex(0);
+    }
+  }, [isLoading]);
 
   // ---------------------------------------------------------------------------
   // Dev Component
