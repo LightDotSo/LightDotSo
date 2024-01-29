@@ -205,7 +205,11 @@ impl TryFrom<SimulationUserOperationRequest> for Vec<SimulationRequest> {
             }
         }
 
-        Err(eyre!("Invalid transaction"))
+        if requests.is_empty() {
+            Err(eyre!("Invalid transaction"))
+        } else {
+            Ok(requests)
+        }
     }
 }
 
