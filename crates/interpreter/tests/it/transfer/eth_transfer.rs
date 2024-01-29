@@ -36,7 +36,7 @@ async fn test_integration_eth_transfer() -> Result<()> {
     let args = InterpreterArgs::parse_from([""]);
 
     // Run the interpreter
-    let res = args.run(request).await?;
+    let res = args.run(vec![request]).await?;
 
     println!("{:?}", res);
 
@@ -65,7 +65,7 @@ async fn test_integration_light_eth_transfer() -> Result<()> {
     let args = InterpreterArgs::parse_from([""]);
 
     // Run the interpreter
-    let res = args.run(request).await?;
+    let res = args.run(vec![request]).await?;
 
     println!("{:?}", res);
 

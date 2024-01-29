@@ -18,6 +18,7 @@ use autometrics::autometrics;
 use axum::{extract::State, Json};
 use clap::Parser;
 use ethers_main::utils::to_checksum;
+use lightdotso_common::utils::hex_to_bytes;
 use lightdotso_db::models::{
     activity::CustomParams, interpretation::upsert_interpretation_with_actions,
 };
@@ -26,7 +27,7 @@ use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
 use lightdotso_prisma::{interpretation, wallet, ActivityEntity, ActivityOperation};
-use lightdotso_simulator::types::SimulationRequest;
+use lightdotso_simulator::types::{SimulationRequest, SimulationUserOperationRequest};
 use lightdotso_tracing::tracing::info;
 // use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
@@ -40,37 +41,29 @@ use utoipa::ToSchema;
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
 pub(crate) struct SimulationCreateRequestParams {
-    /// The block number of the simulation to update for.
-    /// If not provided, the latest block number will be used.
-    pub block_number: Option<u64>,
     /// The chain id of the simulation to update for.
     pub chain_id: u64,
     /// The from address of the simulation to update for.
     pub from: String,
-    /// The to address of the simulation to update for.
-    pub to: String,
-    /// The data of the simulation to update for.
-    pub data: Option<String>,
-    /// The value of the simulation to update for.
-    pub value: Option<u64>,
+    pub nonce: u64,
+    pub init_code: String,
+    pub call_data: String,
 }
 
 // -----------------------------------------------------------------------------
 // Try From
 // -----------------------------------------------------------------------------
 
-impl TryFrom<SimulationCreateRequestParams> for SimulationRequest {
+impl TryFrom<SimulationCreateRequestParams> for SimulationUserOperationRequest {
     type Error = eyre::Report;
 
     fn try_from(params: SimulationCreateRequestParams) -> Result<Self, Self::Error> {
         Ok(Self {
-            block_number: params.block_number,
             chain_id: params.chain_id,
-            from: params.from.parse()?,
-            to: params.to.parse()?,
-            data: params.data.map(|data| data.parse()).transpose()?,
-            value: params.value,
-            gas_limit: u64::MAX,
+            sender: params.from.parse()?,
+            nonce: params.nonce,
+            init_code: Some(hex_to_bytes(&params.init_code).unwrap_or_default().into()),
+            call_data: Some(hex_to_bytes(&params.call_data).unwrap_or_default().into()),
         })
     }
 }
@@ -99,7 +92,11 @@ pub(crate) async fn v1_simulation_create_handler(
     // -------------------------------------------------------------------------
 
     // Get the simulation from the post body.
-    let simulation_request = SimulationRequest::try_from(params.clone())?;
+    let simulation_request_op = SimulationUserOperationRequest::try_from(params.clone())?;
+
+    // Convert the simulation to a vector of simulation requests.
+    let simulation_requests: Vec<SimulationRequest> =
+        Vec::<SimulationRequest>::try_from(simulation_request_op.clone())?;
 
     // -------------------------------------------------------------------------
     // DB
@@ -109,7 +106,7 @@ pub(crate) async fn v1_simulation_create_handler(
     let args = InterpreterArgs::parse_from([""]);
 
     // Run the simulation.
-    let res = args.run(simulation_request.clone()).await?;
+    let res = args.run(simulation_requests.clone()).await?;
     info!("res: {:?}", res);
 
     // Upsert the interpretation
@@ -133,7 +130,7 @@ pub(crate) async fn v1_simulation_create_handler(
             vec![],
             vec![],
             interpretation::id::equals(interpretation.id.clone()),
-            wallet::address::equals(to_checksum(&simulation_request.from, None)),
+            wallet::address::equals(to_checksum(&simulation_request_op.sender, None)),
             vec![],
         )
         .exec()

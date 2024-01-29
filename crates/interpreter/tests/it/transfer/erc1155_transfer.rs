@@ -38,7 +38,7 @@ async fn test_integration_erc1155_transfer() -> Result<()> {
     let args = InterpreterArgs::parse_from([""]);
 
     // Run the interpreter
-    let res = args.run(request).await?;
+    let res = args.run(vec![request]).await?;
 
     assert!(res.success);
 

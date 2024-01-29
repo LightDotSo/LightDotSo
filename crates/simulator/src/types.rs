@@ -42,6 +42,20 @@ pub struct SimulationRequest {
     pub block_number: Option<u64>,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SimulationUserOperationRequest {
+    /// Chain ID of the network
+    pub chain_id: u64,
+    /// From address of the transaction
+    pub sender: Address,
+    /// Nonce of the transaction
+    pub nonce: u64,
+    /// Init code of the transaction
+    pub init_code: Option<Bytes>,
+    /// Calldata of the transaction
+    pub call_data: Option<Bytes>,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SimulationResponse {
     /// Gas used by the transaction
@@ -101,6 +115,30 @@ pub struct UserOperationRequest {
     /// Signature of the transaction
     pub signature: Option<Bytes>,
 }
+
+// -----------------------------------------------------------------------------
+// Try From
+// -----------------------------------------------------------------------------
+
+impl TryFrom<SimulationUserOperationRequest> for Vec<SimulationRequest> {
+    type Error = eyre::Report;
+
+    fn try_from(params: SimulationUserOperationRequest) -> Result<Self, Self::Error> {
+        Ok(vec![SimulationRequest {
+            chain_id: params.chain_id,
+            from: params.sender,
+            to: Address::zero(),
+            data: params.init_code,
+            gas_limit: 0,
+            value: None,
+            block_number: None,
+        }])
+    }
+}
+
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
 
 impl From<UserOperationRequest> for SimulationRequest {
     fn from(uo: UserOperationRequest) -> Self {
