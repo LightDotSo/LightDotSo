@@ -143,12 +143,12 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
   // ---------------------------------------------------------------------------
 
   return (
-    <>
+    <div className="flex items-center max-w-lg">
       <ModalSwiper>
         {pageIndex === 0 && (
           <>
             {isDev && <Dev />}
-            <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
+            <div className="flex w-full flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
               <Button
                 disabled={!isCreatable}
                 isLoading={isLoading}
@@ -161,6 +161,6 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
         )}
         {pageIndex === 1 && <Loading />}
       </ModalSwiper>
-    </>
+    </div>
   );
 };

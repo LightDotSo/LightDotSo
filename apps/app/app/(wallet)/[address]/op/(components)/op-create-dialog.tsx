@@ -79,7 +79,7 @@ export const OpCreateDialog: FC<OpCreateDialogProps> = ({
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center mt-4">
       {userOperations && userOperations.length > 0 && (
         <Pagination>
           <PaginationContent>
@@ -94,16 +94,14 @@ export const OpCreateDialog: FC<OpCreateDialogProps> = ({
           </PaginationContent>
         </Pagination>
       )}
-      <div className="flex items-center max-w-lg">
-        {userOperations && userOperations.length > 0 && (
-          <OpCreateCard
-            key={selectedOpIndex}
-            address={address}
-            config={config}
-            userOperation={userOperations[selectedOpIndex]}
-          />
-        )}
-      </div>
+      {userOperations && userOperations.length > 0 && (
+        <OpCreateCard
+          key={selectedOpIndex}
+          address={address}
+          config={config}
+          userOperation={userOperations[selectedOpIndex]}
+        />
+      )}
     </div>
   );
 };
