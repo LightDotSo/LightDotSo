@@ -1615,7 +1615,7 @@ export interface operations {
       /** @description Auth logout returned successfully */
       200: {
         content: {
-          "application/json": unknown;
+          "application/json": components["schemas"]["AuthSuccess"];
         };
       };
       /** @description Auth logout not succeeded */
@@ -2687,7 +2687,7 @@ export interface operations {
       /** @description Simulation created successfully */
       200: {
         content: {
-          "text/plain": number;
+          "application/json": components["schemas"]["Simulation"];
         };
       };
       /** @description Simulation internal error */

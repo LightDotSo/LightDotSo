@@ -13,12 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{
-    result::AppJsonResult, routes::interpretation::types::Interpretation, state::AppState,
-};
+use crate::{result::AppJsonResult, routes::simulation::types::Simulation, state::AppState};
 use autometrics::autometrics;
 use axum::{extract::State, Json};
 use clap::Parser;
+use ethers_main::utils::to_checksum;
 use lightdotso_db::models::{
     activity::CustomParams, interpretation::upsert_interpretation_with_actions,
 };
@@ -26,11 +25,12 @@ use lightdotso_interpreter::config::InterpreterArgs;
 use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
-use lightdotso_prisma::{ActivityEntity, ActivityOperation};
+use lightdotso_prisma::{interpretation, wallet, ActivityEntity, ActivityOperation};
 use lightdotso_simulator::types::SimulationRequest;
 use lightdotso_tracing::tracing::info;
 // use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
+use serde_json::json;
 use utoipa::ToSchema;
 
 // -----------------------------------------------------------------------------
@@ -85,7 +85,7 @@ impl TryFrom<SimulationCreateRequestParams> for SimulationRequest {
         path = "/simulation/create",
         request_body = SimulationCreateRequestParams,
         responses(
-            (status = 200, description = "Simulation created successfully", body = i64),
+            (status = 200, description = "Simulation created successfully", body = Simulation),
             (status = 500, description = "Simulation internal error", body = SimulationError),
         )
     )]
@@ -93,7 +93,7 @@ impl TryFrom<SimulationCreateRequestParams> for SimulationRequest {
 pub(crate) async fn v1_simulation_create_handler(
     State(state): State<AppState>,
     Json(params): Json<SimulationCreateRequestParams>,
-) -> AppJsonResult<Interpretation> {
+) -> AppJsonResult<Simulation> {
     // -------------------------------------------------------------------------
     // Parse
     // -------------------------------------------------------------------------
@@ -109,12 +109,35 @@ pub(crate) async fn v1_simulation_create_handler(
     let args = InterpreterArgs::parse_from([""]);
 
     // Run the simulation.
-    let res = args.run(simulation_request).await?;
+    let res = args.run(simulation_request.clone()).await?;
     info!("res: {:?}", res);
 
     // Upsert the interpretation
     let interpretation =
         upsert_interpretation_with_actions(state.client.clone(), res.clone(), None, None).await?;
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
+    // Create the simulation the database.
+    let simulation = state
+        .client
+        .simulation()
+        .create(
+            res.block_number as i32,
+            res.gas_used as i64,
+            res.success,
+            json!({}),
+            0,
+            vec![],
+            vec![],
+            interpretation::id::equals(interpretation.id.clone()),
+            wallet::address::equals(to_checksum(&simulation_request.from, None)),
+            vec![],
+        )
+        .exec()
+        .await?;
 
     // -------------------------------------------------------------------------
     // Kafka
@@ -140,8 +163,8 @@ pub(crate) async fn v1_simulation_create_handler(
     // Return
     // -------------------------------------------------------------------------
 
-    // Change the interpretation to the format that the API expects.
-    let interpretation: Interpretation = interpretation.into();
+    // Change the simulation to the format that the API expects.
+    let simulation: Simulation = simulation.into();
 
-    Ok(Json::from(interpretation))
+    Ok(Json::from(simulation))
 }

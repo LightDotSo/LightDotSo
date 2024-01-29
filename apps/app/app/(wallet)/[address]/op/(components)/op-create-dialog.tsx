@@ -80,7 +80,7 @@ export const OpCreateDialog: FC<OpCreateDialogProps> = ({
 
   return (
     <div className="flex flex-col justify-center items-center mt-4">
-      {userOperations && userOperations.length > 0 && (
+      {userOperations && userOperations.length > 1 && (
         <Pagination>
           <PaginationContent>
             {userOperations.map((_, index) => (

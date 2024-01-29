@@ -1132,7 +1132,7 @@ model Simulation {
   // ---------------------------------------------------------------------------
 
   blockNumber Int
-  gasLimit    BigInt
+  gasUsed     BigInt
   success     Boolean
   trace       Json
 
