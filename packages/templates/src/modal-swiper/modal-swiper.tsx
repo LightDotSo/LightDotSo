@@ -17,7 +17,7 @@
 
 import { useModalSwiper } from "@lightdotso/stores";
 import { motion } from "framer-motion";
-import type { FC, ReactNode } from "react";
+import { useState, type FC, type ReactNode, useEffect } from "react";
 
 // -----------------------------------------------------------------------------
 // Const
@@ -42,25 +42,36 @@ interface ModalSwiperProps {
 
 export const ModalSwiper: FC<ModalSwiperProps> = ({ children }) => {
   // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
   const { pageIndex } = useModalSwiper();
 
   // ---------------------------------------------------------------------------
-  // Render
+  // Effect Hooks
   // ---------------------------------------------------------------------------
 
-  // Check if pageIndex is within array boundaries
-  if (pageIndex < 0 || pageIndex >= children.length) {
-    return null;
-  }
+  useEffect(() => {
+    if (pageIndex === 0) {
+      setHasAnimated(true);
+    }
+  }, [pageIndex, setHasAnimated]);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
   return (
     <motion.div
       key={pageIndex}
       variants={variants}
-      initial="enter"
+      initial={!hasAnimated ? "center" : "enter"}
       animate="center"
       exit="exit"
       transition={{
@@ -68,7 +79,7 @@ export const ModalSwiper: FC<ModalSwiperProps> = ({ children }) => {
         opacity: { duration: 0.3 },
       }}
     >
-      {children[pageIndex]}
+      {children}
     </motion.div>
   );
 };

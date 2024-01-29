@@ -20,7 +20,7 @@ import { useUserOperationCreate } from "@lightdotso/hooks";
 import type { UserOperation } from "@lightdotso/schemas";
 import { useModalSwiper } from "@lightdotso/stores";
 import { useDev } from "@lightdotso/stores";
-import { ModalSwiper } from "@lightdotso/templates";
+import { Loading, ModalSwiper } from "@lightdotso/templates";
 import { Button } from "@lightdotso/ui";
 import { useEffect, type FC } from "react";
 import type { Address } from "viem";
@@ -50,7 +50,7 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
   // ---------------------------------------------------------------------------
 
   const { isDev } = useDev();
-  const { setPageIndex } = useModalSwiper();
+  const { pageIndex, setPageIndex } = useModalSwiper();
 
   // ---------------------------------------------------------------------------
   // App Hooks
@@ -147,16 +147,18 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
     <>
       {isDev && <Dev />}
       <ModalSwiper>
-        <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-          <Button
-            disabled={!isCreatable}
-            isLoading={isLoading}
-            onClick={signUserOperation}
-          >
-            Sign Transaction
-          </Button>
-        </div>
-        <div>Hi</div>
+        {pageIndex === 0 && (
+          <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
+            <Button
+              disabled={!isCreatable}
+              isLoading={isLoading}
+              onClick={signUserOperation}
+            >
+              Sign Transaction
+            </Button>
+          </div>
+        )}
+        {pageIndex === 1 && <Loading />}
       </ModalSwiper>
     </>
   );
