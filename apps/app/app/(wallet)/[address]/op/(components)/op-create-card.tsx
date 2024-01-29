@@ -23,7 +23,7 @@ import { useModalSwiper, useDev } from "@lightdotso/stores";
 import { Loading, ModalSwiper } from "@lightdotso/templates";
 import { Button } from "@lightdotso/ui";
 import { useEffect, type FC } from "react";
-import type { Hex, type Address } from "viem";
+import type { Hex, Address } from "viem";
 import { serializeBigInt } from "@/utils";
 
 // -----------------------------------------------------------------------------

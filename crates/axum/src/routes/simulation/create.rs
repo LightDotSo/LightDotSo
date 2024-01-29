@@ -32,10 +32,12 @@ use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
 use lightdotso_prisma::{
-    asset_change, interpretation, simulation, wallet, ActivityEntity, ActivityOperation,
+    asset_change, interpretation, interpretation_action, simulation, wallet, ActivityEntity,
+    ActivityOperation,
 };
 use lightdotso_simulator::types::{SimulationRequest, SimulationUserOperationRequest};
 use lightdotso_tracing::tracing::info;
+use prisma_client_rust::or;
 // use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
@@ -153,11 +155,19 @@ pub(crate) async fn v1_simulation_create_handler(
         .simulation()
         .find_unique(simulation::id::equals(simulation.id.clone()))
         .with(
-            simulation::interpretation::fetch().with(interpretation::actions::fetch(vec![])).with(
-                interpretation::asset_changes::fetch(vec![])
-                    .with(asset_change::interpretation_action::fetch())
-                    .with(asset_change::token::fetch()),
-            ),
+            simulation::interpretation::fetch()
+                .with(interpretation::actions::fetch(vec![
+                    or![interpretation_action::address::equals("".to_string())],
+                    or![interpretation_action::address::equals(to_checksum(
+                        &simulation_request_op.sender,
+                        None
+                    ))],
+                ]))
+                .with(
+                    interpretation::asset_changes::fetch(vec![])
+                        .with(asset_change::interpretation_action::fetch())
+                        .with(asset_change::token::fetch()),
+                ),
         )
         .exec()
         .await?;
