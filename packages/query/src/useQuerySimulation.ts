@@ -43,41 +43,43 @@ export const useQuerySimulation = (params: SimulationParams) => {
     }).queryKey,
   );
 
-  const { data: token_price } = useQuery<SimulationData | null>({
-    queryKey: queryKeys.simulation.create({
-      chain_id: params.chain_id,
-      sender: params.sender,
-      nonce: params.nonce,
-      call_data: params.call_data,
-      init_code: params.init_code,
-    }).queryKey,
-    queryFn: async () => {
-      const res = await postCreateSimulation(
-        {
-          body: {
-            chain_id: params.chain_id,
-            sender: params.sender,
-            nonce: params.nonce,
-            call_data: params.call_data,
-            init_code: params.init_code,
+  const { data: simulation, isLoading: isSimulationLoading } =
+    useQuery<SimulationData | null>({
+      queryKey: queryKeys.simulation.create({
+        chain_id: params.chain_id,
+        sender: params.sender,
+        nonce: params.nonce,
+        call_data: params.call_data,
+        init_code: params.init_code,
+      }).queryKey,
+      queryFn: async () => {
+        const res = await postCreateSimulation(
+          {
+            body: {
+              chain_id: params.chain_id,
+              sender: params.sender,
+              nonce: params.nonce,
+              call_data: params.call_data,
+              init_code: params.init_code,
+            },
           },
-        },
-        clientType,
-      );
+          clientType,
+        );
 
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data as SimulationData;
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
-  });
+        // Return if the response is 200
+        return res.match(
+          data => {
+            return data as SimulationData;
+          },
+          _ => {
+            return currentData ?? null;
+          },
+        );
+      },
+    });
 
   return {
-    token_price,
+    simulation,
+    isSimulationLoading,
   };
 };

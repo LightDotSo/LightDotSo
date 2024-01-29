@@ -17,12 +17,13 @@
 
 import type { ConfigurationData } from "@lightdotso/data";
 import { useUserOperationCreate } from "@lightdotso/hooks";
+import { useQuerySimulation } from "@lightdotso/query";
 import type { UserOperation } from "@lightdotso/schemas";
 import { useModalSwiper, useDev } from "@lightdotso/stores";
 import { Loading, ModalSwiper } from "@lightdotso/templates";
 import { Button } from "@lightdotso/ui";
 import { useEffect, type FC } from "react";
-import type { Address } from "viem";
+import { toHex, type Address, Hex } from "viem";
 import { serializeBigInt } from "@/utils";
 
 // -----------------------------------------------------------------------------
@@ -70,7 +71,17 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
     config: config,
   });
 
-  // const {}
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { simulation, isSimulationLoading } = useQuerySimulation({
+    sender: address as Address,
+    nonce: Number(userOperation.nonce),
+    chain_id: Number(userOperation.chainId),
+    call_data: userOperation.callData as Hex,
+    init_code: userOperation.initCode as Hex,
+  });
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -159,6 +170,7 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
                 Sign Transaction
               </Button>
             </div>
+            {JSON.stringify(simulation, null, 2)}
           </>
         )}
         {pageIndex === 1 && <Loading />}
