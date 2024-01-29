@@ -21,7 +21,7 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@babel/core": "^7.23.7",
+    "@babel/core": "^7.23.9",
     "@lightdotso/client": "workspace:*",
     "@lightdotso/data": "workspace:*",
     "@lightdotso/hooks": "workspace:*",
@@ -53,7 +53,7 @@
     "@tanstack/react-query-next-experimental": "^5.17.19",
     "@tanstack/react-table": "^8.11.7",
     "kysely-postgres-js": "^2.0.0",
-    "lucide-react": "^0.315.0",
+    "lucide-react": "^0.316.0",
     "neverthrow": "^6.1.0",
     "next": "^14.1.0",
     "postgres": "^3.4.3",
@@ -69,7 +69,7 @@
     "@lightdotso/eslint-config": "workspace:*",
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.11.6",
+    "@types/node": "^20.11.10",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
     "autoprefixer": "^10.4.17",
