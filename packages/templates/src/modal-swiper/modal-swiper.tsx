@@ -16,7 +16,7 @@
 "use client";
 
 import { useModalSwiper } from "@lightdotso/stores";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import type { FC, ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
@@ -28,7 +28,6 @@ const variants = {
   center: { x: "0", opacity: 1 },
   exit: { x: "-30%", opacity: 0 },
 };
-
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
@@ -58,20 +57,18 @@ export const ModalSwiper: FC<ModalSwiperProps> = ({ children }) => {
   }
 
   return (
-    <AnimatePresence initial={false}>
-      <motion.div
-        key={pageIndex}
-        variants={variants}
-        initial="enter"
-        animate="center"
-        exit="exit"
-        transition={{
-          x: { type: "spring", stiffness: 300, damping: 30 },
-          opacity: { duration: 0.3 },
-        }}
-      >
-        {children[pageIndex]}
-      </motion.div>
-    </AnimatePresence>
+    <motion.div
+      key={pageIndex}
+      variants={variants}
+      initial="enter"
+      animate="center"
+      exit="exit"
+      transition={{
+        x: { type: "spring", stiffness: 300, damping: 30 },
+        opacity: { duration: 0.3 },
+      }}
+    >
+      {children[pageIndex]}
+    </motion.div>
   );
 };

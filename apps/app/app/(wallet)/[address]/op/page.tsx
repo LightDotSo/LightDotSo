@@ -17,7 +17,6 @@ import type { Address } from "viem";
 import { OpCreateDialog } from "@/app/(wallet)/[address]/op/(components)/op-create-dialog";
 import { handler } from "@/handlers/paths/[address]/op/handler";
 import { preloader } from "@/preloaders/paths/[address]/op/preloader";
-import { ModalSwiper } from "@lightdotso/templates";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -52,13 +51,10 @@ export default async function Page({ params, searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <ModalSwiper>
-      <OpCreateDialog
-        config={config}
-        address={params.address as Address}
-        userOperations={userOperations}
-      />
-      <>Hi</>
-    </ModalSwiper>
+    <OpCreateDialog
+      config={config}
+      address={params.address as Address}
+      userOperations={userOperations}
+    />
   );
 }
