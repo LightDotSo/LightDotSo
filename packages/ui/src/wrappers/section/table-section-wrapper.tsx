@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { cn } from "@lightdotso/utils";
 import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
@@ -21,15 +22,24 @@ import type { ReactNode } from "react";
 
 interface TableSectionWrapperProps {
   children: ReactNode;
+  className?: string;
 }
 
 // -----------------------------------------------------------------------------
 // Layout
 // -----------------------------------------------------------------------------
 
-export function TableSectionWrapper({ children }: TableSectionWrapperProps) {
+export function TableSectionWrapper({
+  children,
+  className,
+}: TableSectionWrapperProps) {
   return (
-    <div className="rounded-md border border-border bg-background p-4">
+    <div
+      className={cn(
+        "rounded-md border border-border bg-background p-4",
+        className,
+      )}
+    >
       {children}
     </div>
   );

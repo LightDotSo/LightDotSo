@@ -34,7 +34,7 @@ export const handler = async (
   // Auth
   // ---------------------------------------------------------------------------
 
-  await verifyUserId();
+  const userId = await verifyUserId();
 
   // ---------------------------------------------------------------------------
   // Validators
@@ -58,12 +58,12 @@ export const handler = async (
     address: params.address as Address,
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
-    user_id: undefined,
+    user_id: userId,
   });
 
   const activitiesCountPromise = getActivitiesCount({
     address: params.address as Address,
-    user_id: undefined,
+    user_id: userId,
   });
 
   const [activities, activitiesCount] = await Promise.all([
