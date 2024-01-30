@@ -75,7 +75,6 @@ export const TabsNav: FC<TabNavProps> = ({
   // ---------------------------------------------------------------------------
 
   const baseSlug = useBaseSlug();
-  const isDesktop = useMediaQuery("md");
 
   // ---------------------------------------------------------------------------
   // Operation Hooks
@@ -128,10 +127,8 @@ export const TabsNav: FC<TabNavProps> = ({
   // Render
   // ---------------------------------------------------------------------------
 
-  if (isDesktop) {
-    if (pathType === "unauthenticated" || pathType === "authenticated") {
-      return null;
-    }
+  if (pathType === "unauthenticated" || pathType === "authenticated") {
+    return null;
   }
 
   return (
