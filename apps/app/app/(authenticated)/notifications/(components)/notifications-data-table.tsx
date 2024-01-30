@@ -24,6 +24,7 @@ import { useAuth } from "@lightdotso/stores";
 import { notificationColumns } from "@lightdotso/tables";
 import { Login } from "@lightdotso/templates";
 import { TableSectionWrapper } from "@lightdotso/ui";
+import { cn } from "@lightdotso/utils";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(authenticated)/notifications/(components)/data-table/data-table";
@@ -87,18 +88,17 @@ export const NotificationsDataTable: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!sessionId) {
-    return <Login />;
-  }
-
   return (
-    <TableSectionWrapper>
-      <DataTable
-        isLoading={isLoading}
-        data={notifications ?? []}
-        columns={notificationColumns}
-        pageCount={pageCount ?? 0}
-      />
-    </TableSectionWrapper>
+    <>
+      {!sessionId && <Login />}
+      <TableSectionWrapper className={cn(sessionId ? "block" : "hidden")}>
+        <DataTable
+          isLoading={isLoading}
+          data={notifications ?? []}
+          columns={notificationColumns}
+          pageCount={pageCount ?? 0}
+        />
+      </TableSectionWrapper>
+    </>
   );
 };

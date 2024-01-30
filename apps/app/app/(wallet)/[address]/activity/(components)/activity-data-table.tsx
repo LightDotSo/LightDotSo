@@ -21,6 +21,7 @@ import { useAuth } from "@lightdotso/stores";
 import { activityColumns } from "@lightdotso/tables";
 import { Login } from "@lightdotso/templates";
 import { TableSectionWrapper } from "@lightdotso/ui";
+import { cn } from "@lightdotso/utils";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(wallet)/[address]/activity/(components)/data-table/data-table";
@@ -93,18 +94,17 @@ export const ActivityDataTable: FC<ActivityDataTableProps> = ({ address }) => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!sessionId) {
-    return <Login />;
-  }
-
   return (
-    <TableSectionWrapper>
-      <DataTable
-        isLoading={isLoading}
-        data={activities ?? []}
-        columns={activityColumns}
-        pageCount={pageCount ?? 0}
-      />
-    </TableSectionWrapper>
+    <>
+      {!sessionId && <Login />}
+      <TableSectionWrapper className={cn(sessionId ? "block" : "hidden")}>
+        <DataTable
+          isLoading={isLoading}
+          data={activities ?? []}
+          columns={activityColumns}
+          pageCount={pageCount ?? 0}
+        />
+      </TableSectionWrapper>
+    </>
   );
 };
