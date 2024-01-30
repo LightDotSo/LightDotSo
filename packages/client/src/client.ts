@@ -150,9 +150,8 @@ export const getClient: (
           process.env.NEXT_PUBLIC_LOCAL_ENV === "dev") &&
         clientType === "authenticated"
       ? localAuthenticatedApiClient
-      : (process.env.LOCAL_ENV === "dev" ||
-            process.env.NEXT_PUBLIC_LOCAL_ENV === "dev") &&
-          clientType === "public"
+      : process.env.LOCAL_ENV === "dev" ||
+          process.env.NEXT_PUBLIC_LOCAL_ENV === "dev"
         ? localApiClient
         : clientType === undefined
           ? publicApiClient
