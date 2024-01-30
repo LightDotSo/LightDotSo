@@ -16,7 +16,7 @@
 // Full complete example from: https://github.com/hqasmei/youtube-tutorials/blob/ee44df8fbf6ab4f4c2f7675f17d67813947a7f61/vercel-animated-tabs/src/components/tabs.tsx
 // License: MIT
 
-import { useBaseSlug, useMediaQuery } from "@lightdotso/hooks";
+import { useBaseSlug } from "@lightdotso/hooks";
 import type { Tab } from "@lightdotso/types";
 import { Badge } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
@@ -75,7 +75,6 @@ export const TabsNav: FC<TabNavProps> = ({
   // ---------------------------------------------------------------------------
 
   const baseSlug = useBaseSlug();
-  const isDesktop = useMediaQuery("md");
 
   // ---------------------------------------------------------------------------
   // Operation Hooks
@@ -128,10 +127,8 @@ export const TabsNav: FC<TabNavProps> = ({
   // Render
   // ---------------------------------------------------------------------------
 
-  if (isDesktop) {
-    if (pathType === "unauthenticated" || pathType === "authenticated") {
-      return null;
-    }
+  if (pathType === "unauthenticated" || pathType === "authenticated") {
+    return null;
   }
 
   return (

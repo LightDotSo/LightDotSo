@@ -233,9 +233,12 @@ impl Interpreter<'_> {
         }
 
         // Flatten the vector to single InterpretationResponse
-        let res = interpretation_responses.into_iter().fold(
+        let res = interpretation_responses.clone().into_iter().fold(
             InterpretationResponse::default(),
             |mut acc, res| {
+                acc.chain_id = res.chain_id;
+                acc.block_number = res.block_number;
+                acc.success &= res.success;
                 acc.gas_used += res.gas_used;
                 acc.success &= res.success;
                 acc.traces.extend(res.traces);
@@ -246,6 +249,17 @@ impl Interpreter<'_> {
                 acc
             },
         );
+
+        // Make sure the chain_id and block_number are added
+        let res = InterpretationResponse {
+            chain_id: requests.first().map(|req| req.chain_id).unwrap_or_default(),
+            block_number: interpretation_responses
+                .last()
+                .map(|res| res.block_number)
+                .unwrap_or_default(),
+            success: interpretation_responses.iter().all(|res| res.success),
+            ..res
+        };
 
         Ok(res)
     }
