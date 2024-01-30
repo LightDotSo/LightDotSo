@@ -16,6 +16,7 @@
 "use client";
 
 import type { ConfigurationData } from "@lightdotso/data";
+import { AssetChange } from "@lightdotso/elements";
 import { useUserOperationCreate } from "@lightdotso/hooks";
 import { useQuerySimulation } from "@lightdotso/query";
 import type { UserOperation } from "@lightdotso/schemas";
@@ -167,6 +168,12 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
           <>
             {isDev && <Dev />}
             <div className="flex w-full flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
+              {simulation &&
+                simulation.interpretation.asset_changes.map(
+                  (asset_change, index) => {
+                    return <AssetChange assetChange={asset_change} />;
+                  },
+                )}
               <Button
                 disabled={!isCreatable}
                 isLoading={isLoading}
