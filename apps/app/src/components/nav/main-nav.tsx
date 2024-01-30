@@ -20,14 +20,14 @@
 
 import { baseWidthWrapper } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
-import { Suspense } from "react";
+import { Suspense, useMemo } from "react";
 import type { FC, HTMLAttributes, ReactNode } from "react";
 import { AppNav } from "@/components/nav/app-nav";
 import { TabsNav } from "@/components/nav/tabs-nav";
 import { RootLogo } from "@/components/root/root-logo";
 import { ConnectButton } from "@/components/web3/connect-button";
 import { WalletSwitcher } from "@/components/web3/wallet-switcher";
-import { usePathType, useTabs } from "@/hooks";
+import { useTabs } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -41,15 +41,9 @@ type MainNavProps = HTMLAttributes<HTMLElement> & {
 // Component
 // -----------------------------------------------------------------------------
 
-export const MainNav: FC<MainNavProps> = ({ children, ...props }) => {
+export const MainNav: FC<MainNavProps> = ({ children }) => {
   // ---------------------------------------------------------------------------
   // Hooks
-  // ---------------------------------------------------------------------------
-
-  const pathType = usePathType();
-
-  // ---------------------------------------------------------------------------
-  // State Hooks
   // ---------------------------------------------------------------------------
 
   const { tabProps } = useTabs();
@@ -58,24 +52,9 @@ export const MainNav: FC<MainNavProps> = ({ children, ...props }) => {
   // Component
   // ---------------------------------------------------------------------------
 
-  const Tabs = () => {
-    // Don't render tabs on unauthenticated or authenticated paths
-    if (pathType === "unauthenticated" || pathType === "authenticated") {
-      return null;
-    }
-
-    return (
-      <div
-        className={cn(
-          "flex h-10 items-center space-x-4 lg:space-x-6",
-          baseWidthWrapper,
-        )}
-        {...props}
-      >
-        <Suspense>{tabProps && <TabsNav {...tabProps} />}</Suspense>
-      </div>
-    );
-  };
+  const TabsNavComponent = useMemo(() => {
+    return tabProps && <TabsNav {...tabProps} />;
+  }, [tabProps]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -93,7 +72,14 @@ export const MainNav: FC<MainNavProps> = ({ children, ...props }) => {
             </div>
             <AppNav mobile={<ConnectButton />} tabs={tabProps.tabs} />
           </div>
-          <Tabs />
+          <div
+            className={cn(
+              "flex h-10 items-center space-x-4 lg:space-x-6",
+              baseWidthWrapper,
+            )}
+          >
+            <Suspense>{TabsNavComponent}</Suspense>
+          </div>
         </div>
         {children}
       </div>
