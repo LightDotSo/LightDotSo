@@ -32,6 +32,7 @@ import {
 export const activityColumns: ColumnDef<ActivityData>[] = [
   {
     id: "user_address",
+    accessorKey: "user_address",
     accessorFn: row => {
       return row.user?.address;
     },

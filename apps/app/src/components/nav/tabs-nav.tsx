@@ -16,7 +16,7 @@
 // Full complete example from: https://github.com/hqasmei/youtube-tutorials/blob/ee44df8fbf6ab4f4c2f7675f17d67813947a7f61/vercel-animated-tabs/src/components/tabs.tsx
 // License: MIT
 
-import { useBaseSlug } from "@lightdotso/hooks";
+import { useBaseSlug, useMediaQuery } from "@lightdotso/hooks";
 import type { Tab } from "@lightdotso/types";
 import { Badge } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
@@ -75,6 +75,7 @@ export const TabsNav: FC<TabNavProps> = ({
   // ---------------------------------------------------------------------------
 
   const baseSlug = useBaseSlug();
+  const isDesktop = useMediaQuery("md");
 
   // ---------------------------------------------------------------------------
   // Operation Hooks
@@ -210,7 +211,7 @@ export const TabsNav: FC<TabNavProps> = ({
           />
         )}
       </AnimatePresence>
-      {selectedRect && navRect && isAnimated && (
+      {selectedRect && navRect && isAnimated && isDesktop && (
         <motion.div
           className={
             "absolute bottom-0 left-0.5 z-10 h-[3px] rounded-lg bg-background-primary"
