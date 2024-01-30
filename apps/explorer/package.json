@@ -50,7 +50,7 @@
     "@sentry/react": "^7.98.0",
     "@tanstack/react-query": "^5.17.19",
     "@tanstack/react-query-devtools": "^5.17.21",
-    "@tanstack/react-query-next-experimental": "^5.17.19",
+    "@tanstack/react-query-next-experimental": "^5.18.0",
     "@tanstack/react-table": "^8.11.7",
     "kysely-postgres-js": "^2.0.0",
     "lucide-react": "^0.317.0",
