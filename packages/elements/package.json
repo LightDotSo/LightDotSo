@@ -33,7 +33,7 @@
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
     "class-variance-authority": "^0.7.0",
-    "lucide-react": "^0.316.0",
+    "lucide-react": "^0.317.0",
     "react": "^18.2.0",
     "react-blurhash": "^0.3.0",
     "react-dom": "^18.2.0",

@@ -28,6 +28,14 @@ use utoipa::ToSchema;
 pub(crate) struct Simulation {
     /// The id of the simulation to read for.
     id: String,
+    /// The block number of the simulation.
+    block_number: i32,
+    /// The amount of gas used in the simulation.
+    gas_used: i64,
+    /// Flag of whether the simulation is successful.
+    success: bool,
+    /// The state of the simulation.
+    status: String,
     /// The interpretation of the simulation.
     interpretation: Option<Interpretation>,
 }
@@ -41,6 +49,10 @@ impl From<simulation::Data> for Simulation {
     fn from(simulation: simulation::Data) -> Self {
         Self {
             id: simulation.id,
+            block_number: simulation.block_number,
+            gas_used: simulation.gas_used,
+            success: simulation.success,
+            status: simulation.status.to_string(),
             interpretation: simulation.interpretation.map(|int| Interpretation::from(*int)),
         }
     }
