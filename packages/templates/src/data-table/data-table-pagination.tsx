@@ -48,6 +48,10 @@ export function DataTablePagination<TData>({
   // Render
   // ---------------------------------------------------------------------------
 
+  if (table.options.data.length === 0) {
+    return null;
+  }
+
   return (
     <div className="flex items-center justify-between px-2 pb-1">
       {table.getIsSomeRowsSelected() ? (
