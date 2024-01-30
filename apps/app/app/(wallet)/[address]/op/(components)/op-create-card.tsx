@@ -167,13 +167,19 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
         {pageIndex === 0 && (
           <>
             {isDev && <Dev />}
-            <div className="flex w-full flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
+            <div className="flex flex-col space-y-4">
               {simulation &&
                 simulation.interpretation.asset_changes.map(
-                  (asset_change, index) => {
-                    return <AssetChange assetChange={asset_change} />;
+                  (asset_change, _index) => {
+                    return (
+                      <div key={asset_change.id} className="flex">
+                        <AssetChange assetChange={asset_change} />
+                      </div>
+                    );
                   },
                 )}
+            </div>
+            <div className="flex w-full flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
               <Button
                 disabled={!isCreatable}
                 isLoading={isLoading}
