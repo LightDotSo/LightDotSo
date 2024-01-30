@@ -28,7 +28,7 @@ use axum::{
 use ethers_main::types::H160;
 use lightdotso_prisma::activity::{self, WhereParam};
 use lightdotso_tracing::tracing::info;
-use prisma_client_rust::{or, Direction};
+use prisma_client_rust::Direction;
 use serde::{Deserialize, Serialize};
 use tower_sessions_core::Session;
 use utoipa::{IntoParams, ToSchema};
@@ -47,6 +47,8 @@ pub struct ListQuery {
     pub limit: Option<i64>,
     /// The user id to filter by.
     pub user_id: Option<String>,
+    /// Flag to query for only user initiated activities.
+    pub is_user_related: Option<bool>,
     /// The wallet address to filter by.
     pub address: Option<String>,
 }
@@ -225,11 +227,9 @@ fn construct_activity_list_query_params(query: &ListQuery) -> Vec<WhereParam> {
         None => vec![],
     };
 
-    if let Some(id) = &query.user_id {
-        query_exp.push(or![activity::user_id::equals(Some(id.clone()))]);
+    if query.is_user_related.unwrap_or(false) {
+        query_exp.push(activity::user_id::not(None));
     }
-
-    // query_exp.push(or![activity::user_id::not(None)]);
 
     query_exp
 }

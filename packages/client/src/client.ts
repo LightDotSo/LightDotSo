@@ -94,6 +94,21 @@ export const getSocketClient: (
 // Light
 // -----------------------------------------------------------------------------
 
+const localApiClient: ReturnType<typeof createClient<ApiPaths>> =
+  createClient<ApiPaths>({
+    baseUrl: "http://localhost:3000/v1",
+    headers: {
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_LIGHT_ADMIN_TOKEN}`,
+    },
+    credentials: "include",
+  });
+
+const localAuthenticatedApiClient: ReturnType<typeof createClient<ApiPaths>> =
+  createClient<ApiPaths>({
+    baseUrl: "http://localhost:3000/authenticated/v1",
+    credentials: "include",
+  });
+
 const localAdminApiClient: ReturnType<typeof createClient<ApiPaths>> =
   createClient<ApiPaths>({
     baseUrl: "http://localhost:3000/admin/v1",
@@ -127,16 +142,22 @@ const adminApiClient: ReturnType<typeof createClient<ApiPaths>> =
 export const getClient: (
   clientType?: "admin" | "authenticated" | "public",
 ) => ReturnType<typeof createClient<ApiPaths>> = clientType =>
-  clientType === "public"
-    ? publicApiClient
-    : process.env.LOCAL_ENV === "dev" ||
-        process.env.NEXT_PUBLIC_LOCAL_ENV === "dev"
-      ? localAdminApiClient
-      : clientType === undefined
-        ? publicApiClient
-        : clientType === "authenticated"
-          ? authenticatedApiClient
-          : adminApiClient;
+  (process.env.LOCAL_ENV === "dev" ||
+    process.env.NEXT_PUBLIC_LOCAL_ENV === "dev") &&
+  clientType === "admin"
+    ? localAdminApiClient
+    : (process.env.LOCAL_ENV === "dev" ||
+          process.env.NEXT_PUBLIC_LOCAL_ENV === "dev") &&
+        clientType === "authenticated"
+      ? localAuthenticatedApiClient
+      : process.env.LOCAL_ENV === "dev" ||
+          process.env.NEXT_PUBLIC_LOCAL_ENV === "dev"
+        ? localApiClient
+        : clientType === undefined
+          ? publicApiClient
+          : clientType === "authenticated"
+            ? authenticatedApiClient
+            : adminApiClient;
 
 // -----------------------------------------------------------------------------
 // RPC
