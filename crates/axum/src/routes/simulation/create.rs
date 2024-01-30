@@ -189,8 +189,7 @@ pub(crate) async fn v1_simulation_create_handler(
             operation: ActivityOperation::Create,
             log: serde_json::to_value(&params)?,
             params: CustomParams {
-                // wallet_address: Some(wallet.address.clone()),
-                // invite_code_id: Some(invite_code.id.clone()),
+                wallet_address: Some(simulation.sender.clone()),
                 ..Default::default()
             },
         },
