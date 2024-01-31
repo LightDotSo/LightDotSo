@@ -48,4 +48,4 @@ export default async function Page({ params, searchParams }: PageProps) {
 // Config
 // -----------------------------------------------------------------------------
 
-export const runtime = "edge";
+// export const runtime = "edge";
