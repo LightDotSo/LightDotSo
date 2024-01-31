@@ -26,6 +26,7 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
+    "@lightdotso/client": "workspace:*",
     "@lightdotso/const": "workspace:*",
     "@lightdotso/data": "workspace:*",
     "@lightdotso/demo": "workspace:*",

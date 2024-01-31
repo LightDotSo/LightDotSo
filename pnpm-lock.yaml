@@ -2268,6 +2268,9 @@ importers:
 
   packages/templates:
     dependencies:
+      '@lightdotso/client':
+        specifier: workspace:*
+        version: link:../client
       '@lightdotso/const':
         specifier: workspace:*
         version: link:../const
