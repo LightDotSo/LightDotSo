@@ -30,11 +30,12 @@ export type UserOperationNonceParams = {
 
 export type UserOperationListParams = {
   address: Address | null;
-  status: "proposed" | "history" | null;
+  status: "proposed" | "history" | "executed" | null;
   order: "desc" | "asc";
   limit: number;
   offset: number;
   is_testnet: boolean;
+  chain_id?: number | null | undefined;
 };
 
 export type UserOperationListCountParams = Omit<

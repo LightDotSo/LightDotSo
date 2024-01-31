@@ -980,9 +980,23 @@ export interface components {
     }]>;
     /** @description Simulation root type. */
     Simulation: {
+      /**
+       * Format: int32
+       * @description The block number of the simulation.
+       */
+      block_number: number;
+      /**
+       * Format: int64
+       * @description The amount of gas used in the simulation.
+       */
+      gas_used: number;
       /** @description The id of the simulation to read for. */
       id: string;
       interpretation?: components["schemas"]["Interpretation"] | null;
+      /** @description The state of the simulation. */
+      status: string;
+      /** @description Flag of whether the simulation is successful. */
+      success: boolean;
     };
     SimulationCreateRequestParams: {
       /** @description The call data of the simulation to update for. */
@@ -1496,6 +1510,8 @@ export interface operations {
         limit?: number | null;
         /** @description The user id to filter by. */
         user_id?: string | null;
+        /** @description Flag to query for only user initiated activities. */
+        is_user_related?: boolean | null;
         /** @description The wallet address to filter by. */
         address?: string | null;
       };
@@ -1528,6 +1544,8 @@ export interface operations {
         limit?: number | null;
         /** @description The user id to filter by. */
         user_id?: string | null;
+        /** @description Flag to query for only user initiated activities. */
+        is_user_related?: boolean | null;
         /** @description The wallet address to filter by. */
         address?: string | null;
       };
@@ -3221,6 +3239,8 @@ export interface operations {
         limit?: number | null;
         /** @description The sender address to filter by. */
         address?: string | null;
+        /** @description The chain id to filter by. */
+        chain_id?: number | null;
         /** @description The status to filter by. */
         status?: ("proposed" | "pending" | "executed" | "reverted" | "history" | "invalid") | null;
         /**
@@ -3260,6 +3280,8 @@ export interface operations {
         limit?: number | null;
         /** @description The sender address to filter by. */
         address?: string | null;
+        /** @description The chain id to filter by. */
+        chain_id?: number | null;
         /** @description The status to filter by. */
         status?: ("proposed" | "pending" | "executed" | "reverted" | "history" | "invalid") | null;
         /**

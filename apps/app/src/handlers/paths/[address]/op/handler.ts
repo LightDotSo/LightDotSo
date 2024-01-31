@@ -21,10 +21,10 @@ import type { UserOperation } from "@lightdotso/schemas";
 import {
   getConfiguration,
   getUserOperationNonce,
-  getUserOperations,
+  // getUserOperations,
   getWallet,
 } from "@lightdotso/services";
-import { calculateInitCode } from "@lightdotso/solutions";
+// import { calculateInitCode } from "@lightdotso/solutions";
 import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
 import { getUserOperationHash } from "permissionless";
