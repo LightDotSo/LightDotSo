@@ -15,7 +15,8 @@
 
 import { useAuth, useModals } from "@lightdotso/stores";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
-import { useCallback, useMemo } from "react";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { useCallback, useState, useMemo } from "react";
 
 // -----------------------------------------------------------------------------
 // Hook
