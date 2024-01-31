@@ -25,6 +25,7 @@ export const userOperationsParser = createParser({
     const operations = value.split(";");
     return operations.map<Partial<UserOperation>>(operation => {
       const [
+        _index,
         chainId,
         hash,
         nonce,
