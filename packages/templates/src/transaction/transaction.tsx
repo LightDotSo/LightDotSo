@@ -110,6 +110,7 @@ export const Transaction: FC<TransactionProps> = ({
       maxPriorityFeePerGas:
         partialUserOperation?.maxPriorityFeePerGas ?? BigInt(0),
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userOperations]);
   console.log("coreUserOperation: ", coreUserOperation);
 
