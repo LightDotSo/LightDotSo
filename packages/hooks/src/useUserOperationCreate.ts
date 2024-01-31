@@ -194,11 +194,10 @@ export const useUserOperationCreate = ({
 
   useEffect(() => {
     const fetchUserOp = async () => {
-      if (!data || !owner || !userOperation) {
-        return;
-      }
-
       if (
+        !data ||
+        !owner ||
+        !userOperation ||
         !userOperation.chainId ||
         !userOperation.hash ||
         !userOperation.nonce ||
@@ -212,6 +211,9 @@ export const useUserOperationCreate = ({
         !userOperation.maxPriorityFeePerGas ||
         !userOperation.paymasterAndData
       ) {
+        if (data) {
+          toast.error("Failed to submit the userOperation result");
+        }
         return;
       }
 
@@ -266,14 +268,7 @@ export const useUserOperationCreate = ({
 
     fetchUserOp();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    data,
-    owner,
-    userOperation,
-    subdigest,
-    configuration?.threshold,
-    address,
-  ]);
+  }, [data, owner, userOperation, configuration?.threshold, address]);
 
   // ---------------------------------------------------------------------------
   // Render
