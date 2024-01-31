@@ -13,8 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { useAuthModal } from "./useAuthModal";
-export { useDebouncedValue } from "@lightdotso/hooks/src/useDebouncedValue";
 export { useEdgeFlag } from "./useEdgeFlag";
 export { usePathType } from "./usePathType";
 export { useTabs } from "./useTabs";

@@ -63,7 +63,7 @@ import {
   TabsTrigger,
   TooltipProvider,
 } from "@lightdotso/ui";
-import { cn, refineNumberFormat } from "@lightdotso/utils";
+import { cn, debounce, refineNumberFormat } from "@lightdotso/utils";
 import { lightWalletAbi } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
@@ -85,7 +85,6 @@ import type { Address, Hex } from "viem";
 import { normalize } from "viem/ens";
 import * as z from "zod";
 import { publicClient } from "@/client/public";
-import { debounce } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Types

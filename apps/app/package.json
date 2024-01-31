@@ -80,7 +80,7 @@
     "@upstash/ratelimit": "^1.0.0",
     "@upstash/redis": "^1.28.2",
     "@vercel/toolbar": "^0.1.10",
-    "@web3modal/wagmi": "^4.0.0-alpha.2",
+    "@web3modal/wagmi": "^4.0.0-alpha.3",
     "blurhash": "^2.0.5",
     "class-variance-authority": "^0.7.0",
     "exponential-backoff": "^3.1.1",
