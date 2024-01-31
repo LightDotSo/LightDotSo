@@ -32,6 +32,7 @@ export interface FooterButtonProps {
   isLoading?: boolean;
   href?: string;
   isModal?: boolean;
+  customSuccessText?: string;
   successClick?: () => void;
   cancelClick?: () => void;
 }
@@ -47,6 +48,7 @@ export const FooterButton: FC<FooterButtonProps> = ({
   isLoading,
   href,
   isModal,
+  customSuccessText,
   successClick,
   cancelClick,
 }) => {
@@ -79,7 +81,7 @@ export const FooterButton: FC<FooterButtonProps> = ({
           type="submit"
           onClick={successClick}
         >
-          Continue
+          {customSuccessText ?? "Continue"}
         </Button>
       ) : (
         <Button

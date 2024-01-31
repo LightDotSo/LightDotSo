@@ -61,6 +61,7 @@ export const ModalInterceptionFooter: FC = () => {
     <FooterButton
       isModal
       className="pt-0"
+      customSuccessText="Execute Transaction"
       disabled={isFormDisabled}
       cancelClick={onDismiss}
     />
