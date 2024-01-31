@@ -69,7 +69,6 @@
     "@tanstack/react-query-persist-client": "^5.18.0",
     "@tanstack/react-table": "^8.11.7",
     "@vercel/toolbar": "^0.1.10",
-    "@web3modal/wagmi": "^4.0.0-alpha.3",
     "class-variance-authority": "^0.7.0",
     "cmdk": "^0.2.1",
     "date-fns": "^3.3.1",

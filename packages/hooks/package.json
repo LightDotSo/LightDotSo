@@ -36,7 +36,6 @@
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
-    "@web3modal/wagmi": "^4.0.0-alpha.3",
     "copy-to-clipboard": "^3.3.3",
     "lodash": "^4.17.21",
     "next": "^14.1.0",

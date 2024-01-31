@@ -37,8 +37,7 @@ import {
   toast,
 } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
-import { useDisconnect } from "@lightdotso/wagmi";
-import { useWeb3Modal } from "@web3modal/wagmi/react";
+import { useDisconnect, useWeb3Modal } from "@lightdotso/wagmi";
 import { Wallet } from "lucide-react";
 import Link from "next/link";
 import { useTheme } from "next-themes";

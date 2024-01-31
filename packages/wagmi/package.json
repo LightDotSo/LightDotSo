@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@lightdotso/const": "workspace:*",
+    "@web3modal/wagmi": "^4.0.0-alpha.3",
     "wagmi": "^2.5.5"
   },
   "publishConfig": {
