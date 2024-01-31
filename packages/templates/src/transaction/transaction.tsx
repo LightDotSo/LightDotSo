@@ -261,7 +261,7 @@ export const Transaction: FC<TransactionProps> = ({
     };
 
     fetchHashAndUpdateOperation();
-  }, [updatedUserOperation]);
+  }, [updatedUserOperation, address]);
 
   // ---------------------------------------------------------------------------
   // Hooks
