@@ -40,3 +40,5 @@ ignores:
   - "@lightdotso/demo"
   - wagmi
   - siwe
+  - "@web3modal/scaffold"
+  - "@web3modal/wagmi"

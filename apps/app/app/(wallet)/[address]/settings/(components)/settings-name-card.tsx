@@ -15,7 +15,7 @@
 
 "use client";
 
-import { useDelayedValue } from "@lightdotso/hooks";
+import { useAuthModal, useDelayedValue } from "@lightdotso/hooks";
 import { useSuspenseQueryWallet, useMutationWallet } from "@lightdotso/query";
 import {
   Button,
@@ -36,7 +36,6 @@ import type { Address } from "viem";
 import * as z from "zod";
 import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const";
-import { useAuthModal } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Schema

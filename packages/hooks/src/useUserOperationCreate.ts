@@ -28,7 +28,6 @@ import {
   // useReadLightVerifyingPaymasterGetHash,
   // useReadLightVerifyingPaymasterSenderNonce,
 } from "@lightdotso/wagmi";
-import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Address, Hex } from "viem";
 import {
@@ -46,7 +45,7 @@ import {
 
 type UserOperationCreateProps = {
   address: Address;
-  config: ConfigurationData;
+  configuration: ConfigurationData;
   userOperation: UserOperation;
 };
 
@@ -56,7 +55,7 @@ type UserOperationCreateProps = {
 
 export const useUserOperationCreate = ({
   address,
-  config: { owners, threshold },
+  configuration: { owners, threshold },
   userOperation,
 }: UserOperationCreateProps) => {
   // ---------------------------------------------------------------------------
@@ -70,12 +69,6 @@ export const useUserOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   const [isLoading, setIsLoading] = useState(false);
-
-  // ---------------------------------------------------------------------------
-  // Next Hooks
-  // ---------------------------------------------------------------------------
-
-  const router = useRouter();
 
   // ---------------------------------------------------------------------------
   // Local Variables
@@ -224,9 +217,6 @@ export const useUserOperationCreate = ({
       res.match(
         _ => {
           toast.success("You submitted the userOperation result");
-          if (threshold >= owner.weight) {
-            router.push(`/${address}/op/${userOperation.hash}`);
-          }
         },
         err => {
           if (err instanceof Error) {

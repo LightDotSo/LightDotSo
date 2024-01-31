@@ -37,7 +37,7 @@ import type { Hex, Address } from "viem";
 
 type UserOperationSubmitProps = {
   address: Address;
-  config: ConfigurationData;
+  configuration: ConfigurationData;
   userOperation: UserOperationData;
 };
 
@@ -47,7 +47,7 @@ type UserOperationSubmitProps = {
 
 export const useUserOperationSubmit = ({
   // address,
-  config,
+  configuration,
   userOperation,
 }: UserOperationSubmitProps) => {
   // ---------------------------------------------------------------------------
@@ -66,12 +66,12 @@ export const useUserOperationSubmit = ({
     userOperation.signatures.reduce((acc, signature) => {
       return (
         acc +
-        ((config &&
-          config.owners.find(owner => owner.id === signature?.owner_id)
+        ((configuration &&
+          configuration.owners.find(owner => owner.id === signature?.owner_id)
             ?.weight) ||
           0)
       );
-    }, 0) >= (config ? config.threshold : 0);
+    }, 0) >= (configuration ? configuration.threshold : 0);
 
   // ---------------------------------------------------------------------------
   // Wagmi

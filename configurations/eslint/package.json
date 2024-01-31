@@ -21,7 +21,7 @@
     "@typescript-eslint/parser": "^6.20.0",
     "eslint": "^8.56.0",
     "eslint-config-next": "^14.1.0",
-    "eslint-config-turbo": "^1.11.3",
+    "eslint-config-turbo": "^1.12.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-cypress": "^2.15.1",
     "eslint-plugin-editorconfig": "^4.0.3",

@@ -17,8 +17,12 @@
 
 import { CHAINS } from "@lightdotso/const";
 import type { State } from "@lightdotso/wagmi";
-import { WagmiProvider, projectId, wagmiConfig } from "@lightdotso/wagmi";
-import { createWeb3Modal } from "@web3modal/wagmi/react";
+import {
+  WagmiProvider,
+  projectId,
+  wagmiConfig,
+  createWeb3Modal,
+} from "@lightdotso/wagmi";
 import { useTheme } from "next-themes";
 import { useState, type ReactNode, useEffect, useMemo } from "react";
 

@@ -56,7 +56,8 @@ import {
   TooltipProvider,
   toast,
 } from "@lightdotso/ui";
-import { cn } from "@lightdotso/utils";
+import { cn, debounce } from "@lightdotso/utils";
+import { publicClient } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isEmpty } from "lodash";
 import { Trash2Icon, UserPlus2 } from "lucide-react";
@@ -68,9 +69,7 @@ import { isAddress } from "viem";
 import { normalize } from "viem/ens";
 import * as z from "zod";
 import { steps } from "@/app/(authenticated)/new/(components)/root/root";
-import { publicClient } from "@/client/public";
 import { MAX_THRESHOLD, MAX_WEIGHT } from "@/const";
-import { debounce } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Types

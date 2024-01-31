@@ -13,48 +13,42 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { cache } from "react";
-import type { FC } from "react";
-import { createPublicClient, http } from "viem";
-import type { Address } from "viem";
-import { mainnet } from "viem/chains";
+import {
+  configurationGetData,
+  userOperationCreateData,
+} from "@lightdotso/demo";
+import type { Meta, StoryObj } from "@storybook/react";
+import { Transaction } from "./transaction";
 
 // -----------------------------------------------------------------------------
-// Utils
+// Meta
 // -----------------------------------------------------------------------------
 
-export const publicClient = createPublicClient({
-  chain: mainnet,
-  transport: http(),
-});
-
-export const getEnsName = cache(async (address: `0x${string}`) => {
-  if (!address) return;
-  const ensName = await publicClient.getEnsName({
-    address,
-  });
-  return ensName;
-});
-
-export const preload = (address: `0x${string}`) => {
-  void getEnsName(address);
+const meta: Meta<typeof Transaction> = {
+  title: "template/Transaction",
+  component: Transaction,
+  tags: ["autodocs"],
+  argTypes: {},
 };
+export default meta;
 
 // -----------------------------------------------------------------------------
-// Props
+// Types
 // -----------------------------------------------------------------------------
 
-type EnsNameProps = {
-  address: Address;
-};
+type Story = StoryObj<typeof Transaction>;
 
 // -----------------------------------------------------------------------------
-// Component
+// Story
 // -----------------------------------------------------------------------------
 
-export const EnsName: FC<EnsNameProps> = async ({ address }) => {
-  const name = await getEnsName(address);
-  if (name) {
-    return <p>{name}</p>;
-  }
+export const Base: Story = {
+  render: args => (
+    <Transaction
+      address="0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F"
+      configuration={configurationGetData}
+      userOperation={userOperationCreateData}
+    />
+  ),
+  args: {},
 };

@@ -27,11 +27,12 @@
   },
   "dependencies": {
     "@lightdotso/client": "workspace:*",
-    "@lightdotso/data": "workspace:*"
+    "@lightdotso/data": "workspace:*",
+    "@lightdotso/schemas": "workspace:*"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.11.10",
+    "@types/node": "^20.11.13",
     "typescript": "^5.3.3"
   },
   "publishConfig": {

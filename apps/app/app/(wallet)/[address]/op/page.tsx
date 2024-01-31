@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Address } from "viem";
-import { OpCreateDialog } from "@/app/(wallet)/[address]/op/(components)/op-create-dialog";
+import { OpTransaction } from "@/app/(wallet)/[address]/op/(components)/op-transaction";
 import { handler } from "@/handlers/paths/[address]/op/handler";
 import { preloader } from "@/preloaders/paths/[address]/op/preloader";
 
@@ -44,15 +44,15 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { config, userOperations } = await handler(params, searchParams);
+  const { configuration, userOperations } = await handler(params, searchParams);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <OpCreateDialog
-      config={config}
+    <OpTransaction
+      configuration={configuration}
       address={params.address as Address}
       userOperations={userOperations}
     />

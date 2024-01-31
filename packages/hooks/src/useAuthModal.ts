@@ -13,8 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+"use client";
+
 import { useAuth, useModals } from "@lightdotso/stores";
-import { useWeb3Modal } from "@web3modal/wagmi/react";
+import { useWeb3Modal } from "@lightdotso/wagmi";
 import { useCallback, useMemo } from "react";
 
 // -----------------------------------------------------------------------------

@@ -19,7 +19,7 @@ import { useMediaQuery } from "@lightdotso/hooks";
 import { useAuth } from "@lightdotso/stores";
 import { Button } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
-import { useWeb3Modal, useWeb3ModalState } from "@web3modal/wagmi/react";
+import { useWeb3Modal, useWeb3ModalState } from "@lightdotso/wagmi";
 import { Wallet } from "lucide-react";
 import type { Address } from "viem";
 

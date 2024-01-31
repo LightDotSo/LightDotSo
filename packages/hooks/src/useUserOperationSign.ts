@@ -38,7 +38,7 @@ import {
 
 type UserOperationSignProps = {
   address: Address;
-  config: ConfigurationData;
+  configuration: ConfigurationData;
   userOperation: UserOperationData;
 };
 
@@ -48,7 +48,7 @@ type UserOperationSignProps = {
 
 export const useUserOperationSign = ({
   address,
-  config: { owners },
+  configuration: { owners },
   userOperation,
 }: UserOperationSignProps) => {
   // ---------------------------------------------------------------------------

@@ -16,8 +16,17 @@
 import withBundleAnalyzer from "@next/bundle-analyzer";
 import { PrismaPlugin } from "@prisma/nextjs-monorepo-workaround-plugin";
 import { withSentryConfig } from "@sentry/nextjs";
+// import path, { dirname } from "path";
+// import { fileURLToPath } from "url";
 // import withSerwistInit from "@serwist/next";
 import packageJson from "./package.json" assert { type: "json" };
+
+// -----------------------------------------------------------------------------
+// Path Config
+// -----------------------------------------------------------------------------
+
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = dirname(__filename);
 
 // ---------------------------------------------------------------------------
 // Next Config
@@ -34,7 +43,7 @@ const nextConfig = {
   },
   experimental: {
     instrumentationHook: true,
-    esmExternals: "loose",
+    // esmExternals: "loose",
     outputFileTracingExcludes: {
       "*": [
         "./node_modules/@swc/core-linux-x64-gnu",
@@ -45,7 +54,12 @@ const nextConfig = {
         "./node_modules/terser",
       ],
     },
-    serverComponentsExternalPackages: [],
+    serverComponentsExternalPackages: [
+      "@web3modal/core",
+      "@web3modal/scaffold",
+      "@web3modal/wagmi",
+      "valtio",
+    ],
   },
   logging: {
     fetches: {
@@ -57,9 +71,11 @@ const nextConfig = {
     "@lightdotso/client",
     "@lightdotso/const",
     "@lightdotso/data",
+    "@lightdotso/elements",
     "@lightdotso/hooks",
     "@lightdotso/kysely",
     "@lightdotso/modals",
+    "@lightdotso/msw",
     "@lightdotso/nuqs",
     "@lightdotso/params",
     "@lightdotso/prisma",
@@ -72,11 +88,13 @@ const nextConfig = {
     "@lightdotso/styles",
     "@lightdotso/svg",
     "@lightdotso/tables",
+    "@lightdotso/templates",
     "@lightdotso/types",
     "@lightdotso/ui",
     "@lightdotso/utils",
     "@lightdotso/wagmi",
   ],
+
   // async rewrites() {
   //   return {
   //     beforeFiles: [
@@ -91,12 +109,18 @@ const nextConfig = {
   //     ],
   //   };
   // },
+
   webpack: (config, { isServer }) => {
     config.resolve.fallback = { fs: false };
+    // config.externals.push("react");
 
     if (isServer) {
       config.plugins = [...config.plugins, new PrismaPlugin()];
+      // config.externals = ["react", ...config.externals];
     }
+
+    // config.resolve.alias["react"] = path.resolve(__dirname, ".", "node_modules", "react");
+
     config.externals.push(
       "async_hooks",
       "pino-pretty",
@@ -104,9 +128,11 @@ const nextConfig = {
       "encoding",
       "net",
     );
+
     // This is only intended to pass CI and should be skiped in your app
-    if (config.name === "server")
+    if (config.name === "server") {
       config.optimization.concatenateModules = false;
+    }
 
     return config;
   },
