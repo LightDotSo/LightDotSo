@@ -80,6 +80,7 @@ export const Transaction: FC<TransactionProps> = ({
     decodedInitCode,
     // paymasterHash,
     // paymasterNonce,
+    owner,
     subdigest,
   } = useUserOperationCreate({
     address: address,
@@ -228,6 +229,17 @@ export const Transaction: FC<TransactionProps> = ({
                     <code className="break-all text-text">
                       simulation:{" "}
                       {simulation && JSON.stringify(simulation, null, 2)}
+                    </code>
+                  </pre>
+                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+                    <code className="break-all text-text">
+                      owner: {JSON.stringify(owner)}
+                    </code>
+                  </pre>
+                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+                    <code className="break-all text-text">
+                      isCreatable: {isCreatable}
+                      isValidUserOperation: {isValidUserOperation}
                     </code>
                   </pre>
                 </div>

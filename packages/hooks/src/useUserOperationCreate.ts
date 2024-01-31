@@ -303,6 +303,7 @@ export const useUserOperationCreate = ({
     // paymasterNonce,
     signUserOperation,
     subdigest,
+    owner,
     threshold: configuration?.threshold,
   };
 };
