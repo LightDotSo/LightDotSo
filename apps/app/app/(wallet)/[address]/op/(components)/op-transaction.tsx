@@ -59,7 +59,7 @@ export const OpTransaction: FC<OpTransactionProps> = ({
 
   const [selectedOpIndex, setSelectedOpIndex] =
     useUserOperationsIndexQueryState();
-  const [_, setUserOperations] = useUserOperationsQueryState();
+  const [_, setUserOperations] = useUserOperationsQueryState(userOperations);
 
   // ---------------------------------------------------------------------------
   // Stores
