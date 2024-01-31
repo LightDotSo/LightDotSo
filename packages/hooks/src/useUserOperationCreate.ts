@@ -172,7 +172,7 @@ export const useUserOperationCreate = ({
   }, [userOperation?.callData]);
 
   const isValidUserOperation = useMemo(() => {
-    return !(
+    return !!(
       typeof owner !== "undefined" &&
       userOperation &&
       userOperation.chainId &&
