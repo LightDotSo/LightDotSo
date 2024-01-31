@@ -97,16 +97,20 @@ export const Transaction: FC<TransactionProps> = ({
   // Wagmi
   // ---------------------------------------------------------------------------
 
-  const gas = useEstimateGas({
+  const { data: gas, error: estimateGasError } = useEstimateGas({
     data: (userOperation?.callData as Hex) ?? "0x",
     chainId: Number(userOperation?.chainId ?? 1),
   });
 
-  const feesPerGas = useEstimateFeesPerGas({
-    chainId: Number(userOperation?.chainId ?? 1),
-  });
+  const { data: feesPerGas, error: estimateFeesPerGasError } =
+    useEstimateFeesPerGas({
+      chainId: Number(userOperation?.chainId ?? 1),
+    });
 
-  const maxPriorityFeePerGas = useEstimateMaxPriorityFeePerGas({
+  const {
+    data: maxPriorityFeePerGas,
+    error: estimateMaxPriorityFeePerGasError,
+  } = useEstimateMaxPriorityFeePerGas({
     chainId: Number(userOperation?.chainId ?? 1),
   });
 
@@ -131,9 +135,9 @@ export const Transaction: FC<TransactionProps> = ({
       const next = [...prev];
       const updatedUserOperation = {
         ...userOperation,
-        callGasLimit: gas.data ?? BigInt(0),
-        maxFeePerGas: feesPerGas.data?.maxFeePerGas ?? BigInt(0),
-        maxPriorityFeePerGas: maxPriorityFeePerGas.data ?? BigInt(0),
+        callGasLimit: gas ?? BigInt(0),
+        maxFeePerGas: feesPerGas?.maxFeePerGas ?? BigInt(0),
+        maxPriorityFeePerGas: maxPriorityFeePerGas ?? BigInt(0),
       };
       next[userOperationIndex] = updatedUserOperation;
       return next;
@@ -228,6 +232,20 @@ export const Transaction: FC<TransactionProps> = ({
                     <code>
                       userOperation:{" "}
                       {userOperation && serializeBigInt(userOperation)}
+                    </code>
+                  </pre>
+                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+                    <code>
+                      estimateGasError:{" "}
+                      {estimateGasError && estimateGasError.message}
+                      <br />
+                      estimateFeesPerGasError:{" "}
+                      {estimateFeesPerGasError &&
+                        estimateFeesPerGasError.message}
+                      <br />
+                      estimateMaxPriorityFeePerGasError:{" "}
+                      {estimateMaxPriorityFeePerGasError &&
+                        estimateMaxPriorityFeePerGasError.message}
                     </code>
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
