@@ -149,7 +149,7 @@ export const useUserOperationCreate = ({
       abi: lightWalletFactoryAbi,
       data: `0x${userOperation?.initCode.slice(42)}` as Hex,
     }).args;
-  }, [userOperation?.initCode]);
+  }, [userOperation?.initCode, userOperation?.callData]);
 
   const decodedCallData = useMemo(() => {
     // If the callData is `0x`, return

@@ -25,6 +25,7 @@ export const userOperationsParser = createParser({
     const operations = value.split(";");
     return operations.map<Partial<UserOperation>>(operation => {
       const [
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         _index,
         chainId,
         hash,
