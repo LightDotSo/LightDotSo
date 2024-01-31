@@ -15,12 +15,14 @@
 
 "use client";
 
-import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
 import type { ConfigurationData } from "@lightdotso/data";
 import { AssetChange } from "@lightdotso/elements";
 import { useUserOperationCreate } from "@lightdotso/hooks";
 import { useUserOperationsQueryState } from "@lightdotso/nuqs";
-import { useQuerySimulation } from "@lightdotso/query";
+import {
+  useQueryPaymasterGasAndPaymasterAndData,
+  useQuerySimulation,
+} from "@lightdotso/query";
 import type { UserOperation } from "@lightdotso/schemas";
 import { useModalSwiper } from "@lightdotso/stores";
 import {
@@ -76,9 +78,31 @@ export const Transaction: FC<TransactionProps> = ({
   // ---------------------------------------------------------------------------
 
   const userOperation = useMemo(() => {
-    return userOperations.length > 0
-      ? userOperations[userOperationIndex]
-      : initialUserOperation;
+    const partialUserOperation =
+      userOperations.length > 0
+        ? userOperations[userOperationIndex]
+        : initialUserOperation;
+
+    // Fill in missing fields
+    const userOperation: Omit<UserOperation, "hash"> = {
+      ...partialUserOperation,
+      chainId: partialUserOperation?.chainId ?? BigInt(0),
+      sender: partialUserOperation?.sender ?? address,
+      initCode: partialUserOperation?.initCode ?? "0x",
+      nonce: partialUserOperation?.nonce ?? BigInt(0),
+      callData: partialUserOperation?.callData ?? "0x",
+      callGasLimit: partialUserOperation?.callGasLimit ?? BigInt(0),
+      verificationGasLimit:
+        partialUserOperation?.verificationGasLimit ?? BigInt(0),
+      paymasterAndData: partialUserOperation?.paymasterAndData ?? "0x",
+      preVerificationGas: partialUserOperation?.preVerificationGas ?? BigInt(0),
+      maxFeePerGas: partialUserOperation?.maxFeePerGas ?? BigInt(0),
+      maxPriorityFeePerGas:
+        partialUserOperation?.maxPriorityFeePerGas ?? BigInt(0),
+      signature: partialUserOperation?.signature ?? "0x",
+    };
+
+    return userOperation;
   }, [userOperations, userOperationIndex]);
 
   // ---------------------------------------------------------------------------
@@ -98,51 +122,87 @@ export const Transaction: FC<TransactionProps> = ({
   // ---------------------------------------------------------------------------
 
   const { data: gas, error: estimateGasError } = useEstimateGas({
-    data: (userOperation?.callData as Hex) ?? "0x",
-    chainId: Number(userOperation?.chainId ?? 1),
+    data: (userOperation.callData as Hex) ?? "0x",
+    chainId: Number(userOperation.chainId ?? 1),
   });
 
   const { data: feesPerGas, error: estimateFeesPerGasError } =
     useEstimateFeesPerGas({
-      chainId: Number(userOperation?.chainId ?? 1),
+      chainId: Number(userOperation.chainId ?? 1),
     });
 
   const {
     data: maxPriorityFeePerGas,
     error: estimateMaxPriorityFeePerGasError,
   } = useEstimateMaxPriorityFeePerGas({
-    chainId: Number(userOperation?.chainId ?? 1),
+    chainId: Number(userOperation.chainId ?? 1),
   });
 
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
+  const { paymasterAndData, paymasterAndDataError } =
+    useQueryPaymasterGasAndPaymasterAndData({
+      sender: address as Address,
+      chainId: userOperation.chainId,
+      nonce: userOperation.nonce,
+      initCode: userOperation.initCode,
+      callData: userOperation.callData,
+      callGasLimit: userOperation.callGasLimit,
+      verificationGasLimit: userOperation.verificationGasLimit,
+      preVerificationGas: userOperation.preVerificationGas,
+      maxFeePerGas: userOperation.maxFeePerGas,
+      maxPriorityFeePerGas: userOperation.maxPriorityFeePerGas,
+    });
+
   const { simulation } = useQuerySimulation({
     sender: address as Address,
-    nonce: Number(userOperation?.nonce ?? 0),
-    chain_id: Number(userOperation?.chainId ?? 0),
-    call_data: (userOperation?.callData ?? "0x") as Hex,
-    init_code: (userOperation?.initCode ?? "0x") as Hex,
+    nonce: Number(userOperation.nonce),
+    chain_id: Number(userOperation.chainId),
+    call_data: userOperation.callData as Hex,
+    init_code: userOperation.initCode as Hex,
   });
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const updatedUserOperation = useMemo(() => {
+    const updatedUserOperation = {
+      ...userOperation,
+      callGasLimit: gas ?? BigInt(0),
+      maxFeePerGas: feesPerGas?.maxFeePerGas ?? BigInt(0),
+      maxPriorityFeePerGas: maxPriorityFeePerGas ?? BigInt(0),
+      paymasterAndData: paymasterAndData?.paymasterAndData ?? "0x",
+    };
+    return updatedUserOperation;
+  }, [
+    userOperation,
+    gas,
+    feesPerGas?.maxFeePerGas,
+    maxPriorityFeePerGas,
+    paymasterAndData?.paymasterAndData,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
-  useEffect(() => {
-    setUserOperations(prev => {
-      const next = [...prev];
-      const updatedUserOperation = {
-        ...userOperation,
-        callGasLimit: gas ?? BigInt(0),
-        maxFeePerGas: feesPerGas?.maxFeePerGas ?? BigInt(0),
-        maxPriorityFeePerGas: maxPriorityFeePerGas ?? BigInt(0),
-      };
-      next[userOperationIndex] = updatedUserOperation;
-      return next;
-    });
-  }, [userOperation]);
+  // useEffect(() => {
+  //   setUserOperations(prev => {
+  //     const next = [...prev];
+  //     const updatedUserOperation = {
+  //       ...userOperation,
+  //       callGasLimit: gas ?? BigInt(0),
+  //       maxFeePerGas: feesPerGas?.maxFeePerGas ?? BigInt(0),
+  //       maxPriorityFeePerGas: maxPriorityFeePerGas ?? BigInt(0),
+  //       paymasterAndData: paymasterAndData?.paymasterAndData ?? "0x",
+  //     };
+  //     next[userOperationIndex] = updatedUserOperation;
+  //     return next;
+  //   });
+  // }, [userOperation]);
 
   // ---------------------------------------------------------------------------
   // Hooks
@@ -236,6 +296,13 @@ export const Transaction: FC<TransactionProps> = ({
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code>
+                      updatedUserOperation:{" "}
+                      {updatedUserOperation &&
+                        serializeBigInt(updatedUserOperation)}
+                    </code>
+                  </pre>
+                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+                    <code>
                       estimateGasError:{" "}
                       {estimateGasError && estimateGasError.message}
                       <br />
@@ -246,11 +313,14 @@ export const Transaction: FC<TransactionProps> = ({
                       estimateMaxPriorityFeePerGasError:{" "}
                       {estimateMaxPriorityFeePerGasError &&
                         estimateMaxPriorityFeePerGasError.message}
+                      <br />
+                      paymasterAndDataError:{" "}
+                      {paymasterAndDataError && paymasterAndDataError.message}
                     </code>
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code className="break-all text-text">
-                      chainId: {Number(userOperation?.chainId ?? 0)}
+                      chainId: {Number(userOperation.chainId ?? 0)}
                     </code>
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
@@ -263,11 +333,6 @@ export const Transaction: FC<TransactionProps> = ({
                     <code className="break-all text-text">
                       decodedCallData:{" "}
                       {decodedCallData && serializeBigInt(decodedCallData)}
-                    </code>
-                  </pre>
-                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-                    <code className="break-all text-text">
-                      userOpHash: {userOperation?.hash ?? "0x"}
                     </code>
                   </pre>
                   {/* <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">

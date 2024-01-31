@@ -30,8 +30,10 @@
     "@lightdotso/data": "workspace:*",
     "@lightdotso/params": "workspace:*",
     "@lightdotso/query-keys": "workspace:*",
+    "@lightdotso/schemas": "workspace:*",
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/ui": "workspace:*",
+    "@lightdotso/utils": "workspace:*",
     "@tanstack/react-query": "^5.18.0",
     "viem": "^2.7.1"
   },

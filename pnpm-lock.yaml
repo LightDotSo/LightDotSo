@@ -1924,12 +1924,18 @@ importers:
       '@lightdotso/query-keys':
         specifier: workspace:*
         version: link:../query-keys
+      '@lightdotso/schemas':
+        specifier: workspace:*
+        version: link:../schemas
       '@lightdotso/stores':
         specifier: workspace:*
         version: link:../stores
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../ui
+      '@lightdotso/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@tanstack/react-query':
         specifier: ^5.18.0
         version: 5.18.0(react@18.2.0)
@@ -1952,6 +1958,9 @@ importers:
       '@lightdotso/params':
         specifier: workspace:*
         version: link:../params
+      '@lightdotso/schemas':
+        specifier: workspace:*
+        version: link:../schemas
       '@lukemorales/query-key-factory':
         specifier: ^1.3.2
         version: 1.3.2(@tanstack/query-core@5.18.0)(@tanstack/react-query@5.18.0)
