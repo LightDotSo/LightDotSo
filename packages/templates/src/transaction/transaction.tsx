@@ -238,8 +238,10 @@ export const Transaction: FC<TransactionProps> = ({
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code className="break-all text-text">
-                      isCreatable: {isCreatable}
-                      isValidUserOperation: {isValidUserOperation}
+                      isCreatable: {isCreatable ? "true" : "false"}
+                      isLoading: {isLoading ? "true" : "false"}
+                      isValidUserOperation:{" "}
+                      {isValidUserOperation ? "true" : "false"}
                     </code>
                   </pre>
                 </div>
