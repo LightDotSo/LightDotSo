@@ -1,2 +1,6 @@
 ignores:
   - "@web3modal/scaffold"
+  - "@lightdotso/tsconfig"
+  - tsup
+  - "@types/node"
+  - vitest
