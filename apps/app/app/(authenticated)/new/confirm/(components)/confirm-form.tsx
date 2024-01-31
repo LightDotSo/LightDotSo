@@ -46,6 +46,7 @@ import {
   TooltipProvider,
   toast,
 } from "@lightdotso/ui";
+import { publicClient } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { backOff } from "exponential-backoff";
 import { isEmpty } from "lodash";
@@ -56,7 +57,6 @@ import { useForm } from "react-hook-form";
 import { isAddress } from "viem";
 import { normalize } from "viem/ens";
 import type * as z from "zod";
-import { publicClient } from "@/client/public";
 
 // -----------------------------------------------------------------------------
 // Types

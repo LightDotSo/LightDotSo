@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+export { publicClient } from "./client";
 export { projectId, wagmiConfig } from "./config";
 export {
   lightWalletAbi,
