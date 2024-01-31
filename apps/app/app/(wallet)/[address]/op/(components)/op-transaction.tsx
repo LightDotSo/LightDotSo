@@ -16,6 +16,7 @@
 "use client";
 
 import type { ConfigurationData } from "@lightdotso/data";
+import { useUserOperationsIndexQueryState } from "@lightdotso/nuqs";
 import type { UserOperation } from "@lightdotso/schemas";
 import { useAuth } from "@lightdotso/stores";
 import { Transaction } from "@lightdotso/templates";
@@ -50,10 +51,11 @@ export const OpTransaction: FC<OpTransactionProps> = ({
   userOperations,
 }) => {
   // ---------------------------------------------------------------------------
-  // State Hooks
+  // Query State Hooks
   // ---------------------------------------------------------------------------
 
-  const [selectedOpIndex, setSelectedOpIndex] = useState<number>(0);
+  const [selectedOpIndex, setSelectedOpIndex] =
+    useUserOperationsIndexQueryState();
 
   // ---------------------------------------------------------------------------
   // Stores
