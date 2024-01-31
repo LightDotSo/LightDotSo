@@ -232,7 +232,6 @@ export const useUserOperationCreate = ({
         !userOperation.maxPriorityFeePerGas ||
         !userOperation.paymasterAndData
       ) {
-        toast.error("Invalid userOperation data");
         return;
       }
 
