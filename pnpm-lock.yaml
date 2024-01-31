@@ -1555,6 +1555,9 @@ importers:
       '@lightdotso/data':
         specifier: workspace:*
         version: link:../data
+      '@lightdotso/schemas':
+        specifier: workspace:*
+        version: link:../schemas
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
