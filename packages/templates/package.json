@@ -38,7 +38,7 @@
     "@tanstack/react-table": "^8.11.7",
     "class-variance-authority": "^0.7.0",
     "framer-motion": "^11.0.3",
-    "lucide-react": "^0.317.0",
+    "lucide-react": "^0.319.0",
     "next": "^14.1.0",
     "next-themes": "^0.2.1",
     "react": "^18.2.0",
@@ -47,8 +47,8 @@
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@storybook/react": "^7.6.10",
-    "@types/node": "^20.11.10",
+    "@storybook/react": "^7.6.11",
+    "@types/node": "^20.11.13",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
     "typescript": "^5.3.3"

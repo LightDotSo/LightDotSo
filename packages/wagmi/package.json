@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@lightdotso/const": "workspace:*",
-    "wagmi": "^2.5.4"
+    "wagmi": "^2.5.5"
   },
   "publishConfig": {
     "access": "public"
