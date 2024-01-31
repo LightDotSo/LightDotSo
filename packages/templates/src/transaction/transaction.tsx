@@ -87,15 +87,16 @@ export const Transaction: FC<TransactionProps> = ({
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const userOperation = useMemo(() => {
+  const coreUserOperation: Omit<
+    UserOperation,
+    "hash" | "paymasterAndData" | "signature"
+  > = useMemo(() => {
     const partialUserOperation =
       userOperations.length > 0
         ? userOperations[userOperationIndex]
         : initialUserOperation;
 
-    // Fill in missing fields
-    const userOperation: Omit<UserOperation, "hash"> = {
-      ...partialUserOperation,
+    return {
       chainId: partialUserOperation?.chainId ?? BigInt(0),
       sender: partialUserOperation?.sender ?? address,
       initCode: partialUserOperation?.initCode ?? "0x",
@@ -104,15 +105,11 @@ export const Transaction: FC<TransactionProps> = ({
       callGasLimit: partialUserOperation?.callGasLimit ?? BigInt(0),
       verificationGasLimit:
         partialUserOperation?.verificationGasLimit ?? BigInt(0),
-      paymasterAndData: partialUserOperation?.paymasterAndData ?? "0x",
       preVerificationGas: partialUserOperation?.preVerificationGas ?? BigInt(0),
       maxFeePerGas: partialUserOperation?.maxFeePerGas ?? BigInt(0),
       maxPriorityFeePerGas:
         partialUserOperation?.maxPriorityFeePerGas ?? BigInt(0),
-      signature: partialUserOperation?.signature ?? "0x",
     };
-
-    return userOperation;
   }, [userOperations, userOperationIndex, initialUserOperation, address]);
 
   // ---------------------------------------------------------------------------
@@ -134,14 +131,14 @@ export const Transaction: FC<TransactionProps> = ({
 
   const { data: feesPerGas, error: estimateFeesPerGasError } =
     useEstimateFeesPerGas({
-      chainId: Number(userOperation.chainId ?? 1),
+      chainId: Number(coreUserOperation.chainId ?? 1),
     });
 
   const {
     data: maxPriorityFeePerGas,
     error: estimateMaxPriorityFeePerGasError,
   } = useEstimateMaxPriorityFeePerGas({
-    chainId: Number(userOperation.chainId ?? 1),
+    chainId: Number(coreUserOperation.chainId ?? 1),
   });
 
   // ---------------------------------------------------------------------------
@@ -151,73 +148,62 @@ export const Transaction: FC<TransactionProps> = ({
   const { paymasterAndData, isPaymasterAndDataLoading, paymasterAndDataError } =
     useQueryPaymasterGasAndPaymasterAndData({
       sender: address as Address,
-      chainId: userOperation.chainId,
-      nonce: userOperation.nonce,
-      initCode: userOperation.initCode,
-      callData: userOperation.callData,
-      callGasLimit: userOperation.callGasLimit,
-      verificationGasLimit: userOperation.verificationGasLimit,
-      preVerificationGas: userOperation.preVerificationGas,
-      maxFeePerGas: feesPerGas?.maxFeePerGas ?? userOperation.maxFeePerGas,
+      chainId: coreUserOperation.chainId,
+      nonce: coreUserOperation.nonce,
+      initCode: coreUserOperation.initCode,
+      callData: coreUserOperation.callData,
+      callGasLimit: coreUserOperation.callGasLimit,
+      verificationGasLimit: coreUserOperation.verificationGasLimit,
+      preVerificationGas: coreUserOperation.preVerificationGas,
+      maxFeePerGas: feesPerGas?.maxFeePerGas ?? coreUserOperation.maxFeePerGas,
       maxPriorityFeePerGas:
-        maxPriorityFeePerGas ?? userOperation.maxPriorityFeePerGas,
+        maxPriorityFeePerGas ?? coreUserOperation.maxPriorityFeePerGas,
     });
 
   const { simulation } = useQuerySimulation({
     sender: address as Address,
-    nonce: Number(userOperation.nonce),
-    chain_id: Number(userOperation.chainId),
-    call_data: userOperation.callData as Hex,
-    init_code: userOperation.initCode as Hex,
+    nonce: Number(coreUserOperation.nonce),
+    chain_id: Number(coreUserOperation.chainId),
+    call_data: coreUserOperation.callData as Hex,
+    init_code: coreUserOperation.initCode as Hex,
   });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const updatedUserOperation = useMemo(() => {
-    const updatedUserOperation = {
-      ...userOperation,
-      callGasLimit: paymasterAndData?.callGasLimit
-        ? fromHex(paymasterAndData.callGasLimit as Hex, { to: "bigint" })
-        : undefined,
-      verificationGasLimit: paymasterAndData?.verificationGasLimit
-        ? fromHex(paymasterAndData.verificationGasLimit as Hex, {
-            to: "bigint",
-          })
-        : undefined,
-      preVerificationGas: paymasterAndData?.preVerificationGas
-        ? fromHex(paymasterAndData.preVerificationGas as Hex, { to: "bigint" })
-        : undefined,
-      maxFeePerGas: paymasterAndData?.maxFeePerGas
-        ? fromHex(paymasterAndData.maxFeePerGas as Hex, { to: "bigint" })
-        : undefined,
-      maxPriorityFeePerGas: paymasterAndData?.maxPriorityFeePerGas
-        ? fromHex(paymasterAndData.maxPriorityFeePerGas as Hex, {
-            to: "bigint",
-          })
-        : undefined,
-      paymasterAndData: paymasterAndData?.paymasterAndData ?? "0x",
-    };
-    return updatedUserOperation;
-  }, [userOperation, paymasterAndData]);
+  const updatedUserOperation: Omit<UserOperation, "hash" | "signature"> =
+    useMemo(() => {
+      return {
+        ...coreUserOperation,
+        callGasLimit: paymasterAndData?.callGasLimit
+          ? fromHex(paymasterAndData.callGasLimit as Hex, { to: "bigint" })
+          : BigInt(0),
+        verificationGasLimit: paymasterAndData?.verificationGasLimit
+          ? fromHex(paymasterAndData.verificationGasLimit as Hex, {
+              to: "bigint",
+            })
+          : BigInt(0),
+        preVerificationGas: paymasterAndData?.preVerificationGas
+          ? fromHex(paymasterAndData.preVerificationGas as Hex, {
+              to: "bigint",
+            })
+          : BigInt(0),
+        maxFeePerGas: paymasterAndData?.maxFeePerGas
+          ? fromHex(paymasterAndData.maxFeePerGas as Hex, { to: "bigint" })
+          : BigInt(0),
+        maxPriorityFeePerGas: paymasterAndData?.maxPriorityFeePerGas
+          ? fromHex(paymasterAndData.maxPriorityFeePerGas as Hex, {
+              to: "bigint",
+            })
+          : BigInt(0),
+        paymasterAndData: paymasterAndData?.paymasterAndData ?? "0x",
+      };
+    }, [coreUserOperation, paymasterAndData]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
-
-  useEffect(() => {
-    if (serialize(userOperation) !== serialize(updatedUserOperation)) {
-      setUserOperations(prev => {
-        const next = [...prev];
-        next[userOperationIndex] = updatedUserOperation;
-        return next;
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [updatedUserOperation]);
-
-  // console.log("updatedUserOperation", updatedUserOperation);
 
   useEffect(() => {
     const fetchHashAndUpdateOperation = async () => {
@@ -237,14 +223,11 @@ export const Transaction: FC<TransactionProps> = ({
         return;
       }
 
-      const hash = await getUserOperationHash({
-        userOperation: updatedUserOperation as PermissionlessUserOperation,
-        entryPoint: CONTRACT_ADDRESSES["Entrypoint"],
-        chainId: Number(updatedUserOperation.chainId) as number,
-      });
-
-      setUserOperationWithHash({
-        sender: address as Address,
+      const omittedUserOperation: Omit<
+        UserOperation,
+        "hash" | "paymasterAndData" | "signature"
+      > = {
+        sender: updatedUserOperation.sender,
         chainId: updatedUserOperation.chainId,
         nonce: updatedUserOperation.nonce,
         initCode: updatedUserOperation.initCode,
@@ -254,13 +237,36 @@ export const Transaction: FC<TransactionProps> = ({
         preVerificationGas: updatedUserOperation.preVerificationGas,
         maxFeePerGas: updatedUserOperation.maxFeePerGas,
         maxPriorityFeePerGas: updatedUserOperation.maxPriorityFeePerGas,
+      };
+
+      if (serialize(coreUserOperation) === serialize(omittedUserOperation)) {
+        setUserOperations(prev => {
+          const next = [...prev];
+          next[userOperationIndex] = updatedUserOperation;
+          return next;
+        });
+      }
+
+      const userOperation = {
+        ...coreUserOperation,
         paymasterAndData: updatedUserOperation.paymasterAndData,
         signature: "0x",
+      };
+
+      const hash = await getUserOperationHash({
+        userOperation: userOperation as PermissionlessUserOperation,
+        entryPoint: CONTRACT_ADDRESSES["Entrypoint"],
+        chainId: Number(updatedUserOperation.chainId) as number,
+      });
+
+      setUserOperationWithHash({
+        ...userOperation,
         hash,
       });
     };
 
     fetchHashAndUpdateOperation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updatedUserOperation, address]);
 
   // ---------------------------------------------------------------------------
@@ -291,6 +297,10 @@ export const Transaction: FC<TransactionProps> = ({
   const isLoading = useMemo(() => {
     return isUserOperationLoading || isPaymasterAndDataLoading;
   }, [isUserOperationLoading, isPaymasterAndDataLoading]);
+
+  const isUpdating = useMemo(() => {
+    return isPaymasterAndDataLoading;
+  }, [isPaymasterAndDataLoading]);
 
   const isDisabled = useMemo(() => {
     return !isUserOperationCreatable || !isValidUserOperation || isLoading;
@@ -373,7 +383,8 @@ export const Transaction: FC<TransactionProps> = ({
                 <div className="grid gap-4 py-4">
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code>
-                      userOperation: {userOperation && serialize(userOperation)}
+                      coreUserOperation:{" "}
+                      {coreUserOperation && serialize(coreUserOperation)}
                     </code>
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
@@ -398,7 +409,7 @@ export const Transaction: FC<TransactionProps> = ({
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code className="break-all text-text">
-                      chainId: {Number(userOperation.chainId ?? 0)}
+                      chainId: {Number(coreUserOperation.chainId ?? 0)}
                     </code>
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
@@ -465,6 +476,8 @@ export const Transaction: FC<TransactionProps> = ({
                       {isUserOperationCreatable ? "true" : "false"}
                       <br />
                       isLoading: {isLoading ? "true" : "false"}
+                      <br />
+                      isUpdating: {isUpdating ? "true" : "false"}
                       <br />
                       isValidUserOperation:{" "}
                       {isValidUserOperation ? "true" : "false"}
