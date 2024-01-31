@@ -69,7 +69,7 @@ export const useUserOperationCreate = ({
   // State Hooks
   // ---------------------------------------------------------------------------
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isUserOperationLoading, setIsUserOperationLoading] = useState(false);
   const [signedData, setSignedData] = useState<Hex>();
 
   // ---------------------------------------------------------------------------
@@ -211,7 +211,7 @@ export const useUserOperationCreate = ({
 
   // Sync the loading state
   useEffect(() => {
-    setIsLoading(isSignLoading);
+    setIsUserOperationLoading(isSignLoading);
   }, [isSignLoading]);
 
   // Sync the signed data
@@ -302,20 +302,32 @@ export const useUserOperationCreate = ({
   }, [signedData, owner, userOperation, configuration?.threshold, address]);
 
   useEffect(() => {
-    if (isLoading) {
+    if (isUserOperationLoading) {
       setPageIndex(1);
     } else {
       setPageIndex(0);
     }
-  }, [isLoading, setPageIndex]);
+  }, [isUserOperationLoading, setPageIndex]);
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const isUserOperationCreatable = useMemo(() => {
+    return (
+      !isUserOperationLoading &&
+      typeof owner !== "undefined" &&
+      isValidUserOperation
+    );
+  }, [isUserOperationLoading, owner, isValidUserOperation]);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return {
-    isLoading,
-    isCreatable: typeof owner !== "undefined" && !isLoading,
+    isUserOperationCreatable,
+    isUserOperationLoading,
     isValidUserOperation,
     decodedCallData,
     decodedInitCode,

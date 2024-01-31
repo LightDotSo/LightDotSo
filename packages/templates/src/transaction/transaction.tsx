@@ -25,7 +25,7 @@ import {
   useQuerySimulation,
 } from "@lightdotso/query";
 import type { UserOperation } from "@lightdotso/schemas";
-import { useModalSwiper } from "@lightdotso/stores";
+import { useFormRef, useModalSwiper } from "@lightdotso/stores";
 import {
   Button,
   Tabs,
@@ -41,8 +41,8 @@ import {
 } from "@lightdotso/wagmi";
 import { getUserOperationHash } from "permissionless";
 import type { UserOperation as PermissionlessUserOperation } from "permissionless";
-import { type FC, useMemo, useEffect } from "react";
-import type { Hex, Address } from "viem";
+import { type FC, useMemo, useEffect, useState } from "react";
+import { type Hex, type Address, fromHex } from "viem";
 import { Loading } from "../loading";
 import { useIsInsideModal } from "../modal";
 import { ModalSwiper } from "../modal-swiper";
@@ -70,6 +70,13 @@ export const Transaction: FC<TransactionProps> = ({
   userOperationIndex = 0,
   isDev = false,
 }) => {
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [userOperationWithHash, setUserOperationWithHash] =
+    useState<UserOperation>();
+
   // ---------------------------------------------------------------------------
   // Query State Hooks
   // ---------------------------------------------------------------------------
@@ -112,6 +119,7 @@ export const Transaction: FC<TransactionProps> = ({
   // Stores
   // ---------------------------------------------------------------------------
 
+  const { setIsFormDisabled, setIsFormLoading } = useFormRef();
   const { pageIndex } = useModalSwiper();
 
   // ---------------------------------------------------------------------------
@@ -140,7 +148,7 @@ export const Transaction: FC<TransactionProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { paymasterAndData, paymasterAndDataError } =
+  const { paymasterAndData, isPaymasterAndDataLoading, paymasterAndDataError } =
     useQueryPaymasterGasAndPaymasterAndData({
       sender: address as Address,
       chainId: userOperation.chainId,
@@ -150,8 +158,9 @@ export const Transaction: FC<TransactionProps> = ({
       callGasLimit: userOperation.callGasLimit,
       verificationGasLimit: userOperation.verificationGasLimit,
       preVerificationGas: userOperation.preVerificationGas,
-      maxFeePerGas: userOperation.maxFeePerGas,
-      maxPriorityFeePerGas: userOperation.maxPriorityFeePerGas,
+      maxFeePerGas: feesPerGas?.maxFeePerGas ?? userOperation.maxFeePerGas,
+      maxPriorityFeePerGas:
+        maxPriorityFeePerGas ?? userOperation.maxPriorityFeePerGas,
     });
 
   const { simulation } = useQuerySimulation({
@@ -169,26 +178,31 @@ export const Transaction: FC<TransactionProps> = ({
   const updatedUserOperation = useMemo(() => {
     const updatedUserOperation = {
       ...userOperation,
-      maxFeePerGas: feesPerGas?.maxFeePerGas ?? BigInt(0),
-      maxPriorityFeePerGas: maxPriorityFeePerGas ?? BigInt(0),
+      callGasLimit: fromHex(paymasterAndData?.callGasLimit as Hex, {
+        to: "bigint",
+      }),
+      verificationGasLimit: fromHex(
+        paymasterAndData?.verificationGasLimit as Hex,
+        {
+          to: "bigint",
+        },
+      ),
+      preVerificationGas: fromHex(paymasterAndData?.preVerificationGas as Hex, {
+        to: "bigint",
+      }),
+      maxFeePerGas: fromHex(paymasterAndData?.maxFeePerGas as Hex, {
+        to: "bigint",
+      }),
+      maxPriorityFeePerGas: fromHex(
+        paymasterAndData?.maxPriorityFeePerGas as Hex,
+        {
+          to: "bigint",
+        },
+      ),
       paymasterAndData: paymasterAndData?.paymasterAndData ?? "0x",
     };
     return updatedUserOperation;
-  }, [
-    userOperation,
-    feesPerGas?.maxFeePerGas,
-    maxPriorityFeePerGas,
-    paymasterAndData?.paymasterAndData,
-  ]);
-  // console.log("updatedUserOperation", updatedUserOperation);
-
-  const userOperationWithHash = useMemo(() => {
-    return getUserOperationHash({
-      userOperation: updatedUserOperation as PermissionlessUserOperation,
-      entryPoint: CONTRACT_ADDRESSES["Entrypoint"],
-      chainId: Number(updatedUserOperation.chainId) as number,
-    });
-  }, [updatedUserOperation]);
+  }, [userOperation, paymasterAndData]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -205,13 +219,32 @@ export const Transaction: FC<TransactionProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updatedUserOperation]);
 
+  // console.log("updatedUserOperation", updatedUserOperation);
+
+  useEffect(() => {
+    const fetchHashAndUpdateOperation = async () => {
+      const hash = await getUserOperationHash({
+        userOperation: updatedUserOperation as PermissionlessUserOperation,
+        entryPoint: CONTRACT_ADDRESSES["Entrypoint"],
+        chainId: Number(updatedUserOperation.chainId) as number,
+      });
+
+      setUserOperationWithHash({
+        ...updatedUserOperation,
+        hash,
+      });
+    };
+
+    fetchHashAndUpdateOperation();
+  }, [updatedUserOperation]);
+
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
 
   const {
-    isLoading,
-    isCreatable,
+    isUserOperationLoading,
+    isUserOperationCreatable,
     isValidUserOperation,
     signUserOperation,
     decodedCallData,
@@ -223,8 +256,32 @@ export const Transaction: FC<TransactionProps> = ({
   } = useUserOperationCreate({
     address: address,
     configuration: configuration,
-    userOperation: { ...updatedUserOperation, hash: userOperationWithHash },
+    userOperation: userOperationWithHash,
   });
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const isLoading = useMemo(() => {
+    return isUserOperationLoading || isPaymasterAndDataLoading;
+  }, [isUserOperationLoading, isPaymasterAndDataLoading]);
+
+  const isDisabled = useMemo(() => {
+    return !isUserOperationCreatable || !isValidUserOperation || isLoading;
+  }, [isUserOperationCreatable, isValidUserOperation, isLoading]);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    setIsFormDisabled(isDisabled);
+  }, [isDisabled, setIsFormDisabled]);
+
+  useEffect(() => {
+    setIsFormLoading(isLoading);
+  }, [isLoading, setIsFormLoading]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -277,7 +334,7 @@ export const Transaction: FC<TransactionProps> = ({
                 {!isInsideModal && (
                   <div className="flex w-full flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
                     <Button
-                      disabled={!isCreatable || !isValidUserOperation}
+                      disabled={isDisabled}
                       isLoading={isLoading}
                       onClick={signUserOperation}
                     >
@@ -379,7 +436,8 @@ export const Transaction: FC<TransactionProps> = ({
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code className="break-all text-text">
-                      isCreatable: {isCreatable ? "true" : "false"}
+                      isUserOperationCreatable:{" "}
+                      {isUserOperationCreatable ? "true" : "false"}
                       <br />
                       isLoading: {isLoading ? "true" : "false"}
                       <br />
