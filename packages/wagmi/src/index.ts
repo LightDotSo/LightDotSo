@@ -41,5 +41,6 @@ export {
   cookieToInitialState,
   useSignMessage,
   useAccount,
+  useEstimateFeesPerGas,
   useEstimateMaxPriorityFeePerGas,
 } from "wagmi";

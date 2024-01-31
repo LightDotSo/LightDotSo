@@ -31,7 +31,10 @@ import {
   TabsTrigger,
 } from "@lightdotso/ui";
 import { cn, serializeBigInt } from "@lightdotso/utils";
-import { useEstimateMaxPriorityFeePerGas } from "@lightdotso/wagmi";
+import {
+  useEstimateFeesPerGas,
+  useEstimateMaxPriorityFeePerGas,
+} from "@lightdotso/wagmi";
 import { type FC, useMemo, useEffect } from "react";
 import type { Hex, Address } from "viem";
 import { Loading } from "../loading";
@@ -93,6 +96,10 @@ export const Transaction: FC<TransactionProps> = ({
   // Wagmi
   // ---------------------------------------------------------------------------
 
+  const maxFeePerGas = useEstimateFeesPerGas({
+    chainId: Number(userOperation?.chainId ?? 1),
+  });
+
   const maxPriorityFeePerGas = useEstimateMaxPriorityFeePerGas({
     chainId: Number(userOperation?.chainId ?? 1),
   });
@@ -118,6 +125,7 @@ export const Transaction: FC<TransactionProps> = ({
       const next = [...prev];
       const updatedUserOperation = {
         ...userOperation,
+        maxFeePerGas: maxFeePerGas.data?.maxFeePerGas,
         maxPriorityFeePerGas: maxPriorityFeePerGas.data,
       };
       next[userOperationIndex] = updatedUserOperation;
