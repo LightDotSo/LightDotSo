@@ -97,8 +97,8 @@ export const Transaction: FC<TransactionProps> = ({
         : initialUserOperation;
 
     return {
-      chainId: partialUserOperation?.chainId ?? BigInt(0),
       sender: partialUserOperation?.sender ?? address,
+      chainId: partialUserOperation?.chainId ?? BigInt(0),
       initCode: partialUserOperation?.initCode ?? "0x",
       nonce: partialUserOperation?.nonce ?? BigInt(0),
       callData: partialUserOperation?.callData ?? "0x",
@@ -110,7 +110,8 @@ export const Transaction: FC<TransactionProps> = ({
       maxPriorityFeePerGas:
         partialUserOperation?.maxPriorityFeePerGas ?? BigInt(0),
     };
-  }, [userOperations, userOperationIndex, initialUserOperation, address]);
+  }, [userOperations]);
+  console.log("coreUserOperation: ", coreUserOperation);
 
   // ---------------------------------------------------------------------------
   // Stores
@@ -174,6 +175,13 @@ export const Transaction: FC<TransactionProps> = ({
 
   const updatedUserOperation: Omit<UserOperation, "hash" | "signature"> =
     useMemo(() => {
+      if (isPaymasterAndDataLoading || paymasterAndDataError !== null) {
+        return {
+          ...coreUserOperation,
+          paymasterAndData: "0x",
+        };
+      }
+
       return {
         ...coreUserOperation,
         callGasLimit: paymasterAndData?.callGasLimit
@@ -199,7 +207,9 @@ export const Transaction: FC<TransactionProps> = ({
           : BigInt(0),
         paymasterAndData: paymasterAndData?.paymasterAndData ?? "0x",
       };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [coreUserOperation, paymasterAndData]);
+  console.log("updatedUserOperation: ", updatedUserOperation);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -223,23 +233,20 @@ export const Transaction: FC<TransactionProps> = ({
         return;
       }
 
-      const omittedUserOperation: Omit<
-        UserOperation,
-        "hash" | "paymasterAndData" | "signature"
-      > = {
-        sender: updatedUserOperation.sender,
-        chainId: updatedUserOperation.chainId,
-        nonce: updatedUserOperation.nonce,
-        initCode: updatedUserOperation.initCode,
-        callData: updatedUserOperation.callData,
-        callGasLimit: updatedUserOperation.callGasLimit,
-        verificationGasLimit: updatedUserOperation.verificationGasLimit,
-        preVerificationGas: updatedUserOperation.preVerificationGas,
-        maxFeePerGas: updatedUserOperation.maxFeePerGas,
-        maxPriorityFeePerGas: updatedUserOperation.maxPriorityFeePerGas,
-      };
-
-      if (serialize(coreUserOperation) === serialize(omittedUserOperation)) {
+      if (
+        coreUserOperation.chainId !== updatedUserOperation.chainId ||
+        coreUserOperation.nonce !== updatedUserOperation.nonce ||
+        coreUserOperation.initCode !== updatedUserOperation.initCode ||
+        coreUserOperation.callData !== updatedUserOperation.callData ||
+        coreUserOperation.callGasLimit !== updatedUserOperation.callGasLimit ||
+        coreUserOperation.verificationGasLimit !==
+          updatedUserOperation.verificationGasLimit ||
+        coreUserOperation.preVerificationGas !==
+          updatedUserOperation.preVerificationGas ||
+        coreUserOperation.maxFeePerGas !== updatedUserOperation.maxFeePerGas ||
+        coreUserOperation.maxPriorityFeePerGas !==
+          updatedUserOperation.maxPriorityFeePerGas
+      ) {
         setUserOperations(prev => {
           const next = [...prev];
           next[userOperationIndex] = updatedUserOperation;
@@ -384,13 +391,15 @@ export const Transaction: FC<TransactionProps> = ({
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code>
                       coreUserOperation:{" "}
-                      {coreUserOperation && serialize(coreUserOperation)}
+                      {coreUserOperation &&
+                        serialize(coreUserOperation, undefined, 2)}
                     </code>
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code>
                       updatedUserOperation:{" "}
-                      {updatedUserOperation && serialize(updatedUserOperation)}
+                      {updatedUserOperation &&
+                        serialize(updatedUserOperation, undefined, 2)}
                     </code>
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
@@ -415,26 +424,29 @@ export const Transaction: FC<TransactionProps> = ({
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code className="break-all text-text">
                       decodedInitCode:{" "}
-                      {decodedInitCode && serialize(decodedInitCode)}
+                      {decodedInitCode &&
+                        serialize(decodedInitCode, undefined, 2)}
                     </code>
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code className="break-all text-text">
                       decodedCallData:{" "}
-                      {decodedCallData && serialize(decodedCallData)}
+                      {decodedCallData &&
+                        serialize(decodedCallData, undefined, 2)}
                     </code>
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code className="break-all text-text">
                       paymasterAndData:{" "}
-                      {paymasterAndData && serialize(paymasterAndData)}
+                      {paymasterAndData &&
+                        serialize(paymasterAndData, undefined, 2)}
                     </code>
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code className="break-all text-text">
                       userOperationWithHash:{" "}
                       {userOperationWithHash &&
-                        serialize(userOperationWithHash)}
+                        serialize(userOperationWithHash, undefined, 2)}
                     </code>
                   </pre>
                   {/* <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
