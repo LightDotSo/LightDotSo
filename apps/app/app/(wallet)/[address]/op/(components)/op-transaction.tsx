@@ -118,7 +118,8 @@ export const OpTransaction: FC<OpTransactionProps> = ({
           key={selectedOpIndex}
           address={address}
           configuration={configuration}
-          userOperation={userOperations[selectedOpIndex]}
+          initialUserOperation={userOperations[selectedOpIndex]}
+          userOperationIndex={selectedOpIndex}
         />
       )}
     </div>

@@ -13,8 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { StorybookConfig } from "@storybook/react-vite";
-import { mergeConfig } from "vite";
+import type { StorybookConfig } from "@storybook/nextjs";
 
 const config: StorybookConfig = {
   stories: [
@@ -36,13 +35,12 @@ const config: StorybookConfig = {
     "msw-storybook-addon",
   ],
   framework: {
-    name: "@storybook/react-vite",
-    options: {},
-  },
-  viteFinal: async (config, { configType }) => {
-    return mergeConfig(config, {
-      define: { "process.env": {} },
-    });
+    name: "@storybook/nextjs",
+    options: {
+      builder: {
+        useSWC: true,
+      },
+    },
   },
   docs: {
     autodocs: true,

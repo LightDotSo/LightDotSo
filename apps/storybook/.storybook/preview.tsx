@@ -13,26 +13,60 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import "@lightdotso/styles/global.css";
 import { Toaster, ReactQueryProvider, Web3Provider } from "@lightdotso/ui";
-import type { Preview } from "@storybook/react";
+import { DocsContainer as BaseContainer } from "@storybook/addon-docs";
 import {
   INITIAL_VIEWPORTS,
   MINIMAL_VIEWPORTS,
 } from "@storybook/addon-viewport";
-import * as React from "react";
+import type { Preview } from "@storybook/react";
+import { themes } from "@storybook/theming";
 import { initialize, mswLoader } from "msw-storybook-addon";
+import {
+  AppRouterContext,
+  type AppRouterInstance,
+} from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { useEffect } from "react";
+import * as React from "react";
+import { useDarkMode } from "storybook-dark-mode";
+import "./global.css";
+
+// From: https://raw.githubusercontent.com/bendigiorgio/kiso/9de5ae4b8f9d6cab3210fdd8bbe61a5ff47243c0/src/docs/.storybook/DocContainer.tsx
+// License: MIT
+
+export const DocsContainer: typeof BaseContainer = ({ children, context }) => {
+  const dark = useDarkMode();
+
+  useEffect(() => {
+    const { darkClass, lightClass } =
+      // @ts-ignore
+      context.store.projectAnnotations.parameters.darkMode;
+    const [addClass, removeClass] = dark
+      ? [darkClass, lightClass]
+      : [lightClass, darkClass];
+    document.body.classList.remove(removeClass);
+    document.body.classList.add(addClass);
+  }, [dark]);
+
+  return (
+    <BaseContainer context={context} theme={dark ? themes.dark : themes.light}>
+      {children}
+    </BaseContainer>
+  );
+};
 
 initialize();
 
 export const decorators = [
   Story => (
-    <ReactQueryProvider showDevTools={false}>
-      <Web3Provider>
-        <Story />
-      </Web3Provider>
-      <Toaster />
-    </ReactQueryProvider>
+    <AppRouterContext.Provider value={{} as AppRouterInstance}>
+      <ReactQueryProvider showDevTools={false}>
+        <Web3Provider>
+          <Story />
+        </Web3Provider>
+        <Toaster />
+      </ReactQueryProvider>
+    </AppRouterContext.Provider>
   ),
 ];
 
@@ -49,6 +83,12 @@ const preview: Preview = {
       darkClass: "dark",
       lightClass: "light",
       stylePreview: true,
+    },
+    nextjs: {
+      appDirectory: true,
+    },
+    docs: {
+      container: DocsContainer,
     },
     options: {
       storySort: {

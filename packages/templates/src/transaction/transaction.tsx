@@ -15,9 +15,11 @@
 
 "use client";
 
+import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
 import type { ConfigurationData } from "@lightdotso/data";
 import { AssetChange } from "@lightdotso/elements";
 import { useUserOperationCreate } from "@lightdotso/hooks";
+import { useUserOperationsQueryState } from "@lightdotso/nuqs";
 import { useQuerySimulation } from "@lightdotso/query";
 import type { UserOperation } from "@lightdotso/schemas";
 import { useModalSwiper, useDev } from "@lightdotso/stores";
@@ -29,7 +31,7 @@ import {
   TabsTrigger,
 } from "@lightdotso/ui";
 import { cn, serializeBigInt } from "@lightdotso/utils";
-import { useEffect, type FC } from "react";
+import { useEffect, type FC, useMemo } from "react";
 import type { Hex, Address } from "viem";
 import { Loading } from "../loading";
 import { useIsInsideModal } from "../modal";
@@ -42,7 +44,8 @@ import { ModalSwiper } from "../modal-swiper";
 type TransactionProps = {
   address: Address;
   configuration: ConfigurationData;
-  userOperation: UserOperation;
+  initialUserOperation: UserOperation;
+  userOperationIndex: number;
 };
 
 // -----------------------------------------------------------------------------
@@ -52,8 +55,25 @@ type TransactionProps = {
 export const Transaction: FC<TransactionProps> = ({
   address,
   configuration,
-  userOperation,
+  initialUserOperation,
+  userOperationIndex = 0,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Query State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [userOperations, setUserOperations] = useUserOperationsQueryState();
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const userOperation = useMemo(() => {
+    return userOperations
+      ? userOperations[userOperationIndex]
+      : initialUserOperation;
+  }, [userOperations, userOperationIndex]);
+
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -94,10 +114,10 @@ export const Transaction: FC<TransactionProps> = ({
 
   const { simulation } = useQuerySimulation({
     sender: address as Address,
-    nonce: Number(userOperation.nonce),
-    chain_id: Number(userOperation.chainId),
-    call_data: userOperation.callData as Hex,
-    init_code: userOperation.initCode as Hex,
+    nonce: Number(userOperation?.nonce ?? 0),
+    chain_id: Number(userOperation?.chainId ?? 0),
+    call_data: (userOperation?.callData ?? "0x") as Hex,
+    init_code: (userOperation?.initCode ?? "0x") as Hex,
   });
 
   // ---------------------------------------------------------------------------
@@ -183,7 +203,7 @@ export const Transaction: FC<TransactionProps> = ({
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code className="break-all text-text">
-                      chainId: {Number(userOperation.chainId)}
+                      chainId: {Number(userOperation?.chainId ?? 0)}
                     </code>
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
@@ -200,7 +220,7 @@ export const Transaction: FC<TransactionProps> = ({
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code className="break-all text-text">
-                      userOpHash: {userOperation.hash}
+                      userOpHash: {userOperation?.hash ?? "0x"}
                     </code>
                   </pre>
                   {/* <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
@@ -239,7 +259,9 @@ export const Transaction: FC<TransactionProps> = ({
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code className="break-all text-text">
                       isCreatable: {isCreatable ? "true" : "false"}
+                      <br />
                       isLoading: {isLoading ? "true" : "false"}
+                      <br />
                       isValidUserOperation:{" "}
                       {isValidUserOperation ? "true" : "false"}
                     </code>

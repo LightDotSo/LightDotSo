@@ -47,7 +47,8 @@ export const Base: Story = {
     <Transaction
       address="0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F"
       configuration={configurationGetData}
-      userOperation={userOperationCreateData}
+      initialUserOperation={userOperationCreateData}
+      userOperationIndex={0}
     />
   ),
   args: {},
