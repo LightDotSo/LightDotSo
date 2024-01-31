@@ -54,7 +54,12 @@ const nextConfig = {
         "./node_modules/terser",
       ],
     },
-    serverComponentsExternalPackages: [],
+    serverComponentsExternalPackages: [
+      "@web3modal/core",
+      "@web3modal/scaffold",
+      "@web3modal/wagmi",
+      "valtio",
+    ],
   },
   logging: {
     fetches: {
@@ -63,9 +68,6 @@ const nextConfig = {
   },
   outputFileTracing: true,
   transpilePackages: [
-    "@web3modal/core",
-    "@web3modal/scaffold",
-    "@web3modal/wagmi",
     "@lightdotso/client",
     "@lightdotso/const",
     "@lightdotso/data",
