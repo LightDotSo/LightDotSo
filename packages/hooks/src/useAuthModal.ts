@@ -13,10 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+"use client";
+
 import { useAuth, useModals } from "@lightdotso/stores";
 import { useWeb3Modal } from "@lightdotso/wagmi";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { useCallback, useState, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 
 // -----------------------------------------------------------------------------
 // Hook
