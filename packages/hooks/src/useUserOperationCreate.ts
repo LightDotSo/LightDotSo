@@ -70,6 +70,7 @@ export const useUserOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   const [isLoading, setIsLoading] = useState(false);
+  const [signedData, setSignedData] = useState<Hex>();
 
   // ---------------------------------------------------------------------------
   // Local Variables
@@ -213,10 +214,19 @@ export const useUserOperationCreate = ({
     setIsLoading(isSignLoading);
   }, [isSignLoading]);
 
+  // Sync the signed data
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+
+    setSignedData(data);
+  }, [data]);
+
   useEffect(() => {
     const fetchUserOp = async () => {
       if (
-        !data ||
+        !signedData ||
         !owner ||
         !userOperation ||
         !userOperation.chainId ||
@@ -247,7 +257,7 @@ export const useUserOperationCreate = ({
         body: {
           signature: {
             owner_id: owner.id,
-            signature: toHex(new Uint8Array([...toBytes(data), 2])),
+            signature: toHex(new Uint8Array([...toBytes(signedData), 2])),
             signature_type: 1,
           },
           user_operation: {
@@ -283,11 +293,13 @@ export const useUserOperationCreate = ({
           }
         },
       );
+
+      setSignedData(undefined);
     };
 
     fetchUserOp();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, owner, userOperation, configuration?.threshold, address]);
+  }, [signedData, owner, userOperation, configuration?.threshold, address]);
 
   useEffect(() => {
     if (isLoading) {

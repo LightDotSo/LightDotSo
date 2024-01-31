@@ -1936,6 +1936,9 @@ importers:
       '@lightdotso/utils':
         specifier: workspace:*
         version: link:../utils
+      '@lightdotso/wagmi':
+        specifier: workspace:*
+        version: link:../wagmi
       '@tanstack/react-query':
         specifier: ^5.18.0
         version: 5.18.0(react@18.2.0)
@@ -2343,6 +2346,9 @@ importers:
       next-themes:
         specifier: ^0.2.1
         version: 0.2.1(next@14.1.0)(react-dom@18.2.0)(react@18.2.0)
+      permissionless:
+        specifier: ^0.0.34
+        version: 0.0.34(viem@2.7.1)
       react:
         specifier: ^18.2.0
         version: 18.2.0

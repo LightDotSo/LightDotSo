@@ -17,7 +17,7 @@ import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
 import { queryKeys } from "@lightdotso/query-keys";
 import type { UserOperation } from "@lightdotso/schemas";
 import { useAuth } from "@lightdotso/stores";
-import { serializeBigInt } from "@lightdotso/utils";
+import { serialize } from "@lightdotso/wagmi";
 import { useQuery } from "@tanstack/react-query";
 import { toHex } from "viem";
 
@@ -50,7 +50,7 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
     error: paymasterAndDataError,
   } = useQuery<PaymasterAndData | null>({
     queryKeyHashFn: key => {
-      return serializeBigInt(key);
+      return serialize(key);
     },
     queryKey: queryKeys.user_operation.get_paymaster_gas_and_paymaster_and_data(
       {

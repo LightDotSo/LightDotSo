@@ -39,6 +39,7 @@ export {
   useDisconnect,
   useEnsName,
   cookieToInitialState,
+  serialize,
   useSignMessage,
   useAccount,
   useEstimateGas,

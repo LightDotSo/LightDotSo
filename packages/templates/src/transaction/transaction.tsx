@@ -32,16 +32,20 @@ import {
   TabsList,
   TabsTrigger,
 } from "@lightdotso/ui";
-import { cn, serializeBigInt } from "@lightdotso/utils";
+import { cn } from "@lightdotso/utils";
 import {
+  serialize,
   useEstimateFeesPerGas,
   useEstimateMaxPriorityFeePerGas,
 } from "@lightdotso/wagmi";
+import { getUserOperationHash } from "permissionless";
+import type { UserOperation as PermissionlessUserOperation } from "permissionless";
 import { type FC, useMemo, useEffect } from "react";
 import type { Hex, Address } from "viem";
 import { Loading } from "../loading";
 import { useIsInsideModal } from "../modal";
 import { ModalSwiper } from "../modal-swiper";
+import { CONTRACT_ADDRESSES } from "@lightdotso/const";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -70,7 +74,6 @@ export const Transaction: FC<TransactionProps> = ({
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [userOperations, setUserOperations] = useUserOperationsQueryState();
 
   // ---------------------------------------------------------------------------
@@ -179,14 +182,20 @@ export const Transaction: FC<TransactionProps> = ({
   ]);
   // console.log("updatedUserOperation", updatedUserOperation);
 
+  const userOperationWithHash = useMemo(() => {
+    return getUserOperationHash({
+      userOperation: updatedUserOperation as PermissionlessUserOperation,
+      entryPoint: CONTRACT_ADDRESSES["Entrypoint"],
+      chainId: Number(updatedUserOperation.chainId) as number,
+    });
+  }, [updatedUserOperation]);
+
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (
-      serializeBigInt(userOperation) !== serializeBigInt(updatedUserOperation)
-    ) {
+    if (serialize(userOperation) !== serialize(updatedUserOperation)) {
       setUserOperations(prev => {
         const next = [...prev];
         next[userOperationIndex] = updatedUserOperation;
@@ -214,7 +223,7 @@ export const Transaction: FC<TransactionProps> = ({
   } = useUserOperationCreate({
     address: address,
     configuration: configuration,
-    userOperation: userOperation,
+    userOperation: { ...updatedUserOperation, hash: userOperationWithHash },
   });
 
   // ---------------------------------------------------------------------------
@@ -282,15 +291,13 @@ export const Transaction: FC<TransactionProps> = ({
                 <div className="grid gap-4 py-4">
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code>
-                      userOperation:{" "}
-                      {userOperation && serializeBigInt(userOperation)}
+                      userOperation: {userOperation && serialize(userOperation)}
                     </code>
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code>
                       updatedUserOperation:{" "}
-                      {updatedUserOperation &&
-                        serializeBigInt(updatedUserOperation)}
+                      {updatedUserOperation && serialize(updatedUserOperation)}
                     </code>
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
@@ -315,18 +322,31 @@ export const Transaction: FC<TransactionProps> = ({
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code className="break-all text-text">
                       decodedInitCode:{" "}
-                      {decodedInitCode && serializeBigInt(decodedInitCode)}
+                      {decodedInitCode && serialize(decodedInitCode)}
                     </code>
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code className="break-all text-text">
                       decodedCallData:{" "}
-                      {decodedCallData && serializeBigInt(decodedCallData)}
+                      {decodedCallData && serialize(decodedCallData)}
+                    </code>
+                  </pre>
+                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+                    <code className="break-all text-text">
+                      paymasterAndData:{" "}
+                      {paymasterAndData && serialize(paymasterAndData)}
+                    </code>
+                  </pre>
+                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+                    <code className="break-all text-text">
+                      userOperationWithHash:{" "}
+                      {userOperationWithHash &&
+                        serialize(userOperationWithHash)}
                     </code>
                   </pre>
                   {/* <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code className="break-all text-text">
-                      paymasterNonce: {serializeBigInt(paymasterNonce)}
+                      paymasterNonce: {serialize(paymasterNonce)}
                     </code>
                   </pre> */}
                   {/* <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
