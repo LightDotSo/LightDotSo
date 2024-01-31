@@ -18,6 +18,7 @@
 import type { ConfigurationData } from "@lightdotso/data";
 import type { UserOperation } from "@lightdotso/schemas";
 import { useAuth } from "@lightdotso/stores";
+import { Transaction } from "@lightdotso/templates";
 import {
   Pagination,
   PaginationContent,
@@ -28,15 +29,14 @@ import { useMemo, useState } from "react";
 import type { FC } from "react";
 import { isAddressEqual } from "viem";
 import type { Address } from "viem";
-import { OpCreateCard } from "@/app/(wallet)/[address]/op/(components)/op-create-card";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type OpCreateDialogProps = {
+type OpTransactionProps = {
   address: Address;
-  config: ConfigurationData;
+  configuration: ConfigurationData;
   userOperations: UserOperation[];
 };
 
@@ -44,9 +44,9 @@ type OpCreateDialogProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const OpCreateDialog: FC<OpCreateDialogProps> = ({
+export const OpTransaction: FC<OpTransactionProps> = ({
   address,
-  config,
+  configuration,
   userOperations,
 }) => {
   // ---------------------------------------------------------------------------
@@ -69,10 +69,10 @@ export const OpCreateDialog: FC<OpCreateDialogProps> = ({
   const owner = useMemo(() => {
     if (!userAddress) return;
 
-    return config.owners?.find(owner =>
+    return configuration.owners?.find(owner =>
       isAddressEqual(owner.address as Address, userAddress),
     );
-  }, [config.owners, userAddress]);
+  }, [configuration.owners, userAddress]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -95,10 +95,10 @@ export const OpCreateDialog: FC<OpCreateDialogProps> = ({
         </Pagination>
       )}
       {userOperations && userOperations.length > 0 && (
-        <OpCreateCard
+        <Transaction
           key={selectedOpIndex}
           address={address}
-          config={config}
+          configuration={configuration}
           userOperation={userOperations[selectedOpIndex]}
         />
       )}

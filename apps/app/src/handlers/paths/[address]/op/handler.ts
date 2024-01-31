@@ -43,7 +43,7 @@ export const handler = async (
     userOperations?: string;
   },
 ): Promise<{
-  config: ConfigurationData;
+  configuration: ConfigurationData;
   userOperations: UserOperation[];
 }> => {
   // ---------------------------------------------------------------------------
@@ -95,25 +95,25 @@ export const handler = async (
 
   const walletPromise = getWallet({ address: params.address as Address });
 
-  const configPromise = getConfiguration({
+  const configurationPromise = getConfiguration({
     address: params.address as Address,
   });
 
-  const [walletRes, configRes] = await Promise.all([
+  const [walletRes, configurationRes] = await Promise.all([
     walletPromise,
-    configPromise,
+    configurationPromise,
   ]);
 
   const walletAndConfigRes = Result.combineWithAllErrors([
     walletRes,
-    configRes,
+    configurationRes,
   ]);
 
-  const { wallet, config } = walletAndConfigRes.match(
-    ([wallet, config]) => {
+  const { wallet, configuration } = walletAndConfigRes.match(
+    ([wallet, configuration]) => {
       return {
         wallet: wallet,
-        config: config,
+        configuration: configuration,
       };
     },
     () => {
@@ -139,7 +139,7 @@ export const handler = async (
           operation.initCode ?? nonce === 0
             ? calculateInitCode(
                 CONTRACT_ADDRESSES["Factory"] as Address,
-                config.image_hash as Hex,
+                configuration.image_hash as Hex,
                 wallet.salt as Hex,
               )
             : "0x",
@@ -222,7 +222,7 @@ export const handler = async (
 
   // Return an object containing an array of userOperations and an array of hashes
   return {
-    config: config,
+    configuration: configuration,
     userOperations: userOperations,
   };
 };

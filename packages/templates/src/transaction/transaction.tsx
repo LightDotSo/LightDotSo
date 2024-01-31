@@ -15,42 +15,186 @@
 
 "use client";
 
-import { useSignInWithSiwe } from "@lightdotso/hooks";
-import { Button, StateInfoSection } from "@lightdotso/ui";
-import { UserIcon } from "lucide-react";
-import type { FC } from "react";
+import type { ConfigurationData } from "@lightdotso/data";
+import { AssetChange } from "@lightdotso/elements";
+import { useUserOperationCreate } from "@lightdotso/hooks";
+import { useQuerySimulation } from "@lightdotso/query";
+import type { UserOperation } from "@lightdotso/schemas";
+import { useModalSwiper, useDev } from "@lightdotso/stores";
+import { Button } from "@lightdotso/ui";
+import { serializeBigInt } from "@lightdotso/utils";
+import { useEffect, type FC } from "react";
+import type { Hex, Address } from "viem";
+import { Loading } from "../loading";
+import { ModalSwiper } from "../modal-swiper";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type TransactionProps = {
+  address: Address;
+  configuration: ConfigurationData;
+  userOperation: UserOperation;
+};
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const Transaction: FC = () => {
+export const Transaction: FC<TransactionProps> = ({
+  address,
+  configuration,
+  userOperation,
+}) => {
   // ---------------------------------------------------------------------------
-  // Hooks
+  // Stores
   // ---------------------------------------------------------------------------
 
-  const { isPending, handleSignIn } = useSignInWithSiwe();
+  const { isDev } = useDev();
+  const { pageIndex, setPageIndex } = useModalSwiper();
+
+  // ---------------------------------------------------------------------------
+  // App Hooks
+  // ---------------------------------------------------------------------------
+
+  const {
+    isLoading,
+    isCreatable,
+    signUserOperation,
+    decodedCallData,
+    decodedInitCode,
+    // paymasterHash,
+    // paymasterNonce,
+    subdigest,
+  } = useUserOperationCreate({
+    address: address,
+    configuration: configuration,
+    userOperation: userOperation,
+  });
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { simulation } = useQuerySimulation({
+    sender: address as Address,
+    nonce: Number(userOperation.nonce),
+    chain_id: Number(userOperation.chainId),
+    call_data: userOperation.callData as Hex,
+    init_code: userOperation.initCode as Hex,
+  });
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    if (isLoading) {
+      setPageIndex(1);
+    } else {
+      setPageIndex(0);
+    }
+  }, [isLoading, setPageIndex]);
+
+  // ---------------------------------------------------------------------------
+  // Dev Component
+  // ---------------------------------------------------------------------------
+
+  const Dev = () => {
+    return (
+      <div className="grid gap-4 py-4">
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code>
+            userOperation: {userOperation && serializeBigInt(userOperation)}
+          </code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">
+            chainId: {Number(userOperation.chainId)}
+          </code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">
+            decodedInitCode:{" "}
+            {decodedInitCode && serializeBigInt(decodedInitCode)}
+          </code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">
+            decodedCallData:{" "}
+            {decodedCallData && serializeBigInt(decodedCallData)}
+          </code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">
+            userOpHash: {userOperation.hash}
+          </code>
+        </pre>
+        {/* <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">
+            paymasterNonce: {serializeBigInt(paymasterNonce)}
+          </code>
+        </pre> */}
+        {/* <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">
+            paymasterHash: {paymasterHash}
+          </code>
+        </pre> */}
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">subdigest: {subdigest}</code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">
+            owners:{" "}
+            {configuration.owners &&
+              JSON.stringify(configuration.owners, null, 2)}
+          </code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">
+            simulation: {simulation && JSON.stringify(simulation, null, 2)}
+          </code>
+        </pre>
+      </div>
+    );
+  };
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <StateInfoSection
-      icon={
-        <UserIcon className="mx-auto size-8 rounded-full border border-border p-2 text-text md:size-10" />
-      }
-      title="Login"
-      description="Get started first by logging in."
-    >
-      <Button
-        className="w-full md:w-32"
-        isLoading={isPending}
-        disabled={isPending}
-        onClick={handleSignIn}
-      >
-        Login
-      </Button>
-    </StateInfoSection>
+    <div className="flex max-w-lg items-center">
+      <ModalSwiper>
+        {pageIndex === 0 && (
+          <>
+            {isDev && <Dev />}
+            <div className="flex flex-col space-y-4">
+              {simulation &&
+                simulation.interpretation.asset_changes.map(
+                  (asset_change, _index) => {
+                    return (
+                      <div key={asset_change.id} className="flex">
+                        <AssetChange assetChange={asset_change} />
+                      </div>
+                    );
+                  },
+                )}
+            </div>
+            <div className="flex w-full flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
+              <Button
+                disabled={!isCreatable}
+                isLoading={isLoading}
+                onClick={signUserOperation}
+              >
+                Sign Transaction
+              </Button>
+            </div>
+          </>
+        )}
+        {pageIndex === 1 && <Loading />}
+      </ModalSwiper>
+    </div>
   );
 };

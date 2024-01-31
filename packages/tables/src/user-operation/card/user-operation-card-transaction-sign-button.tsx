@@ -33,7 +33,7 @@ import type { Address } from "viem";
 
 type UserOperationCardTransactionSignButtonProps = {
   address: Address;
-  config: ConfigurationData;
+  configuration: ConfigurationData;
   userOperation: UserOperationData;
 };
 
@@ -43,7 +43,7 @@ type UserOperationCardTransactionSignButtonProps = {
 
 export const UserOperationCardTransactionSignButton: FC<
   UserOperationCardTransactionSignButtonProps
-> = ({ address, config, userOperation }) => {
+> = ({ address, configuration, userOperation }) => {
   // ---------------------------------------------------------------------------
   // App Hooks
   // ---------------------------------------------------------------------------
@@ -51,7 +51,7 @@ export const UserOperationCardTransactionSignButton: FC<
   const { isLoading, isSigned, isSignable, signUserOperation } =
     useUserOperationSign({
       address: address,
-      config: config,
+      configuration: configuration,
       userOperation: userOperation,
     });
 

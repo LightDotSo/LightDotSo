@@ -33,7 +33,7 @@ import type { Address } from "viem";
 
 type UserOperationCardTransactionExecuteButtonProps = {
   address: Address;
-  config: ConfigurationData;
+  configuration: ConfigurationData;
   userOperation: UserOperationData;
 };
 
@@ -43,14 +43,14 @@ type UserOperationCardTransactionExecuteButtonProps = {
 
 export const UserOperationCardTransactionExecuteButton: FC<
   UserOperationCardTransactionExecuteButtonProps
-> = ({ address, config, userOperation }) => {
+> = ({ address, configuration, userOperation }) => {
   // ---------------------------------------------------------------------------
   // App Hooks
   // ---------------------------------------------------------------------------
 
   const { isLoading, isValid, handleConfirm } = useUserOperationSubmit({
     address: address,
-    config: config,
+    configuration: configuration,
     userOperation: userOperation,
   });
 

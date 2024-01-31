@@ -46,7 +46,7 @@ import {
 
 type UserOperationCreateProps = {
   address: Address;
-  config: ConfigurationData;
+  configuration: ConfigurationData;
   userOperation: UserOperation;
 };
 
@@ -56,7 +56,7 @@ type UserOperationCreateProps = {
 
 export const useUserOperationCreate = ({
   address,
-  config: { owners, threshold },
+  configuration: { owners, threshold },
   userOperation,
 }: UserOperationCreateProps) => {
   // ---------------------------------------------------------------------------

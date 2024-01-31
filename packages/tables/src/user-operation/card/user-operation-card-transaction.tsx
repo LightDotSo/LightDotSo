@@ -290,13 +290,13 @@ export const UserOperationCardTransaction: FC<
                   {userOperation.status === "PROPOSED" && (
                     <UserOperationCardTransactionSignButton
                       address={address}
-                      config={configuration}
+                      configuration={configuration}
                       userOperation={userOperation}
                     />
                   )}
                   <UserOperationCardTransactionExecuteButton
                     address={address}
-                    config={configuration}
+                    configuration={configuration}
                     userOperation={userOperation}
                   />
                 </CardFooter>

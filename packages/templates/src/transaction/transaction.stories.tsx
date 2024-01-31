@@ -15,6 +15,10 @@
 
 import type { Meta, StoryObj } from "@storybook/react";
 import { Transaction } from "./transaction";
+import {
+  configurationGetData,
+  userOperationCreateData,
+} from "@lightdotso/demo";
 
 // -----------------------------------------------------------------------------
 // Meta
@@ -39,6 +43,12 @@ type Story = StoryObj<typeof Transaction>;
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <Transaction />,
+  render: args => (
+    <Transaction
+      address="0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F"
+      configuration={configurationGetData}
+      userOperation={userOperationCreateData}
+    />
+  ),
   args: {},
 };
