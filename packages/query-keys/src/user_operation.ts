@@ -31,7 +31,15 @@ export const user_operation = createQueryKeys("user_operation", {
     queryKey: [{ params }],
   }),
   get_paymaster_gas_and_paymaster_and_data: (
-    params: Omit<UserOperation, "hash" | "paymasterAndData" | "signature">,
+    params: Omit<
+      UserOperation,
+      | "hash"
+      | "paymasterAndData"
+      | "signature"
+      | "callGasLimit"
+      | "verificationGasLimit"
+      | "preVerificationGas"
+    >,
   ) => ({
     queryKey: [{ params }],
   }),

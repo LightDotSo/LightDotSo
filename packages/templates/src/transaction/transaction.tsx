@@ -87,7 +87,7 @@ export const Transaction: FC<TransactionProps> = ({
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const coreUserOperation: Omit<
+  const targetUserOperation: Omit<
     UserOperation,
     "hash" | "paymasterAndData" | "signature"
   > = useMemo(() => {
@@ -112,7 +112,6 @@ export const Transaction: FC<TransactionProps> = ({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userOperations]);
-  console.log("coreUserOperation: ", coreUserOperation);
 
   // ---------------------------------------------------------------------------
   // Stores
@@ -133,15 +132,41 @@ export const Transaction: FC<TransactionProps> = ({
 
   const { data: feesPerGas, error: estimateFeesPerGasError } =
     useEstimateFeesPerGas({
-      chainId: Number(coreUserOperation.chainId ?? 1),
+      chainId: Number(targetUserOperation.chainId ?? 1),
     });
 
   const {
     data: maxPriorityFeePerGas,
     error: estimateMaxPriorityFeePerGasError,
   } = useEstimateMaxPriorityFeePerGas({
-    chainId: Number(coreUserOperation.chainId ?? 1),
+    chainId: Number(targetUserOperation.chainId ?? 1),
   });
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const coreUserOperation: Omit<
+    UserOperation,
+    | "hash"
+    | "paymasterAndData"
+    | "signature"
+    | "callGasLimit"
+    | "verificationGasLimit"
+    | "preVerificationGas"
+  > = useMemo(() => {
+    return {
+      sender: targetUserOperation.sender,
+      chainId: targetUserOperation.chainId,
+      initCode: targetUserOperation.initCode,
+      nonce: targetUserOperation.nonce,
+      callData: targetUserOperation.callData,
+      maxFeePerGas:
+        feesPerGas?.maxFeePerGas ?? targetUserOperation.maxFeePerGas,
+      maxPriorityFeePerGas:
+        maxPriorityFeePerGas ?? targetUserOperation.maxPriorityFeePerGas,
+    };
+  }, [targetUserOperation, feesPerGas, maxPriorityFeePerGas]);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -154,20 +179,16 @@ export const Transaction: FC<TransactionProps> = ({
       nonce: coreUserOperation.nonce,
       initCode: coreUserOperation.initCode,
       callData: coreUserOperation.callData,
-      callGasLimit: coreUserOperation.callGasLimit,
-      verificationGasLimit: coreUserOperation.verificationGasLimit,
-      preVerificationGas: coreUserOperation.preVerificationGas,
-      maxFeePerGas: feesPerGas?.maxFeePerGas ?? coreUserOperation.maxFeePerGas,
-      maxPriorityFeePerGas:
-        maxPriorityFeePerGas ?? coreUserOperation.maxPriorityFeePerGas,
+      maxFeePerGas: coreUserOperation.maxFeePerGas,
+      maxPriorityFeePerGas: coreUserOperation.maxPriorityFeePerGas,
     });
 
   const { simulation } = useQuerySimulation({
     sender: address as Address,
-    nonce: Number(coreUserOperation.nonce),
-    chain_id: Number(coreUserOperation.chainId),
-    call_data: coreUserOperation.callData as Hex,
-    init_code: coreUserOperation.initCode as Hex,
+    nonce: Number(targetUserOperation.nonce),
+    chain_id: Number(targetUserOperation.chainId),
+    call_data: targetUserOperation.callData as Hex,
+    init_code: targetUserOperation.initCode as Hex,
   });
 
   // ---------------------------------------------------------------------------
@@ -178,13 +199,28 @@ export const Transaction: FC<TransactionProps> = ({
     useMemo(() => {
       if (isPaymasterAndDataLoading || paymasterAndDataError !== null) {
         return {
-          ...coreUserOperation,
+          sender: coreUserOperation.sender,
+          chainId: coreUserOperation.chainId,
+          initCode: coreUserOperation.initCode,
+          nonce: coreUserOperation.nonce,
+          callData: coreUserOperation.callData,
+          callGasLimit: BigInt(0),
+          verificationGasLimit: BigInt(0),
+          preVerificationGas: BigInt(0),
+          maxFeePerGas: coreUserOperation.maxFeePerGas,
+          maxPriorityFeePerGas: coreUserOperation.maxPriorityFeePerGas,
           paymasterAndData: "0x",
         };
       }
 
       return {
-        ...coreUserOperation,
+        sender: coreUserOperation.sender,
+        chainId: coreUserOperation.chainId,
+        initCode: coreUserOperation.initCode,
+        nonce: coreUserOperation.nonce,
+        callData: coreUserOperation.callData,
+        maxFeePerGas: coreUserOperation.maxFeePerGas,
+        maxPriorityFeePerGas: coreUserOperation.maxPriorityFeePerGas,
         callGasLimit: paymasterAndData?.callGasLimit
           ? fromHex(paymasterAndData.callGasLimit as Hex, { to: "bigint" })
           : BigInt(0),
@@ -198,19 +234,10 @@ export const Transaction: FC<TransactionProps> = ({
               to: "bigint",
             })
           : BigInt(0),
-        maxFeePerGas: paymasterAndData?.maxFeePerGas
-          ? fromHex(paymasterAndData.maxFeePerGas as Hex, { to: "bigint" })
-          : BigInt(0),
-        maxPriorityFeePerGas: paymasterAndData?.maxPriorityFeePerGas
-          ? fromHex(paymasterAndData.maxPriorityFeePerGas as Hex, {
-              to: "bigint",
-            })
-          : BigInt(0),
         paymasterAndData: paymasterAndData?.paymasterAndData ?? "0x",
       };
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [coreUserOperation, paymasterAndData]);
-  console.log("updatedUserOperation: ", updatedUserOperation);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -235,17 +262,19 @@ export const Transaction: FC<TransactionProps> = ({
       }
 
       if (
-        coreUserOperation.chainId !== updatedUserOperation.chainId ||
-        coreUserOperation.nonce !== updatedUserOperation.nonce ||
-        coreUserOperation.initCode !== updatedUserOperation.initCode ||
-        coreUserOperation.callData !== updatedUserOperation.callData ||
-        coreUserOperation.callGasLimit !== updatedUserOperation.callGasLimit ||
-        coreUserOperation.verificationGasLimit !==
+        targetUserOperation.chainId !== updatedUserOperation.chainId ||
+        targetUserOperation.nonce !== updatedUserOperation.nonce ||
+        targetUserOperation.initCode !== updatedUserOperation.initCode ||
+        targetUserOperation.callData !== updatedUserOperation.callData ||
+        targetUserOperation.callGasLimit !==
+          updatedUserOperation.callGasLimit ||
+        targetUserOperation.verificationGasLimit !==
           updatedUserOperation.verificationGasLimit ||
-        coreUserOperation.preVerificationGas !==
+        targetUserOperation.preVerificationGas !==
           updatedUserOperation.preVerificationGas ||
-        coreUserOperation.maxFeePerGas !== updatedUserOperation.maxFeePerGas ||
-        coreUserOperation.maxPriorityFeePerGas !==
+        targetUserOperation.maxFeePerGas !==
+          updatedUserOperation.maxFeePerGas ||
+        targetUserOperation.maxPriorityFeePerGas !==
           updatedUserOperation.maxPriorityFeePerGas
       ) {
         setUserOperations(prev => {
@@ -256,7 +285,7 @@ export const Transaction: FC<TransactionProps> = ({
       }
 
       const userOperation = {
-        ...coreUserOperation,
+        ...targetUserOperation,
         paymasterAndData: updatedUserOperation.paymasterAndData,
         signature: "0x",
       };
@@ -391,6 +420,13 @@ export const Transaction: FC<TransactionProps> = ({
                 <div className="grid gap-4 py-4">
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code>
+                      targetUserOperation:{" "}
+                      {targetUserOperation &&
+                        serialize(targetUserOperation, undefined, 2)}
+                    </code>
+                  </pre>
+                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+                    <code>
                       coreUserOperation:{" "}
                       {coreUserOperation &&
                         serialize(coreUserOperation, undefined, 2)}
@@ -419,7 +455,7 @@ export const Transaction: FC<TransactionProps> = ({
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code className="break-all text-text">
-                      chainId: {Number(coreUserOperation.chainId ?? 0)}
+                      chainId: {Number(targetUserOperation.chainId ?? 0)}
                     </code>
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">

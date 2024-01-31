@@ -32,7 +32,15 @@ type PaymasterAndData = {
 };
 
 export const useQueryPaymasterGasAndPaymasterAndData = (
-  params: Omit<UserOperation, "hash" | "paymasterAndData" | "signature">,
+  params: Omit<
+    UserOperation,
+    | "hash"
+    | "paymasterAndData"
+    | "signature"
+    | "callGasLimit"
+    | "verificationGasLimit"
+    | "preVerificationGas"
+  >,
 ) => {
   // ---------------------------------------------------------------------------
   // Stores
@@ -59,9 +67,6 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
         initCode: params.initCode,
         sender: params.sender,
         callData: params.callData,
-        callGasLimit: params.callGasLimit,
-        verificationGasLimit: params.verificationGasLimit,
-        preVerificationGas: params.preVerificationGas,
         maxFeePerGas: params.maxFeePerGas,
         maxPriorityFeePerGas: params.maxPriorityFeePerGas,
       },
@@ -77,9 +82,9 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
             initCode: params.initCode,
             callData: params.callData,
             signature: "0x",
-            callGasLimit: toHex(params.callGasLimit),
-            verificationGasLimit: toHex(params.verificationGasLimit),
-            preVerificationGas: toHex(params.preVerificationGas),
+            callGasLimit: "0x44E1C0",
+            verificationGasLimit: "0x1C4B40",
+            preVerificationGas: "0x1C4B40",
             maxFeePerGas: toHex(params.maxFeePerGas),
             maxPriorityFeePerGas: toHex(params.maxPriorityFeePerGas),
           },
