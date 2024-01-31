@@ -71,7 +71,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const { isAuthValid, openAuthModal } = useAuthModal();
+  const { isAuthValid, isAuthLoading, handleAuthModal } = useAuthModal();
 
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -154,21 +154,25 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const WalletLoginButton: FC = () => {
-    // ---------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Render
-    // ---------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     return (
-      <Button disabled={isAuthValid} onClick={openAuthModal}>
+      <Button
+        disabled={isAuthValid}
+        isLoading={isAuthLoading}
+        onClick={handleAuthModal}
+      >
         Login to update name
       </Button>
     );
   };
 
   const SettingsNameCardSubmitButton: FC = () => {
-    // ---------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Render
-    // ---------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     return (
       <Button
@@ -176,6 +180,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
         form="walletNameForm"
         isLoading={isPending}
         disabled={
+          isPending ||
           delayedIsSuccess ||
           !isFormChanged ||
           typeof form.getFieldState("name").error !== "undefined"

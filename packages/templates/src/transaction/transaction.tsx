@@ -108,7 +108,7 @@ export const Transaction: FC<TransactionProps> = ({
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="flex max-w-lg items-center">
+    <div className="flex w-full max-w-lg items-center">
       <ModalSwiper>
         {pageIndex === 0 && (
           <>

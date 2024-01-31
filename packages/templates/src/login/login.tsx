@@ -15,10 +15,10 @@
 
 "use client";
 
-import { useSignInWithSiwe } from "@lightdotso/hooks";
+import { useAuthModal } from "@lightdotso/hooks";
 import { Button, StateInfoSection } from "@lightdotso/ui";
 import { UserIcon } from "lucide-react";
-import type { FC } from "react";
+import { type FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -29,7 +29,7 @@ export const Login: FC = () => {
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const { isPending, handleSignIn } = useSignInWithSiwe();
+  const { isAuthValid, isAuthLoading, handleAuthModal } = useAuthModal(false);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -45,11 +45,11 @@ export const Login: FC = () => {
     >
       <Button
         className="w-full md:w-32"
-        isLoading={isPending}
-        disabled={isPending}
-        onClick={handleSignIn}
+        isLoading={isAuthLoading}
+        disabled={isAuthLoading}
+        onClick={handleAuthModal}
       >
-        Login
+        {isAuthValid ? "Login" : "Connect Wallet"}
       </Button>
     </StateInfoSection>
   );
