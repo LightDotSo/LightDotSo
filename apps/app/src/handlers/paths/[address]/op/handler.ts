@@ -137,7 +137,7 @@ export const handler = async (
         sender: params.address as Address,
         paymasterAndData: "0x",
         nonce: BigInt(nonce),
-        initCode: "0x",
+        initCode: (operation.initCode as Hex) ?? "0x",
         // operation.initCode ?? nonce === 0
         //   ? calculateInitCode(
         //       CONTRACT_ADDRESSES["Factory"] as Address,
