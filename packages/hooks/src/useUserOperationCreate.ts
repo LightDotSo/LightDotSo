@@ -171,6 +171,25 @@ export const useUserOperationCreate = ({
     }
   }, [userOperation?.callData]);
 
+  const isValidUserOperation = useMemo(() => {
+    return (
+      typeof owner === "undefined" ||
+      !userOperation ||
+      !userOperation.chainId ||
+      !userOperation.hash ||
+      !userOperation.nonce ||
+      !userOperation.initCode ||
+      !userOperation.sender ||
+      !userOperation.callData ||
+      !userOperation.callGasLimit ||
+      !userOperation.verificationGasLimit ||
+      !userOperation.preVerificationGas ||
+      !userOperation.maxFeePerGas ||
+      !userOperation.maxPriorityFeePerGas ||
+      !userOperation.paymasterAndData
+    );
+  }, [data, owner, userOperation]);
+
   // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
@@ -277,6 +296,7 @@ export const useUserOperationCreate = ({
   return {
     isLoading,
     isCreatable: typeof owner !== "undefined" && !isLoading,
+    isValidUserOperation,
     decodedCallData,
     decodedInitCode,
     // paymasterHash,

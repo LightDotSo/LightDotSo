@@ -74,6 +74,7 @@ export const Transaction: FC<TransactionProps> = ({
   const {
     isLoading,
     isCreatable,
+    isValidUserOperation,
     signUserOperation,
     decodedCallData,
     decodedInitCode,
@@ -161,7 +162,7 @@ export const Transaction: FC<TransactionProps> = ({
                 {!isInsideModal && (
                   <div className="flex w-full flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
                     <Button
-                      disabled={!isCreatable}
+                      disabled={!isCreatable || isValidUserOperation}
                       isLoading={isLoading}
                       onClick={signUserOperation}
                     >
