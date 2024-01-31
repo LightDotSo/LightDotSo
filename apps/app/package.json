@@ -24,6 +24,9 @@
     "start": "next start",
     "tsc": "tsc --noEmit"
   },
+  "browserslist": [
+    "Chrome 118"
+  ],
   "dependencies": {
     "@babel/core": "^7.23.9",
     "@heroicons/react": "^2.1.1",
