@@ -21,6 +21,7 @@ import type { UserOperation } from "@lightdotso/schemas";
 import {
   getConfiguration,
   getUserOperationNonce,
+  getUserOperations,
   getWallet,
 } from "@lightdotso/services";
 import { calculateInitCode } from "@lightdotso/solutions";
@@ -109,6 +110,7 @@ export const handler = async (
     configurationRes,
   ]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { wallet, configuration } = walletAndConfigRes.match(
     ([wallet, configuration]) => {
       return {
@@ -135,14 +137,14 @@ export const handler = async (
         sender: params.address as Address,
         paymasterAndData: "0x",
         nonce: BigInt(nonce),
-        initCode:
-          operation.initCode ?? nonce === 0
-            ? calculateInitCode(
-                CONTRACT_ADDRESSES["Factory"] as Address,
-                configuration.image_hash as Hex,
-                wallet.salt as Hex,
-              )
-            : "0x",
+        initCode: "0x",
+        // operation.initCode ?? nonce === 0
+        //   ? calculateInitCode(
+        //       CONTRACT_ADDRESSES["Factory"] as Address,
+        //       configuration.image_hash as Hex,
+        //       wallet.salt as Hex,
+        //     )
+        //   : "0x",
         callData: (operation.callData as Hex) ?? "0x",
         signature:
           "0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c",
