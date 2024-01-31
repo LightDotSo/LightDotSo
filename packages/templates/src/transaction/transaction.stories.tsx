@@ -13,12 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Meta, StoryObj } from "@storybook/react";
-import { Transaction } from "./transaction";
 import {
   configurationGetData,
   userOperationCreateData,
 } from "@lightdotso/demo";
+import type { Meta, StoryObj } from "@storybook/react";
+import { Transaction } from "./transaction";
 
 // -----------------------------------------------------------------------------
 // Meta
