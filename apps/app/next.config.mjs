@@ -34,7 +34,7 @@ const nextConfig = {
   },
   experimental: {
     instrumentationHook: true,
-    esmExternals: "loose",
+    esmExternals: true,
     outputFileTracingExcludes: {
       "*": [
         "./node_modules/@swc/core-linux-x64-gnu",
@@ -72,6 +72,7 @@ const nextConfig = {
     "@lightdotso/styles",
     "@lightdotso/svg",
     "@lightdotso/tables",
+    "@lightdotso/templates",
     "@lightdotso/types",
     "@lightdotso/ui",
     "@lightdotso/utils",

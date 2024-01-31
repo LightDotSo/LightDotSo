@@ -2662,6 +2662,9 @@ importers:
       '@lightdotso/const':
         specifier: workspace:*
         version: link:../const
+      '@web3modal/scaffold':
+        specifier: ^4.0.0-alpha.3
+        version: 4.0.0-dfe77c21(@types/react@18.2.48)(react@18.2.0)
       '@web3modal/wagmi':
         specifier: ^4.0.0-alpha.3
         version: 4.0.0-dfe77c21(@types/react@18.2.48)(@wagmi/connectors@4.1.12)(@wagmi/core@2.6.3)(typescript@5.3.3)(viem@2.6.1)
