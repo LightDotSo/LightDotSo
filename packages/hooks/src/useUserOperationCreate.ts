@@ -219,7 +219,8 @@ export const useUserOperationCreate = ({
         !userOperation ||
         !userOperation.chainId ||
         !userOperation.hash ||
-        !userOperation.nonce ||
+        userOperation.nonce === undefined ||
+        userOperation.nonce === null ||
         !userOperation.initCode ||
         !userOperation.sender ||
         !userOperation.callData ||
@@ -230,9 +231,7 @@ export const useUserOperationCreate = ({
         !userOperation.maxPriorityFeePerGas ||
         !userOperation.paymasterAndData
       ) {
-        if (data) {
-          toast.error("Failed to submit the userOperation result");
-        }
+        toast.error("Invalid userOperation data");
         return;
       }
 
