@@ -26,7 +26,7 @@ import {
   PaginationItem,
   PaginationLink,
 } from "@lightdotso/ui";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import type { FC } from "react";
 import { isAddressEqual } from "viem";
 import type { Address } from "viem";
