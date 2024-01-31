@@ -37,7 +37,7 @@ import {
   useEstimateFeesPerGas,
   useEstimateMaxPriorityFeePerGas,
 } from "@lightdotso/wagmi";
-import { type FC, useMemo } from "react";
+import { type FC, useMemo, useEffect } from "react";
 import type { Hex, Address } from "viem";
 import { Loading } from "../loading";
 import { useIsInsideModal } from "../modal";
@@ -177,25 +177,24 @@ export const Transaction: FC<TransactionProps> = ({
     maxPriorityFeePerGas,
     paymasterAndData?.paymasterAndData,
   ]);
+  // console.log("updatedUserOperation", updatedUserOperation);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
-  // useEffect(() => {
-  //   setUserOperations(prev => {
-  //     const next = [...prev];
-  //     const updatedUserOperation = {
-  //       ...userOperation,
-  //       callGasLimit: gas ?? BigInt(0),
-  //       maxFeePerGas: feesPerGas?.maxFeePerGas ?? BigInt(0),
-  //       maxPriorityFeePerGas: maxPriorityFeePerGas ?? BigInt(0),
-  //       paymasterAndData: paymasterAndData?.paymasterAndData ?? "0x",
-  //     };
-  //     next[userOperationIndex] = updatedUserOperation;
-  //     return next;
-  //   });
-  // }, [userOperation]);
+  useEffect(() => {
+    if (
+      serializeBigInt(userOperation) !== serializeBigInt(updatedUserOperation)
+    ) {
+      setUserOperations(prev => {
+        const next = [...prev];
+        next[userOperationIndex] = updatedUserOperation;
+        return next;
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [updatedUserOperation]);
 
   // ---------------------------------------------------------------------------
   // Hooks
