@@ -21,8 +21,14 @@ import { useUserOperationCreate } from "@lightdotso/hooks";
 import { useQuerySimulation } from "@lightdotso/query";
 import type { UserOperation } from "@lightdotso/schemas";
 import { useModalSwiper, useDev } from "@lightdotso/stores";
-import { Button } from "@lightdotso/ui";
-import { serializeBigInt } from "@lightdotso/utils";
+import {
+  Button,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@lightdotso/ui";
+import { cn, serializeBigInt } from "@lightdotso/utils";
 import { useEffect, type FC } from "react";
 import type { Hex, Address } from "viem";
 import { Loading } from "../loading";
@@ -98,69 +104,6 @@ export const Transaction: FC<TransactionProps> = ({
   }, [isLoading, setPageIndex]);
 
   // ---------------------------------------------------------------------------
-  // Dev Component
-  // ---------------------------------------------------------------------------
-
-  const Dev = () => {
-    return (
-      <div className="grid gap-4 py-4">
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code>
-            userOperation: {userOperation && serializeBigInt(userOperation)}
-          </code>
-        </pre>
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">
-            chainId: {Number(userOperation.chainId)}
-          </code>
-        </pre>
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">
-            decodedInitCode:{" "}
-            {decodedInitCode && serializeBigInt(decodedInitCode)}
-          </code>
-        </pre>
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">
-            decodedCallData:{" "}
-            {decodedCallData && serializeBigInt(decodedCallData)}
-          </code>
-        </pre>
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">
-            userOpHash: {userOperation.hash}
-          </code>
-        </pre>
-        {/* <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">
-            paymasterNonce: {serializeBigInt(paymasterNonce)}
-          </code>
-        </pre> */}
-        {/* <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">
-            paymasterHash: {paymasterHash}
-          </code>
-        </pre> */}
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">subdigest: {subdigest}</code>
-        </pre>
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">
-            owners:{" "}
-            {configuration.owners &&
-              JSON.stringify(configuration.owners, null, 2)}
-          </code>
-        </pre>
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">
-            simulation: {simulation && JSON.stringify(simulation, null, 2)}
-          </code>
-        </pre>
-      </div>
-    );
-  };
-
-  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -169,28 +112,117 @@ export const Transaction: FC<TransactionProps> = ({
       <ModalSwiper>
         {pageIndex === 0 && (
           <>
-            {isDev && <Dev />}
-            <div className="flex flex-col space-y-4">
-              {simulation &&
-                simulation.interpretation.asset_changes.map(
-                  (asset_change, _index) => {
-                    return (
-                      <div key={asset_change.id} className="flex">
-                        <AssetChange assetChange={asset_change} />
-                      </div>
-                    );
-                  },
+            <Tabs className="w-full" defaultValue="transaction">
+              <TabsList className="w-full">
+                <TabsTrigger
+                  className={cn(!isDev ? "w-1/3" : "w-1/4")}
+                  value="transaction"
+                >
+                  Transaction
+                </TabsTrigger>
+                <TabsTrigger
+                  className={cn(!isDev ? "w-1/3" : "w-1/4")}
+                  value="details"
+                >
+                  Details
+                </TabsTrigger>
+                <TabsTrigger
+                  className={cn(!isDev ? "w-1/3" : "w-1/4")}
+                  value="data"
+                >
+                  Data
+                </TabsTrigger>
+                {isDev && (
+                  <TabsTrigger className="w-1/4" value="dev">
+                    Dev
+                  </TabsTrigger>
                 )}
-            </div>
-            <div className="flex w-full flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-              <Button
-                disabled={!isCreatable}
-                isLoading={isLoading}
-                onClick={signUserOperation}
-              >
-                Sign Transaction
-              </Button>
-            </div>
+              </TabsList>
+              <TabsContent value="transaction">
+                <div className="flex flex-col space-y-4">
+                  {simulation &&
+                    simulation.interpretation.asset_changes.map(
+                      (asset_change, _index) => {
+                        return (
+                          <div key={asset_change.id} className="flex">
+                            <AssetChange assetChange={asset_change} />
+                          </div>
+                        );
+                      },
+                    )}
+                </div>
+                <div className="flex w-full flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
+                  <Button
+                    disabled={!isCreatable}
+                    isLoading={isLoading}
+                    onClick={signUserOperation}
+                  >
+                    Sign Transaction
+                  </Button>
+                </div>
+              </TabsContent>
+              <TabsContent value="details">Details</TabsContent>
+              <TabsContent value="dev">
+                <div className="grid gap-4 py-4">
+                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+                    <code>
+                      userOperation:{" "}
+                      {userOperation && serializeBigInt(userOperation)}
+                    </code>
+                  </pre>
+                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+                    <code className="break-all text-text">
+                      chainId: {Number(userOperation.chainId)}
+                    </code>
+                  </pre>
+                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+                    <code className="break-all text-text">
+                      decodedInitCode:{" "}
+                      {decodedInitCode && serializeBigInt(decodedInitCode)}
+                    </code>
+                  </pre>
+                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+                    <code className="break-all text-text">
+                      decodedCallData:{" "}
+                      {decodedCallData && serializeBigInt(decodedCallData)}
+                    </code>
+                  </pre>
+                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+                    <code className="break-all text-text">
+                      userOpHash: {userOperation.hash}
+                    </code>
+                  </pre>
+                  {/* <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+                    <code className="break-all text-text">
+                      paymasterNonce: {serializeBigInt(paymasterNonce)}
+                    </code>
+                  </pre> */}
+                  {/* <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+                    <code className="break-all text-text">
+                      paymasterHash: {paymasterHash}
+                    </code>
+                  </pre> */}
+                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+                    <code className="break-all text-text">
+                      subdigest: {subdigest}
+                    </code>
+                  </pre>
+                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+                    <code className="break-all text-text">
+                      owners:{" "}
+                      {configuration.owners &&
+                        JSON.stringify(configuration.owners, null, 2)}
+                    </code>
+                  </pre>
+                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+                    <code className="break-all text-text">
+                      simulation:{" "}
+                      {simulation && JSON.stringify(simulation, null, 2)}
+                    </code>
+                  </pre>
+                </div>
+              </TabsContent>
+            </Tabs>
           </>
         )}
         {pageIndex === 1 && <Loading />}
