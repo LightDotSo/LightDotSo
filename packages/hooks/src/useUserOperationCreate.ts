@@ -19,7 +19,7 @@ import { createUserOperation } from "@lightdotso/client";
 import type { ConfigurationData } from "@lightdotso/data";
 import type { UserOperation } from "@lightdotso/schemas";
 import { subdigestOf } from "@lightdotso/solutions";
-import { useAuth } from "@lightdotso/stores";
+import { useAuth, useModalSwiper } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import {
   useSignMessage,
@@ -63,6 +63,7 @@ export const useUserOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   const { address: userAddress } = useAuth();
+  const { setPageIndex } = useModalSwiper();
 
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -287,6 +288,14 @@ export const useUserOperationCreate = ({
     fetchUserOp();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, owner, userOperation, configuration?.threshold, address]);
+
+  useEffect(() => {
+    if (isLoading) {
+      setPageIndex(1);
+    } else {
+      setPageIndex(0);
+    }
+  }, [isLoading, setPageIndex]);
 
   // ---------------------------------------------------------------------------
   // Render

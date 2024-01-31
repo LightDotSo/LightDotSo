@@ -49,6 +49,7 @@ export const Base: Story = {
       configuration={configurationGetData}
       initialUserOperation={userOperationCreateData}
       userOperationIndex={0}
+      isDev={true}
     />
   ),
   args: {},

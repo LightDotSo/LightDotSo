@@ -15,14 +15,14 @@
 
 "use client";
 
-import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
+// import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
 import type { ConfigurationData } from "@lightdotso/data";
 import { AssetChange } from "@lightdotso/elements";
 import { useUserOperationCreate } from "@lightdotso/hooks";
 import { useUserOperationsQueryState } from "@lightdotso/nuqs";
 import { useQuerySimulation } from "@lightdotso/query";
 import type { UserOperation } from "@lightdotso/schemas";
-import { useModalSwiper, useDev } from "@lightdotso/stores";
+import { useModalSwiper } from "@lightdotso/stores";
 import {
   Button,
   Tabs,
@@ -31,7 +31,8 @@ import {
   TabsTrigger,
 } from "@lightdotso/ui";
 import { cn, serializeBigInt } from "@lightdotso/utils";
-import { useEffect, type FC, useMemo } from "react";
+import { useEstimateMaxPriorityFeePerGas } from "@lightdotso/wagmi";
+import { type FC, useMemo, useEffect } from "react";
 import type { Hex, Address } from "viem";
 import { Loading } from "../loading";
 import { useIsInsideModal } from "../modal";
@@ -46,6 +47,7 @@ type TransactionProps = {
   configuration: ConfigurationData;
   initialUserOperation: UserOperation;
   userOperationIndex: number;
+  isDev?: boolean;
 };
 
 // -----------------------------------------------------------------------------
@@ -57,6 +59,7 @@ export const Transaction: FC<TransactionProps> = ({
   configuration,
   initialUserOperation,
   userOperationIndex = 0,
+  isDev = false,
 }) => {
   // ---------------------------------------------------------------------------
   // Query State Hooks
@@ -69,7 +72,7 @@ export const Transaction: FC<TransactionProps> = ({
   // ---------------------------------------------------------------------------
 
   const userOperation = useMemo(() => {
-    return userOperations
+    return userOperations.length > 0
       ? userOperations[userOperationIndex]
       : initialUserOperation;
   }, [userOperations, userOperationIndex]);
@@ -78,14 +81,49 @@ export const Transaction: FC<TransactionProps> = ({
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { isDev } = useDev();
-  const { pageIndex, setPageIndex } = useModalSwiper();
+  const { pageIndex } = useModalSwiper();
 
   // ---------------------------------------------------------------------------
   // Local Hooks
   // ---------------------------------------------------------------------------
 
   const isInsideModal = useIsInsideModal();
+
+  // ---------------------------------------------------------------------------
+  // Wagmi
+  // ---------------------------------------------------------------------------
+
+  const maxPriorityFeePerGas = useEstimateMaxPriorityFeePerGas({
+    chainId: Number(userOperation?.chainId ?? 1),
+  });
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { simulation } = useQuerySimulation({
+    sender: address as Address,
+    nonce: Number(userOperation?.nonce ?? 0),
+    chain_id: Number(userOperation?.chainId ?? 0),
+    call_data: (userOperation?.callData ?? "0x") as Hex,
+    init_code: (userOperation?.initCode ?? "0x") as Hex,
+  });
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    setUserOperations(prev => {
+      const next = [...prev];
+      const updatedUserOperation = {
+        ...userOperation,
+        maxPriorityFeePerGas: maxPriorityFeePerGas.data,
+      };
+      next[userOperationIndex] = updatedUserOperation;
+      return next;
+    });
+  }, [userOperation]);
 
   // ---------------------------------------------------------------------------
   // Hooks
@@ -107,30 +145,6 @@ export const Transaction: FC<TransactionProps> = ({
     configuration: configuration,
     userOperation: userOperation,
   });
-
-  // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
-
-  const { simulation } = useQuerySimulation({
-    sender: address as Address,
-    nonce: Number(userOperation?.nonce ?? 0),
-    chain_id: Number(userOperation?.chainId ?? 0),
-    call_data: (userOperation?.callData ?? "0x") as Hex,
-    init_code: (userOperation?.initCode ?? "0x") as Hex,
-  });
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
-
-  useEffect(() => {
-    if (isLoading) {
-      setPageIndex(1);
-    } else {
-      setPageIndex(0);
-    }
-  }, [isLoading, setPageIndex]);
 
   // ---------------------------------------------------------------------------
   // Render
