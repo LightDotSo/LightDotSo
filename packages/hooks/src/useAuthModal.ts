@@ -68,7 +68,7 @@ export const useAuthModal = (useModal = true) => {
   }, [sessionId, address]);
 
   const isAuthLoading = useMemo(() => {
-    return isPending || !isAuthValid || isOpen;
+    return isPending || isOpen;
   }, [isPending, isAuthValid]);
 
   // ---------------------------------------------------------------------------
