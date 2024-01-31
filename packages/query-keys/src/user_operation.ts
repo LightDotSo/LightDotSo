@@ -18,7 +18,7 @@ import type {
   UserOperationListCountParams,
   UserOperationListParams,
 } from "@lightdotso/params";
-import { UserOperation } from "@lightdotso/schemas";
+import type { UserOperation } from "@lightdotso/schemas";
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 

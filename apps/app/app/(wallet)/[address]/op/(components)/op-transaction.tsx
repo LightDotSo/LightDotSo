@@ -21,7 +21,7 @@ import {
   useUserOperationsQueryState,
 } from "@lightdotso/nuqs";
 import type { UserOperation } from "@lightdotso/schemas";
-import { useAuth, useDev, useSettings } from "@lightdotso/stores";
+import { useAuth, useDev } from "@lightdotso/stores";
 import { Transaction } from "@lightdotso/templates";
 import {
   Pagination,

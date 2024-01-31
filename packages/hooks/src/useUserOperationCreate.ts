@@ -190,7 +190,7 @@ export const useUserOperationCreate = ({
       userOperation.maxPriorityFeePerGas &&
       userOperation.paymasterAndData
     );
-  }, [data, owner, userOperation]);
+  }, [owner, userOperation]);
 
   // ---------------------------------------------------------------------------
   // Callback Hooks

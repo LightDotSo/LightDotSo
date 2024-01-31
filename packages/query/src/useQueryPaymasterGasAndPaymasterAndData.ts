@@ -15,9 +15,9 @@
 
 import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
 import { queryKeys } from "@lightdotso/query-keys";
-import { UserOperation } from "@lightdotso/schemas";
-import { serializeBigInt } from "@lightdotso/utils";
+import type { UserOperation } from "@lightdotso/schemas";
 import { useAuth } from "@lightdotso/stores";
+import { serializeBigInt } from "@lightdotso/utils";
 import { useQuery } from "@tanstack/react-query";
 import { toHex } from "viem";
 

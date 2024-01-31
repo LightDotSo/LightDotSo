@@ -34,11 +34,10 @@ import {
 } from "@lightdotso/ui";
 import { cn, serializeBigInt } from "@lightdotso/utils";
 import {
-  useEstimateGas,
   useEstimateFeesPerGas,
   useEstimateMaxPriorityFeePerGas,
 } from "@lightdotso/wagmi";
-import { type FC, useMemo, useEffect } from "react";
+import { type FC, useMemo } from "react";
 import type { Hex, Address } from "viem";
 import { Loading } from "../loading";
 import { useIsInsideModal } from "../modal";
@@ -71,6 +70,7 @@ export const Transaction: FC<TransactionProps> = ({
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [userOperations, setUserOperations] = useUserOperationsQueryState();
 
   // ---------------------------------------------------------------------------
@@ -103,7 +103,7 @@ export const Transaction: FC<TransactionProps> = ({
     };
 
     return userOperation;
-  }, [userOperations, userOperationIndex]);
+  }, [userOperations, userOperationIndex, initialUserOperation, address]);
 
   // ---------------------------------------------------------------------------
   // Stores
@@ -120,11 +120,6 @@ export const Transaction: FC<TransactionProps> = ({
   // ---------------------------------------------------------------------------
   // Wagmi
   // ---------------------------------------------------------------------------
-
-  const { data: gas, error: estimateGasError } = useEstimateGas({
-    data: (userOperation.callData as Hex) ?? "0x",
-    chainId: Number(userOperation.chainId ?? 1),
-  });
 
   const { data: feesPerGas, error: estimateFeesPerGasError } =
     useEstimateFeesPerGas({
@@ -171,7 +166,6 @@ export const Transaction: FC<TransactionProps> = ({
   const updatedUserOperation = useMemo(() => {
     const updatedUserOperation = {
       ...userOperation,
-      callGasLimit: gas ?? BigInt(0),
       maxFeePerGas: feesPerGas?.maxFeePerGas ?? BigInt(0),
       maxPriorityFeePerGas: maxPriorityFeePerGas ?? BigInt(0),
       paymasterAndData: paymasterAndData?.paymasterAndData ?? "0x",
@@ -179,7 +173,6 @@ export const Transaction: FC<TransactionProps> = ({
     return updatedUserOperation;
   }, [
     userOperation,
-    gas,
     feesPerGas?.maxFeePerGas,
     maxPriorityFeePerGas,
     paymasterAndData?.paymasterAndData,
@@ -303,9 +296,6 @@ export const Transaction: FC<TransactionProps> = ({
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code>
-                      estimateGasError:{" "}
-                      {estimateGasError && estimateGasError.message}
-                      <br />
                       estimateFeesPerGasError:{" "}
                       {estimateFeesPerGasError &&
                         estimateFeesPerGasError.message}
