@@ -178,27 +178,25 @@ export const Transaction: FC<TransactionProps> = ({
   const updatedUserOperation = useMemo(() => {
     const updatedUserOperation = {
       ...userOperation,
-      callGasLimit: fromHex(paymasterAndData?.callGasLimit as Hex, {
-        to: "bigint",
-      }),
-      verificationGasLimit: fromHex(
-        paymasterAndData?.verificationGasLimit as Hex,
-        {
-          to: "bigint",
-        },
-      ),
-      preVerificationGas: fromHex(paymasterAndData?.preVerificationGas as Hex, {
-        to: "bigint",
-      }),
-      maxFeePerGas: fromHex(paymasterAndData?.maxFeePerGas as Hex, {
-        to: "bigint",
-      }),
-      maxPriorityFeePerGas: fromHex(
-        paymasterAndData?.maxPriorityFeePerGas as Hex,
-        {
-          to: "bigint",
-        },
-      ),
+      callGasLimit: paymasterAndData?.callGasLimit
+        ? fromHex(paymasterAndData.callGasLimit as Hex, { to: "bigint" })
+        : undefined,
+      verificationGasLimit: paymasterAndData?.verificationGasLimit
+        ? fromHex(paymasterAndData.verificationGasLimit as Hex, {
+            to: "bigint",
+          })
+        : undefined,
+      preVerificationGas: paymasterAndData?.preVerificationGas
+        ? fromHex(paymasterAndData.preVerificationGas as Hex, { to: "bigint" })
+        : undefined,
+      maxFeePerGas: paymasterAndData?.maxFeePerGas
+        ? fromHex(paymasterAndData.maxFeePerGas as Hex, { to: "bigint" })
+        : undefined,
+      maxPriorityFeePerGas: paymasterAndData?.maxPriorityFeePerGas
+        ? fromHex(paymasterAndData.maxPriorityFeePerGas as Hex, {
+            to: "bigint",
+          })
+        : undefined,
       paymasterAndData: paymasterAndData?.paymasterAndData ?? "0x",
     };
     return updatedUserOperation;
@@ -223,6 +221,22 @@ export const Transaction: FC<TransactionProps> = ({
 
   useEffect(() => {
     const fetchHashAndUpdateOperation = async () => {
+      // Check if all the fields are filled in
+      if (
+        !updatedUserOperation.chainId ||
+        !updatedUserOperation.nonce ||
+        !updatedUserOperation.initCode ||
+        !updatedUserOperation.callData ||
+        !updatedUserOperation.callGasLimit ||
+        !updatedUserOperation.verificationGasLimit ||
+        !updatedUserOperation.preVerificationGas ||
+        !updatedUserOperation.maxFeePerGas ||
+        !updatedUserOperation.maxPriorityFeePerGas ||
+        !updatedUserOperation.paymasterAndData
+      ) {
+        return;
+      }
+
       const hash = await getUserOperationHash({
         userOperation: updatedUserOperation as PermissionlessUserOperation,
         entryPoint: CONTRACT_ADDRESSES["Entrypoint"],
@@ -230,7 +244,18 @@ export const Transaction: FC<TransactionProps> = ({
       });
 
       setUserOperationWithHash({
-        ...updatedUserOperation,
+        sender: address as Address,
+        chainId: updatedUserOperation.chainId,
+        nonce: updatedUserOperation.nonce,
+        initCode: updatedUserOperation.initCode,
+        callData: updatedUserOperation.callData,
+        callGasLimit: updatedUserOperation.callGasLimit,
+        verificationGasLimit: updatedUserOperation.verificationGasLimit,
+        preVerificationGas: updatedUserOperation.preVerificationGas,
+        maxFeePerGas: updatedUserOperation.maxFeePerGas,
+        maxPriorityFeePerGas: updatedUserOperation.maxPriorityFeePerGas,
+        paymasterAndData: updatedUserOperation.paymasterAndData,
+        signature: "0x",
         hash,
       });
     };
