@@ -32,6 +32,7 @@ import { cn, serializeBigInt } from "@lightdotso/utils";
 import { useEffect, type FC } from "react";
 import type { Hex, Address } from "viem";
 import { Loading } from "../loading";
+import { useIsInsideModal } from "../modal";
 import { ModalSwiper } from "../modal-swiper";
 
 // -----------------------------------------------------------------------------
@@ -59,6 +60,12 @@ export const Transaction: FC<TransactionProps> = ({
 
   const { isDev } = useDev();
   const { pageIndex, setPageIndex } = useModalSwiper();
+
+  // ---------------------------------------------------------------------------
+  // Local Hooks
+  // ---------------------------------------------------------------------------
+
+  const isInsideModal = useIsInsideModal();
 
   // ---------------------------------------------------------------------------
   // App Hooks
@@ -151,15 +158,17 @@ export const Transaction: FC<TransactionProps> = ({
                       },
                     )}
                 </div>
-                <div className="flex w-full flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-                  <Button
-                    disabled={!isCreatable}
-                    isLoading={isLoading}
-                    onClick={signUserOperation}
-                  >
-                    Sign Transaction
-                  </Button>
-                </div>
+                {!isInsideModal && (
+                  <div className="flex w-full flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
+                    <Button
+                      disabled={!isCreatable}
+                      isLoading={isLoading}
+                      onClick={signUserOperation}
+                    >
+                      Sign Transaction
+                    </Button>
+                  </div>
+                )}
               </TabsContent>
               <TabsContent value="details">Details</TabsContent>
               <TabsContent value="dev">
