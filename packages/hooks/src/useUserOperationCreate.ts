@@ -177,7 +177,8 @@ export const useUserOperationCreate = ({
       userOperation &&
       userOperation.chainId &&
       userOperation.hash &&
-      userOperation.nonce &&
+      userOperation.nonce !== undefined &&
+      userOperation.nonce !== null &&
       userOperation.initCode &&
       userOperation.sender &&
       userOperation.callData &&
