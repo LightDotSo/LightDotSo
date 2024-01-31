@@ -32,6 +32,7 @@ export { INTERNAL_LINKS } from "./internal_links";
 export { REDIRECT_PREFIXES } from "./redirect_prefixes";
 export { NAVIGATION_LINKS } from "./navigation_links";
 export { NOTION_LINKS } from "./notion_links";
+export { PAGINATION_SIZES } from "./pagination";
 export {
   SIMPLEHASH_MAINNET_CHAIN_ID_MAPPING,
   SIMPLEHASH_TESTNET_CHAIN_ID_MAPPING,

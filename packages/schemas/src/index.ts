@@ -28,7 +28,6 @@ export type {
   ConfirmFormConfiguration,
   Asset,
   Transfer,
-  Transfers,
   SendFormConfiguration,
 } from "./form";
 export {

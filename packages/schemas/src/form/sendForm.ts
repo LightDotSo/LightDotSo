@@ -65,5 +65,4 @@ export const sendFormConfigurationSchema = z.object({
 
 export type Asset = z.infer<typeof asset>;
 export type Transfer = z.infer<typeof transfer>;
-export type Transfers = z.infer<typeof transfers>;
 export type SendFormConfiguration = z.infer<typeof sendFormConfigurationSchema>;

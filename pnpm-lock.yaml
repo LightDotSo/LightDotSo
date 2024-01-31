@@ -1810,6 +1810,9 @@ importers:
 
   packages/nuqs:
     dependencies:
+      '@lightdotso/const':
+        specifier: workspace:*
+        version: link:../const
       '@lightdotso/schemas':
         specifier: workspace:*
         version: link:../schemas

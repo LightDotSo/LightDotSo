@@ -57,7 +57,7 @@ export const useAuthModal = (useModal = true) => {
     } else {
       handleSignIn();
     }
-  }, [address, open, sessionId, showAuthModal]);
+  }, [address, open, sessionId, showAuthModal, handleSignIn]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -69,7 +69,7 @@ export const useAuthModal = (useModal = true) => {
 
   const isAuthLoading = useMemo(() => {
     return isPending || isOpen;
-  }, [isPending, isAuthValid]);
+  }, [isPending, isOpen]);
 
   // ---------------------------------------------------------------------------
   // Return

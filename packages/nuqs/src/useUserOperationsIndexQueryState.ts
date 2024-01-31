@@ -13,18 +13,18 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export type {
-  PartialUserOperation,
-  PartialUserOperations,
-  ConfirmFormConfiguration,
-} from "./confirmForm";
-export { confirmFormConfigurationSchema } from "./confirmForm";
-export {
-  newFormSchema,
-  newFormConfirmSchema,
-  newFormConfigurationSchema,
-  newFormConfigurationRefinedSchema,
-  newFormStoreSchema,
-} from "./newForm";
-export type { Asset, Transfer, SendFormConfiguration } from "./sendForm";
-export { sendFormConfigurationSchema } from "./sendForm";
+import { parseAsInteger, useQueryState } from "nuqs";
+
+// -----------------------------------------------------------------------------
+// Parser
+// -----------------------------------------------------------------------------
+
+export const userOperationsIndexParser = parseAsInteger.withDefault(0);
+
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
+
+export const useUserOperationsIndexQueryState = () => {
+  return useQueryState("userOperationsIndex", userOperationsIndexParser);
+};

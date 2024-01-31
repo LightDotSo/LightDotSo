@@ -32,6 +32,7 @@ import { cn, serializeBigInt } from "@lightdotso/utils";
 import { useEffect, type FC } from "react";
 import type { Hex, Address } from "viem";
 import { Loading } from "../loading";
+import { useIsInsideModal } from "../modal";
 import { ModalSwiper } from "../modal-swiper";
 
 // -----------------------------------------------------------------------------
@@ -61,17 +62,25 @@ export const Transaction: FC<TransactionProps> = ({
   const { pageIndex, setPageIndex } = useModalSwiper();
 
   // ---------------------------------------------------------------------------
-  // App Hooks
+  // Local Hooks
+  // ---------------------------------------------------------------------------
+
+  const isInsideModal = useIsInsideModal();
+
+  // ---------------------------------------------------------------------------
+  // Hooks
   // ---------------------------------------------------------------------------
 
   const {
     isLoading,
     isCreatable,
+    isValidUserOperation,
     signUserOperation,
     decodedCallData,
     decodedInitCode,
     // paymasterHash,
     // paymasterNonce,
+    owner,
     subdigest,
   } = useUserOperationCreate({
     address: address,
@@ -151,15 +160,17 @@ export const Transaction: FC<TransactionProps> = ({
                       },
                     )}
                 </div>
-                <div className="flex w-full flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-                  <Button
-                    disabled={!isCreatable}
-                    isLoading={isLoading}
-                    onClick={signUserOperation}
-                  >
-                    Sign Transaction
-                  </Button>
-                </div>
+                {!isInsideModal && (
+                  <div className="flex w-full flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
+                    <Button
+                      disabled={!isCreatable || !isValidUserOperation}
+                      isLoading={isLoading}
+                      onClick={signUserOperation}
+                    >
+                      Sign Transaction
+                    </Button>
+                  </div>
+                )}
               </TabsContent>
               <TabsContent value="details">Details</TabsContent>
               <TabsContent value="dev">
@@ -218,6 +229,19 @@ export const Transaction: FC<TransactionProps> = ({
                     <code className="break-all text-text">
                       simulation:{" "}
                       {simulation && JSON.stringify(simulation, null, 2)}
+                    </code>
+                  </pre>
+                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+                    <code className="break-all text-text">
+                      owner: {JSON.stringify(owner)}
+                    </code>
+                  </pre>
+                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+                    <code className="break-all text-text">
+                      isCreatable: {isCreatable ? "true" : "false"}
+                      isLoading: {isLoading ? "true" : "false"}
+                      isValidUserOperation:{" "}
+                      {isValidUserOperation ? "true" : "false"}
                     </code>
                   </pre>
                 </div>

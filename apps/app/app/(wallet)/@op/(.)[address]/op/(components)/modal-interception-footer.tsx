@@ -15,16 +15,33 @@
 
 "use client";
 
+import { useUserOperationCreate } from "@lightdotso/hooks";
+import {
+  useUserOperationsIndexQueryState,
+  useUserOperationsQueryState,
+} from "@lightdotso/nuqs";
+import { useQueryConfiguration } from "@lightdotso/query";
 import { useFormRef, useModals } from "@lightdotso/stores";
 import { FooterButton } from "@lightdotso/templates";
 import { useRouter } from "next/navigation";
 import { type FC, useCallback } from "react";
+import type { Address } from "viem";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type ModalInterceptionFooterProps = {
+  address: Address;
+};
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const ModalInterceptionFooter: FC = () => {
+export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
+  address,
+}) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -38,6 +55,21 @@ export const ModalInterceptionFooter: FC = () => {
   const router = useRouter();
 
   // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { configuration } = useQueryConfiguration({
+    address: address,
+  });
+
+  // ---------------------------------------------------------------------------
+  // Query State
+  // ---------------------------------------------------------------------------
+
+  const [userOperations] = useUserOperationsQueryState();
+  const [selectedOpIndex] = useUserOperationsIndexQueryState();
+
+  // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
@@ -46,6 +78,19 @@ export const ModalInterceptionFooter: FC = () => {
     router.back();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const { signUserOperation } = useUserOperationCreate({
+    address: address,
+    configuration: configuration,
+    userOperation:
+      userOperations && userOperations.length > 0
+        ? userOperations[selectedOpIndex ?? 0]
+        : {},
+  });
 
   // ---------------------------------------------------------------------------
   // Stores
@@ -64,6 +109,7 @@ export const ModalInterceptionFooter: FC = () => {
       customSuccessText="Execute Transaction"
       disabled={isFormDisabled}
       cancelClick={onDismiss}
+      successClick={signUserOperation}
     />
   );
 };

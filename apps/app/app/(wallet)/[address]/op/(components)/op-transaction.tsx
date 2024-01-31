@@ -16,6 +16,10 @@
 "use client";
 
 import type { ConfigurationData } from "@lightdotso/data";
+import {
+  useUserOperationsIndexQueryState,
+  useUserOperationsQueryState,
+} from "@lightdotso/nuqs";
 import type { UserOperation } from "@lightdotso/schemas";
 import { useAuth } from "@lightdotso/stores";
 import { Transaction } from "@lightdotso/templates";
@@ -25,7 +29,7 @@ import {
   PaginationItem,
   PaginationLink,
 } from "@lightdotso/ui";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import type { FC } from "react";
 import { isAddressEqual } from "viem";
 import type { Address } from "viem";
@@ -50,16 +54,31 @@ export const OpTransaction: FC<OpTransactionProps> = ({
   userOperations,
 }) => {
   // ---------------------------------------------------------------------------
-  // State Hooks
+  // Query State Hooks
   // ---------------------------------------------------------------------------
 
-  const [selectedOpIndex, setSelectedOpIndex] = useState<number>(0);
+  const [selectedOpIndex, setSelectedOpIndex] =
+    useUserOperationsIndexQueryState();
+  const [, setUserOperations] = useUserOperationsQueryState(userOperations);
 
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
   const { address: userAddress } = useAuth();
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    if (!userOperations) {
+      return;
+    }
+
+    setUserOperations(userOperations);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks

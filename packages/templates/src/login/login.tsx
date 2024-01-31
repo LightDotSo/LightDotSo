@@ -49,7 +49,7 @@ export const Login: FC = () => {
         disabled={isAuthLoading}
         onClick={handleAuthModal}
       >
-        {isAuthValid ? "Login" : "Connect Wallet"}
+        {isAuthValid ? "Login" : "Connect"}
       </Button>
     </StateInfoSection>
   );

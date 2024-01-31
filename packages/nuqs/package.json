@@ -26,6 +26,7 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
+    "@lightdotso/const": "workspace:*",
     "@lightdotso/schemas": "workspace:*",
     "@tanstack/react-table": "^8.11.7",
     "nuqs": "^1.16.0",
