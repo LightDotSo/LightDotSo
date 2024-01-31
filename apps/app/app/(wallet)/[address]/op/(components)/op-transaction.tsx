@@ -21,7 +21,7 @@ import {
   useUserOperationsQueryState,
 } from "@lightdotso/nuqs";
 import type { UserOperation } from "@lightdotso/schemas";
-import { useAuth } from "@lightdotso/stores";
+import { useAuth, useDev, useSettings } from "@lightdotso/stores";
 import { Transaction } from "@lightdotso/templates";
 import {
   Pagination,
@@ -66,6 +66,7 @@ export const OpTransaction: FC<OpTransactionProps> = ({
   // ---------------------------------------------------------------------------
 
   const { address: userAddress } = useAuth();
+  const { isDev } = useDev();
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -120,6 +121,7 @@ export const OpTransaction: FC<OpTransactionProps> = ({
           configuration={configuration}
           initialUserOperation={userOperations[selectedOpIndex]}
           userOperationIndex={selectedOpIndex}
+          isDev={isDev}
         />
       )}
     </div>

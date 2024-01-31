@@ -15,7 +15,7 @@
 
 "use client";
 
-// import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
+import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
 import type { ConfigurationData } from "@lightdotso/data";
 import { AssetChange } from "@lightdotso/elements";
 import { useUserOperationCreate } from "@lightdotso/hooks";
@@ -32,6 +32,7 @@ import {
 } from "@lightdotso/ui";
 import { cn, serializeBigInt } from "@lightdotso/utils";
 import {
+  useEstimateGas,
   useEstimateFeesPerGas,
   useEstimateMaxPriorityFeePerGas,
 } from "@lightdotso/wagmi";
@@ -96,7 +97,12 @@ export const Transaction: FC<TransactionProps> = ({
   // Wagmi
   // ---------------------------------------------------------------------------
 
-  const maxFeePerGas = useEstimateFeesPerGas({
+  const gas = useEstimateGas({
+    data: (userOperation?.callData as Hex) ?? "0x",
+    chainId: Number(userOperation?.chainId ?? 1),
+  });
+
+  const feesPerGas = useEstimateFeesPerGas({
     chainId: Number(userOperation?.chainId ?? 1),
   });
 
@@ -125,8 +131,9 @@ export const Transaction: FC<TransactionProps> = ({
       const next = [...prev];
       const updatedUserOperation = {
         ...userOperation,
-        maxFeePerGas: maxFeePerGas.data?.maxFeePerGas,
-        maxPriorityFeePerGas: maxPriorityFeePerGas.data,
+        callGasLimit: gas.data ?? BigInt(0),
+        maxFeePerGas: feesPerGas.data?.maxFeePerGas ?? BigInt(0),
+        maxPriorityFeePerGas: maxPriorityFeePerGas.data ?? BigInt(0),
       };
       next[userOperationIndex] = updatedUserOperation;
       return next;
