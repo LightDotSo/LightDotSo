@@ -33,7 +33,6 @@ import type {
   SimplehashMainnetChain,
   SimplehashTestnetChain,
   Transfer,
-  Transfers,
 } from "@lightdotso/schemas";
 import { useFormRef } from "@lightdotso/stores";
 import { FooterButton, useIsInsideModal } from "@lightdotso/templates";
@@ -97,7 +96,7 @@ type NewFormValues = z.infer<typeof sendFormConfigurationSchema>;
 
 type SendDialogProps = {
   address: Address;
-  initialTransfers?: Transfers;
+  initialTransfers?: Array<Transfer>;
 };
 
 // -----------------------------------------------------------------------------
@@ -173,9 +172,9 @@ export const SendDialog: FC<SendDialogProps> = ({
   // ---------------------------------------------------------------------------
 
   // create default transfer object
-  const defaultTransfer: Transfers = useMemo(() => {
+  const defaultTransfer: Array<Transfer> = useMemo(() => {
     // For each token, create a transfer object
-    const transfers: Transfers =
+    const transfers: Array<Transfer> =
       tokens && tokens?.length > 0
         ? [
             {

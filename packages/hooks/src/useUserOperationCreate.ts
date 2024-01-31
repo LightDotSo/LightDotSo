@@ -45,8 +45,8 @@ import {
 
 type UserOperationCreateProps = {
   address: Address;
-  configuration: ConfigurationData;
-  userOperation: UserOperation;
+  configuration?: ConfigurationData | null | undefined;
+  userOperation?: Partial<UserOperation> | null | undefined;
 };
 
 // -----------------------------------------------------------------------------
@@ -55,7 +55,7 @@ type UserOperationCreateProps = {
 
 export const useUserOperationCreate = ({
   address,
-  configuration: { owners, threshold },
+  configuration,
   userOperation,
 }: UserOperationCreateProps) => {
   // ---------------------------------------------------------------------------
@@ -74,11 +74,17 @@ export const useUserOperationCreate = ({
   // Local Variables
   // ---------------------------------------------------------------------------
 
-  const subdigest = subdigestOf(
-    address,
-    hexToBytes(userOperation.hash as Hex),
-    userOperation.chainId,
-  );
+  const subdigest = useMemo(() => {
+    if (!userOperation?.hash || !userOperation?.chainId) {
+      return;
+    }
+
+    return subdigestOf(
+      address,
+      hexToBytes(userOperation?.hash as Hex),
+      userOperation?.chainId,
+    );
+  }, [address, userOperation?.hash, userOperation?.chainId]);
 
   // ---------------------------------------------------------------------------
   // Wagmi
@@ -123,44 +129,57 @@ export const useUserOperationCreate = ({
       return;
     }
 
-    return owners?.find(owner =>
+    return configuration?.owners?.find(owner =>
       isAddressEqual(owner.address as Address, userAddress),
     );
-  }, [owners, userAddress]);
+  }, [configuration?.owners, userAddress]);
 
   const decodedInitCode = useMemo(() => {
     // If the initCode is `0x`, return
-    if (userOperation.initCode === "0x") {
+    if (
+      !userOperation?.callData ||
+      !userOperation?.initCode ||
+      userOperation?.initCode === "0x"
+    ) {
       return;
     }
 
     // Parse the initCode of the userOperation
     return decodeFunctionData({
       abi: lightWalletFactoryAbi,
-      data: `0x${userOperation.initCode.slice(42)}` as Hex,
+      data: `0x${userOperation?.initCode.slice(42)}` as Hex,
     }).args;
-  }, [userOperation.initCode]);
+  }, [userOperation?.initCode]);
 
   const decodedCallData = useMemo(() => {
+    // If the callData is `0x`, return
+    if (!userOperation?.callData || userOperation?.callData === "0x") {
+      return;
+    }
+
     // Parse the callData of tha args depending on the args type
-    switch (userOperation.callData.slice(0, 10)) {
+    switch (userOperation?.callData.slice(0, 10)) {
       // If the function selector is `execute` or `executeBatch`
       case "0xb61d27f6":
       case "0x47e1da2a":
         return decodeFunctionData({
           abi: lightWalletAbi,
-          data: userOperation.callData as Hex,
+          data: userOperation?.callData as Hex,
         }).args;
       default:
-        return userOperation.callData;
+        return userOperation?.callData;
     }
-  }, [userOperation.callData]);
+  }, [userOperation?.callData]);
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
   const signUserOperation = useCallback(() => {
+    if (!subdigest) {
+      return;
+    }
+
     signMessage({ message: { raw: toBytes(subdigest) } });
   }, [subdigest, signMessage]);
 
@@ -176,6 +195,23 @@ export const useUserOperationCreate = ({
   useEffect(() => {
     const fetchUserOp = async () => {
       if (!data || !owner || !userOperation) {
+        return;
+      }
+
+      if (
+        !userOperation.chainId ||
+        !userOperation.hash ||
+        !userOperation.nonce ||
+        !userOperation.initCode ||
+        !userOperation.sender ||
+        !userOperation.callData ||
+        !userOperation.callGasLimit ||
+        !userOperation.verificationGasLimit ||
+        !userOperation.preVerificationGas ||
+        !userOperation.maxFeePerGas ||
+        !userOperation.maxPriorityFeePerGas ||
+        !userOperation.paymasterAndData
+      ) {
         return;
       }
 
@@ -230,7 +266,14 @@ export const useUserOperationCreate = ({
 
     fetchUserOp();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, owner, userOperation, subdigest, threshold, address]);
+  }, [
+    data,
+    owner,
+    userOperation,
+    subdigest,
+    configuration?.threshold,
+    address,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -245,6 +288,6 @@ export const useUserOperationCreate = ({
     // paymasterNonce,
     signUserOperation,
     subdigest,
-    threshold,
+    threshold: configuration?.threshold,
   };
 };

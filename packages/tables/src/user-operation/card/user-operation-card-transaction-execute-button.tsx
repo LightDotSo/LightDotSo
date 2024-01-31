@@ -45,7 +45,7 @@ export const UserOperationCardTransactionExecuteButton: FC<
   UserOperationCardTransactionExecuteButtonProps
 > = ({ address, configuration, userOperation }) => {
   // ---------------------------------------------------------------------------
-  // App Hooks
+  // Hooks
   // ---------------------------------------------------------------------------
 
   const { isLoading, isValid, handleConfirm } = useUserOperationSubmit({

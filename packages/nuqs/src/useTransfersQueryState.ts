@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Transfers } from "@lightdotso/schemas";
+import type { Transfer } from "@lightdotso/schemas";
 import { createParser, useQueryState } from "nuqs";
 import { isAddress } from "viem";
 
@@ -27,7 +27,7 @@ export const transferParser = createParser({
       return null;
     }
     const keys = value.split(";");
-    return keys.reduce<Transfers>((acc, key) => {
+    return keys.reduce<Array<Transfer>>((acc, key) => {
       const [id, address, addressOrEns, chainId, assetType, asset] =
         key.split(":");
       const transferAddress = address;
@@ -97,7 +97,7 @@ export const transferParser = createParser({
       return acc;
     }, []);
   },
-  serialize(value: Transfers) {
+  serialize(value: Array<Transfer>) {
     const entry = Object.entries(value)
       .filter(([, transfer]) => transfer !== undefined)
       .map(([id, transfer]) => {
@@ -149,7 +149,7 @@ export const transferParser = createParser({
 // Hook
 // -----------------------------------------------------------------------------
 
-export const useTransfersQueryState = (initialTransfers: Transfers) => {
+export const useTransfersQueryState = (initialTransfers: Array<Transfer>) => {
   return useQueryState(
     "transfers",
     transferParser.withDefault(initialTransfers),

@@ -68,7 +68,7 @@ export const Transaction: FC<TransactionProps> = ({
   const isInsideModal = useIsInsideModal();
 
   // ---------------------------------------------------------------------------
-  // App Hooks
+  // Hooks
   // ---------------------------------------------------------------------------
 
   const {

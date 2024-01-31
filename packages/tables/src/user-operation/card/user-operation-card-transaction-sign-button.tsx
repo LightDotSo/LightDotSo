@@ -45,7 +45,7 @@ export const UserOperationCardTransactionSignButton: FC<
   UserOperationCardTransactionSignButtonProps
 > = ({ address, configuration, userOperation }) => {
   // ---------------------------------------------------------------------------
-  // App Hooks
+  // Hooks
   // ---------------------------------------------------------------------------
 
   const { isLoading, isSigned, isSignable, signUserOperation } =

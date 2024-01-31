@@ -26,10 +26,5 @@ export {
   newFormConfigurationRefinedSchema,
   newFormStoreSchema,
 } from "./newForm";
-export type {
-  Asset,
-  Transfer,
-  Transfers,
-  SendFormConfiguration,
-} from "./sendForm";
+export type { Asset, Transfer, SendFormConfiguration } from "./sendForm";
 export { sendFormConfigurationSchema } from "./sendForm";
