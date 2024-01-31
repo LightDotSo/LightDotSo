@@ -15,6 +15,7 @@
 
 "use client";
 
+import { CONTRACT_ADDRESSES } from "@lightdotso/const";
 import type { ConfigurationData } from "@lightdotso/data";
 import { AssetChange } from "@lightdotso/elements";
 import { useUserOperationCreate } from "@lightdotso/hooks";
@@ -45,7 +46,6 @@ import type { Hex, Address } from "viem";
 import { Loading } from "../loading";
 import { useIsInsideModal } from "../modal";
 import { ModalSwiper } from "../modal-swiper";
-import { CONTRACT_ADDRESSES } from "@lightdotso/const";
 
 // -----------------------------------------------------------------------------
 // Props
