@@ -43,6 +43,8 @@ pub struct ListQuery {
     pub limit: Option<i64>,
     /// The sender address to filter by.
     pub address: Option<String>,
+    /// The chain id to filter by.
+    pub chain_id: Option<i64>,
     /// The status to filter by.
     #[param(inline)]
     pub status: Option<ListQueryStatus>,
@@ -249,6 +251,12 @@ fn construct_user_operation_list_query_params(query: &ListQuery) -> Vec<WherePar
                 query_exp.push(user_operation::status::equals(UserOperationStatus::Invalid))
             }
         }
+    }
+
+    if let Some(chain_id) = &query.chain_id {
+        query_exp.push(user_operation::chain_id::equals(*chain_id));
+
+        return query_exp;
     }
 
     match &query.is_testnet {

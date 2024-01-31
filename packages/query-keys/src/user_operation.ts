@@ -18,6 +18,7 @@ import type {
   UserOperationListCountParams,
   UserOperationListParams,
 } from "@lightdotso/params";
+import type { UserOperation } from "@lightdotso/schemas";
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
@@ -27,6 +28,19 @@ import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
 export const user_operation = createQueryKeys("user_operation", {
   get: (params: UserOperationGetParams) => ({
+    queryKey: [{ params }],
+  }),
+  get_paymaster_gas_and_paymaster_and_data: (
+    params: Omit<
+      UserOperation,
+      | "hash"
+      | "paymasterAndData"
+      | "signature"
+      | "callGasLimit"
+      | "verificationGasLimit"
+      | "preVerificationGas"
+    >,
+  ) => ({
     queryKey: [{ params }],
   }),
   list: (params: UserOperationListParams) => ({

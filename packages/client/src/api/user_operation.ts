@@ -115,6 +115,7 @@ export const getUserOperations = async (
                 )
               | null;
             is_testnet?: boolean | null | undefined;
+            chain_id?: number | null | undefined;
           }
         | undefined;
     };

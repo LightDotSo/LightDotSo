@@ -19,7 +19,7 @@ import { createUserOperation } from "@lightdotso/client";
 import type { ConfigurationData } from "@lightdotso/data";
 import type { UserOperation } from "@lightdotso/schemas";
 import { subdigestOf } from "@lightdotso/solutions";
-import { useAuth } from "@lightdotso/stores";
+import { useAuth, useModalSwiper } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import {
   useSignMessage,
@@ -63,12 +63,14 @@ export const useUserOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   const { address: userAddress } = useAuth();
+  const { setPageIndex } = useModalSwiper();
 
   // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isUserOperationLoading, setIsUserOperationLoading] = useState(false);
+  const [signedData, setSignedData] = useState<Hex>();
 
   // ---------------------------------------------------------------------------
   // Local Variables
@@ -189,7 +191,7 @@ export const useUserOperationCreate = ({
       userOperation.maxPriorityFeePerGas &&
       userOperation.paymasterAndData
     );
-  }, [data, owner, userOperation]);
+  }, [owner, userOperation]);
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -209,13 +211,22 @@ export const useUserOperationCreate = ({
 
   // Sync the loading state
   useEffect(() => {
-    setIsLoading(isSignLoading);
+    setIsUserOperationLoading(isSignLoading);
   }, [isSignLoading]);
+
+  // Sync the signed data
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+
+    setSignedData(data);
+  }, [data]);
 
   useEffect(() => {
     const fetchUserOp = async () => {
       if (
-        !data ||
+        !signedData ||
         !owner ||
         !userOperation ||
         !userOperation.chainId ||
@@ -246,7 +257,7 @@ export const useUserOperationCreate = ({
         body: {
           signature: {
             owner_id: owner.id,
-            signature: toHex(new Uint8Array([...toBytes(data), 2])),
+            signature: toHex(new Uint8Array([...toBytes(signedData), 2])),
             signature_type: 1,
           },
           user_operation: {
@@ -282,19 +293,41 @@ export const useUserOperationCreate = ({
           }
         },
       );
+
+      setSignedData(undefined);
     };
 
     fetchUserOp();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, owner, userOperation, configuration?.threshold, address]);
+  }, [signedData, owner, userOperation, configuration?.threshold, address]);
+
+  useEffect(() => {
+    if (isUserOperationLoading) {
+      setPageIndex(1);
+    } else {
+      setPageIndex(0);
+    }
+  }, [isUserOperationLoading, setPageIndex]);
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const isUserOperationCreatable = useMemo(() => {
+    return (
+      !isUserOperationLoading &&
+      typeof owner !== "undefined" &&
+      isValidUserOperation
+    );
+  }, [isUserOperationLoading, owner, isValidUserOperation]);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return {
-    isLoading,
-    isCreatable: typeof owner !== "undefined" && !isLoading,
+    isUserOperationCreatable,
+    isUserOperationLoading,
     isValidUserOperation,
     decodedCallData,
     decodedInitCode,

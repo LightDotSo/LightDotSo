@@ -50,3 +50,12 @@ ignores:
   - "@lightdotso/templates"
   - wagmi
   - "@lightdotso/wagmi"
+  - "@lightdotso/styles"
+  - "@storybook/react-vite"
+  - "@types/node"
+  - next
+  - windy-radix-palette
+  - "@headlessui/tailwindcss"
+  - "@tailwindcss/aspect-ratio"
+  - "@tailwindcss/forms"
+  - "@tailwindcss/typography"

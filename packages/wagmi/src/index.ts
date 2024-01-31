@@ -39,6 +39,10 @@ export {
   useDisconnect,
   useEnsName,
   cookieToInitialState,
+  serialize,
   useSignMessage,
   useAccount,
+  useEstimateGas,
+  useEstimateFeesPerGas,
+  useEstimateMaxPriorityFeePerGas,
 } from "wagmi";
