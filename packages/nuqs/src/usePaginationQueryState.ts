@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { PAGINATION_SIZES } from "@lightdotso/const";
 import type { PaginationState } from "@tanstack/react-table";
 import { createParser, useQueryState } from "nuqs";
 
@@ -31,7 +32,9 @@ export const paginationParser = createParser({
     if (isNaN(pageIndex) || isNaN(pageSize)) {
       return null;
     }
-    return { pageIndex, pageSize };
+
+    const finalPageSize = PAGINATION_SIZES.includes(pageSize) ? pageSize : 10;
+    return { pageIndex, pageSize: finalPageSize };
   },
   serialize(value: PaginationState): string {
     return `${value.pageIndex},${value.pageSize}`;
