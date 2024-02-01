@@ -1,5 +1,13 @@
 # @lightdotso/ios
 
+## 3.0.2
+
+### Patch Changes
+
+- Updated dependencies [[`d09c0f9`](https://github.com/LightDotSo/LightDotSo/commit/d09c0f90831d7c9a329bc73727d6adcb5a54f867), [`48453bf`](https://github.com/LightDotSo/LightDotSo/commit/48453bfaf66de41a8dee355e8e56c2c1f334c32a), [`71a8f7d`](https://github.com/LightDotSo/LightDotSo/commit/71a8f7d79be2f4ffcb670594a3f7900ae3a233c2), [`98c9922`](https://github.com/LightDotSo/LightDotSo/commit/98c9922c3fb3d2cfa2073182c50e822ce7bfbe4d), [`9e7ac92`](https://github.com/LightDotSo/LightDotSo/commit/9e7ac92a893343125d7b67815f5d627a3b18f3c7), [`0f0587f`](https://github.com/LightDotSo/LightDotSo/commit/0f0587f3f732b78fcf7e97eeb5f7067fb4ad6b85), [`41f4109`](https://github.com/LightDotSo/LightDotSo/commit/41f410973ea1f8f9440f6d2713c71268210b78ec), [`33b7983`](https://github.com/LightDotSo/LightDotSo/commit/33b79832712965b6d95674239a2e78f95938a2f4), [`017bcaf`](https://github.com/LightDotSo/LightDotSo/commit/017bcafaef4155b7c801fdbf6084e047ea9297aa)]:
+  - @lightdotso/crates@3.1.1
+  - @lightdotso/extension@3.1.1
+
 ## 3.0.1
 
 ### Patch Changes

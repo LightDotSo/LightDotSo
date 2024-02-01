@@ -1,5 +1,13 @@
 # @lightdotso/docs
 
+## 3.1.1
+
+### Patch Changes
+
+- [#1429](https://github.com/LightDotSo/LightDotSo/pull/1429) [`48453bf`](https://github.com/LightDotSo/LightDotSo/commit/48453bfaf66de41a8dee355e8e56c2c1f334c32a) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Configure tailwindcss esm
+
+- [#1455](https://github.com/LightDotSo/LightDotSo/pull/1455) [`33b7983`](https://github.com/LightDotSo/LightDotSo/commit/33b79832712965b6d95674239a2e78f95938a2f4) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update ncu upgrade
+
 ## 3.1.0
 
 ### Minor Changes
