@@ -183,11 +183,7 @@ export const Transaction: FC<TransactionProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const {
-    estimateUserOperationGasData,
-    isEstimateUserOperationGasDataLoading,
-    estimateUserOperationGasDataError,
-  } = useQueryEstimateUserOperationGas({
+  const { estimateUserOperationGasData } = useQueryEstimateUserOperationGas({
     sender: address as Address,
     chainId: coreUserOperation.chainId,
     nonce: coreUserOperation.nonce,
@@ -235,12 +231,7 @@ export const Transaction: FC<TransactionProps> = ({
 
   const updatedUserOperation: Omit<UserOperation, "hash" | "signature"> =
     useMemo(() => {
-      if (
-        isEstimateUserOperationGasDataLoading ||
-        estimateUserOperationGasDataError !== null ||
-        isPaymasterAndDataLoading ||
-        paymasterAndDataError !== null
-      ) {
+      if (isPaymasterAndDataLoading || paymasterAndDataError !== null) {
         return {
           sender: coreUserOperation.sender,
           chainId: coreUserOperation.chainId,
