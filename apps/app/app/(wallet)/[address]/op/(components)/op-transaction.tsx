@@ -43,7 +43,13 @@ type OpTransactionProps = {
   configuration: ConfigurationData;
   userOperations: Omit<
     UserOperation,
-    "hash" | "maxFeePerGas" | "maxPriorityFeePerGas"
+    | "hash"
+    | "signature"
+    | "maxFeePerGas"
+    | "maxPriorityFeePerGas"
+    | "callGasLimit"
+    | "preVerificationGas"
+    | "verificationGasLimit"
   >[];
 };
 

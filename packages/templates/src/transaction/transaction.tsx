@@ -21,6 +21,7 @@ import { AssetChange } from "@lightdotso/elements";
 import { useUserOperationCreate } from "@lightdotso/hooks";
 import { useUserOperationsQueryState } from "@lightdotso/nuqs";
 import {
+  useQueryEstimateUserOperationGas,
   useQueryPaymasterGasAndPaymasterAndData,
   useQuerySimulation,
 } from "@lightdotso/query";
@@ -56,7 +57,14 @@ type TransactionProps = {
   configuration: ConfigurationData;
   initialUserOperation: Omit<
     UserOperation,
-    "hash" | "paymasterAndData" | "maxFeePerGas" | "maxPriorityFeePerGas"
+    | "hash"
+    | "signature"
+    | "paymasterAndData"
+    | "maxFeePerGas"
+    | "maxPriorityFeePerGas"
+    | "callGasLimit"
+    | "preVerificationGas"
+    | "verificationGasLimit"
   >;
   userOperationIndex: number;
   isDev?: boolean;
@@ -175,6 +183,18 @@ export const Transaction: FC<TransactionProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
+  const {
+    estimateUserOperationGasData,
+    isEstimateUserOperationGasDataLoading,
+    estimateUserOperationGasDataError,
+  } = useQueryEstimateUserOperationGas({
+    sender: address as Address,
+    chainId: coreUserOperation.chainId,
+    nonce: coreUserOperation.nonce,
+    initCode: coreUserOperation.initCode,
+    callData: coreUserOperation.callData,
+  });
+
   const { paymasterAndData, isPaymasterAndDataLoading, paymasterAndDataError } =
     useQueryPaymasterGasAndPaymasterAndData({
       sender: address as Address,
@@ -182,6 +202,21 @@ export const Transaction: FC<TransactionProps> = ({
       nonce: coreUserOperation.nonce,
       initCode: coreUserOperation.initCode,
       callData: coreUserOperation.callData,
+      callGasLimit: estimateUserOperationGasData?.callGasLimit
+        ? fromHex(estimateUserOperationGasData?.callGasLimit as Hex, {
+            to: "bigint",
+          })
+        : BigInt(0),
+      preVerificationGas: estimateUserOperationGasData?.preVerificationGas
+        ? fromHex(estimateUserOperationGasData?.preVerificationGas as Hex, {
+            to: "bigint",
+          })
+        : BigInt(0),
+      verificationGasLimit: estimateUserOperationGasData?.verificationGasLimit
+        ? fromHex(estimateUserOperationGasData?.verificationGasLimit as Hex, {
+            to: "bigint",
+          })
+        : BigInt(0),
       maxFeePerGas: coreUserOperation.maxFeePerGas,
       maxPriorityFeePerGas: coreUserOperation.maxPriorityFeePerGas,
     });
@@ -200,7 +235,12 @@ export const Transaction: FC<TransactionProps> = ({
 
   const updatedUserOperation: Omit<UserOperation, "hash" | "signature"> =
     useMemo(() => {
-      if (isPaymasterAndDataLoading || paymasterAndDataError !== null) {
+      if (
+        isEstimateUserOperationGasDataLoading ||
+        estimateUserOperationGasDataError !== null ||
+        isPaymasterAndDataLoading ||
+        paymasterAndDataError !== null
+      ) {
         return {
           sender: coreUserOperation.sender,
           chainId: coreUserOperation.chainId,

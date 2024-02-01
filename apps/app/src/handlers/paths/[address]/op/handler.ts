@@ -26,7 +26,6 @@ import {
 import { calculateInitCode } from "@lightdotso/solutions";
 import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
-import { fromHex } from "viem";
 import type { Address, Hex } from "viem";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
@@ -44,7 +43,13 @@ export const handler = async (
   configuration: ConfigurationData;
   userOperations: Omit<
     UserOperation,
-    "hash" | "maxFeePerGas" | "maxPriorityFeePerGas"
+    | "hash"
+    | "signature"
+    | "maxFeePerGas"
+    | "maxPriorityFeePerGas"
+    | "callGasLimit"
+    | "verificationGasLimit"
+    | "preVerificationGas"
   >[];
 }> => {
   // ---------------------------------------------------------------------------
@@ -129,7 +134,13 @@ export const handler = async (
 
   let ops: Omit<
     UserOperation,
-    "hash" | "maxFeePerGas" | "maxPriorityFeePerGas"
+    | "hash"
+    | "signature"
+    | "maxFeePerGas"
+    | "maxPriorityFeePerGas"
+    | "callGasLimit"
+    | "verificationGasLimit"
+    | "preVerificationGas"
   >[] =
     userOperationsQuery &&
     userOperationsQuery.map(operation => {
@@ -142,11 +153,6 @@ export const handler = async (
         nonce: BigInt(nonce),
         initCode: (operation.initCode as Hex) ?? "0x",
         callData: (operation.callData as Hex) ?? "0x",
-        signature:
-          "0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c",
-        callGasLimit: fromHex("0x44E1C0" as Hex, { to: "bigint" }),
-        verificationGasLimit: fromHex("0x1C4B40" as Hex, { to: "bigint" }),
-        preVerificationGas: fromHex("0x1C4B40" as Hex, { to: "bigint" }),
       };
     });
 
