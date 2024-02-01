@@ -73,7 +73,9 @@ lazy_static! {
 
         // Testnet
         m.insert(80001, "https://polygon-mumbai.g.alchemy.com/v2/".to_string());
+        m.insert(421614, "https://arb-sepolia.g.alchemy.com/v2/".to_string());
         m.insert(11155111, "https://eth-sepolia.g.alchemy.com/v2/".to_string());
+        m.insert(11155420, "https://opt-sepolia.g.alchemy.com/v2/".to_string());
 
         m
     };
@@ -281,6 +283,7 @@ lazy_static! {
         m.insert(42161, "https://api.pimlico.io/v1/arbitrum/rpc".to_string());
         m.insert(43114, "https://api.pimlico.io/v1/avalanche/rpc".to_string());
         m.insert(59144, "https://api.pimlico.io/v1/linea/rpc".to_string());
+        m.insert(534352, "https://api.pimlico.io/v1/scroll/rpc".to_string());
 
 
         // Testnet
