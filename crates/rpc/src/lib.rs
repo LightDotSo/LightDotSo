@@ -495,9 +495,9 @@ pub async fn rpc_proxy_handler(
         let mut rng = thread_rng();
         requests.shuffle(&mut rng);
         requests
-    });
-
-    let shuffled_requests = shuffled_requests.await.expect("Failed during shuffling");
+    })
+    .await
+    .expect("Failed during shuffling");
 
     for (url, key) in shuffled_requests {
         let result =
