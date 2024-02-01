@@ -73,6 +73,7 @@ lazy_static! {
 
         // Testnet
         m.insert(80001, "https://polygon-mumbai.g.alchemy.com/v2/".to_string());
+        m.insert(84532, "https://base-sepolia.g.alchemy.com/v2/".to_string());
         m.insert(421614, "https://arb-sepolia.g.alchemy.com/v2/".to_string());
         m.insert(11155111, "https://eth-sepolia.g.alchemy.com/v2/".to_string());
         m.insert(11155420, "https://opt-sepolia.g.alchemy.com/v2/".to_string());
@@ -281,6 +282,7 @@ lazy_static! {
         m.insert(137, "https://api.pimlico.io/v1/polygon/rpc".to_string());
         m.insert(8453, "https://api.pimlico.io/v1/base/rpc".to_string());
         m.insert(42161, "https://api.pimlico.io/v1/arbitrum/rpc".to_string());
+        m.insert(42220, "https://api.pimlico.io/v1/celo/rpc".to_string());
         m.insert(43114, "https://api.pimlico.io/v1/avalanche/rpc".to_string());
         m.insert(59144, "https://api.pimlico.io/v1/linea/rpc".to_string());
         m.insert(534352, "https://api.pimlico.io/v1/scroll/rpc".to_string());
@@ -289,7 +291,35 @@ lazy_static! {
         // Testnet
         m.insert(10200, "https://api.pimlico.io/v1/chiado-testnet/rpc".to_string());
         m.insert(80001, "https://api.pimlico.io/v1/mumbai/rpc".to_string());
+        m.insert(534351, "https://api.pimlico.io/v1/scroll-sepolia-testnet/rpc".to_string());
         m.insert(11155111, "https://api.pimlico.io/v1/sepolia/rpc".to_string());
+
+        m
+    };
+}
+
+// The silius rpc urls
+lazy_static! {
+    pub static ref SILIUS_RPC_URLS: HashMap<u64, String> = {
+        let mut m = HashMap::new();
+
+        // Mainnet
+        m.insert(1, "https://rpc.silius.xyz/api/v1/chain/ethereum-mainnet".to_string());
+        m.insert(10, "https://rpc.silius.xyz/api/v1/chain/optimism-mainnet".to_string());
+        m.insert(56, "https://rpc.silius.xyz/api/v1/chain/bsc-mainnet".to_string());
+        m.insert(137, "https://rpc.silius.xyz/api/v1/chain/polygon-mainnet".to_string());
+        m.insert(8453, "https://rpc.silius.xyz/api/v1/chain/base-mainnet".to_string());
+        m.insert(42161, "https://rpc.silius.xyz/api/v1/chain/arbitrum-mainnet".to_string());
+        m.insert(43114, "https://rpc.silius.xyz/api/v1/chain/avalanche-mainnet".to_string());
+        m.insert(59144, "https://rpc.silius.xyz/api/v1/chain/linea-mainnet".to_string());
+
+
+        // Testnet
+        m.insert(80001, "https://rpc.silius.xyz/api/v1/chain/polygon-mumbai".to_string());
+        m.insert(84532, "https://rpc.silius.xyz/api/v1/chain/base-sepolia".to_string());
+        m.insert(421614, "https://rpc.silius.xyz/api/v1/chain/arbitrum-sepolia".to_string());
+        m.insert(11155111, "https://rpc.silius.xyz/api/v1/chain/ethereum-sepolia".to_string());
+        m.insert(11155420, "https://rpc.silius.xyz/api/v1/chain/optimism-sepolia".to_string());
 
         m
     };

@@ -95,9 +95,23 @@ export const Transaction: FC<TransactionProps> = ({
   const [userOperations, setUserOperations] = useUserOperationsQueryState();
 
   // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { setIsFormDisabled, setIsFormLoading } = useFormRef();
+  const { pageIndex } = useModalSwiper();
+
+  // ---------------------------------------------------------------------------
+  // Local Hooks
+  // ---------------------------------------------------------------------------
+
+  const isInsideModal = useIsInsideModal();
+
+  // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
+  // Turns the partial userOperation into an userOperation w/ default values
   const targetUserOperation: Omit<
     UserOperation,
     "hash" | "paymasterAndData" | "signature"
@@ -125,27 +139,38 @@ export const Transaction: FC<TransactionProps> = ({
   }, [userOperations]);
 
   // ---------------------------------------------------------------------------
-  // Stores
+  // Query
   // ---------------------------------------------------------------------------
 
-  const { setIsFormDisabled, setIsFormLoading } = useFormRef();
-  const { pageIndex } = useModalSwiper();
+  // Gets the simulation for the user operation
+  const { simulation } = useQuerySimulation({
+    sender: address as Address,
+    nonce: Number(targetUserOperation.nonce),
+    chain_id: Number(targetUserOperation.chainId),
+    call_data: targetUserOperation.callData as Hex,
+    init_code: targetUserOperation.initCode as Hex,
+  });
 
-  // ---------------------------------------------------------------------------
-  // Local Hooks
-  // ---------------------------------------------------------------------------
-
-  const isInsideModal = useIsInsideModal();
+  // Gets the gas estimate for the user operation
+  const { estimateUserOperationGasData } = useQueryEstimateUserOperationGas({
+    sender: address as Address,
+    chainId: targetUserOperation.chainId,
+    nonce: targetUserOperation.nonce,
+    initCode: targetUserOperation.initCode,
+    callData: targetUserOperation.callData,
+  });
 
   // ---------------------------------------------------------------------------
   // Wagmi
   // ---------------------------------------------------------------------------
 
+  // Get the max fee per gas, fallbacks to mainnet
   const { data: feesPerGas, error: estimateFeesPerGasError } =
     useEstimateFeesPerGas({
       chainId: Number(targetUserOperation.chainId ?? 1),
     });
 
+  // Get the max priority fee per gas, fallbacks to mainnet
   const {
     data: maxPriorityFeePerGas,
     error: estimateMaxPriorityFeePerGasError,
@@ -154,54 +179,16 @@ export const Transaction: FC<TransactionProps> = ({
   });
 
   // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
-
-  const coreUserOperation: Omit<
-    UserOperation,
-    | "hash"
-    | "paymasterAndData"
-    | "signature"
-    | "callGasLimit"
-    | "verificationGasLimit"
-    | "preVerificationGas"
-  > = useMemo(() => {
-    return {
-      sender: targetUserOperation.sender,
-      chainId: targetUserOperation.chainId,
-      initCode: targetUserOperation.initCode,
-      nonce: targetUserOperation.nonce,
-      callData: targetUserOperation.callData,
-      maxFeePerGas:
-        feesPerGas?.maxFeePerGas ?? targetUserOperation.maxFeePerGas,
-      maxPriorityFeePerGas:
-        maxPriorityFeePerGas ?? targetUserOperation.maxPriorityFeePerGas,
-    };
-  }, [targetUserOperation, feesPerGas, maxPriorityFeePerGas]);
-
-  // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
-
-  const {
-    estimateUserOperationGasData,
-    isEstimateUserOperationGasDataLoading,
-    estimateUserOperationGasDataError,
-  } = useQueryEstimateUserOperationGas({
-    sender: address as Address,
-    chainId: coreUserOperation.chainId,
-    nonce: coreUserOperation.nonce,
-    initCode: coreUserOperation.initCode,
-    callData: coreUserOperation.callData,
-  });
 
   const { paymasterAndData, isPaymasterAndDataLoading, paymasterAndDataError } =
     useQueryPaymasterGasAndPaymasterAndData({
       sender: address as Address,
-      chainId: coreUserOperation.chainId,
-      nonce: coreUserOperation.nonce,
-      initCode: coreUserOperation.initCode,
-      callData: coreUserOperation.callData,
+      chainId: targetUserOperation.chainId,
+      nonce: targetUserOperation.nonce,
+      initCode: targetUserOperation.initCode,
+      callData: targetUserOperation.callData,
       callGasLimit: estimateUserOperationGasData?.callGasLimit
         ? fromHex(estimateUserOperationGasData?.callGasLimit as Hex, {
             to: "bigint",
@@ -217,17 +204,11 @@ export const Transaction: FC<TransactionProps> = ({
             to: "bigint",
           })
         : BigInt(0),
-      maxFeePerGas: coreUserOperation.maxFeePerGas,
-      maxPriorityFeePerGas: coreUserOperation.maxPriorityFeePerGas,
+      maxFeePerGas:
+        feesPerGas?.maxFeePerGas ?? targetUserOperation.maxFeePerGas,
+      maxPriorityFeePerGas:
+        maxPriorityFeePerGas ?? targetUserOperation.maxPriorityFeePerGas,
     });
-
-  const { simulation } = useQuerySimulation({
-    sender: address as Address,
-    nonce: Number(targetUserOperation.nonce),
-    chain_id: Number(targetUserOperation.chainId),
-    call_data: targetUserOperation.callData as Hex,
-    init_code: targetUserOperation.initCode as Hex,
-  });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -235,35 +216,22 @@ export const Transaction: FC<TransactionProps> = ({
 
   const updatedUserOperation: Omit<UserOperation, "hash" | "signature"> =
     useMemo(() => {
-      if (
-        isEstimateUserOperationGasDataLoading ||
-        estimateUserOperationGasDataError !== null ||
-        isPaymasterAndDataLoading ||
-        paymasterAndDataError !== null
-      ) {
-        return {
-          sender: coreUserOperation.sender,
-          chainId: coreUserOperation.chainId,
-          initCode: coreUserOperation.initCode,
-          nonce: coreUserOperation.nonce,
-          callData: coreUserOperation.callData,
-          callGasLimit: BigInt(0),
-          verificationGasLimit: BigInt(0),
-          preVerificationGas: BigInt(0),
-          maxFeePerGas: coreUserOperation.maxFeePerGas,
-          maxPriorityFeePerGas: coreUserOperation.maxPriorityFeePerGas,
-          paymasterAndData: "0x",
-        };
-      }
-
       return {
-        sender: coreUserOperation.sender,
-        chainId: coreUserOperation.chainId,
-        initCode: coreUserOperation.initCode,
-        nonce: coreUserOperation.nonce,
-        callData: coreUserOperation.callData,
-        maxFeePerGas: coreUserOperation.maxFeePerGas,
-        maxPriorityFeePerGas: coreUserOperation.maxPriorityFeePerGas,
+        // The default values
+        sender: targetUserOperation.sender,
+        chainId: targetUserOperation.chainId,
+        initCode: targetUserOperation.initCode,
+        nonce: targetUserOperation.nonce,
+        callData: targetUserOperation.callData,
+        // The target values to fill in
+        maxFeePerGas: paymasterAndData?.maxFeePerGas
+          ? fromHex(paymasterAndData.maxFeePerGas as Hex, { to: "bigint" })
+          : BigInt(0),
+        maxPriorityFeePerGas: paymasterAndData?.maxPriorityFeePerGas
+          ? fromHex(paymasterAndData.maxPriorityFeePerGas as Hex, {
+              to: "bigint",
+            })
+          : BigInt(0),
         callGasLimit: paymasterAndData?.callGasLimit
           ? fromHex(paymasterAndData.callGasLimit as Hex, { to: "bigint" })
           : BigInt(0),
@@ -277,10 +245,11 @@ export const Transaction: FC<TransactionProps> = ({
               to: "bigint",
             })
           : BigInt(0),
+        // The core paymaster and data values
         paymasterAndData: paymasterAndData?.paymasterAndData ?? "0x",
       };
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [coreUserOperation, paymasterAndData]);
+    }, [targetUserOperation, paymasterAndData]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -290,25 +259,18 @@ export const Transaction: FC<TransactionProps> = ({
     const fetchHashAndUpdateOperation = async () => {
       // Check if all the fields are filled in
       if (
-        !updatedUserOperation.chainId ||
-        !updatedUserOperation.nonce ||
-        !updatedUserOperation.initCode ||
-        !updatedUserOperation.callData ||
-        !updatedUserOperation.callGasLimit ||
-        !updatedUserOperation.verificationGasLimit ||
-        !updatedUserOperation.preVerificationGas ||
-        !updatedUserOperation.maxFeePerGas ||
-        !updatedUserOperation.maxPriorityFeePerGas ||
-        !updatedUserOperation.paymasterAndData
+        updatedUserOperation.callGasLimit === 0n ||
+        updatedUserOperation.verificationGasLimit === 0n ||
+        updatedUserOperation.preVerificationGas === 0n ||
+        updatedUserOperation.maxFeePerGas === 0n ||
+        updatedUserOperation.maxPriorityFeePerGas === 0n ||
+        updatedUserOperation.paymasterAndData === "0x"
       ) {
         return;
       }
 
+      // IF the fields differ, update the user operation
       if (
-        targetUserOperation.chainId !== updatedUserOperation.chainId ||
-        targetUserOperation.nonce !== updatedUserOperation.nonce ||
-        targetUserOperation.initCode !== updatedUserOperation.initCode ||
-        targetUserOperation.callData !== updatedUserOperation.callData ||
         targetUserOperation.callGasLimit !==
           updatedUserOperation.callGasLimit ||
         targetUserOperation.verificationGasLimit !==
@@ -327,9 +289,9 @@ export const Transaction: FC<TransactionProps> = ({
         });
       }
 
+      // Add the dummy signature to get the hash
       const userOperation = {
-        ...targetUserOperation,
-        paymasterAndData: updatedUserOperation.paymasterAndData,
+        ...updatedUserOperation,
         signature: "0x",
       };
 
@@ -466,13 +428,6 @@ export const Transaction: FC<TransactionProps> = ({
                       targetUserOperation:{" "}
                       {targetUserOperation &&
                         serialize(targetUserOperation, undefined, 2)}
-                    </code>
-                  </pre>
-                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-                    <code>
-                      coreUserOperation:{" "}
-                      {coreUserOperation &&
-                        serialize(coreUserOperation, undefined, 2)}
                     </code>
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
