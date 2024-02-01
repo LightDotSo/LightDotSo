@@ -164,7 +164,11 @@ export const getClient: (
 // -----------------------------------------------------------------------------
 
 export const rpcClient = (chainId: number, clientType?: ClientType) => {
-  if (clientType === undefined || clientType === "public") {
+  if (
+    clientType === undefined ||
+    clientType === "public" ||
+    clientType === "authenticated"
+  ) {
     return `https://rpc.light.so/${chainId}`;
   }
 
