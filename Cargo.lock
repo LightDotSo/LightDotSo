@@ -6399,6 +6399,7 @@ name = "lightdotso-paymaster"
 version = "0.1.0"
 dependencies = [
  "async-trait",
+ "backon",
  "clap 4.4.0",
  "ethers 2.0.8",
  "eyre",
