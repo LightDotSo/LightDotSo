@@ -480,95 +480,33 @@ pub async fn rpc_proxy_handler(
         }
     }
 
-    // Get the ankr rpc url
-    let result = try_rpc_with_url(
-        &ANKR_RPC_URLS,
-        None,
-        &chain_id,
-        &client,
-        Body::from(full_body_bytes.clone()),
-    )
-    .await;
-    if let Some(resp) = result {
-        return resp;
-    }
+    // Construct the params for the rpc request
+    let mut requests = vec![
+        (&*ANKR_RPC_URLS, None),
+        (&*LLAMANODES_RPC_URLS, None),
+        (&*THIRDWEB_RPC_URLS, None),
+        (&*PUBLIC_NODE_RPC_URLS, None),
+        (&*OFFICIAL_PUBLIC_RPC_URLS, None),
+        (&*NODEREAL_RPC_URLS, Some(std::env::var("NODEREAL_API_KEY").unwrap())),
+        (&*INFURA_RPC_URLS, Some(std::env::var("INFURA_API_KEY").unwrap())),
+    ];
 
-    // Get the llama noes rpc url
-    let result = try_rpc_with_url(
-        &LLAMANODES_RPC_URLS,
-        None,
-        &chain_id,
-        &client,
-        Body::from(full_body_bytes.clone()),
-    )
-    .await;
-    if let Some(resp) = result {
-        return resp;
-    }
+    let shuffled_requests = tokio::task::spawn_blocking(move || {
+        let mut rng = thread_rng();
+        requests.shuffle(&mut rng);
+        requests
+    });
 
-    // Get the thirdweb rpc url
-    let result = try_rpc_with_url(
-        &THIRDWEB_RPC_URLS,
-        None,
-        &chain_id,
-        &client,
-        Body::from(full_body_bytes.clone()),
-    )
-    .await;
-    if let Some(resp) = result {
-        return resp;
-    }
+    let shuffled_requests = shuffled_requests.await.expect("Failed during shuffling");
 
-    // Get the public rpc url from the constants
-    let result = try_rpc_with_url(
-        &PUBLIC_NODE_RPC_URLS,
-        None,
-        &chain_id,
-        &client,
-        Body::from(full_body_bytes.clone()),
-    )
-    .await;
-    if let Some(resp) = result {
-        return resp;
-    }
+    for (url, key) in shuffled_requests {
+        let result =
+            try_rpc_with_url(url, key, &chain_id, &client, Body::from(full_body_bytes.clone()))
+                .await;
 
-    // Get the official public rpc url from the constants
-    let result = try_rpc_with_url(
-        &OFFICIAL_PUBLIC_RPC_URLS,
-        None,
-        &chain_id,
-        &client,
-        Body::from(full_body_bytes.clone()),
-    )
-    .await;
-    if let Some(resp) = result {
-        return resp;
-    }
-
-    // Get the rpc url from the nodereal constants
-    let result = try_rpc_with_url(
-        &NODEREAL_RPC_URLS,
-        Some(std::env::var("NODEREAL_API_KEY").unwrap()),
-        &chain_id,
-        &client,
-        Body::from(full_body_bytes.clone()),
-    )
-    .await;
-    if let Some(resp) = result {
-        return resp;
-    };
-
-    // Get the rpc url from the constants
-    let result = try_rpc_with_url(
-        &INFURA_RPC_URLS,
-        Some(std::env::var("INFURA_API_KEY").unwrap()),
-        &chain_id,
-        &client,
-        Body::from(full_body_bytes.clone()),
-    )
-    .await;
-    if let Some(resp) = result {
-        return resp;
+        if let Some(resp) = result {
+            return resp;
+        }
     }
 
     // Return an error if the chain_id is not supported or not found
