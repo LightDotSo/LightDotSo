@@ -54,7 +54,7 @@ import { ModalSwiper } from "../modal-swiper";
 type TransactionProps = {
   address: Address;
   configuration: ConfigurationData;
-  initialUserOperation: UserOperation;
+  initialUserOperation: Omit<UserOperation, "hash">;
   userOperationIndex: number;
   isDev?: boolean;
 };
