@@ -41,7 +41,10 @@ import type { Address } from "viem";
 type OpTransactionProps = {
   address: Address;
   configuration: ConfigurationData;
-  userOperations: Omit<UserOperation, "hash">[];
+  userOperations: Omit<
+    UserOperation,
+    "hash" | "maxFeePerGas" | "maxPriorityFeePerGas"
+  >[];
 };
 
 // -----------------------------------------------------------------------------

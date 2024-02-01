@@ -54,7 +54,10 @@ import { ModalSwiper } from "../modal-swiper";
 type TransactionProps = {
   address: Address;
   configuration: ConfigurationData;
-  initialUserOperation: Omit<UserOperation, "hash">;
+  initialUserOperation: Omit<
+    UserOperation,
+    "hash" | "maxFeePerGas" | "maxPriorityFeePerGas"
+  >;
   userOperationIndex: number;
   isDev?: boolean;
 };
@@ -106,9 +109,8 @@ export const Transaction: FC<TransactionProps> = ({
       verificationGasLimit:
         partialUserOperation?.verificationGasLimit ?? BigInt(0),
       preVerificationGas: partialUserOperation?.preVerificationGas ?? BigInt(0),
-      maxFeePerGas: partialUserOperation?.maxFeePerGas ?? BigInt(0),
-      maxPriorityFeePerGas:
-        partialUserOperation?.maxPriorityFeePerGas ?? BigInt(0),
+      maxFeePerGas: BigInt(0),
+      maxPriorityFeePerGas: BigInt(0),
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userOperations]);

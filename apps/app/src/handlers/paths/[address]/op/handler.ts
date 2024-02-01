@@ -42,7 +42,10 @@ export const handler = async (
   },
 ): Promise<{
   configuration: ConfigurationData;
-  userOperations: Omit<UserOperation, "hash">[];
+  userOperations: Omit<
+    UserOperation,
+    "hash" | "maxFeePerGas" | "maxPriorityFeePerGas"
+  >[];
 }> => {
   // ---------------------------------------------------------------------------
   // Handlers
@@ -124,7 +127,10 @@ export const handler = async (
   // Defaults
   // ---------------------------------------------------------------------------
 
-  let ops: Omit<UserOperation, "hash">[] =
+  let ops: Omit<
+    UserOperation,
+    "hash" | "maxFeePerGas" | "maxPriorityFeePerGas"
+  >[] =
     userOperationsQuery &&
     userOperationsQuery.map(operation => {
       const nonce =
@@ -141,8 +147,6 @@ export const handler = async (
         callGasLimit: fromHex("0x44E1C0" as Hex, { to: "bigint" }),
         verificationGasLimit: fromHex("0x1C4B40" as Hex, { to: "bigint" }),
         preVerificationGas: fromHex("0x1C4B40" as Hex, { to: "bigint" }),
-        maxFeePerGas: fromHex("0x" as Hex, { to: "bigint" }),
-        maxPriorityFeePerGas: fromHex("0x" as Hex, { to: "bigint" }),
       };
     });
 
@@ -150,7 +154,7 @@ export const handler = async (
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const resPromises = ops.map((op, index) => {
+  const resPromises = ops.map(op => {
     return getUserOperations({
       address: params.address as Address,
       status: "executed",
