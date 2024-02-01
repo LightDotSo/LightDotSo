@@ -91,6 +91,13 @@ export async function zodJsonRpcFetch<
 
   const data = (await response.json()) as JsonResponseSchema;
 
+  if (response.status !== 200) {
+    if (data.error) {
+      throw new Error(data.error.message);
+    }
+    throw new Error(`HTTP error: ${response.status}`);
+  }
+
   if (data?.error) {
     throw new Error(data.error.message);
   }
