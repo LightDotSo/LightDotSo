@@ -96,15 +96,8 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
         clientType,
       );
 
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return null;
-        },
-      );
+      // Throw error if there is an error
+      return res._unsafeUnwrap();
     },
   });
 
