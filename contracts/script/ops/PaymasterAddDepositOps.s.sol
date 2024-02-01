@@ -36,7 +36,7 @@ contract PaymasterAddDepositOpsScript is BaseLightDeployerOps {
         console.log(paymaster.owner());
 
         // Add deposit
-        paymaster.deposit{value: 0.1 ether}();
+        paymaster.deposit{value: 1 ether}();
 
         // Stop the broadcast
         vm.stopBroadcast();
