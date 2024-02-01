@@ -80,6 +80,7 @@ export const useQueryEstimateUserOperationGas = (
             signature:
               "0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c",
           },
+          "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
         ],
         clientType,
       );
