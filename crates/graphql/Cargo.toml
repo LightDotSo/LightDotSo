@@ -9,11 +9,11 @@
   repository.workspace = true
 
 [dependencies]
-  cynic = { version = "3.2.2", features = ["http-reqwest-blocking"] }
+  cynic = { version = "3.4.3", features = ["http-reqwest-blocking"] }
   cynic-codegen = { version = "3.2.2" }
   ethers = { workspace = true }
   eyre = { workspace = true }
-  insta = "1.17"
+  insta = "1.34"
   lazy_static = { workspace = true }
   lightdotso-common = { workspace = true }
   lightdotso-contracts = { workspace = true }
