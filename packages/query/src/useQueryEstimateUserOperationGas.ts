@@ -56,6 +56,7 @@ export const useQueryEstimateUserOperationGas = (
     isLoading: isEstimateUserOperationGasDataLoading,
     error: estimateUserOperationGasDataError,
   } = useQuery<EstimateUserOperationGasData | null>({
+    retry: 10,
     queryKeyHashFn: key => {
       return serialize(key);
     },
@@ -76,7 +77,7 @@ export const useQueryEstimateUserOperationGas = (
             initCode: params.initCode,
             callData: params.callData,
             paymasterAndData:
-              "0x000000000018d32df916ff115a25fbefc70baf8b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000065185b1ce67f0444c9d1f99cf4bbb8b44846479ec40b7d28acae4c76abd904808cfe12c0590e10e989801251d867f222cb8c6d9af4cec7189eac7295c624c4216227871e1c",
+              "0x000000000003193facb32d1c120719892b7ae97700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000065185b1ce67f0444c9d1f99cf4bbb8b44846479ec40b7d28acae4c76abd904808cfe12c0590e10e989801251d867f222cb8c6d9af4cec7189eac7295c624c4216227871e1c",
             signature: "0x",
           },
           "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
