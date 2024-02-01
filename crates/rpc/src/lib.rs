@@ -314,31 +314,33 @@ pub async fn rpc_proxy_handler(
                     }
                 }
 
-                // Get the rpc url from the chainnodes constants
-                let result = try_rpc_with_url(
-                    &CHAINNODES_RPC_URLS,
-                    Some(std::env::var("CHAINNODES_API_KEY").unwrap()),
-                    &chain_id,
-                    &client,
-                    Body::from(full_body_bytes.clone()),
-                )
-                .await;
-                if let Some(resp) = result {
-                    return resp;
-                };
+                let mut requests = vec![
+                    (&*CHAINNODES_RPC_URLS, Some(std::env::var("CHAINNODES_API_KEY").unwrap())),
+                    (&*BLASTAPI_RPC_URLS, Some(std::env::var("BLAST_API_KEY").unwrap())),
+                ];
 
-                // Get the rpc url from the blast api constants
-                let result = try_rpc_with_url(
-                    &BLASTAPI_RPC_URLS,
-                    Some(std::env::var("BLAST_API_KEY").unwrap()),
-                    &chain_id,
-                    &client,
-                    Body::from(full_body_bytes.clone()),
-                )
-                .await;
-                if let Some(resp) = result {
-                    return resp;
-                };
+                let shuffled_requests = tokio::task::spawn_blocking(move || {
+                    let mut rng = thread_rng();
+                    requests.shuffle(&mut rng);
+                    requests
+                })
+                .await
+                .expect("Failed during shuffling");
+
+                for (url, key) in shuffled_requests {
+                    let result = try_rpc_with_url(
+                        url,
+                        key,
+                        &chain_id,
+                        &client,
+                        Body::from(full_body_bytes.clone()),
+                    )
+                    .await;
+
+                    if let Some(resp) = result {
+                        return resp;
+                    }
+                }
             }
             "eth_sendUserOperation" |
             "eth_estimateUserOperationGas" |

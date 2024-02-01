@@ -114,6 +114,7 @@ lazy_static! {
 
         // Testnet
         m.insert(11155111, "https://eth-sepolia.blastapi.io/".to_string());
+        m.insert(11155420, "https://optimism-sepolia.blastapi.io/".to_string());
 
         m
     };
@@ -151,7 +152,10 @@ lazy_static! {
 
         // Testnet
         m.insert(80001, "https://polygon-mumbai-bor.publicnode.com".to_string());
-        m.insert(11155111, "https://gnosis.publicnode.com".to_string());
+        m.insert(84532, "https://base-sepolia.publicnode.com".to_string());
+        m.insert(421614, "https://arbitrum-sepolia.publicnode.com".to_string());
+        m.insert(11155111, "https://ethereum-sepolia.publicnode.com".to_string());
+        m.insert(11155420, "https://optimism-sepolia.publicnode.com".to_string());
 
         m
     };
@@ -172,7 +176,9 @@ lazy_static! {
         m.insert(43114, "https://api.avax.network/ext/bc/C/rpc".to_string());
 
         // Testnet
+        m.insert(84532, "https://sepolia.base.org".to_string());
         m.insert(11155111, "https://rpc.sepolia.org".to_string());
+        m.insert(11155420, "https://sepolia.optimism.io".to_string());
 
         m
     };
@@ -200,7 +206,10 @@ lazy_static! {
 
         // Testnet
         m.insert(80001, "https://rpc.ankr.com/polygon_mumbai".to_string());
+        m.insert(84532, "https://rpc.ankr.com/base_sepolia".to_string());
+        m.insert(421614, "https://rpc.ankr.com/arbitrum_sepolia".to_string());
         m.insert(11155111, "https://rpc.ankr.com/eth_sepolia".to_string());
+        m.insert(11155420, "https://rpc.ankr.com/optimism_sepolia".to_string());
 
         m
     };
@@ -228,7 +237,11 @@ lazy_static! {
 
         // Testnet
         m.insert(80001, "https://mumbai.rpc.thirdweb.com".to_string());
+        m.insert(84532, "https://base-sepolia-testnet.rpc.thirdweb.com".to_string());
+        m.insert(421614, "https://arbitrum-sepolia.rpc.thirdweb.com".to_string());
         m.insert(11155111, "https://sepolia.rpc.thirdweb.com".to_string());
+        m.insert(11155420, "https://op-sepolia-testnet.rpc.thirdweb.com".to_string());
+        m.insert(999999999, "https://zora-sepolia-testnet.rpc.thirdweb.com".to_string());
 
         m
     };
@@ -263,6 +276,7 @@ lazy_static! {
         m.insert(10, "https://optimism.llamarpc.com".to_string());
         m.insert(56, "https://binance.llamarpc.com".to_string());
         m.insert(137, "https://polygon.llamarpc.com".to_string());
+        m.insert(8453, "https://base.llamarpc.com".to_string());
         m.insert(42161, "https://arbitrum.llamarpc.com".to_string());
 
         m
