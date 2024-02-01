@@ -76,6 +76,7 @@ pub async fn create_paymaster_operation(
         )
         .exec()
         .await?;
+    info!(?paymaster_operation);
 
     Ok(paymaster_operation)
 }
