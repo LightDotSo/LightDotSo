@@ -54,7 +54,10 @@ import { ModalSwiper } from "../modal-swiper";
 type TransactionProps = {
   address: Address;
   configuration: ConfigurationData;
-  initialUserOperation: UserOperation;
+  initialUserOperation: Omit<
+    UserOperation,
+    "hash" | "paymasterAndData" | "maxFeePerGas" | "maxPriorityFeePerGas"
+  >;
   userOperationIndex: number;
   isDev?: boolean;
 };
@@ -94,7 +97,7 @@ export const Transaction: FC<TransactionProps> = ({
     const partialUserOperation =
       userOperations.length > 0
         ? userOperations[userOperationIndex]
-        : initialUserOperation;
+        : { ...initialUserOperation };
 
     return {
       sender: partialUserOperation?.sender ?? address,

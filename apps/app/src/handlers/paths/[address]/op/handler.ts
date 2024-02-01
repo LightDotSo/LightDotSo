@@ -13,7 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
 import { CONTRACT_ADDRESSES } from "@lightdotso/const";
 import type { ConfigurationData } from "@lightdotso/data";
 import { userOperationsParser } from "@lightdotso/nuqs";
@@ -21,15 +20,13 @@ import type { UserOperation } from "@lightdotso/schemas";
 import {
   getConfiguration,
   getUserOperationNonce,
-  // getUserOperations,
+  getUserOperations,
   getWallet,
 } from "@lightdotso/services";
-// import { calculateInitCode } from "@lightdotso/solutions";
+import { calculateInitCode } from "@lightdotso/solutions";
 import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
-import { getUserOperationHash } from "permissionless";
-import type { UserOperation as PermissionlessUserOperation } from "permissionless";
-import { toHex, fromHex } from "viem";
+import { fromHex } from "viem";
 import type { Address, Hex } from "viem";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
@@ -45,7 +42,10 @@ export const handler = async (
   },
 ): Promise<{
   configuration: ConfigurationData;
-  userOperations: UserOperation[];
+  userOperations: Omit<
+    UserOperation,
+    "hash" | "maxFeePerGas" | "maxPriorityFeePerGas"
+  >[];
 }> => {
   // ---------------------------------------------------------------------------
   // Handlers
@@ -127,7 +127,10 @@ export const handler = async (
   // Defaults
   // ---------------------------------------------------------------------------
 
-  let ops: Omit<UserOperation, "hash">[] =
+  let ops: Omit<
+    UserOperation,
+    "hash" | "maxFeePerGas" | "maxPriorityFeePerGas"
+  >[] =
     userOperationsQuery &&
     userOperationsQuery.map(operation => {
       const nonce =
@@ -138,21 +141,12 @@ export const handler = async (
         paymasterAndData: "0x",
         nonce: BigInt(nonce),
         initCode: (operation.initCode as Hex) ?? "0x",
-        // operation.initCode ?? nonce === 0
-        //   ? calculateInitCode(
-        //       CONTRACT_ADDRESSES["Factory"] as Address,
-        //       configuration.image_hash as Hex,
-        //       wallet.salt as Hex,
-        //     )
-        //   : "0x",
         callData: (operation.callData as Hex) ?? "0x",
         signature:
           "0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c",
         callGasLimit: fromHex("0x44E1C0" as Hex, { to: "bigint" }),
         verificationGasLimit: fromHex("0x1C4B40" as Hex, { to: "bigint" }),
         preVerificationGas: fromHex("0x1C4B40" as Hex, { to: "bigint" }),
-        maxFeePerGas: fromHex("0xD320B3B35" as Hex, { to: "bigint" }),
-        maxPriorityFeePerGas: fromHex("0xB323DBB31" as Hex, { to: "bigint" }),
       };
     });
 
@@ -160,71 +154,58 @@ export const handler = async (
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const resPromises = ops.map((op, index) => {
-    return getPaymasterGasAndPaymasterAndData(
-      Number(userOperationsQuery[index].chainId) as number,
-      [
-        {
-          sender: params.address,
-          paymasterAndData: "0x",
-          nonce: toHex(op.nonce),
-          initCode: op.initCode,
-          callData: op.callData,
-          signature: "0x",
-          callGasLimit: toHex(op.callGasLimit),
-          verificationGasLimit: toHex(op.verificationGasLimit),
-          preVerificationGas: toHex(op.preVerificationGas),
-          maxFeePerGas: toHex(op.maxFeePerGas),
-          maxPriorityFeePerGas: toHex(op.maxPriorityFeePerGas),
-        },
-      ],
-      "admin",
-    );
+  const resPromises = ops.map(op => {
+    return getUserOperations({
+      address: params.address as Address,
+      status: "executed",
+      offset: 0,
+      limit: 1,
+      order: "asc",
+      is_testnet: true,
+      chain_id: Number(op.chainId) as number,
+    });
   });
 
   // Resolve all promises
   const res = await Promise.all(resPromises);
 
-  // If there are any errors among responses
+  // If there are any errors among responses, return the lightly parsed userOperations
   if (res.some(r => r.isErr())) {
-    notFound();
+    return {
+      configuration: configuration,
+      userOperations: ops,
+    };
   }
 
+  // Add the initCode to the response if there are no operations
   const parsedUserOperations = ops.map((op, index) => {
     // Parse
     const parsedRes = res[index]._unsafeUnwrap();
 
-    // Combine default operation data with response data
-    return {
-      ...op,
-      callGasLimit: fromHex(parsedRes.callGasLimit as Hex, { to: "bigint" }),
-      verificationGasLimit: fromHex(parsedRes.verificationGasLimit as Hex, {
-        to: "bigint",
-      }),
-      preVerificationGas: fromHex(parsedRes.preVerificationGas as Hex, {
-        to: "bigint",
-      }),
-      maxFeePerGas: fromHex(parsedRes.maxFeePerGas as Hex, { to: "bigint" }),
-      maxPriorityFeePerGas: fromHex(parsedRes.maxPriorityFeePerGas as Hex, {
-        to: "bigint",
-      }),
-      paymasterAndData: parsedRes.paymasterAndData as Hex,
-    };
+    // If there are no operations, add the initCode to the response
+    if (parsedRes.length === 0) {
+      return {
+        ...op,
+        initCode: calculateInitCode(
+          CONTRACT_ADDRESSES["Factory"] as Address,
+          configuration.image_hash as Hex,
+          wallet.salt as Hex,
+        ),
+      };
+    } else {
+      return {
+        ...op,
+      };
+    }
   });
 
-  // Generate user hashes
-  const userOperations = parsedUserOperations.map((userOperation, index) => ({
-    ...userOperation,
-    hash: getUserOperationHash({
-      userOperation: userOperation as PermissionlessUserOperation,
-      entryPoint: CONTRACT_ADDRESSES["Entrypoint"],
-      chainId: Number(userOperationsQuery[index].chainId) as number,
-    }),
-  }));
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
 
-  // Return an object containing an array of userOperations and an array of hashes
+  // Return an object containing an array of userOperations
   return {
     configuration: configuration,
-    userOperations: userOperations,
+    userOperations: parsedUserOperations,
   };
 };
