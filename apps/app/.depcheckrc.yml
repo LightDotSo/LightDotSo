@@ -42,3 +42,4 @@ ignores:
   - siwe
   - "@web3modal/scaffold"
   - "@web3modal/wagmi"
+  - permissionless
