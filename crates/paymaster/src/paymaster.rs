@@ -23,6 +23,7 @@ use crate::{
         UserOperationRequest,
     },
 };
+use backon::{ExponentialBuilder, Retryable};
 use ethers::{
     abi::{encode, Token},
     core::k256::ecdsa::SigningKey,
@@ -110,7 +111,9 @@ pub async fn get_paymaster_and_data(
     info!(chain_id, valid_until, valid_after);
 
     // Attempt to sign the message w/ the KMS.
-    let kms_res = sign_message_kms(chain_id, construct.clone(), valid_until, valid_after).await;
+    let kms_res = { || sign_message_kms(chain_id, construct.clone(), valid_until, valid_after) }
+        .retry(&ExponentialBuilder::default())
+        .await;
 
     // If the KMS signer is available, use it.
     // Otherwise, fall back to the private key.
@@ -140,6 +143,9 @@ pub async fn get_paymaster_and_data(
             Ok((paymater_and_data, paymaster_nonce))
         }
         Err(_) => {
+            warn!("KMS signer is not available");
+            warn!("Falling back to the private key");
+
             // Fallback to the environment fallback address
             let verifying_paymaster_address = LIGHT_PAYMASTER_ADDRESSES[0];
             info!(
