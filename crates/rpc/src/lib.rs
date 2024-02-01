@@ -219,7 +219,10 @@ async fn try_rpc_with_url(
 
         // Get the result from the client
         let result = get_client_result(full_url, client.clone(), body).await;
-        if let Some(resp) = result {
+        if let Some(mut resp) = result {
+            // Add the current rpc url to the response
+            resp.headers_mut().insert("X-RPC-URL", rpc_url.parse().unwrap());
+
             return Some(resp);
         }
     }
