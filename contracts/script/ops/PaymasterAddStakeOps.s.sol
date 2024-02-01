@@ -36,7 +36,7 @@ contract PaymasterAddStakeOpsScript is BaseLightDeployerOps {
         console.log(paymaster.owner());
 
         // Add stake
-        paymaster.addStake{value: 0.1 ether}(86_400);
+        paymaster.addStake{value: 1 ether}(86_400);
 
         // Stop the broadcast
         vm.stopBroadcast();
