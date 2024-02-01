@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #![allow(clippy::unwrap_used)]
+#![allow(clippy::expect_used)]
 
 pub mod config;
 mod constants;
@@ -35,6 +36,7 @@ use lightdotso_contracts::constants::ENTRYPOINT_V060_ADDRESS;
 use lightdotso_jsonrpsee::types::Request as JSONRPCRequest;
 use lightdotso_paymaster::types::UserOperationRequest;
 use lightdotso_tracing::tracing::{error, info, trace, warn};
+use rand::{seq::SliceRandom, thread_rng};
 use serde::ser::Error;
 use serde_json::{json, Error as SerdeError, Value};
 use std::collections::HashMap;
@@ -378,65 +380,36 @@ pub async fn rpc_proxy_handler(
                     return resp;
                 }
 
-                // Get the candide rpc url
-                let result = try_rpc_with_url(
-                    &CANDIDE_RPC_URLS,
-                    None,
-                    &chain_id,
-                    &client,
-                    Body::from(full_body_bytes.clone()),
-                )
-                .await;
-                if let Some(mut resp) = result {
-                    // Continue if the body includes `Unknown error`
-                    let body = resp.body_mut();
-                    // Convert the body into bytes
-                    let body_bytes = body::to_bytes(body).await;
+                let mut requests = vec![
+                    (&*CANDIDE_RPC_URLS, None),
+                    (
+                        &*PIMLICO_RPC_URLS,
+                        Some("?apikey=".to_owned() + &std::env::var("PIMLICO_API_KEY").unwrap()),
+                    ),
+                    (&*ALCHEMY_RPC_URLS, Some(std::env::var("ALCHEMY_API_KEY").unwrap())),
+                ];
 
-                    if let Ok(body_bytes) = body_bytes {
-                        let body_json: Value =
-                            serde_json::from_slice(&body_bytes).unwrap_or_default();
-                        // If the error code is the speficied error code return None
-                        if let Some(error) = body_json.get("error") {
-                            if let Some(message) = error.get("message") {
-                                if message.as_str().map_or(false, |s| s.contains("Unknown error")) {
-                                    info!("Continuing w/ next rpc url: {:?}", body_json);
-                                }
-                            } else {
-                                return resp;
-                            }
-                        } else {
-                            return resp;
-                        }
-                    } else {
+                let shuffled_requests = tokio::task::spawn_blocking(move || {
+                    let mut rng = thread_rng();
+                    requests.shuffle(&mut rng);
+                    requests
+                })
+                .await
+                .expect("Failed during shuffling");
+
+                for (url, key) in shuffled_requests {
+                    let result = try_rpc_with_url(
+                        url,
+                        key,
+                        &chain_id,
+                        &client,
+                        Body::from(full_body_bytes.clone()),
+                    )
+                    .await;
+
+                    if let Some(resp) = result {
                         return resp;
                     }
-                }
-
-                // Get the pimlico rpc url
-                let result = try_rpc_with_url(
-                    &PIMLICO_RPC_URLS,
-                    Some("?apikey=".to_owned() + &std::env::var("PIMLICO_API_KEY").unwrap()),
-                    &chain_id,
-                    &client,
-                    Body::from(full_body_bytes.clone()),
-                )
-                .await;
-                if let Some(resp) = result {
-                    return resp;
-                }
-
-                // Get the alchemy rpc url
-                let result = try_rpc_with_url(
-                    &ALCHEMY_RPC_URLS,
-                    Some(std::env::var("ALCHEMY_API_KEY").unwrap()),
-                    &chain_id,
-                    &client,
-                    Body::from(full_body_bytes.clone()),
-                )
-                .await;
-                if let Some(resp) = result {
-                    return resp;
                 }
             }
             "gas_requestGasEstimation" => {
