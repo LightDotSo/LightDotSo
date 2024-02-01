@@ -13,11 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type {
-  UserOperationGetParams,
-  UserOperationListCountParams,
-  UserOperationListParams,
-} from "@lightdotso/params";
+import type { UserOperation } from "@lightdotso/schemas";
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
@@ -25,14 +21,25 @@ import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 // Keys
 // -----------------------------------------------------------------------------
 
-export const user_operation = createQueryKeys("user_operation", {
-  get: (params: UserOperationGetParams) => ({
+export const rpc = createQueryKeys("rpc", {
+  estimate_user_operation_gas: (
+    params: Omit<
+      UserOperation,
+      | "hash"
+      | "signature"
+      | "paymasterAndData"
+      | "callGasLimit"
+      | "verificationGasLimit"
+      | "preVerificationGas"
+      | "maxFeePerGas"
+      | "maxPriorityFeePerGas"
+    >,
+  ) => ({
     queryKey: [{ params }],
   }),
-  list: (params: UserOperationListParams) => ({
-    queryKey: [{ params }],
-  }),
-  listCount: (params: UserOperationListCountParams) => ({
+  get_paymaster_gas_and_paymaster_and_data: (
+    params: Omit<UserOperation, "hash" | "paymasterAndData" | "signature">,
+  ) => ({
     queryKey: [{ params }],
   }),
 });
@@ -41,4 +48,4 @@ export const user_operation = createQueryKeys("user_operation", {
 // Infer
 // -----------------------------------------------------------------------------
 
-export type UserOperationKeys = inferQueryKeys<typeof user_operation>;
+export type RpcKeys = inferQueryKeys<typeof rpc>;

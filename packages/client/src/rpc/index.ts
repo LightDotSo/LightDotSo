@@ -50,6 +50,10 @@ const HexStringSchema = z
     message: "Must be a hexadecimal string",
   });
 
+// -----------------------------------------------------------------------------
+// SendUserOperation
+// -----------------------------------------------------------------------------
+
 const SendUserOperationResponse = z.string();
 
 const SendUserOperationRequest = z.array(
@@ -90,6 +94,62 @@ export const sendUserOperation = async (
     e => e,
   );
 };
+
+// -----------------------------------------------------------------------------
+// EstimateUserOperationGas
+// -----------------------------------------------------------------------------
+
+const EstimateUserOperationGasResponse = z.object({
+  callGasLimit: HexStringSchema,
+  verificationGas: HexStringSchema,
+  verificationGasLimit: HexStringSchema,
+  preVerificationGas: HexStringSchema,
+});
+
+const EstimateUserOperationGasRequest = z.array(
+  z
+    .object({
+      sender: HexStringSchema,
+      nonce: HexStringSchema,
+      initCode: HexStringSchema,
+      callData: HexStringSchema,
+      signature: HexStringSchema,
+      paymasterAndData: HexStringSchema,
+      callGasLimit: HexStringSchema.optional(),
+      verificationGasLimit: HexStringSchema.optional(),
+      preVerificationGas: HexStringSchema.optional(),
+      maxFeePerGas: HexStringSchema.optional(),
+      maxPriorityFeePerGas: HexStringSchema.optional(),
+    })
+    .or(z.string()),
+);
+
+type EstimateUserOperationGasRequestType = z.infer<
+  typeof EstimateUserOperationGasRequest
+>;
+
+export const estimateUserOperationGas = async (
+  chainId: number,
+  params: EstimateUserOperationGasRequestType,
+  clientType?: ClientType,
+) => {
+  return ResultAsync.fromPromise(
+    zodJsonRpcFetch(
+      rpcClient(chainId, clientType),
+      "eth_estimateUserOperationGas",
+      params,
+      EstimateUserOperationGasResponse,
+      {
+        revalidate: 0,
+      },
+    ),
+    e => e,
+  );
+};
+
+// -----------------------------------------------------------------------------
+// Paymaster
+// -----------------------------------------------------------------------------
 
 const PaymasterGasAndPaymasterAndDataResponse = z.object({
   paymasterNonce: HexStringSchema,

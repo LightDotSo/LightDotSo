@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
+import { estimateUserOperationGas } from "@lightdotso/client";
 import { queryKeys } from "@lightdotso/query-keys";
 import type { UserOperation } from "@lightdotso/schemas";
 import { useAuth } from "@lightdotso/stores";
@@ -21,18 +21,25 @@ import { serialize } from "@lightdotso/wagmi";
 import { useQuery } from "@tanstack/react-query";
 import { toHex } from "viem";
 
-type PaymasterAndData = {
+type EstimateUserOperationGasData = {
   callGasLimit: string;
+  verificationGas: string;
   verificationGasLimit: string;
   preVerificationGas: string;
-  maxFeePerGas: string;
-  maxPriorityFeePerGas: string;
-  paymasterAndData: string;
-  paymasterNonce: string;
 };
 
-export const useQueryPaymasterGasAndPaymasterAndData = (
-  params: Omit<UserOperation, "hash" | "paymasterAndData" | "signature">,
+export const useQueryEstimateUserOperationGas = (
+  params: Omit<
+    UserOperation,
+    | "hash"
+    | "signature"
+    | "paymasterAndData"
+    | "callGasLimit"
+    | "verificationGasLimit"
+    | "preVerificationGas"
+    | "maxFeePerGas"
+    | "maxPriorityFeePerGas"
+  >,
 ) => {
   // ---------------------------------------------------------------------------
   // Stores
@@ -45,52 +52,33 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
   // ---------------------------------------------------------------------------
 
   const {
-    data: paymasterAndData,
-    isLoading: isPaymasterAndDataLoading,
-    error: paymasterAndDataError,
-  } = useQuery<PaymasterAndData | null>({
+    data: estimateUserOperationGasData,
+    isLoading: isEstimateUserOperationGasDataLoading,
+    error: estimateUserOperationGasDataError,
+  } = useQuery<EstimateUserOperationGasData | null>({
     queryKeyHashFn: key => {
       return serialize(key);
     },
-    queryKey: queryKeys.rpc.get_paymaster_gas_and_paymaster_and_data({
+    queryKey: queryKeys.rpc.estimate_user_operation_gas({
       chainId: params.nonce,
       nonce: params.nonce,
       initCode: params.initCode,
       sender: params.sender,
       callData: params.callData,
-      callGasLimit: params.callGasLimit,
-      verificationGasLimit: params.verificationGasLimit,
-      preVerificationGas: params.preVerificationGas,
-      maxFeePerGas: params.maxFeePerGas,
-      maxPriorityFeePerGas: params.maxPriorityFeePerGas,
     }).queryKey,
     queryFn: async () => {
-      if (
-        !params.callGasLimit ||
-        !params.verificationGasLimit ||
-        !params.preVerificationGas ||
-        !params.maxFeePerGas ||
-        !params.maxPriorityFeePerGas
-      ) {
-        return null;
-      }
-
-      const res = await getPaymasterGasAndPaymasterAndData(
+      const res = await estimateUserOperationGas(
         Number(params.chainId) as number,
         [
           {
             sender: params.sender,
-            paymasterAndData: "0x",
             nonce: toHex(params.nonce),
             initCode: params.initCode,
             callData: params.callData,
+            paymasterAndData:
+              "0x000000000018d32df916ff115a25fbefc70baf8b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000065185b1ce67f0444c9d1f99cf4bbb8b44846479ec40b7d28acae4c76abd904808cfe12c0590e10e989801251d867f222cb8c6d9af4cec7189eac7295c624c4216227871e1c",
             signature:
-              "0x00010000000100013b31d8e3cafd8454ccaf0d4ad859bc76bbefbb7a7533197ca12fa852eba6a38a2e52c99c3b297f1935f9bfabb554176e65b601863cf6a80aa566930e0c05eef51c01",
-            callGasLimit: toHex(params.callGasLimit),
-            verificationGasLimit: toHex(params.verificationGasLimit),
-            preVerificationGas: toHex(params.preVerificationGas),
-            maxFeePerGas: toHex(params.maxFeePerGas),
-            maxPriorityFeePerGas: toHex(params.maxPriorityFeePerGas),
+              "0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c",
           },
         ],
         clientType,
@@ -109,8 +97,8 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
   });
 
   return {
-    paymasterAndData,
-    isPaymasterAndDataLoading,
-    paymasterAndDataError,
+    estimateUserOperationGasData,
+    isEstimateUserOperationGasDataLoading,
+    estimateUserOperationGasDataError,
   };
 };
