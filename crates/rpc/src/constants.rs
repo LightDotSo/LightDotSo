@@ -282,6 +282,7 @@ lazy_static! {
         m.insert(137, "https://api.pimlico.io/v1/polygon/rpc".to_string());
         m.insert(8453, "https://api.pimlico.io/v1/base/rpc".to_string());
         m.insert(42161, "https://api.pimlico.io/v1/arbitrum/rpc".to_string());
+        m.insert(42220, "https://api.pimlico.io/v1/celo/rpc".to_string());
         m.insert(43114, "https://api.pimlico.io/v1/avalanche/rpc".to_string());
         m.insert(59144, "https://api.pimlico.io/v1/linea/rpc".to_string());
         m.insert(534352, "https://api.pimlico.io/v1/scroll/rpc".to_string());
@@ -290,6 +291,7 @@ lazy_static! {
         // Testnet
         m.insert(10200, "https://api.pimlico.io/v1/chiado-testnet/rpc".to_string());
         m.insert(80001, "https://api.pimlico.io/v1/mumbai/rpc".to_string());
+        m.insert(534351, "https://api.pimlico.io/v1/scroll-sepolia-testnet/rpc".to_string());
         m.insert(11155111, "https://api.pimlico.io/v1/sepolia/rpc".to_string());
 
         m
