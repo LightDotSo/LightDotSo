@@ -1,5 +1,13 @@
 # @lightdotso/contracts
 
+## 3.1.1
+
+### Patch Changes
+
+- Updated dependencies [[`33b7983`](https://github.com/LightDotSo/LightDotSo/commit/33b79832712965b6d95674239a2e78f95938a2f4)]:
+  - @lightdotso/solutions@3.1.1
+  - @lightdotso/wagmi@3.1.1
+
 ## 3.1.0
 
 ### Minor Changes

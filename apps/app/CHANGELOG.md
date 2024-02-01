@@ -1,5 +1,96 @@
 # @lightdotso/app
 
+## 3.2.0
+
+### Minor Changes
+
+- [#1398](https://github.com/LightDotSo/LightDotSo/pull/1398) [`75f9815`](https://github.com/LightDotSo/LightDotSo/commit/75f98153dbd10a327840af8b8a189e4ef7496d0b) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Next Config Revamp
+
+### Patch Changes
+
+- [#1484](https://github.com/LightDotSo/LightDotSo/pull/1484) [`45b32ed`](https://github.com/LightDotSo/LightDotSo/commit/45b32ed2373da08e1226f5eb5b79fcb6f5bee863) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix Tabs
+
+- [#1474](https://github.com/LightDotSo/LightDotSo/pull/1474) [`966a08b`](https://github.com/LightDotSo/LightDotSo/commit/966a08b67a6d9f7035ed7a2f0ce3ee0e09a95ef1) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add modal hooks
+
+- [#1416](https://github.com/LightDotSo/LightDotSo/pull/1416) [`4f80f8e`](https://github.com/LightDotSo/LightDotSo/commit/4f80f8e5c64d8f0a4c977d238e4f749b68d17ee9) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix tabs nav
+
+- [#1429](https://github.com/LightDotSo/LightDotSo/pull/1429) [`48453bf`](https://github.com/LightDotSo/LightDotSo/commit/48453bfaf66de41a8dee355e8e56c2c1f334c32a) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Configure tailwindcss esm
+
+- [#1408](https://github.com/LightDotSo/LightDotSo/pull/1408) [`c0559e5`](https://github.com/LightDotSo/LightDotSo/commit/c0559e57267105edb44231e5da1599077e0ad904) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add web3modal migration
+
+- [#1485](https://github.com/LightDotSo/LightDotSo/pull/1485) [`4c42be7`](https://github.com/LightDotSo/LightDotSo/commit/4c42be7cb76e22e61776a9951086805927bd0575) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add asset changes
+
+- [#1399](https://github.com/LightDotSo/LightDotSo/pull/1399) [`eab3146`](https://github.com/LightDotSo/LightDotSo/commit/eab31464565c80bc6972362e5ff00bc5ab074d9e) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add favicon.ico
+
+- [#1500](https://github.com/LightDotSo/LightDotSo/pull/1500) [`28827da`](https://github.com/LightDotSo/LightDotSo/commit/28827da987a671d37150c89bb8f3d39912a89fec) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add estimate uop
+
+- [#1448](https://github.com/LightDotSo/LightDotSo/pull/1448) [`98c9922`](https://github.com/LightDotSo/LightDotSo/commit/98c9922c3fb3d2cfa2073182c50e822ce7bfbe4d) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add modal demo
+
+- [#1443](https://github.com/LightDotSo/LightDotSo/pull/1443) [`64c497d`](https://github.com/LightDotSo/LightDotSo/commit/64c497d406aef9910ffd5bda00ef8dc110b68c7b) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add modal auth
+
+- [#1475](https://github.com/LightDotSo/LightDotSo/pull/1475) [`7b89174`](https://github.com/LightDotSo/LightDotSo/commit/7b891748303bc8e5dd7e5449b0487dfcedeedd15) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Ini mobile nav bar
+
+- [#1431](https://github.com/LightDotSo/LightDotSo/pull/1431) [`aae34bf`](https://github.com/LightDotSo/LightDotSo/commit/aae34bfc21e074fe5745b77e5c9284e33d11b204) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add complete template & element
+
+- [#1442](https://github.com/LightDotSo/LightDotSo/pull/1442) [`3ebd3ef`](https://github.com/LightDotSo/LightDotSo/commit/3ebd3eff715e6ff51549d0de4c1eb76a90d99cad) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Refactor card component
+
+- [#1434](https://github.com/LightDotSo/LightDotSo/pull/1434) [`a1fd80b`](https://github.com/LightDotSo/LightDotSo/commit/a1fd80b180af6d49b523faabd138422b2a91674c) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix base height layers
+
+- [#1417](https://github.com/LightDotSo/LightDotSo/pull/1417) [`27ffa58`](https://github.com/LightDotSo/LightDotSo/commit/27ffa583a81e1b76020e3ce37e69cc52c4928f10) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix tabs nav
+
+- [#1462](https://github.com/LightDotSo/LightDotSo/pull/1462) [`617bb0a`](https://github.com/LightDotSo/LightDotSo/commit/617bb0aa65cb9e64c34023682353d777153e21de) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add post toast create
+
+- [#1441](https://github.com/LightDotSo/LightDotSo/pull/1441) [`3c3c683`](https://github.com/LightDotSo/LightDotSo/commit/3c3c6838a06a527de039d777fe173672774f991e) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix styling issues
+
+- [#1446](https://github.com/LightDotSo/LightDotSo/pull/1446) [`99a3980`](https://github.com/LightDotSo/LightDotSo/commit/99a3980f9252759293fb549461221380b84ad209) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add token moal
+
+- [#1472](https://github.com/LightDotSo/LightDotSo/pull/1472) [`d7212a1`](https://github.com/LightDotSo/LightDotSo/commit/d7212a15fac33330f3e984d5f6fcf4469f7b8158) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add useIsInsideModal hook
+
+- [#1455](https://github.com/LightDotSo/LightDotSo/pull/1455) [`33b7983`](https://github.com/LightDotSo/LightDotSo/commit/33b79832712965b6d95674239a2e78f95938a2f4) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update ncu upgrade
+
+- [#1411](https://github.com/LightDotSo/LightDotSo/pull/1411) [`050b728`](https://github.com/LightDotSo/LightDotSo/commit/050b728afed7f911cda960a4a5d0ca4c7588ba53) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add op original
+
+- [#1415](https://github.com/LightDotSo/LightDotSo/pull/1415) [`c96939c`](https://github.com/LightDotSo/LightDotSo/commit/c96939c44829df0379348d6c0afc21f1d9373a72) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix pathtype hooks
+
+- [#1498](https://github.com/LightDotSo/LightDotSo/pull/1498) [`6141b1d`](https://github.com/LightDotSo/LightDotSo/commit/6141b1d20fba024155691e092533857284c3110e) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add light op handler
+
+- [#1461](https://github.com/LightDotSo/LightDotSo/pull/1461) [`ae8d334`](https://github.com/LightDotSo/LightDotSo/commit/ae8d3348491ac6f1b264a5ed7b2febb3c1aff2f6) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add Login component
+
+- [#1452](https://github.com/LightDotSo/LightDotSo/pull/1452) [`d600e1b`](https://github.com/LightDotSo/LightDotSo/commit/d600e1b0086ea318ab27edc93a5dc32e12df08c6) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add nuqs package
+
+- [#1492](https://github.com/LightDotSo/LightDotSo/pull/1492) [`f067d5f`](https://github.com/LightDotSo/LightDotSo/commit/f067d5f28f26242f427f5f801f54cfe3324d1b30) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Refactor auth modal
+
+- [#1477](https://github.com/LightDotSo/LightDotSo/pull/1477) [`7215bb9`](https://github.com/LightDotSo/LightDotSo/commit/7215bb98c1d174f425372edcc15f96e2fa9c3aa0) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add pathname interception
+
+- [#1422](https://github.com/LightDotSo/LightDotSo/pull/1422) [`40a70ae`](https://github.com/LightDotSo/LightDotSo/commit/40a70ae4d113ad7f19901fc24da3926bcf6a36a1) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add suspense modal
+
+- Updated dependencies [[`399f02d`](https://github.com/LightDotSo/LightDotSo/commit/399f02d4fa1d71038ffec9da7fbf14d95c258b0b), [`7775fe6`](https://github.com/LightDotSo/LightDotSo/commit/7775fe6dc64589adbb8aff0bfccd91ce15576d5b), [`3a5f31b`](https://github.com/LightDotSo/LightDotSo/commit/3a5f31b6ba020f1e338b9362be88d9478bb54818), [`48453bf`](https://github.com/LightDotSo/LightDotSo/commit/48453bfaf66de41a8dee355e8e56c2c1f334c32a), [`71a8f7d`](https://github.com/LightDotSo/LightDotSo/commit/71a8f7d79be2f4ffcb670594a3f7900ae3a233c2), [`75b8a32`](https://github.com/LightDotSo/LightDotSo/commit/75b8a32c7c4375f204bfe438f417ac098f1e5cea), [`ddfb7e7`](https://github.com/LightDotSo/LightDotSo/commit/ddfb7e7def47cd5cdc6cf0f13ee379718d6452d7), [`eebfe06`](https://github.com/LightDotSo/LightDotSo/commit/eebfe06ea56dc491ddea68aebad17bf1b3805dab), [`d58a7bf`](https://github.com/LightDotSo/LightDotSo/commit/d58a7bf6f9df0cff91e2260bc7c517ac2a5b6817), [`28b0418`](https://github.com/LightDotSo/LightDotSo/commit/28b0418cd7ef20b4c32566ec6275afb9970033aa), [`57d866f`](https://github.com/LightDotSo/LightDotSo/commit/57d866feceecdf311d2aa0076cb55d217b193cea), [`98c9922`](https://github.com/LightDotSo/LightDotSo/commit/98c9922c3fb3d2cfa2073182c50e822ce7bfbe4d), [`0f0533e`](https://github.com/LightDotSo/LightDotSo/commit/0f0533e1e71149a95ddcd22b276bb0eef1a8fa5c), [`48453bf`](https://github.com/LightDotSo/LightDotSo/commit/48453bfaf66de41a8dee355e8e56c2c1f334c32a), [`aae34bf`](https://github.com/LightDotSo/LightDotSo/commit/aae34bfc21e074fe5745b77e5c9284e33d11b204), [`bb80fb5`](https://github.com/LightDotSo/LightDotSo/commit/bb80fb506bea5fafc7742433aa208f180a2c1799), [`3ebd3ef`](https://github.com/LightDotSo/LightDotSo/commit/3ebd3eff715e6ff51549d0de4c1eb76a90d99cad), [`e2b1e4d`](https://github.com/LightDotSo/LightDotSo/commit/e2b1e4d759fafb1b480e3667de4dc95b0865ce2a), [`a1fd80b`](https://github.com/LightDotSo/LightDotSo/commit/a1fd80b180af6d49b523faabd138422b2a91674c), [`cc91463`](https://github.com/LightDotSo/LightDotSo/commit/cc91463b8e6e962436a643c48363fde692ecdae5), [`5d5ecd9`](https://github.com/LightDotSo/LightDotSo/commit/5d5ecd9f7480fef1f16bbc1af4232d3fe3d62fd4), [`eebfe06`](https://github.com/LightDotSo/LightDotSo/commit/eebfe06ea56dc491ddea68aebad17bf1b3805dab), [`99a3980`](https://github.com/LightDotSo/LightDotSo/commit/99a3980f9252759293fb549461221380b84ad209), [`d7212a1`](https://github.com/LightDotSo/LightDotSo/commit/d7212a15fac33330f3e984d5f6fcf4469f7b8158), [`a887d88`](https://github.com/LightDotSo/LightDotSo/commit/a887d88322fdd936a4d6d07e965095bb330e19e7), [`33b7983`](https://github.com/LightDotSo/LightDotSo/commit/33b79832712965b6d95674239a2e78f95938a2f4), [`7f0b130`](https://github.com/LightDotSo/LightDotSo/commit/7f0b1307b106c6b60b6817bf24423b94f9ae16b3), [`8225989`](https://github.com/LightDotSo/LightDotSo/commit/822598927944def10149a94e35ec6ba25bb75e7d), [`0ee49fe`](https://github.com/LightDotSo/LightDotSo/commit/0ee49fee18bdb3163f9ac50b6be3efe3fc783b6e), [`3769719`](https://github.com/LightDotSo/LightDotSo/commit/3769719e3dad2341d7b5eaec7aedf9394bda6ebc), [`5e7dbbb`](https://github.com/LightDotSo/LightDotSo/commit/5e7dbbb74158b4c3885819d673ce7dcb5c5ad706), [`ae8d334`](https://github.com/LightDotSo/LightDotSo/commit/ae8d3348491ac6f1b264a5ed7b2febb3c1aff2f6), [`d600e1b`](https://github.com/LightDotSo/LightDotSo/commit/d600e1b0086ea318ab27edc93a5dc32e12df08c6)]:
+  - @lightdotso/states@0.0.1
+  - @lightdotso/ui@3.1.1
+  - @lightdotso/client@3.1.1
+  - @lightdotso/const@3.1.1
+  - @lightdotso/prisma@3.1.1
+  - @lightdotso/tables@0.1.1
+  - @lightdotso/modals@0.0.1
+  - @lightdotso/templates@0.0.1
+  - @lightdotso/hooks@0.0.2
+  - @lightdotso/nuqs@0.0.1
+  - @lightdotso/elements@0.0.1
+  - @lightdotso/query@0.1.1
+  - @lightdotso/msw@0.0.1
+  - @lightdotso/stores@0.1.1
+  - @lightdotso/types@0.0.1
+  - @lightdotso/kysely@3.1.1
+  - @lightdotso/query-keys@0.1.1
+  - @lightdotso/solutions@3.1.1
+  - @lightdotso/services@0.0.2
+  - @lightdotso/schemas@3.1.1
+  - @lightdotso/params@0.1.1
+  - @lightdotso/utils@3.1.1
+  - @lightdotso/wagmi@3.1.1
+  - @lightdotso/data@0.1.1
+  - @lightdotso/svg@0.0.2
+
 ## 3.1.0
 
 ### Minor Changes

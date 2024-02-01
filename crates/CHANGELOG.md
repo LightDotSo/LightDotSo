@@ -1,5 +1,25 @@
 # @lightdotso/crates
 
+## 3.1.1
+
+### Patch Changes
+
+- [#1427](https://github.com/LightDotSo/LightDotSo/pull/1427) [`d09c0f9`](https://github.com/LightDotSo/LightDotSo/commit/d09c0f90831d7c9a329bc73727d6adcb5a54f867) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add Procfile
+
+- [#1429](https://github.com/LightDotSo/LightDotSo/pull/1429) [`48453bf`](https://github.com/LightDotSo/LightDotSo/commit/48453bfaf66de41a8dee355e8e56c2c1f334c32a) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Configure tailwindcss esm
+
+- [#1404](https://github.com/LightDotSo/LightDotSo/pull/1404) [`71a8f7d`](https://github.com/LightDotSo/LightDotSo/commit/71a8f7d79be2f4ffcb670594a3f7900ae3a233c2) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix covalent checksum
+
+- [#1448](https://github.com/LightDotSo/LightDotSo/pull/1448) [`98c9922`](https://github.com/LightDotSo/LightDotSo/commit/98c9922c3fb3d2cfa2073182c50e822ce7bfbe4d) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add modal demo
+
+- [#1424](https://github.com/LightDotSo/LightDotSo/pull/1424) [`9e7ac92`](https://github.com/LightDotSo/LightDotSo/commit/9e7ac92a893343125d7b67815f5d627a3b18f3c7) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add otlp axum
+
+- [#1409](https://github.com/LightDotSo/LightDotSo/pull/1409) [`0f0587f`](https://github.com/LightDotSo/LightDotSo/commit/0f0587f3f732b78fcf7e97eeb5f7067fb4ad6b85) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add api crates
+
+- [#1457](https://github.com/LightDotSo/LightDotSo/pull/1457) [`41f4109`](https://github.com/LightDotSo/LightDotSo/commit/41f410973ea1f8f9440f6d2713c71268210b78ec) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add is_testnet util
+
+- [#1447](https://github.com/LightDotSo/LightDotSo/pull/1447) [`017bcaf`](https://github.com/LightDotSo/LightDotSo/commit/017bcafaef4155b7c801fdbf6084e047ea9297aa) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add notification activity authentication
+
 ## 3.1.0
 
 ### Minor Changes

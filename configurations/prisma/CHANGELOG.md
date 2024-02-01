@@ -1,5 +1,13 @@
 # @lightdotso/prisma
 
+## 3.1.1
+
+### Patch Changes
+
+- [#1404](https://github.com/LightDotSo/LightDotSo/pull/1404) [`71a8f7d`](https://github.com/LightDotSo/LightDotSo/commit/71a8f7d79be2f4ffcb670594a3f7900ae3a233c2) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix covalent checksum
+
+- [#1455](https://github.com/LightDotSo/LightDotSo/pull/1455) [`33b7983`](https://github.com/LightDotSo/LightDotSo/commit/33b79832712965b6d95674239a2e78f95938a2f4) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update ncu upgrade
+
 ## 3.1.0
 
 ### Minor Changes

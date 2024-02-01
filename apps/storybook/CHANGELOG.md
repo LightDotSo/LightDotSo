@@ -1,5 +1,27 @@
 # @lightdotso/storybook
 
+## 0.0.2
+
+### Patch Changes
+
+- [#1429](https://github.com/LightDotSo/LightDotSo/pull/1429) [`48453bf`](https://github.com/LightDotSo/LightDotSo/commit/48453bfaf66de41a8dee355e8e56c2c1f334c32a) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Configure tailwindcss esm
+
+- [#1448](https://github.com/LightDotSo/LightDotSo/pull/1448) [`98c9922`](https://github.com/LightDotSo/LightDotSo/commit/98c9922c3fb3d2cfa2073182c50e822ce7bfbe4d) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add modal demo
+
+- [#1494](https://github.com/LightDotSo/LightDotSo/pull/1494) [`9e03d63`](https://github.com/LightDotSo/LightDotSo/commit/9e03d63d3b0b170aa1ff755b5a91ab2585077564) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add nextjs config
+
+- [#1455](https://github.com/LightDotSo/LightDotSo/pull/1455) [`33b7983`](https://github.com/LightDotSo/LightDotSo/commit/33b79832712965b6d95674239a2e78f95938a2f4) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update ncu upgrade
+
+- Updated dependencies [[`7775fe6`](https://github.com/LightDotSo/LightDotSo/commit/7775fe6dc64589adbb8aff0bfccd91ce15576d5b), [`48453bf`](https://github.com/LightDotSo/LightDotSo/commit/48453bfaf66de41a8dee355e8e56c2c1f334c32a), [`75b8a32`](https://github.com/LightDotSo/LightDotSo/commit/75b8a32c7c4375f204bfe438f417ac098f1e5cea), [`eebfe06`](https://github.com/LightDotSo/LightDotSo/commit/eebfe06ea56dc491ddea68aebad17bf1b3805dab), [`d58a7bf`](https://github.com/LightDotSo/LightDotSo/commit/d58a7bf6f9df0cff91e2260bc7c517ac2a5b6817), [`98c9922`](https://github.com/LightDotSo/LightDotSo/commit/98c9922c3fb3d2cfa2073182c50e822ce7bfbe4d), [`0f0533e`](https://github.com/LightDotSo/LightDotSo/commit/0f0533e1e71149a95ddcd22b276bb0eef1a8fa5c), [`48453bf`](https://github.com/LightDotSo/LightDotSo/commit/48453bfaf66de41a8dee355e8e56c2c1f334c32a), [`aae34bf`](https://github.com/LightDotSo/LightDotSo/commit/aae34bfc21e074fe5745b77e5c9284e33d11b204), [`bb80fb5`](https://github.com/LightDotSo/LightDotSo/commit/bb80fb506bea5fafc7742433aa208f180a2c1799), [`3ebd3ef`](https://github.com/LightDotSo/LightDotSo/commit/3ebd3eff715e6ff51549d0de4c1eb76a90d99cad), [`e2b1e4d`](https://github.com/LightDotSo/LightDotSo/commit/e2b1e4d759fafb1b480e3667de4dc95b0865ce2a), [`a1fd80b`](https://github.com/LightDotSo/LightDotSo/commit/a1fd80b180af6d49b523faabd138422b2a91674c), [`eebfe06`](https://github.com/LightDotSo/LightDotSo/commit/eebfe06ea56dc491ddea68aebad17bf1b3805dab), [`d7212a1`](https://github.com/LightDotSo/LightDotSo/commit/d7212a15fac33330f3e984d5f6fcf4469f7b8158), [`33b7983`](https://github.com/LightDotSo/LightDotSo/commit/33b79832712965b6d95674239a2e78f95938a2f4), [`7f0b130`](https://github.com/LightDotSo/LightDotSo/commit/7f0b1307b106c6b60b6817bf24423b94f9ae16b3), [`8225989`](https://github.com/LightDotSo/LightDotSo/commit/822598927944def10149a94e35ec6ba25bb75e7d), [`3769719`](https://github.com/LightDotSo/LightDotSo/commit/3769719e3dad2341d7b5eaec7aedf9394bda6ebc), [`5e7dbbb`](https://github.com/LightDotSo/LightDotSo/commit/5e7dbbb74158b4c3885819d673ce7dcb5c5ad706), [`ae8d334`](https://github.com/LightDotSo/LightDotSo/commit/ae8d3348491ac6f1b264a5ed7b2febb3c1aff2f6)]:
+  - @lightdotso/ui@3.1.1
+  - @lightdotso/const@3.1.1
+  - @lightdotso/tables@0.1.1
+  - @lightdotso/templates@0.0.1
+  - @lightdotso/elements@0.0.1
+  - @lightdotso/demo@0.0.2
+  - @lightdotso/wagmi@3.1.1
+  - @lightdotso/svg@0.0.2
+
 ## 0.0.1
 
 ### Patch Changes
