@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #![allow(clippy::unwrap_used)]
+#![allow(clippy::expect_used)]
 
 pub mod config;
 mod constants;
@@ -35,6 +36,7 @@ use lightdotso_contracts::constants::ENTRYPOINT_V060_ADDRESS;
 use lightdotso_jsonrpsee::types::Request as JSONRPCRequest;
 use lightdotso_paymaster::types::UserOperationRequest;
 use lightdotso_tracing::tracing::{error, info, trace, warn};
+use rand::{seq::SliceRandom, thread_rng};
 use serde::ser::Error;
 use serde_json::{json, Error as SerdeError, Value};
 use std::collections::HashMap;
@@ -413,30 +415,35 @@ pub async fn rpc_proxy_handler(
                     }
                 }
 
-                // Get the pimlico rpc url
-                let result = try_rpc_with_url(
-                    &PIMLICO_RPC_URLS,
-                    Some("?apikey=".to_owned() + &std::env::var("PIMLICO_API_KEY").unwrap()),
-                    &chain_id,
-                    &client,
-                    Body::from(full_body_bytes.clone()),
-                )
-                .await;
-                if let Some(resp) = result {
-                    return resp;
-                }
+                let mut requests = vec![
+                    (
+                        &*PIMLICO_RPC_URLS,
+                        Some("?apikey=".to_owned() + &std::env::var("PIMLICO_API_KEY").unwrap()),
+                    ),
+                    (&*ALCHEMY_RPC_URLS, Some(std::env::var("ALCHEMY_API_KEY").unwrap())),
+                ];
 
-                // Get the alchemy rpc url
-                let result = try_rpc_with_url(
-                    &ALCHEMY_RPC_URLS,
-                    Some(std::env::var("ALCHEMY_API_KEY").unwrap()),
-                    &chain_id,
-                    &client,
-                    Body::from(full_body_bytes.clone()),
-                )
-                .await;
-                if let Some(resp) = result {
-                    return resp;
+                let shuffled_requests = tokio::task::spawn_blocking(move || {
+                    let mut rng = thread_rng();
+                    requests.shuffle(&mut rng);
+                    requests
+                })
+                .await
+                .expect("Failed during shuffling");
+
+                for (url, key) in shuffled_requests {
+                    let result = try_rpc_with_url(
+                        url,
+                        key,
+                        &chain_id,
+                        &client,
+                        Body::from(full_body_bytes.clone()),
+                    )
+                    .await;
+
+                    if let Some(resp) = result {
+                        return resp;
+                    }
                 }
             }
             "gas_requestGasEstimation" => {
