@@ -66,7 +66,7 @@ export const UserOperationsDataTable: FC<UserOperationsDataTableProps> = ({
   const { userOperations, isUserOperationsLoading } = useQueryUserOperations({
     address: address ?? null,
     status: "history",
-    order: "asc",
+    order: "desc",
     limit: paginationState.pageSize,
     offset: offsetCount,
     is_testnet: isTestnetState ?? false,

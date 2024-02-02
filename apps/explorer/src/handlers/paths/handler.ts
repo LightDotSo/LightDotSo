@@ -49,7 +49,7 @@ export const handler = async (searchParams: {
     status: "history",
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
-    order: "asc",
+    order: "desc",
     is_testnet: isTestnetState ?? false,
   });
 
