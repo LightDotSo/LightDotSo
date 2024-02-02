@@ -355,7 +355,11 @@ export const Transaction: FC<TransactionProps> = ({
       isUserOperationLoading ||
       isPaymasterAndDataLoading
     );
-  }, [isUserOperationLoading, isPaymasterAndDataLoading]);
+  }, [
+    isEstimateUserOperationGasDataLoading,
+    isUserOperationLoading,
+    isPaymasterAndDataLoading,
+  ]);
 
   const isUpdating = useMemo(() => {
     return isPaymasterAndDataLoading;
