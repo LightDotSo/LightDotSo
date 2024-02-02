@@ -77,7 +77,7 @@ export const useQueryTransactions = (params: TransactionListParams) => {
           return data as TransactionData[];
         },
         err => {
-          if (err instanceof Error && failureCount % 3 !== 2) {
+          if (failureCount % 3 !== 2) {
             throw err;
           }
           return currentData ?? null;

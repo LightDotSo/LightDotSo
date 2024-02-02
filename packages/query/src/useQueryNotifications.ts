@@ -74,7 +74,7 @@ export const useQueryNotifications = (params: NotificationListParams) => {
           return data;
         },
         err => {
-          if (err instanceof Error && failureCount % 3 !== 2) {
+          if (failureCount % 3 !== 2) {
             throw err;
           }
           return currentData ?? null;
