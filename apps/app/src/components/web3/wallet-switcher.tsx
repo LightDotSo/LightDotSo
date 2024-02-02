@@ -121,7 +121,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { wallets, isLoading } = useSuspenseQueryWallets({
+  const { wallets, isWalletsLoading } = useSuspenseQueryWallets({
     address: address as Address,
     limit: Number.MAX_SAFE_INTEGER,
     offset: 0,
@@ -185,7 +185,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   // ---------------------------------------------------------------------------
 
   // If the address is empty or is not mounted, don't render
-  if (!isMounted || !address || isLoading) {
+  if (!isMounted || !address || isWalletsLoading) {
     return null;
   }
 

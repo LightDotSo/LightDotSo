@@ -39,38 +39,43 @@ export const useQueryUserOperation = (params: UserOperationGetParams) => {
     }).queryKey,
   );
 
-  const { data: userOperation, isLoading: isUserOperationLoading } =
-    useQuery<UserOperationData | null>({
-      queryKey: queryKeys.user_operation.get({
-        hash: params.hash,
-      }).queryKey,
-      queryFn: async () => {
-        if (typeof params.hash === "undefined") {
-          return null;
-        }
+  const {
+    data: userOperation,
+    isLoading: isUserOperationLoading,
+    failureCount,
+  } = useQuery<UserOperationData | null>({
+    queryKey: queryKeys.user_operation.get({
+      hash: params.hash,
+    }).queryKey,
+    queryFn: async () => {
+      if (typeof params.hash === "undefined") {
+        return null;
+      }
 
-        const res = await getUserOperation(
-          {
-            params: {
-              query: {
-                user_operation_hash: params.hash,
-              },
+      const res = await getUserOperation(
+        {
+          params: {
+            query: {
+              user_operation_hash: params.hash,
             },
           },
-          clientType,
-        );
+        },
+        clientType,
+      );
 
-        // Return if the response is 200
-        return res.match(
-          data => {
-            return data as UserOperationData;
-          },
-          _ => {
-            return currentData ?? null;
-          },
-        );
-      },
-    });
+      return res.match(
+        data => {
+          return data as UserOperationData;
+        },
+        err => {
+          if (err instanceof Error && failureCount % 3 !== 2) {
+            throw err;
+          }
+          return currentData ?? null;
+        },
+      );
+    },
+  });
 
   return {
     userOperation,

@@ -43,40 +43,45 @@ export const useQuerySimulation = (params: SimulationParams) => {
     }).queryKey,
   );
 
-  const { data: simulation, isLoading: isSimulationLoading } =
-    useQuery<SimulationData | null>({
-      queryKey: queryKeys.simulation.create({
-        chain_id: params.chain_id,
-        sender: params.sender,
-        nonce: params.nonce,
-        call_data: params.call_data,
-        init_code: params.init_code,
-      }).queryKey,
-      queryFn: async () => {
-        const res = await postCreateSimulation(
-          {
-            body: {
-              chain_id: params.chain_id,
-              sender: params.sender,
-              nonce: params.nonce,
-              call_data: params.call_data,
-              init_code: params.init_code,
-            },
+  const {
+    data: simulation,
+    isLoading: isSimulationLoading,
+    failureCount,
+  } = useQuery<SimulationData | null>({
+    queryKey: queryKeys.simulation.create({
+      chain_id: params.chain_id,
+      sender: params.sender,
+      nonce: params.nonce,
+      call_data: params.call_data,
+      init_code: params.init_code,
+    }).queryKey,
+    queryFn: async () => {
+      const res = await postCreateSimulation(
+        {
+          body: {
+            chain_id: params.chain_id,
+            sender: params.sender,
+            nonce: params.nonce,
+            call_data: params.call_data,
+            init_code: params.init_code,
           },
-          clientType,
-        );
+        },
+        clientType,
+      );
 
-        // Return if the response is 200
-        return res.match(
-          data => {
-            return data as SimulationData;
-          },
-          _ => {
-            return currentData ?? null;
-          },
-        );
-      },
-    });
+      return res.match(
+        data => {
+          return data as SimulationData;
+        },
+        err => {
+          if (err instanceof Error && failureCount % 3 !== 2) {
+            throw err;
+          }
+          return currentData ?? null;
+        },
+      );
+    },
+  });
 
   return {
     simulation,

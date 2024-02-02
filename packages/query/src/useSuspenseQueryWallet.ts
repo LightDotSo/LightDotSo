@@ -37,7 +37,7 @@ export const useSuspenseQueryWallet = (params: WalletParams) => {
     queryKeys.wallet.get({ address: params.address }).queryKey,
   );
 
-  const { data: wallet } = useSuspenseQuery<WalletData | null>({
+  const { data: wallet, failureCount } = useSuspenseQuery<WalletData | null>({
     queryKey: queryKeys.wallet.get({ address: params.address }).queryKey,
     queryFn: async () => {
       if (typeof params.address === "undefined") {
@@ -55,12 +55,14 @@ export const useSuspenseQueryWallet = (params: WalletParams) => {
         clientType,
       );
 
-      // Return if the response is 200
       return res.match(
         data => {
           return data;
         },
-        _ => {
+        err => {
+          if (err instanceof Error && failureCount % 3 !== 2) {
+            throw err;
+          }
           return currentData ?? null;
         },
       );

@@ -49,6 +49,7 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
     isLoading: isPaymasterAndDataLoading,
     error: paymasterAndDataError,
   } = useQuery<PaymasterAndData | null>({
+    retry: 10,
     queryKeyHashFn: key => {
       return serialize(key);
     },

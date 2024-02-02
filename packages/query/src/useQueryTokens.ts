@@ -44,9 +44,11 @@ export const useQueryTokens = (params: TokenListParams) => {
     }).queryKey,
   );
 
-  const { data: tokens, isLoading: isTokensLoading } = useQuery<
-    TokenData[] | null
-  >({
+  const {
+    data: tokens,
+    isLoading: isTokensLoading,
+    failureCount,
+  } = useQuery<TokenData[] | null>({
     queryKey: queryKeys.token.list({
       address: params.address,
       is_testnet: params.is_testnet,
@@ -76,12 +78,14 @@ export const useQueryTokens = (params: TokenListParams) => {
         clientType,
       );
 
-      // Return if the response is 200
       return res.match(
         data => {
           return data as TokenData[];
         },
-        _ => {
+        err => {
+          if (err instanceof Error && failureCount % 3 !== 2) {
+            throw err;
+          }
           return currentData ?? null;
         },
       );

@@ -37,7 +37,7 @@ export const useQueryUser = (params: UserParams) => {
     queryKeys.user.get({ address: params.address }).queryKey,
   );
 
-  const { data: user } = useQuery<UserData | null>({
+  const { data: user, failureCount } = useQuery<UserData | null>({
     queryKey: queryKeys.user.get({ address: params.address }).queryKey,
     queryFn: async () => {
       if (typeof params.address === "undefined") {
@@ -55,12 +55,14 @@ export const useQueryUser = (params: UserParams) => {
         clientType,
       );
 
-      // Return if the response is 200
       return res.match(
         data => {
           return data;
         },
-        _ => {
+        err => {
+          if (err instanceof Error && failureCount % 3 !== 2) {
+            throw err;
+          }
           return currentData ?? null;
         },
       );

@@ -41,9 +41,11 @@ export const useQueryActivities = (params: ActivityListParams) => {
     }).queryKey,
   );
 
-  const { data: activities, isLoading: isActivitiesLoading } = useQuery<
-    ActivityData[] | null
-  >({
+  const {
+    data: activities,
+    isLoading: isActivitiesLoading,
+    failureCount,
+  } = useQuery<ActivityData[] | null>({
     queryKey: queryKeys.activity.list({
       address: params.address,
       limit: params.limit,
@@ -67,12 +69,14 @@ export const useQueryActivities = (params: ActivityListParams) => {
         clientType,
       );
 
-      // Return if the response is 200
       return res.match(
         data => {
           return data;
         },
-        _ => {
+        err => {
+          if (err instanceof Error && failureCount % 3 !== 2) {
+            throw err;
+          }
           return currentData ?? null;
         },
       );

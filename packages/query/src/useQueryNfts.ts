@@ -42,40 +42,45 @@ export const useQueryNfts = (params: NftListParams) => {
     }).queryKey,
   );
 
-  const { data: nftPage, isLoading: isNftsLoading } =
-    useQuery<NftDataPage | null>({
-      queryKey: queryKeys.nft.list({
-        address: params.address,
-        is_testnet: params.is_testnet,
-        limit: params.limit,
-        cursor: params.cursor,
-      }).queryKey,
-      queryFn: async () => {
-        if (typeof params.address === "undefined") {
-          return null;
-        }
+  const {
+    data: nftPage,
+    isLoading: isNftsLoading,
+    failureCount,
+  } = useQuery<NftDataPage | null>({
+    queryKey: queryKeys.nft.list({
+      address: params.address,
+      is_testnet: params.is_testnet,
+      limit: params.limit,
+      cursor: params.cursor,
+    }).queryKey,
+    queryFn: async () => {
+      if (typeof params.address === "undefined") {
+        return null;
+      }
 
-        const res = await getNftsByOwner(
-          {
-            address: params.address,
-            limit: params.limit,
-            isTestnet: params.is_testnet,
-            cursor: null,
-          },
-          clientType,
-        );
+      const res = await getNftsByOwner(
+        {
+          address: params.address,
+          limit: params.limit,
+          isTestnet: params.is_testnet,
+          cursor: null,
+        },
+        clientType,
+      );
 
-        // Return if the response is 200
-        return res.match(
-          data => {
-            return data as NftDataPage;
-          },
-          _ => {
-            return currentData ?? null;
-          },
-        );
-      },
-    });
+      return res.match(
+        data => {
+          return data as NftDataPage;
+        },
+        err => {
+          if (err instanceof Error && failureCount % 3 !== 2) {
+            throw err;
+          }
+          return currentData ?? null;
+        },
+      );
+    },
+  });
 
   return {
     nftPage,

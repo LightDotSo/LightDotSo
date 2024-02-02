@@ -42,38 +42,43 @@ export const useQueryNotificationsCount = (
         .queryKey,
     );
 
-  const { data: notificationsCount, isLoading: isNotificationsCountLoading } =
-    useQuery<NotificationCountData | null>({
-      queryKey: queryKeys.notification.listCount({
-        address: params.address as Address,
-      }).queryKey,
-      queryFn: async () => {
-        if (typeof params.address === "undefined") {
-          return null;
-        }
+  const {
+    data: notificationsCount,
+    isLoading: isNotificationsCountLoading,
+    failureCount,
+  } = useQuery<NotificationCountData | null>({
+    queryKey: queryKeys.notification.listCount({
+      address: params.address as Address,
+    }).queryKey,
+    queryFn: async () => {
+      if (typeof params.address === "undefined") {
+        return null;
+      }
 
-        const res = await getNotificationsCount(
-          {
-            params: {
-              query: {
-                owner: params.address,
-              },
+      const res = await getNotificationsCount(
+        {
+          params: {
+            query: {
+              owner: params.address,
             },
           },
-          clientType,
-        );
+        },
+        clientType,
+      );
 
-        // Return if the response is 200
-        return res.match(
-          data => {
-            return data;
-          },
-          _ => {
-            return currentCountData ?? null;
-          },
-        );
-      },
-    });
+      return res.match(
+        data => {
+          return data;
+        },
+        err => {
+          if (err instanceof Error && failureCount % 3 !== 2) {
+            throw err;
+          }
+          return currentCountData ?? null;
+        },
+      );
+    },
+  });
 
   return {
     notificationsCount,

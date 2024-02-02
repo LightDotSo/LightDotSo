@@ -42,9 +42,11 @@ export const useQueryTransactions = (params: TransactionListParams) => {
     }).queryKey,
   );
 
-  const { data: transactions, isLoading: isTransactionsLoading } = useQuery<
-    TransactionData[] | null
-  >({
+  const {
+    data: transactions,
+    isLoading: isTransactionsLoading,
+    failureCount,
+  } = useQuery<TransactionData[] | null>({
     queryKey: queryKeys.transaction.list({
       address: params.address,
       limit: params.limit,
@@ -70,12 +72,14 @@ export const useQueryTransactions = (params: TransactionListParams) => {
         clientType,
       );
 
-      // Return if the response is 200
       return res.match(
         data => {
           return data as TransactionData[];
         },
-        _ => {
+        err => {
+          if (err instanceof Error && failureCount % 3 !== 2) {
+            throw err;
+          }
           return currentData ?? null;
         },
       );

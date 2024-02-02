@@ -44,7 +44,7 @@ export const useSuspenseQueryPaymasterOperation = (
       }).queryKey,
     );
 
-  const { data: paymasterOperation } =
+  const { data: paymasterOperation, failureCount } =
     useSuspenseQuery<PaymasterOperationData | null>({
       queryKey: queryKeys.paymaster_operation.get({
         address: params.address,
@@ -69,12 +69,14 @@ export const useSuspenseQueryPaymasterOperation = (
           clientType,
         );
 
-        // Return if the response is 200
         return res.match(
           data => {
             return data;
           },
-          _ => {
+          err => {
+            if (err instanceof Error && failureCount % 3 !== 2) {
+              throw err;
+            }
             return currentData ?? null;
           },
         );

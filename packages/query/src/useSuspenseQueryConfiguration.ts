@@ -37,35 +37,39 @@ export const useSuspenseQueryConfiguration = (params: ConfigurationParams) => {
     queryKeys.configuration.get({ address: params.address }).queryKey,
   );
 
-  const { data: configuration } = useSuspenseQuery<ConfigurationData | null>({
-    queryKey: queryKeys.configuration.get({ address: params.address }).queryKey,
-    queryFn: async () => {
-      if (typeof params.address === "undefined" || params.address === null) {
-        return null;
-      }
+  const { data: configuration, failureCount } =
+    useSuspenseQuery<ConfigurationData | null>({
+      queryKey: queryKeys.configuration.get({ address: params.address })
+        .queryKey,
+      queryFn: async () => {
+        if (typeof params.address === "undefined" || params.address === null) {
+          return null;
+        }
 
-      const res = await getConfiguration(
-        {
-          params: {
-            query: {
-              address: params.address,
+        const res = await getConfiguration(
+          {
+            params: {
+              query: {
+                address: params.address,
+              },
             },
           },
-        },
-        clientType,
-      );
+          clientType,
+        );
 
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
-  });
+        return res.match(
+          data => {
+            return data;
+          },
+          err => {
+            if (err instanceof Error && failureCount % 3 !== 2) {
+              throw err;
+            }
+            return currentData ?? null;
+          },
+        );
+      },
+    });
 
   return {
     configuration,

@@ -42,7 +42,9 @@ export const useSuspenseQueryTransactions = (params: TransactionListParams) => {
     }).queryKey,
   );
 
-  const { data: transactions } = useSuspenseQuery<TransactionData[] | null>({
+  const { data: transactions, failureCount } = useSuspenseQuery<
+    TransactionData[] | null
+  >({
     queryKey: queryKeys.transaction.list({
       address: params.address,
       limit: params.limit,
@@ -68,12 +70,14 @@ export const useSuspenseQueryTransactions = (params: TransactionListParams) => {
         clientType,
       );
 
-      // Return if the response is 200
       return res.match(
         data => {
           return data as TransactionData[];
         },
-        _ => {
+        err => {
+          if (err instanceof Error && failureCount % 3 !== 2) {
+            throw err;
+          }
           return currentData ?? null;
         },
       );

@@ -39,35 +39,38 @@ export const useSuspenseQueryWalletSettings = (
     queryKeys.wallet.settings({ address: params.address }).queryKey,
   );
 
-  const { data: walletSettings } = useSuspenseQuery<WalletSettingsData | null>({
-    queryKey: queryKeys.wallet.settings({ address: params.address }).queryKey,
-    queryFn: async () => {
-      if (typeof params.address === "undefined") {
-        return null;
-      }
+  const { data: walletSettings, failureCount } =
+    useSuspenseQuery<WalletSettingsData | null>({
+      queryKey: queryKeys.wallet.settings({ address: params.address }).queryKey,
+      queryFn: async () => {
+        if (typeof params.address === "undefined") {
+          return null;
+        }
 
-      const res = await getWalletSettings(
-        {
-          params: {
-            query: {
-              address: params.address,
+        const res = await getWalletSettings(
+          {
+            params: {
+              query: {
+                address: params.address,
+              },
             },
           },
-        },
-        clientType,
-      );
+          clientType,
+        );
 
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
-  });
+        return res.match(
+          data => {
+            return data;
+          },
+          err => {
+            if (err instanceof Error && failureCount % 3 !== 2) {
+              throw err;
+            }
+            return currentData ?? null;
+          },
+        );
+      },
+    });
 
   return {
     walletSettings,

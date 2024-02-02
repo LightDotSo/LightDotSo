@@ -41,7 +41,11 @@ export const useSuspenseQueryWallets = (params: WalletListParams) => {
     }).queryKey,
   );
 
-  const { data: wallets, isLoading } = useSuspenseQuery<WalletData[] | null>({
+  const {
+    data: wallets,
+    isLoading: isWalletsLoading,
+    failureCount,
+  } = useSuspenseQuery<WalletData[] | null>({
     queryKey: queryKeys.wallet.list({
       address: params.address,
       limit: params.limit,
@@ -65,12 +69,14 @@ export const useSuspenseQueryWallets = (params: WalletListParams) => {
         clientType,
       );
 
-      // Return if the response is 200
       return res.match(
         data => {
           return data;
         },
-        _ => {
+        err => {
+          if (err instanceof Error && failureCount % 3 !== 2) {
+            throw err;
+          }
           return currentData ?? null;
         },
       );
@@ -79,6 +85,6 @@ export const useSuspenseQueryWallets = (params: WalletListParams) => {
 
   return {
     wallets,
-    isLoading,
+    isWalletsLoading,
   };
 };
