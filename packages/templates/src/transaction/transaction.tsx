@@ -553,6 +553,15 @@ export const Transaction: FC<TransactionProps> = ({
                       isUserOperationCreatable:{" "}
                       {isUserOperationCreatable ? "true" : "false"}
                       <br />
+                      isEstimateUserOperationGasDataLoading:{" "}
+                      {isEstimateUserOperationGasDataLoading ? "true" : "false"}
+                      <br />
+                      isUserOperationLoading:{" "}
+                      {isUserOperationLoading ? "true" : "false"}
+                      <br />
+                      isPaymasterAndDataLoading:{" "}
+                      {isPaymasterAndDataLoading ? "true" : "false"}
+                      <br />
                       isLoading: {isLoading ? "true" : "false"}
                       <br />
                       isUpdating: {isUpdating ? "true" : "false"}
