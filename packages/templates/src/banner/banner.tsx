@@ -17,19 +17,22 @@
 
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { useBanners } from "@lightdotso/stores";
+import type { Banner as BannerKind } from "@lightdotso/types";
 import { type FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-export type BannerProps = {};
+export type BannerProps = {
+  kind: BannerKind;
+};
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const Banner: FC<BannerProps> = () => {
+export const Banner: FC<BannerProps> = ({ kind }) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -40,7 +43,7 @@ export const Banner: FC<BannerProps> = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (isBetaClosed) {
+  if (kind === "beta" && isBetaClosed) {
     return null;
   }
 

@@ -13,5 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+export type { Banner } from "./banner";
+export type { Group } from "./group";
 export type { SubCategory, CategoryObject } from "./category";
 export type { Tab } from "./tab";
