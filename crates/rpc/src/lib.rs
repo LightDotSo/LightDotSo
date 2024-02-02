@@ -388,7 +388,7 @@ pub async fn rpc_proxy_handler(
                         &*PIMLICO_RPC_URLS,
                         Some("?apikey=".to_owned() + &std::env::var("PIMLICO_API_KEY").unwrap()),
                     ),
-                    (&*ETHERSPOT_RPC_URLS, Some(std::env::var("ETHERSPOT_API_KEY").unwrap())),
+                    (&*ETHERSPOT_RPC_URLS, None),
                     (&*ALCHEMY_RPC_URLS, Some(std::env::var("ALCHEMY_API_KEY").unwrap())),
                     (&*SILIUS_RPC_URLS, None),
                 ];
