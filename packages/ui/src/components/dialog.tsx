@@ -88,7 +88,7 @@ const DialogHeader = ({
 }: HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      "flex flex-row items-center justify-end border-b border-border px-4 py-2",
+      "flex flex-row items-center justify-end border-b border-border p-2",
       className,
     )}
     {...props}
