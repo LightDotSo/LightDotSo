@@ -36,11 +36,13 @@ export type { UserParams } from "./user";
 export type {
   UserOperationGetParams,
   UserOperationNonceParams,
+  UserOperationCreateParams,
   UserOperationListParams,
   UserOperationListCountParams,
 } from "./userOperation";
 export type {
   WalletParams,
+  WalletCreateParams,
   WalletListParams,
   WalletListCountParams,
 } from "./wallet";

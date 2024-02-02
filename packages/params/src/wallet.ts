@@ -31,3 +31,15 @@ export type WalletListParams = {
 };
 
 export type WalletListCountParams = Omit<WalletListParams, "limit" | "offset">;
+
+export type WalletCreateParams = {
+  simulate: boolean;
+  name: string;
+  threshold: number;
+  owners: {
+    address: Address;
+    weight: number;
+  }[];
+  invite_code: string;
+  salt: string;
+};
