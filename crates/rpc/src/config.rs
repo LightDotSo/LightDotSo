@@ -35,4 +35,7 @@ pub struct RpcArgs {
     /// The nodereal API key
     #[clap(long, env = "NODEREAL_API_KEY")]
     pub nodereal_api_key: String,
+    /// The etherspot API key
+    #[clap(long, env = "ETHERSPOT_API_KEY")]
+    pub etherspot_api_key: String,
 }
