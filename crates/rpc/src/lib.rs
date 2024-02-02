@@ -18,12 +18,16 @@
 
 pub mod config;
 mod constants;
+mod utils;
 
-use crate::constants::{
-    ALCHEMY_RPC_URLS, ANKR_RPC_URLS, BLASTAPI_RPC_URLS, BUNDLER_RPC_URL, CANDIDE_RPC_URLS,
-    CHAINNODES_RPC_URLS, GAS_RPC_URL, INFURA_RPC_URLS, LLAMANODES_RPC_URLS, NODEREAL_RPC_URLS,
-    OFFICIAL_PUBLIC_RPC_URLS, PAYMASTER_RPC_URL, PIMLICO_RPC_URLS, PUBLIC_NODE_RPC_URLS,
-    SILIUS_RPC_URLS, THIRDWEB_RPC_URLS,
+use crate::{
+    constants::{
+        ALCHEMY_RPC_URLS, ANKR_RPC_URLS, BLASTAPI_RPC_URLS, BUNDLER_RPC_URL, CANDIDE_RPC_URLS,
+        CHAINNODES_RPC_URLS, GAS_RPC_URL, INFURA_RPC_URLS, LLAMANODES_RPC_URLS, NODEREAL_RPC_URLS,
+        OFFICIAL_PUBLIC_RPC_URLS, PAYMASTER_RPC_URL, PIMLICO_RPC_URLS, PUBLIC_NODE_RPC_URLS,
+        SILIUS_RPC_URLS, THIRDWEB_RPC_URLS,
+    },
+    utils::shuffle_requests,
 };
 use axum::{
     body::Body,
@@ -36,7 +40,6 @@ use lightdotso_contracts::constants::ENTRYPOINT_V060_ADDRESS;
 use lightdotso_jsonrpsee::types::Request as JSONRPCRequest;
 use lightdotso_paymaster::types::UserOperationRequest;
 use lightdotso_tracing::tracing::{error, info, trace, warn};
-use rand::{seq::SliceRandom, thread_rng};
 use serde::ser::Error;
 use serde_json::{json, Error as SerdeError, Value};
 use std::collections::HashMap;
@@ -322,18 +325,12 @@ pub async fn rpc_proxy_handler(
                     (&*BLASTAPI_RPC_URLS, Some(std::env::var("BLAST_API_KEY").unwrap())),
                 ];
 
-                let shuffled_requests = tokio::task::spawn_blocking(move || {
-                    let mut rng = thread_rng();
-                    requests.shuffle(&mut rng);
-                    requests
-                })
-                .await
-                .expect("Failed during shuffling");
+                shuffle_requests(&mut requests);
 
-                for (url, key) in shuffled_requests {
+                for (url, key) in &requests {
                     let result = try_rpc_with_url(
                         url,
-                        key,
+                        key.clone(),
                         &chain_id,
                         &client,
                         Body::from(full_body_bytes.clone()),
@@ -395,18 +392,12 @@ pub async fn rpc_proxy_handler(
                     (&*SILIUS_RPC_URLS, None),
                 ];
 
-                let shuffled_requests = tokio::task::spawn_blocking(move || {
-                    let mut rng = thread_rng();
-                    requests.shuffle(&mut rng);
-                    requests
-                })
-                .await
-                .expect("Failed during shuffling");
+                shuffle_requests(&mut requests);
 
-                for (url, key) in shuffled_requests {
+                for (url, key) in &requests {
                     let result = try_rpc_with_url(
                         url,
-                        key,
+                        key.clone(),
                         &chain_id,
                         &client,
                         Body::from(full_body_bytes.clone()),
@@ -494,18 +485,17 @@ pub async fn rpc_proxy_handler(
         (&*INFURA_RPC_URLS, Some(std::env::var("INFURA_API_KEY").unwrap())),
     ];
 
-    let shuffled_requests = tokio::task::spawn_blocking(move || {
-        let mut rng = thread_rng();
-        requests.shuffle(&mut rng);
-        requests
-    })
-    .await
-    .expect("Failed during shuffling");
+    shuffle_requests(&mut requests);
 
-    for (url, key) in shuffled_requests {
-        let result =
-            try_rpc_with_url(url, key, &chain_id, &client, Body::from(full_body_bytes.clone()))
-                .await;
+    for (url, key) in &requests {
+        let result = try_rpc_with_url(
+            url,
+            key.clone(),
+            &chain_id,
+            &client,
+            Body::from(full_body_bytes.clone()),
+        )
+        .await;
 
         if let Some(resp) = result {
             return resp;
