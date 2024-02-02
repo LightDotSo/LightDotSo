@@ -309,8 +309,35 @@ lazy_static! {
         m.insert(421614, "https://api.pimlico.io/v1/arbitrum-sepolia/rpc".to_string());
         m.insert(534351, "https://api.pimlico.io/v1/scroll-sepolia-testnet/rpc".to_string());
         m.insert(11155111, "https://api.pimlico.io/v1/sepolia/rpc".to_string());
-        m.insert(11155420, "https://api.pimlico.io/v1/optimism-sepolia/rpc".to_string());
+        // m.insert(11155420, "https://api.pimlico.io/v1/optimism-sepolia/rpc".to_string());
         m.insert(999999999, "https://api.pimlico.io/v1/zora-sepolia/rpc".to_string());
+
+        m
+    };
+}
+
+lazy_static! {
+    pub static ref ETHERSPOT_RPC_URLS: HashMap<u64, String> = {
+        let mut m = HashMap::new();
+
+        // Mainnet
+        m.insert(1, "https://ethereum-bundler.etherspot.io/".to_string());
+        m.insert(10, "https://optimism-bundler.etherspot.io/".to_string());
+        m.insert(14, "https://flare-bundler.etherspot.io/".to_string());
+        m.insert(56, "https://bnb-bundler.etherspot.io/".to_string());
+        m.insert(100, "https://gnosis-bundler.etherspot.io/".to_string());
+        m.insert(137, "https://polygon-bundler.etherspot.io/".to_string());
+        m.insert(5000, "https://mantle-bundler.etherspot.io/".to_string());
+        m.insert(8453, "https://base-bundler.etherspot.io/".to_string());
+        m.insert(42161, "https://arbitrum-bundler.etherspot.io/".to_string());
+        m.insert(43114, "https://avalanche-bundler.etherspot.io/".to_string());
+        m.insert(59144, "https://linea-bundler.etherspot.io/".to_string());
+        m.insert(534352, "https://scroll-bundler.etherspot.io/".to_string());
+
+        // Testnet
+        m.insert(80001, "https://mumbai-bundler.etherspot.io/".to_string());
+        m.insert(534351, "https://scrollsepolia-bundler.etherspot.io/".to_string());
+        m.insert(11155111, "https://sepolia-bundler.etherspot.io/".to_string());
 
         m
     };

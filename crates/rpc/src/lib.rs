@@ -23,9 +23,9 @@ mod utils;
 use crate::{
     constants::{
         ALCHEMY_RPC_URLS, ANKR_RPC_URLS, BLASTAPI_RPC_URLS, BUNDLER_RPC_URL, CANDIDE_RPC_URLS,
-        CHAINNODES_RPC_URLS, GAS_RPC_URL, INFURA_RPC_URLS, LLAMANODES_RPC_URLS, NODEREAL_RPC_URLS,
-        OFFICIAL_PUBLIC_RPC_URLS, PAYMASTER_RPC_URL, PIMLICO_RPC_URLS, PUBLIC_NODE_RPC_URLS,
-        SILIUS_RPC_URLS, THIRDWEB_RPC_URLS,
+        CHAINNODES_RPC_URLS, ETHERSPOT_RPC_URLS, GAS_RPC_URL, INFURA_RPC_URLS, LLAMANODES_RPC_URLS,
+        NODEREAL_RPC_URLS, OFFICIAL_PUBLIC_RPC_URLS, PAYMASTER_RPC_URL, PIMLICO_RPC_URLS,
+        PUBLIC_NODE_RPC_URLS, SILIUS_RPC_URLS, THIRDWEB_RPC_URLS,
     },
     utils::shuffle_requests,
 };
@@ -388,6 +388,7 @@ pub async fn rpc_proxy_handler(
                         &*PIMLICO_RPC_URLS,
                         Some("?apikey=".to_owned() + &std::env::var("PIMLICO_API_KEY").unwrap()),
                     ),
+                    (&*ETHERSPOT_RPC_URLS, Some(std::env::var("ETHERSPOT_API_KEY").unwrap())),
                     (&*ALCHEMY_RPC_URLS, Some(std::env::var("ALCHEMY_API_KEY").unwrap())),
                     (&*SILIUS_RPC_URLS, None),
                 ];
