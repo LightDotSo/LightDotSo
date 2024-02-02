@@ -1,5 +1,11 @@
 # @lightdotso/web
 
+## 3.2.1
+
+### Patch Changes
+
+- [#1514](https://github.com/LightDotSo/LightDotSo/pull/1514) [`3fd8aac`](https://github.com/LightDotSo/LightDotSo/commit/3fd8aac6cd5fa50d85b9ed5f116f72988537cba1) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add explorer desc ordering
+
 ## 3.2.0
 
 ### Minor Changes
