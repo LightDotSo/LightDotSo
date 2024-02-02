@@ -53,6 +53,7 @@ const themes = [
     },
   },
 ];
+
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
@@ -70,7 +71,10 @@ export const FooterModeSelect: FC = () => {
 
   return (
     <Select value={theme} defaultValue={theme} onValueChange={setTheme}>
-      <SelectTrigger size="sm" className="w-auto bg-background-stronger">
+      <SelectTrigger
+        size="sm"
+        className="inline-flex items-center w-auto bg-background-stronger"
+      >
         <SelectValue placeholder="Select a theme" />
       </SelectTrigger>
       <SelectContent>
