@@ -126,7 +126,8 @@ export const useMutationWalletCreate = (params: UserOperationCreateParams) => {
     // return { wallet };
     // },
     // If the mutation fails, use the context we returned above
-    onError: (err, _newWalletSettings, context) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    onError: (err, _newWalletSettings, _context) => {
       if (err instanceof Error) {
         toast.error(err.message);
       } else {
