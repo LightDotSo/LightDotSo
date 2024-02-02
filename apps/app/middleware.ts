@@ -41,7 +41,11 @@ export async function middleware(req: NextRequest) {
   }
 
   // If the root route and doesn't have a search query, redirect to the home page
-  if (req.nextUrl.pathname === "/" && !req.nextUrl.search) {
+  if (
+    process.env.NODE_ENV === "production" &&
+    req.nextUrl.pathname === "/" &&
+    !req.nextUrl.search
+  ) {
     return NextResponse.redirect(new URL("/home", req.url));
   }
 }
