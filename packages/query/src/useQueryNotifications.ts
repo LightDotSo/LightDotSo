@@ -41,9 +41,11 @@ export const useQueryNotifications = (params: NotificationListParams) => {
     }).queryKey,
   );
 
-  const { data: notifications, isLoading: isNotificationsLoading } = useQuery<
-    NotificationData[] | null
-  >({
+  const {
+    data: notifications,
+    isLoading: isNotificationsLoading,
+    failureCount,
+  } = useQuery<NotificationData[] | null>({
     queryKey: queryKeys.notification.list({
       address: params.address,
       limit: params.limit,
@@ -67,12 +69,14 @@ export const useQueryNotifications = (params: NotificationListParams) => {
         clientType,
       );
 
-      // Return if the response is 200
       return res.match(
         data => {
           return data;
         },
-        _ => {
+        err => {
+          if (failureCount % 3 !== 2) {
+            throw err;
+          }
           return currentData ?? null;
         },
       );

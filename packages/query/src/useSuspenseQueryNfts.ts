@@ -42,7 +42,7 @@ export const useSuspenseQueryNfts = (params: NftListParams) => {
     }).queryKey,
   );
 
-  const { data: nftPage } = useSuspenseQuery<NftDataPage | null>({
+  const { data: nftPage, failureCount } = useSuspenseQuery<NftDataPage | null>({
     queryKey: queryKeys.nft.list({
       address: params.address,
       is_testnet: params.is_testnet,
@@ -64,12 +64,14 @@ export const useSuspenseQueryNfts = (params: NftListParams) => {
         clientType,
       );
 
-      // Return if the response is 200
       return res.match(
         data => {
           return data as NftDataPage;
         },
-        _ => {
+        err => {
+          if (failureCount % 3 !== 2) {
+            throw err;
+          }
           return currentData ?? null;
         },
       );

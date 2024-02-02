@@ -37,36 +37,41 @@ export const useQueryAuthSession = (params: AuthParams) => {
     queryKeys.auth.session({ address: params.address }).queryKey,
   );
 
-  const { data: authSession, refetch: refetchAuthSession } =
-    useQuery<AuthSessionData | null>({
-      queryKey: queryKeys.auth.session({ address: params.address }).queryKey,
-      queryFn: async () => {
-        if (typeof params.address === "undefined") {
-          return null;
-        }
+  const {
+    data: authSession,
+    refetch: refetchAuthSession,
+    failureCount,
+  } = useQuery<AuthSessionData | null>({
+    queryKey: queryKeys.auth.session({ address: params.address }).queryKey,
+    queryFn: async () => {
+      if (typeof params.address === "undefined") {
+        return null;
+      }
 
-        const res = await getAuthSession(
-          {
-            params: {
-              query: {
-                address: params.address,
-              },
+      const res = await getAuthSession(
+        {
+          params: {
+            query: {
+              address: params.address,
             },
           },
-          clientType,
-        );
+        },
+        clientType,
+      );
 
-        // Return if the response is 200
-        return res.match(
-          data => {
-            return data;
-          },
-          _ => {
-            return currentData ?? null;
-          },
-        );
-      },
-    });
+      return res.match(
+        data => {
+          return data;
+        },
+        err => {
+          if (failureCount % 3 !== 2) {
+            throw err;
+          }
+          return currentData ?? null;
+        },
+      );
+    },
+  });
 
   return {
     authSession,

@@ -37,37 +37,42 @@ export const useQueryActivitiesCount = (params: ActivityListCountParams) => {
     queryKeys.activity.listCount({ address: params.address }).queryKey,
   );
 
-  const { data: activitiesCount, isLoading: isActivitiesCountLoading } =
-    useQuery<ActivityCountData | null>({
-      queryKey: queryKeys.activity.listCount({ address: params.address })
-        .queryKey,
-      queryFn: async () => {
-        if (typeof params.address === "undefined") {
-          return null;
-        }
+  const {
+    data: activitiesCount,
+    isLoading: isActivitiesCountLoading,
+    failureCount,
+  } = useQuery<ActivityCountData | null>({
+    queryKey: queryKeys.activity.listCount({ address: params.address })
+      .queryKey,
+    queryFn: async () => {
+      if (typeof params.address === "undefined") {
+        return null;
+      }
 
-        const res = await getActivitiesCount(
-          {
-            params: {
-              query: {
-                address: params.address,
-              },
+      const res = await getActivitiesCount(
+        {
+          params: {
+            query: {
+              address: params.address,
             },
           },
-          clientType,
-        );
+        },
+        clientType,
+      );
 
-        // Return if the response is 200
-        return res.match(
-          data => {
-            return data;
-          },
-          _ => {
-            return currentData ?? null;
-          },
-        );
-      },
-    });
+      return res.match(
+        data => {
+          return data;
+        },
+        err => {
+          if (failureCount % 3 !== 2) {
+            throw err;
+          }
+          return currentData ?? null;
+        },
+      );
+    },
+  });
 
   return {
     activitiesCount,

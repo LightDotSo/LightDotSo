@@ -44,9 +44,11 @@ export const useQueryUserOperations = (params: UserOperationListParams) => {
     }).queryKey,
   );
 
-  const { data: userOperations, isLoading: isUserOperationsLoading } = useQuery<
-    UserOperationData[] | null
-  >({
+  const {
+    data: userOperations,
+    isLoading: isUserOperationsLoading,
+    failureCount,
+  } = useQuery<UserOperationData[] | null>({
     queryKey: queryKeys.user_operation.list({
       address: params.address,
       limit: params.limit,
@@ -76,12 +78,14 @@ export const useQueryUserOperations = (params: UserOperationListParams) => {
         clientType,
       );
 
-      // Return if the response is 200
       return res.match(
         data => {
           return data as UserOperationData[];
         },
-        _ => {
+        err => {
+          if (failureCount % 3 !== 2) {
+            throw err;
+          }
           return currentData ?? null;
         },
       );

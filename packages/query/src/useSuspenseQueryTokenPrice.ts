@@ -40,39 +40,42 @@ export const useSuspenseQueryTokenPrice = (params: TokenPriceParams) => {
     }).queryKey,
   );
 
-  const { data: token_price } = useSuspenseQuery<TokenPriceData | null>({
-    queryKey: queryKeys.token_price.get({
-      address: params.address,
-      chain_id: params.chain_id,
-    }).queryKey,
-    queryFn: async () => {
-      if (typeof params.address === "undefined") {
-        return null;
-      }
+  const { data: token_price, failureCount } =
+    useSuspenseQuery<TokenPriceData | null>({
+      queryKey: queryKeys.token_price.get({
+        address: params.address,
+        chain_id: params.chain_id,
+      }).queryKey,
+      queryFn: async () => {
+        if (typeof params.address === "undefined") {
+          return null;
+        }
 
-      const res = await getTokenPrice(
-        {
-          params: {
-            query: {
-              address: params.address,
-              chain_id: params.chain_id,
+        const res = await getTokenPrice(
+          {
+            params: {
+              query: {
+                address: params.address,
+                chain_id: params.chain_id,
+              },
             },
           },
-        },
-        clientType,
-      );
+          clientType,
+        );
 
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
-  });
+        return res.match(
+          data => {
+            return data;
+          },
+          err => {
+            if (failureCount % 3 !== 2) {
+              throw err;
+            }
+            return currentData ?? null;
+          },
+        );
+      },
+    });
 
   return {
     token_price,

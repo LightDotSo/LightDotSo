@@ -46,49 +46,51 @@ export const useSuspenseQueryUserOperations = (
     }).queryKey,
   );
 
-  const { data: userOperations } = useSuspenseQuery<UserOperationData[] | null>(
-    {
-      queryKey: queryKeys.user_operation.list({
-        address: params.address,
-        status: params.status,
-        order: params.order,
-        limit: params.limit,
-        offset: params.offset,
-        is_testnet: params.is_testnet,
-      }).queryKey,
-      queryFn: async () => {
-        if (typeof params.address === "undefined") {
-          return null;
-        }
+  const { data: userOperations, failureCount } = useSuspenseQuery<
+    UserOperationData[] | null
+  >({
+    queryKey: queryKeys.user_operation.list({
+      address: params.address,
+      status: params.status,
+      order: params.order,
+      limit: params.limit,
+      offset: params.offset,
+      is_testnet: params.is_testnet,
+    }).queryKey,
+    queryFn: async () => {
+      if (typeof params.address === "undefined") {
+        return null;
+      }
 
-        const res = await getUserOperations(
-          {
-            params: {
-              query: {
-                address: params.address ?? undefined,
-                status: params.status,
-                order: params.order,
-                limit: params.limit,
-                offset: params.offset,
-                is_testnet: params.is_testnet,
-              },
+      const res = await getUserOperations(
+        {
+          params: {
+            query: {
+              address: params.address ?? undefined,
+              status: params.status,
+              order: params.order,
+              limit: params.limit,
+              offset: params.offset,
+              is_testnet: params.is_testnet,
             },
           },
-          clientType,
-        );
+        },
+        clientType,
+      );
 
-        // Return if the response is 200
-        return res.match(
-          data => {
-            return data as UserOperationData[];
-          },
-          _ => {
-            return currentData ?? null;
-          },
-        );
-      },
+      return res.match(
+        data => {
+          return data as UserOperationData[];
+        },
+        err => {
+          if (failureCount % 3 !== 2) {
+            throw err;
+          }
+          return currentData ?? null;
+        },
+      );
     },
-  );
+  });
 
   return {
     userOperations,

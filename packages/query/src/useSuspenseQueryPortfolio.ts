@@ -37,35 +37,38 @@ export const useSuspenseQueryPortfolio = (params: PortfolioParams) => {
     queryKeys.portfolio.get({ address: params.address }).queryKey,
   );
 
-  const { data: portfolio } = useSuspenseQuery<TokenPortfolioData | null>({
-    queryKey: queryKeys.portfolio.get({ address: params.address }).queryKey,
-    queryFn: async () => {
-      if (typeof params.address === "undefined") {
-        return null;
-      }
+  const { data: portfolio, failureCount } =
+    useSuspenseQuery<TokenPortfolioData | null>({
+      queryKey: queryKeys.portfolio.get({ address: params.address }).queryKey,
+      queryFn: async () => {
+        if (typeof params.address === "undefined") {
+          return null;
+        }
 
-      const res = await getPortfolio(
-        {
-          params: {
-            query: {
-              address: params.address,
+        const res = await getPortfolio(
+          {
+            params: {
+              query: {
+                address: params.address,
+              },
             },
           },
-        },
-        clientType,
-      );
+          clientType,
+        );
 
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
-  });
+        return res.match(
+          data => {
+            return data;
+          },
+          err => {
+            if (failureCount % 3 !== 2) {
+              throw err;
+            }
+            return currentData ?? null;
+          },
+        );
+      },
+    });
 
   return {
     portfolio,

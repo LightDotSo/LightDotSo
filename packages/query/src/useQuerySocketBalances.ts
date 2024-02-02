@@ -39,9 +39,11 @@ export const useQuerySocketBalances = (params: SocketBalanceParams) => {
     }).queryKey,
   );
 
-  const { data: balances, isLoading: isBalancesLoading } = useQuery<
-    SocketBalanceData[] | null
-  >({
+  const {
+    data: balances,
+    isLoading: isBalancesLoading,
+    failureCount,
+  } = useQuery<SocketBalanceData[] | null>({
     queryKey: queryKeys.socket.balance({
       address: params.address,
     }).queryKey,
@@ -61,12 +63,14 @@ export const useQuerySocketBalances = (params: SocketBalanceParams) => {
         clientType,
       );
 
-      // Return if the response is 200
       return res.match(
         data => {
           return data.result as SocketBalanceData[];
         },
-        _ => {
+        err => {
+          if (failureCount % 3 !== 2) {
+            throw err;
+          }
           return currentData ?? null;
         },
       );

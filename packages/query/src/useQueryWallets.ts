@@ -41,9 +41,11 @@ export const useQueryWallets = (params: WalletListParams) => {
     }).queryKey,
   );
 
-  const { data: wallets, isLoading: isWalletsLoading } = useQuery<
-    WalletData[] | null
-  >({
+  const {
+    data: wallets,
+    isLoading: isWalletsLoading,
+    failureCount,
+  } = useQuery<WalletData[] | null>({
     queryKey: queryKeys.wallet.list({
       address: params.address,
       limit: params.limit,
@@ -67,12 +69,14 @@ export const useQueryWallets = (params: WalletListParams) => {
         clientType,
       );
 
-      // Return if the response is 200
       return res.match(
         data => {
           return data;
         },
-        _ => {
+        err => {
+          if (failureCount % 3 !== 2) {
+            throw err;
+          }
           return currentData ?? null;
         },
       );

@@ -44,7 +44,7 @@ export const useSuspenseQueryTokens = (params: TokenListParams) => {
     }).queryKey,
   );
 
-  const { data: tokens } = useSuspenseQuery<TokenData[] | null>({
+  const { data: tokens, failureCount } = useSuspenseQuery<TokenData[] | null>({
     queryKey: queryKeys.token.list({
       address: params.address,
       limit: params.limit,
@@ -74,12 +74,14 @@ export const useSuspenseQueryTokens = (params: TokenListParams) => {
         clientType,
       );
 
-      // Return if the response is 200
       return res.match(
         data => {
           return data as TokenData[];
         },
-        _ => {
+        err => {
+          if (failureCount % 3 !== 2) {
+            throw err;
+          }
           return currentData ?? null;
         },
       );

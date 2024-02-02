@@ -45,42 +45,47 @@ export const useQueryUserOperationsCount = (
       }).queryKey,
     );
 
-  const { data: userOperationsCount, isLoading: isUserOperationsCountLoading } =
-    useQuery<UserOperationCountData | null>({
-      queryKey: queryKeys.user_operation.listCount({
-        address: params.address as Address,
-        status: params.status,
-        is_testnet: params.is_testnet,
-      }).queryKey,
-      queryFn: async () => {
-        if (typeof params.address === "undefined") {
-          return null;
-        }
+  const {
+    data: userOperationsCount,
+    isLoading: isUserOperationsCountLoading,
+    failureCount,
+  } = useQuery<UserOperationCountData | null>({
+    queryKey: queryKeys.user_operation.listCount({
+      address: params.address as Address,
+      status: params.status,
+      is_testnet: params.is_testnet,
+    }).queryKey,
+    queryFn: async () => {
+      if (typeof params.address === "undefined") {
+        return null;
+      }
 
-        const res = await getUserOperationsCount(
-          {
-            params: {
-              query: {
-                address: params.address ?? undefined,
-                status: params.status,
-                is_testnet: params.is_testnet,
-              },
+      const res = await getUserOperationsCount(
+        {
+          params: {
+            query: {
+              address: params.address ?? undefined,
+              status: params.status,
+              is_testnet: params.is_testnet,
             },
           },
-          clientType,
-        );
+        },
+        clientType,
+      );
 
-        // Return if the response is 200
-        return res.match(
-          data => {
-            return data;
-          },
-          _ => {
-            return currentCountData ?? null;
-          },
-        );
-      },
-    });
+      return res.match(
+        data => {
+          return data;
+        },
+        err => {
+          if (failureCount % 3 !== 2) {
+            throw err;
+          }
+          return currentCountData ?? null;
+        },
+      );
+    },
+  });
 
   return {
     userOperationsCount,
