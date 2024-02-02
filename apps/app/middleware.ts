@@ -39,6 +39,11 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL(`/${wallet}/overview`, req.url));
     }
   }
+
+  // If the root route and doesn't have a search query, redirect to the home page
+  if (req.nextUrl.pathname === "/" && !req.nextUrl.search) {
+    return NextResponse.redirect(new URL("/home", req.url));
+  }
 }
 
 // -----------------------------------------------------------------------------
