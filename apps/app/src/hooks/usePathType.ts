@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { useAuth } from "@lightdotso/stores";
-import { Group } from "@lightdotso/types";
+import type { Group } from "@lightdotso/types";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 
