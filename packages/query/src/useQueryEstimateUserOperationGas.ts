@@ -23,7 +23,6 @@ import { toHex } from "viem";
 
 type EstimateUserOperationGasData = {
   callGasLimit: string;
-  verificationGas: string;
   verificationGasLimit: string;
   preVerificationGas: string;
 };
