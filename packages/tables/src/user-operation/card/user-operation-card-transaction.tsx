@@ -111,7 +111,11 @@ export const UserOperationCardTransaction: FC<
 
   const informationItems = useMemo(() => {
     const items: TransactionInformationItem[] = [
-      { title: "Hash", value: shortenBytes32(userOperation.hash) },
+      {
+        title: "Hash",
+        value: shortenBytes32(userOperation.hash),
+        href: `https://jiffyscan.xyz/userOpHash/${userOperation.hash}`,
+      },
       { title: "Nonce", value: userOperation.nonce },
       {
         title: "Status",
