@@ -20,12 +20,8 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v4
-      - name: Set up Rye
-        run: curl -sSf https://rye-up.com/get | RYE_INSTALL_OPTION="--yes" bash
-        shell: bash
-      - name: Add Rye to PATH
-        run: echo "$HOME/.rye/shims" >> $GITHUB_PATH
-        shell: bash
+      - name: Rye Install
+        uses: sksat/setup-rye@v0.8.0
       - name: Install dependencies
         run: |
           rye sync --no-lock
