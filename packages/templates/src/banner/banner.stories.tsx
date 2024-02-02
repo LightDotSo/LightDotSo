@@ -38,7 +38,15 @@ type Story = StoryObj<typeof Banner>;
 // Story
 // -----------------------------------------------------------------------------
 
-export const Base: Story = {
+export const Beta: Story = {
   render: args => <Banner kind="beta" />,
+  args: {},
+};
+export const Demo: Story = {
+  render: args => <Banner kind="demo" />,
+  args: {},
+};
+export const Outage: Story = {
+  render: args => <Banner kind="outage" />,
   args: {},
 };

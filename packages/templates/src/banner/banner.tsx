@@ -18,14 +18,37 @@
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { useBanners } from "@lightdotso/stores";
 import type { Banner as BannerKind } from "@lightdotso/types";
-import { GamepadIcon } from "lucide-react";
+import { cn } from "@lightdotso/utils";
+import { cva, type VariantProps } from "class-variance-authority";
+import { AlertTriangleIcon, BoltIcon, GamepadIcon } from "lucide-react";
 import { type FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Styles
+// -----------------------------------------------------------------------------
+
+const bannerVariants = cva(
+  "flex items-center gap-x-2 px-6 py-2.5 sm:px-3.5 sm:before:flex-1",
+  {
+    variants: {
+      intent: {
+        demo: "border-border-purple bg-background-purple-weakest text-text-purple [&>svg]:text-text-purple",
+        beta: "border-border-info bg-background-info-weakest text-text-info [&>svg]:text-text-info",
+        outage:
+          "border-border-warning bg-background-warning-weakest text-text-warning [&>svg]:text-text-warning",
+      },
+    },
+    defaultVariants: {
+      intent: "beta",
+    },
+  },
+);
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-export type BannerProps = {
+export type BannerProps = VariantProps<typeof bannerVariants> & {
   kind: BannerKind;
 };
 
@@ -49,16 +72,16 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
   }
 
   return (
-    <div className="flex items-center gap-x-6 bg-background-purple-weakest px-6 py-2.5 sm:px-3.5 sm:before:flex-1">
-      <p className="text-sm leading-6 text-text">
-        {kind === "demo" && (
-          <GamepadIcon
-            className="mx-2 inline size-0.5 fill-current"
-            aria-hidden="true"
-          />
-        )}
+    <div className={cn(bannerVariants({ intent: kind }))}>
+      {kind === "beta" && <BoltIcon className="size-4" aria-hidden="true" />}
+      {kind === "demo" && <GamepadIcon className="size-6" aria-hidden="true" />}
+      {kind === "outage" && (
+        <AlertTriangleIcon className="size-4" aria-hidden="true" />
+      )}
+      <p className="text-sm leading-6">
         {kind === "demo" && "Demo"}
         {kind === "beta" && "Beta"}
+        {kind === "outage" && "Outage"}
       </p>
       <div className="flex flex-1 justify-end">
         {kind === "beta" && (
@@ -68,7 +91,7 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
             onClick={toggleIsBetaClosed}
           >
             <span className="sr-only">Dismiss</span>
-            <XMarkIcon className="size-5 text-text" aria-hidden="true" />
+            <XMarkIcon className="size-5" aria-hidden="true" />
           </button>
         )}
       </div>
