@@ -98,7 +98,7 @@ const ReactQueryProvider: FC<ReactQueryProviderProps> = ({
       <ReactQueryStreamedHydration transformer={superjson}>
         {children}
       </ReactQueryStreamedHydration>
-      {showDevTools && process.env.NEXT_PUBLIC_VERCEL_ENV === "preview" && (
+      {showDevTools && process.env.NEXT_PUBLIC_VERCEL_ENV !== "production" && (
         <div className="hidden lg:block">
           <ReactQueryDevtoolsProduction />
         </div>
