@@ -66,13 +66,13 @@ export const publicSocketClient: ReturnType<typeof createClient<SocketPaths>> =
 export const authenticatedSocketClient: ReturnType<
   typeof createClient<SocketPaths>
 > = createClient<SocketPaths>({
-  baseUrl: "https://api.light.so/authenticated/socket",
+  baseUrl: "https://api.light.so/authenticated/v1/socket",
   credentials: "include",
 });
 
 export const adminSocketClient: ReturnType<typeof createClient<SocketPaths>> =
   createClient<SocketPaths>({
-    baseUrl: "https://api.light.so/admin/socket",
+    baseUrl: "https://api.light.so/admin/v1/socket",
     headers: {
       Authorization: `Bearer ${process.env.LIGHT_ADMIN_TOKEN}`,
     },
