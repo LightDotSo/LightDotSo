@@ -14,8 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { useAuth } from "@lightdotso/stores";
+import { Group } from "@lightdotso/types";
 import { usePathname } from "next/navigation";
-// import { usePathname, useSelectedLayoutSegment } from "next/navigation";
 import { useMemo } from "react";
 
 // ---------------------------------------------------------------------------
@@ -51,12 +51,7 @@ const demoPaths = [
 // Types
 // -----------------------------------------------------------------------------
 
-export type RootType =
-  | "authenticated"
-  | "unauthenticated"
-  | "interception"
-  | "wallet"
-  | "demo";
+export type RootType = Group | "interception";
 
 // -----------------------------------------------------------------------------
 // Hook
