@@ -21,6 +21,10 @@ import { useAuth } from "@lightdotso/stores";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
 
+// -----------------------------------------------------------------------------
+// Query
+// -----------------------------------------------------------------------------
+
 export const useQueryTokensCount = (params: TokenListCountParams) => {
   // ---------------------------------------------------------------------------
   // Stores

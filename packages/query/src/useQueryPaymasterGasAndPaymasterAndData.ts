@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
+import type { PaymasterAndData } from "@lightdotso/data";
 import { queryKeys } from "@lightdotso/query-keys";
 import type { UserOperation } from "@lightdotso/schemas";
 import { useAuth } from "@lightdotso/stores";
@@ -21,15 +22,9 @@ import { serialize } from "@lightdotso/wagmi";
 import { useQuery } from "@tanstack/react-query";
 import { toHex } from "viem";
 
-type PaymasterAndData = {
-  callGasLimit: string;
-  verificationGasLimit: string;
-  preVerificationGas: string;
-  maxFeePerGas: string;
-  maxPriorityFeePerGas: string;
-  paymasterAndData: string;
-  paymasterNonce: string;
-};
+// -----------------------------------------------------------------------------
+// Query
+// -----------------------------------------------------------------------------
 
 export const useQueryPaymasterGasAndPaymasterAndData = (
   params: Omit<UserOperation, "hash" | "paymasterAndData" | "signature">,
@@ -69,9 +64,10 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
       if (
         !params.callGasLimit ||
         !params.verificationGasLimit ||
-        !params.preVerificationGas ||
-        !params.maxFeePerGas ||
-        !params.maxPriorityFeePerGas
+        !params.preVerificationGas
+        // !params.preVerificationGas ||
+        // !params.maxFeePerGas ||
+        // !params.maxPriorityFeePerGas
       ) {
         return null;
       }

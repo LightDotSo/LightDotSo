@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { estimateUserOperationGas } from "@lightdotso/client";
+import type { EstimateUserOperationGasData } from "@lightdotso/data";
 import { queryKeys } from "@lightdotso/query-keys";
 import type { UserOperation } from "@lightdotso/schemas";
 import { useAuth } from "@lightdotso/stores";
@@ -21,12 +22,9 @@ import { serialize } from "@lightdotso/wagmi";
 import { useQuery } from "@tanstack/react-query";
 import { toHex } from "viem";
 
-type EstimateUserOperationGasData = {
-  callGasLimit: string;
-  verificationGas: string;
-  verificationGasLimit: string;
-  preVerificationGas: string;
-};
+// -----------------------------------------------------------------------------
+// Query
+// -----------------------------------------------------------------------------
 
 export const useQueryEstimateUserOperationGas = (
   params: Omit<

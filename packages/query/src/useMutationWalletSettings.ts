@@ -20,6 +20,10 @@ import { queryKeys } from "@lightdotso/query-keys";
 import { toast } from "@lightdotso/ui";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 
+// -----------------------------------------------------------------------------
+// Query Mutation
+// -----------------------------------------------------------------------------
+
 export const useMutationWalletSettings = (params: WalletParams) => {
   // ---------------------------------------------------------------------------
   // Query

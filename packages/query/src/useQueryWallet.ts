@@ -20,6 +20,10 @@ import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
+// -----------------------------------------------------------------------------
+// Query
+// -----------------------------------------------------------------------------
+
 export const useQueryWallet = (params: WalletParams) => {
   // ---------------------------------------------------------------------------
   // Stores

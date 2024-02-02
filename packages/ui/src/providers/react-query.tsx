@@ -50,7 +50,7 @@ type ReactQueryProviderProps = {
 
 const ReactQueryProvider: FC<ReactQueryProviderProps> = ({
   children,
-  showDevTools = true,
+  showDevTools = false,
 }) => {
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -98,7 +98,7 @@ const ReactQueryProvider: FC<ReactQueryProviderProps> = ({
       <ReactQueryStreamedHydration transformer={superjson}>
         {children}
       </ReactQueryStreamedHydration>
-      {showDevTools && (
+      {showDevTools && process.env.NEXT_PUBLIC_VERCEL_ENV !== "production" && (
         <div className="hidden lg:block">
           <ReactQueryDevtoolsProduction />
         </div>

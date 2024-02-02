@@ -101,7 +101,7 @@ export const sendUserOperation = async (
 
 const EstimateUserOperationGasResponse = z.object({
   callGasLimit: HexStringSchema,
-  verificationGas: HexStringSchema,
+  verificationGas: HexStringSchema.nullable().optional(),
   verificationGasLimit: HexStringSchema,
   preVerificationGas: HexStringSchema,
 });

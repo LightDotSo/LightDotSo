@@ -152,7 +152,11 @@ export const Transaction: FC<TransactionProps> = ({
   });
 
   // Gets the gas estimate for the user operation
-  const { estimateUserOperationGasData } = useQueryEstimateUserOperationGas({
+  const {
+    estimateUserOperationGasData,
+    isEstimateUserOperationGasDataLoading,
+    estimateUserOperationGasDataError,
+  } = useQueryEstimateUserOperationGas({
     sender: address as Address,
     chainId: targetUserOperation.chainId,
     nonce: targetUserOperation.nonce,
@@ -337,7 +341,11 @@ export const Transaction: FC<TransactionProps> = ({
   // ---------------------------------------------------------------------------
 
   const isLoading = useMemo(() => {
-    return isUserOperationLoading || isPaymasterAndDataLoading;
+    return (
+      isEstimateUserOperationGasDataLoading ||
+      isUserOperationLoading ||
+      isPaymasterAndDataLoading
+    );
   }, [isUserOperationLoading, isPaymasterAndDataLoading]);
 
   const isUpdating = useMemo(() => {
@@ -447,6 +455,10 @@ export const Transaction: FC<TransactionProps> = ({
                       {estimateMaxPriorityFeePerGasError &&
                         estimateMaxPriorityFeePerGasError.message}
                       <br />
+                      estimateUserOperationGasDataError:{" "}
+                      {estimateUserOperationGasDataError &&
+                        estimateUserOperationGasDataError.message}
+                      <br />
                       paymasterAndDataError:{" "}
                       {paymasterAndDataError && paymasterAndDataError.message}
                     </code>
@@ -472,6 +484,13 @@ export const Transaction: FC<TransactionProps> = ({
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code className="break-all text-text">
+                      estimateUserOperationGasData:{" "}
+                      {estimateUserOperationGasData &&
+                        serialize(estimateUserOperationGasData, undefined, 2)}
+                    </code>
+                  </pre>
+                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+                    <code className="break-all text-text">
                       paymasterAndData:{" "}
                       {paymasterAndData &&
                         serialize(paymasterAndData, undefined, 2)}
@@ -482,6 +501,18 @@ export const Transaction: FC<TransactionProps> = ({
                       userOperationWithHash:{" "}
                       {userOperationWithHash &&
                         serialize(userOperationWithHash, undefined, 2)}
+                    </code>
+                  </pre>
+                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+                    <code className="break-all text-text">
+                      feesPerGas:{" "}
+                      {feesPerGas && serialize(feesPerGas, undefined, 2)}
+                      <br />
+                      maxPriorityFeePerGas:{" "}
+                      {maxPriorityFeePerGas &&
+                      maxPriorityFeePerGas === BigInt(0)
+                        ? "0"
+                        : serialize(maxPriorityFeePerGas, undefined, 2)}
                     </code>
                   </pre>
                   {/* <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
@@ -514,13 +545,22 @@ export const Transaction: FC<TransactionProps> = ({
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code className="break-all text-text">
-                      owner: {JSON.stringify(owner)}
+                      owner: {JSON.stringify(owner, null, 2)}
                     </code>
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code className="break-all text-text">
                       isUserOperationCreatable:{" "}
                       {isUserOperationCreatable ? "true" : "false"}
+                      <br />
+                      isEstimateUserOperationGasDataLoading:{" "}
+                      {isEstimateUserOperationGasDataLoading ? "true" : "false"}
+                      <br />
+                      isUserOperationLoading:{" "}
+                      {isUserOperationLoading ? "true" : "false"}
+                      <br />
+                      isPaymasterAndDataLoading:{" "}
+                      {isPaymasterAndDataLoading ? "true" : "false"}
                       <br />
                       isLoading: {isLoading ? "true" : "false"}
                       <br />
