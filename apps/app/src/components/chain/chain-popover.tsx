@@ -89,7 +89,7 @@ export const ChainPopover: FC = () => {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          className="h-9 px-2 py-1 space-x-0.5"
+          className="h-9 space-x-0.5 px-2 py-1"
           size="unsized"
           variant="outline"
           role="combobox"
