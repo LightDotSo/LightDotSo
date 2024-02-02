@@ -15,9 +15,9 @@
 
 "use client";
 
-import { XMarkIcon } from "@heroicons/react/20/solid";
 import { useBanners } from "@lightdotso/stores";
 import type { Banner as BannerKind } from "@lightdotso/types";
+import { XMarkIcon } from "@heroicons/react/20/solid";
 import { type FC } from "react";
 
 // -----------------------------------------------------------------------------
@@ -53,7 +53,7 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
         <a href="#">
           <svg
             viewBox="0 0 2 2"
-            className="mx-2 inline h-0.5 w-0.5 fill-current"
+            className="mx-2 inline size-0.5 fill-current"
             aria-hidden="true"
           >
             <circle cx={1} cy={1} r={1} />
@@ -68,7 +68,7 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
           className="-m-3 p-3 focus-visible:outline-offset-[-4px]"
         >
           <span className="sr-only">Dismiss</span>
-          <XMarkIcon className="h-5 w-5 text-text" aria-hidden="true" />
+          <XMarkIcon className="size-5 text-text" aria-hidden="true" />
         </button>
       </div>
     </div>
