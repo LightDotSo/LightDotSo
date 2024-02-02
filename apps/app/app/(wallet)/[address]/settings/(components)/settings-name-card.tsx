@@ -16,7 +16,7 @@
 "use client";
 
 import { useAuthModal, useDelayedValue } from "@lightdotso/hooks";
-import { useQueryWallet, useMutationWallet } from "@lightdotso/query";
+import { useQueryWallet, useMutationWalletUpdate } from "@lightdotso/query";
 import {
   Button,
   Form,
@@ -90,7 +90,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   // Mutate
   // ---------------------------------------------------------------------------
 
-  const { mutate, isSuccess, isError, isPending } = useMutationWallet({
+  const { mutate, isSuccess, isError, isPending } = useMutationWalletUpdate({
     address: address,
   });
 

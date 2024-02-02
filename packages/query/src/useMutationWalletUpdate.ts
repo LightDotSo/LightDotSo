@@ -13,10 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { updateWalletSettings } from "@lightdotso/client";
-import type { WalletSettingsData } from "@lightdotso/data";
+import { updateWallet } from "@lightdotso/client";
+import type { WalletData } from "@lightdotso/data";
 import type { WalletParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
+import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 
@@ -24,7 +25,13 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 // Query Mutation
 // -----------------------------------------------------------------------------
 
-export const useMutationWalletSettings = (params: WalletParams) => {
+export const useMutationWalletUpdate = (params: WalletParams) => {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { clientType } = useAuth();
+
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -32,58 +39,59 @@ export const useMutationWalletSettings = (params: WalletParams) => {
   const queryClient = useQueryClient();
 
   const { mutate, isPending, isSuccess, isError } = useMutation({
-    mutationFn: async (data: WalletSettingsData) => {
-      const loadingToast = toast.loading("Updating wallet settings...");
+    mutationFn: async (data: Partial<WalletData>) => {
+      const loadingToast = toast.loading("Updating name...");
 
-      const res = await updateWalletSettings({
-        params: {
-          query: {
-            address: params.address,
+      const res = await updateWallet(
+        {
+          params: {
+            query: {
+              address: params.address,
+            },
+          },
+          body: {
+            name: data.name,
           },
         },
-        body: {
-          wallet_settings: {
-            is_enabled_testnet: data.is_enabled_testnet,
-          },
-        },
-      });
+        clientType,
+      );
 
       toast.dismiss(loadingToast);
 
       // Return if the response is 200
       res.match(
         _ => {
-          toast.success("Successfully updated wallet settings.");
+          toast.success("Successfully updated name.");
         },
         err => {
           if (err instanceof Error) {
             toast.error(err.message);
           } else {
-            toast.error("Something went wrong.");
+            toast.error("Failed to update name.");
           }
+
+          throw err;
         },
       );
     },
     // When mutate is called:
-    onMutate: async (walletSettings: WalletSettingsData) => {
+    onMutate: async (wallet: Partial<WalletData>) => {
       // Cancel any outgoing refetches
       // (so they don't overwrite our optimistic update)
       await queryClient.cancelQueries({
-        queryKey: queryKeys.wallet.settings({ address: params.address })
-          .queryKey,
+        queryKey: queryKeys.wallet.get({ address: params.address }).queryKey,
       });
 
       // Snapshot the previous value
-      const previousSettings: WalletSettingsData | undefined =
-        queryClient.getQueryData(
-          queryKeys.wallet.settings({ address: params.address }).queryKey,
-        );
+      const previousSettings: WalletData | undefined = queryClient.getQueryData(
+        queryKeys.wallet.get({ address: params.address }).queryKey,
+      );
 
       // Optimistically update to the new value
       queryClient.setQueryData(
         queryKeys.wallet.settings({ address: params.address }).queryKey,
-        (old: WalletSettingsData) => {
-          return { ...old, walletSettings };
+        (old: WalletData) => {
+          return { ...old, wallet };
         },
       );
 
@@ -93,30 +101,32 @@ export const useMutationWalletSettings = (params: WalletParams) => {
     // If the mutation fails, use the context we returned above
     onError: (err, _newWalletSettings, context) => {
       queryClient.setQueryData(
-        queryKeys.wallet.settings({ address: params.address }).queryKey,
+        queryKeys.wallet.get({ address: params.address }).queryKey,
         context?.previousSettings,
       );
 
       if (err instanceof Error) {
         toast.error(err.message);
       } else {
-        toast.error("Something went wrong.");
+        toast.error("Failed to update name.");
       }
     },
     onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.wallet.settings({ address: params.address })
-          .queryKey,
+        queryKey: queryKeys.wallet.get({ address: params.address }).queryKey,
       });
       queryClient.invalidateQueries({
-        queryKey: queryKeys.auth.session({ address: params.address }).queryKey,
+        queryKey: queryKeys.wallet.list({
+          address: params.address,
+          limit: Number.MAX_SAFE_INTEGER,
+          offset: 0,
+        }).queryKey,
       });
 
       // Invalidate the cache for the address
-      fetch(`/api/revalidate/tag?tag=${params.address}`);
+      // fetch(`/api/revalidate/tag?tag=${address}`);
     },
-    mutationKey: queryKeys.wallet.settings({ address: params.address })
-      .queryKey,
+    mutationKey: queryKeys.wallet.get({ address: params.address }).queryKey,
   });
 
   return {
