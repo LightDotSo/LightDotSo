@@ -210,7 +210,7 @@ export const useUserOperationSubmit = ({
           if (err instanceof Error) {
             toast.error(err.message);
           } else {
-            toast.error("Failed to get signature");
+            toast.error("Failed to get signature.");
           }
         },
       );
