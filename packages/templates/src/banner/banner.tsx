@@ -15,12 +15,18 @@
 
 "use client";
 
-import { XMarkIcon } from "@heroicons/react/20/solid";
+import { INTERNAL_LINKS } from "@lightdotso/const";
 import { useBanners } from "@lightdotso/stores";
 import type { Banner as BannerKind } from "@lightdotso/types";
 import { cn } from "@lightdotso/utils";
+import { XMarkIcon } from "@heroicons/react/20/solid";
 import { cva, type VariantProps } from "class-variance-authority";
-import { AlertTriangleIcon, BoltIcon, GamepadIcon } from "lucide-react";
+import {
+  AlertTriangleIcon,
+  ArrowUpRight,
+  BoltIcon,
+  GamepadIcon,
+} from "lucide-react";
 import { type FC } from "react";
 
 // -----------------------------------------------------------------------------
@@ -83,6 +89,12 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
         {kind === "beta" && "Beta"}
         {kind === "outage" && "Outage"}
       </p>
+      {kind === "outage" && (
+        <a className="inline-flex" href={INTERNAL_LINKS["Status"]}>
+          Learn
+          <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50" />
+        </a>
+      )}
       <div className="flex flex-1 justify-end">
         {kind === "beta" && (
           <button
