@@ -88,7 +88,7 @@ pub async fn start_rpc_server() -> Result<()> {
     // License: MIT
     let governor_conf = Box::new(
         GovernorConfigBuilder::default()
-            .per_millisecond(30)
+            .per_millisecond(300)
             .burst_size(100)
             .use_headers()
             .key_extractor(SmartIpKeyExtractor)
