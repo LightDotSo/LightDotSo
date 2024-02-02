@@ -85,13 +85,18 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
         <AlertTriangleIcon className="size-4" aria-hidden="true" />
       )}
       <p className="text-sm leading-6">
-        {kind === "demo" && "Demo"}
-        {kind === "beta" && "Beta"}
-        {kind === "outage" && "Outage"}
+        {kind === "demo" && "Demo Mode"}
+        {kind === "beta" && "Public Beta"}
+        {kind === "outage" && "Outage Alert"}
       </p>
       {kind === "outage" && (
-        <a className="inline-flex" href={INTERNAL_LINKS["Status"]}>
-          Learn
+        <a
+          className="ml-4 inline-flex text-xs hover:underline"
+          href={INTERNAL_LINKS["Status"]}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn More
           <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50" />
         </a>
       )}
