@@ -13,26 +13,24 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { createUserOperation } from "@lightdotso/client";
-import type { UserOperationCreateParams } from "@lightdotso/params";
+import { createWallet } from "@lightdotso/client";
+import type { WalletData } from "@lightdotso/data";
+import type { WalletCreateParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
-import type { UserOperation } from "@lightdotso/schemas";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import type { Address } from "viem";
-import { toBytes, toHex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Query Mutation
 // -----------------------------------------------------------------------------
 
-export const useMutationWalletCreate = (params: UserOperationCreateParams) => {
+export const useMutationWalletCreate = (params: WalletCreateParams) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { clientType, address } = useAuth();
+  const { clientType } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -41,57 +39,23 @@ export const useMutationWalletCreate = (params: UserOperationCreateParams) => {
   const queryClient = useQueryClient();
 
   const { mutate, isPending, isSuccess, isError } = useMutation({
-    mutationFn: async (data: Partial<UserOperation>) => {
-      if (
-        !data.chainId ||
-        !data.hash ||
-        data.nonce === undefined ||
-        data.nonce === null ||
-        !data.initCode ||
-        !data.sender ||
-        !data.callData ||
-        !data.callGasLimit ||
-        !data.verificationGasLimit ||
-        !data.preVerificationGas ||
-        !data.maxFeePerGas ||
-        !data.maxPriorityFeePerGas ||
-        !data.paymasterAndData
-      ) {
-        return;
-      }
-
-      const loadingToast = toast.loading("Creating the transaction...");
+    mutationFn: async (data: Partial<WalletData>) => {
+      const loadingToast = toast.loading("Creating wallet...");
 
       // Replace with your actual fetch logic
-      const res = await createUserOperation(
+      const res = await createWallet(
         {
           params: {
             query: {
-              chain_id: Number(data.chainId),
+              simulate: params.simulate,
             },
           },
           body: {
-            signature: {
-              owner_id: params.ownerId,
-              signature: toHex(
-                new Uint8Array([...toBytes(params.signedData), 2]),
-              ),
-              signature_type: 1,
-            },
-            user_operation: {
-              chain_id: Number(data.chainId),
-              hash: data.hash,
-              nonce: Number(data.nonce),
-              init_code: data.initCode,
-              sender: data.sender,
-              call_data: data.callData,
-              call_gas_limit: Number(data.callGasLimit),
-              verification_gas_limit: Number(data.verificationGasLimit),
-              pre_verification_gas: Number(data.preVerificationGas),
-              max_fee_per_gas: Number(data.maxFeePerGas),
-              max_priority_fee_per_gas: Number(data.maxPriorityFeePerGas),
-              paymaster_and_data: data.paymasterAndData,
-            },
+            invite_code: params.invite_code,
+            name: params.name,
+            salt: params.salt,
+            threshold: params.threshold,
+            owners: params.owners,
           },
         },
         clientType,
@@ -102,13 +66,13 @@ export const useMutationWalletCreate = (params: UserOperationCreateParams) => {
       // Return if the response is 200
       res.match(
         _ => {
-          toast.success("Successfully created transaction!");
+          toast.success("Successfully updated name.");
         },
         err => {
           if (err instanceof Error) {
             toast.error(err.message);
           } else {
-            toast.error("Failed to create transaction.");
+            toast.error("Failed to update name.");
           }
 
           throw err;
@@ -116,18 +80,36 @@ export const useMutationWalletCreate = (params: UserOperationCreateParams) => {
       );
     },
     // When mutate is called:
-    // onMutate: async (wallet: WalletCreateParams) => {
-    // Cancel any outgoing refetches
-    // (so they don't overwrite our optimistic update)
-    // await queryClient.cancelQueries({
-    // queryKey: queryKeys.user_operation.list({ address: address as Address }).queryKey,
-    // });
+    onMutate: async (wallet: Partial<WalletData>) => {
+      // Cancel any outgoing refetches
+      // (so they don't overwrite our optimistic update)
+      await queryClient.cancelQueries({
+        queryKey: queryKeys.wallet.get({ address: params.address }).queryKey,
+      });
 
-    // return { wallet };
-    // },
+      // Snapshot the previous value
+      const previousSettings: WalletData | undefined = queryClient.getQueryData(
+        queryKeys.wallet.get({ address: params.address }).queryKey,
+      );
+
+      // Optimistically update to the new value
+      queryClient.setQueryData(
+        queryKeys.wallet.settings({ address: params.address }).queryKey,
+        (old: WalletData) => {
+          return { ...old, wallet };
+        },
+      );
+
+      // Return a context object with the snapshotted value
+      return { previousSettings };
+    },
     // If the mutation fails, use the context we returned above
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    onError: (err, _newWalletSettings, _context) => {
+    onError: (err, _newWalletSettings, context) => {
+      queryClient.setQueryData(
+        queryKeys.wallet.get({ address: params.address }).queryKey,
+        context?.previousSettings,
+      );
+
       if (err instanceof Error) {
         toast.error(err.message);
       } else {
@@ -136,8 +118,11 @@ export const useMutationWalletCreate = (params: UserOperationCreateParams) => {
     },
     onSettled: () => {
       queryClient.invalidateQueries({
+        queryKey: queryKeys.wallet.get({ address: params.address }).queryKey,
+      });
+      queryClient.invalidateQueries({
         queryKey: queryKeys.wallet.list({
-          address: address as Address,
+          address: params.address,
           limit: Number.MAX_SAFE_INTEGER,
           offset: 0,
         }).queryKey,
@@ -146,7 +131,7 @@ export const useMutationWalletCreate = (params: UserOperationCreateParams) => {
       // Invalidate the cache for the address
       // fetch(`/api/revalidate/tag?tag=${address}`);
     },
-    // mutationKey: queryKeys.wallet.create({ address }).queryKey,
+    mutationKey: queryKeys.wallet.get({ address: params.address }).queryKey,
   });
 
   return {
