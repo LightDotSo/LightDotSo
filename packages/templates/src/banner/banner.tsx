@@ -15,11 +15,11 @@
 
 "use client";
 
+import { XMarkIcon } from "@heroicons/react/20/solid";
 import { useBanners } from "@lightdotso/stores";
 import type { Banner as BannerKind } from "@lightdotso/types";
-import { XMarkIcon } from "@heroicons/react/20/solid";
-import { type FC } from "react";
 import { GamepadIcon } from "lucide-react";
+import { type FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -59,7 +59,6 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
         )}
         {kind === "demo" && "Demo"}
         {kind === "beta" && "Beta"}
-        <span aria-hidden="true">&rarr;</span>
       </p>
       <div className="flex flex-1 justify-end">
         {kind === "beta" && (
