@@ -26,6 +26,7 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
+    "@heroicons/react": "^2.1.1",
     "@lightdotso/const": "workspace:*",
     "@lightdotso/data": "workspace:*",
     "@lightdotso/demo": "workspace:*",

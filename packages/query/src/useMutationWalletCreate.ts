@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { updateWallet } from "@lightdotso/client";
+import { createWallet } from "@lightdotso/client";
 import type { WalletData } from "@lightdotso/data";
-import type { WalletParams } from "@lightdotso/params";
+import type { WalletCreateParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
@@ -25,7 +25,7 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 // Query Mutation
 // -----------------------------------------------------------------------------
 
-export const useMutationWallet = (params: WalletParams) => {
+export const useMutationWalletCreate = (params: WalletCreateParams) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -39,18 +39,24 @@ export const useMutationWallet = (params: WalletParams) => {
   const queryClient = useQueryClient();
 
   const { mutate, isPending, isSuccess, isError } = useMutation({
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     mutationFn: async (data: Partial<WalletData>) => {
-      const loadingToast = toast.loading("Updating name...");
+      const loadingToast = toast.loading("Creating wallet...");
 
-      const res = await updateWallet(
+      // Replace with your actual fetch logic
+      const res = await createWallet(
         {
           params: {
             query: {
-              address: params.address,
+              simulate: params.simulate,
             },
           },
           body: {
-            name: data.name,
+            invite_code: params.invite_code,
+            name: params.name,
+            salt: params.salt,
+            threshold: params.threshold,
+            owners: params.owners,
           },
         },
         clientType,
@@ -108,7 +114,7 @@ export const useMutationWallet = (params: WalletParams) => {
       if (err instanceof Error) {
         toast.error(err.message);
       } else {
-        toast.error("Failed to update name.");
+        toast.error("Failed to create wallet.");
       }
     },
     onSettled: () => {

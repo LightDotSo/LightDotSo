@@ -38,6 +38,7 @@ import { cn } from "@lightdotso/utils";
 import {
   serialize,
   useEstimateFeesPerGas,
+  useEstimateGas,
   useEstimateMaxPriorityFeePerGas,
 } from "@lightdotso/wagmi";
 import { getUserOperationHash } from "permissionless";
@@ -167,6 +168,14 @@ export const Transaction: FC<TransactionProps> = ({
   // ---------------------------------------------------------------------------
   // Wagmi
   // ---------------------------------------------------------------------------
+
+  // Get the gas estimate for the user operation
+  const { data: estimateGas, error: estimateGasError } = useEstimateGas({
+    chainId: Number(targetUserOperation.chainId ?? 1),
+    account: address as Address,
+    data: targetUserOperation.callData as Hex,
+    to: CONTRACT_ADDRESSES["Entrypoint"],
+  });
 
   // Get the max fee per gas, fallbacks to mainnet
   const { data: feesPerGas, error: estimateFeesPerGasError } =
@@ -346,7 +355,11 @@ export const Transaction: FC<TransactionProps> = ({
       isUserOperationLoading ||
       isPaymasterAndDataLoading
     );
-  }, [isUserOperationLoading, isPaymasterAndDataLoading]);
+  }, [
+    isEstimateUserOperationGasDataLoading,
+    isUserOperationLoading,
+    isPaymasterAndDataLoading,
+  ]);
 
   const isUpdating = useMemo(() => {
     return isPaymasterAndDataLoading;
@@ -447,6 +460,9 @@ export const Transaction: FC<TransactionProps> = ({
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code>
+                      estimateGasError:{" "}
+                      {estimateGasError && estimateGasError.message}
+                      <br />
                       estimateFeesPerGasError:{" "}
                       {estimateFeesPerGasError &&
                         estimateFeesPerGasError.message}
@@ -507,6 +523,11 @@ export const Transaction: FC<TransactionProps> = ({
                     <code className="break-all text-text">
                       feesPerGas:{" "}
                       {feesPerGas && serialize(feesPerGas, undefined, 2)}
+                      <br />
+                      estimateGas:{" "}
+                      {estimateGas && estimateGas === BigInt(0)
+                        ? "0"
+                        : serialize(estimateGas, undefined, 2)}
                       <br />
                       maxPriorityFeePerGas:{" "}
                       {maxPriorityFeePerGas &&

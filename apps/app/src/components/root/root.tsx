@@ -30,6 +30,7 @@ import { headers } from "next/headers";
 import Script from "next/script";
 import { Suspense } from "react";
 import type { FC, ReactNode } from "react";
+import { AppBanner } from "@/components/app-banner";
 import { MainNav } from "@/components/nav/main-nav";
 import { WssState } from "@/components/wss/wss-state";
 
@@ -108,6 +109,8 @@ export const Root: FC<RootProps> = ({ children }) => {
         <ThemeProvider attribute="class">
           <ReactQueryProvider showDevTools>
             <Web3Provider initialState={initialState}>
+              {/* Banner */}
+              <AppBanner />
               {/* Layout */}
               <MainNav>{children}</MainNav>
               <Footer />

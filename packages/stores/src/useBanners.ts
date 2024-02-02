@@ -13,34 +13,33 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Address } from "viem";
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 
 // -----------------------------------------------------------------------------
-// Params
+// State
 // -----------------------------------------------------------------------------
 
-export type WalletParams = {
-  address: Address;
+type BannersStore = {
+  isBetaClosed: boolean;
+  toggleIsBetaClosed: () => void;
 };
 
-export type WalletListParams = {
-  address: Address | null;
-  limit: number;
-  offset: number;
-  user_id?: string;
-};
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
 
-export type WalletListCountParams = Omit<WalletListParams, "limit" | "offset">;
-
-export type WalletCreateParams = {
-  address: Address;
-  simulate: boolean;
-  name: string;
-  threshold: number;
-  owners: {
-    address: Address;
-    weight: number;
-  }[];
-  invite_code: string;
-  salt: string;
-};
+export const useBanners = create(
+  devtools<BannersStore>(
+    set => ({
+      isBetaClosed: false,
+      toggleIsBetaClosed: () =>
+        set(state => ({ isBetaClosed: !state.isBetaClosed })),
+    }),
+    {
+      anonymousActionType: "useBanners",
+      name: "BannersStore",
+      serialize: { options: true },
+    },
+  ),
+);

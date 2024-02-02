@@ -1963,7 +1963,7 @@ importers:
         version: link:../schemas
       '@lukemorales/query-key-factory':
         specifier: ^1.3.2
-        version: 1.3.2(@tanstack/query-core@5.18.0)(@tanstack/react-query@5.18.1)
+        version: 1.3.2(@tanstack/query-core@5.18.1)(@tanstack/react-query@5.18.1)
       '@tanstack/react-query':
         specifier: ^5.18.1
         version: 5.18.1(react@18.2.0)
@@ -2277,6 +2277,9 @@ importers:
 
   packages/templates:
     dependencies:
+      '@heroicons/react':
+        specifier: ^2.1.1
+        version: 2.1.1(react@18.2.0)
       '@lightdotso/const':
         specifier: workspace:*
         version: link:../const
@@ -7010,14 +7013,14 @@ packages:
       '@lit-labs/ssr-dom-shim': 1.1.2
     dev: false
 
-  /@lukemorales/query-key-factory@1.3.2(@tanstack/query-core@5.18.0)(@tanstack/react-query@5.18.1):
+  /@lukemorales/query-key-factory@1.3.2(@tanstack/query-core@5.18.1)(@tanstack/react-query@5.18.1):
     resolution: {integrity: sha512-SFOWcB5ec+RhlKjLjZxTAbOPF2uXNED6lqXiMu3TUt2twKzxE/QLhnYkdbxOBMK5Wwc2Ia+WP3yqCPRKWywnwQ==}
     engines: {node: '>=14'}
     peerDependencies:
       '@tanstack/query-core': '>= 4.0.0'
       '@tanstack/react-query': '>= 4.0.0'
     dependencies:
-      '@tanstack/query-core': 5.18.0
+      '@tanstack/query-core': 5.18.1
       '@tanstack/react-query': 5.18.1(react@18.2.0)
     dev: false
 
@@ -13379,10 +13382,6 @@ packages:
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
       tailwindcss: 3.4.1(ts-node@10.9.2)
-    dev: false
-
-  /@tanstack/query-core@5.18.0:
-    resolution: {integrity: sha512-8c6nxeAnGHxIDZIyDmHdmgFt4D+LprAQaJmjsnM4szcIjsWOyFlzxdqQUuQ/XuQRvUgqYaqlJTtDADlSS7pTPQ==}
     dev: false
 
   /@tanstack/query-core@5.18.1:

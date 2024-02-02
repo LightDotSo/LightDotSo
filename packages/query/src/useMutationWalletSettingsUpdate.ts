@@ -24,7 +24,7 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 // Query Mutation
 // -----------------------------------------------------------------------------
 
-export const useMutationWalletSettings = (params: WalletParams) => {
+export const useMutationWalletSettingsUpdate = (params: WalletParams) => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------

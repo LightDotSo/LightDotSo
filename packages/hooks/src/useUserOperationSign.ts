@@ -138,7 +138,7 @@ export const useUserOperationSign = ({
         return;
       }
 
-      const loadingToast = toast.loading("Submitting the userOperation result");
+      const loadingToast = toast.loading("Submitting the transaction...");
 
       const res = await createSignature({
         params: {
@@ -159,13 +159,13 @@ export const useUserOperationSign = ({
 
       res.match(
         _ => {
-          toast.success("You submitted the userOperation result");
+          toast.success("You submitted the transaction!");
         },
         err => {
           if (err instanceof Error) {
             toast.error(err.message);
           } else {
-            toast.error("An unknown error occurred");
+            toast.error("An unknown error occurred.");
           }
         },
       );

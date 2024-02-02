@@ -13,55 +13,31 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  Separator,
-} from "@lightdotso/ui";
-import type { FC, ReactNode } from "react";
+"use client";
 
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-type SettingsCardProps = {
-  title: string;
-  subtitle: string;
-  children: ReactNode;
-  footerContent?: ReactNode;
-};
+import { Banner } from "@lightdotso/templates";
+import type { FC } from "react";
+import { usePathType } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const SettingsCard: FC<SettingsCardProps> = ({
-  title,
-  subtitle,
-  children,
-  footerContent,
-}) => {
+export const AppBanner: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const pathType = usePathType();
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <Card>
-      <CardHeader className="p-4">
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{subtitle}</CardDescription>
-      </CardHeader>
-      <CardContent className="p-4 pt-0">{children}</CardContent>
-      <Separator />
-      {footerContent && (
-        <CardFooter className="flex w-full items-center justify-end space-x-2 px-4 py-2">
-          {footerContent}
-        </CardFooter>
-      )}
-    </Card>
+    <>
+      {pathType === "wallet" && <Banner kind="beta" />}
+      {pathType === "demo" && <Banner kind="demo" />}
+    </>
   );
 };

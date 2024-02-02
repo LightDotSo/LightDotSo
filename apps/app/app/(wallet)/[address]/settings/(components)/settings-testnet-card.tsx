@@ -17,7 +17,7 @@
 
 import { useDelayedValue } from "@lightdotso/hooks";
 import {
-  useMutationWalletSettings,
+  useMutationWalletSettingsUpdate,
   useQueryWalletSettings,
 } from "@lightdotso/query";
 import {
@@ -83,9 +83,10 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   // Mutate
   // ---------------------------------------------------------------------------
 
-  const { mutate, isSuccess, isError, isPending } = useMutationWalletSettings({
-    address: address,
-  });
+  const { mutate, isSuccess, isError, isPending } =
+    useMutationWalletSettingsUpdate({
+      address: address,
+    });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks

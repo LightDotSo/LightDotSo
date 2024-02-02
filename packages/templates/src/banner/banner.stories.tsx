@@ -13,15 +13,40 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { Meta, StoryObj } from "@storybook/react";
+import { Banner } from "./banner";
+
+// -----------------------------------------------------------------------------
+// Meta
+// -----------------------------------------------------------------------------
+
+const meta: Meta<typeof Banner> = {
+  title: "template/Banner",
+  component: Banner,
+  tags: ["autodocs"],
+  argTypes: {},
+};
+export default meta;
+
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
 
-export type SubCategory = string;
+type Story = StoryObj<typeof Banner>;
 
-export type CategoryObject = {
-  title: string;
-  description: string;
-  note?: string;
-  subcategories: Record<SubCategory, CategoryObject>;
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Beta: Story = {
+  render: args => <Banner kind="beta" />,
+  args: {},
+};
+export const Demo: Story = {
+  render: args => <Banner kind="demo" />,
+  args: {},
+};
+export const Outage: Story = {
+  render: args => <Banner kind="outage" />,
+  args: {},
 };

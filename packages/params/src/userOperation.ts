@@ -42,3 +42,8 @@ export type UserOperationListCountParams = Omit<
   UserOperationListParams,
   "order" | "limit" | "offset"
 >;
+
+export type UserOperationCreateParams = {
+  ownerId: Address;
+  signedData: Hex;
+};
