@@ -25,7 +25,7 @@ import {
   DropdownMenuTrigger,
   toast,
 } from "@lightdotso/ui";
-import { getChainById } from "@lightdotso/utils";
+import { getChainById, getEtherscanUrl } from "@lightdotso/utils";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import type { Row } from "@tanstack/react-table";
 
@@ -65,9 +65,9 @@ export function TransactionTableRowActions({
             <a
               target="_blank"
               rel="noreferrer"
-              href={`${
-                getChainById(row.original.chain_id)?.blockExplorers?.default.url
-              }/tx/${row.original.hash}`}
+              href={`${getEtherscanUrl(
+                getChainById(row.original.chain_id),
+              )}/tx/${row.original.hash}`}
             >
               Open in Explorer
             </a>

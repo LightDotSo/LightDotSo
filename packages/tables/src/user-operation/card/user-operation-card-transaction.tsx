@@ -30,7 +30,12 @@ import {
   Progress,
   toast,
 } from "@lightdotso/ui";
-import { cn, getChainById, shortenBytes32 } from "@lightdotso/utils";
+import {
+  cn,
+  getChainById,
+  getEtherscanUrl,
+  shortenBytes32,
+} from "@lightdotso/utils";
 import type { Row } from "@tanstack/react-table";
 import { flexRender } from "@tanstack/react-table";
 import { ArrowUpRight, CopyCheckIcon, ShareIcon } from "lucide-react";
@@ -131,14 +136,13 @@ export const UserOperationCardTransaction: FC<
       items.push({
         title: "Transaction Hash",
         value: shortenBytes32(userOperation.transaction.hash),
-        href: `${chain?.blockExplorers?.default?.url}/tx/${userOperation.transaction.hash}`,
+        href: `${getEtherscanUrl(chain)}/tx/${userOperation.transaction.hash}`,
       });
     }
 
     return items;
   }, [
-    chain?.blockExplorers?.default?.url,
-    chain?.name,
+    chain,
     configuration?.threshold,
     userOperation.created_at,
     userOperation.hash,

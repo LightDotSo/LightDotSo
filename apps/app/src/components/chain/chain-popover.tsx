@@ -31,6 +31,7 @@ import {
   Button,
   PopoverContent,
 } from "@lightdotso/ui";
+import { getEtherscanUrl } from "@lightdotso/utils";
 import { ArrowUpRight, Globe } from "lucide-react";
 import { useMemo, useState } from "react";
 import type { FC } from "react";
@@ -119,7 +120,7 @@ export const ChainPopover: FC = () => {
                 key={chain.id}
                 target="_blank"
                 rel="noreferrer"
-                href={`${chain?.blockExplorers?.default.url}/address/${wallet}`}
+                href={`${getEtherscanUrl(chain)}/address/${wallet}`}
               >
                 <CommandItem
                   className="flex items-center space-x-2"

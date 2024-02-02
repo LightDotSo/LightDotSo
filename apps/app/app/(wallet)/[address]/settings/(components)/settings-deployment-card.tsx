@@ -22,6 +22,7 @@ import { useQueryUserOperations } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { calculateInitCode } from "@lightdotso/solutions";
 import { Button } from "@lightdotso/ui";
+import { getEtherscanUrl } from "@lightdotso/utils";
 import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import type { FC } from "react";
@@ -125,7 +126,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
           <a
             target="_blank"
             rel="noreferrer"
-            href={`${chain?.blockExplorers?.default.url}/tx/${deployed_op.transaction?.hash}`}
+            href={`${getEtherscanUrl(chain)}/tx/${deployed_op.transaction?.hash}`}
           >
             {deployed_op.transaction?.hash}
           </a>
