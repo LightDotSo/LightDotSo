@@ -24,6 +24,10 @@ import packageJson from "./package.json" assert { type: "json" };
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  basePath:
+    process.env.VERCEL_GIT_COMMIT_REF === "changeset-release/main"
+      ? "/explorer"
+      : "/",
   env: {
     NEXT_PUBLIC_APP_VERSION: `@lightdotso/explorer@${packageJson.version}`,
   },

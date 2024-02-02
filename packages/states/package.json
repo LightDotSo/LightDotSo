@@ -32,7 +32,7 @@
     "@lightdotso/query-keys": "workspace:*",
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
-    "@tanstack/react-query": "^5.18.0",
+    "@tanstack/react-query": "^5.18.1",
     "next": "^14.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -40,8 +40,8 @@
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.11.13",
-    "@types/react": "^18.2.48",
+    "@types/node": "^20.11.16",
+    "@types/react": "^18.2.51",
     "@types/react-dom": "^18.2.18",
     "typescript": "^5.3.3"
   },

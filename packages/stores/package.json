@@ -29,7 +29,7 @@
     "@lightdotso/client": "workspace:*",
     "@lightdotso/data": "workspace:*",
     "@lightdotso/schemas": "workspace:*",
-    "@tanstack/react-table": "^8.11.7",
+    "@tanstack/react-table": "^8.11.8",
     "@types/lodash": "^4.14.202",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
@@ -40,8 +40,8 @@
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.11.13",
-    "@types/react": "^18.2.48",
+    "@types/node": "^20.11.16",
+    "@types/react": "^18.2.51",
     "@types/react-dom": "^18.2.18",
     "typescript": "^5.3.3"
   },

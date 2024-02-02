@@ -27,6 +27,6 @@ export const INTERNAL_LINKS: {
   [Internal.CHANGELOG]: "https://changelog.light.so",
   [Internal.DOCS]: "https://docs.light.so",
   [Internal.EXPLORER]: "https://explorer.light.so",
-  [Internal.HOME]: "https://light.so",
+  [Internal.HOME]: "https://light.so/home",
   [Internal.STATUS]: "https://lightdotso.instatus.com",
 };
