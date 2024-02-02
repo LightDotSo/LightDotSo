@@ -67,6 +67,14 @@ const nextConfig = {
     },
   },
   outputFileTracing: true,
+  rewrites: async () => {
+    return [
+      {
+        source: "/home/:path*",
+        destination: "https://lightdotso.framer.website/:path*",
+      },
+    ];
+  },
   transpilePackages: [
     "@lightdotso/client",
     "@lightdotso/const",
@@ -94,22 +102,6 @@ const nextConfig = {
     "@lightdotso/utils",
     "@lightdotso/wagmi",
   ],
-
-  // async rewrites() {
-  //   return {
-  //     beforeFiles: [
-  //       {
-  //         source: `/auth/:path*`,
-  //         destination: `https://auth.light.so/auth/:path*`,
-  //       },
-  //       {
-  //         source: `/api/auth/:path*`,
-  //         destination: `https://auth.light.so/auth/api/auth/:path*`,
-  //       },
-  //     ],
-  //   };
-  // },
-
   webpack: (config, { isServer }) => {
     config.resolve.fallback = { fs: false };
     // config.externals.push("react");
