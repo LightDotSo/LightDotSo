@@ -20,7 +20,7 @@
 
 import { PlaceholderOrb } from "@lightdotso/elements";
 import { useIsMounted } from "@lightdotso/hooks";
-import { useSuspenseQueryWallets } from "@lightdotso/query";
+import { useQueryWallets } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import {
   Avatar,
@@ -121,7 +121,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { wallets, isWalletsLoading } = useSuspenseQueryWallets({
+  const { wallets, isWalletsLoading } = useQueryWallets({
     address: address as Address,
     limit: Number.MAX_SAFE_INTEGER,
     offset: 0,

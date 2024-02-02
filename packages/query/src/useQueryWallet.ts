@@ -13,14 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getWallets } from "@lightdotso/client";
+import { getWallet } from "@lightdotso/client";
 import type { WalletData } from "@lightdotso/data";
-import type { WalletListParams } from "@lightdotso/params";
+import type { WalletParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-export const useSuspenseQueryWallets = (params: WalletListParams) => {
+export const useQueryWallet = (params: WalletParams) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -33,36 +33,22 @@ export const useSuspenseQueryWallets = (params: WalletListParams) => {
 
   const queryClient = useQueryClient();
 
-  const currentData: WalletData[] | undefined = queryClient.getQueryData(
-    queryKeys.wallet.list({
-      address: params.address,
-      limit: params.limit,
-      offset: params.offset,
-    }).queryKey,
+  const currentData: WalletData | undefined = queryClient.getQueryData(
+    queryKeys.wallet.get({ address: params.address }).queryKey,
   );
 
-  const {
-    data: wallets,
-    isLoading: isWalletsLoading,
-    failureCount,
-  } = useSuspenseQuery<WalletData[] | null>({
-    queryKey: queryKeys.wallet.list({
-      address: params.address,
-      limit: params.limit,
-      offset: params.offset,
-    }).queryKey,
+  const { data: wallet, failureCount } = useQuery<WalletData | null>({
+    queryKey: queryKeys.wallet.get({ address: params.address }).queryKey,
     queryFn: async () => {
       if (typeof params.address === "undefined") {
         return null;
       }
 
-      const res = await getWallets(
+      const res = await getWallet(
         {
           params: {
             query: {
-              owner: params.address,
-              limit: params.limit,
-              offset: params.offset,
+              address: params.address,
             },
           },
         },
@@ -84,7 +70,6 @@ export const useSuspenseQueryWallets = (params: WalletListParams) => {
   });
 
   return {
-    wallets,
-    isWalletsLoading,
+    wallet,
   };
 };

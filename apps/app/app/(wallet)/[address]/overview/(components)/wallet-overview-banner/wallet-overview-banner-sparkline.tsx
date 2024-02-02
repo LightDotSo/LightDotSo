@@ -15,7 +15,7 @@
 
 "use client";
 
-import { useSuspenseQueryPortfolio } from "@lightdotso/query";
+import { useQueryPortfolio } from "@lightdotso/query";
 import { Number } from "@lightdotso/ui";
 import { cn, refineNumberFormat } from "@lightdotso/utils";
 import { SparkAreaChart } from "@tremor/react";
@@ -41,7 +41,7 @@ export const WalletOverviewBannerSparkline: FC<
   // Query
   // ---------------------------------------------------------------------------
 
-  const { portfolio } = useSuspenseQueryPortfolio({ address: address });
+  const { portfolio } = useQueryPortfolio({ address: address });
 
   // ---------------------------------------------------------------------------
   // Render

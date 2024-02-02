@@ -15,7 +15,7 @@
 
 "use client";
 
-import { useSuspenseQueryPortfolio } from "@lightdotso/query";
+import { useQueryPortfolio } from "@lightdotso/query";
 import { Number } from "@lightdotso/ui";
 import type { FC } from "react";
 import type { Address } from "viem";
@@ -43,7 +43,7 @@ export const TokenPortfolio: FC<TokenPortfolioProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { portfolio } = useSuspenseQueryPortfolio({ address: address });
+  const { portfolio } = useQueryPortfolio({ address: address });
 
   // ---------------------------------------------------------------------------
   // Render

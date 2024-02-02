@@ -13,14 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getTransactions } from "@lightdotso/client";
-import type { TransactionData } from "@lightdotso/data";
-import type { TransactionListParams } from "@lightdotso/params";
+import { getTokenPrice } from "@lightdotso/client";
+import type { TokenPriceData } from "@lightdotso/data";
+import type { TokenPriceParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-export const useSuspenseQueryTransactions = (params: TransactionListParams) => {
+export const useQueryTokenPrice = (params: TokenPriceParams) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -33,37 +33,29 @@ export const useSuspenseQueryTransactions = (params: TransactionListParams) => {
 
   const queryClient = useQueryClient();
 
-  const currentData: TransactionData[] | undefined = queryClient.getQueryData(
-    queryKeys.transaction.list({
+  const currentData: TokenPriceData | undefined = queryClient.getQueryData(
+    queryKeys.token_price.get({
       address: params.address,
-      limit: params.limit,
-      offset: params.offset,
-      is_testnet: params.is_testnet,
+      chain_id: params.chain_id,
     }).queryKey,
   );
 
-  const { data: transactions, failureCount } = useSuspenseQuery<
-    TransactionData[] | null
-  >({
-    queryKey: queryKeys.transaction.list({
+  const { data: token_price, failureCount } = useQuery<TokenPriceData | null>({
+    queryKey: queryKeys.token_price.get({
       address: params.address,
-      limit: params.limit,
-      offset: params.offset,
-      is_testnet: params.is_testnet,
+      chain_id: params.chain_id,
     }).queryKey,
     queryFn: async () => {
       if (typeof params.address === "undefined") {
         return null;
       }
 
-      const res = await getTransactions(
+      const res = await getTokenPrice(
         {
           params: {
             query: {
-              address: params.address ?? undefined,
-              limit: params.limit,
-              offset: params.offset,
-              is_testnet: params.is_testnet,
+              address: params.address,
+              chain_id: params.chain_id,
             },
           },
         },
@@ -72,7 +64,7 @@ export const useSuspenseQueryTransactions = (params: TransactionListParams) => {
 
       return res.match(
         data => {
-          return data as TransactionData[];
+          return data;
         },
         err => {
           if (failureCount % 3 !== 2) {
@@ -85,6 +77,6 @@ export const useSuspenseQueryTransactions = (params: TransactionListParams) => {
   });
 
   return {
-    transactions,
+    token_price,
   };
 };

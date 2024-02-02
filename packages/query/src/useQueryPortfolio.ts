@@ -18,9 +18,9 @@ import type { TokenPortfolioData } from "@lightdotso/data";
 import type { PortfolioParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-export const useSuspenseQueryPortfolio = (params: PortfolioParams) => {
+export const useQueryPortfolio = (params: PortfolioParams) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -37,8 +37,8 @@ export const useSuspenseQueryPortfolio = (params: PortfolioParams) => {
     queryKeys.portfolio.get({ address: params.address }).queryKey,
   );
 
-  const { data: portfolio, failureCount } =
-    useSuspenseQuery<TokenPortfolioData | null>({
+  const { data: portfolio, failureCount } = useQuery<TokenPortfolioData | null>(
+    {
       queryKey: queryKeys.portfolio.get({ address: params.address }).queryKey,
       queryFn: async () => {
         if (typeof params.address === "undefined") {
@@ -68,7 +68,8 @@ export const useSuspenseQueryPortfolio = (params: PortfolioParams) => {
           },
         );
       },
-    });
+    },
+  );
 
   return {
     portfolio,

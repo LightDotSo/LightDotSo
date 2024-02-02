@@ -17,7 +17,7 @@
 
 import { CHAINS, MAINNET_CHAINS } from "@lightdotso/const";
 import { useIsMounted } from "@lightdotso/hooks";
-import { useSuspenseQueryWalletSettings } from "@lightdotso/query";
+import { useQueryWalletSettings } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import {
@@ -63,7 +63,7 @@ export const ChainPopover: FC = () => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const { walletSettings } = useSuspenseQueryWalletSettings({
+  const { walletSettings } = useQueryWalletSettings({
     address: wallet as Address,
   });
 

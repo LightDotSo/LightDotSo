@@ -23,10 +23,7 @@ import {
   useUserOperationsQueryState,
   userOperationsParser,
 } from "@lightdotso/nuqs";
-import {
-  useSuspenseQueryNfts,
-  useSuspenseQueryTokens,
-} from "@lightdotso/query";
+import { useQueryNfts, useQueryTokens } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { sendFormConfigurationSchema } from "@lightdotso/schemas";
 import type {
@@ -142,14 +139,14 @@ export const SendDialog: FC<SendDialogProps> = ({
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
-  const { nftPage } = useSuspenseQueryNfts({
+  const { nftPage } = useQueryNfts({
     address,
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
     limit: Number.MAX_SAFE_INTEGER,
     cursor: null,
   });
 
-  const { tokens } = useSuspenseQueryTokens({
+  const { tokens } = useQueryTokens({
     address,
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
     offset: 0,

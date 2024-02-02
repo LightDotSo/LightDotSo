@@ -16,7 +16,7 @@
 "use client";
 
 import type { TransactionData, WalletSettingsData } from "@lightdotso/data";
-import { useSuspenseQueryTransactions } from "@lightdotso/query";
+import { useQueryTransactions } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useTables } from "@lightdotso/stores";
 import { TransactionTable, transactionColumns } from "@lightdotso/tables";
@@ -63,7 +63,7 @@ export const TransactionsList: FC<TransactionsListProps> = ({
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
-  const { transactions } = useSuspenseQueryTransactions({
+  const { transactions } = useQueryTransactions({
     address,
     limit,
     offset: 0,
@@ -101,7 +101,7 @@ export const TransactionsList: FC<TransactionsListProps> = ({
     <TransactionTable
       isLoading={false}
       pageSize={limit}
-      data={transactions}
+      data={transactions ?? []}
       tableOptions={tableOptions}
     />
   );
