@@ -15,9 +15,9 @@
 
 "use client";
 
-import { useIsMounted } from "@lightdotso/hooks";
 import { Banner } from "@lightdotso/templates";
 import type { FC } from "react";
+import { usePathType } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -28,19 +28,16 @@ export const AppBanner: FC = () => {
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const isMounted = useIsMounted();
+  const pathType = usePathType();
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!isMounted) {
-    return null;
-  }
-
   return (
     <>
-      <Banner kind="beta" />
+      {pathType === "wallet" && <Banner kind="beta" />}
+      {pathType === "demo" && <Banner kind="demo" />}
     </>
   );
 };

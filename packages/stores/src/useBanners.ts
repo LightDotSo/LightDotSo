@@ -22,7 +22,7 @@ import { devtools } from "zustand/middleware";
 
 type BannersStore = {
   isBetaClosed: boolean;
-  toggleBeta: () => void;
+  toggleIsBetaClosed: () => void;
 };
 
 // -----------------------------------------------------------------------------
@@ -33,7 +33,8 @@ export const useBanners = create(
   devtools<BannersStore>(
     set => ({
       isBetaClosed: false,
-      toggleBeta: () => set(state => ({ isBetaClosed: !state.isBetaClosed })),
+      toggleIsBetaClosed: () =>
+        set(state => ({ isBetaClosed: !state.isBetaClosed })),
     }),
     {
       anonymousActionType: "useBanners",

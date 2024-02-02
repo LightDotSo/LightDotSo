@@ -19,6 +19,7 @@ import { useBanners } from "@lightdotso/stores";
 import type { Banner as BannerKind } from "@lightdotso/types";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { type FC } from "react";
+import { GamepadIcon } from "lucide-react";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -37,7 +38,7 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { isBetaClosed } = useBanners();
+  const { isBetaClosed, toggleIsBetaClosed } = useBanners();
 
   // ---------------------------------------------------------------------------
   // Render
@@ -50,26 +51,27 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
   return (
     <div className="flex items-center gap-x-6 bg-background-purple-weakest px-6 py-2.5 sm:px-3.5 sm:before:flex-1">
       <p className="text-sm leading-6 text-text">
-        <a href="#">
-          <svg
-            viewBox="0 0 2 2"
+        {kind === "demo" && (
+          <GamepadIcon
             className="mx-2 inline size-0.5 fill-current"
             aria-hidden="true"
-          >
-            <circle cx={1} cy={1} r={1} />
-          </svg>
-          Beta&nbsp;
-          <span aria-hidden="true">&rarr;</span>
-        </a>
+          />
+        )}
+        {kind === "demo" && "Demo"}
+        {kind === "beta" && "Beta"}
+        <span aria-hidden="true">&rarr;</span>
       </p>
       <div className="flex flex-1 justify-end">
-        <button
-          type="button"
-          className="-m-3 p-3 focus-visible:outline-offset-[-4px]"
-        >
-          <span className="sr-only">Dismiss</span>
-          <XMarkIcon className="size-5 text-text" aria-hidden="true" />
-        </button>
+        {kind === "beta" && (
+          <button
+            type="button"
+            className="-m-3 p-3 focus-visible:outline-offset-[-4px]"
+            onClick={toggleIsBetaClosed}
+          >
+            <span className="sr-only">Dismiss</span>
+            <XMarkIcon className="size-5 text-text" aria-hidden="true" />
+          </button>
+        )}
       </div>
     </div>
   );
