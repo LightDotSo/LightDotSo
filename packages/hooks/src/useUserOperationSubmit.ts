@@ -161,7 +161,7 @@ export const useUserOperationSubmit = ({
   // A `useCallback` handler for confirming the operation
   const handleConfirm = useCallback(async () => {
     const processSignature = async () => {
-      const loadingToast = toast.loading("Submitting the userOperation result");
+      const loadingToast = toast.loading("Submitting the transaction...");
 
       // Get the sig as bytes from caller
       const sigRes = await getSignatureUserOperation({
@@ -193,14 +193,14 @@ export const useUserOperationSubmit = ({
           res.match(
             _ => {
               toast.dismiss(loadingToast);
-              toast.success("You submitted the userOperation result");
+              toast.success("You submitted the transaction!");
             },
             err => {
               toast.dismiss(loadingToast);
               if (err instanceof Error) {
                 toast.error(err.message);
               } else {
-                toast.error("Failed to submit the userOperation result");
+                toast.error("Failed to submit the transaction.");
               }
             },
           );
