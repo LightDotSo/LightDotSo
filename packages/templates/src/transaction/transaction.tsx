@@ -484,6 +484,18 @@ export const Transaction: FC<TransactionProps> = ({
                         serialize(userOperationWithHash, undefined, 2)}
                     </code>
                   </pre>
+                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+                    <code className="break-all text-text">
+                      feesPerGas:{" "}
+                      {feesPerGas && serialize(feesPerGas, undefined, 2)}
+                      <br />
+                      maxPriorityFeePerGas:{" "}
+                      {maxPriorityFeePerGas &&
+                      maxPriorityFeePerGas === BigInt(0)
+                        ? "0"
+                        : serialize(maxPriorityFeePerGas, undefined, 2)}
+                    </code>
+                  </pre>
                   {/* <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code className="break-all text-text">
                       paymasterNonce: {serialize(paymasterNonce)}
@@ -514,7 +526,7 @@ export const Transaction: FC<TransactionProps> = ({
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
                     <code className="break-all text-text">
-                      owner: {JSON.stringify(owner)}
+                      owner: {JSON.stringify(owner, null, 2)}
                     </code>
                   </pre>
                   <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
