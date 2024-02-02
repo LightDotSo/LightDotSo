@@ -16,11 +16,12 @@
 import { createUserOperation } from "@lightdotso/client";
 import type { UserOperationCreateParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
-import { UserOperation } from "@lightdotso/schemas";
+import type { UserOperation } from "@lightdotso/schemas";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { Address, toBytes, toHex } from "viem";
+import type { Address } from "viem";
+import { toBytes, toHex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Query Mutation
