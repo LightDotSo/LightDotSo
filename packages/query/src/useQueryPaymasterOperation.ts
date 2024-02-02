@@ -13,15 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getWalletSettings } from "@lightdotso/client";
-import type { WalletSettingsData } from "@lightdotso/data";
-import type { WalletSettingsParams } from "@lightdotso/params";
+import { getPaymasterOperation } from "@lightdotso/client";
+import type { PaymasterOperationData } from "@lightdotso/data";
+import type { PaymasterOperationGetParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-export const useSuspenseQueryWalletSettings = (
-  params: WalletSettingsParams,
+export const useQueryPaymasterOperation = (
+  params: PaymasterOperationGetParams,
 ) => {
   // ---------------------------------------------------------------------------
   // Stores
@@ -35,23 +35,34 @@ export const useSuspenseQueryWalletSettings = (
 
   const queryClient = useQueryClient();
 
-  const currentData: WalletSettingsData | undefined = queryClient.getQueryData(
-    queryKeys.wallet.settings({ address: params.address }).queryKey,
-  );
+  const currentData: PaymasterOperationData | undefined =
+    queryClient.getQueryData(
+      queryKeys.paymaster_operation.get({
+        address: params.address,
+        chain_id: params.chain_id,
+        valid_after: params.valid_after,
+      }).queryKey,
+    );
 
-  const { data: walletSettings, failureCount } =
-    useSuspenseQuery<WalletSettingsData | null>({
-      queryKey: queryKeys.wallet.settings({ address: params.address }).queryKey,
+  const { data: paymasterOperation, failureCount } =
+    useQuery<PaymasterOperationData | null>({
+      queryKey: queryKeys.paymaster_operation.get({
+        address: params.address,
+        chain_id: params.chain_id,
+        valid_after: params.valid_after,
+      }).queryKey,
       queryFn: async () => {
         if (typeof params.address === "undefined") {
           return null;
         }
 
-        const res = await getWalletSettings(
+        const res = await getPaymasterOperation(
           {
             params: {
               query: {
-                address: params.address,
+                address: params.address ?? undefined,
+                chain_id: params.chain_id,
+                valid_after: params.valid_after,
               },
             },
           },
@@ -73,6 +84,6 @@ export const useSuspenseQueryWalletSettings = (
     });
 
   return {
-    walletSettings,
+    paymasterOperation,
   };
 };

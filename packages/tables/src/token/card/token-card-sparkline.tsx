@@ -16,7 +16,7 @@
 "use client";
 
 import type { TokenData } from "@lightdotso/data";
-import { useSuspenseQueryTokenPrice } from "@lightdotso/query";
+import { useQueryTokenPrice } from "@lightdotso/query";
 import { SparkAreaChart } from "@tremor/react";
 import type { FC } from "react";
 import type { Address } from "viem";
@@ -39,7 +39,7 @@ export const TokenCardSparkline: FC<TokenCardSparklineProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { token_price } = useSuspenseQueryTokenPrice({
+  const { token_price } = useQueryTokenPrice({
     address: address as Address,
     chain_id: chain_id,
   });

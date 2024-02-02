@@ -21,7 +21,7 @@ import {
 } from "@lightdotso/client";
 import { CONTRACT_ADDRESSES } from "@lightdotso/const";
 import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
-import { useSuspenseQueryPaymasterOperation } from "@lightdotso/query";
+import { useQueryPaymasterOperation } from "@lightdotso/query";
 import { toast } from "@lightdotso/ui";
 import {
   useReadLightVerifyingPaymasterGetHash,
@@ -115,7 +115,7 @@ export const useUserOperationSubmit = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { paymasterOperation } = useSuspenseQueryPaymasterOperation({
+  const { paymasterOperation } = useQueryPaymasterOperation({
     address: userOperation.paymaster_and_data.slice(0, 42) as Address,
     chain_id: userOperation.chain_id,
     valid_after: fromHex(

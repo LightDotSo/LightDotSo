@@ -19,8 +19,8 @@
 import type { WalletSettingsData } from "@lightdotso/data";
 import {
   useQueryUserOperationsCount,
-  useSuspenseQueryConfiguration,
-  useSuspenseQueryWalletFeatures,
+  useQueryConfiguration,
+  useQueryWalletFeatures,
 } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
@@ -126,14 +126,13 @@ export function useTabs() {
       queryKeys.wallet.settings({ address: walletAddress as Address }).queryKey,
     );
 
-  const { configuration } = useSuspenseQueryConfiguration({
+  const { configuration } = useQueryConfiguration({
     address: walletAddress as Address,
   });
 
-  const { walletFeatures, refetchWalletFeatures } =
-    useSuspenseQueryWalletFeatures({
-      address: walletAddress as Address,
-    });
+  const { walletFeatures, refetchWalletFeatures } = useQueryWalletFeatures({
+    address: walletAddress as Address,
+  });
 
   const { userOperationsCount } = useQueryUserOperationsCount({
     address: walletAddress as Address,

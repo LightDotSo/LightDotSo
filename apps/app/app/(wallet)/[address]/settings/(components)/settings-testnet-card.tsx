@@ -18,7 +18,7 @@
 import { useDelayedValue } from "@lightdotso/hooks";
 import {
   useMutationWalletSettings,
-  useSuspenseQueryWalletSettings,
+  useQueryWalletSettings,
 } from "@lightdotso/query";
 import {
   Button,
@@ -75,7 +75,7 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { walletSettings } = useSuspenseQueryWalletSettings({
+  const { walletSettings } = useQueryWalletSettings({
     address: address,
   });
 

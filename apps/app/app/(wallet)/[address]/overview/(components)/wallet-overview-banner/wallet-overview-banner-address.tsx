@@ -17,7 +17,7 @@
 
 import { PlaceholderOrb } from "@lightdotso/elements";
 import { useCopy } from "@lightdotso/hooks";
-import { useSuspenseQueryWallet } from "@lightdotso/query";
+import { useQueryWallet } from "@lightdotso/query";
 import {
   Avatar,
   Button,
@@ -82,7 +82,7 @@ export const WalletOverviewBannerAddress: FC<
   // Query
   // ---------------------------------------------------------------------------
 
-  const { wallet } = useSuspenseQueryWallet({ address: address });
+  const { wallet } = useQueryWallet({ address: address });
 
   // ---------------------------------------------------------------------------
   // Render

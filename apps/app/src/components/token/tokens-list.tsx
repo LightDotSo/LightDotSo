@@ -16,7 +16,7 @@
 "use client";
 
 import type { WalletSettingsData } from "@lightdotso/data";
-import { useSuspenseQueryTokens } from "@lightdotso/query";
+import { useQueryTokens } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useTables } from "@lightdotso/stores";
 import { TokenTable } from "@lightdotso/tables";
@@ -60,7 +60,7 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
-  const { tokens } = useSuspenseQueryTokens({
+  const { tokens } = useQueryTokens({
     address: address,
     limit: limit,
     offset: 0,
@@ -100,7 +100,7 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
     <TokenTable
       isLoading={false}
       pageSize={limit}
-      data={tokens}
+      data={tokens ?? []}
       tableOptions={tableOptions}
     />
   );

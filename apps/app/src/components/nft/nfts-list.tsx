@@ -16,7 +16,7 @@
 "use client";
 
 import type { NftData, WalletSettingsData } from "@lightdotso/data";
-import { useSuspenseQueryNfts } from "@lightdotso/query";
+import { useQueryNfts } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useTables } from "@lightdotso/stores";
 import { NftTable } from "@lightdotso/tables";
@@ -54,7 +54,7 @@ export const NftsList: FC<NftsListProps> = ({ address, limit }) => {
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
-  const { nftPage } = useSuspenseQueryNfts({
+  const { nftPage } = useQueryNfts({
     address: address,
     limit: limit,
     is_testnet: walletSettings?.is_enabled_testnet ?? false,

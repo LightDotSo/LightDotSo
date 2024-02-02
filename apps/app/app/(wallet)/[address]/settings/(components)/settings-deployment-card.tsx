@@ -18,7 +18,7 @@
 import { CONTRACT_ADDRESSES } from "@lightdotso/const";
 import type { WalletSettingsData } from "@lightdotso/data";
 import { userOperationsParser } from "@lightdotso/nuqs";
-import { useSuspenseQueryUserOperations } from "@lightdotso/query";
+import { useQueryUserOperations } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { calculateInitCode } from "@lightdotso/solutions";
 import { Button } from "@lightdotso/ui";
@@ -65,7 +65,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
 
-  const { userOperations } = useSuspenseQueryUserOperations({
+  const { userOperations } = useQueryUserOperations({
     address,
     status: "history",
     order: "asc",

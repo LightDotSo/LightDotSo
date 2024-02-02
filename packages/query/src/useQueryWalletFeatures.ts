@@ -18,11 +18,9 @@ import type { WalletFeaturesData } from "@lightdotso/data";
 import type { WalletFeaturesParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-export const useSuspenseQueryWalletFeatures = (
-  params: WalletFeaturesParams,
-) => {
+export const useQueryWalletFeatures = (params: WalletFeaturesParams) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -43,7 +41,7 @@ export const useSuspenseQueryWalletFeatures = (
     data: walletFeatures,
     refetch: refetchWalletFeatures,
     failureCount,
-  } = useSuspenseQuery<WalletFeaturesData | null>({
+  } = useQuery<WalletFeaturesData | null>({
     queryKey: queryKeys.wallet.features({ address: params.address }).queryKey,
     queryFn: async () => {
       if (typeof params.address === "undefined") {

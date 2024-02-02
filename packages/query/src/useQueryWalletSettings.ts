@@ -13,14 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getConfiguration } from "@lightdotso/client";
-import type { ConfigurationData } from "@lightdotso/data";
-import type { ConfigurationParams } from "@lightdotso/params";
+import { getWalletSettings } from "@lightdotso/client";
+import type { WalletSettingsData } from "@lightdotso/data";
+import type { WalletSettingsParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-export const useSuspenseQueryConfiguration = (params: ConfigurationParams) => {
+export const useQueryWalletSettings = (params: WalletSettingsParams) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -33,20 +33,19 @@ export const useSuspenseQueryConfiguration = (params: ConfigurationParams) => {
 
   const queryClient = useQueryClient();
 
-  const currentData: ConfigurationData | undefined = queryClient.getQueryData(
-    queryKeys.configuration.get({ address: params.address }).queryKey,
+  const currentData: WalletSettingsData | undefined = queryClient.getQueryData(
+    queryKeys.wallet.settings({ address: params.address }).queryKey,
   );
 
-  const { data: configuration, failureCount } =
-    useSuspenseQuery<ConfigurationData | null>({
-      queryKey: queryKeys.configuration.get({ address: params.address })
-        .queryKey,
+  const { data: walletSettings, failureCount } =
+    useQuery<WalletSettingsData | null>({
+      queryKey: queryKeys.wallet.settings({ address: params.address }).queryKey,
       queryFn: async () => {
-        if (typeof params.address === "undefined" || params.address === null) {
+        if (typeof params.address === "undefined") {
           return null;
         }
 
-        const res = await getConfiguration(
+        const res = await getWalletSettings(
           {
             params: {
               query: {
@@ -72,6 +71,6 @@ export const useSuspenseQueryConfiguration = (params: ConfigurationParams) => {
     });
 
   return {
-    configuration,
+    walletSettings,
   };
 };
