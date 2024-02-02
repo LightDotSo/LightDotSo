@@ -316,6 +316,7 @@ lazy_static! {
     };
 }
 
+// The etherspot rpc urls
 lazy_static! {
     pub static ref ETHERSPOT_RPC_URLS: HashMap<u64, String> = {
         let mut m = HashMap::new();
