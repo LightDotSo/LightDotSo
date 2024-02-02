@@ -31,7 +31,7 @@ export const FooterCopy: FC = () => {
       <span className="hidden md:inline-flex">&nbsp;Light, Inc. - </span>{" "}
       <a
         className="hidden text-text-weak hover:underline md:inline-flex"
-        href={GITHUB_LINKS["License"]}
+        href={GITHUB_LINKS["Repo"]}
         target="_blank"
         rel="noreferrer"
       >

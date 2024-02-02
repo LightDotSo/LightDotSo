@@ -53,6 +53,7 @@ const themes = [
     },
   },
 ];
+
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
@@ -71,17 +72,21 @@ export const FooterModeSelect: FC = () => {
   return (
     <Select value={theme} defaultValue={theme} onValueChange={setTheme}>
       <SelectTrigger size="sm" className="w-auto bg-background-stronger">
-        <SelectValue placeholder="Select a theme" />
+        <SelectValue
+          className="inline-flex items-center"
+          placeholder="Select a theme"
+        />
       </SelectTrigger>
       <SelectContent>
         {themes.map(item => (
           <SelectItem key={item.name} value={item.value}>
-            <span className="inline-flex items-center">
+            {/* NOTICE: A dirty hack to center the child `SelectPrimitive.ItemText` in parent `<span />` container */}
+            <span className="mr-2 mt-0.5 inline-flex items-center">
               <item.icon
                 className="mr-2 size-4 fill-text-weak"
                 aria-hidden="true"
               />
-              <span className="mr-2">{item.name}</span>
+              <span>{item.name}</span>
             </span>
           </SelectItem>
         ))}

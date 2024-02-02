@@ -51,14 +51,14 @@ export const SettingsCard: FC<SettingsCardProps> = ({
 
   return (
     <Card>
-      <CardHeader className="p-6">
+      <CardHeader className="p-4">
         <CardTitle>{title}</CardTitle>
         <CardDescription>{subtitle}</CardDescription>
       </CardHeader>
-      <CardContent className="p-6 pt-0">{children}</CardContent>
+      <CardContent className="p-4 pt-0">{children}</CardContent>
       <Separator />
       {footerContent && (
-        <CardFooter className="flex w-full items-center justify-end space-x-2 p-6">
+        <CardFooter className="flex w-full items-center justify-end space-x-2 p-4">
           {footerContent}
         </CardFooter>
       )}

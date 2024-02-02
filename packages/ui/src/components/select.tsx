@@ -59,7 +59,7 @@ const SelectTrigger = forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      "flex w-full items-center justify-between rounded-md border border-border bg-transparent text-sm ring-offset-background placeholder:text-text-weak focus:outline-none focus:ring-2 focus:ring-border-info focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+      "flex w-full items-center justify-between rounded-md border border-border bg-transparent text-sm ring-offset-background placeholder:text-text-weak focus:outline-none focus:ring-2 focus:ring-border-info focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[placeholder]:space-x-1",
       selectTriggerVariants({ size }),
       className,
     )}
@@ -132,8 +132,9 @@ const SelectItem = forwardRef<
         <Check className="size-4" />
       </SelectPrimitive.ItemIndicator>
     </span>
-
-    <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+    <SelectPrimitive.ItemText className="flex items-center">
+      {children}
+    </SelectPrimitive.ItemText>
   </SelectPrimitive.Item>
 ));
 SelectItem.displayName = SelectPrimitive.Item.displayName;

@@ -21,6 +21,7 @@ import {
 import { Result } from "neverthrow";
 import type { Address } from "viem";
 import { validateAddress } from "@/handlers/validators/address";
+
 // -----------------------------------------------------------------------------
 // Handler
 // -----------------------------------------------------------------------------

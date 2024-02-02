@@ -89,13 +89,13 @@ export const ChainPopover: FC = () => {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          className="h-9 px-2 py-1"
+          className="h-9 space-x-0.5 px-2 py-1"
           size="unsized"
           variant="outline"
           role="combobox"
           aria-expanded={open}
         >
-          <Globe className="mr-1 size-4 shrink-0" />
+          <Globe className="size-4 shrink-0" />
           <div className="flex -space-x-1.5 overflow-hidden">
             {chains.slice(0, 3).map(chain => (
               <ChainLogo
@@ -104,10 +104,10 @@ export const ChainPopover: FC = () => {
                 className="size-6 rounded-lg bg-border"
               />
             ))}
-            <span className="flex size-6 items-center justify-center rounded-lg border border-border bg-background-strongest text-xs text-text">
-              {chains.length > 3 ? `+${chains.length - 3}` : null}
-            </span>
           </div>
+          <span className="flex size-6 items-center justify-center rounded-lg border border-border bg-background-strongest text-xs text-text">
+            {chains.length}
+          </span>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">

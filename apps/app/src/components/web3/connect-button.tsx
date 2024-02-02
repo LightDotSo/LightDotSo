@@ -57,7 +57,7 @@ export const ConnectButton = () => {
   return (
     <Button
       disabled={isOpen}
-      size={isDesktop ? "sm" : "lg"}
+      size={isDesktop ? "default" : "lg"}
       onClick={
         !address
           ? () => open({ view: "Connect" })

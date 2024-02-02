@@ -16,6 +16,7 @@
 export enum Github {
   ACKNOWLEDGEMENTS = "Acknowledgements",
   AUDIT = "Audit",
+  REPO = "Repo",
   LICENSE = "License",
 }
 
@@ -25,6 +26,7 @@ export const GITHUB_LINKS: {
   [Github.ACKNOWLEDGEMENTS]:
     "https://github.com/LightDotSo/LightDotSo/blob/main/ACKNOWLEDGEMENTS.md",
   [Github.AUDIT]: "https://github.com/LightDotSo/LightDotSo/blob/main/audits",
+  [Github.REPO]: "https://github.com/LightDotSo/LightDotSo",
   [Github.LICENSE]:
     "https://github.com/LightDotSo/LightDotSo/blob/main/LICENSE.md",
 };
