@@ -21,6 +21,10 @@ import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 
+// -----------------------------------------------------------------------------
+// Query Mutation
+// -----------------------------------------------------------------------------
+
 export const useMutationWallet = (params: WalletParams) => {
   // ---------------------------------------------------------------------------
   // Stores
