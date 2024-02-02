@@ -27,7 +27,7 @@ const nextConfig = {
   basePath:
     process.env.VERCEL_GIT_COMMIT_REF === "changeset-release/main"
       ? "/explorer"
-      : "/",
+      : "",
   env: {
     NEXT_PUBLIC_APP_VERSION: `@lightdotso/explorer@${packageJson.version}`,
   },
