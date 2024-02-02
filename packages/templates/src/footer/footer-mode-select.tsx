@@ -81,7 +81,7 @@ export const FooterModeSelect: FC = () => {
         {themes.map(item => (
           <SelectItem key={item.name} value={item.value}>
             {/* NOTICE: A dirty hack to center the child `SelectPrimitive.ItemText` in parent `<span />` container */}
-            <span className="mt-0.5 inline-flex items-center mr-2">
+            <span className="mr-2 mt-0.5 inline-flex items-center">
               <item.icon
                 className="mr-2 size-4 fill-text-weak"
                 aria-hidden="true"
