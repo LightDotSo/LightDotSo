@@ -106,7 +106,7 @@ export const Root: FC<RootProps> = ({ children }) => {
     >
       <body className="min-h-[100dvh] bg-background-body">
         <ThemeProvider attribute="class">
-          <ReactQueryProvider>
+          <ReactQueryProvider showDevTools>
             <Web3Provider initialState={initialState}>
               {/* Layout */}
               <MainNav>{children}</MainNav>

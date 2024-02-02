@@ -60,7 +60,7 @@ initialize();
 export const decorators = [
   Story => (
     <AppRouterContext.Provider value={{} as AppRouterInstance}>
-      <ReactQueryProvider showDevTools={false}>
+      <ReactQueryProvider>
         <Web3Provider>
           <Story />
         </Web3Provider>

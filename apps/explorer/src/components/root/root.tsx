@@ -63,7 +63,7 @@ export const Root: FC<RootProps> = ({ children }) => {
     >
       <body className="min-h-[100dvh] bg-background-body">
         <ThemeProvider attribute="class">
-          <ReactQueryProvider>
+          <ReactQueryProvider showDevTools>
             <MainNav>{children}</MainNav>
             <Footer />
             {/* States */}

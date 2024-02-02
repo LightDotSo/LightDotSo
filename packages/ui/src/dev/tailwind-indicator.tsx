@@ -16,7 +16,9 @@
 "use client";
 
 const TailwindIndicator = () => {
-  if (process.env.NODE_ENV === "production") return null;
+  if (process.env.NEXT_PUBLIC_VERCEL_ENV === "production") {
+    return null;
+  }
 
   return (
     <div className="fixed bottom-1 left-1 z-50 flex size-12 items-center justify-center rounded-full bg-gray-800 p-6 font-mono text-sm text-white">
