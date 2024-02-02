@@ -300,13 +300,17 @@ lazy_static! {
         m.insert(43114, "https://api.pimlico.io/v1/avalanche/rpc".to_string());
         m.insert(59144, "https://api.pimlico.io/v1/linea/rpc".to_string());
         m.insert(534352, "https://api.pimlico.io/v1/scroll/rpc".to_string());
-
+        m.insert(7777777, "https://api.pimlico.io/v1/zora/rpc".to_string());
 
         // Testnet
         m.insert(10200, "https://api.pimlico.io/v1/chiado-testnet/rpc".to_string());
         m.insert(80001, "https://api.pimlico.io/v1/mumbai/rpc".to_string());
+        m.insert(84532, "https://api.pimlico.io/v1/base-sepolia/rpc".to_string());
+        m.insert(421614, "https://api.pimlico.io/v1/arbitrum-sepolia/rpc".to_string());
         m.insert(534351, "https://api.pimlico.io/v1/scroll-sepolia-testnet/rpc".to_string());
         m.insert(11155111, "https://api.pimlico.io/v1/sepolia/rpc".to_string());
+        m.insert(11155420, "https://api.pimlico.io/v1/optimism-sepolia/rpc".to_string());
+        m.insert(999999999, "https://api.pimlico.io/v1/zora-sepolia/rpc".to_string());
 
         m
     };
@@ -326,7 +330,6 @@ lazy_static! {
         m.insert(42161, "https://rpc.silius.xyz/api/v1/chain/arbitrum-mainnet".to_string());
         m.insert(43114, "https://rpc.silius.xyz/api/v1/chain/avalanche-mainnet".to_string());
         m.insert(59144, "https://rpc.silius.xyz/api/v1/chain/linea-mainnet".to_string());
-
 
         // Testnet
         m.insert(80001, "https://rpc.silius.xyz/api/v1/chain/polygon-mumbai".to_string());
