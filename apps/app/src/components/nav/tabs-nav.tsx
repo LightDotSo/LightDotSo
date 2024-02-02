@@ -225,9 +225,15 @@ export const TabsNav: FC<TabNavProps> = ({
           transition={transition}
         />
       )}
-      {!isDesktop && (
-        <div className="absolute left-0 bottom-0 z-10 w-full h-px bg-background-weak" />
-      )}
+      {/* {selectedRect && navRect && !isDesktop && (
+        <div
+          className="absolute left-0 bottom-0 z-10 h-[2px] bg-background-primary"
+          style={{
+            width: selectedRect.width,
+            // transform: `translateX(${selectedRect.left - navRect?.left}px)`,
+          }}
+        />
+      )} */}
     </nav>
   );
 };
