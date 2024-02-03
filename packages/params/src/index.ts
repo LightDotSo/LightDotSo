@@ -24,6 +24,7 @@ export type {
 } from "./notification";
 export type { PaymasterOperationGetParams } from "./paymasterOperation";
 export type { PortfolioParams } from "./portfolio";
+export type { QueueInterpretationCreateParams } from "./queue";
 export type { SocketBalanceParams } from "./socket";
 export type { SimulationParams } from "./simulation";
 export type { TokenListParams, TokenListCountParams } from "./token";

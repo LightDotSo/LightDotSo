@@ -20,7 +20,6 @@ import { useAuth } from "@lightdotso/stores";
 import { MobileAppDrawer } from "@lightdotso/templates";
 import type { Tab } from "@lightdotso/types";
 import type { FC, ReactNode } from "react";
-import { Suspense } from "react";
 import { ChainPopover } from "@/components/chain/chain-popover";
 import { FeedbackPopover } from "@/components/feedback/feedback-popover";
 import { NotificationsNav } from "@/components/nav/notifications-nav";
@@ -69,9 +68,7 @@ export const AppNav: FC<AppNavProps> = ({ mobile, tabs }) => {
     <div className="ml-auto hidden items-center space-x-2.5 md:flex">
       {address && (
         <>
-          <Suspense>
-            <ChainPopover />
-          </Suspense>
+          <ChainPopover />
           <FeedbackPopover />
           <NotificationsNav />
         </>

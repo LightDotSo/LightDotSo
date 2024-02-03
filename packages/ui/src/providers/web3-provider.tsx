@@ -15,16 +15,14 @@
 
 "use client";
 
-import { CHAINS } from "@lightdotso/const";
 import type { State } from "@lightdotso/wagmi";
 import {
+  ConnectKitProvider,
   WagmiProvider,
-  projectId,
   wagmiConfig,
-  createWeb3Modal,
 } from "@lightdotso/wagmi";
 import { useTheme } from "next-themes";
-import { useState, type ReactNode, useEffect, useMemo } from "react";
+import { type ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -38,56 +36,22 @@ function Web3Provider({
   initialState?: State;
 }) {
   // ---------------------------------------------------------------------------
-  // State Hooks
-  // ---------------------------------------------------------------------------
-
-  const [web3Modal, setWeb3Modal] = useState<any | null | undefined>(undefined);
-
-  // ---------------------------------------------------------------------------
   // Operation Hooks
   // ---------------------------------------------------------------------------
 
   const { theme } = useTheme();
 
   // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
-
-  const modal = useMemo(() => {
-    if (process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID === undefined) {
-      return null;
-    }
-
-    const modal = createWeb3Modal({
-      // @ts-expect-error
-      chains: CHAINS,
-      wagmiConfig,
-      projectId,
-      themeMode: theme === "light" ? "light" : "dark",
-    });
-    return modal;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // ---------------------------------------------------------------------------
-  // Web3Modal
-  // ---------------------------------------------------------------------------
-
-  useEffect(() => {
-    setWeb3Modal(modal);
-  }, [modal]);
-
-  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  if (typeof web3Modal === "undefined") {
-    return null;
-  }
-
   return (
     <WagmiProvider config={wagmiConfig} initialState={initialState}>
-      {children}
+      <ConnectKitProvider
+        mode={theme === "system" ? "auto" : theme === "dark" ? "dark" : "light"}
+      >
+        {children}
+      </ConnectKitProvider>
     </WagmiProvider>
   );
 }

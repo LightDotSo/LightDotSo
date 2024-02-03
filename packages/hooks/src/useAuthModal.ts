@@ -16,7 +16,7 @@
 "use client";
 
 import { useAuth, useModals } from "@lightdotso/stores";
-import { useWeb3Modal, useWeb3ModalState } from "@lightdotso/wagmi";
+import { useModal } from "@lightdotso/wagmi";
 import { useCallback, useMemo } from "react";
 import { useSignInWithSiwe } from "./useSignInWithSiwe";
 
@@ -24,7 +24,7 @@ import { useSignInWithSiwe } from "./useSignInWithSiwe";
 // Hook
 // -----------------------------------------------------------------------------
 
-export const useAuthModal = (useModal = true) => {
+export const useAuthModal = (isOpenModal = true) => {
   // ---------------------------------------------------------------------------
   // Local Hooks
   // ---------------------------------------------------------------------------
@@ -36,14 +36,13 @@ export const useAuthModal = (useModal = true) => {
   // ---------------------------------------------------------------------------
 
   const { address, sessionId } = useAuth();
-
-  // ---------------------------------------------------------------------------
-  // Web3Modal
-  // ---------------------------------------------------------------------------
-
-  const { open } = useWeb3Modal();
-  const { open: isOpen } = useWeb3ModalState();
   const { showAuthModal } = useModals();
+
+  // ---------------------------------------------------------------------------
+  // Connectkit
+  // ---------------------------------------------------------------------------
+
+  const { open, setOpen } = useModal();
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -51,8 +50,8 @@ export const useAuthModal = (useModal = true) => {
 
   const handleAuthModal = useCallback(() => {
     if (!address && open) {
-      open();
-    } else if (typeof sessionId !== "string" || useModal) {
+      setOpen(true);
+    } else if (typeof sessionId !== "string" || isOpenModal) {
       showAuthModal();
     } else {
       handleSignIn();
@@ -68,8 +67,8 @@ export const useAuthModal = (useModal = true) => {
   }, [sessionId, address]);
 
   const isAuthLoading = useMemo(() => {
-    return isPending || isOpen;
-  }, [isPending, isOpen]);
+    return isPending || open;
+  }, [isPending, open]);
 
   // ---------------------------------------------------------------------------
   // Return

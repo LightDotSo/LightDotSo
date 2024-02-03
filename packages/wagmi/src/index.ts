@@ -28,11 +28,7 @@ export {
   useReadLightVerifyingPaymasterVerifyingSigner,
 } from "./generated";
 
-export {
-  createWeb3Modal,
-  useWeb3Modal,
-  useWeb3ModalState,
-} from "@web3modal/wagmi/react";
+export { ConnectKitButton, ConnectKitProvider, useModal } from "connectkit";
 export type { State } from "wagmi";
 export {
   WagmiProvider,

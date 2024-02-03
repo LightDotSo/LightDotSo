@@ -19,7 +19,7 @@ import { useMediaQuery } from "@lightdotso/hooks";
 import { useAuth } from "@lightdotso/stores";
 import { Button } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
-import { useWeb3Modal, useWeb3ModalState } from "@lightdotso/wagmi";
+import { ConnectKitButton } from "@lightdotso/wagmi";
 import { Wallet } from "lucide-react";
 import type { Address } from "viem";
 
@@ -35,7 +35,7 @@ export const ConnectButton = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address, ens } = useAuth();
+  const { ens } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Hooks
@@ -44,28 +44,25 @@ export const ConnectButton = () => {
   const isDesktop = useMediaQuery("md");
 
   // ---------------------------------------------------------------------------
-  // Web3Modal
-  // ---------------------------------------------------------------------------
-
-  const { open } = useWeb3Modal();
-  const { open: isOpen } = useWeb3ModalState();
-
-  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <Button
-      disabled={isOpen}
-      size={isDesktop ? "default" : "lg"}
-      onClick={
-        !address
-          ? () => open({ view: "Connect" })
-          : () => open({ view: "Account" })
-      }
-    >
-      <Wallet className="mr-2 size-4" />
-      {address ? ens ?? shortenAddress(address as Address) : "Connect Wallet"}
-    </Button>
+    <ConnectKitButton.Custom>
+      {({ isConnecting, show, address }) => {
+        return (
+          <Button
+            disabled={isConnecting}
+            size={isDesktop ? "default" : "lg"}
+            onClick={show}
+          >
+            <Wallet className="mr-2 size-4" />
+            {address
+              ? ens ?? shortenAddress(address as Address)
+              : "Connect Wallet"}
+          </Button>
+        );
+      }}
+    </ConnectKitButton.Custom>
   );
 };

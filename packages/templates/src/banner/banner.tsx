@@ -26,7 +26,9 @@ import {
   ArrowUpRight,
   BoltIcon,
   GamepadIcon,
+  Undo2Icon,
 } from "lucide-react";
+import Link from "next/link";
 import { type FC } from "react";
 
 // -----------------------------------------------------------------------------
@@ -89,6 +91,15 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
         {kind === "beta" && "Public Beta"}
         {kind === "outage" && "Outage Alert"}
       </p>
+      {kind === "demo" && (
+        <Link
+          className="ml-4 inline-flex text-xs hover:underline"
+          href="/?demo=true"
+        >
+          Go to home
+          <Undo2Icon className="ml-2 size-4 shrink-0 opacity-50" />
+        </Link>
+      )}
       {kind === "outage" && (
         <a
           className="ml-4 inline-flex text-xs hover:underline"
