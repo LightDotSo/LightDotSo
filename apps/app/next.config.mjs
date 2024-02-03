@@ -54,12 +54,6 @@ const nextConfig = {
         "./node_modules/terser",
       ],
     },
-    serverComponentsExternalPackages: [
-      "@web3modal/core",
-      "@web3modal/scaffold",
-      "@web3modal/wagmi",
-      "valtio",
-    ],
   },
   logging: {
     fetches: {
@@ -120,6 +114,8 @@ const nextConfig = {
       "encoding",
       "net",
     );
+
+    config.resolve.fallback = { fs: false, net: false, tls: false };
 
     // This is only intended to pass CI and should be skiped in your app
     if (config.name === "server") {

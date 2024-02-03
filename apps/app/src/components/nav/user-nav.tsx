@@ -37,7 +37,8 @@ import {
   toast,
 } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
-import { useDisconnect, useWeb3Modal } from "@lightdotso/wagmi";
+import { useDisconnect } from "@lightdotso/wagmi";
+import { useModal } from "connectkit";
 import { Wallet } from "lucide-react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
@@ -70,10 +71,10 @@ export const UserNav: FC = () => {
   const { address, ens } = useAuth();
 
   // ---------------------------------------------------------------------------
-  // Web3Modal
+  // Connectkit
   // ---------------------------------------------------------------------------
 
-  const { open } = useWeb3Modal();
+  const { setOpen, openSwitchNetworks } = useModal();
 
   // ---------------------------------------------------------------------------
   // Wagmi Hooks
@@ -109,14 +110,14 @@ export const UserNav: FC = () => {
         <DropdownMenuGroup>
           <DropdownMenuItem
             onClick={() => {
-              open({ view: "Account" });
+              setOpen(true);
             }}
           >
             Account
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
-              open({ view: "Networks" });
+              openSwitchNetworks();
             }}
           >
             Change Networks
