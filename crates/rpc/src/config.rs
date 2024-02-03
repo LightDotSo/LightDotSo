@@ -38,4 +38,7 @@ pub struct RpcArgs {
     /// The etherspot API key
     #[clap(long, env = "ETHERSPOT_API_KEY")]
     pub etherspot_api_key: String,
+    /// The biconomy API key
+    #[clap(long, env = "BICONOMY_API_KEY")]
+    pub biconomy_api_key: String,
 }

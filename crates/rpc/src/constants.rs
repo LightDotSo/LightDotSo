@@ -289,20 +289,25 @@ lazy_static! {
         let mut m = HashMap::new();
 
         // Mainnet
-        m.insert(1, "https://bundler.biconomy.io/api/v2/1".to_string());
-        m.insert(10, "https://bundler.biconomy.io/api/v2/10".to_string());
-        m.insert(56, "https://bundler.biconomy.io/api/v2/56".to_string());
-        m.insert(100, "https://bundler.biconomy.io/api/v2/100".to_string());
-        m.insert(137, "https://bundler.biconomy.io/api/v2/137".to_string());
-        m.insert(8453, "https://bundler.biconomy.io/api/v2/8453".to_string());
-        m.insert(42161, "https://bundler.biconomy.io/api/v2/42161".to_string());
+        m.insert(1, "https://bundler.biconomy.io/api/v2/1/".to_string());
+        m.insert(10, "https://bundler.biconomy.io/api/v2/10/".to_string());
+        m.insert(56, "https://bundler.biconomy.io/api/v2/56/".to_string());
+        m.insert(100, "https://bundler.biconomy.io/api/v2/100/".to_string());
+        m.insert(137, "https://bundler.biconomy.io/api/v2/137/".to_string());
+        m.insert(1101, "https://bundler.biconomy.io/api/v2/1101/".to_string());
+        m.insert(8453, "https://bundler.biconomy.io/api/v2/8453/".to_string());
+        m.insert(42161, "https://bundler.biconomy.io/api/v2/42161/".to_string());
+        m.insert(42170, "https://bundler.biconomy.io/api/v2/42170/".to_string());
+        m.insert(43114, "https://bundler.biconomy.io/api/v2/43114/".to_string());
+        m.insert(59144, "https://bundler.biconomy.io/api/v2/59144/".to_string());
 
         // Testnet
-        m.insert(80001, "https://bundler.biconomy.io/api/v2/80001".to_string());
-        m.insert(84532, "https://bundler.biconomy.io/api/v2/84532".to_string());
-        m.insert(421614, "https://bundler.biconomy.io/api/v2/421614".to_string());
-        m.insert(11155111, "https://bundler.biconomy.io/api/v2/11155111".to_string());
-        m.insert(11155420, "https://bundler.biconomy.io/api/v2/11155420".to_string());
+        m.insert(10200, "https://bundler.biconomy.io/api/v2/10200/".to_string());
+        m.insert(80001, "https://bundler.biconomy.io/api/v2/80001/".to_string());
+        m.insert(84532, "https://bundler.biconomy.io/api/v2/84532/".to_string());
+        // m.insert(421614, "https://bundler.biconomy.io/api/v2/421614".to_string());
+        m.insert(11155111, "https://bundler.biconomy.io/api/v2/11155111/".to_string());
+        // m.insert(11155420, "https://bundler.biconomy.io/api/v2/11155420".to_string());
 
         m
     };
