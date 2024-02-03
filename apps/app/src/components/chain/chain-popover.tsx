@@ -35,8 +35,8 @@ import { ArrowUpRight, Globe } from "lucide-react";
 import { useMemo, useState } from "react";
 import type { FC } from "react";
 import type { Address } from "viem";
-import { usePathType } from "@/hooks";
 import { DEMO_WALLET_ADDRESS } from "@/const";
+import { usePathType } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Component
