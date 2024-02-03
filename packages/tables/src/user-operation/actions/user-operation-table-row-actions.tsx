@@ -72,6 +72,15 @@ export function UserOperationTableRowActions({
               Open in Explorer
             </a>
           </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href={`https://jiffyscan.xyz/userOpHash/${row.original.hash}`}
+            >
+              Open in Jiffyscan
+            </a>
+          </DropdownMenuItem>
           <DropdownMenuItem
             onClick={async () => {
               const loadingToast = toast.loading("Queue has been created...");
