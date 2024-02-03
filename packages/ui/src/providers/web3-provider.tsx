@@ -41,6 +41,10 @@ function Web3Provider({
 
   const { theme } = useTheme();
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <WagmiProvider config={wagmiConfig} initialState={initialState}>
       <ConnectKitProvider
