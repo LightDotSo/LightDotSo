@@ -36,7 +36,6 @@
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
-    "connectkit": "^1.7.0-demo",
     "copy-to-clipboard": "^3.3.3",
     "lodash": "^4.17.21",
     "next": "^14.1.0",

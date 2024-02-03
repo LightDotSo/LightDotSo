@@ -16,7 +16,7 @@
 "use client";
 
 import { useAuth, useModals } from "@lightdotso/stores";
-import { useModal } from "connectkit";
+import { useModal } from "@lightdotso/wagmi";
 import { useCallback, useMemo } from "react";
 import { useSignInWithSiwe } from "./useSignInWithSiwe";
 

@@ -28,6 +28,7 @@ export {
   useReadLightVerifyingPaymasterVerifyingSigner,
 } from "./generated";
 
+export { ConnectKitButton, ConnectKitProvider, useModal } from "connectkit";
 export type { State } from "wagmi";
 export {
   WagmiProvider,

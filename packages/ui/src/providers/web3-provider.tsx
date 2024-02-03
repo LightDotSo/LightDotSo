@@ -16,8 +16,11 @@
 "use client";
 
 import type { State } from "@lightdotso/wagmi";
-import { WagmiProvider, wagmiConfig } from "@lightdotso/wagmi";
-import { ConnectKitProvider } from "connectkit";
+import {
+  ConnectKitProvider,
+  WagmiProvider,
+  wagmiConfig,
+} from "@lightdotso/wagmi";
 import { useTheme } from "next-themes";
 import { type ReactNode } from "react";
 
