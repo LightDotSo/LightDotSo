@@ -16,7 +16,6 @@
 "use client";
 
 import { CHAINS, MAINNET_CHAINS } from "@lightdotso/const";
-import { useIsMounted } from "@lightdotso/hooks";
 import { useQueryWalletSettings } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
@@ -36,6 +35,8 @@ import { ArrowUpRight, Globe } from "lucide-react";
 import { useMemo, useState } from "react";
 import type { FC } from "react";
 import type { Address } from "viem";
+import { usePathType } from "@/hooks";
+import { DEMO_WALLET_ADDRESS } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -46,7 +47,7 @@ export const ChainPopover: FC = () => {
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const isMounted = useIsMounted();
+  const pathType = usePathType();
 
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -80,8 +81,8 @@ export const ChainPopover: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  // If the address is empty, return null
-  if (!isMounted || !wallet) {
+  // If the address is empty, and the path type is not "demo", return null.
+  if (!wallet && pathType !== "demo") {
     return null;
   }
 
@@ -120,7 +121,7 @@ export const ChainPopover: FC = () => {
                 key={chain.id}
                 target="_blank"
                 rel="noreferrer"
-                href={`${getEtherscanUrl(chain)}/address/${wallet}`}
+                href={`${getEtherscanUrl(chain)}/address/${pathType === "demo" ? DEMO_WALLET_ADDRESS : wallet}`}
               >
                 <CommandItem
                   className="flex items-center space-x-2"
