@@ -283,6 +283,31 @@ lazy_static! {
     };
 }
 
+// The biconomy rpc urls
+lazy_static! {
+    pub static ref BICONOMY_RPC_URLS: HashMap<u64, String> = {
+        let mut m = HashMap::new();
+
+        // Mainnet
+        m.insert(1, "https://bundler.biconomy.io/api/v2/1".to_string());
+        m.insert(10, "https://bundler.biconomy.io/api/v2/10".to_string());
+        m.insert(56, "https://bundler.biconomy.io/api/v2/56".to_string());
+        m.insert(100, "https://bundler.biconomy.io/api/v2/100".to_string());
+        m.insert(137, "https://bundler.biconomy.io/api/v2/137".to_string());
+        m.insert(8453, "https://bundler.biconomy.io/api/v2/8453".to_string());
+        m.insert(42161, "https://bundler.biconomy.io/api/v2/42161".to_string());
+
+        // Testnet
+        m.insert(80001, "https://bundler.biconomy.io/api/v2/80001".to_string());
+        m.insert(84532, "https://bundler.biconomy.io/api/v2/84532".to_string());
+        m.insert(421614, "https://bundler.biconomy.io/api/v2/421614".to_string());
+        m.insert(11155111, "https://bundler.biconomy.io/api/v2/11155111".to_string());
+        m.insert(11155420, "https://bundler.biconomy.io/api/v2/11155420".to_string());
+
+        m
+    };
+}
+
 // The pimlico rpc urls
 lazy_static! {
     pub static ref PIMLICO_RPC_URLS: HashMap<u64, String> = {
