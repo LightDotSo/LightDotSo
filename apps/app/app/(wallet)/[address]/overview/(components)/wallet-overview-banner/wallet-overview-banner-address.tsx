@@ -75,7 +75,7 @@ export const WalletOverviewBannerAddress: FC<
 
   const handleAddressClick = useCallback(() => {
     copy(address);
-    toast.success("Copied to clipboard");
+    toast.success("Copied to clipboard!");
   }, [address, copy]);
 
   // ---------------------------------------------------------------------------

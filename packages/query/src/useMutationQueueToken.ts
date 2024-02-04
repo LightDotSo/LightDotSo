@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { authLogout } from "@lightdotso/client";
+import { createQueueToken } from "@lightdotso/client";
+import type { QueueParams } from "@lightdotso/params";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import { useMutation } from "@tanstack/react-query";
@@ -22,7 +23,7 @@ import { useMutation } from "@tanstack/react-query";
 // Query Mutation
 // -----------------------------------------------------------------------------
 
-export const useMutationAuthLogout = () => {
+export const useMutationQueueToken = (params: QueueParams) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -30,26 +31,35 @@ export const useMutationAuthLogout = () => {
   const { clientType } = useAuth();
 
   // ---------------------------------------------------------------------------
-  // Query
+  // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const { mutate: logout } = useMutation({
+  const { mutate: queueToken } = useMutation({
     mutationFn: async () => {
-      const loadingToast = toast.loading("Attepmting to logout...");
+      const loadingToast = toast.loading("Queueing...");
 
-      const res = await authLogout({}, clientType);
+      const res = await createQueueToken(
+        {
+          params: {
+            query: {
+              address: params.address,
+            },
+          },
+        },
+        clientType,
+      );
 
       toast.dismiss(loadingToast);
 
       res.match(
         _ => {
-          toast.success("Successfully logged out!");
+          toast.success("Successfully queued portfolio!");
         },
         err => {
           if (err instanceof Error) {
             toast.error(err.message);
           } else {
-            toast.error("Failed to log out.");
+            toast.error("Failed to queue.");
           }
 
           throw err;
@@ -59,6 +69,6 @@ export const useMutationAuthLogout = () => {
   });
 
   return {
-    logout,
+    queueToken,
   };
 };

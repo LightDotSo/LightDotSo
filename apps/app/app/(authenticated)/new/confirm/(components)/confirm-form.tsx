@@ -155,7 +155,7 @@ export const ConfirmForm: FC = () => {
         .then(() => {
           setIsLoading(false);
           toast.dismiss(loadingToast);
-          toast.success("You can now use your wallet.");
+          toast.success("You can now use your wallet!");
 
           backOff(() =>
             getWallet(

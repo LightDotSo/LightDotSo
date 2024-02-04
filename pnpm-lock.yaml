@@ -2189,9 +2189,6 @@ importers:
 
   packages/tables:
     dependencies:
-      '@lightdotso/client':
-        specifier: workspace:*
-        version: link:../client
       '@lightdotso/const':
         specifier: workspace:*
         version: link:../const

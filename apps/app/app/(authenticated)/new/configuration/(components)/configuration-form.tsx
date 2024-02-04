@@ -340,7 +340,7 @@ export const ConfigurationForm: FC = () => {
 
   const onSubmit = useCallback(
     (_data: NewFormValues) => {
-      toast.success("Configuration updated.");
+      toast.success("Configuration updated!");
       navigateToStep();
     },
     [navigateToStep],

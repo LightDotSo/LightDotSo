@@ -59,10 +59,9 @@ export const useMutationWalletSettingsUpdate = (
 
       toast.dismiss(loadingToast);
 
-      // Return if the response is 200
       res.match(
         _ => {
-          toast.success("Successfully updated wallet settings.");
+          toast.success("Successfully updated wallet settings!");
         },
         err => {
           if (err instanceof Error) {

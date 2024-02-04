@@ -54,7 +54,7 @@ export function WalletTableRowActions({ row }: WalletTableRowActionsProps) {
 
   const handleAddressClick = useCallback(() => {
     copy(row.original.address);
-    toast.success("Copied to clipboard");
+    toast.success("Copied to clipboard!");
   }, [row.original.address, copy]);
 
   // ---------------------------------------------------------------------------

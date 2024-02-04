@@ -26,7 +26,7 @@ export type {
 } from "./notification";
 export type { PaymasterOperationGetParams } from "./paymasterOperation";
 export type { PortfolioParams } from "./portfolio";
-export type { QueueInterpretationBodyParams } from "./queue";
+export type { QueueParams, QueueInterpretationBodyParams } from "./queue";
 export type { SignatureParams, SignatureCreateBodyParams } from "./signature";
 export type { SocketBalanceParams } from "./socket";
 export type { SimulationParams } from "./simulation";
