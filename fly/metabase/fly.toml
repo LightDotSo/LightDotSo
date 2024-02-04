@@ -1,0 +1,38 @@
+# fly.toml app configuration file generated for lightdotso-loki on 2023-09-09T12:51:53-07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "lightdotso-metabase"
+primary_region = "sjc"
+
+[build]
+  image = "metabase/metabase:latest"
+
+[mounts]
+  source = "metabase_data"
+  destination = "/metabase-data"
+
+[env]
+  MB_DB_FILE = "/metabase-data/metabase.db"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  [http_service.concurrency]
+    type = "requests"
+    hard_limit = 250
+    soft_limit = 200
+
+[checks]
+  [checks.health]
+    port = 3000
+    type = "http"
+    interval = "15s"
+    timeout = "10s"
+    grace_period = "30s"
+    method = "get"
+    path = "/api/health"
