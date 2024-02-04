@@ -15,6 +15,11 @@
 
 import type { ReactNode } from "react";
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1.0,
+};
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
