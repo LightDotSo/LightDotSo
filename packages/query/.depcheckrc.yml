@@ -4,3 +4,5 @@ ignores:
   - dotenv
   - "@lightdotso/tsconfig"
   - tsup
+  - exponential-backoff
+  - neverthrow

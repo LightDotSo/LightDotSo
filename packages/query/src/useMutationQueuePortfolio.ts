@@ -34,7 +34,7 @@ export const useMutationQueuePortfolio = (params: QueueParams) => {
   // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const { mutate: queueInterpretation } = useMutation({
+  const { mutate: queuePortfolio } = useMutation({
     mutationFn: async () => {
       const loadingToast = toast.loading("Queueing...");
 
@@ -69,6 +69,6 @@ export const useMutationQueuePortfolio = (params: QueueParams) => {
   });
 
   return {
-    queueInterpretation,
+    queuePortfolio,
   };
 };

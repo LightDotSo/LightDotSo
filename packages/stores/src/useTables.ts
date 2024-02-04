@@ -383,7 +383,7 @@ export const useTables = create(
             walletTable: null,
           }),
         tokenColumnFilters: [],
-        tokenColumnVisibility: { ["chain_id"]: false },
+        tokenColumnVisibility: {},
         tokenExpandedState: {},
         tokenRowSelection: {},
         tokenSorting: [],
