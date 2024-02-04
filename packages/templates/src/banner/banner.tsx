@@ -15,11 +15,13 @@
 
 "use client";
 
-import { INTERNAL_LINKS } from "@lightdotso/const";
+import { INTERNAL_LINKS, SOCIAL_LINKS } from "@lightdotso/const";
 import { useBanners } from "@lightdotso/stores";
 import type { Banner as BannerKind } from "@lightdotso/types";
+import { ButtonIcon } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { XMarkIcon } from "@heroicons/react/20/solid";
+import { DiscordLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
 import { cva, type VariantProps } from "class-variance-authority";
 import {
   AlertTriangleIcon,
@@ -30,6 +32,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, type FC } from "react";
+import { FaTelegramPlane } from "react-icons/fa";
 
 // -----------------------------------------------------------------------------
 // Styles
@@ -40,10 +43,10 @@ const bannerVariants = cva(
   {
     variants: {
       intent: {
-        demo: "border-border-purple bg-background-purple-weakest text-text-purple [&>svg]:text-text-purple",
-        beta: "border-border-info bg-background-info-weakest text-text-info [&>svg]:text-text-info",
+        demo: "border-border-purple-weaker bg-background-purple-weakest text-text-purple [&>svg]:text-text-purple",
+        beta: "border-border-info-weak bg-background-info-weakest text-text-info [&>svg]:text-text-info",
         outage:
-          "border-border-warning bg-background-warning-weakest text-text-warning [&>svg]:text-text-warning",
+          "border-border-warning-weaker bg-background-warning-weakest text-text-warning [&>svg]:text-text-warning",
       },
     },
     defaultVariants: {
@@ -101,6 +104,38 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
         {kind === "beta" && "Public Beta"}
         {kind === "outage" && "Outage Alert"}
       </p>
+      {kind === "beta" && (
+        <div className="ml-4 flex items-center">
+          <p className="text-xs leading-6">Please report any issues to </p>
+          <ButtonIcon asChild size="xs" variant="link" intent="info">
+            <a
+              href={SOCIAL_LINKS["Twitter Shun"]}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <TwitterLogoIcon className="size-4" />
+            </a>
+          </ButtonIcon>
+          <ButtonIcon asChild size="xs" variant="link" intent="info">
+            <a
+              href={SOCIAL_LINKS["Discord"]}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <DiscordLogoIcon className="size-4" />
+            </a>
+          </ButtonIcon>
+          <ButtonIcon asChild size="xs" variant="link" intent="info">
+            <a
+              href={SOCIAL_LINKS["Telegram Support"]}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaTelegramPlane className="size-4" />
+            </a>
+          </ButtonIcon>
+        </div>
+      )}
       {kind === "demo" && (
         <Link
           className="ml-4 inline-flex text-xs hover:underline"
@@ -123,14 +158,17 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
       )}
       <div className="flex flex-1 justify-end">
         {kind === "beta" && (
-          <button
-            type="button"
-            className="-m-3 p-3 focus-visible:outline-offset-[-4px]"
+          <ButtonIcon
+            size="xs"
+            variant="link"
+            intent="info"
             onClick={toggleIsBetaClosed}
           >
-            <span className="sr-only">Dismiss</span>
-            <XMarkIcon className="size-5" aria-hidden="true" />
-          </button>
+            <>
+              <XMarkIcon className="size-4" />
+              <span className="sr-only">Dismiss</span>
+            </>
+          </ButtonIcon>
         )}
       </div>
     </div>

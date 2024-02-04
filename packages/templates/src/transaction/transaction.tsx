@@ -389,6 +389,7 @@ export const Transaction: FC<TransactionProps> = ({
     <div className="flex w-full max-w-lg items-center">
       <ModalSwiper>
         {pageIndex === 0 && (
+          // eslint-disable-next-line react/jsx-no-useless-fragment
           <>
             <Tabs className="w-full" defaultValue="transaction">
               <TabsList className="w-full">
