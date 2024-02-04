@@ -17,6 +17,7 @@ import {
   configurationGetData,
   userOperationCreateData,
 } from "@lightdotso/demo";
+import { handlers } from "@lightdotso/msw";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Transaction } from "./transaction";
 
@@ -53,4 +54,9 @@ export const Base: Story = {
     />
   ),
   args: {},
+  parameters: {
+    msw: {
+      handlers: handlers,
+    },
+  },
 };

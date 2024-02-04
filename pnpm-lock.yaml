@@ -2298,6 +2298,9 @@ importers:
       '@lightdotso/hooks':
         specifier: workspace:*
         version: link:../hooks
+      '@lightdotso/msw':
+        specifier: workspace:*
+        version: link:../msw
       '@lightdotso/nuqs':
         specifier: workspace:*
         version: link:../nuqs

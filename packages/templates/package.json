@@ -32,6 +32,7 @@
     "@lightdotso/demo": "workspace:*",
     "@lightdotso/elements": "workspace:*",
     "@lightdotso/hooks": "workspace:*",
+    "@lightdotso/msw": "workspace:*",
     "@lightdotso/nuqs": "workspace:*",
     "@lightdotso/query": "workspace:*",
     "@lightdotso/schemas": "workspace:*",
