@@ -402,6 +402,13 @@ export interface paths {
      */
     get: operations["v1_token_list_count_handler"];
   };
+  "/token/update": {
+    /**
+     * Update a token.
+     * @description Update a token.
+     */
+    post: operations["v1_token_update_handler"];
+  };
   "/token_price/get": {
     /**
      * Get a token_price
@@ -1175,6 +1182,14 @@ export interface components {
       /** @description TokenPrice not found by id. */
       NotFound: string;
     }]>;
+    TokenUpdateRequestParams: {
+      /**
+       * @description The name of the wallet.
+       * @default My Wallet
+       * @example My Wallet
+       */
+      name?: string | null;
+    };
     /** @description Transaction root type. */
     Transaction: {
       /**
@@ -1393,7 +1408,7 @@ export interface components {
        * @description The invite code of the wallet.
        * @example BFD-23S
        */
-      invite_code: string;
+      invite_code?: string | null;
       /**
        * @description The name of the wallet.
        * @default My Wallet
@@ -3049,6 +3064,37 @@ export interface operations {
         };
       };
       /** @description Token bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["TokenError"];
+        };
+      };
+    };
+  };
+  /**
+   * Update a token.
+   * @description Update a token.
+   */
+  v1_token_update_handler: {
+    parameters: {
+      query: {
+        /** @description The id of the token id to post for. */
+        token_id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["TokenUpdateRequestParams"];
+      };
+    };
+    responses: {
+      /** @description Token updated successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Token"];
+        };
+      };
+      /** @description Token internal error */
       500: {
         content: {
           "application/json": components["schemas"]["TokenError"];
