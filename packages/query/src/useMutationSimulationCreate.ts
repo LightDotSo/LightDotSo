@@ -50,14 +50,12 @@ export const useMutationSimulationCreate = () => {
       );
 
       res.match(
-        _ => {
-          toast.success("Successfully logged out.");
-        },
+        _ => {},
         err => {
           if (err instanceof Error) {
             toast.error(err.message);
           } else {
-            toast.error("Failed to log out.");
+            toast.error("Something went wrong.");
           }
 
           throw err;

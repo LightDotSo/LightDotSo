@@ -35,7 +35,11 @@ export const useMutationAuthLogout = () => {
 
   const { mutate: logout } = useMutation({
     mutationFn: async () => {
+      const loadingToast = toast.loading("Attepmting to logout...");
+
       const res = await authLogout({}, clientType);
+
+      toast.dismiss(loadingToast);
 
       res.match(
         _ => {

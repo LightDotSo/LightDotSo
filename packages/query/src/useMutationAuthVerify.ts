@@ -46,6 +46,8 @@ export const useMutationAuthVerify = (params: AuthParams) => {
 
   const { mutate: verify } = useMutation({
     mutationFn: async (body: AuthVerifyBodyParams) => {
+      const loadingToast = toast.loading("Verifying wallet...");
+
       const res = await authVerify(
         {
           params: { query: { user_address: params.address } },
@@ -53,6 +55,8 @@ export const useMutationAuthVerify = (params: AuthParams) => {
         },
         clientType,
       );
+
+      toast.dismiss(loadingToast);
 
       res.match(
         _ => {

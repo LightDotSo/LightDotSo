@@ -43,6 +43,9 @@ export const useMutationFeedbackCreate = (params: FeedbackParams) => {
         if (!params.user_id) {
           return toast.error("Sorry, something went wrong.");
         }
+
+        const loadingToast = toast.loading("Creating feedback...");
+
         const res = await createFeedback(
           {
             params: {
@@ -56,6 +59,8 @@ export const useMutationFeedbackCreate = (params: FeedbackParams) => {
           },
           clientType,
         );
+
+        toast.dismiss(loadingToast);
 
         res.match(
           _ => {
