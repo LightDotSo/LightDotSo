@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { Address } from "viem";
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
@@ -20,11 +21,15 @@ import { createJSONStorage, devtools, persist } from "zustand/middleware";
 // State
 // -----------------------------------------------------------------------------
 
+type QueueTimestamp = {
+  [address: Address]: number | null;
+};
+
 type QueuesStore = {
-  tokenQueueTimestamp: number | null;
-  portfolioQueueTimestamp: number | null;
-  setTokenQueueTimestamp: (timestamp: number) => void;
-  setPortfolioQueueTimestamp: (timestamp: number) => void;
+  tokenQueueTimestamp: QueueTimestamp;
+  portfolioQueueTimestamp: QueueTimestamp;
+  setTokenQueueTimestamp: (address: Address, timestamp: number) => void;
+  setPortfolioQueueTimestamp: (address: Address, timestamp: number) => void;
 };
 
 // -----------------------------------------------------------------------------
@@ -35,12 +40,22 @@ export const useQueues = create(
   devtools(
     persist<QueuesStore>(
       set => ({
-        tokenQueueTimestamp: null,
-        portfolioQueueTimestamp: null,
-        setTokenQueueTimestamp: timestamp =>
-          set(() => ({ tokenQueueTimestamp: timestamp })),
-        setPortfolioQueueTimestamp: timestamp =>
-          set(() => ({ portfolioQueueTimestamp: timestamp })),
+        tokenQueueTimestamp: {},
+        portfolioQueueTimestamp: {},
+        setTokenQueueTimestamp: (address, timestamp) =>
+          set(state => ({
+            tokenQueueTimestamp: {
+              ...state.tokenQueueTimestamp,
+              [address]: timestamp,
+            },
+          })),
+        setPortfolioQueueTimestamp: (address, timestamp) =>
+          set(state => ({
+            portfolioQueueTimestamp: {
+              ...state.tokenQueueTimestamp,
+              [address]: timestamp,
+            },
+          })),
       }),
       {
         name: "queues-state-v1",

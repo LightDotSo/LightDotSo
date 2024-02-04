@@ -40,9 +40,7 @@ export const useMutationQueueToken = (params: QueueParams) => {
         return;
       }
 
-      const loadingToast = toast.loading(
-        params.isToastDistinct ? "Queueing..." : undefined,
-      );
+      const loadingToast = toast.loading("Queueing...");
 
       const res = await createQueueToken(
         {

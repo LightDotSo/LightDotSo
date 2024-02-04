@@ -24,7 +24,7 @@ use axum::{
     Json,
 };
 use ethers_main::{types::H160, utils::to_checksum};
-use lightdotso_prisma::configuration;
+use lightdotso_prisma::{configuration, owner};
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::Direction;
 use serde::Deserialize;
@@ -90,7 +90,7 @@ pub(crate) async fn v1_configuration_get_handler(
                 .client
                 .configuration()
                 .find_unique(configuration::address_checkpoint(checksum_address, checkpoint))
-                .with(configuration::owners::fetch(vec![]))
+                .with(configuration::owners::fetch(vec![]).with(owner::user::fetch()))
                 .exec()
                 .await?
         }
@@ -100,7 +100,7 @@ pub(crate) async fn v1_configuration_get_handler(
                 .configuration()
                 .find_first(vec![configuration::address::equals(checksum_address)])
                 .order_by(configuration::checkpoint::order(Direction::Desc))
-                .with(configuration::owners::fetch(vec![]))
+                .with(configuration::owners::fetch(vec![]).with(owner::user::fetch()))
                 .exec()
                 .await?
         }

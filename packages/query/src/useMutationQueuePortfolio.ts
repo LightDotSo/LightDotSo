@@ -40,10 +40,7 @@ export const useMutationQueuePortfolio = (params: QueueParams) => {
         return;
       }
 
-      const loadingToast = toast.loading(
-        params.isToastDistinct ? "Queueing..." : undefined,
-        { style: { width: params.isToastDistinct ? "auto" : "100%" } },
-      );
+      const loadingToast = toast.loading("Queueing...");
 
       const res = await createQueuePortfolio(
         {

@@ -72,15 +72,18 @@ export const QueueState: FC = () => {
     const now = Date.now();
     const THREE_MINUTES_IN_MILLISECONDS = 3 * 60 * 1000;
 
-    if (now - (tokenQueueTimestamp || 0) > THREE_MINUTES_IN_MILLISECONDS) {
+    if (
+      now - (tokenQueueTimestamp[wallet] ?? 0) >
+      THREE_MINUTES_IN_MILLISECONDS
+    ) {
       queueToken();
-      setTokenQueueTimestamp(now);
+      setTokenQueueTimestamp(wallet, now);
     } else if (
-      now - (portfolioQueueTimestamp || 0) >
+      now - (portfolioQueueTimestamp[wallet] ?? 0) >
       THREE_MINUTES_IN_MILLISECONDS
     ) {
       queuePortfolio();
-      setPortfolioQueueTimestamp(now);
+      setPortfolioQueueTimestamp(wallet, now);
     }
   }, [
     tokenQueueTimestamp,
