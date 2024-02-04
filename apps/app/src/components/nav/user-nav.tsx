@@ -36,7 +36,12 @@ import {
   DropdownMenuTrigger,
 } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
-import { useDisconnect, useModal } from "@lightdotso/wagmi";
+import {
+  useDisconnect,
+  useModal,
+  cookieStorage,
+  createStorage,
+} from "@lightdotso/wagmi";
 import { Wallet } from "lucide-react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
@@ -163,10 +168,20 @@ export const UserNav: FC = () => {
         <DropdownMenuGroup>
           <DropdownMenuItem
             onClick={async () => {
+              // Disconnect
               disconnect();
 
+              // Clear cookies on client
+              const cookies = createStorage({
+                storage: cookieStorage,
+              });
+              cookies.removeItem("state");
+              cookies.removeItem("recentConnectorId");
+
+              // Clear cookies on server
               deleteCookiesAction();
 
+              // Logout
               await logout();
             }}
           >
