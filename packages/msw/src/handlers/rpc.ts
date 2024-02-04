@@ -13,12 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { rpcHandlers } from "./rpc";
-import { tokenPriceHandlers } from "./token_price";
-import { walletHandlers } from "./wallet";
+import { BASE_RPC_URL } from "@lightdotso/const";
+import { getPaymasterAndData } from "@lightdotso/demo";
+import { HttpResponse, http } from "msw";
 
-export const handlers = [
-  ...tokenPriceHandlers,
-  ...rpcHandlers,
-  ...walletHandlers,
-];
+export const getPaymasterGasAndPaymasterAndData = (url: string) =>
+  http.post(`https://rpc.light.so/8453`, () => {
+    return HttpResponse.json(getPaymasterAndData);
+  });
+
+export const rpcHandlers = [getPaymasterGasAndPaymasterAndData(BASE_RPC_URL)];

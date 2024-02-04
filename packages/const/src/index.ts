@@ -18,6 +18,7 @@ export {
   BASE_API_AUTHENTICATED_URL,
   BASE_API_URL,
   BASE_LOCAL_ADMIN_URL,
+  BASE_RPC_URL,
 } from "./api_urls";
 export { CHAIN_IDS, CHAIN_ID_LABELS } from "./chain_ids";
 export { CHAINS, MAINNET_CHAINS, TESTNET_CHAINS } from "./chains";
