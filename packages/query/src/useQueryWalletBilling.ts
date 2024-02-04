@@ -38,7 +38,7 @@ export const useQueryWalletBilling = (params: WalletBillingParams) => {
   const queryClient = useQueryClient();
 
   const currentData: WalletBillingData | undefined = queryClient.getQueryData(
-    queryKeys.wallet.features({ address: params.address }).queryKey,
+    queryKeys.wallet.billing({ address: params.address }).queryKey,
   );
 
   const {
@@ -46,7 +46,7 @@ export const useQueryWalletBilling = (params: WalletBillingParams) => {
     refetch: refetchWalletBilling,
     failureCount,
   } = useQuery<WalletBillingData | null>({
-    queryKey: queryKeys.wallet.features({ address: params.address }).queryKey,
+    queryKey: queryKeys.wallet.billing({ address: params.address }).queryKey,
     queryFn: async () => {
       if (typeof params.address === "undefined") {
         return null;

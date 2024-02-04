@@ -191,7 +191,14 @@ export const TITLES: Record<Category, CategoryObject> = {
       [SettingsSubCategory.Billing]: {
         title: "Billing",
         description: "Manage your billing information",
-        subcategories: {},
+        subcategories: {
+          ["Balance"]: {
+            title: "Balance",
+            description: "Manage your wallet balance",
+            note: "View and manage your wallet balance.",
+            subcategories: {},
+          },
+        },
       },
       [SettingsSubCategory.Deployment]: {
         title: "Deployment",

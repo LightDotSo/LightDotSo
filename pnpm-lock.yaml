@@ -1751,6 +1751,9 @@ importers:
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../ui
+      '@lightdotso/wagmi':
+        specifier: workspace:*
+        version: link:../wagmi
       '@storybook/react':
         specifier: ^7.6.12
         version: 7.6.12(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)

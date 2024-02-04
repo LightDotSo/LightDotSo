@@ -13,25 +13,41 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getWalletSettings as getClientWalletSettings } from "@lightdotso/client";
-import type { WalletSettingsParams } from "@lightdotso/params";
-import "server-only";
+"use client";
+
+import { useModals } from "@lightdotso/stores";
+import { Modal } from "@lightdotso/templates";
+import { DialogDescription, DialogTitle } from "@lightdotso/ui";
 
 // -----------------------------------------------------------------------------
-// Pre
+// Component
 // -----------------------------------------------------------------------------
 
-export const preloadGetWalletSettings = (params: WalletSettingsParams) => {
-  void getWalletSettings(params);
-};
+export function ConnectModal() {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { isConnectModalVisible, hideConnectModal } = useModals();
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  if (isConnectModalVisible) {
+    return (
+      <Modal open size="sm" onClose={hideConnectModal}>
+        <DialogTitle>Connect</DialogTitle>
+        <DialogDescription>Connect for </DialogDescription>
+      </Modal>
+    );
+  }
+
+  return null;
+}
 
 // -----------------------------------------------------------------------------
-// Service
+// Export
 // -----------------------------------------------------------------------------
 
-export const getWalletSettings = async (params: WalletSettingsParams) => {
-  return getClientWalletSettings(
-    { params: { query: { address: params.address } } },
-    "admin",
-  );
-};
+export default ConnectModal;

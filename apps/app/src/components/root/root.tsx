@@ -28,7 +28,6 @@ import dynamic from "next/dynamic";
 import { Inter } from "next/font/google";
 import { headers } from "next/headers";
 import Script from "next/script";
-import { Suspense } from "react";
 import type { FC, ReactNode } from "react";
 import { AppBanner } from "@/components/app-banner";
 import { MainNav } from "@/components/nav/main-nav";
@@ -44,6 +43,13 @@ const CommandK = dynamic(() => import("@/components/command-k"), {
 
 const AuthModal = dynamic(
   () => import("@lightdotso/modals/src/auth/auth-modal"),
+  {
+    ssr: false,
+  },
+);
+
+const ConnectModal = dynamic(
+  () => import("@lightdotso/modals/src/connect/connect-modal"),
   {
     ssr: false,
   },
@@ -119,6 +125,7 @@ export const Root: FC<RootProps> = ({ children }) => {
               <Toaster />
               {/* Modals */}
               <AuthModal />
+              <ConnectModal />
               <DepositModal />
               <NftModal />
               <TokenModal />
@@ -130,9 +137,7 @@ export const Root: FC<RootProps> = ({ children }) => {
           </ReactQueryProvider>
         </ThemeProvider>
         <TailwindIndicator />
-        <Suspense>
-          <VercelToolbar />
-        </Suspense>
+        <VercelToolbar />
       </body>
       <Script async src="https://data.light.so/p.js" />
     </html>

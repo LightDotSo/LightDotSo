@@ -13,62 +13,68 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { queryKeys } from "@lightdotso/query-keys";
-import { getQueryClient } from "@lightdotso/services";
-import { SettingsSectionWrapper } from "@lightdotso/ui";
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
-import type { Address } from "viem";
-import { SettingsBillingBalanceCard } from "@/app/(wallet)/[address]/settings/billing/(components)/settings-billing-balance-card";
-import { handler } from "@/handlers/paths/[address]/settings/billing/handler";
-import { preloader } from "@/preloaders/paths/[address]/preloader";
+"use client";
+
+import { useQueryWalletBilling } from "@lightdotso/query";
+import { Button } from "@lightdotso/ui";
+import type { FC } from "react";
+import type { Address, Chain, Hex } from "viem";
+import { SettingsCard } from "@/components/settings/settings-card";
+import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type PageProps = {
-  params: { address: string };
+type SettingsBillingBalanceCardProps = {
+  address: Address;
 };
 
 // -----------------------------------------------------------------------------
-// Page
+// Component
 // -----------------------------------------------------------------------------
 
-export default async function Page({ params }: PageProps) {
-  // ---------------------------------------------------------------------------
-  // Preloaders
-  // ---------------------------------------------------------------------------
-
-  preloader(params);
-
-  // ---------------------------------------------------------------------------
-  // Handlers
-  // ---------------------------------------------------------------------------
-
-  const { walletBilling } = await handler(params);
-
+export const SettingsBillingBalanceCard: FC<
+  SettingsBillingBalanceCardProps
+> = ({ address }) => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = getQueryClient();
+  const { walletBilling } = useQueryWalletBilling({
+    address,
+  });
 
-  queryClient.setQueryData(
-    queryKeys.wallet.billing({
-      address: params.address as Address,
-    }).queryKey,
-    walletBilling,
-  );
+  // ---------------------------------------------------------------------------
+  // Submit Button
+  // ---------------------------------------------------------------------------
+
+  const SettingsBillingCardSubmitButton: FC = () => {
+    return (
+      <Button type="submit" form="walletBillingForm" disabled={true}>
+        Billing
+      </Button>
+    );
+  };
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <SettingsSectionWrapper>
-        <SettingsBillingBalanceCard address={params.address as Address} />
-      </SettingsSectionWrapper>
-    </HydrationBoundary>
+    <SettingsCard
+      title={
+        TITLES.Settings.subcategories["Billing"].subcategories["Balance"].title
+      }
+      subtitle={
+        TITLES.Settings.subcategories["Billing"].subcategories["Balance"]
+          .description
+      }
+      footerContent={<SettingsBillingCardSubmitButton />}
+    >
+      <div className="flex text-lg">
+        Balance: <span>${walletBilling && walletBilling.balance_usd}</span>
+      </div>
+    </SettingsCard>
   );
-}
+};

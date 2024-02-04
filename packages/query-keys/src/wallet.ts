@@ -35,6 +35,9 @@ export const wallet = createQueryKeys("wallet", {
   listCount: (params: WalletListCountParams) => ({
     queryKey: [{ params }],
   }),
+  billing: (params: WalletParams) => ({
+    queryKey: [{ params }],
+  }),
   features: (params: WalletParams) => ({
     queryKey: [{ params }],
   }),

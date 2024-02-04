@@ -13,59 +13,59 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import { LightLogo } from "@lightdotso/svg";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import type { FC } from "react";
-import { usePathType } from "@/hooks";
-import { useAuth } from "@lightdotso/stores";
+import { getWalletBilling } from "@lightdotso/services";
+import { Result } from "neverthrow";
+import type { Address } from "viem";
+import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
+import { validateAddress } from "@/handlers/validators/address";
 
 // -----------------------------------------------------------------------------
-// Component
+// Handler
 // -----------------------------------------------------------------------------
 
-export const RootLogo: FC = () => {
+export const handler = async (params: { address: string }) => {
   // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { address } = useAuth();
-
-  // ---------------------------------------------------------------------------
-  // Hooks
+  // Validators
   // ---------------------------------------------------------------------------
 
-  const pathType = usePathType();
+  validateAddress(params.address);
 
   // ---------------------------------------------------------------------------
-  // Next Hooks
+  // Fetch
   // ---------------------------------------------------------------------------
 
-  const pathname = usePathname();
+  const { wallet, config, walletSettings } = await addressHandler(params);
+
+  const walletBillingPromise = getWalletBilling({
+    address: params.address as Address,
+  });
+
+  const [walletBilling] = await Promise.all([walletBillingPromise]);
 
   // ---------------------------------------------------------------------------
-  // Render
+  // Parse
   // ---------------------------------------------------------------------------
 
-  return (
-    <Link
-      href={
-        typeof address === "undefined"
-          ? "/"
-          : pathType === "unauthenticated" || pathType === "demo"
-            ? "/"
-            : pathType === "authenticated"
-              ? "/wallets"
-              : // Get the wallet address from the path
-                // Address is the first part of the path
-                // e.g. /0x1234
-                `/${pathname.split("/")[1]}/overview`
-      }
-      className="hover:rounded-md hover:bg-background-stronger"
-    >
-      <LightLogo className="m-2.5 size-8 fill-text" />
-    </Link>
+  const res = Result.combineWithAllErrors([walletBilling]);
+
+  return res.match(
+    ([walletBilling]) => {
+      return {
+        wallet: wallet,
+        config: config,
+        walletSettings: walletSettings,
+        walletBilling: walletBilling,
+      };
+    },
+    () => {
+      return {
+        wallet: wallet,
+        config: config,
+        walletSettings: walletSettings,
+        walletBilling: {
+          balance_usd: 0,
+        },
+      };
+    },
   );
 };

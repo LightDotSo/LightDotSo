@@ -22,6 +22,7 @@ import { devtools } from "zustand/middleware";
 
 type ModalsStore = {
   isAuthModalVisible: boolean;
+  isConnectModalVisible: boolean;
   isDepositModalVisible: boolean;
   isNftModalVisible: boolean;
   isNotificationsModalVisible: boolean;
@@ -30,6 +31,8 @@ type ModalsStore = {
   isTokenModalVisible: boolean;
   showAuthModal: () => void;
   hideAuthModal: () => void;
+  showConnectModal: () => void;
+  hideConnectModal: () => void;
   showDepositModal: () => void;
   hideDepositModal: () => void;
   showNftModal: () => void;
@@ -52,6 +55,7 @@ export const useModals = create(
   devtools<ModalsStore>(
     set => ({
       isAuthModalVisible: false,
+      isConnectModalVisible: false,
       isDepositModalVisible: false,
       isNftModalVisible: false,
       isNotificationsModalVisible: false,
@@ -69,6 +73,18 @@ export const useModals = create(
           isTokenModalVisible: false,
         }),
       hideAuthModal: () => set({ isAuthModalVisible: false }),
+      showConnectModal: () =>
+        set({
+          isConnectModalVisible: true,
+          isAuthModalVisible: false,
+          isDepositModalVisible: false,
+          isNftModalVisible: false,
+          isNotificationsModalVisible: false,
+          isOpModalVisible: false,
+          isSendModalVisible: false,
+          isTokenModalVisible: false,
+        }),
+      hideConnectModal: () => set({ isConnectModalVisible: false }),
       showDepositModal: () =>
         set({
           isDepositModalVisible: true,
