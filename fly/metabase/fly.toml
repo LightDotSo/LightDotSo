@@ -7,7 +7,7 @@ app = "lightdotso-metabase"
 primary_region = "sjc"
 
 [build]
-  image = "metabase/metabase:latest"
+  image = "metabase/metabase:v0.48.4"
 
 [mounts]
   source = "metabase_data"
