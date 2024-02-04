@@ -15,7 +15,9 @@
 
 use super::types::WalletFeatures;
 use crate::{
-    error::RouteError, result::AppJsonResult, routes::wallet_features::error::WalletFeaturesError,
+    error::RouteError,
+    result::{AppError, AppJsonResult},
+    routes::wallet_features::error::WalletFeaturesError,
     state::AppState,
 };
 use autometrics::autometrics;
@@ -24,7 +26,7 @@ use axum::{
     Json,
 };
 use ethers_main::{types::H160, utils::to_checksum};
-use lightdotso_prisma::wallet_features;
+use lightdotso_prisma::{wallet, wallet_features};
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -82,21 +84,51 @@ pub(crate) async fn v1_wallet_features_get_handler(
     let wallet_features = state
         .client
         .wallet_features()
-        .find_unique(wallet_features::wallet_address::equals(checksum_address))
+        .find_unique(wallet_features::wallet_address::equals(checksum_address.clone()))
         .exec()
         .await?;
-
-    // If the wallet_features is not found, return a 404.
-    let wallet_features = wallet_features.ok_or(RouteError::WalletFeaturesError(
-        WalletFeaturesError::NotFound("Wallet features not found".to_string()),
-    ))?;
 
     // -------------------------------------------------------------------------
     // Return
     // -------------------------------------------------------------------------
 
-    // Change the wallet_features to the format that the API expects.
-    let wallet_features: WalletFeatures = wallet_features.into();
+    // If the wallet_features is not found, create a default wallet_features in the db, if the
+    // wallet exists.
+    if let Some(wallet_features) = wallet_features {
+        let wallet_features: WalletFeatures = wallet_features.into();
 
-    Ok(Json::from(wallet_features))
+        Ok(Json::from(wallet_features))
+    } else {
+        // ---------------------------------------------------------------------
+        // DB
+        // ---------------------------------------------------------------------
+
+        let wallet = state
+            .client
+            .wallet()
+            .find_unique(wallet::address::equals(checksum_address.clone()))
+            .exec()
+            .await?;
+
+        if wallet.is_none() {
+            return Err(AppError::RouteError(RouteError::WalletFeaturesError(
+                WalletFeaturesError::NotFound("Wallet not found".to_string()),
+            )));
+        }
+
+        let wallet_features = state
+            .client
+            .wallet_features()
+            .create(wallet::address::equals(checksum_address.clone()), vec![])
+            .exec()
+            .await?;
+
+        // ---------------------------------------------------------------------
+        // Return
+        // ---------------------------------------------------------------------
+
+        let wallet_features: WalletFeatures = wallet_features.into();
+
+        return Ok(Json::from(wallet_features));
+    }
 }

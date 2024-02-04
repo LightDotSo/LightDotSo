@@ -15,7 +15,9 @@
 
 use super::types::WalletSettings;
 use crate::{
-    error::RouteError, result::AppJsonResult, routes::wallet_settings::error::WalletSettingsError,
+    error::RouteError,
+    result::{AppError, AppJsonResult},
+    routes::wallet_settings::error::WalletSettingsError,
     state::AppState,
 };
 use autometrics::autometrics;
@@ -24,7 +26,7 @@ use axum::{
     Json,
 };
 use ethers_main::{types::H160, utils::to_checksum};
-use lightdotso_prisma::wallet_settings;
+use lightdotso_prisma::{wallet, wallet_settings};
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -82,21 +84,51 @@ pub(crate) async fn v1_wallet_settings_get_handler(
     let wallet_settings = state
         .client
         .wallet_settings()
-        .find_unique(wallet_settings::wallet_address::equals(checksum_address))
+        .find_unique(wallet_settings::wallet_address::equals(checksum_address.clone()))
         .exec()
         .await?;
-
-    // If the wallet_settings is not found, return a 404.
-    let wallet_settings = wallet_settings.ok_or(RouteError::WalletSettingsError(
-        WalletSettingsError::NotFound("Wallet settings not found".to_string()),
-    ))?;
 
     // -------------------------------------------------------------------------
     // Return
     // -------------------------------------------------------------------------
 
-    // Change the wallet_settings to the format that the API expects.
-    let wallet_settings: WalletSettings = wallet_settings.into();
+    // If the wallet_settings is not found, create a default wallet_settings in the db, if the
+    // wallet exists.
+    if let Some(wallet_settings) = wallet_settings {
+        let wallet_settings: WalletSettings = wallet_settings.into();
 
-    Ok(Json::from(wallet_settings))
+        Ok(Json::from(wallet_settings))
+    } else {
+        // ---------------------------------------------------------------------
+        // DB
+        // ---------------------------------------------------------------------
+
+        let wallet = state
+            .client
+            .wallet()
+            .find_unique(wallet::address::equals(checksum_address.clone()))
+            .exec()
+            .await?;
+
+        if wallet.is_none() {
+            return Err(AppError::RouteError(RouteError::WalletSettingsError(
+                WalletSettingsError::NotFound("Wallet not found".to_string()),
+            )));
+        }
+
+        // ---------------------------------------------------------------------
+        // Return
+        // ---------------------------------------------------------------------
+
+        let wallet_settings = state
+            .client
+            .wallet_settings()
+            .create(wallet::address::equals(checksum_address.clone()), vec![])
+            .exec()
+            .await?;
+
+        let wallet_settings: WalletSettings = wallet_settings.into();
+
+        return Ok(Json::from(wallet_settings));
+    }
 }

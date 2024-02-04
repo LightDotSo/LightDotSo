@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use crate::routes::user::types::User;
 use lightdotso_prisma::{configuration, owner};
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
@@ -51,6 +52,8 @@ pub(crate) struct ConfigurationOwner {
     address: String,
     /// The weight of the owner.
     weight: i64,
+    /// The user of the owner.
+    user: Option<User>,
 }
 
 // -----------------------------------------------------------------------------
@@ -81,6 +84,7 @@ impl From<owner::Data> for ConfigurationOwner {
             address: owner.address.to_string(),
             index: owner.index,
             weight: owner.weight,
+            user: owner.user.and_then(|maybe_user| maybe_user.map(|user| User::from(*user))),
         }
     }
 }
