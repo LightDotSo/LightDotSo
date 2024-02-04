@@ -21,7 +21,10 @@ export enum Social {
   MIRROR = "Mirror",
   NOTION = "Notion",
   PLAUSIBLE = "Plausible",
+  TELEGRAM = "Telegram",
+  TELEGRAM_SUPPORT = "Telegram Support",
   TWITTER = "Twitter",
+  TWITTER_SHUN = "Twitter Shun",
   WEBSITE = "Website",
 }
 
@@ -34,6 +37,9 @@ export const SOCIAL_LINKS: {
   [Social.NOTION]: "https://lightdotso.notion.site",
   [Social.OPENSEA]: "https://opensea.io",
   [Social.PLAUSIBLE]: "https://plausible.io/light.so",
+  [Social.TELEGRAM]: "https://t.me/LightDotSo",
+  [Social.TELEGRAM_SUPPORT]: "https://t.me/LightDotSoSupport",
   [Social.TWITTER]: "https://twitter.com/LightDotSo",
+  [Social.TWITTER_SHUN]: "https://twitter.com/shunkakinoki",
   [Social.WEBSITE]: "https://light.so",
 };
