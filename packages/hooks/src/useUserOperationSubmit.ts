@@ -166,7 +166,7 @@ export const useUserOperationSubmit = ({
 
     // Unset loading state
     setIsLoading(false);
-  }, [userOperation]);
+  }, [userOperation, userOperation, setIsLoading]);
 
   // ---------------------------------------------------------------------------
   // Render

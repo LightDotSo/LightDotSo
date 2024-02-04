@@ -15,6 +15,7 @@
 
 "use client";
 
+import { useMutationQueueToken } from "@lightdotso/query";
 import {
   ButtonIcon,
   Tooltip,
@@ -26,7 +27,6 @@ import { RefreshCcw } from "lucide-react";
 import type { FC } from "react";
 import type { Address } from "viem";
 import invokePortfolioAction from "@/actions/invokePortfolioAction";
-import { useMutationQueueToken } from "@lightdotso/query";
 
 // -----------------------------------------------------------------------------
 // Props

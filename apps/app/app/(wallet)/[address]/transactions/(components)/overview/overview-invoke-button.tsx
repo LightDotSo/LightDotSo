@@ -16,14 +16,12 @@
 "use client";
 
 import { useMutationUserOperationUpdate } from "@lightdotso/query";
-import { useAuth } from "@lightdotso/stores";
 import {
   ButtonIcon,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
   TooltipProvider,
-  toast,
 } from "@lightdotso/ui";
 import { RefreshCcw } from "lucide-react";
 import type { FC } from "react";
@@ -44,12 +42,6 @@ interface InvokeUserOperationProps {
 export const OverviewInvokeButton: FC<InvokeUserOperationProps> = ({
   address,
 }) => {
-  // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { clientType } = useAuth();
-
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------

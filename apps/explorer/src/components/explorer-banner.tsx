@@ -28,6 +28,7 @@ export const ExplorerBanner: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
+    // eslint-disable-next-line react/jsx-fragments
     <>
       <Banner kind="beta" />
     </>

@@ -15,7 +15,6 @@
 
 "use client";
 
-import { authLogout } from "@lightdotso/client";
 import { useIsMounted } from "@lightdotso/hooks";
 import { useMutationAuthLogout } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
@@ -35,7 +34,6 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-  toast,
 } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
 import { useDisconnect, useModal } from "@lightdotso/wagmi";
