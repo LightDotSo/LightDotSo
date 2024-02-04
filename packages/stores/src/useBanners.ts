@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
 // -----------------------------------------------------------------------------
 // State
@@ -30,12 +30,20 @@ type BannersStore = {
 // -----------------------------------------------------------------------------
 
 export const useBanners = create(
-  devtools<BannersStore>(
-    set => ({
-      isBetaClosed: false,
-      toggleIsBetaClosed: () =>
-        set(state => ({ isBetaClosed: !state.isBetaClosed })),
-    }),
+  devtools(
+    persist<BannersStore>(
+      set => ({
+        isBetaClosed: false,
+        toggleIsBetaClosed: () =>
+          set(state => ({ isBetaClosed: !state.isBetaClosed })),
+      }),
+      {
+        name: "banners-state-v1",
+        storage: createJSONStorage(() => sessionStorage),
+        skipHydration: true,
+        version: 0,
+      },
+    ),
     {
       anonymousActionType: "useBanners",
       name: "BannersStore",

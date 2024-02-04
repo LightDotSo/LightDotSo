@@ -29,7 +29,7 @@ import {
   Undo2Icon,
 } from "lucide-react";
 import Link from "next/link";
-import { type FC } from "react";
+import { useEffect, type FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Styles
@@ -72,10 +72,20 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
   const { isBetaClosed, toggleIsBetaClosed } = useBanners();
 
   // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    if (!useBanners.persist.hasHydrated()) {
+      useBanners.persist.rehydrate();
+    }
+  }, []);
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  if (kind === "beta" && isBetaClosed) {
+  if (!useBanners.persist.hasHydrated() || (kind === "beta" && isBetaClosed)) {
     return null;
   }
 

@@ -226,19 +226,26 @@ lazy_static! {
         m.insert(56, "https://binance.rpc.thirdweb.com".to_string());
         m.insert(100, "https://gnosis.rpc.thirdweb.com".to_string());
         m.insert(137, "https://polygon.rpc.thirdweb.com".to_string());
+        m.insert(169, "https://manta-pacific.rpc.thirdweb.com".to_string());
         m.insert(250, "https://fantom.rpc.thirdweb.com".to_string());
+        m.insert(592, "https://astar.rpc.thirdweb.com".to_string());
         m.insert(1101, "https://polygon-zkevm.rpc.thirdweb.com".to_string());
+        m.insert(1116, "https://core-blockchain.rpc.thirdweb.com".to_string());
+        m.insert(5000, "https://mantle.rpc.thirdweb.com".to_string());
         m.insert(8453, "https://base.rpc.thirdweb.com".to_string());
+        m.insert(9980, "https://combo.rpc.thirdweb.com".to_string());
         m.insert(42161, "https://arbitrum.rpc.thirdweb.com".to_string());
         m.insert(42170, "https://arbitrum-nova.rpc.thirdweb.com".to_string());
         m.insert(42220, "https://celo.rpc.thirdweb.com".to_string());
         m.insert(43114, "https://avalanche.rpc.thirdweb.com".to_string());
+        m.insert(534352, "scroll.rpc.thirdweb.com".to_string());
         m.insert(1666600000, "https://harmony-shard-0.rpc.thirdweb.com".to_string());
 
         // Testnet
         m.insert(80001, "https://mumbai.rpc.thirdweb.com".to_string());
         m.insert(84532, "https://base-sepolia-testnet.rpc.thirdweb.com".to_string());
         m.insert(421614, "https://arbitrum-sepolia.rpc.thirdweb.com".to_string());
+        m.insert(534351, "https://scroll-sepolia-testnet.rpc.thirdweb.com".to_string());
         m.insert(11155111, "https://sepolia.rpc.thirdweb.com".to_string());
         m.insert(11155420, "https://op-sepolia-testnet.rpc.thirdweb.com".to_string());
         m.insert(999999999, "https://zora-sepolia-testnet.rpc.thirdweb.com".to_string());
@@ -294,8 +301,14 @@ lazy_static! {
         m.insert(56, "https://bundler.biconomy.io/api/v2/56/".to_string());
         m.insert(100, "https://bundler.biconomy.io/api/v2/100/".to_string());
         m.insert(137, "https://bundler.biconomy.io/api/v2/137/".to_string());
+        m.insert(169, "https://bundler.biconomy.io/api/v2/169/".to_string());
+        m.insert(204, "https://bundler.biconomy.io/api/v2/204/".to_string());
+        m.insert(592, "https://bundler.biconomy.io/api/v2/592/".to_string());
         m.insert(1101, "https://bundler.biconomy.io/api/v2/1101/".to_string());
+        m.insert(1116, "https://bundler.biconomy.io/api/v2/1116/".to_string());
+        m.insert(5000, "https://bundler.biconomy.io/api/v2/5000/".to_string());
         m.insert(8453, "https://bundler.biconomy.io/api/v2/8453/".to_string());
+        m.insert(9980, "https://bundler.biconomy.io/api/v2/9980/".to_string());
         m.insert(42161, "https://bundler.biconomy.io/api/v2/42161/".to_string());
         m.insert(42170, "https://bundler.biconomy.io/api/v2/42170/".to_string());
         m.insert(43114, "https://bundler.biconomy.io/api/v2/43114/".to_string());
