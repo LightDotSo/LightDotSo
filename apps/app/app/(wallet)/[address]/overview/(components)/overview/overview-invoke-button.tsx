@@ -15,15 +15,13 @@
 
 "use client";
 
-import { createQueueToken } from "@lightdotso/client";
-import { useAuth } from "@lightdotso/stores";
+import { useMutationQueueToken } from "@lightdotso/query";
 import {
   ButtonIcon,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
   TooltipProvider,
-  toast,
 } from "@lightdotso/ui";
 import { RefreshCcw } from "lucide-react";
 import type { FC } from "react";
@@ -46,10 +44,10 @@ export const OverviewInvokeButton: FC<OverviewInvokeButtonProps> = ({
   address,
 }) => {
   // ---------------------------------------------------------------------------
-  // Stores
+  // Query
   // ---------------------------------------------------------------------------
 
-  const { clientType } = useAuth();
+  const { queueToken } = useMutationQueueToken({ address: address });
 
   // ---------------------------------------------------------------------------
   // Render
@@ -63,39 +61,9 @@ export const OverviewInvokeButton: FC<OverviewInvokeButtonProps> = ({
             <ButtonIcon
               variant="shadow"
               onClick={async () => {
-                const loadingToast = toast.loading("Refreshing...");
-
                 invokePortfolioAction(address as Address);
 
-                createQueueToken(
-                  {
-                    params: { query: { address: address as Address } },
-                  },
-                  clientType,
-                )
-                  .then(res => {
-                    toast.dismiss(loadingToast);
-                    res.match(
-                      _success => {
-                        toast.success("Portfolio updated");
-                      },
-                      err => {
-                        if (err instanceof Error) {
-                          toast.error(err.message);
-                        } else {
-                          toast.error("Unknown error");
-                        }
-                      },
-                    );
-                  })
-                  .catch(err => {
-                    toast.dismiss(loadingToast);
-                    if (err instanceof Error) {
-                      toast.error(err.message);
-                    } else {
-                      toast.error("Unknown error");
-                    }
-                  });
+                await queueToken();
               }}
             >
               <RefreshCcw className="size-4" />

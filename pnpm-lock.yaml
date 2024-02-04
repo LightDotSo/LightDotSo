@@ -1629,9 +1629,6 @@ importers:
       '@lightdotso/client':
         specifier: workspace:*
         version: link:../client
-      '@lightdotso/const':
-        specifier: workspace:*
-        version: link:../const
       '@lightdotso/data':
         specifier: workspace:*
         version: link:../data
@@ -1832,6 +1829,12 @@ importers:
 
   packages/params:
     dependencies:
+      '@lightdotso/data':
+        specifier: workspace:*
+        version: link:../data
+      '@lightdotso/schemas':
+        specifier: workspace:*
+        version: link:../schemas
       viem:
         specifier: ^2.7.2
         version: 2.7.2(typescript@5.3.3)(zod@3.22.4)
@@ -1909,6 +1912,9 @@ importers:
       '@lightdotso/client':
         specifier: workspace:*
         version: link:../client
+      '@lightdotso/const':
+        specifier: workspace:*
+        version: link:../const
       '@lightdotso/data':
         specifier: workspace:*
         version: link:../data
@@ -1933,6 +1939,12 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.18.1
         version: 5.18.1(react@18.2.0)
+      exponential-backoff:
+        specifier: ^3.1.1
+        version: 3.1.1
+      neverthrow:
+        specifier: ^6.1.0
+        version: 6.1.0
       viem:
         specifier: ^2.7.2
         version: 2.7.2(typescript@5.3.3)(zod@3.22.4)
@@ -2183,9 +2195,6 @@ importers:
 
   packages/tables:
     dependencies:
-      '@lightdotso/client':
-        specifier: workspace:*
-        version: link:../client
       '@lightdotso/const':
         specifier: workspace:*
         version: link:../const
@@ -21357,7 +21366,6 @@ packages:
       is-hex-prefixed: 1.0.0
       strip-hex-prefix: 1.0.0
     dev: true
-    bundledDependencies: false
 
   /event-target-shim@5.0.1:
     resolution: {integrity: sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==}

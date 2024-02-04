@@ -13,17 +13,21 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { createQueueInterpretation } from "@lightdotso/client";
-import type { QueueInterpretationBodyParams } from "@lightdotso/params";
+import { createSignature } from "@lightdotso/client";
+import type {
+  SignatureCreateBodyParams,
+  SignatureParams,
+} from "@lightdotso/params";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import { useMutation } from "@tanstack/react-query";
+import { toBytes, toHex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Query Mutation
 // -----------------------------------------------------------------------------
 
-export const useMutationQueueInterpretation = () => {
+export const useMutationSignatureCreate = (params: SignatureParams) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -34,16 +38,22 @@ export const useMutationQueueInterpretation = () => {
   // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const { mutate: queueInterpretation } = useMutation({
-    mutationFn: async (body: QueueInterpretationBodyParams) => {
-      const loadingToast = toast.loading("Queueing...");
+  const { mutate: signatureCreate } = useMutation({
+    mutationFn: async (body: SignatureCreateBodyParams) => {
+      const loadingToast = toast.loading("Submitting the transaction...");
 
-      const res = await createQueueInterpretation(
+      const res = await createSignature(
         {
           params: {
             query: {
-              transaction_hash: body.transaction_hash,
-              user_operation_hash: body.user_operation_hash,
+              user_operation_hash: params.user_operation_hash,
+            },
+          },
+          body: {
+            signature: {
+              owner_id: body.owner_id,
+              signature: toHex(new Uint8Array([...toBytes(body.signature), 2])),
+              signature_type: 1,
             },
           },
         },
@@ -54,13 +64,13 @@ export const useMutationQueueInterpretation = () => {
 
       res.match(
         _ => {
-          toast.success("Successfully queued!");
+          toast.success("Successfully submitted transaction!");
         },
         err => {
           if (err instanceof Error) {
             toast.error(err.message);
           } else {
-            toast.error("Failed to queue.");
+            toast.error("An unknown error occurred.");
           }
 
           throw err;
@@ -70,6 +80,6 @@ export const useMutationQueueInterpretation = () => {
   });
 
   return {
-    queueInterpretation,
+    signatureCreate,
   };
 };

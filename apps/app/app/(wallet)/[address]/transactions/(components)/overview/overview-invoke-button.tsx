@@ -15,15 +15,13 @@
 
 "use client";
 
-import { updateUserOperation } from "@lightdotso/client";
-import { useAuth } from "@lightdotso/stores";
+import { useMutationUserOperationUpdate } from "@lightdotso/query";
 import {
   ButtonIcon,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
   TooltipProvider,
-  toast,
 } from "@lightdotso/ui";
 import { RefreshCcw } from "lucide-react";
 import type { FC } from "react";
@@ -45,10 +43,12 @@ export const OverviewInvokeButton: FC<InvokeUserOperationProps> = ({
   address,
 }) => {
   // ---------------------------------------------------------------------------
-  // Stores
+  // Query
   // ---------------------------------------------------------------------------
 
-  const { clientType } = useAuth();
+  const { userOperationUpdate } = useMutationUserOperationUpdate({
+    address: address,
+  });
 
   // ---------------------------------------------------------------------------
   // Render
@@ -59,42 +59,7 @@ export const OverviewInvokeButton: FC<InvokeUserOperationProps> = ({
       <Tooltip>
         <TooltipTrigger asChild>
           <span>
-            <ButtonIcon
-              variant="shadow"
-              onClick={() => {
-                const loadingToast = toast.loading("Updating operation...");
-
-                updateUserOperation(
-                  {
-                    params: { query: { address: address } },
-                  },
-                  clientType,
-                )
-                  .then(res => {
-                    toast.dismiss(loadingToast);
-                    res.match(
-                      _success => {
-                        toast.success("Operation updated");
-                      },
-                      err => {
-                        if (err instanceof Error) {
-                          toast.error(err.message);
-                        } else {
-                          toast.error("Unknown error");
-                        }
-                      },
-                    );
-                  })
-                  .catch(err => {
-                    toast.dismiss(loadingToast);
-                    if (err instanceof Error) {
-                      toast.error(err.message);
-                    } else {
-                      toast.error("Unknown error");
-                    }
-                  });
-              }}
-            >
+            <ButtonIcon variant="shadow" onClick={() => userOperationUpdate()}>
               <RefreshCcw className="size-4" />
             </ButtonIcon>
           </span>

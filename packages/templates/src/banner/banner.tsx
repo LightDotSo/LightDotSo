@@ -32,7 +32,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, type FC } from "react";
-import { FaTelegramPlane } from "react-icons/fa";
+import { PiTelegramLogoDuotone } from "react-icons/pi";
 
 // -----------------------------------------------------------------------------
 // Styles
@@ -105,7 +105,7 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
         {kind === "outage" && "Outage Alert"}
       </p>
       {kind === "beta" && (
-        <div className="ml-4 flex items-center">
+        <div className="ml-2 flex items-center md:ml-4">
           <p className="text-xs leading-6">Please report any issues to </p>
           <ButtonIcon asChild size="xs" variant="link" intent="info">
             <a
@@ -131,14 +131,14 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FaTelegramPlane className="size-4" />
+              <PiTelegramLogoDuotone className="size-4" />
             </a>
           </ButtonIcon>
         </div>
       )}
       {kind === "demo" && (
         <Link
-          className="ml-4 inline-flex text-xs hover:underline"
+          className="ml-2 inline-flex text-xs hover:underline md:ml-4"
           href="/?demo=true"
         >
           Go to home
@@ -147,7 +147,7 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
       )}
       {kind === "outage" && (
         <a
-          className="ml-4 inline-flex text-xs hover:underline"
+          className="ml-2 inline-flex text-xs hover:underline md:ml-4"
           href={INTERNAL_LINKS["Status"]}
           target="_blank"
           rel="noopener noreferrer"

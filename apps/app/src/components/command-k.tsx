@@ -113,7 +113,7 @@ export const CommandK: FC = () => {
         e.preventDefault();
         if (wallet) {
           copy(wallet);
-          toast.success("Copied to clipboard");
+          toast.success("Copied to clipboard!");
         }
       }
       if (e.key === "v" && e.shiftKey && (e.metaKey || e.ctrlKey)) {

@@ -21,7 +21,7 @@ import { getClient } from "../client";
 // POST
 // -----------------------------------------------------------------------------
 
-export const postCreateSimulation = async (
+export const createSimulation = async (
   {
     body,
   }: {

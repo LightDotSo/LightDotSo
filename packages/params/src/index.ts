@@ -14,17 +14,20 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 export type { ActivityListParams, ActivityListCountParams } from "./activity";
-export type { AuthParams } from "./auth";
+export type { AuthParams, AuthVerifyBodyParams } from "./auth";
 export type { ConfigurationParams } from "./configuration";
+export type { FeedbackParams, FeedbackCreateBodyParams } from "./feedback";
 export type { NftListParams } from "./nft";
 export type { NftValuationParams } from "./nftValuation";
 export type {
   NotificationListParams,
   NotificationListCountParams,
+  NotificationReadBodyParams,
 } from "./notification";
 export type { PaymasterOperationGetParams } from "./paymasterOperation";
 export type { PortfolioParams } from "./portfolio";
-export type { QueueInterpretationCreateParams } from "./queue";
+export type { QueueParams, QueueInterpretationBodyParams } from "./queue";
+export type { SignatureParams, SignatureCreateBodyParams } from "./signature";
 export type { SocketBalanceParams } from "./socket";
 export type { SimulationParams } from "./simulation";
 export type { TokenListParams, TokenListCountParams } from "./token";
@@ -35,17 +38,24 @@ export type {
 } from "./transaction";
 export type { UserParams } from "./user";
 export type {
+  UserOperationParams,
   UserOperationGetParams,
   UserOperationNonceParams,
-  UserOperationCreateParams,
   UserOperationListParams,
   UserOperationListCountParams,
+  UserOperationCreateBodyParams,
+  UserOperationUpdateBodyParams,
+  UserOperationSendBodyParams,
 } from "./userOperation";
 export type {
   WalletParams,
-  WalletCreateParams,
   WalletListParams,
   WalletListCountParams,
+  WalletCreateBodyParams,
+  WalletUpdateBodyParams,
 } from "./wallet";
 export type { WalletFeaturesParams } from "./walletFeatures";
-export type { WalletSettingsParams } from "./walletSettings";
+export type {
+  WalletSettingsParams,
+  WaleltSettingsUpdateBodyParams,
+} from "./walletSettings";

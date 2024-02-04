@@ -86,7 +86,7 @@ export const SettingsNotificationCard: FC = () => {
   // ---------------------------------------------------------------------------
 
   function onSubmit(_data: SettingsNotificationCardValues) {
-    toast.success("Notifications updated.");
+    toast.success("Notifications updated!");
   }
 
   // ---------------------------------------------------------------------------

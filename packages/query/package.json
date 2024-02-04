@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@lightdotso/client": "workspace:*",
+    "@lightdotso/const": "workspace:*",
     "@lightdotso/data": "workspace:*",
     "@lightdotso/params": "workspace:*",
     "@lightdotso/query-keys": "workspace:*",
@@ -35,6 +36,8 @@
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
     "@tanstack/react-query": "^5.18.1",
+    "exponential-backoff": "^3.1.1",
+    "neverthrow": "^6.1.0",
     "viem": "^2.7.2"
   },
   "devDependencies": {

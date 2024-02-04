@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Address } from "viem";
+import type { Address, Hex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Params
@@ -21,4 +21,13 @@ import type { Address } from "viem";
 
 export type AuthParams = {
   address: Address;
+};
+
+// -----------------------------------------------------------------------------
+// Params Body
+// -----------------------------------------------------------------------------
+
+export type AuthVerifyBodyParams = {
+  message: string;
+  signature: Hex;
 };

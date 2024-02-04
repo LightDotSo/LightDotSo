@@ -93,7 +93,7 @@ export const UserOperationCardTransaction: FC<
     // Copy the URL to the clipboard
     copy(url.toString());
 
-    toast.success("Copied to clipboard");
+    toast.success("Copied to clipboard!");
   }, [copy, userOperation.hash, userOperation.sender]);
 
   // ---------------------------------------------------------------------------

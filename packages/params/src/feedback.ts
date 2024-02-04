@@ -13,52 +13,21 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { UserOperationData } from "@lightdotso/data";
-import type { UserOperation } from "@lightdotso/schemas";
-import type { Address, Hex } from "viem";
-
 // -----------------------------------------------------------------------------
 // Params
 // -----------------------------------------------------------------------------
 
-export type UserOperationParams = {
-  address: Address;
+export type FeedbackParams = {
+  user_id?: string | null | undefined;
 };
-
-export type UserOperationGetParams = {
-  hash: Hex;
-};
-
-export type UserOperationNonceParams = {
-  address: Address;
-  chain_id: number;
-};
-
-export type UserOperationListParams = {
-  address: Address | null;
-  status: "proposed" | "history" | "executed" | null;
-  order: "desc" | "asc";
-  limit: number;
-  offset: number;
-  is_testnet: boolean;
-  chain_id?: number | null | undefined;
-};
-
-export type UserOperationListCountParams = Omit<
-  UserOperationListParams,
-  "order" | "limit" | "offset"
->;
 
 // -----------------------------------------------------------------------------
 // Params Body
 // -----------------------------------------------------------------------------
 
-export type UserOperationCreateBodyParams = {
-  ownerId: Address;
-  signedData: Hex;
-  userOperation: Partial<UserOperation>;
+export type FeedbackCreateBodyParams = {
+  feedback: {
+    emoji: string;
+    text: string;
+  };
 };
-
-export type UserOperationUpdateBodyParams = Partial<UserOperation>;
-
-export type UserOperationSendBodyParams = UserOperationData;

@@ -13,41 +13,24 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { WalletData } from "@lightdotso/data";
-import type { Address } from "viem";
+"use client";
+
+import { Banner } from "@lightdotso/templates";
+import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
-// Params
+// Component
 // -----------------------------------------------------------------------------
 
-export type WalletParams = {
-  address: Address;
+export const ExplorerBanner: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  return (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    <>
+      <Banner kind="beta" />
+    </>
+  );
 };
-
-export type WalletListParams = {
-  address: Address | null;
-  limit: number;
-  offset: number;
-  user_id?: string;
-};
-
-export type WalletListCountParams = Omit<WalletListParams, "limit" | "offset">;
-
-// -----------------------------------------------------------------------------
-// Params Body
-// -----------------------------------------------------------------------------
-
-export type WalletCreateBodyParams = {
-  address: Address;
-  simulate: boolean;
-  name: string;
-  threshold: number;
-  owners: {
-    address: Address;
-    weight: number;
-  }[];
-  invite_code: string;
-  salt: string;
-};
-
-export type WalletUpdateBodyParams = Partial<WalletData>;

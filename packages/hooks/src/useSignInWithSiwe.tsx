@@ -15,8 +15,8 @@
 
 "use client";
 
-import { getNonce, postAuthVerify } from "@lightdotso/client";
-import { useQueryAuthSession } from "@lightdotso/query";
+import { getNonce } from "@lightdotso/client";
+import { useMutationAuthVerify } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import { useSignMessage, useAccount } from "@lightdotso/wagmi";
@@ -46,9 +46,7 @@ export const useSignInWithSiwe = () => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const { refetchAuthSession } = useQueryAuthSession({
-    address: address as Address,
-  });
+  const { verify } = useMutationAuthVerify({ address: address as Address });
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -77,35 +75,10 @@ export const useSignInWithSiwe = () => {
         signMessageAsync({
           message: message.prepareMessage(),
         }).then(signature => {
-          const loadingToast = toast.loading("Signing in...");
-
-          postAuthVerify(
-            {
-              params: { query: { user_address: address } },
-              body: { message: messageToSign, signature },
-            },
-            clientType,
-          )
-            .then(res => {
-              toast.dismiss(loadingToast);
-              res.match(
-                _ => {
-                  toast.success("Successfully signed in!");
-                  refetchAuthSession();
-                },
-                _ => {
-                  toast.error("Failed to sign in!");
-                },
-              );
-            })
-            .catch(err => {
-              toast.dismiss(loadingToast);
-              if (err instanceof Error) {
-                toast.error(err.message);
-              } else {
-                toast.error("Failed to sign in!");
-              }
-            });
+          verify({
+            message: messageToSign,
+            signature: signature,
+          });
         });
       },
       err => {

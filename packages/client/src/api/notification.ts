@@ -87,7 +87,7 @@ export const getNotificationsCount = async (
 // POST
 // -----------------------------------------------------------------------------
 
-export const createNotification = async (
+export const readNotification = async (
   {
     params,
     body,

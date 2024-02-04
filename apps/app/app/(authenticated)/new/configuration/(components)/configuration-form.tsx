@@ -54,7 +54,6 @@ import {
   SelectValue,
   Separator,
   TooltipProvider,
-  toast,
 } from "@lightdotso/ui";
 import { cn, debounce } from "@lightdotso/utils";
 import { publicClient } from "@lightdotso/wagmi";
@@ -340,7 +339,6 @@ export const ConfigurationForm: FC = () => {
 
   const onSubmit = useCallback(
     (_data: NewFormValues) => {
-      toast.success("Configuration updated.");
       navigateToStep();
     },
     [navigateToStep],

@@ -107,7 +107,7 @@ export const SettingsProfileCard: FC = () => {
   // ---------------------------------------------------------------------------
 
   function onSubmit(_data: ProfileFormValues) {
-    toast.success("Profile updated.");
+    toast.success("Profile updated!");
   }
 
   // ---------------------------------------------------------------------------
