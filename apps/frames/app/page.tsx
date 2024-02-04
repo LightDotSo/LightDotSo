@@ -37,12 +37,12 @@ const frameMetadata = getFrameMetadata({
 });
 
 export const metadata: Metadata = {
-  title: "zizzamia.xyz",
-  description: "LFG",
+  title: "framers.light.so",
+  description: "Frame for light.so",
   openGraph: {
-    title: "zizzamia.xyz",
-    description: "LFG",
-    images: [`${process.env.NEXT_PUBLIC_VERCEL_URL}/park-1.png`],
+    title: "framers.light.so",
+    description: "frame for light.so",
+    // images: [`${process.env.NEXT_PUBLIC_VERCEL_URL}/park-1.png`],
   },
   other: {
     ...frameMetadata,
