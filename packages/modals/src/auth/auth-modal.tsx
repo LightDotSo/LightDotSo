@@ -53,7 +53,7 @@ export function AuthModal() {
               isLoading={isPending}
               type="submit"
               size="sm"
-              className="px-3"
+              className="w-full md:w-auto"
               onClick={handleSignIn}
             >
               <span className="sr-only">Login</span>
