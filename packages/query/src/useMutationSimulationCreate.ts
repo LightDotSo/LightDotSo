@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { createQueueInterpretation } from "@lightdotso/client";
-import type { QueueInterpretationBodyParams } from "@lightdotso/params";
+import { createSimulation } from "@lightdotso/client";
+import type { SimulationCreateBodyParams } from "@lightdotso/params/src/simulation";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import { useMutation } from "@tanstack/react-query";
@@ -23,7 +23,7 @@ import { useMutation } from "@tanstack/react-query";
 // Query Mutation
 // -----------------------------------------------------------------------------
 
-export const useMutationQueueInterpretation = () => {
+export const useMutationSimulationCreate = () => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -34,33 +34,30 @@ export const useMutationQueueInterpretation = () => {
   // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const { mutate: queueInterpretation } = useMutation({
-    mutationFn: async (body: QueueInterpretationBodyParams) => {
-      const loadingToast = toast.loading("Queueing...");
-
-      const res = await createQueueInterpretation(
+  const { mutate: logout } = useMutation({
+    mutationFn: async (body: SimulationCreateBodyParams) => {
+      const res = await createSimulation(
         {
-          params: {
-            query: {
-              transaction_hash: body.transaction_hash,
-              user_operation_hash: body.user_operation_hash,
-            },
+          body: {
+            chain_id: body.chain_id,
+            sender: body.sender,
+            nonce: body.nonce,
+            call_data: body.call_data,
+            init_code: body.init_code,
           },
         },
         clientType,
       );
 
-      toast.dismiss(loadingToast);
-
       res.match(
         _ => {
-          toast.success("Successfully queued!");
+          toast.success("Successfully logged out.");
         },
         err => {
           if (err instanceof Error) {
             toast.error(err.message);
           } else {
-            toast.error("Failed to queue.");
+            toast.error("Failed to log out.");
           }
 
           throw err;
@@ -70,6 +67,6 @@ export const useMutationQueueInterpretation = () => {
   });
 
   return {
-    queueInterpretation,
+    logout,
   };
 };

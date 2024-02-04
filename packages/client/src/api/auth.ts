@@ -55,7 +55,7 @@ export const getAuthSession = async (params?: {}, clientType?: ClientType) => {
 // POST
 // -----------------------------------------------------------------------------
 
-export const postAuthLogout = async (params?: {}, clientType?: ClientType) => {
+export const authLogout = async (params?: {}, clientType?: ClientType) => {
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
@@ -70,7 +70,7 @@ export const postAuthLogout = async (params?: {}, clientType?: ClientType) => {
   });
 };
 
-export const postAuthVerify = async (
+export const authVerify = async (
   {
     params,
     body,

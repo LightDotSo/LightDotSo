@@ -15,7 +15,7 @@
 
 "use client";
 
-import { postAuthLogout } from "@lightdotso/client";
+import { authLogout } from "@lightdotso/client";
 import { useIsMounted } from "@lightdotso/hooks";
 import { useAuth } from "@lightdotso/stores";
 import {
@@ -163,7 +163,7 @@ export const UserNav: FC = () => {
               disconnect();
 
               deleteCookiesAction();
-              postAuthLogout().then(res => {
+              authLogout().then(res => {
                 toast.dismiss(loadingToast);
                 if (res.isOk()) {
                   toast.success("Successfully logged out!");

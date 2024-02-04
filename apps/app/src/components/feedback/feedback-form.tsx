@@ -17,7 +17,7 @@
 // the parent component already has it.
 // "use client";
 
-import { createFeedback } from "@lightdotso/client";
+import { useMutationFeedbackCreate } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import {
   Button,
@@ -30,7 +30,6 @@ import {
   RadioGroup,
   RadioGroupItem,
   Textarea,
-  toast,
 } from "@lightdotso/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { FC } from "react";
@@ -71,7 +70,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { clientType, userId } = useAuth();
+  const { userId } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Form
@@ -83,36 +82,24 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
   });
 
   // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { feedbackCreate, isFeedbackCreateSuccess } = useMutationFeedbackCreate(
+    { user_id: userId },
+  );
+
+  // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
-  function onSubmit(data: FeedbackFormValues) {
-    if (!userId) {
-      return toast.error("Sorry, something went wrong.");
-    }
-    const loadingToast = toast.loading("Sending feedback...");
-    createFeedback(
-      {
-        params: {
-          query: {
-            user_id: userId,
-          },
-        },
-        body: {
-          feedback: data,
-        },
-      },
-      clientType,
-    ).then(res => {
-      toast.dismiss(loadingToast);
-      if (res.isOk()) {
-        toast.success("Thanks for your feedback!");
-        form.reset();
-      } else {
-        toast.error("Sorry, something went wrong.");
-      }
+  async function onSubmit(data: FeedbackFormValues) {
+    await feedbackCreate({ feedback: data });
+
+    if (isFeedbackCreateSuccess) {
+      form.reset();
       onClose();
-    });
+    }
   }
 
   // ---------------------------------------------------------------------------

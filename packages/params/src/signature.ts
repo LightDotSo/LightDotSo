@@ -13,11 +13,22 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { Hex } from "viem";
+
+// -----------------------------------------------------------------------------
+// Params
+// -----------------------------------------------------------------------------
+
+export type SignatureParams = {
+  user_operation_hash: Hex;
+};
+
 // -----------------------------------------------------------------------------
 // Params Body
 // -----------------------------------------------------------------------------
 
-export type QueueInterpretationBodyParams = {
-  transaction_hash?: string | null | undefined;
-  user_operation_hash?: string | null | undefined;
+export type SignatureCreateBodyParams = {
+  owner_id: string;
+  signature: Hex;
+  signature_type: number;
 };

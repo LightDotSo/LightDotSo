@@ -15,7 +15,7 @@
 
 "use client";
 
-import { postAuthLogout } from "@lightdotso/client";
+import { authLogout } from "@lightdotso/client";
 import type { AuthSessionData, UserData } from "@lightdotso/data";
 import { useQueryAuthSession, useQueryUser } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
@@ -126,7 +126,7 @@ export const AuthState: FC = () => {
         // On logout, clear the user
         setAddress(undefined);
         setSessionId(undefined);
-        await postAuthLogout();
+        await authLogout();
       }
     };
 

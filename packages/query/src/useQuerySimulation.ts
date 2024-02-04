@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { postCreateSimulation } from "@lightdotso/client";
+import { createSimulation } from "@lightdotso/client";
 import type { SimulationData } from "@lightdotso/data";
 import type { SimulationParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
@@ -60,7 +60,7 @@ export const useQuerySimulation = (params: SimulationParams) => {
       init_code: params.init_code,
     }).queryKey,
     queryFn: async () => {
-      const res = await postCreateSimulation(
+      const res = await createSimulation(
         {
           body: {
             chain_id: params.chain_id,

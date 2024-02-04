@@ -15,7 +15,10 @@
 
 import { updateWalletSettings } from "@lightdotso/client";
 import type { WalletSettingsData } from "@lightdotso/data";
-import type { WalletParams } from "@lightdotso/params";
+import type {
+  WaleltSettingsUpdateBodyParams,
+  WalletSettingsParams,
+} from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { toast } from "@lightdotso/ui";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
@@ -24,15 +27,21 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 // Query Mutation
 // -----------------------------------------------------------------------------
 
-export const useMutationWalletSettingsUpdate = (params: WalletParams) => {
+export const useMutationWalletSettingsUpdate = (
+  params: WalletSettingsParams,
+) => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
   const queryClient = useQueryClient();
 
+  // ---------------------------------------------------------------------------
+  // Query Mutation
+  // ---------------------------------------------------------------------------
+
   const { mutate, isPending, isSuccess, isError } = useMutation({
-    mutationFn: async (data: WalletSettingsData) => {
+    mutationFn: async (body: WaleltSettingsUpdateBodyParams) => {
       const loadingToast = toast.loading("Updating wallet settings...");
 
       const res = await updateWalletSettings({
@@ -43,7 +52,7 @@ export const useMutationWalletSettingsUpdate = (params: WalletParams) => {
         },
         body: {
           wallet_settings: {
-            is_enabled_testnet: data.is_enabled_testnet,
+            is_enabled_testnet: body.is_enabled_testnet,
           },
         },
       });
@@ -65,7 +74,7 @@ export const useMutationWalletSettingsUpdate = (params: WalletParams) => {
       );
     },
     // When mutate is called:
-    onMutate: async (walletSettings: WalletSettingsData) => {
+    onMutate: async (data: WaleltSettingsUpdateBodyParams) => {
       // Cancel any outgoing refetches
       // (so they don't overwrite our optimistic update)
       await queryClient.cancelQueries({
@@ -83,7 +92,7 @@ export const useMutationWalletSettingsUpdate = (params: WalletParams) => {
       queryClient.setQueryData(
         queryKeys.wallet.settings({ address: params.address }).queryKey,
         (old: WalletSettingsData) => {
-          return { ...old, walletSettings };
+          return { ...old, data };
         },
       );
 

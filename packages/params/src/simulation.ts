@@ -26,3 +26,9 @@ export type SimulationParams = {
   call_data: Hex;
   init_code: Hex;
 };
+
+// -----------------------------------------------------------------------------
+// Params Body
+// -----------------------------------------------------------------------------
+
+export type SimulationCreateBodyParams = SimulationParams;

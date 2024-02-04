@@ -30,3 +30,11 @@ export type NotificationListCountParams = Omit<
   NotificationListParams,
   "limit" | "offset"
 >;
+
+// -----------------------------------------------------------------------------
+// Params Body
+// -----------------------------------------------------------------------------
+
+export type NotificationReadBodyParams = {
+  notifications: { id: string }[];
+};

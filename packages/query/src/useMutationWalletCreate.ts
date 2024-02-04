@@ -15,7 +15,7 @@
 
 import { createWallet } from "@lightdotso/client";
 import type { WalletData } from "@lightdotso/data";
-import type { WalletCreateParams } from "@lightdotso/params";
+import type { WalletCreateBodyParams, WalletParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
@@ -25,7 +25,7 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 // Query Mutation
 // -----------------------------------------------------------------------------
 
-export const useMutationWalletCreate = (params: WalletCreateParams) => {
+export const useMutationWalletCreate = (params: WalletParams) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -38,9 +38,13 @@ export const useMutationWalletCreate = (params: WalletCreateParams) => {
 
   const queryClient = useQueryClient();
 
+  // ---------------------------------------------------------------------------
+  // Query Mutation
+  // ---------------------------------------------------------------------------
+
   const { mutate, isPending, isSuccess, isError } = useMutation({
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    mutationFn: async (data: Partial<WalletData>) => {
+    mutationFn: async (body: WalletCreateBodyParams) => {
       const loadingToast = toast.loading("Creating wallet...");
 
       // Replace with your actual fetch logic
@@ -48,15 +52,15 @@ export const useMutationWalletCreate = (params: WalletCreateParams) => {
         {
           params: {
             query: {
-              simulate: params.simulate,
+              simulate: body.simulate,
             },
           },
           body: {
-            invite_code: params.invite_code,
-            name: params.name,
-            salt: params.salt,
-            threshold: params.threshold,
-            owners: params.owners,
+            invite_code: body.invite_code,
+            name: body.name,
+            salt: body.salt,
+            threshold: body.threshold,
+            owners: body.owners,
           },
         },
         clientType,
@@ -81,7 +85,7 @@ export const useMutationWalletCreate = (params: WalletCreateParams) => {
       );
     },
     // When mutate is called:
-    onMutate: async (wallet: Partial<WalletData>) => {
+    onMutate: async (data: WalletCreateBodyParams) => {
       // Cancel any outgoing refetches
       // (so they don't overwrite our optimistic update)
       await queryClient.cancelQueries({
@@ -97,7 +101,7 @@ export const useMutationWalletCreate = (params: WalletCreateParams) => {
       queryClient.setQueryData(
         queryKeys.wallet.settings({ address: params.address }).queryKey,
         (old: WalletData) => {
-          return { ...old, wallet };
+          return { ...old, data };
         },
       );
 

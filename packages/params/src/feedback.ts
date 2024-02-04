@@ -14,10 +14,20 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // -----------------------------------------------------------------------------
+// Params
+// -----------------------------------------------------------------------------
+
+export type FeedbackParams = {
+  user_id?: string | null | undefined;
+};
+
+// -----------------------------------------------------------------------------
 // Params Body
 // -----------------------------------------------------------------------------
 
-export type QueueInterpretationBodyParams = {
-  transaction_hash?: string | null | undefined;
-  user_operation_hash?: string | null | undefined;
+export type FeedbackCreateBodyParams = {
+  feedback: {
+    emoji: string;
+    text: string;
+  };
 };

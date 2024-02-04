@@ -15,7 +15,7 @@
 
 import { updateWallet } from "@lightdotso/client";
 import type { WalletData } from "@lightdotso/data";
-import type { WalletParams } from "@lightdotso/params";
+import type { WalletParams, WalletUpdateBodyParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
@@ -38,8 +38,12 @@ export const useMutationWalletUpdate = (params: WalletParams) => {
 
   const queryClient = useQueryClient();
 
+  // ---------------------------------------------------------------------------
+  // Query Mutation
+  // ---------------------------------------------------------------------------
+
   const { mutate, isPending, isSuccess, isError } = useMutation({
-    mutationFn: async (data: Partial<WalletData>) => {
+    mutationFn: async (body: WalletUpdateBodyParams) => {
       const loadingToast = toast.loading("Updating name...");
 
       const res = await updateWallet(
@@ -50,7 +54,7 @@ export const useMutationWalletUpdate = (params: WalletParams) => {
             },
           },
           body: {
-            name: data.name,
+            name: body.name,
           },
         },
         clientType,

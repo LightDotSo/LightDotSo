@@ -13,11 +13,16 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { UserOperation } from "@lightdotso/schemas";
 import type { Address, Hex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Params
 // -----------------------------------------------------------------------------
+
+export type UserOperationParams = {
+  address: Address;
+};
 
 export type UserOperationGetParams = {
   hash: Hex;
@@ -43,7 +48,14 @@ export type UserOperationListCountParams = Omit<
   "order" | "limit" | "offset"
 >;
 
-export type UserOperationCreateParams = {
+// -----------------------------------------------------------------------------
+// Body Params
+// -----------------------------------------------------------------------------
+
+export type UserOperationCreateBodyParams = {
   ownerId: Address;
   signedData: Hex;
+  userOperation: Partial<UserOperation>;
 };
+
+export type UserOperationUpdateBodyParams = Partial<UserOperation>;

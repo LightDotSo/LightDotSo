@@ -15,15 +15,14 @@
 
 "use client";
 
-import { createQueueInterpretation } from "@lightdotso/client";
 import type { UserOperationData } from "@lightdotso/data";
+import { useMutationQueueInterpretation } from "@lightdotso/query";
 import {
   Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  toast,
 } from "@lightdotso/ui";
 import { getChainById, getEtherscanUrl } from "@lightdotso/utils";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
@@ -44,6 +43,12 @@ interface UserOperationTableRowActionsProps {
 export function UserOperationTableRowActions({
   row,
 }: UserOperationTableRowActionsProps) {
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { queueInterpretation } = useMutationQueueInterpretation();
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -82,26 +87,9 @@ export function UserOperationTableRowActions({
             </a>
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={async () => {
-              const loadingToast = toast.loading("Queue has been created...");
-              const res = await createQueueInterpretation({
-                params: { query: { user_operation_hash: row.original.hash } },
-              });
-              res.match(
-                () => {
-                  toast.dismiss(loadingToast);
-                  toast.success("Queue created!");
-                },
-                err => {
-                  toast.dismiss(loadingToast);
-                  if (err instanceof Error) {
-                    toast.error(err.message);
-                  } else {
-                    toast.error("Failed to create queue!");
-                  }
-                },
-              );
-            }}
+            onClick={() =>
+              queueInterpretation({ user_operation_hash: row.original.hash })
+            }
           >
             Queue
           </DropdownMenuItem>

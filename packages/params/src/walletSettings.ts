@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { WalletSettingsData } from "@lightdotso/data";
 import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
@@ -22,3 +23,9 @@ import type { Address } from "viem";
 export type WalletSettingsParams = {
   address: Address;
 };
+
+// -----------------------------------------------------------------------------
+// Params Body
+// -----------------------------------------------------------------------------
+
+export type WaleltSettingsUpdateBodyParams = WalletSettingsData;

@@ -15,11 +15,10 @@
 
 "use client";
 
-import { createSignature } from "@lightdotso/client";
 import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
+import { useMutationSignatureCreate } from "@lightdotso/query";
 import { subdigestOf } from "@lightdotso/solutions";
 import { useAuth } from "@lightdotso/stores";
-import { toast } from "@lightdotso/ui";
 import { useSignMessage } from "@lightdotso/wagmi";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
@@ -120,6 +119,14 @@ export const useUserOperationSign = ({
   } = useSignMessage();
 
   // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { signatureCreate } = useMutationSignatureCreate({
+    user_operation_hash: userOperation.hash as Hex,
+  });
+
+  // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
@@ -138,44 +145,18 @@ export const useUserOperationSign = ({
         return;
       }
 
-      const loadingToast = toast.loading("Submitting the transaction...");
-
-      const res = await createSignature({
-        params: {
-          query: {
-            user_operation_hash: userOperation.hash,
-          },
-        },
-        body: {
-          signature: {
-            owner_id: userOwnerId,
-            signature: toHex(new Uint8Array([...toBytes(signedMessage), 2])),
-            signature_type: 1,
-          },
-        },
+      await signatureCreate({
+        owner_id: userOwnerId,
+        signature: toHex(new Uint8Array([...toBytes(signedMessage), 2])),
+        signature_type: 1,
       });
-
-      toast.dismiss(loadingToast);
-
-      res.match(
-        _ => {
-          toast.success("You submitted the transaction!");
-        },
-        err => {
-          if (err instanceof Error) {
-            toast.error(err.message);
-          } else {
-            toast.error("An unknown error occurred.");
-          }
-        },
-      );
     };
 
     processSignature();
 
     // Unset loading state
     setIsLoading(false);
-  }, [signMessage, signedMessage, userOperation, userOwnerId]);
+  }, [signMessage, signatureCreate, signedMessage, userOperation, userOwnerId]);
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
