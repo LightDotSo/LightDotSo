@@ -25,8 +25,6 @@ export const getRpcHandler = (url: string) =>
   http.post(url, async ({ request }) => {
     const body = await request.json();
 
-    console.log("body", body);
-
     // @ts-expect-error
     if (body.method === "eth_estimateGas") {
       return HttpResponse.json({ result: "0x5208" });
@@ -69,8 +67,6 @@ export const getRpcHandler = (url: string) =>
 export const getInternalRpcHandler = (url: string) =>
   http.post(`${url}/8453`, async ({ request }) => {
     const body = await request.json();
-
-    console.log("body", body);
 
     // @ts-expect-error
     // For `eth_estimateUserOperationGas`
