@@ -16,14 +16,17 @@
 #![allow(clippy::unwrap_used)]
 
 use crate::{
-    result::{AppError, AppJsonResult},
-    routes::wallet::types::Wallet,
+    admin::token_is_valid,
+    error::RouteError,
+    result::{AppError, AppJsonResult, AppResult},
+    routes::{auth::error::AuthError, wallet::types::Wallet},
     state::AppState,
 };
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
-    Json,
+    headers::{authorization::Bearer, Authorization},
+    Json, TypedHeader,
 };
 use ethers_main::{
     types::{H160, H256},
@@ -83,7 +86,7 @@ pub struct WalletCreateRequestParams {
     pub threshold: u16,
     /// The invite code of the wallet.
     #[schema(example = "BFD-23S")]
-    pub invite_code: String,
+    pub invite_code: Option<String>,
 }
 
 /// Wallet owner.
@@ -120,6 +123,7 @@ pub(crate) struct WalletCreateOwnerParams {
 pub(crate) async fn v1_wallet_create_handler(
     post_query: Query<PostQuery>,
     State(state): State<AppState>,
+    auth: Option<TypedHeader<Authorization<Bearer>>>,
     Json(params): Json<WalletCreateRequestParams>,
 ) -> AppJsonResult<Wallet> {
     // -------------------------------------------------------------------------
@@ -233,21 +237,25 @@ pub(crate) async fn v1_wallet_create_handler(
     // If the simulate flag is not set, check if the invite code is valid.
     let invite_code = params.invite_code;
 
-    // Check if the invite code is valid.
-    let invite_code_data = state
-        .client
-        .invite_code()
-        .find_first(vec![lightdotso_prisma::invite_code::code::equals(invite_code.clone())])
-        .exec()
-        .await?;
+    if let Some(invite_code) = &invite_code {
+        // Check if the invite code is valid.
+        let invite_code_data = state
+            .client
+            .invite_code()
+            .find_first(vec![lightdotso_prisma::invite_code::code::equals(invite_code.clone())])
+            .exec()
+            .await?;
 
-    // IF the status of the invite code is not ACTIVE, return a 400.
-    if invite_code_data
-        .as_ref()
-        .map(|invite_code| invite_code.status != InviteCodeStatus::Active)
-        .unwrap_or(true)
-    {
-        return Err(AppError::BadRequest);
+        // IF the status of the invite code is not ACTIVE, return a 400.
+        if invite_code_data
+            .as_ref()
+            .map(|invite_code| invite_code.status != InviteCodeStatus::Active)
+            .unwrap_or(true)
+        {
+            return Err(AppError::BadRequest);
+        }
+    } else {
+        authenticate_admin_token(auth.map(|auth| auth.token().to_string()))?;
     }
 
     // Attempt to create a user in case it does not exist.
@@ -389,37 +397,39 @@ pub(crate) async fn v1_wallet_create_handler(
     // DB
     // -------------------------------------------------------------------------
 
-    // Invalidate the invite code.
-    let invite_code = state
-        .client
-        .invite_code()
-        .update(
-            lightdotso_prisma::invite_code::code::equals(invite_code),
-            vec![lightdotso_prisma::invite_code::status::set(InviteCodeStatus::Used)],
-        )
-        .exec()
-        .await?;
-    info!(?invite_code);
+    if let Some(invite_code) = invite_code {
+        // Invalidate the invite code.
+        let invite_code = state
+            .client
+            .invite_code()
+            .update(
+                lightdotso_prisma::invite_code::code::equals(invite_code),
+                vec![lightdotso_prisma::invite_code::status::set(InviteCodeStatus::Used)],
+            )
+            .exec()
+            .await?;
+        info!(?invite_code);
 
-    // -------------------------------------------------------------------------
-    // Kafka
-    // -------------------------------------------------------------------------
+        // ---------------------------------------------------------------------
+        // Kafka
+        // ---------------------------------------------------------------------
 
-    // Produce an activity message.
-    let _ = produce_activity_message(
-        state.producer.clone(),
-        ActivityEntity::InviteCode,
-        &ActivityMessage {
-            operation: ActivityOperation::Update,
-            log: serde_json::to_value(&invite_code)?,
-            params: CustomParams {
-                invite_code_id: Some(invite_code.id.clone()),
-                wallet_address: Some(wallet.address.clone()),
-                ..Default::default()
+        // Produce an activity message.
+        let _ = produce_activity_message(
+            state.producer.clone(),
+            ActivityEntity::InviteCode,
+            &ActivityMessage {
+                operation: ActivityOperation::Update,
+                log: serde_json::to_value(&invite_code)?,
+                params: CustomParams {
+                    invite_code_id: Some(invite_code.id.clone()),
+                    wallet_address: Some(wallet.address.clone()),
+                    ..Default::default()
+                },
             },
-        },
-    )
-    .await;
+        )
+        .await;
+    }
 
     // -------------------------------------------------------------------------
     // Redis
@@ -437,4 +447,28 @@ pub(crate) async fn v1_wallet_create_handler(
     let wallet: Wallet = wallet.into();
 
     Ok(Json::from(wallet))
+}
+
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
+/// Authenticates the admin token.
+fn authenticate_admin_token(auth_token: Option<String>) -> AppResult<bool> {
+    if let Some(token) = auth_token {
+        let is_admin = token_is_valid(&token);
+
+        // If the token is not valid, return a 401.
+        if !is_admin {
+            return Err(AppError::RouteError(RouteError::AuthError(AuthError::Unauthorized(
+                "Unauthorized Admin Token".to_string(),
+            ))));
+        }
+
+        return Ok(is_admin);
+    }
+
+    Err(AppError::RouteError(RouteError::AuthError(AuthError::Unauthorized(
+        "Unauthorized".to_string(),
+    ))))
 }
