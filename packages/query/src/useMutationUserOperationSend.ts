@@ -21,6 +21,8 @@ import { CONTRACT_ADDRESSES } from "@lightdotso/const";
 import type { UserOperationSendBodyParams } from "@lightdotso/params";
 import { toast } from "@lightdotso/ui";
 import { useMutation } from "@tanstack/react-query";
+import { backOff } from "exponential-backoff";
+import { ResultAsync } from "neverthrow";
 import { toHex } from "viem";
 
 // -----------------------------------------------------------------------------
@@ -42,24 +44,29 @@ export const useMutationUserOperationSend = () => {
       });
 
       await sigRes.match(
-        async sig => {
+        sig => {
           // Sned the user operation
-          const res = await sendUserOperation(body.chain_id, [
-            {
-              sender: body.sender,
-              nonce: toHex(body.nonce),
-              initCode: body.init_code,
-              callData: body.call_data,
-              paymasterAndData: body.paymaster_and_data,
-              callGasLimit: toHex(body.call_gas_limit),
-              verificationGasLimit: toHex(body.verification_gas_limit),
-              preVerificationGas: toHex(body.pre_verification_gas),
-              maxFeePerGas: toHex(body.max_fee_per_gas),
-              maxPriorityFeePerGas: toHex(body.max_priority_fee_per_gas),
-              signature: sig,
-            },
-            CONTRACT_ADDRESSES["Entrypoint"],
-          ]);
+          const res = ResultAsync.fromPromise(
+            backOff(() =>
+              sendUserOperation(body.chain_id, [
+                {
+                  sender: body.sender,
+                  nonce: toHex(body.nonce),
+                  initCode: body.init_code,
+                  callData: body.call_data,
+                  paymasterAndData: body.paymaster_and_data,
+                  callGasLimit: toHex(body.call_gas_limit),
+                  verificationGasLimit: toHex(body.verification_gas_limit),
+                  preVerificationGas: toHex(body.pre_verification_gas),
+                  maxFeePerGas: toHex(body.max_fee_per_gas),
+                  maxPriorityFeePerGas: toHex(body.max_priority_fee_per_gas),
+                  signature: sig,
+                },
+                CONTRACT_ADDRESSES["Entrypoint"],
+              ]).then(res => res._unsafeUnwrap()),
+            ),
+            () => new Error("Database error"),
+          );
 
           toast.dismiss(loadingToast);
 
