@@ -21,6 +21,7 @@ import type { Address } from "viem";
 
 export type QueueParams = {
   address: Address;
+  isToastDistinct?: boolean;
 };
 
 // -----------------------------------------------------------------------------

@@ -36,7 +36,9 @@ export const useMutationQueueToken = (params: QueueParams) => {
 
   const { mutate: queueToken, isPending: isLoadingQueueToken } = useMutation({
     mutationFn: async () => {
-      const loadingToast = toast.loading("Queueing...");
+      const loadingToast = toast.loading(
+        params.isToastDistinct ? "Queueing..." : undefined,
+      );
 
       const res = await createQueueToken(
         {
