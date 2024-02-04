@@ -13,25 +13,46 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getWalletSettings as getClientWalletSettings } from "@lightdotso/client";
-import type { WalletSettingsParams } from "@lightdotso/params";
-import "server-only";
+/* eslint-disable react-hooks/rules-of-hooks */
+
+import { useModals } from "@lightdotso/stores";
+import type { Meta, StoryObj } from "@storybook/react";
+import { useEffect } from "react";
+import { ConnectModal } from "./connect-modal";
 
 // -----------------------------------------------------------------------------
-// Pre
+// Meta
 // -----------------------------------------------------------------------------
 
-export const preloadGetWalletSettings = (params: WalletSettingsParams) => {
-  void getWalletSettings(params);
+const meta: Meta<typeof ConnectModal> = {
+  title: "modal/ConnectModal",
+  component: ConnectModal,
+  tags: ["autodocs"],
+  argTypes: {},
 };
 
+export default meta;
+
 // -----------------------------------------------------------------------------
-// Service
+// Types
 // -----------------------------------------------------------------------------
 
-export const getWalletSettings = async (params: WalletSettingsParams) => {
-  return getClientWalletSettings(
-    { params: { query: { address: params.address } } },
-    "admin",
-  );
+type Story = StoryObj<typeof ConnectModal>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Base: Story = {
+  render: () => {
+    const { showConnectModal } = useModals();
+
+    useEffect(() => {
+      showConnectModal();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    return <ConnectModal />;
+  },
+  args: {},
 };

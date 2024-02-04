@@ -13,25 +13,32 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getWalletSettings as getClientWalletSettings } from "@lightdotso/client";
-import type { WalletSettingsParams } from "@lightdotso/params";
-import "server-only";
+import type { Meta, StoryObj } from "@storybook/react";
+import { ConnectButton } from "./connect-button";
 
 // -----------------------------------------------------------------------------
-// Pre
+// Meta
 // -----------------------------------------------------------------------------
 
-export const preloadGetWalletSettings = (params: WalletSettingsParams) => {
-  void getWalletSettings(params);
+const meta: Meta<typeof ConnectButton> = {
+  title: "template/ConnectButton",
+  component: ConnectButton,
+  tags: ["autodocs"],
+  argTypes: {},
 };
+export default meta;
 
 // -----------------------------------------------------------------------------
-// Service
+// Types
 // -----------------------------------------------------------------------------
 
-export const getWalletSettings = async (params: WalletSettingsParams) => {
-  return getClientWalletSettings(
-    { params: { query: { address: params.address } } },
-    "admin",
-  );
+type Story = StoryObj<typeof ConnectButton>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Base: Story = {
+  render: args => <ConnectButton />,
+  args: {},
 };

@@ -15,54 +15,41 @@
 
 "use client";
 
-import { useMediaQuery } from "@lightdotso/hooks";
-import { useAuth } from "@lightdotso/stores";
-import { Button } from "@lightdotso/ui";
-import { shortenAddress } from "@lightdotso/utils";
-import { ConnectKitButton } from "@lightdotso/wagmi";
-import { Wallet } from "lucide-react";
-import type { Address } from "viem";
-
-// From: https://www.rainbowkit.com/docs/custom-connect-button
-// Customizes the ConnectKit button to use the UI Button component.
+import { useModals } from "@lightdotso/stores";
+import { ConnectButton, Modal } from "@lightdotso/templates";
+import { DialogDescription, DialogTitle } from "@lightdotso/ui";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const ConnectButton = () => {
+export function ConnectModal() {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { ens } = useAuth();
-
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const isDesktop = useMediaQuery("md");
+  const { isConnectModalVisible, hideConnectModal } = useModals();
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <ConnectKitButton.Custom>
-      {({ isConnecting, show, address }) => {
-        return (
-          <Button
-            disabled={isConnecting}
-            size={isDesktop ? "default" : "lg"}
-            onClick={show}
-          >
-            <Wallet className="mr-2 size-4" />
-            {address
-              ? ens ?? shortenAddress(address as Address)
-              : "Connect Wallet"}
-          </Button>
-        );
-      }}
-    </ConnectKitButton.Custom>
-  );
-};
+  if (isConnectModalVisible) {
+    return (
+      <Modal open size="sm" onClose={hideConnectModal}>
+        <DialogTitle>Connect</DialogTitle>
+        <DialogDescription>
+          <ConnectButton />
+        </DialogDescription>
+      </Modal>
+    );
+  }
+
+  return null;
+}
+
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
+
+export default ConnectModal;

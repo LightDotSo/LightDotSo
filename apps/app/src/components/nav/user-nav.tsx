@@ -18,6 +18,7 @@
 import { useIsMounted } from "@lightdotso/hooks";
 import { useMutationAuthLogout } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
+import { ConnectButton } from "@lightdotso/templates";
 import {
   Button,
   DropdownMenu,
@@ -48,7 +49,6 @@ import { useTheme } from "next-themes";
 import type { FC } from "react";
 import type { Address } from "viem";
 import deleteCookiesAction from "@/actions/deleteCookiesAction";
-import { ConnectButton } from "@/components/web3/connect-button";
 
 // -----------------------------------------------------------------------------
 // Component

@@ -15,57 +15,55 @@
 
 "use client";
 
+import { useMediaQuery } from "@lightdotso/hooks";
 import { useAuth } from "@lightdotso/stores";
-import { LightLogo } from "@lightdotso/svg";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Button } from "@lightdotso/ui";
+import { shortenAddress } from "@lightdotso/utils";
+import { ConnectKitButton } from "@lightdotso/wagmi";
+import { Wallet } from "lucide-react";
 import type { FC } from "react";
-import { usePathType } from "@/hooks";
+import type { Address } from "viem";
+
+// From: https://www.rainbowkit.com/docs/custom-connect-button
+// Customizes the ConnectKit button to use the UI Button component.
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const RootLogo: FC = () => {
+export const ConnectButton: FC = () => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address } = useAuth();
+  const { ens } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const pathType = usePathType();
-
-  // ---------------------------------------------------------------------------
-  // Next Hooks
-  // ---------------------------------------------------------------------------
-
-  const pathname = usePathname();
+  const isDesktop = useMediaQuery("md");
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <Link
-      href={
-        typeof address === "undefined"
-          ? "/"
-          : pathType === "unauthenticated" || pathType === "demo"
-            ? "/"
-            : pathType === "authenticated"
-              ? "/wallets"
-              : // Get the wallet address from the path
-                // Address is the first part of the path
-                // e.g. /0x1234
-                `/${pathname.split("/")[1]}/overview`
-      }
-      className="hover:rounded-md hover:bg-background-stronger"
-    >
-      <LightLogo className="m-2.5 size-8 fill-text" />
-    </Link>
+    <ConnectKitButton.Custom>
+      {({ isConnecting, show, address }) => {
+        return (
+          <Button
+            disabled={isConnecting}
+            size={isDesktop ? "default" : "lg"}
+            onClick={show}
+          >
+            <Wallet className="mr-2 size-4" />
+            {address
+              ? ens ?? shortenAddress(address as Address)
+              : "Connect Wallet"}
+          </Button>
+        );
+      }}
+    </ConnectKitButton.Custom>
   );
 };

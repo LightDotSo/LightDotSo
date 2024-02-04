@@ -20,7 +20,7 @@ import { SettingsSectionWrapper } from "@lightdotso/ui";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { Suspense } from "react";
 import type { Address, Hex } from "viem";
-import { SettingsDeploymentCard } from "@/app/(wallet)/[address]/settings/(components)/settings-deployment-card";
+import { SettingsDeploymentCard } from "@/app/(wallet)/[address]/settings/deployment/(components)/settings-deployment-card";
 import { handler } from "@/handlers/paths/[address]/settings/deployment/handler";
 import { preloader } from "@/preloaders/paths/[address]/preloader";
 

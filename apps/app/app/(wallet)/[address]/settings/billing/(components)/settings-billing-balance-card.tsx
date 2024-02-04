@@ -15,57 +15,66 @@
 
 "use client";
 
-import { useAuth } from "@lightdotso/stores";
-import { LightLogo } from "@lightdotso/svg";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useQueryWalletBilling } from "@lightdotso/query";
+import { Button } from "@lightdotso/ui";
 import type { FC } from "react";
-import { usePathType } from "@/hooks";
+import type { Address, Chain, Hex } from "viem";
+import { SettingsCard } from "@/components/settings/settings-card";
+import { TITLES } from "@/const";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type SettingsBillingBalanceCardProps = {
+  address: Address;
+};
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const RootLogo: FC = () => {
+export const SettingsBillingBalanceCard: FC<
+  SettingsBillingBalanceCardProps
+> = ({ address }) => {
   // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { address } = useAuth();
-
-  // ---------------------------------------------------------------------------
-  // Hooks
+  // Query
   // ---------------------------------------------------------------------------
 
-  const pathType = usePathType();
+  const { walletBilling } = useQueryWalletBilling({
+    address,
+  });
 
   // ---------------------------------------------------------------------------
-  // Next Hooks
+  // Submit Button
   // ---------------------------------------------------------------------------
 
-  const pathname = usePathname();
+  const SettingsBillingCardSubmitButton: FC = () => {
+    return (
+      <Button type="submit" form="walletBillingForm" disabled={true}>
+        Billing
+      </Button>
+    );
+  };
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <Link
-      href={
-        typeof address === "undefined"
-          ? "/"
-          : pathType === "unauthenticated" || pathType === "demo"
-            ? "/"
-            : pathType === "authenticated"
-              ? "/wallets"
-              : // Get the wallet address from the path
-                // Address is the first part of the path
-                // e.g. /0x1234
-                `/${pathname.split("/")[1]}/overview`
+    <SettingsCard
+      title={
+        TITLES.Settings.subcategories["Billing"].subcategories["Balance"].title
       }
-      className="hover:rounded-md hover:bg-background-stronger"
+      subtitle={
+        TITLES.Settings.subcategories["Billing"].subcategories["Balance"]
+          .description
+      }
+      footerContent={<SettingsBillingCardSubmitButton />}
     >
-      <LightLogo className="m-2.5 size-8 fill-text" />
-    </Link>
+      <div className="flex text-lg">
+        Balance: <span>${walletBilling && walletBilling.balance_usd}</span>
+      </div>
+    </SettingsCard>
   );
 };

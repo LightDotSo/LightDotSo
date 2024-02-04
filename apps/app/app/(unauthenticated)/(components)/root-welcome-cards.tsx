@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { ConnectButton } from "@lightdotso/templates";
 import {
   Button,
   Card,
@@ -24,7 +25,6 @@ import {
 import { Gamepad, Wallet } from "lucide-react";
 import Link from "next/link";
 import type { FC } from "react";
-import { ConnectButton } from "@/components/web3/connect-button";
 
 // -----------------------------------------------------------------------------
 // Component
