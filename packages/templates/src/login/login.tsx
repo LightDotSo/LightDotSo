@@ -44,7 +44,7 @@ export const Login: FC = () => {
       description="Get started first by logging in."
     >
       <Button
-        className="w-full md:w-32"
+        className="w-full sm:w-32"
         isLoading={isAuthLoading}
         disabled={isAuthLoading}
         onClick={handleAuthModal}

@@ -28,4 +28,5 @@ export { Login } from "./login";
 export { Modal, useIsInsideModal } from "./modal";
 export { ModalInterception } from "./modal-interception";
 export { ModalSwiper } from "./modal-swiper";
+export { Support } from "./support";
 export { Transaction } from "./transaction";

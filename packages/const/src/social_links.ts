@@ -15,6 +15,8 @@
 
 /* eslint-disable no-unused-vars */
 export enum Social {
+  CAL = "Cal",
+  CAL_SHUN = "Cal Shun",
   DISCORD = "Discord",
   OPENSEA = "Opensea",
   GITHUB = "Github",
@@ -31,6 +33,8 @@ export enum Social {
 export const SOCIAL_LINKS: {
   readonly [key in Social]: string;
 } = {
+  [Social.CAL]: "https://cal.com/lightdotso",
+  [Social.CAL_SHUN]: "https://cal.com/shunkakinoki",
   [Social.DISCORD]: "https://discord.gg/Vgfxg2Rcy8",
   [Social.GITHUB]: "https://github.com/LightDotSo/LightDotSo",
   [Social.MIRROR]: "https://mirror.xyz/lightdotso.eth",
