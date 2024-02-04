@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@lightdotso/client": "workspace:*",
+    "@lightdotso/const": "workspace:*",
     "@lightdotso/data": "workspace:*",
     "@lightdotso/params": "workspace:*",
     "@lightdotso/query-keys": "workspace:*",

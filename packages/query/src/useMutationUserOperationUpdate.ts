@@ -14,10 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { updateUserOperation } from "@lightdotso/client";
-import type {
-  UserOperationParams,
-  UserOperationUpdateBodyParams,
-} from "@lightdotso/params";
+import type { UserOperationParams } from "@lightdotso/params";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import { useMutation } from "@tanstack/react-query";
@@ -37,9 +34,8 @@ export const useMutationUserOperationUpdate = (params: UserOperationParams) => {
   // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const { mutate: logout } = useMutation({
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    mutationFn: async (_body: UserOperationUpdateBodyParams) => {
+  const { mutate: userOperationUpdate } = useMutation({
+    mutationFn: async () => {
       const loadingToast = toast.loading("Updating operation...");
 
       const res = await updateUserOperation(
@@ -73,6 +69,6 @@ export const useMutationUserOperationUpdate = (params: UserOperationParams) => {
   });
 
   return {
-    logout,
+    userOperationUpdate,
   };
 };

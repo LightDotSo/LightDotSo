@@ -17,6 +17,7 @@
 
 import { authLogout } from "@lightdotso/client";
 import { useIsMounted } from "@lightdotso/hooks";
+import { useMutationAuthLogout } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import {
   Button,
@@ -80,6 +81,12 @@ export const UserNav: FC = () => {
   // ---------------------------------------------------------------------------
 
   const { disconnect } = useDisconnect();
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { logout } = useMutationAuthLogout();
 
   // ---------------------------------------------------------------------------
   // Render
@@ -158,19 +165,11 @@ export const UserNav: FC = () => {
         <DropdownMenuGroup>
           <DropdownMenuItem
             onClick={async () => {
-              const loadingToast = toast.loading("Disconnecting...");
-
               disconnect();
 
               deleteCookiesAction();
-              authLogout().then(res => {
-                toast.dismiss(loadingToast);
-                if (res.isOk()) {
-                  toast.success("Successfully logged out!");
-                } else {
-                  toast.error("Sorry, something went wrong.");
-                }
-              });
+
+              await logout();
             }}
           >
             Disconnect

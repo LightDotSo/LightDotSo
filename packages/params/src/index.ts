@@ -45,6 +45,7 @@ export type {
   UserOperationListCountParams,
   UserOperationCreateBodyParams,
   UserOperationUpdateBodyParams,
+  UserOperationSendBodyParams,
 } from "./userOperation";
 export type {
   WalletParams,

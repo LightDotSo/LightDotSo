@@ -15,7 +15,7 @@
 
 "use client";
 
-import { updateUserOperation } from "@lightdotso/client";
+import { useMutationUserOperationUpdate } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import {
   ButtonIcon,
@@ -51,6 +51,14 @@ export const OverviewInvokeButton: FC<InvokeUserOperationProps> = ({
   const { clientType } = useAuth();
 
   // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { userOperationUpdate } = useMutationUserOperationUpdate({
+    address: address,
+  });
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -59,42 +67,7 @@ export const OverviewInvokeButton: FC<InvokeUserOperationProps> = ({
       <Tooltip>
         <TooltipTrigger asChild>
           <span>
-            <ButtonIcon
-              variant="shadow"
-              onClick={() => {
-                const loadingToast = toast.loading("Updating operation...");
-
-                updateUserOperation(
-                  {
-                    params: { query: { address: address } },
-                  },
-                  clientType,
-                )
-                  .then(res => {
-                    toast.dismiss(loadingToast);
-                    res.match(
-                      _success => {
-                        toast.success("Operation updated!");
-                      },
-                      err => {
-                        if (err instanceof Error) {
-                          toast.error(err.message);
-                        } else {
-                          toast.error("Unknown error");
-                        }
-                      },
-                    );
-                  })
-                  .catch(err => {
-                    toast.dismiss(loadingToast);
-                    if (err instanceof Error) {
-                      toast.error(err.message);
-                    } else {
-                      toast.error("Unknown error");
-                    }
-                  });
-              }}
-            >
+            <ButtonIcon variant="shadow" onClick={() => userOperationUpdate()}>
               <RefreshCcw className="size-4" />
             </ButtonIcon>
           </span>

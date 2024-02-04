@@ -23,6 +23,7 @@ export { useMutationSignatureCreate } from "./useMutationSignatureCreate";
 export { useMutationSimulationCreate } from "./useMutationSimulationCreate";
 export { useMutationUserOperationCreate } from "./useMutationUserOperationCreate";
 export { useMutationUserOperationUpdate } from "./useMutationUserOperationUpdate";
+export { useMutationUserOperationSend } from "./useMutationUserOperationSend";
 export { useMutationWalletCreate } from "./useMutationWalletCreate";
 export { useMutationWalletUpdate } from "./useMutationWalletUpdate";
 export { useMutationWalletSettingsUpdate } from "./useMutationWalletSettingsUpdate";

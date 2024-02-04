@@ -15,14 +15,11 @@
 
 "use client";
 
-import {
-  getSignatureUserOperation,
-  sendUserOperation,
-} from "@lightdotso/client";
-import { CONTRACT_ADDRESSES } from "@lightdotso/const";
 import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
-import { useQueryPaymasterOperation } from "@lightdotso/query";
-import { toast } from "@lightdotso/ui";
+import {
+  useMutationUserOperationSend,
+  useQueryPaymasterOperation,
+} from "@lightdotso/query";
 import {
   useReadLightVerifyingPaymasterGetHash,
   useReadLightVerifyingPaymasterSenderNonce,
@@ -124,6 +121,8 @@ export const useUserOperationSubmit = ({
     ),
   });
 
+  const { userOperationSend } = useMutationUserOperationSend();
+
   // ---------------------------------------------------------------------------
   // Local Variables
   // ---------------------------------------------------------------------------
@@ -160,66 +159,10 @@ export const useUserOperationSubmit = ({
 
   // A `useCallback` handler for confirming the operation
   const handleConfirm = useCallback(async () => {
-    const processSignature = async () => {
-      const loadingToast = toast.loading("Submitting the transaction...");
-
-      // Get the sig as bytes from caller
-      const sigRes = await getSignatureUserOperation({
-        params: { query: { user_operation_hash: userOperation.hash } },
-      });
-
-      await sigRes.match(
-        async sig => {
-          // Sned the user operation
-          const res = await sendUserOperation(userOperation.chain_id, [
-            {
-              sender: userOperation.sender,
-              nonce: toHex(userOperation.nonce),
-              initCode: userOperation.init_code,
-              callData: userOperation.call_data,
-              paymasterAndData: userOperation.paymaster_and_data,
-              callGasLimit: toHex(userOperation.call_gas_limit),
-              verificationGasLimit: toHex(userOperation.verification_gas_limit),
-              preVerificationGas: toHex(userOperation.pre_verification_gas),
-              maxFeePerGas: toHex(userOperation.max_fee_per_gas),
-              maxPriorityFeePerGas: toHex(
-                userOperation.max_priority_fee_per_gas,
-              ),
-              signature: sig,
-            },
-            CONTRACT_ADDRESSES["Entrypoint"],
-          ]);
-
-          res.match(
-            _ => {
-              toast.dismiss(loadingToast);
-              toast.success("You submitted the transaction!");
-            },
-            err => {
-              toast.dismiss(loadingToast);
-              if (err instanceof Error) {
-                toast.error(err.message);
-              } else {
-                toast.error("Failed to submit the transaction.");
-              }
-            },
-          );
-        },
-        async err => {
-          toast.dismiss(loadingToast);
-          if (err instanceof Error) {
-            toast.error(err.message);
-          } else {
-            toast.error("Failed to get signature.");
-          }
-        },
-      );
-    };
-
     // Set loading state
     setIsLoading(true);
 
-    await processSignature();
+    await userOperationSend(userOperation);
 
     // Unset loading state
     setIsLoading(false);
