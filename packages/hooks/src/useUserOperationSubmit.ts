@@ -52,7 +52,6 @@ export const useUserOperationSubmit = ({
   // ---------------------------------------------------------------------------
 
   const [recoveredAddress, setRecoveredAddress] = useState<Address>();
-  const [isLoading, setIsLoading] = useState(false);
 
   // ---------------------------------------------------------------------------
   // Local Variables
@@ -121,7 +120,8 @@ export const useUserOperationSubmit = ({
     ),
   });
 
-  const { userOperationSend } = useMutationUserOperationSend();
+  const { userOperationSend, isUserOperationSendPending: isLoading } =
+    useMutationUserOperationSend();
 
   // ---------------------------------------------------------------------------
   // Local Variables
@@ -159,14 +159,8 @@ export const useUserOperationSubmit = ({
 
   // A `useCallback` handler for confirming the operation
   const handleConfirm = useCallback(async () => {
-    // Set loading state
-    setIsLoading(true);
-
     await userOperationSend(userOperation);
-
-    // Unset loading state
-    setIsLoading(false);
-  }, [userOperation, userOperation, setIsLoading, userOperationSend]);
+  }, [userOperation, userOperationSend]);
 
   // ---------------------------------------------------------------------------
   // Render

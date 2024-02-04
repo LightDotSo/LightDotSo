@@ -34,68 +34,70 @@ export const useMutationUserOperationSend = () => {
   // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const { mutate: userOperationSend } = useMutation({
-    mutationFn: async (body: UserOperationSendBodyParams) => {
-      const loadingToast = toast.loading("Submitting the transaction...");
+  const { mutate: userOperationSend, isPending: isUserOperationSendPending } =
+    useMutation({
+      mutationFn: async (body: UserOperationSendBodyParams) => {
+        const loadingToast = toast.loading("Submitting the transaction...");
 
-      // Get the sig as bytes from caller
-      const sigRes = await getSignatureUserOperation({
-        params: { query: { user_operation_hash: body.hash } },
-      });
+        // Get the sig as bytes from caller
+        const sigRes = await getSignatureUserOperation({
+          params: { query: { user_operation_hash: body.hash } },
+        });
 
-      await sigRes.match(
-        sig => {
-          // Sned the user operation
-          const res = ResultAsync.fromPromise(
-            backOff(() =>
-              sendUserOperation(body.chain_id, [
-                {
-                  sender: body.sender,
-                  nonce: toHex(body.nonce),
-                  initCode: body.init_code,
-                  callData: body.call_data,
-                  paymasterAndData: body.paymaster_and_data,
-                  callGasLimit: toHex(body.call_gas_limit),
-                  verificationGasLimit: toHex(body.verification_gas_limit),
-                  preVerificationGas: toHex(body.pre_verification_gas),
-                  maxFeePerGas: toHex(body.max_fee_per_gas),
-                  maxPriorityFeePerGas: toHex(body.max_priority_fee_per_gas),
-                  signature: sig,
-                },
-                CONTRACT_ADDRESSES["Entrypoint"],
-              ]).then(res => res._unsafeUnwrap()),
-            ),
-            () => new Error("Database error"),
-          );
+        await sigRes.match(
+          sig => {
+            // Sned the user operation
+            const res = ResultAsync.fromPromise(
+              backOff(() =>
+                sendUserOperation(body.chain_id, [
+                  {
+                    sender: body.sender,
+                    nonce: toHex(body.nonce),
+                    initCode: body.init_code,
+                    callData: body.call_data,
+                    paymasterAndData: body.paymaster_and_data,
+                    callGasLimit: toHex(body.call_gas_limit),
+                    verificationGasLimit: toHex(body.verification_gas_limit),
+                    preVerificationGas: toHex(body.pre_verification_gas),
+                    maxFeePerGas: toHex(body.max_fee_per_gas),
+                    maxPriorityFeePerGas: toHex(body.max_priority_fee_per_gas),
+                    signature: sig,
+                  },
+                  CONTRACT_ADDRESSES["Entrypoint"],
+                ]).then(res => res._unsafeUnwrap()),
+              ),
+              () => new Error("Database error"),
+            );
 
-          toast.dismiss(loadingToast);
+            toast.dismiss(loadingToast);
 
-          res.match(
-            _ => {
-              toast.success("You submitted the transaction!");
-            },
-            err => {
-              if (err instanceof Error) {
-                toast.error(err.message);
-              } else {
-                toast.error("Failed to submit the transaction.");
-              }
-            },
-          );
-        },
-        async err => {
-          toast.dismiss(loadingToast);
-          if (err instanceof Error) {
-            toast.error(err.message);
-          } else {
-            toast.error("Failed to get signature.");
-          }
-        },
-      );
-    },
-  });
+            res.match(
+              _ => {
+                toast.success("You submitted the transaction!");
+              },
+              err => {
+                if (err instanceof Error) {
+                  toast.error(err.message);
+                } else {
+                  toast.error("Failed to submit the transaction.");
+                }
+              },
+            );
+          },
+          async err => {
+            toast.dismiss(loadingToast);
+            if (err instanceof Error) {
+              toast.error(err.message);
+            } else {
+              toast.error("Failed to get signature.");
+            }
+          },
+        );
+      },
+    });
 
   return {
+    isUserOperationSendPending,
     userOperationSend,
   };
 };
