@@ -14,11 +14,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { rpcHandlers } from "./rpc";
+import { simulationHandlers } from "./simulation";
 import { tokenPriceHandlers } from "./token_price";
 import { walletHandlers } from "./wallet";
 
 export const handlers = [
   ...tokenPriceHandlers,
   ...rpcHandlers,
+  ...simulationHandlers,
   ...walletHandlers,
 ];

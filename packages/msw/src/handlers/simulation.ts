@@ -13,13 +13,23 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export * from "./activity";
-export * from "./assetChange";
-export * from "./configuration";
-export * from "./notification";
-export * from "./simulation";
-export * from "./token";
-export * from "./tokenPrice";
-export * from "./transaction";
-export * from "./userOperation";
-export * from "./wallet";
+import {
+  BASE_API_AUTHENTICATED_URL,
+  BASE_API_URL,
+  BASE_LOCAL_API_URL,
+  BASE_LOCAL_ADMIN_API_URL,
+} from "@lightdotso/const";
+import { simulationCreateData } from "@lightdotso/demo";
+import { HttpResponse, http } from "msw";
+
+export const postSimulation = (url: string) =>
+  http.post(`${url}/v1/simulation/create`, () => {
+    return HttpResponse.json(simulationCreateData);
+  });
+
+export const simulationHandlers = [
+  postSimulation(BASE_LOCAL_API_URL),
+  postSimulation(BASE_LOCAL_ADMIN_API_URL),
+  postSimulation(BASE_API_AUTHENTICATED_URL),
+  postSimulation(BASE_API_URL),
+];

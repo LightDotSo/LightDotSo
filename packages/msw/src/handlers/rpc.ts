@@ -14,7 +14,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { BASE_RPC_URL } from "@lightdotso/const";
-import { getPaymasterAndData } from "@lightdotso/demo";
+import {
+  getEstimateUserOperationGas,
+  getPaymasterAndData,
+} from "@lightdotso/demo";
 import { HttpResponse, http } from "msw";
 
 export const getRpcHandler = (url: string) =>
@@ -70,18 +73,12 @@ export const getInternalRpcHandler = (url: string) =>
     console.log("body", body);
 
     // @ts-expect-error
+    // For `eth_estimateUserOperationGas`
     if (body.method === "eth_estimateUserOperationGas") {
-      HttpResponse.json({
-        jsonrpc: "2.0",
-        id: 6,
-        result: {
-          preVerificationGas: "0x4674a2da",
-          verificationGasLimit: "0x66a19",
-          callGasLimit: "0x238c",
-        },
-      });
+      HttpResponse.json(getEstimateUserOperationGas);
     }
 
+    // For `eth_paymasterAndDataForUserOperation
     return HttpResponse.json(getPaymasterAndData);
   });
 
