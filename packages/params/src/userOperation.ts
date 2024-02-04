@@ -49,7 +49,7 @@ export type UserOperationListCountParams = Omit<
 >;
 
 // -----------------------------------------------------------------------------
-// Body Params
+// Params Body
 // -----------------------------------------------------------------------------
 
 export type UserOperationCreateBodyParams = {
