@@ -463,14 +463,14 @@ export const Transaction: FC<TransactionProps> = ({
                   />
                   <TransactionDevInfo title="feesPerGas" data={feesPerGas} />
                   <TransactionDevInfo
+                    isNumber
                     title="estimateGas"
                     data={estimateGas}
-                    isNumber
                   />
                   <TransactionDevInfo
+                    isNumber
                     title="maxPriorityFeePerGas"
                     data={maxPriorityFeePerGas}
-                    isNumber
                   />
                   <TransactionDevInfo
                     title="estimateGasError"
