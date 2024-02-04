@@ -17,11 +17,11 @@
 // License: MIT
 
 import {
-  FrameRequest,
+  type FrameRequest,
   getFrameMessage,
   getFrameHtmlResponse,
 } from "@coinbase/onchainkit";
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   let accountAddress: string | undefined = "";
