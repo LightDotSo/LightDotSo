@@ -33,7 +33,7 @@ export const QueueState: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address } = useAuth();
+  const { wallet } = useAuth();
   const {
     tokenQueueTimestamp,
     portfolioQueueTimestamp,
@@ -46,11 +46,11 @@ export const QueueState: FC = () => {
   // ---------------------------------------------------------------------------
 
   const { queueToken } = useMutationQueueToken({
-    address: address as Address,
+    address: wallet as Address,
   });
 
   const { queuePortfolio } = useMutationQueuePortfolio({
-    address: address as Address,
+    address: wallet as Address,
   });
 
   // ---------------------------------------------------------------------------
@@ -65,7 +65,7 @@ export const QueueState: FC = () => {
 
   useEffect(() => {
     // Wait for persisted state to load
-    if (!address || !useQueues.persist.hasHydrated()) {
+    if (!wallet || !useQueues.persist.hasHydrated()) {
       return;
     }
 
@@ -89,7 +89,7 @@ export const QueueState: FC = () => {
     queuePortfolio,
     setPortfolioQueueTimestamp,
     setTokenQueueTimestamp,
-    address,
+    wallet,
   ]);
 
   // ---------------------------------------------------------------------------
