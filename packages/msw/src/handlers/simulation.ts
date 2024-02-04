@@ -17,7 +17,7 @@ import {
   BASE_API_AUTHENTICATED_URL,
   BASE_API_URL,
   BASE_LOCAL_API_URL,
-  BASE_LOCAL_ADMIN_API_URL,
+  BASE_LOCAL_API_ADMIN_URL,
 } from "@lightdotso/const";
 import { simulationCreateData } from "@lightdotso/demo";
 import { HttpResponse, http } from "msw";
@@ -29,7 +29,7 @@ export const postSimulation = (url: string) =>
 
 export const simulationHandlers = [
   postSimulation(BASE_LOCAL_API_URL),
-  postSimulation(BASE_LOCAL_ADMIN_API_URL),
+  postSimulation(BASE_LOCAL_API_ADMIN_URL),
   postSimulation(BASE_API_AUTHENTICATED_URL),
   postSimulation(BASE_API_URL),
 ];

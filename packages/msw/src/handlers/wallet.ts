@@ -16,7 +16,7 @@
 import {
   BASE_API_AUTHENTICATED_URL,
   BASE_API_URL,
-  BASE_LOCAL_ADMIN_API_URL,
+  BASE_LOCAL_API_ADMIN_URL,
 } from "@lightdotso/const";
 import { walletListData } from "@lightdotso/demo";
 import { HttpResponse, http } from "msw";
@@ -27,7 +27,7 @@ export const getWallets = (url: string) =>
   });
 
 export const walletHandlers = [
-  getWallets(BASE_LOCAL_ADMIN_API_URL),
+  getWallets(BASE_LOCAL_API_ADMIN_URL),
   getWallets(BASE_API_AUTHENTICATED_URL),
   getWallets(BASE_API_URL),
 ];
