@@ -52,6 +52,7 @@ export { useQueryUserOperations } from "./useQueryUserOperations";
 export { useQueryUserOperationsCount } from "./useQueryUserOperationsCount";
 export { useQueryWallet } from "./useQueryWallet";
 export { useQueryWallets } from "./useQueryWallets";
+export { useQueryWalletBilling } from "./useQueryWalletBilling";
 export { useQueryWalletsCount } from "./useQueryWalletsCount";
 export { useQueryWalletSettings } from "./useQueryWalletSettings";
 export { useQueryWalletFeatures } from "./useQueryWalletFeatures";

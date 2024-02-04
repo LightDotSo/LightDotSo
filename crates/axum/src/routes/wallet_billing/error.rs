@@ -13,23 +13,23 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export * from "./activity";
-export * from "./auth";
-export * from "./configuration";
-export * from "./feedback";
-export * from "./invite_code";
-export * from "./notification";
-export * from "./paymaster_operation";
-export * from "./portfolio";
-export * from "./queue";
-export * from "./signature";
-export * from "./simulation";
-export * from "./token_price";
-export * from "./token";
-export * from "./transaction";
-export * from "./user_operation";
-export * from "./user";
-export * from "./wallet";
-export * from "./wallet_billing";
-export * from "./wallet_features";
-export * from "./wallet_settings";
+use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
+
+// -----------------------------------------------------------------------------
+// Error
+// -----------------------------------------------------------------------------
+
+/// WalletBilling operation errors
+#[derive(Serialize, Deserialize, ToSchema)]
+pub(crate) enum WalletBillingError {
+    // WalletBilling query error.
+    #[schema(example = "Bad request")]
+    BadRequest(String),
+    /// WalletBilling not found by id.
+    #[schema(example = "id = 1")]
+    NotFound(String),
+    /// WalletBilling unauthorized.
+    #[schema(example = "Unauthorized")]
+    Unauthorized(String),
+}

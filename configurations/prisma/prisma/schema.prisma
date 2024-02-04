@@ -206,6 +206,7 @@ model Wallet {
   // None-to-none
   // ---------------------------------------------------------------------------
 
+  walletBilling  WalletBilling?
   walletFeatures WalletFeatures?
   walletSettings WalletSettings?
 
@@ -223,6 +224,46 @@ model Wallet {
   userOperations      UserOperation[]
   users               User[]
   walletBalances      WalletBalance[]
+}
+
+// -----------------------------------------------------------------------------
+// WalletBilling
+// -----------------------------------------------------------------------------
+
+model WalletBilling {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  balanceUSD Float
+
+  // ---------------------------------------------------------------------------
+  // One-to-one
+  // ---------------------------------------------------------------------------
+
+  wallet        Wallet @relation(fields: [walletAddress], references: [address])
+  walletAddress String @unique
+
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
+  activities Activity[]
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
+  // Relations
+  @@index([walletAddress])
 }
 
 // -----------------------------------------------------------------------------
@@ -1588,6 +1629,9 @@ model Activity {
   supportRequest   SupportRequest? @relation(fields: [supportRequestId], references: [id])
   supportRequestId String?
 
+  walletBilling   WalletBilling? @relation(fields: [walletBillingId], references: [id])
+  walletBillingId String?
+
   walletSettings   WalletSettings? @relation(fields: [walletSettingsId], references: [id])
   walletSettingsId String?
 
@@ -1611,6 +1655,7 @@ model Activity {
   @@index([walletAddress])
   @@index([inviteCodeId])
   @@index([supportRequestId])
+  @@index([walletBillingId])
   @@index([walletSettingsId])
 }
 

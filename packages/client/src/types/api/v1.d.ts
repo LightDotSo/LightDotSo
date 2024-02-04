@@ -486,6 +486,20 @@ export interface paths {
      */
     post: operations["v1_user_operation_update_handler"];
   };
+  "/wallet/billing/get": {
+    /**
+     * Get a wallet_billing
+     * @description Get a wallet_billing
+     */
+    get: operations["v1_wallet_billing_get_handler"];
+  };
+  "/wallet/billing/update": {
+    /**
+     * Create a wallet_billing
+     * @description Create a wallet_billing
+     */
+    post: operations["v1_wallet_billing_update_handler"];
+  };
   "/wallet/create": {
     /**
      * Create a wallet
@@ -687,6 +701,7 @@ export interface components {
        * @description The index of the owner.
        */
       index: number;
+      user?: components["schemas"]["User"] | null;
       /**
        * Format: int64
        * @description The weight of the owner.
@@ -1327,6 +1342,35 @@ export interface components {
       name: string;
       /** @description The salt of the wallet. */
       salt: string;
+    };
+    /** @description WalletBilling root type. */
+    WalletBilling: {
+      /**
+       * Format: double
+       * @description The wallet billing of the balance in USD.
+       */
+      balance_usd: number;
+    };
+    /** @description WalletBilling operation errors */
+    WalletBillingError: OneOf<[{
+      BadRequest: string;
+    }, {
+      /** @description WalletBilling not found by id. */
+      NotFound: string;
+    }, {
+      /** @description WalletBilling unauthorized. */
+      Unauthorized: string;
+    }]>;
+    /** @description Optional WalletBilling root type. */
+    WalletBillingOptional: {
+      /**
+       * Format: double
+       * @description The update query of wallet_billing of whether the testnet is enabled.
+       */
+      balance_usd?: number | null;
+    };
+    WalletBillingUpdateRequestParams: {
+      wallet_billing: components["schemas"]["WalletBillingOptional"];
     };
     /**
      * @description Wallet owner.
@@ -3386,6 +3430,75 @@ export interface operations {
       404: {
         content: {
           "application/json": components["schemas"]["UserOperationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a wallet_billing
+   * @description Get a wallet_billing
+   */
+  v1_wallet_billing_get_handler: {
+    parameters: {
+      query: {
+        /** @description The address of the wallet billing. */
+        address: string;
+      };
+    };
+    responses: {
+      /** @description Wallet billing returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["WalletBilling"];
+        };
+      };
+      /** @description Wallet billing not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["WalletBillingError"];
+        };
+      };
+    };
+  };
+  /**
+   * Create a wallet_billing
+   * @description Create a wallet_billing
+   */
+  v1_wallet_billing_update_handler: {
+    parameters: {
+      query: {
+        /** @description The hash of the wallet billing. */
+        address: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["WalletBillingUpdateRequestParams"];
+      };
+    };
+    responses: {
+      /** @description Wallet billing updated successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["WalletBilling"];
+        };
+      };
+      /** @description Invalid Configuration */
+      400: {
+        content: {
+          "application/json": components["schemas"]["WalletBillingError"];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          "application/json": components["schemas"]["WalletBillingError"];
+        };
+      };
+      /** @description Wallet billing internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["WalletBillingError"];
         };
       };
     };

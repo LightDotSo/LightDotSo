@@ -44,5 +44,6 @@ pub(crate) mod transaction;
 pub(crate) mod user;
 pub(crate) mod user_operation;
 pub(crate) mod wallet;
+pub(crate) mod wallet_billing;
 pub(crate) mod wallet_features;
 pub(crate) mod wallet_settings;

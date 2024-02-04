@@ -27,7 +27,8 @@ use crate::routes::{
     token_group::error::TokenGroupError, token_price::error::TokenPriceError,
     transaction::error::TransactionError, user::error::UserError,
     user_operation::error::UserOperationError, wallet::error::WalletError,
-    wallet_features::error::WalletFeaturesError, wallet_settings::error::WalletSettingsError,
+    wallet_billing::error::WalletBillingError, wallet_features::error::WalletFeaturesError,
+    wallet_settings::error::WalletSettingsError,
 };
 use http::StatusCode;
 
@@ -60,6 +61,7 @@ pub(crate) enum RouteError {
     UserOperationError(UserOperationError),
     UserError(UserError),
     WalletError(WalletError),
+    WalletBillingError(WalletBillingError),
     WalletFeaturesError(WalletFeaturesError),
     WalletSettingsError(WalletSettingsError),
 }
@@ -312,6 +314,16 @@ impl RouteErrorStatusCodeAndMsg for WalletError {
     }
 }
 
+impl RouteErrorStatusCodeAndMsg for WalletBillingError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            WalletBillingError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
+            WalletBillingError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+            WalletBillingError::Unauthorized(msg) => (StatusCode::UNAUTHORIZED, msg.to_string()),
+        }
+    }
+}
+
 impl RouteErrorStatusCodeAndMsg for WalletFeaturesError {
     fn error_status_code_and_msg(&self) -> (StatusCode, String) {
         match self {
@@ -360,6 +372,7 @@ impl RouteErrorStatusCodeAndMsg for RouteError {
             RouteError::UserOperationError(err) => err.error_status_code_and_msg(),
             RouteError::UserError(err) => err.error_status_code_and_msg(),
             RouteError::WalletError(err) => err.error_status_code_and_msg(),
+            RouteError::WalletBillingError(err) => err.error_status_code_and_msg(),
             RouteError::WalletFeaturesError(err) => err.error_status_code_and_msg(),
             RouteError::WalletSettingsError(err) => err.error_status_code_and_msg(),
         }

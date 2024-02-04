@@ -274,6 +274,17 @@ pub(crate) async fn v1_token_list_handler(
         }
     }
 
+    // If there is a token group but only one token in the group, remove the token group.
+    tokens.retain(
+        |token| {
+            if let Some(group) = &token.group {
+                group.tokens.len() > 1
+            } else {
+                true
+            }
+        },
+    );
+
     // If a token group is found, modify the root token to be the culmative sum of the token group.
     for token in tokens.iter_mut() {
         if let Some(group) = &token.group {

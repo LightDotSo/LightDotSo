@@ -54,6 +54,7 @@ export type {
   WalletCreateBodyParams,
   WalletUpdateBodyParams,
 } from "./wallet";
+export type { WalletBillingParams } from "./walletBilling";
 export type { WalletFeaturesParams } from "./walletFeatures";
 export type {
   WalletSettingsParams,
