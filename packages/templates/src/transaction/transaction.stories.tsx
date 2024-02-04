@@ -17,7 +17,6 @@ import {
   configurationGetData,
   userOperationCreateData,
 } from "@lightdotso/demo";
-import { handlers } from "@lightdotso/msw";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Transaction } from "./transaction";
 
@@ -40,6 +39,15 @@ export default meta;
 type Story = StoryObj<typeof Transaction>;
 
 // -----------------------------------------------------------------------------
+// MSW
+// -----------------------------------------------------------------------------
+
+if (typeof window !== "undefined") {
+  const { worker } = await import("@lightdotso/msw");
+  worker.start();
+}
+
+// -----------------------------------------------------------------------------
 // Story
 // -----------------------------------------------------------------------------
 
@@ -54,9 +62,4 @@ export const Base: Story = {
     />
   ),
   args: {},
-  parameters: {
-    msw: {
-      handlers: handlers,
-    },
-  },
 };

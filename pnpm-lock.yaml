@@ -1045,6 +1045,9 @@ importers:
       '@lightdotso/elements':
         specifier: workspace:*
         version: link:../../packages/elements
+      '@lightdotso/msw':
+        specifier: workspace:*
+        version: link:../../packages/msw
       '@lightdotso/styles':
         specifier: workspace:*
         version: link:../../configurations/styles
