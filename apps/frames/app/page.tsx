@@ -22,17 +22,17 @@ import type { Metadata } from "next";
 const frameMetadata = getFrameMetadata({
   buttons: [
     {
-      label: "Tell me the story",
+      label: "Show me some pending transactions!",
     },
     {
-      label: "Redirect to cute dog pictures",
+      label: "Redirect me to demo",
       action: "post_redirect",
     },
   ],
   image: `${process.env.NEXT_PUBLIC_VERCEL_URL}/park-1.png`,
-  input: {
-    text: "Tell me a boat story",
-  },
+  // input: {
+  // text: "Tell me a boat story",
+  // },
   post_url: `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/frame`,
 });
 
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "framers.light.so",
     description: "frame for light.so",
-    // images: [`${process.env.NEXT_PUBLIC_VERCEL_URL}/park-1.png`],
+    images: [`${process.env.NEXT_PUBLIC_VERCEL_URL}/park-1.png`],
   },
   other: {
     ...frameMetadata,

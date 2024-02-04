@@ -25,7 +25,7 @@ import { type NextRequest, NextResponse } from "next/server";
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   let accountAddress: string | undefined = "";
-  let text: string | undefined = "";
+  // let text: string | undefined = "";
 
   const body: FrameRequest = await req.json();
   const { isValid, message } = await getFrameMessage(body, {
@@ -36,22 +36,19 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     accountAddress = message.interactor.verified_accounts[0];
   }
 
-  if (message?.input) {
-    text = message.input;
-  }
+  // if (message?.input) {
+  //   text = message.input;
+  // }
 
   if (message?.button === 2) {
-    return NextResponse.redirect(
-      "https://www.google.com/search?q=cute+dog+pictures&tbm=isch&source=lnms",
-      { status: 302 },
-    );
+    return NextResponse.redirect("https://light.so/demo", { status: 302 });
   }
 
   return new NextResponse(
     getFrameHtmlResponse({
       buttons: [
         {
-          label: `🌲 Text: ${text}`,
+          label: `Transaction #1`,
         },
       ],
       image: `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/park-2.png`,
