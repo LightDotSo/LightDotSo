@@ -20,5 +20,6 @@ export { useFormRef } from "./useFormRef";
 export { useModals } from "./useModals";
 export { useModalSwiper } from "./useModalSwiper";
 export { useNewForm } from "./useNewForm";
+export { useQueues } from "./useQueues";
 export { useSettings } from "./useSettings";
 export { useTables } from "./useTables";

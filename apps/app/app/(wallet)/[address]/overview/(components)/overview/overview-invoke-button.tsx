@@ -23,6 +23,7 @@ import {
   TooltipTrigger,
   TooltipProvider,
 } from "@lightdotso/ui";
+import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { RefreshCcw } from "lucide-react";
 import type { FC } from "react";
 import type { Address } from "viem";
@@ -47,7 +48,9 @@ export const OverviewInvokeButton: FC<OverviewInvokeButtonProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { queueToken } = useMutationQueueToken({ address: address });
+  const { queueToken, isLoadingQueueToken } = useMutationQueueToken({
+    address: address,
+  });
 
   // ---------------------------------------------------------------------------
   // Render
@@ -66,7 +69,11 @@ export const OverviewInvokeButton: FC<OverviewInvokeButtonProps> = ({
                 await queueToken();
               }}
             >
-              <RefreshCcw className="size-4" />
+              {isLoadingQueueToken ? (
+                <DotsHorizontalIcon className="size-4" />
+              ) : (
+                <RefreshCcw className="size-4" />
+              )}
             </ButtonIcon>
           </span>
         </TooltipTrigger>

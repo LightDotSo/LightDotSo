@@ -34,9 +34,16 @@ export const useMutationQueuePortfolio = (params: QueueParams) => {
   // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const { mutate: queueInterpretation } = useMutation({
+  const { mutate: queuePortfolio } = useMutation({
     mutationFn: async () => {
-      const loadingToast = toast.loading("Queueing...");
+      if (params.address) {
+        return;
+      }
+
+      const loadingToast = toast.loading(
+        params.isToastDistinct ? "Queueing..." : undefined,
+        { style: { width: params.isToastDistinct ? "auto" : "100%" } },
+      );
 
       const res = await createQueuePortfolio(
         {
@@ -69,6 +76,6 @@ export const useMutationQueuePortfolio = (params: QueueParams) => {
   });
 
   return {
-    queueInterpretation,
+    queuePortfolio,
   };
 };

@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { AuthState } from "@lightdotso/states";
+import { AuthState, QueueState } from "@lightdotso/states";
 import { Footer } from "@lightdotso/templates";
 import {
   TailwindIndicator,
@@ -124,6 +124,7 @@ export const Root: FC<RootProps> = ({ children }) => {
               <TokenModal />
               {/* States */}
               <AuthState />
+              <QueueState />
               <WssState />
             </Web3Provider>
           </ReactQueryProvider>

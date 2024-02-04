@@ -13,22 +13,46 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Address } from "viem";
+import { create } from "zustand";
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
 // -----------------------------------------------------------------------------
-// Params
+// State
 // -----------------------------------------------------------------------------
 
-export type QueueParams = {
-  address: Address;
-  isToastDistinct?: boolean;
+type QueuesStore = {
+  tokenQueueTimestamp: number | null;
+  portfolioQueueTimestamp: number | null;
+  setTokenQueueTimestamp: (timestamp: number) => void;
+  setPortfolioQueueTimestamp: (timestamp: number) => void;
 };
 
 // -----------------------------------------------------------------------------
-// Params Body
+// Hook
 // -----------------------------------------------------------------------------
 
-export type QueueInterpretationBodyParams = {
-  transaction_hash?: string | null | undefined;
-  user_operation_hash?: string | null | undefined;
-};
+export const useQueues = create(
+  devtools(
+    persist<QueuesStore>(
+      set => ({
+        tokenQueueTimestamp: null,
+        portfolioQueueTimestamp: null,
+        setTokenQueueTimestamp: timestamp =>
+          set(() => ({ tokenQueueTimestamp: timestamp })),
+        setPortfolioQueueTimestamp: timestamp =>
+          set(() => ({ portfolioQueueTimestamp: timestamp })),
+      }),
+      {
+        name: "queues-state-v1",
+        storage: createJSONStorage(() => sessionStorage),
+        skipHydration: true,
+        version: 0,
+      },
+    ),
+    {
+      anonymousActionType: "useQueues",
+      name: "QueuesStore",
+      serialize: { options: true },
+    },
+  ),
+);
