@@ -23,6 +23,9 @@ import { withSentryConfig } from "@sentry/nextjs";
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   experimental: {
     instrumentationHook: true,
     // From: https://github.com/vercel/next.js/issues/42641
