@@ -44,7 +44,7 @@ export const useMutationAuthVerify = (params: AuthParams) => {
   // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const { mutate: verify } = useMutation({
+  const { mutate: verify, isSuccess: isVerifySuccess } = useMutation({
     mutationFn: async (body: AuthVerifyBodyParams) => {
       const loadingToast = toast.loading("Verifying wallet...");
 
@@ -80,5 +80,6 @@ export const useMutationAuthVerify = (params: AuthParams) => {
 
   return {
     verify,
+    isVerifySuccess,
   };
 };

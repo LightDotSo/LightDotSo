@@ -46,7 +46,9 @@ export const useSignInWithSiwe = () => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const { verify } = useMutationAuthVerify({ address: address as Address });
+  const { verify, isVerifySuccess: isSuccess } = useMutationAuthVerify({
+    address: address as Address,
+  });
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -99,5 +101,6 @@ export const useSignInWithSiwe = () => {
   return {
     handleSignIn,
     isPending,
+    isSuccess,
   };
 };

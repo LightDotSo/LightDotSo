@@ -37,50 +37,54 @@ export const useMutationFeedbackCreate = (params: FeedbackParams) => {
   // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const { mutate: feedbackCreate, isSuccess: isFeedbackCreateSuccess } =
-    useMutation({
-      mutationFn: async (body: FeedbackCreateBodyParams) => {
-        if (!params.user_id) {
-          return toast.error("Sorry, something went wrong.");
-        }
+  const {
+    mutate: feedbackCreate,
+    isSuccess: isFeedbackCreateSuccess,
+    isPending: isFeedbackCreateLoading,
+  } = useMutation({
+    mutationFn: async (body: FeedbackCreateBodyParams) => {
+      if (!params.user_id) {
+        return toast.error("Sorry, something went wrong.");
+      }
 
-        const loadingToast = toast.loading("Creating feedback...");
+      const loadingToast = toast.loading("Creating feedback...");
 
-        const res = await createFeedback(
-          {
-            params: {
-              query: {
-                user_id: params.user_id,
-              },
+      const res = await createFeedback(
+        {
+          params: {
+            query: {
+              user_id: params.user_id,
             },
-            body: {
-              feedback: body.feedback,
-            },
           },
-          clientType,
-        );
-
-        toast.dismiss(loadingToast);
-
-        res.match(
-          _ => {
-            toast.success("Thanks for your feedback!");
+          body: {
+            feedback: body.feedback,
           },
-          err => {
-            if (err instanceof Error) {
-              toast.error(err.message);
-            } else {
-              toast.error("Sorry, something went wrong.");
-            }
+        },
+        clientType,
+      );
 
-            throw err;
-          },
-        );
-      },
-    });
+      toast.dismiss(loadingToast);
+
+      res.match(
+        _ => {
+          toast.success("Thanks for your feedback!");
+        },
+        err => {
+          if (err instanceof Error) {
+            toast.error(err.message);
+          } else {
+            toast.error("Sorry, something went wrong.");
+          }
+
+          throw err;
+        },
+      );
+    },
+  });
 
   return {
     feedbackCreate,
     isFeedbackCreateSuccess,
+    isFeedbackCreateLoading,
   };
 };
