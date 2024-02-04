@@ -15,12 +15,12 @@
 
 "use client";
 
+import { useAuth } from "@lightdotso/stores";
 import { LightLogo } from "@lightdotso/svg";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { FC } from "react";
 import { usePathType } from "@/hooks";
-import { useAuth } from "@lightdotso/stores";
 
 // -----------------------------------------------------------------------------
 // Component
