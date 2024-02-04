@@ -88,7 +88,6 @@ export const QueueState: FC = () => {
     setPortfolioQueueTimestamp,
     setTokenQueueTimestamp,
     address,
-    useQueues.persist,
   ]);
 
   // ---------------------------------------------------------------------------
