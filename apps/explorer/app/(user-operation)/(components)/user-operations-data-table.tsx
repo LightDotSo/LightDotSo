@@ -102,6 +102,7 @@ export const UserOperationsDataTable: FC<UserOperationsDataTableProps> = ({
     <TableSectionWrapper>
       <DataTable
         isLoading={isLoading}
+        isTestnet={isTestnetState ?? false}
         data={userOperations ?? []}
         columns={userOperationColumns}
         pageCount={pageCount ?? 0}

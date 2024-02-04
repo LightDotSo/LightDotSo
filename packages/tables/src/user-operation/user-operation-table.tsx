@@ -59,6 +59,7 @@ type UserOperationTableProps = {
   data: UserOperationData[] | null;
   configuration?: ConfigurationData;
   address: Address | null;
+  isTestnet: boolean;
   tableOptions?: Omit<
     TableOptions<UserOperationData>,
     "data" | "columns" | "getCoreRowModel"
@@ -79,6 +80,7 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
   configuration,
   tableOptions,
   address,
+  isTestnet,
   columns = userOperationColumns,
   setUserOperationTable,
 }) => {
@@ -268,6 +270,7 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
                     key={userOperation.hash}
                     isDefaultOpen={isDefaultOpen}
                     address={address}
+                    isTestnet={isTestnet}
                     configuration={configuration}
                     userOperation={userOperation}
                     row={row}

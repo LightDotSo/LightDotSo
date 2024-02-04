@@ -36,7 +36,10 @@ export const AppBanner: FC = () => {
 
   return (
     <>
-      {pathType === "wallet" && <Banner kind="beta" />}
+      {(pathType === "wallet" ||
+        pathType === "authenticated" ||
+        pathType === "unauthenticated" ||
+        pathType === "interception") && <Banner kind="beta" />}
       {pathType === "demo" && <Banner kind="demo" />}
     </>
   );

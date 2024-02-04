@@ -108,6 +108,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
       isLoading={isLoading}
       data={userOperations ?? []}
       address={address}
+      isTestnet={walletSettings?.is_enabled_testnet ?? false}
       columns={userOperationColumns}
       pageCount={pageCount ?? 0}
     />

@@ -66,7 +66,7 @@ export const RootWelcomeCards: FC = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-4">
-          <Button asChild size="sm" variant="outline">
+          <Button asChild size="default" variant="outline">
             <Link href="/demo/overview">
               <Gamepad className="mr-2 size-4" /> Start Demo
             </Link>

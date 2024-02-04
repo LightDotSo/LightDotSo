@@ -17,19 +17,30 @@ import {
   getSignatureUserOperation,
   sendUserOperation,
 } from "@lightdotso/client";
-import { CONTRACT_ADDRESSES } from "@lightdotso/const";
-import type { UserOperationSendBodyParams } from "@lightdotso/params";
+import { CONTRACT_ADDRESSES, TRANSACTION_ROW_COUNT } from "@lightdotso/const";
+import type {
+  UserOperationParams,
+  UserOperationSendBodyParams,
+} from "@lightdotso/params";
+import { queryKeys } from "@lightdotso/query-keys";
 import { toast } from "@lightdotso/ui";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { backOff } from "exponential-backoff";
 import { ResultAsync } from "neverthrow";
+import type { Address } from "viem";
 import { toHex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Query Mutation
 // -----------------------------------------------------------------------------
 
-export const useMutationUserOperationSend = () => {
+export const useMutationUserOperationSend = (params: UserOperationParams) => {
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const queryClient = useQueryClient();
+
   // ---------------------------------------------------------------------------
   // Query Mutation
   // ---------------------------------------------------------------------------
@@ -93,6 +104,28 @@ export const useMutationUserOperationSend = () => {
             }
           },
         );
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.user_operation.list({
+            address: params.address as Address,
+            status: "proposed",
+            order: "asc",
+            limit: TRANSACTION_ROW_COUNT,
+            offset: 0,
+            is_testnet: params.is_testnet ?? false,
+          }).queryKey,
+        });
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.user_operation.listCount({
+            address: params.address as Address,
+            status: "proposed",
+            is_testnet: params.is_testnet ?? false,
+          }).queryKey,
+        });
+
+        // Invalidate the cache for the address
+        fetch(`/api/revalidate/tag?tag=${params.address}`);
       },
     });
 

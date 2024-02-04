@@ -34,6 +34,7 @@ import type { Hex, Address } from "viem";
 
 type UserOperationSubmitProps = {
   address: Address;
+  is_testnet: boolean;
   configuration: ConfigurationData;
   userOperation: UserOperationData;
 };
@@ -43,7 +44,8 @@ type UserOperationSubmitProps = {
 // -----------------------------------------------------------------------------
 
 export const useUserOperationSubmit = ({
-  // address,
+  address,
+  is_testnet,
   configuration,
   userOperation,
 }: UserOperationSubmitProps) => {
@@ -121,7 +123,10 @@ export const useUserOperationSubmit = ({
   });
 
   const { userOperationSend, isUserOperationSendPending: isLoading } =
-    useMutationUserOperationSend();
+    useMutationUserOperationSend({
+      address,
+      is_testnet,
+    });
 
   // ---------------------------------------------------------------------------
   // Local Variables

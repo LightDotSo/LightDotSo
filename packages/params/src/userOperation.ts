@@ -23,6 +23,7 @@ import type { Address, Hex } from "viem";
 
 export type UserOperationParams = {
   address: Address;
+  is_testnet?: boolean;
 };
 
 export type UserOperationGetParams = {

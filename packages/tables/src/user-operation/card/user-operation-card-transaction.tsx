@@ -62,6 +62,7 @@ interface TransactionInformationItem {
 
 type UserOperationCardTransactionProps = {
   address: Address;
+  isTestnet: boolean;
   configuration: ConfigurationData;
   userOperation: UserOperationData;
   row: Row<UserOperationData>;
@@ -74,7 +75,14 @@ type UserOperationCardTransactionProps = {
 
 export const UserOperationCardTransaction: FC<
   UserOperationCardTransactionProps
-> = ({ address, configuration, userOperation, row, isDefaultOpen = false }) => {
+> = ({
+  address,
+  isTestnet,
+  configuration,
+  userOperation,
+  row,
+  isDefaultOpen = false,
+}) => {
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
@@ -304,6 +312,7 @@ export const UserOperationCardTransaction: FC<
                   )}
                   <UserOperationCardTransactionExecuteButton
                     address={address}
+                    isTestnet={isTestnet}
                     configuration={configuration}
                     userOperation={userOperation}
                   />

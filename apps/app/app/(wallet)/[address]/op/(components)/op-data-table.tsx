@@ -15,6 +15,7 @@
 
 "use client";
 
+import type { WalletSettingsData } from "@lightdotso/data";
 import { useQueryUserOperation } from "@lightdotso/query";
 import { userOperationColumns } from "@lightdotso/tables";
 import { type FC } from "react";
@@ -27,13 +28,17 @@ import { DataTable } from "@/app/(wallet)/[address]/transactions/(components)/da
 
 interface OpDataTableProps {
   userOperationHash: Hex;
+  walletSettings: WalletSettingsData;
 }
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const OpDataTable: FC<OpDataTableProps> = ({ userOperationHash }) => {
+export const OpDataTable: FC<OpDataTableProps> = ({
+  userOperationHash,
+  walletSettings,
+}) => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -54,6 +59,7 @@ export const OpDataTable: FC<OpDataTableProps> = ({ userOperationHash }) => {
     <DataTable
       isDefaultOpen
       isLoading={isUserOperationLoading}
+      isTestnet={walletSettings.is_enabled_testnet}
       data={userOperation ? [userOperation] : []}
       address={userOperation.sender as Address}
       columns={userOperationColumns}

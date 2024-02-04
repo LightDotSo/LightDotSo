@@ -30,6 +30,7 @@ interface DataTableProps {
   isLoading: boolean;
   columns: ColumnDef<UserOperationData>[];
   data: UserOperationData[];
+  isTestnet: boolean;
   pageCount: number;
 }
 
@@ -41,6 +42,7 @@ export function DataTable({
   isLoading,
   columns,
   data,
+  isTestnet,
   pageCount,
 }: DataTableProps) {
   // ---------------------------------------------------------------------------
@@ -102,6 +104,7 @@ export function DataTable({
       isLoading={isLoading}
       pageSize={paginationState.pageSize}
       address={null}
+      isTestnet={isTestnet}
       columns={columns}
       data={data}
       configuration={configuration ?? undefined}
