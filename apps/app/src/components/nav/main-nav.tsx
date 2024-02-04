@@ -18,6 +18,7 @@
 
 "use client";
 
+import { ConnectButton } from "@lightdotso/templates";
 import { baseWidthWrapper } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { Suspense, useMemo } from "react";
@@ -25,7 +26,6 @@ import type { FC, HTMLAttributes, ReactNode } from "react";
 import { AppNav } from "@/components/nav/app-nav";
 import { TabsNav } from "@/components/nav/tabs-nav";
 import { RootLogo } from "@/components/root/root-logo";
-import { ConnectButton } from "@/components/web3/connect-button";
 import { WalletSwitcher } from "@/components/web3/wallet-switcher";
 import { useTabs } from "@/hooks";
 

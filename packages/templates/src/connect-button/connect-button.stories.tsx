@@ -13,43 +13,32 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import { useModals } from "@lightdotso/stores";
-import { ConnectButton, Modal } from "@lightdotso/templates";
-import { DialogDescription, DialogTitle } from "@lightdotso/ui";
+import type { Meta, StoryObj } from "@storybook/react";
+import { ConnectButton } from "./connect-button";
 
 // -----------------------------------------------------------------------------
-// Component
+// Meta
 // -----------------------------------------------------------------------------
 
-export function ConnectModal() {
-  // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { isConnectModalVisible, hideConnectModal } = useModals();
-
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  if (isConnectModalVisible) {
-    return (
-      <Modal open size="sm" onClose={hideConnectModal}>
-        <DialogTitle>Connect</DialogTitle>
-        <DialogDescription>
-          <ConnectButton />
-        </DialogDescription>
-      </Modal>
-    );
-  }
-
-  return null;
-}
+const meta: Meta<typeof ConnectButton> = {
+  title: "template/ConnectButton",
+  component: ConnectButton,
+  tags: ["autodocs"],
+  argTypes: {},
+};
+export default meta;
 
 // -----------------------------------------------------------------------------
-// Export
+// Types
 // -----------------------------------------------------------------------------
 
-export default ConnectModal;
+type Story = StoryObj<typeof ConnectButton>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Base: Story = {
+  render: args => <ConnectButton />,
+  args: {},
+};

@@ -21,6 +21,7 @@ import { Button } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
 import { ConnectKitButton } from "@lightdotso/wagmi";
 import { Wallet } from "lucide-react";
+import type { FC } from "react";
 import type { Address } from "viem";
 
 // From: https://www.rainbowkit.com/docs/custom-connect-button
@@ -30,7 +31,7 @@ import type { Address } from "viem";
 // Component
 // -----------------------------------------------------------------------------
 
-export const ConnectButton = () => {
+export const ConnectButton: FC = () => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
