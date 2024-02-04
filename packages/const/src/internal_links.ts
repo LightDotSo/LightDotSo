@@ -17,6 +17,7 @@ export enum Internal {
   CHANGELOG = "Changelog",
   DOCS = "Docs",
   EXPLORER = "Explorer",
+  OPEN = "Open",
   HOME = "Home",
   STATUS = "Status",
 }
@@ -27,6 +28,7 @@ export const INTERNAL_LINKS: {
   [Internal.CHANGELOG]: "https://changelog.light.so",
   [Internal.DOCS]: "https://docs.light.so",
   [Internal.EXPLORER]: "https://explorer.light.so",
+  [Internal.OPEN]: "https://open.light.so",
   [Internal.HOME]: "https://light.so/home",
   [Internal.STATUS]: "https://lightdotso.instatus.com",
 };

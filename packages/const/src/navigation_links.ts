@@ -28,7 +28,7 @@ export const NAVIGATION_LINKS = {
   company: [
     { name: "Careers", href: NOTION_LINKS.Careers },
     { name: "Home", href: INTERNAL_LINKS.Home },
-    { name: "Open", href: SOCIAL_LINKS.Plausible },
+    { name: "Open", href: INTERNAL_LINKS.Open },
     { name: "Notion", href: SOCIAL_LINKS.Notion },
     { name: "Status", href: INTERNAL_LINKS.Status },
   ],
