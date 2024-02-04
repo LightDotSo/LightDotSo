@@ -18,7 +18,7 @@
 import { useQueryWalletBilling } from "@lightdotso/query";
 import { Button } from "@lightdotso/ui";
 import type { FC } from "react";
-import type { Address, Chain, Hex } from "viem";
+import type { Address } from "viem";
 import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const";
 
@@ -73,7 +73,7 @@ export const SettingsBillingBalanceCard: FC<
       footerContent={<SettingsBillingCardSubmitButton />}
     >
       <div className="flex text-lg">
-        Balance: <span>${walletBilling && walletBilling.balance_usd}</span>
+        <span>${walletBilling && walletBilling.balance_usd}</span>
       </div>
     </SettingsCard>
   );

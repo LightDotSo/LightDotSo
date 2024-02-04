@@ -106,7 +106,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
       form.reset();
       onClose();
     }
-  }, [isFeedbackCreateSuccess, onClose]);
+  }, [isFeedbackCreateSuccess, onClose, form]);
 
   // ---------------------------------------------------------------------------
   // Render

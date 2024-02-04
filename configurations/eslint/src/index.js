@@ -129,6 +129,12 @@ module.exports = {
       },
     },
     {
+      files: ["*.json"],
+      rules: {
+        "no-loss-of-precision": "off",
+      },
+    },
+    {
       files: ["*.ts", "*.tsx"],
       rules: {
         "import/no-unresolved": "off",

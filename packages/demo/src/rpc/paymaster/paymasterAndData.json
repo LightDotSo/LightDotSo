@@ -1,0 +1,13 @@
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "callGasLimit": "0x238c",
+    "verificationGasLimit": "0x66a19",
+    "preVerificationGas": "0x49dec7a7",
+    "maxFeePerGas": "0xf4398",
+    "maxPriorityFeePerGas": "0xf4240",
+    "paymasterAndData": "0x000000000003193facb32d1c120719892b7ae97700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000065bfb877cc70ad35c46a9033905d5776e8de357227df57982bbd90adf21b60bd65fd871c5e449782654e025dd91037e1561cb50f7a941bab8995e258fe7fa58a510082ca1b",
+    "paymasterNonce": "0x0"
+  },
+  "id": 1
+}

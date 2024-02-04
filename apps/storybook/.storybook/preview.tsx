@@ -21,7 +21,7 @@ import {
 } from "@storybook/addon-viewport";
 import type { Preview } from "@storybook/react";
 import { themes } from "@storybook/theming";
-import { initialize, mswLoader } from "msw-storybook-addon";
+// import { mswLoader } from "msw-storybook-addon";
 import {
   AppRouterContext,
   type AppRouterInstance,
@@ -54,8 +54,6 @@ export const DocsContainer: typeof BaseContainer = ({ children, context }) => {
     </BaseContainer>
   );
 };
-
-initialize();
 
 export const decorators = [
   Story => (
@@ -110,7 +108,7 @@ const preview: Preview = {
       },
     },
   },
-  loaders: [mswLoader],
+  // loaders: [mswLoader],
 };
 
 export default preview;

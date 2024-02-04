@@ -36,7 +36,6 @@ import {
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import {
-  serialize,
   useEstimateFeesPerGas,
   useEstimateGas,
   useEstimateMaxPriorityFeePerGas,
@@ -48,6 +47,7 @@ import { type Hex, type Address, fromHex } from "viem";
 import { Loading } from "../loading";
 import { useIsInsideModal } from "../modal";
 import { ModalSwiper } from "../modal-swiper";
+import { TransactionDevInfo } from "./transaction-dev-info";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -445,153 +445,94 @@ export const Transaction: FC<TransactionProps> = ({
               <TabsContent value="details">Details</TabsContent>
               <TabsContent value="dev">
                 <div className="grid gap-4 py-4">
-                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-                    <code>
-                      targetUserOperation:{" "}
-                      {targetUserOperation &&
-                        serialize(targetUserOperation, undefined, 2)}
-                    </code>
-                  </pre>
-                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-                    <code>
-                      updatedUserOperation:{" "}
-                      {updatedUserOperation &&
-                        serialize(updatedUserOperation, undefined, 2)}
-                    </code>
-                  </pre>
-                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-                    <code>
-                      estimateGasError:{" "}
-                      {estimateGasError && estimateGasError.message}
-                      <br />
-                      estimateFeesPerGasError:{" "}
-                      {estimateFeesPerGasError &&
-                        estimateFeesPerGasError.message}
-                      <br />
-                      estimateMaxPriorityFeePerGasError:{" "}
-                      {estimateMaxPriorityFeePerGasError &&
-                        estimateMaxPriorityFeePerGasError.message}
-                      <br />
-                      estimateUserOperationGasDataError:{" "}
-                      {estimateUserOperationGasDataError &&
-                        estimateUserOperationGasDataError.message}
-                      <br />
-                      paymasterAndDataError:{" "}
-                      {paymasterAndDataError && paymasterAndDataError.message}
-                    </code>
-                  </pre>
-                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-                    <code className="break-all text-text">
-                      chainId: {Number(targetUserOperation.chainId ?? 0)}
-                    </code>
-                  </pre>
-                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-                    <code className="break-all text-text">
-                      decodedInitCode:{" "}
-                      {decodedInitCode &&
-                        serialize(decodedInitCode, undefined, 2)}
-                    </code>
-                  </pre>
-                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-                    <code className="break-all text-text">
-                      decodedCallData:{" "}
-                      {decodedCallData &&
-                        serialize(decodedCallData, undefined, 2)}
-                    </code>
-                  </pre>
-                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-                    <code className="break-all text-text">
-                      estimateUserOperationGasData:{" "}
-                      {estimateUserOperationGasData &&
-                        serialize(estimateUserOperationGasData, undefined, 2)}
-                    </code>
-                  </pre>
-                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-                    <code className="break-all text-text">
-                      paymasterAndData:{" "}
-                      {paymasterAndData &&
-                        serialize(paymasterAndData, undefined, 2)}
-                    </code>
-                  </pre>
-                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-                    <code className="break-all text-text">
-                      userOperationWithHash:{" "}
-                      {userOperationWithHash &&
-                        serialize(userOperationWithHash, undefined, 2)}
-                    </code>
-                  </pre>
-                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-                    <code className="break-all text-text">
-                      feesPerGas:{" "}
-                      {feesPerGas && serialize(feesPerGas, undefined, 2)}
-                      <br />
-                      estimateGas:{" "}
-                      {estimateGas && estimateGas === BigInt(0)
-                        ? "0"
-                        : serialize(estimateGas, undefined, 2)}
-                      <br />
-                      maxPriorityFeePerGas:{" "}
-                      {maxPriorityFeePerGas &&
-                      maxPriorityFeePerGas === BigInt(0)
-                        ? "0"
-                        : serialize(maxPriorityFeePerGas, undefined, 2)}
-                    </code>
-                  </pre>
-                  {/* <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-                    <code className="break-all text-text">
-                      paymasterNonce: {serialize(paymasterNonce)}
-                    </code>
-                  </pre> */}
-                  {/* <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-                    <code className="break-all text-text">
-                      paymasterHash: {paymasterHash}
-                    </code>
-                  </pre> */}
-                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-                    <code className="break-all text-text">
-                      subdigest: {subdigest}
-                    </code>
-                  </pre>
-                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-                    <code className="break-all text-text">
-                      owners:{" "}
-                      {configuration.owners &&
-                        JSON.stringify(configuration.owners, null, 2)}
-                    </code>
-                  </pre>
-                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-                    <code className="break-all text-text">
-                      simulation:{" "}
-                      {simulation && JSON.stringify(simulation, null, 2)}
-                    </code>
-                  </pre>
-                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-                    <code className="break-all text-text">
-                      owner: {JSON.stringify(owner, null, 2)}
-                    </code>
-                  </pre>
-                  <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-                    <code className="break-all text-text">
-                      isUserOperationCreatable:{" "}
-                      {isUserOperationCreatable ? "true" : "false"}
-                      <br />
-                      isEstimateUserOperationGasDataLoading:{" "}
-                      {isEstimateUserOperationGasDataLoading ? "true" : "false"}
-                      <br />
-                      isUserOperationLoading:{" "}
-                      {isUserOperationLoading ? "true" : "false"}
-                      <br />
-                      isPaymasterAndDataLoading:{" "}
-                      {isPaymasterAndDataLoading ? "true" : "false"}
-                      <br />
-                      isLoading: {isLoading ? "true" : "false"}
-                      <br />
-                      isUpdating: {isUpdating ? "true" : "false"}
-                      <br />
-                      isValidUserOperation:{" "}
-                      {isValidUserOperation ? "true" : "false"}
-                    </code>
-                  </pre>
+                  <TransactionDevInfo
+                    title="targetUserOperation"
+                    data={targetUserOperation}
+                  />
+                  <TransactionDevInfo
+                    title="updatedUserOperation"
+                    data={updatedUserOperation}
+                  />
+                  <TransactionDevInfo
+                    title="userOperationWithHash"
+                    data={userOperationWithHash}
+                  />
+                  <TransactionDevInfo
+                    title="estimateUserOperationGasData"
+                    data={estimateUserOperationGasData}
+                  />
+                  <TransactionDevInfo title="feesPerGas" data={feesPerGas} />
+                  <TransactionDevInfo
+                    isNumber
+                    title="estimateGas"
+                    data={estimateGas}
+                  />
+                  <TransactionDevInfo
+                    isNumber
+                    title="maxPriorityFeePerGas"
+                    data={maxPriorityFeePerGas}
+                  />
+                  <TransactionDevInfo
+                    title="estimateGasError"
+                    data={estimateGasError}
+                  />
+                  <TransactionDevInfo
+                    title="estimateFeesPerGasError"
+                    data={estimateFeesPerGasError}
+                  />
+                  <TransactionDevInfo
+                    title="estimateMaxPriorityFeePerGasError"
+                    data={estimateMaxPriorityFeePerGasError}
+                  />
+                  <TransactionDevInfo
+                    title="estimateUserOperationGasDataError"
+                    data={estimateUserOperationGasDataError}
+                  />
+                  <TransactionDevInfo
+                    title="paymasterAndDataError"
+                    data={paymasterAndDataError}
+                  />
+                  <TransactionDevInfo
+                    title="decodedInitCode"
+                    data={decodedInitCode}
+                  />
+                  <TransactionDevInfo
+                    title="decodedCallData"
+                    data={decodedCallData}
+                  />
+                  <TransactionDevInfo title="subdigest" data={subdigest} />
+                  <TransactionDevInfo
+                    title="paymasterAndData"
+                    data={paymasterAndData}
+                  />
+                  <TransactionDevInfo title="simulation" data={simulation} />
+                  <TransactionDevInfo
+                    title="owners"
+                    data={configuration.owners}
+                  />
+                  <TransactionDevInfo title="owner" data={owner} />
+                  <TransactionDevInfo
+                    title="isUserOperationCreatable"
+                    data={isUserOperationCreatable}
+                  />
+                  <TransactionDevInfo
+                    title="isEstimateUserOperationGasDataLoading"
+                    data={isEstimateUserOperationGasDataLoading}
+                  />
+                  <TransactionDevInfo
+                    title="isUserOperationLoading"
+                    data={isUserOperationLoading}
+                  />
+                  <TransactionDevInfo
+                    title="isPaymasterAndDataLoading"
+                    data={isPaymasterAndDataLoading}
+                  />
+                  <TransactionDevInfo title="isLoading" data={isLoading} />
+                  <TransactionDevInfo title="isUpdating" data={isUpdating} />
+                  <TransactionDevInfo
+                    title="isValidUserOperation"
+                    data={isValidUserOperation}
+                  />
                 </div>
               </TabsContent>
             </Tabs>

@@ -13,13 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export * from "./activity";
-export * from "./assetChange";
-export * from "./configuration";
-export * from "./notification";
-export * from "./simulation";
-export * from "./token";
-export * from "./tokenPrice";
-export * from "./transaction";
-export * from "./userOperation";
-export * from "./wallet";
+import estimateUserOperationGas from "./estimateUserOperationGas.json";
+import paymasterAndData from "./paymasterAndData.json";
+
+export const getEstimateUserOperationGas = estimateUserOperationGas;
+export const getPaymasterAndData = paymasterAndData;

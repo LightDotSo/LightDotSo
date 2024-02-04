@@ -13,10 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export const BASE_LOCAL_ADMIN_URL = "http://localhost:3000/admin";
+export const BASE_LOCAL_API_ADMIN_URL = "http://localhost:3000/admin";
+
+export const BASE_LOCAL_API_AUTHENTICATED_URL =
+  "http://localhost:3000/authenticated";
 
 export const BASE_LOCAL_API_URL = "http://localhost:3000";
+
+export const BASE_API_ADMIN_URL = "https://api.light.so/admin";
 
 export const BASE_API_AUTHENTICATED_URL = "https://api.light.so/authenticated";
 
 export const BASE_API_URL = "https://api.light.so";
+
+export const BASE_RPC_URL = "https://rpc.light.so";
