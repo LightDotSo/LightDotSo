@@ -56,7 +56,15 @@ export const useAuthModal = (isOpenModal = true) => {
     } else {
       handleSignIn();
     }
-  }, [address, open, sessionId, showAuthModal, handleSignIn, useModal]);
+  }, [
+    address,
+    open,
+    sessionId,
+    showAuthModal,
+    handleSignIn,
+    setOpen,
+    isOpenModal,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks

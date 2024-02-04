@@ -18,7 +18,7 @@
 import { INTERNAL_LINKS, SOCIAL_LINKS } from "@lightdotso/const";
 import { useBanners } from "@lightdotso/stores";
 import type { Banner as BannerKind } from "@lightdotso/types";
-import { Button, ButtonIcon } from "@lightdotso/ui";
+import { ButtonIcon } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { DiscordLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
@@ -44,7 +44,7 @@ const bannerVariants = cva(
     variants: {
       intent: {
         demo: "border-border-purple-weaker bg-background-purple-weakest text-text-purple [&>svg]:text-text-purple",
-        beta: "border-border-info-weaker bg-background-info-weakest text-text-info [&>svg]:text-text-info",
+        beta: "border-border-info-weak bg-background-info-weakest text-text-info [&>svg]:text-text-info",
         outage:
           "border-border-warning-weaker bg-background-warning-weakest text-text-warning [&>svg]:text-text-warning",
       },
