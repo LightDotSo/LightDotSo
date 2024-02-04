@@ -183,6 +183,9 @@ export const UserNav: FC = () => {
 
               // Logout
               await logout();
+
+              // Force reload
+              location.reload();
             }}
           >
             Disconnect
