@@ -29,7 +29,7 @@ const frameMetadata = getFrameMetadata({
       action: "post_redirect",
     },
   ],
-  image: `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/image?text="You have some pending transactions"`,
+  image: `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/image?text="Show me some pending transactions!"`,
   post_url: `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/frame`,
 });
 
