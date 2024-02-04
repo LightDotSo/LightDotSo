@@ -27,7 +27,8 @@ import { toast } from "@lightdotso/ui";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { backOff } from "exponential-backoff";
 import { ResultAsync } from "neverthrow";
-import { Address, toHex } from "viem";
+import type { Address } from "viem";
+import { toHex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Query Mutation
