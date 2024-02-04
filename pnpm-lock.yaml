@@ -973,6 +973,9 @@ importers:
       '@babel/core':
         specifier: ^7.23.9
         version: 7.23.9
+      '@coinbase/onchainkit':
+        specifier: ^0.4.5
+        version: 0.4.5(react-dom@18.2.0)(react@18.2.0)(viem@2.7.2)
       '@next/bundle-analyzer':
         specifier: ^14.1.0
         version: 14.1.0
@@ -4575,6 +4578,18 @@ packages:
 
   /@cloudflare/workers-types@4.20240129.0:
     resolution: {integrity: sha512-VyHbih/bqh/RN2FRxnXznG0bpBIg9RfSP1ldbAVnCXFinjOdv0zm2P/RWqOVN9+FgU5sanRltwwT7jGngxZy8w==}
+    dev: false
+
+  /@coinbase/onchainkit@0.4.5(react-dom@18.2.0)(react@18.2.0)(viem@2.7.2):
+    resolution: {integrity: sha512-kqyVQ0G07rqJz1zIc0BnJWOmA+ZWS87Zl1MEsZyqkiRhrJdA4E5E9ERP6Qe2s9K7XCRcdJ3jeUXc9okp6injRQ==}
+    peerDependencies:
+      react: ^18
+      react-dom: ^18
+      viem: ^2.5.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      viem: 2.7.2(typescript@5.3.3)(zod@3.22.4)
     dev: false
 
   /@coinbase/wallet-sdk@3.9.1:

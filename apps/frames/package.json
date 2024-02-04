@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.23.9",
+    "@coinbase/onchainkit": "^0.4.5",
     "@next/bundle-analyzer": "^14.1.0",
     "@sentry/integrations": "^7.99.0",
     "@sentry/nextjs": "^7.99.0",
