@@ -46,6 +46,7 @@ export const Base: Story = {
       isLoading={false}
       pageSize={10}
       address={"0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F" as Address}
+      isTestnet={false}
       data={userOperationListData}
       configuration={configurationGetData}
     />
@@ -58,6 +59,7 @@ export const Null: Story = {
       isLoading={false}
       pageSize={10}
       address={null}
+      isTestnet={false}
       data={userOperationListData}
       configuration={configurationGetData}
     />

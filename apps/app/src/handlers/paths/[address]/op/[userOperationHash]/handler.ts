@@ -34,7 +34,7 @@ export const handler = async (params: {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { config } = await addressHandler(params);
+  const { config, walletSettings } = await addressHandler(params);
 
   // ---------------------------------------------------------------------------
   // Validators
@@ -58,7 +58,11 @@ export const handler = async (params: {
 
   return userOperation.match(
     userOperation => {
-      return { config: config, userOperation: userOperation };
+      return {
+        config: config,
+        userOperation: userOperation,
+        walletSettings: walletSettings,
+      };
     },
     () => {
       notFound();

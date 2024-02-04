@@ -15,7 +15,6 @@
 
 export { MAX_WEIGHT, MAX_THRESHOLD } from "./configuration";
 export { DEMO_WALLET_ADDRESS } from "./demo";
-export { OVERVIEW_ROW_COUNT, TRANSACTION_ROW_COUNT } from "./numbers";
 export {
   Category,
   DemoSubCategory,

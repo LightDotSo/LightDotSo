@@ -44,7 +44,7 @@ export default async function Page({ params }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { userOperation } = await handler(params);
+  const { userOperation, walletSettings } = await handler(params);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -65,7 +65,10 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <OpDataTable userOperationHash={params.userOperationHash as Hex} />
+      <OpDataTable
+        userOperationHash={params.userOperationHash as Hex}
+        walletSettings={walletSettings}
+      />
     </HydrationBoundary>
   );
 }
