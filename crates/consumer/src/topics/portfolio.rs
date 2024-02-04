@@ -82,7 +82,7 @@ pub async fn portfolio_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
                             latest_portfolio_balance,
                             0,
                             wallet::address::equals(to_checksum(&payload.address, None)),
-                            vec![],
+                            vec![wallet_balance::is_latest::set(true)],
                         )
                         .exec()
                         .await?;

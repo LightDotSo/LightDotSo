@@ -266,6 +266,15 @@ pub(crate) async fn v1_token_list_handler(
         .into_iter()
         .collect();
 
+    // Filter out the tokens that has a balance of 0 in the token group.
+    tokens.retain(|token| {
+        if let Some(group) = &token.group {
+            group.tokens.iter().any(|token| token.amount > 0)
+        } else {
+            true
+        }
+    });
+
     // If a token group is found, modify the root token to be the culmative sum of the token group.
     for token in tokens.iter_mut() {
         if let Some(group) = &token.group {

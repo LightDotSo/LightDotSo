@@ -15,12 +15,13 @@
 
 /* eslint-disable no-unused-vars */
 export enum Social {
+  CAL = "Cal",
+  CAL_SHUN = "Cal Shun",
   DISCORD = "Discord",
   OPENSEA = "Opensea",
   GITHUB = "Github",
   MIRROR = "Mirror",
   NOTION = "Notion",
-  PLAUSIBLE = "Plausible",
   TELEGRAM = "Telegram",
   TELEGRAM_SUPPORT = "Telegram Support",
   TWITTER = "Twitter",
@@ -31,12 +32,13 @@ export enum Social {
 export const SOCIAL_LINKS: {
   readonly [key in Social]: string;
 } = {
+  [Social.CAL]: "https://cal.com/lightdotso",
+  [Social.CAL_SHUN]: "https://cal.com/shunkakinoki/support",
   [Social.DISCORD]: "https://discord.gg/Vgfxg2Rcy8",
   [Social.GITHUB]: "https://github.com/LightDotSo/LightDotSo",
   [Social.MIRROR]: "https://mirror.xyz/lightdotso.eth",
   [Social.NOTION]: "https://lightdotso.notion.site",
   [Social.OPENSEA]: "https://opensea.io",
-  [Social.PLAUSIBLE]: "https://plausible.io/light.so",
   [Social.TELEGRAM]: "https://t.me/LightDotSo",
   [Social.TELEGRAM_SUPPORT]: "https://t.me/LightDotSoSupport",
   [Social.TWITTER]: "https://twitter.com/LightDotSo",

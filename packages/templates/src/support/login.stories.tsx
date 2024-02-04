@@ -13,16 +13,32 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Support } from "@lightdotso/templates";
+import type { Meta, StoryObj } from "@storybook/react";
+import { Support } from "./support";
 
 // -----------------------------------------------------------------------------
-// Page
+// Meta
 // -----------------------------------------------------------------------------
 
-export default async function Page() {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
+const meta: Meta<typeof Support> = {
+  title: "template/Support",
+  component: Support,
+  tags: ["autodocs"],
+  argTypes: {},
+};
+export default meta;
 
-  return <Support />;
-}
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+type Story = StoryObj<typeof Support>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Base: Story = {
+  render: args => <Support />,
+  args: {},
+};
