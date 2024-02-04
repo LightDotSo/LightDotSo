@@ -33,7 +33,7 @@ export const SOCIAL_LINKS: {
   readonly [key in Social]: string;
 } = {
   [Social.CAL]: "https://cal.com/lightdotso",
-  [Social.CAL_SHUN]: "https://cal.com/shunkakinoki",
+  [Social.CAL_SHUN]: "https://cal.com/shunkakinoki/support",
   [Social.DISCORD]: "https://discord.gg/Vgfxg2Rcy8",
   [Social.GITHUB]: "https://github.com/LightDotSo/LightDotSo",
   [Social.MIRROR]: "https://mirror.xyz/lightdotso.eth",

@@ -41,7 +41,7 @@ export const Support: FC = () => {
     >
       <div className="jusfity-center flex w-full flex-col items-center">
         <div className="flex gap-2">
-          <ButtonIcon asChild size="xs" variant="link">
+          <ButtonIcon asChild variant="shadow">
             <a
               href={SOCIAL_LINKS["Twitter Shun"]}
               target="_blank"
@@ -50,7 +50,7 @@ export const Support: FC = () => {
               <TwitterLogoIcon className="size-4" />
             </a>
           </ButtonIcon>
-          <ButtonIcon asChild size="xs" variant="link">
+          <ButtonIcon asChild variant="shadow">
             <a
               href={SOCIAL_LINKS["Discord"]}
               target="_blank"
@@ -59,7 +59,7 @@ export const Support: FC = () => {
               <DiscordLogoIcon className="size-4" />
             </a>
           </ButtonIcon>
-          <ButtonIcon asChild size="xs" variant="link">
+          <ButtonIcon asChild variant="shadow">
             <a
               href={SOCIAL_LINKS["Telegram Support"]}
               target="_blank"
