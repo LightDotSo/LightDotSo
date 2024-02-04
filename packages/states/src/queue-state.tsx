@@ -73,9 +73,10 @@ export const QueueState: FC = () => {
     if (now - (tokenQueueTimestamp || 0) > THREE_MINUTES_IN_MILLISECONDS) {
       queueToken();
       setTokenQueueTimestamp(now);
-    }
-
-    if (now - (portfolioQueueTimestamp || 0) > THREE_MINUTES_IN_MILLISECONDS) {
+    } else if (
+      now - (portfolioQueueTimestamp || 0) >
+      THREE_MINUTES_IN_MILLISECONDS
+    ) {
       queuePortfolio();
       setPortfolioQueueTimestamp(now);
     }
