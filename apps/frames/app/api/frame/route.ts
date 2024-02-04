@@ -16,12 +16,10 @@
 // From: https://github.com/Zizzamia/a-frame-in-100-lines/blob/1e401d0c8ecc8d1b9ef5b31e92723eede9f06c51/app/api/frame/route.ts
 // License: MIT
 
-import {
-  FrameRequest,
-  getFrameMessage,
-  getFrameHtmlResponse,
-} from "@coinbase/onchainkit";
-import { NextRequest, NextResponse } from "next/server";
+import type { FrameRequest } from "@coinbase/onchainkit";
+import { getFrameMessage, getFrameHtmlResponse } from "@coinbase/onchainkit";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   let accountAddress: string | undefined = "";
