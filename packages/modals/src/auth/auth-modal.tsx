@@ -19,6 +19,7 @@ import { useSignInWithSiwe } from "@lightdotso/hooks";
 import { useModals } from "@lightdotso/stores";
 import { Modal } from "@lightdotso/templates";
 import { Button, DialogDescription, DialogTitle } from "@lightdotso/ui";
+import { useEffect } from "react";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -35,7 +36,18 @@ export function AuthModal() {
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
-  const { isPending, handleSignIn } = useSignInWithSiwe();
+  const { isPending, handleSignIn, isSuccess } = useSignInWithSiwe();
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // Close modal on success
+  useEffect(() => {
+    if (isSuccess) {
+      hideAuthModal();
+    }
+  }, [isSuccess, hideAuthModal]);
 
   // ---------------------------------------------------------------------------
   // Render

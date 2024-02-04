@@ -36,7 +36,7 @@ export const useMutationQueueToken = (params: QueueParams) => {
 
   const { mutate: queueToken, isPending: isLoadingQueueToken } = useMutation({
     mutationFn: async () => {
-      if (params.address) {
+      if (!params.address) {
         return;
       }
 

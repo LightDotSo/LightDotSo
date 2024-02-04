@@ -32,7 +32,7 @@ import {
   Textarea,
 } from "@lightdotso/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { FC } from "react";
+import { useEffect, type FC } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -85,9 +85,8 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const { feedbackCreate, isFeedbackCreateSuccess } = useMutationFeedbackCreate(
-    { user_id: userId },
-  );
+  const { feedbackCreate, isFeedbackCreateSuccess, isFeedbackCreateLoading } =
+    useMutationFeedbackCreate({ user_id: userId });
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -95,12 +94,19 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
 
   async function onSubmit(data: FeedbackFormValues) {
     await feedbackCreate({ feedback: data });
+  }
 
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // Close modal on success
+  useEffect(() => {
     if (isFeedbackCreateSuccess) {
       form.reset();
       onClose();
     }
-  }
+  }, [isFeedbackCreateSuccess, onClose]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -183,7 +189,13 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
           )}
         />
         <div className="flex justify-end">
-          <Button type="submit">Send Feedback</Button>
+          <Button
+            isLoading={isFeedbackCreateLoading}
+            disabled={isFeedbackCreateLoading}
+            type="submit"
+          >
+            Send Feedback
+          </Button>
         </div>
       </form>
     </Form>
