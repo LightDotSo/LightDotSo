@@ -26,6 +26,7 @@ import { Inter } from "next/font/google";
 import Script from "next/script";
 import { Suspense } from "react";
 import type { FC, ReactNode } from "react";
+import { ExplorerBanner } from "../explorer-banner";
 import { MainNav } from "../nav/main-nav";
 
 // -----------------------------------------------------------------------------
@@ -64,6 +65,9 @@ export const Root: FC<RootProps> = ({ children }) => {
       <body className="min-h-[100dvh] bg-background-body">
         <ThemeProvider attribute="class">
           <ReactQueryProvider showDevTools>
+            {/* Banner */}
+            <ExplorerBanner />
+            {/* Layout */}
             <MainNav>{children}</MainNav>
             <Footer />
             {/* States */}
