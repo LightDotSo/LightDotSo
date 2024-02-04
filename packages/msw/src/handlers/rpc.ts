@@ -18,7 +18,7 @@ import { getPaymasterAndData } from "@lightdotso/demo";
 import { HttpResponse, http } from "msw";
 
 export const getPaymasterGasAndPaymasterAndData = (url: string) =>
-  http.post(`https://rpc.light.so/8453`, () => {
+  http.all(`${url}/8453`, () => {
     return HttpResponse.json(getPaymasterAndData);
   });
 
