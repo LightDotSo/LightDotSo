@@ -108,17 +108,29 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
         <div className="ml-4 flex items-center">
           <p className="text-xs leading-6">Please report any issues to </p>
           <ButtonIcon asChild size="xs" variant="link" intent="info">
-            <a href={SOCIAL_LINKS["Twitter Shun"]} target="_blank" rel="no">
+            <a
+              href={SOCIAL_LINKS["Twitter Shun"]}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <TwitterLogoIcon className="size-4" />
             </a>
           </ButtonIcon>
           <ButtonIcon asChild size="xs" variant="link" intent="info">
-            <a href={SOCIAL_LINKS["Discord"]} target="_blank" rel="no">
+            <a
+              href={SOCIAL_LINKS["Discord"]}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <DiscordLogoIcon className="size-4" />
             </a>
           </ButtonIcon>
           <ButtonIcon asChild size="xs" variant="link" intent="info">
-            <a href={SOCIAL_LINKS["Telegram Support"]} target="_blank" rel="no">
+            <a
+              href={SOCIAL_LINKS["Telegram Support"]}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <FaTelegramPlane className="size-4" />
             </a>
           </ButtonIcon>
