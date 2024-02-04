@@ -29,10 +29,7 @@ const frameMetadata = getFrameMetadata({
       action: "post_redirect",
     },
   ],
-  image: `${process.env.NEXT_PUBLIC_VERCEL_URL}/park-1.png`,
-  // input: {
-  // text: "Tell me a boat story",
-  // },
+  image: `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/image?text="You have some pending transactions"`,
   post_url: `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/frame`,
 });
 
@@ -42,7 +39,9 @@ export const metadata: Metadata = {
   openGraph: {
     title: "framers.light.so",
     description: "frame for light.so",
-    images: [`${process.env.NEXT_PUBLIC_VERCEL_URL}/park-1.png`],
+    images: [
+      `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/image?text="You have some pending transactions"`,
+    ],
   },
   other: {
     ...frameMetadata,

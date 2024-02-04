@@ -22,10 +22,11 @@ import {
   getFrameHtmlResponse,
 } from "@coinbase/onchainkit";
 import { type NextRequest, NextResponse } from "next/server";
+import { getAddress } from "viem";
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   let accountAddress: string | undefined = "";
-  // let text: string | undefined = "";
+  let text: string | undefined = "";
 
   const body: FrameRequest = await req.json();
   const { isValid, message } = await getFrameMessage(body, {
@@ -44,6 +45,20 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     return NextResponse.redirect("https://light.so/demo", { status: 302 });
   }
 
+  if (!accountAddress) {
+    return new NextResponse(
+      getFrameHtmlResponse({
+        buttons: [
+          {
+            label: "Go back",
+          },
+        ],
+        image: `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/image?text="You need to connect your wallet"`,
+        post_url: `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/frame?`,
+      }),
+    );
+  }
+
   return new NextResponse(
     getFrameHtmlResponse({
       buttons: [
@@ -51,7 +66,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
           label: `Transaction #1`,
         },
       ],
-      image: `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/park-2.png`,
+      image: `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/image?text="You have some pending transactions"`,
       post_url: `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/frame`,
     }),
   );
