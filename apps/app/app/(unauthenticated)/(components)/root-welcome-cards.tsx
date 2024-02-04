@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { useMediaQuery } from "@lightdotso/hooks";
 import {
   Button,
   Card,
@@ -31,6 +32,12 @@ import { ConnectButton } from "@/components/web3/connect-button";
 // -----------------------------------------------------------------------------
 
 export const RootWelcomeCards: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const isDesktop = useMediaQuery("md");
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -66,7 +73,7 @@ export const RootWelcomeCards: FC = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-4">
-          <Button asChild size="sm" variant="outline">
+          <Button asChild size={isDesktop ? "default" : "lg"} variant="outline">
             <Link href="/demo/overview">
               <Gamepad className="mr-2 size-4" /> Start Demo
             </Link>
