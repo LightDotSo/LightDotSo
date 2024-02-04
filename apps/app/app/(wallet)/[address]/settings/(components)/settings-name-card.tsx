@@ -187,7 +187,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
         }
       >
         {!isError && delayedIsSuccess
-          ? "Success!"
+          ? "Success"
           : isPending
             ? "Updating name..."
             : "Update name"}

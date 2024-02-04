@@ -158,13 +158,14 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
         form="walletTestnetForm"
         isLoading={isPending}
         disabled={
+          isPending ||
           delayedIsSuccess ||
           !isFormChanged ||
           typeof form.getFieldState("enabled").error !== "undefined"
         }
       >
         {!isError && delayedIsSuccess
-          ? "Success!"
+          ? "Success"
           : isPending
             ? "Saving..."
             : "Save"}
