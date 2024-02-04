@@ -106,8 +106,8 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
       </p>
       {kind === "beta" && (
         <div className="ml-2 flex items-center md:ml-4">
-          <p className="text-xs leading-6">
-            Please report <span className="hidden md:block">any issues</span> to{" "}
+          <p className="text-xs leading-6 hidden sm:block">
+            Please report any issues to{" "}
           </p>
           <ButtonIcon asChild size="xs" variant="link" intent="info">
             <a
