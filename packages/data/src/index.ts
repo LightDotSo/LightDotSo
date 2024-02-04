@@ -35,6 +35,7 @@ export type {
   UserOperationData,
   UserOperationCountData,
 } from "./userOperation";
+export type { WalletBillingData } from "./walletBilling";
 export type { WalletFeaturesData } from "./walletFeatures";
 export type { WalletSettingsData } from "./walletSettings";
 export type { WalletData, WalletCountData } from "./wallet";
