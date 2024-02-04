@@ -39,7 +39,7 @@ export const Support: FC = () => {
       title="Support"
       description="Please reach out to us if you need any help."
     >
-      <div className="flex flex-col jusfity-center items-center w-full">
+      <div className="jusfity-center flex w-full flex-col items-center">
         <div className="flex gap-2">
           <ButtonIcon asChild size="xs" variant="link">
             <a
@@ -80,7 +80,7 @@ export const Support: FC = () => {
             >
               here
             </a>{" "}
-            if it's an urgent matter.
+            if it&apos;s an urgent matter.
           </p>
         </div>
       </div>
