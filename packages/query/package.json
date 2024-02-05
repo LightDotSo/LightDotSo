@@ -38,7 +38,7 @@
     "@tanstack/react-query": "^5.18.1",
     "exponential-backoff": "^3.1.1",
     "neverthrow": "^6.1.0",
-    "viem": "^2.7.2"
+    "viem": "^2.7.3"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
