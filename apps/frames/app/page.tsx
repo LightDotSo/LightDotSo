@@ -29,8 +29,8 @@ const frameMetadata = getFrameMetadata({
       action: "post_redirect",
     },
   ],
-  image: `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/image?text="Show me some pending transactions!"`,
-  post_url: `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/frame`,
+  image: `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/image?text="Show me some pending transactions!"`,
+  post_url: `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/frame`,
 });
 
 export const metadata: Metadata = {
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     title: "framers.light.so",
     description: "frame for light.so",
     images: [
-      `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/image?text="You have some pending transactions"`,
+      `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/image?text="You have some pending transactions"`,
     ],
   },
   other: {
