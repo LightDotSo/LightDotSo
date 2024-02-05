@@ -31,7 +31,7 @@
     "next": "^14.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "viem": "^2.7.2"
+    "viem": "^2.7.3"
   },
   "devDependencies": {
     "@lightdotso/eslint-config": "workspace:*",
@@ -39,7 +39,7 @@
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^20.11.16",
-    "@types/react": "^18.2.52",
+    "@types/react": "^18.2.53",
     "@types/react-dom": "^18.2.18",
     "autoprefixer": "^10.4.17",
     "postcss": "^8.4.33",
