@@ -5,25 +5,25 @@
         "name": "@evmts/ts-plugin",
         "compiler": {
           "foundryProject": true,
-          "solcVersion": "0.8.18",
+          "solcVersion": "0.8.18"
         },
         "localContracts": {
           "contracts": [
             {
               "name": "LightWalletFactory",
               "addresses": {
-                "31337": "0x63CBfA247a2c1043892c7cEB4C21d1d8BC71Ffab",
-              },
-            },
-          ],
-        },
-      },
+                "31337": "0x63CBfA247a2c1043892c7cEB4C21d1d8BC71Ffab"
+              }
+            }
+          ]
+        }
+      }
     ],
     "paths": {
       "@/out/*": ["./out/*"],
       "@/contracts/*": ["./contracts/src/*"],
-      "@/contracts/test/spec/*": ["./contracts/test/spec/*"],
-    },
+      "@/contracts/test/spec/*": ["./contracts/test/spec/*"]
+    }
   },
   "include": [
     "**/__checks__/**/*.ts",
@@ -32,7 +32,7 @@
     "playwright.config.ts",
     "vitest.config.ts",
     "vitest.workspace.ts",
-    "wagmi.config.ts",
+    "wagmi.config.ts"
   ],
-  "extends": "./tsconfig.base",
+  "extends": "./tsconfig.base"
 }
