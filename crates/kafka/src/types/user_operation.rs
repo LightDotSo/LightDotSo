@@ -25,6 +25,7 @@ use serde_json::{json, Value};
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UserOperationMessage {
     pub hash: H256,
+    pub chain_id: u64,
 }
 
 // -----------------------------------------------------------------------------
