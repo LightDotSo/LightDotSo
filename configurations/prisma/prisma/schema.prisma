@@ -144,12 +144,13 @@ model User {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  activities    Activity[]
-  owners        Owner[]
-  wallets       Wallet[]
-  feedbacks     Feedback[]
-  notifications Notification[]
-  inviteCodes   InviteCode[]
+  activities                 Activity[]
+  feedbacks                  Feedback[]
+  inviteCodes                InviteCode[]
+  notifications              Notification[]
+  owners                     Owner[]
+  wallets                    Wallet[]
+  walletNotificationSettings WalletNotificationSettings[]
 }
 
 // -----------------------------------------------------------------------------
@@ -214,16 +215,17 @@ model Wallet {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  activities          Activity[]
-  configurations      Configuration[]
-  notifications       Notification[]
-  paymasterOperations PaymasterOperation[]
-  simulations         Simulation[]
-  supportRequests     SupportRequest[]
-  transactions        Transaction[]
-  userOperations      UserOperation[]
-  users               User[]
-  walletBalances      WalletBalance[]
+  activities                 Activity[]
+  configurations             Configuration[]
+  notifications              Notification[]
+  paymasterOperations        PaymasterOperation[]
+  simulations                Simulation[]
+  supportRequests            SupportRequest[]
+  transactions               Transaction[]
+  userOperations             UserOperation[]
+  users                      User[]
+  walletBalances             WalletBalance[]
+  walletNotificationSettings WalletNotificationSettings[]
 }
 
 // -----------------------------------------------------------------------------
@@ -337,6 +339,35 @@ model WalletSettings {
   // ---------------------------------------------------------------------------
 
   // Relations
+  @@index([walletAddress])
+}
+
+model WalletNotificationSettings {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // One-to-one
+  // ---------------------------------------------------------------------------
+
+  user          User   @relation(fields: [userId], references: [id])
+  userId        String
+  wallet        Wallet @relation(fields: [walletAddress], references: [address])
+  walletAddress String
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
+  // Unique
+  @@unique([userId, walletAddress])
+  // Relations
+  @@index([userId])
   @@index([walletAddress])
 }
 

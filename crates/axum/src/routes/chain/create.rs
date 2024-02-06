@@ -17,7 +17,7 @@ use crate::{
     constants::KAKI_USER_ID,
     error::RouteError,
     result::AppJsonResult,
-    routes::token::{error::TokenError, types::Token},
+    routes::chain::{error::ChainError, types::Chain},
     sessions::get_user_id,
     state::AppState,
 };
@@ -26,11 +26,11 @@ use axum::{
     extract::{Query, State},
     Json,
 };
-use lightdotso_prisma::token;
+use lightdotso_prisma::chain;
 use lightdotso_tracing::tracing::info;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 use tower_sessions_core::Session;
-use utoipa::{IntoParams, ToSchema};
+use utoipa::IntoParams;
 
 // -----------------------------------------------------------------------------
 // Query
@@ -39,47 +39,38 @@ use utoipa::{IntoParams, ToSchema};
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
-pub struct PutQuery {
-    /// The id of the token id to post for.
-    token_id: String,
-}
-
-// -----------------------------------------------------------------------------
-// Params
-// -----------------------------------------------------------------------------
-
-#[derive(Serialize, Deserialize, ToSchema, Clone)]
-#[serde(rename_all = "snake_case")]
-pub struct TokenUpdateRequestParams {
-    /// The name of the wallet.
-    #[schema(example = "My Token", default = "My Token")]
-    pub name: Option<String>,
+pub struct PostQuery {
+    /// The id of the chain id to createfor.
+    id: i64,
+    /// The name of the chain.
+    name: String,
+    /// A boolean value to indicate if the chain is testnet.
+    is_testnet: bool,
 }
 
 // -----------------------------------------------------------------------------
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Update a token.
+/// Create a chain.
 #[utoipa::path(
-        put,
-        path = "/token/update",
+        post,
+        path = "/chain/create",
         params(
-            PutQuery
+            PostQuery
         ),
-        request_body = TokenUpdateRequestParams,
+        request_body = ChainCreateRequestParams,
         responses(
-            (status = 200, description = "Token updated successfully", body = Token),
-            (status = 500, description = "Token internal error", body = TokenError),
+            (status = 200, description = "Chain created successfully", body = Chain),
+            (status = 500, description = "Chain internal error", body = ChainError),
         )
     )]
 #[autometrics]
-pub(crate) async fn v1_token_update_handler(
+pub(crate) async fn v1_chain_create_handler(
     State(state): State<AppState>,
     mut session: Session,
-    put_query: Query<PutQuery>,
-    Json(params): Json<TokenUpdateRequestParams>,
-) -> AppJsonResult<Token> {
+    post_query: Query<PostQuery>,
+) -> AppJsonResult<Chain> {
     // -------------------------------------------------------------------------
     // Session
     // -------------------------------------------------------------------------
@@ -94,7 +85,7 @@ pub(crate) async fn v1_token_update_handler(
 
     // If the authenticated user id is not `KAKI_USER_ID`, return an error.
     if auth_user_id != KAKI_USER_ID.to_string() {
-        return Err(RouteError::TokenError(TokenError::Unauthorized(format!(
+        return Err(RouteError::ChainError(ChainError::Unauthorized(format!(
             "Not authorized for {}",
             auth_user_id
         )))
@@ -105,20 +96,24 @@ pub(crate) async fn v1_token_update_handler(
     // Parse
     // -------------------------------------------------------------------------
 
-    // Get the put query.
-    let Query(query) = put_query;
+    // Get the post query.
+    let Query(query) = post_query;
 
-    // Get the token id from the post query.
-    let token_id = query.token_id;
+    // Get the chain id from the post query.
+    let chain_id = query.id;
+
     // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
 
-    // Update the token.
-    let token = state
+    // Create the chain.
+    let chain = state
         .client
-        .token()
-        .update(token::id::equals(token_id), vec![token::name::set(params.name)])
+        .chain()
+        .create(
+            chain_id,
+            vec![chain::name::set(Some(query.name)), chain::is_testnet::set(query.is_testnet)],
+        )
         .exec()
         .await?;
 
@@ -126,8 +121,8 @@ pub(crate) async fn v1_token_update_handler(
     // Return
     // -------------------------------------------------------------------------
 
-    // Change the token to the format that the API expects.
-    let token: Token = token.into();
+    // Change the chain to the format that the API expects.
+    let chain: Chain = chain.into();
 
-    Ok(Json::from(token))
+    Ok(Json::from(chain))
 }

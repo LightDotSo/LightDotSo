@@ -13,23 +13,29 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use lightdotso_prisma::chain;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
 // -----------------------------------------------------------------------------
-// Error
+// Types
 // -----------------------------------------------------------------------------
 
-/// Token error.
-#[derive(Serialize, Deserialize, ToSchema)]
-pub(crate) enum TokenError {
-    /// Token query error.
-    #[schema(example = "Bad request")]
-    BadRequest(String),
-    /// Token not found by id.
-    #[schema(example = "id = 1")]
-    NotFound(String),
-    /// Unauthorized token access.
-    #[schema(example = "Unauthorized")]
-    Unauthorized(String),
+/// Chain root type.
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
+pub(crate) struct Chain {
+    /// The id of the protocol group.
+    id: i64,
+}
+
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
+/// Implement From<chain::Data> for Chain.
+impl From<chain::Data> for Chain {
+    fn from(chain: chain::Data) -> Self {
+        Self { id: chain.id }
+    }
 }

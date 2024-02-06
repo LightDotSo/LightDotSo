@@ -20,16 +20,16 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// Token error.
+/// Chain errors
 #[derive(Serialize, Deserialize, ToSchema)]
-pub(crate) enum TokenError {
-    /// Token query error.
+pub(crate) enum ChainError {
+    /// Chain query error.
     #[schema(example = "Bad request")]
     BadRequest(String),
-    /// Token not found by id.
+    /// Chain not found by id.
     #[schema(example = "id = 1")]
     NotFound(String),
-    /// Unauthorized token access.
+    /// Chain unauthorized.
     #[schema(example = "Unauthorized")]
     Unauthorized(String),
 }

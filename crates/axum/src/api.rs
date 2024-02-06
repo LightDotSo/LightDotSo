@@ -34,11 +34,11 @@ use crate::{
     constants::SESSION_COOKIE_ID,
     handle_error,
     routes::{
-        activity, asset_change, auth, check, configuration, feedback, health, interpretation,
-        interpretation_action, invite_code, notification, owner, paymaster, paymaster_operation,
-        portfolio, protocol, protocol_group, queue, signature, simplehash, simulation, socket,
-        support_request, token, token_group, token_price, transaction, user, user_operation,
-        wallet, wallet_billing, wallet_features, wallet_settings,
+        activity, asset_change, auth, chain, check, configuration, feedback, health,
+        interpretation, interpretation_action, invite_code, notification, owner, paymaster,
+        paymaster_operation, portfolio, protocol, protocol_group, queue, signature, simplehash,
+        simulation, socket, support_request, token, token_group, token_price, transaction, user,
+        user_operation, wallet, wallet_billing, wallet_features, wallet_settings,
     },
     sessions::{authenticated, RedisStore},
     state::AppState,
@@ -92,6 +92,9 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(auth::nonce::AuthNonce),
         schemas(auth::session::AuthSession),
         schemas(auth::verify::AuthVerifyCreateRequestParams),
+        schemas(chain::error::ChainError),
+        schemas(chain::types::Chain),
+        schemas(chain::update::ChainUpdateRequestParams),
         schemas(configuration::error::ConfigurationError),
         schemas(configuration::types::Configuration),
         schemas(configuration::types::ConfigurationOwner),
@@ -190,6 +193,10 @@ use utoipa_swagger_ui::SwaggerUi;
         auth::v1_auth_verify_handler,
         check::handler,
         health::handler,
+        chain::v1_chain_create_handler,
+        chain::v1_chain_get_handler,
+        chain::v1_chain_list_handler,
+        chain::v1_chain_update_handler,
         configuration::v1_configuration_get_handler,
         configuration::v1_configuration_list_handler,
         feedback::v1_feedback_create_handler,
@@ -265,6 +272,7 @@ use utoipa_swagger_ui::SwaggerUi;
         (name = "activity", description = "Activity API"),
         (name = "asset_change", description = "Asset Change API"),
         (name = "auth", description = "Auth API"),
+        (name = "chain", description = "Chain API"),
         (name = "configuration", description = "Configuration API"),
         (name = "check", description = "Check API"),
         (name = "feedback", description = "Feedback API"),
@@ -393,6 +401,7 @@ pub async fn start_api_server() -> Result<()> {
         .merge(activity::router())
         .merge(asset_change::router())
         .merge(auth::router())
+        .merge(chain::router())
         .merge(configuration::router())
         .merge(check::router())
         .merge(feedback::router())
