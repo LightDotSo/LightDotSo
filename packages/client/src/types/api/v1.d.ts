@@ -73,6 +73,34 @@ export interface paths {
      */
     post: operations["v1_auth_verify_handler"];
   };
+  "/chain/create": {
+    /**
+     * Create a chain.
+     * @description Create a chain.
+     */
+    post: operations["v1_chain_create_handler"];
+  };
+  "/chain/get": {
+    /**
+     * Get a protocol group
+     * @description Get a protocol group
+     */
+    get: operations["v1_chain_get_handler"];
+  };
+  "/chain/list": {
+    /**
+     * Returns a list of protocol groups.
+     * @description Returns a list of protocol groups.
+     */
+    get: operations["v1_chain_list_handler"];
+  };
+  "/chain/update": {
+    /**
+     * Update a chain.
+     * @description Update a chain.
+     */
+    put: operations["v1_chain_update_handler"];
+  };
   "/check": {
     /**
      * Check if the server is running.
@@ -407,7 +435,7 @@ export interface paths {
      * Update a token.
      * @description Update a token.
      */
-    post: operations["v1_token_update_handler"];
+    put: operations["v1_token_update_handler"];
   };
   "/token_price/get": {
     /**
@@ -667,6 +695,33 @@ export interface components {
     AuthVerifyCreateRequestParams: {
       message: string;
       signature: string;
+    };
+    /** @description Chain root type. */
+    Chain: {
+      /**
+       * Format: int64
+       * @description The id of the protocol group.
+       */
+      id: number;
+    };
+    /** @description Chain errors */
+    ChainError: OneOf<[{
+      /** @description Chain query error. */
+      BadRequest: string;
+    }, {
+      /** @description Chain not found by id. */
+      NotFound: string;
+    }, {
+      /** @description Chain unauthorized. */
+      Unauthorized: string;
+    }]>;
+    ChainUpdateRequestParams: {
+      /**
+       * @description The name of the chain.
+       * @default Chain
+       * @example My Chain
+       */
+      name?: string | null;
     };
     /** @description Configuration root type. */
     Configuration: {
@@ -1120,6 +1175,9 @@ export interface components {
     }, {
       /** @description Token not found by id. */
       NotFound: string;
+    }, {
+      /** @description Unauthorized token access. */
+      Unauthorized: string;
     }]>;
     /** @description TokenGroup root type. */
     TokenGroup: {
@@ -1185,8 +1243,8 @@ export interface components {
     TokenUpdateRequestParams: {
       /**
        * @description The name of the wallet.
-       * @default My Wallet
-       * @example My Wallet
+       * @default My Token
+       * @example My Token
        */
       name?: string | null;
     };
@@ -1775,6 +1833,126 @@ export interface operations {
       500: {
         content: {
           "application/json": components["schemas"]["AuthError"];
+        };
+      };
+    };
+  };
+  /**
+   * Create a chain.
+   * @description Create a chain.
+   */
+  v1_chain_create_handler: {
+    parameters: {
+      query: {
+        /** @description The id of the chain id to createfor. */
+        id: number;
+        /** @description The name of the chain. */
+        name: string;
+        /** @description A boolean value to indicate if the chain is testnet. */
+        is_testnet: boolean;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ChainCreateRequestParams"];
+      };
+    };
+    responses: {
+      /** @description Chain created successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Chain"];
+        };
+      };
+      /** @description Chain internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["ChainError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a protocol group
+   * @description Get a protocol group
+   */
+  v1_chain_get_handler: {
+    parameters: {
+      query: {
+        /** @description The chain id to query for. */
+        id: number;
+      };
+    };
+    responses: {
+      /** @description Protocola group returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Chain"];
+        };
+      };
+      /** @description Protocola group not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["ChainError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of protocol groups.
+   * @description Returns a list of protocol groups.
+   */
+  v1_chain_list_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first protocol group to return. */
+        offset?: number | null;
+        /** @description The maximum number of protocol groups to return. */
+        limit?: number | null;
+      };
+    };
+    responses: {
+      /** @description Protocol groups returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Chain"][];
+        };
+      };
+      /** @description Protocol group bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["ChainError"];
+        };
+      };
+    };
+  };
+  /**
+   * Update a chain.
+   * @description Update a chain.
+   */
+  v1_chain_update_handler: {
+    parameters: {
+      query: {
+        /** @description The id of the chain id to updatefor. */
+        id: number;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ChainUpdateRequestParams"];
+      };
+    };
+    responses: {
+      /** @description Chain updated successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Chain"];
+        };
+      };
+      /** @description Chain internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["ChainError"];
         };
       };
     };

@@ -22,7 +22,10 @@ pub(crate) mod update;
 
 use crate::state::AppState;
 use autometrics::autometrics;
-use axum::{routing::get, Router};
+use axum::{
+    routing::{get, post, put},
+    Router,
+};
 
 pub(crate) use create::{__path_v1_chain_create_handler, v1_chain_create_handler};
 pub(crate) use get::{__path_v1_chain_get_handler, v1_chain_get_handler};
@@ -36,8 +39,8 @@ pub(crate) use update::{__path_v1_chain_update_handler, v1_chain_update_handler}
 #[autometrics]
 pub(crate) fn router() -> Router<AppState> {
     Router::new()
-        .route("/chain/create", get(v1_chain_create_handler))
+        .route("/chain/create", post(v1_chain_create_handler))
         .route("/chain/get", get(v1_chain_get_handler))
         .route("/chain/list", get(v1_chain_list_handler))
-        .route("/chain/update", get(v1_chain_update_handler))
+        .route("/chain/update", put(v1_chain_update_handler))
 }
