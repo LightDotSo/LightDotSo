@@ -243,7 +243,7 @@ export {
 } from "./components/timeline";
 export { Tabs, TabsList, TabsTrigger, TabsContent } from "./components/tabs";
 export { Textarea } from "./components/textarea";
-export { toast, Toaster } from "./components/toast";
+export { toast, toastMinimalLoading, Toaster } from "./components/toast";
 export { Toggle, toggleVariants } from "./components/toggle";
 export { ToggleGroup, ToggleGroupItem } from "./components/toggle-group";
 export {

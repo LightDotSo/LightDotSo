@@ -18,6 +18,7 @@ import type { ReactNode } from "react";
 import type { ExternalToast } from "sonner";
 import { toast } from "sonner";
 import { Button } from "./button";
+import { toastMinimalLoading } from "./toast";
 
 // -----------------------------------------------------------------------------
 // Components
@@ -158,4 +159,17 @@ export const Close: Story = {
       },
     },
   },
+};
+export const Minimal: Story = {
+  render: () => (
+    <Button
+      variant="outline"
+      onClick={() => {
+        toastMinimalLoading();
+      }}
+    >
+      Minimal
+    </Button>
+  ),
+  args: {},
 };
