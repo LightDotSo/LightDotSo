@@ -39,6 +39,7 @@ use lightdotso_kafka::{
     },
 };
 use lightdotso_notifier::config::NotifierArgs;
+use lightdotso_polling::config::PollingArgs;
 use lightdotso_tracing::tracing::{info, warn};
 use rdkafka::{
     consumer::{stream_consumer::StreamConsumer, CommitMode, Consumer as KafkaConsumer},
@@ -87,8 +88,14 @@ impl Consumer {
         // Parse the command line arguments
         let args = IndexerArgs::parse();
 
+        // Parse the polling command line arguments
+        let polling_args = PollingArgs::parse();
+
         // Parse the notifer command line arguments
         let notifier_args = NotifierArgs::parse();
+
+        // Create the poller
+        let poller = polling_args.create(0).await?;
 
         // Create the indexer
         let indexer = args.create().await;
@@ -169,7 +176,7 @@ impl Consumer {
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         topic if topic == USER_OPERATION.to_string() => {
-                            let _ = user_operation_consumer(&m, &notifier).await;
+                            let _ = user_operation_consumer(&m, &poller).await;
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         _ => {

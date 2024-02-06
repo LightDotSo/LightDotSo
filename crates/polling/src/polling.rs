@@ -43,7 +43,8 @@ use lightdotso_graphql::{
     polling::{
         min_block::run_min_block_query,
         user_operations::{
-            run_user_operations_query, BigInt, GetUserOperationsQueryVariables, UserOperation,
+            run_user_operation_query, run_user_operations_query, BigInt,
+            GetUserOperationQueryVariables, GetUserOperationsQueryVariables, UserOperation,
         },
     },
     traits::UserOperationConstruct,
@@ -163,6 +164,26 @@ impl Polling {
         }
     }
 
+    /// Run a single user operation query
+    /// Get the user operation by the given index
+    #[autometrics]
+    pub async fn run_uop(&self, hash: H256) -> Result<()> {
+        // Get the user operation by the given hash.
+        let user_operation = self.poll_uop(hash).await;
+
+        // If the user operation is found, index the event.
+        if let Ok(Some(op)) = user_operation {
+            info!(
+                "User Operation found, chain_id: {} index: {} user_operation_event: {:?} ",
+                self.chain_id, op.index.0, op.user_operation_event
+            );
+
+            let _ = self.index_uop(&op).await;
+        }
+
+        Ok(())
+    }
+
     /// Get the min block
     #[autometrics]
     async fn get_min_block(&self) -> Result<i32> {
@@ -188,6 +209,60 @@ impl Polling {
         }
 
         Ok(0)
+    }
+
+    /// Index the event
+    #[autometrics]
+    async fn index_uop(&self, op: &UserOperation) -> Result<()> {
+        // Create to db if the operation has a successful event.
+        if let Some(user_operation_event) = &op.user_operation_event {
+            // Log the operation along with the chain id.
+            info!(
+                "User Operation found, chain_id: {} index: {} user_operation_event: {:?} ",
+                self.chain_id, op.index.0, user_operation_event,
+            );
+
+            // Add the wallet to the cache.
+            if self.redis_client.is_some() {
+                let _ = self.add_to_wallets(op);
+            }
+
+            // Attempt to create the wallet in the db.
+            // (Fail if the wallet already exists)
+            info!("db_try_create_wallet");
+            let res = self.db_try_create_wallet(op).await;
+            if res.is_err() {
+                error!("db_try_create_wallet error: {:?}", res);
+            }
+
+            // Attempt to create the user operation in the db.
+            info!("db_upsert_transaction_with_log_receipt");
+            let res = self.db_upsert_transaction_with_log_receipt(op.clone()).await;
+            if res.is_err() {
+                error!("db_upsert_transaction_with_log_receipt error: {:?}", res);
+            }
+
+            // Create the user operation in the db.
+            info!("db_upsert_user_operation");
+            let res = self.db_upsert_user_operation(op.clone()).await;
+            if res.is_err() {
+                error!("db_upsert_user_operation error: {:?}", res);
+            }
+
+            // Upsert the user operation logs in the db.
+            info!("db_upsert_user_operation_logs");
+            let res = self.db_upsert_user_operation_logs(op.clone()).await;
+            if res.is_err() {
+                error!("db_upsert_user_operation_logs error: {:?}", res);
+            }
+
+            // Send the tx queue on all modes.
+            if self.kafka_client.is_some() && self.provider.is_some() {
+                let _ = self.send_tx_queue(op.block_number.0.parse().unwrap()).await;
+            }
+        }
+
+        Ok(())
     }
 
     /// Poll the task
@@ -237,53 +312,8 @@ impl Polling {
             // If the operations is not empty, loop through the operations.
             if !user_operations.is_empty() {
                 for (index, op) in user_operations.iter().enumerate() {
-                    // Create to db if the operation has a successful event.
-                    if let Some(user_operation_event) = &op.user_operation_event {
-                        // Log the operation along with the chain id.
-                        info!(
-                            "User Operation found, chain_id: {} index: {} user_operation_event: {:?} ",
-                            self.chain_id, op.index.0, user_operation_event,
-                        );
-
-                        // Add the wallet to the cache.
-                        if self.redis_client.is_some() {
-                            let _ = self.add_to_wallets(op);
-                        }
-
-                        // Attempt to create the wallet in the db.
-                        // (Fail if the wallet already exists)
-                        info!("db_try_create_wallet");
-                        let res = self.db_try_create_wallet(op).await;
-                        if res.is_err() {
-                            error!("db_try_create_wallet error: {:?}", res);
-                        }
-
-                        // Attempt to create the user operation in the db.
-                        info!("db_upsert_transaction_with_log_receipt");
-                        let res = self.db_upsert_transaction_with_log_receipt(op.clone()).await;
-                        if res.is_err() {
-                            error!("db_upsert_transaction_with_log_receipt error: {:?}", res);
-                        }
-
-                        // Create the user operation in the db.
-                        info!("db_upsert_user_operation");
-                        let res = self.db_upsert_user_operation(op.clone()).await;
-                        if res.is_err() {
-                            error!("db_upsert_user_operation error: {:?}", res);
-                        }
-
-                        // Upsert the user operation logs in the db.
-                        info!("db_upsert_user_operation_logs");
-                        let res = self.db_upsert_user_operation_logs(op.clone()).await;
-                        if res.is_err() {
-                            error!("db_upsert_user_operation_logs error: {:?}", res);
-                        }
-
-                        // Send the tx queue on all modes.
-                        if self.kafka_client.is_some() && self.provider.is_some() {
-                            let _ = self.send_tx_queue(op.block_number.0.parse().unwrap()).await;
-                        }
-                    }
+                    // Index the event.
+                    self.index_uop(op).await?;
 
                     // Return the minimum block number for the last operation.
                     if index == user_operations.len() - 1 {
@@ -300,6 +330,38 @@ impl Polling {
         }
 
         Ok(min_block)
+    }
+
+    /// Poll a single user operation
+    // #[autometrics]
+    async fn poll_uop(&self, hash: H256) -> Result<Option<UserOperation>> {
+        // Escape the static lifetime.
+        let url = self.url.clone();
+
+        // Get the user operation query from the graphql api.
+        let user_operation_res = tokio::task::spawn_blocking(move || {
+            {
+                || {
+                    run_user_operation_query(
+                        url.clone(),
+                        GetUserOperationQueryVariables { id: &format!("{:?}", hash) },
+                    )
+                }
+            }
+            .retry(&ExponentialBuilder::default())
+            .call()
+        })
+        .await?;
+
+        // Get the data from the response.
+        let data = user_operation_res?.data;
+
+        // If can parse the data, return the user operation.
+        if let Some(d) = data {
+            return Ok(d.user_operation);
+        }
+
+        Ok(None)
     }
 
     /// Create a new operation in the db

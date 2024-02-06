@@ -19,6 +19,19 @@ use eyre::Result;
 mod schema {}
 
 #[derive(cynic::QueryVariables, Debug)]
+pub struct GetUserOperationQueryVariables<'a> {
+    pub id: &'a str,
+}
+
+#[derive(cynic::QueryFragment, Debug)]
+#[cynic(graphql_type = "Query", variables = "GetUserOperationQueryVariables")]
+pub struct GetUserOperationQuery {
+    #[arguments(id: $id)]
+    pub user_operation: Option<UserOperation>,
+    pub _meta: Option<Meta>,
+}
+
+#[derive(cynic::QueryVariables, Debug)]
 pub struct GetUserOperationsQueryVariables {
     pub min_block: BigInt,
     pub min_index: BigInt,
@@ -290,6 +303,25 @@ pub struct BigInt(pub String);
 #[derive(cynic::Scalar, Debug, Clone)]
 pub struct Bytes(pub String);
 
+pub fn build_user_operation_query(
+    vars: GetUserOperationQueryVariables,
+) -> cynic::Operation<GetUserOperationQuery, GetUserOperationQueryVariables> {
+    use cynic::QueryBuilder;
+
+    GetUserOperationQuery::build(vars)
+}
+
+pub fn run_user_operation_query(
+    url: String,
+    vars: GetUserOperationQueryVariables,
+) -> Result<cynic::GraphQlResponse<GetUserOperationQuery>> {
+    use cynic::http::ReqwestBlockingExt;
+
+    let query = build_user_operation_query(vars);
+
+    Ok(reqwest::blocking::Client::new().post(url).run_graphql(query)?)
+}
+
 pub fn build_user_operations_query(
     vars: GetUserOperationsQueryVariables,
 ) -> cynic::Operation<GetUserOperationsQuery, GetUserOperationsQueryVariables> {
@@ -326,6 +358,10 @@ mod test {
         });
 
         insta::assert_snapshot!(query.query);
+
+        let query = build_user_operation_query(GetUserOperationQueryVariables { id: "0x1234" });
+
+        insta::assert_snapshot!(query.query);
     }
 
     #[test]
@@ -338,6 +374,19 @@ mod test {
             },
         )
         .unwrap();
+        if result.errors.is_some() {
+            assert_eq!(result.errors.unwrap().len(), 0);
+        }
+
+        let result = run_user_operation_query(
+            get_graphql_url(137).unwrap(),
+            GetUserOperationQueryVariables {
+                id: "0x3aa33c2bf5adbafef0a884b90aa412667c97ba3fb2506589771e12898acb2c61",
+            },
+        )
+        .unwrap();
+        println!("{:?}", result);
+
         if result.errors.is_some() {
             assert_eq!(result.errors.unwrap().len(), 0);
         }

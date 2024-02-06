@@ -22,6 +22,7 @@
   lightdotso-kafka = { workspace = true }
   lightdotso-notifier = { workspace = true }
   lightdotso-opentelemetry = { workspace = true }
+  lightdotso-polling = { workspace = true }
   lightdotso-prisma = { workspace = true }
   lightdotso-tracing = { workspace = true }
   opentelemetry = { workspace = true }

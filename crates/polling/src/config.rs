@@ -42,6 +42,21 @@ pub struct PollingArgs {
 }
 
 impl PollingArgs {
+    pub async fn create(&self, chain_id: u64) -> Result<Polling> {
+        Polling::new(
+            &PollingArgs::default(),
+            chain_id,
+            // Only run once
+            0,
+            THE_GRAPH_HOSTED_SERVICE_URLS
+                .get(&chain_id)
+                .ok_or_else(|| eyre!("The graph hosted service url is None"))?
+                .clone(),
+            true,
+        )
+        .await
+    }
+
     #[tokio::main]
     pub async fn run(&self) -> Result<()> {
         // Add info
