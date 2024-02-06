@@ -1488,7 +1488,11 @@ importers:
         specifier: workspace:*
         version: link:../configurations/eslint
 
-  crates: {}
+  crates:
+    dependencies:
+      '@lightdotso/prisma':
+        specifier: workspace:*
+        version: link:../configurations/prisma
 
   fastlane:
     dependencies:

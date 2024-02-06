@@ -16,6 +16,9 @@
     "build": "exit 0",
     "rundler": "cd ../lib/rundler/crates/sim/tracer && yarn install && yarn run build && cp -r dist ~/.cargo/git/checkouts/rundler-afbc6e8113d271a8/b253c48/crates/sim/tracer/dist/"
   },
+  "dependencies": {
+    "@lightdotso/prisma": "workspace:*"
+  },
   "publishConfig": {
     "access": "public"
   }

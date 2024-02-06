@@ -25,7 +25,7 @@ use axum::extract::Json;
 use ethers::{types::Bloom, utils::to_checksum};
 use eyre::Result;
 use lightdotso_contracts::utils::is_testnet;
-use lightdotso_prisma::{log, log_topic, receipt, transaction, wallet};
+use lightdotso_prisma::{chain, log, log_topic, receipt, transaction, wallet};
 use lightdotso_tracing::{
     tracing::{info, info_span, trace},
     tracing_futures::Instrument,
@@ -137,13 +137,13 @@ pub async fn upsert_transaction_with_log_receipt(
                     NaiveDateTime::from_timestamp_opt(timestamp.low_u64() as i64, 0).unwrap(),
                     FixedOffset::east_opt(0).unwrap(),
                 ),
-                chain_id,
                 trace
                     .clone()
                     .map_or(json!({}), |t| serde_json::to_value(t).unwrap_or_else(|_| (json!({})))),
                 format!("{:?}", transaction.hash),
                 transaction.nonce.low_u64() as i64,
                 to_checksum(&transaction.from, None),
+                chain::id::equals(chain_id),
                 transaction_params.clone(),
             ),
             transaction_params.clone(),

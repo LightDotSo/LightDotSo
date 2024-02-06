@@ -29,7 +29,8 @@ use lightdotso_contracts::{
     types::UserOperationWithTransactionAndReceiptLogs, utils::is_testnet,
 };
 use lightdotso_prisma::{
-    log, paymaster, paymaster_operation, transaction, user_operation, wallet, UserOperationStatus,
+    chain, log, paymaster, paymaster_operation, transaction, user_operation, wallet,
+    UserOperationStatus,
 };
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::chrono::{DateTime, NaiveDateTime, Utc};
@@ -52,7 +53,6 @@ pub async fn upsert_user_operation(
         .upsert(
             user_operation::hash::equals(format!("{:?}", uow.hash)),
             user_operation::create(
-                chain_id,
                 to_checksum(&uow.entry_point, None),
                 format!("{:?}", uow.hash),
                 uow.nonce.unwrap_or(0.into()).low_u64() as i64,
@@ -64,6 +64,7 @@ pub async fn upsert_user_operation(
                 uow.max_fee_per_gas.unwrap_or(0.into()).low_u64() as i64,
                 uow.max_priority_fee_per_gas.unwrap_or(0.into()).low_u64() as i64,
                 uow.paymaster_and_data.clone().unwrap_or_else(|| vec![].into()).to_vec(),
+                chain::id::equals(chain_id),
                 wallet::address::equals(to_checksum(&uow.light_wallet, None)),
                 vec![user_operation::signature::set(Some(
                     uow.signature.clone().unwrap_or_else(|| vec![].into()).to_vec(),
@@ -99,7 +100,7 @@ pub async fn upsert_user_operation(
                     paymaster::address_chain_id(to_checksum(&paymaster_address, None), chain_id),
                     paymaster::create(
                         to_checksum(&paymaster_address, None),
-                        chain_id,
+                        chain::id::equals(chain_id),
                         vec![paymaster::user_operations::connect(vec![
                             user_operation::hash::equals(format!("{:?}", uow.hash)),
                         ])],

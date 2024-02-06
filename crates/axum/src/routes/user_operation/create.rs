@@ -40,17 +40,8 @@ use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
 use lightdotso_prisma::{
-    configuration,
-    // log,
-    owner,
-    paymaster,
-    paymaster_operation,
-    // receipt,
-    user_operation,
-    wallet,
-    ActivityEntity,
-    ActivityOperation,
-    SignatureProcedure,
+    chain, configuration, owner, paymaster, paymaster_operation, user_operation, wallet,
+    ActivityEntity, ActivityOperation, SignatureProcedure,
 };
 use lightdotso_solutions::{signature::recover_ecdsa_signature, utils::render_subdigest};
 use lightdotso_tracing::tracing::{error, info};
@@ -300,7 +291,11 @@ pub(crate) async fn v1_user_operation_create_handler(
             .paymaster()
             .upsert(
                 paymaster::address_chain_id(to_checksum(&decded_paymaster_address, None), chain_id),
-                paymaster::create(to_checksum(&decded_paymaster_address, None), chain_id, vec![]),
+                paymaster::create(
+                    to_checksum(&decded_paymaster_address, None),
+                    chain::id::equals(chain_id),
+                    vec![],
+                ),
                 vec![],
             )
             .exec()
@@ -344,7 +339,6 @@ pub(crate) async fn v1_user_operation_create_handler(
                 let user_operation = client
                     .user_operation()
                     .create(
-                        chain_id,
                         "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789".parse()?,
                         user_operation.hash,
                         user_operation.nonce,
@@ -356,6 +350,7 @@ pub(crate) async fn v1_user_operation_create_handler(
                         user_operation.max_fee_per_gas,
                         user_operation.max_priority_fee_per_gas,
                         user_operation.paymaster_and_data.hex_to_bytes()?,
+                        chain::id::equals(chain_id),
                         wallet::address::equals(user_operation.sender),
                         params,
                     )

@@ -16,7 +16,7 @@
 use ethers::utils::to_checksum;
 use eyre::Result;
 use lightdotso_kafka::types::portfolio::PortfolioMessage;
-use lightdotso_prisma::{wallet, wallet_balance, PrismaClient};
+use lightdotso_prisma::{chain, wallet, wallet_balance, PrismaClient};
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::{raw, PrismaValue};
 use rdkafka::{message::BorrowedMessage, Message};
@@ -80,7 +80,7 @@ pub async fn portfolio_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
                         .wallet_balance()
                         .create(
                             latest_portfolio_balance,
-                            0,
+                            chain::id::equals(0),
                             wallet::address::equals(to_checksum(&payload.address, None)),
                             vec![wallet_balance::is_latest::set(true)],
                         )

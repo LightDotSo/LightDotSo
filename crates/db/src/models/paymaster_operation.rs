@@ -20,7 +20,7 @@ use autometrics::autometrics;
 use ethers::utils::to_checksum;
 use eyre::Result;
 use lightdotso_prisma::{
-    paymaster, paymaster_operation, user_operation, wallet, UserOperationStatus,
+    chain, paymaster, paymaster_operation, user_operation, wallet, UserOperationStatus,
 };
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::{
@@ -49,7 +49,11 @@ pub async fn create_paymaster_operation(
         .paymaster()
         .upsert(
             paymaster::address_chain_id(to_checksum(&paymaster_address, None), chain_id),
-            paymaster::create(to_checksum(&paymaster_address, None), chain_id, vec![]),
+            paymaster::create(
+                to_checksum(&paymaster_address, None),
+                chain::id::equals(chain_id),
+                vec![],
+            ),
             vec![],
         )
         .exec()
