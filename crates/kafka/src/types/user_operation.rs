@@ -35,7 +35,7 @@ pub struct UserOperationMessage {
 impl ToJson for UserOperationMessage {
     fn to_json(&self) -> String {
         let msg_value: Value = json!({
-            "user_operation_hash": format!("{:?}", self.hash),
+            "hash": format!("{:?}", self.hash),
             "chain_id": self.chain_id,
         });
 
@@ -68,7 +68,7 @@ mod tests {
     // Test serialization and deserialization
     #[test]
     fn test_serialization_deserialization() -> Result<()> {
-        let original_msg = UserOperationMessage { hash: h256_mock(), chain_id: 2u64 };
+        let original_msg = UserOperationMessage { hash: h256_mock(), chain_id: 137 };
 
         let serialized = serde_json::to_string(&original_msg)?;
         let deserialized: UserOperationMessage = serde_json::from_str(&serialized)?;
