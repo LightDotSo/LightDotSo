@@ -31,7 +31,7 @@ pub async fn user_operation_consumer(msg: &BorrowedMessage<'_>, poller: &Polling
 
         info!("payload: {:?}", payload);
 
-        poller.run_uop(payload.hash).await?;
+        poller.run_uop(payload.chain_id, payload.hash).await?;
     }
 
     Ok(())
