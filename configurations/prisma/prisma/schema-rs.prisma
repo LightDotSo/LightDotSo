@@ -190,19 +190,16 @@ model UserNotificationSettings {
   userId String @unique
 
   // ---------------------------------------------------------------------------
-  // None-to-none
+  // Many-to-many
   // ---------------------------------------------------------------------------
 
-  notificationSettings   NotificationSettings? @relation(fields: [notificationSettingsId], references: [id])
-  notificationSettingsId String?
-
+  notificationSettings NotificationSettings[]
   // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
 
   // Relations
   @@index([userId])
-  @@index([notificationSettingsId])
 }
 
 // -----------------------------------------------------------------------------
@@ -413,11 +410,10 @@ model WalletNotificationSettings {
   walletAddress String
 
   // ---------------------------------------------------------------------------
-  // None-to-none
+  // Many-to-many
   // ---------------------------------------------------------------------------
 
-  notificationSettings   NotificationSettings? @relation(fields: [notificationSettingsId], references: [id])
-  notificationSettingsId String?
+  notificationSettings NotificationSettings[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -428,7 +424,6 @@ model WalletNotificationSettings {
   // Relations
   @@index([userId])
   @@index([walletAddress])
-  @@index([notificationSettingsId])
 }
 
 // -----------------------------------------------------------------------------
@@ -2091,6 +2086,7 @@ model Metrics {
 // -----------------------------------------------------------------------------
 // NotificationSettings
 // -----------------------------------------------------------------------------
+
 model NotificationSettings {
   // ---------------------------------------------------------------------------
   // Core
@@ -2101,9 +2097,59 @@ model NotificationSettings {
   updatedAt DateTime @updatedAt
 
   // ---------------------------------------------------------------------------
-  // Many-to-many
+  // Fields
   // ---------------------------------------------------------------------------
 
-  userNotificationSettings   UserNotificationSettings[]
-  walletNotificationSettings WalletNotificationSettings[]
+  entity    NotificationEntity
+  operation NotificationOperation
+  type      NotificationType
+
+  isEnabled Boolean @default(true)
+
+  // ---------------------------------------------------------------------------
+  // None-to-one
+  // ---------------------------------------------------------------------------
+
+  userNotificationSettings     UserNotificationSettings?   @relation(fields: [userNotificationSettingsId], references: [id])
+  userNotificationSettingsId   String?
+  walletNotificationSettings   WalletNotificationSettings? @relation(fields: [walletNotificationSettingsId], references: [id])
+  walletNotificationSettingsId String?
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
+  // Relations
+  @@index([userNotificationSettingsId])
+  @@index([walletNotificationSettingsId])
+}
+
+enum NotificationEntity {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
+
+  INVITE_CODE
+  TRANSACTION
+  USER_OPERATION
+}
+
+enum NotificationOperation {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
+
+  CREATE
+  UPDATE
+  DELETE
+}
+
+enum NotificationType {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
+
+  EMAIL
+  PUSH
+  SMS
 }
