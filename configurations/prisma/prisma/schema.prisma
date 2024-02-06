@@ -209,11 +209,19 @@ model UserNotificationSettings {
   userId String @unique
 
   // ---------------------------------------------------------------------------
+  // None-to-none
+  // ---------------------------------------------------------------------------
+
+  notificationSettings   NotificationSettings? @relation(fields: [notificationSettingsId], references: [id])
+  notificationSettingsId String?
+
+  // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
 
   // Relations
   @@index([userId])
+  @@index([notificationSettingsId])
 }
 
 // -----------------------------------------------------------------------------
@@ -424,6 +432,13 @@ model WalletNotificationSettings {
   walletAddress String
 
   // ---------------------------------------------------------------------------
+  // None-to-none
+  // ---------------------------------------------------------------------------
+
+  notificationSettings   NotificationSettings? @relation(fields: [notificationSettingsId], references: [id])
+  notificationSettingsId String?
+
+  // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
 
@@ -432,6 +447,7 @@ model WalletNotificationSettings {
   // Relations
   @@index([userId])
   @@index([walletAddress])
+  @@index([notificationSettingsId])
 }
 
 // -----------------------------------------------------------------------------
@@ -2089,4 +2105,24 @@ model Metrics {
 
   // Relations
   @@index([chainId])
+}
+
+// -----------------------------------------------------------------------------
+// NotificationSettings
+// -----------------------------------------------------------------------------
+model NotificationSettings {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
+  userNotificationSettings   UserNotificationSettings[]
+  walletNotificationSettings WalletNotificationSettings[]
 }

@@ -40,7 +40,7 @@ use utoipa::IntoParams;
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct PostQuery {
-    /// The id of the chain id to createfor.
+    /// The id of the chain id to create for.
     id: i64,
     /// The name of the chain.
     name: String,
