@@ -18,3 +18,4 @@ pub mod covalent;
 pub mod interpretation;
 pub mod portfolio;
 pub mod transaction;
+pub mod user_operation;
