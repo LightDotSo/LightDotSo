@@ -21,18 +21,17 @@ use axum::Json;
 use backon::{BlockingRetryable, ExponentialBuilder, Retryable};
 use chrono::Timelike;
 use ethers::{
-    prelude::{Http, Provider, ProviderError},
-    providers::Middleware,
+    prelude::Provider,
+    providers::{Http, Middleware},
     types::{Block, H256},
     utils::to_checksum,
 };
-use eyre::Result;
+use eyre::{eyre, Result};
 use lightdotso_contracts::{
     provider::get_provider, types::UserOperationWithTransactionAndReceiptLogs,
 };
 use lightdotso_db::{
     db::create_client,
-    error::DbError,
     models::{
         transaction::upsert_transaction_with_log_receipt,
         user_operation::{upsert_user_operation, upsert_user_operation_logs},
@@ -63,13 +62,21 @@ use std::{sync::Arc, time::Duration};
 #[allow(dead_code)]
 #[derive(Clone)]
 pub struct Polling {
+    /// The chain id to poll for
     chain_id: u64,
+    /// The sleep seconds that is configured
     sleep_seconds: u64,
+    /// The url to poll
     url: String,
+    /// The mode to poll in
     live: bool,
+    /// The db client
     db_client: Arc<PrismaClient>,
+    /// The redis client
     redis_client: Option<Arc<Client>>,
+    /// The kafka client
     kafka_client: Option<Arc<FutureProducer>>,
+    /// The provider
     provider: Option<Arc<Provider<Http>>>,
 }
 
@@ -369,31 +376,28 @@ impl Polling {
     pub async fn db_upsert_user_operation(
         &self,
         op: UserOperation,
-    ) -> Result<Json<lightdotso_prisma::user_operation::Data>, DbError> {
+    ) -> Result<Json<lightdotso_prisma::user_operation::Data>> {
         let db_client = self.db_client.clone();
         let chain_id = self.chain_id;
         let uoc = UserOperationConstruct { chain_id: chain_id as i64, user_operation: op.clone() };
         let uow: UserOperationWithTransactionAndReceiptLogs = uoc.into();
 
-        { || upsert_user_operation(db_client.clone(), uow.clone(), chain_id as i64) }
+        Ok({ || upsert_user_operation(db_client.clone(), uow.clone(), chain_id as i64) }
             .retry(&ExponentialBuilder::default())
-            .await
+            .await?)
     }
 
     /// Upserts user operation logs in db
     #[autometrics]
-    pub async fn db_upsert_user_operation_logs(
-        &self,
-        op: UserOperation,
-    ) -> Result<Json<()>, DbError> {
+    pub async fn db_upsert_user_operation_logs(&self, op: UserOperation) -> Result<Json<()>> {
         let db_client = self.db_client.clone();
         let chain_id = self.chain_id;
         let uoc = UserOperationConstruct { chain_id: chain_id as i64, user_operation: op.clone() };
         let uow: UserOperationWithTransactionAndReceiptLogs = uoc.into();
 
-        { || upsert_user_operation_logs(db_client.clone(), uow.clone()) }
+        Ok({ || upsert_user_operation_logs(db_client.clone(), uow.clone()) }
             .retry(&ExponentialBuilder::default())
-            .await
+            .await?)
     }
 
     /// Create a new transaction w/ the
@@ -401,16 +405,16 @@ impl Polling {
     pub async fn db_upsert_transaction_with_log_receipt(
         &self,
         op: UserOperation,
-    ) -> Result<Json<lightdotso_prisma::transaction::Data>, DbError> {
+    ) -> Result<Json<lightdotso_prisma::transaction::Data>> {
         let db_client = self.db_client.clone();
         let chain_id = self.chain_id;
 
         let uoc = UserOperationConstruct { chain_id: chain_id as i64, user_operation: op.clone() };
         let uow: UserOperationWithTransactionAndReceiptLogs = uoc.into();
 
-        let block = self.get_block(uow.transaction.block_number.unwrap()).await.unwrap().unwrap();
+        let block = self.get_block(uow.transaction.block_number.unwrap()).await?.unwrap();
 
-        {
+        Ok({
             || {
                 upsert_transaction_with_log_receipt(
                     db_client.clone(),
@@ -425,7 +429,7 @@ impl Polling {
             }
         }
         .retry(&ExponentialBuilder::default())
-        .await
+        .await?)
     }
 
     /// Attempt to create a new operation in the db
@@ -433,7 +437,7 @@ impl Polling {
     pub async fn db_try_create_wallet(
         &self,
         user_operation: &UserOperation,
-    ) -> Result<Json<lightdotso_prisma::wallet::Data>, DbError> {
+    ) -> Result<Json<lightdotso_prisma::wallet::Data>> {
         let db_client = self.db_client.clone();
         let chain_id = self.chain_id;
 
@@ -442,7 +446,7 @@ impl Polling {
                 let (_, salt) =
                     get_image_hash_salt_from_init_code(init_code.clone().0.into_bytes()).unwrap();
 
-                return {
+                return Ok({
                     || {
                         upsert_wallet_with_configuration(
                             db_client.clone(),
@@ -454,52 +458,43 @@ impl Polling {
                     }
                 }
                 .retry(&ExponentialBuilder::default())
-                .await;
+                .await?);
             }
         }
 
         // Return not found if the init code is not found.
-        Err(DbError::NotFound)
+        Err(eyre!("init_code not found"))
     }
 
     /// Add a new wallet in the cache
     #[autometrics]
-    pub fn add_to_wallets(
-        &self,
-        user_operation: &UserOperation,
-    ) -> Result<(), lightdotso_redis::redis::RedisError> {
+    pub fn add_to_wallets(&self, user_operation: &UserOperation) -> Result<()> {
         let address = user_operation.light_wallet.address.0.parse().unwrap();
         let client = self.redis_client.clone().unwrap();
         let con = client.get_connection();
         if let Ok(mut con) = con {
-            { || add_to_wallets(&mut con, to_checksum(&address, None).as_str()) }
+            let _ = { || add_to_wallets(&mut con, to_checksum(&address, None).as_str()) }
                 .retry(&ExponentialBuilder::default())
-                .call()
+                .call();
         } else {
             error!("Redis connection error, {:?}", con.err());
-            Ok(())
         }
+        Ok(())
     }
 
     /// Get the block logs for the given block number
     #[autometrics]
-    pub async fn get_block(
-        &self,
-        block_number: ethers::types::U64,
-    ) -> Result<Option<Block<H256>>, ProviderError> {
+    pub async fn get_block(&self, block_number: ethers::types::U64) -> Result<Option<Block<H256>>> {
         let client = self.provider.clone().unwrap();
         info!("get_block, chain_id: {} block_number: {}", self.chain_id, block_number);
 
         // Get the logs
-        { || client.get_block(block_number) }.retry(&ExponentialBuilder::default()).await
+        Ok({ || client.get_block(block_number) }.retry(&ExponentialBuilder::default()).await?)
     }
 
     /// Add a new tx in the queue
     #[autometrics]
-    pub async fn send_tx_queue(
-        &self,
-        block_number: i32,
-    ) -> Result<(), lightdotso_kafka::rdkafka::error::KafkaError> {
+    pub async fn send_tx_queue(&self, block_number: i32) -> Result<()> {
         let client = self.kafka_client.clone().unwrap();
         let provider = self.provider.clone().unwrap();
         let chain_id = self.chain_id;
