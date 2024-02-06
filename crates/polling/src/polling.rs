@@ -170,20 +170,27 @@ impl Polling {
     /// Get the user operation by the given index
     #[autometrics]
     pub async fn run_uop(&self, chain_id: u64, hash: H256) -> Result<()> {
+        let chain = self.chain_mapping.get(&chain_id);
+
         // Get the url from the chain mapping.
-        let url = self.chain_mapping.get(&chain_id).unwrap().get("graph").unwrap();
+        let maybe_url = match chain {
+            Some(urls) => urls.get("graph").or(urls.get("satsuma")),
+            None => None,
+        };
 
-        // Get the user operation by the given hash.
-        let user_operation = self.poll_uop(url.to_string(), hash).await;
+        if let Some(url) = maybe_url {
+            // Get the user operation by the given hash.
+            let user_operation = self.poll_uop(url.to_string(), hash).await;
 
-        // If the user operation is found, index the event.
-        if let Ok(Some(op)) = user_operation {
-            info!(
-                "User Operation found, chain_id: {} index: {} user_operation_event: {:?} ",
-                chain_id, op.index.0, op.user_operation_event
-            );
+            // If the user operation is found, index the event.
+            if let Ok(Some(op)) = user_operation {
+                info!(
+                    "User Operation found, chain_id: {} index: {} user_operation_event: {:?} ",
+                    chain_id, op.index.0, op.user_operation_event
+                );
 
-            let _ = self.index_uop(chain_id, &op).await;
+                let _ = self.index_uop(chain_id, &op).await;
+            }
         }
 
         Ok(())

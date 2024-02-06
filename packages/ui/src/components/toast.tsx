@@ -19,7 +19,7 @@ import { cn } from "@lightdotso/utils";
 import { cva } from "class-variance-authority";
 import { useTheme } from "next-themes";
 import type { ComponentProps } from "react";
-import { toast, Toaster as SonnerToaster } from "sonner";
+import { toast, Toaster as SonnerToaster, ExternalToast } from "sonner";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -53,6 +53,22 @@ const toastVariants = cva(
   },
 );
 
+const toastMinimalLoadingStyles: ExternalToast = {
+  position: "bottom-left",
+  style: {
+    height: "44px",
+    width: "44px",
+  },
+};
+
+const toastMinimalIntentStyles: ExternalToast = {
+  position: "bottom-left",
+  style: {
+    height: "52px",
+    width: "52px",
+  },
+};
+
 // -----------------------------------------------------------------------------
 // Components
 // -----------------------------------------------------------------------------
@@ -85,20 +101,7 @@ const Toaster = () => {
 };
 
 // -----------------------------------------------------------------------------
-// Utils
-// -----------------------------------------------------------------------------
-
-const toastMinimalLoading = () =>
-  toast.loading(undefined, {
-    position: "bottom-left",
-    style: {
-      height: "44px",
-      width: "44px",
-    },
-  });
-
-// -----------------------------------------------------------------------------
 // Exports
 // -----------------------------------------------------------------------------
 
-export { toast, toastMinimalLoading, Toaster };
+export { toast, toastMinimalLoadingStyles, toastMinimalIntentStyles, Toaster };
