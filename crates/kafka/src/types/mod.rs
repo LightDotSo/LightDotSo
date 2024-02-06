@@ -17,3 +17,4 @@ pub mod activity;
 pub mod covalent;
 pub mod interpretation;
 pub mod portfolio;
+pub mod user_operation;

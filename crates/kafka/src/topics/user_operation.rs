@@ -13,6 +13,26 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod min_block;
-pub mod user_operation;
-pub mod user_operations;
+use crate::{
+    namespace::USER_OPERATION, produce_message, traits::ToJson,
+    types::user_operation::UserOperationMessage,
+};
+use eyre::Result;
+pub use rdkafka;
+use rdkafka::producer::FutureProducer;
+use std::sync::Arc;
+
+// -----------------------------------------------------------------------------
+// Producer
+// -----------------------------------------------------------------------------
+
+/// Produce a message with UserOperation topic.
+pub async fn produce_user_operation_message(
+    producer: Arc<FutureProducer>,
+    msg: &UserOperationMessage,
+) -> Result<()> {
+    let message = msg.to_json();
+
+    produce_message(producer, USER_OPERATION.as_str(), &message, None).await?;
+    Ok(())
+}

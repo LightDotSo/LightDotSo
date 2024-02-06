@@ -69,3 +69,8 @@ lazy_static! {
 lazy_static! {
     pub static ref ERROR_TRANSACTION: String = "error-transaction".to_string();
 }
+
+// The user operation namesapce
+lazy_static! {
+    pub static ref USER_OPERATION: String = "user-operation".to_string();
+}

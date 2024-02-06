@@ -21,3 +21,4 @@ pub mod notification;
 pub mod portfolio;
 pub mod transaction;
 pub mod unknown;
+pub mod user_operation;

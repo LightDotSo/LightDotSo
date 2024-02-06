@@ -23,6 +23,7 @@ use crate::{
         error_transaction::error_transaction_consumer, interpretation::interpretation_consumer,
         notification::notification_consumer, portfolio::portfolio_consumer,
         transaction::transaction_consumer, unknown::unknown_consumer,
+        user_operation::user_operation_consumer,
     },
 };
 use clap::Parser;
@@ -34,7 +35,7 @@ use lightdotso_kafka::{
     namespace::{
         ACTIVITY, COVALENT, ERROR_TRANSACTION, INTERPRETATION, NOTIFICATION, PORTFOLIO,
         RETRY_TRANSACTION, RETRY_TRANSACTION_0, RETRY_TRANSACTION_1, RETRY_TRANSACTION_2,
-        TRANSACTION,
+        TRANSACTION, USER_OPERATION,
     },
 };
 use lightdotso_notifier::config::NotifierArgs;
@@ -165,6 +166,10 @@ impl Consumer {
                         }
                         topic if topic == ERROR_TRANSACTION.to_string() => {
                             let _ = error_transaction_consumer(&m);
+                            let _ = self.consumer.commit_message(&m, CommitMode::Async);
+                        }
+                        topic if topic == USER_OPERATION.to_string() => {
+                            let _ = user_operation_consumer(&m, &notifier).await;
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         _ => {

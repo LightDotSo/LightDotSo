@@ -18,6 +18,7 @@ pub(crate) mod interpretation;
 pub(crate) mod portfolio;
 pub(crate) mod token;
 pub(crate) mod types;
+pub(crate) mod user_operation;
 
 use crate::state::AppState;
 use autometrics::autometrics;
@@ -28,6 +29,9 @@ pub(crate) use interpretation::{
 };
 pub(crate) use portfolio::{__path_v1_queue_portfolio_handler, v1_queue_portfolio_handler};
 pub(crate) use token::{__path_v1_queue_token_handler, v1_queue_token_handler};
+pub(crate) use user_operation::{
+    __path_v1_queue_user_operation_handler, v1_queue_user_operation_handler,
+};
 
 // -----------------------------------------------------------------------------
 // Router
@@ -39,4 +43,5 @@ pub(crate) fn router() -> Router<AppState> {
         .route("/queue/interpretation", post(v1_queue_interpretation_handler))
         .route("/queue/portfolio", post(v1_queue_portfolio_handler))
         .route("/queue/token", post(v1_queue_token_handler))
+        .route("/queue/user_operation", post(v1_queue_user_operation_handler))
 }
