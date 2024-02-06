@@ -26,7 +26,7 @@ pub async fn user_operation_consumer(msg: &BorrowedMessage<'_>, poller: &Polling
 
     // If the payload is valid
     if let Some(Ok(payload)) = payload_opt {
-        // Parse the payload into a JSON object, `PortfolioMessage`
+        // Parse the payload into a JSON object, `UserOperationMessage`
         let payload: UserOperationMessage = serde_json::from_slice(payload.as_bytes())?;
         info!("payload: {:?}", payload);
 

@@ -7,7 +7,13 @@
       "env": [
         "NEXT_PUBLIC_SENTRY_DSN",
         "NEXT_PUBLIC_VERCEL_ENV",
+        "NODE_ENV",
+        "KAFKA_BROKER",
+        "KAFKA_USERNAME",
+        "KAFKA_PASSWORD",
         "SENTRY_DSN",
+        "UPSTASH_REDIS_REST_URL",
+        "UPSTASH_REST_API_TOKEN",
         "VERCEL_ENV"
       ],
       "inputs": ["app/**", "pages/**", "src/**", "next.config.js"],
