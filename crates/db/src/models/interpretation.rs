@@ -21,7 +21,7 @@ use ethers::utils::to_checksum;
 use eyre::Result;
 use lightdotso_interpreter::types::{AssetTokenType, InterpretationResponse};
 use lightdotso_prisma::{
-    asset_change, interpretation, interpretation_action, token, transaction, user_operation,
+    asset_change, chain, interpretation, interpretation_action, token, transaction, user_operation,
     TokenType,
 };
 use lightdotso_tracing::tracing::info;
@@ -71,7 +71,11 @@ pub async fn upsert_interpretation_with_actions(
         // Fails gracefully if the token already exists
         let token_creation = db
             .token()
-            .create(asset_change_param.0, asset_change_param.1, asset_change_param.2)
+            .create(
+                asset_change_param.0,
+                chain::id::equals(asset_change_param.1),
+                asset_change_param.2,
+            )
             .exec()
             .await;
         info!(?token_creation);
