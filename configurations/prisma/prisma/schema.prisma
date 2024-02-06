@@ -451,7 +451,13 @@ model Chain {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  metrics Metrics[]
+  metrics        Metrics[]
+  paymasters     Paymaster[]
+  protocols      Protocol[]
+  tokens         Token[]
+  transactions   Transaction[]
+  userOperations UserOperation[]
+  walletBalances WalletBalance[]
 }
 
 // -----------------------------------------------------------------------------
@@ -747,6 +753,12 @@ model Transaction {
   receipt Receipt?
 
   // ---------------------------------------------------------------------------
+  // Relation One-to-many
+  // ---------------------------------------------------------------------------
+
+  chain Chain @relation(fields: [chainId], references: [id])
+
+  // ---------------------------------------------------------------------------
   // Relation None-to-one
   // ---------------------------------------------------------------------------
 
@@ -768,6 +780,7 @@ model Transaction {
 
   // Relations
   @@index([walletAddress])
+  @@index([chainId])
   @@index([activityId])
   @@index([interpretationId])
 }
@@ -864,6 +877,7 @@ model UserOperation {
   // Relation One-to-many
   // ---------------------------------------------------------------------------
 
+  chain  Chain  @relation(fields: [chainId], references: [id])
   wallet Wallet @relation(fields: [sender], references: [address])
 
   // ---------------------------------------------------------------------------
@@ -892,6 +906,7 @@ model UserOperation {
   @@index([interpretationId])
   @@index([metadataId])
   @@index([paymasterOperationId])
+  @@index([chainId])
   @@index([sender])
   @@index([paymasterId])
 }
@@ -951,6 +966,12 @@ model Paymaster {
   chainId BigInt
 
   // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  chain Chain @relation(fields: [chainId], references: [id])
+
+  // ---------------------------------------------------------------------------
   // Many-to-many
   // ---------------------------------------------------------------------------
 
@@ -963,6 +984,8 @@ model Paymaster {
 
   // Unique
   @@unique([address, chainId])
+  // Relations
+  @@index([chainId])
 }
 
 model PaymasterOperation {
@@ -1316,6 +1339,12 @@ model Token {
   tokenId  BigInt?
 
   // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  chain Chain @relation(fields: [chainId], references: [id])
+
+  // ---------------------------------------------------------------------------
   // None-to-many
   // ---------------------------------------------------------------------------
 
@@ -1339,6 +1368,7 @@ model Token {
   @@unique([address, chainId])
   @@unique([address, chainId, tokenId])
   // Relations
+  @@index([chainId])
   @@index([groupId])
 }
 
@@ -1418,6 +1448,12 @@ model Protocol {
   status  ProtocolStatus @default(UNKNOWN)
 
   // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  chain Chain @relation(fields: [chainId], references: [id])
+
+  // ---------------------------------------------------------------------------
   // None-to-many
   // ---------------------------------------------------------------------------
 
@@ -1436,6 +1472,7 @@ model Protocol {
   // ---------------------------------------------------------------------------
 
   // Relations
+  @@index([chainId])
   @@index([groupId])
 }
 
@@ -1590,6 +1627,7 @@ model WalletBalance {
   // One-to-many
   // ---------------------------------------------------------------------------
 
+  chain         Chain  @relation(fields: [chainId], references: [id])
   wallet        Wallet @relation(fields: [walletAddress], references: [address])
   walletAddress String
 
@@ -1610,6 +1648,7 @@ model WalletBalance {
   // Query
   @@index([walletAddress, chainId, amount, isLatest, isSpam, isTestnet])
   // Relations
+  @@index([chainId])
   @@index([walletAddress])
   @@index([tokenId])
   @@index([tokenProtocolId])
