@@ -50,6 +50,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
       <h1>light.so</h1>
     </>
