@@ -39,6 +39,7 @@ use lightdotso_db::{
     },
 };
 use lightdotso_graphql::{
+    constants::DEFAULT_CHAIN_SLEEP_SECONDS,
     polling::{
         min_block::run_min_block_query,
         user_operations::{
@@ -114,7 +115,8 @@ impl Polling {
         let url = self.chain_mapping.get(&chain_id).unwrap().get(&service_provider).unwrap();
 
         // Get the sleep seconds from the sleep seconds mapping.
-        let sleep_seconds = *self.sleep_seconds_mapping.get(&chain_id).unwrap();
+        let sleep_seconds =
+            *self.sleep_seconds_mapping.get(&chain_id).unwrap_or(&*DEFAULT_CHAIN_SLEEP_SECONDS);
 
         // Get the initial min block.
         let initial_min_block = self.get_min_block(url.to_string()).await.unwrap_or_default();

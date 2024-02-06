@@ -72,12 +72,12 @@ impl PollingArgs {
 
         // Spawn a task for each chain id.
         for (chain_id, chain_map) in chain_mapping.clone().into_iter() {
-            for (_, url) in chain_map.into_iter() {
+            for (service, _url) in chain_map.into_iter() {
                 if self.live || self.mode == "all" {
                     let live_handle = tokio::spawn(run_polling(
                         self.clone(),
                         chain_id,
-                        url.clone(),
+                        service.clone(),
                         true,
                         chain_mapping.clone(),
                     ));
@@ -88,7 +88,7 @@ impl PollingArgs {
                     let past_handle = tokio::spawn(run_polling(
                         self.clone(),
                         chain_id,
-                        url.clone(),
+                        service.clone(),
                         false,
                         chain_mapping.clone(),
                     ));
@@ -112,7 +112,7 @@ impl PollingArgs {
 pub async fn run_polling(
     args: PollingArgs,
     chain_id: u64,
-    url: String,
+    service_provider: String,
     live: bool,
     chain_mapping: HashMap<u64, HashMap<String, String>>,
 ) -> Result<()> {
@@ -124,14 +124,14 @@ pub async fn run_polling(
             let polling =
                 Polling::new(&args, sleep_seconds_mapping.clone(), chain_mapping.clone(), live)
                     .await?;
-            polling.run(chain_id, url.clone()).await;
+            polling.run(chain_id, service_provider.clone()).await;
         }
         false => {
             loop {
                 let polling =
                     Polling::new(&args, sleep_seconds_mapping.clone(), chain_mapping.clone(), live)
                         .await?;
-                polling.run(chain_id, url.clone()).await;
+                polling.run(chain_id, service_provider.clone()).await;
 
                 // Sleep for 1 hour
                 tokio::time::sleep(tokio::time::Duration::from_secs(60 * 60)).await;
@@ -149,6 +149,8 @@ pub fn create_sleep_seconds_mapping() -> HashMap<u64, u64> {
     for (chain_id, seconds) in CHAIN_SLEEP_SECONDS.clone().into_iter() {
         sleep_seconds_mapping.insert(chain_id, seconds);
     }
+
+    // Insert a default value for the sleep seconds
 
     sleep_seconds_mapping
 }
