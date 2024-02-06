@@ -241,21 +241,24 @@ impl Polling {
             info!("db_upsert_transaction_with_log_receipt");
             let res = self.db_upsert_transaction_with_log_receipt(chain_id, op.clone()).await;
             if res.is_err() {
-                error!("db_upsert_transaction_with_log_receipt error: {:?}", res);
+                error!(
+                    "db_upsert_transaction_with_log_receipt error: {:?} at chain_id: {}",
+                    res, chain_id
+                );
             }
 
             // Create the user operation in the db.
             info!("db_upsert_user_operation");
             let res = self.db_upsert_user_operation(chain_id, op.clone()).await;
             if res.is_err() {
-                error!("db_upsert_user_operation error: {:?}", res);
+                error!("db_upsert_user_operation error: {:?} at chain_id: {}", res, chain_id);
             }
 
             // Upsert the user operation logs in the db.
             info!("db_upsert_user_operation_logs");
             let res = self.db_upsert_user_operation_logs(chain_id, op.clone()).await;
             if res.is_err() {
-                error!("db_upsert_user_operation_logs error: {:?}", res);
+                error!("db_upsert_user_operation_logs error: {:?} at chain_id: {}", res, chain_id);
             }
 
             // Send the tx queue on all modes.
