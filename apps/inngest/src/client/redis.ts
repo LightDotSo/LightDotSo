@@ -13,32 +13,33 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::traits::ToJson;
-use ethers::types::H256;
-use serde::{Deserialize, Serialize};
-use serde_json::{json, Value};
+import { Client } from "@upstash/edge-flags";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 
 // -----------------------------------------------------------------------------
-// Types
+// Client
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct UserOperationMessage {
-    pub hash: H256,
-    pub chain_id: u64,
-}
+export const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL!,
+  token: process.env.UPSTASH_REST_API_TOKEN!,
+});
 
 // -----------------------------------------------------------------------------
-// Traits
+// Ratelimit
 // -----------------------------------------------------------------------------
 
-impl ToJson for UserOperationMessage {
-    fn to_json(&self) -> String {
-        let msg_value: Value = json!({
-            "user_operation_hash": format!("{:?}", self.hash),
-            "chain_id": self.chain_id,
-        });
+export const ratelimit = new Ratelimit({
+  redis: redis,
+  analytics: true,
+  limiter: Ratelimit.slidingWindow(2, "30s"),
+});
 
-        msg_value.to_string()
-    }
-}
+// -----------------------------------------------------------------------------
+// Edge
+// -----------------------------------------------------------------------------
+
+export const edgeFlags = new Client({
+  redis: redis,
+});

@@ -21,17 +21,17 @@
   },
   "dependencies": {
     "@babel/core": "^7.23.9",
-    "@coinbase/onchainkit": "^0.4.5",
+    "@coinbase/onchainkit": "^0.5.0",
     "@lightdotso/services": "workspace:*",
     "@next/bundle-analyzer": "^14.1.0",
-    "@sentry/integrations": "^7.99.0",
-    "@sentry/nextjs": "^7.99.0",
+    "@sentry/integrations": "^7.100.0",
+    "@sentry/nextjs": "^7.100.0",
     "@vercel/og": "^0.6.2",
     "critters": "^0.0.20",
     "next": "^14.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "viem": "^2.7.3"
+    "viem": "^2.7.6"
   },
   "devDependencies": {
     "@lightdotso/eslint-config": "workspace:*",
@@ -39,10 +39,10 @@
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^20.11.16",
-    "@types/react": "^18.2.53",
+    "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.18",
     "autoprefixer": "^10.4.17",
-    "postcss": "^8.4.33",
+    "postcss": "^8.4.34",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3"
   },

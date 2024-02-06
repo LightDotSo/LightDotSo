@@ -13,32 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::traits::ToJson;
-use ethers::types::H256;
-use serde::{Deserialize, Serialize};
-use serde_json::{json, Value};
+import { Kafka } from "@upstash/kafka";
 
 // -----------------------------------------------------------------------------
-// Types
+// Client
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct UserOperationMessage {
-    pub hash: H256,
-    pub chain_id: u64,
-}
-
-// -----------------------------------------------------------------------------
-// Traits
-// -----------------------------------------------------------------------------
-
-impl ToJson for UserOperationMessage {
-    fn to_json(&self) -> String {
-        let msg_value: Value = json!({
-            "user_operation_hash": format!("{:?}", self.hash),
-            "chain_id": self.chain_id,
-        });
-
-        msg_value.to_string()
-    }
-}
+export const kafka = new Kafka({
+  url: `https://${process.env.KAFKA_BROKER!.split(":")[0]}`,
+  username: process.env.KAFKA_USERNAME!,
+  password: process.env.KAFKA_PASSWORD!,
+});

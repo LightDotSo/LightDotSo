@@ -33,14 +33,14 @@
     "@lightdotso/svg": "workspace:*",
     "@lightdotso/templates": "workspace:*",
     "@lightdotso/ui": "workspace:*",
-    "@storybook/react": "^7.6.12",
+    "@storybook/react": "^7.6.13",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^20.11.16",
-    "@types/react": "^18.2.53",
+    "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.18",
     "typescript": "^5.3.3"
   },
