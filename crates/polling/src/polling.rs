@@ -21,18 +21,17 @@ use axum::Json;
 use backon::{BlockingRetryable, ExponentialBuilder, Retryable};
 use chrono::Timelike;
 use ethers::{
-    prelude::{Http, Provider, ProviderError},
-    providers::Middleware,
+    prelude::Provider,
+    providers::{Http, Middleware},
     types::{Block, H256},
     utils::to_checksum,
 };
-use eyre::Result;
+use eyre::{eyre, Result};
 use lightdotso_contracts::{
     provider::get_provider, types::UserOperationWithTransactionAndReceiptLogs,
 };
 use lightdotso_db::{
     db::create_client,
-    error::DbError,
     models::{
         transaction::upsert_transaction_with_log_receipt,
         user_operation::{upsert_user_operation, upsert_user_operation_logs},
@@ -40,6 +39,7 @@ use lightdotso_db::{
     },
 };
 use lightdotso_graphql::{
+    constants::DEFAULT_CHAIN_SLEEP_SECONDS,
     polling::{
         min_block::run_min_block_query,
         user_operations::{
@@ -58,33 +58,33 @@ use lightdotso_prisma::PrismaClient;
 use lightdotso_redis::{get_redis_client, query::wallet::add_to_wallets, redis::Client};
 use lightdotso_solutions::init::get_image_hash_salt_from_init_code;
 use lightdotso_tracing::tracing::{error, info, trace, warn};
-use std::{sync::Arc, time::Duration};
+use std::{collections::HashMap, sync::Arc, time::Duration};
 
 #[allow(dead_code)]
 #[derive(Clone)]
 pub struct Polling {
-    chain_id: u64,
-    sleep_seconds: u64,
-    url: String,
+    /// The mode to poll in
     live: bool,
+    // Create a mapping of chain_id to type to url
+    chain_mapping: HashMap<u64, HashMap<String, String>>,
+    /// Create a mapping of chain_id to sleep_seconds
+    sleep_seconds_mapping: HashMap<u64, u64>,
+    /// The db client
     db_client: Arc<PrismaClient>,
+    /// The redis client
     redis_client: Option<Arc<Client>>,
+    /// The kafka client
     kafka_client: Option<Arc<FutureProducer>>,
-    provider: Option<Arc<Provider<Http>>>,
 }
 
 impl Polling {
     pub async fn new(
         _args: &PollingArgs,
-        chain_id: u64,
-        sleep_seconds: u64,
-        url: String,
+        sleep_seconds_mapping: HashMap<u64, u64>,
+        chain_mapping: HashMap<u64, HashMap<String, String>>,
         live: bool,
     ) -> Result<Self> {
         info!("Polling new, starting");
-
-        // Create the url
-        let url = url.clone();
 
         // Create the db client
         let db_client = Arc::new(create_client().await?);
@@ -97,44 +97,46 @@ impl Polling {
         let kafka_client: Option<Arc<FutureProducer>> =
             get_producer().map_or_else(|_e| None, |client| Some(Arc::new(client)));
 
-        // Create the provider
-        let provider: Option<Arc<Provider<Http>>> = get_provider(chain_id).await.ok().map(Arc::new);
-
         // Create the polling
         Ok(Self {
-            chain_id,
-            sleep_seconds,
-            url,
+            sleep_seconds_mapping,
+            chain_mapping,
             live,
             db_client,
             redis_client,
             kafka_client,
-            provider,
         })
     }
 
-    pub async fn run(&self) {
+    pub async fn run(&self, chain_id: u64, service_provider: String) {
         info!("Polling run, starting");
 
+        // Get the url from the chain mapping.
+        let url = self.chain_mapping.get(&chain_id).unwrap().get(&service_provider).unwrap();
+
+        // Get the sleep seconds from the sleep seconds mapping.
+        let sleep_seconds =
+            *self.sleep_seconds_mapping.get(&chain_id).unwrap_or(&*DEFAULT_CHAIN_SLEEP_SECONDS);
+
         // Get the initial min block.
-        let initial_min_block = self.get_min_block().await.unwrap_or_default();
+        let initial_min_block = self.get_min_block(url.to_string()).await.unwrap_or_default();
 
         let mut min_block = if self.live { initial_min_block } else { 0 };
 
         loop {
             // Wrap the task in a catch_unwind block to not crash the task if the task panics.
-            let result = self.poll_task(min_block).await;
+            let result = self.poll_task(chain_id, url.to_string(), min_block).await;
 
             match result {
                 Ok(block) => {
                     let now = chrono::Utc::now();
-                    // trace!("Polling run, chain_id: {} timestamp: {}", self.chain_id, now);
+                    // trace!("Polling run, chain_id: {} timestamp: {}", chain_id, now);
 
                     // Info if the second is divisible by 30 or 30 + 1.
                     if now.second() % 30 == 0 || now.second() % 30 == 1 {
                         info!(
                             "Polling run, chain_id: {} timestamp: {} url: {}",
-                            self.chain_id, now, self.url
+                            chain_id, now, url
                         );
                     }
 
@@ -146,16 +148,16 @@ impl Polling {
                     if !self.live && min_block >= initial_min_block {
                         warn!(
                             "Polling exiting, chain_id: {} min_block: {} initial_min_block: {} at url: {}",
-                            self.chain_id, min_block, initial_min_block, self.url
+                            chain_id, min_block, initial_min_block, url
                         );
                         break;
                     }
 
                     // Sleep for 1 second.
-                    tokio::time::sleep(std::time::Duration::from_secs(self.sleep_seconds)).await;
+                    tokio::time::sleep(std::time::Duration::from_secs(sleep_seconds)).await;
                 }
                 Err(e) => {
-                    error!("run_task {} panicked: {:?}", self.chain_id, e);
+                    error!("run_task {} panicked: {:?}", chain_id, e);
 
                     // Retry the task after 1 second.
                     tokio::time::sleep(Duration::from_secs(1)).await;
@@ -167,18 +169,21 @@ impl Polling {
     /// Run a single user operation query
     /// Get the user operation by the given index
     #[autometrics]
-    pub async fn run_uop(&self, hash: H256) -> Result<()> {
+    pub async fn run_uop(&self, chain_id: u64, hash: H256) -> Result<()> {
+        // Get the url from the chain mapping.
+        let url = self.chain_mapping.get(&chain_id).unwrap().get("graph").unwrap();
+
         // Get the user operation by the given hash.
-        let user_operation = self.poll_uop(hash).await;
+        let user_operation = self.poll_uop(url.to_string(), hash).await;
 
         // If the user operation is found, index the event.
         if let Ok(Some(op)) = user_operation {
             info!(
                 "User Operation found, chain_id: {} index: {} user_operation_event: {:?} ",
-                self.chain_id, op.index.0, op.user_operation_event
+                chain_id, op.index.0, op.user_operation_event
             );
 
-            let _ = self.index_uop(&op).await;
+            let _ = self.index_uop(chain_id, &op).await;
         }
 
         Ok(())
@@ -186,10 +191,7 @@ impl Polling {
 
     /// Get the min block
     #[autometrics]
-    async fn get_min_block(&self) -> Result<i32> {
-        // Escape the static lifetime.
-        let url = self.url.clone();
-
+    async fn get_min_block(&self, url: String) -> Result<i32> {
         // Get the min_block query from the graphql api.
         let min_block_res = tokio::task::spawn_blocking(move || {
             { || run_min_block_query(url.clone()) }.retry(&ExponentialBuilder::default()).call()
@@ -213,13 +215,13 @@ impl Polling {
 
     /// Index the event
     #[autometrics]
-    async fn index_uop(&self, op: &UserOperation) -> Result<()> {
+    async fn index_uop(&self, chain_id: u64, op: &UserOperation) -> Result<()> {
         // Create to db if the operation has a successful event.
         if let Some(user_operation_event) = &op.user_operation_event {
             // Log the operation along with the chain id.
             info!(
                 "User Operation found, chain_id: {} index: {} user_operation_event: {:?} ",
-                self.chain_id, op.index.0, user_operation_event,
+                chain_id, op.index.0, user_operation_event,
             );
 
             // Add the wallet to the cache.
@@ -230,35 +232,38 @@ impl Polling {
             // Attempt to create the wallet in the db.
             // (Fail if the wallet already exists)
             info!("db_try_create_wallet");
-            let res = self.db_try_create_wallet(op).await;
+            let res = self.db_try_create_wallet(chain_id, op).await;
             if res.is_err() {
                 error!("db_try_create_wallet error: {:?}", res);
             }
 
             // Attempt to create the user operation in the db.
             info!("db_upsert_transaction_with_log_receipt");
-            let res = self.db_upsert_transaction_with_log_receipt(op.clone()).await;
+            let res = self.db_upsert_transaction_with_log_receipt(chain_id, op.clone()).await;
             if res.is_err() {
-                error!("db_upsert_transaction_with_log_receipt error: {:?}", res);
+                error!(
+                    "db_upsert_transaction_with_log_receipt error: {:?} at chain_id: {}",
+                    res, chain_id
+                );
             }
 
             // Create the user operation in the db.
             info!("db_upsert_user_operation");
-            let res = self.db_upsert_user_operation(op.clone()).await;
+            let res = self.db_upsert_user_operation(chain_id, op.clone()).await;
             if res.is_err() {
-                error!("db_upsert_user_operation error: {:?}", res);
+                error!("db_upsert_user_operation error: {:?} at chain_id: {}", res, chain_id);
             }
 
             // Upsert the user operation logs in the db.
             info!("db_upsert_user_operation_logs");
-            let res = self.db_upsert_user_operation_logs(op.clone()).await;
+            let res = self.db_upsert_user_operation_logs(chain_id, op.clone()).await;
             if res.is_err() {
-                error!("db_upsert_user_operation_logs error: {:?}", res);
+                error!("db_upsert_user_operation_logs error: {:?} at chain_id: {}", res, chain_id);
             }
 
             // Send the tx queue on all modes.
-            if self.kafka_client.is_some() && self.provider.is_some() {
-                let _ = self.send_tx_queue(op.block_number.0.parse().unwrap()).await;
+            if self.kafka_client.is_some() {
+                let _ = self.send_tx_queue(chain_id, op.block_number.0.parse().unwrap()).await;
             }
         }
 
@@ -267,12 +272,11 @@ impl Polling {
 
     /// Poll the task
     #[autometrics]
-    async fn poll_task(&self, mut min_block: i32) -> Result<i32> {
+    async fn poll_task(&self, chain_id: u64, url: String, mut min_block: i32) -> Result<i32> {
         // Get the polling metrics, set the attempt.
-        PollingMetrics::set_attempt(self.chain_id);
+        PollingMetrics::set_attempt(chain_id);
 
-        // Escape the static lifetime.
-        let url = self.url.clone();
+        // Set the index to 0.
         let index = 0;
 
         // Get the light operation data, spawn a blocking task to not block the tokio runtime thread
@@ -303,7 +307,7 @@ impl Polling {
             let user_operations = d.user_operations;
             trace!(
                 "Polling run, chain_id: {} min_block: {} index: {} user_operations: {:?}",
-                self.chain_id,
+                chain_id,
                 min_block,
                 index,
                 user_operations
@@ -313,7 +317,7 @@ impl Polling {
             if !user_operations.is_empty() {
                 for (index, op) in user_operations.iter().enumerate() {
                     // Index the event.
-                    self.index_uop(op).await?;
+                    self.index_uop(chain_id, op).await?;
 
                     // Return the minimum block number for the last operation.
                     if index == user_operations.len() - 1 {
@@ -334,10 +338,7 @@ impl Polling {
 
     /// Poll a single user operation
     // #[autometrics]
-    async fn poll_uop(&self, hash: H256) -> Result<Option<UserOperation>> {
-        // Escape the static lifetime.
-        let url = self.url.clone();
-
+    async fn poll_uop(&self, url: String, hash: H256) -> Result<Option<UserOperation>> {
         // Get the user operation query from the graphql api.
         let user_operation_res = tokio::task::spawn_blocking(move || {
             {
@@ -368,49 +369,49 @@ impl Polling {
     #[autometrics]
     pub async fn db_upsert_user_operation(
         &self,
+        chain_id: u64,
         op: UserOperation,
-    ) -> Result<Json<lightdotso_prisma::user_operation::Data>, DbError> {
+    ) -> Result<Json<lightdotso_prisma::user_operation::Data>> {
         let db_client = self.db_client.clone();
-        let chain_id = self.chain_id;
         let uoc = UserOperationConstruct { chain_id: chain_id as i64, user_operation: op.clone() };
         let uow: UserOperationWithTransactionAndReceiptLogs = uoc.into();
 
-        { || upsert_user_operation(db_client.clone(), uow.clone(), chain_id as i64) }
+        Ok({ || upsert_user_operation(db_client.clone(), uow.clone(), chain_id as i64) }
             .retry(&ExponentialBuilder::default())
-            .await
+            .await?)
     }
 
     /// Upserts user operation logs in db
     #[autometrics]
     pub async fn db_upsert_user_operation_logs(
         &self,
+        chain_id: u64,
         op: UserOperation,
-    ) -> Result<Json<()>, DbError> {
+    ) -> Result<Json<()>> {
         let db_client = self.db_client.clone();
-        let chain_id = self.chain_id;
         let uoc = UserOperationConstruct { chain_id: chain_id as i64, user_operation: op.clone() };
         let uow: UserOperationWithTransactionAndReceiptLogs = uoc.into();
 
-        { || upsert_user_operation_logs(db_client.clone(), uow.clone()) }
+        Ok({ || upsert_user_operation_logs(db_client.clone(), uow.clone()) }
             .retry(&ExponentialBuilder::default())
-            .await
+            .await?)
     }
 
     /// Create a new transaction w/ the
     #[autometrics]
     pub async fn db_upsert_transaction_with_log_receipt(
         &self,
+        chain_id: u64,
         op: UserOperation,
-    ) -> Result<Json<lightdotso_prisma::transaction::Data>, DbError> {
+    ) -> Result<Json<lightdotso_prisma::transaction::Data>> {
         let db_client = self.db_client.clone();
-        let chain_id = self.chain_id;
 
         let uoc = UserOperationConstruct { chain_id: chain_id as i64, user_operation: op.clone() };
         let uow: UserOperationWithTransactionAndReceiptLogs = uoc.into();
 
-        let block = self.get_block(uow.transaction.block_number.unwrap()).await.unwrap().unwrap();
+        let block = self.get_block(chain_id, uow.transaction.block_number.unwrap()).await?.unwrap();
 
-        {
+        Ok({
             || {
                 upsert_transaction_with_log_receipt(
                     db_client.clone(),
@@ -425,24 +426,24 @@ impl Polling {
             }
         }
         .retry(&ExponentialBuilder::default())
-        .await
+        .await?)
     }
 
     /// Attempt to create a new operation in the db
     #[autometrics]
     pub async fn db_try_create_wallet(
         &self,
+        chain_id: u64,
         user_operation: &UserOperation,
-    ) -> Result<Json<lightdotso_prisma::wallet::Data>, DbError> {
+    ) -> Result<Json<lightdotso_prisma::wallet::Data>> {
         let db_client = self.db_client.clone();
-        let chain_id = self.chain_id;
 
         if let Some(init_code) = &user_operation.init_code {
             if init_code.0.len() > 2 {
                 let (_, salt) =
                     get_image_hash_salt_from_init_code(init_code.clone().0.into_bytes()).unwrap();
 
-                return {
+                return Ok({
                     || {
                         upsert_wallet_with_configuration(
                             db_client.clone(),
@@ -454,65 +455,78 @@ impl Polling {
                     }
                 }
                 .retry(&ExponentialBuilder::default())
-                .await;
+                .await?);
             }
         }
 
         // Return not found if the init code is not found.
-        Err(DbError::NotFound)
+        Err(eyre!("init_code not found"))
     }
 
     /// Add a new wallet in the cache
     #[autometrics]
-    pub fn add_to_wallets(
-        &self,
-        user_operation: &UserOperation,
-    ) -> Result<(), lightdotso_redis::redis::RedisError> {
+    pub fn add_to_wallets(&self, user_operation: &UserOperation) -> Result<()> {
         let address = user_operation.light_wallet.address.0.parse().unwrap();
         let client = self.redis_client.clone().unwrap();
         let con = client.get_connection();
         if let Ok(mut con) = con {
-            { || add_to_wallets(&mut con, to_checksum(&address, None).as_str()) }
+            let _ = { || add_to_wallets(&mut con, to_checksum(&address, None).as_str()) }
                 .retry(&ExponentialBuilder::default())
-                .call()
+                .call();
         } else {
             error!("Redis connection error, {:?}", con.err());
-            Ok(())
         }
+        Ok(())
+    }
+
+    /// Get the provider
+    pub async fn get_provider(&self, chain_id: u64) -> Result<Option<Arc<Provider<Http>>>> {
+        // Create the provider
+        let client: Option<Arc<Provider<Http>>> = get_provider(chain_id).await.ok().map(Arc::new);
+
+        Ok(client)
     }
 
     /// Get the block logs for the given block number
     #[autometrics]
     pub async fn get_block(
         &self,
+        chain_id: u64,
         block_number: ethers::types::U64,
-    ) -> Result<Option<Block<H256>>, ProviderError> {
-        let client = self.provider.clone().unwrap();
-        info!("get_block, chain_id: {} block_number: {}", self.chain_id, block_number);
+    ) -> Result<Option<Block<H256>>> {
+        let client = self.get_provider(chain_id).await?;
 
-        // Get the logs
-        { || client.get_block(block_number) }.retry(&ExponentialBuilder::default()).await
+        info!("get_block, chain_id: {} block_number: {}", chain_id, block_number);
+
+        if let Some(client) = client {
+            // Get the logs
+            let res =
+                { || client.get_block(block_number) }.retry(&ExponentialBuilder::default()).await?;
+
+            return Ok(res);
+        }
+
+        Ok(None)
     }
 
     /// Add a new tx in the queue
     #[autometrics]
-    pub async fn send_tx_queue(
-        &self,
-        block_number: i32,
-    ) -> Result<(), lightdotso_kafka::rdkafka::error::KafkaError> {
+    pub async fn send_tx_queue(&self, chain_id: u64, block_number: i32) -> Result<()> {
         let client = self.kafka_client.clone().unwrap();
-        let provider = self.provider.clone().unwrap();
-        let chain_id = self.chain_id;
 
-        let block = provider.get_block(block_number as u64).await.unwrap();
+        let provider = self.get_provider(chain_id).await?;
 
-        let payload = serde_json::to_value((&block, &chain_id))
-            .unwrap_or_else(|_| serde_json::Value::Null)
-            .to_string();
+        if let Some(provider) = provider {
+            let block = provider.get_block(block_number as u64).await.unwrap();
 
-        let _ = { || produce_transaction_message(client.clone(), &payload) }
-            .retry(&ExponentialBuilder::default())
-            .await;
+            let payload = serde_json::to_value((&block, &chain_id))
+                .unwrap_or_else(|_| serde_json::Value::Null)
+                .to_string();
+
+            let _ = { || produce_transaction_message(client.clone(), &payload) }
+                .retry(&ExponentialBuilder::default())
+                .await;
+        }
 
         Ok(())
     }

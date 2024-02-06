@@ -29,7 +29,9 @@ pub async fn user_operation_consumer(msg: &BorrowedMessage<'_>, poller: &Polling
         // Parse the payload into a JSON object, `PortfolioMessage`
         let payload: UserOperationMessage = serde_json::from_slice(payload.as_bytes())?;
 
-        poller.run_uop(payload.hash).await?;
+        info!("payload: {:?}", payload);
+
+        poller.run_uop(payload.chain_id, payload.hash).await?;
     }
 
     Ok(())

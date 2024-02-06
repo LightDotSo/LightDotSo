@@ -95,7 +95,7 @@ impl Consumer {
         let notifier_args = NotifierArgs::parse();
 
         // Create the poller
-        let poller = polling_args.create(137).await?;
+        let poller = polling_args.create().await?;
 
         // Create the indexer
         let indexer = args.create().await;

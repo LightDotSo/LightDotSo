@@ -13,14 +13,16 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#![allow(clippy::unwrap_used)]
+
 use crate::polling::Polling;
 use clap::Parser;
-use eyre::{eyre, Result};
+use eyre::Result;
 use lightdotso_graphql::constants::{
-    CHAIN_SLEEP_SECONDS, DEFAULT_CHAIN_SLEEP_SECONDS, SATSUMA_BASE_URL, SATSUMA_LIVE_IDS,
-    THE_GRAPH_HOSTED_SERVICE_URLS,
+    CHAIN_SLEEP_SECONDS, SATSUMA_BASE_URL, SATSUMA_LIVE_IDS, THE_GRAPH_HOSTED_SERVICE_URLS,
 };
 use lightdotso_tracing::tracing::{error, info};
+use std::collections::HashMap;
 
 #[derive(Debug, Clone, Parser, Default)]
 pub struct PollingArgs {
@@ -42,19 +44,15 @@ pub struct PollingArgs {
 }
 
 impl PollingArgs {
-    pub async fn create(&self, chain_id: u64) -> Result<Polling> {
-        Polling::new(
-            &PollingArgs::default(),
-            chain_id,
-            // Only run once
-            0,
-            THE_GRAPH_HOSTED_SERVICE_URLS
-                .get(&chain_id)
-                .ok_or_else(|| eyre!("The graph hosted service url is None"))?
-                .clone(),
-            true,
-        )
-        .await
+    pub async fn create(&self) -> Result<Polling> {
+        // Create a mapping of sleep seconds for each chain id
+        let sleep_seconds_mapping = create_sleep_seconds_mapping();
+
+        // Create a mapping for chain id to polling URLs.
+        let chain_mapping =
+            create_chain_mapping(self.satsuma_api_key.clone(), self.satsuma_enabled);
+
+        Polling::new(&PollingArgs::default(), sleep_seconds_mapping, chain_mapping, true).await
     }
 
     #[tokio::main]
@@ -65,44 +63,37 @@ impl PollingArgs {
         // Print the config
         info!("Config: {:?}", self);
 
-        // Make a new hash map w/ u64 keys and String values
-        let mut chain_id_to_urls = std::collections::HashMap::new();
-
-        // Iterate and push from the `THE_GRAPH_HOSTED_SERVICE_URLS` into the hash map
-        for (chain_id, url) in THE_GRAPH_HOSTED_SERVICE_URLS.clone().into_iter() {
-            chain_id_to_urls.insert(chain_id, url);
-        }
-
-        // Iterate and push from the `SATSUMA_LIVE_IDS` into the hash map
-        // If the satsuma_api_key is not None and satsuma_enabled is true
-        if self.satsuma_api_key.is_some() && self.satsuma_enabled {
-            for (chain_id, id) in SATSUMA_LIVE_IDS.clone().into_iter() {
-                let url = format!(
-                    "{}/{}/{}",
-                    SATSUMA_BASE_URL.clone(),
-                    self.satsuma_api_key.clone().ok_or_else(|| eyre!("satsuma_api_key is None"))?,
-                    id
-                );
-                info!("url: {}", url);
-                chain_id_to_urls.insert(chain_id, url);
-            }
-        }
+        // Create a mapping for chain id to polling URLs.
+        let chain_mapping =
+            create_chain_mapping(self.satsuma_api_key.clone(), self.satsuma_enabled);
 
         // Create a vector to store the handles to the spawned tasks.
         let mut handles = Vec::new();
 
         // Spawn a task for each chain id.
-        for (chain_id, url) in chain_id_to_urls.clone().into_iter() {
-            if self.live || self.mode == "all" {
-                let live_handle =
-                    tokio::spawn(run_polling(self.clone(), chain_id, url.clone(), true));
-                handles.push(live_handle);
-            }
+        for (chain_id, chain_map) in chain_mapping.clone().into_iter() {
+            for (service, _url) in chain_map.into_iter() {
+                if self.live || self.mode == "all" {
+                    let live_handle = tokio::spawn(run_polling(
+                        self.clone(),
+                        chain_id,
+                        service.clone(),
+                        true,
+                        chain_mapping.clone(),
+                    ));
+                    handles.push(live_handle);
+                }
 
-            if !self.live || self.mode == "all" {
-                let past_handle =
-                    tokio::spawn(run_polling(self.clone(), chain_id, url.clone(), false));
-                handles.push(past_handle);
+                if !self.live || self.mode == "all" {
+                    let past_handle = tokio::spawn(run_polling(
+                        self.clone(),
+                        chain_id,
+                        service.clone(),
+                        false,
+                        chain_mapping.clone(),
+                    ));
+                    handles.push(past_handle);
+                }
             }
         }
 
@@ -118,30 +109,29 @@ impl PollingArgs {
 }
 
 // Run the polling for a specific chain id.
-pub async fn run_polling(args: PollingArgs, chain_id: u64, url: String, live: bool) -> Result<()> {
+pub async fn run_polling(
+    args: PollingArgs,
+    chain_id: u64,
+    service_provider: String,
+    live: bool,
+    chain_mapping: HashMap<u64, HashMap<String, String>>,
+) -> Result<()> {
+    // Create a mapping of sleep seconds for each chain id
+    let sleep_seconds_mapping = create_sleep_seconds_mapping();
+
     match live {
         true => {
-            let polling = Polling::new(
-                &args,
-                chain_id,
-                *CHAIN_SLEEP_SECONDS.get(&chain_id).unwrap_or(&DEFAULT_CHAIN_SLEEP_SECONDS),
-                url.clone(),
-                live,
-            )
-            .await?;
-            polling.run().await;
+            let polling =
+                Polling::new(&args, sleep_seconds_mapping.clone(), chain_mapping.clone(), live)
+                    .await?;
+            polling.run(chain_id, service_provider.clone()).await;
         }
         false => {
             loop {
-                let polling = Polling::new(
-                    &args,
-                    chain_id,
-                    *CHAIN_SLEEP_SECONDS.get(&chain_id).unwrap_or(&DEFAULT_CHAIN_SLEEP_SECONDS),
-                    url.clone(),
-                    live,
-                )
-                .await?;
-                polling.run().await;
+                let polling =
+                    Polling::new(&args, sleep_seconds_mapping.clone(), chain_mapping.clone(), live)
+                        .await?;
+                polling.run(chain_id, service_provider.clone()).await;
 
                 // Sleep for 1 hour
                 tokio::time::sleep(tokio::time::Duration::from_secs(60 * 60)).await;
@@ -150,4 +140,42 @@ pub async fn run_polling(args: PollingArgs, chain_id: u64, url: String, live: bo
     }
 
     Ok(())
+}
+
+/// Create a mapping of sleep seconds for each chain id.
+pub fn create_sleep_seconds_mapping() -> HashMap<u64, u64> {
+    let mut sleep_seconds_mapping = HashMap::new();
+
+    for (chain_id, seconds) in CHAIN_SLEEP_SECONDS.clone().into_iter() {
+        sleep_seconds_mapping.insert(chain_id, seconds);
+    }
+
+    // Insert a default value for the sleep seconds
+
+    sleep_seconds_mapping
+}
+
+/// Create a mapping for chain id to polling URLs.
+pub fn create_chain_mapping(
+    satsuma_api_key: Option<String>,
+    satsuma_enabled: bool,
+) -> HashMap<u64, HashMap<String, String>> {
+    let mut chain_id_to_urls = std::collections::HashMap::new();
+
+    for (chain_id, url) in THE_GRAPH_HOSTED_SERVICE_URLS.clone().into_iter() {
+        let mut child_map = HashMap::new();
+        child_map.insert("graph".to_string(), url);
+        chain_id_to_urls.insert(chain_id, child_map);
+    }
+
+    if satsuma_api_key.is_some() && satsuma_enabled {
+        for (chain_id, id) in SATSUMA_LIVE_IDS.clone().into_iter() {
+            let url =
+                format!("{}/{}/{}", SATSUMA_BASE_URL.clone(), satsuma_api_key.clone().unwrap(), id);
+            let child_map = chain_id_to_urls.entry(chain_id).or_insert_with(HashMap::new);
+            child_map.insert("satsuma".to_string(), url);
+        }
+    }
+
+    chain_id_to_urls
 }
