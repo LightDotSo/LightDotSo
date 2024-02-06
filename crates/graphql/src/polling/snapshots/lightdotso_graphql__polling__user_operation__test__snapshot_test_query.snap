@@ -1,0 +1,108 @@
+---
+source: crates/graphql/src/polling/user_operation.rs
+expression: query.query
+---
+query GetUserOperationQuery($id: String!) {
+  userOperation(id: $id) {
+    id
+    index
+    sender
+    nonce
+    initCode
+    callData
+    callGasLimit
+    verificationGasLimit
+    preVerificationGas
+    maxFeePerGas
+    maxPriorityFeePerGas
+    paymasterAndData
+    signature
+    blockNumber
+    blockTimestamp
+    transactionHash
+    entryPoint
+    paymaster
+    userOperationEvent {
+      id
+      index
+      userOpHash
+      paymaster
+      nonce
+      transactionHash
+    }
+    userOperationRevertReason {
+      id
+      index
+      userOpHash
+      sender
+      nonce
+      revertReason
+      transactionHash
+    }
+    lightWallet {
+      id
+      index
+      address
+      imageHash
+      userOpHash
+      sender
+      factory
+      paymaster
+      blockNumber
+      blockTimestamp
+      transactionHash
+    }
+    transaction {
+      id
+      hash
+      index
+      from
+      to
+      value
+      gasLimit
+      gasPrice
+      input
+      nonce
+      receipt {
+        id
+        transactionHash
+        transactionIndex
+        blockHash
+        blockNumber
+        cumulativeGasUsed
+        gasUsed
+        status
+        logsBloom
+        logs {
+          id
+          address
+          topics
+          data
+          blockHash
+          blockNumber
+          transactionHash
+          transactionIndex
+          logIndex
+        }
+      }
+    }
+    logs {
+      id
+      address
+      topics
+      data
+      blockHash
+      blockNumber
+      transactionHash
+      transactionIndex
+      logIndex
+    }
+  }
+  _meta {
+    block {
+      number
+    }
+  }
+}
+
+

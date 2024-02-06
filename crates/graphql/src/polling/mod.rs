@@ -14,4 +14,5 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 pub mod min_block;
+pub mod user_operation;
 pub mod user_operations;
