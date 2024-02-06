@@ -77,6 +77,7 @@ pub async fn upsert_transaction_with_log_receipt(
         transaction::input::set(Some(transaction.input.0.to_vec())),
         transaction::block_number::set(transaction.block_number.map(|n| n.as_u32() as i32)),
         transaction::to::set(transaction.to.map(|to| to_checksum(&to, None))),
+        transaction::chain_id::set(chain_id),
         transaction::wallet_address::set(Some(to_checksum(&wallet_address, None))),
         transaction::is_testnet::set(is_testnet(chain_id as u64)),
     ];

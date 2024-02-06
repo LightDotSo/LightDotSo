@@ -20,3 +20,5 @@ ignores:
   - "@lightdotso/eslint-config"
   - "@lightdotso/styles"
   - "@next/bundle-analyzer"
+  - "@sentry-internal/feedback"
+  - "@sentry/react"
