@@ -77,8 +77,6 @@ pub async fn upsert_transaction_with_log_receipt(
         transaction::input::set(Some(transaction.input.0.to_vec())),
         transaction::block_number::set(transaction.block_number.map(|n| n.as_u32() as i32)),
         transaction::to::set(transaction.to.map(|to| to_checksum(&to, None))),
-        transaction::chain_id::set(chain_id),
-        transaction::wallet::connect(wallet::address::equals(to_checksum(&wallet_address, None))),
         transaction::is_testnet::set(is_testnet(chain_id as u64)),
     ];
 
@@ -153,6 +151,22 @@ pub async fn upsert_transaction_with_log_receipt(
         .instrument(info_span!("upsert_transaction"))
         .await?;
     trace!(?tx_data);
+
+    // Set the relationship between the chain, wallet and the transaction
+    let tx = db
+        .transaction()
+        .update(
+            transaction::hash::equals(format!("{:?}", transaction.hash)),
+            vec![
+                transaction::chain::connect(chain::id::equals(chain_id)),
+                transaction::wallet::connect(wallet::address::equals(to_checksum(
+                    &wallet_address,
+                    None,
+                ))),
+            ],
+        )
+        .exec()
+        .await?;
 
     // Don't push from the params if it is `Determistic Option Zero` or `Determistic Option None`.
     // `crates/graphql/src/traits.rs`
@@ -284,7 +298,7 @@ pub async fn upsert_transaction_with_log_receipt(
             .await?;
     }
 
-    Ok(Json::from(tx_data))
+    Ok(Json::from(tx))
 }
 
 // -----------------------------------------------------------------------------
