@@ -264,6 +264,7 @@ impl RouteErrorStatusCodeAndMsg for TokenError {
         match self {
             TokenError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
             TokenError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+            TokenError::Unauthorized(msg) => (StatusCode::UNAUTHORIZED, msg.to_string()),
         }
     }
 }

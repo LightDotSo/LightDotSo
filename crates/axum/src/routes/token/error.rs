@@ -29,4 +29,7 @@ pub(crate) enum TokenError {
     /// Token not found by id.
     #[schema(example = "id = 1")]
     NotFound(String),
+    /// Unauthorized token access.
+    #[schema(example = "Unauthorized")]
+    Unauthorized(String),
 }
