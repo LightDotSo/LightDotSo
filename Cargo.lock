@@ -6169,6 +6169,7 @@ dependencies = [
  "lightdotso-kafka",
  "lightdotso-notifier",
  "lightdotso-opentelemetry",
+ "lightdotso-polling",
  "lightdotso-prisma",
  "lightdotso-tracing",
  "opentelemetry 0.20.0",

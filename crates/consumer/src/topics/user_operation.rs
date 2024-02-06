@@ -14,27 +14,23 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use eyre::Result;
-use lightdotso_notifier::notifier::Notifier;
+use lightdotso_kafka::types::user_operation::UserOperationMessage;
+use lightdotso_polling::polling::Polling;
 use lightdotso_tracing::tracing::info;
 use rdkafka::{message::BorrowedMessage, Message};
 
-pub async fn user_operation_consumer(msg: &BorrowedMessage<'_>, notifier: &Notifier) -> Result<()> {
-    // Send webhook if exists
-    info!(
-        "key: '{:?}', payload: '{:?}',  topic: {}, partition: {}, offset: {}, timestamp: {:?}",
-        msg.key(),
-        msg.payload_view::<str>(),
-        msg.topic(),
-        msg.partition(),
-        msg.offset(),
-        msg.timestamp()
-    );
-
+pub async fn user_operation_consumer(msg: &BorrowedMessage<'_>, poller: &Polling) -> Result<()> {
     // Convert the payload to a string
     let payload_opt = msg.payload_view::<str>();
     info!("payload_opt: {:?}", payload_opt);
 
-    notifier.run().await;
+    // If the payload is valid
+    if let Some(Ok(payload)) = payload_opt {
+        // Parse the payload into a JSON object, `PortfolioMessage`
+        let payload: UserOperationMessage = serde_json::from_slice(payload.as_bytes())?;
+
+        poller.run_uop(payload.hash).await?;
+    }
 
     Ok(())
 }
