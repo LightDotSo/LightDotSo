@@ -376,6 +376,11 @@ pub(crate) async fn v1_user_operation_create_handler(
             })
             .await;
 
+    // If the res contains error, log it
+    if let Err(e) = &res {
+        error!(?e);
+    }
+
     // If the user_operation is not created, return a 500.
     let (signature, user_operation) = res.map_err(|_| AppError::InternalError)?;
     info!(?user_operation);
