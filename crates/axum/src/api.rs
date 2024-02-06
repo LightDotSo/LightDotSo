@@ -193,6 +193,7 @@ use utoipa_swagger_ui::SwaggerUi;
         auth::v1_auth_verify_handler,
         check::handler,
         health::handler,
+        chain::v1_chain_create_handler,
         chain::v1_chain_get_handler,
         chain::v1_chain_list_handler,
         chain::v1_chain_update_handler,
