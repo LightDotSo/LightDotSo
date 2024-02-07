@@ -136,6 +136,7 @@ model User {
   feedbacks                  Feedback[]
   inviteCodes                InviteCode[]
   notifications              Notification[]
+  notificationSettings       NotificationSettings[]
   owners                     Owner[]
   wallets                    Wallet[]
   walletNotificationSettings WalletNotificationSettings[]
@@ -275,6 +276,7 @@ model Wallet {
   activities                 Activity[]
   configurations             Configuration[]
   notifications              Notification[]
+  notificationSettings       NotificationSettings[]
   paymasterOperations        PaymasterOperation[]
   simulations                Simulation[]
   supportRequests            SupportRequest[]
@@ -1942,11 +1944,15 @@ model NotificationSettings {
   // Fields
   // ---------------------------------------------------------------------------
 
-  entity    NotificationSettingsEntity
-  operation NotificationSettingsOperation
-  platform  NotificationSettingsPlatform
-
+  key       String
   isEnabled Boolean @default(true)
+
+  // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 
   // ---------------------------------------------------------------------------
   // None-to-one
@@ -1954,6 +1960,9 @@ model NotificationSettings {
 
   userNotificationSettings   UserNotificationSettings? @relation(fields: [userNotificationSettingsId], references: [id])
   userNotificationSettingsId String?
+
+  wallet        Wallet? @relation(fields: [walletAddress], references: [address])
+  walletAddress String?
 
   walletNotificationSettings   WalletNotificationSettings? @relation(fields: [walletNotificationSettingsId], references: [id])
   walletNotificationSettingsId String?
@@ -1963,39 +1972,13 @@ model NotificationSettings {
   // ---------------------------------------------------------------------------
 
   // Unique
-  // @@unique([entity, operation, platform, userNotificationSettingsId, walletNotificationSettingsId])
+  @@unique([key, userId])
+  @@unique([key, userId, walletAddress])
   // Relations
+  @@index([userId])
+  @@index([walletAddress])
   @@index([userNotificationSettingsId])
   @@index([walletNotificationSettingsId])
-}
-
-enum NotificationSettingsEntity {
-  // ---------------------------------------------------------------------------
-  // Enum Fields
-  // ---------------------------------------------------------------------------
-
-  INVITE_CODE
-  TRANSACTION
-  USER_OPERATION
-}
-
-enum NotificationSettingsOperation {
-  // ---------------------------------------------------------------------------
-  // Enum Fields
-  // ---------------------------------------------------------------------------
-
-  CREATE
-  UPDATE
-  DELETE
-}
-
-enum NotificationSettingsPlatform {
-  // ---------------------------------------------------------------------------
-  // Enum Fields
-  // ---------------------------------------------------------------------------
-
-  EMAIL
-  WEB
 }
 
 // -----------------------------------------------------------------------------
