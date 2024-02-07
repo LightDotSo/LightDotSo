@@ -1188,6 +1188,13 @@ model Paymaster {
   chain Chain @relation(fields: [chainId], references: [id])
 
   // ---------------------------------------------------------------------------
+  // None-to-one
+  // ---------------------------------------------------------------------------
+
+  activity   Activity? @relation(fields: [activityId], references: [id])
+  activityId String?   @unique
+
+  // ---------------------------------------------------------------------------
   // Many-to-many
   // ---------------------------------------------------------------------------
 
@@ -1235,6 +1242,13 @@ model PaymasterOperation {
   paymasterId String
 
   wallet Wallet @relation(fields: [sender], references: [address])
+
+  // ---------------------------------------------------------------------------
+  // None-to-one
+  // ---------------------------------------------------------------------------
+
+  activity   Activity? @relation(fields: [activityId], references: [id])
+  activityId String?   @unique
 
   // ---------------------------------------------------------------------------
   // None-to-none
@@ -1952,12 +1966,14 @@ model Activity {
   // Immutable Relations None-to-none
   // ---------------------------------------------------------------------------
 
-  feedback      Feedback?
-  notification  Notification?
-  signature     Signature?
-  simulation    Simulation?
-  transaction   Transaction?
-  userOperation UserOperation?
+  feedback           Feedback?
+  notification       Notification?
+  paymaster          Paymaster?
+  paymasterOperation PaymasterOperation?
+  signature          Signature?
+  simulation         Simulation?
+  transaction        Transaction?
+  userOperation      UserOperation?
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1997,6 +2013,8 @@ enum ActivityEntity {
 
   FEEDBACK
   NOTIFICATION
+  PAYMASTER
+  PAYMASTER_OPERATION
   SIGNATURE
   SIMULATION
   TRANSACTION
