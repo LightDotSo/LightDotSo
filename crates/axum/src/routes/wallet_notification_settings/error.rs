@@ -13,30 +13,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub(crate) mod error;
-pub(crate) mod get;
-pub(crate) mod types;
-pub(crate) mod update;
-
-use crate::state::AppState;
-use autometrics::autometrics;
-use axum::{
-    routing::{get, put},
-    Router,
-};
-
-pub(crate) use get::{__path_v1_wallet_features_get_handler, v1_wallet_features_get_handler};
-pub(crate) use update::{
-    __path_v1_wallet_features_update_handler, v1_wallet_features_update_handler,
-};
+use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
 
 // -----------------------------------------------------------------------------
-// Router
+// Error
 // -----------------------------------------------------------------------------
 
-#[autometrics]
-pub(crate) fn router() -> Router<AppState> {
-    Router::new()
-        .route("/wallet/features/get", get(v1_wallet_features_get_handler))
-        .route("/wallet/features/update", put(v1_wallet_features_update_handler))
+/// WalletNotificationSettings operation errors
+#[derive(Serialize, Deserialize, ToSchema)]
+pub(crate) enum WalletNotificationSettingsError {
+    // WalletNotificationSettings query error.
+    #[schema(example = "Bad request")]
+    BadRequest(String),
+    /// WalletNotificationSettings not found by id.
+    #[schema(example = "id = 1")]
+    NotFound(String),
 }

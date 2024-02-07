@@ -73,6 +73,41 @@ export interface paths {
      */
     post: operations["v1_auth_verify_handler"];
   };
+  "/billing/get": {
+    /**
+     * Get a billing
+     * @description Get a billing
+     */
+    get: operations["v1_billing_get_handler"];
+  };
+  "/billing/list": {
+    /**
+     * Returns a list of billings.
+     * @description Returns a list of billings.
+     */
+    get: operations["v1_billing_list_handler"];
+  };
+  "/billing_operation/get": {
+    /**
+     * Get a paymaster
+     * @description Get a paymaster
+     */
+    get: operations["v1_billing_operation_get_handler"];
+  };
+  "/billing_operation/list": {
+    /**
+     * Returns a list of billing operations.
+     * @description Returns a list of billing operations.
+     */
+    get: operations["v1_billing_operation_list_handler"];
+  };
+  "/billing_operation/list/count": {
+    /**
+     * Returns a count of list of billing operations.
+     * @description Returns a count of list of billing operations.
+     */
+    get: operations["v1_billing_operation_list_count_handler"];
+  };
   "/chain/create": {
     /**
      * Create a chain.
@@ -226,6 +261,27 @@ export interface paths {
      * @description Read a list of notifications
      */
     post: operations["v1_notification_read_handler"];
+  };
+  "/notification_settings/get": {
+    /**
+     * Get a paymaster
+     * @description Get a paymaster
+     */
+    get: operations["v1_notification_settings_get_handler"];
+  };
+  "/notification_settings/list": {
+    /**
+     * Returns a list of interpretation actions.
+     * @description Returns a list of interpretation actions.
+     */
+    get: operations["v1_notification_settings_list_handler"];
+  };
+  "/notification_settings/list/count": {
+    /**
+     * Returns a count of list of interpretation actions.
+     * @description Returns a count of list of interpretation actions.
+     */
+    get: operations["v1_notification_settings_list_count_handler"];
   };
   "/owner/get": {
     /**
@@ -479,6 +535,34 @@ export interface paths {
      */
     get: operations["v1_user_get_handler"];
   };
+  "/user/notification/settings/get": {
+    /**
+     * Get a user settings
+     * @description Get a user settings
+     */
+    get: operations["v1_user_notification_settings_get_handler"];
+  };
+  "/user/notification/settings/update": {
+    /**
+     * Create a user_notification_settings
+     * @description Create a user_notification_settings
+     */
+    put: operations["v1_user_notification_settings_update_handler"];
+  };
+  "/user/settings/get": {
+    /**
+     * Get a user settings
+     * @description Get a user settings
+     */
+    get: operations["v1_user_settings_get_handler"];
+  };
+  "/user/settings/update": {
+    /**
+     * Create a user_settings
+     * @description Create a user_settings
+     */
+    put: operations["v1_user_settings_update_handler"];
+  };
   "/user_operation/create": {
     /**
      * Create a user operation
@@ -526,7 +610,7 @@ export interface paths {
      * Get a user operation
      * @description Get a user operation
      */
-    post: operations["v1_user_operation_update_handler"];
+    put: operations["v1_user_operation_update_handler"];
   };
   "/wallet/billing/get": {
     /**
@@ -540,7 +624,7 @@ export interface paths {
      * Create a wallet_billing
      * @description Create a wallet_billing
      */
-    post: operations["v1_wallet_billing_update_handler"];
+    put: operations["v1_wallet_billing_update_handler"];
   };
   "/wallet/create": {
     /**
@@ -561,7 +645,7 @@ export interface paths {
      * Create a wallet_features
      * @description Create a wallet_features
      */
-    post: operations["v1_wallet_features_update_handler"];
+    put: operations["v1_wallet_features_update_handler"];
   };
   "/wallet/get": {
     /**
@@ -584,6 +668,20 @@ export interface paths {
      */
     get: operations["v1_wallet_list_count_handler"];
   };
+  "/wallet/notification/settings/get": {
+    /**
+     * Get a wallet_notification_settings
+     * @description Get a wallet_notification_settings
+     */
+    get: operations["v1_wallet_notification_settings_get_handler"];
+  };
+  "/wallet/notification/settings/update": {
+    /**
+     * Create a wallet_notification_settings
+     * @description Create a wallet_notification_settings
+     */
+    put: operations["v1_wallet_notification_settings_update_handler"];
+  };
   "/wallet/settings/get": {
     /**
      * Get a wallet_settings
@@ -596,7 +694,7 @@ export interface paths {
      * Create a wallet_settings
      * @description Create a wallet_settings
      */
-    post: operations["v1_wallet_settings_update_handler"];
+    put: operations["v1_wallet_settings_update_handler"];
   };
   "/wallet/update": {
     /**
@@ -702,6 +800,40 @@ export interface components {
     AuthVerifyCreateRequestParams: {
       message: string;
       signature: string;
+    };
+    /** @description Billing root type. */
+    Billing: {
+      /** @description The id of the billing. */
+      id: string;
+    };
+    /** @description Billing operation errors */
+    BillingError: OneOf<[{
+      /** @description Billing query error. */
+      BadRequest: string;
+    }, {
+      /** @description Billing not found by id. */
+      NotFound: string;
+    }]>;
+    /** @description BillingOperation root type. */
+    BillingOperation: {
+      /** @description The id of the billing operation. */
+      id: string;
+    };
+    /** @description BillingOperation errors */
+    BillingOperationError: OneOf<[{
+      /** @description BillingOperation query error. */
+      BadRequest: string;
+    }, {
+      /** @description BillingOperation not found by id. */
+      NotFound: string;
+    }]>;
+    /** @description Count of list of billing operations. */
+    BillingOperationListCount: {
+      /**
+       * Format: int64
+       * @description The count of the list of billing operations.
+       */
+      count: number;
     };
     /** @description Chain root type. */
     Chain: {
@@ -894,6 +1026,27 @@ export interface components {
     NotificationReadRequestParams: {
       /** @description The array of the notifications to query. */
       notifications: components["schemas"]["NotificationReadParams"][];
+    };
+    /** @description NotificationSettings root type. */
+    NotificationSettings: {
+      /** @description The id of the interpretation action. */
+      id: string;
+    };
+    /** @description NotificationSettings errors */
+    NotificationSettingsError: OneOf<[{
+      /** @description NotificationSettings query error. */
+      BadRequest: string;
+    }, {
+      /** @description NotificationSettings not found by id. */
+      NotFound: string;
+    }]>;
+    /** @description Count of list of interpretation actions. */
+    NotificationSettingsListCount: {
+      /**
+       * Format: int64
+       * @description The count of the list of interpretation actions.
+       */
+      count: number;
     };
     /** @description Owner root type. */
     Owner: {
@@ -1299,6 +1452,21 @@ export interface components {
       /** @description User not found by id. */
       NotFound: string;
     }]>;
+    /** @description UserNotificationSettings root type. */
+    UserNotificationSettings: {
+      /** @description The id of the user settings. */
+      id: string;
+    };
+    /** @description UserNotificationSettings operation errors */
+    UserNotificationSettingsError: OneOf<[{
+      BadRequest: string;
+    }, {
+      /** @description UserNotificationSettings not found by id. */
+      NotFound: string;
+    }]>;
+    UserNotificationSettingsUpdateRequestParams: {
+      user_notification_settings: components["schemas"]["UserNotificationSettingsOptional"];
+    };
     /** @description User operation root type. */
     UserOperation: {
       /** @description The call data of the user operation. */
@@ -1412,6 +1580,18 @@ export interface components {
       /** @description User operation updated successfully. */
       Updated: string;
     };
+    /** @description UserSettings root type. */
+    UserSettings: {
+      /** @description The id of the user settings. */
+      id: string;
+    };
+    /** @description UserSettings operation errors */
+    UserSettingsError: OneOf<[{
+      BadRequest: string;
+    }, {
+      /** @description UserSettings not found by id. */
+      NotFound: string;
+    }]>;
     /** @description Wallet root type. */
     Wallet: {
       /** @description The address of the wallet. */
@@ -1425,11 +1605,8 @@ export interface components {
     };
     /** @description WalletBilling root type. */
     WalletBilling: {
-      /**
-       * Format: double
-       * @description The wallet billing of the balance in USD.
-       */
-      balance_usd: number;
+      /** @description The wallet billing of the balance in USD. */
+      id: string;
     };
     /** @description WalletBilling operation errors */
     WalletBillingError: OneOf<[{
@@ -1443,11 +1620,8 @@ export interface components {
     }]>;
     /** @description Optional WalletBilling root type. */
     WalletBillingOptional: {
-      /**
-       * Format: double
-       * @description The update query of wallet_billing of whether the testnet is enabled.
-       */
-      balance_usd?: number | null;
+      /** @description The update query of wallet_billing of whether the testnet is enabled. */
+      id: string;
     };
     WalletBillingUpdateRequestParams: {
       wallet_billing: components["schemas"]["WalletBillingOptional"];
@@ -1840,6 +2014,149 @@ export interface operations {
       500: {
         content: {
           "application/json": components["schemas"]["AuthError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a billing
+   * @description Get a billing
+   */
+  v1_billing_get_handler: {
+    parameters: {
+      query: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Billing returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Billing"];
+        };
+      };
+      /** @description Billing not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["BillingError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of billings.
+   * @description Returns a list of billings.
+   */
+  v1_billing_list_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first billing to return. */
+        offset?: number | null;
+        /** @description The maximum number of billings to return. */
+        limit?: number | null;
+      };
+    };
+    responses: {
+      /** @description Billings returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Billing"][];
+        };
+      };
+      /** @description Billing bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["BillingError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a paymaster
+   * @description Get a paymaster
+   */
+  v1_billing_operation_get_handler: {
+    parameters: {
+      query: {
+        /** @description The id of the billing operation. */
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Billing operation returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["BillingOperation"];
+        };
+      };
+      /** @description Billing operation not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["BillingOperationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of billing operations.
+   * @description Returns a list of billing operations.
+   */
+  v1_billing_operation_list_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first billing operation to return. */
+        offset?: number | null;
+        /** @description The maximum number of billing operations to return. */
+        limit?: number | null;
+        /** @description The status to filter by. */
+        status?: string | null;
+        /** @description The id to filter by. */
+        id?: string | null;
+      };
+    };
+    responses: {
+      /** @description Billing operations returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["BillingOperation"][];
+        };
+      };
+      /** @description Billing operation bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["BillingOperationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a count of list of billing operations.
+   * @description Returns a count of list of billing operations.
+   */
+  v1_billing_operation_list_count_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first billing operation to return. */
+        offset?: number | null;
+        /** @description The maximum number of billing operations to return. */
+        limit?: number | null;
+        /** @description The status to filter by. */
+        status?: string | null;
+        /** @description The id to filter by. */
+        id?: string | null;
+      };
+    };
+    responses: {
+      /** @description Billing operations returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["BillingOperationListCount"];
+        };
+      };
+      /** @description BillingOperation bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["BillingOperationError"];
         };
       };
     };
@@ -2418,6 +2735,92 @@ export interface operations {
       500: {
         content: {
           "application/json": components["schemas"]["NotificationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a paymaster
+   * @description Get a paymaster
+   */
+  v1_notification_settings_get_handler: {
+    parameters: {
+      query: {
+        /** @description The id of the interpretation action. */
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Interpretation action returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["NotificationSettings"];
+        };
+      };
+      /** @description Interpretation action not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["NotificationSettingsError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of interpretation actions.
+   * @description Returns a list of interpretation actions.
+   */
+  v1_notification_settings_list_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first interpretation action to return. */
+        offset?: number | null;
+        /** @description The maximum number of interpretation actions to return. */
+        limit?: number | null;
+        /** @description The flag to filter by enabled or disabled. */
+        is_enabled?: boolean | null;
+      };
+    };
+    responses: {
+      /** @description Interpretation Actions returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["NotificationSettings"][];
+        };
+      };
+      /** @description Interpretation Action bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["NotificationSettingsError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a count of list of interpretation actions.
+   * @description Returns a count of list of interpretation actions.
+   */
+  v1_notification_settings_list_count_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first interpretation action to return. */
+        offset?: number | null;
+        /** @description The maximum number of interpretation actions to return. */
+        limit?: number | null;
+        /** @description The flag to filter by enabled or disabled. */
+        is_enabled?: boolean | null;
+      };
+    };
+    responses: {
+      /** @description Interpretation actions returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["NotificationSettingsListCount"];
+        };
+      };
+      /** @description NotificationSettings bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["NotificationSettingsError"];
         };
       };
     };
@@ -3462,6 +3865,144 @@ export interface operations {
     };
   };
   /**
+   * Get a user settings
+   * @description Get a user settings
+   */
+  v1_user_notification_settings_get_handler: {
+    parameters: {
+      query?: {
+        /** @description The user id to filter by. (for admin purposes only) */
+        user_id?: string | null;
+      };
+    };
+    responses: {
+      /** @description User Settings returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserNotificationSettings"];
+        };
+      };
+      /** @description User Settings not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["UserNotificationSettingsError"];
+        };
+      };
+    };
+  };
+  /**
+   * Create a user_notification_settings
+   * @description Create a user_notification_settings
+   */
+  v1_user_notification_settings_update_handler: {
+    parameters: {
+      query?: {
+        /** @description The user id to filter by. (for admin purposes only) */
+        user_id?: string | null;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UserNotificationSettingsUpdateRequestParams"];
+      };
+    };
+    responses: {
+      /** @description User Settings updated successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserNotificationSettings"];
+        };
+      };
+      /** @description Invalid Configuration */
+      400: {
+        content: {
+          "application/json": components["schemas"]["UserNotificationSettingsError"];
+        };
+      };
+      /** @description User Settings already exists */
+      409: {
+        content: {
+          "application/json": components["schemas"]["UserNotificationSettingsError"];
+        };
+      };
+      /** @description User Settings internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["UserNotificationSettingsError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a user settings
+   * @description Get a user settings
+   */
+  v1_user_settings_get_handler: {
+    parameters: {
+      query?: {
+        /** @description The user id to filter by. (for admin purposes only) */
+        user_id?: string | null;
+      };
+    };
+    responses: {
+      /** @description User Settings returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserSettings"];
+        };
+      };
+      /** @description User Settings not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["UserSettingsError"];
+        };
+      };
+    };
+  };
+  /**
+   * Create a user_settings
+   * @description Create a user_settings
+   */
+  v1_user_settings_update_handler: {
+    parameters: {
+      query?: {
+        /** @description The user id to filter by. (for admin purposes only) */
+        user_id?: string | null;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UserSettingsUpdateRequestParams"];
+      };
+    };
+    responses: {
+      /** @description User Settings updated successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserSettings"];
+        };
+      };
+      /** @description Invalid Configuration */
+      400: {
+        content: {
+          "application/json": components["schemas"]["UserSettingsError"];
+        };
+      };
+      /** @description User Settings already exists */
+      409: {
+        content: {
+          "application/json": components["schemas"]["UserSettingsError"];
+        };
+      };
+      /** @description User Settings internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["UserSettingsError"];
+        };
+      };
+    };
+  };
+  /**
    * Create a user operation
    * @description Create a user operation
    */
@@ -3962,6 +4503,79 @@ export interface operations {
       500: {
         content: {
           "application/json": components["schemas"]["WalletError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a wallet_notification_settings
+   * @description Get a wallet_notification_settings
+   */
+  v1_wallet_notification_settings_get_handler: {
+    parameters: {
+      query: {
+        /** @description The address of the wallet settings. */
+        wallet_address: string;
+        /** @description The user id to filter by. (for admin purposes only) */
+        user_id?: string | null;
+      };
+    };
+    responses: {
+      /** @description Wallet Settings returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["WalletNotificationSettings"];
+        };
+      };
+      /** @description Wallet Settings not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["WalletNotificationSettingsError"];
+        };
+      };
+    };
+  };
+  /**
+   * Create a wallet_notification_settings
+   * @description Create a wallet_notification_settings
+   */
+  v1_wallet_notification_settings_update_handler: {
+    parameters: {
+      query: {
+        /** @description The hash of the wallet settings. */
+        address: string;
+        /** @description The user id to filter by. */
+        user_id?: string | null;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["WalletNotificationSettingsUpdateRequestParams"];
+      };
+    };
+    responses: {
+      /** @description Wallet Settings updated successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["WalletNotificationSettings"];
+        };
+      };
+      /** @description Invalid Configuration */
+      400: {
+        content: {
+          "application/json": components["schemas"]["WalletNotificationSettingsError"];
+        };
+      };
+      /** @description Wallet Settings already exists */
+      409: {
+        content: {
+          "application/json": components["schemas"]["WalletNotificationSettingsError"];
+        };
+      };
+      /** @description Wallet Settings internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["WalletNotificationSettingsError"];
         };
       };
     };

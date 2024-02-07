@@ -25,9 +25,12 @@ use axum::{
     Router,
 };
 
-pub(crate) use get::{__path_v1_wallet_features_get_handler, v1_wallet_features_get_handler};
+pub(crate) use get::{
+    __path_v1_wallet_notification_settings_get_handler, v1_wallet_notification_settings_get_handler,
+};
 pub(crate) use update::{
-    __path_v1_wallet_features_update_handler, v1_wallet_features_update_handler,
+    __path_v1_wallet_notification_settings_update_handler,
+    v1_wallet_notification_settings_update_handler,
 };
 
 // -----------------------------------------------------------------------------
@@ -37,6 +40,12 @@ pub(crate) use update::{
 #[autometrics]
 pub(crate) fn router() -> Router<AppState> {
     Router::new()
-        .route("/wallet/features/get", get(v1_wallet_features_get_handler))
-        .route("/wallet/features/update", put(v1_wallet_features_update_handler))
+        .route(
+            "/wallet/notification/settings/get",
+            get(v1_wallet_notification_settings_get_handler),
+        )
+        .route(
+            "/wallet/notification/settings/update",
+            put(v1_wallet_notification_settings_update_handler),
+        )
 }

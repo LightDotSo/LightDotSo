@@ -63,7 +63,7 @@ export const handler = async (params: { address: string }) => {
         config: config,
         walletSettings: walletSettings,
         walletBilling: {
-          balance_usd: 0,
+          id: "",
         },
       };
     },
