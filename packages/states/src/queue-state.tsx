@@ -51,6 +51,7 @@ export const QueueState: FC = () => {
 
   const { queuePortfolio } = useMutationQueuePortfolio({
     address: wallet as Address,
+    isMinimal: true,
   });
 
   // ---------------------------------------------------------------------------

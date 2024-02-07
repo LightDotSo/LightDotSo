@@ -332,6 +332,13 @@ export interface paths {
      */
     post: operations["v1_queue_token_handler"];
   };
+  "/queue/user_operation": {
+    /**
+     * Queue user operation handler.
+     * @description Queue user operation handler.
+     */
+    post: operations["v1_queue_user_operation_handler"];
+  };
   "/signature/create": {
     /**
      * Create a signature
@@ -1844,7 +1851,7 @@ export interface operations {
   v1_chain_create_handler: {
     parameters: {
       query: {
-        /** @description The id of the chain id to createfor. */
+        /** @description The id of the chain id to create for. */
         id: number;
         /** @description The name of the chain. */
         name: string;
@@ -2802,6 +2809,34 @@ export interface operations {
       query: {
         /** @description The address of the target queue. */
         address: string;
+      };
+    };
+    responses: {
+      /** @description Queue created successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["QueueSuccess"];
+        };
+      };
+      /** @description Queue internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["QueueError"];
+        };
+      };
+    };
+  };
+  /**
+   * Queue user operation handler.
+   * @description Queue user operation handler.
+   */
+  v1_queue_user_operation_handler: {
+    parameters: {
+      query: {
+        /** @description The address of the target queue. */
+        hash: string;
+        /** @description The chain id of the target queue. */
+        chain_id: number;
       };
     };
     responses: {

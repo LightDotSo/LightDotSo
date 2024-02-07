@@ -16,7 +16,7 @@
 import { createQueueToken } from "@lightdotso/client";
 import type { QueueParams } from "@lightdotso/params";
 import { useAuth } from "@lightdotso/stores";
-import { toast } from "@lightdotso/ui";
+import { toast, toastMinimalLoadingStyles } from "@lightdotso/ui";
 import { useMutation } from "@tanstack/react-query";
 
 // -----------------------------------------------------------------------------
@@ -40,7 +40,9 @@ export const useMutationQueueToken = (params: QueueParams) => {
         return;
       }
 
-      const loadingToast = toast.loading("Queueing...");
+      const loadingToast = params.isMinimal
+        ? toast.loading(undefined, toastMinimalLoadingStyles)
+        : toast.loading("Queueing...");
 
       const res = await createQueueToken(
         {
@@ -57,6 +59,9 @@ export const useMutationQueueToken = (params: QueueParams) => {
 
       res.match(
         _ => {
+          if (params.isMinimal) {
+            return;
+          }
           toast.success("Successfully queued portfolio!");
         },
         err => {
