@@ -1093,7 +1093,6 @@ model Billing {
 
   activities        Activity[]
   billingOperations BillingOperation[]
-  tokens            Token[]
   walletBilling     WalletBilling[]
 }
 
@@ -1145,8 +1144,8 @@ model BillingOperation {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  activities Activity[]
-  tokens     Token[]
+  activities     Activity[]
+  walletBalances WalletBalance[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1592,12 +1591,6 @@ model Token {
   // None-to-many
   // ---------------------------------------------------------------------------
 
-  billing   Billing? @relation(fields: [billingId], references: [id])
-  billingId String?
-
-  billingOperation   BillingOperation? @relation(fields: [billingOperationId], references: [id])
-  billingOperationId String?
-
   group   TokenGroup? @relation(fields: [groupId], references: [id])
   groupId String?
 
@@ -1619,8 +1612,6 @@ model Token {
   @@unique([address, chainId, tokenId])
   // Relations
   @@index([chainId])
-  @@index([billingId])
-  @@index([billingOperationId])
   @@index([groupId])
 }
 
@@ -1887,6 +1878,9 @@ model WalletBalance {
   // None-to-many
   // ---------------------------------------------------------------------------
 
+  billingOperation   BillingOperation? @relation(fields: [billingOperationId], references: [id])
+  billingOperationId String?
+
   token   Token?  @relation(fields: [tokenId], references: [id])
   tokenId String?
 
@@ -1902,6 +1896,7 @@ model WalletBalance {
   // Relations
   @@index([chainId])
   @@index([walletAddress])
+  @@index([billingOperationId])
   @@index([tokenId])
   @@index([tokenProtocolId])
 }
