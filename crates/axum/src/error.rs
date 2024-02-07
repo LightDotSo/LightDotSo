@@ -19,7 +19,8 @@ use crate::routes::{
     chain::error::ChainError, configuration::error::ConfigurationError,
     feedback::error::FeedbackError, interpretation::error::InterpretationError,
     interpretation_action::error::InterpretationActionError, invite_code::error::InviteCodeError,
-    notification::error::NotificationError, owner::error::OwnerError,
+    notification::error::NotificationError,
+    notification_settings::error::NotificationSettingsError, owner::error::OwnerError,
     paymaster::error::PaymasterError, paymaster_operation::error::PaymasterOperationError,
     portfolio::error::PortfolioError, protocol::error::ProtocolError,
     protocol_group::error::ProtocolGroupError, queue::error::QueueError,
@@ -48,6 +49,7 @@ pub(crate) enum RouteError {
     InterpretationActionError(InterpretationActionError),
     InviteCodeError(InviteCodeError),
     NotificationError(NotificationError),
+    NotificationSettingsError(NotificationSettingsError),
     OwnerError(OwnerError),
     PaymasterError(PaymasterError),
     PaymasterOperationError(PaymasterOperationError),
@@ -185,6 +187,17 @@ impl RouteErrorStatusCodeAndMsg for NotificationError {
         match self {
             NotificationError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
             NotificationError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+        }
+    }
+}
+
+impl RouteErrorStatusCodeAndMsg for NotificationSettingsError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            NotificationSettingsError::BadRequest(msg) => {
+                (StatusCode::BAD_REQUEST, msg.to_string())
+            }
+            NotificationSettingsError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
         }
     }
 }
@@ -401,6 +414,7 @@ impl RouteErrorStatusCodeAndMsg for RouteError {
             RouteError::InterpretationActionError(err) => err.error_status_code_and_msg(),
             RouteError::InviteCodeError(err) => err.error_status_code_and_msg(),
             RouteError::NotificationError(err) => err.error_status_code_and_msg(),
+            RouteError::NotificationSettingsError(err) => err.error_status_code_and_msg(),
             RouteError::OwnerError(err) => err.error_status_code_and_msg(),
             RouteError::PaymasterError(err) => err.error_status_code_and_msg(),
             RouteError::PaymasterOperationError(err) => err.error_status_code_and_msg(),
