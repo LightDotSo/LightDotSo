@@ -19,7 +19,8 @@ import { cn } from "@lightdotso/utils";
 import { cva } from "class-variance-authority";
 import { useTheme } from "next-themes";
 import type { ComponentProps } from "react";
-import { toast, Toaster as SonnerToaster, ExternalToast } from "sonner";
+import type { ExternalToast } from "sonner";
+import { toast, Toaster as SonnerToaster } from "sonner";
 
 // -----------------------------------------------------------------------------
 // Types
