@@ -291,14 +291,11 @@ model WalletBilling {
   updatedAt DateTime @updatedAt
 
   // ---------------------------------------------------------------------------
-  // Fields
-  // ---------------------------------------------------------------------------
-
-  balanceUSD Float
-
-  // ---------------------------------------------------------------------------
   // One-to-one
   // ---------------------------------------------------------------------------
+
+  billing   Billing? @relation(fields: [billingId], references: [id])
+  billingId String?
 
   wallet        Wallet @relation(fields: [walletAddress], references: [address])
   walletAddress String @unique
@@ -307,8 +304,7 @@ model WalletBilling {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  activities        Activity[]
-  billingOperations BillingOperation[]
+  activities Activity[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1033,6 +1029,35 @@ model UserOperationMetadata {
 }
 
 // -----------------------------------------------------------------------------
+// Billing
+// -----------------------------------------------------------------------------
+
+model Billing {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  balanceUSD Float
+  // status     BillingStatus @default(PROPOSED)
+
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
+  billingOperation BillingOperation[]
+  tokens           Token[]
+  walletBilling    WalletBilling[]
+}
+
+// -----------------------------------------------------------------------------
 // BillingOperation
 // -----------------------------------------------------------------------------
 
@@ -1056,8 +1081,8 @@ model BillingOperation {
   // None-to-many
   // ---------------------------------------------------------------------------
 
-  walletBilling   WalletBilling? @relation(fields: [walletBillingId], references: [id])
-  walletBillingId String?
+  billing   Billing? @relation(fields: [billingId], references: [id])
+  billingId String?
 
   // ---------------------------------------------------------------------------
   // Many-to-many
@@ -1070,7 +1095,7 @@ model BillingOperation {
   // ---------------------------------------------------------------------------
 
   // Relations
-  @@index([walletBillingId])
+  @@index([billingId])
 }
 
 enum BillingOperationStatus {
@@ -1506,6 +1531,8 @@ model Token {
   // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
+  Billing   Billing? @relation(fields: [billingId], references: [id])
+  billingId String?
 
   // Unique
   @@unique([address, chainId])
