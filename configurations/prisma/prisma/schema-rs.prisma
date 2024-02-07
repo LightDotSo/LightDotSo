@@ -354,6 +354,12 @@ model WalletFeatures {
   walletAddress String @unique
 
   // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
+  activities Activity[]
+
+  // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
 
@@ -2204,6 +2210,9 @@ model Activity {
   walletBilling   WalletBilling? @relation(fields: [walletBillingId], references: [id])
   walletBillingId String?
 
+  walletFeatures   WalletFeatures? @relation(fields: [walletFeaturesId], references: [id])
+  walletFeaturesId String?
+
   walletNotificationSettings   WalletNotificationSettings? @relation(fields: [walletNotificationSettingsId], references: [id])
   walletNotificationSettingsId String?
 
@@ -2237,6 +2246,7 @@ model Activity {
   @@index([userSettingsId])
   @@index([userNotificationSettingsId])
   @@index([walletBillingId])
+  @@index([walletFeaturesId])
   @@index([walletNotificationSettingsId])
   @@index([walletSettingsId])
 }
@@ -2297,21 +2307,9 @@ model Metrics {
 
   balanceUSDSum Float
 
-  feedbackCount           BigInt
-  interpretationCount     BigInt
-  inviteCodeCount         BigInt
-  notificationCount       BigInt
-  ownerCount              BigInt
-  paymasterOperationCount BigInt
-  protocolCount           BigInt
-  simulationCount         BigInt
-  tokenCount              BigInt
-  transactionCount        BigInt
-  userCount               BigInt
-  userOperationCount      BigInt
-  walletCount             BigInt
-
-  uniqueWalletCount BigInt
+  transactionCount   BigInt
+  userOperationCount BigInt
+  walletCount        BigInt
 
   // ---------------------------------------------------------------------------
   // None-to-many

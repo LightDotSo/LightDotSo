@@ -2326,21 +2326,9 @@ model Metrics {
 
   balanceUSDSum Float
 
-  feedbackCount           BigInt
-  interpretationCount     BigInt
-  inviteCodeCount         BigInt
-  notificationCount       BigInt
-  ownerCount              BigInt
-  paymasterOperationCount BigInt
-  protocolCount           BigInt
-  simulationCount         BigInt
-  tokenCount              BigInt
-  transactionCount        BigInt
-  userCount               BigInt
-  userOperationCount      BigInt
-  walletCount             BigInt
-
-  uniqueWalletCount BigInt
+  transactionCount   BigInt
+  userOperationCount BigInt
+  walletCount        BigInt
 
   // ---------------------------------------------------------------------------
   // None-to-many
