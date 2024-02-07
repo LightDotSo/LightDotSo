@@ -41,7 +41,7 @@ pub struct ListQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of billings.
+/// Returns a list of billings
 #[utoipa::path(
         get,
         path = "/billing/list",

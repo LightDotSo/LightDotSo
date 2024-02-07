@@ -43,7 +43,7 @@ pub struct ListQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of interpretations.
+/// Returns a list of interpretations
 #[utoipa::path(
         get,
         path = "/interpretation/list",

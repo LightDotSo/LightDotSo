@@ -47,7 +47,7 @@ pub struct GetQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Get a wallet_features
+/// Get a wallet features
 #[utoipa::path(
         get,
         path = "/wallet/features/get",

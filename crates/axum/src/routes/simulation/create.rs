@@ -84,7 +84,7 @@ impl TryFrom<SimulationCreateRequestParams> for SimulationUserOperationRequest {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Create a simulation.
+/// Create a simulation
 #[utoipa::path(
         post,
         path = "/simulation/create",

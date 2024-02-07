@@ -60,7 +60,7 @@ pub struct WalletSettingsUpdateRequestParams {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Create a wallet_settings
+/// Update the wallet settings
 #[utoipa::path(
         put,
         path = "/wallet/settings/update",

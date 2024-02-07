@@ -60,7 +60,7 @@ pub struct TokenUpdateRequestParams {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Update a token.
+/// Update a token
 #[utoipa::path(
         put,
         path = "/token/update",

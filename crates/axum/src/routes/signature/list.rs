@@ -45,7 +45,7 @@ pub struct ListQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of signatures.
+/// Returns a list of signatures
 #[utoipa::path(
         get,
         path = "/signature/list",

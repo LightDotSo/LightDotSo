@@ -56,7 +56,7 @@ pub(crate) struct NotificationSettingsListCount {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of interpretation actions.
+/// Returns a list of interpretation actions
 #[utoipa::path(
         get,
         path = "/notification_settings/list",
@@ -112,7 +112,7 @@ pub(crate) async fn v1_notification_settings_list_handler(
     Ok(Json::from(notification_settingss))
 }
 
-/// Returns a count of list of interpretation actions.
+/// Returns a count of list of interpretation actions
 #[utoipa::path(
         get,
         path = "/notification_settings/list/count",

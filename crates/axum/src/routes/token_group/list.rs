@@ -41,7 +41,7 @@ pub struct ListQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of token groups.
+/// Returns a list of token groups
 #[utoipa::path(
         get,
         path = "/token/group/list",

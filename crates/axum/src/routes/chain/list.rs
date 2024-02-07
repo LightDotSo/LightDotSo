@@ -41,7 +41,7 @@ pub struct ListQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of protocol groups.
+/// Returns a list of protocol groups
 #[utoipa::path(
         get,
         path = "/chain/list",

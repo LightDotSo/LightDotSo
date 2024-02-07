@@ -69,7 +69,7 @@ pub(crate) struct ActivityListCount {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of activities.
+/// Returns a list of activities
 #[utoipa::path(
         get,
         path = "/activity/list",
@@ -135,7 +135,7 @@ pub(crate) async fn v1_activity_list_handler(
     Ok(Json::from(activities))
 }
 
-/// Returns a count of list of activities.
+/// Returns a count of list of activities
 #[utoipa::path(
         get,
         path = "/activity/list/count",

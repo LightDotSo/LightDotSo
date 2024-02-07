@@ -59,7 +59,7 @@ pub(crate) struct BillingOperationListCount {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of billing operations.
+/// Returns a list of billing operations
 #[utoipa::path(
         get,
         path = "/billing_operation/list",
@@ -115,7 +115,7 @@ pub(crate) async fn v1_billing_operation_list_handler(
     Ok(Json::from(billing_operations))
 }
 
-/// Returns a count of list of billing operations.
+/// Returns a count of list of billing operations
 #[utoipa::path(
         get,
         path = "/billing_operation/list/count",

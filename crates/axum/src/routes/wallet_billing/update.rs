@@ -59,7 +59,7 @@ pub struct WalletBillingUpdateRequestParams {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Create a wallet_billing
+/// Update the wallet billing
 #[utoipa::path(
         put,
         path = "/wallet/billing/update",

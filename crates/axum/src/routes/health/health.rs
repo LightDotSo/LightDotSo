@@ -20,7 +20,7 @@ use axum::response::IntoResponse;
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Check the health of the server.
+/// Check the health of the server
 #[utoipa::path(
         get,
         path = "/health",

@@ -71,7 +71,7 @@ pub(crate) struct TokenListCount {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of tokens.
+/// Returns a list of tokens
 #[utoipa::path(
         get,
         path = "/token/list",
@@ -300,7 +300,7 @@ pub(crate) async fn v1_token_list_handler(
     Ok(Json::from(tokens))
 }
 
-/// Returns a count of list of tokens.
+/// Returns a count of list of tokens
 #[utoipa::path(
         get,
         path = "/token/list/count",

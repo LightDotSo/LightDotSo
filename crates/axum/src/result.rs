@@ -122,18 +122,18 @@ impl IntoResponse for AppError {
     fn into_response(self) -> Response {
         let status = match self {
             AppError::RouteError(err) => err.error_status_code_and_msg(),
-            AppError::PrismaError(error) if error.is_prisma_error::<UniqueKeyViolation>() => {
+            AppError::EyreError(err) => (StatusCode::BAD_REQUEST, err.to_string()),
+            AppError::PrismaError(err) if err.is_prisma_error::<UniqueKeyViolation>() => {
                 (StatusCode::BAD_REQUEST, "Prisma Error: Unique key violation".to_string())
             }
-            AppError::EyreError(eyre_msg) => (StatusCode::BAD_REQUEST, eyre_msg.to_string()),
-            AppError::PrismaError(_) => {
-                (StatusCode::INTERNAL_SERVER_ERROR, "Prisma Error".to_string())
+            AppError::PrismaError(err) => {
+                (StatusCode::INTERNAL_SERVER_ERROR, format!("Prisma Error: {}", err))
             }
-            AppError::RedisError(_) => {
-                (StatusCode::INTERNAL_SERVER_ERROR, "Redis Error".to_string())
+            AppError::RedisError(err) => {
+                (StatusCode::INTERNAL_SERVER_ERROR, format!("Redis Error: {}", err))
             }
-            AppError::SerdeJsonError(_) => {
-                (StatusCode::BAD_REQUEST, "Serde JSON Error".to_string())
+            AppError::SerdeJsonError(err) => {
+                (StatusCode::BAD_REQUEST, format!("Serde JSON Error: {}", err))
             }
             AppError::FromHexError(_) => (StatusCode::BAD_REQUEST, "Bad Hex".to_string()),
             AppError::RustHexError(_) => (StatusCode::BAD_REQUEST, "Bad Rust Hex".to_string()),

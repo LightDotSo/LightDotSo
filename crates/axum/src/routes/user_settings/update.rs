@@ -60,7 +60,7 @@ pub struct UserSettingsUpdateRequestParams {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Create a user_settings
+/// Update the user settings
 #[utoipa::path(
         put,
         path = "/user/settings/update",

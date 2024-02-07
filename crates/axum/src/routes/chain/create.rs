@@ -52,7 +52,7 @@ pub struct PostQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Create a chain.
+/// Create a chain
 #[utoipa::path(
         post,
         path = "/chain/create",

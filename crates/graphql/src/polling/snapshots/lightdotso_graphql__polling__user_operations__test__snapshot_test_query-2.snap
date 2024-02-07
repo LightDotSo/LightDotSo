@@ -1,5 +1,5 @@
 ---
-source: crates/graphql/src/polling/user_operation.rs
+source: crates/graphql/src/polling/user_operations.rs
 expression: query.query
 ---
 query GetUserOperationQuery($id: String!) {
