@@ -15,7 +15,10 @@
 
 #![allow(clippy::unwrap_used)]
 
-use crate::config::PollingArgs;
+use crate::{
+    config::PollingArgs,
+    constants::{GRAPH, SATSUMA},
+};
 use autometrics::autometrics;
 use axum::Json;
 use backon::{BlockingRetryable, ExponentialBuilder, Retryable};
@@ -174,7 +177,7 @@ impl Polling {
 
         // Get the url from the chain mapping.
         let maybe_url = match chain {
-            Some(urls) => urls.get("graph").or(urls.get("satsuma")),
+            Some(urls) => urls.get(&*GRAPH.to_string()).or(urls.get(&*SATSUMA.to_string())),
             None => None,
         };
 

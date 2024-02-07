@@ -13,8 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#![recursion_limit = "512"]
+use lazy_static::lazy_static;
 
-pub mod config;
-pub mod constants;
-pub mod polling;
+// The graph namesapce
+lazy_static! {
+    pub static ref GRAPH: String = "graph".to_string();
+}
+
+// The satsuma namesapce
+lazy_static! {
+    pub static ref SATSUMA: String = "satsuma".to_string();
+}

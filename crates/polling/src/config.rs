@@ -15,7 +15,10 @@
 
 #![allow(clippy::unwrap_used)]
 
-use crate::polling::Polling;
+use crate::{
+    constants::{GRAPH, SATSUMA},
+    polling::Polling,
+};
 use clap::Parser;
 use eyre::Result;
 use lightdotso_graphql::constants::{
@@ -160,11 +163,11 @@ pub fn create_chain_mapping(
     satsuma_api_key: Option<String>,
     satsuma_enabled: bool,
 ) -> HashMap<u64, HashMap<String, String>> {
-    let mut chain_id_to_urls = std::collections::HashMap::new();
+    let mut chain_id_to_urls = HashMap::new();
 
     for (chain_id, url) in THE_GRAPH_HOSTED_SERVICE_URLS.clone().into_iter() {
-        let mut child_map = HashMap::new();
-        child_map.insert("graph".to_string(), url);
+        let mut child_map: HashMap<String, String> = HashMap::new();
+        child_map.insert((*GRAPH).to_string(), url);
         chain_id_to_urls.insert(chain_id, child_map);
     }
 
@@ -173,7 +176,7 @@ pub fn create_chain_mapping(
             let url =
                 format!("{}/{}/{}", SATSUMA_BASE_URL.clone(), satsuma_api_key.clone().unwrap(), id);
             let child_map = chain_id_to_urls.entry(chain_id).or_insert_with(HashMap::new);
-            child_map.insert("satsuma".to_string(), url);
+            child_map.insert((*SATSUMA).to_string(), url);
         }
     }
 
