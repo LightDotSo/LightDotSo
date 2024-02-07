@@ -1953,7 +1953,7 @@ model NotificationSettings {
 
   entity    NotificationEntity
   operation NotificationOperation
-  type      NotificationType
+  platform  NotificationPlatform
 
   isEnabled Boolean @default(true)
 
@@ -1971,7 +1971,7 @@ model NotificationSettings {
   // ---------------------------------------------------------------------------
 
   // Unique
-  @@unique([entity, operation, type, userNotificationSettingsId, walletNotificationSettingsId])
+  @@unique([entity, operation, platform, userNotificationSettingsId, walletNotificationSettingsId])
   // Relations
   @@index([userNotificationSettingsId])
   @@index([walletNotificationSettingsId])
@@ -1997,7 +1997,7 @@ enum NotificationOperation {
   DELETE
 }
 
-enum NotificationType {
+enum NotificationPlatform {
   // ---------------------------------------------------------------------------
   // Enum Fields
   // ---------------------------------------------------------------------------
