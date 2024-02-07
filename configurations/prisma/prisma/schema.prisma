@@ -2271,6 +2271,8 @@ model NotificationSettings {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Unique
+  @@unique([entity, operation, type, userNotificationSettingsId, walletNotificationSettingsId])
   // Relations
   @@index([userNotificationSettingsId])
   @@index([walletNotificationSettingsId])
