@@ -294,11 +294,15 @@ model WalletBilling {
   // One-to-one
   // ---------------------------------------------------------------------------
 
-  billing   Billing? @relation(fields: [billingId], references: [id])
-  billingId String?
-
   wallet        Wallet @relation(fields: [walletAddress], references: [address])
   walletAddress String @unique
+
+  // ---------------------------------------------------------------------------
+  // None-to-one
+  // ---------------------------------------------------------------------------
+
+  billing   Billing? @relation(fields: [billingId], references: [id])
+  billingId String
 
   // ---------------------------------------------------------------------------
   // Many-to-many
@@ -312,6 +316,7 @@ model WalletBilling {
 
   // Relations
   @@index([walletAddress])
+  @@index([billingId])
 }
 
 // -----------------------------------------------------------------------------
@@ -410,6 +415,7 @@ model WalletNotificationSettings {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
+  activities           Activity[]
   notificationSettings NotificationSettings[]
 
   // ---------------------------------------------------------------------------
@@ -1046,15 +1052,26 @@ model Billing {
   // ---------------------------------------------------------------------------
 
   balanceUSD Float
-  // status     BillingStatus @default(PROPOSED)
+  status     BillingStatus
 
   // ---------------------------------------------------------------------------
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  billingOperation BillingOperation[]
-  tokens           Token[]
-  walletBilling    WalletBilling[]
+  activities        Activity[]
+  billingOperations BillingOperation[]
+  tokens            Token[]
+  walletBilling     WalletBilling[]
+}
+
+enum BillingStatus {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
+
+  ADMIN
+  SPONSORED
+  USER
 }
 
 // -----------------------------------------------------------------------------
@@ -1075,7 +1092,14 @@ model BillingOperation {
   // ---------------------------------------------------------------------------
 
   balanceUSD Float
-  status     BillingOperationStatus @default(PROPOSED)
+  status     BillingOperationStatus
+
+  // ---------------------------------------------------------------------------
+  // None-to-one
+  // ---------------------------------------------------------------------------
+
+  // paymasterOperation   PaymasterOperation?
+  // paymasterOperationId String?
 
   // ---------------------------------------------------------------------------
   // None-to-many
@@ -1088,7 +1112,8 @@ model BillingOperation {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  tokens Token[]
+  activities Activity[]
+  tokens     Token[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1103,11 +1128,10 @@ enum BillingOperationStatus {
   // Enum Fields
   // ---------------------------------------------------------------------------
 
-  PROPOSED
-  PENDING
-  EXECUTED
-  REVERTED
-  INVALID
+  DEPOSIT
+  WITHDRAWAL
+  PAYMENT
+  SPONSORED
 }
 
 // -----------------------------------------------------------------------------
@@ -1135,6 +1159,13 @@ model Paymaster {
   // ---------------------------------------------------------------------------
 
   chain Chain @relation(fields: [chainId], references: [id])
+
+  // ---------------------------------------------------------------------------
+  // None-to-one
+  // ---------------------------------------------------------------------------
+
+  activity   Activity? @relation(fields: [activityId], references: [id])
+  activityId String?   @unique
 
   // ---------------------------------------------------------------------------
   // Many-to-many
@@ -1170,6 +1201,13 @@ model PaymasterOperation {
   validAfter  DateTime
 
   // ---------------------------------------------------------------------------
+  // One-to-one
+  // ---------------------------------------------------------------------------
+
+  // billingOperation   BillingOperation @relation(fields: [billingOperationId], references: [id])
+  billingOperationId String? @unique
+
+  // ---------------------------------------------------------------------------
   // One-to-many
   // ---------------------------------------------------------------------------
 
@@ -1177,6 +1215,13 @@ model PaymasterOperation {
   paymasterId String
 
   wallet Wallet @relation(fields: [sender], references: [address])
+
+  // ---------------------------------------------------------------------------
+  // None-to-one
+  // ---------------------------------------------------------------------------
+
+  activity   Activity? @relation(fields: [activityId], references: [id])
+  activityId String?   @unique
 
   // ---------------------------------------------------------------------------
   // None-to-none
@@ -1191,6 +1236,7 @@ model PaymasterOperation {
   // Unique
   @@unique([validAfter, paymasterId])
   // Relations
+  // @@index([billingOperationId])
   @@index([paymasterId])
   @@index([sender])
   @@index([sender, senderNonce])
@@ -1513,6 +1559,9 @@ model Token {
   // None-to-many
   // ---------------------------------------------------------------------------
 
+  billing   Billing? @relation(fields: [billingId], references: [id])
+  billingId String?
+
   billingOperation   BillingOperation? @relation(fields: [billingOperationId], references: [id])
   billingOperationId String?
 
@@ -1531,14 +1580,13 @@ model Token {
   // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
-  Billing   Billing? @relation(fields: [billingId], references: [id])
-  billingId String?
 
   // Unique
   @@unique([address, chainId])
   @@unique([address, chainId, tokenId])
   // Relations
   @@index([chainId])
+  @@index([billingId])
   @@index([billingOperationId])
   @@index([groupId])
 }
@@ -1860,6 +1908,12 @@ model Activity {
   // Mutable Relations None-to-many
   // ---------------------------------------------------------------------------
 
+  billing   Billing? @relation(fields: [billingId], references: [id])
+  billingId String?
+
+  billingOperation   BillingOperation? @relation(fields: [billingOperationId], references: [id])
+  billingOperationId String?
+
   inviteCode   InviteCode? @relation(fields: [inviteCodeId], references: [id])
   inviteCodeId String?
 
@@ -1869,6 +1923,9 @@ model Activity {
   walletBilling   WalletBilling? @relation(fields: [walletBillingId], references: [id])
   walletBillingId String?
 
+  walletNotificationSettings   WalletNotificationSettings? @relation(fields: [walletNotificationSettingsId], references: [id])
+  walletNotificationSettingsId String?
+
   walletSettings   WalletSettings? @relation(fields: [walletSettingsId], references: [id])
   walletSettingsId String?
 
@@ -1876,22 +1933,28 @@ model Activity {
   // Immutable Relations None-to-none
   // ---------------------------------------------------------------------------
 
-  feedback      Feedback?
-  notification  Notification?
-  signature     Signature?
-  simulation    Simulation?
-  transaction   Transaction?
-  userOperation UserOperation?
+  feedback           Feedback?
+  notification       Notification?
+  paymaster          Paymaster?
+  paymasterOperation PaymasterOperation?
+  signature          Signature?
+  simulation         Simulation?
+  transaction        Transaction?
+  userOperation      UserOperation?
 
   // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
+
   // Relations
   @@index([userId])
   @@index([walletAddress])
+  @@index([billingId])
+  @@index([billingOperationId])
   @@index([inviteCodeId])
   @@index([supportRequestId])
   @@index([walletBillingId])
+  @@index([walletNotificationSettingsId])
   @@index([walletSettingsId])
 }
 
@@ -2204,6 +2267,8 @@ model NotificationSettings {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Unique
+  @@unique([entity, operation, type, userNotificationSettingsId, walletNotificationSettingsId])
   // Relations
   @@index([userNotificationSettingsId])
   @@index([walletNotificationSettingsId])

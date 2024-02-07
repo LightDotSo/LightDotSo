@@ -1114,6 +1114,13 @@ model BillingOperation {
   status     BillingOperationStatus
 
   // ---------------------------------------------------------------------------
+  // None-to-one
+  // ---------------------------------------------------------------------------
+
+  // paymasterOperation   PaymasterOperation?
+  // paymasterOperationId String?
+
+  // ---------------------------------------------------------------------------
   // None-to-many
   // ---------------------------------------------------------------------------
 
@@ -1213,6 +1220,13 @@ model PaymasterOperation {
   validAfter  DateTime
 
   // ---------------------------------------------------------------------------
+  // One-to-one
+  // ---------------------------------------------------------------------------
+
+  // billingOperation   BillingOperation @relation(fields: [billingOperationId], references: [id])
+  billingOperationId String? @unique
+
+  // ---------------------------------------------------------------------------
   // One-to-many
   // ---------------------------------------------------------------------------
 
@@ -1241,6 +1255,7 @@ model PaymasterOperation {
   // Unique
   @@unique([validAfter, paymasterId])
   // Relations
+  // @@index([billingOperationId])
   @@index([paymasterId])
   @@index([sender])
   @@index([sender, senderNonce])
