@@ -32,9 +32,9 @@ use utoipa::{IntoParams, ToSchema};
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct ListQuery {
-    /// The offset of the first interpretation action to return.
+    /// The offset of the first notification settings to return.
     pub offset: Option<i64>,
-    /// The maximum number of interpretation actions to return.
+    /// The maximum number of notification settingss to return.
     pub limit: Option<i64>,
     /// The flag to filter by enabled or disabled.
     pub is_enabled: Option<bool>,
@@ -44,11 +44,11 @@ pub struct ListQuery {
 // Types
 // -----------------------------------------------------------------------------
 
-/// Count of list of interpretation actions.
+/// Count of list of notification settingss.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
 pub(crate) struct NotificationSettingsListCount {
-    /// The count of the list of interpretation actions.
+    /// The count of the list of notification settingss.
     pub count: i64,
 }
 
@@ -56,7 +56,7 @@ pub(crate) struct NotificationSettingsListCount {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of interpretation actions
+/// Returns a list of notification settingss
 #[utoipa::path(
         get,
         path = "/notification_settings/list",
@@ -64,8 +64,8 @@ pub(crate) struct NotificationSettingsListCount {
             ListQuery
         ),
         responses(
-            (status = 200, description = "Interpretation Actions returned successfully", body = [NotificationSettings]),
-            (status = 500, description = "Interpretation Action bad request", body = NotificationSettingsError),
+            (status = 200, description = "Notification settingss returned successfully", body = [NotificationSettings]),
+            (status = 500, description = "Notification settings bad request", body = NotificationSettingsError),
         )
     )]
 #[autometrics]
@@ -91,7 +91,7 @@ pub(crate) async fn v1_notification_settings_list_handler(
     // DB
     // -------------------------------------------------------------------------
 
-    // Get the interpretation actions from the database.
+    // Get the notification settingss from the database.
     let notification_settingss = state
         .client
         .notification_settings()
@@ -105,14 +105,14 @@ pub(crate) async fn v1_notification_settings_list_handler(
     // Return
     // -------------------------------------------------------------------------
 
-    // Change the interpretation actions to the format that the API expects.
+    // Change the notification settingss to the format that the API expects.
     let notification_settingss: Vec<NotificationSettings> =
         notification_settingss.into_iter().map(NotificationSettings::from).collect();
 
     Ok(Json::from(notification_settingss))
 }
 
-/// Returns a count of list of interpretation actions
+/// Returns a count of list of notification settingss
 #[utoipa::path(
         get,
         path = "/notification_settings/list/count",
@@ -120,7 +120,7 @@ pub(crate) async fn v1_notification_settings_list_handler(
             ListQuery
         ),
         responses(
-            (status = 200, description = "Interpretation actions returned successfully", body = NotificationSettingsListCount),
+            (status = 200, description = "Notification settingss returned successfully", body = NotificationSettingsListCount),
             (status = 500, description = "NotificationSettings bad request", body = NotificationSettingsError),
         )
     )]
@@ -147,7 +147,7 @@ pub(crate) async fn v1_notification_settings_list_count_handler(
     // DB
     // -------------------------------------------------------------------------
 
-    // Get the interpretation actions from the database.
+    // Get the notification settingss from the database.
     let count = state.client.notification_settings().count(query_params).exec().await?;
 
     // -------------------------------------------------------------------------
@@ -161,7 +161,7 @@ pub(crate) async fn v1_notification_settings_list_count_handler(
 // Utils
 // -----------------------------------------------------------------------------
 
-/// Constructs a query for interpretation actions.
+/// Constructs a query for notification settingss.
 fn construct_notification_settings_list_query_params(query: &ListQuery) -> Vec<WhereParam> {
     let mut query_exp = vec![];
 

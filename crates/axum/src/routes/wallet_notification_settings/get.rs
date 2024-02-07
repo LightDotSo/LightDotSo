@@ -107,6 +107,7 @@ pub(crate) async fn v1_wallet_notification_settings_get_handler(
             auth_user_id.clone(),
             checksum_address.clone(),
         ))
+        .with(wallet_notification_settings::notification_settings::fetch(vec![]))
         .exec()
         .await?;
 
@@ -135,7 +136,9 @@ pub(crate) async fn v1_wallet_notification_settings_get_handler(
 
         if wallet.is_none() {
             return Err(AppError::RouteError(RouteError::WalletNotificationSettingsError(
-                WalletNotificationSettingsError::NotFound("Wallet not found".to_string()),
+                WalletNotificationSettingsError::NotFound(
+                    "Wallet notification not found".to_string(),
+                ),
             )));
         }
 

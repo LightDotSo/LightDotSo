@@ -14,13 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use super::types::UserSettings;
-use crate::{
-    authentication::authenticate_user,
-    error::RouteError,
-    result::{AppError, AppJsonResult},
-    routes::user_settings::error::UserSettingsError,
-    state::AppState,
-};
+use crate::{authentication::authenticate_user, result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -95,7 +89,11 @@ pub(crate) async fn v1_user_settings_get_handler(
     let user_settings = state
         .client
         .user_settings()
-        .find_unique(user_settings::user_id::equals(auth_user_id.clone()))
+        .upsert(
+            user_settings::user_id::equals(auth_user_id.clone()),
+            user_settings::create(user::id::equals(auth_user_id.clone()), vec![]),
+            vec![],
+        )
         .exec()
         .await?;
 
@@ -103,39 +101,7 @@ pub(crate) async fn v1_user_settings_get_handler(
     // Return
     // -------------------------------------------------------------------------
 
-    // If the user_settings is not found, create a default user_settings in the db, if the
-    // user exists.
-    if let Some(user_settings) = user_settings {
-        let user_settings: UserSettings = user_settings.into();
+    let user_settings: UserSettings = user_settings.into();
 
-        Ok(Json::from(user_settings))
-    } else {
-        // ---------------------------------------------------------------------
-        // DB
-        // ---------------------------------------------------------------------
-
-        let user =
-            state.client.user().find_unique(user::id::equals(auth_user_id.clone())).exec().await?;
-
-        if user.is_none() {
-            return Err(AppError::RouteError(RouteError::UserSettingsError(
-                UserSettingsError::NotFound("User not found".to_string()),
-            )));
-        }
-
-        // ---------------------------------------------------------------------
-        // Return
-        // ---------------------------------------------------------------------
-
-        let user_settings = state
-            .client
-            .user_settings()
-            .create(user::id::equals(auth_user_id.clone()), vec![])
-            .exec()
-            .await?;
-
-        let user_settings: UserSettings = user_settings.into();
-
-        return Ok(Json::from(user_settings));
-    }
+    return Ok(Json::from(user_settings));
 }

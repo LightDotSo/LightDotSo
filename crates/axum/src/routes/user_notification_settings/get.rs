@@ -96,6 +96,7 @@ pub(crate) async fn v1_user_notification_settings_get_handler(
         .client
         .user_notification_settings()
         .find_unique(user_notification_settings::user_id::equals(auth_user_id.clone()))
+        .with(user_notification_settings::notification_settings::fetch(vec![]))
         .exec()
         .await?;
 
@@ -120,7 +121,9 @@ pub(crate) async fn v1_user_notification_settings_get_handler(
 
         if user.is_none() {
             return Err(AppError::RouteError(RouteError::UserNotificationSettingsError(
-                UserNotificationSettingsError::NotFound("User not found".to_string()),
+                UserNotificationSettingsError::NotFound(
+                    "User notification settings not found".to_string(),
+                ),
             )));
         }
 

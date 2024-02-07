@@ -73,10 +73,10 @@ pub struct WalletNotificationSettingsUpdateRequestParams {
         ),
         request_body = WalletNotificationSettingsUpdateRequestParams,
         responses(
-            (status = 200, description = "Wallet Settings updated successfully", body = WalletNotificationSettings),
+            (status = 200, description = "Wallet notification settings updated successfully", body = WalletNotificationSettings),
             (status = 400, description = "Invalid Configuration", body = WalletNotificationSettingsError),
-            (status = 409, description = "Wallet Settings already exists", body = WalletNotificationSettingsError),
-            (status = 500, description = "Wallet Settings internal error", body = WalletNotificationSettingsError),
+            (status = 409, description = "Wallet notification settings already exists", body = WalletNotificationSettingsError),
+            (status = 500, description = "Wallet notification settings internal error", body = WalletNotificationSettingsError),
         )
     )]
 #[autometrics]
@@ -110,20 +110,6 @@ pub(crate) async fn v1_wallet_notification_settings_update_handler(
             .await?;
 
     // -------------------------------------------------------------------------
-    // Params
-    // -------------------------------------------------------------------------
-
-    // For each wallet_notification_settings, create the params update.
-    let params = vec![];
-
-    // info!("Update wallet_notification_settings for address: {:?}", checksum_address);
-
-    // if wallet_notification_settings.is_enabled_testnet.is_some() {
-    //     let is_enabled_testnet = wallet_notification_settings.is_enabled_testnet.unwrap();
-    //     params.push(wallet_notification_settings::is_enabled_testnet::set(is_enabled_testnet));
-    // }
-
-    // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
 
@@ -139,13 +125,19 @@ pub(crate) async fn v1_wallet_notification_settings_update_handler(
             wallet_notification_settings::create(
                 user::id::equals(auth_user_id.clone()),
                 wallet::address::equals(checksum_address.clone()),
-                params.clone(),
+                vec![],
             ),
-            params.clone(),
+            vec![],
         )
         .exec()
         .await?;
     info!(?wallet_notification_settings);
+
+    // -------------------------------------------------------------------------
+    // Params
+    // -------------------------------------------------------------------------
+
+    // For each wallet_notification_settings, create the params update.
 
     // -------------------------------------------------------------------------
     // Kafka
