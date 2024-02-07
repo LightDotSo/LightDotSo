@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import withBundleAnalyzer from "@next/bundle-analyzer";
+import { PrismaPlugin } from "@prisma/nextjs-monorepo-workaround-plugin";
 import { withSentryConfig } from "@sentry/nextjs";
 
 // ---------------------------------------------------------------------------
@@ -38,9 +39,15 @@ const nextConfig = {
     },
   },
   outputFileTracing: true,
-  transpilePackages: ["@lightdotso/ui"],
-  webpack: config => {
+  transpilePackages: ["@lightdotso/prisma"],
+  webpack: (config, { isServer }) => {
     config.externals.push("async_hooks", "pino-pretty", "lokijs", "encoding");
+
+    if (isServer) {
+      config.plugins = [...config.plugins, new PrismaPlugin()];
+      // config.externals = ["react", ...config.externals];
+    }
+
     config.resolve.fallback = { fs: false, net: false, tls: false };
 
     return config;
