@@ -483,9 +483,6 @@ importers:
       immer:
         specifier: ^10.0.3
         version: 10.0.3
-      inngest:
-        specifier: ^3.13.0
-        version: 3.13.0(typescript@5.3.3)
       kysely-postgres-js:
         specifier: ^2.0.0
         version: 2.0.0(kysely@0.27.2)(postgres@3.4.3)
@@ -577,9 +574,6 @@ importers:
       autoprefixer:
         specifier: ^10.4.17
         version: 10.4.17(postcss@8.4.34)
-      inngest-cli:
-        specifier: ^0.25.2
-        version: 0.25.2
       postcss:
         specifier: ^8.4.34
         version: 8.4.34
@@ -1183,6 +1177,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.17
         version: 10.4.17(postcss@8.4.34)
+      inngest-cli:
+        specifier: ^0.25.2
+        version: 0.25.2
       postcss:
         specifier: ^8.4.34
         version: 8.4.34
