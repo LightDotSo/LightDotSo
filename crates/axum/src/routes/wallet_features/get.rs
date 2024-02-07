@@ -14,12 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use super::types::WalletFeatures;
-use crate::{
-    error::RouteError,
-    result::{AppError, AppJsonResult},
-    routes::wallet_features::error::WalletFeaturesError,
-    state::AppState,
-};
+use crate::{result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -84,51 +79,19 @@ pub(crate) async fn v1_wallet_features_get_handler(
     let wallet_features = state
         .client
         .wallet_features()
-        .find_unique(wallet_features::wallet_address::equals(checksum_address.clone()))
+        .upsert(
+            wallet_features::wallet_address::equals(checksum_address.clone()),
+            wallet_features::create(wallet::address::equals(checksum_address.clone()), vec![]),
+            vec![],
+        )
         .exec()
         .await?;
 
-    // -------------------------------------------------------------------------
+    // ---------------------------------------------------------------------
     // Return
-    // -------------------------------------------------------------------------
+    // ---------------------------------------------------------------------
 
-    // If the wallet_features is not found, create a default wallet_features in the db, if the
-    // wallet exists.
-    if let Some(wallet_features) = wallet_features {
-        let wallet_features: WalletFeatures = wallet_features.into();
+    let wallet_features: WalletFeatures = wallet_features.into();
 
-        Ok(Json::from(wallet_features))
-    } else {
-        // ---------------------------------------------------------------------
-        // DB
-        // ---------------------------------------------------------------------
-
-        let wallet = state
-            .client
-            .wallet()
-            .find_unique(wallet::address::equals(checksum_address.clone()))
-            .exec()
-            .await?;
-
-        if wallet.is_none() {
-            return Err(AppError::RouteError(RouteError::WalletFeaturesError(
-                WalletFeaturesError::NotFound("Wallet not found".to_string()),
-            )));
-        }
-
-        let wallet_features = state
-            .client
-            .wallet_features()
-            .create(wallet::address::equals(checksum_address.clone()), vec![])
-            .exec()
-            .await?;
-
-        // ---------------------------------------------------------------------
-        // Return
-        // ---------------------------------------------------------------------
-
-        let wallet_features: WalletFeatures = wallet_features.into();
-
-        return Ok(Json::from(wallet_features));
-    }
+    return Ok(Json::from(wallet_features));
 }
