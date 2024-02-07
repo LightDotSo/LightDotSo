@@ -49,7 +49,7 @@
     "@types/lodash": "^4.14.202",
     "@types/node": "^20.11.16",
     "@types/react": "^18.2.55",
-    "@types/react-dom": "^18.2.18",
+    "@types/react-dom": "^18.2.19",
     "typescript": "^5.3.3"
   },
   "publishConfig": {
