@@ -25,8 +25,16 @@ use utoipa::ToSchema;
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
 pub(crate) struct NotificationSettings {
-    /// The id of the interpretation action.
+    /// The id of the notification settings.
     id: String,
+    /// The entity of the notification settings.
+    entity: String,
+    /// The operation of the notification settings.
+    operation: String,
+    /// The platform of the notification settings.
+    platform: String,
+    /// The flag that indicates if the notification settings is enabled.
+    is_enabled: bool,
 }
 
 // -----------------------------------------------------------------------------
@@ -36,6 +44,12 @@ pub(crate) struct NotificationSettings {
 /// Implement From<notification_settings::Data> for NotificationSettings.
 impl From<notification_settings::Data> for NotificationSettings {
     fn from(notification_settings: notification_settings::Data) -> Self {
-        Self { id: notification_settings.id }
+        Self {
+            id: notification_settings.id,
+            entity: notification_settings.entity.to_string(),
+            operation: notification_settings.operation.to_string(),
+            platform: notification_settings.platform.to_string(),
+            is_enabled: notification_settings.is_enabled,
+        }
     }
 }

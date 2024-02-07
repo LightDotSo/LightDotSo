@@ -35,7 +35,7 @@ use utoipa::IntoParams;
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct GetQuery {
-    /// The id of the interpretation action.
+    /// The id of the notification settings.
     pub id: String,
 }
 
@@ -51,8 +51,8 @@ pub struct GetQuery {
             GetQuery
         ),
         responses(
-            (status = 200, description = "Interpretation action returned successfully", body = NotificationSettings),
-            (status = 404, description = "Interpretation action not found", body = NotificationSettingsError),
+            (status = 200, description = "Notification settings returned successfully", body = NotificationSettings),
+            (status = 404, description = "Notification settings not found", body = NotificationSettingsError),
         )
     )]
 #[autometrics]
@@ -82,14 +82,14 @@ pub(crate) async fn v1_notification_settings_get_handler(
     // If the paymaster is not found, return a 404.
     let notification_settings =
         notification_settings.ok_or(RouteError::NotificationSettingsError(
-            NotificationSettingsError::NotFound("Interpretation action not found".to_string()),
+            NotificationSettingsError::NotFound("Notification settings not found".to_string()),
         ))?;
 
     // -------------------------------------------------------------------------
     // Return
     // -------------------------------------------------------------------------
 
-    // Change the interpretation action to the format that the API expects.
+    // Change the notification settings to the format that the API expects.
     let notification_settings: NotificationSettings = notification_settings.into();
 
     Ok(Json::from(notification_settings))

@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use crate::routes::notification_settings::types::NotificationSettings;
 use lightdotso_prisma::user_notification_settings;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
@@ -27,13 +28,15 @@ use utoipa::ToSchema;
 pub(crate) struct UserNotificationSettings {
     /// The id of the user settings.
     pub id: String,
+    /// The notification settings of user notification settings.
+    pub settings: Vec<NotificationSettings>,
 }
 
 /// Optional UserNotificationSettings root type.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
 pub(crate) struct UserNotificationSettingsOptional {
-    /// The update query of user_notification_settings of whether the testnet is enabled.
+    /// The update query of user notification settings of whether the testnet is enabled.
     pub is_enabled_testnet: Option<bool>,
 }
 
@@ -44,6 +47,14 @@ pub(crate) struct UserNotificationSettingsOptional {
 /// Implement From<user_notification_settings::Data> for UserNotificationSettings.
 impl From<user_notification_settings::Data> for UserNotificationSettings {
     fn from(user_notification_settings: user_notification_settings::Data) -> Self {
-        Self { id: user_notification_settings.id }
+        Self {
+            id: user_notification_settings.id,
+            settings: user_notification_settings
+                .notification_settings
+                .unwrap_or_default()
+                .into_iter()
+                .map(NotificationSettings::from)
+                .collect(),
+        }
     }
 }

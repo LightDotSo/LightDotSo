@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use crate::routes::notification_settings::types::NotificationSettings;
 use lightdotso_prisma::wallet_notification_settings;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
@@ -25,15 +26,17 @@ use utoipa::ToSchema;
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
 pub(crate) struct WalletNotificationSettings {
-    /// The id of wallet_notification_settings.
+    /// The id of wallet notification settings.
     pub id: String,
+    /// The notification settings of wallet notification settings.
+    pub settings: Vec<NotificationSettings>,
 }
 
 /// Optional WalletNotificationSettings root type.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
 pub(crate) struct WalletNotificationSettingsOptional {
-    /// The update query of wallet_notification_settings of whether the testnet is enabled.
+    /// The update query of wallet notification settings of whether the testnet is enabled.
     pub is_enabled_testnet: Option<bool>,
 }
 
@@ -44,6 +47,14 @@ pub(crate) struct WalletNotificationSettingsOptional {
 /// Implement From<wallet_notification_settings::Data> for WalletNotificationSettings.
 impl From<wallet_notification_settings::Data> for WalletNotificationSettings {
     fn from(wallet_notification_settings: wallet_notification_settings::Data) -> Self {
-        Self { id: wallet_notification_settings.id }
+        Self {
+            id: wallet_notification_settings.id,
+            settings: wallet_notification_settings
+                .notification_settings
+                .unwrap_or_default()
+                .into_iter()
+                .map(NotificationSettings::from)
+                .collect(),
+        }
     }
 }
