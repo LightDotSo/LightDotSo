@@ -52,4 +52,5 @@ pub(crate) mod user_settings;
 pub(crate) mod wallet;
 pub(crate) mod wallet_billing;
 pub(crate) mod wallet_features;
+pub(crate) mod wallet_notification_settings;
 pub(crate) mod wallet_settings;

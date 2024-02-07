@@ -39,7 +39,8 @@ use crate::{
         notification_settings, owner, paymaster, paymaster_operation, portfolio, protocol,
         protocol_group, queue, signature, simplehash, simulation, socket, support_request, token,
         token_group, token_price, transaction, user, user_notification_settings, user_operation,
-        user_settings, wallet, wallet_billing, wallet_features, wallet_settings,
+        user_settings, wallet, wallet_billing, wallet_features, wallet_notification_settings,
+        wallet_settings,
     },
     sessions::{authenticated, RedisStore},
     state::AppState,
@@ -288,12 +289,14 @@ use utoipa_swagger_ui::SwaggerUi;
         wallet::v1_wallet_list_count_handler,
         wallet::v1_wallet_list_count_handler,
         wallet::v1_wallet_update_handler,
-        wallet_billing::v1_wallet_billing_update_handler,
         wallet_billing::v1_wallet_billing_get_handler,
-        wallet_features::v1_wallet_features_update_handler,
+        wallet_billing::v1_wallet_billing_update_handler,
         wallet_features::v1_wallet_features_get_handler,
-        wallet_settings::v1_wallet_settings_update_handler,
+        wallet_features::v1_wallet_features_update_handler,
+        wallet_notification_settings::v1_wallet_notification_settings_get_handler,
+        wallet_notification_settings::v1_wallet_notification_settings_update_handler,
         wallet_settings::v1_wallet_settings_get_handler,
+        wallet_settings::v1_wallet_settings_update_handler,
     ),
     tags(
         (name = "activity", description = "Activity API"),
@@ -332,6 +335,7 @@ use utoipa_swagger_ui::SwaggerUi;
         (name = "wallet", description = "Wallet API"),
         (name = "wallet_billing", description = "Wallet Billing API"),
         (name = "wallet_features", description = "Wallet Features API"),
+        (name = "wallet_notification_settings", description = "Wallet Notification Settings API"),
         (name = "wallet_settings", description = "Wallet Settings API"),
     )
 )]
@@ -469,6 +473,7 @@ pub async fn start_api_server() -> Result<()> {
         .merge(wallet::router())
         .merge(wallet_billing::router())
         .merge(wallet_features::router())
+        .merge(wallet_notification_settings::router())
         .merge(wallet_settings::router());
 
     // Create the simplehash api

@@ -31,7 +31,9 @@ use crate::routes::{
     user_notification_settings::error::UserNotificationSettingsError,
     user_operation::error::UserOperationError, user_settings::error::UserSettingsError,
     wallet::error::WalletError, wallet_billing::error::WalletBillingError,
-    wallet_features::error::WalletFeaturesError, wallet_settings::error::WalletSettingsError,
+    wallet_features::error::WalletFeaturesError,
+    wallet_notification_settings::error::WalletNotificationSettingsError,
+    wallet_settings::error::WalletSettingsError,
 };
 use http::StatusCode;
 
@@ -72,6 +74,7 @@ pub(crate) enum RouteError {
     WalletError(WalletError),
     WalletBillingError(WalletBillingError),
     WalletFeaturesError(WalletFeaturesError),
+    WalletNotificationSettingsError(WalletNotificationSettingsError),
     WalletSettingsError(WalletSettingsError),
 }
 
@@ -405,6 +408,19 @@ impl RouteErrorStatusCodeAndMsg for WalletFeaturesError {
     }
 }
 
+impl RouteErrorStatusCodeAndMsg for WalletNotificationSettingsError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            WalletNotificationSettingsError::BadRequest(msg) => {
+                (StatusCode::BAD_REQUEST, msg.to_string())
+            }
+            WalletNotificationSettingsError::NotFound(msg) => {
+                (StatusCode::NOT_FOUND, msg.to_string())
+            }
+        }
+    }
+}
+
 impl RouteErrorStatusCodeAndMsg for WalletSettingsError {
     fn error_status_code_and_msg(&self) -> (StatusCode, String) {
         match self {
@@ -451,6 +467,7 @@ impl RouteErrorStatusCodeAndMsg for RouteError {
             RouteError::WalletError(err) => err.error_status_code_and_msg(),
             RouteError::WalletBillingError(err) => err.error_status_code_and_msg(),
             RouteError::WalletFeaturesError(err) => err.error_status_code_and_msg(),
+            RouteError::WalletNotificationSettingsError(err) => err.error_status_code_and_msg(),
             RouteError::WalletSettingsError(err) => err.error_status_code_and_msg(),
         }
     }
