@@ -116,6 +116,7 @@ impl RouteErrorStatusCodeAndMsg for BillingError {
         match self {
             BillingError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
             BillingError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+            BillingError::Unauthorized(msg) => (StatusCode::UNAUTHORIZED, msg.to_string()),
         }
     }
 }
