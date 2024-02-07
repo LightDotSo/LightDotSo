@@ -1071,7 +1071,7 @@ model Billing {
   // ---------------------------------------------------------------------------
 
   balanceUSD Float
-  status     BillingStatus @default(PROPOSED)
+  status     BillingStatus
 
   // ---------------------------------------------------------------------------
   // Many-to-many
@@ -1088,11 +1088,9 @@ enum BillingStatus {
   // Enum Fields
   // ---------------------------------------------------------------------------
 
-  PROPOSED
-  PENDING
-  EXECUTED
-  REVERTED
-  INVALID
+  ADMIN
+  SPONSORED
+  USER
 }
 
 // -----------------------------------------------------------------------------
@@ -1113,7 +1111,7 @@ model BillingOperation {
   // ---------------------------------------------------------------------------
 
   balanceUSD Float
-  status     BillingOperationStatus @default(PROPOSED)
+  status     BillingOperationStatus
 
   // ---------------------------------------------------------------------------
   // None-to-many
@@ -1142,11 +1140,10 @@ enum BillingOperationStatus {
   // Enum Fields
   // ---------------------------------------------------------------------------
 
-  PROPOSED
-  PENDING
-  EXECUTED
-  REVERTED
-  INVALID
+  DEPOSIT
+  WITHDRAWAL
+  PAYMENT
+  SPONSORED
 }
 
 // -----------------------------------------------------------------------------
@@ -1952,6 +1949,7 @@ model Activity {
   // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
+
   // Relations
   @@index([userId])
   @@index([walletAddress])
