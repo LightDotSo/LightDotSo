@@ -1970,8 +1970,9 @@ model NotificationSettings {
   // None-to-one
   // ---------------------------------------------------------------------------
 
-  userNotificationSettings     UserNotificationSettings?   @relation(fields: [userNotificationSettingsId], references: [id])
-  userNotificationSettingsId   String?
+  userNotificationSettings   UserNotificationSettings? @relation(fields: [userNotificationSettingsId], references: [id])
+  userNotificationSettingsId String?
+
   walletNotificationSettings   WalletNotificationSettings? @relation(fields: [walletNotificationSettingsId], references: [id])
   walletNotificationSettingsId String?
 
