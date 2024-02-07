@@ -1945,7 +1945,7 @@ model NotificationSettings {
   // ---------------------------------------------------------------------------
 
   key       String
-  isEnabled Boolean @default(true)
+  isEnabled Boolean
 
   // ---------------------------------------------------------------------------
   // One-to-many
@@ -1972,7 +1972,6 @@ model NotificationSettings {
   // ---------------------------------------------------------------------------
 
   // Unique
-  @@unique([key, userId])
   @@unique([key, userId, walletAddress])
   // Relations
   @@index([userId])
