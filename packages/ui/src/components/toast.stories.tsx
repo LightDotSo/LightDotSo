@@ -18,6 +18,7 @@ import type { ReactNode } from "react";
 import type { ExternalToast } from "sonner";
 import { toast } from "sonner";
 import { Button } from "./button";
+import { toastMinimalIntentStyles, toastMinimalLoadingStyles } from "./toast";
 
 // -----------------------------------------------------------------------------
 // Components
@@ -156,6 +157,22 @@ export const Close: Story = {
       cancel: {
         label: "Cancel",
       },
+    },
+  },
+};
+export const MinimalLoading: Story = {
+  args: {
+    variant: "loading",
+    data: {
+      ...toastMinimalLoadingStyles,
+    },
+  },
+};
+export const MinimalIntent: Story = {
+  args: {
+    variant: "success",
+    data: {
+      ...toastMinimalIntentStyles,
     },
   },
 };

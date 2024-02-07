@@ -13,8 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { createQueuePortfolio } from "@lightdotso/client";
-import type { QueueParams } from "@lightdotso/params";
+import { createQueueUserOperation } from "@lightdotso/client";
+import type {
+  QueueParams,
+  QueueUserOpeartionBodyParams,
+} from "@lightdotso/params";
 import { useAuth } from "@lightdotso/stores";
 import { toast, toastMinimalLoadingStyles } from "@lightdotso/ui";
 import { useMutation } from "@tanstack/react-query";
@@ -23,7 +26,7 @@ import { useMutation } from "@tanstack/react-query";
 // Query Mutation
 // -----------------------------------------------------------------------------
 
-export const useMutationQueuePortfolio = (params: QueueParams) => {
+export const useMutationQueueUserOperation = (params: QueueParams) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -34,50 +37,53 @@ export const useMutationQueuePortfolio = (params: QueueParams) => {
   // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const { mutate: queuePortfolio } = useMutation({
-    mutationFn: async () => {
-      if (!params.address) {
-        return;
-      }
+  const { mutate: queueUserOperation, isPending: isLoadingQueueUserOperation } =
+    useMutation({
+      mutationFn: async (body: QueueUserOpeartionBodyParams) => {
+        if (!params.address) {
+          return;
+        }
 
-      const loadingToast = params.isMinimal
-        ? toast.loading(undefined, toastMinimalLoadingStyles)
-        : toast.loading("Queueing...");
+        const loadingToast = params.isMinimal
+          ? toast.loading(undefined, toastMinimalLoadingStyles)
+          : toast.loading("Queueing...");
 
-      const res = await createQueuePortfolio(
-        {
-          params: {
-            query: {
-              address: params.address,
+        const res = await createQueueUserOperation(
+          {
+            params: {
+              query: {
+                hash: body.hash,
+                chain_id: body.chain_id,
+              },
             },
           },
-        },
-        clientType,
-      );
+          clientType,
+        );
 
-      toast.dismiss(loadingToast);
+        toast.dismiss(loadingToast);
 
-      res.match(
-        _ => {
-          if (params.isMinimal) {
-            return;
-          }
-          toast.success("Successfully queued!");
-        },
-        err => {
-          if (err instanceof Error) {
-            toast.error(err.message);
-          } else {
-            toast.error("Failed to queue.");
-          }
+        res.match(
+          _ => {
+            if (params.isMinimal) {
+              return;
+            }
+            toast.success("Successfully queued user operation!");
+          },
+          err => {
+            if (err instanceof Error) {
+              toast.error(err.message);
+            } else {
+              toast.error("Failed to queue.");
+            }
 
-          throw err;
-        },
-      );
-    },
-  });
+            throw err;
+          },
+        );
+      },
+    });
 
   return {
-    queuePortfolio,
+    queueUserOperation,
+    isLoadingQueueUserOperation,
   };
 };

@@ -83,7 +83,6 @@
     "exponential-backoff": "^3.1.1",
     "framer-motion": "^11.0.3",
     "immer": "^10.0.3",
-    "inngest": "^3.13.0",
     "kysely-postgres-js": "^2.0.0",
     "lodash": "^4.17.21",
     "lucide-react": "^0.323.0",
@@ -116,7 +115,6 @@
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.18",
     "autoprefixer": "^10.4.17",
-    "inngest-cli": "^0.25.2",
     "postcss": "^8.4.34",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3"

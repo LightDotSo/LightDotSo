@@ -21,7 +21,7 @@ import type { Address } from "viem";
 
 export type QueueParams = {
   address: Address;
-  isToastDistinct?: boolean;
+  isMinimal?: boolean;
 };
 
 // -----------------------------------------------------------------------------
@@ -31,4 +31,9 @@ export type QueueParams = {
 export type QueueInterpretationBodyParams = {
   transaction_hash?: string | null | undefined;
   user_operation_hash?: string | null | undefined;
+};
+
+export type QueueUserOpeartionBodyParams = {
+  hash: string;
+  chain_id: number;
 };
