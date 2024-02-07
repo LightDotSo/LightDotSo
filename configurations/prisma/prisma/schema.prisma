@@ -181,6 +181,12 @@ model UserSettings {
   userId String @unique
 
   // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
+  activities Activity[]
+
+  // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
 
@@ -212,7 +218,9 @@ model UserNotificationSettings {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
+  activities           Activity[]
   notificationSettings NotificationSettings[]
+
   // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
@@ -1180,13 +1188,6 @@ model Paymaster {
   chain Chain @relation(fields: [chainId], references: [id])
 
   // ---------------------------------------------------------------------------
-  // None-to-one
-  // ---------------------------------------------------------------------------
-
-  activity   Activity? @relation(fields: [activityId], references: [id])
-  activityId String?   @unique
-
-  // ---------------------------------------------------------------------------
   // Many-to-many
   // ---------------------------------------------------------------------------
 
@@ -1234,13 +1235,6 @@ model PaymasterOperation {
   paymasterId String
 
   wallet Wallet @relation(fields: [sender], references: [address])
-
-  // ---------------------------------------------------------------------------
-  // None-to-one
-  // ---------------------------------------------------------------------------
-
-  activity   Activity? @relation(fields: [activityId], references: [id])
-  activityId String?   @unique
 
   // ---------------------------------------------------------------------------
   // None-to-none
@@ -1939,6 +1933,12 @@ model Activity {
   supportRequest   SupportRequest? @relation(fields: [supportRequestId], references: [id])
   supportRequestId String?
 
+  userSettings   UserSettings? @relation(fields: [userSettingsId], references: [id])
+  userSettingsId String?
+
+  userNotificationSettings   UserNotificationSettings? @relation(fields: [userNotificationSettingsId], references: [id])
+  userNotificationSettingsId String?
+
   walletBilling   WalletBilling? @relation(fields: [walletBillingId], references: [id])
   walletBillingId String?
 
@@ -1952,14 +1952,12 @@ model Activity {
   // Immutable Relations None-to-none
   // ---------------------------------------------------------------------------
 
-  feedback           Feedback?
-  notification       Notification?
-  paymaster          Paymaster?
-  paymasterOperation PaymasterOperation?
-  signature          Signature?
-  simulation         Simulation?
-  transaction        Transaction?
-  userOperation      UserOperation?
+  feedback      Feedback?
+  notification  Notification?
+  signature     Signature?
+  simulation    Simulation?
+  transaction   Transaction?
+  userOperation UserOperation?
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1972,6 +1970,8 @@ model Activity {
   @@index([billingOperationId])
   @@index([inviteCodeId])
   @@index([supportRequestId])
+  @@index([userSettingsId])
+  @@index([userNotificationSettingsId])
   @@index([walletBillingId])
   @@index([walletNotificationSettingsId])
   @@index([walletSettingsId])
@@ -1989,7 +1989,10 @@ enum ActivityEntity {
   BILLING_OPERATION
   INVITE_CODE
   SUPPORT_REQUEST
+  USER_SETTINGS
+  USER_NOTIFICATION_SETTINGS
   WALLET_BILLING
+  WALLET_NOTIFICATION_SETTINGS
   WALLET_SETTINGS
 
   FEEDBACK

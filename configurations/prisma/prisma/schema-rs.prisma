@@ -162,6 +162,12 @@ model UserSettings {
   userId String @unique
 
   // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
+  activities Activity[]
+
+  // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
 
@@ -193,7 +199,9 @@ model UserNotificationSettings {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
+  activities           Activity[]
   notificationSettings NotificationSettings[]
+
   // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
@@ -1920,6 +1928,12 @@ model Activity {
   supportRequest   SupportRequest? @relation(fields: [supportRequestId], references: [id])
   supportRequestId String?
 
+  userSettings   UserSettings? @relation(fields: [userSettingsId], references: [id])
+  userSettingsId String?
+
+  userNotificationSettings   UserNotificationSettings? @relation(fields: [userNotificationSettingsId], references: [id])
+  userNotificationSettingsId String?
+
   walletBilling   WalletBilling? @relation(fields: [walletBillingId], references: [id])
   walletBillingId String?
 
@@ -1953,6 +1967,8 @@ model Activity {
   @@index([billingOperationId])
   @@index([inviteCodeId])
   @@index([supportRequestId])
+  @@index([userSettingsId])
+  @@index([userNotificationSettingsId])
   @@index([walletBillingId])
   @@index([walletNotificationSettingsId])
   @@index([walletSettingsId])
