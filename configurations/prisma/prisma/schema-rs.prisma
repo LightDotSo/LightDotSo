@@ -1951,9 +1951,9 @@ model NotificationSettings {
   // Fields
   // ---------------------------------------------------------------------------
 
-  entity   NotificationSettingsEntity
-  // operation NotificationSettingsOperation
-  platform NotificationSettingsPlatform
+  entity    NotificationSettingsEntity
+  operation NotificationSettingsOperation
+  platform  NotificationSettingsPlatform
 
   isEnabled Boolean @default(true)
 
@@ -1985,6 +1985,16 @@ enum NotificationSettingsEntity {
   INVITE_CODE
   TRANSACTION
   USER_OPERATION
+}
+
+enum NotificationSettingsOperation {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
+
+  CREATE
+  DELETE
+  UPDATE
 }
 
 enum NotificationSettingsPlatform {
