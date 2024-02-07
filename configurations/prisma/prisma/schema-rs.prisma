@@ -1882,132 +1882,6 @@ model WalletBalance {
 }
 
 // -----------------------------------------------------------------------------
-// Activity
-// -----------------------------------------------------------------------------
-
-model Activity {
-  // ---------------------------------------------------------------------------
-  // Core
-  // ---------------------------------------------------------------------------
-
-  id        String   @id @default(cuid())
-  timestamp DateTime @default(now())
-
-  // ---------------------------------------------------------------------------
-  // Fields
-  // ---------------------------------------------------------------------------
-
-  entity    ActivityEntity
-  operation ActivityOperation
-  log       Json
-  key       String?
-
-  // ---------------------------------------------------------------------------
-  // Relations None-to-many
-  // ---------------------------------------------------------------------------
-
-  user   User?   @relation(fields: [userId], references: [id])
-  userId String?
-
-  wallet        Wallet? @relation(fields: [walletAddress], references: [address])
-  walletAddress String?
-
-  // ---------------------------------------------------------------------------
-  // Mutable Relations None-to-many
-  // ---------------------------------------------------------------------------
-
-  billing   Billing? @relation(fields: [billingId], references: [id])
-  billingId String?
-
-  billingOperation   BillingOperation? @relation(fields: [billingOperationId], references: [id])
-  billingOperationId String?
-
-  inviteCode   InviteCode? @relation(fields: [inviteCodeId], references: [id])
-  inviteCodeId String?
-
-  supportRequest   SupportRequest? @relation(fields: [supportRequestId], references: [id])
-  supportRequestId String?
-
-  userSettings   UserSettings? @relation(fields: [userSettingsId], references: [id])
-  userSettingsId String?
-
-  userNotificationSettings   UserNotificationSettings? @relation(fields: [userNotificationSettingsId], references: [id])
-  userNotificationSettingsId String?
-
-  walletBilling   WalletBilling? @relation(fields: [walletBillingId], references: [id])
-  walletBillingId String?
-
-  walletNotificationSettings   WalletNotificationSettings? @relation(fields: [walletNotificationSettingsId], references: [id])
-  walletNotificationSettingsId String?
-
-  walletSettings   WalletSettings? @relation(fields: [walletSettingsId], references: [id])
-  walletSettingsId String?
-
-  // ---------------------------------------------------------------------------
-  // Immutable Relations None-to-none
-  // ---------------------------------------------------------------------------
-
-  feedback           Feedback?
-  notification       Notification?
-  paymaster          Paymaster?
-  paymasterOperation PaymasterOperation?
-  signature          Signature?
-  simulation         Simulation?
-  transaction        Transaction?
-  userOperation      UserOperation?
-
-  // ---------------------------------------------------------------------------
-  // Mappings
-  // ---------------------------------------------------------------------------
-
-  // Relations
-  @@index([userId])
-  @@index([walletAddress])
-  @@index([billingId])
-  @@index([billingOperationId])
-  @@index([inviteCodeId])
-  @@index([supportRequestId])
-  @@index([userSettingsId])
-  @@index([userNotificationSettingsId])
-  @@index([walletBillingId])
-  @@index([walletNotificationSettingsId])
-  @@index([walletSettingsId])
-}
-
-enum ActivityEntity {
-  // ---------------------------------------------------------------------------
-  // Enum Fields
-  // ---------------------------------------------------------------------------
-
-  USER
-  WALLET
-
-  BILLING
-  BILLING_OPERATION
-  INVITE_CODE
-  SUPPORT_REQUEST
-  WALLET_BILLING
-  WALLET_SETTINGS
-
-  FEEDBACK
-  NOTIFICATION
-  SIGNATURE
-  SIMULATION
-  TRANSACTION
-  USER_OPERATION
-}
-
-enum ActivityOperation {
-  // ---------------------------------------------------------------------------
-  // Enum Fields
-  // ---------------------------------------------------------------------------
-
-  CREATE
-  UPDATE
-  DELETE
-}
-
-// -----------------------------------------------------------------------------
 // Notification
 // -----------------------------------------------------------------------------
 
@@ -2272,6 +2146,137 @@ enum SupportRequestStatus {
   OPEN
   ACTIVE
   CLOSED
+}
+
+// -----------------------------------------------------------------------------
+// Activity
+// -----------------------------------------------------------------------------
+
+model Activity {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  timestamp DateTime @default(now())
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  entity    ActivityEntity
+  operation ActivityOperation
+  log       Json
+  key       String?
+
+  // ---------------------------------------------------------------------------
+  // Relations None-to-many
+  // ---------------------------------------------------------------------------
+
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  wallet        Wallet? @relation(fields: [walletAddress], references: [address])
+  walletAddress String?
+
+  // ---------------------------------------------------------------------------
+  // Mutable Relations None-to-many
+  // ---------------------------------------------------------------------------
+
+  billing   Billing? @relation(fields: [billingId], references: [id])
+  billingId String?
+
+  billingOperation   BillingOperation? @relation(fields: [billingOperationId], references: [id])
+  billingOperationId String?
+
+  inviteCode   InviteCode? @relation(fields: [inviteCodeId], references: [id])
+  inviteCodeId String?
+
+  supportRequest   SupportRequest? @relation(fields: [supportRequestId], references: [id])
+  supportRequestId String?
+
+  userSettings   UserSettings? @relation(fields: [userSettingsId], references: [id])
+  userSettingsId String?
+
+  userNotificationSettings   UserNotificationSettings? @relation(fields: [userNotificationSettingsId], references: [id])
+  userNotificationSettingsId String?
+
+  walletBilling   WalletBilling? @relation(fields: [walletBillingId], references: [id])
+  walletBillingId String?
+
+  walletNotificationSettings   WalletNotificationSettings? @relation(fields: [walletNotificationSettingsId], references: [id])
+  walletNotificationSettingsId String?
+
+  walletSettings   WalletSettings? @relation(fields: [walletSettingsId], references: [id])
+  walletSettingsId String?
+
+  // ---------------------------------------------------------------------------
+  // Immutable Relations None-to-none
+  // ---------------------------------------------------------------------------
+
+  feedback           Feedback?
+  notification       Notification?
+  paymaster          Paymaster?
+  paymasterOperation PaymasterOperation?
+  signature          Signature?
+  simulation         Simulation?
+  transaction        Transaction?
+  userOperation      UserOperation?
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
+  // Relations
+  @@index([userId])
+  @@index([walletAddress])
+  @@index([billingId])
+  @@index([billingOperationId])
+  @@index([inviteCodeId])
+  @@index([supportRequestId])
+  @@index([userSettingsId])
+  @@index([userNotificationSettingsId])
+  @@index([walletBillingId])
+  @@index([walletNotificationSettingsId])
+  @@index([walletSettingsId])
+}
+
+enum ActivityEntity {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
+
+  USER
+  WALLET
+
+  BILLING
+  BILLING_OPERATION
+  INVITE_CODE
+  SUPPORT_REQUEST
+  USER_SETTINGS
+  USER_NOTIFICATION_SETTINGS
+  WALLET_BILLING
+  WALLET_NOTIFICATION_SETTINGS
+  WALLET_SETTINGS
+
+  FEEDBACK
+  NOTIFICATION
+  PAYMASTER
+  PAYMASTER_OPERATION
+  SIGNATURE
+  SIMULATION
+  TRANSACTION
+  USER_OPERATION
+}
+
+enum ActivityOperation {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
+
+  CREATE
+  UPDATE
+  DELETE
 }
 
 // -----------------------------------------------------------------------------
