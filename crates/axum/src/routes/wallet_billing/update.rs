@@ -39,7 +39,7 @@ use utoipa::{IntoParams, ToSchema};
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
-pub struct PostQuery {
+pub struct PutQuery {
     /// The hash of the wallet billing.
     pub address: String,
 }
@@ -61,10 +61,10 @@ pub struct WalletBillingUpdateRequestParams {
 
 /// Create a wallet_billing
 #[utoipa::path(
-        post,
+        put,
         path = "/wallet/billing/update",
         params(
-            PostQuery
+            PutQuery
         ),
         request_body = WalletBillingUpdateRequestParams,
         responses(
@@ -76,7 +76,7 @@ pub struct WalletBillingUpdateRequestParams {
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_billing_update_handler(
-    post_query: Query<PostQuery>,
+    put_query: Query<PutQuery>,
     State(state): State<AppState>,
     mut session: Session,
     // Json(params): Json<WalletBillingUpdateRequestParams>,
@@ -106,14 +106,14 @@ pub(crate) async fn v1_wallet_billing_update_handler(
     // Parse
     // -------------------------------------------------------------------------
 
-    // Get the post query.
-    let Query(post) = post_query;
+    // Get the put query.
+    let Query(put) = put_query;
 
-    // Parse the address from the post query.
-    let parsed_query_address: H160 = post.address.parse()?;
+    // Parse the address from the put query.
+    let parsed_query_address: H160 = put.address.parse()?;
     let checksum_address = to_checksum(&parsed_query_address, None);
 
-    // Get the wallet_billing from the post body.
+    // Get the wallet_billing from the put body.
     // let wallet_billing = params.wallet_billing;
 
     // -------------------------------------------------------------------------

@@ -15,19 +15,19 @@
 
 #![allow(clippy::unwrap_used)]
 
-use super::types::{WalletSettings, WalletSettingsOptional};
-use crate::{authentication::authenticate_wallet_user, result::AppJsonResult, state::AppState};
+use super::types::{UserSettings, UserSettingsOptional};
+use crate::{authentication::authenticate_user, result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
-    Json,
+    headers::{authorization::Bearer, Authorization},
+    Json, TypedHeader,
 };
-use ethers_main::{types::H160, utils::to_checksum};
 use lightdotso_db::models::activity::CustomParams;
 use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
-use lightdotso_prisma::{wallet, wallet_settings, ActivityEntity, ActivityOperation};
+use lightdotso_prisma::{user, user_settings, ActivityEntity, ActivityOperation};
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use tower_sessions_core::Session;
@@ -41,8 +41,8 @@ use utoipa::{IntoParams, ToSchema};
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct PutQuery {
-    /// The hash of the wallet settings.
-    pub address: String,
+    /// The user id to filter by. (for admin purposes only)
+    pub user_id: Option<String>,
 }
 
 // -----------------------------------------------------------------------------
@@ -51,37 +51,38 @@ pub struct PutQuery {
 
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub struct WalletSettingsUpdateRequestParams {
-    /// The result of the wallet_settings.
-    pub wallet_settings: WalletSettingsOptional,
+pub struct UserSettingsUpdateRequestParams {
+    /// The result of the user_settings.
+    pub user_settings: UserSettingsOptional,
 }
 
 // -----------------------------------------------------------------------------
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Create a wallet_settings
+/// Create a user_settings
 #[utoipa::path(
         put,
-        path = "/wallet/settings/update",
+        path = "/user/settings/update",
         params(
             PutQuery
         ),
-        request_body = WalletSettingsUpdateRequestParams,
+        request_body = UserSettingsUpdateRequestParams,
         responses(
-            (status = 200, description = "Wallet Settings updated successfully", body = WalletSettings),
-            (status = 400, description = "Invalid Configuration", body = WalletSettingsError),
-            (status = 409, description = "Wallet Settings already exists", body = WalletSettingsError),
-            (status = 500, description = "Wallet Settings internal error", body = WalletSettingsError),
+            (status = 200, description = "User Settings updated successfully", body = UserSettings),
+            (status = 400, description = "Invalid Configuration", body = UserSettingsError),
+            (status = 409, description = "User Settings already exists", body = UserSettingsError),
+            (status = 500, description = "User Settings internal error", body = UserSettingsError),
         )
     )]
 #[autometrics]
-pub(crate) async fn v1_wallet_settings_update_handler(
+pub(crate) async fn v1_user_settings_update_handler(
     put_query: Query<PutQuery>,
     State(state): State<AppState>,
     mut session: Session,
-    Json(params): Json<WalletSettingsUpdateRequestParams>,
-) -> AppJsonResult<WalletSettings> {
+    auth: Option<TypedHeader<Authorization<Bearer>>>,
+    Json(params): Json<UserSettingsUpdateRequestParams>,
+) -> AppJsonResult<UserSettings> {
     // -------------------------------------------------------------------------
     // Parse
     // -------------------------------------------------------------------------
@@ -89,54 +90,45 @@ pub(crate) async fn v1_wallet_settings_update_handler(
     // Get the put query.
     let Query(put) = put_query;
 
-    // Parse the address from the put query.
-    let parsed_query_address: H160 = put.address.parse()?;
-    let checksum_address = to_checksum(&parsed_query_address, None);
-
-    // Get the wallet_settings from the put body.
-    let wallet_settings = params.wallet_settings;
+    // Get the user_settings from the put body.
+    let _user_settings = params.user_settings;
 
     // -------------------------------------------------------------------------
     // Authentication
     // -------------------------------------------------------------------------
 
-    // Check to see if the user is one of the owners of the wallet configurations.
-    let auth_user_id =
-        authenticate_wallet_user(&state, &mut session, &parsed_query_address, None, None).await?;
+    // Get the authenticated user id.
+    let auth_user_id = authenticate_user(
+        &state,
+        &mut session,
+        auth.map(|auth| auth.token().to_string()),
+        put.user_id,
+    )
+    .await?;
 
     // -------------------------------------------------------------------------
     // Params
     // -------------------------------------------------------------------------
 
-    // For each wallet_settings, create the params update.
-    let mut params = vec![];
-
-    info!("Update wallet_settings for address: {:?}", checksum_address);
-
-    if wallet_settings.is_enabled_testnet.is_some() {
-        let is_enabled_testnet = wallet_settings.is_enabled_testnet.unwrap();
-        params.push(wallet_settings::is_enabled_testnet::set(is_enabled_testnet));
-    }
+    // For each user_settings, create the params update.
+    let params = vec![];
 
     // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
 
-    // Create the wallet_settings the database.
-    let wallet_settings = state
+    // Create the user_settings the database.
+    let user_settings = state
         .client
-        .wallet_settings()
+        .user_settings()
         .upsert(
-            wallet_settings::wallet_address::equals(checksum_address.clone()),
-            wallet_settings::create(
-                wallet::address::equals(checksum_address.clone()),
-                params.clone(),
-            ),
+            user_settings::user_id::equals(auth_user_id.clone()),
+            user_settings::create(user::id::equals(auth_user_id.clone()), params.clone()),
             params.clone(),
         )
         .exec()
         .await?;
-    info!(?wallet_settings);
+    info!(?user_settings);
 
     // -------------------------------------------------------------------------
     // Kafka
@@ -145,15 +137,11 @@ pub(crate) async fn v1_wallet_settings_update_handler(
     // Produce an activity message.
     let _ = produce_activity_message(
         state.producer.clone(),
-        ActivityEntity::WalletSettings,
+        ActivityEntity::UserSettings,
         &ActivityMessage {
             operation: ActivityOperation::Update,
-            log: serde_json::to_value(&wallet_settings)?,
-            params: CustomParams {
-                user_id: Some(auth_user_id),
-                wallet_address: Some(checksum_address.clone()),
-                ..Default::default()
-            },
+            log: serde_json::to_value(&user_settings)?,
+            params: CustomParams { user_id: Some(auth_user_id), ..Default::default() },
         },
     )
     .await;
@@ -163,7 +151,7 @@ pub(crate) async fn v1_wallet_settings_update_handler(
     // -------------------------------------------------------------------------
 
     // Change the signatures to the format that the API expects.
-    let wallet_settings: WalletSettings = wallet_settings.into();
+    let user_settings: UserSettings = user_settings.into();
 
-    Ok(Json::from(wallet_settings))
+    Ok(Json::from(user_settings))
 }

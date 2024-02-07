@@ -25,7 +25,7 @@ pub(crate) mod update;
 use crate::state::AppState;
 use autometrics::autometrics;
 use axum::{
-    routing::{get, post},
+    routing::{get, post, put},
     Router,
 };
 
@@ -53,7 +53,7 @@ pub(crate) use update::{
 pub(crate) fn router() -> Router<AppState> {
     Router::new()
         .route("/user_operation/get", get(v1_user_operation_get_handler))
-        .route("/user_operation/update", post(v1_user_operation_update_handler))
+        .route("/user_operation/update", put(v1_user_operation_update_handler))
         .route("/user_operation/nonce", get(v1_user_operation_nonce_handler))
         .route("/user_operation/list", get(v1_user_operation_list_handler))
         .route("/user_operation/list/count", get(v1_user_operation_list_count_handler))
