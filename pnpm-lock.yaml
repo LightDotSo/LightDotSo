@@ -1107,6 +1107,9 @@ importers:
       '@next/bundle-analyzer':
         specifier: ^14.1.0
         version: 14.1.0
+      '@prisma/nextjs-monorepo-workaround-plugin':
+        specifier: ^5.9.1
+        version: 5.9.1
       '@sentry-internal/feedback':
         specifier: ^7.100.1
         version: 7.100.1
