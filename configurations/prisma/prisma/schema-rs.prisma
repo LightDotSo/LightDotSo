@@ -1951,9 +1951,9 @@ model NotificationSettings {
   // Fields
   // ---------------------------------------------------------------------------
 
-  entity    NotificationEntity
-  operation NotificationOperation
-  platform  NotificationPlatform
+  entity    NotificationSettingsEntity
+  operation NotificationSettingsOperation
+  platform  NotificationSettingsPlatform
 
   isEnabled Boolean @default(true)
 
@@ -1977,7 +1977,7 @@ model NotificationSettings {
   @@index([walletNotificationSettingsId])
 }
 
-enum NotificationEntity {
+enum NotificationSettingsEntity {
   // ---------------------------------------------------------------------------
   // Enum Fields
   // ---------------------------------------------------------------------------
@@ -1987,7 +1987,7 @@ enum NotificationEntity {
   USER_OPERATION
 }
 
-enum NotificationOperation {
+enum NotificationSettingsOperation {
   // ---------------------------------------------------------------------------
   // Enum Fields
   // ---------------------------------------------------------------------------
@@ -1997,7 +1997,7 @@ enum NotificationOperation {
   DELETE
 }
 
-enum NotificationPlatform {
+enum NotificationSettingsPlatform {
   // ---------------------------------------------------------------------------
   // Enum Fields
   // ---------------------------------------------------------------------------
