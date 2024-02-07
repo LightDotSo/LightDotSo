@@ -73,10 +73,10 @@ pub struct WalletNotificationSettingsUpdateRequestParams {
         ),
         request_body = WalletNotificationSettingsUpdateRequestParams,
         responses(
-            (status = 200, description = "Wallet Settings updated successfully", body = WalletNotificationSettings),
+            (status = 200, description = "Wallet notification settings updated successfully", body = WalletNotificationSettings),
             (status = 400, description = "Invalid Configuration", body = WalletNotificationSettingsError),
-            (status = 409, description = "Wallet Settings already exists", body = WalletNotificationSettingsError),
-            (status = 500, description = "Wallet Settings internal error", body = WalletNotificationSettingsError),
+            (status = 409, description = "Wallet notification settings already exists", body = WalletNotificationSettingsError),
+            (status = 500, description = "Wallet notification settings internal error", body = WalletNotificationSettingsError),
         )
     )]
 #[autometrics]
