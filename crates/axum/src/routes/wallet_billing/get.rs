@@ -85,6 +85,7 @@ pub(crate) async fn v1_wallet_billing_get_handler(
         .client
         .wallet_billing()
         .find_unique(wallet_billing::wallet_address::equals(checksum_address.clone()))
+        .with(wallet_billing::billing::fetch())
         .exec()
         .await?;
 

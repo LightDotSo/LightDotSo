@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use crate::routes::billing::types::Billing;
 use lightdotso_prisma::wallet_billing;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
@@ -27,6 +28,8 @@ use utoipa::ToSchema;
 pub(crate) struct WalletBilling {
     /// The wallet billing of the balance in USD.
     pub id: String,
+    /// The billing data of the wallet billing.
+    pub billing: Option<Billing>,
 }
 
 /// Optional WalletBilling root type.
@@ -44,6 +47,9 @@ pub(crate) struct WalletBillingOptional {
 /// Implement From<wallet_billing::Data> for WalletBilling.
 impl From<wallet_billing::Data> for WalletBilling {
     fn from(wallet_billing: wallet_billing::Data) -> Self {
-        Self { id: wallet_billing.id }
+        Self {
+            id: wallet_billing.id,
+            billing: wallet_billing.billing.map(|billing| Billing::from(*billing)),
+        }
     }
 }
