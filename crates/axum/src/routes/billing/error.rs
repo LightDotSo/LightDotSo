@@ -29,4 +29,7 @@ pub(crate) enum BillingError {
     /// Billing not found by id.
     #[schema(example = "id = 1")]
     NotFound(String),
+    /// Billing unauthorized.
+    #[schema(example = "Unauthorized")]
+    Unauthorized(String),
 }
