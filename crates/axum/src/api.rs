@@ -34,11 +34,12 @@ use crate::{
     constants::SESSION_COOKIE_ID,
     handle_error,
     routes::{
-        activity, asset_change, auth, billing, chain, check, configuration, feedback, health,
-        interpretation, interpretation_action, invite_code, notification, owner, paymaster,
-        paymaster_operation, portfolio, protocol, protocol_group, queue, signature, simplehash,
-        simulation, socket, support_request, token, token_group, token_price, transaction, user,
-        user_operation, wallet, wallet_billing, wallet_features, wallet_settings,
+        activity, asset_change, auth, billing, billing_operation, chain, check, configuration,
+        feedback, health, interpretation, interpretation_action, invite_code, notification, owner,
+        paymaster, paymaster_operation, portfolio, protocol, protocol_group, queue, signature,
+        simplehash, simulation, socket, support_request, token, token_group, token_price,
+        transaction, user, user_operation, wallet, wallet_billing, wallet_features,
+        wallet_settings,
     },
     sessions::{authenticated, RedisStore},
     state::AppState,
@@ -94,6 +95,9 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(auth::verify::AuthVerifyCreateRequestParams),
         schemas(billing::error::BillingError),
         schemas(billing::types::Billing),
+        schemas(billing_operation::error::BillingOperationError),
+        schemas(billing_operation::list::BillingOperationListCount),
+        schemas(billing_operation::types::BillingOperation),
         schemas(chain::error::ChainError),
         schemas(chain::types::Chain),
         schemas(chain::update::ChainUpdateRequestParams),
@@ -195,6 +199,9 @@ use utoipa_swagger_ui::SwaggerUi;
         auth::v1_auth_verify_handler,
         billing::v1_billing_get_handler,
         billing::v1_billing_list_handler,
+        billing_operation::v1_billing_operation_get_handler,
+        billing_operation::v1_billing_operation_list_handler,
+        billing_operation::v1_billing_operation_list_count_handler,
         check::handler,
         health::handler,
         chain::v1_chain_create_handler,
@@ -278,6 +285,7 @@ use utoipa_swagger_ui::SwaggerUi;
         (name = "asset_change", description = "Asset Change API"),
         (name = "auth", description = "Auth API"),
         (name = "billing", description = "Billing API"),
+        (name = "billing_operation", description = "Billing Operation API"),
         (name = "chain", description = "Chain API"),
         (name = "configuration", description = "Configuration API"),
         (name = "check", description = "Check API"),
@@ -409,6 +417,7 @@ pub async fn start_api_server() -> Result<()> {
         .merge(asset_change::router())
         .merge(auth::router())
         .merge(billing::router())
+        .merge(billing_operation::router())
         .merge(chain::router())
         .merge(configuration::router())
         .merge(check::router())
