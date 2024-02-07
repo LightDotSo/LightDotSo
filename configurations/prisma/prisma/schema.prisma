@@ -326,7 +326,8 @@ model WalletBilling {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  activities Activity[]
+  activities        Activity[]
+  billingOperations BillingOperation[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1067,13 +1068,28 @@ model BillingOperation {
   // Fields
   // ---------------------------------------------------------------------------
 
-  status BillingOperationStatus @default(PROPOSED)
+  balanceUSD Float
+  status     BillingOperationStatus @default(PROPOSED)
+
+  // ---------------------------------------------------------------------------
+  // None-to-many
+  // ---------------------------------------------------------------------------
+
+  walletBilling   WalletBilling? @relation(fields: [walletBillingId], references: [id])
+  walletBillingId String?
 
   // ---------------------------------------------------------------------------
   // Many-to-many
   // ---------------------------------------------------------------------------
 
   tokens Token[]
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
+  // Relations
+  @@index([walletBillingId])
 }
 
 enum BillingOperationStatus {
