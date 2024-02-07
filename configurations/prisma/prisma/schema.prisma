@@ -1176,6 +1176,13 @@ model Paymaster {
   chain Chain @relation(fields: [chainId], references: [id])
 
   // ---------------------------------------------------------------------------
+  // None-to-one
+  // ---------------------------------------------------------------------------
+
+  activity   Activity? @relation(fields: [activityId], references: [id])
+  activityId String?   @unique
+
+  // ---------------------------------------------------------------------------
   // Many-to-many
   // ---------------------------------------------------------------------------
 
@@ -1935,6 +1942,7 @@ model Activity {
 
   feedback           Feedback?
   notification       Notification?
+  paymaster          Paymaster?
   paymasterOperation PaymasterOperation?
   signature          Signature?
   simulation         Simulation?
