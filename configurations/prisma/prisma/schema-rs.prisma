@@ -1966,8 +1966,11 @@ enum ActivityEntity {
   USER
   WALLET
 
+  BILLING
+  BILLING_OPERATION
   INVITE_CODE
   SUPPORT_REQUEST
+  WALLET_BILLING
   WALLET_SETTINGS
 
   FEEDBACK
@@ -2033,6 +2036,79 @@ model Notification {
   @@index([activityId])
   @@index([userId])
   @@index([walletAddress])
+}
+
+// -----------------------------------------------------------------------------
+// NotificationSettings
+// -----------------------------------------------------------------------------
+
+model NotificationSettings {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  entity    NotificationEntity
+  operation NotificationOperation
+  type      NotificationType
+
+  isEnabled Boolean @default(true)
+
+  // ---------------------------------------------------------------------------
+  // None-to-one
+  // ---------------------------------------------------------------------------
+
+  userNotificationSettings     UserNotificationSettings?   @relation(fields: [userNotificationSettingsId], references: [id])
+  userNotificationSettingsId   String?
+  walletNotificationSettings   WalletNotificationSettings? @relation(fields: [walletNotificationSettingsId], references: [id])
+  walletNotificationSettingsId String?
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
+  // Unique
+  @@unique([entity, operation, type, userNotificationSettingsId, walletNotificationSettingsId])
+  // Relations
+  @@index([userNotificationSettingsId])
+  @@index([walletNotificationSettingsId])
+}
+
+enum NotificationEntity {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
+
+  INVITE_CODE
+  TRANSACTION
+  USER_OPERATION
+}
+
+enum NotificationOperation {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
+
+  CREATE
+  UPDATE
+  DELETE
+}
+
+enum NotificationType {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
+
+  EMAIL
+  PUSH
+  SMS
 }
 
 // -----------------------------------------------------------------------------
@@ -2229,77 +2305,4 @@ model Metrics {
 
   // Relations
   @@index([chainId])
-}
-
-// -----------------------------------------------------------------------------
-// NotificationSettings
-// -----------------------------------------------------------------------------
-
-model NotificationSettings {
-  // ---------------------------------------------------------------------------
-  // Core
-  // ---------------------------------------------------------------------------
-
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // ---------------------------------------------------------------------------
-  // Fields
-  // ---------------------------------------------------------------------------
-
-  entity    NotificationEntity
-  operation NotificationOperation
-  type      NotificationType
-
-  isEnabled Boolean @default(true)
-
-  // ---------------------------------------------------------------------------
-  // None-to-one
-  // ---------------------------------------------------------------------------
-
-  userNotificationSettings     UserNotificationSettings?   @relation(fields: [userNotificationSettingsId], references: [id])
-  userNotificationSettingsId   String?
-  walletNotificationSettings   WalletNotificationSettings? @relation(fields: [walletNotificationSettingsId], references: [id])
-  walletNotificationSettingsId String?
-
-  // ---------------------------------------------------------------------------
-  // Mappings
-  // ---------------------------------------------------------------------------
-
-  // Unique
-  @@unique([entity, operation, type, userNotificationSettingsId, walletNotificationSettingsId])
-  // Relations
-  @@index([userNotificationSettingsId])
-  @@index([walletNotificationSettingsId])
-}
-
-enum NotificationEntity {
-  // ---------------------------------------------------------------------------
-  // Enum Fields
-  // ---------------------------------------------------------------------------
-
-  INVITE_CODE
-  TRANSACTION
-  USER_OPERATION
-}
-
-enum NotificationOperation {
-  // ---------------------------------------------------------------------------
-  // Enum Fields
-  // ---------------------------------------------------------------------------
-
-  CREATE
-  UPDATE
-  DELETE
-}
-
-enum NotificationType {
-  // ---------------------------------------------------------------------------
-  // Enum Fields
-  // ---------------------------------------------------------------------------
-
-  EMAIL
-  PUSH
-  SMS
 }
