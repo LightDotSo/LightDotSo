@@ -308,6 +308,7 @@ model WalletBilling {
   // ---------------------------------------------------------------------------
 
   activities Activity[]
+  tokens     Token[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1434,8 +1435,10 @@ model Token {
   // None-to-many
   // ---------------------------------------------------------------------------
 
-  group   TokenGroup? @relation(fields: [groupId], references: [id])
-  groupId String?
+  group           TokenGroup?    @relation(fields: [groupId], references: [id])
+  groupId         String?
+  walletBilling   WalletBilling? @relation(fields: [walletBillingId], references: [id])
+  walletBillingId String?
 
   // ---------------------------------------------------------------------------
   // Many-to-many
@@ -1456,6 +1459,7 @@ model Token {
   // Relations
   @@index([chainId])
   @@index([groupId])
+  @@index([walletBillingId])
 }
 
 model TokenGroup {
