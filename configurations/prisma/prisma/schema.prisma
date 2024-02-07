@@ -327,7 +327,6 @@ model WalletBilling {
   // ---------------------------------------------------------------------------
 
   activities Activity[]
-  tokens     Token[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1052,6 +1051,44 @@ model UserOperationMetadata {
 }
 
 // -----------------------------------------------------------------------------
+// BillingOperation
+// -----------------------------------------------------------------------------
+
+model BillingOperation {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  status BillingOperationStatus @default(PROPOSED)
+
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
+  tokens Token[]
+}
+
+enum BillingOperationStatus {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
+
+  PROPOSED
+  PENDING
+  EXECUTED
+  REVERTED
+  INVALID
+}
+
+// -----------------------------------------------------------------------------
 // Paymaster
 // -----------------------------------------------------------------------------
 
@@ -1124,12 +1161,6 @@ model PaymasterOperation {
   // ---------------------------------------------------------------------------
 
   userOperation UserOperation?
-
-  // ---------------------------------------------------------------------------
-  // Many-to-many
-  // ---------------------------------------------------------------------------
-
-  tokens Token[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1460,14 +1491,11 @@ model Token {
   // None-to-many
   // ---------------------------------------------------------------------------
 
+  billingOperation   BillingOperation? @relation(fields: [billingOperationId], references: [id])
+  billingOperationId String?
+
   group   TokenGroup? @relation(fields: [groupId], references: [id])
   groupId String?
-
-  paymasterOperation   PaymasterOperation? @relation(fields: [paymasterOperationId], references: [id])
-  paymasterOperationId String?
-
-  walletBilling   WalletBilling? @relation(fields: [walletBillingId], references: [id])
-  walletBillingId String?
 
   // ---------------------------------------------------------------------------
   // Many-to-many
@@ -1487,9 +1515,8 @@ model Token {
   @@unique([address, chainId, tokenId])
   // Relations
   @@index([chainId])
+  @@index([billingOperationId])
   @@index([groupId])
-  @@index([paymasterOperationId])
-  @@index([walletBillingId])
 }
 
 model TokenGroup {
