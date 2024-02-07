@@ -1951,9 +1951,9 @@ model NotificationSettings {
   // Fields
   // ---------------------------------------------------------------------------
 
-  entity NotificationSettingsEntity
+  entity   NotificationSettingsEntity
   // operation NotificationSettingsOperation
-  // platform  NotificationSettingsPlatform
+  platform NotificationSettingsPlatform
 
   isEnabled Boolean @default(true)
 
