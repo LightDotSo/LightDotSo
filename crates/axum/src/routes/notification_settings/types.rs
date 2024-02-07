@@ -13,10 +13,29 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use lightdotso_prisma::notification_settings;
+use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
+
 // -----------------------------------------------------------------------------
-// Data
+// Types
 // -----------------------------------------------------------------------------
 
-export type WalletBillingData = {
-  id: string;
-};
+/// NotificationSettings root type.
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
+pub(crate) struct NotificationSettings {
+    /// The id of the interpretation action.
+    id: String,
+}
+
+// -----------------------------------------------------------------------------
+// From
+// -----------------------------------------------------------------------------
+
+/// Implement From<notification_settings::Data> for NotificationSettings.
+impl From<notification_settings::Data> for NotificationSettings {
+    fn from(notification_settings: notification_settings::Data) -> Self {
+        Self { id: notification_settings.id }
+    }
+}

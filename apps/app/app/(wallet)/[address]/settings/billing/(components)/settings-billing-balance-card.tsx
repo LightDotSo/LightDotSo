@@ -73,7 +73,7 @@ export const SettingsBillingBalanceCard: FC<
       footerContent={<SettingsBillingCardSubmitButton />}
     >
       <div className="flex text-lg">
-        <span>${walletBilling && walletBilling.balance_usd}</span>
+        <span>${walletBilling && walletBilling.id}</span>
       </div>
     </SettingsCard>
   );

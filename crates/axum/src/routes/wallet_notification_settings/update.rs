@@ -15,7 +15,7 @@
 
 #![allow(clippy::unwrap_used)]
 
-use super::types::{WalletSettings, WalletSettingsOptional};
+use super::types::{WalletNotificationSettings, WalletNotificationSettingsOptional};
 use crate::{authentication::authenticate_wallet_user, result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
@@ -27,7 +27,9 @@ use lightdotso_db::models::activity::CustomParams;
 use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
-use lightdotso_prisma::{wallet, wallet_settings, ActivityEntity, ActivityOperation};
+use lightdotso_prisma::{
+    user, wallet, wallet_notification_settings, ActivityEntity, ActivityOperation,
+};
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use tower_sessions_core::Session;
@@ -43,6 +45,8 @@ use utoipa::{IntoParams, ToSchema};
 pub struct PutQuery {
     /// The hash of the wallet settings.
     pub address: String,
+    /// The user id to filter by.
+    pub user_id: Option<String>,
 }
 
 // -----------------------------------------------------------------------------
@@ -51,37 +55,37 @@ pub struct PutQuery {
 
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub struct WalletSettingsUpdateRequestParams {
-    /// The result of the wallet_settings.
-    pub wallet_settings: WalletSettingsOptional,
+pub struct WalletNotificationSettingsUpdateRequestParams {
+    /// The result of the wallet_notification_settings.
+    pub wallet_notification_settings: WalletNotificationSettingsOptional,
 }
 
 // -----------------------------------------------------------------------------
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Create a wallet_settings
+/// Create a wallet_notification_settings
 #[utoipa::path(
         put,
-        path = "/wallet/settings/update",
+        path = "/wallet/notification/settings/update",
         params(
             PutQuery
         ),
-        request_body = WalletSettingsUpdateRequestParams,
+        request_body = WalletNotificationSettingsUpdateRequestParams,
         responses(
-            (status = 200, description = "Wallet Settings updated successfully", body = WalletSettings),
-            (status = 400, description = "Invalid Configuration", body = WalletSettingsError),
-            (status = 409, description = "Wallet Settings already exists", body = WalletSettingsError),
-            (status = 500, description = "Wallet Settings internal error", body = WalletSettingsError),
+            (status = 200, description = "Wallet Settings updated successfully", body = WalletNotificationSettings),
+            (status = 400, description = "Invalid Configuration", body = WalletNotificationSettingsError),
+            (status = 409, description = "Wallet Settings already exists", body = WalletNotificationSettingsError),
+            (status = 500, description = "Wallet Settings internal error", body = WalletNotificationSettingsError),
         )
     )]
 #[autometrics]
-pub(crate) async fn v1_wallet_settings_update_handler(
+pub(crate) async fn v1_wallet_notification_settings_update_handler(
     put_query: Query<PutQuery>,
     State(state): State<AppState>,
     mut session: Session,
-    Json(params): Json<WalletSettingsUpdateRequestParams>,
-) -> AppJsonResult<WalletSettings> {
+    Json(params): Json<WalletNotificationSettingsUpdateRequestParams>,
+) -> AppJsonResult<WalletNotificationSettings> {
     // -------------------------------------------------------------------------
     // Parse
     // -------------------------------------------------------------------------
@@ -93,8 +97,8 @@ pub(crate) async fn v1_wallet_settings_update_handler(
     let parsed_query_address: H160 = put.address.parse()?;
     let checksum_address = to_checksum(&parsed_query_address, None);
 
-    // Get the wallet_settings from the put body.
-    let wallet_settings = params.wallet_settings;
+    // Get the wallet_notification_settings from the put body.
+    let _wallet_notification_settings = params.wallet_notification_settings;
 
     // -------------------------------------------------------------------------
     // Authentication
@@ -102,33 +106,38 @@ pub(crate) async fn v1_wallet_settings_update_handler(
 
     // Check to see if the user is one of the owners of the wallet configurations.
     let auth_user_id =
-        authenticate_wallet_user(&state, &mut session, &parsed_query_address, None, None).await?;
+        authenticate_wallet_user(&state, &mut session, &parsed_query_address, None, put.user_id)
+            .await?;
 
     // -------------------------------------------------------------------------
     // Params
     // -------------------------------------------------------------------------
 
-    // For each wallet_settings, create the params update.
-    let mut params = vec![];
+    // For each wallet_notification_settings, create the params update.
+    let params = vec![];
 
-    info!("Update wallet_settings for address: {:?}", checksum_address);
+    // info!("Update wallet_notification_settings for address: {:?}", checksum_address);
 
-    if wallet_settings.is_enabled_testnet.is_some() {
-        let is_enabled_testnet = wallet_settings.is_enabled_testnet.unwrap();
-        params.push(wallet_settings::is_enabled_testnet::set(is_enabled_testnet));
-    }
+    // if wallet_notification_settings.is_enabled_testnet.is_some() {
+    //     let is_enabled_testnet = wallet_notification_settings.is_enabled_testnet.unwrap();
+    //     params.push(wallet_notification_settings::is_enabled_testnet::set(is_enabled_testnet));
+    // }
 
     // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
 
-    // Create the wallet_settings the database.
-    let wallet_settings = state
+    // Create the wallet_notification_settings the database.
+    let wallet_notification_settings = state
         .client
-        .wallet_settings()
+        .wallet_notification_settings()
         .upsert(
-            wallet_settings::wallet_address::equals(checksum_address.clone()),
-            wallet_settings::create(
+            wallet_notification_settings::user_id_wallet_address(
+                auth_user_id.clone(),
+                checksum_address.clone(),
+            ),
+            wallet_notification_settings::create(
+                user::id::equals(auth_user_id.clone()),
                 wallet::address::equals(checksum_address.clone()),
                 params.clone(),
             ),
@@ -136,7 +145,7 @@ pub(crate) async fn v1_wallet_settings_update_handler(
         )
         .exec()
         .await?;
-    info!(?wallet_settings);
+    info!(?wallet_notification_settings);
 
     // -------------------------------------------------------------------------
     // Kafka
@@ -145,10 +154,10 @@ pub(crate) async fn v1_wallet_settings_update_handler(
     // Produce an activity message.
     let _ = produce_activity_message(
         state.producer.clone(),
-        ActivityEntity::WalletSettings,
+        ActivityEntity::WalletNotificationSettings,
         &ActivityMessage {
             operation: ActivityOperation::Update,
-            log: serde_json::to_value(&wallet_settings)?,
+            log: serde_json::to_value(&wallet_notification_settings)?,
             params: CustomParams {
                 user_id: Some(auth_user_id),
                 wallet_address: Some(checksum_address.clone()),
@@ -163,7 +172,8 @@ pub(crate) async fn v1_wallet_settings_update_handler(
     // -------------------------------------------------------------------------
 
     // Change the signatures to the format that the API expects.
-    let wallet_settings: WalletSettings = wallet_settings.into();
+    let wallet_notification_settings: WalletNotificationSettings =
+        wallet_notification_settings.into();
 
-    Ok(Json::from(wallet_settings))
+    Ok(Json::from(wallet_notification_settings))
 }

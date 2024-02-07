@@ -21,7 +21,7 @@ pub(crate) mod update;
 use crate::state::AppState;
 use autometrics::autometrics;
 use axum::{
-    routing::{get, post},
+    routing::{get, put},
     Router,
 };
 
@@ -38,5 +38,5 @@ pub(crate) use update::{
 pub(crate) fn router() -> Router<AppState> {
     Router::new()
         .route("/wallet/billing/get", get(v1_wallet_billing_get_handler))
-        .route("/wallet/billing/update", post(v1_wallet_billing_update_handler))
+        .route("/wallet/billing/update", put(v1_wallet_billing_update_handler))
 }

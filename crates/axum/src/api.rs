@@ -35,10 +35,11 @@ use crate::{
     handle_error,
     routes::{
         activity, asset_change, auth, billing, billing_operation, chain, check, configuration,
-        feedback, health, interpretation, interpretation_action, invite_code, notification, owner,
-        paymaster, paymaster_operation, portfolio, protocol, protocol_group, queue, signature,
-        simplehash, simulation, socket, support_request, token, token_group, token_price,
-        transaction, user, user_operation, wallet, wallet_billing, wallet_features,
+        feedback, health, interpretation, interpretation_action, invite_code, notification,
+        notification_settings, owner, paymaster, paymaster_operation, portfolio, protocol,
+        protocol_group, queue, signature, simplehash, simulation, socket, support_request, token,
+        token_group, token_price, transaction, user, user_notification_settings, user_operation,
+        user_settings, wallet, wallet_billing, wallet_features, wallet_notification_settings,
         wallet_settings,
     },
     sessions::{authenticated, RedisStore},
@@ -120,6 +121,9 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(notification::read::NotificationReadParams),
         schemas(notification::read::NotificationReadRequestParams),
         schemas(notification::types::Notification),
+        schemas(notification_settings::error::NotificationSettingsError),
+        schemas(notification_settings::list::NotificationSettingsListCount),
+        schemas(notification_settings::types::NotificationSettings),
         schemas(owner::error::OwnerError),
         schemas(owner::types::Owner),
         schemas(paymaster::error::PaymasterError),
@@ -161,6 +165,9 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(transaction::types::Transaction),
         schemas(user::error::UserError),
         schemas(user::types::User),
+        schemas(user_notification_settings::error::UserNotificationSettingsError),
+        schemas(user_notification_settings::types::UserNotificationSettings),
+        schemas(user_notification_settings::update::UserNotificationSettingsUpdateRequestParams),
         schemas(user_operation::create::UserOperationCreateParams),
         schemas(user_operation::create::UserOperationCreateRequestParams),
         schemas(user_operation::error::UserOperationError),
@@ -168,6 +175,8 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(user_operation::nonce::UserOperationNonce),
         schemas(user_operation::types::UserOperation),
         schemas(user_operation::types::UserOperationSuccess),
+        schemas(user_settings::error::UserSettingsError),
+        schemas(user_settings::types::UserSettings),
         schemas(wallet::create::WalletCreateOwnerParams),
         schemas(wallet::create::WalletCreateRequestParams),
         schemas(wallet::error::WalletError),
@@ -224,6 +233,9 @@ use utoipa_swagger_ui::SwaggerUi;
         notification::v1_notification_list_handler,
         notification::v1_notification_list_count_handler,
         notification::v1_notification_read_handler,
+        notification_settings::v1_notification_settings_get_handler,
+        notification_settings::v1_notification_settings_list_handler,
+        notification_settings::v1_notification_settings_list_count_handler,
         owner::v1_owner_get_handler,
         owner::v1_owner_list_handler,
         paymaster::v1_paymaster_get_handler,
@@ -260,6 +272,8 @@ use utoipa_swagger_ui::SwaggerUi;
         transaction::v1_transaction_list_handler,
         transaction::v1_transaction_list_count_handler,
         user::v1_user_get_handler,
+        user_notification_settings::v1_user_notification_settings_get_handler,
+        user_notification_settings::v1_user_notification_settings_update_handler,
         user_operation::v1_user_operation_create_handler,
         user_operation::v1_user_operation_get_handler,
         user_operation::v1_user_operation_nonce_handler,
@@ -267,18 +281,22 @@ use utoipa_swagger_ui::SwaggerUi;
         user_operation::v1_user_operation_list_count_handler,
         user_operation::v1_user_operation_signature_handler,
         user_operation::v1_user_operation_update_handler,
+        user_settings::v1_user_settings_get_handler,
+        user_settings::v1_user_settings_update_handler,
         wallet::v1_wallet_create_handler,
         wallet::v1_wallet_get_handler,
         wallet::v1_wallet_list_handler,
         wallet::v1_wallet_list_count_handler,
         wallet::v1_wallet_list_count_handler,
         wallet::v1_wallet_update_handler,
-        wallet_billing::v1_wallet_billing_update_handler,
         wallet_billing::v1_wallet_billing_get_handler,
-        wallet_features::v1_wallet_features_update_handler,
+        wallet_billing::v1_wallet_billing_update_handler,
         wallet_features::v1_wallet_features_get_handler,
-        wallet_settings::v1_wallet_settings_update_handler,
+        wallet_features::v1_wallet_features_update_handler,
+        wallet_notification_settings::v1_wallet_notification_settings_get_handler,
+        wallet_notification_settings::v1_wallet_notification_settings_update_handler,
         wallet_settings::v1_wallet_settings_get_handler,
+        wallet_settings::v1_wallet_settings_update_handler,
     ),
     tags(
         (name = "activity", description = "Activity API"),
@@ -295,6 +313,7 @@ use utoipa_swagger_ui::SwaggerUi;
         (name = "invite_code", description = "Invite Code API"),
         (name = "health", description = "Health API"),
         (name = "notification", description = "Notification API"),
+        (name = "notification_settings", description = "Notification Settings API"),
         (name = "owner", description = "Owner API"),
         (name = "paymaster", description = "Paymaster API"),
         (name = "paymaster_operation", description = "Paymaster Operation API"),
@@ -310,10 +329,13 @@ use utoipa_swagger_ui::SwaggerUi;
         (name = "token_price", description = "Token Price API"),
         (name = "transaction", description = "Transaction API"),
         (name = "user", description = "User API"),
+        (name = "user_notification_settings", description = "User Notification Settings API"),
         (name = "user_operation", description = "User Operation API"),
+        (name = "user_settings", description = "User Settings API"),
         (name = "wallet", description = "Wallet API"),
         (name = "wallet_billing", description = "Wallet Billing API"),
         (name = "wallet_features", description = "Wallet Features API"),
+        (name = "wallet_notification_settings", description = "Wallet Notification Settings API"),
         (name = "wallet_settings", description = "Wallet Settings API"),
     )
 )]
@@ -428,6 +450,7 @@ pub async fn start_api_server() -> Result<()> {
         .merge(invite_code::router())
         // .merge(metrics::router())
         .merge(notification::router())
+        .merge(notification_settings::router())
         .merge(owner::router())
         .merge(paymaster::router())
         .merge(paymaster_operation::router())
@@ -444,10 +467,13 @@ pub async fn start_api_server() -> Result<()> {
         .merge(token_price::router())
         .merge(transaction::router())
         .merge(user::router())
+        .merge(user_notification_settings::router())
         .merge(user_operation::router())
+        .merge(user_settings::router())
         .merge(wallet::router())
         .merge(wallet_billing::router())
         .merge(wallet_features::router())
+        .merge(wallet_notification_settings::router())
         .merge(wallet_settings::router());
 
     // Create the simplehash api
