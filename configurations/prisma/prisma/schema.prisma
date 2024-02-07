@@ -1970,7 +1970,7 @@ model NotificationSettings {
   // Fields
   // ---------------------------------------------------------------------------
 
-  // entity    NotificationSettingsEntity
+  entity NotificationSettingsEntity
   // operation NotificationSettingsOperation
   // platform  NotificationSettingsPlatform
 
@@ -1996,15 +1996,15 @@ model NotificationSettings {
   @@index([walletNotificationSettingsId])
 }
 
-// enum NotificationSettingsEntity {
-//   // ---------------------------------------------------------------------------
-//   // Enum Fields
-//   // ---------------------------------------------------------------------------
+enum NotificationSettingsEntity {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
 
-//   INVITE_CODE
-//   TRANSACTION
-//   USER_OPERATION
-// }
+  INVITE_CODE
+  TRANSACTION
+  USER_OPERATION
+}
 
 // enum NotificationSettingsOperation {
 //   // ---------------------------------------------------------------------------
