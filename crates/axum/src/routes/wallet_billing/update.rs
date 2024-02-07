@@ -79,7 +79,7 @@ pub(crate) async fn v1_wallet_billing_update_handler(
     post_query: Query<PostQuery>,
     State(state): State<AppState>,
     mut session: Session,
-    Json(params): Json<WalletBillingUpdateRequestParams>,
+    // Json(params): Json<WalletBillingUpdateRequestParams>,
 ) -> AppJsonResult<WalletBilling> {
     // -------------------------------------------------------------------------
     // Session
@@ -114,21 +114,21 @@ pub(crate) async fn v1_wallet_billing_update_handler(
     let checksum_address = to_checksum(&parsed_query_address, None);
 
     // Get the wallet_billing from the post body.
-    let wallet_billing = params.wallet_billing;
+    // let wallet_billing = params.wallet_billing;
 
     // -------------------------------------------------------------------------
     // Params
     // -------------------------------------------------------------------------
 
     // For each wallet_billing, create the params update.
-    let mut params = vec![];
+    let params = vec![];
 
-    info!("Update wallet_billing for address: {:?}", checksum_address);
+    // info!("Update wallet_billing for address: {:?}", checksum_address);
 
-    if wallet_billing.balance_usd.is_some() {
-        let balance_usd = wallet_billing.balance_usd.unwrap();
-        params.push(wallet_billing::balance_usd::set(balance_usd));
-    }
+    // if wallet_billing.balance_usd.is_some() {
+    //     let balance_usd = wallet_billing.balance_usd.unwrap();
+    //     params.push(wallet_billing::balance_usd::set(balance_usd));
+    // }
 
     // -------------------------------------------------------------------------
     // DB

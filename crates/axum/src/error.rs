@@ -15,8 +15,9 @@
 
 use crate::routes::{
     activity::error::ActivityError, asset_change::error::AssetChangeError, auth::error::AuthError,
-    chain::error::ChainError, configuration::error::ConfigurationError,
-    feedback::error::FeedbackError, interpretation::error::InterpretationError,
+    billing::error::BillingError, chain::error::ChainError,
+    configuration::error::ConfigurationError, feedback::error::FeedbackError,
+    interpretation::error::InterpretationError,
     interpretation_action::error::InterpretationActionError, invite_code::error::InviteCodeError,
     notification::error::NotificationError, owner::error::OwnerError,
     paymaster::error::PaymasterError, paymaster_operation::error::PaymasterOperationError,
@@ -38,6 +39,7 @@ pub(crate) enum RouteError {
     ActivityError(ActivityError),
     AssetChangeError(AssetChangeError),
     AuthError(AuthError),
+    BillingError(BillingError),
     ChainError(ChainError),
     ConfigurationError(ConfigurationError),
     FeedbackError(FeedbackError),
@@ -96,6 +98,15 @@ impl RouteErrorStatusCodeAndMsg for AuthError {
             AuthError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
             AuthError::InternalError(msg) => (StatusCode::INTERNAL_SERVER_ERROR, msg.to_string()),
             AuthError::Unauthorized(msg) => (StatusCode::UNAUTHORIZED, msg.to_string()),
+        }
+    }
+}
+
+impl RouteErrorStatusCodeAndMsg for BillingError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            BillingError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
+            BillingError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
         }
     }
 }
@@ -361,6 +372,7 @@ impl RouteErrorStatusCodeAndMsg for RouteError {
             RouteError::ActivityError(err) => err.error_status_code_and_msg(),
             RouteError::AssetChangeError(err) => err.error_status_code_and_msg(),
             RouteError::AuthError(err) => err.error_status_code_and_msg(),
+            RouteError::BillingError(err) => err.error_status_code_and_msg(),
             RouteError::ChainError(err) => err.error_status_code_and_msg(),
             RouteError::ConfigurationError(err) => err.error_status_code_and_msg(),
             RouteError::FeedbackError(err) => err.error_status_code_and_msg(),

@@ -1951,9 +1951,9 @@ model NotificationSettings {
   // Fields
   // ---------------------------------------------------------------------------
 
-  entity    NotificationSettingsEntity
-  operation NotificationSettingsOperation
-  platform  NotificationSettingsPlatform
+  // entity    NotificationSettingsEntity
+  // operation NotificationSettingsOperation
+  // platform  NotificationSettingsPlatform
 
   isEnabled Boolean @default(true)
 
@@ -1971,41 +1971,41 @@ model NotificationSettings {
   // ---------------------------------------------------------------------------
 
   // Unique
-  @@unique([entity, operation, platform, userNotificationSettingsId, walletNotificationSettingsId])
+  // @@unique([entity, operation, platform, userNotificationSettingsId, walletNotificationSettingsId])
   // Relations
   @@index([userNotificationSettingsId])
   @@index([walletNotificationSettingsId])
 }
 
-enum NotificationSettingsEntity {
-  // ---------------------------------------------------------------------------
-  // Enum Fields
-  // ---------------------------------------------------------------------------
+// enum NotificationSettingsEntity {
+//   // ---------------------------------------------------------------------------
+//   // Enum Fields
+//   // ---------------------------------------------------------------------------
 
-  INVITE_CODE
-  TRANSACTION
-  USER_OPERATION
-}
+//   INVITE_CODE
+//   TRANSACTION
+//   USER_OPERATION
+// }
 
-enum NotificationSettingsOperation {
-  // ---------------------------------------------------------------------------
-  // Enum Fields
-  // ---------------------------------------------------------------------------
+// enum NotificationSettingsOperation {
+//   // ---------------------------------------------------------------------------
+//   // Enum Fields
+//   // ---------------------------------------------------------------------------
 
-  CREATE
-  UPDATE
-  DELETE
-}
+//   CREATE
+//   UPDATE
+//   DELETE
+// }
 
-enum NotificationSettingsPlatform {
-  // ---------------------------------------------------------------------------
-  // Enum Fields
-  // ---------------------------------------------------------------------------
+// enum NotificationSettingsPlatform {
+//   // ---------------------------------------------------------------------------
+//   // Enum Fields
+//   // ---------------------------------------------------------------------------
 
-  EMAIL
-  PUSH
-  SMS
-}
+//   EMAIL
+//   PUSH
+//   SMS
+// }
 
 // -----------------------------------------------------------------------------
 // Feedback

@@ -26,7 +26,7 @@ use axum::{
     Json,
 };
 use ethers_main::{types::H160, utils::to_checksum};
-use lightdotso_prisma::{wallet, wallet_billing};
+use lightdotso_prisma::{wallet, wallet_billing, BillingStatus};
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -116,10 +116,13 @@ pub(crate) async fn v1_wallet_billing_get_handler(
             )));
         }
 
+        let billing =
+            state.client.billing().create(0.0, BillingStatus::User, vec![]).exec().await?;
+
         let wallet_billing = state
             .client
             .wallet_billing()
-            .create(0.0, wallet::address::equals(checksum_address.clone()), vec![])
+            .create(wallet::address::equals(checksum_address.clone()), billing.id, vec![])
             .exec()
             .await?;
 
