@@ -306,10 +306,10 @@ model WalletBilling {
   walletAddress String @unique
 
   // ---------------------------------------------------------------------------
-  // None-to-one
+  // One-to-many
   // ---------------------------------------------------------------------------
 
-  billing   Billing? @relation(fields: [billingId], references: [id])
+  billing   Billing @relation(fields: [billingId], references: [id])
   billingId String
 
   // ---------------------------------------------------------------------------
