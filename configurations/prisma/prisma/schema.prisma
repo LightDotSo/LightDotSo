@@ -1970,9 +1970,9 @@ model NotificationSettings {
   // Fields
   // ---------------------------------------------------------------------------
 
-  entity NotificationSettingsEntity
+  entity   NotificationSettingsEntity
   // operation NotificationSettingsOperation
-  // platform  NotificationSettingsPlatform
+  platform NotificationSettingsPlatform
 
   isEnabled Boolean @default(true)
 
@@ -2016,15 +2016,14 @@ enum NotificationSettingsEntity {
 //   DELETE
 // }
 
-// enum NotificationSettingsPlatform {
-//   // ---------------------------------------------------------------------------
-//   // Enum Fields
-//   // ---------------------------------------------------------------------------
+enum NotificationSettingsPlatform {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
 
-//   EMAIL
-//   PUSH
-//   SMS
-// }
+  EMAIL
+  WEB
+}
 
 // -----------------------------------------------------------------------------
 // Feedback
