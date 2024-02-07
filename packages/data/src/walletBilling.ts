@@ -18,5 +18,5 @@
 // -----------------------------------------------------------------------------
 
 export type WalletBillingData = {
-  balance_usd: number;
+  id: string;
 };

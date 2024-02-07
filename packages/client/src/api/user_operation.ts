@@ -248,7 +248,7 @@ export const updateUserOperation = async (
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
-    client.POST("/user_operation/update", {
+    client.PUT("/user_operation/update", {
       // @ts-ignore
       next: { revalidate: 0 },
       params,

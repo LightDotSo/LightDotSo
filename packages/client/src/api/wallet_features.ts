@@ -68,7 +68,7 @@ export const updateWalletFeatures = async (
   const client = getClient(clientType);
 
   return ResultAsync.fromPromise(
-    client.POST("/wallet/features/update", {
+    client.PUT("/wallet/features/update", {
       // @ts-ignore
       next: { revalidate: 0 },
       params,
