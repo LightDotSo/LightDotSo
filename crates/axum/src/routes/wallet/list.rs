@@ -67,7 +67,7 @@ pub(crate) struct WalletListCount {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of wallets.
+/// Returns a list of wallets
 #[utoipa::path(
         get,
         path = "/wallet/list",
@@ -136,7 +136,7 @@ pub(crate) async fn v1_wallet_list_handler(
     Ok(Json::from(wallets))
 }
 
-/// Returns a count of list of wallets.
+/// Returns a count of list of wallets
 #[utoipa::path(
         get,
         path = "/wallet/list/count",

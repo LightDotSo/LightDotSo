@@ -60,7 +60,7 @@ pub(crate) struct SimulationListCount {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of simulations.
+/// Returns a list of simulations
 #[utoipa::path(
         get,
         path = "/simulation/list",
@@ -122,7 +122,7 @@ pub(crate) async fn v1_simulation_list_handler(
     Ok(Json::from(simulations))
 }
 
-/// Returns a count of list of simulations.
+/// Returns a count of list of simulations
 #[utoipa::path(
         get,
         path = "/simulation/list/count",

@@ -89,7 +89,7 @@ pub(crate) struct UserOperationListCount {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of user operations.
+/// Returns a list of user operations
 #[utoipa::path(
         get,
         path = "/user_operation/list",
@@ -172,7 +172,7 @@ pub(crate) async fn v1_user_operation_list_handler(
     Ok(Json::from(user_operations))
 }
 
-/// Returns a count of user operations.
+/// Returns a count of user operations
 #[utoipa::path(
         get,
         path = "/user_operation/list/count",

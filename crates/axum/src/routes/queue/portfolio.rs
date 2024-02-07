@@ -46,7 +46,7 @@ pub struct PostQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Queue portfolio handler.
+/// Queue portfolio handler
 #[utoipa::path(
         post,
         path = "/queue/portfolio",

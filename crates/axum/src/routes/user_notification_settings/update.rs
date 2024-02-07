@@ -60,7 +60,7 @@ pub struct UserNotificationSettingsUpdateRequestParams {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Create a user_notification_settings
+/// Update the user notification settings
 #[utoipa::path(
         put,
         path = "/user/notification/settings/update",

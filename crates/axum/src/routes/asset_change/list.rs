@@ -42,7 +42,7 @@ pub struct ListQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of assets.
+/// Returns a list of assets
 #[utoipa::path(
         get,
         path = "/asset_change/list",

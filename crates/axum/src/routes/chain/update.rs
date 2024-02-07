@@ -60,7 +60,7 @@ pub struct ChainUpdateRequestParams {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Update a chain.
+/// Update a chain
 #[utoipa::path(
         put,
         path = "/chain/update",

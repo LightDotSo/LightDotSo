@@ -46,7 +46,7 @@ pub struct PostQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Queue token handler.
+/// Queue token handler
 #[utoipa::path(
         post,
         path = "/queue/token",

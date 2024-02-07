@@ -47,7 +47,7 @@ pub struct PostQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Create a token group.
+/// Create a token group
 #[utoipa::path(
         post,
         path = "/token/group/create",

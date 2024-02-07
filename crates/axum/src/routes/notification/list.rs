@@ -68,7 +68,7 @@ pub(crate) struct NotificationListCount {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of notifications.
+/// Returns a list of notifications
 #[utoipa::path(
         get,
         path = "/notification/list",
@@ -138,7 +138,7 @@ pub(crate) async fn v1_notification_list_handler(
     Ok(Json::from(notifications))
 }
 
-/// Returns a count of list of notifications.
+/// Returns a count of list of notifications
 #[utoipa::path(
         get,
         path = "/notification/list/count",

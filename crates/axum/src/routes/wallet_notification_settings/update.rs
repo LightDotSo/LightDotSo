@@ -64,7 +64,7 @@ pub struct WalletNotificationSettingsUpdateRequestParams {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Create a wallet_notification_settings
+/// Update the wallet notification settings
 #[utoipa::path(
         put,
         path = "/wallet/notification/settings/update",

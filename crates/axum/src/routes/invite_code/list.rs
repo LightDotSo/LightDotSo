@@ -58,7 +58,7 @@ pub(crate) struct InviteCodeListCount {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of invite codes.
+/// Returns a list of invite codes
 #[utoipa::path(
         get,
         path = "/invite_code/list",
@@ -128,7 +128,7 @@ pub(crate) async fn v1_invite_code_list_handler(
     Ok(Json::from(invite_codes))
 }
 
-/// Returns a count of list of invite codes.
+/// Returns a count of list of invite codes
 #[utoipa::path(
         get,
         path = "/invite_code/list/count",

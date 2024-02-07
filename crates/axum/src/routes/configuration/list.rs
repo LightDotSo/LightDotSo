@@ -43,7 +43,7 @@ pub struct ListQuery {
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of configurations.
+/// Returns a list of configurations
 #[utoipa::path(
         get,
         path = "/configuration/list",
