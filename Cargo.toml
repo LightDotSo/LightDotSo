@@ -153,13 +153,13 @@
     once_cell = "1.8.0"
     pin-project-lite = "0.2.13"
     prettyplease = "0.2.15"
-    prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.10", features = [
+    prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.11", features = [
       "migrations",
       "mocking",
       "sqlite",
       "sqlite-create-many",
     ] }
-    prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.10", features = [
+    prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.11", features = [
       "migrations",
       "mocking",
       "sqlite",
