@@ -13,5 +13,6 @@
   clap = { workspace = true, features = ["derive"] }
   eyre = { workspace = true }
   lightdotso-discord = { workspace = true }
+  lightdotso-prisma = { workspace = true }
   lightdotso-tracing = { workspace = true }
   serde_json = { workspace = true }

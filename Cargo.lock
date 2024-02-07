@@ -6369,6 +6369,7 @@ dependencies = [
  "clap 4.4.0",
  "eyre",
  "lightdotso-discord",
+ "lightdotso-prisma",
  "lightdotso-tracing",
  "serde_json",
 ]

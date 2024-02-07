@@ -1944,8 +1944,9 @@ model NotificationSettings {
   // Fields
   // ---------------------------------------------------------------------------
 
-  key       String
-  isEnabled Boolean
+  key        String
+  isEnabled  Boolean
+  isUserOnly Boolean @default(false)
 
   // ---------------------------------------------------------------------------
   // One-to-many
@@ -1972,7 +1973,7 @@ model NotificationSettings {
   // ---------------------------------------------------------------------------
 
   // Unique
-  @@unique([key, userId, walletAddress])
+  @@unique([key, isUserOnly, userId, walletAddress])
   // Relations
   @@index([userId])
   @@index([walletAddress])
