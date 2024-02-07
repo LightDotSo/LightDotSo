@@ -1144,8 +1144,7 @@ model BillingOperation {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  activities     Activity[]
-  walletBalances WalletBalance[]
+  activities Activity[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1878,9 +1877,6 @@ model WalletBalance {
   // None-to-many
   // ---------------------------------------------------------------------------
 
-  billingOperation   BillingOperation? @relation(fields: [billingOperationId], references: [id])
-  billingOperationId String?
-
   token   Token?  @relation(fields: [tokenId], references: [id])
   tokenId String?
 
@@ -1896,7 +1892,6 @@ model WalletBalance {
   // Relations
   @@index([chainId])
   @@index([walletAddress])
-  @@index([billingOperationId])
   @@index([tokenId])
   @@index([tokenProtocolId])
 }

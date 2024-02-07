@@ -1074,7 +1074,6 @@ model Billing {
 
   activities        Activity[]
   billingOperations BillingOperation[]
-  tokens            Token[]
   walletBilling     WalletBilling[]
 }
 
@@ -1127,7 +1126,6 @@ model BillingOperation {
   // ---------------------------------------------------------------------------
 
   activities Activity[]
-  tokens     Token[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1573,12 +1571,6 @@ model Token {
   // None-to-many
   // ---------------------------------------------------------------------------
 
-  billing   Billing? @relation(fields: [billingId], references: [id])
-  billingId String?
-
-  billingOperation   BillingOperation? @relation(fields: [billingOperationId], references: [id])
-  billingOperationId String?
-
   group   TokenGroup? @relation(fields: [groupId], references: [id])
   groupId String?
 
@@ -1600,8 +1592,6 @@ model Token {
   @@unique([address, chainId, tokenId])
   // Relations
   @@index([chainId])
-  @@index([billingId])
-  @@index([billingOperationId])
   @@index([groupId])
 }
 
