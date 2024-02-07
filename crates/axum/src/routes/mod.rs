@@ -16,6 +16,8 @@
 pub(crate) mod activity;
 pub(crate) mod asset_change;
 pub(crate) mod auth;
+pub(crate) mod billing;
+pub(crate) mod billing_operation;
 pub(crate) mod chain;
 pub(crate) mod check;
 pub(crate) mod configuration;

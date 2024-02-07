@@ -13,37 +13,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use lightdotso_prisma::wallet_billing;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
 // -----------------------------------------------------------------------------
-// Types
+// Error
 // -----------------------------------------------------------------------------
 
-/// WalletBilling root type.
-#[derive(Serialize, Deserialize, ToSchema, Clone)]
-#[serde(rename_all = "snake_case")]
-pub(crate) struct WalletBilling {
-    /// The wallet billing of the balance in USD.
-    pub id: String,
-}
-
-/// Optional WalletBilling root type.
-#[derive(Serialize, Deserialize, ToSchema, Clone)]
-#[serde(rename_all = "snake_case")]
-pub(crate) struct WalletBillingOptional {
-    /// The update query of wallet_billing of whether the testnet is enabled.
-    pub id: String,
-}
-
-// -----------------------------------------------------------------------------
-// From
-// -----------------------------------------------------------------------------
-
-/// Implement From<wallet_billing::Data> for WalletBilling.
-impl From<wallet_billing::Data> for WalletBilling {
-    fn from(wallet_billing: wallet_billing::Data) -> Self {
-        Self { id: wallet_billing.id }
-    }
+/// Billing operation errors
+#[derive(Serialize, Deserialize, ToSchema)]
+pub(crate) enum BillingError {
+    /// Billing query error.
+    #[schema(example = "Bad request")]
+    BadRequest(String),
+    /// Billing not found by id.
+    #[schema(example = "id = 1")]
+    NotFound(String),
 }
