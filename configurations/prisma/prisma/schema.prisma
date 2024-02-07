@@ -1970,9 +1970,9 @@ model NotificationSettings {
   // Fields
   // ---------------------------------------------------------------------------
 
-  entity   NotificationSettingsEntity
-  // operation NotificationSettingsOperation
-  platform NotificationSettingsPlatform
+  entity    NotificationSettingsEntity
+  operation NotificationSettingsOperation
+  platform  NotificationSettingsPlatform
 
   isEnabled Boolean @default(true)
 
@@ -2006,15 +2006,15 @@ enum NotificationSettingsEntity {
   USER_OPERATION
 }
 
-// enum NotificationSettingsOperation {
-//   // ---------------------------------------------------------------------------
-//   // Enum Fields
-//   // ---------------------------------------------------------------------------
+enum NotificationSettingsOperation {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
 
-//   CREATE
-//   UPDATE
-//   DELETE
-// }
+  CREATE
+  UPDATE
+  DELETE
+}
 
 enum NotificationSettingsPlatform {
   // ---------------------------------------------------------------------------
