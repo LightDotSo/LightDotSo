@@ -28,6 +28,7 @@ use crate::routes::{
     support_request::error::SupportRequestError, token::error::TokenError,
     token_group::error::TokenGroupError, token_price::error::TokenPriceError,
     transaction::error::TransactionError, user::error::UserError,
+    user_notification_settings::error::UserNotificationSettingsError,
     user_operation::error::UserOperationError, user_settings::error::UserSettingsError,
     wallet::error::WalletError, wallet_billing::error::WalletBillingError,
     wallet_features::error::WalletFeaturesError, wallet_settings::error::WalletSettingsError,
@@ -64,8 +65,9 @@ pub(crate) enum RouteError {
     TokenGroupError(TokenGroupError),
     TokenPriceError(TokenPriceError),
     TransactionError(TransactionError),
-    UserOperationError(UserOperationError),
     UserError(UserError),
+    UserOperationError(UserOperationError),
+    UserNotificationSettingsError(UserNotificationSettingsError),
     UserSettingsError(UserSettingsError),
     WalletError(WalletError),
     WalletBillingError(WalletBillingError),
@@ -350,6 +352,19 @@ impl RouteErrorStatusCodeAndMsg for UserError {
     }
 }
 
+impl RouteErrorStatusCodeAndMsg for UserNotificationSettingsError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            UserNotificationSettingsError::BadRequest(msg) => {
+                (StatusCode::BAD_REQUEST, msg.to_string())
+            }
+            UserNotificationSettingsError::NotFound(msg) => {
+                (StatusCode::NOT_FOUND, msg.to_string())
+            }
+        }
+    }
+}
+
 impl RouteErrorStatusCodeAndMsg for UserSettingsError {
     fn error_status_code_and_msg(&self) -> (StatusCode, String) {
         match self {
@@ -429,8 +444,9 @@ impl RouteErrorStatusCodeAndMsg for RouteError {
             RouteError::TokenGroupError(err) => err.error_status_code_and_msg(),
             RouteError::TokenPriceError(err) => err.error_status_code_and_msg(),
             RouteError::TransactionError(err) => err.error_status_code_and_msg(),
-            RouteError::UserOperationError(err) => err.error_status_code_and_msg(),
             RouteError::UserError(err) => err.error_status_code_and_msg(),
+            RouteError::UserNotificationSettingsError(err) => err.error_status_code_and_msg(),
+            RouteError::UserOperationError(err) => err.error_status_code_and_msg(),
             RouteError::UserSettingsError(err) => err.error_status_code_and_msg(),
             RouteError::WalletError(err) => err.error_status_code_and_msg(),
             RouteError::WalletBillingError(err) => err.error_status_code_and_msg(),

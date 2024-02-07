@@ -25,8 +25,13 @@ use axum::{
     Router,
 };
 
-pub(crate) use get::{__path_v1_user_settings_get_handler, v1_user_settings_get_handler};
-pub(crate) use update::{__path_v1_user_settings_update_handler, v1_user_settings_update_handler};
+pub(crate) use get::{
+    __path_v1_user_notification_settings_get_handler, v1_user_notification_settings_get_handler,
+};
+pub(crate) use update::{
+    __path_v1_user_notification_settings_update_handler,
+    v1_user_notification_settings_update_handler,
+};
 
 // -----------------------------------------------------------------------------
 // Router
@@ -35,6 +40,9 @@ pub(crate) use update::{__path_v1_user_settings_update_handler, v1_user_settings
 #[autometrics]
 pub(crate) fn router() -> Router<AppState> {
     Router::new()
-        .route("/user/settings/get", get(v1_user_settings_get_handler))
-        .route("/user/settings/update", put(v1_user_settings_update_handler))
+        .route("/user/notification/settings/get", get(v1_user_notification_settings_get_handler))
+        .route(
+            "/user/notification/settings/update",
+            put(v1_user_notification_settings_update_handler),
+        )
 }
