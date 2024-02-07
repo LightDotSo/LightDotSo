@@ -373,6 +373,12 @@ model WalletFeatures {
   walletAddress String @unique
 
   // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
+  activities Activity[]
+
+  // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
 
@@ -2223,6 +2229,9 @@ model Activity {
   walletBilling   WalletBilling? @relation(fields: [walletBillingId], references: [id])
   walletBillingId String?
 
+  walletFeatures   WalletFeatures? @relation(fields: [walletFeaturesId], references: [id])
+  walletFeaturesId String?
+
   walletNotificationSettings   WalletNotificationSettings? @relation(fields: [walletNotificationSettingsId], references: [id])
   walletNotificationSettingsId String?
 
@@ -2256,6 +2265,7 @@ model Activity {
   @@index([userSettingsId])
   @@index([userNotificationSettingsId])
   @@index([walletBillingId])
+  @@index([walletFeaturesId])
   @@index([walletNotificationSettingsId])
   @@index([walletSettingsId])
 }
