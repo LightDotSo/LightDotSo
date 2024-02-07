@@ -1071,6 +1071,7 @@ model Billing {
   // ---------------------------------------------------------------------------
 
   balanceUSD Float
+  status     BillingStatus @default(PROPOSED)
 
   // ---------------------------------------------------------------------------
   // Many-to-many
@@ -1080,6 +1081,18 @@ model Billing {
   billingOperations BillingOperation[]
   tokens            Token[]
   walletBilling     WalletBilling[]
+}
+
+enum BillingStatus {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
+
+  PROPOSED
+  PENDING
+  EXECUTED
+  REVERTED
+  INVALID
 }
 
 // -----------------------------------------------------------------------------
