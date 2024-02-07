@@ -138,14 +138,6 @@ pub(crate) async fn v1_wallet_notification_settings_update_handler(
     // -------------------------------------------------------------------------
 
     // For each wallet_notification_settings, create the params update.
-    // let params = vec![];
-
-    // info!("Update wallet_notification_settings for address: {:?}", checksum_address);
-
-    // if wallet_notification_settings.is_enabled_testnet.is_some() {
-    //     let is_enabled_testnet = wallet_notification_settings.is_enabled_testnet.unwrap();
-    //     params.push(wallet_notification_settings::is_enabled_testnet::set(is_enabled_testnet));
-    // }
 
     // -------------------------------------------------------------------------
     // Kafka

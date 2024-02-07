@@ -37,7 +37,7 @@ pub(crate) struct WalletNotificationSettings {
 #[serde(rename_all = "snake_case")]
 pub(crate) struct WalletNotificationSettingsOptional {
     /// The update query of wallet notification settings of whether the testnet is enabled.
-    pub is_enabled_testnet: Option<bool>,
+    pub settings: Option<Vec<NotificationSettings>>,
 }
 
 // -----------------------------------------------------------------------------
