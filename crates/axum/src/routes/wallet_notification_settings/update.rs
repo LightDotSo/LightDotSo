@@ -170,9 +170,8 @@ pub(crate) async fn v1_wallet_notification_settings_update_handler(
                 .client
                 .notification_settings()
                 .upsert(
-                    notification_settings::key_is_user_only_user_id_wallet_address(
+                    notification_settings::key_user_id_wallet_address(
                         setting.key.clone(),
-                        false,
                         auth_user_id.clone(),
                         checksum_address.clone(),
                     ),
