@@ -99,7 +99,7 @@ const nextConfig = {
   webpack: (config, { isServer }) => {
     config.resolve.fallback = { fs: false };
 
-    config.externals.push("react");
+    // config.externals.push("react");
 
     if (isServer) {
       config.plugins = [...config.plugins, new PrismaPlugin()];
