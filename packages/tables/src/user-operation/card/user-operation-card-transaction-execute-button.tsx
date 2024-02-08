@@ -49,12 +49,13 @@ export const UserOperationCardTransactionExecuteButton: FC<
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const { isLoading, isValid, handleConfirm } = useUserOperationSubmit({
-    address: address,
-    is_testnet: isTestnet,
-    configuration: configuration,
-    userOperation: userOperation,
-  });
+  const { isLoading, isValid, isSuccess, handleConfirm } =
+    useUserOperationSubmit({
+      address: address,
+      is_testnet: isTestnet,
+      configuration: configuration,
+      userOperation: userOperation,
+    });
 
   // ---------------------------------------------------------------------------
   // Render
@@ -66,7 +67,10 @@ export const UserOperationCardTransactionExecuteButton: FC<
         <TooltipTrigger asChild>
           <Button
             disabled={
-              !isValid || isLoading || userOperation.status !== "PROPOSED"
+              !isValid ||
+              isLoading ||
+              isSuccess ||
+              userOperation.status !== "PROPOSED"
             }
             isLoading={isLoading}
             variant={isValid ? "default" : "outline"}

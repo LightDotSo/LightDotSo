@@ -124,8 +124,8 @@ export const useUserOperationSubmit = ({
 
   const {
     userOperationSend,
-    isUserOperationSendPending,
-    isUserOperationSendSuccess,
+    isUserOperationSendPending: isLoading,
+    isUserOperationSendSuccess: isSuccess,
   } = useMutationUserOperationSend({
     address,
     is_testnet,
@@ -171,19 +171,12 @@ export const useUserOperationSubmit = ({
   }, [userOperation, userOperationSend]);
 
   // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
-
-  const isLoading = useMemo(() => {
-    return isUserOperationSendPending || !isUserOperationSendSuccess;
-  }, [isUserOperationSendPending, isUserOperationSendSuccess]);
-
-  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return {
     isLoading,
+    isSuccess,
     isValid,
     paymasterNonce,
     paymasterOperation,
