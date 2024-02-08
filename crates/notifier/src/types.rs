@@ -262,10 +262,14 @@ mod tests {
         for key in NOTIFICATION_KEYS.iter() {
             println!("{}", key);
         }
+        insta::assert_snapshot!("NOTIFICATION_KEYS", format!("{:?}", *NOTIFICATION_KEYS));
     }
 
     #[test]
     fn test_notification_default_enabled() {
-        println!("{:?}", *NOTIFICATION_DEFAULT_ENABLED);
+        insta::assert_snapshot!(
+            "NOTIFICATION_DEFAULT_ENABLED",
+            format!("{:?}", *NOTIFICATION_DEFAULT_ENABLED)
+        );
     }
 }
