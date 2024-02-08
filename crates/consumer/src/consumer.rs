@@ -136,7 +136,7 @@ impl Consumer {
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         topic if topic == ACTIVITY.to_string() => {
-                            let _ = activity_consumer(&m, db.clone()).await;
+                            let _ = activity_consumer(self.producer.clone(), &m, db.clone()).await;
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         topic if topic == COVALENT.to_string() => {
@@ -168,7 +168,7 @@ impl Consumer {
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         topic if topic == NOTIFICATION.to_string() => {
-                            let _ = notification_consumer(&m, &notifier).await;
+                            let _ = notification_consumer(&m, &notifier, db.clone()).await;
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         topic if topic == ERROR_TRANSACTION.to_string() => {

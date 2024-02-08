@@ -88,6 +88,19 @@ pub fn match_wallet_only_notification_with_activity(
     }
 }
 
+// Combination utility function to match the activity entity/operation combination
+pub fn match_notification_with_activity(
+    entity: &ActivityEntity,
+    operation: &ActivityOperation,
+    log: &Value,
+) -> Option<Operation> {
+    if let Some(res) = match_user_only_notification_with_activity(entity, operation, log) {
+        return Some(Operation::UserOnly(res));
+    }
+
+    match_wallet_only_notification_with_activity(entity, operation, log).map(Operation::WalletOnly)
+}
+
 // This is a list of all operations
 #[derive(Clone, Debug, Display)]
 pub enum Operation {

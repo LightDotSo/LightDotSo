@@ -13,10 +13,26 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod activity;
-pub mod covalent;
-pub mod interpretation;
-pub mod notification;
-pub mod portfolio;
-pub mod transaction;
-pub mod user_operation;
+use crate::{
+    namespace::NOTIFICATION, produce_message, traits::ToJson,
+    types::notification::NotificationMessage,
+};
+use eyre::Result;
+pub use rdkafka;
+use rdkafka::producer::FutureProducer;
+use std::sync::Arc;
+
+// -----------------------------------------------------------------------------
+// Producer
+// -----------------------------------------------------------------------------
+
+/// Produce a message with Notification topic.
+pub async fn produce_notification_message(
+    producer: Arc<FutureProducer>,
+    msg: &NotificationMessage,
+) -> Result<()> {
+    let message = msg.to_json();
+
+    produce_message(producer, NOTIFICATION.as_str(), &message, None).await?;
+    Ok(())
+}

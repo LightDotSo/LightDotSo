@@ -15,10 +15,13 @@
 
 use eyre::{eyre, Result};
 use lightdotso_db::models::activity::create_activity_with_user_and_wallet;
-use lightdotso_kafka::types::activity::ActivityMessage;
+use lightdotso_kafka::{
+    topics::notification::produce_notification_message,
+    types::{activity::ActivityMessage, notification::NotificationMessage},
+};
 use lightdotso_prisma::{ActivityEntity, ActivityOperation, PrismaClient};
 use lightdotso_tracing::tracing::info;
-use rdkafka::{message::BorrowedMessage, Message};
+use rdkafka::{message::BorrowedMessage, producer::FutureProducer, Message};
 use std::sync::Arc;
 
 // -----------------------------------------------------------------------------
@@ -62,7 +65,11 @@ impl FromStrExt for ActivityOperation {
 // Consumer
 // -----------------------------------------------------------------------------
 
-pub async fn activity_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>) -> Result<()> {
+pub async fn activity_consumer(
+    producer: Arc<FutureProducer>,
+    msg: &BorrowedMessage<'_>,
+    db: Arc<PrismaClient>,
+) -> Result<()> {
     // Send webhook if exists
     info!(
         "key: '{:?}', payload: '{:?}',  topic: {}, partition: {}, offset: {}, timestamp: {:?}",
@@ -91,14 +98,21 @@ pub async fn activity_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>)
             let payload: ActivityMessage = serde_json::from_slice(payload.as_bytes())?;
 
             // Create activity with user and wallet
-            let _ = create_activity_with_user_and_wallet(
+            let act = create_activity_with_user_and_wallet(
                 db,
                 entity,
                 payload.operation,
                 payload.log.clone(),
                 payload.params,
             )
-            .await;
+            .await?;
+            info!("act: {:?}", act);
+
+            produce_notification_message(
+                producer,
+                &NotificationMessage { activity_id: act.id.clone() },
+            )
+            .await?;
         }
     }
 

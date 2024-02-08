@@ -14,11 +14,18 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use eyre::Result;
-use lightdotso_notifier::notifier::Notifier;
+use lightdotso_kafka::types::notification::NotificationMessage;
+use lightdotso_notifier::{notifier::Notifier, types::match_notification_with_activity};
+use lightdotso_prisma::{activity, PrismaClient};
 use lightdotso_tracing::tracing::info;
 use rdkafka::{message::BorrowedMessage, Message};
+use std::sync::Arc;
 
-pub async fn notification_consumer(msg: &BorrowedMessage<'_>, notifier: &Notifier) -> Result<()> {
+pub async fn notification_consumer(
+    msg: &BorrowedMessage<'_>,
+    notifier: &Notifier,
+    db: Arc<PrismaClient>,
+) -> Result<()> {
     // Send webhook if exists
     info!(
         "key: '{:?}', payload: '{:?}',  topic: {}, partition: {}, offset: {}, timestamp: {:?}",
@@ -34,7 +41,31 @@ pub async fn notification_consumer(msg: &BorrowedMessage<'_>, notifier: &Notifie
     let payload_opt = msg.payload_view::<str>();
     info!("payload_opt: {:?}", payload_opt);
 
-    notifier.run().await;
+    // If the payload is valid
+    if let Some(Ok(payload)) = payload_opt {
+        // Try to deserialize the payload as json
+        let payload: NotificationMessage = serde_json::from_slice(payload.as_bytes())?;
+
+        // Get the activity from the database
+        let activity =
+            db.activity().find_unique(activity::id::equals(payload.activity_id)).exec().await?;
+
+        // If the activity exists
+        if let Some(entity) = activity {
+            // Match the notification with the activity
+            let res =
+                match_notification_with_activity(&entity.entity, &entity.operation, &entity.log);
+
+            // Check if the notification should be sent or not
+            if let Some(res) = res {
+                info!("res: {:?}", res);
+
+                // Send the notification
+            }
+
+            notifier.run().await;
+        }
+    }
 
     Ok(())
 }
