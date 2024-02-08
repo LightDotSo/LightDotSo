@@ -15,7 +15,7 @@
 
 import { createUserOperation } from "@lightdotso/client";
 import { TRANSACTION_ROW_COUNT } from "@lightdotso/const";
-import { UserOperationData } from "@lightdotso/data";
+import type { UserOperationData } from "@lightdotso/data";
 import type {
   UserOperationCreateBodyParams,
   UserOperationParams,
