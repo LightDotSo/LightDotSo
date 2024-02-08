@@ -23,7 +23,14 @@ use serde_json::{json, Value};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct NotificationMessage {
+    /// The activity id
     pub activity_id: String,
+    /// The key of the notification
+    pub key: String,
+    /// The user id of the notification
+    pub user_id: Option<String>,
+    /// The wallet address of the notification
+    pub wallet_address: Option<String>,
 }
 
 // -----------------------------------------------------------------------------
@@ -34,6 +41,9 @@ impl ToJson for NotificationMessage {
     fn to_json(&self) -> String {
         let msg_value: Value = json!({
             "activity_id": &self.activity_id,
+            "key": &self.key,
+            "user_id": &self.user_id,
+            "wallet_address": &self.wallet_address,
         });
 
         msg_value.to_string()

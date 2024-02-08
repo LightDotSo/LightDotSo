@@ -19,8 +19,10 @@ use lightdotso_kafka::{
     topics::notification::produce_notification_message,
     types::{activity::ActivityMessage, notification::NotificationMessage},
 };
-use lightdotso_prisma::{ActivityEntity, ActivityOperation, PrismaClient};
+use lightdotso_notifier::types::{match_notification_with_activity, Operation};
+use lightdotso_prisma::{configuration, owner, ActivityEntity, ActivityOperation, PrismaClient};
 use lightdotso_tracing::tracing::info;
+use prisma_client_rust::Direction;
 use rdkafka::{message::BorrowedMessage, producer::FutureProducer, Message};
 use std::sync::Arc;
 
@@ -99,20 +101,77 @@ pub async fn activity_consumer(
 
             // Create activity with user and wallet
             let act = create_activity_with_user_and_wallet(
-                db,
+                db.clone(),
                 entity,
                 payload.operation,
                 payload.log.clone(),
                 payload.params,
             )
             .await?;
-            info!("act: {:?}", act);
+            info!("act: {:?}", act.clone());
 
-            produce_notification_message(
-                producer,
-                &NotificationMessage { activity_id: act.id.clone() },
-            )
-            .await?;
+            let res = match_notification_with_activity(&entity, &payload.operation, &payload.log);
+
+            if let Some(res) = res {
+                info!("res: {:?}", res);
+
+                match res {
+                    Operation::UserOnly(_) => {
+                        // let notification = NotificationMessage {
+                        //     user_id: act.user_id,
+                        //     activity_id: act.id,
+                        //     entity: entity.to_string(),
+                        //     operation: payload.operation.to_string(),
+                        //     log: payload.log,
+                        // };
+
+                        // produce_notification_message(producer, &notification).await?;
+                    }
+                    Operation::WalletOnly(opt) => {
+                        let key_id = opt.to_string();
+                        info!("key_id: {:?}", key_id);
+
+                        if let Some(wallet_address) = &act.wallet_address {
+                            // Get the owners of the wallet
+                            let config = db
+                                .clone()
+                                .configuration()
+                                .find_first(vec![configuration::address::equals(
+                                    wallet_address.to_string(),
+                                )])
+                                .order_by(configuration::checkpoint::order(Direction::Desc))
+                                .with(
+                                    configuration::owners::fetch(vec![]).with(owner::user::fetch()),
+                                )
+                                .exec()
+                                .await?;
+
+                            if let Some(configuration) = config {
+                                // Get the configuration of the wallet
+                                if let Some(owners) = configuration.owners {
+                                    // For each owner of the wallet
+                                    for owner in owners {
+                                        // Construct the notification
+                                        let notification = NotificationMessage {
+                                            key: key_id.clone(),
+                                            activity_id: act.id.clone(),
+                                            user_id: owner.user_id,
+                                            wallet_address: Some(wallet_address.to_string()),
+                                        };
+
+                                        // Send the notification
+                                        produce_notification_message(
+                                            producer.clone(),
+                                            &notification,
+                                        )
+                                        .await?;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
