@@ -30,6 +30,7 @@ export enum Category {
   Transactions = "Transactions",
   Profile = "Profile",
   Settings = "Settings",
+  WalletSettings = "WalletSettings",
   Activity = "Activity",
   Owners = "Owners",
   Send = "Send",
@@ -67,6 +68,12 @@ export enum TransactionsSubCategory {
 }
 
 export enum SettingsSubCategory {
+  Appearance = "Appearance",
+  Notifications = "Notifications",
+  Profile = "Profile",
+}
+
+export enum WalletSettingsSubCategory {
   Account = "Account",
   Billing = "Billing",
   Deployment = "Deployment",
@@ -166,7 +173,28 @@ export const TITLES: Record<Category, CategoryObject> = {
     title: "Settings",
     description: "Manage your account settings.",
     subcategories: {
-      [SettingsSubCategory.WalletSettings]: {
+      [SettingsSubCategory.Appearance]: {
+        title: "Appearance",
+        description: "Manage your appearance settings.",
+        subcategories: {},
+      },
+      [SettingsSubCategory.Notifications]: {
+        title: "Notifications",
+        description: "Manage your notification settings.",
+        subcategories: {},
+      },
+      [SettingsSubCategory.Profile]: {
+        title: "Profile",
+        description: "Manage your profile settings.",
+        subcategories: {},
+      },
+    },
+  },
+  [Category.WalletSettings]: {
+    title: "Wallet Settings",
+    description: "Manage your wallet settings.",
+    subcategories: {
+      [WalletSettingsSubCategory.WalletSettings]: {
         title: "Wallet Settings",
         description: "Manage your wallet settings",
         subcategories: {
@@ -184,12 +212,12 @@ export const TITLES: Record<Category, CategoryObject> = {
           },
         },
       },
-      [SettingsSubCategory.Account]: {
+      [WalletSettingsSubCategory.Account]: {
         title: "Account",
         description: "Manage your wallet account",
         subcategories: {},
       },
-      [SettingsSubCategory.Billing]: {
+      [WalletSettingsSubCategory.Billing]: {
         title: "Billing",
         description: "Manage your billing information",
         subcategories: {
@@ -201,7 +229,7 @@ export const TITLES: Record<Category, CategoryObject> = {
           },
         },
       },
-      [SettingsSubCategory.Deployment]: {
+      [WalletSettingsSubCategory.Deployment]: {
         title: "Deployment",
         description: "Manage your wallet deployments.",
         subcategories: {
@@ -213,10 +241,17 @@ export const TITLES: Record<Category, CategoryObject> = {
           },
         },
       },
-      [SettingsSubCategory.Notifications]: {
+      [WalletSettingsSubCategory.Notifications]: {
         title: "Notifications",
         description: "Manage your wallet notifications.",
-        subcategories: {},
+        subcategories: {
+          ["Notification Settings"]: {
+            title: "Notification Settings",
+            description: "Manage your wallet notification settings.",
+            note: "Manage your wallet notification settings.",
+            subcategories: {},
+          },
+        },
       },
     },
   },

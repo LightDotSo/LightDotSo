@@ -22,6 +22,7 @@ import {
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { SidebarNav } from "@/components/nav/sidebar-nav";
+import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Const
@@ -47,8 +48,8 @@ const sidebarNavItems = [
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: "Forms",
-  description: "Advanced form example using react-hook-form and Zod.",
+  title: TITLES.Settings.title,
+  description: TITLES.Settings.description,
 };
 
 // -----------------------------------------------------------------------------
@@ -66,8 +67,8 @@ interface SettingsLayoutProps {
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
     <BannerSection
-      title="Settings"
-      description="Manage your account settings and set preferences."
+      title={TITLES.Settings.title}
+      description={TITLES.Settings.description}
       size="sm"
     >
       <HStackFull>

@@ -116,7 +116,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
     <SettingsCard
       title={chain.name}
       subtitle={
-        TITLES.Settings.subcategories["Deployment"].subcategories["Chain"]
+        TITLES.WalletSettings.subcategories["Deployment"].subcategories["Chain"]
           .description
       }
       footerContent={<SettingsDeploymentCardSubmitButton />}

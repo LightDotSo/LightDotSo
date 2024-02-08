@@ -22,8 +22,8 @@ import { TITLES } from "@/const";
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: TITLES.Settings.subcategories.Notifications.title,
-  description: TITLES.Settings.subcategories.Notifications.description,
+  title: TITLES.WalletSettings.subcategories.Notifications.title,
+  description: TITLES.WalletSettings.subcategories.Notifications.description,
 };
 
 // -----------------------------------------------------------------------------

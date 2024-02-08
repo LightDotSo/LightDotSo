@@ -210,12 +210,14 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   return (
     <SettingsCard
       title={
-        TITLES.Settings.subcategories["Wallet Settings"].subcategories["Name"]
-          .title
+        TITLES.WalletSettings.subcategories["Wallet Settings"].subcategories[
+          "Name"
+        ].title
       }
       subtitle={
-        TITLES.Settings.subcategories["Wallet Settings"].subcategories["Name"]
-          .description
+        TITLES.WalletSettings.subcategories["Wallet Settings"].subcategories[
+          "Name"
+        ].description
       }
       footerContent={
         <>
@@ -249,7 +251,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
               <FormItem>
                 <FormLabel>
                   {
-                    TITLES.Settings.subcategories["Wallet Settings"]
+                    TITLES.WalletSettings.subcategories["Wallet Settings"]
                       .subcategories["Name"].title
                   }
                 </FormLabel>
@@ -258,7 +260,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
                 </FormControl>
                 <FormDescription>
                   {
-                    TITLES.Settings.subcategories["Wallet Settings"]
+                    TITLES.WalletSettings.subcategories["Wallet Settings"]
                       .subcategories["Name"].note
                   }
                 </FormDescription>

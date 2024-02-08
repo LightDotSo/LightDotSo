@@ -64,20 +64,20 @@ export const SettingsNotificationsSettingsCard: FC<
   return (
     <SettingsCard
       title={
-        TITLES.Settings.subcategories["Notifications"].subcategories["Balance"]
-          .title
+        TITLES.WalletSettings.subcategories["Notifications"].subcategories[
+          "Notification Settings"
+        ].title
       }
       subtitle={
-        TITLES.Settings.subcategories["Notifications"].subcategories["Balance"]
-          .description
+        TITLES.WalletSettings.subcategories["Notifications"].subcategories[
+          "Notification Settings"
+        ].description
       }
       footerContent={<SettingsNotificationsCardSubmitButton />}
     >
       <div className="flex text-lg">
         <span>
-          $
-          {walletNotificationSettings &&
-            walletNotificationSettings.settings.length}
+          ${walletNotificationSettings && walletNotificationSettings.id}
         </span>
       </div>
     </SettingsCard>
