@@ -216,7 +216,14 @@ export const TITLES: Record<Category, CategoryObject> = {
       [SettingsSubCategory.Notifications]: {
         title: "Notifications",
         description: "Manage your wallet notifications.",
-        subcategories: {},
+        subcategories: {
+          ["Notification Settings"]: {
+            title: "Notification Settings",
+            description: "Manage your wallet notification settings.",
+            note: "Manage your wallet notification settings.",
+            subcategories: {},
+          },
+        },
       },
     },
   },
