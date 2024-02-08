@@ -13,68 +13,59 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import { useQueryWalletBilling } from "@lightdotso/query";
-import { Button } from "@lightdotso/ui";
-import type { FC } from "react";
+import { getWalletNotificationSettings } from "@lightdotso/services";
+import { Result } from "neverthrow";
 import type { Address } from "viem";
-import { SettingsCard } from "@/components/settings/settings-card";
-import { TITLES } from "@/const";
+import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
+import { validateAddress } from "@/handlers/validators/address";
 
 // -----------------------------------------------------------------------------
-// Props
+// Handler
 // -----------------------------------------------------------------------------
 
-type SettingsBillingBalanceCardProps = {
-  address: Address;
-};
-
-// -----------------------------------------------------------------------------
-// Component
-// -----------------------------------------------------------------------------
-
-export const SettingsBillingBalanceCard: FC<
-  SettingsBillingBalanceCardProps
-> = ({ address }) => {
+export const handler = async (params: { address: string }) => {
   // ---------------------------------------------------------------------------
-  // Query
+  // Validators
   // ---------------------------------------------------------------------------
 
-  const { walletBilling } = useQueryWalletBilling({
-    address,
+  validateAddress(params.address);
+
+  // ---------------------------------------------------------------------------
+  // Fetch
+  // ---------------------------------------------------------------------------
+
+  const { wallet, config, walletSettings } = await addressHandler(params);
+
+  const walletNotificationsPromise = getWalletNotificationSettings({
+    address: params.address as Address,
   });
 
-  // ---------------------------------------------------------------------------
-  // Submit Button
-  // ---------------------------------------------------------------------------
-
-  const SettingsBillingCardSubmitButton: FC = () => {
-    return (
-      <Button type="submit" form="walletBillingForm" disabled={true}>
-        Billing
-      </Button>
-    );
-  };
+  const [walletNotifications] = await Promise.all([walletNotificationsPromise]);
 
   // ---------------------------------------------------------------------------
-  // Render
+  // Parse
   // ---------------------------------------------------------------------------
 
-  return (
-    <SettingsCard
-      title={
-        TITLES.Settings.subcategories["Billing"].subcategories["Balance"].title
-      }
-      subtitle={
-        TITLES.Settings.subcategories["Billing"].subcategories["Balance"]
-          .description
-      }
-      footerContent={<SettingsBillingCardSubmitButton />}
-    >
-      <div className="flex text-lg">
-        <span>${walletBilling && walletBilling.billing?.balance_usd}</span>
-      </div>
-    </SettingsCard>
+  const res = Result.combineWithAllErrors([walletNotifications]);
+
+  return res.match(
+    ([walletNotifications]) => {
+      return {
+        wallet: wallet,
+        config: config,
+        walletSettings: walletSettings,
+        walletNotifications: walletNotifications,
+      };
+    },
+    () => {
+      return {
+        wallet: wallet,
+        config: config,
+        walletSettings: walletSettings,
+        walletNotifications: {
+          id: "",
+        },
+      };
+    },
   );
 };

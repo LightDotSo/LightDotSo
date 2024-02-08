@@ -58,6 +58,10 @@ export {
   getWalletFeatures,
 } from "./getWalletFeatures";
 export {
+  preloadGetWalletNotificationSettings,
+  getWalletNotificationSettings,
+} from "./getWalletNotificationSettings";
+export {
   preloadGetWalletSettings,
   getWalletSettings,
 } from "./getWalletSettings";

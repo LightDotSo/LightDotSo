@@ -45,7 +45,7 @@ export const useQueryWalletNotificationSettings = (
         .queryKey,
     );
 
-  const { data: walletSettings, failureCount } =
+  const { data: walletNotificationSettings, failureCount } =
     useQuery<WalletNotificationSettingsData | null>({
       queryKey: queryKeys.wallet.notificationSettings({
         address: params.address,
@@ -81,6 +81,6 @@ export const useQueryWalletNotificationSettings = (
     });
 
   return {
-    walletSettings,
+    walletNotificationSettings,
   };
 };

@@ -38,13 +38,16 @@ export type UserOperationData = {
     created_at: string;
   }[];
   status: string;
-  transaction?: {
-    hash: string;
-  } | null;
+  transaction?:
+    | {
+        hash: string;
+      }
+    | null
+    | undefined;
   verification_gas_limit: number;
   created_at: string;
   updated_at: string;
-  interpretation?: InterpretationData | null;
+  interpretation?: InterpretationData | null | undefined;
 };
 
 export type UserOperationCountData = {

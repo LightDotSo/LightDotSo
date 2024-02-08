@@ -13,13 +13,29 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { BillingData } from "./billing";
+import { getWalletNotificationSettings as getClientWalletSettings } from "@lightdotso/client";
+import type { WalletSettingsParams } from "@lightdotso/params";
+import "server-only";
 
 // -----------------------------------------------------------------------------
-// Data
+// Pre
 // -----------------------------------------------------------------------------
 
-export type WalletBillingData = {
-  id: string;
-  billing?: BillingData | null | undefined;
+export const preloadGetWalletNotificationSettings = (
+  params: WalletSettingsParams,
+) => {
+  void getWalletNotificationSettings(params);
+};
+
+// -----------------------------------------------------------------------------
+// Service
+// -----------------------------------------------------------------------------
+
+export const getWalletNotificationSettings = async (
+  params: WalletSettingsParams,
+) => {
+  return getClientWalletSettings(
+    { params: { query: { address: params.address } } },
+    "admin",
+  );
 };

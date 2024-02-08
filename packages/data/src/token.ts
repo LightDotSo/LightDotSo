@@ -26,10 +26,10 @@ export type TokenData = {
   balance_usd: number;
   chain_id: number;
   decimals: number;
-  name?: string | null;
+  name?: string | null | undefined;
   symbol: string;
-  token_type?: string | null;
-  group?: TokenGroupData | null;
+  token_type?: string | null | undefined;
+  group?: TokenGroupData | null | undefined;
 };
 
 export type TokenCountData = {

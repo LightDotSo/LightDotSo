@@ -13,13 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { BillingData } from "./billing";
-
 // -----------------------------------------------------------------------------
 // Data
 // -----------------------------------------------------------------------------
 
-export type WalletBillingData = {
+export type BillingData = {
+  balance_usd: number;
   id: string;
-  billing?: BillingData | null | undefined;
+  status: string;
 };
