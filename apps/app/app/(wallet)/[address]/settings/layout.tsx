@@ -41,6 +41,10 @@ const sidebarNavItems = [
     title: TITLES.Settings.subcategories["Deployment"].title,
     href: "/settings/deployment",
   },
+  {
+    title: TITLES.Settings.subcategories["Notifications"].title,
+    href: "/settings/notifications",
+  },
 ];
 
 // -----------------------------------------------------------------------------

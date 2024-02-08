@@ -16,6 +16,7 @@
 import { getWalletNotificationSettings } from "@lightdotso/services";
 import { Result } from "neverthrow";
 import type { Address } from "viem";
+import { verifyUserId } from "@/auth";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
 
@@ -24,6 +25,12 @@ import { validateAddress } from "@/handlers/validators/address";
 // -----------------------------------------------------------------------------
 
 export const handler = async (params: { address: string }) => {
+  // ---------------------------------------------------------------------------
+  // Auth
+  // ---------------------------------------------------------------------------
+
+  const userId = await verifyUserId();
+
   // ---------------------------------------------------------------------------
   // Validators
   // ---------------------------------------------------------------------------
@@ -38,6 +45,7 @@ export const handler = async (params: { address: string }) => {
 
   const walletNotificationsPromise = getWalletNotificationSettings({
     address: params.address as Address,
+    user_id: userId,
   });
 
   const [walletNotifications] = await Promise.all([walletNotificationsPromise]);
