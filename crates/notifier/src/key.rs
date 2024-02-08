@@ -30,7 +30,7 @@ pub enum Platform {
 // This is a list of all user operations
 #[derive(Clone, Debug, EnumString, EnumIter, IntoStaticStr, Display)]
 pub enum UserOnlyOperation {
-    #[strum(serialize = "invite-code-accepted")]
+    #[strum(serialize = "INVITE_CODE_ACCEPTED")]
     InviteCodeAccepted,
 }
 
@@ -56,11 +56,11 @@ pub fn match_user_only_notification_with_activity(
 // This is a list of all wallet operations
 #[derive(Clone, Debug, EnumString, EnumIter, IntoStaticStr, Display)]
 pub enum WalletOnlyOperation {
-    #[strum(serialize = "user-operation-created")]
+    #[strum(serialize = "USER_OPERATION_CREATED")]
     UserOperationCreated,
-    #[strum(serialize = "user-operation-executed")]
+    #[strum(serialize = "USER_OPERATION_EXECUTED")]
     UserOperationExecuted,
-    #[strum(serialize = "transaction-with-user-operation-executed")]
+    #[strum(serialize = "TRANSACTION_WITH_USER_OPERATION_EXECUTED")]
     TransactionWithUserOperationExecuted,
 }
 
