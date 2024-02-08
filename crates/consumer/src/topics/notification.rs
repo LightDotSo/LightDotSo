@@ -19,7 +19,7 @@ use lightdotso_notifier::{
     notifier::Notifier,
     types::{match_notification_with_activity, Operation},
 };
-use lightdotso_prisma::{activity, wallet_notification_settings, PrismaClient};
+use lightdotso_prisma::{activity, notification, wallet_notification_settings, PrismaClient};
 use lightdotso_tracing::tracing::info;
 use rdkafka::{message::BorrowedMessage, Message};
 use std::sync::Arc;
@@ -51,8 +51,11 @@ pub async fn notification_consumer(
         info!("payload: {:?}", payload);
 
         // Get the activity from the database
-        let activity =
-            db.activity().find_unique(activity::id::equals(payload.activity_id)).exec().await?;
+        let activity = db
+            .activity()
+            .find_unique(activity::id::equals(payload.clone().activity_id))
+            .exec()
+            .await?;
 
         // If the activity exists
         if let Some(entity) = activity {
@@ -71,8 +74,8 @@ pub async fn notification_consumer(
                         info!("key_id: {:?}", key_id);
 
                         // If the user_id and wallet_address are present
-                        if let Some(user_id) = payload.user_id {
-                            if let Some(wallet_address) = payload.wallet_address {
+                        if let Some(user_id) = payload.clone().user_id {
+                            if let Some(wallet_address) = payload.clone().wallet_address {
                                 // Get the wallet setting from the database
                                 let wallet_notification_settings = db
                                     .clone()
@@ -99,11 +102,23 @@ pub async fn notification_consumer(
                                     if let Some(notification_settings) =
                                         wallet_notification_settings.notification_settings
                                     {
-                                        if notification_settings
-                                            .into_iter()
-                                            .any(|data| data.key.contains(&key_id))
-                                        {
-                                            // contains data with specified key_id
+                                        if notification_settings.into_iter().any(|data| {
+                                            data.key.contains(&key_id) && data.is_enabled
+                                        }) {
+                                            // Create the notification
+                                            db.clone()
+                                                .notification()
+                                                .create(vec![
+                                                    notification::activity_id::set(Some(
+                                                        payload.clone().activity_id.clone(),
+                                                    )),
+                                                    notification::user_id::set(Some(user_id)),
+                                                    notification::wallet_address::set(Some(
+                                                        wallet_address.clone(),
+                                                    )),
+                                                ])
+                                                .exec()
+                                                .await?;
                                         }
                                     }
                                 }

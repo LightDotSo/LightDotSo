@@ -136,7 +136,13 @@ impl Consumer {
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         topic if topic == ACTIVITY.to_string() => {
-                            let _ = activity_consumer(self.producer.clone(), &m, db.clone()).await;
+                            let res =
+                                activity_consumer(self.producer.clone(), &m, db.clone()).await;
+                            // If the consumer failed
+                            if let Err(e) = res {
+                                // Log the error
+                                warn!("Activity consumer failed with error: {:?}", e);
+                            }
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         topic if topic == COVALENT.to_string() => {
@@ -168,7 +174,12 @@ impl Consumer {
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         topic if topic == NOTIFICATION.to_string() => {
-                            let _ = notification_consumer(&m, &notifier, db.clone()).await;
+                            let res = notification_consumer(&m, &notifier, db.clone()).await;
+                            // If the consumer failed
+                            if let Err(e) = res {
+                                // Log the error
+                                warn!("Notification consumer failed with error: {:?}", e);
+                            }
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         topic if topic == ERROR_TRANSACTION.to_string() => {
@@ -176,7 +187,12 @@ impl Consumer {
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         topic if topic == USER_OPERATION.to_string() => {
-                            let _ = user_operation_consumer(&m, &poller).await;
+                            let res = user_operation_consumer(&m, &poller).await;
+                            // If the consumer failed
+                            if let Err(e) = res {
+                                // Log the error
+                                warn!("User operation consumer failed with error: {:?}", e);
+                            }
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         _ => {

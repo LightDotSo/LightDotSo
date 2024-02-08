@@ -21,7 +21,7 @@ use serde_json::{json, Value};
 // Types
 // -----------------------------------------------------------------------------
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct NotificationMessage {
     /// The activity id
     pub activity_id: String,
