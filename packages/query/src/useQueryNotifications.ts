@@ -64,7 +64,7 @@ export const useQueryNotifications = (params: NotificationListParams) => {
         {
           params: {
             query: {
-              owner: params.address,
+              address: params.address,
               limit: params.limit,
               offset: params.offset,
             },

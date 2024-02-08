@@ -34,7 +34,7 @@ export const getNotifications = async (params: WalletListParams) => {
     {
       params: {
         query: {
-          owner: params.address,
+          address: params.address,
           limit: params.limit,
           offset: params.offset,
           user_id: params.user_id,

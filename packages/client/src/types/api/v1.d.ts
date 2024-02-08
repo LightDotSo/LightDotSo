@@ -2762,8 +2762,8 @@ export interface operations {
         limit?: number | null;
         /** @description The user id to filter by. */
         user_id?: string | null;
-        /** @description The wallet address to filter by. */
-        wallet_address?: string | null;
+        /** @description The address to filter by. */
+        address?: string | null;
       };
     };
     responses: {
@@ -2794,8 +2794,8 @@ export interface operations {
         limit?: number | null;
         /** @description The user id to filter by. */
         user_id?: string | null;
-        /** @description The wallet address to filter by. */
-        wallet_address?: string | null;
+        /** @description The address to filter by. */
+        address?: string | null;
       };
     };
     responses: {

@@ -63,7 +63,7 @@ export const useQueryNotificationsCount = (
         {
           params: {
             query: {
-              owner: params.address,
+              address: params.address,
             },
           },
         },
