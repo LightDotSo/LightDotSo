@@ -180,12 +180,12 @@ pub(crate) async fn v1_user_notification_settings_update_handler(
                         user::id::equals(auth_user_id.clone()),
                         vec![
                             notification_settings::is_enabled::set(setting.value),
-                            notification_settings::is_user_only::set(true),
+                            notification_settings::is_user_only::set(Some(true)),
                         ],
                     ),
                     vec![
                         notification_settings::is_enabled::set(setting.value),
-                        notification_settings::is_user_only::set(true),
+                        notification_settings::is_user_only::set(Some(true)),
                     ],
                 )
                 .exec()

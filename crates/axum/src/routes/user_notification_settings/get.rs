@@ -150,7 +150,7 @@ pub(crate) async fn v1_user_notification_settings_get_handler(
                                     notification_settings::user_notification_settings_id::set(
                                         Some(user_notification_settings.clone().id),
                                     ),
-                                    notification_settings::is_user_only::set(true),
+                                    notification_settings::is_user_only::set(Some(true)),
                                 ],
                             )
                         })
@@ -224,7 +224,7 @@ pub(crate) async fn v1_user_notification_settings_get_handler(
                             notification_settings::user_notification_settings_id::set(Some(
                                 user_notification_settings.clone().id,
                             )),
-                            notification_settings::is_user_only::set(true),
+                            notification_settings::is_user_only::set(Some(true)),
                         ],
                     )
                 })
