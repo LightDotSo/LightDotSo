@@ -146,7 +146,7 @@ export const SettingsAppearanceCard: FC = () => {
                 <FormMessage />
                 <RadioGroup
                   defaultValue={field.value}
-                  className="grid md:grid-cols-3 gap-8 pt-2"
+                  className="grid gap-8 pt-2 md:grid-cols-3"
                   onValueChange={setTheme}
                 >
                   <FormItem>
@@ -183,7 +183,7 @@ export const SettingsAppearanceCard: FC = () => {
                           License: AGPL-3.0
                          */}
                         <div
-                          className="absolute bottom-0 left-0 right-0 top-0"
+                          className="absolute inset-0"
                           style={{
                             clipPath: "polygon(100% 0, 0 0, 100% 100%)",
                           }}
