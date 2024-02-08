@@ -2,4 +2,4 @@
 source: crates/notifier/src/types.rs
 expression: "format!(\"{:?}\", * USER_NOTIFICATION_KEYS)"
 ---
-["INVITE_CODE_ACCEPTED"]
+["WEB-INVITE_CODE_ACCEPTED"]
