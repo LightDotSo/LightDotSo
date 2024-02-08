@@ -109,11 +109,8 @@ export const SettingsNotificationCard: FC = () => {
 
   return (
     <SettingsCard
-      title={"Appearance"}
-      subtitle={
-        TITLES.WalletSettings.subcategories["Deployment"].subcategories["Chain"]
-          .description
-      }
+      title={TITLES.Settings.subcategories["Notifications"].title}
+      subtitle={TITLES.Settings.subcategories["Notifications"].description}
       footerContent={<SettingsNotificationCardSubmitButton />}
     >
       <Form {...form}>

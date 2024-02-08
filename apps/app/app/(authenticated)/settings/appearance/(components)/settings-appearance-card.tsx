@@ -126,11 +126,8 @@ export const SettingsAppearanceCard: FC = () => {
 
   return (
     <SettingsCard
-      title={"Appearance"}
-      subtitle={
-        TITLES.WalletSettings.subcategories["Deployment"].subcategories["Chain"]
-          .description
-      }
+      title={TITLES.Settings.subcategories["Appearance"].title}
+      subtitle={TITLES.Settings.subcategories["Appearance"].description}
     >
       <Form {...form}>
         <form className="space-y-8">
