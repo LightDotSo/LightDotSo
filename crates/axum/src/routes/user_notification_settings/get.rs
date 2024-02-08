@@ -122,6 +122,8 @@ pub(crate) async fn v1_user_notification_settings_get_handler(
                     }
                 }
             }
+        } else {
+            missing_notification_settings = USER_NOTIFICATION_KEYS.to_vec();
         }
 
         // If there are missing notification settings, add them to the wallet notification settings.
