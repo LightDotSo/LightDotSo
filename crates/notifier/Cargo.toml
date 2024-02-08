@@ -12,7 +12,11 @@
   backon = { workspace = true }
   clap = { workspace = true, features = ["derive"] }
   eyre = { workspace = true }
+  lazy_static = { workspace = true }
   lightdotso-discord = { workspace = true }
   lightdotso-prisma = { workspace = true }
   lightdotso-tracing = { workspace = true }
+  serde = { workspace = true }
   serde_json = { workspace = true }
+  strum = { workspace = true }
+  strum_macros = { workspace = true }

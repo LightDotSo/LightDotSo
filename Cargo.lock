@@ -6368,10 +6368,14 @@ dependencies = [
  "backon",
  "clap 4.4.0",
  "eyre",
+ "lazy_static",
  "lightdotso-discord",
  "lightdotso-prisma",
  "lightdotso-tracing",
+ "serde",
  "serde_json",
+ "strum 0.25.0",
+ "strum_macros 0.25.2",
 ]
 
 [[package]]
