@@ -165,7 +165,7 @@ lazy_static! {
                 let is_default_enabled = match operation {
                     UserOnlyOperation::InviteCodeAccepted => true,
                 };
-                map.insert(operation.to_string(), is_default_enabled);
+                map.insert(notif.to_string(), is_default_enabled);
             }
         }
 
@@ -185,7 +185,7 @@ lazy_static! {
                     WalletOnlyOperation::UserOperationExecuted => true,
                     WalletOnlyOperation::TransactionWithUserOperationExecuted => true,
                 };
-                map.insert(operation.to_string(), is_default_enabled);
+                map.insert(notif.to_string(), is_default_enabled);
             }
         }
 
@@ -305,6 +305,22 @@ mod tests {
         insta::assert_snapshot!(
             "NOTIFICATION_DEFAULT_ENABLED",
             format!("{:?}", *NOTIFICATION_DEFAULT_ENABLED)
+        );
+    }
+
+    #[test]
+    fn test_user_notification_default_enabled() {
+        insta::assert_snapshot!(
+            "USER_NOTIFICATION_DEFAULT_ENABLED",
+            format!("{:?}", *USER_NOTIFICATION_DEFAULT_ENABLED)
+        );
+    }
+
+    #[test]
+    fn test_wallet_notification_default_enabled() {
+        insta::assert_snapshot!(
+            "WALLET_NOTIFICATION_DEFAULT_ENABLED",
+            format!("{:?}", *WALLET_NOTIFICATION_DEFAULT_ENABLED)
         );
     }
 }
