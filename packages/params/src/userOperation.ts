@@ -55,7 +55,7 @@ export type UserOperationListCountParams = Omit<
 // -----------------------------------------------------------------------------
 
 export type UserOperationCreateBodyParams = {
-  ownerId: Address;
+  ownerId: string;
   signedData: Hex;
   userOperation: Partial<UserOperation>;
 };

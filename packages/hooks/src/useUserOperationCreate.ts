@@ -15,12 +15,11 @@
 
 "use client";
 
-import { createUserOperation } from "@lightdotso/client";
 import type { ConfigurationData } from "@lightdotso/data";
+import { useMutationUserOperationCreate } from "@lightdotso/query";
 import type { UserOperation } from "@lightdotso/schemas";
 import { subdigestOf } from "@lightdotso/solutions";
 import { useAuth, useModalSwiper } from "@lightdotso/stores";
-import { toast } from "@lightdotso/ui";
 import {
   useSignMessage,
   lightWalletAbi,
@@ -206,6 +205,14 @@ export const useUserOperationCreate = ({
   }, [subdigest, signMessage]);
 
   // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { userOperationCreate } = useMutationUserOperationCreate({
+    address: address,
+  });
+
+  // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
@@ -224,80 +231,21 @@ export const useUserOperationCreate = ({
   }, [data]);
 
   useEffect(() => {
-    const fetchUserOp = async () => {
-      if (
-        !signedData ||
-        !owner ||
-        !userOperation ||
-        !userOperation.chainId ||
-        !userOperation.hash ||
-        userOperation.nonce === undefined ||
-        userOperation.nonce === null ||
-        !userOperation.initCode ||
-        !userOperation.sender ||
-        !userOperation.callData ||
-        !userOperation.callGasLimit ||
-        !userOperation.verificationGasLimit ||
-        !userOperation.preVerificationGas ||
-        !userOperation.maxFeePerGas ||
-        !userOperation.maxPriorityFeePerGas ||
-        !userOperation.paymasterAndData
-      ) {
+    const createUserOp = async () => {
+      if (!owner || !signedData || !userOperation) {
         return;
       }
 
-      const loadingToast = toast.loading("Submitting the transaction...");
-
-      const res = await createUserOperation({
-        params: {
-          query: {
-            chain_id: Number(userOperation.chainId),
-          },
-        },
-        body: {
-          signature: {
-            owner_id: owner.id,
-            signature: toHex(new Uint8Array([...toBytes(signedData), 2])),
-            signature_type: 1,
-          },
-          user_operation: {
-            chain_id: Number(userOperation.chainId),
-            hash: userOperation.hash,
-            nonce: Number(userOperation.nonce),
-            init_code: userOperation.initCode,
-            sender: userOperation.sender,
-            call_data: userOperation.callData,
-            call_gas_limit: Number(userOperation.callGasLimit),
-            verification_gas_limit: Number(userOperation.verificationGasLimit),
-            pre_verification_gas: Number(userOperation.preVerificationGas),
-            max_fee_per_gas: Number(userOperation.maxFeePerGas),
-            max_priority_fee_per_gas: Number(
-              userOperation.maxPriorityFeePerGas,
-            ),
-            paymaster_and_data: userOperation.paymasterAndData,
-          },
-        },
+      userOperationCreate({
+        ownerId: owner.id,
+        signedData: signedData as Hex,
+        userOperation: userOperation,
       });
-
-      toast.dismiss(loadingToast);
-
-      res.match(
-        _ => {
-          toast.success("You submitted the transaction!");
-        },
-        err => {
-          if (err instanceof Error) {
-            toast.error(err.message);
-          } else {
-            toast.error("Failed to submit the transaction.");
-          }
-        },
-      );
 
       setSignedData(undefined);
     };
 
-    fetchUserOp();
+    createUserOp();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signedData, owner, userOperation, configuration?.threshold, address]);
 

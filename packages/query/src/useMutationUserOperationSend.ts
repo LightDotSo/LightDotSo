@@ -110,9 +110,6 @@ export const useMutationUserOperationSend = (params: UserOperationParams) => {
       );
     },
     onMutate: async (data: UserOperationSendBodyParams) => {
-      await queryClient.cancelQueries({
-        queryKey: queryKeys.wallet.get({ address: params.address }).queryKey,
-      });
       const previousData: UserOperationData[] | undefined =
         queryClient.getQueryData(
           queryKeys.user_operation.list({
