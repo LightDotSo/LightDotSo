@@ -33,7 +33,7 @@ use lightdotso_db::models::activity::CustomParams;
 use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
-use lightdotso_notifier::types::USER_NOTIFICATION_DEFAULT_ENABLED;
+use lightdotso_notifier::types::WALLET_NOTIFICATION_DEFAULT_ENABLED;
 use lightdotso_prisma::{
     notification_settings, user, wallet, wallet_notification_settings, ActivityEntity,
     ActivityOperation,
@@ -149,7 +149,7 @@ pub(crate) async fn v1_wallet_notification_settings_update_handler(
     // If it is not, return an error.
     if let Some(settings) = optional_params.clone().settings {
         for setting in settings.iter() {
-            if !USER_NOTIFICATION_DEFAULT_ENABLED.contains_key(&setting.key) {
+            if !WALLET_NOTIFICATION_DEFAULT_ENABLED.contains_key(&setting.key) {
                 return Err(AppError::RouteError(RouteError::WalletNotificationSettingsError(
                     WalletNotificationSettingsError::BadRequest(
                         "Invalid Configuration".to_string(),
@@ -180,7 +180,7 @@ pub(crate) async fn v1_wallet_notification_settings_update_handler(
                         setting.key.clone(),
                         setting.value,
                         user::id::equals(auth_user_id.clone()),
-                        vec![],
+                        vec![notification_settings::is_enabled::set(setting.value)],
                     ),
                     vec![notification_settings::is_enabled::set(setting.value)],
                 )

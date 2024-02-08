@@ -141,9 +141,12 @@ pub(crate) async fn v1_user_notification_settings_get_handler(
                                 key.clone(),
                                 *USER_NOTIFICATION_DEFAULT_ENABLED.get(key).unwrap_or(&false),
                                 auth_user_id.clone(),
-                                vec![notification_settings::user_notification_settings_id::set(
-                                    Some(user_notification_settings.clone().id),
-                                )],
+                                vec![
+                                    notification_settings::user_notification_settings_id::set(
+                                        Some(user_notification_settings.clone().id),
+                                    ),
+                                    notification_settings::is_user_only::set(true),
+                                ],
                             )
                         })
                         .collect(),
@@ -212,9 +215,12 @@ pub(crate) async fn v1_user_notification_settings_get_handler(
                         key.clone(),
                         *value,
                         auth_user_id.clone(),
-                        vec![notification_settings::user_notification_settings_id::set(Some(
-                            user_notification_settings.clone().id,
-                        ))],
+                        vec![
+                            notification_settings::user_notification_settings_id::set(Some(
+                                user_notification_settings.clone().id,
+                            )),
+                            notification_settings::is_user_only::set(true),
+                        ],
                     )
                 })
                 .collect(),

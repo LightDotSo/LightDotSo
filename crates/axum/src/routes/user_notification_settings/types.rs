@@ -13,7 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::routes::notification_settings::types::NotificationSettings;
+use crate::routes::notification_settings::types::{
+    NotificationSettings, NotificationSettingsUpdate,
+};
 use lightdotso_prisma::user_notification_settings;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
@@ -37,7 +39,7 @@ pub(crate) struct UserNotificationSettings {
 #[serde(rename_all = "snake_case")]
 pub(crate) struct UserNotificationSettingsOptional {
     /// The update query of user notification settings of whether the testnet is enabled.
-    pub is_enabled_testnet: Option<bool>,
+    pub settings: Option<Vec<NotificationSettingsUpdate>>,
 }
 
 // -----------------------------------------------------------------------------

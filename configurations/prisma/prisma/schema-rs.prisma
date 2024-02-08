@@ -1973,6 +1973,7 @@ model NotificationSettings {
   // ---------------------------------------------------------------------------
 
   // Unique
+  @@unique([key, isUserOnly, userId])
   @@unique([key, isUserOnly, userId, walletAddress])
   // Relations
   @@index([userId])

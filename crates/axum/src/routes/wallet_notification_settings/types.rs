@@ -13,7 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::routes::notification_settings::types::NotificationSettings;
+use crate::routes::notification_settings::types::{
+    NotificationSettings, NotificationSettingsUpdate,
+};
 use lightdotso_prisma::wallet_notification_settings;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
@@ -38,16 +40,6 @@ pub(crate) struct WalletNotificationSettings {
 pub(crate) struct WalletNotificationSettingsOptional {
     /// The update query of wallet notification settings of whether the testnet is enabled.
     pub settings: Option<Vec<NotificationSettingsUpdate>>,
-}
-
-/// WalletNotificationSettingsUpdate root type.
-#[derive(Serialize, Deserialize, ToSchema, Clone)]
-#[serde(rename_all = "snake_case")]
-pub(crate) struct NotificationSettingsUpdate {
-    /// The key of the notification settings.
-    pub key: String,
-    /// The boolean value of the notification settings.
-    pub value: bool,
 }
 
 // -----------------------------------------------------------------------------
