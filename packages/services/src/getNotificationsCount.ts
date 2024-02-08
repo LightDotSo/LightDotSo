@@ -38,7 +38,7 @@ export const getNotificationsCount = async (
     {
       params: {
         query: {
-          owner: params.address,
+          address: params.address,
           user_id: params.user_id,
         },
       },

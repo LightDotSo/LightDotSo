@@ -47,8 +47,8 @@ pub(crate) struct ListQuery {
     pub limit: Option<i64>,
     /// The user id to filter by.
     pub user_id: Option<String>,
-    /// The wallet address to filter by.
-    pub wallet_address: Option<String>,
+    /// The address to filter by.
+    pub address: Option<String>,
 }
 
 // -----------------------------------------------------------------------------
@@ -210,7 +210,7 @@ async fn authenticate_user_id(
     auth_token: Option<String>,
 ) -> AppResult<String> {
     // Parse the address.
-    let query_address: Option<H160> = query.wallet_address.as_ref().and_then(|s| s.parse().ok());
+    let query_address: Option<H160> = query.address.as_ref().and_then(|s| s.parse().ok());
 
     // If the user id is provided, authenticate the user.
     let auth_user_id = if query.user_id.is_some() {
@@ -226,7 +226,7 @@ async fn authenticate_user_id(
 
 /// Constructs a query for notifications.
 fn construct_activity_list_query_params(query: &ListQuery, user_id: String) -> Vec<WhereParam> {
-    let mut query_exp = match &query.wallet_address {
+    let mut query_exp = match &query.address {
         Some(addr) => {
             vec![notification::wallet_address::equals(Some(addr.clone()))]
         }

@@ -220,7 +220,10 @@ export const Transaction: FC<TransactionProps> = ({
       maxFeePerGas:
         feesPerGas?.maxFeePerGas ?? targetUserOperation.maxFeePerGas,
       maxPriorityFeePerGas:
-        maxPriorityFeePerGas ?? targetUserOperation.maxPriorityFeePerGas,
+        // Fallback to 1 if the maxPriorityFeePerGas is 0 from the RPC
+        maxPriorityFeePerGas === BigInt(0)
+          ? BigInt(1)
+          : maxPriorityFeePerGas ?? targetUserOperation.maxPriorityFeePerGas,
     });
 
   // ---------------------------------------------------------------------------
