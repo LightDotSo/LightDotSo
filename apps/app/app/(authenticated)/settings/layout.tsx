@@ -48,8 +48,8 @@ const sidebarNavItems = [
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: TITLES.WalletSettings.title,
-  description: TITLES.WalletSettings.description,
+  title: TITLES.Settings.title,
+  description: TITLES.Settings.description,
 };
 
 // -----------------------------------------------------------------------------
@@ -67,8 +67,8 @@ interface SettingsLayoutProps {
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
     <BannerSection
-      title={TITLES.WalletSettings.title}
-      description={TITLES.WalletSettings.description}
+      title={TITLES.Settings.title}
+      description={TITLES.Settings.description}
       size="sm"
     >
       <HStackFull>
