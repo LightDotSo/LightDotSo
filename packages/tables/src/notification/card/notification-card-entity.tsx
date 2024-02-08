@@ -13,17 +13,27 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { ActivityData } from "./activity";
+"use client";
+
+import type { NotificationData } from "@lightdotso/data";
+import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
-// Data
+// Props
 // -----------------------------------------------------------------------------
 
-export type NotificationData = {
-  id: string;
-  activity?: ActivityData | null | undefined;
-};
+type NotificationCardEntityProps = { notification: NotificationData };
 
-export type NotificationCountData = {
-  count: number;
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const NotificationCardEntity: FC<NotificationCardEntityProps> = ({
+  notification,
+}) => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  return <div>{notification?.activity?.entity}</div>;
 };

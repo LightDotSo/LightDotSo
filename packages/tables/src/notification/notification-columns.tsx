@@ -16,11 +16,15 @@
 "use client";
 
 import type { NotificationData } from "@lightdotso/data";
-import { PlaceholderOrb } from "@lightdotso/elements";
 import { DataTableColumnHeader } from "@lightdotso/templates";
-import { Avatar } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { NotificationTableRowActions } from "./actions";
+import {
+  NotificationCardAddress,
+  NotificationCardEntity,
+  NotificationCardOperation,
+  NotificationCardTimestamp,
+} from "./card";
 
 // -----------------------------------------------------------------------------
 // Definitions
@@ -28,33 +32,67 @@ import { NotificationTableRowActions } from "./actions";
 
 export const notificationColumns: ColumnDef<NotificationData>[] = [
   {
-    id: "name",
-    accessorKey: "name",
+    id: "user_address",
+    accessorKey: "user_address",
+    accessorFn: row => {
+      return row.activity?.address;
+    },
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Name" />
+      <DataTableColumnHeader className="w-fit" column={column} title="User" />
     ),
-    cell: ({ row }) => (
-      <div className="flex items-center">{row.getValue("name")}</div>
-    ),
+    cell: ({ row }) => <NotificationCardAddress notification={row.original} />,
     enableSorting: false,
     enableHiding: false,
   },
   {
-    id: "address",
-    accessorKey: "address",
+    id: "entity",
+    accessorKey: "entity",
+    accessorFn: row => {
+      return row.activity?.entity;
+    },
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Address" />
+      <DataTableColumnHeader className="w-3" column={column} title="Entity" />
+    ),
+    cell: ({ row }) => <NotificationCardEntity notification={row.original} />,
+  },
+  {
+    id: "operation",
+    accessorKey: "operation",
+    accessorFn: row => {
+      return row.activity?.operation;
+    },
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        className="w-10"
+        column={column}
+        title="Operation"
+      />
     ),
     cell: ({ row }) => (
-      <div className="flex items-center">
-        <Avatar className="mr-3 size-7">
-          <PlaceholderOrb address={row.getValue("address") ?? "0x"} />
-        </Avatar>
-        {row.getValue("address")}
-      </div>
+      <NotificationCardOperation notification={row.original} />
     ),
-    enableSorting: false,
-    enableHiding: false,
+  },
+  {
+    id: "timestamp",
+    accessorKey: "timestamp",
+    accessorFn: row => {
+      return row.activity?.timestamp;
+    },
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        className="w-10"
+        column={column}
+        title="Timestamp"
+      />
+    ),
+    cell: ({ row }) => (
+      <NotificationCardTimestamp notification={row.original} />
+    ),
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+    enableSorting: true,
+    enableHiding: true,
   },
   {
     id: "actions",

@@ -13,17 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { ActivityData } from "./activity";
-
-// -----------------------------------------------------------------------------
-// Data
-// -----------------------------------------------------------------------------
-
-export type NotificationData = {
-  id: string;
-  activity?: ActivityData | null | undefined;
-};
-
-export type NotificationCountData = {
-  count: number;
-};
+export { NotificationCardAddress } from "./notification-card-address";
+export { NotificationCardEntity } from "./notification-card-entity";
+export { NotificationCardOperation } from "./notification-card-operation";
+export { NotificationCardTimestamp } from "./notification-card-timestamp";
