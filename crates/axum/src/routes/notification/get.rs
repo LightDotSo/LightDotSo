@@ -79,6 +79,7 @@ pub(crate) async fn v1_notification_get_handler(
         .client
         .notification()
         .find_unique(notification::id::equals(query.notification_id))
+        .with(notification::activity::fetch())
         .exec()
         .await?;
 

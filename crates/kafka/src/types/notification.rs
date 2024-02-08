@@ -13,37 +13,39 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::routes::activity::types::Activity;
-use lightdotso_prisma::notification;
+use crate::traits::ToJson;
 use serde::{Deserialize, Serialize};
-use utoipa::ToSchema;
+use serde_json::{json, Value};
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
 
-/// Notification root type.
-#[derive(Serialize, Deserialize, ToSchema, Clone)]
-#[serde(rename_all = "snake_case")]
-pub(crate) struct Notification {
-    /// The id of the notification to read for.
-    id: String,
-    /// The activity of the notification.
-    activity: Option<Activity>,
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct NotificationMessage {
+    /// The activity id
+    pub activity_id: String,
+    /// The key of the notification
+    pub key: String,
+    /// The user id of the notification
+    pub user_id: Option<String>,
+    /// The wallet address of the notification
+    pub wallet_address: Option<String>,
 }
 
 // -----------------------------------------------------------------------------
-// From
+// Traits
 // -----------------------------------------------------------------------------
 
-/// Implement From<notification::Data> for Notification.
-impl From<notification::Data> for Notification {
-    fn from(notification: notification::Data) -> Self {
-        Self {
-            id: notification.id,
-            activity: notification.activity.and_then(|maybe_activity| {
-                maybe_activity.map(|activity| Activity::from(*activity))
-            }),
-        }
+impl ToJson for NotificationMessage {
+    fn to_json(&self) -> String {
+        let msg_value: Value = json!({
+            "activity_id": &self.activity_id,
+            "key": &self.key,
+            "user_id": &self.user_id,
+            "wallet_address": &self.wallet_address,
+        });
+
+        msg_value.to_string()
     }
 }
