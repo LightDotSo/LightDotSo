@@ -122,6 +122,7 @@ pub(crate) async fn v1_notification_list_handler(
         .client
         .notification()
         .find_many(query_params)
+        .with(notification::activity::fetch())
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
         .exec()

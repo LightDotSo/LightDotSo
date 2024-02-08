@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use crate::routes::activity::types::Activity;
 use lightdotso_prisma::notification;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
@@ -27,6 +28,8 @@ use utoipa::ToSchema;
 pub(crate) struct Notification {
     /// The id of the notification to read for.
     id: String,
+    /// The activity of the notification.
+    activity: Option<Activity>,
 }
 
 // -----------------------------------------------------------------------------
@@ -36,6 +39,11 @@ pub(crate) struct Notification {
 /// Implement From<notification::Data> for Notification.
 impl From<notification::Data> for Notification {
     fn from(notification: notification::Data) -> Self {
-        Self { id: notification.id }
+        Self {
+            id: notification.id,
+            activity: notification.activity.and_then(|maybe_activity| {
+                maybe_activity.map(|activity| Activity::from(*activity))
+            }),
+        }
     }
 }
