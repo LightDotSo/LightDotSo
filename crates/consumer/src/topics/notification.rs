@@ -15,8 +15,11 @@
 
 use eyre::Result;
 use lightdotso_kafka::types::notification::NotificationMessage;
-use lightdotso_notifier::{notifier::Notifier, types::match_notification_with_activity};
-use lightdotso_prisma::{activity, PrismaClient};
+use lightdotso_notifier::{
+    notifier::Notifier,
+    types::{match_notification_with_activity, Operation},
+};
+use lightdotso_prisma::{activity, wallet_notification_settings, PrismaClient};
 use lightdotso_tracing::tracing::info;
 use rdkafka::{message::BorrowedMessage, Message};
 use std::sync::Arc;
@@ -45,6 +48,7 @@ pub async fn notification_consumer(
     if let Some(Ok(payload)) = payload_opt {
         // Try to deserialize the payload as json
         let payload: NotificationMessage = serde_json::from_slice(payload.as_bytes())?;
+        info!("payload: {:?}", payload);
 
         // Get the activity from the database
         let activity =
@@ -60,7 +64,53 @@ pub async fn notification_consumer(
             if let Some(res) = res {
                 info!("res: {:?}", res);
 
-                // Send the notification
+                match res {
+                    Operation::UserOnly(_) => {}
+                    Operation::WalletOnly(opt) => {
+                        let key_id = opt.to_string();
+                        info!("key_id: {:?}", key_id);
+
+                        // If the user_id and wallet_address are present
+                        if let Some(user_id) = payload.user_id {
+                            if let Some(wallet_address) = payload.wallet_address {
+                                // Get the wallet setting from the database
+                                let wallet_notification_settings = db
+                                    .clone()
+                                    .wallet_notification_settings()
+                                    .find_unique(
+                                        wallet_notification_settings::user_id_wallet_address(
+                                            user_id.clone(),
+                                            wallet_address.clone(),
+                                        ),
+                                    )
+                                    .with(
+                                        wallet_notification_settings::notification_settings::fetch(
+                                            vec![],
+                                        ),
+                                    )
+                                    .exec()
+                                    .await?;
+
+                                // If the wallet setting exists
+                                if let Some(wallet_notification_settings) =
+                                    wallet_notification_settings
+                                {
+                                    // Match the key_id w/ the keys in the wallet setting
+                                    if let Some(notification_settings) =
+                                        wallet_notification_settings.notification_settings
+                                    {
+                                        if notification_settings
+                                            .into_iter()
+                                            .any(|data| data.key.contains(&key_id))
+                                        {
+                                            // contains data with specified key_id
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             notifier.run().await;
