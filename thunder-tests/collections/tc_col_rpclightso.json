@@ -369,7 +369,7 @@
       "_id": "49a99074-12cd-4814-9a95-3785a0564c14",
       "colId": "be17b027-c42e-4599-813b-7c1a3479774a",
       "containerId": "",
-      "name": "gas_requestGasEstimation Copy",
+      "name": "eth_maxPriorityFeePerGas",
       "url": "https://rpc.light.so/43114",
       "method": "POST",
       "sortNum": 22500,
