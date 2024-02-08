@@ -16,16 +16,13 @@
 use lazy_static::lazy_static;
 use lightdotso_prisma::{ActivityEntity, ActivityOperation};
 use serde_json::Value;
+use std::collections::HashMap;
 use strum::IntoEnumIterator;
 use strum_macros::{Display, EnumIter, EnumString, IntoStaticStr};
 
 #[derive(Clone, Debug, EnumString, EnumIter, IntoStaticStr, Display)]
 pub enum Platform {
-    #[strum(serialize = "android")]
-    Android,
-    #[strum(serialize = "ios")]
-    IOS,
-    #[strum(serialize = "web")]
+    #[strum(serialize = "WEB")]
     Web,
 }
 
@@ -125,10 +122,10 @@ impl std::fmt::Display for Notification {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
             Notification::UserOnly(platform, operation) => {
-                write!(f, "{:?}-{:?}", platform, operation)
+                write!(f, "{}-{}", platform, operation)
             }
             Notification::WalletOnly(platform, operation) => {
-                write!(f, "{:?}-{:?}", platform, operation)
+                write!(f, "{}-{}", platform, operation)
             }
         }
     }
@@ -155,6 +152,28 @@ lazy_static! {
 }
 
 lazy_static! {
+    pub static ref NOTIFICATION_DEFAULT_ENABLED: HashMap<String, bool> = {
+        let mut map = HashMap::new();
+
+        for notif in NOTIFICATION.iter() {
+            let is_default_enabled = match notif {
+                Notification::UserOnly(_, operation) => match operation {
+                    UserOnlyOperation::InviteCodeAccepted => true,
+                },
+                Notification::WalletOnly(_, operation) => match operation {
+                    WalletOnlyOperation::UserOperationCreated => false,
+                    WalletOnlyOperation::UserOperationExecuted => true,
+                    WalletOnlyOperation::TransactionWithUserOperationExecuted => true,
+                },
+            };
+            map.insert(notif.to_string(), is_default_enabled);
+        }
+
+        map
+    };
+}
+
+lazy_static! {
     pub static ref NOTIFICATION_KEYS: Vec<String> = {
         let mut notification_keys = Vec::new();
 
@@ -175,5 +194,10 @@ mod tests {
         for key in NOTIFICATION_KEYS.iter() {
             println!("{}", key);
         }
+    }
+
+    #[test]
+    fn test_notification_default_enabled() {
+        println!("{:?}", *NOTIFICATION_DEFAULT_ENABLED);
     }
 }

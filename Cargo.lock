@@ -6368,6 +6368,7 @@ dependencies = [
  "backon",
  "clap 4.4.0",
  "eyre",
+ "insta",
  "lazy_static",
  "lightdotso-discord",
  "lightdotso-prisma",
