@@ -32,6 +32,7 @@ use lightdotso_notifier::types::{WALLET_NOTIFICATION_DEFAULT_ENABLED, WALLET_NOT
 use lightdotso_prisma::{notification_settings, user, wallet, wallet_notification_settings};
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
+use std::collections::HashSet;
 use tower_sessions_core::Session;
 use utoipa::IntoParams;
 
@@ -123,12 +124,14 @@ pub(crate) async fn v1_wallet_notification_settings_get_handler(
         if let Some(notification_settings) =
             wallet_notification_settings.clone().notification_settings
         {
+            // Create a HashSet for quicker lookup
+            let settings_keys: HashSet<_> =
+                notification_settings.iter().map(|s| s.key.clone()).collect();
+
             for key in WALLET_NOTIFICATION_KEYS.iter() {
-                for setting in notification_settings.iter() {
-                    // if none match, add the missing notification setting.
-                    if setting.key != *key {
-                        missing_notification_settings.push(key.clone());
-                    }
+                // Check if the key exists in settings_keys
+                if !settings_keys.contains(key) {
+                    missing_notification_settings.push(key.clone());
                 }
             }
         } else {

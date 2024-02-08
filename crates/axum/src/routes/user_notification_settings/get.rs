@@ -30,6 +30,7 @@ use axum::{
 use lightdotso_notifier::types::{USER_NOTIFICATION_DEFAULT_ENABLED, USER_NOTIFICATION_KEYS};
 use lightdotso_prisma::{notification_settings, user, user_notification_settings};
 use serde::Deserialize;
+use std::collections::HashSet;
 use tower_sessions_core::Session;
 use utoipa::IntoParams;
 
@@ -114,12 +115,14 @@ pub(crate) async fn v1_user_notification_settings_get_handler(
         if let Some(notification_settings) =
             user_notification_settings.clone().notification_settings
         {
+            // Create a HashSet for quicker lookup
+            let settings_keys: HashSet<_> =
+                notification_settings.iter().map(|s| s.key.clone()).collect();
+
             for key in USER_NOTIFICATION_KEYS.iter() {
-                for setting in notification_settings.iter() {
-                    // if none match, add the missing notification setting.
-                    if setting.key != *key {
-                        missing_notification_settings.push(key.clone());
-                    }
+                // Check if the key exists in settings_keys
+                if !settings_keys.contains(key) {
+                    missing_notification_settings.push(key.clone());
                 }
             }
         } else {
