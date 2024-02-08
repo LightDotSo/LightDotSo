@@ -64,12 +64,12 @@ export const SettingsNotificationsSettingsCard: FC<
   return (
     <SettingsCard
       title={
-        TITLES.Settings.subcategories["Notifications"].subcategories[
+        TITLES.WalletSettings.subcategories["Notifications"].subcategories[
           "Notification Settings"
         ].title
       }
       subtitle={
-        TITLES.Settings.subcategories["Notifications"].subcategories[
+        TITLES.WalletSettings.subcategories["Notifications"].subcategories[
           "Notification Settings"
         ].description
       }

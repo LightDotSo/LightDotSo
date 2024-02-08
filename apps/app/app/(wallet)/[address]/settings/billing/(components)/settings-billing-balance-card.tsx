@@ -64,10 +64,11 @@ export const SettingsBillingBalanceCard: FC<
   return (
     <SettingsCard
       title={
-        TITLES.Settings.subcategories["Billing"].subcategories["Balance"].title
+        TITLES.WalletSettings.subcategories["Billing"].subcategories["Balance"]
+          .title
       }
       subtitle={
-        TITLES.Settings.subcategories["Billing"].subcategories["Balance"]
+        TITLES.WalletSettings.subcategories["Billing"].subcategories["Balance"]
           .description
       }
       footerContent={<SettingsBillingCardSubmitButton />}

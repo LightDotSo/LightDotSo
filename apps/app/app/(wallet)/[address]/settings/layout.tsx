@@ -30,19 +30,19 @@ import { TITLES } from "@/const";
 
 const sidebarNavItems = [
   {
-    title: TITLES.Settings.subcategories["Wallet Settings"].title,
+    title: TITLES.WalletSettings.subcategories["Wallet Settings"].title,
     href: "/settings",
   },
   {
-    title: TITLES.Settings.subcategories["Billing"].title,
+    title: TITLES.WalletSettings.subcategories["Billing"].title,
     href: "/settings/billing",
   },
   {
-    title: TITLES.Settings.subcategories["Deployment"].title,
+    title: TITLES.WalletSettings.subcategories["Deployment"].title,
     href: "/settings/deployment",
   },
   {
-    title: TITLES.Settings.subcategories["Notifications"].title,
+    title: TITLES.WalletSettings.subcategories["Notifications"].title,
     href: "/settings/notifications",
   },
 ];
@@ -52,8 +52,8 @@ const sidebarNavItems = [
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: TITLES.Settings.title,
-  description: TITLES.Settings.description,
+  title: TITLES.WalletSettings.title,
+  description: TITLES.WalletSettings.description,
 };
 
 // -----------------------------------------------------------------------------
@@ -75,8 +75,8 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
 
   return (
     <BannerSection
-      title={TITLES.Settings.title}
-      description={TITLES.Settings.description}
+      title={TITLES.WalletSettings.title}
+      description={TITLES.WalletSettings.description}
       size="sm"
     >
       <HStackFull>

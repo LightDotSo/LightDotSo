@@ -72,6 +72,7 @@ export const handler = async (params: { address: string }) => {
         walletSettings: walletSettings,
         walletNotifications: {
           id: "",
+          settings: [],
         },
       };
     },

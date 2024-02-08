@@ -111,7 +111,7 @@ export const SettingsNotificationCard: FC = () => {
     <SettingsCard
       title={"Appearance"}
       subtitle={
-        TITLES.Settings.subcategories["Deployment"].subcategories["Chain"]
+        TITLES.WalletSettings.subcategories["Deployment"].subcategories["Chain"]
           .description
       }
       footerContent={<SettingsNotificationCardSubmitButton />}

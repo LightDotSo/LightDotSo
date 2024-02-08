@@ -180,12 +180,12 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   return (
     <SettingsCard
       title={
-        TITLES.Settings.subcategories["Wallet Settings"].subcategories[
+        TITLES.WalletSettings.subcategories["Wallet Settings"].subcategories[
           "Testnet"
         ].title
       }
       subtitle={
-        TITLES.Settings.subcategories["Wallet Settings"].subcategories[
+        TITLES.WalletSettings.subcategories["Wallet Settings"].subcategories[
           "Testnet"
         ].description
       }
@@ -204,13 +204,13 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
               <FormItem>
                 <FormLabel>
                   {
-                    TITLES.Settings.subcategories["Wallet Settings"]
+                    TITLES.WalletSettings.subcategories["Wallet Settings"]
                       .subcategories["Testnet"].title
                   }
                 </FormLabel>
                 <FormDescription>
                   {
-                    TITLES.Settings.subcategories["Wallet Settings"]
+                    TITLES.WalletSettings.subcategories["Wallet Settings"]
                       .subcategories["Testnet"].note
                   }
                 </FormDescription>
