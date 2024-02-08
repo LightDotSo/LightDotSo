@@ -13,17 +13,32 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { ActivityData } from "./activity";
+"use client";
+
+import type { NotificationData } from "@lightdotso/data";
+import type { FC } from "react";
+import { TimestampCard } from "../../(components)/card";
 
 // -----------------------------------------------------------------------------
-// Data
+// Props
 // -----------------------------------------------------------------------------
 
-export type NotificationData = {
-  id: string;
-  activity?: ActivityData | null | undefined;
-};
+type NotificationCardTimestampProps = { notification: NotificationData };
 
-export type NotificationCountData = {
-  count: number;
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const NotificationCardTimestamp: FC<NotificationCardTimestampProps> = ({
+  notification,
+}) => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  if (!notification?.activity?.timestamp) {
+    return null;
+  }
+
+  return <TimestampCard timestamp={notification?.activity?.timestamp} />;
 };

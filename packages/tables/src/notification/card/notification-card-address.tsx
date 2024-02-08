@@ -13,53 +13,35 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { UserOperationData } from "@lightdotso/data";
-import type { UserOperation } from "@lightdotso/schemas";
-import type { Address, Hex } from "viem";
+"use client";
+
+import type { NotificationData } from "@lightdotso/data";
+import type { FC } from "react";
+import type { Address } from "viem";
+import { AddressCard } from "../../(components)/card";
 
 // -----------------------------------------------------------------------------
-// Params
+// Props
 // -----------------------------------------------------------------------------
 
-export type UserOperationParams = {
-  address: Address;
-  is_testnet?: boolean;
-};
-
-export type UserOperationGetParams = {
-  hash: Hex;
-};
-
-export type UserOperationNonceParams = {
-  address: Address;
-  chain_id: number;
-};
-
-export type UserOperationListParams = {
-  address: Address | null;
-  status: "proposed" | "history" | "executed" | null;
-  order: "desc" | "asc";
-  limit: number;
-  offset: number;
-  is_testnet: boolean;
-  chain_id?: number | null | undefined;
-};
-
-export type UserOperationListCountParams = Omit<
-  UserOperationListParams,
-  "order" | "limit" | "offset"
->;
+type NotificationCardAddressProps = { notification: NotificationData };
 
 // -----------------------------------------------------------------------------
-// Params Body
+// Component
 // -----------------------------------------------------------------------------
 
-export type UserOperationCreateBodyParams = {
-  ownerId: string;
-  signedData: Hex;
-  userOperation: Partial<UserOperation>;
+export const NotificationCardAddress: FC<NotificationCardAddressProps> = ({
+  notification,
+}) => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  if (!notification?.activity?.user?.address) {
+    return null;
+  }
+
+  return (
+    <AddressCard address={notification?.activity?.user?.address as Address} />
+  );
 };
-
-export type UserOperationUpdateBodyParams = Partial<UserOperation>;
-
-export type UserOperationSendBodyParams = UserOperationData;

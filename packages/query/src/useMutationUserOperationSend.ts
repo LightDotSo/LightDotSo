@@ -18,6 +18,7 @@ import {
   sendUserOperation,
 } from "@lightdotso/client";
 import { CONTRACT_ADDRESSES, TRANSACTION_ROW_COUNT } from "@lightdotso/const";
+import type { UserOperationData } from "@lightdotso/data";
 import type {
   UserOperationParams,
   UserOperationSendBodyParams,
@@ -46,6 +47,8 @@ export const useMutationUserOperationSend = (params: UserOperationParams) => {
   const {
     mutate: userOperationSend,
     isPending: isUserOperationSendPending,
+    isIdle: isUserOperationSendIdle,
+    isSuccess: isUserOperationSendSuccess,
     failureCount,
   } = useMutation({
     retry: 10,
@@ -106,6 +109,41 @@ export const useMutationUserOperationSend = (params: UserOperationParams) => {
         },
       );
     },
+    onMutate: async (data: UserOperationSendBodyParams) => {
+      const previousData: UserOperationData[] | undefined =
+        queryClient.getQueryData(
+          queryKeys.user_operation.list({
+            address: params.address as Address,
+            status: "proposed",
+            order: "asc",
+            limit: TRANSACTION_ROW_COUNT,
+            offset: 0,
+            is_testnet: params.is_testnet ?? false,
+          }).queryKey,
+        );
+      queryClient.setQueryData(
+        queryKeys.user_operation.list({
+          address: params.address as Address,
+          status: "proposed",
+          order: "asc",
+          limit: TRANSACTION_ROW_COUNT,
+          offset: 0,
+          is_testnet: params.is_testnet ?? false,
+        }).queryKey,
+        (old: UserOperationData[]) => {
+          // Get the data same as the data in the list, and update the status to "pending"
+          const newData = old.map(d => {
+            if (d.hash === data.hash) {
+              return { ...d, status: "PENDING" };
+            }
+            return d;
+          });
+
+          return newData;
+        },
+      );
+      return { previousData };
+    },
     onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.user_operation.list({
@@ -124,14 +162,13 @@ export const useMutationUserOperationSend = (params: UserOperationParams) => {
           is_testnet: params.is_testnet ?? false,
         }).queryKey,
       });
-
-      // Invalidate the cache for the address
-      fetch(`/api/revalidate/tag?tag=${params.address}`);
     },
   });
 
   return {
     isUserOperationSendPending,
+    isUserOperationSendIdle,
+    isUserOperationSendSuccess,
     userOperationSend,
   };
 };

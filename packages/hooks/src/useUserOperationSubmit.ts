@@ -122,11 +122,15 @@ export const useUserOperationSubmit = ({
     ),
   });
 
-  const { userOperationSend, isUserOperationSendPending: isLoading } =
-    useMutationUserOperationSend({
-      address,
-      is_testnet,
-    });
+  const {
+    userOperationSend,
+    isUserOperationSendPending: isLoading,
+    isUserOperationSendIdle: isIdle,
+    isUserOperationSendSuccess: isSuccess,
+  } = useMutationUserOperationSend({
+    address,
+    is_testnet,
+  });
 
   // ---------------------------------------------------------------------------
   // Local Variables
@@ -173,6 +177,8 @@ export const useUserOperationSubmit = ({
 
   return {
     isLoading,
+    isIdle,
+    isSuccess,
     isValid,
     paymasterNonce,
     paymasterOperation,
