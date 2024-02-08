@@ -125,6 +125,7 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(notification_settings::error::NotificationSettingsError),
         schemas(notification_settings::list::NotificationSettingsListCount),
         schemas(notification_settings::types::NotificationSettings),
+        schemas(notification_settings::types::NotificationSettingsUpdate),
         schemas(owner::error::OwnerError),
         schemas(owner::types::Owner),
         schemas(paymaster::error::PaymasterError),

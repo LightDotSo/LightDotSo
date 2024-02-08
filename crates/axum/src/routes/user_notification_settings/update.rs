@@ -16,7 +16,13 @@
 #![allow(clippy::unwrap_used)]
 
 use super::types::{UserNotificationSettings, UserNotificationSettingsOptional};
-use crate::{authentication::authenticate_user, result::AppJsonResult, state::AppState};
+use crate::{
+    authentication::authenticate_user,
+    error::RouteError,
+    result::{AppError, AppJsonResult},
+    routes::user_notification_settings::error::UserNotificationSettingsError,
+    state::AppState,
+};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -27,7 +33,10 @@ use lightdotso_db::models::activity::CustomParams;
 use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
-use lightdotso_prisma::{user, user_notification_settings, ActivityEntity, ActivityOperation};
+use lightdotso_notifier::types::USER_NOTIFICATION_DEFAULT_ENABLED;
+use lightdotso_prisma::{
+    notification_settings, user, user_notification_settings, ActivityEntity, ActivityOperation,
+};
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use tower_sessions_core::Session;
@@ -91,7 +100,7 @@ pub(crate) async fn v1_user_notification_settings_update_handler(
     let Query(put) = put_query;
 
     // Get the user_notification_settings from the put body.
-    let _user_notification_settings = params.user_notification_settings;
+    let optional_params = params.user_notification_settings;
 
     // -------------------------------------------------------------------------
     // Authentication
@@ -132,6 +141,57 @@ pub(crate) async fn v1_user_notification_settings_update_handler(
         .exec()
         .await?;
     info!(?user_notification_settings);
+
+    // -------------------------------------------------------------------------
+    // Params
+    // -------------------------------------------------------------------------
+
+    // Check to see if the keys in the params vec is one of `USER_NOTIFICATION_SETTINGS_KEYS`.
+    // If it is not, return an error.
+    if let Some(settings) = optional_params.clone().settings {
+        for setting in settings.iter() {
+            if !USER_NOTIFICATION_DEFAULT_ENABLED.contains_key(&setting.key) {
+                return Err(AppError::RouteError(RouteError::UserNotificationSettingsError(
+                    UserNotificationSettingsError::BadRequest("Invalid Configuration".to_string()),
+                )));
+            }
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
+    // For each setting in the optional params, update the wallet_notification_settings.
+    if let Some(settings) = optional_params.settings {
+        for setting in settings.iter() {
+            state
+                .client
+                .notification_settings()
+                .upsert(
+                    notification_settings::key_is_user_only_user_id(
+                        setting.key.clone(),
+                        true,
+                        auth_user_id.clone(),
+                    ),
+                    notification_settings::create(
+                        setting.key.clone(),
+                        setting.value,
+                        user::id::equals(auth_user_id.clone()),
+                        vec![
+                            notification_settings::is_enabled::set(setting.value),
+                            notification_settings::is_user_only::set(true),
+                        ],
+                    ),
+                    vec![
+                        notification_settings::is_enabled::set(setting.value),
+                        notification_settings::is_user_only::set(true),
+                    ],
+                )
+                .exec()
+                .await?;
+        }
+    }
 
     // -------------------------------------------------------------------------
     // Kafka

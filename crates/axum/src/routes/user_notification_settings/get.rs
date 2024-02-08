@@ -27,7 +27,8 @@ use axum::{
     headers::{authorization::Bearer, Authorization},
     Json, TypedHeader,
 };
-use lightdotso_prisma::{user, user_notification_settings};
+use lightdotso_notifier::types::{USER_NOTIFICATION_DEFAULT_ENABLED, USER_NOTIFICATION_KEYS};
+use lightdotso_prisma::{notification_settings, user, user_notification_settings};
 use serde::Deserialize;
 use tower_sessions_core::Session;
 use utoipa::IntoParams;
@@ -107,6 +108,78 @@ pub(crate) async fn v1_user_notification_settings_get_handler(
     // If the user_notification_settings is not found, create a default user_notification_settings
     // in the db, if the user exists.
     if let Some(user_notification_settings) = user_notification_settings {
+        let mut missing_notification_settings = vec![];
+
+        // Compare the notification settings with the wallet notification keys.
+        if let Some(notification_settings) =
+            user_notification_settings.clone().notification_settings
+        {
+            for key in USER_NOTIFICATION_KEYS.iter() {
+                for setting in notification_settings.iter() {
+                    // if none match, add the missing notification setting.
+                    if setting.key != *key {
+                        missing_notification_settings.push(key.clone());
+                    }
+                }
+            }
+        }
+
+        // If there are missing notification settings, add them to the wallet notification settings.
+        if !missing_notification_settings.is_empty() {
+            // -----------------------------------------------------------------
+            // DB
+            // -----------------------------------------------------------------
+
+            let _ = state
+                .client
+                .notification_settings()
+                .create_many(
+                    missing_notification_settings
+                        .iter()
+                        .map(|key| {
+                            (
+                                key.clone(),
+                                *USER_NOTIFICATION_DEFAULT_ENABLED.get(key).unwrap_or(&false),
+                                auth_user_id.clone(),
+                                vec![
+                                    notification_settings::user_notification_settings_id::set(
+                                        Some(user_notification_settings.clone().id),
+                                    ),
+                                    notification_settings::is_user_only::set(true),
+                                ],
+                            )
+                        })
+                        .collect(),
+                )
+                .exec()
+                .await?;
+
+            // Get the wallet notification settings again.
+            let wallet_notification_settings = state
+                .client
+                .user_notification_settings()
+                .find_unique(user_notification_settings::user_id::equals(auth_user_id.clone()))
+                .with(user_notification_settings::notification_settings::fetch(vec![]))
+                .exec()
+                .await?;
+
+            // If the wallet is not found, return a 404.
+            let wallet_notification_settings = wallet_notification_settings.clone().ok_or(
+                RouteError::UserNotificationSettingsError(UserNotificationSettingsError::NotFound(
+                    "User notification not found".to_string(),
+                )),
+            )?;
+
+            // -----------------------------------------------------------------
+            // Return
+            // -----------------------------------------------------------------
+
+            let wallet_notification_settings: UserNotificationSettings =
+                wallet_notification_settings.into();
+
+            return Ok(Json::from(wallet_notification_settings));
+        }
+
         let user_notification_settings: UserNotificationSettings =
             user_notification_settings.into();
 
@@ -127,16 +200,35 @@ pub(crate) async fn v1_user_notification_settings_get_handler(
             )));
         }
 
-        // ---------------------------------------------------------------------
-        // Return
-        // ---------------------------------------------------------------------
-
         let user_notification_settings = state
             .client
             .user_notification_settings()
             .create(user::id::equals(auth_user_id.clone()), vec![])
             .exec()
             .await?;
+
+        let _ = state.client.notification_settings().create_many(
+            USER_NOTIFICATION_DEFAULT_ENABLED
+                .iter()
+                .map(|(key, value)| {
+                    (
+                        key.clone(),
+                        *value,
+                        auth_user_id.clone(),
+                        vec![
+                            notification_settings::user_notification_settings_id::set(Some(
+                                user_notification_settings.clone().id,
+                            )),
+                            notification_settings::is_user_only::set(true),
+                        ],
+                    )
+                })
+                .collect(),
+        );
+
+        // ---------------------------------------------------------------------
+        // Return
+        // ---------------------------------------------------------------------
 
         let user_notification_settings: UserNotificationSettings =
             user_notification_settings.into();
