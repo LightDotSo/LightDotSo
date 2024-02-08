@@ -39,7 +39,7 @@ import { TITLES } from "@/const";
 // -----------------------------------------------------------------------------
 
 const appearanceFormSchema = z.object({
-  theme: z.enum(["light", "dark"], {
+  theme: z.enum(["light", "dark", "system"], {
     required_error: "Please select a theme.",
   }),
 });
@@ -47,9 +47,6 @@ const appearanceFormSchema = z.object({
 type AppearanceFormValues = z.infer<typeof appearanceFormSchema>;
 
 // This can come from your database or API.
-const defaultValues: Partial<AppearanceFormValues> = {
-  theme: "light",
-};
 
 // -----------------------------------------------------------------------------
 // Component
@@ -60,11 +57,15 @@ export const SettingsAppearanceCard: FC = () => {
   // Operation Hooks
   // ---------------------------------------------------------------------------
 
-  const { setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------
+
+  const defaultValues: Partial<AppearanceFormValues> = {
+    theme: theme === "system" ? "system" : theme === "dark" ? "dark" : "light",
+  };
 
   const form = useForm<AppearanceFormValues>({
     mode: "all",
@@ -72,6 +73,52 @@ export const SettingsAppearanceCard: FC = () => {
     resolver: zodResolver(appearanceFormSchema),
     defaultValues,
   });
+
+  // ---------------------------------------------------------------------------
+  // Component
+  // ---------------------------------------------------------------------------
+
+  const DarkModeCard: FC = () => {
+    return (
+      <div className="items-center rounded-md border-2 border-border bg-background-body p-1 hover:bg-background-stronger hover:text-text-weak">
+        <div className="space-y-2 rounded-sm bg-slate-950 p-2">
+          <div className="space-y-2 rounded-md bg-slate-800 p-2 shadow-sm">
+            <div className="h-2 w-[80px] rounded-lg bg-slate-400" />
+            <div className="h-2 w-[100px] rounded-lg bg-slate-400" />
+          </div>
+          <div className="flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-sm">
+            <div className="size-4 rounded-full bg-slate-400" />
+            <div className="h-2 w-[100px] rounded-lg bg-slate-400" />
+          </div>
+          <div className="flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-sm">
+            <div className="size-4 rounded-full bg-slate-400" />
+            <div className="h-2 w-[100px] rounded-lg bg-slate-400" />
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const LightModeCard: FC = () => {
+    return (
+      <div className="hover:border-accent items-center rounded-md border-2 border-border p-1">
+        <div className="space-y-2 rounded-sm bg-[#ecedef] p-2">
+          <div className="space-y-2 rounded-md bg-white p-2 shadow-sm">
+            <div className="h-2 w-[80px] rounded-lg bg-[#ecedef]" />
+            <div className="h-2 w-[100px] rounded-lg bg-[#ecedef]" />
+          </div>
+          <div className="flex items-center space-x-2 rounded-md bg-white p-2 shadow-sm">
+            <div className="size-4 rounded-full bg-[#ecedef]" />
+            <div className="h-2 w-[100px] rounded-lg bg-[#ecedef]" />
+          </div>
+          <div className="flex items-center space-x-2 rounded-md bg-white p-2 shadow-sm">
+            <div className="size-4 rounded-full bg-[#ecedef]" />
+            <div className="h-2 w-[100px] rounded-lg bg-[#ecedef]" />
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   // ---------------------------------------------------------------------------
   // Render
@@ -99,7 +146,7 @@ export const SettingsAppearanceCard: FC = () => {
                 <FormMessage />
                 <RadioGroup
                   defaultValue={field.value}
-                  className="grid max-w-md grid-cols-2 gap-8 pt-2"
+                  className="grid md:grid-cols-3 gap-8 pt-2"
                   onValueChange={setTheme}
                 >
                   <FormItem>
@@ -107,22 +154,7 @@ export const SettingsAppearanceCard: FC = () => {
                       <FormControl>
                         <RadioGroupItem value="light" className="sr-only" />
                       </FormControl>
-                      <div className="hover:border-accent items-center rounded-md border-2 border-border p-1">
-                        <div className="space-y-2 rounded-sm bg-[#ecedef] p-2">
-                          <div className="space-y-2 rounded-md bg-white p-2 shadow-sm">
-                            <div className="h-2 w-[80px] rounded-lg bg-[#ecedef]" />
-                            <div className="h-2 w-[100px] rounded-lg bg-[#ecedef]" />
-                          </div>
-                          <div className="flex items-center space-x-2 rounded-md bg-white p-2 shadow-sm">
-                            <div className="size-4 rounded-full bg-[#ecedef]" />
-                            <div className="h-2 w-[100px] rounded-lg bg-[#ecedef]" />
-                          </div>
-                          <div className="flex items-center space-x-2 rounded-md bg-white p-2 shadow-sm">
-                            <div className="size-4 rounded-full bg-[#ecedef]" />
-                            <div className="h-2 w-[100px] rounded-lg bg-[#ecedef]" />
-                          </div>
-                        </div>
-                      </div>
+                      <LightModeCard />
                       <span className="block w-full p-2 text-center font-normal">
                         Light
                       </span>
@@ -133,24 +165,34 @@ export const SettingsAppearanceCard: FC = () => {
                       <FormControl>
                         <RadioGroupItem value="dark" className="sr-only" />
                       </FormControl>
-                      <div className="items-center rounded-md border-2 border-border bg-background-body p-1 hover:bg-background-stronger hover:text-text-weak">
-                        <div className="space-y-2 rounded-sm bg-slate-950 p-2">
-                          <div className="space-y-2 rounded-md bg-slate-800 p-2 shadow-sm">
-                            <div className="h-2 w-[80px] rounded-lg bg-slate-400" />
-                            <div className="h-2 w-[100px] rounded-lg bg-slate-400" />
-                          </div>
-                          <div className="flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-sm">
-                            <div className="size-4 rounded-full bg-slate-400" />
-                            <div className="h-2 w-[100px] rounded-lg bg-slate-400" />
-                          </div>
-                          <div className="flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-sm">
-                            <div className="size-4 rounded-full bg-slate-400" />
-                            <div className="h-2 w-[100px] rounded-lg bg-slate-400" />
-                          </div>
+                      <DarkModeCard />
+                      <span className="block w-full p-2 text-center font-normal">
+                        Dark
+                      </span>
+                    </FormLabel>
+                  </FormItem>
+                  <FormItem>
+                    <FormLabel className="hover:cursor-pointer [&:has([data-state=checked])>div]:border-border-primary">
+                      <FormControl>
+                        <RadioGroupItem value="system" className="sr-only" />
+                      </FormControl>
+                      <div className="relative">
+                        <LightModeCard />
+                        {/* 
+                          From: https://github.com/openstatusHQ/openstatus/blob/fd9716bb9af53c7c0b0e3dfc26a20f321b83b368/apps/web/src/app/app/%5BworkspaceSlug%5D/(dashboard)/settings/appearance/page.tsx#L28C9-L38C15
+                          License: AGPL-3.0
+                         */}
+                        <div
+                          className="absolute bottom-0 left-0 right-0 top-0"
+                          style={{
+                            clipPath: "polygon(100% 0, 0 0, 100% 100%)",
+                          }}
+                        >
+                          <DarkModeCard />
                         </div>
                       </div>
                       <span className="block w-full p-2 text-center font-normal">
-                        Dark
+                        System
                       </span>
                     </FormLabel>
                   </FormItem>
