@@ -216,8 +216,8 @@ lazy_static! {
         let mut user_notification_keys = Vec::new();
 
         for notif in NOTIFICATION.iter() {
-            if let Notification::UserOnly(_, operation) = notif {
-                user_notification_keys.push(operation.to_string());
+            if let Notification::UserOnly(_, _) = notif {
+                user_notification_keys.push(notif.to_string());
             }
         }
 
@@ -231,8 +231,8 @@ lazy_static! {
         let mut wallet_notification_keys = Vec::new();
 
         for notif in NOTIFICATION.iter() {
-            if let Notification::WalletOnly(_, operation) = notif {
-                wallet_notification_keys.push(operation.to_string());
+            if let Notification::WalletOnly(_, _) = notif {
+                wallet_notification_keys.push(notif.to_string());
             }
         }
 
