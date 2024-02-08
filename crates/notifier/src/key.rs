@@ -72,9 +72,6 @@ pub fn match_wallet_only_notification_with_activity(
             Some(WalletOnlyOperation::UserOperationCreated)
         }
         (ActivityEntity::UserOperation, ActivityOperation::Update) => {
-            Some(WalletOnlyOperation::UserOperationExecuted)
-        }
-        (ActivityEntity::Transaction, ActivityOperation::Update) => {
             if log["status"].as_str() == Some("EXECUTED") ||
                 log["status"].as_str() == Some("REVERTED")
             {
@@ -83,6 +80,7 @@ pub fn match_wallet_only_notification_with_activity(
                 None
             }
         }
+        (ActivityEntity::Transaction, ActivityOperation::Update) => None,
         _ => None,
     }
 }
