@@ -77,7 +77,7 @@ export const SettingsNotificationsSettingsCard: FC<
     >
       <div className="flex text-lg">
         <span>
-          ${walletNotificationSettings && walletNotificationSettings.id}
+          {walletNotificationSettings && walletNotificationSettings.id}
         </span>
       </div>
     </SettingsCard>

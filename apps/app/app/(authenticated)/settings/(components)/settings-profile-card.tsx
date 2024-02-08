@@ -130,8 +130,8 @@ export const SettingsProfileCard: FC = () => {
 
   return (
     <SettingsCard
-      title={TITLES.Settings.subcategories["Appearance"].title}
-      subtitle={TITLES.Settings.subcategories["Appearance"].description}
+      title={TITLES.Settings.subcategories["Profile"].title}
+      subtitle={TITLES.Settings.subcategories["Profile"].description}
       footerContent={<SettingsProfileCardSubmitButton />}
     >
       <Form {...form}>
