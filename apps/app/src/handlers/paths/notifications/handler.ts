@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { paginationParser } from "@lightdotso/nuqs";
+import { addressParser, paginationParser } from "@lightdotso/nuqs";
 import {
   getNotifications,
   getNotificationsCount,
@@ -26,7 +26,10 @@ import { verifyUserId } from "@/auth";
 // Handler
 // -----------------------------------------------------------------------------
 
-export const handler = async (searchParams: { pagination?: string }) => {
+export const handler = async (searchParams: {
+  pagination?: string;
+  address?: string;
+}) => {
   // ---------------------------------------------------------------------------
   // Auth
   // ---------------------------------------------------------------------------
@@ -40,6 +43,8 @@ export const handler = async (searchParams: { pagination?: string }) => {
   const paginationState = paginationParser.parseServerSide(
     searchParams.pagination,
   );
+
+  const addressState = addressParser.parseServerSide(searchParams.address);
 
   // ---------------------------------------------------------------------------
   // Fetch
@@ -81,6 +86,7 @@ export const handler = async (searchParams: { pagination?: string }) => {
   return res.match(
     ([user, notifications, notificationsCount]) => {
       return {
+        addressState: addressState,
         paginationState: paginationState,
         user: user,
         notifications: notifications,
@@ -89,6 +95,7 @@ export const handler = async (searchParams: { pagination?: string }) => {
     },
     () => {
       return {
+        addressState: addressState,
         paginationState: paginationState,
         user: {
           address: "",

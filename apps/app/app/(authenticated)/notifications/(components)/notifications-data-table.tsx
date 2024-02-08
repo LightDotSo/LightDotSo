@@ -15,7 +15,10 @@
 
 "use client";
 
-import { usePaginationQueryState } from "@lightdotso/nuqs";
+import {
+  useAddressQueryState,
+  usePaginationQueryState,
+} from "@lightdotso/nuqs";
 import {
   useQueryNotifications,
   useQueryNotificationsCount,
@@ -38,13 +41,14 @@ export const NotificationsDataTable: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address, sessionId } = useAuth();
+  const { sessionId } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
   const [paginationState] = usePaginationQueryState();
+  const [addressState] = useAddressQueryState();
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -59,14 +63,14 @@ export const NotificationsDataTable: FC = () => {
   // ---------------------------------------------------------------------------
 
   const { notifications, isNotificationsLoading } = useQueryNotifications({
-    address: address as Address,
+    address: addressState as Address,
     limit: paginationState.pageSize,
     offset: offsetCount,
   });
 
   const { notificationsCount, isNotificationsCountLoading } =
     useQueryNotificationsCount({
-      address: address as Address,
+      address: addressState as Address,
     });
 
   // ---------------------------------------------------------------------------

@@ -48,8 +48,13 @@ export default async function Page({ searchParams }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { paginationState, user, notifications, notificationsCount } =
-    await handler(searchParams);
+  const {
+    addressState,
+    paginationState,
+    user,
+    notifications,
+    notificationsCount,
+  } = await handler(searchParams);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -59,7 +64,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   queryClient.setQueryData(
     queryKeys.notification.list({
-      address: user.id === "" ? null : (user.address as Address),
+      address: user.id === "" ? null : (addressState as Address),
       limit: paginationState.pageSize,
       offset: paginationState.pageIndex * paginationState.pageSize,
       user_id: null,
@@ -68,7 +73,7 @@ export default async function Page({ searchParams }: PageProps) {
   );
   queryClient.setQueryData(
     queryKeys.notification.listCount({
-      address: user.id === "" ? null : (user.address as Address),
+      address: user.id === "" ? null : (addressState as Address),
       user_id: null,
     }).queryKey,
     notificationsCount,

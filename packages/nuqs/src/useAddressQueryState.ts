@@ -13,28 +13,18 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Address } from "viem";
+import { parseAsString, useQueryState } from "nuqs";
 
 // -----------------------------------------------------------------------------
-// Params
+// Parser
 // -----------------------------------------------------------------------------
 
-export type NotificationListParams = {
-  address?: Address | null | undefined;
-  limit: number;
-  offset: number;
-  user_id?: string | null | undefined;
-};
-
-export type NotificationListCountParams = Omit<
-  NotificationListParams,
-  "limit" | "offset"
->;
+export const addressParser = parseAsString;
 
 // -----------------------------------------------------------------------------
-// Params Body
+// Hook
 // -----------------------------------------------------------------------------
 
-export type NotificationReadBodyParams = {
-  notifications: { id: string }[];
+export const useAddressQueryState = () => {
+  return useQueryState("address", addressParser);
 };
