@@ -16,7 +16,13 @@
 #![allow(clippy::unwrap_used)]
 
 use super::types::{WalletNotificationSettings, WalletNotificationSettingsOptional};
-use crate::{authentication::authenticate_wallet_user, result::AppJsonResult, state::AppState};
+use crate::{
+    authentication::authenticate_wallet_user,
+    error::RouteError,
+    result::{AppError, AppJsonResult},
+    routes::wallet_notification_settings::error::WalletNotificationSettingsError,
+    state::AppState,
+};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -27,8 +33,10 @@ use lightdotso_db::models::activity::CustomParams;
 use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
+use lightdotso_notifier::types::USER_NOTIFICATION_DEFAULT_ENABLED;
 use lightdotso_prisma::{
-    user, wallet, wallet_notification_settings, ActivityEntity, ActivityOperation,
+    notification_settings, user, wallet, wallet_notification_settings, ActivityEntity,
+    ActivityOperation,
 };
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
@@ -98,7 +106,7 @@ pub(crate) async fn v1_wallet_notification_settings_update_handler(
     let checksum_address = to_checksum(&parsed_query_address, None);
 
     // Get the wallet_notification_settings from the put body.
-    let _wallet_notification_settings = params.wallet_notification_settings;
+    let optional_params = params.wallet_notification_settings;
 
     // -------------------------------------------------------------------------
     // Authentication
@@ -137,7 +145,49 @@ pub(crate) async fn v1_wallet_notification_settings_update_handler(
     // Params
     // -------------------------------------------------------------------------
 
-    // For each wallet_notification_settings, create the params update.
+    // Check to see if the keys in the params vec is one of `USER_NOTIFICATION_SETTINGS_KEYS`.
+    // If it is not, return an error.
+    if let Some(settings) = optional_params.clone().settings {
+        for setting in settings.iter() {
+            if !USER_NOTIFICATION_DEFAULT_ENABLED.contains_key(&setting.key) {
+                return Err(AppError::RouteError(RouteError::WalletNotificationSettingsError(
+                    WalletNotificationSettingsError::BadRequest(
+                        "Invalid Configuration".to_string(),
+                    ),
+                )));
+            }
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
+    // For each setting in the optional params, update the wallet_notification_settings.
+    if let Some(settings) = optional_params.settings {
+        for setting in settings.iter() {
+            state
+                .client
+                .notification_settings()
+                .upsert(
+                    notification_settings::key_is_user_only_user_id_wallet_address(
+                        setting.key.clone(),
+                        false,
+                        auth_user_id.clone(),
+                        checksum_address.clone(),
+                    ),
+                    notification_settings::create(
+                        setting.key.clone(),
+                        setting.value,
+                        user::id::equals(auth_user_id.clone()),
+                        vec![],
+                    ),
+                    vec![notification_settings::is_enabled::set(setting.value)],
+                )
+                .exec()
+                .await?;
+        }
+    }
 
     // -------------------------------------------------------------------------
     // Kafka

@@ -37,7 +37,17 @@ pub(crate) struct WalletNotificationSettings {
 #[serde(rename_all = "snake_case")]
 pub(crate) struct WalletNotificationSettingsOptional {
     /// The update query of wallet notification settings of whether the testnet is enabled.
-    pub settings: Option<Vec<NotificationSettings>>,
+    pub settings: Option<Vec<NotificationSettingsUpdate>>,
+}
+
+/// WalletNotificationSettingsUpdate root type.
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
+pub(crate) struct NotificationSettingsUpdate {
+    /// The key of the notification settings.
+    pub key: String,
+    /// The boolean value of the notification settings.
+    pub value: bool,
 }
 
 // -----------------------------------------------------------------------------
