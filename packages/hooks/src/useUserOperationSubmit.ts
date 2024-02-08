@@ -24,7 +24,7 @@ import {
   useReadLightVerifyingPaymasterGetHash,
   useReadLightVerifyingPaymasterSenderNonce,
 } from "@lightdotso/wagmi";
-import { useCallback, useState, useEffect, useMemo } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { toHex, fromHex, recoverMessageAddress } from "viem";
 import type { Hex, Address } from "viem";
 
@@ -125,6 +125,7 @@ export const useUserOperationSubmit = ({
   const {
     userOperationSend,
     isUserOperationSendPending: isLoading,
+    isUserOperationSendIdle: isIdle,
     isUserOperationSendSuccess: isSuccess,
   } = useMutationUserOperationSend({
     address,
@@ -176,6 +177,7 @@ export const useUserOperationSubmit = ({
 
   return {
     isLoading,
+    isIdle,
     isSuccess,
     isValid,
     paymasterNonce,

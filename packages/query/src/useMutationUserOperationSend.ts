@@ -47,6 +47,7 @@ export const useMutationUserOperationSend = (params: UserOperationParams) => {
   const {
     mutate: userOperationSend,
     isPending: isUserOperationSendPending,
+    isIdle: isUserOperationSendIdle,
     isSuccess: isUserOperationSendSuccess,
     failureCount,
   } = useMutation({
@@ -169,6 +170,7 @@ export const useMutationUserOperationSend = (params: UserOperationParams) => {
 
   return {
     isUserOperationSendPending,
+    isUserOperationSendIdle,
     isUserOperationSendSuccess,
     userOperationSend,
   };

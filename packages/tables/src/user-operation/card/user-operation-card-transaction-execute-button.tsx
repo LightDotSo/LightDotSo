@@ -49,7 +49,7 @@ export const UserOperationCardTransactionExecuteButton: FC<
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const { isLoading, isValid, isSuccess, handleConfirm } =
+  const { isLoading, isValid, isIdle, isSuccess, handleConfirm } =
     useUserOperationSubmit({
       address: address,
       is_testnet: isTestnet,
@@ -69,7 +69,7 @@ export const UserOperationCardTransactionExecuteButton: FC<
             disabled={
               !isValid ||
               isLoading ||
-              isSuccess ||
+              (!isIdle && isSuccess) ||
               userOperation.status !== "PROPOSED"
             }
             isLoading={isLoading}
