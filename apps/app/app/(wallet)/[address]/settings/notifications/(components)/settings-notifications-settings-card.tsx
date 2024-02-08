@@ -15,7 +15,7 @@
 
 "use client";
 
-import { useQueryWalletBilling } from "@lightdotso/query";
+import { useQueryWalletNotificationSettings } from "@lightdotso/query";
 import { Button } from "@lightdotso/ui";
 import type { FC } from "react";
 import type { Address } from "viem";
@@ -26,7 +26,7 @@ import { TITLES } from "@/const";
 // Props
 // -----------------------------------------------------------------------------
 
-type SettingsBillingBalanceCardProps = {
+type SettingsNotificationSettingsCardProps = {
   address: Address;
 };
 
@@ -34,14 +34,14 @@ type SettingsBillingBalanceCardProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const SettingsBillingBalanceCard: FC<
-  SettingsBillingBalanceCardProps
+export const SettingsNotificationsSettingsCard: FC<
+  SettingsNotificationSettingsCardProps
 > = ({ address }) => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
-  const { walletBilling } = useQueryWalletBilling({
+  const { walletNotificationSettings } = useQueryWalletNotificationSettings({
     address,
   });
 
@@ -49,10 +49,10 @@ export const SettingsBillingBalanceCard: FC<
   // Submit Button
   // ---------------------------------------------------------------------------
 
-  const SettingsBillingCardSubmitButton: FC = () => {
+  const SettingsNotificationsCardSubmitButton: FC = () => {
     return (
-      <Button type="submit" form="walletBillingForm" disabled={true}>
-        Billing
+      <Button type="submit" form="walletNotificationsForm" disabled={true}>
+        Notifications
       </Button>
     );
   };
@@ -64,16 +64,21 @@ export const SettingsBillingBalanceCard: FC<
   return (
     <SettingsCard
       title={
-        TITLES.Settings.subcategories["Billing"].subcategories["Balance"].title
+        TITLES.Settings.subcategories["Notifications"].subcategories["Balance"]
+          .title
       }
       subtitle={
-        TITLES.Settings.subcategories["Billing"].subcategories["Balance"]
+        TITLES.Settings.subcategories["Notifications"].subcategories["Balance"]
           .description
       }
-      footerContent={<SettingsBillingCardSubmitButton />}
+      footerContent={<SettingsNotificationsCardSubmitButton />}
     >
       <div className="flex text-lg">
-        <span>${walletBilling && walletBilling.billing?.balance_usd}</span>
+        <span>
+          $
+          {walletNotificationSettings &&
+            walletNotificationSettings.settings.length}
+        </span>
       </div>
     </SettingsCard>
   );

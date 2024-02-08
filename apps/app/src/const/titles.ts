@@ -70,6 +70,7 @@ export enum SettingsSubCategory {
   Account = "Account",
   Billing = "Billing",
   Deployment = "Deployment",
+  Notifications = "Notifications",
   WalletSettings = "Wallet Settings",
 }
 
@@ -211,6 +212,11 @@ export const TITLES: Record<Category, CategoryObject> = {
             subcategories: {},
           },
         },
+      },
+      [SettingsSubCategory.Notifications]: {
+        title: "Notifications",
+        description: "Manage your wallet notifications.",
+        subcategories: {},
       },
     },
   },

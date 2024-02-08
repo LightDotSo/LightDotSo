@@ -13,44 +13,35 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type {
-  WalletListParams,
-  WalletListCountParams,
-  WalletParams,
-} from "@lightdotso/params";
-import { createQueryKeys } from "@lukemorales/query-key-factory";
-import type { inferQueryKeys } from "@lukemorales/query-key-factory";
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
+import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
-// Keys
+// Metadata
 // -----------------------------------------------------------------------------
 
-export const wallet = createQueryKeys("wallet", {
-  get: (params: WalletParams) => ({
-    queryKey: [{ params }],
-  }),
-  list: (params: WalletListParams) => ({
-    queryKey: [{ params }],
-  }),
-  listCount: (params: WalletListCountParams) => ({
-    queryKey: [{ params }],
-  }),
-  billing: (params: WalletParams) => ({
-    queryKey: [{ params }],
-  }),
-  features: (params: WalletParams) => ({
-    queryKey: [{ params }],
-  }),
-  notificationSettings: (params: WalletParams) => ({
-    queryKey: [{ params }],
-  }),
-  settings: (params: WalletParams) => ({
-    queryKey: [{ params }],
-  }),
-});
+export const metadata: Metadata = {
+  title: TITLES.Settings.subcategories.Notifications.title,
+  description: TITLES.Settings.subcategories.Notifications.description,
+};
 
 // -----------------------------------------------------------------------------
-// Infer
+// Props
 // -----------------------------------------------------------------------------
 
-export type WalletKeys = inferQueryKeys<typeof wallet>;
+interface SettingsNotificationsLayoutProps {
+  children: ReactNode;
+}
+
+// -----------------------------------------------------------------------------
+// Layout
+// -----------------------------------------------------------------------------
+
+export default function Layout({ children }: SettingsNotificationsLayoutProps) {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  return children;
+}

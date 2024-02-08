@@ -32,4 +32,5 @@ export * from "./user";
 export * from "./wallet";
 export * from "./wallet_billing";
 export * from "./wallet_features";
+export * from "./wallet_notification_settings";
 export * from "./wallet_settings";

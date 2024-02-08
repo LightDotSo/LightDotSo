@@ -24,8 +24,8 @@ export type ActivityData = {
   entity: string;
   operation: string;
   timestamp: string;
-  address?: string | null;
-  user?: UserData | null;
+  address?: string | null | undefined;
+  user?: UserData | null | undefined;
 };
 
 export type ActivityCountData = {

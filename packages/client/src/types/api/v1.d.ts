@@ -19,15 +19,15 @@ export interface paths {
   };
   "/activity/list": {
     /**
-     * Returns a list of activities.
-     * @description Returns a list of activities.
+     * Returns a list of activities
+     * @description Returns a list of activities
      */
     get: operations["v1_activity_list_handler"];
   };
   "/activity/list/count": {
     /**
-     * Returns a count of list of activities.
-     * @description Returns a count of list of activities.
+     * Returns a count of list of activities
+     * @description Returns a count of list of activities
      */
     get: operations["v1_activity_list_count_handler"];
   };
@@ -40,8 +40,8 @@ export interface paths {
   };
   "/asset_change/list": {
     /**
-     * Returns a list of assets.
-     * @description Returns a list of assets.
+     * Returns a list of assets
+     * @description Returns a list of assets
      */
     get: operations["v1_asset_change_list_handler"];
   };
@@ -82,10 +82,17 @@ export interface paths {
   };
   "/billing/list": {
     /**
-     * Returns a list of billings.
-     * @description Returns a list of billings.
+     * Returns a list of billings
+     * @description Returns a list of billings
      */
     get: operations["v1_billing_list_handler"];
+  };
+  "/billing/update": {
+    /**
+     * Update a billing
+     * @description Update a billing
+     */
+    put: operations["v1_billing_update_handler"];
   };
   "/billing_operation/get": {
     /**
@@ -96,22 +103,22 @@ export interface paths {
   };
   "/billing_operation/list": {
     /**
-     * Returns a list of billing operations.
-     * @description Returns a list of billing operations.
+     * Returns a list of billing operations
+     * @description Returns a list of billing operations
      */
     get: operations["v1_billing_operation_list_handler"];
   };
   "/billing_operation/list/count": {
     /**
-     * Returns a count of list of billing operations.
-     * @description Returns a count of list of billing operations.
+     * Returns a count of list of billing operations
+     * @description Returns a count of list of billing operations
      */
     get: operations["v1_billing_operation_list_count_handler"];
   };
   "/chain/create": {
     /**
-     * Create a chain.
-     * @description Create a chain.
+     * Create a chain
+     * @description Create a chain
      */
     post: operations["v1_chain_create_handler"];
   };
@@ -124,22 +131,22 @@ export interface paths {
   };
   "/chain/list": {
     /**
-     * Returns a list of protocol groups.
-     * @description Returns a list of protocol groups.
+     * Returns a list of protocol groups
+     * @description Returns a list of protocol groups
      */
     get: operations["v1_chain_list_handler"];
   };
   "/chain/update": {
     /**
-     * Update a chain.
-     * @description Update a chain.
+     * Update a chain
+     * @description Update a chain
      */
     put: operations["v1_chain_update_handler"];
   };
   "/check": {
     /**
-     * Check if the server is running.
-     * @description Check if the server is running.
+     * Check if the server is running
+     * @description Check if the server is running
      */
     get: operations["handler"];
   };
@@ -152,8 +159,8 @@ export interface paths {
   };
   "/configuration/list": {
     /**
-     * Returns a list of configurations.
-     * @description Returns a list of configurations.
+     * Returns a list of configurations
+     * @description Returns a list of configurations
      */
     get: operations["v1_configuration_list_handler"];
   };
@@ -166,8 +173,8 @@ export interface paths {
   };
   "/health": {
     /**
-     * Check the health of the server.
-     * @description Check the health of the server.
+     * Check the health of the server
+     * @description Check the health of the server
      */
     get: operations["handler"];
   };
@@ -180,8 +187,8 @@ export interface paths {
   };
   "/interpretation/list": {
     /**
-     * Returns a list of interpretations.
-     * @description Returns a list of interpretations.
+     * Returns a list of interpretations
+     * @description Returns a list of interpretations
      */
     get: operations["v1_interpretation_list_handler"];
   };
@@ -194,15 +201,15 @@ export interface paths {
   };
   "/interpretation_action/list": {
     /**
-     * Returns a list of interpretation actions.
-     * @description Returns a list of interpretation actions.
+     * Returns a list of interpretation actions
+     * @description Returns a list of interpretation actions
      */
     get: operations["v1_interpretation_action_list_handler"];
   };
   "/interpretation_action/list/count": {
     /**
-     * Returns a count of list of interpretation actions.
-     * @description Returns a count of list of interpretation actions.
+     * Returns a count of list of interpretation actions
+     * @description Returns a count of list of interpretation actions
      */
     get: operations["v1_interpretation_action_list_count_handler"];
   };
@@ -222,15 +229,15 @@ export interface paths {
   };
   "/invite_code/list": {
     /**
-     * Returns a list of invite codes.
-     * @description Returns a list of invite codes.
+     * Returns a list of invite codes
+     * @description Returns a list of invite codes
      */
     get: operations["v1_invite_code_list_handler"];
   };
   "/invite_code/list/count": {
     /**
-     * Returns a count of list of invite codes.
-     * @description Returns a count of list of invite codes.
+     * Returns a count of list of invite codes
+     * @description Returns a count of list of invite codes
      */
     get: operations["v1_invite_code_list_count_handler"];
   };
@@ -243,15 +250,15 @@ export interface paths {
   };
   "/notification/list": {
     /**
-     * Returns a list of notifications.
-     * @description Returns a list of notifications.
+     * Returns a list of notifications
+     * @description Returns a list of notifications
      */
     get: operations["v1_notification_list_handler"];
   };
   "/notification/list/count": {
     /**
-     * Returns a count of list of notifications.
-     * @description Returns a count of list of notifications.
+     * Returns a count of list of notifications
+     * @description Returns a count of list of notifications
      */
     get: operations["v1_notification_list_count_handler"];
   };
@@ -271,15 +278,15 @@ export interface paths {
   };
   "/notification_settings/list": {
     /**
-     * Returns a list of interpretation actions.
-     * @description Returns a list of interpretation actions.
+     * Returns a list of notification settingss
+     * @description Returns a list of notification settingss
      */
     get: operations["v1_notification_settings_list_handler"];
   };
   "/notification_settings/list/count": {
     /**
-     * Returns a count of list of interpretation actions.
-     * @description Returns a count of list of interpretation actions.
+     * Returns a count of list of notification settingss
+     * @description Returns a count of list of notification settingss
      */
     get: operations["v1_notification_settings_list_count_handler"];
   };
@@ -292,8 +299,8 @@ export interface paths {
   };
   "/owner/list": {
     /**
-     * Returns a list of owners.
-     * @description Returns a list of owners.
+     * Returns a list of owners
+     * @description Returns a list of owners
      */
     get: operations["v1_owner_list_handler"];
   };
@@ -306,8 +313,8 @@ export interface paths {
   };
   "/paymaster/list": {
     /**
-     * Returns a list of paymasters.
-     * @description Returns a list of paymasters.
+     * Returns a list of paymasters
+     * @description Returns a list of paymasters
      */
     get: operations["v1_paymaster_list_handler"];
   };
@@ -320,8 +327,8 @@ export interface paths {
   };
   "/paymaster_operation/list": {
     /**
-     * Returns a list of paymasters.
-     * @description Returns a list of paymasters.
+     * Returns a list of paymasters
+     * @description Returns a list of paymasters
      */
     get: operations["v1_paymaster_operation_list_handler"];
   };
@@ -341,8 +348,8 @@ export interface paths {
   };
   "/protocol/group/create": {
     /**
-     * Create a protocol group.
-     * @description Create a protocol group.
+     * Create a protocol group
+     * @description Create a protocol group
      */
     post: operations["v1_protocol_group_create_handler"];
   };
@@ -355,43 +362,43 @@ export interface paths {
   };
   "/protocol/group/list": {
     /**
-     * Returns a list of protocol groups.
-     * @description Returns a list of protocol groups.
+     * Returns a list of protocol groups
+     * @description Returns a list of protocol groups
      */
     get: operations["v1_protocol_group_list_handler"];
   };
   "/protocol/list": {
     /**
-     * Returns a list of protocols.
-     * @description Returns a list of protocols.
+     * Returns a list of protocols
+     * @description Returns a list of protocols
      */
     get: operations["v1_protocol_list_handler"];
   };
   "/queue/interpretation": {
     /**
-     * Queue interpretation handler.
-     * @description Queue interpretation handler.
+     * Queue interpretation handler
+     * @description Queue interpretation handler
      */
     post: operations["v1_queue_interpretation_handler"];
   };
   "/queue/portfolio": {
     /**
-     * Queue portfolio handler.
-     * @description Queue portfolio handler.
+     * Queue portfolio handler
+     * @description Queue portfolio handler
      */
     post: operations["v1_queue_portfolio_handler"];
   };
   "/queue/token": {
     /**
-     * Queue token handler.
-     * @description Queue token handler.
+     * Queue token handler
+     * @description Queue token handler
      */
     post: operations["v1_queue_token_handler"];
   };
   "/queue/user_operation": {
     /**
-     * Queue user operation handler.
-     * @description Queue user operation handler.
+     * Queue user operation handler
+     * @description Queue user operation handler
      */
     post: operations["v1_queue_user_operation_handler"];
   };
@@ -411,15 +418,15 @@ export interface paths {
   };
   "/signature/list": {
     /**
-     * Returns a list of signatures.
-     * @description Returns a list of signatures.
+     * Returns a list of signatures
+     * @description Returns a list of signatures
      */
     get: operations["v1_signature_list_handler"];
   };
   "/simulation/create": {
     /**
-     * Create a simulation.
-     * @description Create a simulation.
+     * Create a simulation
+     * @description Create a simulation
      */
     post: operations["v1_simulation_create_handler"];
   };
@@ -432,15 +439,15 @@ export interface paths {
   };
   "/simulation/list": {
     /**
-     * Returns a list of simulations.
-     * @description Returns a list of simulations.
+     * Returns a list of simulations
+     * @description Returns a list of simulations
      */
     get: operations["v1_simulation_list_handler"];
   };
   "/simulation/list/count": {
     /**
-     * Returns a count of list of simulations.
-     * @description Returns a count of list of simulations.
+     * Returns a count of list of simulations
+     * @description Returns a count of list of simulations
      */
     get: operations["v1_simulation_list_count_handler"];
   };
@@ -460,8 +467,8 @@ export interface paths {
   };
   "/token/group/create": {
     /**
-     * Create a token group.
-     * @description Create a token group.
+     * Create a token group
+     * @description Create a token group
      */
     post: operations["v1_token_group_create_handler"];
   };
@@ -474,29 +481,29 @@ export interface paths {
   };
   "/token/group/list": {
     /**
-     * Returns a list of token groups.
-     * @description Returns a list of token groups.
+     * Returns a list of token groups
+     * @description Returns a list of token groups
      */
     get: operations["v1_token_group_list_handler"];
   };
   "/token/list": {
     /**
-     * Returns a list of tokens.
-     * @description Returns a list of tokens.
+     * Returns a list of tokens
+     * @description Returns a list of tokens
      */
     get: operations["v1_token_list_handler"];
   };
   "/token/list/count": {
     /**
-     * Returns a count of list of tokens.
-     * @description Returns a count of list of tokens.
+     * Returns a count of list of tokens
+     * @description Returns a count of list of tokens
      */
     get: operations["v1_token_list_count_handler"];
   };
   "/token/update": {
     /**
-     * Update a token.
-     * @description Update a token.
+     * Update a token
+     * @description Update a token
      */
     put: operations["v1_token_update_handler"];
   };
@@ -516,15 +523,15 @@ export interface paths {
   };
   "/transaction/list": {
     /**
-     * Returns a list of transactions.
-     * @description Returns a list of transactions.
+     * Returns a list of transactions
+     * @description Returns a list of transactions
      */
     get: operations["v1_transaction_list_handler"];
   };
   "/transaction/list/count": {
     /**
-     * Returns a count of list of transactions.
-     * @description Returns a count of list of transactions.
+     * Returns a count of list of transactions
+     * @description Returns a count of list of transactions
      */
     get: operations["v1_transaction_list_count_handler"];
   };
@@ -544,8 +551,8 @@ export interface paths {
   };
   "/user/notification/settings/update": {
     /**
-     * Create a user_notification_settings
-     * @description Create a user_notification_settings
+     * Update the user notification settings
+     * @description Update the user notification settings
      */
     put: operations["v1_user_notification_settings_update_handler"];
   };
@@ -558,8 +565,8 @@ export interface paths {
   };
   "/user/settings/update": {
     /**
-     * Create a user_settings
-     * @description Create a user_settings
+     * Update the user settings
+     * @description Update the user settings
      */
     put: operations["v1_user_settings_update_handler"];
   };
@@ -579,15 +586,15 @@ export interface paths {
   };
   "/user_operation/list": {
     /**
-     * Returns a list of user operations.
-     * @description Returns a list of user operations.
+     * Returns a list of user operations
+     * @description Returns a list of user operations
      */
     get: operations["v1_user_operation_list_handler"];
   };
   "/user_operation/list/count": {
     /**
-     * Returns a count of user operations.
-     * @description Returns a count of user operations.
+     * Returns a count of user operations
+     * @description Returns a count of user operations
      */
     get: operations["v1_user_operation_list_count_handler"];
   };
@@ -600,8 +607,8 @@ export interface paths {
   };
   "/user_operation/signature": {
     /**
-     * Check a user operation for its validity and return the computed signature if valid.
-     * @description Check a user operation for its validity and return the computed signature if valid.
+     * Check a user operation for its validity and return the computed signature if valid
+     * @description Check a user operation for its validity and return the computed signature if valid
      */
     get: operations["v1_user_operation_signature_handler"];
   };
@@ -614,15 +621,15 @@ export interface paths {
   };
   "/wallet/billing/get": {
     /**
-     * Get a wallet_billing
-     * @description Get a wallet_billing
+     * Get a wallet billing
+     * @description Get a wallet billing
      */
     get: operations["v1_wallet_billing_get_handler"];
   };
   "/wallet/billing/update": {
     /**
-     * Create a wallet_billing
-     * @description Create a wallet_billing
+     * Update the wallet billing
+     * @description Update the wallet billing
      */
     put: operations["v1_wallet_billing_update_handler"];
   };
@@ -635,15 +642,15 @@ export interface paths {
   };
   "/wallet/features/get": {
     /**
-     * Get a wallet_features
-     * @description Get a wallet_features
+     * Get a wallet features
+     * @description Get a wallet features
      */
     get: operations["v1_wallet_features_get_handler"];
   };
   "/wallet/features/update": {
     /**
-     * Create a wallet_features
-     * @description Create a wallet_features
+     * Update the wallet features
+     * @description Update the wallet features
      */
     put: operations["v1_wallet_features_update_handler"];
   };
@@ -656,43 +663,43 @@ export interface paths {
   };
   "/wallet/list": {
     /**
-     * Returns a list of wallets.
-     * @description Returns a list of wallets.
+     * Returns a list of wallets
+     * @description Returns a list of wallets
      */
     get: operations["v1_wallet_list_handler"];
   };
   "/wallet/list/count": {
     /**
-     * Returns a count of list of wallets.
-     * @description Returns a count of list of wallets.
+     * Returns a count of list of wallets
+     * @description Returns a count of list of wallets
      */
     get: operations["v1_wallet_list_count_handler"];
   };
   "/wallet/notification/settings/get": {
     /**
-     * Get a wallet_notification_settings
-     * @description Get a wallet_notification_settings
+     * Get a wallet notification settings
+     * @description Get a wallet notification settings
      */
     get: operations["v1_wallet_notification_settings_get_handler"];
   };
   "/wallet/notification/settings/update": {
     /**
-     * Create a wallet_notification_settings
-     * @description Create a wallet_notification_settings
+     * Update the wallet notification settings
+     * @description Update the wallet notification settings
      */
     put: operations["v1_wallet_notification_settings_update_handler"];
   };
   "/wallet/settings/get": {
     /**
-     * Get a wallet_settings
-     * @description Get a wallet_settings
+     * Get a wallet settings
+     * @description Get a wallet settings
      */
     get: operations["v1_wallet_settings_get_handler"];
   };
   "/wallet/settings/update": {
     /**
-     * Create a wallet_settings
-     * @description Create a wallet_settings
+     * Update the wallet settings
+     * @description Update the wallet settings
      */
     put: operations["v1_wallet_settings_update_handler"];
   };
@@ -803,8 +810,15 @@ export interface components {
     };
     /** @description Billing root type. */
     Billing: {
+      /**
+       * Format: double
+       * @description The balance USD of the billing.
+       */
+      balance_usd: number;
       /** @description The id of the billing. */
       id: string;
+      /** @description The billing status of the billing. */
+      status: string;
     };
     /** @description Billing operation errors */
     BillingError: OneOf<[{
@@ -813,6 +827,9 @@ export interface components {
     }, {
       /** @description Billing not found by id. */
       NotFound: string;
+    }, {
+      /** @description Billing unauthorized. */
+      Unauthorized: string;
     }]>;
     /** @description BillingOperation root type. */
     BillingOperation: {
@@ -834,6 +851,15 @@ export interface components {
        * @description The count of the list of billing operations.
        */
       count: number;
+    };
+    BillingUpdateRequestParams: {
+      /**
+       * Format: double
+       * @description The balance USD of the wallet.
+       */
+      balance_usd?: number | null;
+      /** @default USER */
+      status?: components["schemas"]["BillingQueryStatus"] | null;
     };
     /** @description Chain root type. */
     Chain: {
@@ -999,6 +1025,7 @@ export interface components {
     };
     /** @description Notification root type. */
     Notification: {
+      activity?: components["schemas"]["Activity"] | null;
       /** @description The id of the notification to read for. */
       id: string;
     };
@@ -1029,8 +1056,12 @@ export interface components {
     };
     /** @description NotificationSettings root type. */
     NotificationSettings: {
-      /** @description The id of the interpretation action. */
+      /** @description The id of the notification settings. */
       id: string;
+      /** @description The flag that indicates if the notification settings is enabled. */
+      is_enabled: boolean;
+      /** @description The key of the notification settings. */
+      key: string;
     };
     /** @description NotificationSettings errors */
     NotificationSettingsError: OneOf<[{
@@ -1040,13 +1071,20 @@ export interface components {
       /** @description NotificationSettings not found by id. */
       NotFound: string;
     }]>;
-    /** @description Count of list of interpretation actions. */
+    /** @description Count of list of notification settingss. */
     NotificationSettingsListCount: {
       /**
        * Format: int64
-       * @description The count of the list of interpretation actions.
+       * @description The count of the list of notification settingss.
        */
       count: number;
+    };
+    /** @description WalletNotificationSettingsUpdate root type. */
+    NotificationSettingsUpdate: {
+      /** @description The key of the notification settings. */
+      key: string;
+      /** @description The boolean value of the notification settings. */
+      value: boolean;
     };
     /** @description Owner root type. */
     Owner: {
@@ -1456,6 +1494,8 @@ export interface components {
     UserNotificationSettings: {
       /** @description The id of the user settings. */
       id: string;
+      /** @description The notification settings of user notification settings. */
+      settings: components["schemas"]["NotificationSettings"][];
     };
     /** @description UserNotificationSettings operation errors */
     UserNotificationSettingsError: OneOf<[{
@@ -1464,6 +1504,11 @@ export interface components {
       /** @description UserNotificationSettings not found by id. */
       NotFound: string;
     }]>;
+    /** @description Optional UserNotificationSettings root type. */
+    UserNotificationSettingsOptional: {
+      /** @description The update query of user notification settings of whether the testnet is enabled. */
+      settings?: components["schemas"]["NotificationSettingsUpdate"][] | null;
+    };
     UserNotificationSettingsUpdateRequestParams: {
       user_notification_settings: components["schemas"]["UserNotificationSettingsOptional"];
     };
@@ -1605,6 +1650,7 @@ export interface components {
     };
     /** @description WalletBilling root type. */
     WalletBilling: {
+      billing?: components["schemas"]["Billing"] | null;
       /** @description The wallet billing of the balance in USD. */
       id: string;
     };
@@ -1727,6 +1773,28 @@ export interface components {
        */
       count: number;
     };
+    /** @description WalletNotificationSettings root type. */
+    WalletNotificationSettings: {
+      /** @description The id of wallet notification settings. */
+      id: string;
+      /** @description The notification settings of wallet notification settings. */
+      settings: components["schemas"]["NotificationSettings"][];
+    };
+    /** @description WalletNotificationSettings operation errors */
+    WalletNotificationSettingsError: OneOf<[{
+      BadRequest: string;
+    }, {
+      /** @description WalletNotificationSettings not found by id. */
+      NotFound: string;
+    }]>;
+    /** @description Optional WalletNotificationSettings root type. */
+    WalletNotificationSettingsOptional: {
+      /** @description The update query of wallet notification settings of whether the testnet is enabled. */
+      settings?: components["schemas"]["NotificationSettingsUpdate"][] | null;
+    };
+    WalletNotificationSettingsUpdateRequestParams: {
+      wallet_notification_settings: components["schemas"]["WalletNotificationSettingsOptional"];
+    };
     /** @description WalletSettings root type. */
     WalletSettings: {
       /** @description The wallet_settings of whether the testnet is enabled. */
@@ -1796,8 +1864,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a list of activities.
-   * @description Returns a list of activities.
+   * Returns a list of activities
+   * @description Returns a list of activities
    */
   v1_activity_list_handler: {
     parameters: {
@@ -1830,8 +1898,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a count of list of activities.
-   * @description Returns a count of list of activities.
+   * Returns a count of list of activities
+   * @description Returns a count of list of activities
    */
   v1_activity_list_count_handler: {
     parameters: {
@@ -1889,8 +1957,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a list of assets.
-   * @description Returns a list of assets.
+   * Returns a list of assets
+   * @description Returns a list of assets
    */
   v1_asset_change_list_handler: {
     parameters: {
@@ -2044,8 +2112,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a list of billings.
-   * @description Returns a list of billings.
+   * Returns a list of billings
+   * @description Returns a list of billings
    */
   v1_billing_list_handler: {
     parameters: {
@@ -2064,6 +2132,37 @@ export interface operations {
         };
       };
       /** @description Billing bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["BillingError"];
+        };
+      };
+    };
+  };
+  /**
+   * Update a billing
+   * @description Update a billing
+   */
+  v1_billing_update_handler: {
+    parameters: {
+      query: {
+        /** @description The id of the billing id to post for. */
+        billing_id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["BillingUpdateRequestParams"];
+      };
+    };
+    responses: {
+      /** @description Billing updated successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Billing"];
+        };
+      };
+      /** @description Billing internal error */
       500: {
         content: {
           "application/json": components["schemas"]["BillingError"];
@@ -2098,8 +2197,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a list of billing operations.
-   * @description Returns a list of billing operations.
+   * Returns a list of billing operations
+   * @description Returns a list of billing operations
    */
   v1_billing_operation_list_handler: {
     parameters: {
@@ -2130,8 +2229,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a count of list of billing operations.
-   * @description Returns a count of list of billing operations.
+   * Returns a count of list of billing operations
+   * @description Returns a count of list of billing operations
    */
   v1_billing_operation_list_count_handler: {
     parameters: {
@@ -2162,8 +2261,8 @@ export interface operations {
     };
   };
   /**
-   * Create a chain.
-   * @description Create a chain.
+   * Create a chain
+   * @description Create a chain
    */
   v1_chain_create_handler: {
     parameters: {
@@ -2223,8 +2322,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a list of protocol groups.
-   * @description Returns a list of protocol groups.
+   * Returns a list of protocol groups
+   * @description Returns a list of protocol groups
    */
   v1_chain_list_handler: {
     parameters: {
@@ -2251,8 +2350,8 @@ export interface operations {
     };
   };
   /**
-   * Update a chain.
-   * @description Update a chain.
+   * Update a chain
+   * @description Update a chain
    */
   v1_chain_update_handler: {
     parameters: {
@@ -2282,8 +2381,8 @@ export interface operations {
     };
   };
   /**
-   * Check the health of the server.
-   * @description Check the health of the server.
+   * Check the health of the server
+   * @description Check the health of the server
    */
   handler: {
     responses: {
@@ -2322,8 +2421,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a list of configurations.
-   * @description Returns a list of configurations.
+   * Returns a list of configurations
+   * @description Returns a list of configurations
    */
   v1_configuration_list_handler: {
     parameters: {
@@ -2401,8 +2500,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a list of interpretations.
-   * @description Returns a list of interpretations.
+   * Returns a list of interpretations
+   * @description Returns a list of interpretations
    */
   v1_interpretation_list_handler: {
     parameters: {
@@ -2455,8 +2554,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a list of interpretation actions.
-   * @description Returns a list of interpretation actions.
+   * Returns a list of interpretation actions
+   * @description Returns a list of interpretation actions
    */
   v1_interpretation_action_list_handler: {
     parameters: {
@@ -2487,8 +2586,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a count of list of interpretation actions.
-   * @description Returns a count of list of interpretation actions.
+   * Returns a count of list of interpretation actions
+   * @description Returns a count of list of interpretation actions
    */
   v1_interpretation_action_list_count_handler: {
     parameters: {
@@ -2565,8 +2664,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a list of invite codes.
-   * @description Returns a list of invite codes.
+   * Returns a list of invite codes
+   * @description Returns a list of invite codes
    */
   v1_invite_code_list_handler: {
     parameters: {
@@ -2595,8 +2694,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a count of list of invite codes.
-   * @description Returns a count of list of invite codes.
+   * Returns a count of list of invite codes
+   * @description Returns a count of list of invite codes
    */
   v1_invite_code_list_count_handler: {
     parameters: {
@@ -2651,8 +2750,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a list of notifications.
-   * @description Returns a list of notifications.
+   * Returns a list of notifications
+   * @description Returns a list of notifications
    */
   v1_notification_list_handler: {
     parameters: {
@@ -2683,8 +2782,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a count of list of notifications.
-   * @description Returns a count of list of notifications.
+   * Returns a count of list of notifications
+   * @description Returns a count of list of notifications
    */
   v1_notification_list_count_handler: {
     parameters: {
@@ -2746,18 +2845,18 @@ export interface operations {
   v1_notification_settings_get_handler: {
     parameters: {
       query: {
-        /** @description The id of the interpretation action. */
+        /** @description The id of the notification settings. */
         id: string;
       };
     };
     responses: {
-      /** @description Interpretation action returned successfully */
+      /** @description Notification settings returned successfully */
       200: {
         content: {
           "application/json": components["schemas"]["NotificationSettings"];
         };
       };
-      /** @description Interpretation action not found */
+      /** @description Notification settings not found */
       404: {
         content: {
           "application/json": components["schemas"]["NotificationSettingsError"];
@@ -2766,28 +2865,28 @@ export interface operations {
     };
   };
   /**
-   * Returns a list of interpretation actions.
-   * @description Returns a list of interpretation actions.
+   * Returns a list of notification settingss
+   * @description Returns a list of notification settingss
    */
   v1_notification_settings_list_handler: {
     parameters: {
       query?: {
-        /** @description The offset of the first interpretation action to return. */
+        /** @description The offset of the first notification settings to return. */
         offset?: number | null;
-        /** @description The maximum number of interpretation actions to return. */
+        /** @description The maximum number of notification settingss to return. */
         limit?: number | null;
         /** @description The flag to filter by enabled or disabled. */
         is_enabled?: boolean | null;
       };
     };
     responses: {
-      /** @description Interpretation Actions returned successfully */
+      /** @description Notification settingss returned successfully */
       200: {
         content: {
           "application/json": components["schemas"]["NotificationSettings"][];
         };
       };
-      /** @description Interpretation Action bad request */
+      /** @description Notification settings bad request */
       500: {
         content: {
           "application/json": components["schemas"]["NotificationSettingsError"];
@@ -2796,22 +2895,22 @@ export interface operations {
     };
   };
   /**
-   * Returns a count of list of interpretation actions.
-   * @description Returns a count of list of interpretation actions.
+   * Returns a count of list of notification settingss
+   * @description Returns a count of list of notification settingss
    */
   v1_notification_settings_list_count_handler: {
     parameters: {
       query?: {
-        /** @description The offset of the first interpretation action to return. */
+        /** @description The offset of the first notification settings to return. */
         offset?: number | null;
-        /** @description The maximum number of interpretation actions to return. */
+        /** @description The maximum number of notification settingss to return. */
         limit?: number | null;
         /** @description The flag to filter by enabled or disabled. */
         is_enabled?: boolean | null;
       };
     };
     responses: {
-      /** @description Interpretation actions returned successfully */
+      /** @description Notification settingss returned successfully */
       200: {
         content: {
           "application/json": components["schemas"]["NotificationSettingsListCount"];
@@ -2851,8 +2950,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a list of owners.
-   * @description Returns a list of owners.
+   * Returns a list of owners
+   * @description Returns a list of owners
    */
   v1_owner_list_handler: {
     parameters: {
@@ -2904,8 +3003,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a list of paymasters.
-   * @description Returns a list of paymasters.
+   * Returns a list of paymasters
+   * @description Returns a list of paymasters
    */
   v1_paymaster_list_handler: {
     parameters: {
@@ -2962,8 +3061,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a list of paymasters.
-   * @description Returns a list of paymasters.
+   * Returns a list of paymasters
+   * @description Returns a list of paymasters
    */
   v1_paymaster_operation_list_handler: {
     parameters: {
@@ -3041,8 +3140,8 @@ export interface operations {
     };
   };
   /**
-   * Create a protocol group.
-   * @description Create a protocol group.
+   * Create a protocol group
+   * @description Create a protocol group
    */
   v1_protocol_group_create_handler: {
     parameters: {
@@ -3094,8 +3193,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a list of protocol groups.
-   * @description Returns a list of protocol groups.
+   * Returns a list of protocol groups
+   * @description Returns a list of protocol groups
    */
   v1_protocol_group_list_handler: {
     parameters: {
@@ -3122,8 +3221,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a list of protocols.
-   * @description Returns a list of protocols.
+   * Returns a list of protocols
+   * @description Returns a list of protocols
    */
   v1_protocol_list_handler: {
     parameters: {
@@ -3150,8 +3249,8 @@ export interface operations {
     };
   };
   /**
-   * Queue interpretation handler.
-   * @description Queue interpretation handler.
+   * Queue interpretation handler
+   * @description Queue interpretation handler
    */
   v1_queue_interpretation_handler: {
     parameters: {
@@ -3178,8 +3277,8 @@ export interface operations {
     };
   };
   /**
-   * Queue portfolio handler.
-   * @description Queue portfolio handler.
+   * Queue portfolio handler
+   * @description Queue portfolio handler
    */
   v1_queue_portfolio_handler: {
     parameters: {
@@ -3204,8 +3303,8 @@ export interface operations {
     };
   };
   /**
-   * Queue token handler.
-   * @description Queue token handler.
+   * Queue token handler
+   * @description Queue token handler
    */
   v1_queue_token_handler: {
     parameters: {
@@ -3230,8 +3329,8 @@ export interface operations {
     };
   };
   /**
-   * Queue user operation handler.
-   * @description Queue user operation handler.
+   * Queue user operation handler
+   * @description Queue user operation handler
    */
   v1_queue_user_operation_handler: {
     parameters: {
@@ -3331,8 +3430,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a list of signatures.
-   * @description Returns a list of signatures.
+   * Returns a list of signatures
+   * @description Returns a list of signatures
    */
   v1_signature_list_handler: {
     parameters: {
@@ -3361,8 +3460,8 @@ export interface operations {
     };
   };
   /**
-   * Create a simulation.
-   * @description Create a simulation.
+   * Create a simulation
+   * @description Create a simulation
    */
   v1_simulation_create_handler: {
     requestBody: {
@@ -3412,8 +3511,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a list of simulations.
-   * @description Returns a list of simulations.
+   * Returns a list of simulations
+   * @description Returns a list of simulations
    */
   v1_simulation_list_handler: {
     parameters: {
@@ -3442,8 +3541,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a count of list of simulations.
-   * @description Returns a count of list of simulations.
+   * Returns a count of list of simulations
+   * @description Returns a count of list of simulations
    */
   v1_simulation_list_count_handler: {
     parameters: {
@@ -3531,8 +3630,8 @@ export interface operations {
     };
   };
   /**
-   * Create a token group.
-   * @description Create a token group.
+   * Create a token group
+   * @description Create a token group
    */
   v1_token_group_create_handler: {
     parameters: {
@@ -3584,8 +3683,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a list of token groups.
-   * @description Returns a list of token groups.
+   * Returns a list of token groups
+   * @description Returns a list of token groups
    */
   v1_token_group_list_handler: {
     parameters: {
@@ -3612,8 +3711,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a list of tokens.
-   * @description Returns a list of tokens.
+   * Returns a list of tokens
+   * @description Returns a list of tokens
    */
   v1_token_list_handler: {
     parameters: {
@@ -3650,8 +3749,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a count of list of tokens.
-   * @description Returns a count of list of tokens.
+   * Returns a count of list of tokens
+   * @description Returns a count of list of tokens
    */
   v1_token_list_count_handler: {
     parameters: {
@@ -3688,8 +3787,8 @@ export interface operations {
     };
   };
   /**
-   * Update a token.
-   * @description Update a token.
+   * Update a token
+   * @description Update a token
    */
   v1_token_update_handler: {
     parameters: {
@@ -3773,8 +3872,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a list of transactions.
-   * @description Returns a list of transactions.
+   * Returns a list of transactions
+   * @description Returns a list of transactions
    */
   v1_transaction_list_handler: {
     parameters: {
@@ -3805,8 +3904,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a count of list of transactions.
-   * @description Returns a count of list of transactions.
+   * Returns a count of list of transactions
+   * @description Returns a count of list of transactions
    */
   v1_transaction_list_count_handler: {
     parameters: {
@@ -3891,8 +3990,8 @@ export interface operations {
     };
   };
   /**
-   * Create a user_notification_settings
-   * @description Create a user_notification_settings
+   * Update the user notification settings
+   * @description Update the user notification settings
    */
   v1_user_notification_settings_update_handler: {
     parameters: {
@@ -3960,8 +4059,8 @@ export interface operations {
     };
   };
   /**
-   * Create a user_settings
-   * @description Create a user_settings
+   * Update the user settings
+   * @description Update the user settings
    */
   v1_user_settings_update_handler: {
     parameters: {
@@ -4071,8 +4170,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a list of user operations.
-   * @description Returns a list of user operations.
+   * Returns a list of user operations
+   * @description Returns a list of user operations
    */
   v1_user_operation_list_handler: {
     parameters: {
@@ -4112,8 +4211,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a count of user operations.
-   * @description Returns a count of user operations.
+   * Returns a count of user operations
+   * @description Returns a count of user operations
    */
   v1_user_operation_list_count_handler: {
     parameters: {
@@ -4181,8 +4280,8 @@ export interface operations {
     };
   };
   /**
-   * Check a user operation for its validity and return the computed signature if valid.
-   * @description Check a user operation for its validity and return the computed signature if valid.
+   * Check a user operation for its validity and return the computed signature if valid
+   * @description Check a user operation for its validity and return the computed signature if valid
    */
   v1_user_operation_signature_handler: {
     parameters: {
@@ -4235,8 +4334,8 @@ export interface operations {
     };
   };
   /**
-   * Get a wallet_billing
-   * @description Get a wallet_billing
+   * Get a wallet billing
+   * @description Get a wallet billing
    */
   v1_wallet_billing_get_handler: {
     parameters: {
@@ -4261,8 +4360,8 @@ export interface operations {
     };
   };
   /**
-   * Create a wallet_billing
-   * @description Create a wallet_billing
+   * Update the wallet billing
+   * @description Update the wallet billing
    */
   v1_wallet_billing_update_handler: {
     parameters: {
@@ -4347,8 +4446,8 @@ export interface operations {
     };
   };
   /**
-   * Get a wallet_features
-   * @description Get a wallet_features
+   * Get a wallet features
+   * @description Get a wallet features
    */
   v1_wallet_features_get_handler: {
     parameters: {
@@ -4373,8 +4472,8 @@ export interface operations {
     };
   };
   /**
-   * Create a wallet_features
-   * @description Create a wallet_features
+   * Update the wallet features
+   * @description Update the wallet features
    */
   v1_wallet_features_update_handler: {
     parameters: {
@@ -4444,8 +4543,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a list of wallets.
-   * @description Returns a list of wallets.
+   * Returns a list of wallets
+   * @description Returns a list of wallets
    */
   v1_wallet_list_handler: {
     parameters: {
@@ -4476,8 +4575,8 @@ export interface operations {
     };
   };
   /**
-   * Returns a count of list of wallets.
-   * @description Returns a count of list of wallets.
+   * Returns a count of list of wallets
+   * @description Returns a count of list of wallets
    */
   v1_wallet_list_count_handler: {
     parameters: {
@@ -4508,14 +4607,14 @@ export interface operations {
     };
   };
   /**
-   * Get a wallet_notification_settings
-   * @description Get a wallet_notification_settings
+   * Get a wallet notification settings
+   * @description Get a wallet notification settings
    */
   v1_wallet_notification_settings_get_handler: {
     parameters: {
       query: {
         /** @description The address of the wallet settings. */
-        wallet_address: string;
+        address: string;
         /** @description The user id to filter by. (for admin purposes only) */
         user_id?: string | null;
       };
@@ -4536,8 +4635,8 @@ export interface operations {
     };
   };
   /**
-   * Create a wallet_notification_settings
-   * @description Create a wallet_notification_settings
+   * Update the wallet notification settings
+   * @description Update the wallet notification settings
    */
   v1_wallet_notification_settings_update_handler: {
     parameters: {
@@ -4554,7 +4653,7 @@ export interface operations {
       };
     };
     responses: {
-      /** @description Wallet Settings updated successfully */
+      /** @description Wallet notification settings updated successfully */
       200: {
         content: {
           "application/json": components["schemas"]["WalletNotificationSettings"];
@@ -4566,13 +4665,13 @@ export interface operations {
           "application/json": components["schemas"]["WalletNotificationSettingsError"];
         };
       };
-      /** @description Wallet Settings already exists */
+      /** @description Wallet notification settings already exists */
       409: {
         content: {
           "application/json": components["schemas"]["WalletNotificationSettingsError"];
         };
       };
-      /** @description Wallet Settings internal error */
+      /** @description Wallet notification settings internal error */
       500: {
         content: {
           "application/json": components["schemas"]["WalletNotificationSettingsError"];
@@ -4581,8 +4680,8 @@ export interface operations {
     };
   };
   /**
-   * Get a wallet_settings
-   * @description Get a wallet_settings
+   * Get a wallet settings
+   * @description Get a wallet settings
    */
   v1_wallet_settings_get_handler: {
     parameters: {
@@ -4592,13 +4691,13 @@ export interface operations {
       };
     };
     responses: {
-      /** @description Wallet Settings returned successfully */
+      /** @description Wallet settings returned successfully */
       200: {
         content: {
           "application/json": components["schemas"]["WalletSettings"];
         };
       };
-      /** @description Wallet Settings not found */
+      /** @description Wallet settings not found */
       404: {
         content: {
           "application/json": components["schemas"]["WalletSettingsError"];
@@ -4607,8 +4706,8 @@ export interface operations {
     };
   };
   /**
-   * Create a wallet_settings
-   * @description Create a wallet_settings
+   * Update the wallet settings
+   * @description Update the wallet settings
    */
   v1_wallet_settings_update_handler: {
     parameters: {

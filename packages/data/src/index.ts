@@ -16,9 +16,11 @@
 export type { ActivityData, ActivityCountData } from "./activity";
 export type { AssetChangeData } from "./assetChange";
 export type { AuthNonceData, AuthSessionData } from "./auth";
+export type { BillingData } from "./billing";
 export type { ConfigurationData } from "./configuration";
 export type { InterpretationData } from "./interpretation";
 export type { NotificationData, NotificationCountData } from "./notification";
+export type { NotificationSettingsData } from "./notificationSettings";
 export type { NftData, NftDataPage } from "./nft";
 export type { EstimateUserOperationGasData, PaymasterAndData } from "./rpc";
 export type { OwnerData } from "./owner";
@@ -35,7 +37,8 @@ export type {
   UserOperationData,
   UserOperationCountData,
 } from "./userOperation";
+export type { WalletData, WalletCountData } from "./wallet";
 export type { WalletBillingData } from "./walletBilling";
 export type { WalletFeaturesData } from "./walletFeatures";
+export type { WalletNotificationSettingsData } from "./walletNotificationSettings";
 export type { WalletSettingsData } from "./walletSettings";
-export type { WalletData, WalletCountData } from "./wallet";

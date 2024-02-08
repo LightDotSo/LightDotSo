@@ -18,10 +18,10 @@ import type { TokenData } from "./token";
 
 export type AssetChangeData = {
   address: string;
-  after_amount?: number | null;
+  after_amount?: number | null | undefined;
   amount: number;
-  before_amount?: number | null;
+  before_amount?: number | null | undefined;
   id: string;
-  action?: InterpretationActionData | null;
-  token?: TokenData | null;
+  action?: InterpretationActionData | null | undefined;
+  token?: TokenData | null | undefined;
 };
