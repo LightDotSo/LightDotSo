@@ -44,7 +44,7 @@ use utoipa::IntoParams;
 #[into_params(parameter_in = Query)]
 pub struct GetQuery {
     /// The address of the wallet settings.
-    pub wallet_address: String,
+    pub address: String,
     /// The user id to filter by. (for admin purposes only)
     pub user_id: Option<String>,
 }
@@ -79,7 +79,7 @@ pub(crate) async fn v1_wallet_notification_settings_get_handler(
     // Get the get query.
     let Query(query) = get_query;
 
-    let parsed_query_address: H160 = query.wallet_address.parse()?;
+    let parsed_query_address: H160 = query.address.parse()?;
     let checksum_address = to_checksum(&parsed_query_address, None);
 
     info!("Get wallet_notification_settings for address: {:?}", checksum_address);
@@ -279,7 +279,7 @@ async fn authenticate_user_id(
     auth_token: Option<String>,
 ) -> AppResult<String> {
     // Parse the address.
-    let parsed_query_address: H160 = query.wallet_address.parse()?;
+    let parsed_query_address: H160 = query.address.parse()?;
 
     // If the user id is provided, authenticate the user.
     let auth_user_id = if query.user_id.is_some() {

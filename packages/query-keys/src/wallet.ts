@@ -41,6 +41,9 @@ export const wallet = createQueryKeys("wallet", {
   features: (params: WalletParams) => ({
     queryKey: [{ params }],
   }),
+  notificationSettings: (params: WalletParams) => ({
+    queryKey: [{ params }],
+  }),
   settings: (params: WalletParams) => ({
     queryKey: [{ params }],
   }),

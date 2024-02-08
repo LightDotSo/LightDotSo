@@ -13,24 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export * from "./activity";
-export * from "./auth";
-export * from "./configuration";
-export * from "./feedback";
-export * from "./invite_code";
-export * from "./notification";
-export * from "./paymaster_operation";
-export * from "./portfolio";
-export * from "./queue";
-export * from "./signature";
-export * from "./simulation";
-export * from "./token_price";
-export * from "./token";
-export * from "./transaction";
-export * from "./user_operation";
-export * from "./user";
-export * from "./wallet";
-export * from "./wallet_billing";
-export * from "./wallet_features";
-export * from "./wallet_notification_settings";
-export * from "./wallet_settings";
+export type NotificationSettingsData = {
+  id: string;
+  key: string;
+  is_enabled: boolean;
+};
