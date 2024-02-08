@@ -30,6 +30,7 @@ import { preloader } from "@/preloaders/paths/notifications/preloader";
 type PageProps = {
   searchParams: {
     pagination?: string;
+    address?: string;
   };
 };
 
