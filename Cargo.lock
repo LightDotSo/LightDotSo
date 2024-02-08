@@ -6020,6 +6020,7 @@ dependencies = [
  "lightdotso-indexer",
  "lightdotso-interpreter",
  "lightdotso-kafka",
+ "lightdotso-notifier",
  "lightdotso-opentelemetry",
  "lightdotso-paymaster",
  "lightdotso-prisma",

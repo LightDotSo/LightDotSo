@@ -28,7 +28,8 @@ use axum::{
     Json, TypedHeader,
 };
 use ethers_main::{types::H160, utils::to_checksum};
-use lightdotso_prisma::{user, wallet, wallet_notification_settings};
+use lightdotso_notifier::types::WALLET_NOTIFICATION_KEYS;
+use lightdotso_prisma::{notification_settings, user, wallet, wallet_notification_settings};
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use tower_sessions_core::Session;
@@ -115,9 +116,90 @@ pub(crate) async fn v1_wallet_notification_settings_get_handler(
     // Return
     // -------------------------------------------------------------------------
 
-    // If the wallet_notification_settings is not found, create a default
-    // wallet_notification_settings in the db, if the wallet exists.
     if let Some(wallet_notification_settings) = wallet_notification_settings {
+        let mut missing_notification_settings = vec![];
+
+        // Compare the notification settings with the wallet notification keys.
+        if let Some(notification_settings) =
+            wallet_notification_settings.clone().notification_settings
+        {
+            for key in WALLET_NOTIFICATION_KEYS.iter() {
+                for setting in notification_settings.iter() {
+                    // if none match, add the missing notification setting.
+                    if setting.key != *key {
+                        missing_notification_settings.push(key.clone());
+                    }
+                }
+            }
+        }
+
+        // If there are missing notification settings, add them to the wallet notification settings.
+        if !missing_notification_settings.is_empty() {
+            // -----------------------------------------------------------------
+            // DB
+            // -----------------------------------------------------------------
+
+            let _ = state
+                .client
+                .notification_settings()
+                .create_many(
+                    missing_notification_settings
+                        .iter()
+                        .map(|key| {
+                            (
+                                key.clone(),
+                                true,
+                                auth_user_id.clone(),
+                                vec![
+                                    notification_settings::wallet_address::set(Some(
+                                        checksum_address.clone(),
+                                    )),
+                                    notification_settings::wallet_notification_settings_id::set(
+                                        Some(wallet_notification_settings.clone().id),
+                                    ),
+                                ],
+                            )
+                        })
+                        .collect(),
+                )
+                .exec()
+                .await?;
+
+            // Get the wallet notification settings again.
+            let wallet_notification_settings = state
+                .client
+                .wallet_notification_settings()
+                .find_unique(wallet_notification_settings::user_id_wallet_address(
+                    auth_user_id.clone(),
+                    checksum_address.clone(),
+                ))
+                .with(wallet_notification_settings::notification_settings::fetch(vec![]))
+                .exec()
+                .await?;
+
+            // If the wallet is not found, return a 404.
+            let wallet_notification_settings = wallet_notification_settings.clone().ok_or(
+                RouteError::WalletNotificationSettingsError(
+                    WalletNotificationSettingsError::NotFound(
+                        "Wallet notification not found".to_string(),
+                    ),
+                ),
+            )?;
+
+            // -----------------------------------------------------------------
+            // Return
+            // -----------------------------------------------------------------
+
+            let wallet_notification_settings: WalletNotificationSettings =
+                wallet_notification_settings.into();
+
+            return Ok(Json::from(wallet_notification_settings));
+        }
+
+        // ---------------------------------------------------------------------
+        // Return
+        // ---------------------------------------------------------------------
+
         let wallet_notification_settings: WalletNotificationSettings =
             wallet_notification_settings.into();
 
@@ -142,10 +224,6 @@ pub(crate) async fn v1_wallet_notification_settings_get_handler(
             )));
         }
 
-        // ---------------------------------------------------------------------
-        // Return
-        // ---------------------------------------------------------------------
-
         let wallet_notification_settings = state
             .client
             .wallet_notification_settings()
@@ -156,6 +234,10 @@ pub(crate) async fn v1_wallet_notification_settings_get_handler(
             )
             .exec()
             .await?;
+
+        // ---------------------------------------------------------------------
+        // Return
+        // ---------------------------------------------------------------------
 
         let wallet_notification_settings: WalletNotificationSettings =
             wallet_notification_settings.into();
