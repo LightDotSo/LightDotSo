@@ -16,6 +16,7 @@
 "use client";
 
 import { useIsMounted } from "@lightdotso/hooks";
+import { useAuth } from "@lightdotso/stores";
 import { ButtonIcon } from "@lightdotso/ui";
 import { BellIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
@@ -26,6 +27,12 @@ import type { FC } from "react";
 // -----------------------------------------------------------------------------
 
 export const NotificationsNav: FC = () => {
+  // ---------------------------------------------------------------------------
+  // States
+  // ---------------------------------------------------------------------------
+
+  const { wallet } = useAuth();
+
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
@@ -42,7 +49,7 @@ export const NotificationsNav: FC = () => {
 
   return (
     <ButtonIcon asChild variant="outline" className="rounded-full">
-      <Link href="/notifications">
+      <Link href={`/notifications${wallet ? `?address=${wallet}` : ""}`}>
         <BellIcon />
         <span className="sr-only">Open notificaitons</span>
       </Link>

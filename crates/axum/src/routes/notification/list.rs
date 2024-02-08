@@ -16,9 +16,8 @@
 use super::types::Notification;
 use crate::{
     authentication::{authenticate_user, authenticate_wallet_user},
-    error::RouteError,
-    result::{AppError, AppJsonResult, AppResult},
-    routes::auth::error::AuthError,
+    result::{AppJsonResult, AppResult},
+    sessions::get_user_id,
     state::AppState,
 };
 use autometrics::autometrics;
@@ -219,9 +218,7 @@ async fn authenticate_user_id(
     } else if let Some(addr) = query_address {
         authenticate_wallet_user(state, session, &addr, None, None).await?
     } else {
-        return Err(AppError::RouteError(RouteError::AuthError(AuthError::Unauthorized(
-            "Unauthorized".to_string(),
-        ))));
+        get_user_id(session)?
     };
 
     Ok(auth_user_id)
