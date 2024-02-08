@@ -66,7 +66,7 @@ export const UserOperationCardTransactionExecuteButton: FC<
         <TooltipTrigger asChild>
           <Button
             disabled={
-              !isValid || isLoading || userOperation.status === "EXECUTED"
+              !isValid || isLoading || userOperation.status !== "PROPOSED"
             }
             isLoading={isLoading}
             variant={isValid ? "default" : "outline"}
@@ -75,7 +75,9 @@ export const UserOperationCardTransactionExecuteButton: FC<
           >
             {userOperation.status === "PROPOSED"
               ? "Execute"
-              : "Already executed"}
+              : userOperation.status === "PENDING"
+                ? "Pending"
+                : "Already executed"}
           </Button>
         </TooltipTrigger>
         <TooltipContent>
@@ -84,6 +86,8 @@ export const UserOperationCardTransactionExecuteButton: FC<
               Already executed on{" "}
               {new Date(userOperation.updated_at).toLocaleDateString()}
             </span>
+          ) : userOperation.status === "PENDING" ? (
+            <span>Transaction is pending...</span>
           ) : (
             <span>Execute this transaction</span>
           )}

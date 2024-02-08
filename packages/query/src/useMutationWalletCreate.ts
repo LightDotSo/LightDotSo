@@ -84,7 +84,6 @@ export const useMutationWalletCreate = (params: WalletParams) => {
         },
       );
     },
-    // When mutate is called:
     onMutate: async (data: WalletCreateBodyParams) => {
       // Cancel any outgoing refetches
       // (so they don't overwrite our optimistic update)
