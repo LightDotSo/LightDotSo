@@ -1,0 +1,5 @@
+---
+source: crates/notifier/src/types.rs
+expression: "format!(\"{:?}\", * OPERATIONS)"
+---
+[UserOnly(InviteCodeAccepted), WalletOnly(UserOperationCreated), WalletOnly(UserOperationExecuted), WalletOnly(TransactionWithUserOperationExecuted)]

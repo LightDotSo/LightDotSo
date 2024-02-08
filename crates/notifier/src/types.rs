@@ -258,11 +258,46 @@ mod tests {
     use super::*;
 
     #[test]
+    fn test_user_notification_keys() {
+        for key in USER_NOTIFICATION_KEYS.iter() {
+            println!("{}", key);
+        }
+        insta::assert_snapshot!("USER_NOTIFICATION_KEYS", format!("{:?}", *USER_NOTIFICATION_KEYS));
+    }
+
+    #[test]
+    fn test_wallet_notification_keys() {
+        for key in WALLET_NOTIFICATION_KEYS.iter() {
+            println!("{}", key);
+        }
+        insta::assert_snapshot!(
+            "WALLET_NOTIFICATION_KEYS",
+            format!("{:?}", *WALLET_NOTIFICATION_KEYS)
+        );
+    }
+
+    #[test]
     fn test_notification_keys() {
         for key in NOTIFICATION_KEYS.iter() {
             println!("{}", key);
         }
         insta::assert_snapshot!("NOTIFICATION_KEYS", format!("{:?}", *NOTIFICATION_KEYS));
+    }
+
+    #[test]
+    fn test_operations() {
+        for operation in OPERATIONS.iter() {
+            println!("{}", operation);
+        }
+        insta::assert_snapshot!("OPERATIONS", format!("{:?}", *OPERATIONS));
+    }
+
+    #[test]
+    fn test_notification() {
+        for notification in NOTIFICATION.iter() {
+            println!("{}", notification);
+        }
+        insta::assert_snapshot!("NOTIFICATION", format!("{:?}", *NOTIFICATION));
     }
 
     #[test]
