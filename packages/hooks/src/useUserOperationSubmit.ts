@@ -24,7 +24,7 @@ import {
   useReadLightVerifyingPaymasterGetHash,
   useReadLightVerifyingPaymasterSenderNonce,
 } from "@lightdotso/wagmi";
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useState, useEffect, useMemo } from "react";
 import { toHex, fromHex, recoverMessageAddress } from "viem";
 import type { Hex, Address } from "viem";
 
@@ -122,11 +122,14 @@ export const useUserOperationSubmit = ({
     ),
   });
 
-  const { userOperationSend, isUserOperationSendPending: isLoading } =
-    useMutationUserOperationSend({
-      address,
-      is_testnet,
-    });
+  const {
+    userOperationSend,
+    isUserOperationSendPending,
+    isUserOperationSendSuccess,
+  } = useMutationUserOperationSend({
+    address,
+    is_testnet,
+  });
 
   // ---------------------------------------------------------------------------
   // Local Variables
@@ -166,6 +169,14 @@ export const useUserOperationSubmit = ({
   const handleConfirm = useCallback(async () => {
     await userOperationSend(userOperation);
   }, [userOperation, userOperationSend]);
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const isLoading = useMemo(() => {
+    return isUserOperationSendPending || !isUserOperationSendSuccess;
+  }, [isUserOperationSendPending, isUserOperationSendSuccess]);
 
   // ---------------------------------------------------------------------------
   // Render
