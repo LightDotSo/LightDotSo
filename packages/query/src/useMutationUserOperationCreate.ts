@@ -36,7 +36,7 @@ export const useMutationUserOperationCreate = (params: UserOperationParams) => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { clientType, address } = useAuth();
+  const { clientType } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Query

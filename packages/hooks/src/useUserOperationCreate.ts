@@ -33,7 +33,6 @@ import {
   isAddressEqual,
   toBytes,
   hexToBytes,
-  toHex,
   // fromHex,
   decodeFunctionData,
 } from "viem";
