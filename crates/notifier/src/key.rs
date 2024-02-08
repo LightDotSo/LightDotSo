@@ -20,12 +20,14 @@ use std::collections::HashMap;
 use strum::IntoEnumIterator;
 use strum_macros::{Display, EnumIter, EnumString, IntoStaticStr};
 
+// This is a list of all platforms
 #[derive(Clone, Debug, EnumString, EnumIter, IntoStaticStr, Display)]
 pub enum Platform {
     #[strum(serialize = "WEB")]
     Web,
 }
 
+// This is a list of all user operations
 #[derive(Clone, Debug, EnumString, EnumIter, IntoStaticStr, Display)]
 pub enum UserOnlyOperation {
     #[strum(serialize = "invite-code-accepted")]
@@ -51,6 +53,7 @@ pub fn match_user_only_notification_with_activity(
     }
 }
 
+// This is a list of all wallet operations
 #[derive(Clone, Debug, EnumString, EnumIter, IntoStaticStr, Display)]
 pub enum WalletOnlyOperation {
     #[strum(serialize = "user-operation-created")]
@@ -85,6 +88,7 @@ pub fn match_wallet_only_notification_with_activity(
     }
 }
 
+// This is a list of all operations
 #[derive(Clone, Debug, Display)]
 pub enum Operation {
     UserOnly(UserOnlyOperation),
@@ -92,6 +96,7 @@ pub enum Operation {
 }
 
 lazy_static! {
+    // This is a list of all operations
     pub static ref OPERATIONS: Vec<Operation> = {
         let mut operations = Vec::new();
 
@@ -109,13 +114,13 @@ lazy_static! {
 
 // For each operation, we define a notification type which is all combinations of operation and
 // platform
-
 #[derive(Clone, Debug)]
 pub enum Notification {
     UserOnly(Platform, UserOnlyOperation),
     WalletOnly(Platform, WalletOnlyOperation),
 }
 
+// Implement Display for Notification
 impl std::fmt::Display for Notification {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
@@ -130,6 +135,7 @@ impl std::fmt::Display for Notification {
 }
 
 lazy_static! {
+    // This is a list of all notification types
     pub static ref NOTIFICATION: Vec<Notification> = {
         let mut notification_types = Vec::new();
 
@@ -150,21 +156,17 @@ lazy_static! {
 }
 
 lazy_static! {
-    pub static ref NOTIFICATION_DEFAULT_ENABLED: HashMap<String, bool> = {
+    // This is a list of all user notification types
+    pub static ref USER_NOTIFICATION_DEFAULT_ENABLED: HashMap<String, bool> = {
         let mut map = HashMap::new();
 
         for notif in NOTIFICATION.iter() {
-            let is_default_enabled = match notif {
-                Notification::UserOnly(_, operation) => match operation {
+            if let Notification::UserOnly(_, operation) = notif {
+                let is_default_enabled = match operation {
                     UserOnlyOperation::InviteCodeAccepted => true,
-                },
-                Notification::WalletOnly(_, operation) => match operation {
-                    WalletOnlyOperation::UserOperationCreated => false,
-                    WalletOnlyOperation::UserOperationExecuted => true,
-                    WalletOnlyOperation::TransactionWithUserOperationExecuted => true,
-                },
-            };
-            map.insert(notif.to_string(), is_default_enabled);
+                };
+                map.insert(operation.to_string(), is_default_enabled);
+            }
         }
 
         map
@@ -172,6 +174,74 @@ lazy_static! {
 }
 
 lazy_static! {
+    // This is a list of all wallet notification types
+    pub static ref WALLET_NOTIFICATION_DEFAULT_ENABLED: HashMap<String, bool> = {
+        let mut map = HashMap::new();
+
+        for notif in NOTIFICATION.iter() {
+            if let Notification::WalletOnly(_, operation) = notif {
+                let is_default_enabled = match operation {
+                    WalletOnlyOperation::UserOperationCreated => true,
+                    WalletOnlyOperation::UserOperationExecuted => true,
+                    WalletOnlyOperation::TransactionWithUserOperationExecuted => true,
+                };
+                map.insert(operation.to_string(), is_default_enabled);
+            }
+        }
+
+        map
+    };
+}
+
+lazy_static! {
+    // This is a list of all notification default enabled
+    pub static ref NOTIFICATION_DEFAULT_ENABLED: HashMap<String, bool> = {
+        let mut map = HashMap::new();
+
+        for (key, value) in &*USER_NOTIFICATION_DEFAULT_ENABLED {
+            map.insert(key.clone(), *value);
+        }
+
+        for (key, value) in &*WALLET_NOTIFICATION_DEFAULT_ENABLED {
+            map.insert(key.clone(), *value);
+        }
+
+        map
+    };
+}
+
+lazy_static! {
+    // This is a list of all user notification keys
+    pub static ref USER_NOTIFICATION_KEYS: Vec<String> = {
+        let mut user_notification_keys = Vec::new();
+
+        for notif in NOTIFICATION.iter() {
+            if let Notification::UserOnly(_, operation) = notif {
+                user_notification_keys.push(operation.to_string());
+            }
+        }
+
+        user_notification_keys
+    };
+}
+
+lazy_static! {
+    // This is a list of all wallet notification keys
+    pub static ref WALLET_NOTIFICATION_KEYS: Vec<String> = {
+        let mut wallet_notification_keys = Vec::new();
+
+        for notif in NOTIFICATION.iter() {
+            if let Notification::WalletOnly(_, operation) = notif {
+                wallet_notification_keys.push(operation.to_string());
+            }
+        }
+
+        wallet_notification_keys
+    };
+}
+
+lazy_static! {
+    // This is a list of all notification keys
     pub static ref NOTIFICATION_KEYS: Vec<String> = {
         let mut notification_keys = Vec::new();
 
