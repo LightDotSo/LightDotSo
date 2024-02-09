@@ -19,28 +19,36 @@ import { CHAINS, MAINNET_CHAINS } from "@lightdotso/const";
 import type { TokenData } from "@lightdotso/data";
 import { TokenImage } from "@lightdotso/elements";
 import { useQuerySocketBalances, useQueryTokens } from "@lightdotso/query";
-import { useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import { Modal } from "@lightdotso/templates";
-import { cn, refineNumberFormat } from "@lightdotso/utils";
 import { Button, ButtonIcon } from "@lightdotso/ui";
+import { cn, refineNumberFormat } from "@lightdotso/utils";
 import { type FC, useMemo, useState } from "react";
+import type { Address } from "viem";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type TokenModalProps = {
+  address: Address;
+  isTestnet?: boolean;
+  isTokenModalVisible: boolean;
+  onTokenSelect: (token: TokenData) => void;
+  type: "native" | "socket";
+};
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TokenModal: FC = () => {
-  // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const {
-    tokenModalProps: { address, isTestnet, type },
-    isTokenModalVisible,
-    hideTokenModal,
-  } = useModals();
-
+export const TokenModal: FC<TokenModalProps> = ({
+  address,
+  isTestnet,
+  isTokenModalVisible,
+  onTokenSelect,
+  type,
+}) => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -103,7 +111,7 @@ export const TokenModal: FC = () => {
       name: balance.name,
       symbol: balance.symbol,
     }));
-  }, [balances, chainId, type]);
+  }, [balances, chainId, tokens, type]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -117,39 +125,41 @@ export const TokenModal: FC = () => {
         headerContent={
           <div className="flex flex-row space-x-2">
             <Button
-              onClick={() => setChainId(0)}
               className={cn(chainId === 0 && "ring-2 ring-border-primary")}
               variant="shadow"
+              onClick={() => setChainId(0)}
             >
               All Chains
             </Button>
             {chains.map(chain => (
               <ButtonIcon
-                onClick={() => setChainId(chain.id)}
+                key={chain.id}
                 className={cn(
                   chainId === chain.id && "ring-2 ring-border-primary",
                 )}
-                key={chain.id}
                 variant="shadow"
+                onClick={() => setChainId(chain.id)}
               >
                 <ChainLogo chainId={chain.id} />
               </ButtonIcon>
             ))}
           </div>
         }
-        onClose={hideTokenModal}
+        // onClose={hideTokenModal}
       >
         {renderedTokens && renderedTokens.length > 0 ? (
           <div className="">
             {renderedTokens.map(token => (
+              // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
               <div
-                className="p-2 flex flex-row items-center hover:bg-background-stronger rounded-md cursor-pointer"
                 key={token.address}
+                className="flex cursor-pointer flex-row items-center rounded-md p-2 hover:bg-background-stronger"
+                onClick={() => onTokenSelect(token)}
               >
                 <TokenImage withChainLogo token={token} />
-                <div className="pl-4 grow flex flex-col">
+                <div className="flex grow flex-col pl-4">
                   <div className="text-text">{token.name}</div>
-                  <div className="font-light text-sm text-text-weak">
+                  <div className="text-sm font-light text-text-weak">
                     {token.symbol}
                   </div>
                 </div>

@@ -17,9 +17,8 @@
 
 import { useModals } from "@lightdotso/stores";
 import type { Meta, StoryObj } from "@storybook/react";
-import { useEffect } from "react";
-import { TokenModal } from "./token-modal";
 import type { Address } from "viem";
+import { TokenModal } from "./token-modal";
 
 // -----------------------------------------------------------------------------
 // Meta
@@ -46,35 +45,27 @@ type Story = StoryObj<typeof TokenModal>;
 
 export const Base: Story = {
   render: () => {
-    const { showTokenModal, setTokenModalProps } = useModals();
-
-    useEffect(() => {
-      setTokenModalProps({
-        address: "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F" as Address,
-        type: "native",
-      });
-      showTokenModal();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    return <TokenModal />;
+    return (
+      <TokenModal
+        isTokenModalVisible
+        address={"0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F" as Address}
+        type="native"
+        onTokenSelect={() => {}}
+      />
+    );
   },
   args: {},
 };
 export const Socket: Story = {
   render: () => {
-    const { showTokenModal, setTokenModalProps } = useModals();
-
-    useEffect(() => {
-      setTokenModalProps({
-        address: "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F" as Address,
-        type: "socket",
-      });
-      showTokenModal();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    return <TokenModal />;
+    return (
+      <TokenModal
+        isTokenModalVisible
+        address={"0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F" as Address}
+        type="socket"
+        onTokenSelect={() => {}}
+      />
+    );
   },
   args: {},
 };
