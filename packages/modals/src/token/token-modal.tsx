@@ -21,6 +21,8 @@ import { useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import { Modal } from "@lightdotso/templates";
 import { Button, ButtonIcon } from "@lightdotso/ui";
+import { useState } from "react";
+import { cn } from "../../../utils/src";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -34,6 +36,12 @@ export function TokenModal() {
   const { balances } = useQuerySocketBalances({
     address: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
   });
+
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [chainId, setChainId] = useState<number>(0);
 
   // ---------------------------------------------------------------------------
   // Stores
@@ -51,9 +59,22 @@ export function TokenModal() {
         open
         headerContent={
           <div className="flex flex-row space-x-2">
-            <Button variant="shadow">All Chains</Button>
+            <Button
+              onClick={() => setChainId(0)}
+              className={cn(chainId === 0 && "ring-2 ring-border-primary")}
+              variant="shadow"
+            >
+              All Chains
+            </Button>
             {MAINNET_CHAINS.map(chain => (
-              <ButtonIcon key={chain.id} variant="shadow">
+              <ButtonIcon
+                onClick={() => setChainId(chain.id)}
+                className={cn(
+                  chainId === chain.id && "ring-2 ring-border-primary",
+                )}
+                key={chain.id}
+                variant="shadow"
+              >
                 <ChainLogo chainId={chain.id} />
               </ButtonIcon>
             ))}
