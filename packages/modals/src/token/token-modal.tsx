@@ -112,7 +112,6 @@ export const TokenModal: FC = () => {
       <Modal
         open
         className="p-2"
-        onClose={onClose}
         bannerContent={
           <div className="flex flex-row space-x-2">
             <Button
@@ -136,7 +135,7 @@ export const TokenModal: FC = () => {
             ))}
           </div>
         }
-        // onClose={hideTokenModal}
+        onClose={onClose}
       >
         {renderedTokens && renderedTokens.length > 0 ? (
           <div className="">
