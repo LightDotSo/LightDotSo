@@ -48,11 +48,6 @@ import {
   FormMessage,
   Input,
   Label,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
   Tabs,
   TabsContent,
   TabsList,
@@ -65,8 +60,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
 import { ChevronDown, Trash2Icon, UserPlus2 } from "lucide-react";
-import dynamic from "next/dynamic";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import type { FC } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import {
@@ -81,17 +75,6 @@ import {
 import type { Address, Hex } from "viem";
 import { normalize } from "viem/ens";
 import * as z from "zod";
-
-// -----------------------------------------------------------------------------
-// Dynamic
-// -----------------------------------------------------------------------------
-
-const TokenModal = dynamic(
-  () => import("@lightdotso/modals/src/token/token-modal"),
-  {
-    ssr: false,
-  },
-);
 
 // -----------------------------------------------------------------------------
 // Types
