@@ -1226,6 +1226,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                         transfers?.[index]
                                                           ?.chainId,
                                                   );
+
                                                 if (token) {
                                                   form.setValue(
                                                     `transfers.${index}.asset.quantity`,
