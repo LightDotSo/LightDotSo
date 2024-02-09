@@ -122,7 +122,7 @@ export const TokenModal: FC<TokenModalProps> = ({
       <Modal
         open
         className="p-2"
-        headerContent={
+        bannerContent={
           <div className="flex flex-row space-x-2">
             <Button
               className={cn(chainId === 0 && "ring-2 ring-border-primary")}

@@ -61,6 +61,7 @@ interface ModalProps extends VariantProps<typeof modalDialogVariants> {
   children: ReactNode;
   className?: string;
   headerContent?: ReactNode;
+  bannerContent?: ReactNode;
   footerContent?: ReactNode;
   open?: boolean;
   onClose?: () => void;
@@ -89,7 +90,7 @@ export const Modal: FC<ModalProps> = ({
   className,
   open,
   size,
-  headerContent,
+  bannerContent,
   footerContent,
   onClose,
 }) => {
@@ -112,7 +113,7 @@ export const Modal: FC<ModalProps> = ({
     return (
       <Drawer shouldScaleBackground open={open} onClose={onClose}>
         <DrawerContent>
-          {headerContent && <DialogHeader>{headerContent}</DialogHeader>}
+          {bannerContent && <DialogHeader>{bannerContent}</DialogHeader>}
           <DrawerBody className={className}>
             <ModalContext.Provider value={true}>
               <Suspense fallback={<Skeleton className="h-64 w-full" />}>
@@ -141,9 +142,9 @@ export const Modal: FC<ModalProps> = ({
               <X />
             </ButtonIcon>
           </DialogHeader>
-          {headerContent && (
+          {bannerContent && (
             <DialogHeader className="block w-full justify-start space-x-0">
-              {headerContent}
+              {bannerContent}
             </DialogHeader>
           )}
           <DialogBody className={className}>
