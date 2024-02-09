@@ -56,34 +56,23 @@ export function TokenModal() {
   // ---------------------------------------------------------------------------
 
   const tokens: TokenData[] = useMemo(() => {
-    let filtered_balances;
-
-    if (balances && chainId > 0) {
-      filtered_balances = balances.filter(
-        balance => balance.chainId === chainId,
-      );
-    } else {
-      filtered_balances = balances;
-    }
+    const filtered_balances =
+      (balances && chainId > 0
+        ? balances.filter(balance => balance.chainId === chainId)
+        : balances) || [];
 
     // Map the balances to tokens
-    if (filtered_balances) {
-      return filtered_balances.map(balance => {
-        return {
-          id: `${balance.chainId}-${balance.address}-${balance.decimals}`,
-          chain_id: balance.chainId,
-          balance_usd: 0,
-          address: balance.address,
-          amount: balance.amount,
-          chainId: balance.chainId,
-          decimals: balance.decimals,
-          name: balance.name,
-          symbol: balance.symbol,
-        };
-      });
-    }
-
-    return [];
+    return filtered_balances.map(balance => ({
+      id: `${balance.chainId}-${balance.address}-${balance.decimals}`,
+      chain_id: balance.chainId,
+      balance_usd: 0,
+      address: balance.address,
+      amount: balance.amount,
+      chainId: balance.chainId,
+      decimals: balance.decimals,
+      name: balance.name,
+      symbol: balance.symbol,
+    }));
   }, [balances, chainId]);
 
   // ---------------------------------------------------------------------------
