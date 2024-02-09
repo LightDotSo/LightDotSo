@@ -1196,18 +1196,36 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                 );
                                               }}
                                               onChange={e => {
-                                                // Update the field value
-                                                field.onChange(
-                                                  parseFloat(e.target.value) ||
-                                                    0,
-                                                );
+                                                // If the input ends with ".", leave it unchanged.
+                                                if (
+                                                  e.target.value.endsWith(
+                                                    ".",
+                                                  ) ||
+                                                  (e.target.value.includes(
+                                                    ".",
+                                                  ) &&
+                                                    e.target.value.endsWith(
+                                                      "0",
+                                                    ))
+                                                ) {
+                                                  field.onChange(
+                                                    e.target.value,
+                                                  );
+                                                } else {
+                                                  // Only parse to float if the value doesn't end with "."
+                                                  field.onChange(
+                                                    parseFloat(
+                                                      e.target.value,
+                                                    ) || 0,
+                                                  );
+                                                }
 
-                                                // Validate the address
+                                                // Validate the number
                                                 const quantity = parseFloat(
                                                   e.target.value,
                                                 );
 
-                                                if (quantity) {
+                                                if (!isNaN(quantity)) {
                                                   validateTokenQuantity(
                                                     quantity,
                                                     index,
