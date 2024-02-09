@@ -81,3 +81,20 @@ export const Socket: Story = {
   },
   args: {},
 };
+export const Empty: Story = {
+  render: () => {
+    const { showTokenModal, setTokenModalProps } = useModals();
+
+    useEffect(() => {
+      setTokenModalProps({
+        ...tokenModalProps,
+        address: "0x07beCa880a83b93983604157fefCC57377977300",
+      });
+      showTokenModal();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    return <TokenModal />;
+  },
+  args: {},
+};

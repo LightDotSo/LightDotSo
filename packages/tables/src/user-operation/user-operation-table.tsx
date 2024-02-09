@@ -44,7 +44,7 @@ import {
 import { useEffect, type FC, useMemo } from "react";
 import type { Address } from "viem";
 import { groupByDate } from "../group";
-import { TableEmpty } from "../table-empty";
+import { EmptyState } from "@lightdotso/elements";
 import { UserOperationCardTransaction } from "./card";
 import { userOperationColumns } from "./user-operation-columns";
 
@@ -247,7 +247,7 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                <TableEmpty entity="transaction" />
+                <EmptyState entity="transaction" />
               </TableCell>
             </TableRow>
           )}
@@ -285,7 +285,7 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
           <TableBody>
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                <TableEmpty entity="transaction" />
+                <EmptyState entity="transaction" />
               </TableCell>
             </TableRow>
           </TableBody>

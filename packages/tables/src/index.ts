@@ -18,7 +18,6 @@ export { nftColumns, NftTable } from "./nft";
 export { notificationColumns, NotificationTable } from "./notification";
 export { ownerColumns, OwnerTable } from "./owner";
 export { tokenColumns, TokenTable } from "./token";
-export { TableEmpty } from "./table-empty";
 export { transactionColumns, TransactionTable } from "./transaction";
 export { userOperationColumns, UserOperationTable } from "./user-operation";
 export { walletColumns, WalletTable } from "./wallet";

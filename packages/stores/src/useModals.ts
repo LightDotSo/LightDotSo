@@ -22,6 +22,13 @@ import { devtools } from "zustand/middleware";
 // Props
 // -----------------------------------------------------------------------------
 
+export type NftModalProps = {
+  address: Address;
+  isTestnet?: boolean;
+  onClose?: () => void;
+  onNftSelect: (nft: TokenData) => void;
+};
+
 export type TokenModalProps = {
   address: Address;
   isTestnet?: boolean;
@@ -35,6 +42,8 @@ export type TokenModalProps = {
 // -----------------------------------------------------------------------------
 
 type ModalsStore = {
+  nftModalProps: NftModalProps;
+  setNftModalProps: (props: NftModalProps) => void;
   tokenModalProps: TokenModalProps;
   setTokenModalProps: (props: TokenModalProps) => void;
   isAuthModalVisible: boolean;
@@ -70,6 +79,13 @@ type ModalsStore = {
 export const useModals = create(
   devtools<ModalsStore>(
     set => ({
+      nftModalProps: {
+        // @ts-expect-error
+        address: "",
+        isNftModalVisible: false,
+        onNftSelect: () => {},
+      },
+      setNftModalProps: (props: NftModalProps) => set({ nftModalProps: props }),
       tokenModalProps: {
         // @ts-expect-error
         address: "",

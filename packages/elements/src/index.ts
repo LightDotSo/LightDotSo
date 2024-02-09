@@ -15,6 +15,7 @@
 
 export { ActionLogo } from "./action-logo";
 export { AssetChange } from "./asset-change";
+export { EmptyState } from "./empty-state";
 export { NftImage } from "./nft-image";
 export { PlaceholderOrb } from "./placeholder-orb";
 export { TokenImage } from "./token-image";

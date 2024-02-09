@@ -17,7 +17,7 @@
 
 import { CHAINS, MAINNET_CHAINS } from "@lightdotso/const";
 import type { TokenData } from "@lightdotso/data";
-import { TokenImage } from "@lightdotso/elements";
+import { EmptyState, TokenImage } from "@lightdotso/elements";
 import { useQuerySocketBalances, useQueryTokens } from "@lightdotso/query";
 import { useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
@@ -162,7 +162,9 @@ export const TokenModal: FC = () => {
             ))}
           </div>
         ) : (
-          <div>No tokens found</div>
+          <div className="flex w-full justify-center h-32 text-center">
+            <EmptyState entity="token" />
+          </div>
         )}
       </Modal>
     );

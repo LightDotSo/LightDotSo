@@ -38,7 +38,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, type FC, useMemo } from "react";
-import { TableEmpty } from "../table-empty";
+import { EmptyState } from "@lightdotso/elements";
 import { NftCard } from "./card";
 import { nftColumns } from "./nft-columns";
 import { NftsWrapper } from "./nfts-wrapper";
@@ -197,7 +197,7 @@ export const NftTable: FC<NftTableProps> = ({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  <TableEmpty entity="nft" />
+                  <EmptyState entity="nft" />
                 </TableCell>
               </TableRow>
             </TableBody>

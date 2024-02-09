@@ -42,7 +42,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, type FC, useMemo } from "react";
-import { TableEmpty } from "../table-empty";
+import { EmptyState } from "@lightdotso/elements";
 import { transactionColumns } from "./transaction-columns";
 
 // -----------------------------------------------------------------------------
@@ -222,7 +222,7 @@ export const TransactionTable: FC<TransactionTableProps> = ({
         ) : (
           <TableRow>
             <TableCell colSpan={columns.length} className="h-24 text-center">
-              <TableEmpty entity="transaction" />
+              <EmptyState entity="transaction" />
             </TableCell>
           </TableRow>
         )}

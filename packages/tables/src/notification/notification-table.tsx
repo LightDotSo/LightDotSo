@@ -41,7 +41,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, type FC, useMemo } from "react";
-import { TableEmpty } from "../table-empty";
+import { EmptyState } from "@lightdotso/elements";
 import { notificationColumns } from "./notification-columns";
 
 // -----------------------------------------------------------------------------
@@ -198,7 +198,7 @@ export const NotificationTable: FC<NotificationTableProps> = ({
         ) : (
           <TableRow>
             <TableCell colSpan={columns.length} className="h-24 text-center">
-              <TableEmpty entity="notification" />
+              <EmptyState entity="notification" />
             </TableCell>
           </TableRow>
         )}

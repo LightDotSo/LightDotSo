@@ -15,6 +15,7 @@
 
 "use client";
 
+import { useQueryNfts } from "@lightdotso/query";
 import { useModals } from "@lightdotso/stores";
 import { Modal } from "@lightdotso/templates";
 import { DialogDescription, DialogTitle } from "@lightdotso/ui";
@@ -28,7 +29,22 @@ export function NftModal() {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { isNftModalVisible, hideNftModal } = useModals();
+  const {
+    isNftModalVisible,
+    hideNftModal,
+    nftModalProps: { address, isTestnet },
+  } = useModals();
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { nftPage } = useQueryNfts({
+    address: address,
+    limit: Number.MAX_SAFE_INTEGER,
+    is_testnet: isTestnet ?? false,
+    cursor: null,
+  });
 
   // ---------------------------------------------------------------------------
   // Render
