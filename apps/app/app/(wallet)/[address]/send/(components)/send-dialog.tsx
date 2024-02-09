@@ -1345,12 +1345,12 @@ export const SendDialog: FC<SendDialogProps> = ({
                                           <Button
                                             size="lg"
                                             type="button"
+                                            variant="outline"
+                                            className="flex w-full items-center justify-between px-4 text-sm"
                                             onClick={() => {
                                               setIsTokenModalOpen(true);
                                               hideSendModal();
                                             }}
-                                            variant="outline"
-                                            className="flex w-full items-center justify-between px-4 text-sm"
                                           >
                                             {token && (
                                               <TokenImage
