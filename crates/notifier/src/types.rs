@@ -16,7 +16,7 @@
 use lazy_static::lazy_static;
 use lightdotso_prisma::{ActivityEntity, ActivityOperation};
 use serde_json::Value;
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use strum::IntoEnumIterator;
 use strum_macros::{Display, EnumIter, EnumString, IntoStaticStr};
 
@@ -170,8 +170,8 @@ lazy_static! {
 
 lazy_static! {
     // This is a list of all user notification types
-    pub static ref USER_NOTIFICATION_DEFAULT_ENABLED: HashMap<String, bool> = {
-        let mut map = HashMap::new();
+    pub static ref USER_NOTIFICATION_DEFAULT_ENABLED: BTreeMap<String, bool> = {
+        let mut map = BTreeMap::new();
 
         for notif in NOTIFICATION.iter() {
             if let Notification::UserOnly(_, operation) = notif {
@@ -188,8 +188,8 @@ lazy_static! {
 
 lazy_static! {
     // This is a list of all wallet notification types
-    pub static ref WALLET_NOTIFICATION_DEFAULT_ENABLED: HashMap<String, bool> = {
-        let mut map = HashMap::new();
+    pub static ref WALLET_NOTIFICATION_DEFAULT_ENABLED: BTreeMap<String, bool> = {
+        let mut map = BTreeMap::new();
 
         for notif in NOTIFICATION.iter() {
             if let Notification::WalletOnly(_, operation) = notif {
@@ -208,8 +208,8 @@ lazy_static! {
 
 lazy_static! {
     // This is a list of all notification default enabled
-    pub static ref NOTIFICATION_DEFAULT_ENABLED: HashMap<String, bool> = {
-        let mut map = HashMap::new();
+    pub static ref NOTIFICATION_DEFAULT_ENABLED: BTreeMap<String, bool> = {
+        let mut map = BTreeMap::new();
 
         for (key, value) in &*USER_NOTIFICATION_DEFAULT_ENABLED {
             map.insert(key.clone(), *value);
