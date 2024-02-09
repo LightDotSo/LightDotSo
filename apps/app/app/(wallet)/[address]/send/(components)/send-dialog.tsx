@@ -1346,8 +1346,8 @@ export const SendDialog: FC<SendDialogProps> = ({
                                             size="lg"
                                             type="button"
                                             onClick={() => {
-                                              hideSendModal();
                                               setIsTokenModalOpen(true);
+                                              hideSendModal();
                                             }}
                                             variant="outline"
                                             className="flex w-full items-center justify-between px-4 text-sm"
@@ -1391,6 +1391,9 @@ export const SendDialog: FC<SendDialogProps> = ({
 
                                               form.trigger();
                                               setIsTokenModalOpen(false);
+                                              if (isInsideModal) {
+                                                showSendModal();
+                                              }
                                             }}
                                           />
                                           <FormMessage />
