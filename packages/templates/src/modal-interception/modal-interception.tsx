@@ -45,6 +45,9 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // ---------------------------------------------------------------------------
 
   const {
+    isNotificationsModalBackground,
+    isOpModalBackground,
+    isSendModalBackground,
     isNotificationsModalVisible,
     isOpModalVisible,
     isSendModalVisible,
@@ -66,6 +69,22 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
+
+  const isBackground = useMemo(() => {
+    switch (type) {
+      case "op":
+        return isOpModalBackground;
+      case "notifications":
+        return isNotificationsModalBackground;
+      case "send":
+        return isSendModalBackground;
+    }
+  }, [
+    isNotificationsModalBackground,
+    isOpModalBackground,
+    isSendModalBackground,
+    type,
+  ]);
 
   const isOpen = useMemo(() => {
     switch (type) {
@@ -137,7 +156,12 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   }
 
   return (
-    <Modal footerContent={footerContent} open={isOpen} onClose={onDismiss}>
+    <Modal
+      className={isBackground ? "hidden" : ""}
+      footerContent={footerContent}
+      open={isOpen}
+      onClose={onDismiss}
+    >
       {children}
     </Modal>
   );
