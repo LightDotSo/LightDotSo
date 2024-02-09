@@ -16,11 +16,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import { useModals } from "@lightdotso/stores";
+import type { TokenModalProps } from "@lightdotso/stores/src/useModals";
 import type { Meta, StoryObj } from "@storybook/react";
+import { useEffect } from "react";
 import type { Address } from "viem";
 import { TokenModal } from "./token-modal";
-import { useEffect } from "react";
-import { TokenModalProps } from "@lightdotso/stores/src/useModals";
 
 // -----------------------------------------------------------------------------
 // Meta
