@@ -56,12 +56,14 @@ export function TokenModal() {
   // ---------------------------------------------------------------------------
 
   const tokens: TokenData[] = useMemo(() => {
-    let filtered_balances = balances;
+    let filtered_balances;
 
     if (balances && chainId > 0) {
       filtered_balances = balances.filter(
         balance => balance.chainId === chainId,
       );
+    } else {
+      filtered_balances = balances;
     }
 
     // Map the balances to tokens
