@@ -64,7 +64,7 @@ import { lightWalletAbi, publicClient } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
-import { Trash2Icon, UserPlus2 } from "lucide-react";
+import { ChevronDown, Trash2Icon, UserPlus2 } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { FC } from "react";
@@ -1352,16 +1352,16 @@ export const SendDialog: FC<SendDialogProps> = ({
                                             variant="outline"
                                             className="flex w-full items-center justify-between px-4 text-sm"
                                           >
-                                            <div className="flex items-center">
-                                              {token && (
-                                                <TokenImage
-                                                  size="xs"
-                                                  className="mr-2"
-                                                  token={token}
-                                                />
-                                              )}
-                                              {token?.symbol}
-                                            </div>
+                                            {token && (
+                                              <TokenImage
+                                                size="xs"
+                                                className="mr-2"
+                                                token={token}
+                                              />
+                                            )}
+                                            {token?.symbol}
+                                            <div className="grow" />
+                                            <ChevronDown className="size-4 opacity-50" />
                                           </Button>
                                           <TokenModal
                                             isTokenModalVisible={
