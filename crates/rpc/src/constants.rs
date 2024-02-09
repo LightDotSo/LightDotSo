@@ -27,12 +27,6 @@ lazy_static! {
         "http://lightdotso-paymaster.internal:3000".to_string();
 }
 
-// The internal simulator rpc url
-lazy_static! {
-    pub static ref SIMULATOR_RPC_URL: String =
-        "http://lightdotso-simulator.internal:3000".to_string();
-}
-
 // The internal bundler rpc urls
 lazy_static! {
     pub static ref BUNDLER_RPC_URL: String = "http://lightdotso-bundler.internal:3000".to_string();
