@@ -66,13 +66,6 @@ const NftModal = dynamic(() => import("@lightdotso/modals/src/nft/nft-modal"), {
   ssr: false,
 });
 
-const TokenModal = dynamic(
-  () => import("@lightdotso/modals/src/token/token-modal"),
-  {
-    ssr: false,
-  },
-);
-
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
@@ -128,7 +121,6 @@ export const Root: FC<RootProps> = ({ children }) => {
               <ConnectModal />
               <DepositModal />
               <NftModal />
-              <TokenModal />
               {/* States */}
               <AuthState />
               <QueueState />

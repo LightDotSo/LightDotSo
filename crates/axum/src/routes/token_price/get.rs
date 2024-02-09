@@ -25,9 +25,9 @@ use axum::{
 };
 use ethers_main::{types::H160, utils::to_checksum};
 use lightdotso_contracts::utils::is_testnet;
-use lightdotso_prisma::token;
+use lightdotso_prisma::{token, token_price};
 use lightdotso_tracing::tracing::info;
-use prisma_client_rust::{raw, PrismaValue};
+use prisma_client_rust::{raw, Direction, PrismaValue};
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -117,6 +117,11 @@ pub(crate) async fn v1_token_price_get_handler(
         .client
         .token()
         .find_unique(token::address_chain_id(checksum_address, query.chain_id))
+        .with(
+            token::prices::fetch(vec![])
+                .order_by(token_price::timestamp::order(Direction::Desc))
+                .take(1),
+        )
         .exec()
         .await?;
 
@@ -142,8 +147,14 @@ pub(crate) async fn v1_token_price_get_handler(
     // Return
     // -------------------------------------------------------------------------
 
-    // Get the price from the result array.
-    let price = if !result.is_empty() { result[0].price } else { 0.0 };
+    // Get the price from the result array. Use the last price if the token does not have a price.
+    // Use the average price if the token does not have a price and the result is empty.
+    let price = token
+        .prices
+        .unwrap_or_default()
+        .first()
+        .map(|x| x.price)
+        .unwrap_or(if !result.is_empty() { result[0].price } else { 0.0 });
 
     // Get the 24h price change from the result array.
     let price_change_24h = if result.len() > 1 { result[0].price - result[1].price } else { 0.0 };

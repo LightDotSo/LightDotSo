@@ -98,11 +98,11 @@ const nextConfig = {
   ],
   webpack: (config, { isServer }) => {
     config.resolve.fallback = { fs: false };
+
     // config.externals.push("react");
 
     if (isServer) {
       config.plugins = [...config.plugins, new PrismaPlugin()];
-      // config.externals = ["react", ...config.externals];
     }
 
     // config.resolve.alias["react"] = path.resolve(__dirname, ".", "node_modules", "react");

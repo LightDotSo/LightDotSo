@@ -36,7 +36,7 @@ export const useMutationUserOperationCreate = (params: UserOperationParams) => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { clientType, address } = useAuth();
+  const { clientType } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -137,6 +137,32 @@ export const useMutationUserOperationCreate = (params: UserOperationParams) => {
       );
     },
     onMutate: async (data: UserOperationCreateBodyParams) => {
+      const uopData = {
+        call_data: data.userOperation.callData,
+        call_gas_limit: data.userOperation.callGasLimit,
+        chain_id: data.userOperation.chainId,
+        hash: data.userOperation.hash,
+        init_code: data.userOperation.initCode,
+        max_fee_per_gas: data.userOperation.maxFeePerGas,
+        max_priority_fee_per_gas: data.userOperation.maxPriorityFeePerGas,
+        nonce: data.userOperation.nonce,
+        paymaster_and_data: data.userOperation.paymasterAndData,
+        pre_verification_gas: data.userOperation.preVerificationGas,
+        sender: data.userOperation.sender,
+        signatures: [
+          {
+            owner_id: data.ownerId,
+            signature: toHex(new Uint8Array([...toBytes(data.signedData), 2])),
+            signature_type: 1,
+            created_at: new Date().toISOString(),
+          },
+        ],
+        status: "PROPOSED",
+        verification_gas_limit: data.userOperation.verificationGasLimit,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+
       const previousData: UserOperationData[] | undefined =
         queryClient.getQueryData(
           queryKeys.user_operation.list({
@@ -160,33 +186,7 @@ export const useMutationUserOperationCreate = (params: UserOperationParams) => {
         (old: UserOperationData[]) => {
           return {
             ...old,
-            ...{
-              call_data: data.userOperation.callData,
-              call_gas_limit: data.userOperation.callGasLimit,
-              chain_id: data.userOperation.chainId,
-              hash: data.userOperation.hash,
-              init_code: data.userOperation.initCode,
-              max_fee_per_gas: data.userOperation.maxFeePerGas,
-              max_priority_fee_per_gas: data.userOperation.maxPriorityFeePerGas,
-              nonce: data.userOperation.nonce,
-              paymaster_and_data: data.userOperation.paymasterAndData,
-              pre_verification_gas: data.userOperation.preVerificationGas,
-              sender: data.userOperation.sender,
-              signatures: [
-                {
-                  owner_id: data.ownerId,
-                  signature: toHex(
-                    new Uint8Array([...toBytes(data.signedData), 2]),
-                  ),
-                  signature_type: 1,
-                  created_at: new Date().toISOString(),
-                },
-              ],
-              status: "PROPOSED",
-              verification_gas_limit: data.userOperation.verificationGasLimit,
-              created_at: new Date().toISOString(),
-              updated_at: new Date().toISOString(),
-            },
+            ...uopData,
           };
         },
       );
