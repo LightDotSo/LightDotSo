@@ -123,9 +123,10 @@ export const SendDialog: FC<SendDialogProps> = ({
   const { setIsFormDisabled } = useFormRef();
   const {
     showSendModal,
-    setTokenModalProps,
     setNftModalProps,
+    showNftModal,
     hideNftModal,
+    setTokenModalProps,
     showTokenModal,
     hideTokenModal,
   } = useModals();
@@ -456,6 +457,14 @@ export const SendDialog: FC<SendDialogProps> = ({
           ];
         }
 
+        // Get the amount
+        const amount =
+          // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+          transfer.asset?.quantity! * Math.pow(10, token.decimals!);
+
+        // If the amount is a float, convert to a integer
+        const intAmount = Math.floor(amount);
+
         // Encode the erc20 `transfer`
         return [
           transfer.asset.address as Address,
@@ -475,13 +484,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                       type: "uint256",
                     },
                   ],
-                  [
-                    transfer.address as Address,
-                    BigInt(
-                      // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-                      transfer.asset?.quantity! * Math.pow(10, token.decimals!),
-                    ),
-                  ],
+                  [transfer.address as Address, BigInt(intAmount)],
                 ),
                 "bytes",
               ),
@@ -1566,7 +1569,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                               setNftModalProps({
                                                 address: address as Address,
                                                 onClose: () => {
-                                                  hideTokenModal();
+                                                  hideNftModal();
                                                   if (isInsideModal) {
                                                     showSendModal();
                                                   }
@@ -1594,13 +1597,13 @@ export const SendDialog: FC<SendDialogProps> = ({
 
                                                   form.trigger();
 
-                                                  hideTokenModal();
+                                                  hideNftModal();
                                                   if (isInsideModal) {
                                                     showSendModal();
                                                   }
                                                 },
                                               });
-                                              showTokenModal();
+                                              showNftModal();
                                             }}
                                           >
                                             {nft && (
