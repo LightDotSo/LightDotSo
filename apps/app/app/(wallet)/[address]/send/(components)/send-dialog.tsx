@@ -1372,7 +1372,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                 setIsTokenModalOpen(true);
                                               }}
                                               variant="outline"
-                                              className="flex w-full items-center justify-between text-sm px-4"
+                                              className="flex w-full items-center justify-between px-4 text-sm"
                                             >
                                               <div className="flex items-center">
                                                 {token && (
