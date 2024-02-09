@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { TokenData } from "@lightdotso/data";
+import type { NftData, TokenData } from "@lightdotso/data";
 import type { Address } from "viem";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
@@ -26,7 +26,7 @@ export type NftModalProps = {
   address: Address;
   isTestnet?: boolean;
   onClose?: () => void;
-  onNftSelect: (nft: TokenData) => void;
+  onNftSelect: (nft: NftData) => void;
 };
 
 export type TokenModalProps = {

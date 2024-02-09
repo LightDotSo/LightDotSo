@@ -15,10 +15,10 @@
 
 "use client";
 
+import { EmptyState, NftImage } from "@lightdotso/elements";
 import { useQueryNfts } from "@lightdotso/query";
 import { useModals } from "@lightdotso/stores";
 import { Modal } from "@lightdotso/templates";
-import { DialogDescription, DialogTitle } from "@lightdotso/ui";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -31,8 +31,7 @@ export function NftModal() {
 
   const {
     isNftModalVisible,
-    hideNftModal,
-    nftModalProps: { address, isTestnet },
+    nftModalProps: { address, isTestnet, onClose, onNftSelect },
   } = useModals();
 
   // ---------------------------------------------------------------------------
@@ -52,9 +51,32 @@ export function NftModal() {
 
   if (isNftModalVisible) {
     return (
-      <Modal open size="sm" onClose={hideNftModal}>
-        <DialogTitle>NFT</DialogTitle>
-        <DialogDescription>NFT for</DialogDescription>
+      <Modal open className="p-2" onClose={onClose}>
+        {nftPage && nftPage.nfts.length > 0 ? (
+          <div className="grid grid-cols-3 gap-2">
+            {nftPage.nfts
+              .filter(
+                nft =>
+                  nft?.collection?.spam_score !== undefined &&
+                  nft?.collection?.spam_score !== null &&
+                  nft?.collection?.spam_score < 60,
+              )
+              .map(nft => (
+                // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+                <div
+                  key={nft.nft_id}
+                  className="col-span-1 cursor-pointer flex-row items-center rounded-md hover:ring-2 ring-border-primary"
+                  onClick={() => onNftSelect(nft)}
+                >
+                  <NftImage nft={nft} className="rounded-t-md" />
+                </div>
+              ))}
+          </div>
+        ) : (
+          <div className="flex w-full justify-center h-32 text-center">
+            <EmptyState entity="nft" />
+          </div>
+        )}
       </Modal>
     );
   }

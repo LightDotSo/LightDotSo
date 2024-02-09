@@ -16,9 +16,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import { useModals } from "@lightdotso/stores";
+import type { NftModalProps } from "@lightdotso/stores";
 import type { Meta, StoryObj } from "@storybook/react";
 import { useEffect } from "react";
 import { NftModal } from "./nft-modal";
+import { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Meta
@@ -40,15 +42,44 @@ export default meta;
 type Story = StoryObj<typeof NftModal>;
 
 // -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+const nftModalProps: NftModalProps = {
+  address: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed" as Address,
+  isTestnet: false,
+  onClose: () => {},
+  onNftSelect: () => {},
+};
+
+// -----------------------------------------------------------------------------
 // Story
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
   render: () => {
-    const { showNftModal } = useModals();
+    const { showNftModal, setNftModalProps } = useModals();
 
     useEffect(() => {
+      setNftModalProps(nftModalProps);
       showNftModal();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    return <NftModal />;
+  },
+  args: {},
+};
+export const Empty: Story = {
+  render: () => {
+    const { showTokenModal, setNftModalProps } = useModals();
+
+    useEffect(() => {
+      setNftModalProps({
+        ...nftModalProps,
+        address: "0x07beCa880a83b93983604157fefCC57377977300",
+      });
+      showTokenModal();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

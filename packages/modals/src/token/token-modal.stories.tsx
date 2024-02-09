@@ -42,7 +42,7 @@ export default meta;
 type Story = StoryObj<typeof TokenModal>;
 
 // -----------------------------------------------------------------------------
-// Story
+// Props
 // -----------------------------------------------------------------------------
 
 const tokenModalProps: TokenModalProps = {
@@ -52,6 +52,10 @@ const tokenModalProps: TokenModalProps = {
   onTokenSelect: () => {},
   type: "native",
 };
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
 
 export const Base: Story = {
   render: () => {
