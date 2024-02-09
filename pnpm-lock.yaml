@@ -1907,6 +1907,9 @@ importers:
       '@lightdotso/data':
         specifier: workspace:*
         version: link:../data
+      '@lightdotso/elements':
+        specifier: workspace:*
+        version: link:../elements
       '@lightdotso/hooks':
         specifier: workspace:*
         version: link:../hooks
@@ -1925,6 +1928,9 @@ importers:
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../ui
+      '@lightdotso/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@storybook/react':
         specifier: ^7.6.13
         version: 7.6.13(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)

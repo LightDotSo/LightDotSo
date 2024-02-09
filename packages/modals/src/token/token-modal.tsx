@@ -17,13 +17,14 @@
 
 import { MAINNET_CHAINS } from "@lightdotso/const";
 import type { TokenData } from "@lightdotso/data";
+import { TokenImage } from "@lightdotso/elements";
 import { useQuerySocketBalances } from "@lightdotso/query";
 import { useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import { Modal } from "@lightdotso/templates";
+import { cn, refineNumberFormat } from "@lightdotso/utils";
 import { Button, ButtonIcon } from "@lightdotso/ui";
 import { useMemo, useState } from "react";
-import { cn } from "../../../utils/src";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -117,11 +118,23 @@ export function TokenModal() {
         onClose={hideTokenModal}
       >
         {tokens && tokens.length > 0 ? (
-          <div className="grid grid-cols-3 gap-4">
-            {tokens.map(balance => (
-              <div key={balance.address}>
-                <div>{balance.name}</div>
-                <div>{balance.amount}</div>
+          <div className="">
+            {tokens.map(token => (
+              <div
+                className="p-2 flex flex-row items-center hover:bg-background-stronger rounded-md cursor-pointer"
+                key={token.address}
+              >
+                <TokenImage withChainLogo token={token} />
+                <div className="pl-4 grow flex flex-col">
+                  <div className="text-text">{token.name}</div>
+                  <div className="font-light text-sm text-text-weak">
+                    {token.symbol}
+                  </div>
+                </div>
+                <div className="flex-none text-sm text-text-weak">
+                  {refineNumberFormat(token.amount)}
+                  {` ${token.symbol}`}
+                </div>
               </div>
             ))}
           </div>
