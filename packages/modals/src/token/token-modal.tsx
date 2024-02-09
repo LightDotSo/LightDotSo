@@ -70,7 +70,7 @@ export function TokenModal() {
     if (filtered_balances) {
       return filtered_balances.map(balance => {
         return {
-          id: `${balance.address}-${balance.chainId}`,
+          id: `${balance.chainId}-${balance.address}-${balance.decimals}`,
           chain_id: balance.chainId,
           balance_usd: 0,
           address: balance.address,
