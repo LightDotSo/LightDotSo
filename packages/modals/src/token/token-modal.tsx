@@ -162,7 +162,7 @@ export const TokenModal: FC = () => {
             ))}
           </div>
         ) : (
-          <div className="flex w-full justify-center h-32 text-center">
+          <div className="flex h-32 w-full justify-center text-center">
             <EmptyState entity="token" />
           </div>
         )}
