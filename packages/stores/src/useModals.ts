@@ -28,6 +28,7 @@ type ModalsStore = {
   isNotificationsModalVisible: boolean;
   isOpModalVisible: boolean;
   isSendModalVisible: boolean;
+  isTokenModalVisible: boolean;
   showAuthModal: () => void;
   hideAuthModal: () => void;
   showConnectModal: () => void;
@@ -42,6 +43,8 @@ type ModalsStore = {
   hideOpModal: () => void;
   showSendModal: () => void;
   hideSendModal: () => void;
+  showTokenModal: () => void;
+  hideTokenModal: () => void;
 };
 
 // -----------------------------------------------------------------------------
@@ -67,6 +70,7 @@ export const useModals = create(
           isNotificationsModalVisible: false,
           isOpModalVisible: false,
           isSendModalVisible: false,
+          isTokenModalVisible: false,
         }),
       hideAuthModal: () => set({ isAuthModalVisible: false }),
       showConnectModal: () =>
@@ -78,6 +82,7 @@ export const useModals = create(
           isNotificationsModalVisible: false,
           isOpModalVisible: false,
           isSendModalVisible: false,
+          isTokenModalVisible: false,
         }),
       hideConnectModal: () => set({ isConnectModalVisible: false }),
       showDepositModal: () =>
@@ -88,6 +93,7 @@ export const useModals = create(
           isNotificationsModalVisible: false,
           isOpModalVisible: false,
           isSendModalVisible: false,
+          isTokenModalVisible: false,
         }),
       hideDepositModal: () => set({ isDepositModalVisible: false }),
       showNotificationsModal: () =>
@@ -98,6 +104,7 @@ export const useModals = create(
           isNftModalVisible: false,
           isOpModalVisible: false,
           isSendModalVisible: false,
+          isTokenModalVisible: false,
         }),
       hideNotificationsModal: () => set({ isNotificationsModalVisible: false }),
       showOpModal: () =>
@@ -108,6 +115,7 @@ export const useModals = create(
           isNftModalVisible: false,
           isNotificationsModalVisible: false,
           isSendModalVisible: false,
+          isTokenModalVisible: false,
         }),
       hideOpModal: () => set({ isOpModalVisible: false }),
       showNftModal: () =>
@@ -118,6 +126,7 @@ export const useModals = create(
           isNotificationsModalVisible: false,
           isOpModalVisible: false,
           isSendModalVisible: false,
+          isTokenModalVisible: false,
         }),
       hideNftModal: () => set({ isNftModalVisible: false }),
       showSendModal: () =>
@@ -128,8 +137,20 @@ export const useModals = create(
           isNftModalVisible: false,
           isNotificationsModalVisible: false,
           isOpModalVisible: false,
+          isTokenModalVisible: false,
         }),
       hideSendModal: () => set({ isSendModalVisible: false }),
+      showTokenModal: () =>
+        set({
+          isTokenModalVisible: true,
+          isAuthModalVisible: false,
+          isDepositModalVisible: false,
+          isNftModalVisible: false,
+          isNotificationsModalVisible: false,
+          isOpModalVisible: false,
+          isSendModalVisible: false,
+        }),
+      hideTokenModal: () => set({ isTokenModalVisible: false }),
     }),
     {
       anonymousActionType: "useModals",
