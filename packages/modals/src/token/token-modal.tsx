@@ -15,28 +15,47 @@
 
 "use client";
 
-import { MAINNET_CHAINS } from "@lightdotso/const";
+import { CHAINS, MAINNET_CHAINS } from "@lightdotso/const";
 import type { TokenData } from "@lightdotso/data";
 import { TokenImage } from "@lightdotso/elements";
-import { useQuerySocketBalances } from "@lightdotso/query";
+import { useQuerySocketBalances, useQueryTokens } from "@lightdotso/query";
 import { useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import { Modal } from "@lightdotso/templates";
 import { cn, refineNumberFormat } from "@lightdotso/utils";
 import { Button, ButtonIcon } from "@lightdotso/ui";
-import { useMemo, useState } from "react";
+import { type FC, useMemo, useState } from "react";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export function TokenModal() {
+export const TokenModal: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const {
+    tokenModalProps: { address, isTestnet, type },
+    isTokenModalVisible,
+    hideTokenModal,
+  } = useModals();
+
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
+  const { tokens } = useQueryTokens({
+    address: address,
+    is_testnet: isTestnet ?? false,
+    limit: Number.MAX_SAFE_INTEGER,
+    offset: 0,
+    group: false,
+    chain_ids: null,
+  });
+
   const { balances } = useQuerySocketBalances({
-    address: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
+    address: address,
   });
 
   // ---------------------------------------------------------------------------
@@ -46,16 +65,27 @@ export function TokenModal() {
   const [chainId, setChainId] = useState<number>(0);
 
   // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { isTokenModalVisible, hideTokenModal } = useModals();
-
-  // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const tokens: TokenData[] = useMemo(() => {
+  const chains = useMemo(() => {
+    if (isTestnet) {
+      return CHAINS;
+    }
+
+    return MAINNET_CHAINS;
+  }, [isTestnet]);
+
+  const renderedTokens: TokenData[] = useMemo(() => {
+    if (type === "native") {
+      const filtered_tokens =
+        tokens && chainId > 0
+          ? tokens.filter(token => token.chain_id === chainId)
+          : tokens;
+
+      return filtered_tokens || [];
+    }
+
     const filtered_balances =
       (balances && chainId > 0
         ? balances.filter(balance => balance.chainId === chainId)
@@ -73,7 +103,7 @@ export function TokenModal() {
       name: balance.name,
       symbol: balance.symbol,
     }));
-  }, [balances, chainId]);
+  }, [balances, chainId, type]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -83,6 +113,7 @@ export function TokenModal() {
     return (
       <Modal
         open
+        className="p-2"
         headerContent={
           <div className="flex flex-row space-x-2">
             <Button
@@ -92,7 +123,7 @@ export function TokenModal() {
             >
               All Chains
             </Button>
-            {MAINNET_CHAINS.map(chain => (
+            {chains.map(chain => (
               <ButtonIcon
                 onClick={() => setChainId(chain.id)}
                 className={cn(
@@ -108,9 +139,9 @@ export function TokenModal() {
         }
         onClose={hideTokenModal}
       >
-        {tokens && tokens.length > 0 ? (
+        {renderedTokens && renderedTokens.length > 0 ? (
           <div className="">
-            {tokens.map(token => (
+            {renderedTokens.map(token => (
               <div
                 className="p-2 flex flex-row items-center hover:bg-background-stronger rounded-md cursor-pointer"
                 key={token.address}
@@ -137,7 +168,7 @@ export function TokenModal() {
   }
 
   return null;
-}
+};
 
 // -----------------------------------------------------------------------------
 // Export

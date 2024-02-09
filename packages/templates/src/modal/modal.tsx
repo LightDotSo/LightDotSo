@@ -59,6 +59,7 @@ const modalDialogVariants = cva(["max-h-[80%]"], {
 
 interface ModalProps extends VariantProps<typeof modalDialogVariants> {
   children: ReactNode;
+  className?: string;
   headerContent?: ReactNode;
   footerContent?: ReactNode;
   open?: boolean;
@@ -85,6 +86,7 @@ export function useIsInsideModal() {
 
 export const Modal: FC<ModalProps> = ({
   children,
+  className,
   open,
   size,
   headerContent,
@@ -111,7 +113,7 @@ export const Modal: FC<ModalProps> = ({
       <Drawer shouldScaleBackground open={open} onClose={onClose}>
         <DrawerContent>
           {headerContent && <DialogHeader>{headerContent}</DialogHeader>}
-          <DrawerBody>
+          <DrawerBody className={className}>
             <ModalContext.Provider value={true}>
               <Suspense fallback={<Skeleton className="h-64 w-full" />}>
                 {children}
@@ -144,7 +146,7 @@ export const Modal: FC<ModalProps> = ({
               {headerContent}
             </DialogHeader>
           )}
-          <DialogBody>
+          <DialogBody className={className}>
             <ModalContext.Provider value={true}>
               <Suspense fallback={<Skeleton className="h-64 w-full" />}>
                 {children}
