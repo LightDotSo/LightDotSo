@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { NotificationData } from "@lightdotso/data";
+import { EmptyState } from "@lightdotso/elements";
 import { useDebounced, useMediaQuery } from "@lightdotso/hooks";
 import {
   Skeleton,
@@ -41,7 +42,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, type FC, useMemo } from "react";
-import { EmptyState } from "@lightdotso/elements";
 import { notificationColumns } from "./notification-columns";
 
 // -----------------------------------------------------------------------------

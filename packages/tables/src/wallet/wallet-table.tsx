@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { WalletData } from "@lightdotso/data";
+import { EmptyState } from "@lightdotso/elements";
 import { useDebounced, useMediaQuery } from "@lightdotso/hooks";
 import {
   Skeleton,
@@ -42,7 +43,6 @@ import {
 } from "@tanstack/react-table";
 import Link from "next/link";
 import { useEffect, type FC, useMemo } from "react";
-import { EmptyState } from "@lightdotso/elements";
 import { walletColumns } from "./wallet-columns";
 
 // -----------------------------------------------------------------------------

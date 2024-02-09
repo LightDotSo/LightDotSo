@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
+import { EmptyState } from "@lightdotso/elements";
 import { useDebounced, useMediaQuery } from "@lightdotso/hooks";
 import {
   Skeleton,
@@ -44,7 +45,6 @@ import {
 import { useEffect, type FC, useMemo } from "react";
 import type { Address } from "viem";
 import { groupByDate } from "../group";
-import { EmptyState } from "@lightdotso/elements";
 import { UserOperationCardTransaction } from "./card";
 import { userOperationColumns } from "./user-operation-columns";
 
