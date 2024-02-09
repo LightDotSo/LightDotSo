@@ -1371,6 +1371,9 @@ export const SendDialog: FC<SendDialogProps> = ({
                                               }
                                               address={address}
                                               type="native"
+                                              onClose={() =>
+                                                setIsTokenModalOpen(false)
+                                              }
                                               onTokenSelect={token => {
                                                 form.setValue(
                                                   `transfers.${index}.asset.address`,

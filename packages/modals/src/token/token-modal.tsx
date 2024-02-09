@@ -34,6 +34,7 @@ type TokenModalProps = {
   address: Address;
   isTestnet?: boolean;
   isTokenModalVisible: boolean;
+  onClose?: () => void;
   onTokenSelect: (token: TokenData) => void;
   type: "native" | "socket";
 };
@@ -46,6 +47,7 @@ export const TokenModal: FC<TokenModalProps> = ({
   address,
   isTestnet,
   isTokenModalVisible,
+  onClose,
   onTokenSelect,
   type,
 }) => {
@@ -122,6 +124,7 @@ export const TokenModal: FC<TokenModalProps> = ({
       <Modal
         open
         className="p-2"
+        onClose={onClose}
         bannerContent={
           <div className="flex flex-row space-x-2">
             <Button
