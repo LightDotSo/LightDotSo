@@ -71,6 +71,7 @@ import {
   toFunctionSelector,
   toHex,
   fromHex,
+  getAddress,
 } from "viem";
 import type { Address, Hex } from "viem";
 import { normalize } from "viem/ens";
@@ -1372,14 +1373,18 @@ export const SendDialog: FC<SendDialogProps> = ({
                                               showTokenModal();
                                             }}
                                           >
-                                            {token && (
-                                              <TokenImage
-                                                size="xs"
-                                                className="mr-2"
-                                                token={token}
-                                              />
+                                            {token ? (
+                                              <>
+                                                <TokenImage
+                                                  size="xs"
+                                                  className="mr-2"
+                                                  token={token}
+                                                />
+                                                {token?.symbol}
+                                              </>
+                                            ) : (
+                                              "Select Token"
                                             )}
-                                            {token?.symbol}
                                             <div className="grow" />
                                             <ChevronDown className="size-4 opacity-50" />
                                           </Button>
@@ -1466,7 +1471,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                   nftPage &&
                                                   transfers &&
                                                   transfers?.length > 0 &&
-                                                  transfers[index].asset &&
+                                                  transfers[index]?.asset &&
                                                   transfers[index]?.asset
                                                     ?.address &&
                                                   "tokenId" in
@@ -1531,7 +1536,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                       transfers[index]?.asset as {
                                         tokenId: number | undefined;
                                       }
-                                    ).tokenId;
+                                    )?.tokenId;
 
                                     const nft =
                                       (nftPage &&
@@ -1570,20 +1575,28 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                   }
                                                 },
                                                 onNftSelect: nft => {
-                                                  form.setValue(
-                                                    `transfers.${index}.asset.address`,
-                                                    address,
-                                                  );
-                                                  if (chainId) {
+                                                  if (nft.contract_address) {
                                                     form.setValue(
-                                                      `transfers.${index}.chainId`,
-                                                      chainId,
+                                                      `transfers.${index}.asset.address`,
+                                                      getAddress(
+                                                        nft.contract_address,
+                                                      ),
                                                     );
                                                   }
-                                                  if (tokenId) {
+                                                  if (nft.chain) {
+                                                    form.setValue(
+                                                      `transfers.${index}.chainId`,
+                                                      SIMPLEHASH_CHAIN_ID_MAPPING[
+                                                        nft.chain! as
+                                                          | SimplehashMainnetChain
+                                                          | SimplehashTestnetChain
+                                                      ],
+                                                    );
+                                                  }
+                                                  if (nft.token_id) {
                                                     form.setValue(
                                                       `transfers.${index}.asset.tokenId`,
-                                                      tokenId,
+                                                      parseInt(nft.token_id),
                                                     );
                                                   }
                                                   form.setValue(
@@ -1605,15 +1618,19 @@ export const SendDialog: FC<SendDialogProps> = ({
                                               showNftModal();
                                             }}
                                           >
-                                            {nft && (
-                                              <div className="mr-2 size-6">
-                                                <NftImage
-                                                  className="rounded-md"
-                                                  nft={nft}
-                                                />
-                                              </div>
+                                            {nft ? (
+                                              <>
+                                                <div className="mr-2 size-6">
+                                                  <NftImage
+                                                    className="rounded-md"
+                                                    nft={nft}
+                                                  />
+                                                </div>
+                                                {nft.name ?? nft.token_id}
+                                              </>
+                                            ) : (
+                                              "Select NFT"
                                             )}
-                                            {nft && (nft.name ?? nft.token_id)}
                                             <div className="grow" />
                                             <ChevronDown className="size-4 opacity-50" />
                                           </Button>
