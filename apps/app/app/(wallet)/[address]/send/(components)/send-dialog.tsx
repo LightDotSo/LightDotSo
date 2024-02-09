@@ -1196,7 +1196,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                 );
                                               }}
                                               onChange={e => {
-                                                // If the input ends with ".", leave it unchanged.
+                                                // If the input ends with ".", or includes "." and ends with "0", set the value as string, as it can be assumed that the user is still typing
                                                 if (
                                                   e.target.value.endsWith(
                                                     ".",
