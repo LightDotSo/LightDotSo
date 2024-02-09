@@ -19,8 +19,8 @@ import { useModals } from "@lightdotso/stores";
 import type { NftModalProps } from "@lightdotso/stores";
 import type { Meta, StoryObj } from "@storybook/react";
 import { useEffect } from "react";
+import type { Address } from "viem";
 import { NftModal } from "./nft-modal";
-import { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Meta

@@ -65,7 +65,7 @@ export function NftModal() {
                 // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
                 <div
                   key={nft.nft_id}
-                  className="col-span-1 cursor-pointer flex-row items-center rounded-md hover:ring-2 ring-border-primary"
+                  className="col-span-1 cursor-pointer flex-row items-center rounded-md ring-border-primary hover:ring-2"
                   onClick={() => onNftSelect(nft)}
                 >
                   <NftImage nft={nft} className="rounded-t-md" />
@@ -73,7 +73,7 @@ export function NftModal() {
               ))}
           </div>
         ) : (
-          <div className="flex w-full justify-center h-32 text-center">
+          <div className="flex h-32 w-full justify-center text-center">
             <EmptyState entity="nft" />
           </div>
         )}
