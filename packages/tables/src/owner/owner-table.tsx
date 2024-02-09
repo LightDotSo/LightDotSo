@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { OwnerData } from "@lightdotso/data";
+import { EmptyState } from "@lightdotso/elements";
 import { useDebounced, useMediaQuery } from "@lightdotso/hooks";
 import {
   Skeleton,
@@ -41,7 +42,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, type FC, useMemo } from "react";
-import { TableEmpty } from "../table-empty";
 import { ownerColumns } from "./owner-columns";
 
 // -----------------------------------------------------------------------------
@@ -195,7 +195,7 @@ export const OwnerTable: FC<OwnerTableProps> = ({
         ) : (
           <TableRow>
             <TableCell colSpan={columns.length} className="h-24 text-center">
-              <TableEmpty entity="owner" />
+              <EmptyState entity="owner" />
             </TableCell>
           </TableRow>
         )}

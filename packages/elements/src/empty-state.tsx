@@ -33,7 +33,7 @@ type Entity =
 // Const
 // -----------------------------------------------------------------------------
 
-const entityDescription: Record<Entity, string> = {
+const entityStateDescription: Record<Entity, string> = {
   activity: "activity",
   wallet: "wallets",
   token: "tokens",
@@ -47,7 +47,7 @@ const entityDescription: Record<Entity, string> = {
 // Props
 // -----------------------------------------------------------------------------
 
-interface TableEmptyProps {
+interface EmptyStateProps {
   entity: Entity;
 }
 
@@ -55,7 +55,7 @@ interface TableEmptyProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export const TableEmpty: FC<TableEmptyProps> = ({ entity }) => {
+export const EmptyState: FC<EmptyStateProps> = ({ entity }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -66,7 +66,7 @@ export const TableEmpty: FC<TableEmptyProps> = ({ entity }) => {
         <Wallet className="mx-auto size-10 text-lg text-border" />
       </span>
       <div className="text-text-weaker">
-        No {entityDescription[entity]} in wallet.
+        No {entityStateDescription[entity]} in wallet.
       </div>
     </div>
   );

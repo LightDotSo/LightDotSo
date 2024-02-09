@@ -13,22 +13,34 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { PortfolioParams } from "@lightdotso/params";
-import { createQueryKeys } from "@lukemorales/query-key-factory";
-import type { inferQueryKeys } from "@lukemorales/query-key-factory";
+import type { Meta, StoryObj } from "@storybook/react";
+import { EmptyState } from "./empty-state";
 
 // -----------------------------------------------------------------------------
-// Keys
+// Meta
 // -----------------------------------------------------------------------------
 
-export const portfolio = createQueryKeys("portfolio", {
-  get: (params: PortfolioParams) => ({
-    queryKey: [{ params }],
-  }),
-});
+const meta: Meta<typeof EmptyState> = {
+  title: "element/EmptyState",
+  component: EmptyState,
+  tags: ["autodocs"],
+  argTypes: {},
+};
+export default meta;
 
 // -----------------------------------------------------------------------------
-// Infer
+// Types
 // -----------------------------------------------------------------------------
 
-export type PortfolioKeys = inferQueryKeys<typeof portfolio>;
+type Story = StoryObj<typeof EmptyState>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Base: Story = {
+  render: args => <EmptyState entity={args.entity} />,
+  args: {
+    entity: "wallet",
+  },
+};

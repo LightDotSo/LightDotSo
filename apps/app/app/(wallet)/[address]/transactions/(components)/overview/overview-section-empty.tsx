@@ -19,8 +19,8 @@ import type {
   UserOperationCountData,
   WalletSettingsData,
 } from "@lightdotso/data";
+import { EmptyState } from "@lightdotso/elements";
 import { queryKeys } from "@lightdotso/query-keys";
-import { TableEmpty } from "@lightdotso/tables";
 import { Table, TableBody, TableCell, TableRow } from "@lightdotso/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
@@ -71,7 +71,7 @@ export const OverviewSectionEmpty = ({
       <TableBody>
         <TableRow>
           <TableCell className="h-24 text-center">
-            <TableEmpty entity="transaction" />
+            <EmptyState entity="transaction" />
           </TableCell>
         </TableRow>
       </TableBody>

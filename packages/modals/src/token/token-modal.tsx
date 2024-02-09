@@ -17,38 +17,28 @@
 
 import { CHAINS, MAINNET_CHAINS } from "@lightdotso/const";
 import type { TokenData } from "@lightdotso/data";
-import { TokenImage } from "@lightdotso/elements";
+import { EmptyState, TokenImage } from "@lightdotso/elements";
 import { useQuerySocketBalances, useQueryTokens } from "@lightdotso/query";
+import { useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import { Modal } from "@lightdotso/templates";
 import { Button, ButtonIcon } from "@lightdotso/ui";
 import { cn, refineNumberFormat } from "@lightdotso/utils";
 import { type FC, useMemo, useState } from "react";
-import type { Address } from "viem";
-
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-type TokenModalProps = {
-  address: Address;
-  isTestnet?: boolean;
-  isTokenModalVisible: boolean;
-  onTokenSelect: (token: TokenData) => void;
-  type: "native" | "socket";
-};
-
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TokenModal: FC<TokenModalProps> = ({
-  address,
-  isTestnet,
-  isTokenModalVisible,
-  onTokenSelect,
-  type,
-}) => {
+export const TokenModal: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const {
+    tokenModalProps: { address, isTestnet, onClose, onTokenSelect, type },
+    isTokenModalVisible,
+  } = useModals();
+
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -122,7 +112,7 @@ export const TokenModal: FC<TokenModalProps> = ({
       <Modal
         open
         className="p-2"
-        headerContent={
+        bannerContent={
           <div className="flex flex-row space-x-2">
             <Button
               className={cn(chainId === 0 && "ring-2 ring-border-primary")}
@@ -145,7 +135,7 @@ export const TokenModal: FC<TokenModalProps> = ({
             ))}
           </div>
         }
-        // onClose={hideTokenModal}
+        onClose={onClose}
       >
         {renderedTokens && renderedTokens.length > 0 ? (
           <div className="">
@@ -171,7 +161,9 @@ export const TokenModal: FC<TokenModalProps> = ({
             ))}
           </div>
         ) : (
-          <div>No tokens found</div>
+          <div className="flex h-32 w-full justify-center text-center">
+            <EmptyState entity="token" />
+          </div>
         )}
       </Modal>
     );
