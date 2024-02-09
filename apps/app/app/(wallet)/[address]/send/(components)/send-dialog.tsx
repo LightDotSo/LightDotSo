@@ -1313,19 +1313,18 @@ export const SendDialog: FC<SendDialogProps> = ({
                                   control={form.control}
                                   name={`transfers.${index}.asset.address`}
                                   render={({ field }) => {
-                                    // Get the token address and chainId
-                                    const [tokenAddress, chainId] =
-                                      field.value?.split("-") || [];
+                                    const tokenAddress = field.value;
+                                    const chainId = transfers[index]?.chainId;
 
                                     // Get the matching token
                                     const token =
                                       (tokens &&
+                                        chainId &&
                                         tokens?.length > 0 &&
                                         tokens?.find(
                                           token =>
                                             token.address === tokenAddress &&
-                                            token.chain_id ===
-                                              parseInt(chainId),
+                                            token.chain_id === chainId,
                                         )) ||
                                       undefined;
 
@@ -1526,17 +1525,29 @@ export const SendDialog: FC<SendDialogProps> = ({
                                   control={form.control}
                                   name={`transfers.${index}.asset.address`}
                                   render={({ field }) => {
-                                    // Get the token of address and chainId
-                                    const [address, tokenId, chainId] =
-                                      field.value?.split("-") || [];
+                                    const tokenAddress = field.value;
+                                    const chainId = transfers[index]?.chainId;
+                                    const tokenId = (
+                                      transfers[index]?.asset as {
+                                        tokenId: number | undefined;
+                                      }
+                                    ).tokenId;
 
                                     const nft =
                                       (nftPage &&
+                                        chainId &&
+                                        tokenId &&
                                         nftPage.nfts?.length > 0 &&
                                         nftPage.nfts?.find(
                                           nft =>
-                                            nft.contract_address === address &&
-                                            nft.token_id === tokenId,
+                                            nft.contract_address ===
+                                              tokenAddress &&
+                                            SIMPLEHASH_CHAIN_ID_MAPPING[
+                                              nft.chain! as
+                                                | SimplehashMainnetChain
+                                                | SimplehashTestnetChain
+                                            ] === chainId &&
+                                            nft.token_id === tokenId.toString(),
                                         )) ||
                                       undefined;
 
@@ -1563,14 +1574,18 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                     `transfers.${index}.asset.address`,
                                                     address,
                                                   );
-                                                  form.setValue(
-                                                    `transfers.${index}.chainId`,
-                                                    parseInt(chainId),
-                                                  );
-                                                  form.setValue(
-                                                    `transfers.${index}.asset.tokenId`,
-                                                    parseInt(tokenId),
-                                                  );
+                                                  if (chainId) {
+                                                    form.setValue(
+                                                      `transfers.${index}.chainId`,
+                                                      chainId,
+                                                    );
+                                                  }
+                                                  if (tokenId) {
+                                                    form.setValue(
+                                                      `transfers.${index}.asset.tokenId`,
+                                                      tokenId,
+                                                    );
+                                                  }
                                                   form.setValue(
                                                     `transfers.${index}.assetType`,
                                                     nft.contract.type?.toLowerCase() ===
