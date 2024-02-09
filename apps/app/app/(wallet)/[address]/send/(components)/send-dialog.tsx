@@ -1325,79 +1325,75 @@ export const SendDialog: FC<SendDialogProps> = ({
                                     key={field.id}
                                     control={form.control}
                                     name={`transfers.${index}.asset.address`}
-                                    render={({ field: _field }) => (
-                                      <FormControl>
-                                        <div className="w-full space-y-2">
-                                          <Label htmlFor="weight">Token</Label>
-                                          <Select
-                                            defaultValue={
-                                              transfers &&
-                                              transfers?.length > 0 &&
-                                              transfers[index]?.asset
-                                                ?.address &&
-                                              transfers[index]?.chainId
-                                                ? `${transfers[index]?.asset?.address}-${transfers[index]?.chainId}`
-                                                : undefined
-                                            }
-                                            onValueChange={value => {
-                                              // Get the token of address and chainId
-                                              const [address, chainId] =
-                                                value?.split("-") || [];
+                                    render={({ field: _field }) => {
+                                      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                                      const [tokenAddress, _chainId] =
+                                        _field.value?.split("-") || [];
 
-                                              // Set the chainId of the token
-                                              const token =
-                                                tokens &&
-                                                tokens?.length > 0 &&
-                                                tokens?.find(
-                                                  token =>
-                                                    token.address === address,
-                                                );
+                                      const token =
+                                        (tokens &&
+                                          tokens?.length > 0 &&
+                                          tokens?.find(
+                                            token =>
+                                              token.address === tokenAddress,
+                                          )) ||
+                                        undefined;
 
-                                              if (token) {
+                                      return (
+                                        <FormControl>
+                                          <div className="w-full space-y-2">
+                                            <Label htmlFor="weight">
+                                              Token
+                                            </Label>
+                                            <Button
+                                              size="lg"
+                                              type="button"
+                                              onClick={() =>
+                                                setIsTokenModalOpen(true)
+                                              }
+                                              variant="outline"
+                                              className="flex w-full items-center justify-between text-sm px-4"
+                                            >
+                                              <div className="flex items-center">
+                                                {token && (
+                                                  <TokenImage
+                                                    size="xs"
+                                                    className="mr-2"
+                                                    token={token}
+                                                  />
+                                                )}
+                                                {token?.symbol}
+                                              </div>
+                                            </Button>
+                                            <TokenModal
+                                              isTokenModalVisible={
+                                                isTokenModalOpen
+                                              }
+                                              address={address}
+                                              type="native"
+                                              onTokenSelect={token => {
                                                 form.setValue(
                                                   `transfers.${index}.asset.address`,
-                                                  address,
+                                                  token.address,
                                                 );
                                                 form.setValue(
                                                   `transfers.${index}.chainId`,
-                                                  parseInt(chainId),
+                                                  token.chain_id,
                                                 );
                                                 form.setValue(
                                                   `transfers.${index}.assetType`,
                                                   "erc20",
                                                 );
-                                              }
 
-                                              form.trigger();
-                                            }}
-                                          >
-                                            <FormControl>
-                                              <SelectTrigger className="w-full">
-                                                <SelectValue placeholder="Select a token" />
-                                              </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent>
-                                              {tokens?.map(token => (
-                                                <SelectItem
-                                                  key={`${token.address}-${token.chain_id}`}
-                                                  value={`${token.address}-${token.chain_id}`}
-                                                >
-                                                  <div className="flex items-center">
-                                                    <TokenImage
-                                                      size="xs"
-                                                      className="mr-2"
-                                                      token={token}
-                                                    />
-                                                    {token.symbol}
-                                                  </div>
-                                                </SelectItem>
-                                              ))}
-                                            </SelectContent>
-                                          </Select>
-                                          <FormMessage />
-                                        </div>
-                                      </FormControl>
-                                    )}
+                                                form.trigger();
+                                                setIsTokenModalOpen(false);
+                                              }}
+                                            />
+                                            <FormMessage />
+                                          </div>
+                                        </FormControl>
+                                      );
+                                    }}
                                   />
                                 </div>
                               </div>
@@ -1683,14 +1679,6 @@ export const SendDialog: FC<SendDialogProps> = ({
           </Form>
         </TooltipProvider>
       </div>
-      <TokenModal
-        isTokenModalVisible={isTokenModalOpen}
-        address={address}
-        type="native"
-        onTokenSelect={() => {
-          setIsTokenModalOpen(false);
-        }}
-      />
     </>
   );
 };
