@@ -82,7 +82,9 @@ export const adminSocketClient: ReturnType<typeof createClient<SocketPaths>> =
 export const getSocketClient: (
   clientType?: "admin" | "authenticated" | "public",
 ) => ReturnType<typeof createClient<SocketPaths>> = clientType =>
-  process.env.LOCAL_ENV === "dev" || process.env.NEXT_PUBLIC_LOCAL_ENV === "dev"
+  process.env.LOCAL_ENV === "dev" ||
+  process.env.NEXT_PUBLIC_LOCAL_ENV === "dev" ||
+  process.env.STORYBOOK_ENV === "dev"
     ? localSocketClient
     : clientType === undefined
       ? publicSocketClient

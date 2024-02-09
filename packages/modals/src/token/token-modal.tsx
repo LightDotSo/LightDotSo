@@ -16,12 +16,13 @@
 "use client";
 
 import { MAINNET_CHAINS } from "@lightdotso/const";
+import type { TokenData } from "@lightdotso/data";
 import { useQuerySocketBalances } from "@lightdotso/query";
 import { useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import { Modal } from "@lightdotso/templates";
 import { Button, ButtonIcon } from "@lightdotso/ui";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { cn } from "../../../utils/src";
 
 // -----------------------------------------------------------------------------
@@ -48,6 +49,39 @@ export function TokenModal() {
   // ---------------------------------------------------------------------------
 
   const { isTokenModalVisible, hideTokenModal } = useModals();
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const tokens: TokenData[] = useMemo(() => {
+    let filtered_balances = balances;
+
+    if (balances && chainId > 0) {
+      filtered_balances = balances.filter(
+        balance => balance.chainId === chainId,
+      );
+    }
+
+    // Map the balances to tokens
+    if (filtered_balances) {
+      return filtered_balances.map(balance => {
+        return {
+          id: `${balance.address}-${balance.chainId}`,
+          chain_id: balance.chainId,
+          balance_usd: 0,
+          address: balance.address,
+          amount: balance.amount,
+          chainId: balance.chainId,
+          decimals: balance.decimals,
+          name: balance.name,
+          symbol: balance.symbol,
+        };
+      });
+    }
+
+    return [];
+  }, [balances, chainId]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -82,7 +116,18 @@ export function TokenModal() {
         }
         onClose={hideTokenModal}
       >
-        <>{JSON.stringify(balances)}</>
+        {tokens && tokens.length > 0 ? (
+          <div className="grid grid-cols-3 gap-4">
+            {tokens.map(balance => (
+              <div key={balance.address}>
+                <div>{balance.name}</div>
+                <div>{balance.amount}</div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div>No tokens found</div>
+        )}
       </Modal>
     );
   }
