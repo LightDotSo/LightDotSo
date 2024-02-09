@@ -13,14 +13,30 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { TokenData } from "@lightdotso/data";
+import type { Address } from "viem";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+export type TokenModalProps = {
+  address: Address;
+  isTestnet?: boolean;
+  onClose?: () => void;
+  onTokenSelect: (token: TokenData) => void;
+  type: "native" | "socket";
+};
 
 // -----------------------------------------------------------------------------
 // State
 // -----------------------------------------------------------------------------
 
 type ModalsStore = {
+  tokenModalProps: TokenModalProps;
+  setTokenModalProps: (props: TokenModalProps) => void;
   isAuthModalVisible: boolean;
   isConnectModalVisible: boolean;
   isDepositModalVisible: boolean;
@@ -54,6 +70,15 @@ type ModalsStore = {
 export const useModals = create(
   devtools<ModalsStore>(
     set => ({
+      tokenModalProps: {
+        // @ts-expect-error
+        address: "",
+        isTokenModalVisible: false,
+        onTokenSelect: () => {},
+        type: "native",
+      },
+      setTokenModalProps: (props: TokenModalProps) =>
+        set({ tokenModalProps: props }),
       isAuthModalVisible: false,
       isConnectModalVisible: false,
       isDepositModalVisible: false,

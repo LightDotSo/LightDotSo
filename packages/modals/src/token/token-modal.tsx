@@ -19,38 +19,26 @@ import { CHAINS, MAINNET_CHAINS } from "@lightdotso/const";
 import type { TokenData } from "@lightdotso/data";
 import { TokenImage } from "@lightdotso/elements";
 import { useQuerySocketBalances, useQueryTokens } from "@lightdotso/query";
+import { useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import { Modal } from "@lightdotso/templates";
 import { Button, ButtonIcon } from "@lightdotso/ui";
 import { cn, refineNumberFormat } from "@lightdotso/utils";
 import { type FC, useMemo, useState } from "react";
-import type { Address } from "viem";
-
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-type TokenModalProps = {
-  address: Address;
-  isTestnet?: boolean;
-  isTokenModalVisible: boolean;
-  onClose?: () => void;
-  onTokenSelect: (token: TokenData) => void;
-  type: "native" | "socket";
-};
-
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TokenModal: FC<TokenModalProps> = ({
-  address,
-  isTestnet,
-  isTokenModalVisible,
-  onClose,
-  onTokenSelect,
-  type,
-}) => {
+export const TokenModal: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const {
+    tokenModalProps: { address, isTestnet, onClose, onTokenSelect, type },
+    isTokenModalVisible,
+  } = useModals();
+
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------

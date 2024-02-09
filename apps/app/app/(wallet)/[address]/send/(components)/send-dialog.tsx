@@ -117,17 +117,12 @@ export const SendDialog: FC<SendDialogProps> = ({
   initialTransfers,
 }) => {
   // ---------------------------------------------------------------------------
-  // State Hooks
-  // ---------------------------------------------------------------------------
-
-  const [isTokenModalOpen, setIsTokenModalOpen] = useState(false);
-
-  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
   const { setIsFormDisabled } = useFormRef();
-  const { showSendModal, hideSendModal } = useModals();
+  const { showSendModal, setTokenModalProps, showTokenModal, hideTokenModal } =
+    useModals();
 
   // ---------------------------------------------------------------------------
   // Ref Hooks
@@ -1348,8 +1343,38 @@ export const SendDialog: FC<SendDialogProps> = ({
                                             variant="outline"
                                             className="flex w-full items-center justify-between px-4 text-sm"
                                             onClick={() => {
-                                              setIsTokenModalOpen(true);
-                                              hideSendModal();
+                                              setTokenModalProps({
+                                                address: address,
+                                                type: "native",
+                                                onClose: () => {
+                                                  hideTokenModal();
+                                                  if (isInsideModal) {
+                                                    showSendModal();
+                                                  }
+                                                },
+                                                onTokenSelect: token => {
+                                                  form.setValue(
+                                                    `transfers.${index}.asset.address`,
+                                                    token.address,
+                                                  );
+                                                  form.setValue(
+                                                    `transfers.${index}.chainId`,
+                                                    token.chain_id,
+                                                  );
+                                                  form.setValue(
+                                                    `transfers.${index}.assetType`,
+                                                    "erc20",
+                                                  );
+
+                                                  form.trigger();
+
+                                                  hideTokenModal();
+                                                  if (isInsideModal) {
+                                                    showSendModal();
+                                                  }
+                                                },
+                                              });
+                                              showTokenModal();
                                             }}
                                           >
                                             {token && (
@@ -1363,39 +1388,6 @@ export const SendDialog: FC<SendDialogProps> = ({
                                             <div className="grow" />
                                             <ChevronDown className="size-4 opacity-50" />
                                           </Button>
-                                          <TokenModal
-                                            isTokenModalVisible={
-                                              isTokenModalOpen
-                                            }
-                                            address={address}
-                                            type="native"
-                                            onClose={() => {
-                                              setIsTokenModalOpen(false);
-                                              if (isInsideModal) {
-                                                showSendModal();
-                                              }
-                                            }}
-                                            onTokenSelect={token => {
-                                              form.setValue(
-                                                `transfers.${index}.asset.address`,
-                                                token.address,
-                                              );
-                                              form.setValue(
-                                                `transfers.${index}.chainId`,
-                                                token.chain_id,
-                                              );
-                                              form.setValue(
-                                                `transfers.${index}.assetType`,
-                                                "erc20",
-                                              );
-
-                                              form.trigger();
-                                              setIsTokenModalOpen(false);
-                                              if (isInsideModal) {
-                                                showSendModal();
-                                              }
-                                            }}
-                                          />
                                           <FormMessage />
                                         </div>
                                       </FormControl>
