@@ -31,7 +31,7 @@ import type {
   SimplehashTestnetChain,
   Transfer,
 } from "@lightdotso/schemas";
-import { useFormRef } from "@lightdotso/stores";
+import { useFormRef, useModals } from "@lightdotso/stores";
 import { FooterButton, useIsInsideModal } from "@lightdotso/templates";
 import {
   Accordion,
@@ -127,6 +127,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   // ---------------------------------------------------------------------------
 
   const { setIsFormDisabled } = useFormRef();
+  const { showSendModal, hideSendModal } = useModals();
 
   // ---------------------------------------------------------------------------
   // Ref Hooks
@@ -1348,9 +1349,10 @@ export const SendDialog: FC<SendDialogProps> = ({
                                             <Button
                                               size="lg"
                                               type="button"
-                                              onClick={() =>
-                                                setIsTokenModalOpen(true)
-                                              }
+                                              onClick={() => {
+                                                hideSendModal();
+                                                setIsTokenModalOpen(true);
+                                              }}
                                               variant="outline"
                                               className="flex w-full items-center justify-between text-sm px-4"
                                             >
@@ -1371,9 +1373,12 @@ export const SendDialog: FC<SendDialogProps> = ({
                                               }
                                               address={address}
                                               type="native"
-                                              onClose={() =>
-                                                setIsTokenModalOpen(false)
-                                              }
+                                              onClose={() => {
+                                                setIsTokenModalOpen(false);
+                                                if (isInsideModal) {
+                                                  showSendModal();
+                                                }
+                                              }}
                                               onTokenSelect={token => {
                                                 form.setValue(
                                                   `transfers.${index}.asset.address`,
