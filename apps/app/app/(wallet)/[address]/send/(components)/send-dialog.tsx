@@ -121,8 +121,14 @@ export const SendDialog: FC<SendDialogProps> = ({
   // ---------------------------------------------------------------------------
 
   const { setIsFormDisabled } = useFormRef();
-  const { showSendModal, setTokenModalProps, showTokenModal, hideTokenModal } =
-    useModals();
+  const {
+    showSendModal,
+    setTokenModalProps,
+    setNftModalProps,
+    hideNftModal,
+    showTokenModal,
+    hideTokenModal,
+  } = useModals();
 
   // ---------------------------------------------------------------------------
   // Ref Hooks
@@ -1319,17 +1325,20 @@ export const SendDialog: FC<SendDialogProps> = ({
                                   key={field.id}
                                   control={form.control}
                                   name={`transfers.${index}.asset.address`}
-                                  render={({ field: _field }) => {
-                                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                                    const [tokenAddress, _chainId] =
-                                      _field.value?.split("-") || [];
+                                  render={({ field }) => {
+                                    // Get the token address and chainId
+                                    const [tokenAddress, chainId] =
+                                      field.value?.split("-") || [];
 
+                                    // Get the matching token
                                     const token =
                                       (tokens &&
                                         tokens?.length > 0 &&
                                         tokens?.find(
                                           token =>
-                                            token.address === tokenAddress,
+                                            token.address === tokenAddress &&
+                                            token.chain_id ===
+                                              parseInt(chainId),
                                         )) ||
                                       undefined;
 
@@ -1529,110 +1538,88 @@ export const SendDialog: FC<SendDialogProps> = ({
                                   key={field.id}
                                   control={form.control}
                                   name={`transfers.${index}.asset.address`}
-                                  render={({ field: _field }) => (
-                                    <FormControl>
-                                      <div className="w-full space-y-2">
-                                        <Label htmlFor="weight">NFT</Label>
-                                        <Select
-                                          defaultValue={
-                                            transfers &&
-                                            transfers?.length > 0 &&
-                                            transfers[index]?.asset &&
-                                            transfers[index]?.asset?.address &&
-                                            "tokenId" in
-                                              // eslint-disable-next-line no-unsafe-optional-chaining, @typescript-eslint/no-non-null-asserted-optional-chain
-                                              transfers[index]?.asset! &&
-                                            transfers[index]?.chainId
-                                              ? // @ts-expect-error
-                                                `${transfers[index]?.asset?.address}-${transfers[index]?.asset?.tokenId}-${transfers[index]?.chainId}`
-                                              : undefined
-                                          }
-                                          onValueChange={value => {
-                                            // Get the token of address and chainId
-                                            const [address, tokenId, chainId] =
-                                              value?.split("-") || [];
+                                  render={({ field }) => {
+                                    // Get the token of address and chainId
+                                    const [address, tokenId, chainId] =
+                                      field.value?.split("-") || [];
 
-                                            // Set the chainId of the token
-                                            const nft =
-                                              nftPage &&
-                                              nftPage.nfts?.length > 0 &&
-                                              nftPage.nfts?.find(
-                                                nft =>
-                                                  nft.contract_address ===
-                                                    address &&
-                                                  nft.token_id === tokenId,
-                                              );
+                                    const nft =
+                                      (nftPage &&
+                                        nftPage.nfts?.length > 0 &&
+                                        nftPage.nfts?.find(
+                                          nft =>
+                                            nft.contract_address === address &&
+                                            nft.token_id === tokenId,
+                                        )) ||
+                                      undefined;
 
-                                            if (nft) {
-                                              form.setValue(
-                                                `transfers.${index}.asset.address`,
-                                                address,
-                                              );
-                                              form.setValue(
-                                                `transfers.${index}.chainId`,
-                                                parseInt(chainId),
-                                              );
-                                              form.setValue(
-                                                `transfers.${index}.asset.tokenId`,
-                                                parseInt(tokenId),
-                                              );
-                                              form.setValue(
-                                                `transfers.${index}.assetType`,
-                                                nft.contract.type?.toLowerCase() ===
-                                                  "erc721"
-                                                  ? "erc721"
-                                                  : "erc1155",
-                                              );
-                                            }
+                                    return (
+                                      <FormControl>
+                                        <div className="w-full space-y-2">
+                                          <Label htmlFor="weight">NFT</Label>
+                                          <Button
+                                            size="lg"
+                                            type="button"
+                                            variant="outline"
+                                            className="flex w-full items-center justify-between px-4 text-sm"
+                                            onClick={() => {
+                                              setNftModalProps({
+                                                address: address as Address,
+                                                onClose: () => {
+                                                  hideTokenModal();
+                                                  if (isInsideModal) {
+                                                    showSendModal();
+                                                  }
+                                                },
+                                                onNftSelect: nft => {
+                                                  form.setValue(
+                                                    `transfers.${index}.asset.address`,
+                                                    address,
+                                                  );
+                                                  form.setValue(
+                                                    `transfers.${index}.chainId`,
+                                                    parseInt(chainId),
+                                                  );
+                                                  form.setValue(
+                                                    `transfers.${index}.asset.tokenId`,
+                                                    parseInt(tokenId),
+                                                  );
+                                                  form.setValue(
+                                                    `transfers.${index}.assetType`,
+                                                    nft.contract.type?.toLowerCase() ===
+                                                      "erc721"
+                                                      ? "erc721"
+                                                      : "erc1155",
+                                                  );
 
-                                            form.trigger();
-                                          }}
-                                        >
-                                          <FormControl>
-                                            <SelectTrigger className="w-full">
-                                              <SelectValue placeholder="Select a NFT" />
-                                            </SelectTrigger>
-                                          </FormControl>
-                                          <SelectContent>
-                                            {nftPage &&
-                                              nftPage.nfts?.map(nft => (
-                                                <SelectItem
-                                                  key={`${
-                                                    nft.contract_address
-                                                  }-${nft.token_id}-${
-                                                    SIMPLEHASH_CHAIN_ID_MAPPING[
-                                                      nft.chain! as
-                                                        | SimplehashMainnetChain
-                                                        | SimplehashTestnetChain
-                                                    ]
-                                                  }`}
-                                                  value={`${
-                                                    nft.contract_address
-                                                  }-${nft.token_id}-${
-                                                    SIMPLEHASH_CHAIN_ID_MAPPING[
-                                                      nft.chain! as
-                                                        | SimplehashMainnetChain
-                                                        | SimplehashTestnetChain
-                                                    ]
-                                                  }`}
-                                                >
-                                                  <div className="flex items-center">
-                                                    <div className="mr-2 size-6">
-                                                      <NftImage
-                                                        className="rounded-md"
-                                                        nft={nft}
-                                                      />
-                                                    </div>
-                                                    {nft.name ?? nft.token_id}
-                                                  </div>
-                                                </SelectItem>
-                                              ))}
-                                          </SelectContent>
-                                        </Select>
-                                        <FormMessage />
-                                      </div>
-                                    </FormControl>
-                                  )}
+                                                  form.trigger();
+
+                                                  hideTokenModal();
+                                                  if (isInsideModal) {
+                                                    showSendModal();
+                                                  }
+                                                },
+                                              });
+                                              showTokenModal();
+                                            }}
+                                          >
+                                            {nft && (
+                                              <div className="mr-2 size-6">
+                                                <NftImage
+                                                  className="rounded-md"
+                                                  nft={nft}
+                                                />
+                                              </div>
+                                            )}
+                                            {nft && (nft.name ?? nft.token_id)}
+                                            <div className="grow" />
+                                            <ChevronDown className="size-4 opacity-50" />
+                                          </Button>
+                                          <FormMessage />
+                                        </div>
+                                      </FormControl>
+                                    );
+                                  }}
                                 />
                               </div>
                             </div>
