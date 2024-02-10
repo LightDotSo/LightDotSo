@@ -1346,7 +1346,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                   hideTokenModal();
                                                   if (isInsideModal) {
                                                     setBackgroundSendModal(
-                                                      true,
+                                                      false,
                                                     );
                                                   }
                                                 },
@@ -1374,6 +1374,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                   }
                                                 },
                                               });
+                                              setBackgroundSendModal(true);
                                               showTokenModal();
                                             }}
                                           >
@@ -1576,7 +1577,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                   hideNftModal();
                                                   if (isInsideModal) {
                                                     setBackgroundSendModal(
-                                                      true,
+                                                      false,
                                                     );
                                                   }
                                                 },
@@ -1623,6 +1624,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                   }
                                                 },
                                               });
+                                              setBackgroundSendModal(true);
                                               showNftModal();
                                             }}
                                           >
