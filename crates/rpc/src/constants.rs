@@ -33,6 +33,7 @@ lazy_static! {
 }
 
 // The infura rpc urls
+// Thank you to the Infura team for providing the service!
 lazy_static! {
     pub static ref INFURA_RPC_URLS: HashMap<u64, String> = {
         let mut m = HashMap::new();
@@ -53,6 +54,7 @@ lazy_static! {
 }
 
 // The alchemy rpc urls
+// Thank you to the Alchemy team for providing the service!
 lazy_static! {
     pub static ref ALCHEMY_RPC_URLS: HashMap<u64, String> = {
         let mut m = HashMap::new();
@@ -77,6 +79,7 @@ lazy_static! {
 }
 
 // The nodereal rpc urls
+// Thank you to the NodeReal team for providing the service!
 lazy_static! {
     pub static ref NODEREAL_RPC_URLS: HashMap<u64, String> = {
         let mut m = HashMap::new();
@@ -92,6 +95,7 @@ lazy_static! {
 }
 
 // The blast api rpc urls
+// Thank you to the Blast API team for providing the service!
 lazy_static! {
     pub static ref BLASTAPI_RPC_URLS: HashMap<u64, String> = {
         let mut m = HashMap::new();
@@ -115,6 +119,7 @@ lazy_static! {
 }
 
 // The chainnodes rpc urls
+// Thank you to the Chainnodes team for providing the service!
 lazy_static! {
     pub static ref CHAINNODES_RPC_URLS: HashMap<u64, String> = {
         let mut m = HashMap::new();
@@ -130,6 +135,7 @@ lazy_static! {
 }
 
 // The public node rpc urls
+// Thank you to the Public Node team for providing the service!
 lazy_static! {
     pub static ref PUBLIC_NODE_RPC_URLS: HashMap<u64, String> = {
         let mut m = HashMap::new();
@@ -156,6 +162,7 @@ lazy_static! {
 }
 
 // The official public rpc urls
+// Thank you to the respective chain teams for providing the service!
 lazy_static! {
     pub static ref OFFICIAL_PUBLIC_RPC_URLS: HashMap<u64, String> = {
         let mut m = HashMap::new();
@@ -182,7 +189,8 @@ lazy_static! {
     };
 }
 
-// The public rpc urls
+// The ankr rpc urls
+// Thank you to the Ankr team for providing the service!
 lazy_static! {
     pub static ref ANKR_RPC_URLS: HashMap<u64, String> = {
         let mut m = HashMap::new();
@@ -215,6 +223,7 @@ lazy_static! {
 }
 
 // The thirdweb rpc urls
+// Thank you to the Thirdweb team for providing the service!
 lazy_static! {
     pub static ref THIRDWEB_RPC_URLS: HashMap<u64, String> = {
         let mut m = HashMap::new();
@@ -255,6 +264,7 @@ lazy_static! {
 }
 
 // The nodereal rpc urls
+// Thank you to the Node RPC team for providing the service!
 lazy_static! {
     pub static ref NODRPC_RPC_URLS: HashMap<u64, String> = {
         let mut m = HashMap::new();
@@ -274,6 +284,7 @@ lazy_static! {
 }
 
 // The nodereal rpc urls
+// Thank you to the Llama team for providing the service!
 lazy_static! {
     pub static ref LLAMANODES_RPC_URLS: HashMap<u64, String> = {
         let mut m = HashMap::new();
@@ -291,6 +302,8 @@ lazy_static! {
 }
 
 // The biconomy rpc urls
+// From: https://docs.biconomy.io/Bundler/supportedNetworks
+// Thank you to the Biconomy team for providing the service!
 lazy_static! {
     pub static ref BICONOMY_RPC_URLS: HashMap<u64, String> = {
         let mut m = HashMap::new();
@@ -327,6 +340,8 @@ lazy_static! {
 }
 
 // The pimlico rpc urls
+// From: https://docs.pimlico.io/bundler/reference/supported-chains
+// Thank you to the Pimlico team for providing the service!
 lazy_static! {
     pub static ref PIMLICO_RPC_URLS: HashMap<u64, String> = {
         let mut m = HashMap::new();
@@ -336,6 +351,7 @@ lazy_static! {
         m.insert(10, "https://api.pimlico.io/v1/optimism/rpc".to_string());
         m.insert(56, "https://api.pimlico.io/v1/binance/rpc".to_string());
         m.insert(100, "https://api.pimlico.io/v1/gnosis/rpc".to_string());
+        m.insert(122, "https://api.pimlico.io/v1/fuse/rpc".to_string());
         m.insert(137, "https://api.pimlico.io/v1/polygon/rpc".to_string());
         m.insert(8453, "https://api.pimlico.io/v1/base/rpc".to_string());
         m.insert(42161, "https://api.pimlico.io/v1/arbitrum/rpc".to_string());
@@ -361,6 +377,8 @@ lazy_static! {
 }
 
 // The etherspot rpc urls
+// From: https://etherspot.fyi/prime-sdk/chains-supported
+// Thank you to the Etherspot team for providing these public endpoints!
 lazy_static! {
     pub static ref ETHERSPOT_RPC_URLS: HashMap<u64, String> = {
         let mut m = HashMap::new();
@@ -380,6 +398,7 @@ lazy_static! {
         m.insert(534352, "https://scroll-bundler.etherspot.io/".to_string());
 
         // Testnet
+        m.insert(5001, "https://mantletestnet-bundler.etherspot.io/".to_string());
         m.insert(80001, "https://mumbai-bundler.etherspot.io/".to_string());
         m.insert(534351, "https://scrollsepolia-bundler.etherspot.io/".to_string());
         m.insert(11155111, "https://sepolia-bundler.etherspot.io/".to_string());
@@ -389,6 +408,8 @@ lazy_static! {
 }
 
 // The particle rpc urls
+// From: https://docs.particle.network/developers/account-abstraction/available-networks
+// Thank you to the Particle team for providing these public endpoints!
 lazy_static! {
     pub static ref PARTICLE_RPC_URLS: HashMap<u64, String> = {
         let mut m = HashMap::new();
@@ -420,6 +441,8 @@ lazy_static! {
 }
 
 // The silius rpc urls
+// From: https://github.com/silius-rs/silius?tab=readme-ov-file#supported-networks
+// Thank you to the Silius team for providing these public endpoints!
 lazy_static! {
     pub static ref SILIUS_RPC_URLS: HashMap<u64, String> = {
         let mut m = HashMap::new();
@@ -435,6 +458,8 @@ lazy_static! {
         m.insert(59144, "https://rpc.silius.xyz/api/v1/chain/linea-mainnet".to_string());
 
         // Testnet
+        m.insert(97, "https://rpc.silius.xyz/api/v1/chain/bsc-testnet".to_string());
+        m.insert(43113, "https://rpc.silius.xyz/api/v1/chain/avalanche-fuji".to_string());
         m.insert(80001, "https://rpc.silius.xyz/api/v1/chain/polygon-mumbai".to_string());
         m.insert(84532, "https://rpc.silius.xyz/api/v1/chain/base-sepolia".to_string());
         m.insert(421614, "https://rpc.silius.xyz/api/v1/chain/arbitrum-sepolia".to_string());
@@ -457,7 +482,8 @@ lazy_static! {
         m.insert(137, "https://polygon.voltaire.candidewallet.com/rpc".to_string());
 
          // Testnet
-        m.insert(43113, "https://avalanche-avash.voltaire.candidewallet.com/rpc".to_string());
+        m.insert(43113, "https://avalanche-fuji.voltaire.candidewallet.com/rpc".to_string());
+        m.insert(44787, "https://celo-alfajores.voltaire.candidewallet.com/rpc".to_string());
         m.insert(80001, "https://mumbai.voltaire.candidewallet.com/rpc".to_string());
         m.insert(11155111, "https://sepolia.voltaire.candidewallet.com/rpc".to_string());
 
