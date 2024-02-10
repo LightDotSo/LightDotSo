@@ -156,10 +156,13 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   }
 
   return (
-    <div className={isBackground ? "hidden" : ""}>
-      <Modal footerContent={footerContent} open={isOpen} onClose={onDismiss}>
-        {children}
-      </Modal>
-    </div>
+    <Modal
+      isHidden={isBackground}
+      footerContent={footerContent}
+      open={isOpen}
+      onClose={onDismiss}
+    >
+      {children}
+    </Modal>
   );
 };
