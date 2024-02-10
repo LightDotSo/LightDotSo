@@ -39,7 +39,7 @@ use super::{error::QueueError, types::QueueSuccess};
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct PostQuery {
-    /// The address of the target queue.
+    /// The user operation hash of the target queue.
     pub hash: String,
     /// The chain id of the target queue.
     pub chain_id: u64,
