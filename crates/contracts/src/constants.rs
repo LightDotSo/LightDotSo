@@ -112,6 +112,7 @@ lazy_static! {
         m.insert(421614, "Arbitrum Sepolia Testnet");
         m.insert(11155111, "Sepolia Testnet");
         m.insert(11155420, "Optimism Sepolia Testnet");
+        m.insert(168587773, "Blast Sepolia Testnet");
 
         m
     };
