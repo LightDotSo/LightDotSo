@@ -60,6 +60,7 @@ const modalDialogVariants = cva(["max-h-[80%]"], {
 interface ModalProps extends VariantProps<typeof modalDialogVariants> {
   children: ReactNode;
   className?: string;
+  isHidden?: boolean;
   headerContent?: ReactNode;
   bannerContent?: ReactNode;
   footerContent?: ReactNode;
@@ -88,6 +89,7 @@ export function useIsInsideModal() {
 export const Modal: FC<ModalProps> = ({
   children,
   className,
+  isHidden,
   open,
   size,
   bannerContent,
@@ -112,7 +114,7 @@ export const Modal: FC<ModalProps> = ({
   if (!isDesktop) {
     return (
       <Drawer shouldScaleBackground open={open} onClose={onClose}>
-        <DrawerContent>
+        <DrawerContent className={isHidden ? "hidden" : ""}>
           {bannerContent && <DialogHeader>{bannerContent}</DialogHeader>}
           <DrawerBody className={className}>
             <ModalContext.Provider value={true}>
@@ -135,6 +137,7 @@ export const Modal: FC<ModalProps> = ({
           className={cn(
             "w-full overflow-scroll",
             modalDialogVariants({ size }),
+            isHidden && "hidden",
           )}
         >
           <DialogHeader>
