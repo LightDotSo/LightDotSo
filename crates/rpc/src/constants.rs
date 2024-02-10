@@ -165,9 +165,12 @@ lazy_static! {
         m.insert(10, "https://mainnet.optimism.io".to_string());
         m.insert(56, "https://bsc-dataseed.binance.org".to_string());
         m.insert(100, "https://rpc.gnosischain.com".to_string());
+        m.insert(169, "https://pacific-rpc.manta.network/http".to_string());
+        m.insert(5000, "https://rpc.mantle.xyz".to_string());
         m.insert(8453, "https://mainnet.base.org".to_string());
         m.insert(42161, "https://arb1.arbitrum.io/rpc".to_string());
         m.insert(43114, "https://api.avax.network/ext/bc/C/rpc".to_string());
+        m.insert(59140, "https://rpc.linea.build ".to_string());
 
         // Testnet
         m.insert(84532, "https://sepolia.base.org".to_string());
@@ -197,6 +200,7 @@ lazy_static! {
         m.insert(42170, "https://rpc.ankr.com/arbitrumnova".to_string());
         m.insert(42220, "https://rpc.ankr.com/celo".to_string());
         m.insert(43114, "https://rpc.ankr.com/avalanche".to_string());
+        m.insert(59144, "https://rpc.ankr.com/linea".to_string());
         m.insert(1666600000, "https://rpc.ankr.com/harmony".to_string());
 
         // Testnet
@@ -233,7 +237,7 @@ lazy_static! {
         m.insert(42170, "https://arbitrum-nova.rpc.thirdweb.com".to_string());
         m.insert(42220, "https://celo.rpc.thirdweb.com".to_string());
         m.insert(43114, "https://avalanche.rpc.thirdweb.com".to_string());
-        m.insert(534352, "scroll.rpc.thirdweb.com".to_string());
+        m.insert(534352, "https://scroll.rpc.thirdweb.com".to_string());
         m.insert(1666600000, "https://harmony-shard-0.rpc.thirdweb.com".to_string());
 
         // Testnet
@@ -243,6 +247,7 @@ lazy_static! {
         m.insert(534351, "https://scroll-sepolia-testnet.rpc.thirdweb.com".to_string());
         m.insert(11155111, "https://sepolia.rpc.thirdweb.com".to_string());
         m.insert(11155420, "https://op-sepolia-testnet.rpc.thirdweb.com".to_string());
+        m.insert(168587773, "https://blast-sepolia-testnet.rpc.thirdweb.com".to_string());
         m.insert(999999999, "https://zora-sepolia-testnet.rpc.thirdweb.com".to_string());
 
         m
@@ -342,6 +347,7 @@ lazy_static! {
 
         // Testnet
         m.insert(10200, "https://api.pimlico.io/v1/chiado-testnet/rpc".to_string());
+        m.insert(44787, "https://api.pimlico.io/v1/celo-alfajores-testnet/rpc".to_string());
         m.insert(80001, "https://api.pimlico.io/v1/mumbai/rpc".to_string());
         m.insert(84532, "https://api.pimlico.io/v1/base-sepolia/rpc".to_string());
         m.insert(421614, "https://api.pimlico.io/v1/arbitrum-sepolia/rpc".to_string());
@@ -393,14 +399,18 @@ lazy_static! {
         m.insert(56, "https://bundler.particle.network?chainId=56".to_string());
         m.insert(100, "https://bundler.particle.network?chainId=100".to_string());
         m.insert(137, "https://bundler.particle.network?chainId=137".to_string());
+        m.insert(169, "https://bundler.particle.network?chainId=169".to_string());
         m.insert(8453, "https://bundler.particle.network?chainId=8453".to_string());
         m.insert(42161, "https://bundler.particle.network?chainId=42161".to_string());
         m.insert(43114, "https://bundler.particle.network?chainId=43114".to_string());
         m.insert(59144, "https://bundler.particle.network?chainId=59144".to_string());
+        m.insert(534352, "https://bundler.particle.network?chainId=534352".to_string());
 
         // Testnet
+        m.insert(59140, "https://bundler.particle.network?chainId=59140".to_string());
         m.insert(80001, "https://bundler.particle.network?chainId=80001".to_string());
         m.insert(84532, "https://bundler.particle.network?chainId=84532".to_string());
+        m.insert(534351, "https://bundler.particle.network?chainId=534351".to_string());
         m.insert(11155111, "https://bundler.particle.network?chainId=11155111".to_string());
         m.insert(11155420, "https://bundler.particle.network?chainId=11155420".to_string());
         m.insert(168587773, "https://bundler.particle.network?chainId=168587773".to_string());
