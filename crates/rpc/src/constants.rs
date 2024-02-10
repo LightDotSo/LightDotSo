@@ -173,6 +173,7 @@ lazy_static! {
         m.insert(84532, "https://sepolia.base.org".to_string());
         m.insert(11155111, "https://rpc.sepolia.org".to_string());
         m.insert(11155420, "https://sepolia.optimism.io".to_string());
+        m.insert(168587773, "https://sepolia.blast.io".to_string());
 
         m
     };
@@ -376,6 +377,33 @@ lazy_static! {
         m.insert(80001, "https://mumbai-bundler.etherspot.io/".to_string());
         m.insert(534351, "https://scrollsepolia-bundler.etherspot.io/".to_string());
         m.insert(11155111, "https://sepolia-bundler.etherspot.io/".to_string());
+
+        m
+    };
+}
+
+// The particle rpc urls
+lazy_static! {
+    pub static ref PARTICLE_RPC_URLS: HashMap<u64, String> = {
+        let mut m = HashMap::new();
+
+        // Mainnet
+        m.insert(1, "https://bundler.particle.network?chainId=1".to_string());
+        m.insert(10, "https://bundler.particle.network?chainId=10".to_string());
+        m.insert(56, "https://bundler.particle.network?chainId=56".to_string());
+        m.insert(100, "https://bundler.particle.network?chainId=100".to_string());
+        m.insert(137, "https://bundler.particle.network?chainId=137".to_string());
+        m.insert(8453, "https://bundler.particle.network?chainId=8453".to_string());
+        m.insert(42161, "https://bundler.particle.network?chainId=42161".to_string());
+        m.insert(43114, "https://bundler.particle.network?chainId=43114".to_string());
+        m.insert(59144, "https://bundler.particle.network?chainId=59144".to_string());
+
+        // Testnet
+        m.insert(80001, "https://bundler.particle.network?chainId=80001".to_string());
+        m.insert(84532, "https://bundler.particle.network?chainId=84532".to_string());
+        m.insert(11155111, "https://bundler.particle.network?chainId=11155111".to_string());
+        m.insert(11155420, "https://bundler.particle.network?chainId=11155420".to_string());
+        m.insert(168587773, "https://bundler.particle.network?chainId=168587773".to_string());
 
         m
     };
