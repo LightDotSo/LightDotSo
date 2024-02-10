@@ -106,7 +106,7 @@ export const SendDialog: FC<SendDialogProps> = ({
 
   const { setIsFormDisabled } = useFormRef();
   const {
-    setBackgroundTokenModal,
+    setBackgroundSendModal,
     setNftModalProps,
     showNftModal,
     hideNftModal,
@@ -1345,7 +1345,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                 onClose: () => {
                                                   hideTokenModal();
                                                   if (isInsideModal) {
-                                                    setBackgroundTokenModal(
+                                                    setBackgroundSendModal(
                                                       false,
                                                     );
                                                   }
@@ -1368,7 +1368,7 @@ export const SendDialog: FC<SendDialogProps> = ({
 
                                                   hideTokenModal();
                                                   if (isInsideModal) {
-                                                    setBackgroundTokenModal(
+                                                    setBackgroundSendModal(
                                                       true,
                                                     );
                                                   }
@@ -1575,7 +1575,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                 onClose: () => {
                                                   hideNftModal();
                                                   if (isInsideModal) {
-                                                    setBackgroundTokenModal(
+                                                    setBackgroundSendModal(
                                                       false,
                                                     );
                                                   }
@@ -1617,7 +1617,7 @@ export const SendDialog: FC<SendDialogProps> = ({
 
                                                   hideNftModal();
                                                   if (isInsideModal) {
-                                                    setBackgroundTokenModal(
+                                                    setBackgroundSendModal(
                                                       true,
                                                     );
                                                   }
