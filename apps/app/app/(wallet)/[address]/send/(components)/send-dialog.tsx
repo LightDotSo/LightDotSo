@@ -1346,7 +1346,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                   hideTokenModal();
                                                   if (isInsideModal) {
                                                     setBackgroundSendModal(
-                                                      false,
+                                                      true,
                                                     );
                                                   }
                                                 },
@@ -1369,7 +1369,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                   hideTokenModal();
                                                   if (isInsideModal) {
                                                     setBackgroundSendModal(
-                                                      true,
+                                                      false,
                                                     );
                                                   }
                                                 },
@@ -1576,7 +1576,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                   hideNftModal();
                                                   if (isInsideModal) {
                                                     setBackgroundSendModal(
-                                                      false,
+                                                      true,
                                                     );
                                                   }
                                                 },
@@ -1618,7 +1618,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                   hideNftModal();
                                                   if (isInsideModal) {
                                                     setBackgroundSendModal(
-                                                      true,
+                                                      false,
                                                     );
                                                   }
                                                 },
