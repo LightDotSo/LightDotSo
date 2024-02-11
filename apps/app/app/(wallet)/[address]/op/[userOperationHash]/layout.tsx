@@ -22,8 +22,8 @@ import {
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import type { Hex } from "viem";
-import { TITLES } from "@/const";
 import { OpInvokeButton } from "@/app/(wallet)/[address]/op/[userOperationHash]/(components)/op-invoke-button";
+import { TITLES } from "@/const";
 import { handler } from "@/handlers/paths/[address]/op/[userOperationHash]/handler";
 
 // -----------------------------------------------------------------------------
