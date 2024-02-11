@@ -73,7 +73,16 @@ export const FooterButton: FC<FooterButtonProps> = ({
           Cancel
         </Button>
       </span>
-      {!href || isLoading || disabled ? (
+      {href ? (
+        <Button
+          asChild
+          className="w-full md:w-auto"
+          isLoading={isLoading}
+          disabled={disabled}
+        >
+          <Link href={href}>Continue</Link>
+        </Button>
+      ) : (
         <Button
           className="w-full md:w-auto"
           isLoading={isLoading}
@@ -82,17 +91,6 @@ export const FooterButton: FC<FooterButtonProps> = ({
           onClick={successClick}
         >
           {customSuccessText ?? "Continue"}
-        </Button>
-      ) : (
-        <Button
-          asChild
-          className="w-full md:w-auto"
-          onClick={e => e.preventDefault()}
-          isLoading={isLoading}
-          disabled={disabled}
-          type="submit"
-        >
-          <Link href={href}>Continue</Link>
         </Button>
       )}
       {isModal ? (
