@@ -13,12 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { ModalInterception } from "@lightdotso/templates";
 import type { Address } from "viem";
-import { ModalInterceptionFooter } from "@/app/(wallet)/@op/(.)[address]/op/(components)/modal-interception-footer";
-import OriginalPage from "@/app/(wallet)/[address]/op/page";
+import { CreateTransaction } from "@/app/(wallet)/[address]/create/(components)/create-transaction";
+import { handler } from "@/handlers/paths/[address]/create/handler";
+import { preloader } from "@/preloaders/paths/[address]/create/preloader";
 
-// -----------------------------------------------------------------------------
+// ------------------------------------------------------c-----------------------
 // Props
 // -----------------------------------------------------------------------------
 
@@ -35,23 +35,26 @@ type PageProps = {
 
 export default async function Page({ params, searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
+  // Preloaders
+  // ---------------------------------------------------------------------------
+
+  preloader(params, searchParams);
+
+  // ---------------------------------------------------------------------------
+  // Handlers
+  // ---------------------------------------------------------------------------
+
+  const { configuration, userOperations } = await handler(params, searchParams);
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <ModalInterception
-      footerContent={
-        <ModalInterceptionFooter address={params.address as Address} />
-      }
-      type="op"
-    >
-      <OriginalPage params={params} searchParams={searchParams} />
-    </ModalInterception>
+    <CreateTransaction
+      configuration={configuration}
+      address={params.address as Address}
+      userOperations={userOperations}
+    />
   );
 }
-
-// -----------------------------------------------------------------------------
-// Config
-// -----------------------------------------------------------------------------
-
-// export const runtime = "edge";

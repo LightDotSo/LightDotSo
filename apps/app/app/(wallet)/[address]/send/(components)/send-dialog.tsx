@@ -1678,7 +1678,7 @@ export const SendDialog: FC<SendDialogProps> = ({
               <FooterButton
                 isModal={false}
                 cancelDisabled={true}
-                href={`/${address}/op?userOperations=${userOperationsParser.serialize(userOperationsParams!)}`}
+                href={`/${address}/create?userOperations=${userOperationsParser.serialize(userOperationsParams!)}`}
                 disabled={!isFormValid}
               />
             )}

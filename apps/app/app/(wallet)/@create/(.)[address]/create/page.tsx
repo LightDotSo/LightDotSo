@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { ModalInterception } from "@lightdotso/templates";
 import type { Address } from "viem";
-import { OpTransaction } from "@/app/(wallet)/[address]/op/(components)/op-transaction";
-import { handler } from "@/handlers/paths/[address]/op/handler";
-import { preloader } from "@/preloaders/paths/[address]/op/preloader";
+import { ModalInterceptionFooter } from "@/app/(wallet)/@create/(.)[address]/create/(components)/modal-interception-footer";
+import OriginalPage from "@/app/(wallet)/[address]/create/page";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -35,26 +35,23 @@ type PageProps = {
 
 export default async function Page({ params, searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
-  // Preloaders
-  // ---------------------------------------------------------------------------
-
-  preloader(params, searchParams);
-
-  // ---------------------------------------------------------------------------
-  // Handlers
-  // ---------------------------------------------------------------------------
-
-  const { configuration, userOperations } = await handler(params, searchParams);
-
-  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <OpTransaction
-      configuration={configuration}
-      address={params.address as Address}
-      userOperations={userOperations}
-    />
+    <ModalInterception
+      footerContent={
+        <ModalInterceptionFooter address={params.address as Address} />
+      }
+      type="op"
+    >
+      <OriginalPage params={params} searchParams={searchParams} />
+    </ModalInterception>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Config
+// -----------------------------------------------------------------------------
+
+// export const runtime = "edge";
