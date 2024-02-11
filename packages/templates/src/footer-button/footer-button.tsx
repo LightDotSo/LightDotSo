@@ -18,7 +18,7 @@
 import { Button, ButtonIcon } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { XIcon } from "lucide-react";
-import type { FC, MouseEvent } from "react";
+import { useMemo, type FC, type MouseEvent } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -74,7 +74,7 @@ export const FooterButton: FC<FooterButtonProps> = ({
         className="w-full md:w-auto"
         isLoading={isLoading}
         disabled={disabled}
-        onClick={onClick}
+        onMouseDown={onClick}
       >
         {customSuccessText ?? "Continue"}
       </Button>
