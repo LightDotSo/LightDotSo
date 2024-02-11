@@ -22,6 +22,7 @@ import type { Address } from "viem";
 import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const";
 import { useAuthModal } from "@lightdotso/hooks";
+import { SettingsCardButton } from "@/components/settings/settings-card-button";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -39,12 +40,6 @@ export const SettingsNotificationsSettingsCard: FC<
   SettingsNotificationSettingsCardProps
 > = ({ address }) => {
   // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const { isAuthValid, isAuthLoading, handleAuthModal } = useAuthModal();
-
-  // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
@@ -56,36 +51,12 @@ export const SettingsNotificationsSettingsCard: FC<
   // Submit Button
   // ---------------------------------------------------------------------------
 
-  const WalletLoginButton: FC = () => {
-    // -------------------------------------------------------------------------
-    // Render
-    // -------------------------------------------------------------------------
-
-    return (
-      <Button
-        disabled={isAuthValid}
-        isLoading={isAuthLoading}
-        onClick={handleAuthModal}
-      >
-        Login to update name
-      </Button>
-    );
-  };
-
   const SettingsNotificationsCardSubmitButton: FC = () => {
     return (
       <Button type="submit" form="walletNotificationsForm" disabled={true}>
         Notifications
       </Button>
     );
-  };
-
-  const SettingsNotificationsCardButton: FC = () => {
-    if (!isAuthValid) {
-      return <WalletLoginButton />;
-    }
-
-    return <SettingsNotificationsCardSubmitButton />;
   };
 
   // ---------------------------------------------------------------------------
@@ -104,7 +75,11 @@ export const SettingsNotificationsSettingsCard: FC<
           "Notification Settings"
         ].description
       }
-      footerContent={<SettingsNotificationsCardButton />}
+      footerContent={
+        <SettingsCardButton>
+          <SettingsNotificationsCardSubmitButton />
+        </SettingsCardButton>
+      }
     >
       <div className="flex text-lg">
         <span>

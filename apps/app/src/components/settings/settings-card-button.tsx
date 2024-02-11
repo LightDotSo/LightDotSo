@@ -13,75 +13,54 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
 import { useAuthModal } from "@lightdotso/hooks";
-import { useQueryWalletBilling } from "@lightdotso/query";
 import { Button } from "@lightdotso/ui";
-import type { FC } from "react";
-import type { Address } from "viem";
-import { SettingsCard } from "@/components/settings/settings-card";
-import { TITLES } from "@/const";
-import { SettingsCardButton } from "@/components/settings/settings-card-button";
+import type { FC, ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type SettingsBillingBalanceCardProps = {
-  address: Address;
+type SettingsCardButtonProps = {
+  children: ReactNode;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const SettingsBillingBalanceCard: FC<
-  SettingsBillingBalanceCardProps
-> = ({ address }) => {
+export const SettingsCardButton: FC<SettingsCardButtonProps> = ({
+  children,
+}) => {
   // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
-
-  const { walletBilling } = useQueryWalletBilling({
-    address,
-  });
-
-  // ---------------------------------------------------------------------------
-  // Submit Button
+  // Hooks
   // ---------------------------------------------------------------------------
 
-  const SettingsBillingCardSubmitButton: FC = () => {
-    return (
-      <Button type="submit" form="walletBillingForm" disabled={true}>
-        Billing
-      </Button>
-    );
-  };
+  const { isAuthValid, isAuthLoading, handleAuthModal } = useAuthModal();
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <SettingsCard
-      title={
-        TITLES.WalletSettings.subcategories["Billing"].subcategories["Balance"]
-          .title
-      }
-      subtitle={
-        TITLES.WalletSettings.subcategories["Billing"].subcategories["Balance"]
-          .description
-      }
-      footerContent={
-        <SettingsCardButton>
-          <SettingsBillingCardSubmitButton />
-        </SettingsCardButton>
-      }
-    >
-      <div className="flex text-lg">
-        <span>${walletBilling && walletBilling.billing?.balance_usd}</span>
-      </div>
-    </SettingsCard>
-  );
+  const WalletLoginButton: FC = () => {
+    // -------------------------------------------------------------------------
+    // Render
+    // -------------------------------------------------------------------------
+
+    return (
+      <Button
+        disabled={isAuthValid}
+        isLoading={isAuthLoading}
+        onClick={handleAuthModal}
+      >
+        Login to update name
+      </Button>
+    );
+  };
+
+  if (!isAuthValid) {
+    return <WalletLoginButton />;
+  }
+
+  return children;
 };
