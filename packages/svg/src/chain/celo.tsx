@@ -33,11 +33,11 @@ export const CeloLogo: ForwardRefExoticComponent<
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g clip-path="url(#clip0_7984_9126)">
+    <g clipPath="url(#clip0_7984_9126)">
       <rect width="24" height="24" rx="6" fill="#FCFF52" />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M17.3019 7H7V17.37H17.3027V13.75H15.5931C15.0038 15.0709 13.6772 15.9902 12.1591 15.9902C10.0664 15.9902 8.37153 14.2694 8.37153 12.178C8.37153 10.0859 10.0664 8.37977 12.1591 8.37977C13.7066 8.37977 15.0332 9.32933 15.6225 10.6789H17.3027L17.3019 7Z"
         fill="#09090B"
       />
