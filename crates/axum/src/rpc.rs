@@ -38,11 +38,12 @@ use axum::{
 use clap::Parser;
 use eyre::Result;
 use hyper::client;
+use lightdotso_kafka::get_producer;
 use lightdotso_rpc::{
     config::RpcArgs, internal_rpc_handler, protected_rpc_handler, public_rpc_handler,
 };
 use lightdotso_tracing::tracing::{info, Level};
-use std::{net::SocketAddr, time::Duration};
+use std::{net::SocketAddr, sync::Arc, time::Duration};
 use tower::ServiceBuilder;
 use tower_governor::{
     governor::GovernorConfigBuilder, key_extractor::SmartIpKeyExtractor, GovernorLayer,
@@ -63,6 +64,7 @@ pub async fn start_rpc_server() -> Result<()> {
         .enable_http1()
         .build();
     let client: client::Client<_, hyper::Body> = client::Client::builder().build(https);
+    let producer = Arc::new(get_producer()?);
 
     // Get the config
     let _ = RpcArgs::parse();
@@ -122,7 +124,7 @@ pub async fn start_rpc_server() -> Result<()> {
         .route("/protected/:key/:chain_id", on(MethodFilter::all(), protected_rpc_handler))
         .route("/internal/:chain_id", on(MethodFilter::all(), internal_rpc_handler))
         .layer(ServiceBuilder::new().layer(trace_layer.clone()).into_inner())
-        .with_state(client);
+        .with_state((client, producer));
 
     let socket_addr = "[::]:3000".parse()?;
     axum::Server::bind(&socket_addr)

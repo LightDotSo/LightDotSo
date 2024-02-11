@@ -16,10 +16,16 @@
 use eyre::Result;
 use lightdotso_kafka::types::user_operation::UserOperationMessage;
 use lightdotso_polling::polling::Polling;
+use lightdotso_prisma::{user_operation, PrismaClient, UserOperationStatus};
 use lightdotso_tracing::tracing::info;
 use rdkafka::{message::BorrowedMessage, Message};
+use std::sync::Arc;
 
-pub async fn user_operation_consumer(msg: &BorrowedMessage<'_>, poller: &Polling) -> Result<()> {
+pub async fn user_operation_consumer(
+    msg: &BorrowedMessage<'_>,
+    poller: &Polling,
+    db: Arc<PrismaClient>,
+) -> Result<()> {
     // Convert the payload to a string
     let payload_opt = msg.payload_view::<str>();
     info!("payload_opt: {:?}", payload_opt);
@@ -30,6 +36,19 @@ pub async fn user_operation_consumer(msg: &BorrowedMessage<'_>, poller: &Polling
         let payload: UserOperationMessage = serde_json::from_slice(payload.as_bytes())?;
         info!("payload: {:?}", payload);
 
+        // If the `is_pending` field is Some(true), then update the user operation state in the db
+        if payload.is_pending == Some(true) {
+            let _ = db
+                .user_operation()
+                .update(
+                    user_operation::hash::equals(format!("{:?}", payload.hash)),
+                    vec![user_operation::status::set(UserOperationStatus::Pending)],
+                )
+                .exec()
+                .await?;
+        }
+
+        // Run the user operation poller
         poller.run_uop(payload.chain_id, payload.hash).await?;
     }
 

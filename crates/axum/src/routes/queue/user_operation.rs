@@ -104,7 +104,11 @@ pub(crate) async fn v1_queue_user_operation_handler(
     // For each chain, run the kafka producer.
     produce_user_operation_message(
         state.producer.clone(),
-        &UserOperationMessage { hash: parsed_query_hash, chain_id: uop.chain_id as u64 },
+        &UserOperationMessage {
+            hash: parsed_query_hash,
+            chain_id: uop.chain_id as u64,
+            is_pending: None,
+        },
     )
     .await?;
 

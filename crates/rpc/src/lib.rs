@@ -35,15 +35,20 @@ use axum::{
     extract::{Path, State},
     http::{Request, Response},
 };
+use ethers::types::H256;
 use hyper::{body, client::HttpConnector};
 use hyper_rustls::HttpsConnector;
 use lightdotso_contracts::constants::ENTRYPOINT_V060_ADDRESS;
 use lightdotso_jsonrpsee::types::Request as JSONRPCRequest;
+use lightdotso_kafka::{
+    rdkafka::producer::FutureProducer, topics::user_operation::produce_user_operation_message,
+    types::user_operation::UserOperationMessage,
+};
 use lightdotso_paymaster::types::UserOperationRequest;
 use lightdotso_tracing::tracing::{error, info, trace, warn};
 use serde::ser::Error;
 use serde_json::{json, Error as SerdeError, Value};
-use std::collections::HashMap;
+use std::{collections::HashMap, sync::Arc};
 
 pub type Client = hyper::client::Client<HttpsConnector<HttpConnector>, Body>;
 
@@ -166,7 +171,7 @@ async fn get_client_result(uri: String, client: Client, body: Body) -> Option<Re
 
 /// The public rpc handler for the RPC server
 pub async fn public_rpc_handler(
-    state: State<Client>,
+    state: State<(Client, Arc<FutureProducer>)>,
     chain_id: Path<String>,
     req: Request<Body>,
 ) -> Response<Body> {
@@ -175,7 +180,7 @@ pub async fn public_rpc_handler(
 
 /// The protected rpc handler for the RPC server
 pub async fn protected_rpc_handler(
-    state: State<Client>,
+    state: State<(Client, Arc<FutureProducer>)>,
     Path((key, chain_id)): Path<(String, String)>,
     req: Request<Body>,
 ) -> Response<Body> {
@@ -193,7 +198,7 @@ pub async fn protected_rpc_handler(
 
 /// The internal rpc handler for the RPC server
 pub async fn internal_rpc_handler(
-    state: State<Client>,
+    state: State<(Client, Arc<FutureProducer>)>,
     chain_id: Path<String>,
     req: Request<Body>,
 ) -> Response<Body> {
@@ -237,12 +242,18 @@ async fn try_rpc_with_url(
 
 /// The rpc proxy handler for the RPC server
 pub async fn rpc_proxy_handler(
-    State(client): State<Client>,
+    State(state): State<(Client, Arc<FutureProducer>)>,
     Path(chain_id): Path<String>,
     mut req: Request<Body>,
     debug: bool,
 ) -> Response<Body> {
     info!("req: {:?}", req);
+
+    // Get the client from the state
+    let client = state.0.clone();
+
+    // Get the producer from the state
+    let producer = state.1.clone();
 
     // Convert hexadecimal chain_id to u64 or normal integer
     // Return 0 if the chain_id is not a hexadecimal or normal integer
@@ -415,6 +426,25 @@ pub async fn rpc_proxy_handler(
                             let body_json: Value = serde_json::from_slice(&body).unwrap();
                             if let Some(result) = body_json.get("result") {
                                 info!("result: {:?}", result);
+
+                                // Convert the result to a H256
+                                let result =
+                                    serde_json::from_value::<String>(result.clone()).unwrap();
+                                let hash: Result<H256, _> = result.parse();
+                                info!("hash: {:?}", hash);
+
+                                if let Ok(hash) = hash {
+                                    info!("Successfully queueing user operation message");
+                                    let _ = produce_user_operation_message(
+                                        producer.clone(),
+                                        &UserOperationMessage {
+                                            hash,
+                                            chain_id,
+                                            is_pending: Some(true),
+                                        },
+                                    )
+                                    .await;
+                                }
                             }
 
                             // Reconstruct the response and return
