@@ -96,7 +96,7 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { isFormDisabled } = useFormRef();
+  const { isFormDisabled, isFormLoading } = useFormRef();
 
   // ---------------------------------------------------------------------------
   // Render
@@ -108,6 +108,7 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
       className="pt-0"
       customSuccessText="Execute Transaction"
       disabled={isFormDisabled}
+      isLoading={isFormLoading}
       cancelClick={onDismiss}
       successClick={signUserOperation}
     />

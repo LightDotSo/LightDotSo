@@ -394,7 +394,7 @@ export const Transaction: FC<TransactionProps> = ({
       next[userOperationIndex] = userOperationWithHash;
       return next;
     });
-  }, [userOperationWithHash]);
+  }, [userOperationWithHash, userOperationIndex, setUserOperations]);
 
   // ---------------------------------------------------------------------------
   // Render

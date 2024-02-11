@@ -43,7 +43,11 @@ export const TransactionDevInfo: FC<TransactionDevInfoProps> = ({
     <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
       <code className="break-all text-text">
         {title}:{" "}
-        {data && (isNumber ? Number(data) : serialize(data, undefined, 2))}
+        {typeof data === "boolean"
+          ? data
+            ? "true"
+            : "false"
+          : data && (isNumber ? Number(data) : serialize(data, undefined, 2))}
       </code>
     </pre>
   );
