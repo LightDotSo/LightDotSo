@@ -1685,7 +1685,7 @@ export const SendDialog: FC<SendDialogProps> = ({
               <FooterButton
                 isModal={false}
                 cancelDisabled={true}
-                disabled={!isFormValid}
+                disabled={false}
                 onClick={e => {
                   e.preventDefault();
                   router.push(

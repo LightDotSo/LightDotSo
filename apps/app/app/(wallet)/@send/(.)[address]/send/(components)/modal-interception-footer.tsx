@@ -76,7 +76,7 @@ export const ModalInterceptionFooter: FC = () => {
       isModal
       className="pt-0"
       cancelClick={onDismiss}
-      disabled={isFormDisabled}
+      disabled={false}
       onClick={e => {
         e.preventDefault();
         router.push(href);
