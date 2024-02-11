@@ -29,7 +29,6 @@ export const FooterCopy: FC = () => {
     <p className="text-xs text-text-weak/60 xl:text-center">
       &copy; {new Date().getFullYear()}
       <span className="hidden md:inline-flex">&nbsp;Light, Inc. - </span>{" "}
-      <span className="hidden md:inline-flex">&middot;</span>{" "}
       <a
         className="hidden text-text-weak hover:underline md:inline-flex"
         href={GITHUB_LINKS["License"]}
@@ -47,6 +46,7 @@ export const FooterCopy: FC = () => {
       >
         Audits
       </a>{" "}
+      <span className="hidden md:inline-flex">&middot;</span>{" "}
       <a
         className="hidden text-text-weak hover:underline md:inline-flex"
         href={GITHUB_LINKS["Acknowledgements"]}
