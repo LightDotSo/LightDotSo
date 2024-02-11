@@ -21,8 +21,7 @@ import type { FC } from "react";
 import type { Address } from "viem";
 import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const";
-import { useAuthModal } from "@lightdotso/hooks";
-import { SettingsCardButton } from "@/components/settings/settings-card-button";
+import { SettingsCardBaseButton } from "@/components/settings/settings-card-base-button";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -76,9 +75,9 @@ export const SettingsNotificationsSettingsCard: FC<
         ].description
       }
       footerContent={
-        <SettingsCardButton>
+        <SettingsCardBaseButton>
           <SettingsNotificationsCardSubmitButton />
-        </SettingsCardButton>
+        </SettingsCardBaseButton>
       }
     >
       <div className="flex text-lg">

@@ -38,7 +38,7 @@ import type { Address } from "viem";
 import * as z from "zod";
 import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const";
-import { SettingsCardButton } from "@/components/settings/settings-card-button";
+import { SettingsCardBaseButton } from "@/components/settings/settings-card-base-button";
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -191,9 +191,9 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
         ].description
       }
       footerContent={
-        <SettingsCardButton>
+        <SettingsCardBaseButton>
           <SettingsTestnetCardSubmitButton />
-        </SettingsCardButton>
+        </SettingsCardBaseButton>
       }
     >
       <Form {...form}>

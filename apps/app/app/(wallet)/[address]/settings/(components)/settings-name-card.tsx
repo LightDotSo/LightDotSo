@@ -15,7 +15,7 @@
 
 "use client";
 
-import { useAuthModal, useDelayedValue } from "@lightdotso/hooks";
+import { useDelayedValue } from "@lightdotso/hooks";
 import { useQueryWallet, useMutationWalletUpdate } from "@lightdotso/query";
 import {
   Button,
@@ -36,7 +36,7 @@ import type { Address } from "viem";
 import * as z from "zod";
 import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const";
-import { SettingsCardButton } from "@/components/settings/settings-card-button";
+import { SettingsCardBaseButton } from "@/components/settings/settings-card-base-button";
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -205,9 +205,9 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
               Cancel
             </Button>
           )}
-          <SettingsCardButton>
+          <SettingsCardBaseButton>
             <SettingsNameCardSubmitButton />
-          </SettingsCardButton>
+          </SettingsCardBaseButton>
         </>
       }
     >

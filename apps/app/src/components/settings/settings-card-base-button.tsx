@@ -21,7 +21,7 @@ import type { FC, ReactNode } from "react";
 // Props
 // -----------------------------------------------------------------------------
 
-type SettingsCardButtonProps = {
+type SettingsCardBaseButtonProps = {
   children: ReactNode;
 };
 
@@ -29,7 +29,7 @@ type SettingsCardButtonProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const SettingsCardButton: FC<SettingsCardButtonProps> = ({
+export const SettingsCardBaseButton: FC<SettingsCardBaseButtonProps> = ({
   children,
 }) => {
   // ---------------------------------------------------------------------------
