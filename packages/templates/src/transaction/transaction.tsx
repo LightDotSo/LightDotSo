@@ -384,6 +384,18 @@ export const Transaction: FC<TransactionProps> = ({
     setIsFormLoading(isLoading);
   }, [isLoading, setIsFormLoading]);
 
+  useEffect(() => {
+    setUserOperations(prev => {
+      // Set the userOperationWithHash at the userOperationIndex
+      const next = [...prev];
+      if (!userOperationWithHash) {
+        return next;
+      }
+      next[userOperationIndex] = userOperationWithHash;
+      return next;
+    });
+  }, [userOperationWithHash]);
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
