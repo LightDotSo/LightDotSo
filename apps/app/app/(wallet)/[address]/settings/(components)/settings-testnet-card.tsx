@@ -15,7 +15,7 @@
 
 "use client";
 
-import { useDelayedValue } from "@lightdotso/hooks";
+import { useAuthModal, useDelayedValue } from "@lightdotso/hooks";
 import {
   useMutationWalletSettingsUpdate,
   useQueryWalletSettings,
@@ -64,6 +64,12 @@ type SettingsTestnetCardProps = {
 export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   address,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const { isAuthValid, isAuthLoading, handleAuthModal } = useAuthModal();
+
   // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
@@ -151,6 +157,22 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   // Submit Button
   // ---------------------------------------------------------------------------
 
+  const WalletLoginButton: FC = () => {
+    // -------------------------------------------------------------------------
+    // Render
+    // -------------------------------------------------------------------------
+
+    return (
+      <Button
+        disabled={isAuthValid}
+        isLoading={isAuthLoading}
+        onClick={handleAuthModal}
+      >
+        Login to update name
+      </Button>
+    );
+  };
+
   const SettingsTestnetCardSubmitButton: FC = () => {
     return (
       <Button
@@ -173,6 +195,14 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
     );
   };
 
+  const SettingsTestnetCardButton: FC = () => {
+    if (!isAuthValid) {
+      return <WalletLoginButton />;
+    }
+
+    return <SettingsTestnetCardSubmitButton />;
+  };
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -189,7 +219,7 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
           "Testnet"
         ].description
       }
-      footerContent={<SettingsTestnetCardSubmitButton />}
+      footerContent={<SettingsTestnetCardButton />}
     >
       <Form {...form}>
         <form

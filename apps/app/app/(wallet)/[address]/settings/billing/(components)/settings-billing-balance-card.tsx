@@ -15,6 +15,7 @@
 
 "use client";
 
+import { useAuthModal } from "@lightdotso/hooks";
 import { useQueryWalletBilling } from "@lightdotso/query";
 import { Button } from "@lightdotso/ui";
 import type { FC } from "react";
@@ -38,6 +39,12 @@ export const SettingsBillingBalanceCard: FC<
   SettingsBillingBalanceCardProps
 > = ({ address }) => {
   // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const { isAuthValid, isAuthLoading, handleAuthModal } = useAuthModal();
+
+  // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
@@ -49,12 +56,36 @@ export const SettingsBillingBalanceCard: FC<
   // Submit Button
   // ---------------------------------------------------------------------------
 
+  const WalletLoginButton: FC = () => {
+    // -------------------------------------------------------------------------
+    // Render
+    // -------------------------------------------------------------------------
+
+    return (
+      <Button
+        disabled={isAuthValid}
+        isLoading={isAuthLoading}
+        onClick={handleAuthModal}
+      >
+        Login to update name
+      </Button>
+    );
+  };
+
   const SettingsBillingCardSubmitButton: FC = () => {
     return (
       <Button type="submit" form="walletBillingForm" disabled={true}>
         Billing
       </Button>
     );
+  };
+
+  const SettingsBillingCardButton: FC = () => {
+    if (!isAuthValid) {
+      return <WalletLoginButton />;
+    }
+
+    return <SettingsBillingCardSubmitButton />;
   };
 
   // ---------------------------------------------------------------------------
@@ -71,7 +102,7 @@ export const SettingsBillingBalanceCard: FC<
         TITLES.WalletSettings.subcategories["Billing"].subcategories["Balance"]
           .description
       }
-      footerContent={<SettingsBillingCardSubmitButton />}
+      footerContent={<SettingsBillingCardButton />}
     >
       <div className="flex text-lg">
         <span>${walletBilling && walletBilling.billing?.balance_usd}</span>
