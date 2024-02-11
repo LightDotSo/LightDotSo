@@ -90,7 +90,6 @@ export const FooterButton: FC<FooterButtonProps> = ({
           isLoading={isLoading}
           disabled={disabled}
           type="submit"
-          onClick={successClick}
         >
           <Link href={href}>Continue</Link>
         </Button>
