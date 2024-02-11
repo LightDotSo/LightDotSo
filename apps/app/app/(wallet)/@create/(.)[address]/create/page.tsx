@@ -43,7 +43,7 @@ export default async function Page({ params, searchParams }: PageProps) {
       footerContent={
         <ModalInterceptionFooter address={params.address as Address} />
       }
-      type="op"
+      type="create"
     >
       <OriginalPage params={params} searchParams={searchParams} />
     </ModalInterception>

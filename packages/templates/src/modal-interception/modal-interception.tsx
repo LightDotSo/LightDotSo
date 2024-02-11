@@ -27,7 +27,7 @@ import { Modal } from "../modal";
 
 interface ModalInterceptionProps {
   children: ReactNode;
-  type: "op" | "notifications" | "send";
+  type: "create" | "op" | "notifications" | "send";
   footerContent?: ReactNode;
 }
 
@@ -45,12 +45,15 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // ---------------------------------------------------------------------------
 
   const {
+    isCreateModalBackground,
     isNotificationsModalBackground,
     isOpModalBackground,
     isSendModalBackground,
+    isCreateModalVisible,
     isNotificationsModalVisible,
     isOpModalVisible,
     isSendModalVisible,
+    showCreateModal,
     showNotificationsModal,
     showOpModal,
     showSendModal,
@@ -72,6 +75,8 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
 
   const isBackground = useMemo(() => {
     switch (type) {
+      case "create":
+        return isCreateModalBackground;
       case "op":
         return isOpModalBackground;
       case "notifications":
@@ -80,6 +85,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
         return isSendModalBackground;
     }
   }, [
+    isCreateModalBackground,
     isNotificationsModalBackground,
     isOpModalBackground,
     isSendModalBackground,
@@ -88,6 +94,8 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
 
   const isOpen = useMemo(() => {
     switch (type) {
+      case "create":
+        return isCreateModalVisible;
       case "op":
         return isOpModalVisible;
       case "notifications":
@@ -95,7 +103,13 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
       case "send":
         return isSendModalVisible;
     }
-  }, [isNotificationsModalVisible, isOpModalVisible, isSendModalVisible, type]);
+  }, [
+    isCreateModalVisible,
+    isNotificationsModalVisible,
+    isOpModalVisible,
+    isSendModalVisible,
+    type,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -128,6 +142,11 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     }
 
     switch (type) {
+      case "create":
+        if (pathname.includes("create")) {
+          showCreateModal();
+        }
+        break;
       case "op":
         if (pathname.includes("op")) {
           showOpModal();
