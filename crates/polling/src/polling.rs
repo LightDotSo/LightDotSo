@@ -278,6 +278,7 @@ impl Polling {
             }
 
             // Send the activity queue & interpretation ququjej on all modes.
+            info!("send_activity_queue & send_interpretation_queue");
             if self.live && self.kafka_client.is_some() {
                 if let Ok(res) = res {
                     let _ = self.send_activity_queue(res.0.clone()).await;
@@ -286,6 +287,7 @@ impl Polling {
             }
 
             // Send the tx queue on all modes.
+            info!("send_tx_queue");
             if self.kafka_client.is_some() {
                 let _ = self.send_tx_queue(chain_id, op.block_number.0.parse().unwrap()).await;
             }
