@@ -40,7 +40,7 @@ pub struct PollingArgs {
     pub mode: String,
     /// The the graph studio API key
     #[clap(long, env = "THE_GRAPH_STUDIO_API_KEY")]
-    pub the_graph_studio_api_key: String,
+    pub the_graph_studio_api_key: Option<String>,
     /// The satsuma API key
     #[clap(long, env = "SATSUMA_API_KEY")]
     pub satsuma_api_key: Option<String>,
@@ -170,7 +170,7 @@ pub fn create_sleep_seconds_mapping() -> HashMap<u64, u64> {
 
 /// Create a mapping for chain id to polling URLs.
 pub fn create_chain_mapping(
-    the_graph_studio_api_key: String,
+    the_graph_studio_api_key: Option<String>,
     satsuma_api_key: Option<String>,
     satsuma_enabled: bool,
 ) -> HashMap<u64, HashMap<String, String>> {
@@ -182,16 +182,18 @@ pub fn create_chain_mapping(
         chain_id_to_urls.insert(chain_id, child_map);
     }
 
-    for (chain_id, id) in THE_GRAPH_STUDIO_SERVICE_IDS.clone().into_iter() {
-        let url = format!(
-            "{}/{}/{}/{}",
-            THE_GRAPH_STUDIO_BASE_URL.clone(),
-            the_graph_studio_api_key,
-            "subgraphs/id",
-            id
-        );
-        let child_map = chain_id_to_urls.entry(chain_id).or_insert_with(HashMap::new);
-        child_map.insert((*GRAPH).to_string(), url);
+    if let Some(the_graph_studio_api_key) = the_graph_studio_api_key {
+        for (chain_id, id) in THE_GRAPH_STUDIO_SERVICE_IDS.clone().into_iter() {
+            let url = format!(
+                "{}/{}/{}/{}",
+                THE_GRAPH_STUDIO_BASE_URL.clone(),
+                the_graph_studio_api_key.clone(),
+                "subgraphs/id",
+                id
+            );
+            let child_map = chain_id_to_urls.entry(chain_id).or_insert_with(HashMap::new);
+            child_map.insert((*GRAPH).to_string(), url);
+        }
     }
 
     if satsuma_api_key.is_some() && satsuma_enabled {
