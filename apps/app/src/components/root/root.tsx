@@ -41,6 +41,13 @@ const CommandK = dynamic(() => import("@/components/command-k"), {
   ssr: false,
 });
 
+const AddressModal = dynamic(
+  () => import("@lightdotso/modals/src/address/address-modal"),
+  {
+    ssr: false,
+  },
+);
+
 const AuthModal = dynamic(
   () => import("@lightdotso/modals/src/auth/auth-modal"),
   {
@@ -124,6 +131,7 @@ export const Root: FC<RootProps> = ({ children }) => {
               <CommandK />
               <Toaster />
               {/* Modals */}
+              <AddressModal />
               <AuthModal />
               <ConnectModal />
               <DepositModal />
