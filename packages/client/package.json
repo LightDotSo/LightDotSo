@@ -35,14 +35,14 @@
   "dependencies": {
     "@lightdotso/schemas": "workspace:*",
     "cross-env": "^7.0.3",
-    "dotenv": "^16.4.1",
+    "dotenv": "^16.4.2",
     "neverthrow": "^6.1.0",
     "openapi-fetch": "^0.8.2",
     "zod": "^3.22.4"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.11.16",
+    "@types/node": "^20.11.17",
     "openapi-typescript": "^6.7.4",
     "typescript": "^5.3.3"
   },

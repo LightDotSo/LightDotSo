@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.23.9",
-    "@coinbase/onchainkit": "^0.5.1",
+    "@coinbase/onchainkit": "^0.6.1",
     "@lightdotso/services": "workspace:*",
     "@next/bundle-analyzer": "^14.1.0",
     "@sentry/integrations": "^7.100.1",
@@ -31,14 +31,14 @@
     "next": "^14.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "viem": "^2.7.6"
+    "viem": "^2.7.8"
   },
   "devDependencies": {
     "@lightdotso/eslint-config": "workspace:*",
     "@lightdotso/styles": "workspace:*",
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.11.16",
+    "@types/node": "^20.11.17",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "autoprefixer": "^10.4.17",

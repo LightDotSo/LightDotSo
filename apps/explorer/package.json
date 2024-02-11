@@ -48,9 +48,9 @@
     "@sentry/integrations": "^7.100.1",
     "@sentry/nextjs": "^7.100.1",
     "@sentry/react": "^7.100.1",
-    "@tanstack/react-query": "^5.18.1",
-    "@tanstack/react-query-devtools": "^5.18.1",
-    "@tanstack/react-query-next-experimental": "^5.18.1",
+    "@tanstack/react-query": "^5.20.1",
+    "@tanstack/react-query-devtools": "^5.20.1",
+    "@tanstack/react-query-next-experimental": "^5.20.1",
     "@tanstack/react-table": "^8.11.8",
     "kysely-postgres-js": "^2.0.0",
     "lucide-react": "^0.323.0",
@@ -63,13 +63,13 @@
     "react-error-boundary": "^4.0.12",
     "server-only": "^0.0.1",
     "superjson": "^2.2.1",
-    "viem": "^2.7.6"
+    "viem": "^2.7.8"
   },
   "devDependencies": {
     "@lightdotso/eslint-config": "workspace:*",
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.11.16",
+    "@types/node": "^20.11.17",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "autoprefixer": "^10.4.17",

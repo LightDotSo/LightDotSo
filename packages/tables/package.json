@@ -40,18 +40,18 @@
     "@lightdotso/utils": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
     "@radix-ui/react-icons": "^1.3.0",
-    "@storybook/react": "^7.6.13",
+    "@storybook/react": "^7.6.14",
     "@tanstack/react-table": "^8.11.8",
     "@tremor/react": "^3.13.4",
     "lucide-react": "^0.323.0",
     "next": "^14.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "viem": "^2.7.6"
+    "viem": "^2.7.8"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.11.16",
+    "@types/node": "^20.11.17",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "typescript": "^5.3.3"

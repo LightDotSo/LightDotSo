@@ -41,13 +41,13 @@
     "kysely-postgres-js": "^2.0.0",
     "postgres": "^3.4.3",
     "prisma": "^5.9.1",
-    "prisma-kysely": "^1.7.1",
+    "prisma-kysely": "^1.8.0",
     "zod": "^3.22.4",
     "zod-prisma": "^0.5.4"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.11.16",
+    "@types/node": "^20.11.17",
     "typescript": "^5.3.3"
   },
   "publishConfig": {

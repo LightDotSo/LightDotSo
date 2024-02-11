@@ -21,12 +21,12 @@
     "@types/firefox-webext-browser": "^120.0.0",
     "buffer": "^6.0.3",
     "cross-env": "^7.0.3",
-    "dotenv": "^16.4.1",
+    "dotenv": "^16.4.2",
     "events": "^3.3.0",
     "isutf8": "^4.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20.11.16",
+    "@types/node": "^20.11.17",
     "typescript": "^5.3.3"
   },
   "publishConfig": {
