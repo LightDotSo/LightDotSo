@@ -13,37 +13,75 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import {
+  BaseLayerWrapper,
+  BasicPageWrapper,
+  BannerSection,
+  MiddleLayerWrapper,
+} from "@lightdotso/ui";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import type { Hex } from "viem";
 import { TITLES } from "@/const";
+import { OpInvokeButton } from "@/app/(wallet)/[address]/op/(components)/op-invoke-button";
+import { handler } from "@/handlers/paths/[address]/op/[userOperationHash]/handler";
 
 // -----------------------------------------------------------------------------
 // Metadata
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: TITLES.UserOperation.subcategories["Details"].title,
-  description: TITLES.UserOperation.subcategories["Details"].description,
+  title: TITLES.UserOperation.title,
+  description: TITLES.UserOperation.description,
 };
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface UserOperationDetailsLayoutProps {
+interface UserOperationLayoutProps {
   children: ReactNode;
+  params: {
+    address: string;
+    userOperationHash: string;
+  };
 }
 
 // -----------------------------------------------------------------------------
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function UserOperationDetailsLayout({
+export default async function UserOperationLayout({
   children,
-}: UserOperationDetailsLayoutProps) {
+  params,
+}: UserOperationLayoutProps) {
+  // ---------------------------------------------------------------------------
+  // Handlers
+  // ---------------------------------------------------------------------------
+
+  await handler(params);
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return children;
+  return (
+    <>
+      <BannerSection
+        title={TITLES.Transactions.title}
+        description={TITLES.Transactions.description}
+      >
+        <MiddleLayerWrapper>
+          <div className="flex w-full justify-end">
+            <OpInvokeButton
+              userOperationHash={params.userOperationHash as Hex}
+            />
+          </div>
+        </MiddleLayerWrapper>
+      </BannerSection>
+      <BaseLayerWrapper>
+        <BasicPageWrapper>{children}</BasicPageWrapper>
+      </BaseLayerWrapper>
+    </>
+  );
 }

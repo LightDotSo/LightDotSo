@@ -41,8 +41,6 @@ use super::{error::QueueError, types::QueueSuccess};
 pub struct PostQuery {
     /// The user operation hash of the target queue.
     pub hash: String,
-    /// The chain id of the target queue.
-    pub chain_id: u64,
 }
 
 // -----------------------------------------------------------------------------
@@ -81,7 +79,7 @@ pub(crate) async fn v1_queue_user_operation_handler(
     // -------------------------------------------------------------------------
 
     // Get the user operation from the database.
-    let wallet = state
+    let uop = state
         .client
         .user_operation()
         .find_unique(user_operation::hash::equals(full_op_hash.clone()))
@@ -89,7 +87,7 @@ pub(crate) async fn v1_queue_user_operation_handler(
         .await?;
 
     // If the wallet is not found, return a 404.
-    wallet.ok_or(RouteError::QueueError(QueueError::NotFound(full_op_hash.clone())))?;
+    let uop = uop.ok_or(RouteError::QueueError(QueueError::NotFound(full_op_hash.clone())))?;
 
     // -------------------------------------------------------------------------
     // Redis
@@ -106,7 +104,7 @@ pub(crate) async fn v1_queue_user_operation_handler(
     // For each chain, run the kafka producer.
     produce_user_operation_message(
         state.producer.clone(),
-        &UserOperationMessage { hash: parsed_query_hash, chain_id: query.chain_id },
+        &UserOperationMessage { hash: parsed_query_hash, chain_id: uop.chain_id as u64 },
     )
     .await?;
 

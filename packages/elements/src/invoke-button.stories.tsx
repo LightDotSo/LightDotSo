@@ -13,45 +13,42 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import { InvokeButton } from "@lightdotso/elements";
-import { useMutationUserOperationUpdate } from "@lightdotso/query";
-import type { FC } from "react";
-import type { Address } from "viem";
+import type { Meta, StoryObj } from "@storybook/react";
+import { InvokeButton } from "./invoke-button";
 
 // -----------------------------------------------------------------------------
-// Props
+// Meta
 // -----------------------------------------------------------------------------
 
-interface InvokeUserOperationProps {
-  address: Address;
-}
+const meta: Meta<typeof InvokeButton> = {
+  title: "element/InvokeButton",
+  component: InvokeButton,
+  tags: ["autodocs"],
+  argTypes: {},
+};
+export default meta;
 
 // -----------------------------------------------------------------------------
-// Component
+// Types
 // -----------------------------------------------------------------------------
 
-export const OverviewInvokeButton: FC<InvokeUserOperationProps> = ({
-  address,
-}) => {
-  // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
+type Story = StoryObj<typeof InvokeButton>;
 
-  const { userOperationUpdate, isLoadingUserOperationUpdate } =
-    useMutationUserOperationUpdate({
-      address: address,
-    });
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
 
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <InvokeButton
-      isLoading={isLoadingUserOperationUpdate}
-      onClick={() => userOperationUpdate()}
-    />
-  );
+export const Base: Story = {
+  render: args => <InvokeButton {...args} />,
+  args: {
+    onClick: () => {},
+    isLoading: false,
+  },
+};
+export const Loading: Story = {
+  render: args => <InvokeButton {...args} />,
+  args: {
+    onClick: () => {},
+    isLoading: true,
+  },
 };

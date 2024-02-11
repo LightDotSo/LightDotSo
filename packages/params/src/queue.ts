@@ -35,5 +35,4 @@ export type QueueInterpretationBodyParams = {
 
 export type QueueUserOpeartionBodyParams = {
   hash: string;
-  chain_id: number;
 };

@@ -103,7 +103,6 @@ export const createQueueUserOperation = async (
     params: {
       query: {
         hash: string;
-        chain_id: number;
       };
     };
   },

@@ -53,7 +53,6 @@ export const useMutationQueueUserOperation = (params: QueueParams) => {
             params: {
               query: {
                 hash: body.hash,
-                chain_id: body.chain_id,
               },
             },
           },

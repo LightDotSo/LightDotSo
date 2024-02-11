@@ -16,33 +16,33 @@
 "use client";
 
 import { InvokeButton } from "@lightdotso/elements";
-import { useMutationQueueToken } from "@lightdotso/query";
+import { useMutationQueueUserOperation } from "@lightdotso/query";
 import type { FC } from "react";
-import type { Address } from "viem";
-import invokePortfolioAction from "@/actions/invokePortfolioAction";
+import type { Hex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface OverviewInvokeButtonProps {
-  address: Address;
+interface OpInvokeButtonProps {
+  userOperationHash: Hex;
 }
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const OverviewInvokeButton: FC<OverviewInvokeButtonProps> = ({
-  address,
+export const OpInvokeButton: FC<OpInvokeButtonProps> = ({
+  userOperationHash,
 }) => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
-  const { queueToken, isLoadingQueueToken } = useMutationQueueToken({
-    address: address,
-  });
+  const { queueUserOperation, isLoadingQueueUserOperation } =
+    useMutationQueueUserOperation({
+      address: userOperationHash,
+    });
 
   // ---------------------------------------------------------------------------
   // Render
@@ -50,12 +50,8 @@ export const OverviewInvokeButton: FC<OverviewInvokeButtonProps> = ({
 
   return (
     <InvokeButton
-      isLoading={isLoadingQueueToken}
-      onClick={async () => {
-        invokePortfolioAction(address as Address);
-
-        await queueToken();
-      }}
+      isLoading={isLoadingQueueUserOperation}
+      onClick={() => queueUserOperation({ hash: userOperationHash })}
     />
   );
 };

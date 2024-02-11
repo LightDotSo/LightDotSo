@@ -34,7 +34,10 @@ export const useMutationUserOperationUpdate = (params: UserOperationParams) => {
   // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const { mutate: userOperationUpdate } = useMutation({
+  const {
+    mutate: userOperationUpdate,
+    isPending: isLoadingUserOperationUpdate,
+  } = useMutation({
     mutationFn: async () => {
       const loadingToast = toast.loading("Updating operation...");
 
@@ -69,6 +72,7 @@ export const useMutationUserOperationUpdate = (params: UserOperationParams) => {
   });
 
   return {
+    isLoadingUserOperationUpdate,
     userOperationUpdate,
   };
 };
