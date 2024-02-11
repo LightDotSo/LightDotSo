@@ -56,8 +56,11 @@ use lightdotso_graphql::{
 use lightdotso_kafka::{
     get_producer,
     rdkafka::producer::FutureProducer,
-    topics::{activity::produce_activity_message, transaction::produce_transaction_message},
-    types::activity::ActivityMessage,
+    topics::{
+        activity::produce_activity_message, interpretation::produce_interpretation_message,
+        transaction::produce_transaction_message,
+    },
+    types::{activity::ActivityMessage, interpretation::InterpretationMessage},
 };
 use lightdotso_opentelemetry::polling::PollingMetrics;
 use lightdotso_prisma::{user_operation, ActivityEntity, ActivityOperation, PrismaClient};
@@ -267,18 +270,19 @@ impl Polling {
                 error!("db_upsert_user_operation error: {:?} at chain_id: {}", res, chain_id);
             }
 
-            // Send the activity queue on all modes.
-            if self.live && self.kafka_client.is_some() {
-                if let Ok(res) = res {
-                    let _ = self.send_activity_queue(res.0).await;
-                }
-            }
-
             // Upsert the user operation logs in the db.
             info!("db_upsert_user_operation_logs");
-            let res = self.db_upsert_user_operation_logs(chain_id, op.clone()).await;
-            if res.is_err() {
+            let log_res = self.db_upsert_user_operation_logs(chain_id, op.clone()).await;
+            if log_res.is_err() {
                 error!("db_upsert_user_operation_logs error: {:?} at chain_id: {}", res, chain_id);
+            }
+
+            // Send the activity queue & interpretation ququjej on all modes.
+            if self.live && self.kafka_client.is_some() {
+                if let Ok(res) = res {
+                    let _ = self.send_activity_queue(res.0.clone()).await;
+                    let _ = self.send_interpretation_queue(res.0.clone()).await;
+                }
             }
 
             // Send the tx queue on all modes.
@@ -548,6 +552,35 @@ impl Polling {
         let _ = { || produce_activity_message(client.clone(), ActivityEntity::UserOperation, msg) }
             .retry(&ExponentialBuilder::default())
             .await;
+
+        Ok(())
+    }
+
+    /// Add a new interpretion in the queue
+    #[autometrics]
+    pub async fn send_interpretation_queue(&self, op: user_operation::Data) -> Result<()> {
+        let client = self.kafka_client.clone().unwrap();
+        let uop_hash: H256 = op.clone().hash.parse()?;
+
+        let uop_msg =
+            &InterpretationMessage { user_operation_hash: Some(uop_hash), transaction_hash: None };
+
+        let _ = { || produce_interpretation_message(client.clone(), uop_msg) }
+            .retry(&ExponentialBuilder::default())
+            .await;
+
+        if let Some(tx_hash) = &op.transaction_hash {
+            let tx_hash: H256 = tx_hash.parse()?;
+
+            let tx_msg = &InterpretationMessage {
+                user_operation_hash: None,
+                transaction_hash: Some(tx_hash),
+            };
+
+            let _ = { || produce_interpretation_message(client.clone(), tx_msg) }
+                .retry(&ExponentialBuilder::default())
+                .await;
+        }
 
         Ok(())
     }
