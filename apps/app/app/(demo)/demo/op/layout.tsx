@@ -16,7 +16,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Metadata } from "next";
-import OriginalLayout from "@/app/(wallet)/[address]/op/layout";
+import OriginalLayout from "@/app/(wallet)/[address]/create/layout";
 import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------

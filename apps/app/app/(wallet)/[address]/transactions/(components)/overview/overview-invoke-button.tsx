@@ -15,15 +15,8 @@
 
 "use client";
 
+import { InvokeButton } from "@lightdotso/elements";
 import { useMutationUserOperationUpdate } from "@lightdotso/query";
-import {
-  ButtonIcon,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-  TooltipProvider,
-} from "@lightdotso/ui";
-import { RefreshCcw } from "lucide-react";
 import type { FC } from "react";
 import type { Address } from "viem";
 
@@ -46,28 +39,19 @@ export const OverviewInvokeButton: FC<InvokeUserOperationProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { userOperationUpdate } = useMutationUserOperationUpdate({
-    address: address,
-  });
+  const { userOperationUpdate, isLoadingUserOperationUpdate } =
+    useMutationUserOperationUpdate({
+      address: address,
+    });
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <span>
-            <ButtonIcon variant="shadow" onClick={() => userOperationUpdate()}>
-              <RefreshCcw className="size-4" />
-            </ButtonIcon>
-          </span>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Refresh</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <InvokeButton
+      isLoading={isLoadingUserOperationUpdate}
+      onClick={() => userOperationUpdate()}
+    />
   );
 };

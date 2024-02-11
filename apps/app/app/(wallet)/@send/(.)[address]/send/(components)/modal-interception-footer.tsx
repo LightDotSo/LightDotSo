@@ -64,7 +64,7 @@ export const ModalInterceptionFooter: FC = () => {
   // ---------------------------------------------------------------------------
 
   const href = useMemo(() => {
-    return `/${wallet}/op?userOperations=${userOperationsParser.serialize(userOperations)}`;
+    return `/${wallet}/create?userOperations=${userOperationsParser.serialize(userOperations)}`;
   }, [wallet, userOperations]);
 
   // ---------------------------------------------------------------------------

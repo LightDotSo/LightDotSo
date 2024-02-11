@@ -3335,10 +3335,8 @@ export interface operations {
   v1_queue_user_operation_handler: {
     parameters: {
       query: {
-        /** @description The address of the target queue. */
+        /** @description The user operation hash of the target queue. */
         hash: string;
-        /** @description The chain id of the target queue. */
-        chain_id: number;
       };
     };
     responses: {

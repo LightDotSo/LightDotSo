@@ -100,7 +100,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
         disabled={typeof deployed_op !== "undefined"}
       >
         <Link
-          href={`/${address}/op?userOperations=${userOperationsParser.serialize([{ chainId: BigInt(chain.id), initCode: initCode }])}`}
+          href={`/${address}/create?userOperations=${userOperationsParser.serialize([{ chainId: BigInt(chain.id), initCode: initCode }])}`}
         >
           {typeof deployed_op !== "undefined" ? "Already Deployed" : "Deploy"}
         </Link>

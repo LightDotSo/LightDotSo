@@ -38,7 +38,7 @@ import type { Address } from "viem";
 // Props
 // -----------------------------------------------------------------------------
 
-type OpTransactionProps = {
+type CreateTransactionProps = {
   address: Address;
   configuration: ConfigurationData;
   userOperations: Omit<
@@ -57,7 +57,7 @@ type OpTransactionProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const OpTransaction: FC<OpTransactionProps> = ({
+export const CreateTransaction: FC<CreateTransactionProps> = ({
   address,
   configuration,
   userOperations,

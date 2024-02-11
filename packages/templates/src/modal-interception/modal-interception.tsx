@@ -27,7 +27,7 @@ import { Modal } from "../modal";
 
 interface ModalInterceptionProps {
   children: ReactNode;
-  type: "op" | "notifications" | "send";
+  type: "create" | "op" | "notifications" | "send";
   footerContent?: ReactNode;
 }
 
@@ -45,15 +45,19 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // ---------------------------------------------------------------------------
 
   const {
+    isCreateModalBackground,
     isNotificationsModalBackground,
     isOpModalBackground,
     isSendModalBackground,
+    isCreateModalVisible,
     isNotificationsModalVisible,
     isOpModalVisible,
     isSendModalVisible,
+    showCreateModal,
     showNotificationsModal,
     showOpModal,
     showSendModal,
+    hideCreateModal,
     hideNotificationsModal,
     hideOpModal,
     hideSendModal,
@@ -72,6 +76,8 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
 
   const isBackground = useMemo(() => {
     switch (type) {
+      case "create":
+        return isCreateModalBackground;
       case "op":
         return isOpModalBackground;
       case "notifications":
@@ -80,6 +86,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
         return isSendModalBackground;
     }
   }, [
+    isCreateModalBackground,
     isNotificationsModalBackground,
     isOpModalBackground,
     isSendModalBackground,
@@ -88,6 +95,8 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
 
   const isOpen = useMemo(() => {
     switch (type) {
+      case "create":
+        return isCreateModalVisible;
       case "op":
         return isOpModalVisible;
       case "notifications":
@@ -95,7 +104,13 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
       case "send":
         return isSendModalVisible;
     }
-  }, [isNotificationsModalVisible, isOpModalVisible, isSendModalVisible, type]);
+  }, [
+    isCreateModalVisible,
+    isNotificationsModalVisible,
+    isOpModalVisible,
+    isSendModalVisible,
+    type,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -103,6 +118,10 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
 
   const onDismiss = useCallback(() => {
     switch (type) {
+      case "create":
+        hideCreateModal();
+        router.back();
+        break;
       case "op":
         hideOpModal();
         router.back();
@@ -128,6 +147,12 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     }
 
     switch (type) {
+      case "create":
+        if (pathname.includes("create")) {
+          showCreateModal();
+          hideSendModal();
+        }
+        break;
       case "op":
         if (pathname.includes("op")) {
           showOpModal();
@@ -159,6 +184,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     <Modal
       isHidden={isBackground}
       footerContent={footerContent}
+      size={type === "op" ? "lg" : "default"}
       open={isOpen}
       onClose={onDismiss}
     >

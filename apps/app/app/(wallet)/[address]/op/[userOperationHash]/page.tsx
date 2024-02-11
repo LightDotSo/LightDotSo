@@ -17,7 +17,7 @@ import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Hex } from "viem";
-import { OpDataTable } from "@/app/(wallet)/[address]/op/(components)/op-data-table";
+import { OpDataTable } from "@/app/(wallet)/[address]/op/[userOperationHash]/(components)/op-data-table";
 import { handler } from "@/handlers/paths/[address]/op/[userOperationHash]/handler";
 import { preloader } from "@/preloaders/paths/[address]/op/[userOperationHash]/preloader";
 

@@ -106,7 +106,7 @@ export const SendDialog: FC<SendDialogProps> = ({
 
   const { setIsFormDisabled } = useFormRef();
   const {
-    setBackgroundSendModal,
+    setSendBackgroundModal,
     setNftModalProps,
     showNftModal,
     hideNftModal,
@@ -1345,7 +1345,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                 onClose: () => {
                                                   hideTokenModal();
                                                   if (isInsideModal) {
-                                                    setBackgroundSendModal(
+                                                    setSendBackgroundModal(
                                                       false,
                                                     );
                                                   }
@@ -1368,13 +1368,13 @@ export const SendDialog: FC<SendDialogProps> = ({
 
                                                   hideTokenModal();
                                                   if (isInsideModal) {
-                                                    setBackgroundSendModal(
+                                                    setSendBackgroundModal(
                                                       false,
                                                     );
                                                   }
                                                 },
                                               });
-                                              setBackgroundSendModal(true);
+                                              setSendBackgroundModal(true);
                                               showTokenModal();
                                             }}
                                           >
@@ -1576,7 +1576,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                 onClose: () => {
                                                   hideNftModal();
                                                   if (isInsideModal) {
-                                                    setBackgroundSendModal(
+                                                    setSendBackgroundModal(
                                                       false,
                                                     );
                                                   }
@@ -1618,13 +1618,13 @@ export const SendDialog: FC<SendDialogProps> = ({
 
                                                   hideNftModal();
                                                   if (isInsideModal) {
-                                                    setBackgroundSendModal(
+                                                    setSendBackgroundModal(
                                                       false,
                                                     );
                                                   }
                                                 },
                                               });
-                                              setBackgroundSendModal(true);
+                                              setSendBackgroundModal(true);
                                               showNftModal();
                                             }}
                                           >
@@ -1678,7 +1678,7 @@ export const SendDialog: FC<SendDialogProps> = ({
               <FooterButton
                 isModal={false}
                 cancelDisabled={true}
-                href={`/${address}/op?userOperations=${userOperationsParser.serialize(userOperationsParams!)}`}
+                href={`/${address}/create?userOperations=${userOperationsParser.serialize(userOperationsParams!)}`}
                 disabled={!isFormValid}
               />
             )}

@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import OriginalPage from "@/app/(wallet)/@op/(.)[address]/op/page";
+import OriginalPage from "@/app/(wallet)/[address]/op/[userOperationHash]/page";
 import { DEMO_WALLET_ADDRESS } from "@/const";
 
 // -----------------------------------------------------------------------------
@@ -23,18 +23,18 @@ import { DEMO_WALLET_ADDRESS } from "@/const";
 // -----------------------------------------------------------------------------
 
 interface PageProps {
-  searchParams: {
-    userOperations?: string;
-  };
+  params: { address: string; userOperationHash: string };
 }
 
 // -----------------------------------------------------------------------------
 // Original Page
 // -----------------------------------------------------------------------------
 
-export default async function Page({ searchParams }: PageProps) {
+export default async function Page({ params }: PageProps) {
   return OriginalPage({
-    params: { address: DEMO_WALLET_ADDRESS },
-    searchParams,
+    params: {
+      address: DEMO_WALLET_ADDRESS,
+      userOperationHash: params.userOperationHash,
+    },
   });
 }

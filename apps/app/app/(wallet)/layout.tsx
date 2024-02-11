@@ -21,6 +21,7 @@ import type { ReactNode } from "react";
 
 type RootLayoutProps = {
   children: ReactNode;
+  create: ReactNode;
   op: ReactNode;
   send: ReactNode;
 };
@@ -29,7 +30,12 @@ type RootLayoutProps = {
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function RootLayout({ children, op, send }: RootLayoutProps) {
+export default function RootLayout({
+  children,
+  create,
+  op,
+  send,
+}: RootLayoutProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -37,6 +43,7 @@ export default function RootLayout({ children, op, send }: RootLayoutProps) {
   return (
     <>
       {children}
+      {create}
       {op}
       {send}
     </>

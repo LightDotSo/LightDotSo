@@ -13,49 +13,48 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import { InvokeButton } from "@lightdotso/elements";
-import { useMutationQueueToken } from "@lightdotso/query";
-import type { FC } from "react";
 import type { Address } from "viem";
-import invokePortfolioAction from "@/actions/invokePortfolioAction";
+import { CreateTransaction } from "@/app/(wallet)/[address]/create/(components)/create-transaction";
+import { handler } from "@/handlers/paths/[address]/create/handler";
+import { preloader } from "@/preloaders/paths/[address]/create/preloader";
 
-// -----------------------------------------------------------------------------
+// ------------------------------------------------------c-----------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface OverviewInvokeButtonProps {
-  address: Address;
-}
+type PageProps = {
+  params: { address: string };
+  searchParams: {
+    userOperations?: string;
+  };
+};
 
 // -----------------------------------------------------------------------------
-// Component
+// Page
 // -----------------------------------------------------------------------------
 
-export const OverviewInvokeButton: FC<OverviewInvokeButtonProps> = ({
-  address,
-}) => {
+export default async function Page({ params, searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
-  // Query
+  // Preloaders
   // ---------------------------------------------------------------------------
 
-  const { queueToken, isLoadingQueueToken } = useMutationQueueToken({
-    address: address,
-  });
+  preloader(params, searchParams);
+
+  // ---------------------------------------------------------------------------
+  // Handlers
+  // ---------------------------------------------------------------------------
+
+  const { configuration, userOperations } = await handler(params, searchParams);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <InvokeButton
-      isLoading={isLoadingQueueToken}
-      onClick={async () => {
-        invokePortfolioAction(address as Address);
-
-        await queueToken();
-      }}
+    <CreateTransaction
+      configuration={configuration}
+      address={params.address as Address}
+      userOperations={userOperations}
     />
   );
-};
+}

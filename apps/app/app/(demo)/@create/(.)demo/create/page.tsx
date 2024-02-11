@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import OriginalPage from "@/app/(wallet)/[address]/create/page";
+import OriginalPage from "@/app/(wallet)/@create/(.)[address]/create/page";
 import { DEMO_WALLET_ADDRESS } from "@/const";
 
 // -----------------------------------------------------------------------------

@@ -13,48 +13,45 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Address } from "viem";
-import { OpTransaction } from "@/app/(wallet)/[address]/op/(components)/op-transaction";
-import { handler } from "@/handlers/paths/[address]/op/handler";
-import { preloader } from "@/preloaders/paths/[address]/op/preloader";
+"use client";
+
+import { InvokeButton } from "@lightdotso/elements";
+import { useMutationQueueUserOperation } from "@lightdotso/query";
+import type { FC } from "react";
+import type { Hex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type PageProps = {
-  params: { address: string };
-  searchParams: {
-    userOperations?: string;
-  };
-};
+interface OpInvokeButtonProps {
+  userOperationHash: Hex;
+}
 
 // -----------------------------------------------------------------------------
-// Page
+// Component
 // -----------------------------------------------------------------------------
 
-export default async function Page({ params, searchParams }: PageProps) {
+export const OpInvokeButton: FC<OpInvokeButtonProps> = ({
+  userOperationHash,
+}) => {
   // ---------------------------------------------------------------------------
-  // Preloaders
-  // ---------------------------------------------------------------------------
-
-  preloader(params, searchParams);
-
-  // ---------------------------------------------------------------------------
-  // Handlers
+  // Query
   // ---------------------------------------------------------------------------
 
-  const { configuration, userOperations } = await handler(params, searchParams);
+  const { queueUserOperation, isLoadingQueueUserOperation } =
+    useMutationQueueUserOperation({
+      address: userOperationHash,
+    });
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <OpTransaction
-      configuration={configuration}
-      address={params.address as Address}
-      userOperations={userOperations}
+    <InvokeButton
+      isLoading={isLoadingQueueUserOperation}
+      onClick={() => queueUserOperation({ hash: userOperationHash })}
     />
   );
-}
+};

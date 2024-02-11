@@ -56,6 +56,7 @@ type ModalsStore = {
   isAddressModalBackground: boolean;
   isAuthModalBackground: boolean;
   isConnectModalBackground: boolean;
+  isCreateModalBackground: boolean;
   isDepositModalBackground: boolean;
   isNftModalBackground: boolean;
   isNotificationsModalBackground: boolean;
@@ -65,6 +66,7 @@ type ModalsStore = {
   isAddressModalVisible: boolean;
   isAuthModalVisible: boolean;
   isConnectModalVisible: boolean;
+  isCreateModalVisible: boolean;
   isDepositModalVisible: boolean;
   isNftModalVisible: boolean;
   isNotificationsModalVisible: boolean;
@@ -76,28 +78,31 @@ type ModalsStore = {
   setAddressModalBackground: (isBackground: boolean) => void;
   showAuthModal: () => void;
   hideAuthModal: () => void;
-  setBackgroundAuthModal: (isBackground: boolean) => void;
+  setAuthBackgroundModal: (isBackground: boolean) => void;
   showConnectModal: () => void;
   hideConnectModal: () => void;
-  setBackgroundConnectModal: (isBackground: boolean) => void;
+  setConnectBackgroundModal: (isBackground: boolean) => void;
+  showCreateModal: () => void;
+  hideCreateModal: () => void;
+  setCreateBackgroundModal: (isBackground: boolean) => void;
   showDepositModal: () => void;
   hideDepositModal: () => void;
-  setBackgroundDepositModal: (isBackground: boolean) => void;
+  setDepositBackgroundModal: (isBackground: boolean) => void;
   showNftModal: () => void;
   hideNftModal: () => void;
-  setBackgroundNftModal: (isBackground: boolean) => void;
+  setNftBackgroundModal: (isBackground: boolean) => void;
   showNotificationsModal: () => void;
   hideNotificationsModal: () => void;
-  setBackgroundNotificationsModal: (isBackground: boolean) => void;
+  setNotificationsBackgroundModal: (isBackground: boolean) => void;
   showOpModal: () => void;
   hideOpModal: () => void;
-  setBackgroundOpModal: (isBackground: boolean) => void;
+  setOpBackgroundModal: (isBackground: boolean) => void;
   showSendModal: () => void;
   hideSendModal: () => void;
-  setBackgroundSendModal: (isBackground: boolean) => void;
+  setSendBackgroundModal: (isBackground: boolean) => void;
   showTokenModal: () => void;
   hideTokenModal: () => void;
-  setBackgroundTokenModal: (isBackground: boolean) => void;
+  setTokenBackgroundModal: (isBackground: boolean) => void;
 };
 
 // -----------------------------------------------------------------------------
@@ -131,6 +136,7 @@ export const useModals = create(
       isAddressModalBackground: false,
       isAuthModalBackground: false,
       isConnectModalBackground: false,
+      isCreateModalBackground: false,
       isDepositModalBackground: false,
       isNftModalBackground: false,
       isNotificationsModalBackground: false,
@@ -139,6 +145,7 @@ export const useModals = create(
       isTokenModalBackground: false,
       isAuthModalVisible: false,
       isConnectModalVisible: false,
+      isCreateModalVisible: false,
       isDepositModalVisible: false,
       isNftModalVisible: false,
       isNotificationsModalVisible: false,
@@ -157,56 +164,63 @@ export const useModals = create(
           isAuthModalVisible: true,
         }),
       hideAuthModal: () => set({ isAuthModalVisible: false }),
-      setBackgroundAuthModal: (isBackground: boolean) =>
+      setAuthBackgroundModal: (isBackground: boolean) =>
         set({ isAuthModalBackground: isBackground }),
       showConnectModal: () =>
         set({
           isConnectModalVisible: true,
         }),
       hideConnectModal: () => set({ isConnectModalVisible: false }),
-      setBackgroundConnectModal: (isBackground: boolean) =>
+      setConnectBackgroundModal: (isBackground: boolean) =>
         set({ isConnectModalBackground: isBackground }),
+      showCreateModal: () =>
+        set({
+          isCreateModalVisible: true,
+        }),
+      hideCreateModal: () => set({ isCreateModalVisible: false }),
+      setCreateBackgroundModal: (isBackground: boolean) =>
+        set({ isCreateModalBackground: isBackground }),
       showDepositModal: () =>
         set({
           isDepositModalVisible: true,
         }),
       hideDepositModal: () => set({ isDepositModalVisible: false }),
-      setBackgroundDepositModal: (isBackground: boolean) =>
+      setDepositBackgroundModal: (isBackground: boolean) =>
         set({ isDepositModalBackground: isBackground }),
       showNotificationsModal: () =>
         set({
           isNotificationsModalVisible: true,
         }),
       hideNotificationsModal: () => set({ isNotificationsModalVisible: false }),
-      setBackgroundNotificationsModal: (isBackground: boolean) =>
+      setNotificationsBackgroundModal: (isBackground: boolean) =>
         set({ isNftModalBackground: isBackground }),
       showOpModal: () =>
         set({
           isOpModalVisible: true,
         }),
       hideOpModal: () => set({ isOpModalVisible: false }),
-      setBackgroundOpModal: (isBackground: boolean) =>
+      setOpBackgroundModal: (isBackground: boolean) =>
         set({ isOpModalBackground: isBackground }),
       showNftModal: () =>
         set({
           isNftModalVisible: true,
         }),
       hideNftModal: () => set({ isNftModalVisible: false }),
-      setBackgroundNftModal: (isBackground: boolean) =>
+      setNftBackgroundModal: (isBackground: boolean) =>
         set({ isNftModalBackground: isBackground }),
       showSendModal: () =>
         set({
           isSendModalVisible: true,
         }),
       hideSendModal: () => set({ isSendModalVisible: false }),
-      setBackgroundSendModal: (isBackground: boolean) =>
+      setSendBackgroundModal: (isBackground: boolean) =>
         set({ isSendModalBackground: isBackground }),
       showTokenModal: () =>
         set({
           isTokenModalVisible: true,
         }),
       hideTokenModal: () => set({ isTokenModalVisible: false }),
-      setBackgroundTokenModal: (isBackground: boolean) =>
+      setTokenBackgroundModal: (isBackground: boolean) =>
         set({ isTokenModalBackground: isBackground }),
     }),
     {
