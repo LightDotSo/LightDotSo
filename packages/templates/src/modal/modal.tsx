@@ -136,30 +136,36 @@ export const Modal: FC<ModalProps> = ({
         <DialogOverlay />
         <DialogContent
           className={cn(
-            "w-full",
+            "w-full overflow-scroll",
             modalDialogVariants({ size }),
             isHidden && "hidden",
           )}
         >
-          <DialogHeader>
+          <DialogHeader className="sticky top-0">
             <ButtonIcon size="sm" variant="shadow" onClick={onClose}>
               <X />
             </ButtonIcon>
           </DialogHeader>
           {bannerContent && (
-            <DialogHeader className="block w-full justify-start space-x-0">
+            <DialogHeader className="sticky block w-full justify-start space-x-0">
               {bannerContent}
             </DialogHeader>
           )}
-          <DialogBody className={cn("overflow-scroll", className)}>
+          <DialogBody className={className}>
             <ModalContext.Provider value={true}>
-              <Suspense fallback={<Skeleton className="h-64 w-full" />}>
+              <Suspense
+                fallback={
+                  <Skeleton
+                    className={cn("h-64 w-full", size === "lg" && "h-96")}
+                  />
+                }
+              >
                 {children}
               </Suspense>
             </ModalContext.Provider>
           </DialogBody>
           {footerContent && (
-            <DialogFooter className="block w-full justify-start space-x-0">
+            <DialogFooter className="sticky bottom-0 block w-full justify-start space-x-0">
               {footerContent}
             </DialogFooter>
           )}

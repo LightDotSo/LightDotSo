@@ -135,7 +135,14 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
         router.back();
         break;
     }
-  }, [hideNotificationsModal, hideOpModal, hideSendModal, router, type]);
+  }, [
+    hideCreateModal,
+    hideNotificationsModal,
+    hideOpModal,
+    hideSendModal,
+    router,
+    type,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -150,7 +157,6 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
       case "create":
         if (pathname.includes("create")) {
           showCreateModal();
-          hideSendModal();
         }
         break;
       case "op":
