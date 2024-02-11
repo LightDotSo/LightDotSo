@@ -347,8 +347,7 @@ pub async fn rpc_proxy_handler(
             "eth_estimateUserOperationGas" |
             "eth_supportedEntryPoints" |
             "eth_getUserOperationByHash" |
-            "eth_getUserOperationReceipt" |
-            "rundler_maxPriorityFeePerGas" => {
+            "eth_getUserOperationReceipt" => {
                 // Deserialize w/ serde_json
                 let body_json_result =
                     serde_json::from_slice::<JSONRPCRequest<Vec<Value>>>(&full_body_bytes);
@@ -409,6 +408,19 @@ pub async fn rpc_proxy_handler(
                     .await;
 
                     if let Some(resp) = result {
+                        // If the method is `eth_sendUserOperation` and the response is 200, get the
+                        // `result` in the response body and log it
+                        if method == "eth_sendUserOperation" {
+                            let body = body::to_bytes(resp.into_body()).await.unwrap();
+                            let body_json: Value = serde_json::from_slice(&body).unwrap();
+                            if let Some(result) = body_json.get("result") {
+                                info!("result: {:?}", result);
+                            }
+
+                            // Reconstruct the response and return
+                            return Response::builder().status(200).body(Body::from(body)).unwrap();
+                        }
+
                         return resp;
                     }
                 }
