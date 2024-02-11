@@ -153,7 +153,13 @@ export const Modal: FC<ModalProps> = ({
           )}
           <DialogBody className={cn("overflow-scroll", className)}>
             <ModalContext.Provider value={true}>
-              <Suspense fallback={<Skeleton className="h-64 w-full" />}>
+              <Suspense
+                fallback={
+                  <Skeleton
+                    className={cn("h-64 w-full", size === "lg" && "h-96")}
+                  />
+                }
+              >
                 {children}
               </Suspense>
             </ModalContext.Provider>
