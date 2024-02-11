@@ -29,13 +29,14 @@ export const FooterCopy: FC = () => {
     <p className="text-xs text-text-weak/60 xl:text-center">
       &copy; {new Date().getFullYear()}
       <span className="hidden md:inline-flex">&nbsp;Light, Inc. - </span>{" "}
+      <span className="hidden md:inline-flex">&middot;</span>{" "}
       <a
         className="hidden text-text-weak hover:underline md:inline-flex"
-        href={GITHUB_LINKS["Acknowledgements"]}
+        href={GITHUB_LINKS["License"]}
         target="_blank"
         rel="noreferrer"
       >
-        Acknowledgements
+        AGPL v3.0
       </a>{" "}
       <span className="hidden md:inline-flex">&middot;</span>{" "}
       <a
@@ -46,15 +47,14 @@ export const FooterCopy: FC = () => {
       >
         Audits
       </a>{" "}
-      <span className="hidden md:inline-flex">&middot;</span>{" "}
       <a
         className="hidden text-text-weak hover:underline md:inline-flex"
-        href={GITHUB_LINKS["License"]}
+        href={GITHUB_LINKS["Acknowledgements"]}
         target="_blank"
         rel="noreferrer"
       >
-        License
-      </a>
+        Credits
+      </a>{" "}
     </p>
   );
 };
