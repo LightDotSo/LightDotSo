@@ -15,9 +15,8 @@
 
 "use client";
 
-import { Button, ButtonIcon } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
-import { XIcon } from "lucide-react";
 import type { FC, MouseEvent } from "react";
 
 // -----------------------------------------------------------------------------
@@ -72,13 +71,13 @@ export const FooterButton: FC<FooterButtonProps> = ({
       </span>
       <Button
         className="w-full md:w-auto"
-        isLoading={isLoading}
-        disabled={disabled}
+        // isLoading={isLoading}
+        // disabled={disabled}
         onClick={onClick}
       >
         {customSuccessText ?? "Continue"}
       </Button>
-      {isModal ? (
+      {/* {isModal ? (
         <span className="inline-flex justify-center md:hidden">
           <ButtonIcon
             size="sm"
@@ -97,7 +96,7 @@ export const FooterButton: FC<FooterButtonProps> = ({
         >
           Cancel
         </Button>
-      )}
+      )} */}
     </div>
   );
 };
