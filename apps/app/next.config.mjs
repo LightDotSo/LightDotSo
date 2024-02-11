@@ -61,6 +61,15 @@ const nextConfig = {
     },
   },
   outputFileTracing: true,
+  redirects: async () => {
+    return [
+      {
+        source: "/changelog/:path*",
+        destination: "https://lightdotso.notion.site/:path*",
+        permanent: true,
+      },
+    ];
+  },
   rewrites: async () => {
     return [
       {
