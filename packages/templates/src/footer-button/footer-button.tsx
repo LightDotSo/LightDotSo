@@ -87,6 +87,7 @@ export const FooterButton: FC<FooterButtonProps> = ({
         <Button
           asChild
           className="w-full md:w-auto"
+          onClick={e => e.preventDefault()}
           isLoading={isLoading}
           disabled={disabled}
           type="submit"
