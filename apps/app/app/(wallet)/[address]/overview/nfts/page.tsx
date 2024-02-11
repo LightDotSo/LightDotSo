@@ -34,6 +34,7 @@ import { preloader } from "@/preloaders/paths/[address]/overview/nfts/preloader"
 interface PageProps {
   params: { address: Address };
   searchParams: {
+    cursor?: string;
     pagination?: string;
   };
 }
@@ -53,10 +54,8 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { walletSettings, nfts, nftValuation } = await handler(
-    params,
-    searchParams,
-  );
+  const { cursorState, paginationState, walletSettings, nfts, nftValuation } =
+    await handler(params, searchParams);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -78,7 +77,7 @@ export default async function Page({ params, searchParams }: PageProps) {
       address: params.address as Address,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
       limit: SIMPLEHASH_MAX_COUNT,
-      cursor: null,
+      cursor: paginationState.pageIndex === 0 ? null : cursorState,
     }).queryKey,
     nfts,
   );

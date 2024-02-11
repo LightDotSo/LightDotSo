@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { paginationParser } from "@lightdotso/nuqs";
+import { cursorParser, paginationParser } from "@lightdotso/nuqs";
 import { getNftValuation, getNfts } from "@lightdotso/services";
 import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
@@ -28,6 +28,7 @@ import { validateAddress } from "@/handlers/validators/address";
 export const handler = async (
   params: { address: string },
   searchParams: {
+    cursor?: string;
     pagination?: string;
   },
 ) => {
@@ -41,6 +42,7 @@ export const handler = async (
   // Parsers
   // ---------------------------------------------------------------------------
 
+  const cursorState = cursorParser.parseServerSide(searchParams.cursor);
   const paginationState = paginationParser.parseServerSide(
     searchParams.pagination,
   );
@@ -76,6 +78,7 @@ export const handler = async (
   return res.match(
     ([nfts, nftValuation]) => {
       return {
+        cursorState: cursorState,
         paginationState: paginationState,
         walletSettings: walletSettings,
         nfts: nfts,

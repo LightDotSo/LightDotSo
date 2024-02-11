@@ -67,7 +67,7 @@ export const useQueryNfts = (params: NftListParams) => {
           address: params.address,
           limit: params.limit,
           isTestnet: params.is_testnet,
-          cursor: null,
+          cursor: params.cursor,
         },
         clientType,
       );
