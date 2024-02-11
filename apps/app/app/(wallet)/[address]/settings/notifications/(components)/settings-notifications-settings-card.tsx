@@ -20,6 +20,7 @@ import { Button } from "@lightdotso/ui";
 import type { FC } from "react";
 import type { Address } from "viem";
 import { SettingsCard } from "@/components/settings/settings-card";
+import { SettingsCardBaseButton } from "@/components/settings/settings-card-base-button";
 import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
@@ -73,7 +74,11 @@ export const SettingsNotificationsSettingsCard: FC<
           "Notification Settings"
         ].description
       }
-      footerContent={<SettingsNotificationsCardSubmitButton />}
+      footerContent={
+        <SettingsCardBaseButton>
+          <SettingsNotificationsCardSubmitButton />
+        </SettingsCardBaseButton>
+      }
     >
       <div className="flex text-lg">
         <span>

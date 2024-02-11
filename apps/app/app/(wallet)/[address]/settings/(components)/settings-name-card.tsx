@@ -15,7 +15,7 @@
 
 "use client";
 
-import { useAuthModal, useDelayedValue } from "@lightdotso/hooks";
+import { useDelayedValue } from "@lightdotso/hooks";
 import { useQueryWallet, useMutationWalletUpdate } from "@lightdotso/query";
 import {
   Button,
@@ -35,6 +35,7 @@ import { useForm } from "react-hook-form";
 import type { Address } from "viem";
 import * as z from "zod";
 import { SettingsCard } from "@/components/settings/settings-card";
+import { SettingsCardBaseButton } from "@/components/settings/settings-card-base-button";
 import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
@@ -67,12 +68,6 @@ type SettingsNameCardProps = {
 // -----------------------------------------------------------------------------
 
 export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const { isAuthValid, isAuthLoading, handleAuthModal } = useAuthModal();
-
   // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
@@ -153,22 +148,6 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   // Submit Button
   // ---------------------------------------------------------------------------
 
-  const WalletLoginButton: FC = () => {
-    // -------------------------------------------------------------------------
-    // Render
-    // -------------------------------------------------------------------------
-
-    return (
-      <Button
-        disabled={isAuthValid}
-        isLoading={isAuthLoading}
-        onClick={handleAuthModal}
-      >
-        Login to update name
-      </Button>
-    );
-  };
-
   const SettingsNameCardSubmitButton: FC = () => {
     // -------------------------------------------------------------------------
     // Render
@@ -193,14 +172,6 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
             : "Update name"}
       </Button>
     );
-  };
-
-  const SettingsNameCardButton: FC = () => {
-    if (!isAuthValid) {
-      return <WalletLoginButton />;
-    }
-
-    return <SettingsNameCardSubmitButton />;
   };
 
   // ---------------------------------------------------------------------------
@@ -234,7 +205,9 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
               Cancel
             </Button>
           )}
-          <SettingsNameCardButton />
+          <SettingsCardBaseButton>
+            <SettingsNameCardSubmitButton />
+          </SettingsCardBaseButton>
         </>
       }
     >

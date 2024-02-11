@@ -37,6 +37,7 @@ import { useForm } from "react-hook-form";
 import type { Address } from "viem";
 import * as z from "zod";
 import { SettingsCard } from "@/components/settings/settings-card";
+import { SettingsCardBaseButton } from "@/components/settings/settings-card-base-button";
 import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
@@ -189,7 +190,11 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
           "Testnet"
         ].description
       }
-      footerContent={<SettingsTestnetCardSubmitButton />}
+      footerContent={
+        <SettingsCardBaseButton>
+          <SettingsTestnetCardSubmitButton />
+        </SettingsCardBaseButton>
+      }
     >
       <Form {...form}>
         <form

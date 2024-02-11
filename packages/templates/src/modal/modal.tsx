@@ -147,7 +147,7 @@ export const Modal: FC<ModalProps> = ({
             </ButtonIcon>
           </DialogHeader>
           {bannerContent && (
-            <DialogHeader className="sticky block w-full justify-start space-x-0">
+            <DialogHeader className="sticky top-0 block w-full justify-start space-x-0">
               {bannerContent}
             </DialogHeader>
           )}
