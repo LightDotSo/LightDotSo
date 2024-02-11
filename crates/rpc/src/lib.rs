@@ -410,7 +410,7 @@ pub async fn rpc_proxy_handler(
                     if let Some(resp) = result {
                         // If the method is `eth_sendUserOperation` and the response is 200, get the
                         // `result` in the response body and log it
-                        if method == "eth_sendUserOperation" {
+                        if method == "eth_sendUserOperation" && resp.status().is_success() {
                             let body = body::to_bytes(resp.into_body()).await.unwrap();
                             let body_json: Value = serde_json::from_slice(&body).unwrap();
                             if let Some(result) = body_json.get("result") {
