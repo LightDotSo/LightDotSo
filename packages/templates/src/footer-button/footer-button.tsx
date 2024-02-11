@@ -77,8 +77,8 @@ export const FooterButton: FC<FooterButtonProps> = ({
         <Button
           asChild
           className="w-full md:w-auto"
-          isLoading={isLoading}
-          disabled={disabled}
+          isLoading={false}
+          disabled={true}
         >
           <Link href={href}>Continue</Link>
         </Button>

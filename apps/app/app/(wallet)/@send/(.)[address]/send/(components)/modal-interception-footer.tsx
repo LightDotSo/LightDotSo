@@ -22,7 +22,7 @@ import {
 import { useAuth, useFormRef, useModals } from "@lightdotso/stores";
 import { FooterButton } from "@lightdotso/templates";
 import { useRouter } from "next/navigation";
-import { useMemo, type FC, useCallback } from "react";
+import { useMemo, type FC, useCallback, useState, useEffect } from "react";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -50,6 +50,12 @@ export const ModalInterceptionFooter: FC = () => {
   const router = useRouter();
 
   // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [footerHref, setFooterHref] = useState<string | null>(null);
+
+  // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
@@ -68,6 +74,13 @@ export const ModalInterceptionFooter: FC = () => {
   }, [wallet, userOperations]);
 
   // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    setFooterHref(href);
+  }, [href, setFooterHref]);
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -77,7 +90,7 @@ export const ModalInterceptionFooter: FC = () => {
       className="pt-0"
       cancelClick={onDismiss}
       disabled={false}
-      href={href}
+      href={footerHref ?? "/create"}
     />
   );
 };
