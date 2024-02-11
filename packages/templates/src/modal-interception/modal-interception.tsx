@@ -178,6 +178,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     <Modal
       isHidden={isBackground}
       footerContent={footerContent}
+      size={type === "op" ? "lg" : "default"}
       open={isOpen}
       onClose={onDismiss}
     >
