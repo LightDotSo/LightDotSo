@@ -141,7 +141,7 @@ export const Modal: FC<ModalProps> = ({
             isHidden && "hidden",
           )}
         >
-          <DialogHeader className="sticky">
+          <DialogHeader className="sticky top-0">
             <ButtonIcon size="sm" variant="shadow" onClick={onClose}>
               <X />
             </ButtonIcon>
@@ -165,7 +165,7 @@ export const Modal: FC<ModalProps> = ({
             </ModalContext.Provider>
           </DialogBody>
           {footerContent && (
-            <DialogFooter className="sticky block w-full justify-start space-x-0">
+            <DialogFooter className="sticky bottom-0 block w-full justify-start space-x-0">
               {footerContent}
             </DialogFooter>
           )}
