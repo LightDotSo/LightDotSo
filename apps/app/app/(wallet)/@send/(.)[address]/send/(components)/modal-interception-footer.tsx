@@ -75,12 +75,12 @@ export const ModalInterceptionFooter: FC = () => {
     <FooterButton
       isModal
       className="pt-0"
+      cancelClick={onDismiss}
+      disabled={isFormDisabled}
       onClick={e => {
         e.preventDefault();
         router.push(href);
       }}
-      cancelClick={onDismiss}
-      disabled={isFormDisabled}
     />
   );
 };

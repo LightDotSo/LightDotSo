@@ -666,8 +666,8 @@ export const ConfigurationForm: FC = () => {
               <FooterButton
                 isModal={false}
                 disabled={!isFormValid}
-                onClick={navigateToStep}
                 cancelClick={() => router.back()}
+                onClick={navigateToStep}
               />
             </form>
           </Form>

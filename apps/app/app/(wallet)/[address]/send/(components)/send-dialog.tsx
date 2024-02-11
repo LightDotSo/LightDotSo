@@ -60,6 +60,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
 import { ChevronDown, Trash2Icon, UserPlus2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef } from "react";
 import type { FC } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -76,7 +77,6 @@ import {
 import type { Address, Hex } from "viem";
 import { normalize } from "viem/ens";
 import * as z from "zod";
-import { useRouter } from "next/navigation";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -1685,13 +1685,13 @@ export const SendDialog: FC<SendDialogProps> = ({
               <FooterButton
                 isModal={false}
                 cancelDisabled={true}
+                disabled={!isFormValid}
                 onClick={e => {
                   e.preventDefault();
                   router.push(
                     `/${address}/create?userOperations=${userOperationsParser.serialize(userOperationsParams!)}`,
                   );
                 }}
-                disabled={!isFormValid}
               />
             )}
           </form>
