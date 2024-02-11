@@ -31,11 +31,29 @@ export const FooterCopy: FC = () => {
       <span className="hidden md:inline-flex">&nbsp;Light, Inc. - </span>{" "}
       <a
         className="hidden text-text-weak hover:underline md:inline-flex"
-        href={GITHUB_LINKS["Repo"]}
+        href={GITHUB_LINKS["Acknowledgements"]}
         target="_blank"
         rel="noreferrer"
       >
-        AGPL v3.0
+        Acknowledgements
+      </a>{" "}
+      &middot;{" "}
+      <a
+        className="hidden text-text-weak hover:underline md:inline-flex"
+        href={GITHUB_LINKS["Audit"]}
+        target="_blank"
+        rel="noreferrer"
+      >
+        Audits
+      </a>{" "}
+      &middot;{" "}
+      <a
+        className="hidden text-text-weak hover:underline md:inline-flex"
+        href={GITHUB_LINKS["License"]}
+        target="_blank"
+        rel="noreferrer"
+      >
+        License
       </a>
     </p>
   );
