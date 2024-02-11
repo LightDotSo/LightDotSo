@@ -107,7 +107,7 @@ pub(crate) async fn v1_queue_user_operation_handler(
         &UserOperationMessage {
             hash: parsed_query_hash,
             chain_id: uop.chain_id as u64,
-            is_pending: None,
+            is_pending_update: false,
         },
     )
     .await?;
