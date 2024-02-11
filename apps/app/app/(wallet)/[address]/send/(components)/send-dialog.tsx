@@ -76,6 +76,7 @@ import {
 import type { Address, Hex } from "viem";
 import { normalize } from "viem/ens";
 import * as z from "zod";
+import { useRouter } from "next/navigation";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -134,6 +135,12 @@ export const SendDialog: FC<SendDialogProps> = ({
   // useEffect(() => {
   //   setFormRef(formRef);
   // }, [setFormRef]);
+
+  // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
+  const router = useRouter();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -1678,7 +1685,12 @@ export const SendDialog: FC<SendDialogProps> = ({
               <FooterButton
                 isModal={false}
                 cancelDisabled={true}
-                href={`/${address}/create?userOperations=${userOperationsParser.serialize(userOperationsParams!)}`}
+                onClick={e => {
+                  e.preventDefault();
+                  router.push(
+                    `/${address}/create?userOperations=${userOperationsParser.serialize(userOperationsParams!)}`,
+                  );
+                }}
                 disabled={!isFormValid}
               />
             )}

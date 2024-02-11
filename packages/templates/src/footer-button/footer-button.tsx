@@ -18,8 +18,7 @@
 import { Button, ButtonIcon } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { XIcon } from "lucide-react";
-import Link from "next/link";
-import type { FC } from "react";
+import type { FC, MouseEvent } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -30,11 +29,10 @@ export interface FooterButtonProps {
   disabled?: boolean;
   cancelDisabled?: boolean;
   isLoading?: boolean;
-  href?: string;
   isModal?: boolean;
   customSuccessText?: string;
-  successClick?: () => void;
-  cancelClick?: () => void;
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
+  cancelClick?: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
 // -----------------------------------------------------------------------------
@@ -46,10 +44,9 @@ export const FooterButton: FC<FooterButtonProps> = ({
   disabled,
   cancelDisabled,
   isLoading,
-  href,
   isModal,
   customSuccessText,
-  successClick,
+  onClick,
   cancelClick,
 }) => {
   // ---------------------------------------------------------------------------
@@ -73,26 +70,15 @@ export const FooterButton: FC<FooterButtonProps> = ({
           Cancel
         </Button>
       </span>
-      {href ? (
-        <Button
-          asChild
-          className="w-full md:w-auto"
-          isLoading={isLoading}
-          disabled={disabled}
-        >
-          <Link href={href}>Continue</Link>
-        </Button>
-      ) : (
-        <Button
-          className="w-full md:w-auto"
-          isLoading={isLoading}
-          disabled={disabled}
-          type="submit"
-          onClick={successClick}
-        >
-          {customSuccessText ?? "Continue"}
-        </Button>
-      )}
+      <Button
+        className="w-full md:w-auto"
+        isLoading={isLoading}
+        disabled={disabled}
+        type="submit"
+        onClick={onClick}
+      >
+        {customSuccessText ?? "Continue"}
+      </Button>
       {isModal ? (
         <span className="inline-flex justify-center md:hidden">
           <ButtonIcon

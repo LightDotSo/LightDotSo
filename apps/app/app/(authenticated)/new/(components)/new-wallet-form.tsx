@@ -394,7 +394,7 @@ export const NewWalletForm: FC = () => {
                 isModal={false}
                 cancelDisabled={true}
                 disabled={!isFormValid}
-                successClick={navigateToStep}
+                onClick={navigateToStep}
               />
             </form>
           </Form>
