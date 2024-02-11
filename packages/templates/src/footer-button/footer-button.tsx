@@ -72,6 +72,7 @@ export const FooterButton: FC<FooterButtonProps> = ({
       </span>
       <Button
         className="w-full md:w-auto"
+        type="button"
         isLoading={isLoading}
         disabled={disabled}
         onMouseDown={onClick}
