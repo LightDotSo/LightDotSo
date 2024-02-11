@@ -41,7 +41,7 @@ import type { FC, ReactNode } from "react";
 // Styles
 // -----------------------------------------------------------------------------
 
-const modalDialogVariants = cva("", {
+const modalDialogVariants = cva(["max-h-[80%]"], {
   variants: {
     size: {
       lg: "max-w-6xl",
@@ -136,22 +136,22 @@ export const Modal: FC<ModalProps> = ({
         <DialogOverlay />
         <DialogContent
           className={cn(
-            "w-full",
+            "w-full overflow-scroll",
             modalDialogVariants({ size }),
             isHidden && "hidden",
           )}
         >
-          <DialogHeader>
+          <DialogHeader className="sticky">
             <ButtonIcon size="sm" variant="shadow" onClick={onClose}>
               <X />
             </ButtonIcon>
           </DialogHeader>
           {bannerContent && (
-            <DialogHeader className="block w-full justify-start space-x-0">
+            <DialogHeader className="sticky block w-full justify-start space-x-0">
               {bannerContent}
             </DialogHeader>
           )}
-          <DialogBody className={cn("max-h-[80%] overflow-scroll", className)}>
+          <DialogBody className={className}>
             <ModalContext.Provider value={true}>
               <Suspense
                 fallback={
@@ -165,7 +165,7 @@ export const Modal: FC<ModalProps> = ({
             </ModalContext.Provider>
           </DialogBody>
           {footerContent && (
-            <DialogFooter className="block w-full justify-start space-x-0">
+            <DialogFooter className="sticky block w-full justify-start space-x-0">
               {footerContent}
             </DialogFooter>
           )}
