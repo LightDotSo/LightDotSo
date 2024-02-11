@@ -17,7 +17,7 @@
 
 import { SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
 import type { NftData } from "@lightdotso/data";
-import { usePaginationQueryState } from "@lightdotso/nuqs";
+import { useCursorQueryState, usePaginationQueryState } from "@lightdotso/nuqs";
 import { useTables } from "@lightdotso/stores";
 import { NftTable } from "@lightdotso/tables";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -41,6 +41,7 @@ export function DataTable({ isLoading, columns, data }: DataTableProps) {
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
+  const [cursorState] = useCursorQueryState();
   const [paginationState, setPaginationState] = usePaginationQueryState();
 
   // ---------------------------------------------------------------------------
@@ -71,7 +72,9 @@ export function DataTable({ isLoading, columns, data }: DataTableProps) {
       columnFilters: nftColumnFilters,
       pagination: paginationState,
     },
-    pageCount: paginationState.pageIndex,
+    pageCount: cursorState
+      ? paginationState.pageIndex + 2
+      : paginationState.pageIndex + 1,
     paginateExpandedRows: false,
     enableRowSelection: true,
     manualPagination: true,
