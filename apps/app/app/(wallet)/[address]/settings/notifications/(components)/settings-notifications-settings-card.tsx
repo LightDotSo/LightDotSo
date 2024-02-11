@@ -20,8 +20,8 @@ import { Button } from "@lightdotso/ui";
 import type { FC } from "react";
 import type { Address } from "viem";
 import { SettingsCard } from "@/components/settings/settings-card";
-import { TITLES } from "@/const";
 import { SettingsCardBaseButton } from "@/components/settings/settings-card-base-button";
+import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Props

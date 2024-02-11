@@ -37,8 +37,8 @@ import { useForm } from "react-hook-form";
 import type { Address } from "viem";
 import * as z from "zod";
 import { SettingsCard } from "@/components/settings/settings-card";
-import { TITLES } from "@/const";
 import { SettingsCardBaseButton } from "@/components/settings/settings-card-base-button";
+import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Schema
