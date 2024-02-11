@@ -26,7 +26,7 @@ use serde_json::{json, Value};
 pub struct UserOperationMessage {
     pub hash: H256,
     pub chain_id: u64,
-    pub is_pending: Option<bool>,
+    pub is_pending_update: bool,
 }
 
 // -----------------------------------------------------------------------------
@@ -38,7 +38,7 @@ impl ToJson for UserOperationMessage {
         let msg_value: Value = json!({
             "hash": format!("{:?}", self.hash),
             "chain_id": self.chain_id,
-            "is_pending": self.is_pending,
+            "is_pending_update": self.is_pending_update,
         });
 
         msg_value.to_string()
@@ -60,11 +60,11 @@ mod tests {
     #[test]
     fn test_to_json() {
         let msg =
-            UserOperationMessage { hash: h256_mock(), chain_id: 1u64, is_pending: Some(true) };
+            UserOperationMessage { hash: h256_mock(), chain_id: 1u64, is_pending_update: true };
 
         let json_str = msg.to_json();
         let expected_str =
-            format!("{{\"hash\":\"{:?}\",\"chain_id\":1,\"is_pending\":true}}", msg.hash);
+            format!("{{\"hash\":\"{:?}\",\"chain_id\":1,\"is_pending_update\":true}}", msg.hash);
 
         assert_eq!(json_str, expected_str);
     }
@@ -73,7 +73,7 @@ mod tests {
     #[test]
     fn test_serialization_deserialization() -> Result<()> {
         let original_msg =
-            UserOperationMessage { hash: h256_mock(), chain_id: 137, is_pending: None };
+            UserOperationMessage { hash: h256_mock(), chain_id: 137, is_pending_update: true };
 
         let serialized = serde_json::to_string(&original_msg)?;
         let deserialized: UserOperationMessage = serde_json::from_str(&serialized)?;

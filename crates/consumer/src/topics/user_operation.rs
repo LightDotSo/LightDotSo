@@ -36,8 +36,9 @@ pub async fn user_operation_consumer(
         let payload: UserOperationMessage = serde_json::from_slice(payload.as_bytes())?;
         info!("payload: {:?}", payload);
 
-        // If the `is_pending` field is Some(true), then update the user operation state in the db
-        if payload.is_pending == Some(true) {
+        // If the `is_pending_update` field is true, then update the user operation state in the db
+        info!("is_pending_update: {:?}", payload.is_pending_update);
+        if payload.is_pending_update {
             let _ = db
                 .user_operation()
                 .update(

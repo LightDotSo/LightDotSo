@@ -440,7 +440,7 @@ pub async fn rpc_proxy_handler(
                                         &UserOperationMessage {
                                             hash,
                                             chain_id,
-                                            is_pending: Some(true),
+                                            is_pending_update: true,
                                         },
                                     )
                                     .await;
