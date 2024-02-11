@@ -74,7 +74,6 @@ export const FooterButton: FC<FooterButtonProps> = ({
         className="w-full md:w-auto"
         isLoading={isLoading}
         disabled={disabled}
-        type="submit"
         onClick={onClick}
       >
         {customSuccessText ?? "Continue"}
