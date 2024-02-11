@@ -164,15 +164,15 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
         type="submit"
         form="walletNameForm"
         isLoading={isPending}
-        onClick={e => {
-          e.stopPropagation();
-        }}
         disabled={
           isPending ||
           delayedIsSuccess ||
           !isFormChanged ||
           typeof form.getFieldState("name").error !== "undefined"
         }
+        onClick={e => {
+          e.stopPropagation();
+        }}
       >
         {!isError && delayedIsSuccess
           ? "Success"
