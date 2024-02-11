@@ -24,7 +24,9 @@ import type {
 import { ArbitrumLogo } from "./arbitrum";
 import { AvalancheLogo } from "./avalanche";
 import { BaseLogo } from "./base";
+import { BlastLogo } from "./blast";
 import { BscLogo } from "./bsc";
+import { CeloLogo } from "./celo";
 import { EthereumLogo } from "./ethereum";
 import { GnosisLogo } from "./gnosis";
 import { OptimismLogo } from "./optimism";
@@ -98,11 +100,17 @@ export const ChainLogo: FC<ChainLogoProps> = ({
       return <AvalancheLogo {...props} />;
     case 42161:
       return <ArbitrumLogo {...props} />;
+    case 42220:
+      return <CeloLogo {...props} />;
 
     // -------------------------------------------------------------------------
     // Testnet
     // -------------------------------------------------------------------------
 
+    case 44787:
+      return (
+        <TestnetChainLogoWrapper logo={CeloLogo} chainId={chainId} {...props} />
+      );
     case 80001:
       return (
         <TestnetChainLogoWrapper
@@ -135,6 +143,14 @@ export const ChainLogo: FC<ChainLogoProps> = ({
       return (
         <TestnetChainLogoWrapper
           logo={OptimismLogo}
+          chainId={chainId}
+          {...props}
+        />
+      );
+    case 168587773:
+      return (
+        <TestnetChainLogoWrapper
+          logo={BlastLogo}
           chainId={chainId}
           {...props}
         />
