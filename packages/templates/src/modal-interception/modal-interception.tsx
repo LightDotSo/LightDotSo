@@ -57,6 +57,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     showNotificationsModal,
     showOpModal,
     showSendModal,
+    hideCreateModal,
     hideNotificationsModal,
     hideOpModal,
     hideSendModal,
@@ -117,6 +118,10 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
 
   const onDismiss = useCallback(() => {
     switch (type) {
+      case "create":
+        hideCreateModal();
+        router.back();
+        break;
       case "op":
         hideOpModal();
         router.back();
@@ -145,6 +150,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
       case "create":
         if (pathname.includes("create")) {
           showCreateModal();
+          hideSendModal();
         }
         break;
       case "op":
