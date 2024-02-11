@@ -18,7 +18,6 @@ import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import { SettingsSectionWrapper } from "@lightdotso/ui";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
-import { Suspense } from "react";
 import type { Address, Hex } from "viem";
 import { SettingsDeploymentCard } from "@/app/(wallet)/[address]/settings/deployment/(components)/settings-deployment-card";
 import { handler } from "@/handlers/paths/[address]/settings/deployment/handler";
@@ -80,14 +79,13 @@ export default async function Page({ params }: PageProps) {
     <HydrationBoundary state={dehydrate(queryClient)}>
       <SettingsSectionWrapper>
         {wallet_chains.map(chain => (
-          <Suspense key={chain.id}>
-            <SettingsDeploymentCard
-              chain={JSON.stringify(chain)}
-              address={params.address as Address}
-              image_hash={config.image_hash as Hex}
-              salt={wallet.salt as Hex}
-            />
-          </Suspense>
+          <SettingsDeploymentCard
+            key={chain.id}
+            chain={JSON.stringify(chain)}
+            address={params.address as Address}
+            image_hash={config.image_hash as Hex}
+            salt={wallet.salt as Hex}
+          />
         ))}
       </SettingsSectionWrapper>
     </HydrationBoundary>

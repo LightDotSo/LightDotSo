@@ -45,6 +45,23 @@ lazy_static! {
 }
 
 lazy_static! {
+    pub static ref THE_GRAPH_STUDIO_BASE_URL: String =
+        "https://gateway-arbitrum.network.thegraph.com/api".to_string();
+}
+
+// The graph studio service rpc urls
+lazy_static! {
+    pub static ref THE_GRAPH_STUDIO_SERVICE_IDS: HashMap<u64, String> = {
+        let mut m = HashMap::new();
+
+        // Testnet
+        m.insert(1685877733, "GSV9eeURHDAoAVPacXKqTKKdDwE4cuUzTesWCvqQMJzU".to_string());
+
+        m
+    };
+}
+
+lazy_static! {
     pub static ref SATSUMA_BASE_URL: String = "https://subgraph.satsuma-prod.com".to_string();
 }
 

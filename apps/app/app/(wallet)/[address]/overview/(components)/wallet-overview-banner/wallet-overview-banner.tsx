@@ -24,7 +24,6 @@ import {
   TooltipProvider,
 } from "@lightdotso/ui";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
-import { Suspense } from "react";
 import type { FC } from "react";
 import type { Address } from "viem";
 import { WalletOverviewBannerAddress } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner-address";
@@ -61,9 +60,7 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
         <WalletOverviewBannerAddress address={address} />
       </div>
       <div className="col-span-1 flex w-full">
-        <Suspense fallback={null}>
-          <WalletOverviewBannerSparkline address={address} />
-        </Suspense>
+        <WalletOverviewBannerSparkline address={address} />
       </div>
       <div className="col-span-2 flex w-full items-center md:col-span-1 md:justify-end">
         <TooltipProvider>

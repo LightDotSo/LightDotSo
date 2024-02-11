@@ -25,6 +25,7 @@ import { Modal } from "@lightdotso/templates";
 import { Button, ButtonIcon } from "@lightdotso/ui";
 import { cn, refineNumberFormat } from "@lightdotso/utils";
 import { type FC, useMemo, useState } from "react";
+
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------

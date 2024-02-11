@@ -24,7 +24,6 @@ import {
 } from "@lightdotso/ui";
 import { Inter } from "next/font/google";
 import Script from "next/script";
-import { Suspense } from "react";
 import type { FC, ReactNode } from "react";
 import { ExplorerBanner } from "../explorer-banner";
 import { MainNav } from "../nav/main-nav";
@@ -77,9 +76,7 @@ export const Root: FC<RootProps> = ({ children }) => {
           </ReactQueryProvider>
         </ThemeProvider>
         <TailwindIndicator />
-        <Suspense>
-          <VercelToolbar />
-        </Suspense>
+        <VercelToolbar />
       </body>
       <Script async src="https://data.light.so/p.js" />
     </html>

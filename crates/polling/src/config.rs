@@ -23,6 +23,7 @@ use clap::Parser;
 use eyre::Result;
 use lightdotso_graphql::constants::{
     CHAIN_SLEEP_SECONDS, SATSUMA_BASE_URL, SATSUMA_LIVE_IDS, THE_GRAPH_HOSTED_SERVICE_URLS,
+    THE_GRAPH_STUDIO_BASE_URL, THE_GRAPH_STUDIO_SERVICE_IDS,
 };
 use lightdotso_tracing::tracing::{error, info};
 use std::collections::HashMap;
@@ -37,7 +38,10 @@ pub struct PollingArgs {
     #[arg(long, short, default_value_t = String::from(""))]
     #[clap(long, env = "POLLING_MODE")]
     pub mode: String,
-    /// The infura API key
+    /// The the graph studio API key
+    #[clap(long, env = "THE_GRAPH_STUDIO_API_KEY")]
+    pub the_graph_studio_api_key: String,
+    /// The satsuma API key
     #[clap(long, env = "SATSUMA_API_KEY")]
     pub satsuma_api_key: Option<String>,
     /// The flag of whether polling is live.
@@ -52,8 +56,11 @@ impl PollingArgs {
         let sleep_seconds_mapping = create_sleep_seconds_mapping();
 
         // Create a mapping for chain id to polling URLs.
-        let chain_mapping =
-            create_chain_mapping(self.satsuma_api_key.clone(), self.satsuma_enabled);
+        let chain_mapping = create_chain_mapping(
+            self.the_graph_studio_api_key.clone(),
+            self.satsuma_api_key.clone(),
+            self.satsuma_enabled,
+        );
 
         Polling::new(&PollingArgs::default(), sleep_seconds_mapping, chain_mapping, true).await
     }
@@ -67,8 +74,11 @@ impl PollingArgs {
         info!("Config: {:?}", self);
 
         // Create a mapping for chain id to polling URLs.
-        let chain_mapping =
-            create_chain_mapping(self.satsuma_api_key.clone(), self.satsuma_enabled);
+        let chain_mapping = create_chain_mapping(
+            self.the_graph_studio_api_key.clone(),
+            self.satsuma_api_key.clone(),
+            self.satsuma_enabled,
+        );
 
         // Create a vector to store the handles to the spawned tasks.
         let mut handles = Vec::new();
@@ -160,6 +170,7 @@ pub fn create_sleep_seconds_mapping() -> HashMap<u64, u64> {
 
 /// Create a mapping for chain id to polling URLs.
 pub fn create_chain_mapping(
+    the_graph_studio_api_key: String,
     satsuma_api_key: Option<String>,
     satsuma_enabled: bool,
 ) -> HashMap<u64, HashMap<String, String>> {
@@ -169,6 +180,18 @@ pub fn create_chain_mapping(
         let mut child_map: HashMap<String, String> = HashMap::new();
         child_map.insert((*GRAPH).to_string(), url);
         chain_id_to_urls.insert(chain_id, child_map);
+    }
+
+    for (chain_id, id) in THE_GRAPH_STUDIO_SERVICE_IDS.clone().into_iter() {
+        let url = format!(
+            "{}/{}/{}/{}",
+            THE_GRAPH_STUDIO_BASE_URL.clone(),
+            the_graph_studio_api_key,
+            "subgraphs/id",
+            id
+        );
+        let child_map = chain_id_to_urls.entry(chain_id).or_insert_with(HashMap::new);
+        child_map.insert((*GRAPH).to_string(), url);
     }
 
     if satsuma_api_key.is_some() && satsuma_enabled {

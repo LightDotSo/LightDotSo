@@ -15,13 +15,14 @@
 
 "use client";
 
+import { SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
 import type { WalletSettingsData } from "@lightdotso/data";
-import { usePaginationQueryState } from "@lightdotso/nuqs";
+import { useCursorQueryState, usePaginationQueryState } from "@lightdotso/nuqs";
 import { useQueryNfts } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { nftColumns } from "@lightdotso/tables";
 import { useQueryClient } from "@tanstack/react-query";
-import { type FC } from "react";
+import { useEffect, type FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/data-table";
 
@@ -42,6 +43,7 @@ export const NftsDataTable: FC<NftsDataTableProps> = ({ address }) => {
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
+  const [cursorState, setCursorState] = useCursorQueryState();
   const [paginationState] = usePaginationQueryState();
 
   // ---------------------------------------------------------------------------
@@ -56,9 +58,21 @@ export const NftsDataTable: FC<NftsDataTableProps> = ({ address }) => {
   const { nftPage, isNftsLoading } = useQueryNfts({
     address: address,
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
-    limit: paginationState.pageSize,
-    cursor: null,
+    limit: SIMPLEHASH_MAX_COUNT,
+    cursor: paginationState.pageIndex === 0 ? null : cursorState,
   });
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    // Set the cursor state if there is a next cursor
+    if (nftPage?.next_cursor) {
+      setCursorState(nftPage.next_cursor);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nftPage?.next_cursor, setCursorState, paginationState.pageIndex]);
 
   // ---------------------------------------------------------------------------
   // Render

@@ -15,6 +15,7 @@
 
 "use client";
 
+import { SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
 import type { NftData } from "@lightdotso/data";
 import { usePaginationQueryState } from "@lightdotso/nuqs";
 import { useTables } from "@lightdotso/stores";
@@ -70,7 +71,7 @@ export function DataTable({ isLoading, columns, data }: DataTableProps) {
       columnFilters: nftColumnFilters,
       pagination: paginationState,
     },
-    pageCount: paginationState.pageIndex + 2,
+    pageCount: paginationState.pageIndex,
     paginateExpandedRows: false,
     enableRowSelection: true,
     manualPagination: true,
@@ -88,7 +89,7 @@ export function DataTable({ isLoading, columns, data }: DataTableProps) {
   return (
     <NftTable
       isLoading={isLoading}
-      pageSize={paginationState.pageSize}
+      pageSize={SIMPLEHASH_MAX_COUNT}
       data={data}
       columns={columns}
       tableOptions={tableOoptions}

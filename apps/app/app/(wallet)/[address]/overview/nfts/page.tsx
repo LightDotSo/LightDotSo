@@ -15,10 +15,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { Suspense } from "react";
 import type { Address } from "viem";
 import { NftsDataTable } from "@/app/(wallet)/[address]/overview/nfts/(components)/nfts-data-table";
 import { NftsDataTablePagination } from "@/app/(wallet)/[address]/overview/nfts/(components)/nfts-data-table-pagination";
@@ -34,6 +34,7 @@ import { preloader } from "@/preloaders/paths/[address]/overview/nfts/preloader"
 interface PageProps {
   params: { address: Address };
   searchParams: {
+    cursor?: string;
     pagination?: string;
   };
 }
@@ -53,10 +54,8 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { paginationState, walletSettings, nfts, nftValuation } = await handler(
-    params,
-    searchParams,
-  );
+  const { cursorState, paginationState, walletSettings, nfts, nftValuation } =
+    await handler(params, searchParams);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -77,8 +76,8 @@ export default async function Page({ params, searchParams }: PageProps) {
     queryKeys.nft.list({
       address: params.address as Address,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
-      limit: paginationState.pageSize,
-      cursor: null,
+      limit: SIMPLEHASH_MAX_COUNT,
+      cursor: paginationState.pageIndex === 0 ? null : cursorState,
     }).queryKey,
     nfts,
   );
@@ -90,13 +89,9 @@ export default async function Page({ params, searchParams }: PageProps) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <PortfolioSection title="Total NFTs Value">
-        <Suspense>
-          <NftPortfolio address={params.address as Address} />
-        </Suspense>
+        <NftPortfolio address={params.address as Address} />
       </PortfolioSection>
-      <Suspense>
-        <NftsDataTable address={params.address as Address} />
-      </Suspense>
+      <NftsDataTable address={params.address as Address} />
       <NftsDataTablePagination />
     </HydrationBoundary>
   );

@@ -30,7 +30,7 @@ import { AppNav } from "./app-nav";
 
 const tabs: Tab[] = [
   {
-    label: "Explorer",
+    label: "Home",
     id: "user-operations",
     href: "/",
     icon: (
@@ -48,7 +48,7 @@ const tabs: Tab[] = [
   {
     label: "App",
     id: "app",
-    href: "https://app.light.so",
+    href: "https://light.so",
     icon: (
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <ArrowUpRightFromSquare {...props} />,

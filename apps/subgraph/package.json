@@ -55,6 +55,7 @@
     "deploy:satsuma:optimism-sepolia": "graph deploy --node https://subgraphs.alchemy.com/api/subgraphs/deploy --ipfs https://ipfs.satsuma.xyz optimism-sepolia --deploy-key ${SATSUMA_DEPLOY_KEY} --version-label v${npm_package_version} --network optimism-sepolia",
     "deploy:satsuma:sepolia": "graph deploy --node https://subgraphs.alchemy.com/api/subgraphs/deploy --ipfs https://ipfs.satsuma.xyz sepolia --deploy-key ${SATSUMA_DEPLOY_KEY} --version-label v${npm_package_version} --network sepolia",
     "deploy:studio": "concurrently \"pnpm:deploy:studio:*\" --max-processes 1 --continue-on-error",
+    "deploy:studio:blast-testnet": "graph deploy --studio lightdotso-blast-testnet --version-label v${npm_package_version} --network blast-testnet",
     "deploy:studio:polygon-zkevm": "graph deploy --studio lightdotso-polygon-zkevm --version-label v${npm_package_version} --network polygon-zkevm",
     "deploy:studio:polygon-zkevm-testnet": "graph deploy --studio lightdotso-polygon-zkevm-testnet --version-label v${npm_package_version} --network polygon-zkevm-testnet",
     "deploy:studio:scroll": "graph deploy --studio lightdotso-scroll --version-label v${npm_package_version} --network scroll",

@@ -35,6 +35,7 @@ import type { Table } from "@tanstack/react-table";
 // -----------------------------------------------------------------------------
 
 interface DataTablePaginationProps<TData> {
+  sizes?: number[];
   table: Table<TData>;
 }
 
@@ -43,6 +44,7 @@ interface DataTablePaginationProps<TData> {
 // -----------------------------------------------------------------------------
 
 export function DataTablePagination<TData>({
+  sizes = PAGINATION_SIZES,
   table,
 }: DataTablePaginationProps<TData>) {
   // ---------------------------------------------------------------------------
@@ -76,7 +78,7 @@ export function DataTablePagination<TData>({
               <SelectValue placeholder={table.getState().pagination.pageSize} />
             </SelectTrigger>
             <SelectContent side="top">
-              {PAGINATION_SIZES.map(pageSize => (
+              {sizes.map(pageSize => (
                 <SelectItem key={pageSize} value={`${pageSize}`}>
                   {pageSize}
                 </SelectItem>
