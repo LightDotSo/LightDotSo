@@ -37,7 +37,7 @@ export const FooterCopy: FC = () => {
       >
         Acknowledgements
       </a>{" "}
-      &middot;{" "}
+      <span className="hidden md:inline-flex">&middot;</span>{" "}
       <a
         className="hidden text-text-weak hover:underline md:inline-flex"
         href={GITHUB_LINKS["Audit"]}
@@ -46,7 +46,7 @@ export const FooterCopy: FC = () => {
       >
         Audits
       </a>{" "}
-      &middot;{" "}
+      <span className="hidden md:inline-flex">&middot;</span>{" "}
       <a
         className="hidden text-text-weak hover:underline md:inline-flex"
         href={GITHUB_LINKS["License"]}
