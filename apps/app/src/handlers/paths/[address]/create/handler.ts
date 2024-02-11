@@ -80,20 +80,20 @@ export const handler = async (
   // Fetch Nonce
   // ---------------------------------------------------------------------------
 
-  const noncePromises = userOperationsQuery.map(operation => {
-    return getUserOperationNonce({
-      address: params.address as Address,
-      chain_id: Number(operation.chainId) as number,
-    });
-  });
+  // const noncePromises = userOperationsQuery.map(operation => {
+  //   return getUserOperationNonce({
+  //     address: params.address as Address,
+  //     chain_id: Number(operation.chainId) as number,
+  //   });
+  // });
 
-  // Resolve all promises
-  const nonces = await Promise.all(noncePromises);
+  // // Resolve all promises
+  // const nonces = await Promise.all(noncePromises);
 
-  // If there are any errors among responses
-  if (nonces.some(n => n.isErr())) {
-    notFound();
-  }
+  // // If there are any errors among responses
+  // if (nonces.some(n => n.isErr())) {
+  //   notFound();
+  // }
 
   // ---------------------------------------------------------------------------
   // Fetch Wallet and Configuration
@@ -144,13 +144,14 @@ export const handler = async (
   >[] =
     userOperationsQuery &&
     userOperationsQuery.map(operation => {
-      const nonce =
-        nonces[userOperationsQuery.indexOf(operation)]._unsafeUnwrap().nonce;
+      // const nonce =
+      // nonces[userOperationsQuery.indexOf(operation)]._unsafeUnwrap().nonce;
       return {
         chainId: operation.chainId as bigint,
         sender: params.address as Address,
         paymasterAndData: "0x",
-        nonce: BigInt(nonce),
+        // nonce: BigInt(nonce),
+        nonce: BigInt(0),
         initCode: (operation.initCode as Hex) ?? "0x",
         callData: (operation.callData as Hex) ?? "0x",
       };
@@ -160,50 +161,50 @@ export const handler = async (
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const resPromises = ops.map(op => {
-    return getUserOperations({
-      address: params.address as Address,
-      status: "executed",
-      offset: 0,
-      limit: 1,
-      order: "asc",
-      is_testnet: true,
-      chain_id: Number(op.chainId) as number,
-    });
-  });
+  // const resPromises = ops.map(op => {
+  //   return getUserOperations({
+  //     address: params.address as Address,
+  //     status: "executed",
+  //     offset: 0,
+  //     limit: 1,
+  //     order: "asc",
+  //     is_testnet: true,
+  //     chain_id: Number(op.chainId) as number,
+  //   });
+  // });
 
   // Resolve all promises
-  const res = await Promise.all(resPromises);
+  // const res = await Promise.all(resPromises);
 
   // If there are any errors among responses, return the lightly parsed userOperations
-  if (res.some(r => r.isErr())) {
-    return {
-      configuration: configuration,
-      userOperations: ops,
-    };
-  }
+  // if (res.some(r => r.isErr())) {
+  //   return {
+  //     configuration: configuration,
+  //     userOperations: ops,
+  //   };
+  // }
 
   // Add the initCode to the response if there are no operations
-  const parsedUserOperations = ops.map((op, index) => {
-    // Parse
-    const parsedRes = res[index]._unsafeUnwrap();
+  // const parsedUserOperations = ops.map((op, index) => {
+  //   // Parse
+  //   const parsedRes = res[index]._unsafeUnwrap();
 
-    // If there are no operations, add the initCode to the response
-    if (parsedRes.length === 0) {
-      return {
-        ...op,
-        initCode: calculateInitCode(
-          CONTRACT_ADDRESSES["Factory"] as Address,
-          configuration.image_hash as Hex,
-          wallet.salt as Hex,
-        ),
-      };
-    } else {
-      return {
-        ...op,
-      };
-    }
-  });
+  //   // If there are no operations, add the initCode to the response
+  //   if (parsedRes.length === 0) {
+  //     return {
+  //       ...op,
+  //       initCode: calculateInitCode(
+  //         CONTRACT_ADDRESSES["Factory"] as Address,
+  //         configuration.image_hash as Hex,
+  //         wallet.salt as Hex,
+  //       ),
+  //     };
+  //   } else {
+  //     return {
+  //       ...op,
+  //     };
+  //   }
+  // });
 
   // ---------------------------------------------------------------------------
   // Return
@@ -212,6 +213,6 @@ export const handler = async (
   // Return an object containing an array of userOperations
   return {
     configuration: configuration,
-    userOperations: parsedUserOperations,
+    userOperations: ops,
   };
 };
