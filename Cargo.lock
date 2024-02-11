@@ -6507,6 +6507,7 @@ version = "0.1.0"
 dependencies = [
  "axum 0.6.20",
  "clap 4.4.0",
+ "ethers 2.0.8",
  "eyre",
  "futures",
  "futures-util",
@@ -6515,6 +6516,7 @@ dependencies = [
  "lazy_static",
  "lightdotso-contracts",
  "lightdotso-jsonrpsee",
+ "lightdotso-kafka",
  "lightdotso-paymaster",
  "lightdotso-tracing",
  "rand 0.8.5",

@@ -187,7 +187,7 @@ impl Consumer {
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                         topic if topic == USER_OPERATION.to_string() => {
-                            let res = user_operation_consumer(&m, &poller).await;
+                            let res = user_operation_consumer(&m, &poller, db.clone()).await;
                             // If the consumer failed
                             if let Err(e) = res {
                                 // Log the error
