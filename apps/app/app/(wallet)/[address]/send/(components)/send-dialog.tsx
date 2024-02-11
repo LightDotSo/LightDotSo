@@ -1010,6 +1010,12 @@ export const SendDialog: FC<SendDialogProps> = ({
   const debouncedValidateAddress = debounce(validateAddress, 300);
 
   // ---------------------------------------------------------------------------
+
+  const href = useMemo(() => {
+    return `/${address}/create?userOperations=${userOperationsParser.serialize(userOperationsParams!)}`;
+  }, [address, userOperationsParams]);
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -1686,12 +1692,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                 isModal={false}
                 cancelDisabled={true}
                 disabled={false}
-                onClick={e => {
-                  e.preventDefault();
-                  router.push(
-                    `/${address}/create?userOperations=${userOperationsParser.serialize(userOperationsParams!)}`,
-                  );
-                }}
+                href={href}
               />
             )}
           </form>

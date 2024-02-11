@@ -18,7 +18,8 @@
 import { Button, ButtonIcon } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { XIcon } from "lucide-react";
-import { useMemo, type FC, type MouseEvent } from "react";
+import Link from "next/link";
+import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -29,10 +30,11 @@ export interface FooterButtonProps {
   disabled?: boolean;
   cancelDisabled?: boolean;
   isLoading?: boolean;
+  href?: string;
   isModal?: boolean;
   customSuccessText?: string;
-  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
-  cancelClick?: (e: MouseEvent<HTMLButtonElement>) => void;
+  onClick?: () => void;
+  cancelClick?: () => void;
 }
 
 // -----------------------------------------------------------------------------
@@ -44,6 +46,7 @@ export const FooterButton: FC<FooterButtonProps> = ({
   disabled,
   cancelDisabled,
   isLoading,
+  href,
   isModal,
   customSuccessText,
   onClick,
@@ -70,15 +73,26 @@ export const FooterButton: FC<FooterButtonProps> = ({
           Cancel
         </Button>
       </span>
-      <Button
-        className="w-full md:w-auto"
-        type="button"
-        isLoading={isLoading}
-        disabled={disabled}
-        onMouseDown={onClick}
-      >
-        {customSuccessText ?? "Continue"}
-      </Button>
+      {href ? (
+        <Button
+          asChild
+          className="w-full md:w-auto"
+          isLoading={isLoading}
+          disabled={disabled}
+        >
+          <Link href={href}>Continue</Link>
+        </Button>
+      ) : (
+        <Button
+          className="w-full md:w-auto"
+          isLoading={isLoading}
+          disabled={disabled}
+          type="submit"
+          onClick={onClick}
+        >
+          {customSuccessText ?? "Continue"}
+        </Button>
+      )}
       {isModal ? (
         <span className="inline-flex justify-center md:hidden">
           <ButtonIcon
