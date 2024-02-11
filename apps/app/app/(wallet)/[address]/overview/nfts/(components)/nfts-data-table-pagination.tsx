@@ -15,6 +15,7 @@
 
 "use client";
 
+import { SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
 import { useTables } from "@lightdotso/stores";
 import { DataTablePagination } from "@lightdotso/templates";
 import { useEffect, type FC } from "react";
@@ -48,5 +49,7 @@ export const NftsDataTablePagination: FC = () => {
     return null;
   }
 
-  return <DataTablePagination table={nftTable} />;
+  return (
+    <DataTablePagination sizes={[SIMPLEHASH_MAX_COUNT]} table={nftTable} />
+  );
 };

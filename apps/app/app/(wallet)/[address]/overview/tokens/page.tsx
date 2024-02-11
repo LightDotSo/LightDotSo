@@ -18,7 +18,6 @@
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { Suspense } from "react";
 import type { Address } from "viem";
 import { TokensDataTable } from "@/app/(wallet)/[address]/overview/tokens/(components)/tokens-data-table";
 import { TokensDataTablePagination } from "@/app/(wallet)/[address]/overview/tokens/(components)/tokens-data-table-pagination";
@@ -97,13 +96,9 @@ export default async function Page({ params, searchParams }: PageProps) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <PortfolioSection title="Total Token Value">
-        <Suspense>
-          <TokenPortfolio address={params.address as Address} />
-        </Suspense>
+        <TokenPortfolio address={params.address as Address} />
       </PortfolioSection>
-      <Suspense>
-        <TokensDataTable address={params.address as Address} />
-      </Suspense>
+      <TokensDataTable address={params.address as Address} />
       <TokensDataTablePagination />
     </HydrationBoundary>
   );

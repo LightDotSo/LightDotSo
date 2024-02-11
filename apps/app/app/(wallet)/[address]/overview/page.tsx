@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { OVERVIEW_ROW_COUNT } from "@lightdotso/const";
+import { OVERVIEW_ROW_COUNT, SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
@@ -90,7 +90,7 @@ export default async function Page({ params }: PageProps) {
     queryKeys.nft.list({
       address: params.address as Address,
       is_testnet: walletSettings?.is_enabled_testnet,
-      limit: OVERVIEW_ROW_COUNT,
+      limit: SIMPLEHASH_MAX_COUNT,
       cursor: null,
     }).queryKey,
     nfts,

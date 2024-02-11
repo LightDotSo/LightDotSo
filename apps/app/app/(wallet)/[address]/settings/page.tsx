@@ -17,7 +17,6 @@ import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import { SettingsSectionWrapper } from "@lightdotso/ui";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
-import { Suspense } from "react";
 import type { Address } from "viem";
 import { SettingsNameCard } from "@/app/(wallet)/[address]/settings/(components)/settings-name-card";
 import { SettingsTestnetCard } from "@/app/(wallet)/[address]/settings/(components)/settings-testnet-card";
@@ -67,12 +66,8 @@ export default async function Page({ params }: PageProps) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <SettingsSectionWrapper>
-        <Suspense>
-          <SettingsNameCard address={params.address as Address} />
-        </Suspense>
-        <Suspense>
-          <SettingsTestnetCard address={params.address as Address} />
-        </Suspense>
+        <SettingsNameCard address={params.address as Address} />
+        <SettingsTestnetCard address={params.address as Address} />
       </SettingsSectionWrapper>
     </HydrationBoundary>
   );

@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { OVERVIEW_ROW_COUNT } from "@lightdotso/const";
+import { OVERVIEW_ROW_COUNT, SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
 import {
   getPortfolio,
   getNfts,
@@ -55,7 +55,7 @@ export const handler = async (params: { address: string }) => {
 
   const nftsPromise = getNfts({
     address: params.address as Address,
-    limit: OVERVIEW_ROW_COUNT,
+    limit: SIMPLEHASH_MAX_COUNT,
     is_testnet: walletSettings.is_enabled_testnet,
     cursor: null,
   });

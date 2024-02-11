@@ -78,7 +78,7 @@ export const MainNav: FC<MainNavProps> = ({ children }) => {
               baseWidthWrapper,
             )}
           >
-            <Suspense>{TabsNavComponent}</Suspense>
+            {TabsNavComponent}
           </div>
         </div>
         {children}

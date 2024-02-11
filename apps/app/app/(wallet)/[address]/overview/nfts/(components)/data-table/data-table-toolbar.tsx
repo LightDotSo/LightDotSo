@@ -15,6 +15,7 @@
 
 "use client";
 
+import { SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
 import type {
   NftData,
   NftDataPage,
@@ -75,7 +76,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
     queryKeys.nft.list({
       address: wallet as Address,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
-      limit: paginationState.pageSize,
+      limit: SIMPLEHASH_MAX_COUNT,
       cursor: null,
     }).queryKey,
   );

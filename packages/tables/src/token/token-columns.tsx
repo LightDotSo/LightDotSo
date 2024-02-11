@@ -18,7 +18,6 @@
 import type { TokenData } from "@lightdotso/data";
 import { DataTableColumnHeader } from "@lightdotso/templates";
 import type { ColumnDef } from "@tanstack/react-table";
-import { Suspense } from "react";
 import { TokenTableRowActions } from "./actions";
 import {
   TokenCardBalance,
@@ -91,12 +90,10 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
       />
     ),
     cell: ({ row }) => (
-      <Suspense fallback={null}>
-        <TokenCardSparkline
-          token={row.original}
-          isExpanded={typeof row.getParentRow() !== "undefined"}
-        />
-      </Suspense>
+      <TokenCardSparkline
+        token={row.original}
+        isExpanded={typeof row.getParentRow() !== "undefined"}
+      />
     ),
     enableSorting: false,
     enableHiding: true,
@@ -108,12 +105,10 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
       <DataTableColumnHeader className="w-10" column={column} title="Price" />
     ),
     cell: ({ row }) => (
-      <Suspense fallback={null}>
-        <TokenCardPrice
-          token={row.original}
-          isExpanded={typeof row.getParentRow() !== "undefined"}
-        />
-      </Suspense>
+      <TokenCardPrice
+        token={row.original}
+        isExpanded={typeof row.getParentRow() !== "undefined"}
+      />
     ),
     enableSorting: false,
     enableHiding: true,
@@ -128,11 +123,7 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
         className="text-right"
       />
     ),
-    cell: ({ row }) => (
-      <Suspense fallback={null}>
-        <TokenTableRowActions token={row.original} />
-      </Suspense>
-    ),
+    cell: ({ row }) => <TokenTableRowActions token={row.original} />,
     enableSorting: false,
     enableHiding: true,
   },
