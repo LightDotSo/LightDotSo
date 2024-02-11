@@ -150,7 +150,6 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
       case "create":
         if (pathname.includes("create")) {
           showCreateModal();
-          hideSendModal();
         }
         break;
       case "op":
