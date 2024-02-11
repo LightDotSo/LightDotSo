@@ -21,7 +21,6 @@ import type {
   NftDataPage,
   WalletSettingsData,
 } from "@lightdotso/data";
-import { usePaginationQueryState } from "@lightdotso/nuqs";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth, useTables } from "@lightdotso/stores";
 import {
@@ -54,12 +53,6 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
 
   const { wallet } = useAuth();
   const { nftColumnFilters } = useTables();
-
-  // ---------------------------------------------------------------------------
-  // Query State Hooks
-  // ---------------------------------------------------------------------------
-
-  const [paginationState] = usePaginationQueryState();
 
   // ---------------------------------------------------------------------------
   // Query
