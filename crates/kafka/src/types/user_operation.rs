@@ -60,7 +60,7 @@ mod tests {
         let msg = UserOperationMessage { hash: h256_mock(), chain_id: 1u64 };
 
         let json_str = msg.to_json();
-        let expected_str = format!("{{\"user_operation_hash\":\"{:?}\",\"chain_id\":1}}", msg.hash);
+        let expected_str = format!("{{\"hash\":\"{:?}\",\"chain_id\":1}}", msg.hash);
 
         assert_eq!(json_str, expected_str);
     }
