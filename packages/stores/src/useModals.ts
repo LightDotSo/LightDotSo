@@ -22,6 +22,13 @@ import { devtools } from "zustand/middleware";
 // Props
 // -----------------------------------------------------------------------------
 
+export type AddressModalProps = {
+  address: Address;
+  isTestnet?: boolean;
+  onClose?: () => void;
+  onAddressSelect: (address: Address) => void;
+};
+
 export type NftModalProps = {
   address: Address;
   isTestnet?: boolean;
@@ -46,6 +53,7 @@ type ModalsStore = {
   setNftModalProps: (props: NftModalProps) => void;
   tokenModalProps: TokenModalProps;
   setTokenModalProps: (props: TokenModalProps) => void;
+  isAddressModalBackground: boolean;
   isAuthModalBackground: boolean;
   isConnectModalBackground: boolean;
   isDepositModalBackground: boolean;
@@ -54,6 +62,7 @@ type ModalsStore = {
   isOpModalBackground: boolean;
   isSendModalBackground: boolean;
   isTokenModalBackground: boolean;
+  isAddressModalVisible: boolean;
   isAuthModalVisible: boolean;
   isConnectModalVisible: boolean;
   isDepositModalVisible: boolean;
@@ -62,6 +71,9 @@ type ModalsStore = {
   isOpModalVisible: boolean;
   isSendModalVisible: boolean;
   isTokenModalVisible: boolean;
+  showAddressModal: () => void;
+  hideAddressModal: () => void;
+  setAddressModalBackground: (isBackground: boolean) => void;
   showAuthModal: () => void;
   hideAuthModal: () => void;
   setBackgroundAuthModal: (isBackground: boolean) => void;
@@ -95,6 +107,11 @@ type ModalsStore = {
 export const useModals = create(
   devtools<ModalsStore>(
     set => ({
+      addressModalProps: {
+        address: "",
+        isAddressModalVisible: false,
+        onAddressSelect: () => {},
+      },
       nftModalProps: {
         // @ts-expect-error
         address: "",
@@ -111,6 +128,7 @@ export const useModals = create(
       },
       setTokenModalProps: (props: TokenModalProps) =>
         set({ tokenModalProps: props }),
+      isAddressModalBackground: false,
       isAuthModalBackground: false,
       isConnectModalBackground: false,
       isDepositModalBackground: false,
@@ -127,6 +145,13 @@ export const useModals = create(
       isOpModalVisible: false,
       isSendModalVisible: false,
       isTokenModalVisible: false,
+      showAddressModal: () =>
+        set({
+          isAddressModalVisible: true,
+        }),
+      hideAddressModal: () => set({ isAddressModalVisible: false }),
+      setAddressModalBackground: (isBackground: boolean) =>
+        set({ isAddressModalBackground: isBackground }),
       showAuthModal: () =>
         set({
           isAuthModalVisible: true,

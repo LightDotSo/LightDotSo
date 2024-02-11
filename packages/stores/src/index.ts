@@ -18,7 +18,11 @@ export { useBanners } from "./useBanners";
 export { useDev } from "./useDev";
 export { useFormRef } from "./useFormRef";
 export { useModals } from "./useModals";
-export type { NftModalProps, TokenModalProps } from "./useModals";
+export type {
+  AddressModalProps,
+  NftModalProps,
+  TokenModalProps,
+} from "./useModals";
 export { useModalSwiper } from "./useModalSwiper";
 export { useNewForm } from "./useNewForm";
 export { useQueues } from "./useQueues";
