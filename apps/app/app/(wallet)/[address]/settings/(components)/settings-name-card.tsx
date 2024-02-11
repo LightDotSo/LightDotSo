@@ -15,7 +15,7 @@
 
 "use client";
 
-import { useDelayedValue } from "@lightdotso/hooks";
+import { useAuthModal, useDelayedValue } from "@lightdotso/hooks";
 import { useQueryWallet, useMutationWalletUpdate } from "@lightdotso/query";
 import {
   Button,
@@ -68,6 +68,12 @@ type SettingsNameCardProps = {
 // -----------------------------------------------------------------------------
 
 export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const { isAuthValid } = useAuthModal();
+
   // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
@@ -158,6 +164,9 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
         type="submit"
         form="walletNameForm"
         isLoading={isPending}
+        onClick={e => {
+          e.stopPropagation();
+        }}
         disabled={
           isPending ||
           delayedIsSuccess ||
@@ -192,7 +201,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
       }
       footerContent={
         <>
-          {isFormChanged && (
+          {isAuthValid && isFormChanged && (
             <Button
               variant="link"
               onClick={() => {
