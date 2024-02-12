@@ -1,6 +1,6 @@
 {
-  "name": "@lightdotso/stores",
-  "version": "0.1.1",
+  "name": "@lightdotso/forms",
+  "version": "0.0.1",
   "private": true,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
@@ -26,21 +26,12 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@lightdotso/client": "workspace:*",
-    "@lightdotso/data": "workspace:*",
-    "@lightdotso/schemas": "workspace:*",
-    "@tanstack/react-table": "^8.11.8",
-    "@types/lodash": "^4.14.202",
-    "lodash": "^4.17.21",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-hook-form": "^7.50.1",
-    "viem": "^2.7.8",
-    "zod": "^3.22.4",
-    "zustand": "^4.5.0"
+    "@hookform/devtools": "^4.3.1",
+    "@lightdotso/stores": "workspace:*"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
+    "@storybook/react": "^7.6.14",
     "@types/node": "^20.11.17",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",

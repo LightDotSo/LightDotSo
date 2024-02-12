@@ -327,6 +327,9 @@ importers:
       '@lightdotso/elements':
         specifier: workspace:*
         version: link:../../packages/elements
+      '@lightdotso/forms':
+        specifier: workspace:*
+        version: link:../../packages/forms
       '@lightdotso/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks
@@ -1801,6 +1804,34 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
+  packages/forms:
+    dependencies:
+      '@hookform/devtools':
+        specifier: ^4.3.1
+        version: 4.3.1(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0)
+      '@lightdotso/stores':
+        specifier: workspace:*
+        version: link:../stores
+    devDependencies:
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../../configurations/tsconfig
+      '@storybook/react':
+        specifier: ^7.6.14
+        version: 7.6.14(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
+      '@types/node':
+        specifier: ^20.11.17
+        version: 20.11.17
+      '@types/react':
+        specifier: ^18.2.55
+        version: 18.2.55
+      '@types/react-dom':
+        specifier: ^18.2.19
+        version: 18.2.19
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
   packages/hooks:
     dependencies:
       '@lightdotso/client':
@@ -2325,6 +2356,9 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
+      react-hook-form:
+        specifier: ^7.50.1
+        version: 7.50.1(react@18.2.0)
       viem:
         specifier: ^2.7.8
         version: 2.7.8(typescript@5.3.3)(zod@3.22.4)
@@ -2603,6 +2637,9 @@ importers:
 
   packages/ui:
     dependencies:
+      '@hookform/devtools':
+        specifier: ^4.3.1
+        version: 4.3.1(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0)
       '@hookform/resolvers':
         specifier: ^3.3.4
         version: 3.3.4(react-hook-form@7.50.1)

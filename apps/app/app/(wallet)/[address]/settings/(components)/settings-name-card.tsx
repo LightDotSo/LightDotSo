@@ -28,7 +28,6 @@ import {
   FormMessage,
   Input,
 } from "@lightdotso/ui";
-import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { FC } from "react";
 import { useState, useEffect, useMemo } from "react";
@@ -251,10 +250,6 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
           />
         </form>
       </Form>
-      {(process.env.NODE_ENV !== "production" ||
-        process.env.NEXT_PUBLIC_VERCEL_ENV === "preview") && (
-        <DevTool control={form.control} />
-      )}
     </SettingsCard>
   );
 };

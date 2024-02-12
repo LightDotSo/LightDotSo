@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { MutableRefObject } from "react";
+import { Control, FieldValues } from "react-hook-form";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
@@ -22,6 +23,8 @@ import { devtools } from "zustand/middleware";
 // -----------------------------------------------------------------------------
 
 export interface FormRefState {
+  formControl: Control<FieldValues, any> | undefined;
+  setFormControl: (formControl: Control<FieldValues, any> | undefined) => void;
   formRef: MutableRefObject<HTMLFormElement | null> | undefined;
   setFormRef: (
     formRef: MutableRefObject<HTMLFormElement | null> | undefined,
@@ -39,6 +42,9 @@ export interface FormRefState {
 export const useFormRef = create(
   devtools<FormRefState>(
     set => ({
+      formControl: undefined,
+      setFormControl: (formControl: Control<FieldValues, any> | undefined) =>
+        set({ formControl }),
       formRef: undefined,
       setFormRef: (
         formRef: MutableRefObject<HTMLFormElement | null> | undefined,
