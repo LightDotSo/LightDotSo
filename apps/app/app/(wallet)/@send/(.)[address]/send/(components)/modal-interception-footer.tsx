@@ -90,7 +90,11 @@ export const ModalInterceptionFooter: FC = () => {
       className="pt-0"
       cancelClick={onDismiss}
       disabled={false}
-      href={footerHref ?? "/create"}
+      // href={footerHref ?? "/create"}
+      onClick={e => {
+        e.persist();
+        router.push(footerHref ?? "/create");
+      }}
     />
   );
 };

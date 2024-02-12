@@ -1010,6 +1010,8 @@ export const SendDialog: FC<SendDialogProps> = ({
   const debouncedValidateAddress = debounce(validateAddress, 300);
 
   // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
 
   const href = useMemo(() => {
     return `/${address}/create?userOperations=${userOperationsParser.serialize(userOperationsParams!)}`;

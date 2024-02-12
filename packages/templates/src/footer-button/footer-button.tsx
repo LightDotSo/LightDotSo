@@ -19,7 +19,7 @@ import { Button, ButtonIcon } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { XIcon } from "lucide-react";
 import Link from "next/link";
-import type { FC } from "react";
+import type { FC, MouseEvent } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -33,8 +33,8 @@ export interface FooterButtonProps {
   href?: string;
   isModal?: boolean;
   customSuccessText?: string;
-  onClick?: () => void;
-  cancelClick?: () => void;
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
+  cancelClick?: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
 // -----------------------------------------------------------------------------
@@ -63,6 +63,8 @@ export const FooterButton: FC<FooterButtonProps> = ({
         className,
       )}
     >
+      <div className="overflow-scroll max-w-md">{href}</div>
+      <br />
       <span className="hidden md:block">
         <Button
           disabled={cancelDisabled}
