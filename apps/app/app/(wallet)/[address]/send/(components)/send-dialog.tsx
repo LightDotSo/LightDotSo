@@ -1036,7 +1036,12 @@ export const SendDialog: FC<SendDialogProps> = ({
     <div className="grid gap-10">
       <TooltipProvider delayDuration={300}>
         <Form {...form}>
-          <form ref={formRef} className="space-y-4">
+          <form
+            id="send-dialog-form"
+            onSubmit={form.handleSubmit(onSubmit)}
+            ref={formRef}
+            className="space-y-4"
+          >
             <div className="space-y-4">
               {fields.map((field, index) => (
                 <Accordion
@@ -1702,10 +1707,10 @@ export const SendDialog: FC<SendDialogProps> = ({
             </div>
             {!isInsideModal && (
               <FooterButton
+                id="send-dialog-form"
                 isModal={false}
                 cancelDisabled={true}
                 disabled={false}
-                onClick={form.handleSubmit(onSubmit)}
               />
             )}
           </form>
