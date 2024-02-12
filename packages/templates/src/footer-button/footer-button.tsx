@@ -75,6 +75,7 @@ export const FooterButton: FC<FooterButtonProps> = ({
           Cancel
         </Button>
       </span>
+      {href && <Link href="/notifications">Notifications</Link>}
       <button onClick={() => window.alert("here")}>Here</button>
       {href ? (
         <Link href={href}>Continue</Link>
