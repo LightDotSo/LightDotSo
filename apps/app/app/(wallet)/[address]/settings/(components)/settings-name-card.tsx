@@ -113,8 +113,6 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const form = useForm<WalletNameFormValues>({
-    mode: "all",
-    reValidateMode: "onBlur",
     resolver: zodResolver(walletNameFormSchema),
     defaultValues,
   });
@@ -122,17 +120,14 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   const formValues = form.watch();
 
   // ---------------------------------------------------------------------------
-  // Callback Hooks
+  // Submit Handler
   // ---------------------------------------------------------------------------
 
-  // function onSubmit(data: WalletNameFormValues) {
-  //   form.trigger();
+  const onSubmit: SubmitHandler<WalletNameFormValues> = data => {
+    form.trigger();
 
-  //   mutate({ name: data.name });
-  // }
-
-  const onSubmit: SubmitHandler<WalletNameFormValues> = data =>
-    window.alert(data);
+    mutate({ name: data.name });
+  };
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -168,8 +163,8 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
     return (
       <Button
         type="submit"
-        form="walletNameForm"
         isLoading={isPending}
+        onClick={form.handleSubmit(onSubmit)}
         disabled={
           isPending ||
           delayedIsSuccess ||
@@ -224,11 +219,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
       }
     >
       <Form {...form}>
-        <form
-          id="walletNameForm"
-          className="space-y-8"
-          onSubmit={form.handleSubmit(onSubmit)}
-        >
+        <form className="space-y-8">
           <FormField
             control={form.control}
             name="name"
