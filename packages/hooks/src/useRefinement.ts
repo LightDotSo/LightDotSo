@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+"use client";
+
 // From: https://stackblitz.com/edit/vitejs-vite-x1cial?file=src%2Fuse-refinement.ts
 // Ref: https://github.com/orgs/react-hook-form/discussions/9005
 // Thank you to @lennerd for the original implementation!
