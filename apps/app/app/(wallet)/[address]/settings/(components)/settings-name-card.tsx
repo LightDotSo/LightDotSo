@@ -31,7 +31,8 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { FC } from "react";
 import { useState, useEffect, useMemo } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import type { SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import type { Address } from "viem";
 import * as z from "zod";
 import { SettingsCard } from "@/components/settings/settings-card";
