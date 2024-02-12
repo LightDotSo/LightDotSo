@@ -364,14 +364,6 @@ export const SendDialog: FC<SendDialogProps> = ({
   });
 
   // ---------------------------------------------------------------------------
-  // Submit Handler
-  // ---------------------------------------------------------------------------
-
-  const onSubmit: SubmitHandler<NewFormValues> = data => {
-    form.trigger();
-  };
-
-  // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
@@ -838,6 +830,24 @@ export const SendDialog: FC<SendDialogProps> = ({
   }, [isFormValid, userOperationsParams]);
 
   // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const href = useMemo(() => {
+    return `/${address}/create?userOperations=${userOperationsParser.serialize(userOperationsParams!)}`;
+  }, [address, userOperationsParams]);
+
+  // ---------------------------------------------------------------------------
+  // Submit Handler
+  // ---------------------------------------------------------------------------
+
+  const onSubmit: SubmitHandler<NewFormValues> = data => {
+    form.trigger();
+
+    router.push(href);
+  };
+
+  // ---------------------------------------------------------------------------
   // Validation
   // ---------------------------------------------------------------------------
 
@@ -1016,14 +1026,6 @@ export const SendDialog: FC<SendDialogProps> = ({
   // ---------------------------------------------------------------------------
 
   const debouncedValidateAddress = debounce(validateAddress, 300);
-
-  // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
-
-  const href = useMemo(() => {
-    return `/${address}/create?userOperations=${userOperationsParser.serialize(userOperationsParams!)}`;
-  }, [address, userOperationsParams]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -1702,7 +1704,6 @@ export const SendDialog: FC<SendDialogProps> = ({
                 isModal={false}
                 cancelDisabled={true}
                 disabled={false}
-                // href={href}
                 onClick={form.handleSubmit(onSubmit)}
               />
             )}
