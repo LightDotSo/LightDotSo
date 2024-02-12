@@ -63,7 +63,7 @@ import { ChevronDown, Trash2Icon, UserPlus2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef } from "react";
 import type { FC } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import {
   isAddress,
   encodeFunctionData,
@@ -362,6 +362,14 @@ export const SendDialog: FC<SendDialogProps> = ({
     name: "transfers",
     control: form.control,
   });
+
+  // ---------------------------------------------------------------------------
+  // Submit Handler
+  // ---------------------------------------------------------------------------
+
+  const onSubmit: SubmitHandler<NewFormValues> = data => {
+    form.trigger();
+  };
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -1694,7 +1702,8 @@ export const SendDialog: FC<SendDialogProps> = ({
                 isModal={false}
                 cancelDisabled={true}
                 disabled={false}
-                href={href}
+                // href={href}
+                onClick={form.handleSubmit(onSubmit)}
               />
             )}
           </form>
