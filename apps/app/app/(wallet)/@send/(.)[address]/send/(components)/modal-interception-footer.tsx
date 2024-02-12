@@ -74,6 +74,15 @@ export const ModalInterceptionFooter: FC = () => {
   }, [wallet, userOperations]);
 
   // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  const onClick = useCallback(() => {
+    window.alert("Send");
+    router.push(footerHref ?? "/create");
+  }, [footerHref, router]);
+
+  // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
@@ -90,9 +99,7 @@ export const ModalInterceptionFooter: FC = () => {
       className="pt-0"
       cancelClick={onDismiss}
       disabled={isFormDisabled}
-      onClick={() => {
-        router.push(footerHref ?? "/create");
-      }}
+      onClick={onClick}
     />
   );
 };
