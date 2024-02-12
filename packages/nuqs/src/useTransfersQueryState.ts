@@ -21,7 +21,7 @@ import { isAddress } from "viem";
 // Parser
 // -----------------------------------------------------------------------------
 
-export const transferParser = createParser({
+export const transfersParser = createParser({
   parse(value) {
     if (value === "") {
       return null;
@@ -149,9 +149,9 @@ export const transferParser = createParser({
 // Hook
 // -----------------------------------------------------------------------------
 
-export const useTransfersQueryState = (initialTransfers: Array<Transfer>) => {
+export const useTransfersQueryState = (initialTransfers?: Array<Transfer>) => {
   return useQueryState(
     "transfers",
-    transferParser.withDefault(initialTransfers),
+    transfersParser.withDefault(initialTransfers ?? []),
   );
 };

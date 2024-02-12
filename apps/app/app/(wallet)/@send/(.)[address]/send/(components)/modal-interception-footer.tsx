@@ -16,6 +16,8 @@
 "use client";
 
 import {
+  transfersParser,
+  useTransfersQueryState,
   useUserOperationsQueryState,
   userOperationsParser,
 } from "@lightdotso/nuqs";
@@ -33,6 +35,7 @@ export const ModalInterceptionFooter: FC = () => {
   // Nuqs
   // ---------------------------------------------------------------------------
 
+  const [transfers] = useTransfersQueryState();
   const [userOperations] = useUserOperationsQueryState();
 
   // ---------------------------------------------------------------------------
@@ -70,7 +73,7 @@ export const ModalInterceptionFooter: FC = () => {
   // ---------------------------------------------------------------------------
 
   const href = useMemo(() => {
-    return `/${wallet}/create?userOperations=${userOperationsParser.serialize(userOperations)}`;
+    return `/${wallet}/create?userOperations=${userOperationsParser.serialize(userOperations)}&transfers=${transfersParser.serialize(transfers)}`;
   }, [wallet, userOperations]);
 
   // ---------------------------------------------------------------------------
@@ -78,7 +81,6 @@ export const ModalInterceptionFooter: FC = () => {
   // ---------------------------------------------------------------------------
 
   const onClick = useCallback(() => {
-    window.alert("Send");
     router.push(footerHref ?? "/create");
   }, [footerHref, router]);
 

@@ -19,6 +19,7 @@ import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
 import type { WalletSettingsData } from "@lightdotso/data";
 import { NftImage, PlaceholderOrb, TokenImage } from "@lightdotso/elements";
 import {
+  transfersParser,
   useTransfersQueryState,
   useUserOperationsQueryState,
   userOperationsParser,
@@ -62,7 +63,7 @@ import { isEmpty } from "lodash";
 import { ChevronDown, Trash2Icon, UserPlus2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import type { FC } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -173,9 +174,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   // Query State
   // ---------------------------------------------------------------------------
 
-  const [transfers, setTransfers] = useTransfersQueryState(
-    initialTransfers ?? [],
-  );
+  const [transfers, setTransfers] = useTransfersQueryState(initialTransfers);
   const [, setUserOperations] = useUserOperationsQueryState();
 
   // ---------------------------------------------------------------------------
@@ -835,19 +834,21 @@ export const SendDialog: FC<SendDialogProps> = ({
     setFormControl(form.control);
   }, [form.control, setFormControl]);
 
-  // -----------------------------------------
-
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const href = useMemo(() => {
-    return `/${address}/create?userOperations=${userOperationsParser.serialize(userOperationsParams!)}`;
-  }, [address, userOperationsParams]);
+    return `/${address}/create?userOperations=${userOperationsParser.serialize(userOperationsParams!)}&transfers=${transfersParser.serialize(transfers)}`;
+  }, [address, userOperationsParams, transfers]);
 
   // ---------------------------------------------------------------------------
   // Submit Handler
   // ---------------------------------------------------------------------------
+
+  const onClick = useCallback(() => {
+    router.push(href);
+  }, [href, router]);
 
   const onSubmit: SubmitHandler<NewFormValues> = () => {
     form.trigger();
@@ -1717,7 +1718,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                 isModal={false}
                 cancelDisabled={true}
                 disabled={false}
-                onClick={() => router.push(href)}
+                onClick={onClick}
               />
             )}
             {!isInsideModal && <Link href={"/notifications"}>Continue</Link>}
