@@ -166,13 +166,13 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
       <Button
         type="submit"
         isLoading={isPending}
-        onClick={form.handleSubmit(onSubmit)}
         disabled={
           isPending ||
           delayedIsSuccess ||
           !isFormChanged ||
           typeof form.getFieldState("name").error !== "undefined"
         }
+        onClick={form.handleSubmit(onSubmit)}
       >
         {!isError && delayedIsSuccess
           ? "Success"
