@@ -74,7 +74,7 @@ export const ModalInterceptionFooter: FC = () => {
 
   const href = useMemo(() => {
     return `/${wallet}/create?userOperations=${userOperationsParser.serialize(userOperations)}&transfers=${transfersParser.serialize(transfers)}`;
-  }, [wallet, userOperations]);
+  }, [wallet, userOperations, transfers]);
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
