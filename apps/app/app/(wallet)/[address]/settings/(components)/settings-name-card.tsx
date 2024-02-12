@@ -31,7 +31,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { FC } from "react";
 import { useState, useEffect, useMemo } from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import type { Address } from "viem";
 import * as z from "zod";
 import { SettingsCard } from "@/components/settings/settings-card";
@@ -112,6 +112,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const form = useForm<WalletNameFormValues>({
+    mode: "onChange",
     // mode: "all",
     // // reValidateMode: "onBlur",
     resolver: zodResolver(walletNameFormSchema),
@@ -124,9 +125,14 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
-  function onSubmit(data: WalletNameFormValues) {
-    mutate({ name: data.name });
-  }
+  // function onSubmit(data: WalletNameFormValues) {
+  //   form.trigger();
+
+  //   mutate({ name: data.name });
+  // }
+
+  const onSubmit: SubmitHandler<WalletNameFormValues> = data =>
+    window.alert(data);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
