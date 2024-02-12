@@ -24,6 +24,8 @@ use types::{BalancesData, TransactionsData};
 pub mod constants;
 pub mod types;
 
+// Example: https://api.routescan.io/v2/network/testnet/evm/168587773/address/0x35da762a35FCb3160738EeCd60fa18438C273D5E/erc20-holdings?limit=25
+
 // From: https://github.com/mark-ruddy/covctl/blob/5539c2722c7267276b85334e646c3e59df6158d1/covalent_class_a/src/lib.rs#L8
 // License: MIT
 /// Makes a request to the Covalent API
