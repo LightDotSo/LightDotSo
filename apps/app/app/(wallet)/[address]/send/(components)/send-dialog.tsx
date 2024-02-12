@@ -375,7 +375,7 @@ export const SendDialog: FC<SendDialogProps> = ({
           setTransfers(null);
         } else {
           // @ts-expect-error
-          setTransfers(value.transfers);
+          setTransfers(value.transfers, { throttleMs: 3000 });
         }
       }
 
@@ -825,7 +825,7 @@ export const SendDialog: FC<SendDialogProps> = ({
 
   useEffect(() => {
     if (isFormValid && userOperationsParams) {
-      setUserOperations(userOperationsParams);
+      setUserOperations(userOperationsParams, { throttleMs: 3000 });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFormValid, userOperationsParams]);
