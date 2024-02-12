@@ -65,8 +65,6 @@ export const FooterButton: FC<FooterButtonProps> = ({
         className,
       )}
     >
-      <div className="max-w-md overflow-scroll">{href}</div>
-      <br />
       <span className="hidden md:block">
         <Button
           disabled={cancelDisabled}
@@ -77,6 +75,7 @@ export const FooterButton: FC<FooterButtonProps> = ({
           Cancel
         </Button>
       </span>
+      <button onClick={() => window.alert("here")}>Here</button>
       {href ? (
         <Button
           asChild
