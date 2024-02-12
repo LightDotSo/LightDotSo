@@ -17,6 +17,7 @@
 
 import { getInviteCode } from "@lightdotso/client";
 import { NOTION_LINKS } from "@lightdotso/const";
+import { RefinementCallback, useRefinement } from "@lightdotso/hooks";
 import {
   useInviteCodeQueryState,
   useNameQueryState,
@@ -88,12 +89,44 @@ export const NewWalletForm: FC = () => {
   const { setFormValues } = useNewForm();
 
   // ---------------------------------------------------------------------------
+  // Validation
+  // ---------------------------------------------------------------------------
+
+  function validateInviteCode(): RefinementCallback<NewFormValues> {
+    return async (data, { signal }) => {
+      let timeoutRef: ReturnType<typeof setTimeout>;
+
+      signal?.addEventListener("abort", () => {
+        clearTimeout(timeoutRef);
+      });
+      const res = await getInviteCode({
+        params: { query: { code: data.inviteCode } },
+      });
+
+      return res.match(
+        data => {
+          if (data.status === "ACTIVE") {
+            return true;
+          }
+
+          return false;
+        },
+        _ => false,
+      );
+    };
+  }
+
+  // ---------------------------------------------------------------------------
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
   const [name, setName] = useNameQueryState();
   const [inviteCode, setInviteCode] = useInviteCodeQueryState();
   const [type, setType] = useTypeQueryState();
+
+  const validInviteCode = useRefinement(validateInviteCode(), {
+    debounce: 500,
+  });
 
   // ---------------------------------------------------------------------------
   // Form
@@ -108,7 +141,12 @@ export const NewWalletForm: FC = () => {
   const form = useForm<NewFormValues>({
     mode: "all",
     reValidateMode: "onBlur",
-    resolver: zodResolver(newFormSchema),
+    resolver: zodResolver(
+      newFormSchema.refine(validInviteCode, {
+        message: "Invite Code is not valid.",
+        path: ["inviteCodeValid"],
+      }),
+    ),
     defaultValues,
   });
 
@@ -141,17 +179,6 @@ export const NewWalletForm: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch]);
 
-  // Set the form values from the URL on mount
-  useEffect(() => {
-    // Set the form values from the default values
-    setFormValues(defaultValues);
-
-    if (inviteCode && inviteCode.length === 7) {
-      validateInviteCode(inviteCode);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
@@ -179,48 +206,6 @@ export const NewWalletForm: FC = () => {
     },
     [navigateToStep],
   );
-
-  // ---------------------------------------------------------------------------
-  // Validation
-  // ---------------------------------------------------------------------------
-
-  async function validateInviteCode(inviteCode: string): Promise<boolean> {
-    if (/^[0-9A-Z]{3}-[0-9A-Z]{3}$/.test(inviteCode)) {
-      const res = await getInviteCode({
-        params: { query: { code: inviteCode } },
-      });
-
-      res.match(
-        data => {
-          if (data.status === "ACTIVE") {
-            form.clearErrors("inviteCode");
-            return true;
-          } else {
-            form.setError("inviteCode", {
-              type: "manual",
-              message: "Invite code not valid",
-            });
-            return false;
-          }
-        },
-        _err => {
-          form.setError("inviteCode", {
-            type: "manual",
-            message: "Invite code failed could not be found",
-          });
-          return false;
-        },
-      );
-    } else {
-      // Show an error message
-      form.setError("inviteCode", {
-        type: "manual",
-        message: "Invalid invite code format",
-      });
-      return false;
-    }
-    return false;
-  }
 
   // ---------------------------------------------------------------------------
   // Render
@@ -329,25 +314,13 @@ export const NewWalletForm: FC = () => {
                 control={form.control}
                 name="inviteCode"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem onChange={validInviteCode.invalidate}>
                     <FormLabel htmlFor="inviteCode">Invite Code</FormLabel>
                     <OTP
                       length={6}
                       id="inviteCode"
                       placeholder="Your Invite Code"
                       defaultValue={field.value}
-                      onBlur={e => {
-                        if (e.target.value.length === 7) {
-                          field.onChange(e.target.value);
-                          validateInviteCode(e.target.value);
-                        }
-                      }}
-                      onChange={e => {
-                        if (e.target.value.length === 7) {
-                          field.onChange(e.target.value);
-                          validateInviteCode(e.target.value);
-                        }
-                      }}
                     />
                     <FormDescription>Enter the invite code</FormDescription>
                     <FormMessage />
