@@ -1037,10 +1037,10 @@ export const SendDialog: FC<SendDialogProps> = ({
       <TooltipProvider delayDuration={300}>
         <Form {...form}>
           <form
-            id="send-dialog-form"
-            onSubmit={form.handleSubmit(onSubmit)}
             ref={formRef}
+            id="send-dialog-form"
             className="space-y-4"
+            onSubmit={form.handleSubmit(onSubmit)}
           >
             <div className="space-y-4">
               {fields.map((field, index) => (
