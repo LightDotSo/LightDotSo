@@ -223,8 +223,8 @@ export const SendDialog: FC<SendDialogProps> = ({
   // ---------------------------------------------------------------------------
 
   const form = useForm<NewFormValues>({
-    // mode: "all",
-    // reValidateMode: "onBlur",
+    mode: "all",
+    reValidateMode: "onBlur",
     resolver: zodResolver(
       sendFormConfigurationSchema.superRefine((value, ctx) => {
         // Check if no two transfers have the same address and asset address + chainId
