@@ -116,7 +116,7 @@ export const SettingsProfileCard: FC = () => {
 
   const SettingsProfileCardSubmitButton = () => (
     <Button
-      form="userProfileForm"
+      id="settings-profile-card-form"
       type="submit"
       disabled={!form.formState.isValid}
     >
@@ -136,7 +136,7 @@ export const SettingsProfileCard: FC = () => {
     >
       <Form {...form}>
         <form
-          id="userProfileForm"
+          id="settings-profile-card-form"
           className="space-y-8"
           onSubmit={form.handleSubmit(onSubmit)}
         >

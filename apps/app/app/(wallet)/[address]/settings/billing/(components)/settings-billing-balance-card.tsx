@@ -52,7 +52,11 @@ export const SettingsBillingBalanceCard: FC<
 
   const SettingsBillingCardSubmitButton: FC = () => {
     return (
-      <Button type="submit" form="walletBillingForm" disabled={true}>
+      <Button
+        type="submit"
+        id="settings-billing-balance-card-button"
+        disabled={true}
+      >
         Billing
       </Button>
     );

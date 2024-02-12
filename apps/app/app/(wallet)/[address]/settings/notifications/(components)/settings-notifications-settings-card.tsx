@@ -52,7 +52,11 @@ export const SettingsNotificationsSettingsCard: FC<
 
   const SettingsNotificationsCardSubmitButton: FC = () => {
     return (
-      <Button type="submit" form="walletNotificationsForm" disabled={true}>
+      <Button
+        type="submit"
+        id="settings-notifications-settings-card-form"
+        disabled={true}
+      >
         Notifications
       </Button>
     );

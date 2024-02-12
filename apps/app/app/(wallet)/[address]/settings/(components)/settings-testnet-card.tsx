@@ -155,8 +155,8 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   const SettingsTestnetCardSubmitButton: FC = () => {
     return (
       <Button
+        id="settings-testnet-card-form"
         type="submit"
-        form="walletTestnetForm"
         isLoading={isPending}
         disabled={
           isPending ||
@@ -198,7 +198,7 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
     >
       <Form {...form}>
         <form
-          id="walletTestnetForm"
+          id="settings-testnet-card-form"
           className="space-y-8"
           onSubmit={form.handleSubmit(onSubmit)}
         >

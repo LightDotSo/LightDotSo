@@ -164,6 +164,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
 
     return (
       <Button
+        id="settings-name-card-form"
         type="submit"
         isLoading={isPending}
         disabled={
@@ -172,7 +173,6 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
           !isFormChanged ||
           typeof form.getFieldState("name").error !== "undefined"
         }
-        onClick={form.handleSubmit(onSubmit)}
       >
         {!isError && delayedIsSuccess
           ? "Success"
@@ -221,7 +221,11 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
       }
     >
       <Form {...form}>
-        <form className="space-y-8">
+        <form
+          id="settings-name-card-form"
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-8"
+        >
           <FormField
             control={form.control}
             name="name"
