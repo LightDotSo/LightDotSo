@@ -15,12 +15,11 @@
 
 "use client";
 
-import type { ConfigurationData } from "@lightdotso/data";
-import { useQueryConfiguration } from "@lightdotso/query";
 import {
   useUserOperationsIndexQueryState,
   useUserOperationsQueryState,
 } from "@lightdotso/nuqs";
+import { useQueryConfiguration } from "@lightdotso/query";
 import type { UserOperation } from "@lightdotso/schemas";
 import { useAuth, useDev } from "@lightdotso/stores";
 import { Transaction } from "@lightdotso/templates";

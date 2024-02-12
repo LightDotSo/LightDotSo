@@ -1707,6 +1707,22 @@ export const SendDialog: FC<SendDialogProps> = ({
                 Add Transfer
               </Button>
             </div>
+            {!isInsideModal && (
+              <FooterButton
+                href="/notifications"
+                isModal={false}
+                cancelDisabled={true}
+                disabled={false}
+              />
+            )}
+            {!isInsideModal && (
+              <FooterButton
+                href={href}
+                isModal={false}
+                cancelDisabled={true}
+                disabled={false}
+              />
+            )}
             {!isInsideModal && <Link href={"/notifications"}>Continue</Link>}
           </form>
         </Form>
