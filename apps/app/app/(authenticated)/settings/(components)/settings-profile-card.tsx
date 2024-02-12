@@ -117,8 +117,8 @@ export const SettingsProfileCard: FC = () => {
 
   const SettingsProfileCardSubmitButton = () => (
     <Button
-      id="settings-profile-card-form"
       type="submit"
+      form="settings-profile-card-form"
       disabled={!form.formState.isValid}
     >
       Update profile

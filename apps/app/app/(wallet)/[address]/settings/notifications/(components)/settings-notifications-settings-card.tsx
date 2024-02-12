@@ -54,7 +54,7 @@ export const SettingsNotificationsSettingsCard: FC<
     return (
       <Button
         type="submit"
-        id="settings-notifications-settings-card-form"
+        form="settings-notifications-settings-card-form"
         disabled={true}
       >
         Notifications

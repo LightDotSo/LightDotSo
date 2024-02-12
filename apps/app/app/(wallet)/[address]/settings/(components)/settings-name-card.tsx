@@ -163,8 +163,8 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
 
     return (
       <Button
-        id="settings-name-card-form"
         type="submit"
+        form="settings-name-card-form"
         isLoading={isPending}
         disabled={
           isPending ||

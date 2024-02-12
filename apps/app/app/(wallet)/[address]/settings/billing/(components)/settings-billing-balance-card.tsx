@@ -54,7 +54,7 @@ export const SettingsBillingBalanceCard: FC<
     return (
       <Button
         type="submit"
-        id="settings-billing-balance-card-button"
+        form="settings-billing-balance-card-button"
         disabled={true}
       >
         Billing

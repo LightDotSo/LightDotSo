@@ -28,7 +28,7 @@ import type { FC, MouseEvent } from "react";
 export interface FooterButtonProps {
   className?: string;
   disabled?: boolean;
-  id?: string;
+  form?: string;
   cancelDisabled?: boolean;
   isLoading?: boolean;
   href?: string;
@@ -46,7 +46,7 @@ export const FooterButton: FC<FooterButtonProps> = ({
   className,
   disabled,
   cancelDisabled,
-  id,
+  form,
   isLoading,
   href,
   isModal,
@@ -87,9 +87,9 @@ export const FooterButton: FC<FooterButtonProps> = ({
       // >
       // <Link href={href}>Continue</Link>
       // </Button>
-      id ? (
+      form ? (
         <Button
-          id={id}
+          form={form}
           className="w-full md:w-auto"
           isLoading={isLoading}
           disabled={disabled}

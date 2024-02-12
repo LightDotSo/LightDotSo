@@ -156,8 +156,8 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   const SettingsTestnetCardSubmitButton: FC = () => {
     return (
       <Button
-        id="settings-testnet-card-form"
         type="submit"
+        form="settings-testnet-card-form"
         isLoading={isPending}
         disabled={
           isPending ||

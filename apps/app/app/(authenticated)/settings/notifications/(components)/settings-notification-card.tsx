@@ -97,7 +97,7 @@ export const SettingsNotificationCard: FC = () => {
   const SettingsNotificationCardSubmitButton = () => (
     <Button
       type="submit"
-      id="settings-notification-card-form"
+      form="settings-notification-card-form"
       disabled={!form.formState.isValid}
     >
       Update profile
