@@ -31,6 +31,7 @@ import {
   FormMessage,
   Switch,
 } from "@lightdotso/ui";
+import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, type FC, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
@@ -236,6 +237,10 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
           />
         </form>
       </Form>
+      {(process.env.NODE_ENV !== "production" ||
+        process.env.NEXT_PUBLIC_VERCEL_ENV === "preview") && (
+        <DevTool control={form.control} />
+      )}
     </SettingsCard>
   );
 };

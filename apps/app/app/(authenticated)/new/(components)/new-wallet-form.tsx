@@ -53,6 +53,7 @@ import {
   BuildingLibraryIcon,
   ShieldExclamationIcon,
 } from "@heroicons/react/24/solid";
+import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isEmpty } from "lodash";
 import { ArrowUpRight } from "lucide-react";
@@ -398,6 +399,10 @@ export const NewWalletForm: FC = () => {
               />
             </form>
           </Form>
+          {(process.env.NODE_ENV !== "production" ||
+            process.env.NEXT_PUBLIC_VERCEL_ENV === "preview") && (
+            <DevTool control={form.control} />
+          )}
         </TooltipProvider>
       </CardContent>
     </Card>

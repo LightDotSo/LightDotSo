@@ -47,6 +47,7 @@ import {
   toast,
 } from "@lightdotso/ui";
 import { publicClient } from "@lightdotso/wagmi";
+import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { backOff } from "exponential-backoff";
 import { isEmpty } from "lodash";
@@ -327,6 +328,10 @@ export const ConfirmForm: FC = () => {
               {/* <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre> */}
             </form>
           </Form>
+          {(process.env.NODE_ENV !== "production" ||
+            process.env.NEXT_PUBLIC_VERCEL_ENV === "preview") && (
+            <DevTool control={form.control} />
+          )}
         </TooltipProvider>
       </CardContent>
     </Card>

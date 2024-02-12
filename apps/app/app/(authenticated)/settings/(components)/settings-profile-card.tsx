@@ -34,6 +34,7 @@ import {
   toast,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
+import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import type { FC } from "react";
@@ -241,6 +242,10 @@ export const SettingsProfileCard: FC = () => {
           </div>
         </form>
       </Form>
+      {(process.env.NODE_ENV !== "production" ||
+        process.env.NEXT_PUBLIC_VERCEL_ENV === "preview") && (
+        <DevTool control={form.control} />
+      )}
     </SettingsCard>
   );
 };

@@ -26,6 +26,7 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "@lightdotso/ui";
+import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTheme } from "next-themes";
 import type { FC } from "react";
@@ -199,6 +200,10 @@ export const SettingsAppearanceCard: FC = () => {
           />
         </form>
       </Form>
+      {(process.env.NODE_ENV !== "production" ||
+        process.env.NEXT_PUBLIC_VERCEL_ENV === "preview") && (
+        <DevTool control={form.control} />
+      )}
     </SettingsCard>
   );
 };

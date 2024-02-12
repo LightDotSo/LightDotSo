@@ -57,6 +57,7 @@ import {
 } from "@lightdotso/ui";
 import { cn, debounce } from "@lightdotso/utils";
 import { publicClient } from "@lightdotso/wagmi";
+import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isEmpty } from "lodash";
 import { Trash2Icon, UserPlus2 } from "lucide-react";
@@ -671,6 +672,10 @@ export const ConfigurationForm: FC = () => {
               />
             </form>
           </Form>
+          {(process.env.NODE_ENV !== "production" ||
+            process.env.NEXT_PUBLIC_VERCEL_ENV === "preview") && (
+            <DevTool control={form.control} />
+          )}
         </TooltipProvider>
       </CardContent>
     </Card>
