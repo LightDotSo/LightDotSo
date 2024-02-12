@@ -23,7 +23,8 @@
 // Hook
 // -----------------------------------------------------------------------------
 
-import { MutableRefObject, useEffect, useRef } from "react";
+import type { MutableRefObject } from "react";
+import { useEffect, useRef } from "react";
 
 export interface Refinement<T> {
   /**
