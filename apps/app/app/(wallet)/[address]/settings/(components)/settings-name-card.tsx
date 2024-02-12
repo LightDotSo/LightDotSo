@@ -113,9 +113,8 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const form = useForm<WalletNameFormValues>({
-    mode: "onChange",
-    // mode: "all",
-    // // reValidateMode: "onBlur",
+    mode: "all",
+    reValidateMode: "onBlur",
     resolver: zodResolver(walletNameFormSchema),
     defaultValues,
   });
@@ -177,9 +176,6 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
           !isFormChanged ||
           typeof form.getFieldState("name").error !== "undefined"
         }
-        onClick={e => {
-          e.preventDefault();
-        }}
       >
         {!isError && delayedIsSuccess
           ? "Success"
