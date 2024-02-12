@@ -17,6 +17,7 @@ Sentry.init({
   autoSessionTracking: true,
   tracesSampleRate: 1.0,
   release: `lightdotso@${version}`,
+  ignoreErrors: ["ResizeObserver loop limit exceeded"],
   integrations: [
     new CaptureConsoleIntegration({
       levels: ["error"],
