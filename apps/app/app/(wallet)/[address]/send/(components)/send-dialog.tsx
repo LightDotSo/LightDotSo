@@ -842,7 +842,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   // Submit Handler
   // ---------------------------------------------------------------------------
 
-  const onSubmit: SubmitHandler<NewFormValues> = data => {
+  const onSubmit: SubmitHandler<NewFormValues> = () => {
     form.trigger();
 
     router.push(href);
