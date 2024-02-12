@@ -1714,18 +1714,10 @@ export const SendDialog: FC<SendDialogProps> = ({
             </div>
             {!isInsideModal && (
               <FooterButton
-                href="/notifications"
                 isModal={false}
                 cancelDisabled={true}
                 disabled={false}
-              />
-            )}
-            {!isInsideModal && (
-              <FooterButton
-                href={href}
-                isModal={false}
-                cancelDisabled={true}
-                disabled={false}
+                onClick={() => router.push(href)}
               />
             )}
             {!isInsideModal && <Link href={"/notifications"}>Continue</Link>}

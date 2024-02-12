@@ -173,8 +173,6 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
 
     return (
       <Button
-        type="submit"
-        form="settings-name-card-form"
         isLoading={isPending}
         disabled={
           isPending ||
@@ -182,6 +180,9 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
           !isFormChanged ||
           typeof form.getFieldState("name").error !== "undefined"
         }
+        // Workaround for form.handleSubmit(onSubmit) not working on first click
+        // Issue: https://github.com/jaredpalmer/formik/issues/1332#issuecomment-799930718
+        onMouseDown={() => form.handleSubmit(onSubmit)()}
       >
         {!isError && delayedIsSuccess
           ? "Success"

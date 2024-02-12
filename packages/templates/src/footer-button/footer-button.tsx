@@ -31,7 +31,6 @@ export interface FooterButtonProps {
   form?: string;
   cancelDisabled?: boolean;
   isLoading?: boolean;
-  href?: string;
   isModal?: boolean;
   customSuccessText?: string;
   onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
@@ -48,7 +47,6 @@ export const FooterButton: FC<FooterButtonProps> = ({
   cancelDisabled,
   form,
   isLoading,
-  href,
   isModal,
   customSuccessText,
   onClick,
@@ -75,19 +73,7 @@ export const FooterButton: FC<FooterButtonProps> = ({
           Cancel
         </Button>
       </span>
-      {href && <Link href="/notifications">Notifications</Link>}
-      <button onClick={() => window.alert("here")}>Here</button>
-      {href ? (
-        <Link href={href}>Continue</Link>
-      ) : // <Button
-      //   asChild
-      //   className="w-full md:w-auto"
-      //   isLoading={false}
-      //   disabled={true}
-      // >
-      // <Link href={href}>Continue</Link>
-      // </Button>
-      form ? (
+      {form ? (
         <Button
           form={form}
           className="w-full md:w-auto"
@@ -102,7 +88,7 @@ export const FooterButton: FC<FooterButtonProps> = ({
           className="w-full md:w-auto"
           isLoading={isLoading}
           disabled={disabled}
-          onClick={onClick}
+          onMouseDown={onClick}
         >
           {customSuccessText ?? "Continue"}
         </Button>
