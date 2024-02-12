@@ -16,6 +16,7 @@
 "use client";
 
 import type { ConfigurationData } from "@lightdotso/data";
+import { useQueryConfiguration } from "@lightdotso/query";
 import {
   useUserOperationsIndexQueryState,
   useUserOperationsQueryState,
@@ -40,7 +41,6 @@ import type { Address } from "viem";
 
 type CreateTransactionProps = {
   address: Address;
-  configuration: ConfigurationData;
   userOperations: Omit<
     UserOperation,
     | "hash"
@@ -59,7 +59,6 @@ type CreateTransactionProps = {
 
 export const CreateTransaction: FC<CreateTransactionProps> = ({
   address,
-  configuration,
   userOperations,
 }) => {
   // ---------------------------------------------------------------------------
@@ -91,21 +90,35 @@ export const CreateTransaction: FC<CreateTransactionProps> = ({
   }, []);
 
   // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { configuration } = useQueryConfiguration({
+    address: address,
+  });
+
+  // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const owner = useMemo(() => {
-    if (!userAddress) return;
+    if (!userAddress || !configuration || !configuration.owners) {
+      return;
+    }
 
     return configuration.owners?.find(owner =>
       isAddressEqual(owner.address as Address, userAddress),
     );
-  }, [configuration.owners, userAddress]);
+  }, [configuration, userAddress]);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
+
+  if (!configuration) {
+    return null;
+  }
 
   return (
     <div className="mt-4 flex flex-col items-center justify-center">

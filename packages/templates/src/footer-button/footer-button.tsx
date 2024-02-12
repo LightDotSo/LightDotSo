@@ -77,15 +77,16 @@ export const FooterButton: FC<FooterButtonProps> = ({
       </span>
       <button onClick={() => window.alert("here")}>Here</button>
       {href ? (
-        <Button
-          asChild
-          className="w-full md:w-auto"
-          isLoading={false}
-          disabled={true}
-        >
-          <Link href={href}>Continue</Link>
-        </Button>
-      ) : id ? (
+        <Link href={href}>Continue</Link>
+      ) : // <Button
+      //   asChild
+      //   className="w-full md:w-auto"
+      //   isLoading={false}
+      //   disabled={true}
+      // >
+      // <Link href={href}>Continue</Link>
+      // </Button>
+      id ? (
         <Button
           id={id}
           className="w-full md:w-auto"

@@ -44,7 +44,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { configuration, userOperations } = await handler(params, searchParams);
+  const { userOperations } = await handler(params, searchParams);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -52,7 +52,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   return (
     <CreateTransaction
-      configuration={configuration}
+      // configuration={configuration}
       address={params.address as Address}
       userOperations={userOperations}
     />

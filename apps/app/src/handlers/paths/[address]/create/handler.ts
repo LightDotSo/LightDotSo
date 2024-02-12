@@ -40,7 +40,7 @@ export const handler = async (
     userOperations?: string;
   },
 ): Promise<{
-  configuration: ConfigurationData;
+  // configuration: ConfigurationData;
   userOperations: Omit<
     UserOperation,
     | "hash"
@@ -99,34 +99,34 @@ export const handler = async (
   // Fetch Wallet and Configuration
   // ---------------------------------------------------------------------------
 
-  const walletPromise = getWallet({ address: params.address as Address });
+  // const walletPromise = getWallet({ address: params.address as Address });
 
-  const configurationPromise = getConfiguration({
-    address: params.address as Address,
-  });
+  // const configurationPromise = getConfiguration({
+  //   address: params.address as Address,
+  // });
 
-  const [walletRes, configurationRes] = await Promise.all([
-    walletPromise,
-    configurationPromise,
-  ]);
+  // const [walletRes, configurationRes] = await Promise.all([
+  //   walletPromise,
+  //   configurationPromise,
+  // ]);
 
-  const walletAndConfigRes = Result.combineWithAllErrors([
-    walletRes,
-    configurationRes,
-  ]);
+  // const walletAndConfigRes = Result.combineWithAllErrors([
+  //   walletRes,
+  //   configurationRes,
+  // ]);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { wallet, configuration } = walletAndConfigRes.match(
-    ([wallet, configuration]) => {
-      return {
-        wallet: wallet,
-        configuration: configuration,
-      };
-    },
-    () => {
-      return notFound();
-    },
-  );
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // const { wallet, configuration } = walletAndConfigRes.match(
+  //   ([wallet, configuration]) => {
+  //     return {
+  //       wallet: wallet,
+  //       configuration: configuration,
+  //     };
+  //   },
+  //   () => {
+  //     return notFound();
+  //   },
+  // );
 
   // ---------------------------------------------------------------------------
   // Defaults
@@ -212,7 +212,7 @@ export const handler = async (
 
   // Return an object containing an array of userOperations
   return {
-    configuration: configuration,
+    // configuration: configuration,
     userOperations: ops,
   };
 };
