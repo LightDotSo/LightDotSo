@@ -1721,7 +1721,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                 onClick={onClick}
               />
             )}
-            {!isInsideModal && <Link href={"/notifications"}>Continue</Link>}
+            {isInsideModal && <Link href={"/notifications"}>Continue</Link>}
           </form>
         </Form>
       </TooltipProvider>
