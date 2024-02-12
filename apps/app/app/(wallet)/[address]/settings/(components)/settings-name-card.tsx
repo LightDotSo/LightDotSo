@@ -17,6 +17,7 @@
 
 import { useAuthModal, useDelayedValue } from "@lightdotso/hooks";
 import { useQueryWallet, useMutationWalletUpdate } from "@lightdotso/query";
+import { useFormRef } from "@lightdotso/stores";
 import {
   Button,
   Form,
@@ -69,6 +70,12 @@ type SettingsNameCardProps = {
 // -----------------------------------------------------------------------------
 
 export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { setFormControl } = useFormRef();
+
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
@@ -150,6 +157,10 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
       setKey(Math.random());
     }
   }, [isSuccess]);
+
+  useEffect(() => {
+    setFormControl(form.control);
+  }, [form.control, setFormControl]);
 
   // ---------------------------------------------------------------------------
   // Submit Button

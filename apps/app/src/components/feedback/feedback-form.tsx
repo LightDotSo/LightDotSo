@@ -18,7 +18,7 @@
 // "use client";
 
 import { useMutationFeedbackCreate } from "@lightdotso/query";
-import { useAuth } from "@lightdotso/stores";
+import { useAuth, useFormRef } from "@lightdotso/stores";
 import {
   Button,
   Form,
@@ -31,7 +31,6 @@ import {
   RadioGroupItem,
   Textarea,
 } from "@lightdotso/ui";
-import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, type FC } from "react";
 import { useForm } from "react-hook-form";
@@ -72,6 +71,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
   // ---------------------------------------------------------------------------
 
   const { userId } = useAuth();
+  const { setFormControl } = useFormRef();
 
   // ---------------------------------------------------------------------------
   // Form
@@ -108,6 +108,10 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
       onClose();
     }
   }, [isFeedbackCreateSuccess, onClose, form]);
+
+  useEffect(() => {
+    setFormControl(form.control);
+  }, [form.control, setFormControl]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -199,10 +203,6 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
           </Button>
         </div>
       </form>
-      {(process.env.NODE_ENV !== "production" ||
-        process.env.NEXT_PUBLIC_VERCEL_ENV === "preview") && (
-        <DevTool control={form.control} />
-      )}
     </Form>
   );
 };

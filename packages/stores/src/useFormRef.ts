@@ -23,8 +23,8 @@ import { devtools } from "zustand/middleware";
 // -----------------------------------------------------------------------------
 
 export interface FormRefState {
-  formControl: Control<FieldValues, any> | undefined;
-  setFormControl: (formControl: Control<FieldValues, any> | undefined) => void;
+  formControl: Control<any, any> | undefined;
+  setFormControl: (formControl: Control<any, any> | undefined) => void;
   formRef: MutableRefObject<HTMLFormElement | null> | undefined;
   setFormRef: (
     formRef: MutableRefObject<HTMLFormElement | null> | undefined,
@@ -43,7 +43,7 @@ export const useFormRef = create(
   devtools<FormRefState>(
     set => ({
       formControl: undefined,
-      setFormControl: (formControl: Control<FieldValues, any> | undefined) =>
+      setFormControl: (formControl: Control<any, any> | undefined) =>
         set({ formControl }),
       formRef: undefined,
       setFormRef: (

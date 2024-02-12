@@ -15,6 +15,7 @@
 
 "use client";
 
+import { useFormRef } from "@lightdotso/stores";
 import {
   Button,
   Form,
@@ -34,10 +35,9 @@ import {
   toast,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
-import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import type { FC } from "react";
+import { useEffect, type FC } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import * as z from "zod";
 import { SettingsCard } from "@/components/settings/settings-card";
@@ -88,6 +88,12 @@ const defaultValues: Partial<ProfileFormValues> = {
 
 export const SettingsProfileCard: FC = () => {
   // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { setFormControl } = useFormRef();
+
+  // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------
 
@@ -124,6 +130,14 @@ export const SettingsProfileCard: FC = () => {
       Update profile
     </Button>
   );
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    setFormControl(form.control);
+  }, [form.control, setFormControl]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -242,10 +256,6 @@ export const SettingsProfileCard: FC = () => {
           </div>
         </form>
       </Form>
-      {(process.env.NODE_ENV !== "production" ||
-        process.env.NEXT_PUBLIC_VERCEL_ENV === "preview") && (
-        <DevTool control={form.control} />
-      )}
     </SettingsCard>
   );
 };

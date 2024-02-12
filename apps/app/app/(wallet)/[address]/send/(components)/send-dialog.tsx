@@ -56,7 +56,6 @@ import {
 } from "@lightdotso/ui";
 import { cn, debounce, refineNumberFormat } from "@lightdotso/utils";
 import { lightWalletAbi, publicClient } from "@lightdotso/wagmi";
-import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
@@ -108,7 +107,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { setIsFormDisabled } = useFormRef();
+  const { setIsFormDisabled, setFormControl } = useFormRef();
   const {
     setSendBackgroundModal,
     setNftModalProps,
@@ -831,6 +830,12 @@ export const SendDialog: FC<SendDialogProps> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFormValid, userOperationsParams]);
+
+  useEffect(() => {
+    setFormControl(form.control);
+  }, [form.control, setFormControl]);
+
+  // -----------------------------------------
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -1726,10 +1731,6 @@ export const SendDialog: FC<SendDialogProps> = ({
             {!isInsideModal && <Link href={"/notifications"}>Continue</Link>}
           </form>
         </Form>
-        {(process.env.NODE_ENV !== "production" ||
-          process.env.NEXT_PUBLIC_VERCEL_ENV === "preview") && (
-          <DevTool control={form.control} />
-        )}
       </TooltipProvider>
     </div>
   );

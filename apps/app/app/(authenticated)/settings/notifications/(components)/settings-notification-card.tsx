@@ -15,6 +15,7 @@
 
 "use client";
 
+import { useFormRef } from "@lightdotso/stores";
 import {
   Button,
   Checkbox,
@@ -30,10 +31,9 @@ import {
   Switch,
   toast,
 } from "@lightdotso/ui";
-import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import type { FC } from "react";
+import { useEffect, type FC } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { SettingsCard } from "@/components/settings/settings-card";
@@ -72,6 +72,12 @@ const defaultValues: Partial<SettingsNotificationCardValues> = {
 
 export const SettingsNotificationCard: FC = () => {
   // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { setFormControl } = useFormRef();
+
+  // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------
 
@@ -103,6 +109,14 @@ export const SettingsNotificationCard: FC = () => {
       Update profile
     </Button>
   );
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    setFormControl(form.control);
+  }, [form.control, setFormControl]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -281,10 +295,6 @@ export const SettingsNotificationCard: FC = () => {
           />
         </form>
       </Form>
-      {(process.env.NODE_ENV !== "production" ||
-        process.env.NEXT_PUBLIC_VERCEL_ENV === "preview") && (
-        <DevTool control={form.control} />
-      )}
     </SettingsCard>
   );
 };

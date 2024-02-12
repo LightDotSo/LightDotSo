@@ -20,6 +20,7 @@ import {
   useMutationWalletSettingsUpdate,
   useQueryWalletSettings,
 } from "@lightdotso/query";
+import { useFormRef } from "@lightdotso/stores";
 import {
   Button,
   Form,
@@ -66,6 +67,12 @@ type SettingsTestnetCardProps = {
 export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   address,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { setFormControl } = useFormRef();
+
   // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
@@ -148,6 +155,10 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
       setKey(Math.random());
     }
   }, [isSuccess]);
+
+  useEffect(() => {
+    setFormControl(form.control);
+  }, [form.control, setFormControl]);
 
   // ---------------------------------------------------------------------------
   // Submit Button
@@ -237,10 +248,6 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
           />
         </form>
       </Form>
-      {(process.env.NODE_ENV !== "production" ||
-        process.env.NEXT_PUBLIC_VERCEL_ENV === "preview") && (
-        <DevTool control={form.control} />
-      )}
     </SettingsCard>
   );
 };

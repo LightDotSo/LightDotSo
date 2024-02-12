@@ -27,7 +27,7 @@ import {
 } from "@lightdotso/nuqs";
 import type { Owner, Owners } from "@lightdotso/nuqs";
 import { newFormSchema, newFormConfigurationSchema } from "@lightdotso/schemas";
-import { useAuth, useNewForm } from "@lightdotso/stores";
+import { useAuth, useFormRef, useNewForm } from "@lightdotso/stores";
 import { FooterButton } from "@lightdotso/templates";
 import {
   Avatar,
@@ -57,7 +57,6 @@ import {
 } from "@lightdotso/ui";
 import { cn, debounce } from "@lightdotso/utils";
 import { publicClient } from "@lightdotso/wagmi";
-import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isEmpty } from "lodash";
 import { Trash2Icon, UserPlus2 } from "lucide-react";
@@ -106,6 +105,7 @@ export const ConfigurationForm: FC = () => {
   // ---------------------------------------------------------------------------
 
   const { address: userAddress, ens: userEns } = useAuth();
+  const { setFormControl } = useFormRef();
   const { setFormValues, fetchToCreate } = useNewForm();
 
   // ---------------------------------------------------------------------------
@@ -313,6 +313,10 @@ export const ConfigurationForm: FC = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValues]);
+
+  useEffect(() => {
+    setFormControl(form.control);
+  }, [form.control, setFormControl]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -672,10 +676,6 @@ export const ConfigurationForm: FC = () => {
               />
             </form>
           </Form>
-          {(process.env.NODE_ENV !== "production" ||
-            process.env.NEXT_PUBLIC_VERCEL_ENV === "preview") && (
-            <DevTool control={form.control} />
-          )}
         </TooltipProvider>
       </CardContent>
     </Card>

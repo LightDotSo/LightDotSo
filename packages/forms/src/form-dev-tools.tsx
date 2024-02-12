@@ -21,7 +21,7 @@ import { useFormRef } from "@lightdotso/stores";
 const FormDevTools = () => {
   const { formControl } = useFormRef();
 
-  if (process.env.NEXT_PUBLIC_VERCEL_ENV === "production") {
+  if (process.env.NEXT_PUBLIC_VERCEL_ENV === "production" || !formControl) {
     return null;
   }
 

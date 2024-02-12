@@ -15,6 +15,7 @@
 
 "use client";
 
+import { useFormRef } from "@lightdotso/stores";
 import {
   Form,
   FormControl,
@@ -26,10 +27,9 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "@lightdotso/ui";
-import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTheme } from "next-themes";
-import type { FC } from "react";
+import { useEffect, type FC } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { SettingsCard } from "@/components/settings/settings-card";
@@ -55,6 +55,12 @@ type AppearanceFormValues = z.infer<typeof appearanceFormSchema>;
 
 export const SettingsAppearanceCard: FC = () => {
   // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { setFormControl } = useFormRef();
+
+  // ---------------------------------------------------------------------------
   // Operation Hooks
   // ---------------------------------------------------------------------------
 
@@ -74,6 +80,14 @@ export const SettingsAppearanceCard: FC = () => {
     resolver: zodResolver(appearanceFormSchema),
     defaultValues,
   });
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    setFormControl(form.control);
+  }, [form.control, setFormControl]);
 
   // ---------------------------------------------------------------------------
   // Component
@@ -200,10 +214,6 @@ export const SettingsAppearanceCard: FC = () => {
           />
         </form>
       </Form>
-      {(process.env.NODE_ENV !== "production" ||
-        process.env.NEXT_PUBLIC_VERCEL_ENV === "preview") && (
-        <DevTool control={form.control} />
-      )}
     </SettingsCard>
   );
 };
