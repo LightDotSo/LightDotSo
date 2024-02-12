@@ -6502,6 +6502,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "lightdotso-routescan"
+version = "0.1.0"
+dependencies = [
+ "dotenvy",
+ "eyre",
+ "lazy_static",
+ "lightdotso-contracts",
+ "lightdotso-tracing",
+ "reqwest",
+ "serde",
+ "tokio",
+]
+
+[[package]]
 name = "lightdotso-rpc"
 version = "0.1.0"
 dependencies = [
