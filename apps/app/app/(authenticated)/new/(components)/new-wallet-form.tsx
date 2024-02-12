@@ -17,7 +17,8 @@
 
 import { getInviteCode } from "@lightdotso/client";
 import { NOTION_LINKS } from "@lightdotso/const";
-import { RefinementCallback, useRefinement } from "@lightdotso/hooks";
+import type { RefinementCallback } from "@lightdotso/hooks";
+import { useRefinement } from "@lightdotso/hooks";
 import {
   useInviteCodeQueryState,
   useNameQueryState,
