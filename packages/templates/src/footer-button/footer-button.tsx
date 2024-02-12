@@ -63,7 +63,7 @@ export const FooterButton: FC<FooterButtonProps> = ({
         className,
       )}
     >
-      <div className="overflow-scroll max-w-md">{href}</div>
+      <div className="max-w-md overflow-scroll">{href}</div>
       <br />
       <span className="hidden md:block">
         <Button
