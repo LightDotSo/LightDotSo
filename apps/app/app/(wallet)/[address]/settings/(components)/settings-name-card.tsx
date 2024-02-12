@@ -171,7 +171,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
           typeof form.getFieldState("name").error !== "undefined"
         }
         onClick={e => {
-          e.persist();
+          e.preventDefault();
         }}
       >
         {!isError && delayedIsSuccess
