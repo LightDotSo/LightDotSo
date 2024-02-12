@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { MutableRefObject } from "react";
-import type { Control, FieldValues } from "react-hook-form";
+import type { Control } from "react-hook-form";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
