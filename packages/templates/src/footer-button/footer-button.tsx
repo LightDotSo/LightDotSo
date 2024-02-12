@@ -68,7 +68,7 @@ export const FooterButton: FC<FooterButtonProps> = ({
           disabled={cancelDisabled}
           className="w-auto"
           variant="outline"
-          onClick={cancelClick}
+          onMouseDown={cancelClick}
         >
           Cancel
         </Button>
@@ -99,7 +99,7 @@ export const FooterButton: FC<FooterButtonProps> = ({
             size="sm"
             className="rounded-full"
             variant="outline"
-            onClick={cancelClick}
+            onMouseDown={cancelClick}
           >
             <XIcon />
           </ButtonIcon>
@@ -108,7 +108,7 @@ export const FooterButton: FC<FooterButtonProps> = ({
         <Button
           className="block w-auto md:hidden"
           variant="outline"
-          onClick={cancelClick}
+          onMouseDown={cancelClick}
         >
           Cancel
         </Button>
