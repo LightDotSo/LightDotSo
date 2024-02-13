@@ -212,6 +212,14 @@ export const NewWalletForm: FC = () => {
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // Set the form values from the URL on mount
+  useEffect(() => {
+    // Set the form values from the default values
+    setFormValues(defaultValues);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     setFormControl(form.control);
   }, [form.control, setFormControl]);
