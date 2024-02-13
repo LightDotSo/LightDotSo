@@ -298,14 +298,11 @@ export const Transaction: FC<TransactionProps> = ({
         targetUserOperation.maxPriorityFeePerGas !==
           updatedUserOperation.maxPriorityFeePerGas
       ) {
-        setUserOperations(
-          prev => {
-            const next = [...prev];
-            next[userOperationIndex] = updatedUserOperation;
-            return next;
-          },
-          { throttleMs: 3000 },
-        );
+        setUserOperations(prev => {
+          const next = [...prev];
+          next[userOperationIndex] = updatedUserOperation;
+          return next;
+        });
       }
 
       // Add the dummy signature to get the hash
@@ -388,18 +385,15 @@ export const Transaction: FC<TransactionProps> = ({
   }, [isLoading, setIsFormLoading]);
 
   useEffect(() => {
-    setUserOperations(
-      prev => {
-        // Set the userOperationWithHash at the userOperationIndex
-        const next = [...prev];
-        if (!userOperationWithHash) {
-          return next;
-        }
-        next[userOperationIndex] = userOperationWithHash;
+    setUserOperations(prev => {
+      // Set the userOperationWithHash at the userOperationIndex
+      const next = [...prev];
+      if (!userOperationWithHash) {
         return next;
-      },
-      { throttleMs: 3000 },
-    );
+      }
+      next[userOperationIndex] = userOperationWithHash;
+      return next;
+    });
   }, [userOperationWithHash, userOperationIndex, setUserOperations]);
 
   // ---------------------------------------------------------------------------

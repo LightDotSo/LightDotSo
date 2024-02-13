@@ -152,6 +152,8 @@ export const transfersParser = createParser({
 export const useTransfersQueryState = (initialTransfers?: Array<Transfer>) => {
   return useQueryState(
     "transfers",
-    transfersParser.withDefault(initialTransfers ?? []),
+    transfersParser.withDefault(initialTransfers ?? []).withOptions({
+      throttleMs: 3000,
+    }),
   );
 };
