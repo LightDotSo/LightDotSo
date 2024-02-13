@@ -13,15 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { MAX_WEIGHT, MAX_THRESHOLD } from "./configuration";
-export { DEMO_WALLET_ADDRESS } from "./demo";
-export {
-  Category,
-  DemoSubCategory,
-  UserOperationSubCategory,
-  OverviewSubCategory,
-  TransactionsSubCategory,
-  SettingsSubCategory,
-  TITLES,
-} from "./titles";
-export { DEFAULT_TABS, AI_TAB, DEV_TAB, HOME_TABS } from "./tabs";
+import { preloader as addressPreloader } from "@/preloaders/paths/[address]/preloader";
+
+// -----------------------------------------------------------------------------
+// Preloader
+// -----------------------------------------------------------------------------
+
+export const preloader = (params: { address: string }) => {
+  addressPreloader(params);
+};

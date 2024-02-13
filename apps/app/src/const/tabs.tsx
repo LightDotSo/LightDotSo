@@ -100,3 +100,12 @@ export const AI_TAB = {
     props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
   ) => <RadiobuttonIcon {...props} />,
 };
+
+export const DEV_TAB = {
+  label: "Dev",
+  id: "dev",
+  href: "/dev",
+  icon: (
+    props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
+  ) => <RadiobuttonIcon {...props} />,
+};
