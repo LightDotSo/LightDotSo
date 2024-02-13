@@ -141,6 +141,7 @@ export const Transaction: FC<TransactionProps> = ({
     defaultValues,
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const formValues = form.watch();
 
   // ---------------------------------------------------------------------------
@@ -149,12 +150,17 @@ export const Transaction: FC<TransactionProps> = ({
 
   // Set the form values from the URL on mount
   useEffect(() => {
-    // Set the form values from the default values
-    setUserOperations(prev => {
-      const next = [...prev];
-      next[userOperationIndex] = defaultValues;
-      return next;
-    });
+    // Start time delay
+    const timer = setTimeout(() => {
+      setUserOperations(prev => {
+        const next = [...prev];
+        next[userOperationIndex] = defaultValues;
+        return next;
+      });
+    }, 1500);
+
+    // Clean up timer on unmount
+    return () => clearTimeout(timer);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
