@@ -70,7 +70,7 @@ export const AddressForm: FC<AddressFormProps> = ({ name, onKeyDown }) => {
     const charLength = fieldValue ? fieldValue.length : 0;
 
     // Set the span left position based on the length of the input
-    setSpanLeft(charLength * 9 + 30);
+    setSpanLeft(charLength * 9 + 32);
   }, [methods.watch(name), methods.formState.isDirty]);
 
   // ---------------------------------------------------------------------------
