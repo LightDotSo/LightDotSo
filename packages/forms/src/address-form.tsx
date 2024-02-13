@@ -18,7 +18,13 @@
 import { PlaceholderOrb } from "@lightdotso/elements";
 import { Avatar, FormField, FormMessage, Input, Label } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
-import type { FC, InputHTMLAttributes } from "react";
+import {
+  useRef,
+  type FC,
+  type InputHTMLAttributes,
+  useState,
+  useEffect,
+} from "react";
 import { useFormContext } from "react-hook-form";
 import { isAddress } from "viem";
 
@@ -36,10 +42,36 @@ type AddressFormProps = {
 
 export const AddressForm: FC<AddressFormProps> = ({ name, onKeyDown }) => {
   // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [spanLeft, setSpanLeft] = useState(0);
+
+  // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------
 
   const methods = useFormContext();
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    // If the form is not dirty, return
+    const fieldValue = methods.getValues(name);
+
+    // If the field value is empty, return
+    if (!fieldValue) {
+      return;
+    }
+
+    // Get the length of the input value
+    const charLength = fieldValue ? fieldValue.length : 0;
+
+    // Set the span left position based on the length of the input
+    setSpanLeft(charLength * 9 + 30);
+  }, [methods.watch(name), methods.formState.isDirty]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -58,13 +90,26 @@ export const AddressForm: FC<AddressFormProps> = ({ name, onKeyDown }) => {
           <Label htmlFor="address">Address or ENS</Label>
           <div className="flex items-center space-x-3">
             <div className="relative inline-block w-full">
-              <Input
-                id="address"
-                className="pl-12"
-                onKeyDown={onKeyDown}
-                {...field}
-                placeholder="Your address or ENS name"
-              />
+              <div className="relative">
+                <Input
+                  id="address"
+                  className="pl-12"
+                  onKeyDown={onKeyDown}
+                  {...field}
+                  placeholder="Your address or ENS name"
+                />
+                <span
+                  className="absolute top-1/2 left-4 transform -translate-y-1/2 text-red-500"
+                  style={{ left: `${spanLeft}px` }}
+                >
+                  {methods.formState.isValid &&
+                    !methods.formState.errors[name] && (
+                      <span>
+                        <span className="text-green-500">✓</span>
+                      </span>
+                    )}
+                </span>
+              </div>
               <div className="absolute inset-y-0 left-3 flex items-center">
                 <Avatar className="size-6">
                   {/* If the address is valid, try resolving an ens Avatar */}
@@ -87,8 +132,8 @@ export const AddressForm: FC<AddressFormProps> = ({ name, onKeyDown }) => {
               </div>
             </div>
           </div>
-          {/* <div className="text-text">{JSON.stringify(field, null, 2)}</div> */}
-          {/* <div className="text-text">{JSON.stringify(methods, null, 2)}</div> */}
+          <div className="text-text">{JSON.stringify(field, null, 2)}</div>
+          <div className="text-text">{JSON.stringify(methods, null, 2)}</div>
           <FormMessage />
         </div>
       )}

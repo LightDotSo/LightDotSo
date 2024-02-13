@@ -58,7 +58,7 @@ export const Base: Story = {
   render: args => {
     const getEns = async ({ name }: { name: string }) =>
       publicClient.getEnsAddress({ name: normalize(name) }).then(addr => {
-        console.log(addr);
+        // console.log(addr);
         return !!addr;
       });
 
@@ -70,7 +70,6 @@ export const Base: Story = {
       mode: "all",
       reValidateMode: "onBlur",
       resolver: zodResolver(
-        // walletNameFormSchema,
         walletNameFormSchema.refine(
           ({ addressOrEns }) => {
             if (addressOrEns.length < 1) {
