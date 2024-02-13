@@ -73,7 +73,7 @@ export const OpInvokeButton: FC<OpInvokeButtonProps> = ({
 
     await userOperationSend(userOperation);
 
-    // queueUserOperation({ hash: userOperationHash });
+    queueUserOperation({ hash: userOperationHash });
   }, [userOperation, userOperationSend, queueUserOperation, userOperationHash]);
 
   // ---------------------------------------------------------------------------
