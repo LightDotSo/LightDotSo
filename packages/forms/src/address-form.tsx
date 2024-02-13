@@ -15,16 +15,11 @@
 
 "use client";
 
-import { PlaceholderOrb } from "@lightdotso/elements";
+import { EnsAddress, PlaceholderOrb } from "@lightdotso/elements";
 import { Avatar, FormField, FormMessage, Input, Label } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
-import {
-  useRef,
-  type FC,
-  type InputHTMLAttributes,
-  useState,
-  useEffect,
-} from "react";
+import { BadgeCheckIcon } from "lucide-react";
+import { type FC, type InputHTMLAttributes, useState, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { isAddress } from "viem";
 
@@ -99,13 +94,16 @@ export const AddressForm: FC<AddressFormProps> = ({ name, onKeyDown }) => {
                   placeholder="Your address or ENS name"
                 />
                 <span
-                  className="absolute top-1/2 left-4 transform -translate-y-1/2 text-red-500"
+                  className="absolute top-1/2 left-4 transform -translate-y-1/2"
                   style={{ left: `${spanLeft}px` }}
                 >
                   {methods.formState.isValid &&
                     !methods.formState.errors[name] && (
-                      <span>
-                        <span className="text-green-500">✓</span>
+                      <span className="flex items-center space-x-1">
+                        <BadgeCheckIcon className="text-text-info size-4" />
+                        <span className="text-xs text-text-weak">
+                          <EnsAddress name={field.value} />
+                        </span>
                       </span>
                     )}
                 </span>
