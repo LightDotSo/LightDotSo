@@ -52,7 +52,6 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   return (
     <CreateTransaction
-      // configuration={configuration}
       address={params.address as Address}
       userOperations={userOperations}
     />
