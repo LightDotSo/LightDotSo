@@ -124,14 +124,15 @@ export const CreateTransaction: FC<CreateTransactionProps> = ({
       {userOperations && userOperations.length > 1 && (
         <Pagination>
           <PaginationContent>
-            {userOperations.map((_, index) => (
-              <PaginationItem
-                key={index}
-                onClick={() => setSelectedOpIndex(index)}
-              >
-                <PaginationLink>{index + 1}</PaginationLink>
-              </PaginationItem>
-            ))}
+            {userOperations &&
+              userOperations.map((_, index) => (
+                <PaginationItem
+                  key={index}
+                  onClick={() => setSelectedOpIndex(index)}
+                >
+                  <PaginationLink>{index + 1}</PaginationLink>
+                </PaginationItem>
+              ))}
           </PaginationContent>
         </Pagination>
       )}

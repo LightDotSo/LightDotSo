@@ -110,8 +110,19 @@ export const useMutationUserOperationSend = (params: UserOperationParams) => {
       );
     },
     onMutate: async (data: UserOperationSendBodyParams) => {
-      const previousData: UserOperationData[] | undefined =
-        queryClient.getQueryData(
+      try {
+        const previousData: UserOperationData[] | undefined =
+          queryClient.getQueryData(
+            queryKeys.user_operation.list({
+              address: params.address as Address,
+              status: "queued",
+              order: "asc",
+              limit: TRANSACTION_ROW_COUNT,
+              offset: 0,
+              is_testnet: params.is_testnet ?? false,
+            }).queryKey,
+          );
+        queryClient.setQueryData(
           queryKeys.user_operation.list({
             address: params.address as Address,
             status: "queued",
@@ -120,29 +131,31 @@ export const useMutationUserOperationSend = (params: UserOperationParams) => {
             offset: 0,
             is_testnet: params.is_testnet ?? false,
           }).queryKey,
-        );
-      queryClient.setQueryData(
-        queryKeys.user_operation.list({
-          address: params.address as Address,
-          status: "queued",
-          order: "asc",
-          limit: TRANSACTION_ROW_COUNT,
-          offset: 0,
-          is_testnet: params.is_testnet ?? false,
-        }).queryKey,
-        (old: UserOperationData[]) => {
-          // Get the data same as the data in the list, and update the status to "pending"
-          const newData = old.map(d => {
-            if (d.hash === data.hash) {
-              return { ...d, status: "PENDING" };
-            }
-            return d;
-          });
+          (old: UserOperationData[]) => {
+            // Get the data same as the data in the list, and update the status to "pending"
+            const newData =
+              old && old.length > 0
+                ? old.map(d => {
+                    if (d.hash === data.hash) {
+                      return { ...d, status: "PENDING" };
+                    }
+                    return d;
+                  })
+                : [];
 
-          return newData;
-        },
-      );
-      return { previousData };
+            return newData;
+          },
+        );
+
+        return { previousData };
+      } catch (err) {
+        if (err instanceof Error) {
+          toast.error(err.message);
+        } else {
+          toast.error("Failed to update the user operation status.");
+        }
+        return { previousData: undefined };
+      }
     },
     onSettled: () => {
       queryClient.invalidateQueries({
