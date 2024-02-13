@@ -21,6 +21,7 @@ import {
   useQueryUserOperation,
 } from "@lightdotso/query";
 import { FooterButton } from "@lightdotso/templates";
+import { toast } from "@lightdotso/ui";
 import { useRouter } from "next/navigation";
 import { useCallback, type FC } from "react";
 import type { Address, Hex } from "viem";
@@ -74,6 +75,7 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
     queueUserOperation({ hash: userOperationHash });
 
     if (!userOperation) {
+      toast.error("User operation not found");
       return;
     }
 

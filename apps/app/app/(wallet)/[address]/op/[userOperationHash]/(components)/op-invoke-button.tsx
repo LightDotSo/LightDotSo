@@ -21,6 +21,7 @@ import {
   useMutationUserOperationSend,
   useQueryUserOperation,
 } from "@lightdotso/query";
+import { toast } from "@lightdotso/ui";
 import { useCallback } from "react";
 import type { FC } from "react";
 import type { Address, Hex } from "viem";
@@ -65,9 +66,8 @@ export const OpInvokeButton: FC<OpInvokeButtonProps> = ({
   // ---------------------------------------------------------------------------
 
   const onClick = useCallback(async () => {
-    console.log("userOperation:", userOperation);
-
     if (!userOperation) {
+      toast.error("User operation not found");
       return;
     }
 
