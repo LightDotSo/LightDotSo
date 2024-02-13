@@ -65,13 +65,15 @@ export const OpInvokeButton: FC<OpInvokeButtonProps> = ({
   // ---------------------------------------------------------------------------
 
   const onClick = useCallback(async () => {
-    queueUserOperation({ hash: userOperationHash });
+    console.log("userOperation:", userOperation);
 
     if (!userOperation) {
       return;
     }
 
     await userOperationSend(userOperation);
+
+    queueUserOperation({ hash: userOperationHash });
   }, [userOperation, userOperationSend, queueUserOperation, userOperationHash]);
 
   // ---------------------------------------------------------------------------
