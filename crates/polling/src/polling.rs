@@ -541,12 +541,14 @@ impl Polling {
         let client = self.kafka_client.clone().unwrap();
         let payload = serde_json::to_value(&op).unwrap_or_else(|_| serde_json::Value::Null);
         let uop_hash = op.clone().hash;
+        let uop_sender = op.clone().sender;
 
         let msg = &ActivityMessage {
             operation: ActivityOperation::Update,
             log: payload.clone().to_owned(),
             params: CustomParams {
                 user_operation_hash: Some(uop_hash.clone()),
+                wallet_address: Some(uop_sender.clone()),
                 ..Default::default()
             },
         };
