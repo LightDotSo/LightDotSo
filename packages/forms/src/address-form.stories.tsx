@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { addressOrEns } from "@lightdotso/schemas";
 import { Form } from "@lightdotso/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { Meta, StoryObj } from "@storybook/react";
@@ -43,7 +44,7 @@ type Story = StoryObj<typeof AddressForm>;
 // -----------------------------------------------------------------------------
 
 const walletNameFormSchema = z.object({
-  address: z.string().email(),
+  address: addressOrEns,
 });
 
 // -----------------------------------------------------------------------------

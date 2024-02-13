@@ -14,14 +14,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { createParser, useQueryState } from "nuqs";
-import { isAddress } from "viem";
+import { type Address, isAddress } from "viem";
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
 
 export type Owner = {
-  address?: string;
+  address?: Address;
   addressOrEns?: string;
   weight: number;
 };
@@ -50,7 +50,7 @@ export const ownerParser = createParser({
         !isNaN(parsedWeight)
       ) {
         acc[parseInt(id)] = {
-          address: address === "_" ? undefined : address,
+          address: address === "_" ? undefined : (address as Address),
           addressOrEns: addressOrEns === "_" ? undefined : addressOrEns,
           weight: parseInt(weight),
         };

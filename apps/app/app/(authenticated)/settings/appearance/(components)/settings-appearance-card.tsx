@@ -31,7 +31,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTheme } from "next-themes";
 import { useEffect, type FC } from "react";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
+import { z } from "zod";
 import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const";
 

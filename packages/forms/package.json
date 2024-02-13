@@ -29,6 +29,7 @@
     "@hookform/devtools": "^4.3.1",
     "@hookform/resolvers": "^3.3.4",
     "@lightdotso/elements": "workspace:*",
+    "@lightdotso/schemas": "workspace:*",
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",

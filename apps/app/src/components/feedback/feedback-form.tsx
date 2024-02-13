@@ -34,7 +34,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, type FC } from "react";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
+import { z } from "zod";
 
 // -----------------------------------------------------------------------------
 // Schema

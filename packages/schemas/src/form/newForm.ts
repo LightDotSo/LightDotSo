@@ -14,7 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { isAddress } from "viem";
-import * as z from "zod";
+import { z } from "zod";
+import { address, addressOrEns } from "../web3";
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -50,11 +51,8 @@ export const newFormConfigurationSchema = z.object({
     .min(1, { message: "Threshold must be at least 1." }),
   owners: z.array(
     z.object({
-      address: z
-        .string()
-        .min(1, { message: "Please enter a valid address." })
-        .optional(),
-      addressOrEns: z.string().optional(),
+      address: address.optional(),
+      addressOrEns: addressOrEns.optional(),
       weight: z
         .number()
         .int()

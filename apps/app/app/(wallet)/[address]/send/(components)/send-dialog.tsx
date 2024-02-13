@@ -78,7 +78,7 @@ import {
 } from "viem";
 import type { Address, Hex } from "viem";
 import { normalize } from "viem/ens";
-import * as z from "zod";
+import { z } from "zod";
 
 // -----------------------------------------------------------------------------
 // Types

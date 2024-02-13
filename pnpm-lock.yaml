@@ -1818,6 +1818,9 @@ importers:
       '@lightdotso/elements':
         specifier: workspace:*
         version: link:../elements
+      '@lightdotso/schemas':
+        specifier: workspace:*
+        version: link:../schemas
       '@lightdotso/stores':
         specifier: workspace:*
         version: link:../stores
@@ -2235,6 +2238,9 @@ importers:
 
   packages/schemas:
     dependencies:
+      abitype:
+        specifier: ^1.0.0
+        version: 1.0.0(typescript@5.3.3)(zod@3.22.4)
       viem:
         specifier: ^2.7.8
         version: 2.7.8(typescript@5.3.3)(zod@3.22.4)
