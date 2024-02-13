@@ -26,6 +26,7 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
+    "@heroicons/react": "^2.1.1",
     "@hookform/devtools": "^4.3.1",
     "@hookform/resolvers": "^3.3.4",
     "@lightdotso/elements": "workspace:*",

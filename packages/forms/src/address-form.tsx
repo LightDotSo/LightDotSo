@@ -18,7 +18,7 @@
 import { EnsAddress, PlaceholderOrb } from "@lightdotso/elements";
 import { Avatar, FormField, FormMessage, Input, Label } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
-import { BadgeCheckIcon } from "lucide-react";
+import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 import { type FC, type InputHTMLAttributes, useState, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { isAddress } from "viem";
@@ -100,7 +100,7 @@ export const AddressForm: FC<AddressFormProps> = ({ name, onKeyDown }) => {
                   {methods.formState.isValid &&
                     !methods.formState.errors[name] && (
                       <span className="flex items-center space-x-1">
-                        <BadgeCheckIcon className="text-text-info size-4" />
+                        <CheckBadgeIcon className="text-text-info size-4" />
                         <span className="text-xs text-text-weak">
                           <EnsAddress name={field.value} />
                         </span>
