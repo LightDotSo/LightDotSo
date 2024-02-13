@@ -84,8 +84,6 @@ export const CreateTransaction: FC<CreateTransactionProps> = ({
       return;
     }
 
-    console.log("userOperations", userOperations);
-
     setUserOperations(userOperations);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
