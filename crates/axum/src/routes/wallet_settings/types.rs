@@ -25,6 +25,8 @@ use utoipa::ToSchema;
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
 pub(crate) struct WalletSettings {
+    /// The wallet_settings of whether the developer mode is enabled.
+    pub is_enabled_dev: bool,
     /// The wallet_settings of whether the testnet is enabled.
     pub is_enabled_testnet: bool,
 }
@@ -33,6 +35,8 @@ pub(crate) struct WalletSettings {
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
 pub(crate) struct WalletSettingsOptional {
+    /// The update query of wallet_settings of whether the developer mode is enabled.
+    pub is_enabled_dev: Option<bool>,
     /// The update query of wallet_settings of whether the testnet is enabled.
     pub is_enabled_testnet: Option<bool>,
 }
@@ -44,6 +48,9 @@ pub(crate) struct WalletSettingsOptional {
 /// Implement From<wallet_settings::Data> for WalletSettings.
 impl From<wallet_settings::Data> for WalletSettings {
     fn from(wallet_settings: wallet_settings::Data) -> Self {
-        Self { is_enabled_testnet: wallet_settings.is_enabled_testnet }
+        Self {
+            is_enabled_dev: wallet_settings.is_enabled_dev,
+            is_enabled_testnet: wallet_settings.is_enabled_testnet,
+        }
     }
 }

@@ -13,16 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { queryKeys } from "@lightdotso/query-keys";
-import { getQueryClient } from "@lightdotso/services";
-import { SettingsSectionWrapper } from "@lightdotso/ui";
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
-import type { Address } from "viem";
-import { SettingsDevCard } from "@/app/(wallet)/[address]/settings/(components)/settings-dev-card";
-import { SettingsNameCard } from "@/app/(wallet)/[address]/settings/(components)/settings-name-card";
-import { SettingsTestnetCard } from "@/app/(wallet)/[address]/settings/(components)/settings-testnet-card";
-import { handler } from "@/handlers/paths/[address]/settings/handler";
-import { preloader } from "@/preloaders/paths/[address]/settings/preloader";
+import { handler } from "@/handlers/paths/[address]/dev/handler";
+import { preloader } from "@/preloaders/paths/[address]/dev/preloader";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -47,30 +39,12 @@ export default async function Page({ params }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { walletSettings } = await handler(params);
-
-  // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
-
-  const queryClient = getQueryClient();
-
-  queryClient.setQueryData(
-    queryKeys.wallet.settings({ address: params.address as Address }).queryKey,
-    walletSettings,
-  );
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <SettingsSectionWrapper>
-        <SettingsNameCard address={params.address as Address} />
-        <SettingsDevCard address={params.address as Address} />
-        <SettingsTestnetCard address={params.address as Address} />
-      </SettingsSectionWrapper>
-    </HydrationBoundary>
-  );
+  return null;
 }

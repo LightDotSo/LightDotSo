@@ -13,14 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import {
-  getConfiguration,
-  getWallet,
-  getWalletSettings,
-} from "@lightdotso/services";
-import { Result } from "neverthrow";
-import { notFound } from "next/navigation";
-import type { Address } from "viem";
+import { redirect } from "next/navigation";
+import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
 
 // -----------------------------------------------------------------------------
@@ -38,41 +32,17 @@ export const handler = async (params: { address: string }) => {
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const walletPromise = getWallet({ address: params.address as Address });
-
-  const configPromise = getConfiguration({
-    address: params.address as Address,
-  });
-
-  const walletSettingsPromise = getWalletSettings({
-    address: params.address as Address,
-  });
-
-  const [wallet, config, walletSettings] = await Promise.all([
-    walletPromise,
-    configPromise,
-    walletSettingsPromise,
-  ]);
+  const { walletSettings } = await addressHandler(params);
 
   // ---------------------------------------------------------------------------
-  // Parse
+  // Return
   // ---------------------------------------------------------------------------
 
-  const res = Result.combineWithAllErrors([wallet, config]);
+  if (!walletSettings.is_enabled_dev) {
+    redirect(`/${params.address}/settings`);
+  }
 
-  return res.match(
-    ([wallet, config]) => {
-      return {
-        wallet: wallet,
-        config: config,
-        walletSettings: walletSettings.unwrapOr({
-          is_enabled_dev: false,
-          is_enabled_testnet: false,
-        }),
-      };
-    },
-    () => {
-      return notFound();
-    },
-  );
+  return {
+    walletSettings,
+  };
 };

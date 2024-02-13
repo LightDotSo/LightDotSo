@@ -1797,6 +1797,8 @@ export interface components {
     };
     /** @description WalletSettings root type. */
     WalletSettings: {
+      /** @description The wallet_settings of whether the developer mode is enabled. */
+      is_enabled_dev: boolean;
       /** @description The wallet_settings of whether the testnet is enabled. */
       is_enabled_testnet: boolean;
     };
@@ -1809,6 +1811,8 @@ export interface components {
     }]>;
     /** @description Optional WalletSettings root type. */
     WalletSettingsOptional: {
+      /** @description The update query of wallet_settings of whether the developer mode is enabled. */
+      is_enabled_dev?: boolean | null;
       /** @description The update query of wallet_settings of whether the testnet is enabled. */
       is_enabled_testnet?: boolean | null;
     };

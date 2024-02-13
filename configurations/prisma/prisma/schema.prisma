@@ -405,6 +405,7 @@ model WalletSettings {
   // Fields
   // ---------------------------------------------------------------------------
 
+  isEnabledDev     Boolean @default(false)
   isEnabledTestnet Boolean @default(false)
 
   // ---------------------------------------------------------------------------

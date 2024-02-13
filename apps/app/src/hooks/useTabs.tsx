@@ -29,7 +29,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useMemo } from "react";
 import type { Address } from "viem";
-import { AI_TAB, DEFAULT_TABS, HOME_TABS } from "@/const";
+import { AI_TAB, DEV_TAB, DEFAULT_TABS, HOME_TABS } from "@/const";
 import { usePathType } from "@/hooks";
 
 // -----------------------------------------------------------------------------
@@ -155,6 +155,14 @@ export function useTabs() {
 
   // Inside useTabs function
   const transformedTabs: Tab[] = useMemo(() => {
+    if (walletSettings?.is_enabled_dev) {
+      // If dev not yet in tabs, add it
+      if (!tabs.find(tab => tab.id === DEV_TAB.id)) {
+        // Add it after the id `owners`
+        const indexOfOwners = tabs.findIndex(tab => tab.id === "owners");
+        tabs.splice(indexOfOwners + 1, 0, DEV_TAB);
+      }
+    }
     if (walletFeatures?.is_enabled_ai) {
       // If AI not yet in tabs, add it
       if (!tabs.find(tab => tab.id === AI_TAB.id)) {
@@ -181,7 +189,13 @@ export function useTabs() {
       // }
       return tab;
     });
-  }, [configuration, userOperationsCount, walletFeatures?.is_enabled_ai, tabs]);
+  }, [
+    configuration,
+    userOperationsCount,
+    walletSettings?.is_enabled_dev,
+    walletFeatures?.is_enabled_ai,
+    tabs,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Return
