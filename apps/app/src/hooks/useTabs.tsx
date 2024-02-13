@@ -136,7 +136,7 @@ export function useTabs() {
 
   const { userOperationsCount } = useQueryUserOperationsCount({
     address: walletAddress as Address,
-    status: "proposed",
+    status: "queued",
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
   });
 

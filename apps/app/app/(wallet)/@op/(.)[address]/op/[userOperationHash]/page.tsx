@@ -14,7 +14,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { ModalInterception } from "@lightdotso/templates";
+import { ModalInterceptionFooter } from "@/app/(wallet)/@op/(.)[address]/op/(components)/modal-interception-footer";
 import OriginalPage from "@/app/(wallet)/[address]/op/[userOperationHash]/page";
+import { handler } from "@/handlers/paths/[address]/op/[userOperationHash]/handler";
+import type { Address, Hex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -30,11 +33,25 @@ type PageProps = {
 
 export default async function Page({ params }: PageProps) {
   // ---------------------------------------------------------------------------
+  // Handlers
+  // ---------------------------------------------------------------------------
+
+  await handler(params);
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <ModalInterception type="op">
+    <ModalInterception
+      footerContent={
+        <ModalInterceptionFooter
+          address={params.address as Address}
+          userOperationHash={params.userOperationHash as Hex}
+        />
+      }
+      type="op"
+    >
       <OriginalPage params={params} />
     </ModalInterception>
   );

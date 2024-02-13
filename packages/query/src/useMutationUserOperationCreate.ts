@@ -167,7 +167,7 @@ export const useMutationUserOperationCreate = (params: UserOperationParams) => {
         queryClient.getQueryData(
           queryKeys.user_operation.list({
             address: params.address as Address,
-            status: "proposed",
+            status: "queued",
             order: "asc",
             limit: TRANSACTION_ROW_COUNT,
             offset: 0,
@@ -177,7 +177,7 @@ export const useMutationUserOperationCreate = (params: UserOperationParams) => {
       queryClient.setQueryData(
         queryKeys.user_operation.list({
           address: params.address as Address,
-          status: "proposed",
+          status: "queued",
           order: "asc",
           limit: TRANSACTION_ROW_COUNT,
           offset: 0,

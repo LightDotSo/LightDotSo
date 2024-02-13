@@ -36,7 +36,7 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export interface DataTableToolbarProps {
-  status: "proposed" | "history";
+  status: "queued" | "history";
   table: Table<UserOperationData>;
 }
 
@@ -77,7 +77,7 @@ export function DataTableToolbar({ status, table }: DataTableToolbarProps) {
     queryKeys.user_operation.list({
       address: wallet as Address,
       status: status,
-      order: status === "proposed" ? "asc" : "desc",
+      order: status === "queued" ? "asc" : "desc",
       offset: offsetCount,
       limit: paginationState.pageSize,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,

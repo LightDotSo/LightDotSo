@@ -34,7 +34,7 @@ import { DataTable } from "@/app/(wallet)/[address]/transactions/(components)/da
 
 interface TransactionsDataTableProps {
   address: Address;
-  status: "proposed" | "history";
+  status: "queued" | "history";
 }
 
 // -----------------------------------------------------------------------------
@@ -71,7 +71,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   const { userOperations, isUserOperationsLoading } = useQueryUserOperations({
     address,
     status,
-    order: status === "proposed" ? "asc" : "desc",
+    order: status === "queued" ? "asc" : "desc",
     limit: paginationState.pageSize,
     offset: offsetCount,
     is_testnet: walletSettings?.is_enabled_testnet ?? false,

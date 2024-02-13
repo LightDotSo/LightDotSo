@@ -21,7 +21,7 @@ import {
 } from "@lightdotso/ui";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import type { Hex } from "viem";
+import type { Address, Hex } from "viem";
 import { OpInvokeButton } from "@/app/(wallet)/[address]/op/[userOperationHash]/(components)/op-invoke-button";
 import { TITLES } from "@/const";
 import { handler } from "@/handlers/paths/[address]/op/[userOperationHash]/handler";
@@ -74,6 +74,7 @@ export default async function UserOperationLayout({
         <MiddleLayerWrapper>
           <div className="flex w-full justify-end">
             <OpInvokeButton
+              address={params.address as Address}
               userOperationHash={params.userOperationHash as Hex}
             />
           </div>

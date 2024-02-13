@@ -55,7 +55,7 @@ export const handler = async (
 
   const userOperationsPromise = getUserOperations({
     address: params.address as Address,
-    status: "proposed",
+    status: "queued",
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
     order: "asc",
@@ -64,7 +64,7 @@ export const handler = async (
 
   const userOperationsCountPromise = getUserOperationsCount({
     address: params.address as Address,
-    status: "proposed",
+    status: "queued",
     is_testnet: walletSettings.is_enabled_testnet,
   });
 

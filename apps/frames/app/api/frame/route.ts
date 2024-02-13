@@ -73,7 +73,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     const queuedUserOperations = (
       await getUserOperations({
         address: wallet.address as Address,
-        status: "proposed",
+        status: "queued",
         offset: 0,
         limit: 10,
         order: "asc",

@@ -106,7 +106,7 @@ export const getUserOperations = async (
             order?: ("asc" | "desc") | null | undefined;
             status?:
               | (
-                  | "proposed"
+                  | "queued"
                   | "pending"
                   | "executed"
                   | "reverted"
@@ -146,7 +146,7 @@ export const getUserOperationsCount = async (
             address?: string | null | undefined;
             status?:
               | (
-                  | "proposed"
+                  | "queued"
                   | "pending"
                   | "executed"
                   | "reverted"

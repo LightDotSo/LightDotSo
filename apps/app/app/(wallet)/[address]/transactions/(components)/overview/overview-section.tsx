@@ -30,7 +30,7 @@ import type { Address } from "viem";
 
 interface OverviewSectionProps {
   address: Address;
-  status: "proposed" | "history";
+  status: "queued" | "history";
   href: string;
   title: string;
   children: ReactNode;
@@ -60,7 +60,7 @@ export const OverviewSection = ({
     queryKeys.user_operation.list({
       address,
       status,
-      order: status === "proposed" ? "asc" : "desc",
+      order: status === "queued" ? "asc" : "desc",
       limit: 10,
       offset: 0,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,

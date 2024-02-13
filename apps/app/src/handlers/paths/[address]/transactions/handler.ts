@@ -48,7 +48,7 @@ export const handler = async (params: { address: string }) => {
 
   const queuedUserOperationsPromise = getUserOperations({
     address: params.address as Address,
-    status: "proposed",
+    status: "queued",
     offset: 0,
     limit: TRANSACTION_ROW_COUNT,
     order: "asc",
@@ -56,7 +56,7 @@ export const handler = async (params: { address: string }) => {
   });
   const queuedUserOperationsCountPromise = getUserOperationsCount({
     address: params.address as Address,
-    status: "proposed",
+    status: "queued",
     is_testnet: walletSettings.is_enabled_testnet,
   });
 
