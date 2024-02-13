@@ -22,6 +22,6 @@ test("getEnsDomains", async () => {
     { name: "kaki", amount: 3 },
   );
 
-  // expect(result._unsafeUnwrap()).toBe("0x1");
-  console.log(JSON.stringify(result));
+  expect(result._unsafeUnwrap()).haveOwnProperty("domains");
+  // console.log(JSON.stringify(result));
 });
