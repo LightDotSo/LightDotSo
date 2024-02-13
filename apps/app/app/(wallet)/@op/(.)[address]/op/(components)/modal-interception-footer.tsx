@@ -21,6 +21,7 @@ import {
   useQueryUserOperation,
 } from "@lightdotso/query";
 import { FooterButton } from "@lightdotso/templates";
+import { toast } from "@lightdotso/ui";
 import { useRouter } from "next/navigation";
 import { useCallback, type FC } from "react";
 import type { Address, Hex } from "viem";
@@ -70,6 +71,17 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
+  const onClick = useCallback(async () => {
+    if (!userOperation) {
+      toast.error("User operation not found.");
+      return;
+    }
+
+    await userOperationSend(userOperation);
+
+    queueUserOperation({ hash: userOperationHash });
+  }, [userOperation, userOperationSend, queueUserOperation, userOperationHash]);
+
   const onDismiss = useCallback(() => {
     router.back();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -86,7 +98,9 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
       disabled={
         isLoadingQueueUserOperation ||
         isUserOperationLoading ||
-        isUserOperationSendPending
+        isUserOperationSendPending ||
+        (userOperation?.status !== "PROPOSED" &&
+          userOperation?.status !== "PENDING")
       }
       isLoading={
         isLoadingQueueUserOperation ||
@@ -95,13 +109,7 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
       }
       customSuccessText="Refresh"
       cancelClick={onDismiss}
-      onClick={() => {
-        queueUserOperation({ hash: userOperationHash });
-
-        if (userOperation) {
-          userOperationSend(userOperation);
-        }
-      }}
+      onClick={onClick}
     />
   );
 };

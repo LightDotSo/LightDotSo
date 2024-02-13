@@ -53,13 +53,13 @@ export const WalletOverviewBannerSparkline: FC<
 
   return (
     <div className="grid w-full grid-cols-2">
-      <div className="col-span-1 flex flex-col justify-center space-y-3">
+      <div className="col-span-1 flex flex-col justify-center space-y-2">
         <span className="text-text-weak">Net Worth</span>
         {portfolio.balances && (
           <Number value={portfolio.balance ?? 0.0} size="xl" prefix="$" />
         )}
       </div>
-      <div className="col-span-1 flex flex-col justify-center space-y-3">
+      <div className="col-span-1 flex flex-col justify-center space-y-2">
         <span
           className={cn(
             "rounded px-1.5 font-medium",

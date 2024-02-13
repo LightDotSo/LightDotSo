@@ -132,16 +132,19 @@ export const useMutationUserOperationSend = (params: UserOperationParams) => {
         }).queryKey,
         (old: UserOperationData[]) => {
           // Get the data same as the data in the list, and update the status to "pending"
-          const newData = old.map(d => {
-            if (d.hash === data.hash) {
-              return { ...d, status: "PENDING" };
-            }
-            return d;
-          });
-
+          const newData =
+            old && old.length > 0
+              ? old.map(d => {
+                  if (d.hash === data.hash) {
+                    return { ...d, status: "PENDING" };
+                  }
+                  return d;
+                })
+              : [];
           return newData;
         },
       );
+
       return { previousData };
     },
     onSettled: () => {

@@ -70,8 +70,9 @@ export default async function UserOperationLayout({
       <BannerSection
         title={TITLES.Transactions.title}
         description={TITLES.Transactions.description}
+        size="sm"
       >
-        <MiddleLayerWrapper>
+        <MiddleLayerWrapper size="sm">
           <div className="flex w-full justify-end">
             <OpInvokeButton
               address={params.address as Address}
@@ -80,7 +81,7 @@ export default async function UserOperationLayout({
           </div>
         </MiddleLayerWrapper>
       </BannerSection>
-      <BaseLayerWrapper>
+      <BaseLayerWrapper size="sm">
         <BasicPageWrapper>{children}</BasicPageWrapper>
       </BaseLayerWrapper>
     </>
