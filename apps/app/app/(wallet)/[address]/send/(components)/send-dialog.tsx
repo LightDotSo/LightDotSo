@@ -61,7 +61,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
 import { ChevronDown, Trash2Icon, UserPlus2 } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import type { FC } from "react";
@@ -1721,7 +1720,6 @@ export const SendDialog: FC<SendDialogProps> = ({
                 onClick={onClick}
               />
             )}
-            {isInsideModal && <Link href={"/notifications"}>Continue</Link>}
           </form>
         </Form>
       </TooltipProvider>
