@@ -14,27 +14,15 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use eyre::Result;
-use lightdotso_routescan::{get_token_balances, get_transactions};
+use lightdotso_routescan::get_token_balances;
 
-#[ignore]
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_token_test() -> Result<()> {
     let _ = dotenvy::dotenv();
 
     let res =
-        get_token_balances("1", "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed", None, None).await?;
-    println!("{:#?}", res);
-
-    Ok(())
-}
-
-#[ignore]
-#[tokio::test(flavor = "multi_thread")]
-async fn test_integration_transactions_test() -> Result<()> {
-    let _ = dotenvy::dotenv();
-
-    let res =
-        get_transactions("1", "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed", None, None).await?;
+        get_token_balances(&168587773, "0x35da762a35FCb3160738EeCd60fa18438C273D5E", None, None)
+            .await?;
     println!("{:#?}", res);
 
     Ok(())
