@@ -338,6 +338,16 @@ export const NewWalletForm: FC = () => {
                       id="inviteCode"
                       placeholder="Your Invite Code"
                       defaultValue={field.value}
+                      onBlur={e => {
+                        if (e.target.value.length === 7) {
+                          field.onChange(e.target.value);
+                        }
+                      }}
+                      onChange={e => {
+                        if (e.target.value.length === 7) {
+                          field.onChange(e.target.value);
+                        }
+                      }}
                     />
                     <FormDescription>Enter the invite code</FormDescription>
                     <FormMessage />
