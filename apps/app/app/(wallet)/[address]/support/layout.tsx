@@ -13,7 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { HStackFull, BannerSection } from "@lightdotso/ui";
+import {
+  HStackFull,
+  BannerSection,
+  BasicPageWrapper,
+  BaseLayerWrapper,
+} from "@lightdotso/ui";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { TITLES } from "@/const";
@@ -48,8 +53,13 @@ export default function SupportLayout({ children }: SupportLayoutProps) {
     <BannerSection
       title={TITLES.Support.title}
       description={TITLES.Support.description}
+      size="sm"
     >
-      <HStackFull>{children}</HStackFull>
+      <HStackFull>
+        <BaseLayerWrapper size="sm">
+          <BasicPageWrapper>{children}</BasicPageWrapper>
+        </BaseLayerWrapper>
+      </HStackFull>
     </BannerSection>
   );
 }
