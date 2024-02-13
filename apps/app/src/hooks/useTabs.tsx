@@ -189,7 +189,13 @@ export function useTabs() {
       // }
       return tab;
     });
-  }, [configuration, userOperationsCount, walletFeatures?.is_enabled_ai, tabs]);
+  }, [
+    configuration,
+    userOperationsCount,
+    walletSettings?.is_enabled_dev,
+    walletFeatures?.is_enabled_ai,
+    tabs,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Return
