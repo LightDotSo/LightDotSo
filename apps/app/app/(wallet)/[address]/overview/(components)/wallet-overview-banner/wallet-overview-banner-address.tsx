@@ -104,7 +104,7 @@ export const WalletOverviewBannerAddress: FC<
         <PlaceholderOrb address={address ?? "0x"} />
       </Avatar>
       <div className="p-1">
-        <div className="flex items-center space-x-3 overflow-hidden text-ellipsis text-left text-sm md:text-base pr-2">
+        <div className="flex items-center space-x-3 overflow-hidden text-ellipsis pr-2 text-left text-sm md:text-base">
           <div className="text-lg font-extrabold tracking-tight md:text-2xl">
             {wallet
               ? wallet.name
