@@ -113,6 +113,11 @@ pub(crate) async fn v1_wallet_settings_update_handler(
 
     info!("Update wallet_settings for address: {:?}", checksum_address);
 
+    if wallet_settings.is_enabled_dev.is_some() {
+        let is_enabled_dev = wallet_settings.is_enabled_dev.unwrap();
+        params.push(wallet_settings::is_enabled_dev::set(is_enabled_dev));
+    }
+
     if wallet_settings.is_enabled_testnet.is_some() {
         let is_enabled_testnet = wallet_settings.is_enabled_testnet.unwrap();
         params.push(wallet_settings::is_enabled_testnet::set(is_enabled_testnet));

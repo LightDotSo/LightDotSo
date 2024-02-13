@@ -27,7 +27,8 @@
   },
   "dependencies": {
     "@hookform/devtools": "^4.3.1",
-    "@lightdotso/stores": "workspace:*"
+    "@lightdotso/stores": "workspace:*",
+    "abitype": "^1.0.0"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",

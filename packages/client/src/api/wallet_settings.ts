@@ -59,6 +59,7 @@ export const updateWalletSettings = async (
     };
     body: {
       wallet_settings: {
+        is_enabled_dev?: boolean | null | undefined;
         is_enabled_testnet?: boolean | null | undefined;
       };
     };

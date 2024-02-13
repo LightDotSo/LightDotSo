@@ -56,6 +56,7 @@ export const useMutationWalletSettingsUpdate = (
         },
         body: {
           wallet_settings: {
+            is_enabled_dev: body.is_enabled_dev,
             is_enabled_testnet: body.is_enabled_testnet,
           },
         },
