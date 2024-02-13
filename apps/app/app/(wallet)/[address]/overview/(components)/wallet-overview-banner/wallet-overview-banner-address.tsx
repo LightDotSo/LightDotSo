@@ -36,7 +36,7 @@ import {
 } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
 import { useEnsName } from "@lightdotso/wagmi";
-import { ChevronDown, Copy } from "lucide-react";
+import { ChevronDown, ClipboardCheck, Copy } from "lucide-react";
 import { useCallback, type FC } from "react";
 import type { Address } from "viem";
 
@@ -59,7 +59,7 @@ export const WalletOverviewBannerAddress: FC<
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const [, copy] = useCopy();
+  const [isCopied, copy] = useCopy();
 
   // ---------------------------------------------------------------------------
   // Wagmi Hooks
@@ -73,7 +73,7 @@ export const WalletOverviewBannerAddress: FC<
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
-  const handleAddressClick = useCallback(() => {
+  const handleCopyClick = useCallback(() => {
     copy(address);
     toast.success("Copied to clipboard!");
   }, [address, copy]);
@@ -93,41 +93,56 @@ export const WalletOverviewBannerAddress: FC<
       <Avatar className="size-10 sm:size-12 md:size-16">
         <PlaceholderOrb address={address ?? "0x"} />
       </Avatar>
-      <div className="flex items-center space-x-3 overflow-hidden text-ellipsis p-1 text-left text-sm md:text-base">
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="unstyled"
-              size="unsized"
-              className="text-lg font-extrabold tracking-tight md:text-2xl"
-              onClick={handleAddressClick}
-            >
-              {wallet
-                ? wallet.name
-                : ens ??
-                  (typeof address === "string" && shortenAddress(address))}
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Copy Address {shortenAddress(address)}</p>
-          </TooltipContent>
-        </Tooltip>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <ButtonIcon variant="outline" size="xs">
-              <ChevronDown className="size-3" />
-            </ButtonIcon>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56">
-            <DropdownMenuGroup>
-              <DropdownMenuItem onClick={handleAddressClick}>
-                <Copy className="mr-2 size-4" />
-                <span>Copy Address</span>
-                <DropdownMenuShortcut>⇧⌘A</DropdownMenuShortcut>
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+      <div>
+        <div className="flex items-center space-x-3 overflow-hidden text-ellipsis text-left text-sm md:text-base">
+          <div className="text-lg font-extrabold tracking-tight md:text-2xl">
+            {wallet
+              ? wallet.name
+              : ens ?? (typeof address === "string" && shortenAddress(address))}
+          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <ButtonIcon variant="outline" size="xs">
+                <ChevronDown className="size-3" />
+              </ButtonIcon>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56">
+              <DropdownMenuGroup>
+                <DropdownMenuItem onClick={handleCopyClick}>
+                  <Copy className="mr-1.5 size-4" />
+                  <span>Copy Address</span>
+                  <DropdownMenuShortcut>⇧⌘A</DropdownMenuShortcut>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        <div className="hidden md:inline-flex space-x-1.5 items-center bg-background-stronger rounded-md pl-2 pr-1 py-1 w-auto md:mt-1.5">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <>
+                <p className="text-text/80 text-xs md:text-sm">
+                  {shortenAddress(address)}
+                </p>
+                <ButtonIcon
+                  onClick={handleCopyClick}
+                  variant="unstyled"
+                  size="xs"
+                  className="text-text/80"
+                >
+                  {!isCopied ? (
+                    <Copy className="size-4" />
+                  ) : (
+                    <ClipboardCheck className="size-4" />
+                  )}
+                </ButtonIcon>
+              </>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Copy Address {shortenAddress(address)}</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
       </div>
     </TooltipProvider>
   );
