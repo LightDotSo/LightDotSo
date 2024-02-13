@@ -14,10 +14,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { ModalInterception } from "@lightdotso/templates";
+import type { Address, Hex } from "viem";
 import { ModalInterceptionFooter } from "@/app/(wallet)/@op/(.)[address]/op/(components)/modal-interception-footer";
 import OriginalPage from "@/app/(wallet)/[address]/op/[userOperationHash]/page";
 import { handler } from "@/handlers/paths/[address]/op/[userOperationHash]/handler";
-import type { Address, Hex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props

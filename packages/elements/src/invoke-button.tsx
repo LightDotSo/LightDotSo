@@ -31,7 +31,7 @@ import type { FC } from "react";
 // -----------------------------------------------------------------------------
 
 interface InvokeButtonProps {
-  isLoading: boolean;
+  isLoading?: boolean;
   onClick: () => void;
 }
 

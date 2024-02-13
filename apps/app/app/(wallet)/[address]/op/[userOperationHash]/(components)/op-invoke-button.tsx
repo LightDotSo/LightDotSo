@@ -21,6 +21,7 @@ import {
   useMutationUserOperationSend,
   useQueryUserOperation,
 } from "@lightdotso/query";
+import { useCallback } from "react";
 import type { FC } from "react";
 import type { Address, Hex } from "viem";
 
@@ -50,13 +51,28 @@ export const OpInvokeButton: FC<OpInvokeButtonProps> = ({
       address: userOperationHash,
     });
 
-  const { userOperation } = useQueryUserOperation({
+  const { userOperation, isUserOperationLoading } = useQueryUserOperation({
     hash: userOperationHash,
   });
 
-  const { userOperationSend } = useMutationUserOperationSend({
-    address,
-  });
+  const { userOperationSend, isUserOperationSendPending } =
+    useMutationUserOperationSend({
+      address,
+    });
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  const onClick = useCallback(async () => {
+    queueUserOperation({ hash: userOperationHash });
+
+    if (!userOperation) {
+      return;
+    }
+
+    await userOperationSend(userOperation);
+  }, [userOperation, userOperationSend, queueUserOperation, userOperationHash]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -64,14 +80,12 @@ export const OpInvokeButton: FC<OpInvokeButtonProps> = ({
 
   return (
     <InvokeButton
-      isLoading={isLoadingQueueUserOperation}
-      onClick={() => {
-        queueUserOperation({ hash: userOperationHash });
-
-        if (userOperation) {
-          userOperationSend(userOperation);
-        }
-      }}
+      isLoading={
+        isLoadingQueueUserOperation ||
+        isUserOperationLoading ||
+        isUserOperationSendPending
+      }
+      onClick={onClick}
     />
   );
 };

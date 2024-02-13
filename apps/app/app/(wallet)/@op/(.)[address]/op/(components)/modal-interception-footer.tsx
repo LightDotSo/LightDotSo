@@ -70,6 +70,16 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
+  const onClick = useCallback(async () => {
+    queueUserOperation({ hash: userOperationHash });
+
+    if (!userOperation) {
+      return;
+    }
+
+    await userOperationSend(userOperation);
+  }, [userOperation, userOperationSend, queueUserOperation, userOperationHash]);
+
   const onDismiss = useCallback(() => {
     router.back();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -86,7 +96,9 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
       disabled={
         isLoadingQueueUserOperation ||
         isUserOperationLoading ||
-        isUserOperationSendPending
+        isUserOperationSendPending ||
+        (userOperation?.status !== "PROPOSED" &&
+          userOperation?.status !== "PENDING")
       }
       isLoading={
         isLoadingQueueUserOperation ||
@@ -95,13 +107,7 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
       }
       customSuccessText="Refresh"
       cancelClick={onDismiss}
-      onClick={() => {
-        queueUserOperation({ hash: userOperationHash });
-
-        if (userOperation) {
-          userOperationSend(userOperation);
-        }
-      }}
+      onClick={onClick}
     />
   );
 };
