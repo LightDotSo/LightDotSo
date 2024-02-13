@@ -2506,6 +2506,9 @@ importers:
       '@heroicons/react':
         specifier: ^2.1.1
         version: 2.1.1(react@18.2.0)
+      '@hookform/resolvers':
+        specifier: ^3.3.4
+        version: 3.3.4(react-hook-form@7.50.1)
       '@lightdotso/const':
         specifier: workspace:*
         version: link:../const
@@ -2584,6 +2587,9 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
+      react-hook-form:
+        specifier: ^7.50.1
+        version: 7.50.1(react@18.2.0)
       react-icons:
         specifier: ^5.0.1
         version: 5.0.1(react@18.2.0)
