@@ -153,7 +153,7 @@ export const useTransfersQueryState = (initialTransfers?: Array<Transfer>) => {
   return useQueryState(
     "transfers",
     transfersParser.withDefault(initialTransfers ?? []).withOptions({
-      throttleMs: 300,
+      throttleMs: 1500,
     }),
   );
 };
