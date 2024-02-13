@@ -41,6 +41,7 @@ export const useMutationFeedbackCreate = (params: FeedbackParams) => {
     mutate: feedbackCreate,
     isSuccess: isFeedbackCreateSuccess,
     isPending: isFeedbackCreateLoading,
+    failureCount,
   } = useMutation({
     mutationFn: async (body: FeedbackCreateBodyParams) => {
       if (!params.user_id) {
@@ -70,6 +71,10 @@ export const useMutationFeedbackCreate = (params: FeedbackParams) => {
           toast.success("Thanks for your feedback!");
         },
         err => {
+          if (failureCount % 3 !== 2) {
+            throw err;
+          }
+
           if (err instanceof Error) {
             toast.error(err.message);
           } else {

@@ -62,7 +62,7 @@ export const useQueryTokens = (params: TokenListParams) => {
       chain_ids: params.chain_ids,
     }).queryKey,
     queryFn: async () => {
-      if (typeof params.address === "undefined") {
+      if (!params.address) {
         return null;
       }
 

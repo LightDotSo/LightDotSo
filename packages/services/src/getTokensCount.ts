@@ -33,7 +33,7 @@ export const getTokensCount = async (params: TokenListCountParams) => {
   return getClientTokensCount(
     {
       params: {
-        query: { address: params.address, is_testnet: params.is_testnet },
+        query: { address: params.address!, is_testnet: params.is_testnet },
       },
     },
     "admin",

@@ -51,7 +51,7 @@ export const useQueryWalletNotificationSettings = (
         address: params.address,
       }).queryKey,
       queryFn: async () => {
-        if (typeof params.address === "undefined") {
+        if (!params.address) {
           return null;
         }
 

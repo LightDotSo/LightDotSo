@@ -32,7 +32,7 @@ export const preloadGetNfts = (params: NftListParams) => {
 export const getNfts = async (params: NftListParams) => {
   return getClientNftsByOwner(
     {
-      address: params.address,
+      address: params.address!,
       limit: params.limit,
       isTestnet: params.is_testnet,
       cursor: params.cursor,

@@ -34,7 +34,7 @@ export const useMutationQueuePortfolio = (params: QueueParams) => {
   // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const { mutate: queuePortfolio } = useMutation({
+  const { mutate: queuePortfolio, failureCount } = useMutation({
     mutationFn: async () => {
       if (!params.address) {
         return;
@@ -65,6 +65,10 @@ export const useMutationQueuePortfolio = (params: QueueParams) => {
           toast.success("Successfully queued!");
         },
         err => {
+          if (failureCount % 3 !== 2) {
+            throw err;
+          }
+
           if (err instanceof Error) {
             toast.error(err.message);
           } else {

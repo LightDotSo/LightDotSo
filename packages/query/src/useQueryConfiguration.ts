@@ -48,7 +48,7 @@ export const useQueryConfiguration = (params: ConfigurationParams) => {
   } = useQuery<ConfigurationData | null>({
     queryKey: queryKeys.configuration.get({ address: params.address }).queryKey,
     queryFn: async () => {
-      if (typeof params.address === "undefined" || params.address === null) {
+      if (!params.address) {
         return null;
       }
 

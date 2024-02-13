@@ -31,7 +31,7 @@ export const preloadGetWalletFeatures = (params: WalletFeaturesParams) => {
 
 export const getWalletFeatures = async (params: WalletFeaturesParams) => {
   return getClientWalletSettigns(
-    { params: { query: { address: params.address } } },
+    { params: { query: { address: params.address! } } },
     "admin",
   );
 };

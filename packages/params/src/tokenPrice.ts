@@ -20,6 +20,6 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export type TokenPriceParams = {
-  address: Address;
+  address: Address | null;
   chain_id: number;
 };

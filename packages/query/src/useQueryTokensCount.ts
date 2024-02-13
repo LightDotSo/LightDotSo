@@ -57,7 +57,7 @@ export const useQueryTokensCount = (params: TokenListCountParams) => {
       chain_ids: null,
     }).queryKey,
     queryFn: async () => {
-      if (typeof params.address === "undefined") {
+      if (!params.address) {
         return null;
       }
 

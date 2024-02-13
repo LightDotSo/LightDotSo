@@ -58,7 +58,7 @@ export const useQueryTransactions = (params: TransactionListParams) => {
       is_testnet: params.is_testnet,
     }).queryKey,
     queryFn: async () => {
-      if (typeof params.address === "undefined") {
+      if (!params.address) {
         return null;
       }
 

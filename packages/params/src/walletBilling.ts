@@ -20,5 +20,5 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export type WalletBillingParams = {
-  address: Address;
+  address: Address | null;
 };

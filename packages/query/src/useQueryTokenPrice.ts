@@ -50,7 +50,7 @@ export const useQueryTokenPrice = (params: TokenPriceParams) => {
       chain_id: params.chain_id,
     }).queryKey,
     queryFn: async () => {
-      if (typeof params.address === "undefined") {
+      if (!params.address) {
         return null;
       }
 

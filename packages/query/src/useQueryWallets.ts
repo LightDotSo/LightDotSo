@@ -56,7 +56,7 @@ export const useQueryWallets = (params: WalletListParams) => {
       offset: params.offset,
     }).queryKey,
     queryFn: async () => {
-      if (typeof params.address === "undefined") {
+      if (!params.address) {
         return null;
       }
 

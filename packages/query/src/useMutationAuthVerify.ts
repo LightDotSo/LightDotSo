@@ -44,8 +44,16 @@ export const useMutationAuthVerify = (params: AuthParams) => {
   // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const { mutate: verify, isSuccess: isVerifySuccess } = useMutation({
+  const {
+    mutate: verify,
+    isSuccess: isVerifySuccess,
+    failureCount,
+  } = useMutation({
     mutationFn: async (body: AuthVerifyBodyParams) => {
+      if (!params.address) {
+        return;
+      }
+
       const loadingToast = toast.loading("Verifying wallet...");
 
       const res = await authVerify(
@@ -63,6 +71,10 @@ export const useMutationAuthVerify = (params: AuthParams) => {
           toast.success("Successfully signed in!");
         },
         err => {
+          if (failureCount % 3 !== 2) {
+            throw err;
+          }
+
           if (err instanceof Error) {
             toast.error(err.message);
           } else {

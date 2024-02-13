@@ -40,8 +40,12 @@ export const useMutationWalletSettingsUpdate = (
   // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const { mutate, isPending, isSuccess, isError } = useMutation({
+  const { mutate, isPending, isSuccess, isError, failureCount } = useMutation({
     mutationFn: async (body: WaleltSettingsUpdateBodyParams) => {
+      if (!params.address) {
+        return;
+      }
+
       const loadingToast = toast.loading("Updating wallet settings...");
 
       const res = await updateWalletSettings({
@@ -64,6 +68,10 @@ export const useMutationWalletSettingsUpdate = (
           toast.success("Successfully updated wallet settings!");
         },
         err => {
+          if (failureCount % 3 !== 2) {
+            throw err;
+          }
+
           if (err instanceof Error) {
             toast.error(err.message);
           } else {

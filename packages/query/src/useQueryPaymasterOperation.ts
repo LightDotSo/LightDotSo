@@ -56,7 +56,7 @@ export const useQueryPaymasterOperation = (
         valid_after: params.valid_after,
       }).queryKey,
       queryFn: async () => {
-        if (typeof params.address === "undefined") {
+        if (!params.address) {
           return null;
         }
 

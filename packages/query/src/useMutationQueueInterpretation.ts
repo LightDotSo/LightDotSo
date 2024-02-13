@@ -34,7 +34,7 @@ export const useMutationQueueInterpretation = () => {
   // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const { mutate: queueInterpretation } = useMutation({
+  const { mutate: queueInterpretation, failureCount } = useMutation({
     mutationFn: async (body: QueueInterpretationBodyParams) => {
       const loadingToast = toast.loading("Queueing...");
 
@@ -57,6 +57,10 @@ export const useMutationQueueInterpretation = () => {
           toast.success("Successfully queued!");
         },
         err => {
+          if (failureCount % 3 !== 2) {
+            throw err;
+          }
+
           if (err instanceof Error) {
             toast.error(err.message);
           } else {

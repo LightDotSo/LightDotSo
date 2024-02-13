@@ -22,7 +22,7 @@ import "server-only";
 // -----------------------------------------------------------------------------
 
 export const preloadGetNftValuation = (params: NftValuationParams) => {
-  void getClientNftValuation(params.address);
+  void getNftValuation(params);
 };
 
 // -----------------------------------------------------------------------------
@@ -30,5 +30,5 @@ export const preloadGetNftValuation = (params: NftValuationParams) => {
 // -----------------------------------------------------------------------------
 
 export const getNftValuation = async (params: NftValuationParams) => {
-  return getClientNftValuation(params.address, "admin");
+  return getClientNftValuation(params.address!, "admin");
 };

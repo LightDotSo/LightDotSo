@@ -37,7 +37,7 @@ export const getUserOperationNonce = async (
   return getClientUserOperationNonce(
     {
       params: {
-        query: { address: params.address, chain_id: params.chain_id },
+        query: { address: params.address!, chain_id: params.chain_id },
       },
     },
     "admin",

@@ -34,7 +34,7 @@ export const getTokens = async (params: TokenListParams) => {
     {
       params: {
         query: {
-          address: params.address,
+          address: params.address!,
           is_testnet: params.is_testnet,
           group: params.group,
           limit: params.limit,

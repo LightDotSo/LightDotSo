@@ -37,49 +37,56 @@ export const useMutationQueueUserOperation = (params: QueueParams) => {
   // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const { mutate: queueUserOperation, isPending: isLoadingQueueUserOperation } =
-    useMutation({
-      mutationFn: async (body: QueueUserOpeartionBodyParams) => {
-        if (!params.address) {
-          return;
-        }
+  const {
+    mutate: queueUserOperation,
+    isPending: isLoadingQueueUserOperation,
+    failureCount,
+  } = useMutation({
+    mutationFn: async (body: QueueUserOpeartionBodyParams) => {
+      if (!params.address) {
+        return;
+      }
 
-        const loadingToast = params.isMinimal
-          ? toast.loading(undefined, toastMinimalLoadingStyles)
-          : toast.loading("Queueing...");
+      const loadingToast = params.isMinimal
+        ? toast.loading(undefined, toastMinimalLoadingStyles)
+        : toast.loading("Queueing...");
 
-        const res = await createQueueUserOperation(
-          {
-            params: {
-              query: {
-                hash: body.hash,
-              },
+      const res = await createQueueUserOperation(
+        {
+          params: {
+            query: {
+              hash: body.hash,
             },
           },
-          clientType,
-        );
+        },
+        clientType,
+      );
 
-        toast.dismiss(loadingToast);
+      toast.dismiss(loadingToast);
 
-        res.match(
-          _ => {
-            if (params.isMinimal) {
-              return;
-            }
-            toast.success("Successfully queued user operation!");
-          },
-          err => {
-            if (err instanceof Error) {
-              toast.error(err.message);
-            } else {
-              toast.error("Failed to queue.");
-            }
-
+      res.match(
+        _ => {
+          if (params.isMinimal) {
+            return;
+          }
+          toast.success("Successfully queued user operation!");
+        },
+        err => {
+          if (failureCount % 3 !== 2) {
             throw err;
-          },
-        );
-      },
-    });
+          }
+
+          if (err instanceof Error) {
+            toast.error(err.message);
+          } else {
+            toast.error("Failed to queue.");
+          }
+
+          throw err;
+        },
+      );
+    },
+  });
 
   return {
     queueUserOperation,

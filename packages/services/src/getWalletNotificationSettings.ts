@@ -35,7 +35,7 @@ export const getWalletNotificationSettings = async (
   params: WalletSettingsParams,
 ) => {
   return getClientWalletSettings(
-    { params: { query: { address: params.address } } },
+    { params: { query: { address: params.address! } } },
     "admin",
   );
 };
