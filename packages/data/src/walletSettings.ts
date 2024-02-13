@@ -18,5 +18,6 @@
 // -----------------------------------------------------------------------------
 
 export type WalletSettingsData = {
+  is_enabled_dev: boolean;
   is_enabled_testnet: boolean;
 };

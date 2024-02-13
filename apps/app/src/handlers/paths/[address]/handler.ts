@@ -65,7 +65,10 @@ export const handler = async (params: { address: string }) => {
       return {
         wallet: wallet,
         config: config,
-        walletSettings: walletSettings.unwrapOr({ is_enabled_testnet: false }),
+        walletSettings: walletSettings.unwrapOr({
+          is_enabled_dev: false,
+          is_enabled_testnet: false,
+        }),
       };
     },
     () => {

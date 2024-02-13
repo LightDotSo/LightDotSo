@@ -29,4 +29,4 @@ export type WalletSettingsParams = {
 // Params Body
 // -----------------------------------------------------------------------------
 
-export type WaleltSettingsUpdateBodyParams = WalletSettingsData;
+export type WaleltSettingsUpdateBodyParams = Partial<WalletSettingsData>;
