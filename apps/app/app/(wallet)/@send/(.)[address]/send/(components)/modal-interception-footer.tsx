@@ -74,7 +74,7 @@ export const ModalInterceptionFooter: FC = () => {
   const onClick = useCallback(() => {
     router.push(href ?? "/create");
     setSendBackgroundModal(false);
-  }, [href, router]);
+  }, [href, router, setSendBackgroundModal]);
 
   // ---------------------------------------------------------------------------
   // Render

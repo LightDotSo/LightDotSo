@@ -20,7 +20,6 @@ import { useCopy } from "@lightdotso/hooks";
 import { useQueryWallet } from "@lightdotso/query";
 import {
   Avatar,
-  Button,
   ButtonIcon,
   DropdownMenu,
   DropdownMenuContent,
@@ -36,7 +35,8 @@ import {
 } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
 import { useEnsName } from "@lightdotso/wagmi";
-import { ChevronDown, ClipboardCheck, Copy } from "lucide-react";
+import { ChevronDown, ClipboardCheck, Copy, Navigation } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useCallback, type FC } from "react";
 import type { Address } from "viem";
 
@@ -62,6 +62,12 @@ export const WalletOverviewBannerAddress: FC<
   const [isCopied, copy] = useCopy();
 
   // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
+  const router = useRouter();
+
+  // ---------------------------------------------------------------------------
   // Wagmi Hooks
   // ---------------------------------------------------------------------------
 
@@ -78,6 +84,10 @@ export const WalletOverviewBannerAddress: FC<
     toast.success("Copied to clipboard!");
   }, [address, copy]);
 
+  const handleSendClick = useCallback(() => {
+    router.push(`/${address}/send`);
+  }, [address, router]);
+
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -93,7 +103,7 @@ export const WalletOverviewBannerAddress: FC<
       <Avatar className="size-10 sm:size-12 md:size-16">
         <PlaceholderOrb address={address ?? "0x"} />
       </Avatar>
-      <div className="p-1">
+      <div className="p-1 px-1.5">
         <div className="flex items-center space-x-3 overflow-hidden text-ellipsis text-left text-sm md:text-base">
           <div className="text-lg font-extrabold tracking-tight md:text-2xl">
             {wallet
@@ -114,21 +124,28 @@ export const WalletOverviewBannerAddress: FC<
                   <DropdownMenuShortcut>⇧⌘A</DropdownMenuShortcut>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
+              <DropdownMenuGroup>
+                <DropdownMenuItem onClick={handleSendClick}>
+                  <Navigation className="mr-1.5 size-4" />
+                  <span>Send</span>
+                  <DropdownMenuShortcut>⇧⌘S</DropdownMenuShortcut>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div className="hidden md:inline-flex space-x-1.5 items-center bg-background-stronger rounded-md pl-2 pr-1 py-1 w-auto md:mt-1.5">
+        <div className="hidden w-auto items-center space-x-1.5 rounded-md bg-background-stronger py-1 pl-2 pr-1 md:mt-3 md:inline-flex">
           <Tooltip>
             <TooltipTrigger asChild>
               <>
-                <p className="text-text-weak font-medium text-xs md:text-sm">
+                <p className="text-xs font-medium text-text-weak md:text-sm">
                   {shortenAddress(address)}
                 </p>
                 <ButtonIcon
-                  onClick={handleCopyClick}
                   variant="unstyled"
                   size="xs"
                   className="text-text-weak"
+                  onClick={handleCopyClick}
                 >
                   {!isCopied ? (
                     <Copy className="size-4" />
