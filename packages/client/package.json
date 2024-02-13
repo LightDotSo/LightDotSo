@@ -36,6 +36,7 @@
     "@lightdotso/schemas": "workspace:*",
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.4",
+    "graphql-request": "^6.1.0",
     "neverthrow": "^6.1.0",
     "openapi-fetch": "^0.8.2",
     "zod": "^3.22.4"

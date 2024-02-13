@@ -13,11 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export * from "./api";
-export * from "./client";
-export * from "./ens";
-export * from "./llama";
-export * from "./rpc";
-export * from "./simplehash";
-export * from "./socket";
-export * from "./zod";
+import { expect, test } from "vitest";
+import { getEnsDomains } from "../src"; // Replace with your actual file path
+
+test("getEnsDomains", async () => {
+  const result = await getEnsDomains(
+    "https://api.thegraph.com/subgraphs/name/ensdomains/ens",
+    { name: "kaki", amount: 3 },
+  );
+
+  // expect(result._unsafeUnwrap()).toBe("0x1");
+  console.log(JSON.stringify(result));
+});
