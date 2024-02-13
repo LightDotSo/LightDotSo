@@ -27,7 +27,7 @@ import {
 } from "@lightdotso/nuqs";
 import type { Owner, Owners } from "@lightdotso/nuqs";
 import { newFormSchema, newFormConfigurationSchema } from "@lightdotso/schemas";
-import { useAuth, useNewForm } from "@lightdotso/stores";
+import { useAuth, useFormRef, useNewForm } from "@lightdotso/stores";
 import { FooterButton } from "@lightdotso/templates";
 import {
   Avatar,
@@ -105,6 +105,7 @@ export const ConfigurationForm: FC = () => {
   // ---------------------------------------------------------------------------
 
   const { address: userAddress, ens: userEns } = useAuth();
+  const { setFormControl } = useFormRef();
   const { setFormValues, fetchToCreate } = useNewForm();
 
   // ---------------------------------------------------------------------------
@@ -312,6 +313,10 @@ export const ConfigurationForm: FC = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValues]);
+
+  useEffect(() => {
+    setFormControl(form.control);
+  }, [form.control, setFormControl]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -666,8 +671,8 @@ export const ConfigurationForm: FC = () => {
               <FooterButton
                 isModal={false}
                 disabled={!isFormValid}
-                successClick={navigateToStep}
                 cancelClick={() => router.back()}
+                onClick={navigateToStep}
               />
             </form>
           </Form>

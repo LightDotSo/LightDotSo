@@ -15,8 +15,9 @@
 
 "use client";
 
-import { useDelayedValue } from "@lightdotso/hooks";
+import { useAuthModal, useDelayedValue } from "@lightdotso/hooks";
 import { useQueryWallet, useMutationWalletUpdate } from "@lightdotso/query";
+import { useFormRef } from "@lightdotso/stores";
 import {
   Button,
   Form,
@@ -31,6 +32,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { FC } from "react";
 import { useState, useEffect, useMemo } from "react";
+import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";
 import * as z from "zod";
@@ -68,6 +70,18 @@ type SettingsNameCardProps = {
 // -----------------------------------------------------------------------------
 
 export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { setFormControl } = useFormRef();
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const { isAuthValid } = useAuthModal();
+
   // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
@@ -115,12 +129,12 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   const formValues = form.watch();
 
   // ---------------------------------------------------------------------------
-  // Callback Hooks
+  // Submit Handler
   // ---------------------------------------------------------------------------
 
-  function onSubmit(data: WalletNameFormValues) {
+  const onSubmit: SubmitHandler<WalletNameFormValues> = data => {
     mutate({ name: data.name });
-  }
+  };
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -144,6 +158,10 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
     }
   }, [isSuccess]);
 
+  useEffect(() => {
+    setFormControl(form.control);
+  }, [form.control, setFormControl]);
+
   // ---------------------------------------------------------------------------
   // Submit Button
   // ---------------------------------------------------------------------------
@@ -155,8 +173,6 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
 
     return (
       <Button
-        type="submit"
-        form="walletNameForm"
         isLoading={isPending}
         disabled={
           isPending ||
@@ -164,6 +180,9 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
           !isFormChanged ||
           typeof form.getFieldState("name").error !== "undefined"
         }
+        // Workaround for form.handleSubmit(onSubmit) not working on first click
+        // Issue: https://github.com/jaredpalmer/formik/issues/1332#issuecomment-799930718
+        onMouseDown={() => form.handleSubmit(onSubmit)()}
       >
         {!isError && delayedIsSuccess
           ? "Success"
@@ -192,7 +211,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
       }
       footerContent={
         <>
-          {isFormChanged && (
+          {isAuthValid && isFormChanged && (
             <Button
               variant="link"
               onClick={() => {
@@ -213,7 +232,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
     >
       <Form {...form}>
         <form
-          id="walletNameForm"
+          id="settings-name-card-form"
           className="space-y-8"
           onSubmit={form.handleSubmit(onSubmit)}
         >

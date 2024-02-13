@@ -25,11 +25,13 @@
   "dependencies": {
     "@babel/core": "^7.23.9",
     "@heroicons/react": "^2.1.1",
+    "@hookform/devtools": "^4.3.1",
     "@hookform/resolvers": "^3.3.4",
     "@lightdotso/client": "workspace:*",
     "@lightdotso/const": "workspace:*",
     "@lightdotso/data": "workspace:*",
     "@lightdotso/elements": "workspace:*",
+    "@lightdotso/forms": "workspace:*",
     "@lightdotso/hooks": "workspace:*",
     "@lightdotso/kysely": "workspace:*",
     "@lightdotso/modals": "workspace:*",

@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { FormDevTools } from "@lightdotso/forms";
 import { AuthState, QueueState } from "@lightdotso/states";
 import { Footer } from "@lightdotso/templates";
 import {
@@ -144,6 +145,8 @@ export const Root: FC<RootProps> = ({ children }) => {
             </Web3Provider>
           </ReactQueryProvider>
         </ThemeProvider>
+        {/* Dev */}
+        <FormDevTools />
         <TailwindIndicator />
         <VercelToolbar />
       </body>

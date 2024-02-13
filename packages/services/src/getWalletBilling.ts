@@ -31,7 +31,7 @@ export const preloadGetWalletBilling = (params: WalletBillingParams) => {
 
 export const getWalletBilling = async (params: WalletBillingParams) => {
   return getClientWalletBilling(
-    { params: { query: { address: params.address } } },
+    { params: { query: { address: params.address! } } },
     "admin",
   );
 };

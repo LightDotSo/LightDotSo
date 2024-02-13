@@ -56,7 +56,7 @@ export const useQueryNotifications = (params: NotificationListParams) => {
       offset: params.offset,
     }).queryKey,
     queryFn: async () => {
-      if (typeof params.address === "undefined") {
+      if (!params.address) {
         return null;
       }
 

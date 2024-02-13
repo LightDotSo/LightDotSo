@@ -34,7 +34,7 @@ export const useMutationNotificationRead = () => {
   // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const { mutate: notificationsRead } = useMutation({
+  const { mutate: notificationsRead, failureCount } = useMutation({
     mutationFn: async (body: NotificationReadBodyParams) => {
       const res = await readNotification(
         {
@@ -51,6 +51,10 @@ export const useMutationNotificationRead = () => {
           toast.success("Successfully read notifications!");
         },
         err => {
+          if (failureCount % 3 !== 2) {
+            throw err;
+          }
+
           if (err instanceof Error) {
             toast.error(err.message);
           } else {

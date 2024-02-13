@@ -29,7 +29,7 @@ import {
   newFormConfigurationSchema,
   newFormStoreSchema,
 } from "@lightdotso/schemas";
-import { useAuth, useNewForm } from "@lightdotso/stores";
+import { useAuth, useFormRef, useNewForm } from "@lightdotso/stores";
 import { FooterButton } from "@lightdotso/templates";
 import {
   Card,
@@ -80,6 +80,7 @@ export const ConfirmForm: FC = () => {
   // ---------------------------------------------------------------------------
 
   const { clientType } = useAuth();
+  const { setFormControl } = useFormRef();
   const { address, setFormValues, fetchToCreate } = useNewForm();
 
   // ---------------------------------------------------------------------------
@@ -238,6 +239,10 @@ export const ConfirmForm: FC = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    setFormControl(form.control);
+  }, [form.control, setFormControl]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks

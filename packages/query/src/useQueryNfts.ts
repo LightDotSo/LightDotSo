@@ -58,7 +58,7 @@ export const useQueryNfts = (params: NftListParams) => {
       cursor: params.cursor,
     }).queryKey,
     queryFn: async () => {
-      if (typeof params.address === "undefined") {
+      if (!params.address) {
         return null;
       }
 

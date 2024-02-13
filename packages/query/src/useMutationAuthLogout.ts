@@ -33,7 +33,7 @@ export const useMutationAuthLogout = () => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const { mutate: logout } = useMutation({
+  const { mutate: logout, failureCount } = useMutation({
     mutationFn: async () => {
       const loadingToast = toast.loading("Attepmting to logout...");
 
@@ -46,6 +46,10 @@ export const useMutationAuthLogout = () => {
           toast.success("Successfully logged out!");
         },
         err => {
+          if (failureCount % 3 !== 2) {
+            throw err;
+          }
+
           if (err instanceof Error) {
             toast.error(err.message);
           } else {

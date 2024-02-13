@@ -25,7 +25,7 @@ import {
   useQueryPaymasterGasAndPaymasterAndData,
   useQuerySimulation,
 } from "@lightdotso/query";
-import type { UserOperation } from "@lightdotso/schemas";
+import { userOperation, type UserOperation } from "@lightdotso/schemas";
 import { useFormRef, useModalSwiper } from "@lightdotso/stores";
 import {
   Button,
@@ -40,14 +40,24 @@ import {
   useEstimateGas,
   useEstimateMaxPriorityFeePerGas,
 } from "@lightdotso/wagmi";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { getUserOperationHash } from "permissionless";
 import type { UserOperation as PermissionlessUserOperation } from "permissionless";
 import { type FC, useMemo, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { type Hex, type Address, fromHex } from "viem";
 import { Loading } from "../loading";
 import { useIsInsideModal } from "../modal";
 import { ModalSwiper } from "../modal-swiper";
 import { TransactionDevInfo } from "./transaction-dev-info";
+
+// -----------------------------------------------------------------------------
+// Schema
+// -----------------------------------------------------------------------------
+
+const userOperationFormSchema = userOperation;
+
+type UserOperationFormValues = UserOperation;
 
 // -----------------------------------------------------------------------------
 // Props
@@ -109,6 +119,20 @@ export const Transaction: FC<TransactionProps> = ({
   const isInsideModal = useIsInsideModal();
 
   // ---------------------------------------------------------------------------
+  // Form
+  // ---------------------------------------------------------------------------
+
+  const form = useForm<UserOperationFormValues>({
+    mode: "all",
+    reValidateMode: "onBlur",
+    resolver: zodResolver(userOperationFormSchema),
+    defaultValues: initialUserOperation,
+  });
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const formValues = form.watch();
+
+  // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
@@ -119,7 +143,7 @@ export const Transaction: FC<TransactionProps> = ({
   > = useMemo(() => {
     const partialUserOperation =
       userOperations.length > 0
-        ? userOperations[userOperationIndex]
+        ? { ...userOperations[userOperationIndex], ...initialUserOperation }
         : { ...initialUserOperation };
 
     return {

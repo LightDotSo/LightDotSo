@@ -15,6 +15,7 @@
 
 "use client";
 
+import { useFormRef } from "@lightdotso/stores";
 import {
   Button,
   Form,
@@ -36,7 +37,7 @@ import {
 import { cn } from "@lightdotso/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import type { FC } from "react";
+import { useEffect, type FC } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import * as z from "zod";
 import { SettingsCard } from "@/components/settings/settings-card";
@@ -87,6 +88,12 @@ const defaultValues: Partial<ProfileFormValues> = {
 
 export const SettingsProfileCard: FC = () => {
   // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { setFormControl } = useFormRef();
+
+  // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------
 
@@ -116,13 +123,21 @@ export const SettingsProfileCard: FC = () => {
 
   const SettingsProfileCardSubmitButton = () => (
     <Button
-      form="userProfileForm"
       type="submit"
+      form="settings-profile-card-form"
       disabled={!form.formState.isValid}
     >
       Update profile
     </Button>
   );
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    setFormControl(form.control);
+  }, [form.control, setFormControl]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -136,7 +151,7 @@ export const SettingsProfileCard: FC = () => {
     >
       <Form {...form}>
         <form
-          id="userProfileForm"
+          id="settings-profile-card-form"
           className="space-y-8"
           onSubmit={form.handleSubmit(onSubmit)}
         >

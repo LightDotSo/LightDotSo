@@ -36,7 +36,7 @@ export {
   useThresholdQueryState,
 } from "./useThresholdQueryState";
 export {
-  transferParser,
+  transfersParser,
   useTransfersQueryState,
 } from "./useTransfersQueryState";
 export { typeParser, useTypeQueryState } from "./useTypeQueryState";

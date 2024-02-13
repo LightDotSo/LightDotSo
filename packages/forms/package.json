@@ -1,0 +1,44 @@
+{
+  "name": "@lightdotso/forms",
+  "version": "0.0.1",
+  "private": true,
+  "homepage": "https://github.com/LightDotSo/LightDotSo",
+  "bugs": {
+    "url": "https://github.com/LightDotSo/LightDotSo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LightDotSo/LightDotSo.git"
+  },
+  "license": "AGPL-3.0-or-later",
+  "author": "Light, Inc.",
+  "sideEffects": false,
+  "main": "./src/index.ts",
+  "files": [
+    "dist/**",
+    "src/**"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "clean": "rimraf -rf dist",
+    "prepack": "clean-package",
+    "postpack": "clean-package restore",
+    "tsc": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hookform/devtools": "^4.3.1",
+    "@lightdotso/stores": "workspace:*"
+  },
+  "devDependencies": {
+    "@lightdotso/tsconfig": "workspace:*",
+    "@storybook/react": "^7.6.14",
+    "@types/node": "^20.11.17",
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "typescript": "^5.3.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "clean-package": "../../clean-package.config.json"
+}

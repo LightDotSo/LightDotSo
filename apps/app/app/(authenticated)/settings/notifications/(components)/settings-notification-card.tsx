@@ -15,6 +15,7 @@
 
 "use client";
 
+import { useFormRef } from "@lightdotso/stores";
 import {
   Button,
   Checkbox,
@@ -32,7 +33,7 @@ import {
 } from "@lightdotso/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import type { FC } from "react";
+import { useEffect, type FC } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { SettingsCard } from "@/components/settings/settings-card";
@@ -71,6 +72,12 @@ const defaultValues: Partial<SettingsNotificationCardValues> = {
 
 export const SettingsNotificationCard: FC = () => {
   // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { setFormControl } = useFormRef();
+
+  // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------
 
@@ -96,12 +103,20 @@ export const SettingsNotificationCard: FC = () => {
   const SettingsNotificationCardSubmitButton = () => (
     <Button
       type="submit"
-      form="userNotificationForm"
+      form="settings-notification-card-form"
       disabled={!form.formState.isValid}
     >
       Update profile
     </Button>
   );
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    setFormControl(form.control);
+  }, [form.control, setFormControl]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -115,7 +130,7 @@ export const SettingsNotificationCard: FC = () => {
     >
       <Form {...form}>
         <form
-          id="userNotificationForm"
+          id="settings-notification-card-form"
           className="space-y-8"
           onSubmit={form.handleSubmit(onSubmit)}
         >

@@ -38,7 +38,7 @@ export const useMutationSignatureCreate = (params: SignatureParams) => {
   // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const { mutate: signatureCreate } = useMutation({
+  const { mutate: signatureCreate, failureCount } = useMutation({
     mutationFn: async (body: SignatureCreateBodyParams) => {
       const loadingToast = toast.loading("Submitting the transaction...");
 
@@ -67,6 +67,10 @@ export const useMutationSignatureCreate = (params: SignatureParams) => {
           toast.success("Successfully submitted transaction!");
         },
         err => {
+          if (failureCount % 3 !== 2) {
+            throw err;
+          }
+
           if (err instanceof Error) {
             toast.error(err.message);
           } else {

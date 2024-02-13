@@ -96,7 +96,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
     return (
       <Button
         type="submit"
-        form="walletNameForm"
+        form="settings-deployment-card-form"
         disabled={typeof deployed_op !== "undefined"}
       >
         <Link

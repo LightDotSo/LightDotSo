@@ -37,8 +37,13 @@ export const useMutationUserOperationUpdate = (params: UserOperationParams) => {
   const {
     mutate: userOperationUpdate,
     isPending: isLoadingUserOperationUpdate,
+    failureCount,
   } = useMutation({
     mutationFn: async () => {
+      if (!params.address) {
+        return;
+      }
+
       const loadingToast = toast.loading("Updating operation...");
 
       const res = await updateUserOperation(
@@ -59,6 +64,10 @@ export const useMutationUserOperationUpdate = (params: UserOperationParams) => {
           toast.success("Successfully updated operations!");
         },
         err => {
+          if (failureCount % 3 !== 2) {
+            throw err;
+          }
+
           if (err instanceof Error) {
             toast.error(err.message);
           } else {

@@ -20,5 +20,5 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export type NftValuationParams = {
-  address: Address;
+  address: Address | null;
 };

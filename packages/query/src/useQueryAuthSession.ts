@@ -48,7 +48,7 @@ export const useQueryAuthSession = (params: AuthParams) => {
   } = useQuery<AuthSessionData | null>({
     queryKey: queryKeys.auth.session({ address: params.address }).queryKey,
     queryFn: async () => {
-      if (typeof params.address === "undefined") {
+      if (!params.address) {
         return null;
       }
 

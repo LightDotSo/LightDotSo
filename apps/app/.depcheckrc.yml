@@ -42,3 +42,4 @@ ignores:
   - siwe
   - permissionless
   - "@sentry/node"
+  - "@hookform/devtools"

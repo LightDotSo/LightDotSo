@@ -42,7 +42,7 @@ export const useMutationWalletCreate = (params: WalletParams) => {
   // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const { mutate, isPending, isSuccess, isError } = useMutation({
+  const { mutate, isPending, isSuccess, isError, failureCount } = useMutation({
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     mutationFn: async (body: WalletCreateBodyParams) => {
       const loadingToast = toast.loading("Creating wallet...");
@@ -74,6 +74,10 @@ export const useMutationWalletCreate = (params: WalletParams) => {
           toast.success("Successfully updated name!");
         },
         err => {
+          if (failureCount % 3 !== 2) {
+            throw err;
+          }
+
           if (err instanceof Error) {
             toast.error(err.message);
           } else {

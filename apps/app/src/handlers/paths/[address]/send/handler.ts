@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { transferParser } from "@lightdotso/nuqs";
+import { transfersParser } from "@lightdotso/nuqs";
 import { getNfts, getTokens } from "@lightdotso/services";
 import type { Address } from "viem";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
@@ -39,7 +39,7 @@ export const handler = async (
   // Parsers
   // ---------------------------------------------------------------------------
 
-  const transfers = transferParser.parseServerSide(searchParams.transfers);
+  const transfers = transfersParser.parseServerSide(searchParams.transfers);
 
   // ---------------------------------------------------------------------------
   // Fetch

@@ -55,7 +55,7 @@ export const useQueryNotificationsCount = (
       address: params.address as Address,
     }).queryKey,
     queryFn: async () => {
-      if (typeof params.address === "undefined") {
+      if (!params.address) {
         return null;
       }
 

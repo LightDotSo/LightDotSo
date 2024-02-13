@@ -48,7 +48,7 @@ export const useQueryWalletBilling = (params: WalletBillingParams) => {
   } = useQuery<WalletBillingData | null>({
     queryKey: queryKeys.wallet.billing({ address: params.address }).queryKey,
     queryFn: async () => {
-      if (typeof params.address === "undefined") {
+      if (!params.address) {
         return null;
       }
 

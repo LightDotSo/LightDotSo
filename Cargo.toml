@@ -25,13 +25,14 @@
     "crates/kafka",
     "crates/keychain",
     "crates/notifier",
+    "crates/opentelemetry",
     "crates/polling",
     "crates/pusher",
-    "crates/opentelemetry",
     "crates/paymaster",
     "crates/prometheus",
     "crates/prisma",
     "crates/redis",
+    "crates/routescan",
     "crates/rpc",
     "crates/signer",
     "crates/simulator",
@@ -132,6 +133,7 @@
     lightdotso-prometheus = { path = "./crates/prometheus" }
     lightdotso-prisma = { path = "./crates/prisma" }
     lightdotso-redis = { path = "./crates/redis" }
+    lightdotso-routescan = { path = "./crates/routescan" }
     lightdotso-rpc = { path = "./crates/rpc" }
     lightdotso-solutions = { path = "./crates/solutions" }
     lightdotso-signer = { path = "./crates/signer" }

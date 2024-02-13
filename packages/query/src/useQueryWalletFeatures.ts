@@ -48,7 +48,7 @@ export const useQueryWalletFeatures = (params: WalletFeaturesParams) => {
   } = useQuery<WalletFeaturesData | null>({
     queryKey: queryKeys.wallet.features({ address: params.address }).queryKey,
     queryFn: async () => {
-      if (typeof params.address === "undefined") {
+      if (!params.address) {
         return null;
       }
 

@@ -19,6 +19,7 @@ import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
 import type { WalletSettingsData } from "@lightdotso/data";
 import { NftImage, PlaceholderOrb, TokenImage } from "@lightdotso/elements";
 import {
+  transfersParser,
   useTransfersQueryState,
   useUserOperationsQueryState,
   userOperationsParser,
@@ -60,8 +61,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
 import { ChevronDown, Trash2Icon, UserPlus2 } from "lucide-react";
-import { useEffect, useMemo, useRef } from "react";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import type { FC } from "react";
+import type { SubmitHandler } from "react-hook-form";
 import { useFieldArray, useForm } from "react-hook-form";
 import {
   isAddress,
@@ -104,7 +107,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { setIsFormDisabled } = useFormRef();
+  const { setIsFormDisabled, setFormControl } = useFormRef();
   const {
     setSendBackgroundModal,
     setNftModalProps,
@@ -136,6 +139,12 @@ export const SendDialog: FC<SendDialogProps> = ({
   // }, [setFormRef]);
 
   // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
+  const router = useRouter();
+
+  // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
@@ -164,9 +173,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   // Query State
   // ---------------------------------------------------------------------------
 
-  const [transfers, setTransfers] = useTransfersQueryState(
-    initialTransfers ?? [],
-  );
+  const [transfers, setTransfers] = useTransfersQueryState(initialTransfers);
   const [, setUserOperations] = useUserOperationsQueryState();
 
   // ---------------------------------------------------------------------------
@@ -822,6 +829,32 @@ export const SendDialog: FC<SendDialogProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFormValid, userOperationsParams]);
 
+  useEffect(() => {
+    setFormControl(form.control);
+  }, [form.control, setFormControl]);
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const href = useMemo(() => {
+    return `/${address}/create?userOperations=${userOperationsParser.serialize(userOperationsParams!)}&transfers=${transfersParser.serialize(transfers)}`;
+  }, [address, userOperationsParams, transfers]);
+
+  // ---------------------------------------------------------------------------
+  // Submit Handler
+  // ---------------------------------------------------------------------------
+
+  const onClick = useCallback(() => {
+    router.push(href);
+  }, [href, router]);
+
+  const onSubmit: SubmitHandler<NewFormValues> = () => {
+    form.trigger();
+
+    router.push(href);
+  };
+
   // ---------------------------------------------------------------------------
   // Validation
   // ---------------------------------------------------------------------------
@@ -1010,7 +1043,12 @@ export const SendDialog: FC<SendDialogProps> = ({
     <div className="grid gap-10">
       <TooltipProvider delayDuration={300}>
         <Form {...form}>
-          <form ref={formRef} className="space-y-4">
+          <form
+            ref={formRef}
+            id="send-dialog-form"
+            className="space-y-4"
+            onSubmit={form.handleSubmit(onSubmit)}
+          >
             <div className="space-y-4">
               {fields.map((field, index) => (
                 <Accordion
@@ -1678,8 +1716,8 @@ export const SendDialog: FC<SendDialogProps> = ({
               <FooterButton
                 isModal={false}
                 cancelDisabled={true}
-                href={`/${address}/create?userOperations=${userOperationsParser.serialize(userOperationsParams!)}`}
-                disabled={!isFormValid}
+                disabled={false}
+                onClick={onClick}
               />
             )}
           </form>

@@ -16,13 +16,15 @@
 "use client";
 
 import {
+  transfersParser,
+  useTransfersQueryState,
   useUserOperationsQueryState,
   userOperationsParser,
 } from "@lightdotso/nuqs";
 import { useAuth, useFormRef, useModals } from "@lightdotso/stores";
 import { FooterButton } from "@lightdotso/templates";
 import { useRouter } from "next/navigation";
-import { useMemo, type FC, useCallback } from "react";
+import { useMemo, type FC, useCallback, useState, useEffect } from "react";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -33,6 +35,7 @@ export const ModalInterceptionFooter: FC = () => {
   // Nuqs
   // ---------------------------------------------------------------------------
 
+  const [transfers] = useTransfersQueryState();
   const [userOperations] = useUserOperationsQueryState();
 
   // ---------------------------------------------------------------------------
@@ -50,6 +53,12 @@ export const ModalInterceptionFooter: FC = () => {
   const router = useRouter();
 
   // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [footerHref, setFooterHref] = useState<string | null>(null);
+
+  // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
@@ -64,9 +73,24 @@ export const ModalInterceptionFooter: FC = () => {
   // ---------------------------------------------------------------------------
 
   const href = useMemo(() => {
-    return `/${wallet}/create?userOperations=${userOperationsParser.serialize(userOperations)}`;
-  }, [wallet, userOperations]);
+    return `/${wallet}/create?userOperations=${userOperationsParser.serialize(userOperations)}&transfers=${transfersParser.serialize(transfers)}`;
+  }, [wallet, userOperations, transfers]);
 
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  const onClick = useCallback(() => {
+    router.push(footerHref ?? "/create");
+  }, [footerHref, router]);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    setFooterHref(href);
+  }, [href, setFooterHref]);
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -77,7 +101,7 @@ export const ModalInterceptionFooter: FC = () => {
       className="pt-0"
       cancelClick={onDismiss}
       disabled={isFormDisabled}
-      href={href}
+      onClick={onClick}
     />
   );
 };

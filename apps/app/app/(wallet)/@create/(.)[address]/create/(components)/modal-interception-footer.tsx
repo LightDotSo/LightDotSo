@@ -110,7 +110,7 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
       disabled={isFormDisabled}
       isLoading={isFormLoading}
       cancelClick={onDismiss}
-      successClick={signUserOperation}
+      onClick={signUserOperation}
     />
   );
 };

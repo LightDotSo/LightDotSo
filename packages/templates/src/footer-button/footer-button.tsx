@@ -18,8 +18,7 @@
 import { Button, ButtonIcon } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { XIcon } from "lucide-react";
-import Link from "next/link";
-import type { FC } from "react";
+import type { FC, MouseEvent } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -28,13 +27,13 @@ import type { FC } from "react";
 export interface FooterButtonProps {
   className?: string;
   disabled?: boolean;
+  form?: string;
   cancelDisabled?: boolean;
   isLoading?: boolean;
-  href?: string;
   isModal?: boolean;
   customSuccessText?: string;
-  successClick?: () => void;
-  cancelClick?: () => void;
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
+  cancelClick?: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
 // -----------------------------------------------------------------------------
@@ -45,11 +44,11 @@ export const FooterButton: FC<FooterButtonProps> = ({
   className,
   disabled,
   cancelDisabled,
+  form,
   isLoading,
-  href,
   isModal,
   customSuccessText,
-  successClick,
+  onClick,
   cancelClick,
 }) => {
   // ---------------------------------------------------------------------------
@@ -68,31 +67,29 @@ export const FooterButton: FC<FooterButtonProps> = ({
           disabled={cancelDisabled}
           className="w-auto"
           variant="outline"
-          onClick={cancelClick}
+          onMouseDown={cancelClick}
         >
           Cancel
         </Button>
       </span>
-      {!href || isLoading || disabled ? (
+      {form ? (
         <Button
+          form={form}
           className="w-full md:w-auto"
           isLoading={isLoading}
           disabled={disabled}
           type="submit"
-          onClick={successClick}
         >
           {customSuccessText ?? "Continue"}
         </Button>
       ) : (
         <Button
-          asChild
           className="w-full md:w-auto"
           isLoading={isLoading}
           disabled={disabled}
-          type="submit"
-          onClick={successClick}
+          onMouseDown={onClick}
         >
-          <Link href={href}>Continue</Link>
+          {customSuccessText ?? "Continue"}
         </Button>
       )}
       {isModal ? (
@@ -101,7 +98,7 @@ export const FooterButton: FC<FooterButtonProps> = ({
             size="sm"
             className="rounded-full"
             variant="outline"
-            onClick={cancelClick}
+            onMouseDown={cancelClick}
           >
             <XIcon />
           </ButtonIcon>
@@ -110,7 +107,7 @@ export const FooterButton: FC<FooterButtonProps> = ({
         <Button
           className="block w-auto md:hidden"
           variant="outline"
-          onClick={cancelClick}
+          onMouseDown={cancelClick}
         >
           Cancel
         </Button>
