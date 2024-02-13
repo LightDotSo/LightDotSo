@@ -129,7 +129,7 @@ export const useUserOperationsQueryState = (
   return useQueryState(
     "userOperations",
     userOperationsParser.withDefault(defaultUserOperations ?? []).withOptions({
-      throttleMs: 1500,
+      throttleMs: 700,
     }),
   );
 };

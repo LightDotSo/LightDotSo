@@ -129,6 +129,7 @@ export const Transaction: FC<TransactionProps> = ({
     defaultValues: initialUserOperation,
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const formValues = form.watch();
 
   // ---------------------------------------------------------------------------
