@@ -67,7 +67,7 @@ export const OpInvokeButton: FC<OpInvokeButtonProps> = ({
 
   const onClick = useCallback(async () => {
     if (!userOperation) {
-      toast.error("User operation not found");
+      toast.error("User operation not found.");
       return;
     }
 

@@ -72,14 +72,14 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
   // ---------------------------------------------------------------------------
 
   const onClick = useCallback(async () => {
-    queueUserOperation({ hash: userOperationHash });
-
     if (!userOperation) {
-      toast.error("User operation not found");
+      toast.error("User operation not found.");
       return;
     }
 
     await userOperationSend(userOperation);
+
+    queueUserOperation({ hash: userOperationHash });
   }, [userOperation, userOperationSend, queueUserOperation, userOperationHash]);
 
   const onDismiss = useCallback(() => {
