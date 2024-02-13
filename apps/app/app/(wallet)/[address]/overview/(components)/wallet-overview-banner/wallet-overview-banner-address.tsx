@@ -93,7 +93,7 @@ export const WalletOverviewBannerAddress: FC<
       <Avatar className="size-10 sm:size-12 md:size-16">
         <PlaceholderOrb address={address ?? "0x"} />
       </Avatar>
-      <div>
+      <div className="p-1">
         <div className="flex items-center space-x-3 overflow-hidden text-ellipsis text-left text-sm md:text-base">
           <div className="text-lg font-extrabold tracking-tight md:text-2xl">
             {wallet
@@ -121,14 +121,14 @@ export const WalletOverviewBannerAddress: FC<
           <Tooltip>
             <TooltipTrigger asChild>
               <>
-                <p className="text-text/80 text-xs md:text-sm">
+                <p className="text-text-weak font-medium text-xs md:text-sm">
                   {shortenAddress(address)}
                 </p>
                 <ButtonIcon
                   onClick={handleCopyClick}
                   variant="unstyled"
                   size="xs"
-                  className="text-text/80"
+                  className="text-text-weak"
                 >
                   {!isCopied ? (
                     <Copy className="size-4" />
