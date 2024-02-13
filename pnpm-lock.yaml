@@ -1818,6 +1818,9 @@ importers:
       '@lightdotso/elements':
         specifier: workspace:*
         version: link:../elements
+      '@lightdotso/hooks':
+        specifier: workspace:*
+        version: link:../hooks
       '@lightdotso/schemas':
         specifier: workspace:*
         version: link:../schemas
@@ -1839,6 +1842,9 @@ importers:
       react-hook-form:
         specifier: ^7.50.1
         version: 7.50.1(react@18.2.0)
+      viem:
+        specifier: ^2.7.8
+        version: 2.7.8(typescript@5.3.3)(zod@3.22.4)
       zod:
         specifier: ^3.22.4
         version: 3.22.4

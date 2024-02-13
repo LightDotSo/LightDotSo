@@ -29,6 +29,7 @@
     "@hookform/devtools": "^4.3.1",
     "@hookform/resolvers": "^3.3.4",
     "@lightdotso/elements": "workspace:*",
+    "@lightdotso/hooks": "workspace:*",
     "@lightdotso/schemas": "workspace:*",
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/ui": "workspace:*",
@@ -36,6 +37,7 @@
     "@lightdotso/wagmi": "workspace:*",
     "abitype": "^1.0.0",
     "react-hook-form": "^7.50.1",
+    "viem": "^2.7.8",
     "zod": "^3.22.4"
   },
   "devDependencies": {
