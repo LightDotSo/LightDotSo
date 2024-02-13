@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "typescript": "^5.3.3",
-    "wrangler": "^3.28.1"
+    "wrangler": "^3.28.2"
   },
   "publishConfig": {
     "access": "public"

@@ -20,13 +20,14 @@ import { Avatar, FormField, FormMessage, Input, Label } from "@lightdotso/ui";
 // import { useEnsName } from "@lightdotso/wagmi";
 import { useFormContext } from "react-hook-form";
 import type { FC } from "react";
-import { isAddress, type Address } from "viem";
+import { isAddress } from "viem";
+import { cn } from "@lightdotso/utils";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type AddressFormProps = { name: string; className?: string };
+type AddressFormProps = { name: string };
 
 // -----------------------------------------------------------------------------
 // Component
@@ -55,8 +56,8 @@ export const AddressForm: FC<AddressFormProps> = ({ name }) => {
 
   return (
     <FormField
-      name={name}
       control={methods.control}
+      name={name}
       render={({ field }) => (
         <div className="col-span-6 space-y-2">
           <Label htmlFor="address">Address or ENS</Label>
@@ -78,11 +79,20 @@ export const AddressForm: FC<AddressFormProps> = ({ name }) => {
                         ? field?.value
                         : "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
                     }
+                    className={cn(
+                      // If the field is not valid, add opacity
+                      methods.formState.errors.owners &&
+                        methods.formState.errors[name]
+                        ? "opacity-50"
+                        : "opacity-100",
+                    )}
                   />
                 </Avatar>
               </div>
             </div>
           </div>
+          {/* <div className="text-text">{JSON.stringify(field, null, 2)}</div> */}
+          {/* <div className="text-text">{JSON.stringify(methods, null, 2)}</div> */}
           <FormMessage />
         </div>
       )}

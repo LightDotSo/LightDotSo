@@ -29,7 +29,7 @@
     "@lightdotso/const": "workspace:*",
     "@lightdotso/schemas": "workspace:*",
     "@tanstack/react-table": "^8.11.8",
-    "nuqs": "^1.16.1",
+    "nuqs": "^1.17.0",
     "viem": "^2.7.8"
   },
   "devDependencies": {

@@ -16,9 +16,9 @@
 import { Form } from "@lightdotso/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Address } from "abitype/zod";
 import { useForm } from "react-hook-form";
 import { AddressForm } from "./address-form";
+import { z } from "zod";
 
 // -----------------------------------------------------------------------------
 // Meta
@@ -39,6 +39,14 @@ export default meta;
 type Story = StoryObj<typeof AddressForm>;
 
 // -----------------------------------------------------------------------------
+// Schema
+// -----------------------------------------------------------------------------
+
+const walletNameFormSchema = z.object({
+  address: z.string().email(),
+});
+
+// -----------------------------------------------------------------------------
 // Story
 // -----------------------------------------------------------------------------
 
@@ -47,7 +55,7 @@ export const Base: Story = {
     const methods = useForm({
       mode: "all",
       reValidateMode: "onBlur",
-      resolver: zodResolver(Address),
+      resolver: zodResolver(walletNameFormSchema),
     });
 
     return (

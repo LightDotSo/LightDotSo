@@ -28,7 +28,7 @@
   "dependencies": {
     "@lightdotso/client": "workspace:*",
     "@lightdotso/params": "workspace:*",
-    "@tanstack/react-query": "^5.20.1",
+    "@tanstack/react-query": "^5.20.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "server-only": "^0.0.1"

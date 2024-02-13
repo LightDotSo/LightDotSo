@@ -21,7 +21,7 @@
     "@types/firefox-webext-browser": "^120.0.0",
     "buffer": "^6.0.3",
     "cross-env": "^7.0.3",
-    "dotenv": "^16.4.2",
+    "dotenv": "^16.4.4",
     "events": "^3.3.0",
     "isutf8": "^4.0.0"
   },

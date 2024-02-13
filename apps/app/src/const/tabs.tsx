@@ -22,6 +22,7 @@ import {
   MixerVerticalIcon,
   ChatBubbleIcon,
   RadiobuttonIcon,
+  DesktopIcon,
 } from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
 import type { RefAttributes } from "react";
@@ -102,10 +103,10 @@ export const AI_TAB = {
 };
 
 export const DEV_TAB = {
-  label: "Dev",
+  label: "Developer",
   id: "dev",
   href: "/dev",
   icon: (
     props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
-  ) => <RadiobuttonIcon {...props} />,
+  ) => <DesktopIcon {...props} />,
 };

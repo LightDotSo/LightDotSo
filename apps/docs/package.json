@@ -22,8 +22,8 @@
   "dependencies": {
     "@babel/core": "^7.23.9",
     "@next/bundle-analyzer": "^14.1.0",
-    "@sentry/integrations": "^7.100.1",
-    "@sentry/nextjs": "^7.100.1",
+    "@sentry/integrations": "^7.101.0",
+    "@sentry/nextjs": "^7.101.0",
     "next": "^14.1.0",
     "nextra": "^2.13.3",
     "nextra-theme-docs": "^2.13.3",
