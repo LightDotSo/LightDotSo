@@ -13,30 +13,39 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { z } from "zod";
+import { Avatar } from "@lightdotso/ui";
+import type { Meta, StoryObj } from "@storybook/react";
+import { PlaceholderOrb } from "./placeholder-orb";
 
 // -----------------------------------------------------------------------------
-// Schema
+// Meta
 // -----------------------------------------------------------------------------
 
-export const userOperation = z.object({
-  chainId: z.bigint(),
-  hash: z.string(),
-  nonce: z.bigint(),
-  initCode: z.string(),
-  sender: z.string(),
-  callData: z.string(),
-  callGasLimit: z.bigint(),
-  verificationGasLimit: z.bigint(),
-  preVerificationGas: z.bigint(),
-  maxFeePerGas: z.bigint(),
-  maxPriorityFeePerGas: z.bigint(),
-  paymasterAndData: z.string(),
-  signature: z.string(),
-});
+const meta: Meta<typeof PlaceholderOrb> = {
+  title: "element/PlaceholderOrb",
+  component: PlaceholderOrb,
+  tags: ["autodocs"],
+  argTypes: {},
+};
+export default meta;
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
 
-export type UserOperation = z.infer<typeof userOperation>;
+type Story = StoryObj<typeof PlaceholderOrb>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Base: Story = {
+  render: args => (
+    <Avatar className="size-6">
+      <PlaceholderOrb {...args} />
+    </Avatar>
+  ),
+  args: {
+    address: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
+  },
+};

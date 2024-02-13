@@ -66,7 +66,7 @@ import type { FC } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { isAddress } from "viem";
 import { normalize } from "viem/ens";
-import * as z from "zod";
+import { z } from "zod";
 import { steps } from "@/app/(authenticated)/new/(components)/root/root";
 import { MAX_THRESHOLD, MAX_WEIGHT } from "@/const";
 
@@ -399,11 +399,11 @@ export const ConfigurationForm: FC = () => {
           message: "Please enter a valid address or ENS name",
         });
         // Clear the value of key address
-        form.setValue(`owners.${index}.address`, "");
+        form.setValue(`owners.${index}.address`, "0x");
       }
     } else {
       // Clear the value of key address
-      form.setValue(`owners.${index}.address`, "");
+      form.setValue(`owners.${index}.address`, "0x");
     }
   }
 
@@ -484,7 +484,7 @@ export const ConfigurationForm: FC = () => {
                                       // Clear the value of key address
                                       form.setValue(
                                         `owners.${index}.address`,
-                                        "",
+                                        "0x",
                                       );
                                     }
                                     const address = e.target.value;

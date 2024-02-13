@@ -95,6 +95,7 @@ const preview: Preview = {
           "component",
           "svg",
           "element",
+          "form",
           "modal",
           "template",
           "table",

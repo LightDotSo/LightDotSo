@@ -13,30 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { z } from "zod";
+import { Address as ZodAddress } from "abitype/zod";
+import type { z } from "zod";
 
 // -----------------------------------------------------------------------------
 // Schema
 // -----------------------------------------------------------------------------
 
-export const userOperation = z.object({
-  chainId: z.bigint(),
-  hash: z.string(),
-  nonce: z.bigint(),
-  initCode: z.string(),
-  sender: z.string(),
-  callData: z.string(),
-  callGasLimit: z.bigint(),
-  verificationGasLimit: z.bigint(),
-  preVerificationGas: z.bigint(),
-  maxFeePerGas: z.bigint(),
-  maxPriorityFeePerGas: z.bigint(),
-  paymasterAndData: z.string(),
-  signature: z.string(),
-});
+export const address = ZodAddress;
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
 
-export type UserOperation = z.infer<typeof userOperation>;
+export type Address = z.infer<typeof address>;

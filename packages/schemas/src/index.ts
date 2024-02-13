@@ -42,5 +42,5 @@ export type {
   SimplehashTestnetChain,
 } from "./simplehash";
 export { llamaGetSchema, llamaPostSchema } from "./llama";
-export { userOperation } from "./web3";
-export type { UserOperation } from "./web3";
+export { address, addressOrEns, userOperation } from "./web3";
+export type { Address, AddressOrEns, UserOperation } from "./web3";

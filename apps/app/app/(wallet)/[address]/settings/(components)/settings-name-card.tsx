@@ -35,7 +35,7 @@ import { useState, useEffect, useMemo } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";
-import * as z from "zod";
+import { z } from "zod";
 import { SettingsCard } from "@/components/settings/settings-card";
 import { SettingsCardBaseButton } from "@/components/settings/settings-card-base-button";
 import { TITLES } from "@/const";

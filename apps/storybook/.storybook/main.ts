@@ -18,6 +18,7 @@ import type { StorybookConfig } from "@storybook/nextjs";
 const config: StorybookConfig = {
   stories: [
     "../../../packages/elements/src/**/*.stories.@(js|jsx|ts|tsx|mdx)",
+    "../../../packages/forms/src/**/*.stories.@(js|jsx|ts|tsx|mdx)",
     "../../../packages/modals/src/**/*.stories.@(js|jsx|ts|tsx|mdx)",
     "../../../packages/states/src/**/*.stories.@(js|jsx|ts|tsx|mdx)",
     "../../../packages/svg/src/**/*.stories.@(js|jsx|ts|tsx|mdx)",

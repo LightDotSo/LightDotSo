@@ -206,9 +206,9 @@ export const TITLES: Record<Category, CategoryObject> = {
             subcategories: {},
           },
           ["Dev"]: {
-            title: "Dev",
-            description: "Enable or disable dev mode",
-            note: "This will enable or disable dev mode for your wallet.",
+            title: "Developer Mode",
+            description: "Enable or disable developer mode",
+            note: "This will enable or disable developer mode for your wallet.",
             subcategories: {},
           },
           ["Testnet"]: {

@@ -33,6 +33,7 @@ export type { State } from "wagmi";
 export {
   WagmiProvider,
   useDisconnect,
+  useEnsAddress,
   useEnsName,
   cookieStorage,
   cookieToInitialState,

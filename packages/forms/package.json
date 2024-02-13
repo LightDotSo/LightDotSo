@@ -26,12 +26,25 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
+    "@heroicons/react": "^2.1.1",
     "@hookform/devtools": "^4.3.1",
-    "@lightdotso/stores": "workspace:*"
+    "@hookform/resolvers": "^3.3.4",
+    "@lightdotso/elements": "workspace:*",
+    "@lightdotso/hooks": "workspace:*",
+    "@lightdotso/schemas": "workspace:*",
+    "@lightdotso/stores": "workspace:*",
+    "@lightdotso/ui": "workspace:*",
+    "@lightdotso/utils": "workspace:*",
+    "@lightdotso/wagmi": "workspace:*",
+    "abitype": "^1.0.0",
+    "lucide-react": "^0.330.0",
+    "react-hook-form": "^7.50.1",
+    "viem": "^2.7.8",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@storybook/react": "^7.6.14",
+    "@storybook/react": "^7.6.15",
     "@types/node": "^20.11.17",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",

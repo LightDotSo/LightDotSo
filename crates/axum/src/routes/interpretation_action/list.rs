@@ -167,10 +167,10 @@ pub(crate) async fn v1_interpretation_action_list_count_handler(
 /// Constructs a query for interpretation actions.
 fn construct_interpretation_action_list_query_params(query: &ListQuery) -> Vec<WhereParam> {
     let mut query_exp = match &query.address {
-        Some(address) => vec![
-            or![interpretation_action::address::equals("".to_string())],
-            or![interpretation_action::address::equals(address.to_string())],
-        ],
+        Some(address) => vec![or![
+            interpretation_action::address::equals("".to_string()),
+            interpretation_action::address::equals(address.to_string())
+        ]],
         None => vec![],
     };
 

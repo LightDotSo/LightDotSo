@@ -13,30 +13,34 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { Address } from "abitype/zod";
 import { z } from "zod";
 
 // -----------------------------------------------------------------------------
 // Schema
 // -----------------------------------------------------------------------------
 
-export const userOperation = z.object({
-  chainId: z.bigint(),
-  hash: z.string(),
-  nonce: z.bigint(),
-  initCode: z.string(),
-  sender: z.string(),
-  callData: z.string(),
-  callGasLimit: z.bigint(),
-  verificationGasLimit: z.bigint(),
-  preVerificationGas: z.bigint(),
-  maxFeePerGas: z.bigint(),
-  maxPriorityFeePerGas: z.bigint(),
-  paymasterAndData: z.string(),
-  signature: z.string(),
-});
+export const addressOrEns = Address.or(
+  z.string().refine(
+    value => {
+      // Check if it's a possible ENS name
+      const dnsRegex = /^(?:(?:(?:\w[\w-]*\.)+[a-zA-Z]{2,}))/;
+      if (dnsRegex.test(value)) {
+        return true;
+      }
+
+      // If neither, return false
+      return false;
+    },
+    {
+      message: "Input should be a valid ENS Domain",
+      path: ["addressOrEns"],
+    },
+  ),
+);
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
 
-export type UserOperation = z.infer<typeof userOperation>;
+export type AddressOrEns = z.infer<typeof addressOrEns>;
