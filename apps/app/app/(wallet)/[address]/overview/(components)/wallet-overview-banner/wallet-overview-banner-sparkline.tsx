@@ -52,7 +52,7 @@ export const WalletOverviewBannerSparkline: FC<
   }
 
   return (
-    <div className="grid w-full grid-cols-2">
+    <div className="grid w-full grid-cols-2 gap-3">
       <div className="col-span-1 flex flex-col justify-center">
         <span className="text-text-weak">Net Worth</span>
         {portfolio.balances && (
