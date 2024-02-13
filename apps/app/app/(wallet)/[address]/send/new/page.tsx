@@ -15,40 +15,26 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { redirect } from "next/navigation";
-import { handler } from "@/handlers/paths/[address]/handler";
-import { preloader } from "@/preloaders/paths/[address]/preloader";
+import OriginalPage from "@/app/(wallet)/@send/(.)[address]/send/page";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-export interface PageProps {
-  params: {
-    address: string;
+interface PageProps {
+  params: { address: string };
+  searchParams: {
+    transfers?: string;
   };
 }
 
 // -----------------------------------------------------------------------------
-// Page
+// Original Page
 // -----------------------------------------------------------------------------
 
-export default async function Page({ params }: PageProps) {
-  // ---------------------------------------------------------------------------
-  // Preloaders
-  // ---------------------------------------------------------------------------
-
-  preloader(params);
-
-  // ---------------------------------------------------------------------------
-  // Handlers
-  // ---------------------------------------------------------------------------
-
-  await handler(params);
-
-  // ---------------------------------------------------------------------------
-  // Redirect
-  // ---------------------------------------------------------------------------
-
-  redirect(`/${params.address}/send`);
+export default async function Page({ params, searchParams }: PageProps) {
+  return OriginalPage({
+    params,
+    searchParams,
+  });
 }

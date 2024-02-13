@@ -85,7 +85,7 @@ export const WalletOverviewBannerAddress: FC<
   }, [address, copy]);
 
   const handleSendClick = useCallback(() => {
-    router.push(`/${address}/send/redirect`);
+    router.push(`/${address}/send/new`);
   }, [address, router]);
 
   // ---------------------------------------------------------------------------
