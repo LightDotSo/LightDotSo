@@ -13,10 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { Form } from "@lightdotso/ui";
+import { zodResolver } from "@hookform/resolvers/zod";
 import type { Meta, StoryObj } from "@storybook/react";
+import { Address } from "abitype/zod";
 import { useForm } from "react-hook-form";
 import { AddressForm } from "./address-form";
-import { Form } from "@lightdotso/ui";
 
 // -----------------------------------------------------------------------------
 // Meta
@@ -42,7 +44,11 @@ type Story = StoryObj<typeof AddressForm>;
 
 export const Base: Story = {
   render: args => {
-    const methods = useForm();
+    const methods = useForm({
+      mode: "all",
+      reValidateMode: "onBlur",
+      resolver: zodResolver(Address),
+    });
 
     return (
       <Form {...methods}>
