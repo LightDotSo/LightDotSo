@@ -114,7 +114,7 @@ export const useMutationUserOperationSend = (params: UserOperationParams) => {
         queryClient.getQueryData(
           queryKeys.user_operation.list({
             address: params.address as Address,
-            status: "proposed",
+            status: "queued",
             order: "asc",
             limit: TRANSACTION_ROW_COUNT,
             offset: 0,
@@ -124,7 +124,7 @@ export const useMutationUserOperationSend = (params: UserOperationParams) => {
       queryClient.setQueryData(
         queryKeys.user_operation.list({
           address: params.address as Address,
-          status: "proposed",
+          status: "queued",
           order: "asc",
           limit: TRANSACTION_ROW_COUNT,
           offset: 0,
@@ -148,7 +148,7 @@ export const useMutationUserOperationSend = (params: UserOperationParams) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.user_operation.list({
           address: params.address as Address,
-          status: "proposed",
+          status: "queued",
           order: "asc",
           limit: TRANSACTION_ROW_COUNT,
           offset: 0,
@@ -158,7 +158,7 @@ export const useMutationUserOperationSend = (params: UserOperationParams) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.user_operation.listCount({
           address: params.address as Address,
-          status: "proposed",
+          status: "queued",
           is_testnet: params.is_testnet ?? false,
         }).queryKey,
       });

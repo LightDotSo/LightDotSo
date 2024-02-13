@@ -77,7 +77,7 @@ export default async function Page({ params }: PageProps) {
   queryClient.setQueryData(
     queryKeys.user_operation.list({
       address: params.address as Address,
-      status: "proposed",
+      status: "queued",
       order: "asc",
       limit: TRANSACTION_ROW_COUNT,
       offset: 0,
@@ -88,7 +88,7 @@ export default async function Page({ params }: PageProps) {
   queryClient.setQueryData(
     queryKeys.user_operation.listCount({
       address: params.address as Address,
-      status: "proposed",
+      status: "queued",
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
     queuedUserOperationsCount,
@@ -121,13 +121,13 @@ export default async function Page({ params }: PageProps) {
     <HydrationBoundary state={dehydrate(queryClient)}>
       <OverviewSection
         address={params.address as Address}
-        status="proposed"
+        status="queued"
         title="Queue"
         href={`/${params.address}/transactions/queue`}
       >
         <TransactionsDataTable
           address={params.address as Address}
-          status="proposed"
+          status="queued"
         />
       </OverviewSection>
       <OverviewSection

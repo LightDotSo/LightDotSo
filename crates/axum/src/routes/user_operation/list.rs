@@ -66,11 +66,14 @@ pub enum ListQueryOrder {
 #[derive(Clone, Debug, Deserialize, ToSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum ListQueryStatus {
+    // Custom status
+    Queued,
+    History,
+    // User operation status
     Proposed,
     Pending,
-    Executed,
     Reverted,
-    History,
+    Executed,
     Invalid,
 }
 
@@ -234,6 +237,10 @@ fn construct_user_operation_list_query_params(query: &ListQuery) -> Vec<WherePar
             ListQueryStatus::Proposed => {
                 query_exp.push(user_operation::status::equals(UserOperationStatus::Proposed))
             }
+            ListQueryStatus::Queued => query_exp.push(or![
+                user_operation::status::equals(UserOperationStatus::Pending),
+                user_operation::status::equals(UserOperationStatus::Proposed)
+            ]),
             ListQueryStatus::History => query_exp.push(or![
                 user_operation::status::equals(UserOperationStatus::Executed),
                 user_operation::status::equals(UserOperationStatus::Reverted),

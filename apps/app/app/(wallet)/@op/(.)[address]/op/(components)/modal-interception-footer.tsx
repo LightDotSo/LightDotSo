@@ -15,20 +15,21 @@
 
 "use client";
 
-import { InvokeButton } from "@lightdotso/elements";
 import {
   useMutationQueueUserOperation,
   useMutationUserOperationSend,
   useQueryUserOperation,
 } from "@lightdotso/query";
-import type { FC } from "react";
+import { FooterButton } from "@lightdotso/templates";
+import { useRouter } from "next/navigation";
+import { useCallback, type FC } from "react";
 import type { Address, Hex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface OpInvokeButtonProps {
+interface ModalInterceptionFooterProps {
   address: Address;
   userOperationHash: Hex;
 }
@@ -37,10 +38,16 @@ interface OpInvokeButtonProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export const OpInvokeButton: FC<OpInvokeButtonProps> = ({
+export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
   address,
   userOperationHash,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
+  const router = useRouter();
+
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -50,21 +57,44 @@ export const OpInvokeButton: FC<OpInvokeButtonProps> = ({
       address: userOperationHash,
     });
 
-  const { userOperation } = useQueryUserOperation({
+  const { userOperation, isUserOperationLoading } = useQueryUserOperation({
     hash: userOperationHash,
   });
 
-  const { userOperationSend } = useMutationUserOperationSend({
-    address,
-  });
+  const { userOperationSend, isUserOperationSendPending } =
+    useMutationUserOperationSend({
+      address,
+    });
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  const onDismiss = useCallback(() => {
+    router.back();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router]);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <InvokeButton
-      isLoading={isLoadingQueueUserOperation}
+    <FooterButton
+      isModal
+      className="pt-0"
+      disabled={
+        isLoadingQueueUserOperation ||
+        isUserOperationLoading ||
+        isUserOperationSendPending
+      }
+      isLoading={
+        isLoadingQueueUserOperation ||
+        isUserOperationSendPending ||
+        isUserOperationLoading
+      }
+      customSuccessText="Refresh"
+      cancelClick={onDismiss}
       onClick={() => {
         queueUserOperation({ hash: userOperationHash });
 

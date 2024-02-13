@@ -4183,7 +4183,7 @@ export interface operations {
         /** @description The chain id to filter by. */
         chain_id?: number | null;
         /** @description The status to filter by. */
-        status?: ("proposed" | "pending" | "executed" | "reverted" | "history" | "invalid") | null;
+        status?: ("queued" | "history" | "proposed" | "pending" | "reverted" | "executed" | "invalid") | null;
         /**
          * @description The direction to order by.
          * Default is `asc`.
@@ -4224,7 +4224,7 @@ export interface operations {
         /** @description The chain id to filter by. */
         chain_id?: number | null;
         /** @description The status to filter by. */
-        status?: ("proposed" | "pending" | "executed" | "reverted" | "history" | "invalid") | null;
+        status?: ("queued" | "history" | "proposed" | "pending" | "reverted" | "executed" | "invalid") | null;
         /**
          * @description The direction to order by.
          * Default is `asc`.
