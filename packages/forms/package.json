@@ -27,8 +27,13 @@
   },
   "dependencies": {
     "@hookform/devtools": "^4.3.1",
+    "@lightdotso/elements": "workspace:*",
     "@lightdotso/stores": "workspace:*",
-    "abitype": "^1.0.0"
+    "@lightdotso/ui": "workspace:*",
+    "@lightdotso/utils": "workspace:*",
+    "@lightdotso/wagmi": "workspace:*",
+    "abitype": "^1.0.0",
+    "react-hook-form": "^7.50.1"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",

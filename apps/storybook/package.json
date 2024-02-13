@@ -30,6 +30,7 @@
     "@lightdotso/const": "workspace:*",
     "@lightdotso/demo": "workspace:*",
     "@lightdotso/elements": "workspace:*",
+    "@lightdotso/forms": "workspace:*",
     "@lightdotso/msw": "workspace:*",
     "@lightdotso/styles": "workspace:*",
     "@lightdotso/svg": "workspace:*",

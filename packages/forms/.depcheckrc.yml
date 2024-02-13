@@ -6,5 +6,3 @@ ignores:
   - tsup
   - react-dom
   - "@types/react-dom"
-  - "@storybook/react"
-  - "@types/react"
