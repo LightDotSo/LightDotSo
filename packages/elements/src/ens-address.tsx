@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { useEnsAddress } from "@lightdotso/wagmi";
-import { normalize } from "viem/ens";
-import type { FC, InsHTMLAttributes } from "react";
 import { shortenAddress } from "@lightdotso/utils";
+import { useEnsAddress } from "@lightdotso/wagmi";
+import type { FC } from "react";
+import { normalize } from "viem/ens";
 
 // -----------------------------------------------------------------------------
 // Props

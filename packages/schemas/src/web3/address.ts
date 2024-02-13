@@ -13,14 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Address } from "abitype/zod";
-import { z } from "zod";
+import { Address as ZodAddress } from "abitype/zod";
+import type { z } from "zod";
 
 // -----------------------------------------------------------------------------
 // Schema
 // -----------------------------------------------------------------------------
 
-export const address = Address;
+export const address = ZodAddress;
 
 // -----------------------------------------------------------------------------
 // Types

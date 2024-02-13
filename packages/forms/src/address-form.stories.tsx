@@ -20,10 +20,10 @@ import { publicClient } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { Meta, StoryObj } from "@storybook/react";
 import { useForm } from "react-hook-form";
+import { isAddress } from "viem";
 import { normalize } from "viem/ens";
 import { z } from "zod";
 import { AddressForm } from "./address-form";
-import { isAddress } from "viem";
 
 // -----------------------------------------------------------------------------
 // Meta
@@ -63,10 +63,12 @@ export const Base: Story = {
         return !!addr;
       });
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const validEns = useRefinement(getEns, {
       debounce: 300,
     });
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const methods = useForm({
       mode: "all",
       reValidateMode: "onBlur",

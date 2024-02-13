@@ -66,7 +66,7 @@ export const AddressForm: FC<AddressFormProps> = ({ name, onKeyDown }) => {
 
     // Set the span left position based on the length of the input
     setSpanLeft(charLength * 9 + 32);
-  }, [methods.watch(name), methods.formState.isDirty]);
+  }, [methods.formState.isDirty, name, methods]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -94,13 +94,13 @@ export const AddressForm: FC<AddressFormProps> = ({ name, onKeyDown }) => {
                   placeholder="Your address or ENS name"
                 />
                 <span
-                  className="absolute top-1/2 left-4 transform -translate-y-1/2"
+                  className="absolute left-4 top-1/2 -translate-y-1/2"
                   style={{ left: `${spanLeft}px` }}
                 >
                   {methods.formState.isValid &&
                     !methods.formState.errors[name] && (
                       <span className="flex items-center space-x-1">
-                        <CheckBadgeIcon className="text-text-info size-4" />
+                        <CheckBadgeIcon className="size-4 text-text-info" />
                         <span className="text-xs text-text-weak">
                           <EnsAddress name={field.value} />
                         </span>

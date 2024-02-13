@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { userOperationListData } from "@lightdotso/demo";
 import type { Meta, StoryObj } from "@storybook/react";
 import { UserOperationTimeline } from "./user-operation-timeline";
-import { userOperationListData } from "@lightdotso/demo";
 
 // -----------------------------------------------------------------------------
 // Meta
