@@ -17,9 +17,8 @@
 
 import { PlaceholderOrb } from "@lightdotso/elements";
 import { Avatar, FormField, FormMessage, Input, Label } from "@lightdotso/ui";
-// import { useEnsName } from "@lightdotso/wagmi";
 import { cn } from "@lightdotso/utils";
-import type { FC } from "react";
+import type { FC, InputHTMLAttributes } from "react";
 import { useFormContext } from "react-hook-form";
 import { isAddress } from "viem";
 
@@ -27,19 +26,15 @@ import { isAddress } from "viem";
 // Props
 // -----------------------------------------------------------------------------
 
-type AddressFormProps = { name: string };
+type AddressFormProps = {
+  name: string;
+} & InputHTMLAttributes<HTMLInputElement>;
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const AddressForm: FC<AddressFormProps> = ({ name }) => {
-  // ---------------------------------------------------------------------------
-  // Wagmi
-  // ---------------------------------------------------------------------------
-
-  // const { data: ens } = useEnsName({ address: address, chainId: 1 });
-
+export const AddressForm: FC<AddressFormProps> = ({ name, onKeyDown }) => {
   // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------
@@ -66,6 +61,7 @@ export const AddressForm: FC<AddressFormProps> = ({ name }) => {
               <Input
                 id="address"
                 className="pl-12"
+                onKeyDown={onKeyDown}
                 {...field}
                 placeholder="Your address or ENS name"
               />
@@ -91,8 +87,8 @@ export const AddressForm: FC<AddressFormProps> = ({ name }) => {
               </div>
             </div>
           </div>
-          {/* <div className="text-text">{JSON.stringify(field, null, 2)}</div> */}
-          {/* <div className="text-text">{JSON.stringify(methods, null, 2)}</div> */}
+          <div className="text-text">{JSON.stringify(field, null, 2)}</div>
+          <div className="text-text">{JSON.stringify(methods, null, 2)}</div>
           <FormMessage />
         </div>
       )}

@@ -13,11 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { useRefinement } from "@lightdotso/hooks";
 import { addressOrEns } from "@lightdotso/schemas";
 import { Form } from "@lightdotso/ui";
+import { publicClient } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { Meta, StoryObj } from "@storybook/react";
 import { useForm } from "react-hook-form";
+import { normalize } from "viem/ens";
 import { z } from "zod";
 import { AddressForm } from "./address-form";
 
@@ -44,7 +47,7 @@ type Story = StoryObj<typeof AddressForm>;
 // -----------------------------------------------------------------------------
 
 const walletNameFormSchema = z.object({
-  address: addressOrEns,
+  addressOrEns: addressOrEns,
 });
 
 // -----------------------------------------------------------------------------
@@ -53,17 +56,43 @@ const walletNameFormSchema = z.object({
 
 export const Base: Story = {
   render: args => {
+    const getEns = async ({ name }: { name: string }) =>
+      publicClient.getEnsAddress({ name: normalize(name) }).then(addr => {
+        console.log(addr);
+        return !!addr;
+      });
+
+    const validEns = useRefinement(getEns, {
+      debounce: 300,
+    });
+
     const methods = useForm({
       mode: "all",
       reValidateMode: "onBlur",
-      resolver: zodResolver(walletNameFormSchema),
+      resolver: zodResolver(
+        // walletNameFormSchema,
+        walletNameFormSchema.refine(
+          ({ addressOrEns }) => {
+            if (addressOrEns.length < 1) {
+              return true;
+            }
+            return validEns({ name: addressOrEns });
+          },
+          {
+            path: ["addressOrEns"],
+            message: "Ens name is not valid",
+          },
+        ),
+      ),
     });
 
     return (
       <Form {...methods}>
-        <AddressForm name="address" />
+        <AddressForm onKeyDown={validEns.invalidate} {...args} />
       </Form>
     );
   },
-  args: {},
+  args: {
+    name: "addressOrEns",
+  },
 };
