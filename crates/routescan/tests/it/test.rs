@@ -16,6 +16,10 @@
 use eyre::Result;
 use lightdotso_routescan::get_token_balances;
 
+// From: https://routescan.io/documentation/api-swagger
+// Thank you to the Routescan team for providing this API!
+// Example: https://api.routescan.io/v2/network/testnet/evm/168587773/address/0x35da762a35FCb3160738EeCd60fa18438C273D5E/erc20-holdings?limit=25
+
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_token_test() -> Result<()> {
     let _ = dotenvy::dotenv();
