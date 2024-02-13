@@ -145,6 +145,7 @@ pub async fn activity_consumer(
                                 )
                                 .exec()
                                 .await?;
+                            info!("config: {:?}", config.clone());
 
                             if let Some(configuration) = config {
                                 // Get the configuration of the wallet
@@ -158,6 +159,7 @@ pub async fn activity_consumer(
                                             user_id: owner.user_id,
                                             wallet_address: Some(wallet_address.to_string()),
                                         };
+                                        info!("notification: {:?}", notification.clone());
 
                                         // Send the notification
                                         produce_notification_message(
