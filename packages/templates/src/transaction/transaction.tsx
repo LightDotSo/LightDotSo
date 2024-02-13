@@ -119,18 +119,6 @@ export const Transaction: FC<TransactionProps> = ({
   const isInsideModal = useIsInsideModal();
 
   // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
-
-  // This can come from your database or API.
-  const defaultValues: Partial<UserOperation> = useMemo(() => {
-    return {
-      ...initialUserOperation,
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialUserOperation]);
-
-  // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------
 
@@ -138,32 +126,10 @@ export const Transaction: FC<TransactionProps> = ({
     mode: "all",
     reValidateMode: "onBlur",
     resolver: zodResolver(userOperationFormSchema),
-    defaultValues,
+    defaultValues: initialUserOperation,
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const formValues = form.watch();
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
-
-  // Set the form values from the URL on mount
-  useEffect(() => {
-    // Start time delay
-    const timer = setTimeout(() => {
-      setUserOperations(prev => {
-        const next = [...prev];
-        next[userOperationIndex] = defaultValues;
-        return next;
-      });
-    }, 1500);
-
-    // Clean up timer on unmount
-    return () => clearTimeout(timer);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -175,7 +141,7 @@ export const Transaction: FC<TransactionProps> = ({
     "hash" | "paymasterAndData" | "signature"
   > = useMemo(() => {
     const partialUserOperation =
-      userOperations.length > 0
+      formValues ?? userOperations.length > 0
         ? userOperations[userOperationIndex]
         : { ...initialUserOperation };
 
