@@ -130,8 +130,8 @@ export const AddressForm: FC<AddressFormProps> = ({ name, onKeyDown }) => {
               </div>
             </div>
           </div>
-          <div className="text-text">{JSON.stringify(field, null, 2)}</div>
-          <div className="text-text">{JSON.stringify(methods, null, 2)}</div>
+          {/* <div className="text-text">{JSON.stringify(field, null, 2)}</div> */}
+          {/* <div className="text-text">{JSON.stringify(methods, null, 2)}</div> */}
           <FormMessage />
         </div>
       )}
