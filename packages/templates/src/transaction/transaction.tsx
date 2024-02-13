@@ -141,8 +141,8 @@ export const Transaction: FC<TransactionProps> = ({
     "hash" | "paymasterAndData" | "signature"
   > = useMemo(() => {
     const partialUserOperation =
-      formValues ?? userOperations.length > 0
-        ? userOperations[userOperationIndex]
+      userOperations.length > 0
+        ? { ...userOperations[userOperationIndex], ...initialUserOperation }
         : { ...initialUserOperation };
 
     return {
