@@ -14,8 +14,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { ResultAsync } from "neverthrow";
-import { zodGraphqlRequest } from "../zod";
 import { z } from "zod";
+import { ensClient } from "../client";
+import { zodGraphqlRequest } from "../zod";
 
 export const ENS_DOMAINS_QUERY = /* GraphQL */ `
   query lookup($name: String!, $amount: Int!) {
@@ -46,12 +47,13 @@ export const ensDomainsSchema = z.object({
   ),
 });
 
-export const getEnsDomains = async (
-  endpoint: string,
-  params: { name: string; amount: number },
-) => {
+export const getEnsDomains = async (params: {
+  name: string;
+  amount: number;
+}) => {
+  const client = ensClient();
   return ResultAsync.fromPromise(
-    zodGraphqlRequest(endpoint, ENS_DOMAINS_QUERY, params, ensDomainsSchema),
+    zodGraphqlRequest(client, ENS_DOMAINS_QUERY, params, ensDomainsSchema),
     e => e,
   );
 };

@@ -28,6 +28,7 @@ import { isAddress } from "viem";
 // -----------------------------------------------------------------------------
 
 type AddressFormProps = {
+  isLabelHidden?: boolean;
   name: string;
 } & InputHTMLAttributes<HTMLInputElement>;
 
@@ -35,7 +36,11 @@ type AddressFormProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const AddressForm: FC<AddressFormProps> = ({ name, onKeyDown }) => {
+export const AddressForm: FC<AddressFormProps> = ({
+  isLabelHidden = true,
+  name,
+  onKeyDown,
+}) => {
   // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
@@ -86,7 +91,7 @@ export const AddressForm: FC<AddressFormProps> = ({ name, onKeyDown }) => {
       name={name}
       render={({ field }) => (
         <div className="grow">
-          {/* <Label htmlFor="address">Address or ENS</Label> */}
+          {isLabelHidden && <Label htmlFor="address">Address or ENS</Label>}
           <div className="flex items-center space-x-3">
             <div className="relative inline-block w-full">
               <div className="relative">

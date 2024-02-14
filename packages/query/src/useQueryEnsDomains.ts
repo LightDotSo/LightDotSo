@@ -17,7 +17,6 @@ import { getEnsDomains } from "@lightdotso/client";
 import type { EnsDataPage } from "@lightdotso/data";
 import type { EnsListParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
-import { useAuth } from "@lightdotso/stores";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 // -----------------------------------------------------------------------------
@@ -25,12 +24,6 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 // -----------------------------------------------------------------------------
 
 export const useQueryEnsDomains = (params: EnsListParams) => {
-  // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { clientType } = useAuth();
-
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -58,13 +51,10 @@ export const useQueryEnsDomains = (params: EnsListParams) => {
         return null;
       }
 
-      const res = await getEnsDomains(
-        "https://api.thegraph.com/subgraphs/name/ensdomains/ens",
-        {
-          name: params.name,
-          amount: params.limit,
-        },
-      );
+      const res = await getEnsDomains({
+        name: params.name,
+        amount: params.limit,
+      });
 
       return res.match(
         data => {

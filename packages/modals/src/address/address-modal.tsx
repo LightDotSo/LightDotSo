@@ -17,17 +17,18 @@
 
 import { AddressForm } from "@lightdotso/forms";
 import { useDebouncedValue, useRefinement } from "@lightdotso/hooks";
+import { useQueryEnsDomains, useQueryWallets } from "@lightdotso/query";
 import { addressOrEns } from "@lightdotso/schemas";
 import { useAuth, useModals } from "@lightdotso/stores";
 import { Modal } from "@lightdotso/templates";
+import { Form } from "@lightdotso/ui";
 import { publicClient } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Address, isAddress } from "viem";
+import type { Address } from "viem";
+import { isAddress } from "viem";
 import { normalize } from "viem/ens";
 import { z } from "zod";
-import { Form } from "@lightdotso/ui";
-import { useQueryEnsDomains, useQueryWallets } from "@lightdotso/query";
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -119,13 +120,13 @@ export function AddressModal() {
       <>
         <Form {...methods}>
           <Modal
+            open
             headerContent={
               <AddressForm
-                onKeyDown={validEns.invalidate}
                 name="addressOrEns"
+                onKeyDown={validEns.invalidate}
               />
             }
-            open
             onClose={hideAddressModal}
           >
             {ensDomains && ensDomains.length > 0 && (
@@ -134,7 +135,7 @@ export function AddressModal() {
                   // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
                   <div
                     key={ensDomain.id}
-                    className="flex flex-row items-center space-x-2 pointer-cursor hover:bg-background-stronger rounded-md p-2"
+                    className="flex cursor-pointer flex-row items-center space-x-2 rounded-md p-2 hover:bg-background-stronger"
                     onClick={() => {
                       methods.setValue("addressOrEns", ensDomain.name);
                       validEns.invalidate();
@@ -151,7 +152,7 @@ export function AddressModal() {
                   // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
                   <div
                     key={wallet.address}
-                    className="flex flex-row items-center space-x-2 pointer-cursor hover:bg-background-stronger rounded-md p-2"
+                    className="flex cursor-pointer flex-row items-center space-x-2 rounded-md p-2 hover:bg-background-stronger"
                     onClick={() => {
                       methods.setValue("addressOrEns", wallet.address);
                       validEns.invalidate();

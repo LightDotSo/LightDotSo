@@ -17,10 +17,7 @@ import { expect, test } from "vitest";
 import { getEnsDomains } from "../src"; // Replace with your actual file path
 
 test("getEnsDomains", async () => {
-  const result = await getEnsDomains(
-    "https://api.thegraph.com/subgraphs/name/ensdomains/ens",
-    { name: "kaki", amount: 3 },
-  );
+  const result = await getEnsDomains({ name: "kaki", amount: 3 });
 
   expect(result._unsafeUnwrap()).haveOwnProperty("domains");
   // console.log(JSON.stringify(result));
