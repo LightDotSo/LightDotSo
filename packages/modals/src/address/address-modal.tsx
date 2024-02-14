@@ -24,7 +24,6 @@ import { FooterButton, Modal } from "@lightdotso/templates";
 import { Form } from "@lightdotso/ui";
 import { publicClient } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";
 import { isAddress } from "viem";
@@ -44,12 +43,6 @@ const addressModalFormSchema = z.object({
 // -----------------------------------------------------------------------------
 
 export function AddressModal() {
-  // ---------------------------------------------------------------------------
-  // State Hooks
-  // ---------------------------------------------------------------------------
-
-  const [isValidEns, setIsValidEns] = useState(false);
-
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
