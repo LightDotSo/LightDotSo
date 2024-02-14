@@ -62,7 +62,7 @@ export const useQueryUserOperations = (params: UserOperationListParams) => {
       order: params.order,
     }).queryKey,
     queryFn: async () => {
-      if (!params.address) {
+      if (typeof params.address === "undefined") {
         return null;
       }
 

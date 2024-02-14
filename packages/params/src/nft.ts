@@ -20,7 +20,7 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export type NftListParams = {
-  address: Address | null;
+  address: Address | null | undefined;
   is_testnet: boolean;
   limit: number;
   cursor: string | null;

@@ -21,11 +21,11 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export type WalletParams = {
-  address: Address | null;
+  address: Address | null | undefined;
 };
 
 export type WalletListParams = {
-  address: Address | null;
+  address: Address | null | undefined;
   limit: number;
   offset: number;
   user_id?: string;
@@ -38,7 +38,7 @@ export type WalletListCountParams = Omit<WalletListParams, "limit" | "offset">;
 // -----------------------------------------------------------------------------
 
 export type WalletCreateBodyParams = {
-  address: Address | null;
+  address: Address | null | undefined;
   simulate: boolean;
   name: string;
   threshold: number;

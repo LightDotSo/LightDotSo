@@ -20,7 +20,7 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export type ActivityListParams = {
-  address: Address | null;
+  address: Address | null | undefined;
   limit: number;
   offset: number;
   user_id?: string;
