@@ -20,7 +20,7 @@ import { useDebouncedValue, useRefinement } from "@lightdotso/hooks";
 import { useQueryEnsDomains, useQueryWallets } from "@lightdotso/query";
 import { addressOrEns } from "@lightdotso/schemas";
 import { useAuth, useModals } from "@lightdotso/stores";
-import { Modal } from "@lightdotso/templates";
+import { FooterButton, Modal } from "@lightdotso/templates";
 import { Form } from "@lightdotso/ui";
 import { publicClient } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -48,7 +48,11 @@ export function AddressModal() {
   // ---------------------------------------------------------------------------
 
   const { address } = useAuth();
-  const { isAddressModalVisible, hideAddressModal } = useModals();
+  const {
+    isAddressModalVisible,
+    hideAddressModal,
+    addressModalProps: { onAddressSelect },
+  } = useModals();
 
   const getEns = async ({ name }: { name: string }) =>
     publicClient.getEnsAddress({ name: normalize(name) }).then(addr => {
@@ -121,46 +125,62 @@ export function AddressModal() {
         <Form {...methods}>
           <Modal
             open
+            className="p-2"
             headerContent={
               <AddressForm
                 name="addressOrEns"
                 onKeyDown={validEns.invalidate}
               />
             }
+            footerContent={
+              <FooterButton
+                className="pt-0"
+                disabled={!methods.formState.isValid}
+                onClick={() => {
+                  onAddressSelect(watchName);
+                }}
+              />
+            }
             onClose={hideAddressModal}
           >
             {ensDomains && ensDomains.length > 0 && (
               <div className="">
-                {ensDomains.map(ensDomain => (
-                  // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-                  <div
-                    key={ensDomain.id}
-                    className="flex cursor-pointer flex-row items-center space-x-2 rounded-md p-2 hover:bg-background-stronger"
-                    onClick={() => {
-                      methods.setValue("addressOrEns", ensDomain.name);
-                      validEns.invalidate();
-                    }}
-                  >
-                    <div>{ensDomain.name}</div>
-                  </div>
-                ))}
+                {ensDomains &&
+                  ensDomains
+                    .filter(ensDomain => ensDomain.name !== watchName)
+                    .map(ensDomain => (
+                      // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+                      <div
+                        key={ensDomain.id}
+                        className="flex cursor-pointer flex-row items-center space-x-2 rounded-md p-2 hover:bg-background-stronger"
+                        onClick={() => {
+                          methods.setValue("addressOrEns", ensDomain.name);
+                          methods.trigger("addressOrEns");
+                          validEns.invalidate();
+                        }}
+                      >
+                        <div>{ensDomain.name}</div>
+                      </div>
+                    ))}
               </div>
             )}
             {wallets && wallets.length > 0 && (
               <div className="">
-                {wallets.map(wallet => (
-                  // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-                  <div
-                    key={wallet.address}
-                    className="flex cursor-pointer flex-row items-center space-x-2 rounded-md p-2 hover:bg-background-stronger"
-                    onClick={() => {
-                      methods.setValue("addressOrEns", wallet.address);
-                      validEns.invalidate();
-                    }}
-                  >
-                    <div>{wallet.address}</div>
-                  </div>
-                ))}
+                {wallets &&
+                  wallets.map(wallet => (
+                    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+                    <div
+                      key={wallet.address}
+                      className="flex cursor-pointer flex-row items-center space-x-2 rounded-md p-2 hover:bg-background-stronger"
+                      onClick={() => {
+                        methods.setValue("addressOrEns", wallet.address);
+                        methods.trigger("addressOrEns");
+                        validEns.invalidate();
+                      }}
+                    >
+                      <div>{wallet.address}</div>
+                    </div>
+                  ))}
               </div>
             )}
           </Modal>
