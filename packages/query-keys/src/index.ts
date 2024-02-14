@@ -18,6 +18,7 @@ import type { inferQueryKeyStore } from "@lukemorales/query-key-factory";
 import { activity } from "./activity";
 import { auth } from "./auth";
 import { configuration } from "./configuration";
+import { ens } from "./ens";
 import { nft } from "./nft";
 import { nft_valuation } from "./nft_valation";
 import { notification } from "./notification";
@@ -37,6 +38,7 @@ export const queryKeys = mergeQueryKeys(
   auth,
   activity,
   configuration,
+  ens,
   nft,
   nft_valuation,
   notification,

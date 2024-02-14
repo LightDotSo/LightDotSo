@@ -18,6 +18,7 @@ export type { AssetChangeData } from "./assetChange";
 export type { AuthNonceData, AuthSessionData } from "./auth";
 export type { BillingData } from "./billing";
 export type { ConfigurationData } from "./configuration";
+export type { EnsDataPage } from "./ens";
 export type { InterpretationData } from "./interpretation";
 export type { NotificationData, NotificationCountData } from "./notification";
 export type { NotificationSettingsData } from "./notificationSettings";

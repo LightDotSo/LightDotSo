@@ -1989,6 +1989,9 @@ importers:
 
   packages/modals:
     dependencies:
+      '@hookform/resolvers':
+        specifier: ^3.3.4
+        version: 3.3.4(react-hook-form@7.50.1)
       '@lightdotso/const':
         specifier: workspace:*
         version: link:../const
@@ -1998,12 +2001,18 @@ importers:
       '@lightdotso/elements':
         specifier: workspace:*
         version: link:../elements
+      '@lightdotso/forms':
+        specifier: workspace:*
+        version: link:../forms
       '@lightdotso/hooks':
         specifier: workspace:*
         version: link:../hooks
       '@lightdotso/query':
         specifier: workspace:*
         version: link:../query
+      '@lightdotso/schemas':
+        specifier: workspace:*
+        version: link:../schemas
       '@lightdotso/stores':
         specifier: workspace:*
         version: link:../stores
@@ -2019,6 +2028,9 @@ importers:
       '@lightdotso/utils':
         specifier: workspace:*
         version: link:../utils
+      '@lightdotso/wagmi':
+        specifier: workspace:*
+        version: link:../wagmi
       '@storybook/react':
         specifier: ^7.6.15
         version: 7.6.15(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
@@ -2028,9 +2040,15 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
+      react-hook-form:
+        specifier: ^7.50.1
+        version: 7.50.1(react@18.2.0)
       viem:
         specifier: ^2.7.8
         version: 2.7.8(typescript@5.3.3)(zod@3.22.4)
+      zod:
+        specifier: ^3.22.4
+        version: 3.22.4
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*

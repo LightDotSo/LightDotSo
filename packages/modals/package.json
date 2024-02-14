@@ -26,20 +26,26 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.4",
     "@lightdotso/const": "workspace:*",
     "@lightdotso/data": "workspace:*",
     "@lightdotso/elements": "workspace:*",
+    "@lightdotso/forms": "workspace:*",
     "@lightdotso/hooks": "workspace:*",
     "@lightdotso/query": "workspace:*",
+    "@lightdotso/schemas": "workspace:*",
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/svg": "workspace:*",
     "@lightdotso/templates": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
+    "@lightdotso/wagmi": "workspace:*",
     "@storybook/react": "^7.6.15",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "viem": "^2.7.8"
+    "react-hook-form": "^7.50.1",
+    "viem": "^2.7.8",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
