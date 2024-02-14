@@ -24,12 +24,12 @@ import { FooterButton, Modal } from "@lightdotso/templates";
 import { Form } from "@lightdotso/ui";
 import { publicClient } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";
 import { isAddress } from "viem";
 import { normalize } from "viem/ens";
 import { z } from "zod";
-import { useState } from "react";
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -143,10 +143,10 @@ export function AddressModal() {
               <FooterButton
                 className="pt-0"
                 disabled={!methods.formState.isValid}
+                customSuccessText="Select"
                 onClick={() => {
                   onAddressSelect(watchName);
                 }}
-                customSuccessText="Select"
               />
             }
             onClose={hideAddressModal}
@@ -160,7 +160,7 @@ export function AddressModal() {
                       // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
                       <div
                         key={ensDomain.id}
-                        className="flex text-base font-light cursor-pointer flex-row items-center space-x-2 rounded-md p-2 hover:bg-background-stronger"
+                        className="flex cursor-pointer flex-row items-center space-x-2 rounded-md p-2 text-base font-light hover:bg-background-stronger"
                         onClick={() => {
                           methods.setValue("addressOrEns", ensDomain.name);
                           methods.trigger("addressOrEns");
@@ -179,7 +179,7 @@ export function AddressModal() {
                     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
                     <div
                       key={wallet.address}
-                      className="flex text-base font-light cursor-pointer flex-row items-center space-x-2 rounded-md p-2 hover:bg-background-stronger"
+                      className="flex cursor-pointer flex-row items-center space-x-2 rounded-md p-2 text-base font-light hover:bg-background-stronger"
                       onClick={() => {
                         methods.setValue("addressOrEns", wallet.address);
                         methods.trigger("addressOrEns");
