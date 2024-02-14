@@ -13,72 +13,52 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getTransactions } from "@lightdotso/client";
-import type { TransactionData } from "@lightdotso/data";
-import type { TransactionListParams } from "@lightdotso/params";
+import { getEnsDomains } from "@lightdotso/client";
+import type { EnsDataPage } from "@lightdotso/data";
+import type { EnsListParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
-import { useAuth } from "@lightdotso/stores";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 // -----------------------------------------------------------------------------
 // Query
 // -----------------------------------------------------------------------------
 
-export const useQueryTransactions = (params: TransactionListParams) => {
-  // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { clientType } = useAuth();
-
+export const useQueryEnsDomains = (params: EnsListParams) => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
   const queryClient = useQueryClient();
 
-  const currentData: TransactionData[] | undefined = queryClient.getQueryData(
-    queryKeys.transaction.list({
-      address: params.address,
+  const currentData: EnsDataPage | undefined = queryClient.getQueryData(
+    queryKeys.ens.list({
+      name: params.name,
       limit: params.limit,
-      offset: params.offset,
-      is_testnet: params.is_testnet,
     }).queryKey,
   );
 
   const {
-    data: transactions,
-    isLoading: isTransactionsLoading,
+    data: ensPage,
+    isLoading: isEnsDomainsLoading,
     failureCount,
-  } = useQuery<TransactionData[] | null>({
-    queryKey: queryKeys.transaction.list({
-      address: params.address,
+  } = useQuery<EnsDataPage | null>({
+    queryKey: queryKeys.ens.list({
+      name: params.name,
       limit: params.limit,
-      offset: params.offset,
-      is_testnet: params.is_testnet,
     }).queryKey,
     queryFn: async () => {
-      if (typeof params.address === "undefined") {
+      if (!params.name) {
         return null;
       }
 
-      const res = await getTransactions(
-        {
-          params: {
-            query: {
-              address: params.address ?? undefined,
-              limit: params.limit,
-              offset: params.offset,
-              is_testnet: params.is_testnet,
-            },
-          },
-        },
-        clientType,
-      );
+      const res = await getEnsDomains({
+        name: params.name,
+        amount: params.limit,
+      });
 
       return res.match(
         data => {
-          return data as TransactionData[];
+          return data as EnsDataPage;
         },
         err => {
           if (failureCount % 3 !== 2) {
@@ -91,7 +71,19 @@ export const useQueryTransactions = (params: TransactionListParams) => {
   });
 
   return {
-    transactions,
-    isTransactionsLoading,
+    ensDomains: ensPage?.domains
+      .filter(
+        domain =>
+          domain.resolver &&
+          domain.resolver.addr &&
+          domain.resolver.addr.id !== null &&
+          domain.name !== null,
+      )
+      .map(domain => ({
+        name: domain.name,
+        id: domain.resolver.addr.id,
+      })),
+
+    isEnsDomainsLoading,
   };
 };

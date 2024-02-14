@@ -21,7 +21,7 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export type WalletSettingsParams = {
-  address: Address | null;
+  address: Address | null | undefined;
   user_id?: string | null | undefined;
 };
 

@@ -13,41 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { WalletData } from "@lightdotso/data";
-import type { Address } from "viem";
-
 // -----------------------------------------------------------------------------
-// Params
+// Data
 // -----------------------------------------------------------------------------
 
-export type WalletParams = {
-  address: Address | null | undefined;
-};
-
-export type WalletListParams = {
-  address: Address | null | undefined;
-  limit: number;
-  offset: number;
-  user_id?: string;
-};
-
-export type WalletListCountParams = Omit<WalletListParams, "limit" | "offset">;
-
-// -----------------------------------------------------------------------------
-// Params Body
-// -----------------------------------------------------------------------------
-
-export type WalletCreateBodyParams = {
-  address: Address | null | undefined;
-  simulate: boolean;
-  name: string;
-  threshold: number;
-  owners: {
-    address: Address;
-    weight: number;
+export type EnsDataPage = {
+  domains: {
+    name: string | null;
+    resolver: {
+      addr: {
+        id: string | null;
+      };
+    };
   }[];
-  invite_code: string;
-  salt: string;
 };
-
-export type WalletUpdateBodyParams = Partial<WalletData>;

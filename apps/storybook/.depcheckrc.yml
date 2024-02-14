@@ -61,3 +61,4 @@ ignores:
   - "@tailwindcss/typography"
   - msw-storybook-addon
   - "@lightdotso/msw"
+  - "@lightdotso/forms"

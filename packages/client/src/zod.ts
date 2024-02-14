@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { request } from "graphql-request";
 import type { z } from "zod";
 
 // -----------------------------------------------------------------------------
@@ -47,6 +48,26 @@ export const zodFetch = async <TResponseSchema extends z.Schema>(
   }
 
   return responseSchema.parse(data);
+};
+
+// -----------------------------------------------------------------------------
+// GraphQL
+// -----------------------------------------------------------------------------
+
+export const zodGraphqlRequest = async <TResponseSchema extends z.Schema>(
+  endpoint: string,
+  query: string,
+  variables: Record<string, unknown>,
+  responseSchema: TResponseSchema,
+  headers?: Record<string, string>,
+): Promise<z.infer<TResponseSchema>> => {
+  const response = await request(endpoint, query, variables, headers);
+
+  if (!response) {
+    throw new Error("Failed to fetch the data");
+  }
+
+  return responseSchema.parse(response);
 };
 
 // -----------------------------------------------------------------------------

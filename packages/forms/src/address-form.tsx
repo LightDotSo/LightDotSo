@@ -28,6 +28,7 @@ import { isAddress } from "viem";
 // -----------------------------------------------------------------------------
 
 type AddressFormProps = {
+  isLabelHidden?: boolean;
   name: string;
 } & InputHTMLAttributes<HTMLInputElement>;
 
@@ -35,7 +36,11 @@ type AddressFormProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const AddressForm: FC<AddressFormProps> = ({ name, onKeyDown }) => {
+export const AddressForm: FC<AddressFormProps> = ({
+  isLabelHidden = true,
+  name,
+  onKeyDown,
+}) => {
   // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
@@ -47,6 +52,8 @@ export const AddressForm: FC<AddressFormProps> = ({ name, onKeyDown }) => {
   // ---------------------------------------------------------------------------
 
   const methods = useFormContext();
+
+  const watchedName = methods.watch(name);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -65,8 +72,10 @@ export const AddressForm: FC<AddressFormProps> = ({ name, onKeyDown }) => {
     const charLength = fieldValue ? fieldValue.length : 0;
 
     // Set the span left position based on the length of the input
-    setSpanLeft(charLength * 9 + 32);
-  }, [methods.formState.isDirty, name, methods]);
+    setSpanLeft(charLength * 7 + 80);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watchedName, name, methods]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -81,8 +90,8 @@ export const AddressForm: FC<AddressFormProps> = ({ name, onKeyDown }) => {
       control={methods.control}
       name={name}
       render={({ field }) => (
-        <div className="col-span-6 space-y-2">
-          <Label htmlFor="address">Address or ENS</Label>
+        <div className="grow">
+          {!isLabelHidden && <Label htmlFor="address">Address or ENS</Label>}
           <div className="flex items-center space-x-3">
             <div className="relative inline-block w-full">
               <div className="relative">
@@ -98,14 +107,16 @@ export const AddressForm: FC<AddressFormProps> = ({ name, onKeyDown }) => {
                   style={{ left: `${spanLeft}px` }}
                 >
                   {methods.formState.isValid &&
-                    !methods.formState.errors[name] && (
-                      <span className="flex items-center space-x-1">
-                        <CheckBadgeIcon className="size-4 text-text-info" />
-                        <span className="text-xs text-text-weak">
-                          <EnsAddress name={field.value} />
-                        </span>
+                  !methods.formState.errors[name] ? (
+                    <span className="flex items-center space-x-1">
+                      <CheckBadgeIcon className="size-4 text-text-info" />
+                      <span className="text-xs text-text-weak">
+                        <EnsAddress name={field.value} />
                       </span>
-                    )}
+                    </span>
+                  ) : field.value && field.value.length > 3 ? (
+                    <FormMessage />
+                  ) : null}
                 </span>
               </div>
               <div className="absolute inset-y-0 left-3 flex items-center">
@@ -132,7 +143,7 @@ export const AddressForm: FC<AddressFormProps> = ({ name, onKeyDown }) => {
           </div>
           {/* <div className="text-text">{JSON.stringify(field, null, 2)}</div> */}
           {/* <div className="text-text">{JSON.stringify(methods, null, 2)}</div> */}
-          <FormMessage />
+          {/* <FormMessage /> */}
         </div>
       )}
     />

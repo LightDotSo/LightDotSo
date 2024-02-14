@@ -16,6 +16,7 @@
 export type { ActivityListParams, ActivityListCountParams } from "./activity";
 export type { AuthParams, AuthVerifyBodyParams } from "./auth";
 export type { ConfigurationParams } from "./configuration";
+export type { EnsListParams } from "./ens";
 export type { FeedbackParams, FeedbackCreateBodyParams } from "./feedback";
 export type { NftListParams } from "./nft";
 export type { NftValuationParams } from "./nftValuation";

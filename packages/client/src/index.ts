@@ -15,6 +15,7 @@
 
 export * from "./api";
 export * from "./client";
+export * from "./ens";
 export * from "./llama";
 export * from "./rpc";
 export * from "./simplehash";

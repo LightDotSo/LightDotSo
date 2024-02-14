@@ -22,7 +22,7 @@ import type { Address, Hex } from "viem";
 // -----------------------------------------------------------------------------
 
 export type UserOperationParams = {
-  address: Address | null;
+  address: Address | null | undefined;
   is_testnet?: boolean;
 };
 
@@ -31,12 +31,12 @@ export type UserOperationGetParams = {
 };
 
 export type UserOperationNonceParams = {
-  address: Address | null;
+  address: Address | null | undefined;
   chain_id: number;
 };
 
 export type UserOperationListParams = {
-  address: Address | null;
+  address: Address | null | undefined;
   status: "queued" | "history" | "executed" | null;
   order: "desc" | "asc";
   limit: number;

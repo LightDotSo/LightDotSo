@@ -93,6 +93,7 @@ export const Modal: FC<ModalProps> = ({
   isHidden,
   open,
   size,
+  headerContent,
   bannerContent,
   footerContent,
   onClose,
@@ -116,6 +117,7 @@ export const Modal: FC<ModalProps> = ({
     return (
       <Drawer shouldScaleBackground open={open} onClose={onClose}>
         <DrawerContent className={isHidden ? "hidden" : ""}>
+          {headerContent && <DialogHeader>{headerContent}</DialogHeader>}
           {bannerContent && <DialogHeader>{bannerContent}</DialogHeader>}
           <DrawerBody className={className}>
             <ModalContext.Provider value={true}>
@@ -141,8 +143,16 @@ export const Modal: FC<ModalProps> = ({
             isHidden && "hidden",
           )}
         >
-          <DialogHeader className="sticky top-0">
-            <ButtonIcon size="sm" variant="shadow" onClick={onClose}>
+          <DialogHeader
+            className={cn("sticky top-0", headerContent && "justify-between")}
+          >
+            {headerContent && headerContent}
+            <ButtonIcon
+              className="ml-4"
+              size="sm"
+              variant="shadow"
+              onClick={onClose}
+            >
               <X />
             </ButtonIcon>
           </DialogHeader>

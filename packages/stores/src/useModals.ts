@@ -23,10 +23,10 @@ import { devtools } from "zustand/middleware";
 // -----------------------------------------------------------------------------
 
 export type AddressModalProps = {
-  address: Address;
+  addressOrEns: string;
   isTestnet?: boolean;
   onClose?: () => void;
-  onAddressSelect: (address: Address) => void;
+  onAddressSelect: (addressOrEns: string) => void;
 };
 
 export type NftModalProps = {
@@ -49,6 +49,8 @@ export type TokenModalProps = {
 // -----------------------------------------------------------------------------
 
 type ModalsStore = {
+  addressModalProps: AddressModalProps;
+  setAddressModalProps: (props: AddressModalProps) => void;
   nftModalProps: NftModalProps;
   setNftModalProps: (props: NftModalProps) => void;
   tokenModalProps: TokenModalProps;
@@ -113,7 +115,7 @@ export const useModals = create(
   devtools<ModalsStore>(
     set => ({
       addressModalProps: {
-        address: "",
+        addressOrEns: "",
         isAddressModalVisible: false,
         onAddressSelect: () => {},
       },

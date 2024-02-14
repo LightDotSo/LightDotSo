@@ -1642,6 +1642,9 @@ importers:
       dotenv:
         specifier: ^16.4.4
         version: 16.4.4
+      graphql-request:
+        specifier: ^6.1.0
+        version: 6.1.0(graphql@16.8.1)
       neverthrow:
         specifier: ^6.1.0
         version: 6.1.0
@@ -1848,6 +1851,9 @@ importers:
       lucide-react:
         specifier: ^0.330.0
         version: 0.330.0(react@18.2.0)
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
       react-hook-form:
         specifier: ^7.50.1
         version: 7.50.1(react@18.2.0)
@@ -1983,6 +1989,9 @@ importers:
 
   packages/modals:
     dependencies:
+      '@hookform/resolvers':
+        specifier: ^3.3.4
+        version: 3.3.4(react-hook-form@7.50.1)
       '@lightdotso/const':
         specifier: workspace:*
         version: link:../const
@@ -1992,12 +2001,18 @@ importers:
       '@lightdotso/elements':
         specifier: workspace:*
         version: link:../elements
+      '@lightdotso/forms':
+        specifier: workspace:*
+        version: link:../forms
       '@lightdotso/hooks':
         specifier: workspace:*
         version: link:../hooks
       '@lightdotso/query':
         specifier: workspace:*
         version: link:../query
+      '@lightdotso/schemas':
+        specifier: workspace:*
+        version: link:../schemas
       '@lightdotso/stores':
         specifier: workspace:*
         version: link:../stores
@@ -2013,6 +2028,9 @@ importers:
       '@lightdotso/utils':
         specifier: workspace:*
         version: link:../utils
+      '@lightdotso/wagmi':
+        specifier: workspace:*
+        version: link:../wagmi
       '@storybook/react':
         specifier: ^7.6.15
         version: 7.6.15(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
@@ -2022,9 +2040,15 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
+      react-hook-form:
+        specifier: ^7.50.1
+        version: 7.50.1(react@18.2.0)
       viem:
         specifier: ^2.7.8
         version: 2.7.8(typescript@5.3.3)(zod@3.22.4)
+      zod:
+        specifier: ^3.22.4
+        version: 3.22.4
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
@@ -6777,6 +6801,14 @@ packages:
     resolution: {integrity: sha512-YfKLT2w+ItXD/VPYQiAKtINQONVsAOkcqVFMHlhUy0fcEBVWuFBT53hJNI0/l5ujQa4TSxtzrKW/7EABAdgI8g==}
     dependencies:
       assemblyscript: 0.19.10
+    dev: false
+
+  /@graphql-typed-document-node/core@3.2.0(graphql@16.8.1):
+    resolution: {integrity: sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==}
+    peerDependencies:
+      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
+    dependencies:
+      graphql: 16.8.1
     dev: false
 
   /@grpc/grpc-js@1.9.0:
@@ -23141,6 +23173,18 @@ packages:
       graphql: '*'
     dependencies:
       graphql: 16.8.1
+    dev: false
+
+  /graphql-request@6.1.0(graphql@16.8.1):
+    resolution: {integrity: sha512-p+XPfS4q7aIpKVcgmnZKhMNqhltk20hfXtkaIkTfjjmiKMJ5xrt5c743cL03y/K7y1rg3WrIC49xGiEQ4mxdNw==}
+    peerDependencies:
+      graphql: 14 - 16
+    dependencies:
+      '@graphql-typed-document-node/core': 3.2.0(graphql@16.8.1)
+      cross-fetch: 3.1.8
+      graphql: 16.8.1
+    transitivePeerDependencies:
+      - encoding
     dev: false
 
   /graphql@15.5.0:

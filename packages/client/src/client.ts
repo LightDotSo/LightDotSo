@@ -25,6 +25,13 @@ import type { paths as SocketPaths } from "./types/socket/v2";
 export type ClientType = "admin" | "authenticated" | "public";
 
 // -----------------------------------------------------------------------------
+// Ens
+// -----------------------------------------------------------------------------
+
+export const ensClient = () =>
+  "https://api.thegraph.com/subgraphs/name/ensdomains/ens";
+
+// -----------------------------------------------------------------------------
 // Simplehash
 // -----------------------------------------------------------------------------
 

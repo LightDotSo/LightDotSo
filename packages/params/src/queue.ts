@@ -20,7 +20,7 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export type QueueParams = {
-  address: Address | null;
+  address: Address | null | undefined;
   isMinimal?: boolean;
 };
 

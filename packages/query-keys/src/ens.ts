@@ -13,41 +13,22 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { WalletData } from "@lightdotso/data";
-import type { Address } from "viem";
+import type { EnsListParams } from "@lightdotso/params";
+import { createQueryKeys } from "@lukemorales/query-key-factory";
+import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
 // -----------------------------------------------------------------------------
-// Params
+// Keys
 // -----------------------------------------------------------------------------
 
-export type WalletParams = {
-  address: Address | null | undefined;
-};
-
-export type WalletListParams = {
-  address: Address | null | undefined;
-  limit: number;
-  offset: number;
-  user_id?: string;
-};
-
-export type WalletListCountParams = Omit<WalletListParams, "limit" | "offset">;
+export const ens = createQueryKeys("ens", {
+  list: (params: EnsListParams) => ({
+    queryKey: [{ params }],
+  }),
+});
 
 // -----------------------------------------------------------------------------
-// Params Body
+// Infer
 // -----------------------------------------------------------------------------
 
-export type WalletCreateBodyParams = {
-  address: Address | null | undefined;
-  simulate: boolean;
-  name: string;
-  threshold: number;
-  owners: {
-    address: Address;
-    weight: number;
-  }[];
-  invite_code: string;
-  salt: string;
-};
-
-export type WalletUpdateBodyParams = Partial<WalletData>;
+export type EnsKeys = inferQueryKeys<typeof ens>;

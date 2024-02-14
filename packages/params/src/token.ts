@@ -20,7 +20,7 @@ import type { Address } from "viem";
 // -----------------------------------------------------------------------------
 
 export type TokenListParams = {
-  address: Address | null;
+  address: Address | null | undefined;
   is_testnet: boolean;
   limit: number;
   offset: number;

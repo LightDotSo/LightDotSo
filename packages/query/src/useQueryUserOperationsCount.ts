@@ -60,7 +60,7 @@ export const useQueryUserOperationsCount = (
       is_testnet: params.is_testnet,
     }).queryKey,
     queryFn: async () => {
-      if (!params.address) {
+      if (typeof params.address === "undefined") {
         return null;
       }
 

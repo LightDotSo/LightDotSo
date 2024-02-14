@@ -13,20 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Address } from "viem";
+import { expect, test } from "vitest";
+import { getEnsDomains } from "../src"; // Replace with your actual file path
 
-// -----------------------------------------------------------------------------
-// Params
-// -----------------------------------------------------------------------------
+test("getEnsDomains", async () => {
+  const result = await getEnsDomains({ name: "kaki", amount: 3 });
 
-export type ActivityListParams = {
-  address: Address | null | undefined;
-  limit: number;
-  offset: number;
-  user_id?: string;
-};
-
-export type ActivityListCountParams = Omit<
-  ActivityListParams,
-  "limit" | "offset"
->;
+  expect(result._unsafeUnwrap()).haveOwnProperty("domains");
+  // console.log(JSON.stringify(result));
+});

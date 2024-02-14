@@ -20,7 +20,7 @@ import type { Address, Hex } from "viem";
 // -----------------------------------------------------------------------------
 
 export type AuthParams = {
-  address: Address | null;
+  address: Address | null | undefined;
 };
 
 // -----------------------------------------------------------------------------
