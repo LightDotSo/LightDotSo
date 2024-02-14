@@ -35,6 +35,7 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
+  toast,
 } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
 import {
@@ -115,7 +116,6 @@ export const UserNav: FC = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent forceMount className="w-56" align="end">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem
             onClick={() => {
@@ -147,19 +147,42 @@ export const UserNav: FC = () => {
             <DropdownMenuSubTrigger>Invite users</DropdownMenuSubTrigger>
             <DropdownMenuPortal>
               <DropdownMenuSubContent>
-                <DropdownMenuItem>Email</DropdownMenuItem>
-                <DropdownMenuItem>Message</DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => toast.error("Not implemented yet.")}
+                >
+                  Email
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => toast.error("Not implemented yet.")}
+                >
+                  Message
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>More...</DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => toast.error("Not implemented yet.")}
+                >
+                  More...
+                </DropdownMenuItem>
               </DropdownMenuSubContent>
             </DropdownMenuPortal>
           </DropdownMenuSub>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem asChild>
+            <Link href="/notifications">
+              Notifications <DropdownMenuShortcut>⌘N</DropdownMenuShortcut>
+            </Link>
+          </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link href="/settings">
               Settings
               <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
             </Link>
           </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
           <DropdownMenuItem asChild>
             <Link href="/new">New Wallet</Link>
           </DropdownMenuItem>
