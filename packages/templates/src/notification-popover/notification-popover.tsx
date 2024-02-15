@@ -25,7 +25,7 @@ import {
   TabsTrigger,
 } from "@lightdotso/ui";
 import { BellIcon, Settings2 } from "lucide-react";
-import { FC } from "react";
+import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Component
