@@ -48,7 +48,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { Suspense, useCallback, useEffect, useState } from "react";
 import type { UIEvent, FC, ComponentPropsWithoutRef } from "react";
 import { getAddress, isAddress } from "viem";
-import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props

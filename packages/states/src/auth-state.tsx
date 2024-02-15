@@ -25,7 +25,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import type { FC } from "react";
 import { isAddress } from "viem";
-import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Component
