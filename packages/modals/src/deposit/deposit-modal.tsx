@@ -39,7 +39,8 @@ import {
 } from "@lightdotso/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { isEmpty } from "lodash";
+import { useEffect, useMemo } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
@@ -123,10 +124,17 @@ export function DepositModal() {
   // ---------------------------------------------------------------------------
 
   const onSubmit: SubmitHandler<DepositFormValues> = () => {
-    form.trigger();
-
+    // form.trigger();
     // router.push(href);
   };
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const isFormValid = useMemo(() => {
+    return form.formState.isValid && isEmpty(form.formState.errors);
+  }, [form.formState]);
 
   // ---------------------------------------------------------------------------
   // Template Hooks
@@ -151,7 +159,12 @@ export function DepositModal() {
           </>
         }
         footerContent={
-          <FooterButton className="pt-0" customSuccessText="Deposit" />
+          <FooterButton
+            form="deposit-modal-form"
+            disabled={!isFormValid}
+            className="pt-0"
+            customSuccessText="Deposit"
+          />
         }
         onClose={hideDepositModal}
       >
@@ -168,7 +181,7 @@ export function DepositModal() {
             <Form {...form}>
               <form
                 // ref={formRef}
-                id="send-dialog-form"
+                id="deposit-modal-form"
                 className="space-y-4"
                 onSubmit={form.handleSubmit(onSubmit)}
               >
@@ -269,6 +282,16 @@ export function DepositModal() {
                               render={({ field }) => (
                                 <Input
                                   {...field}
+                                  onChange={e => {
+                                    if (!e.target.value) {
+                                      // Clear the value of key address
+                                      form.setValue("asset.quantity", 0);
+                                    }
+
+                                    const quantity = parseInt(e.target.value);
+
+                                    field.onChange(quantity);
+                                  }}
                                   type="number"
                                   className="w-full"
                                 />
