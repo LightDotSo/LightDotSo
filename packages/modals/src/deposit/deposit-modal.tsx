@@ -105,6 +105,7 @@ export function DepositModal() {
 
   useEffect(() => {
     const subscription = form.watch((value, { name: _name }) => {
+      console.log("value", value, _name);
       if (value === undefined) {
         setTransfer(null);
       } else {
