@@ -91,7 +91,7 @@ pub fn init_test_tracing() {
 /// From: https://github.com/autometrics-dev/autometrics-rs/blob/0801acbe0db735c85324c8f70302af056d3fe9c2/examples/opentelemetry-push/src/main.rs#L11C1-L27C1
 /// License: MIT
 /// Also heavily inspired by: https://github.com/senate-xyz/senate/blob/19d565957554673429f9391eee2af7261f1b44b4/apps/email-secretary/src/telemetry.rs#L29C1-L75C81
-/// License: GPL-3.0
+/// Inspired by License: GPL-3.0
 /// Initializes a new push-based OpenTelemetry metrics pipeline.
 pub fn init_metrics() -> Result<()> {
     info!("Initializing metrics pipeline...");

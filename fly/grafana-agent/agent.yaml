@@ -15,7 +15,7 @@
 
 # Default configuration for the Grafana Agent.
 # https://github.com/grafana/intro-to-mltp/blob/main/agent/config.yaml
-# License: AGPL-3.0
+# Inspired by License: AGPL-3.0
 
 # Fly.io Forum
 # https://community.fly.io/t/grafana-tempo-agent/4253/3

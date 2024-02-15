@@ -27,6 +27,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 use ethers::types::{Address, H256, U64};
 use jsonrpsee::{core::RpcResult, proc_macros::rpc};
 use rundler_sim::{GasEstimate, UserOperationOptionalGas};
@@ -36,7 +48,7 @@ use crate::types::{RichUserOperation, UserOperationReceipt};
 /// Entire file derved from: https://github.com/Vid201/silius/blob/b1841aa614a9410907d1801128bf500f2a87596f/crates/rpc/src/eth_api.rs
 /// License: MIT or Apache-2.0
 /// Then converted to: https://github.com/alchemyplatform/rundler/blob/22fc250166cf525596faa9db84f5f56ca945a40b/crates/rpc/src/eth/mod.rs
-/// License: GPL-3.0
+/// License: LGPL-3.0
 /// Thank you to Vid201 for the wonderful work!
 
 #[rpc(client, server, namespace = "eth")]

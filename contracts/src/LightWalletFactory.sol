@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// SPDX-License-Identifier: AGPL-3.0-or-later
+// SPDX-License-Identifier: Apache-2.0
 
 pragma solidity ^0.8.18;
 
@@ -75,9 +75,8 @@ contract LightWalletFactory is ILightWalletFactory {
         // Initializes the account
         ret = LightWallet(
             payable(
-                new ERC1967Proxy{salt : bytes32(salt)}(
-                  address(accountImplementation),
-                  abi.encodeCall(LightWallet.initialize, (hash))
+                new ERC1967Proxy{salt: bytes32(salt)}(
+                    address(accountImplementation), abi.encodeCall(LightWallet.initialize, (hash))
                 )
             )
         );

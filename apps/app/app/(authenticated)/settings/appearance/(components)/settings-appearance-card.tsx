@@ -183,31 +183,6 @@ export const SettingsAppearanceCard: FC = () => {
                       </span>
                     </FormLabel>
                   </FormItem>
-                  <FormItem>
-                    <FormLabel className="hover:cursor-pointer [&:has([data-state=checked])>div]:border-border-primary">
-                      <FormControl>
-                        <RadioGroupItem value="system" className="sr-only" />
-                      </FormControl>
-                      <div className="relative">
-                        <LightModeCard />
-                        {/* 
-                          From: https://github.com/openstatusHQ/openstatus/blob/fd9716bb9af53c7c0b0e3dfc26a20f321b83b368/apps/web/src/app/app/%5BworkspaceSlug%5D/(dashboard)/settings/appearance/page.tsx#L28C9-L38C15
-                          License: AGPL-3.0
-                         */}
-                        <div
-                          className="absolute inset-0"
-                          style={{
-                            clipPath: "polygon(100% 0, 0 0, 100% 100%)",
-                          }}
-                        >
-                          <DarkModeCard />
-                        </div>
-                      </div>
-                      <span className="block w-full p-2 text-center font-normal">
-                        System
-                      </span>
-                    </FormLabel>
-                  </FormItem>
                 </RadioGroup>
               </FormItem>
             )}

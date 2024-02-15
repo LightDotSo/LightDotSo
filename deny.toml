@@ -22,7 +22,6 @@
   copyleft = "allow"
   confidence-threshold = 0.93
   allow = [
-    "AGPL-3.0",
     "Apache-2.0",
     "Apache-2.0 WITH LLVM-exception",
     "BSD-2-Clause",

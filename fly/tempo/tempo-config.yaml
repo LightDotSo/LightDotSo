@@ -15,7 +15,7 @@
 
 # Default configuration for the Tempo.
 # File from: https://github.com/grafana/intro-to-mltp/blob/b28081e888ffd39e4700d1e50facdaa5d1ce39c4/tempo/tempo.yaml
-# License: AGPL-3.0
+# Inspired by License: AGPL-3.0
 
 # Configure the server block.
 server:

@@ -10,7 +10,7 @@
     "type": "git",
     "url": "https://github.com/LightDotSo/LightDotSo.git"
   },
-  "license": "AGPL-3.0-or-later",
+  "license": "Apache-2.0",
   "author": "Light, Inc.",
   "files": [
     "dist/**"

@@ -37,7 +37,7 @@
   },
   // Json schema settings
   // From: https://github.com/typehero/typehero/blob/83577d389c287e8c37ac03a02cf3d9e6ac1e3c6e/.vscode/settings.json#L4
-  // License: AGPL-3.0
+  // Inspired by License: AGPL-3.0
   "json.schemas": [
     {
       "fileMatch": ["tsconfig.*.json"],
