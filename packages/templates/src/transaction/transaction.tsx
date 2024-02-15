@@ -28,6 +28,7 @@ import { userOperation, type UserOperation } from "@lightdotso/schemas";
 import { useFormRef, useModalSwiper } from "@lightdotso/stores";
 import {
   Button,
+  Skeleton,
   Tabs,
   TabsContent,
   TabsList,
@@ -184,7 +185,7 @@ export const Transaction: FC<TransactionProps> = ({
   // ---------------------------------------------------------------------------
 
   // Gets the simulation for the user operation
-  const { simulation } = useQuerySimulation({
+  const { simulation, isSimulationLoading } = useQuerySimulation({
     sender: address as Address,
     nonce: Number(targetUserOperation.nonce),
     chain_id: Number(targetUserOperation.chainId),
@@ -549,6 +550,7 @@ export const Transaction: FC<TransactionProps> = ({
               </TabsList>
               <TabsContent value="transaction">
                 <div className="flex flex-col space-y-4">
+                  {isSimulationLoading && <Skeleton className="h-32" />}
                   {simulation &&
                     simulation.interpretation.asset_changes.map(
                       (asset_change, _index) => {
