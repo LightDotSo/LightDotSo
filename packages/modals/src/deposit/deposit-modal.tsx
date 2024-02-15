@@ -212,9 +212,9 @@ export function DepositModal() {
                                   walletSettings?.is_enabled_testnet ?? false,
                                 onClose: () => {
                                   hideTokenModal();
-                                  // if (isInsideModal) {
-                                  //   setSendBackgroundModal(false);
-                                  // }
+                                  if (isInsideModal) {
+                                    setDepositBackgroundModal(false);
+                                  }
                                 },
                                 onTokenSelect: token => {
                                   form.setValue("chainId", token.chain_id);
