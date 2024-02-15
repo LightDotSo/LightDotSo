@@ -19,6 +19,7 @@ import { FooterButton, Modal } from "@lightdotso/templates";
 import {
   DialogDescription,
   DialogTitle,
+  Separator,
   Tabs,
   TabsContent,
   TabsList,
@@ -43,21 +44,25 @@ export function DepositModal() {
   if (isDepositModalVisible) {
     return (
       <Modal
+        bannerContent={
+          <>
+            <DialogTitle>Deposit</DialogTitle>
+            <DialogDescription>
+              Please choose assets to deposit to this wallet!
+            </DialogDescription>
+          </>
+        }
         footerContent={<FooterButton className="pt-0" />}
         open
         onClose={hideDepositModal}
       >
-        <DialogTitle>Deposit</DialogTitle>
-        <DialogDescription>
-          Please choose assets to deposit to this wallet!
-        </DialogDescription>
-        <Tabs className="py-3">
+        <Tabs defaultValue="token" className="py-3">
           <TabsList className="w-full">
             <TabsTrigger className="w-full" value="token">
-              Account
+              Token
             </TabsTrigger>
             <TabsTrigger className="w-full" value="nft">
-              Password
+              NFTs
             </TabsTrigger>
           </TabsList>
           <TabsContent value="token">
