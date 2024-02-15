@@ -37,6 +37,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@lightdotso/ui";
+import { useReadContract, useWriteContract } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
@@ -44,6 +45,7 @@ import { useEffect, useMemo } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
+import { Address, erc20Abi } from "viem";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -62,7 +64,7 @@ export function DepositModal() {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address } = useAuth();
+  const { address, wallet } = useAuth();
   const {
     isDepositModalVisible,
     hideDepositModal,
@@ -120,10 +122,49 @@ export function DepositModal() {
   }, [form.watch]);
 
   // ---------------------------------------------------------------------------
+  // Wagmi
+  // ---------------------------------------------------------------------------
+
+  const { data } = useReadContract({
+    abi: erc20Abi,
+    account: form.getValues("asset.address") as Address,
+    chainId: form.getValues("chainId"),
+  });
+
+  const { writeContract } = useWriteContract();
+
+  // ---------------------------------------------------------------------------
   // Submit Handler
   // ---------------------------------------------------------------------------
 
-  const onSubmit: SubmitHandler<DepositFormValues> = () => {
+  const onSubmit: SubmitHandler<DepositFormValues> = async () => {
+    console.log("Deposit form submitted!");
+
+    console.log(data);
+
+    if (!wallet) {
+      console.error("Wallet is not defined");
+      return;
+    }
+
+    const quantity = form.getValues("asset.quantity");
+
+    if (!quantity) {
+      console.error("Quantity is 0");
+      return;
+    }
+
+    console.log("Quantity: ", quantity);
+
+    const res = await writeContract({
+      abi: erc20Abi,
+      address: form.getValues("asset.address") as Address,
+      chainId: form.getValues("chainId"),
+      functionName: "transfer",
+      args: [wallet, BigInt(quantity)],
+    });
+
+    console.log(res);
     // form.trigger();
     // router.push(href);
   };

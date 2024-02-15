@@ -43,4 +43,6 @@ export {
   useEstimateGas,
   useEstimateFeesPerGas,
   useEstimateMaxPriorityFeePerGas,
+  useReadContract,
+  useWriteContract,
 } from "wagmi";
