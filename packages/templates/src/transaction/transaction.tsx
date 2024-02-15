@@ -32,6 +32,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
+  Textarea,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import {
@@ -419,6 +420,20 @@ export const Transaction: FC<TransactionProps> = ({
     });
   }, [userOperationWithHash, userOperationIndex, setUserOperations]);
 
+  const chunkSize = 32;
+
+  const splitHexIntoChunks = (str: string, chunkLen: number): string[] => {
+    let result: string[] = [];
+    for (let i = 0; i < str.length; i += chunkLen) {
+      result.push(str.substring(i, i + chunkSize));
+    }
+    return result;
+  };
+
+  const chunkArray = userOperationWithHash
+    ? splitHexIntoChunks(userOperationWithHash.callData, chunkSize)
+    : [];
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -481,6 +496,17 @@ export const Transaction: FC<TransactionProps> = ({
                 )}
               </TabsContent>
               <TabsContent value="details">Details</TabsContent>
+              <TabsContent value="data">
+                <div className="w-full rounded-md bg-background-weak py-3">
+                  <pre className="text-sm italic">
+                    <Textarea
+                      className="w-full h-96"
+                      value={userOperationWithHash?.callData}
+                      readOnly
+                    />
+                  </pre>
+                </div>
+              </TabsContent>
               <TabsContent value="dev">
                 <div className="grid gap-4 py-4">
                   <TransactionDevInfo
