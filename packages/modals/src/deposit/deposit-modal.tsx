@@ -37,7 +37,14 @@ import {
   TabsList,
   TabsTrigger,
 } from "@lightdotso/ui";
-import { useReadContract, useWriteContract } from "@lightdotso/wagmi";
+import {
+  useAccount,
+  useChainId,
+  useReadContract,
+  useSendTransaction,
+  useSwitchChain,
+  useWriteContract,
+} from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
@@ -65,6 +72,9 @@ export function DepositModal() {
   // ---------------------------------------------------------------------------
 
   const { address, wallet } = useAuth();
+  const { chainId } = useAccount();
+  const { switchChain } = useSwitchChain();
+
   const {
     isDepositModalVisible,
     hideDepositModal,
@@ -131,6 +141,7 @@ export function DepositModal() {
     chainId: form.getValues("chainId"),
   });
 
+  const { sendTransaction } = useSendTransaction();
   const { writeContract } = useWriteContract();
 
   // ---------------------------------------------------------------------------
@@ -141,6 +152,24 @@ export function DepositModal() {
     console.log("Deposit form submitted!");
 
     console.log(data);
+
+    const assetChainId = form.getValues("chainId");
+
+    if (!assetChainId) {
+      console.error("assetChainId is not defined");
+      return;
+    }
+
+    console.log("assetChainId: ", assetChainId);
+
+    if (chainId !== assetChainId) {
+      console.error("ChainId does not match");
+      console.log("Current chain: ", chainId);
+      console.log("Switching chain to: ", assetChainId);
+
+      switchChain({ chainId: assetChainId });
+      return;
+    }
 
     if (!wallet) {
       console.error("Wallet is not defined");
@@ -155,6 +184,23 @@ export function DepositModal() {
     }
 
     console.log("Quantity: ", quantity);
+
+    const addr = form.getValues("asset.address") as Address;
+
+    console.log("Address: ", addr);
+
+    if (addr === "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee") {
+      console.log("Sending ETH");
+
+      const res = await sendTransaction({
+        chainId: chainId,
+        to: wallet,
+        value: BigInt(quantity),
+      });
+
+      console.log(res);
+      return;
+    }
 
     const res = await writeContract({
       abi: erc20Abi,

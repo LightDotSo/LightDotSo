@@ -40,9 +40,12 @@ export {
   serialize,
   useSignMessage,
   useAccount,
+  useChainId,
   useEstimateGas,
   useEstimateFeesPerGas,
   useEstimateMaxPriorityFeePerGas,
   useReadContract,
+  useSendTransaction,
+  useSwitchChain,
   useWriteContract,
 } from "wagmi";
