@@ -39,7 +39,6 @@ import {
 } from "@lightdotso/ui";
 import {
   useAccount,
-  useChainId,
   useReadContract,
   useSendTransaction,
   useSwitchChain,
@@ -72,8 +71,8 @@ export function DepositModal() {
   // ---------------------------------------------------------------------------
 
   const { address, wallet } = useAuth();
-  const { chainId } = useAccount();
-  const { switchChain } = useSwitchChain();
+  const { chainId, isConnecting } = useAccount();
+  const { switchChain, isPending: isSwitchChainPending } = useSwitchChain();
 
   const {
     isDepositModalVisible,
@@ -141,17 +140,19 @@ export function DepositModal() {
     chainId: form.getValues("chainId"),
   });
 
-  const { sendTransaction } = useSendTransaction();
-  const { writeContract } = useWriteContract();
+  const { sendTransaction, isPending: isSendTransactionPending } =
+    useSendTransaction();
+  const { writeContract, isPending: isWriteContractPending } =
+    useWriteContract();
 
   // ---------------------------------------------------------------------------
   // Submit Handler
   // ---------------------------------------------------------------------------
 
   const onSubmit: SubmitHandler<DepositFormValues> = async () => {
-    console.log("Deposit form submitted!");
+    console.info("Deposit form submitted!");
 
-    console.log(data);
+    console.info(data);
 
     const assetChainId = form.getValues("chainId");
 
@@ -160,12 +161,12 @@ export function DepositModal() {
       return;
     }
 
-    console.log("assetChainId: ", assetChainId);
+    console.info("assetChainId: ", assetChainId);
 
     if (chainId !== assetChainId) {
       console.error("ChainId does not match");
-      console.log("Current chain: ", chainId);
-      console.log("Switching chain to: ", assetChainId);
+      console.info("Current chain: ", chainId);
+      console.info("Switching chain to: ", assetChainId);
 
       switchChain({ chainId: assetChainId });
       return;
@@ -183,14 +184,14 @@ export function DepositModal() {
       return;
     }
 
-    console.log("Quantity: ", quantity);
+    console.info("Quantity: ", quantity);
 
     const addr = form.getValues("asset.address") as Address;
 
-    console.log("Address: ", addr);
+    console.info("Address: ", addr);
 
     if (addr === "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee") {
-      console.log("Sending ETH");
+      console.info("Sending ETH");
 
       const res = await sendTransaction({
         chainId: chainId,
@@ -198,7 +199,7 @@ export function DepositModal() {
         value: BigInt(quantity),
       });
 
-      console.log(res);
+      console.info(res);
       return;
     }
 
@@ -210,7 +211,7 @@ export function DepositModal() {
       args: [wallet, BigInt(quantity)],
     });
 
-    console.log(res);
+    console.info(res);
     // form.trigger();
     // router.push(href);
   };
@@ -218,6 +219,16 @@ export function DepositModal() {
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
+
+  const isFormLoading = useMemo(() => {
+    return (
+      form.formState.isSubmitting ||
+      isSendTransactionPending ||
+      isWriteContractPending ||
+      isSwitchChainPending ||
+      isConnecting
+    );
+  }, [form.formState]);
 
   const isFormValid = useMemo(() => {
     return form.formState.isValid && isEmpty(form.formState.errors);
@@ -249,6 +260,7 @@ export function DepositModal() {
           <FooterButton
             form="deposit-modal-form"
             disabled={!isFormValid}
+            isLoading={isFormLoading}
             className="pt-0"
             customSuccessText={
               !address
