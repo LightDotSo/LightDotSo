@@ -25,7 +25,7 @@ import {
 import { Megaphone } from "lucide-react";
 import { useState } from "react";
 import type { FC } from "react";
-import { FeedbackForm } from "@/components/feedback/feedback-form";
+import { FeedbackForm } from "./feedback-form";
 
 // -----------------------------------------------------------------------------
 // Component

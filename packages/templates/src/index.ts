@@ -20,6 +20,7 @@ export {
   DataTablePagination,
   DataTableViewOptions,
 } from "./data-table";
+export { FeedbackPopover } from "./feedback-popover";
 export { Footer } from "./footer";
 export { FooterButton } from "./footer-button";
 export { MobileAppDrawer } from "./mobile-app-drawer";
@@ -28,5 +29,6 @@ export { Login } from "./login";
 export { Modal, useIsInsideModal } from "./modal";
 export { ModalInterception } from "./modal-interception";
 export { ModalSwiper } from "./modal-swiper";
+export { NotificationPopover } from "./notification-popover";
 export { Support } from "./support";
 export { Transaction } from "./transaction";
