@@ -33,6 +33,8 @@ import {
   type FC,
   type InputHTMLAttributes,
   useCallback,
+  useState,
+  use,
 } from "react";
 import { useForm, useFormContext } from "react-hook-form";
 import type { z } from "zod";
@@ -59,6 +61,12 @@ type InviteCodeFormProps = {
 
 export const InviteCodeForm: FC<InviteCodeFormProps> = ({ name }) => {
   // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [isValidating, setIsValidating] = useState(false);
+
+  // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------
 
@@ -69,6 +77,8 @@ export const InviteCodeForm: FC<InviteCodeFormProps> = ({ name }) => {
   }: {
     inviteCode: string;
   }) => {
+    setIsValidating(true);
+
     const res = await getClientInviteCode({
       params: {
         query: {
@@ -76,6 +86,8 @@ export const InviteCodeForm: FC<InviteCodeFormProps> = ({ name }) => {
         },
       },
     });
+
+    setIsValidating(false);
 
     return res.match(
       data => data.status === "ACTIVE",
@@ -144,6 +156,12 @@ export const InviteCodeForm: FC<InviteCodeFormProps> = ({ name }) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (!isValidating) {
+      syncWithParent();
+    }
+  }, [isValidating, syncWithParent]);
 
   // ---------------------------------------------------------------------------
   // Render
