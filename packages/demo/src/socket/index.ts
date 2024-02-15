@@ -12,22 +12,4 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// -----------------------------------------------------------------------------
-// Data
-// -----------------------------------------------------------------------------
-
-export type SocketBalanceData = {
-  chainId: number;
-  address: string;
-  name: string;
-  symbol: string;
-  decimals: number;
-  price?: number;
-  amount: number;
-  currency?: string;
-};
-
-export type SocketBalancePageData = {
-  success: boolean;
-  result: SocketBalanceData[];
-};
+export * from "./balances";

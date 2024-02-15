@@ -12,22 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// -----------------------------------------------------------------------------
-// Data
-// -----------------------------------------------------------------------------
+import type {
+  SocketBalanceData,
+  SocketBalancePageData,
+} from "@lightdotso/data";
+import getJsonData from "./get.json";
+import listJsonData from "./list.json";
 
-export type SocketBalanceData = {
-  chainId: number;
-  address: string;
-  name: string;
-  symbol: string;
-  decimals: number;
-  price?: number;
-  amount: number;
-  currency?: string;
-};
-
-export type SocketBalancePageData = {
-  success: boolean;
-  result: SocketBalanceData[];
-};
+export const socketBalancesGetData = getJsonData as SocketBalanceData;
+export const socketBalancesListData = listJsonData as SocketBalancePageData;

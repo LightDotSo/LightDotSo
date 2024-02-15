@@ -205,7 +205,7 @@ export function DepositModal() {
 
                               setTokenModalProps({
                                 address: address,
-                                type: "native",
+                                type: "socket",
                                 isTestnet:
                                   walletSettings?.is_enabled_testnet ?? false,
                                 onClose: () => {

@@ -14,4 +14,5 @@
 
 export * from "./api";
 export * from "./rpc";
+export * from "./socket";
 export * from "./simplehash";
