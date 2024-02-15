@@ -15,7 +15,11 @@
 "use client";
 
 import {
-  Button,
+  useQueryNotifications,
+  useQueryNotificationsCount,
+} from "@lightdotso/query";
+import { useAuth } from "@lightdotso/stores";
+import {
   ButtonIcon,
   Popover,
   PopoverContent,
@@ -28,12 +32,24 @@ import {
 import { BellIcon, Settings2 } from "lucide-react";
 import Link from "next/link";
 import { FC } from "react";
+import { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
 export const NotificationPopover: FC = () => {
+  const { address } = useAuth();
+
+  const { notifications } = useQueryNotifications({
+    address: address as Address,
+    limit: 10,
+    offset: 0,
+  });
+  const { notificationsCount } = useQueryNotificationsCount({
+    address: address as Address,
+  });
+
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -48,13 +64,18 @@ export const NotificationPopover: FC = () => {
       </PopoverTrigger>
       <PopoverContent className="w-96 p-0">
         <Tabs variant="outline">
-          <div className="flex justify-between">
+          <div className="flex justify-between border-b border-border">
             <TabsList>
               <TabsTrigger value="inbox">Inbox</TabsTrigger>
               <TabsTrigger value="archive">Archive</TabsTrigger>
               <TabsTrigger value="transactions">Transactions</TabsTrigger>
             </TabsList>
-            <ButtonIcon size="sm" variant="ghost" className="rounded-full m-1">
+            <ButtonIcon
+              asChild
+              size="sm"
+              variant="ghost"
+              className="rounded-full m-1"
+            >
               <Link href="/settings/notifications">
                 <Settings2 className="size-4" />
                 <span className="sr-only">Open settings</span>
