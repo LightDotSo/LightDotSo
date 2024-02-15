@@ -21,3 +21,7 @@ Some of the code is referenced and annotated from their respective repositories.
 Thank you to [shacdn/ui](https://ui.shadcn.com/) for providing the beautiful UI components that were used for the base implementation of the frontend.
 
 All of our up-to-date UI components are available in the [storybook](https://storybook.light.so) located [here](./packages/ui/).
+
+## References
+
+All of the references used in this project are located [here](./REFERENCES.md).
