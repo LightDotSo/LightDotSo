@@ -24,7 +24,6 @@ import { Form } from "@lightdotso/ui";
 import { publicClient } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import type { Address } from "viem";
 import { isAddress } from "viem";
 import { normalize } from "viem/ens";
 import { z } from "zod";
@@ -109,7 +108,7 @@ export function AddressModal() {
   });
 
   const { wallets } = useQueryWallets({
-    address: address as Address,
+    address: address,
     offset: 0,
     limit: 6,
   });

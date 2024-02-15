@@ -12,46 +12,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-"use client";
-
-import { useIsMounted } from "@lightdotso/hooks";
-import { useAuth } from "@lightdotso/stores";
 import { ButtonIcon } from "@lightdotso/ui";
-import { BellIcon } from "@radix-ui/react-icons";
-import Link from "next/link";
+import { BellIcon } from "lucide-react";
 import type { FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+export interface NotificationPopoverIconProps {
+  notificationsCount: number | null | undefined;
+}
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const NotificationsNav: FC = () => {
-  // ---------------------------------------------------------------------------
-  // States
-  // ---------------------------------------------------------------------------
-
-  const { wallet } = useAuth();
-
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const isMounted = useIsMounted();
-
+export const NotificationPopoverIcon: FC<NotificationPopoverIconProps> = ({
+  notificationsCount,
+}) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!isMounted) {
-    return null;
-  }
-
   return (
-    <ButtonIcon asChild variant="outline" className="rounded-full">
-      <Link href={`/notifications${wallet ? `?address=${wallet}` : ""}`}>
-        <BellIcon />
+    <div className="relative">
+      <ButtonIcon variant="outline" className="rounded-full">
+        <BellIcon className="size-4" />
         <span className="sr-only">Open notificaitons</span>
-      </Link>
-    </ButtonIcon>
+      </ButtonIcon>
+      {notificationsCount && notificationsCount > 0 && (
+        <span className="translate-x-1/5 translate-y-1/5 absolute bottom-0 right-0 size-2 rounded-full bg-background-info" />
+      )}
+    </div>
   );
 };

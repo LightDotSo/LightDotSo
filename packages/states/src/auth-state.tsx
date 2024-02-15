@@ -25,7 +25,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import type { FC } from "react";
 import { isAddress } from "viem";
-import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -59,11 +58,11 @@ export const AuthState: FC = () => {
   const queryClient = useQueryClient();
 
   const { user } = useQueryUser({
-    address: address as Address,
+    address: address,
   });
 
   const { authSession } = useQueryAuthSession({
-    address: address as Address,
+    address: address,
   });
 
   // ---------------------------------------------------------------------------
@@ -135,7 +134,7 @@ export const AuthState: FC = () => {
   // Subscribe to the user query
   useEffect(() => {
     const observer = new QueryObserver<UserData | null>(queryClient, {
-      queryKey: queryKeys.user.get({ address: address as Address }).queryKey,
+      queryKey: queryKeys.user.get({ address: address }).queryKey,
     });
 
     const unsubscribe = observer.subscribe(result => {
@@ -148,8 +147,7 @@ export const AuthState: FC = () => {
   // Subscribe to the session query
   useEffect(() => {
     const observer = new QueryObserver<AuthSessionData | null>(queryClient, {
-      queryKey: queryKeys.auth.session({ address: address as Address })
-        .queryKey,
+      queryKey: queryKeys.auth.session({ address: address }).queryKey,
     });
 
     const unsubscribe = observer.subscribe(result => {

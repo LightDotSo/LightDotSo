@@ -20,7 +20,6 @@ import { useAuth } from "@lightdotso/stores";
 import { walletColumns } from "@lightdotso/tables";
 import { TableSectionWrapper } from "@lightdotso/ui";
 import { useMemo, type FC } from "react";
-import type { Address } from "viem";
 import { DataTable } from "@/app/(authenticated)/wallets/(components)/data-table/data-table";
 
 // -----------------------------------------------------------------------------
@@ -53,13 +52,13 @@ export const WalletsDataTable: FC = () => {
   // ---------------------------------------------------------------------------
 
   const { wallets, isWalletsLoading } = useQueryWallets({
-    address: address as Address,
+    address: address,
     limit: paginationState.pageSize,
     offset: offsetCount,
   });
 
   const { walletsCount, isWalletsCountLoading } = useQueryWalletsCount({
-    address: address as Address,
+    address: address,
   });
 
   // ---------------------------------------------------------------------------

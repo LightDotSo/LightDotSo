@@ -51,7 +51,7 @@ export const OverviewSectionEmpty = ({
   const currentData: UserOperationCountData | undefined =
     queryClient.getQueryData(
       queryKeys.user_operation.listCount({
-        address: address as Address,
+        address: address,
         status: null,
         is_testnet: walletSettings?.is_enabled_testnet ?? false,
       }).queryKey,

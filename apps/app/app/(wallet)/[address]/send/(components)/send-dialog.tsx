@@ -1609,7 +1609,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                             className="flex w-full items-center justify-between px-4 text-sm"
                                             onClick={() => {
                                               setNftModalProps({
-                                                address: address as Address,
+                                                address: address,
                                                 onClose: () => {
                                                   hideNftModal();
                                                   if (isInsideModal) {

@@ -79,6 +79,7 @@ const BadgeIcon = forwardRef<HTMLDivElement, BadgeIconProps>(
             className,
           }),
           badgeIconVariants({ size, shape }),
+          className,
         )}
         data-variant={variant ?? "default"}
         {...props}

@@ -21,7 +21,6 @@ import { toast } from "@lightdotso/ui";
 import { useSignMessage, useAccount } from "@lightdotso/wagmi";
 import { useCallback } from "react";
 import { SiweMessage } from "siwe";
-import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -46,7 +45,7 @@ export const useSignInWithSiwe = () => {
   // ---------------------------------------------------------------------------
 
   const { verify, isVerifySuccess: isSuccess } = useMutationAuthVerify({
-    address: address as Address,
+    address: address,
   });
 
   // ---------------------------------------------------------------------------

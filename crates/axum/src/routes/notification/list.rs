@@ -26,7 +26,10 @@ use axum::{
     Json, TypedHeader,
 };
 use ethers_main::types::H160;
-use lightdotso_prisma::notification::{self, WhereParam};
+use lightdotso_prisma::{
+    activity,
+    notification::{self, WhereParam},
+};
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use tower_sessions_core::Session;
@@ -120,7 +123,7 @@ pub(crate) async fn v1_notification_list_handler(
         .client
         .notification()
         .find_many(query_params)
-        .with(notification::activity::fetch())
+        .with(notification::activity::fetch().with(activity::user::fetch()))
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
         .exec()

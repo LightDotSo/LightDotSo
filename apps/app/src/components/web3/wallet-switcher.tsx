@@ -48,7 +48,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { Suspense, useCallback, useEffect, useState } from "react";
 import type { UIEvent, FC, ComponentPropsWithoutRef } from "react";
 import { getAddress, isAddress } from "viem";
-import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -121,7 +120,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   // ---------------------------------------------------------------------------
 
   const { wallets, isWalletsLoading } = useQueryWallets({
-    address: address as Address,
+    address: address,
     limit: Number.MAX_SAFE_INTEGER,
     offset: 0,
   });
