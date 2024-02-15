@@ -112,10 +112,6 @@ export const UserOperationCardTransaction: FC<
     [userOperation],
   );
 
-  // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
-
   const informationItems = useMemo(() => {
     const items: TransactionInformationItem[] = [
       {

@@ -40,19 +40,23 @@ import { NotificationPopoverIcon } from "./notification-popover-icon";
 // -----------------------------------------------------------------------------
 
 export const NotificationPopover: FC = () => {
-  const { address } = useAuth();
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { wallet } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
   const { notifications } = useQueryNotifications({
-    address: address,
+    address: wallet,
     limit: 10,
     offset: 0,
   });
   const { notificationsCount } = useQueryNotificationsCount({
-    address: address,
+    address: wallet,
   });
 
   // ---------------------------------------------------------------------------

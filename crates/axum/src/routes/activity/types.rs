@@ -33,6 +33,8 @@ pub(crate) struct Activity {
     operation: String,
     /// The timestamp of the activity.
     timestamp: String,
+    /// The log message of the activity.
+    log: String,
     /// The wallet address of the activity.
     address: Option<String>,
     /// The user that created the activity.
@@ -51,6 +53,7 @@ impl From<activity::Data> for Activity {
             entity: activity.entity.to_string(),
             operation: activity.operation.to_string(),
             timestamp: activity.timestamp.to_rfc3339(),
+            log: activity.log.to_string(),
             address: activity.wallet_address.map(|addr| addr.to_string()),
             user: activity.user.and_then(|user| user.map(|data| User::from(*data))),
         }
