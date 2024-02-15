@@ -129,9 +129,6 @@ export const InviteCodeForm: FC<InviteCodeFormProps> = ({ name }) => {
       return;
     }
 
-    // Invalidate the query
-    validInviteCode.invalidate();
-
     // Sync with parent
     parentMethods.setValue(name, form.getValues(name));
 
@@ -174,7 +171,7 @@ export const InviteCodeForm: FC<InviteCodeFormProps> = ({ name }) => {
         name={name}
         render={({ field }) => {
           return (
-            <FormItem onMouseLeave={syncWithParent}>
+            <FormItem onMouseLeave={validInviteCode.invalidate}>
               <FormLabel htmlFor={name}>Invite Code</FormLabel>
               <OTP
                 length={6}
@@ -185,13 +182,13 @@ export const InviteCodeForm: FC<InviteCodeFormProps> = ({ name }) => {
                   if (e.target.value.length === 7) {
                     field.onChange(e.target.value);
                   }
-                  syncWithParent();
+                  validInviteCode.invalidate();
                 }}
                 onChange={e => {
                   if (e.target.value.length === 7) {
                     field.onChange(e.target.value);
                   }
-                  syncWithParent();
+                  validInviteCode.invalidate();
                 }}
               />
               <FormDescription>Enter the invite code</FormDescription>
