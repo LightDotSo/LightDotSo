@@ -14,4 +14,4 @@
 
 export { AddressForm } from "./address-form";
 export { FormDevTools } from "./form-dev-tools";
-export { OTPForm } from "./otp-form";
+export { InviteCodeForm } from "./invite-code-form";

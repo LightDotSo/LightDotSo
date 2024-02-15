@@ -14,7 +14,9 @@
 
 "use client";
 
-import { RefinementCallback, useRefinement } from "@lightdotso/hooks";
+import { getInviteCode as getClientInviteCode } from "@lightdotso/client";
+import type { RefinementCallback } from "@lightdotso/hooks";
+import { useRefinement } from "@lightdotso/hooks";
 import { newFormSchema } from "@lightdotso/schemas";
 import {
   Form,
@@ -32,9 +34,8 @@ import {
   type InputHTMLAttributes,
   useCallback,
 } from "react";
-import { getInviteCode as getClientInviteCode } from "@lightdotso/client";
 import { useForm, useFormContext } from "react-hook-form";
-import { z } from "zod";
+import type { z } from "zod";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -42,13 +43,13 @@ import { z } from "zod";
 
 const inviteCodeSchema = newFormSchema.pick({ inviteCode: true });
 
-type NewFormValues = z.infer<typeof inviteCodeSchema>;
+type InviteCodeValues = z.infer<typeof inviteCodeSchema>;
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type OTPFormProps = {
+type InviteCodeFormProps = {
   name: string;
 } & InputHTMLAttributes<HTMLInputElement>;
 
@@ -56,14 +57,14 @@ type OTPFormProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const OTPForm: FC<OTPFormProps> = ({ name, onKeyDown }) => {
+export const InviteCodeForm: FC<InviteCodeFormProps> = ({ name }) => {
   // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------
 
   const parentMethods = useFormContext();
 
-  const getInviteCode: RefinementCallback<NewFormValues> = async ({
+  const getInviteCode: RefinementCallback<InviteCodeValues> = async ({
     inviteCode,
   }: {
     inviteCode: string;
@@ -155,7 +156,7 @@ export const OTPForm: FC<OTPFormProps> = ({ name, onKeyDown }) => {
         name={name}
         render={({ field }) => {
           return (
-            <FormItem>
+            <FormItem onMouseLeave={syncWithParent}>
               <FormLabel htmlFor={name}>Invite Code</FormLabel>
               <OTP
                 length={6}

@@ -13,15 +13,15 @@
 // limitations under the License.
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { OTPForm } from "./otp-form";
+import { InviteCodeForm } from "./invite-code-form";
 
 // -----------------------------------------------------------------------------
 // Meta
 // -----------------------------------------------------------------------------
 
-const meta: Meta<typeof OTPForm> = {
-  title: "form/OTPForm",
-  component: OTPForm,
+const meta: Meta<typeof InviteCodeForm> = {
+  title: "form/InviteCodeForm",
+  component: InviteCodeForm,
   tags: ["autodocs"],
   argTypes: {},
 };
@@ -31,7 +31,7 @@ export default meta;
 // Types
 // -----------------------------------------------------------------------------
 
-type Story = StoryObj<typeof OTPForm>;
+type Story = StoryObj<typeof InviteCodeForm>;
 
 // -----------------------------------------------------------------------------
 // Story
@@ -39,7 +39,7 @@ type Story = StoryObj<typeof OTPForm>;
 
 export const Base: Story = {
   render: args => {
-    return <OTPForm {...args} />;
+    return <InviteCodeForm {...args} />;
   },
   args: {
     name: "inviteCode",

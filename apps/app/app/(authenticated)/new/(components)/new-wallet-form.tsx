@@ -16,7 +16,7 @@
 
 import { getInviteCode } from "@lightdotso/client";
 import { NOTION_LINKS } from "@lightdotso/const";
-import { OTPForm } from "@lightdotso/forms";
+import { InviteCodeForm } from "@lightdotso/forms";
 import type { RefinementCallback } from "@lightdotso/hooks";
 import { useRefinement } from "@lightdotso/hooks";
 import {
@@ -290,7 +290,7 @@ export const NewWalletForm: FC = () => {
                   </div>
                 )}
               />
-              <OTPForm name="inviteCode" />
+              <InviteCodeForm name="inviteCode" />
               <FormField
                 control={form.control}
                 name="name"
