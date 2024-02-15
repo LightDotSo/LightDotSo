@@ -29,7 +29,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@lightdotso/ui";
-import { BellIcon, Settings2 } from "lucide-react";
+import { Settings2 } from "lucide-react";
 import Link from "next/link";
 import { FC } from "react";
 import { Address } from "viem";
@@ -57,11 +57,10 @@ export const NotificationPopover: FC = () => {
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <ButtonIcon variant="outline" className="rounded-full">
-          <BellIcon className="size-4" />
-          <span className="sr-only">Open notificaitons</span>
-        </ButtonIcon>
+      <PopoverTrigger>
+        <NotificationPopoverIcon
+          notificationsCount={notificationsCount?.count}
+        />
       </PopoverTrigger>
       <PopoverContent className="w-96 p-0">
         <Tabs variant="outline">
