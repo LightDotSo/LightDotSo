@@ -20,7 +20,6 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { useForm } from "react-hook-form";
 import { OTPForm } from "./otp-form";
 import { getInviteCode as getClientInviteCode } from "@lightdotso/client";
-import { z } from "zod";
 
 // -----------------------------------------------------------------------------
 // Meta
@@ -71,23 +70,18 @@ export const Base: Story = {
       mode: "all",
       reValidateMode: "onBlur",
       resolver: zodResolver(
-        z
-          .object({
-            inviteCode: z.string(),
-          })
-          .refine(
-            ({ inviteCode }) => {
-              console.log("inviteCode", inviteCode);
-              if (inviteCode.length < 1) {
-                return true;
-              }
-              return validInviteCode({ inviteCode: inviteCode });
-            },
-            {
-              path: ["inviteCode"],
-              message: "Invite code is not valid",
-            },
-          ),
+        newFormSchema.pick({ inviteCode: true }).refine(
+          ({ inviteCode }) => {
+            if (inviteCode.length < 1) {
+              return true;
+            }
+            return validInviteCode({ inviteCode: inviteCode });
+          },
+          {
+            path: ["inviteCode"],
+            message: "Invite code is not valid",
+          },
+        ),
       ),
     });
 
