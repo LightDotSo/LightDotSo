@@ -14,7 +14,10 @@
 
 "use client";
 
+import { useRefinement } from "@lightdotso/hooks";
+import { newFormSchema } from "@lightdotso/schemas";
 import {
+  Form,
   FormDescription,
   FormField,
   FormItem,
@@ -22,8 +25,10 @@ import {
   FormMessage,
   OTP,
 } from "@lightdotso/ui";
-import { type FC, type InputHTMLAttributes } from "react";
-import { useFormContext } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, type FC, type InputHTMLAttributes } from "react";
+import { getInviteCode as getClientInviteCode } from "@lightdotso/client";
+import { useForm, useFormContext } from "react-hook-form";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -42,48 +47,102 @@ export const OTPForm: FC<OTPFormProps> = ({ name, onKeyDown }) => {
   // Form
   // ---------------------------------------------------------------------------
 
-  const methods = useFormContext();
+  const parentMethods = useFormContext();
+
+  const getInviteCode = async ({ inviteCode }: { inviteCode: string }) => {
+    const res = await getClientInviteCode({
+      params: {
+        query: {
+          code: inviteCode,
+        },
+      },
+    });
+
+    return res.match(
+      data => data.status === "ACTIVE",
+      () => false,
+    );
+  };
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const validInviteCode = useRefinement(getInviteCode, {
+    debounce: 300,
+  });
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const form = useForm({
+    mode: "all",
+    reValidateMode: "onBlur",
+    resolver: zodResolver(
+      newFormSchema.pick({ inviteCode: true }).refine(
+        ({ inviteCode }) => {
+          if (inviteCode.length < 1) {
+            return true;
+          }
+          return validInviteCode({ inviteCode: inviteCode });
+        },
+        {
+          path: ["inviteCode"],
+          message: "Invite code is not valid",
+        },
+      ),
+    ),
+  });
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // Sync the parent form methods
+  useEffect(() => {
+    if (!parentMethods) {
+      return;
+    }
+
+    parentMethods.register(name, form.getValues(name));
+    return () => {
+      parentMethods.unregister(name);
+    };
+  }, [form, name, parentMethods]);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!methods) {
-    return null;
-  }
-
   return (
-    <FormField
-      control={methods.control}
-      name={name}
-      render={({ field }) => {
-        return (
-          <FormItem onKeyDown={onKeyDown}>
-            <FormLabel htmlFor={name}>Invite Code</FormLabel>
-            <OTP
-              length={6}
-              id={name}
-              placeholder="Your Invite Code"
-              defaultValue={field.value}
-              onBlur={e => {
-                if (e.target.value.length === 7) {
-                  field.onChange(e.target.value);
-                }
-              }}
-              onChange={e => {
-                if (e.target.value.length === 7) {
-                  field.onChange(e.target.value);
-                }
-              }}
-            />
-            <FormDescription>Enter the invite code</FormDescription>
-            <FormMessage />
-            <div className="text-text">{JSON.stringify(field, null, 2)}</div>
-            <div className="text-text">{JSON.stringify(methods, null, 2)}</div>
-            {/* <FormMessage /> */}
-          </FormItem>
-        );
-      }}
-    />
+    <Form {...form}>
+      <FormField
+        control={form.control}
+        name={name}
+        render={({ field }) => {
+          return (
+            <FormItem onKeyDown={validInviteCode.invalidate}>
+              <FormLabel htmlFor={name}>Invite Code</FormLabel>
+              <OTP
+                length={6}
+                id={name}
+                placeholder="Your Invite Code"
+                defaultValue={field.value}
+                onBlur={e => {
+                  if (e.target.value.length === 7) {
+                    field.onChange(e.target.value);
+                  }
+                }}
+                onChange={e => {
+                  if (e.target.value.length === 7) {
+                    field.onChange(e.target.value);
+                  }
+                }}
+              />
+              <FormDescription>Enter the invite code</FormDescription>
+              <FormMessage />
+              <div className="text-text">{JSON.stringify(field, null, 2)}</div>
+              <div className="text-text">{JSON.stringify(form, null, 2)}</div>
+              {/* <FormMessage /> */}
+            </FormItem>
+          );
+        }}
+      />
+    </Form>
   );
 };

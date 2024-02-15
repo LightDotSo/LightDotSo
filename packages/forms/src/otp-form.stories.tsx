@@ -12,14 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { useRefinement } from "@lightdotso/hooks";
-import { newFormSchema } from "@lightdotso/schemas";
-import { Form } from "@lightdotso/ui";
-import { zodResolver } from "@hookform/resolvers/zod";
 import type { Meta, StoryObj } from "@storybook/react";
-import { useForm } from "react-hook-form";
 import { OTPForm } from "./otp-form";
-import { getInviteCode as getClientInviteCode } from "@lightdotso/client";
 
 // -----------------------------------------------------------------------------
 // Meta
@@ -45,51 +39,7 @@ type Story = StoryObj<typeof OTPForm>;
 
 export const Base: Story = {
   render: args => {
-    const getInviteCode = async ({ inviteCode }: { inviteCode: string }) => {
-      const res = await getClientInviteCode({
-        params: {
-          query: {
-            code: inviteCode,
-          },
-        },
-      });
-
-      return res.match(
-        data => data.status === "ACTIVE",
-        () => false,
-      );
-    };
-
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const validInviteCode = useRefinement(getInviteCode, {
-      debounce: 300,
-    });
-
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const methods = useForm({
-      mode: "all",
-      reValidateMode: "onBlur",
-      resolver: zodResolver(
-        newFormSchema.pick({ inviteCode: true }).refine(
-          ({ inviteCode }) => {
-            if (inviteCode.length < 1) {
-              return true;
-            }
-            return validInviteCode({ inviteCode: inviteCode });
-          },
-          {
-            path: ["inviteCode"],
-            message: "Invite code is not valid",
-          },
-        ),
-      ),
-    });
-
-    return (
-      <Form {...methods}>
-        <OTPForm onKeyDown={validInviteCode.invalidate} {...args} />
-      </Form>
-    );
+    return <OTPForm {...args} />;
   },
   args: {
     name: "inviteCode",

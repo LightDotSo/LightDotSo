@@ -16,6 +16,7 @@
 
 import { getInviteCode } from "@lightdotso/client";
 import { NOTION_LINKS } from "@lightdotso/const";
+import { OTPForm } from "@lightdotso/forms";
 import type { RefinementCallback } from "@lightdotso/hooks";
 import { useRefinement } from "@lightdotso/hooks";
 import {
@@ -326,33 +327,7 @@ export const NewWalletForm: FC = () => {
                   </div>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="inviteCode"
-                render={({ field }) => (
-                  <FormItem onChange={validInviteCode.invalidate}>
-                    <FormLabel htmlFor="inviteCode">Invite Code</FormLabel>
-                    <OTP
-                      length={6}
-                      id="inviteCode"
-                      placeholder="Your Invite Code"
-                      defaultValue={field.value}
-                      onBlur={e => {
-                        if (e.target.value.length === 7) {
-                          field.onChange(e.target.value);
-                        }
-                      }}
-                      onChange={e => {
-                        if (e.target.value.length === 7) {
-                          field.onChange(e.target.value);
-                        }
-                      }}
-                    />
-                    <FormDescription>Enter the invite code</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <OTPForm name="inviteCode" />
               <FormField
                 control={form.control}
                 name="name"
