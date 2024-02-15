@@ -14,7 +14,7 @@
 
 "use client";
 
-import { useRefinement } from "@lightdotso/hooks";
+import { RefinementCallback, useRefinement } from "@lightdotso/hooks";
 import { newFormSchema } from "@lightdotso/schemas";
 import {
   Form,
@@ -29,6 +29,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, type FC, type InputHTMLAttributes } from "react";
 import { getInviteCode as getClientInviteCode } from "@lightdotso/client";
 import { useForm, useFormContext } from "react-hook-form";
+import { z } from "zod";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+const inviteCodeSchema = newFormSchema.pick({ inviteCode: true });
+
+type NewFormValues = z.infer<typeof inviteCodeSchema>;
 
 // -----------------------------------------------------------------------------
 // Props
@@ -49,7 +58,11 @@ export const OTPForm: FC<OTPFormProps> = ({ name, onKeyDown }) => {
 
   const parentMethods = useFormContext();
 
-  const getInviteCode = async ({ inviteCode }: { inviteCode: string }) => {
+  const getInviteCode: RefinementCallback<NewFormValues> = async ({
+    inviteCode,
+  }: {
+    inviteCode: string;
+  }) => {
     const res = await getClientInviteCode({
       params: {
         query: {

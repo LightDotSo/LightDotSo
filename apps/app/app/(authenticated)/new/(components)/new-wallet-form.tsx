@@ -90,44 +90,12 @@ export const NewWalletForm: FC = () => {
   const { setFormValues } = useNewForm();
 
   // ---------------------------------------------------------------------------
-  // Validation
-  // ---------------------------------------------------------------------------
-
-  function validateInviteCode(): RefinementCallback<NewFormValues> {
-    return async (data, { signal }) => {
-      let timeoutRef: ReturnType<typeof setTimeout>;
-
-      signal?.addEventListener("abort", () => {
-        clearTimeout(timeoutRef);
-      });
-      const res = await getInviteCode({
-        params: { query: { code: data.inviteCode } },
-      });
-
-      return res.match(
-        data => {
-          if (data.status === "ACTIVE") {
-            return true;
-          }
-
-          return false;
-        },
-        _ => false,
-      );
-    };
-  }
-
-  // ---------------------------------------------------------------------------
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
   const [name, setName] = useNameQueryState();
   const [inviteCode, setInviteCode] = useInviteCodeQueryState();
   const [type, setType] = useTypeQueryState();
-
-  const validInviteCode = useRefinement(validateInviteCode(), {
-    debounce: 500,
-  });
 
   // ---------------------------------------------------------------------------
   // Form
@@ -142,12 +110,7 @@ export const NewWalletForm: FC = () => {
   const form = useForm<NewFormValues>({
     mode: "all",
     reValidateMode: "onBlur",
-    resolver: zodResolver(
-      newFormSchema.refine(validInviteCode, {
-        message: "Invite Code is not valid.",
-        path: ["inviteCodeValid"],
-      }),
-    ),
+    resolver: zodResolver(newFormSchema),
     defaultValues,
   });
 
