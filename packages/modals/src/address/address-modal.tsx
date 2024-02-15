@@ -109,7 +109,7 @@ export function AddressModal() {
   });
 
   const { wallets } = useQueryWallets({
-    address: address as Address,
+    address: address,
     offset: 0,
     limit: 6,
   });

@@ -52,7 +52,7 @@ export const NotificationPopover: FC = () => {
     offset: 0,
   });
   const { notificationsCount } = useQueryNotificationsCount({
-    address: address as Address,
+    address: address,
   });
 
   // ---------------------------------------------------------------------------

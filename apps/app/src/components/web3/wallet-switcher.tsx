@@ -121,7 +121,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   // ---------------------------------------------------------------------------
 
   const { wallets, isWalletsLoading } = useQueryWallets({
-    address: address as Address,
+    address: address,
     limit: Number.MAX_SAFE_INTEGER,
     offset: 0,
   });

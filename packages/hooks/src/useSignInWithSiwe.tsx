@@ -46,7 +46,7 @@ export const useSignInWithSiwe = () => {
   // ---------------------------------------------------------------------------
 
   const { verify, isVerifySuccess: isSuccess } = useMutationAuthVerify({
-    address: address as Address,
+    address: address,
   });
 
   // ---------------------------------------------------------------------------

@@ -53,13 +53,13 @@ export const WalletsDataTable: FC = () => {
   // ---------------------------------------------------------------------------
 
   const { wallets, isWalletsLoading } = useQueryWallets({
-    address: address as Address,
+    address: address,
     limit: paginationState.pageSize,
     offset: offsetCount,
   });
 
   const { walletsCount, isWalletsCountLoading } = useQueryWalletsCount({
-    address: address as Address,
+    address: address,
   });
 
   // ---------------------------------------------------------------------------
