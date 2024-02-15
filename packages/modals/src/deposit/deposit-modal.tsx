@@ -250,7 +250,13 @@ export function DepositModal() {
             form="deposit-modal-form"
             disabled={!isFormValid}
             className="pt-0"
-            customSuccessText="Deposit"
+            customSuccessText={
+              !address
+                ? "Connect Wallet"
+                : chainId !== form.getValues("chainId")
+                  ? "Change Network"
+                  : "Deposit"
+            }
           />
         }
         onClose={hideDepositModal}
