@@ -1,17 +1,16 @@
-// Copyright (C) 2023 Light, Inc.
+// Copyright 2023-2024 Light, Inc.
 //
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Affero General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Affero General Public License for more details.
+//   http://www.apache.org/licenses/LICENSE-2.0
 //
-// You should have received a copy of the GNU Affero General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 use dotenvy::dotenv;
 use eyre::Result;
@@ -91,7 +90,7 @@ pub fn init_test_tracing() {
 /// From: https://github.com/autometrics-dev/autometrics-rs/blob/0801acbe0db735c85324c8f70302af056d3fe9c2/examples/opentelemetry-push/src/main.rs#L11C1-L27C1
 /// License: MIT
 /// Also heavily inspired by: https://github.com/senate-xyz/senate/blob/19d565957554673429f9391eee2af7261f1b44b4/apps/email-secretary/src/telemetry.rs#L29C1-L75C81
-/// License: GPL-3.0
+/// Inspired by License: GPL-3.0
 /// Initializes a new push-based OpenTelemetry metrics pipeline.
 pub fn init_metrics() -> Result<()> {
     info!("Initializing metrics pipeline...");

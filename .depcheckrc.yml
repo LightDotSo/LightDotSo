@@ -55,3 +55,7 @@ ignores:
   - tsup
   - vercel
   - viem
+  - next
+  - "@thunderclient/cli"
+  - clean-package
+  - execa

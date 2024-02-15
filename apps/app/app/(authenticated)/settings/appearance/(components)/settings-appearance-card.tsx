@@ -1,17 +1,16 @@
-// Copyright (C) 2023 Light, Inc.
+// Copyright 2023-2024 Light, Inc.
 //
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Affero General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Affero General Public License for more details.
+//   http://www.apache.org/licenses/LICENSE-2.0
 //
-// You should have received a copy of the GNU Affero General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 "use client";
 
@@ -180,31 +179,6 @@ export const SettingsAppearanceCard: FC = () => {
                       <DarkModeCard />
                       <span className="block w-full p-2 text-center font-normal">
                         Dark
-                      </span>
-                    </FormLabel>
-                  </FormItem>
-                  <FormItem>
-                    <FormLabel className="hover:cursor-pointer [&:has([data-state=checked])>div]:border-border-primary">
-                      <FormControl>
-                        <RadioGroupItem value="system" className="sr-only" />
-                      </FormControl>
-                      <div className="relative">
-                        <LightModeCard />
-                        {/* 
-                          From: https://github.com/openstatusHQ/openstatus/blob/fd9716bb9af53c7c0b0e3dfc26a20f321b83b368/apps/web/src/app/app/%5BworkspaceSlug%5D/(dashboard)/settings/appearance/page.tsx#L28C9-L38C15
-                          License: AGPL-3.0
-                         */}
-                        <div
-                          className="absolute inset-0"
-                          style={{
-                            clipPath: "polygon(100% 0, 0 0, 100% 100%)",
-                          }}
-                        >
-                          <DarkModeCard />
-                        </div>
-                      </div>
-                      <span className="block w-full p-2 text-center font-normal">
-                        System
                       </span>
                     </FormLabel>
                   </FormItem>
