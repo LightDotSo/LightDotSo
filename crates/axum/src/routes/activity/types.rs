@@ -15,6 +15,7 @@
 use crate::routes::user::types::User;
 use lightdotso_prisma::activity;
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 use utoipa::ToSchema;
 
 // -----------------------------------------------------------------------------
@@ -34,7 +35,7 @@ pub(crate) struct Activity {
     /// The timestamp of the activity.
     timestamp: String,
     /// The log message of the activity.
-    log: String,
+    log: Value,
     /// The wallet address of the activity.
     address: Option<String>,
     /// The user that created the activity.
@@ -53,7 +54,7 @@ impl From<activity::Data> for Activity {
             entity: activity.entity.to_string(),
             operation: activity.operation.to_string(),
             timestamp: activity.timestamp.to_rfc3339(),
-            log: activity.log.to_string(),
+            log: activity.log,
             address: activity.wallet_address.map(|addr| addr.to_string()),
             user: activity.user.and_then(|user| user.map(|data| User::from(*data))),
         }
