@@ -13,20 +13,48 @@
 // limitations under the License.
 
 import { z } from "zod";
-import { transfer } from "../web3";
 
 // -----------------------------------------------------------------------------
 // Schema
 // -----------------------------------------------------------------------------
 
-const transfers = z.array(transfer);
+const erc20 = z.object({
+  address: z.string().optional(),
+  decimals: z.number().optional(),
+  quantity: z.number().optional(),
+});
 
-export const sendFormConfigurationSchema = z.object({
-  transfers: transfers,
+const erc721 = z.object({
+  address: z.string().optional(),
+  tokenId: z.number().optional(),
+  quantity: z.number().optional(),
+});
+
+const erc1155 = z.object({
+  address: z.string().optional(),
+  tokenId: z.number().optional(),
+  quantity: z.number().optional(),
+});
+
+const erc1155Batch = z.object({
+  address: z.string().optional(),
+  tokenIds: z.array(z.number()),
+  quantities: z.array(z.number()),
+});
+
+export const asset = z.union([erc20, erc721, erc1155, erc1155Batch]);
+
+export const transfer = z.object({
+  address: z.string().optional(),
+  addressOrEns: z.string().optional(),
+  asset: asset.optional(),
+  assetType: z.string().optional(),
+  chainId: z.number().optional(),
 });
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
 
-export type SendFormConfiguration = z.infer<typeof sendFormConfigurationSchema>;
+export type Asset = z.infer<typeof asset>;
+export type Transfer = z.infer<typeof transfer>;

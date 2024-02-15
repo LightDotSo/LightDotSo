@@ -16,5 +16,7 @@ export { address } from "./address";
 export type { Address } from "./address";
 export type { AddressOrEns } from "./addressOrEns";
 export { addressOrEns } from "./addressOrEns";
+export type { Asset, Transfer } from "./transfer";
+export { asset, transfer } from "./transfer";
 export type { UserOperation } from "./userOperation";
 export { userOperation } from "./userOperation";

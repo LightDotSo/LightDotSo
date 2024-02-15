@@ -55,8 +55,8 @@ import { type Hex, type Address, fromHex } from "viem";
 import { Loading } from "../loading";
 import { useIsInsideModal } from "../modal";
 import { ModalSwiper } from "../modal-swiper";
-import { TransactionDevInfo } from "./transaction-dev-info";
 import { TransactionDetailInfo } from "./transaction-details-info";
+import { TransactionDevInfo } from "./transaction-dev-info";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -437,27 +437,13 @@ export const Transaction: FC<TransactionProps> = ({
     });
   }, [userOperationWithHash, userOperationIndex, setUserOperations]);
 
-  const chunkSize = 32;
-
-  const splitHexIntoChunks = (str: string, chunkLen: number): string[] => {
-    let result: string[] = [];
-    for (let i = 0; i < str.length; i += chunkLen) {
-      result.push(str.substring(i, i + chunkSize));
-    }
-    return result;
-  };
-
-  const chunkArray = userOperationWithHash
-    ? splitHexIntoChunks(userOperationWithHash.callData, chunkSize)
-    : [];
-
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const chain = useMemo(
     () => getChainById(Number(targetUserOperation.chainId)),
-    [userOperation],
+    [targetUserOperation.chainId],
   );
 
   const informationItems = useMemo(() => {
@@ -521,9 +507,15 @@ export const Transaction: FC<TransactionProps> = ({
   }, [
     chain,
     configuration?.threshold,
+    targetUserOperation.chainId,
     targetUserOperation.nonce,
     targetUserOperation.sender,
     userOperationWithHash?.hash,
+    estimateUserOperationGasData?.callGasLimit,
+    estimateUserOperationGasData?.preVerificationGas,
+    estimateUserOperationGasData?.verificationGasLimit,
+    feesPerGas?.maxFeePerGas,
+    maxPriorityFeePerGas,
   ]);
 
   // ---------------------------------------------------------------------------
@@ -591,6 +583,7 @@ export const Transaction: FC<TransactionProps> = ({
               <TabsContent value="details">
                 {informationItems.map(item => (
                   <TransactionDetailInfo
+                    key={item.title}
                     title={item.title}
                     value={item.value}
                   />
@@ -600,9 +593,9 @@ export const Transaction: FC<TransactionProps> = ({
                 <div className="w-full rounded-md bg-background-weak py-3">
                   <pre className="text-sm italic">
                     <Textarea
-                      className="w-full h-96"
-                      value={userOperationWithHash?.callData}
                       readOnly
+                      className="h-96 w-full"
+                      value={userOperationWithHash?.callData}
                     />
                   </pre>
                 </div>
