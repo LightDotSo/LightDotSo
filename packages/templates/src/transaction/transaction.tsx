@@ -28,13 +28,19 @@ import { userOperation, type UserOperation } from "@lightdotso/schemas";
 import { useFormRef, useModalSwiper } from "@lightdotso/stores";
 import {
   Button,
+  Skeleton,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
   Textarea,
 } from "@lightdotso/ui";
-import { cn } from "@lightdotso/utils";
+import {
+  cn,
+  getChainById,
+  shortenAddress,
+  shortenBytes32,
+} from "@lightdotso/utils";
 import {
   useEstimateFeesPerGas,
   useEstimateGas,
@@ -50,6 +56,17 @@ import { Loading } from "../loading";
 import { useIsInsideModal } from "../modal";
 import { ModalSwiper } from "../modal-swiper";
 import { TransactionDevInfo } from "./transaction-dev-info";
+import { TransactionDetailInfo } from "./transaction-details-info";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+interface TransactionDetailsItem {
+  title: string;
+  value: string | number;
+  href?: string;
+}
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -168,7 +185,7 @@ export const Transaction: FC<TransactionProps> = ({
   // ---------------------------------------------------------------------------
 
   // Gets the simulation for the user operation
-  const { simulation } = useQuerySimulation({
+  const { simulation, isSimulationLoading } = useQuerySimulation({
     sender: address as Address,
     nonce: Number(targetUserOperation.nonce),
     chain_id: Number(targetUserOperation.chainId),
@@ -435,6 +452,81 @@ export const Transaction: FC<TransactionProps> = ({
     : [];
 
   // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const chain = useMemo(
+    () => getChainById(Number(targetUserOperation.chainId)),
+    [userOperation],
+  );
+
+  const informationItems = useMemo(() => {
+    const items: TransactionDetailsItem[] = [
+      { title: "Nonce", value: Number(targetUserOperation.nonce) },
+      { title: "Sender", value: shortenAddress(targetUserOperation.sender) },
+      { title: "Threshold", value: configuration?.threshold },
+      { title: "Chain", value: chain?.name },
+    ];
+
+    if (estimateUserOperationGasData?.callGasLimit) {
+      items.push({
+        title: "Call Gas Limit",
+        value: fromHex(estimateUserOperationGasData.callGasLimit as Hex, {
+          to: "bigint",
+        }).toLocaleString(),
+      });
+    }
+
+    if (estimateUserOperationGasData?.preVerificationGas) {
+      items.push({
+        title: "Pre-Verification Gas",
+        value: fromHex(estimateUserOperationGasData.preVerificationGas as Hex, {
+          to: "bigint",
+        }).toLocaleString(),
+      });
+    }
+
+    if (estimateUserOperationGasData?.verificationGasLimit) {
+      items.push({
+        title: "Verification Gas Limit",
+        value: fromHex(
+          estimateUserOperationGasData.verificationGasLimit as Hex,
+          { to: "bigint" },
+        ).toLocaleString(),
+      });
+    }
+
+    if (feesPerGas?.maxFeePerGas) {
+      items.push({
+        title: "Max Fee Per Gas",
+        value: feesPerGas.maxFeePerGas.toLocaleString(),
+      });
+    }
+
+    if (maxPriorityFeePerGas) {
+      items.push({
+        title: "Max Priority Fee Per Gas",
+        value: maxPriorityFeePerGas.toLocaleString(),
+      });
+    }
+
+    if (userOperationWithHash?.hash) {
+      items.push({
+        title: "Hash",
+        value: shortenBytes32(userOperationWithHash.hash),
+      });
+    }
+
+    return items;
+  }, [
+    chain,
+    configuration?.threshold,
+    targetUserOperation.nonce,
+    targetUserOperation.sender,
+    userOperationWithHash?.hash,
+  ]);
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -472,6 +564,7 @@ export const Transaction: FC<TransactionProps> = ({
               </TabsList>
               <TabsContent value="transaction">
                 <div className="flex flex-col space-y-4">
+                  {isSimulationLoading && <Skeleton className="h-32" />}
                   {simulation &&
                     simulation.interpretation.asset_changes.map(
                       (asset_change, _index) => {
@@ -495,7 +588,14 @@ export const Transaction: FC<TransactionProps> = ({
                   </div>
                 )}
               </TabsContent>
-              <TabsContent value="details">Details</TabsContent>
+              <TabsContent value="details">
+                {informationItems.map(item => (
+                  <TransactionDetailInfo
+                    title={item.title}
+                    value={item.value}
+                  />
+                ))}
+              </TabsContent>
               <TabsContent value="data">
                 <div className="w-full rounded-md bg-background-weak py-3">
                   <pre className="text-sm italic">
