@@ -15,6 +15,7 @@
 "use client";
 
 import {
+  Button,
   ButtonIcon,
   Popover,
   PopoverContent,
@@ -25,6 +26,7 @@ import {
   TabsTrigger,
 } from "@lightdotso/ui";
 import { BellIcon, Settings2 } from "lucide-react";
+import Link from "next/link";
 import { FC } from "react";
 
 // -----------------------------------------------------------------------------
@@ -44,13 +46,21 @@ export const NotificationPopover: FC = () => {
           <span className="sr-only">Open notificaitons</span>
         </ButtonIcon>
       </PopoverTrigger>
-      <PopoverContent className="w-80 p-0">
+      <PopoverContent className="w-96 p-0">
         <Tabs variant="outline">
-          <TabsList>
-            <TabsTrigger value="inbox">Inbox</TabsTrigger>
-            <TabsTrigger value="archive">Archive</TabsTrigger>
-            <TabsTrigger value="transactions">Transactions</TabsTrigger>
-          </TabsList>
+          <div className="flex justify-between">
+            <TabsList>
+              <TabsTrigger value="inbox">Inbox</TabsTrigger>
+              <TabsTrigger value="archive">Archive</TabsTrigger>
+              <TabsTrigger value="transactions">Transactions</TabsTrigger>
+            </TabsList>
+            <ButtonIcon size="sm" variant="ghost" className="rounded-full m-1">
+              <Link href="/settings/notifications">
+                <Settings2 className="size-4" />
+                <span className="sr-only">Open settings</span>
+              </Link>
+            </ButtonIcon>
+          </div>
           <TabsContent value="inbox">
             <p className="text-sm text-text-primary">
               Make changes to your account here. Click save when you&apos;re
