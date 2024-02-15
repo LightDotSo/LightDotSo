@@ -34,7 +34,12 @@ import {
   TabsTrigger,
   Textarea,
 } from "@lightdotso/ui";
-import { cn } from "@lightdotso/utils";
+import {
+  cn,
+  getChainById,
+  shortenAddress,
+  shortenBytes32,
+} from "@lightdotso/utils";
 import {
   useEstimateFeesPerGas,
   useEstimateGas,
@@ -50,6 +55,17 @@ import { Loading } from "../loading";
 import { useIsInsideModal } from "../modal";
 import { ModalSwiper } from "../modal-swiper";
 import { TransactionDevInfo } from "./transaction-dev-info";
+import { TransactionDetailInfo } from "./transaction-details-info";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+interface TransactionDetailsItem {
+  title: string;
+  value: string | number;
+  href?: string;
+}
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -420,19 +436,80 @@ export const Transaction: FC<TransactionProps> = ({
     });
   }, [userOperationWithHash, userOperationIndex, setUserOperations]);
 
-  const chunkSize = 32;
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
 
-  const splitHexIntoChunks = (str: string, chunkLen: number): string[] => {
-    let result: string[] = [];
-    for (let i = 0; i < str.length; i += chunkLen) {
-      result.push(str.substring(i, i + chunkSize));
+  const chain = useMemo(
+    () => getChainById(Number(targetUserOperation.chainId)),
+    [userOperation],
+  );
+
+  const informationItems = useMemo(() => {
+    const items: TransactionDetailsItem[] = [
+      { title: "Nonce", value: Number(targetUserOperation.nonce) },
+      { title: "Sender", value: shortenAddress(targetUserOperation.sender) },
+      { title: "Threshold", value: configuration?.threshold },
+      { title: "Chain", value: chain?.name },
+    ];
+
+    if (estimateUserOperationGasData?.callGasLimit) {
+      items.push({
+        title: "Call Gas Limit",
+        value: fromHex(estimateUserOperationGasData.callGasLimit as Hex, {
+          to: "bigint",
+        }).toLocaleString(),
+      });
     }
-    return result;
-  };
 
-  const chunkArray = userOperationWithHash
-    ? splitHexIntoChunks(userOperationWithHash.callData, chunkSize)
-    : [];
+    if (estimateUserOperationGasData?.preVerificationGas) {
+      items.push({
+        title: "Pre-Verification Gas",
+        value: fromHex(estimateUserOperationGasData.preVerificationGas as Hex, {
+          to: "bigint",
+        }).toLocaleString(),
+      });
+    }
+
+    if (estimateUserOperationGasData?.verificationGasLimit) {
+      items.push({
+        title: "Verification Gas Limit",
+        value: fromHex(
+          estimateUserOperationGasData.verificationGasLimit as Hex,
+          { to: "bigint" },
+        ).toLocaleString(),
+      });
+    }
+
+    if (feesPerGas?.maxFeePerGas) {
+      items.push({
+        title: "Max Fee Per Gas",
+        value: feesPerGas.maxFeePerGas.toLocaleString(),
+      });
+    }
+
+    if (maxPriorityFeePerGas) {
+      items.push({
+        title: "Max Priority Fee Per Gas",
+        value: maxPriorityFeePerGas.toLocaleString(),
+      });
+    }
+
+    if (userOperationWithHash?.hash) {
+      items.push({
+        title: "Hash",
+        value: shortenBytes32(userOperationWithHash.hash),
+      });
+    }
+
+    return items;
+  }, [
+    chain,
+    configuration?.threshold,
+    targetUserOperation.nonce,
+    targetUserOperation.sender,
+    userOperationWithHash?.hash,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -495,7 +572,14 @@ export const Transaction: FC<TransactionProps> = ({
                   </div>
                 )}
               </TabsContent>
-              <TabsContent value="details">Details</TabsContent>
+              <TabsContent value="details">
+                {informationItems.map(item => (
+                  <TransactionDetailInfo
+                    title={item.title}
+                    value={item.value}
+                  />
+                ))}
+              </TabsContent>
               <TabsContent value="data">
                 <div className="w-full rounded-md bg-background-weak py-3">
                   <pre className="text-sm italic">
