@@ -26,7 +26,12 @@ import {
   OTP,
 } from "@lightdotso/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, type FC, type InputHTMLAttributes } from "react";
+import {
+  useEffect,
+  type FC,
+  type InputHTMLAttributes,
+  useCallback,
+} from "react";
 import { getInviteCode as getClientInviteCode } from "@lightdotso/client";
 import { useForm, useFormContext } from "react-hook-form";
 import { z } from "zod";
@@ -103,19 +108,17 @@ export const OTPForm: FC<OTPFormProps> = ({ name, onKeyDown }) => {
   });
 
   // ---------------------------------------------------------------------------
-  // Effect Hooks
+  // Callback Hooks
   // ---------------------------------------------------------------------------
 
-  // Sync the parent form methods
-  useEffect(() => {
+  const syncWithParent = useCallback(() => {
     if (!parentMethods) {
       return;
     }
 
-    parentMethods.register(name, form.getValues(name));
-    return () => {
-      parentMethods.unregister(name);
-    };
+    parentMethods.setValue(name, form.getValues(name));
+
+    validInviteCode.invalidate();
   }, [form, name, parentMethods]);
 
   // ---------------------------------------------------------------------------
@@ -129,7 +132,7 @@ export const OTPForm: FC<OTPFormProps> = ({ name, onKeyDown }) => {
         name={name}
         render={({ field }) => {
           return (
-            <FormItem onKeyDown={validInviteCode.invalidate}>
+            <FormItem>
               <FormLabel htmlFor={name}>Invite Code</FormLabel>
               <OTP
                 length={6}
@@ -140,17 +143,19 @@ export const OTPForm: FC<OTPFormProps> = ({ name, onKeyDown }) => {
                   if (e.target.value.length === 7) {
                     field.onChange(e.target.value);
                   }
+                  syncWithParent();
                 }}
                 onChange={e => {
                   if (e.target.value.length === 7) {
                     field.onChange(e.target.value);
                   }
+                  syncWithParent();
                 }}
               />
               <FormDescription>Enter the invite code</FormDescription>
               <FormMessage />
-              <div className="text-text">{JSON.stringify(field, null, 2)}</div>
-              <div className="text-text">{JSON.stringify(form, null, 2)}</div>
+              {/* <div className="text-text">{JSON.stringify(field, null, 2)}</div> */}
+              {/* <div className="text-text">{JSON.stringify(form, null, 2)}</div> */}
               {/* <FormMessage /> */}
             </FormItem>
           );
