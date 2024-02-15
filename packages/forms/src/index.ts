@@ -14,3 +14,4 @@
 
 export { AddressForm } from "./address-form";
 export { FormDevTools } from "./form-dev-tools";
+export { InviteCodeForm } from "./invite-code-form";

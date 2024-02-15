@@ -1824,6 +1824,9 @@ importers:
       '@hookform/resolvers':
         specifier: ^3.3.4
         version: 3.3.4(react-hook-form@7.50.1)
+      '@lightdotso/client':
+        specifier: workspace:*
+        version: link:../client
       '@lightdotso/elements':
         specifier: workspace:*
         version: link:../elements

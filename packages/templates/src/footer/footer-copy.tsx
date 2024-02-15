@@ -34,7 +34,7 @@ export const FooterCopy: FC = () => {
         target="_blank"
         rel="noreferrer"
       >
-        Apache-2.0
+        Apache 2.0
       </a>{" "}
       <span className="hidden md:inline-flex">&middot;</span>{" "}
       <a

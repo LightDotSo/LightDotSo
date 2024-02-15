@@ -14,10 +14,8 @@
 
 "use client";
 
-import { getInviteCode } from "@lightdotso/client";
 import { NOTION_LINKS } from "@lightdotso/const";
-import type { RefinementCallback } from "@lightdotso/hooks";
-import { useRefinement } from "@lightdotso/hooks";
+import { InviteCodeForm } from "@lightdotso/forms";
 import {
   useInviteCodeQueryState,
   useNameQueryState,
@@ -42,7 +40,6 @@ import {
   RadioGroupItem,
   Input,
   Label,
-  OTP,
   TooltipProvider,
   Tooltip,
   TooltipTrigger,
@@ -89,44 +86,12 @@ export const NewWalletForm: FC = () => {
   const { setFormValues } = useNewForm();
 
   // ---------------------------------------------------------------------------
-  // Validation
-  // ---------------------------------------------------------------------------
-
-  function validateInviteCode(): RefinementCallback<NewFormValues> {
-    return async (data, { signal }) => {
-      let timeoutRef: ReturnType<typeof setTimeout>;
-
-      signal?.addEventListener("abort", () => {
-        clearTimeout(timeoutRef);
-      });
-      const res = await getInviteCode({
-        params: { query: { code: data.inviteCode } },
-      });
-
-      return res.match(
-        data => {
-          if (data.status === "ACTIVE") {
-            return true;
-          }
-
-          return false;
-        },
-        _ => false,
-      );
-    };
-  }
-
-  // ---------------------------------------------------------------------------
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
   const [name, setName] = useNameQueryState();
   const [inviteCode, setInviteCode] = useInviteCodeQueryState();
   const [type, setType] = useTypeQueryState();
-
-  const validInviteCode = useRefinement(validateInviteCode(), {
-    debounce: 500,
-  });
 
   // ---------------------------------------------------------------------------
   // Form
@@ -141,12 +106,7 @@ export const NewWalletForm: FC = () => {
   const form = useForm<NewFormValues>({
     mode: "all",
     reValidateMode: "onBlur",
-    resolver: zodResolver(
-      newFormSchema.refine(validInviteCode, {
-        message: "Invite Code is not valid.",
-        path: ["inviteCodeValid"],
-      }),
-    ),
+    resolver: zodResolver(newFormSchema),
     defaultValues,
   });
 
@@ -326,33 +286,7 @@ export const NewWalletForm: FC = () => {
                   </div>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="inviteCode"
-                render={({ field }) => (
-                  <FormItem onChange={validInviteCode.invalidate}>
-                    <FormLabel htmlFor="inviteCode">Invite Code</FormLabel>
-                    <OTP
-                      length={6}
-                      id="inviteCode"
-                      placeholder="Your Invite Code"
-                      defaultValue={field.value}
-                      onBlur={e => {
-                        if (e.target.value.length === 7) {
-                          field.onChange(e.target.value);
-                        }
-                      }}
-                      onChange={e => {
-                        if (e.target.value.length === 7) {
-                          field.onChange(e.target.value);
-                        }
-                      }}
-                    />
-                    <FormDescription>Enter the invite code</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <InviteCodeForm name="inviteCode" />
               <FormField
                 control={form.control}
                 name="name"
@@ -390,6 +324,8 @@ export const NewWalletForm: FC = () => {
                   </a>
                 </CardDescription>
               </div>
+              {/* <div className="text-text">{JSON.stringify(field, null, 2)}</div> */}
+              {/* <div className="text-text">{JSON.stringify(form, null, 2)}</div> */}
               <FooterButton
                 isModal={false}
                 cancelDisabled={true}

@@ -29,6 +29,7 @@
     "@heroicons/react": "^2.1.1",
     "@hookform/devtools": "^4.3.1",
     "@hookform/resolvers": "^3.3.4",
+    "@lightdotso/client": "workspace:*",
     "@lightdotso/elements": "workspace:*",
     "@lightdotso/hooks": "workspace:*",
     "@lightdotso/schemas": "workspace:*",
