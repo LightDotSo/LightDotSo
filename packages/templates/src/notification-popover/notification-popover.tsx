@@ -33,6 +33,7 @@ import { Settings2 } from "lucide-react";
 import Link from "next/link";
 import { FC } from "react";
 import { NotificationPopoverIcon } from "./notification-popover-icon";
+import { EmptyState } from "@lightdotso/elements";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -92,18 +93,21 @@ export const NotificationPopover: FC = () => {
                   <p className="text-sm text-text-primary">{notification.id}</p>
                 </div>
               ))}
+            {notificationsCount?.count === 0 && (
+              <div className="text-center w-full justify-center py-8">
+                <EmptyState entity="notification" />
+              </div>
+            )}
           </TabsContent>
           <TabsContent value="archive">
-            <p className="text-sm text-text-primary">
-              Change your password here. After saving, you&apos;ll be logged
-              out.
-            </p>
+            <div className="text-center w-full justify-center py-8">
+              <EmptyState entity="notification" />
+            </div>
           </TabsContent>
           <TabsContent value="transactions">
-            <p className="text-sm text-text-primary">
-              Change your password here. After saving, you&apos;ll be logged
-              out.
-            </p>
+            <div className="text-center w-full justify-center py-8">
+              <EmptyState entity="notification" />
+            </div>
           </TabsContent>
         </Tabs>
       </PopoverContent>
