@@ -30,6 +30,7 @@ import {
   FormControl,
   FormField,
   FormMessage,
+  Input,
   Label,
   Tabs,
   TabsContent,
@@ -193,68 +194,87 @@ export function DepositModal() {
 
                     return (
                       <FormControl>
-                        <div className="w-full space-y-2">
-                          <Label htmlFor="weight">Token</Label>
-                          <Button
-                            size="lg"
-                            type="button"
-                            variant="outline"
-                            className="flex w-full items-center justify-between px-4 text-sm"
-                            onClick={() => {
-                              if (!address) {
-                                return;
-                              }
+                        <div>
+                          <div className="w-full space-y-2">
+                            <Label htmlFor="weight">Token</Label>
+                            <Button
+                              size="lg"
+                              type="button"
+                              variant="outline"
+                              className="flex w-full items-center justify-between px-4 text-sm"
+                              onClick={() => {
+                                if (!address) {
+                                  return;
+                                }
 
-                              setTokenModalProps({
-                                address: address,
-                                type: "socket",
-                                isTestnet:
-                                  walletSettings?.is_enabled_testnet ?? false,
-                                onClose: () => {
-                                  hideTokenModal();
-                                  if (isInsideModal) {
-                                    setDepositBackgroundModal(false);
-                                  }
-                                },
-                                onTokenSelect: token => {
-                                  form.setValue("chainId", token.chain_id);
-                                  form.setValue("asset.address", token.address);
-                                  form.setValue("assetType", "erc20");
+                                setTokenModalProps({
+                                  address: address,
+                                  type: "socket",
+                                  isTestnet:
+                                    walletSettings?.is_enabled_testnet ?? false,
+                                  onClose: () => {
+                                    hideTokenModal();
+                                    if (isInsideModal) {
+                                      setDepositBackgroundModal(false);
+                                    }
+                                  },
+                                  onTokenSelect: token => {
+                                    form.setValue("chainId", token.chain_id);
+                                    form.setValue(
+                                      "asset.address",
+                                      token.address,
+                                    );
+                                    form.setValue("assetType", "erc20");
 
-                                  form.trigger();
+                                    form.trigger();
 
-                                  hideTokenModal();
-                                  if (isInsideModal) {
-                                    setDepositBackgroundModal(false);
-                                  }
-                                },
-                              });
+                                    hideTokenModal();
+                                    if (isInsideModal) {
+                                      setDepositBackgroundModal(false);
+                                    }
+                                  },
+                                });
 
-                              setDepositBackgroundModal(true);
-                              showTokenModal();
-                            }}
-                          >
-                            {token ? (
-                              <>
-                                <TokenImage
-                                  size="xs"
-                                  className="mr-2"
-                                  token={{
-                                    ...token,
-                                    balance_usd: 0,
-                                    id: "",
-                                    chain_id: token.chainId,
-                                  }}
+                                setDepositBackgroundModal(true);
+                                showTokenModal();
+                              }}
+                            >
+                              {token ? (
+                                <>
+                                  <TokenImage
+                                    size="xs"
+                                    className="mr-2"
+                                    token={{
+                                      ...token,
+                                      balance_usd: 0,
+                                      id: "",
+                                      chain_id: token.chainId,
+                                    }}
+                                  />
+                                  {token?.symbol}
+                                </>
+                              ) : (
+                                "Select Token"
+                              )}
+                              <div className="grow" />
+                              {/* <ChevronDown className="size-4 opacity-50" /> */}
+                            </Button>
+                            <FormMessage />
+                          </div>
+                          <div className="w-full space-y-2">
+                            <Label htmlFor="weight">Amount</Label>
+                            <FormField
+                              control={form.control}
+                              name="asset.quantity"
+                              render={({ field }) => (
+                                <Input
+                                  {...field}
+                                  type="number"
+                                  className="w-full"
                                 />
-                                {token?.symbol}
-                              </>
-                            ) : (
-                              "Select Token"
-                            )}
-                            <div className="grow" />
-                            {/* <ChevronDown className="size-4 opacity-50" /> */}
-                          </Button>
-                          <FormMessage />
+                              )}
+                            />
+                          </div>
                         </div>
                       </FormControl>
                     );
