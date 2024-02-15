@@ -42,8 +42,12 @@ import { NotificationPopoverIcon } from "./notification-popover-icon";
 export const NotificationPopover: FC = () => {
   const { address } = useAuth();
 
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
   const { notifications } = useQueryNotifications({
-    address: address as Address,
+    address: address,
     limit: 10,
     offset: 0,
   });
@@ -83,10 +87,12 @@ export const NotificationPopover: FC = () => {
             </ButtonIcon>
           </div>
           <TabsContent value="inbox">
-            <p className="text-sm text-text-primary">
-              Make changes to your account here. Click save when you&apos;re
-              done.
-            </p>
+            {notifications &&
+              notifications.map(notification => (
+                <div key={notification.id} className="p-4">
+                  <p className="text-sm text-text-primary">{notification.id}</p>
+                </div>
+              ))}
           </TabsContent>
           <TabsContent value="archive">
             <p className="text-sm text-text-primary">
