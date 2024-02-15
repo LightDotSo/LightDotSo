@@ -116,10 +116,33 @@ export const OTPForm: FC<OTPFormProps> = ({ name, onKeyDown }) => {
       return;
     }
 
+    // Invalidate the query
+    validInviteCode.invalidate();
+
+    // Sync with parent
     parentMethods.setValue(name, form.getValues(name));
 
-    validInviteCode.invalidate();
+    // If the form is valid, clear the error
+    if (form.formState.isValid) {
+      parentMethods.clearErrors(name);
+    }
+
+    // If there is an error, sync with parent
+    if (!form.formState.isValid && form.formState.errors[name]) {
+      parentMethods.setError(name, form.formState.errors[name]!);
+    }
   }, [form, name, parentMethods]);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // Only on mount
+  useEffect(() => {
+    syncWithParent();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // ---------------------------------------------------------------------------
   // Render
