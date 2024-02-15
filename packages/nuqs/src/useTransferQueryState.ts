@@ -115,7 +115,7 @@ export const transferParser = createParser({
     return (
       `${value?.address ?? "_"}:` +
       `${value?.addressOrEns ?? "_"}:` +
-      `${value?.chainId ?? 0}:${value?.assetType}_${assetString}`
+      `${value?.chainId ?? 0}:${value?.assetType}:${assetString}`
     );
   },
 });

@@ -171,11 +171,11 @@ export function DepositModal() {
                 onSubmit={form.handleSubmit(onSubmit)}
               >
                 <FormField
-                  // key={field.id}
                   control={form.control}
-                  name="address"
-                  render={({ field }) => {
-                    const tokenAddress = field.value;
+                  name="asset"
+                  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                  render={({ field: _field }) => {
+                    const tokenAddress = transfer.asset?.address;
                     const chainId = transfer.chainId;
 
                     // Get the matching token
@@ -216,8 +216,8 @@ export function DepositModal() {
                                   // }
                                 },
                                 onTokenSelect: token => {
-                                  form.setValue("address", token.address);
                                   form.setValue("chainId", token.chain_id);
+                                  form.setValue("asset.address", token.address);
                                   form.setValue("assetType", "erc20");
 
                                   form.trigger();
