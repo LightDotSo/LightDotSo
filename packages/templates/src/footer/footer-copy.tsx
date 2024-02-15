@@ -30,11 +30,11 @@ export const FooterCopy: FC = () => {
       <span className="hidden md:inline-flex">&nbsp;Light, Inc. - </span>{" "}
       <a
         className="hidden text-text-weak hover:underline md:inline-flex"
-        href={GITHUB_LINKS["License"]}
+        href={GITHUB_LINKS["Repo"]}
         target="_blank"
         rel="noreferrer"
       >
-        AGPL v3.0
+        Apache-2.0
       </a>{" "}
       <span className="hidden md:inline-flex">&middot;</span>{" "}
       <a

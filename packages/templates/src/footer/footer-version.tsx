@@ -43,7 +43,7 @@ export const FooterVersion: FC = () => {
             className="hover:underline"
             target="_blank"
             rel="noreferrer"
-            href={SOCIAL_LINKS.Github}
+            href={`${SOCIAL_LINKS.Github}/commit/${process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA}`}
           >
             ({process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA.slice(0, 7)})
           </a>

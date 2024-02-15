@@ -1729,7 +1729,7 @@ enum ProtocolStatus {
 }
 
 // The wallet balances are from: https://github.com/llamafolio/llamafolio-api
-// License: GPL-3.0
+// Inspired by License: GPL-3.0
 model TokenProtocol {
   // ---------------------------------------------------------------------------
   // Core
@@ -1833,7 +1833,7 @@ model WalletBalance {
   balanceUSD Float
 
   // The below fields are from: https://github.com/llamafolio/llamafolio-api
-  // License: GPL-3.0
+  // Inspired by License: GPL-3.0
 
   // rewardUSD  Float?
   // debtUSD    Float?
