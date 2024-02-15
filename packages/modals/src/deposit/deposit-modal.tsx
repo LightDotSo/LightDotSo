@@ -15,8 +15,15 @@
 "use client";
 
 import { useModals } from "@lightdotso/stores";
-import { Modal } from "@lightdotso/templates";
-import { DialogDescription, DialogTitle } from "@lightdotso/ui";
+import { FooterButton, Modal } from "@lightdotso/templates";
+import {
+  DialogDescription,
+  DialogTitle,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@lightdotso/ui";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -35,9 +42,37 @@ export function DepositModal() {
 
   if (isDepositModalVisible) {
     return (
-      <Modal open size="sm" onClose={hideDepositModal}>
+      <Modal
+        footerContent={<FooterButton className="pt-0" />}
+        open
+        onClose={hideDepositModal}
+      >
         <DialogTitle>Deposit</DialogTitle>
-        <DialogDescription>Deposit for </DialogDescription>
+        <DialogDescription>
+          Please choose assets to deposit to this wallet!
+        </DialogDescription>
+        <Tabs className="py-3">
+          <TabsList className="w-full">
+            <TabsTrigger className="w-full" value="token">
+              Account
+            </TabsTrigger>
+            <TabsTrigger className="w-full" value="nft">
+              Password
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="token">
+            <p className="text-sm text-text-primary">
+              Make changes to your account here. Click save when you&apos;re
+              done.
+            </p>
+          </TabsContent>
+          <TabsContent value="nft">
+            <p className="text-sm text-text-primary">
+              Change your password here. After saving, you&apos;ll be logged
+              out.
+            </p>
+          </TabsContent>
+        </Tabs>
       </Modal>
     );
   }
