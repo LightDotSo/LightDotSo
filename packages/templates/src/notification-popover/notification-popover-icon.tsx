@@ -42,7 +42,7 @@ export const NotificationPopoverIcon: FC<NotificationPopoverIconProps> = ({
         <span className="sr-only">Open notificaitons</span>
       </ButtonIcon>
       {notificationsCount && notificationsCount > 0 && (
-        <span className="absolute bottom-0 right-0 transform translate-x-1/5 translate-y-1/5 w-2 h-2 rounded-full bg-background-info"></span>
+        <span className="translate-x-1/5 translate-y-1/5 absolute bottom-0 right-0 size-2 rounded-full bg-background-info" />
       )}
     </div>
   );

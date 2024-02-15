@@ -31,7 +31,7 @@ import {
 } from "@lightdotso/ui";
 import { Settings2 } from "lucide-react";
 import Link from "next/link";
-import { FC } from "react";
+import type { FC } from "react";
 import { NotificationPopoverIcon } from "./notification-popover-icon";
 
 // -----------------------------------------------------------------------------
@@ -77,7 +77,7 @@ export const NotificationPopover: FC = () => {
               asChild
               size="sm"
               variant="ghost"
-              className="rounded-full m-1"
+              className="m-1 rounded-full"
             >
               <Link href="/settings/notifications">
                 <Settings2 className="size-4" />
