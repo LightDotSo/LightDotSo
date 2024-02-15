@@ -14,11 +14,8 @@
 
 "use client";
 
-import { getInviteCode } from "@lightdotso/client";
 import { NOTION_LINKS } from "@lightdotso/const";
 import { InviteCodeForm } from "@lightdotso/forms";
-import type { RefinementCallback } from "@lightdotso/hooks";
-import { useRefinement } from "@lightdotso/hooks";
 import {
   useInviteCodeQueryState,
   useNameQueryState,
@@ -43,7 +40,6 @@ import {
   RadioGroupItem,
   Input,
   Label,
-  OTP,
   TooltipProvider,
   Tooltip,
   TooltipTrigger,
@@ -329,7 +325,7 @@ export const NewWalletForm: FC = () => {
                 </CardDescription>
               </div>
               {/* <div className="text-text">{JSON.stringify(field, null, 2)}</div> */}
-              <div className="text-text">{JSON.stringify(form, null, 2)}</div>
+              {/* <div className="text-text">{JSON.stringify(form, null, 2)}</div> */}
               <FooterButton
                 isModal={false}
                 cancelDisabled={true}
