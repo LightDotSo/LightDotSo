@@ -33,6 +33,7 @@ import { BellIcon, Settings2 } from "lucide-react";
 import Link from "next/link";
 import { FC } from "react";
 import { Address } from "viem";
+import { NotificationPopoverIcon } from "./notification-popover-icon";
 
 // -----------------------------------------------------------------------------
 // Component
