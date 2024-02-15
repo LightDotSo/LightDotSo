@@ -105,7 +105,6 @@ export function DepositModal() {
 
   useEffect(() => {
     const subscription = form.watch((value, { name: _name }) => {
-      console.log("value", value, _name);
       if (value === undefined) {
         setTransfer(null);
       } else {
@@ -150,7 +149,9 @@ export function DepositModal() {
             </DialogDescription>
           </>
         }
-        footerContent={<FooterButton className="pt-0" />}
+        footerContent={
+          <FooterButton className="pt-0" customSuccessText="Deposit" />
+        }
         onClose={hideDepositModal}
       >
         <Tabs defaultValue="token" className="py-3">
