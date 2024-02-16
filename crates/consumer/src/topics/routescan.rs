@@ -22,7 +22,7 @@ use lightdotso_kafka::{
     types::{portfolio::PortfolioMessage, routescan::RoutescanMessage},
 };
 use lightdotso_prisma::{token, wallet_balance, PrismaClient};
-use lightdotso_routescan::get_token_balances;
+use lightdotso_routescan::{get_native_balance, get_token_balances, types::WalletBalanceItem};
 use lightdotso_tracing::tracing::info;
 use rdkafka::{message::BorrowedMessage, producer::FutureProducer, Message};
 use std::sync::Arc;
@@ -49,59 +49,65 @@ pub async fn routescan_consumer(
         }
 
         // Log the payload
-        let mut balances = get_token_balances(
-            &payload.chain_id.to_string(),
-            &to_checksum(&payload.address, None),
-            None,
-            None,
-        )
-        .await?;
+        let mut balances =
+            get_token_balances(&payload.chain_id, &to_checksum(&payload.address, None), None, None)
+                .await?;
         info!(?balances);
 
-        // Replace the addresses of `0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee` with
-        // `0x0000000000000000000000000000000000000000` This is because Routescan uses the
-        // former for ETH, but we use the latter.
-        for item in &mut balances.data.items {
-            if item.contract_address ==
-                Some("0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee".to_string()) ||
-                item.contract_address ==
-                    Some("0x0000000000000000000000000000000000001010".to_string())
-            {
-                item.contract_address =
-                    Some("0x0000000000000000000000000000000000000000".to_string());
-            }
+        // Get the native balance
+        let native_balance =
+            get_native_balance(&payload.chain_id, &to_checksum(&payload.address, None)).await?;
+        info!(?native_balance);
+
+        // Get the items from the token balances
+        let items = balances.items.clone();
+
+        // If the native balance is not zero, add it to the items
+        if !native_balance.result != 0 {
+            balances.items.push(WalletBalanceItem {
+                chain_id: Some(payload.chain_id.to_string()),
+                token_address: None,
+                token_name: None,
+                token_symbol: None,
+                // Hardcoded to 18 decimals for native balance
+                token_decimals: Some(18),
+                token_quantity: Some(native_balance.result.to_string()),
+                token_price: None,
+                token_value_in_usd: None,
+                updated_at_block: None,
+            });
         }
 
         // Filter the balances to only include tokens with non-none contract addresses and non-zero
         // decimals
-        balances.data.items = balances
-            .data
-            .items
+        let new_items = items
             .into_iter()
-            .filter(|item| item.contract_address.is_some() && item.contract_decimals.is_some())
+            .filter(|item| {
+                item.token_quantity.is_some() &&
+                    item.token_decimals.is_some() &&
+                    item.token_address.is_some()
+            })
             .collect::<Vec<_>>();
 
         // Create the tokens
         let res = db
             .token()
             .create_many(
-                balances
-                    .data
-                    .items
+                new_items
                     .iter()
                     .map(|item| {
                         (
                             to_checksum(
-                                &(item.contract_address.clone().unwrap().parse().unwrap()),
+                                &(item.token_address.clone().unwrap().parse().unwrap()),
                                 None,
                             ),
                             payload.chain_id as i64,
                             vec![
                                 token::symbol::set(Some(
-                                    item.contract_ticker_symbol.clone().unwrap_or("".to_string()),
+                                    item.token_symbol.clone().unwrap_or("".to_string()),
                                 )),
-                                token::decimals::set(Some(item.contract_decimals.unwrap())),
-                                token::name::set(item.contract_name.clone()),
+                                token::decimals::set(Some(item.token_decimals.unwrap())),
+                                token::name::set(item.token_name.clone()),
                             ],
                         )
                     })
@@ -121,22 +127,23 @@ pub async fn routescan_consumer(
         info!("tokens: {:?}", tokens);
 
         // Create token data for each token
-        let token_data_results = balances
-            .data
-            .items
+        let token_data_results = new_items
             .iter()
             .map(|ite| {
                 // Find the item
                 let token = tokens.iter().find(|token| {
                     token.address.clone().to_lowercase() ==
-                        ite.contract_address.clone().unwrap().to_lowercase()
+                        ite.token_address.clone().unwrap().to_lowercase()
                 });
 
                 // Convert the Option to a Result
                 let token_result = token.ok_or(eyre::eyre!("Item not found for token: {:?}", ite));
 
                 // If valid item found, build data, else propagate error
-                token_result.map(|token| (ite.quote_rate.unwrap_or(0.0), token.clone().id, vec![]))
+                // Temporary fix for quote rate
+                token_result.map(|token| (0.0, token.clone().id, vec![]))
+                // token_result.map(|token| (ite.quote_rate.unwrap_or(0.0), token.clone().id,
+                // vec![]))
             })
             .collect::<Vec<_>>();
 
@@ -170,9 +177,7 @@ pub async fn routescan_consumer(
                 client
                     .wallet_balance()
                     .create_many(
-                        balances
-                            .data
-                            .items
+                        new_items
                             .iter()
                             .map(|item| {
                                 // Find the token
@@ -180,31 +185,27 @@ pub async fn routescan_consumer(
                                     .iter()
                                     .find(|token| {
                                         token.address.clone().to_lowercase() ==
-                                            item.contract_address.clone().unwrap()
+                                            item.token_address.clone().unwrap()
                                     })
                                     .unwrap();
 
                                 (
-                                    item.quote.unwrap_or(0.0),
+                                    // Temporary fix for quote rate
+                                    // item.quote.unwrap_or(0.0),
+                                    0.0,
                                     payload.chain_id as i64,
                                     to_checksum(&payload.address, None),
                                     vec![
                                         wallet_balance::amount::set(Some(
-                                            item.balance
+                                            item.token_quantity
                                                 .as_ref()
                                                 .map(|balance| {
                                                     balance.parse::<i64>().unwrap_or(0).to_string()
                                                 })
                                                 .unwrap_or(0.to_string()),
                                         )),
-                                        wallet_balance::stable::set(Some(
-                                            item.balance_type
-                                                .as_ref()
-                                                .map(|balance_type| balance_type == "stablecoin")
-                                                .unwrap_or(false),
-                                        )),
                                         wallet_balance::token_id::set(Some(token.id.to_string())),
-                                        wallet_balance::is_spam::set(item.is_spam),
+                                        // wallet_balance::is_spam::set(item.is_spam),
                                         wallet_balance::is_latest::set(true),
                                         wallet_balance::is_testnet::set(is_testnet(
                                             payload.chain_id as u64,
