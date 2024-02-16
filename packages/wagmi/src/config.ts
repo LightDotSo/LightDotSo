@@ -13,12 +13,14 @@
 // limitations under the License.
 
 import { CHAINS } from "@lightdotso/const";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { createClient, fallback } from "viem";
 import {
   cookieStorage,
   createConfig,
   createStorage,
   http,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   unstable_connector,
 } from "wagmi";
 import {
@@ -53,7 +55,8 @@ export const wagmiConfig = createConfig({
   client({ chain }) {
     return createClient({
       chain,
-      transport: fallback([http(), unstable_connector(injected)]),
+      transport: http(),
+      // transport: fallback([http(), unstable_connector(injected)]),
     });
   },
   connectors: [
