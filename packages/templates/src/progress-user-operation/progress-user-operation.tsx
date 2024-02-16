@@ -41,7 +41,7 @@ export const ProgressUserOperation: FC = () => {
   // ---------------------------------------------------------------------------
 
   const { userOperations, isUserOperationsLoading } = useQueryUserOperations({
-    address: address ?? null,
+    address: address,
     status: "pending",
     order: "desc",
     limit: Number.MAX_SAFE_INTEGER,
