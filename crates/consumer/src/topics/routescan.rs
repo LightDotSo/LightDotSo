@@ -17,21 +17,14 @@
 use ethers::utils::to_checksum;
 use eyre::Result;
 use lightdotso_contracts::utils::is_testnet;
-use lightdotso_kafka::{
-    topics::portfolio::produce_portfolio_message,
-    types::{portfolio::PortfolioMessage, routescan::RoutescanMessage},
-};
+use lightdotso_kafka::types::routescan::RoutescanMessage;
 use lightdotso_prisma::{token, wallet_balance, PrismaClient};
 use lightdotso_routescan::{get_native_balance, get_token_balances, types::WalletBalanceItem};
 use lightdotso_tracing::tracing::info;
-use rdkafka::{message::BorrowedMessage, producer::FutureProducer, Message};
+use rdkafka::{message::BorrowedMessage, Message};
 use std::sync::Arc;
 
-pub async fn routescan_consumer(
-    producer: Arc<FutureProducer>,
-    msg: &BorrowedMessage<'_>,
-    db: Arc<PrismaClient>,
-) -> Result<()> {
+pub async fn routescan_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>) -> Result<()> {
     // Convert the payload to a string
     let payload_opt = msg.payload_view::<str>();
     info!("payload_opt: {:?}", payload_opt);
@@ -40,13 +33,6 @@ pub async fn routescan_consumer(
     if let Some(Ok(payload)) = payload_opt {
         // Parse the payload into a JSON object, `RoutescanMessage`
         let payload: RoutescanMessage = serde_json::from_slice(payload.as_bytes())?;
-
-        // If the chain is 0, produce a portfolio message
-        if payload.chain_id == 0 {
-            produce_portfolio_message(producer, &PortfolioMessage { address: payload.address })
-                .await?;
-            return Ok(());
-        }
 
         // Log the payload
         let mut balances =
