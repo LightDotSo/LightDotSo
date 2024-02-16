@@ -71,6 +71,7 @@ export const ProgressUserOperation: FC = () => {
               );
             },
           },
+          position: "top-right",
         });
 
         setHashedToasts(
