@@ -37,7 +37,7 @@ export const NotificationPopoverIcon: FC<NotificationPopoverIconProps> = ({
 
   return (
     <div className="relative">
-      <ButtonIcon variant="outline" className="rounded-full">
+      <ButtonIcon variant="outline">
         <BellIcon className="size-4" />
         <span className="sr-only">Open notificaitons</span>
       </ButtonIcon>
