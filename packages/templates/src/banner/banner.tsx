@@ -139,14 +139,17 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
         </div>
       )}
       {kind === "demo" && (
-        <Link className="inline-flex hover:underline" href="/?demo=true">
+        <Link
+          className="inline-flex items-center text-sm hover:underline"
+          href="/?demo=true"
+        >
           Go to home
           <Undo2Icon className="ml-2 size-4 shrink-0 opacity-50" />
         </Link>
       )}
       {kind === "outage" && (
         <a
-          className="inline-flex hover:underline"
+          className="inline-flex items-center text-sm hover:underline"
           href={INTERNAL_LINKS["Status"]}
           target="_blank"
           rel="noopener noreferrer"
