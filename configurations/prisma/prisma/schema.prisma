@@ -1099,6 +1099,7 @@ model Billing {
   // ---------------------------------------------------------------------------
 
   activities        Activity[]
+  billingBalances   BillingBalance[]
   billingOperations BillingOperation[]
   walletBilling     WalletBilling[]
 }
@@ -1142,6 +1143,9 @@ model BillingBalance {
   // One-to-many
   // ---------------------------------------------------------------------------
 
+  billing   Billing @relation(fields: [billingId], references: [id])
+  billingId String
+
   chain Chain @relation(fields: [chainId], references: [id])
 
   // ---------------------------------------------------------------------------
@@ -1159,6 +1163,7 @@ model BillingBalance {
   // ---------------------------------------------------------------------------
 
   // Relations
+  @@index([billingId])
   @@index([billingOperationId])
   @@index([chainId])
   @@index([tokenId])
