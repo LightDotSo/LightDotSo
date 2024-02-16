@@ -39,6 +39,7 @@ import {
 } from "@lightdotso/ui";
 import {
   useAccount,
+  useChainId,
   useReadContract,
   useSendTransaction,
   useSwitchChain,
@@ -73,6 +74,7 @@ export function DepositModal() {
 
   const { address, wallet } = useAuth();
   const { chainId, isConnecting } = useAccount();
+  const globalChainId = useChainId();
   const { switchChain, isPending: isSwitchChainPending } = useSwitchChain();
 
   const {
@@ -143,8 +145,11 @@ export function DepositModal() {
 
   const { sendTransaction, isPending: isSendTransactionPending } =
     useSendTransaction();
-  const { writeContract, isPending: isWriteContractPending } =
-    useWriteContract();
+  const {
+    writeContract,
+    error,
+    isPending: isWriteContractPending,
+  } = useWriteContract();
 
   // ---------------------------------------------------------------------------
   // Submit Handler
@@ -154,6 +159,8 @@ export function DepositModal() {
     console.info("Deposit form submitted!");
 
     console.info(data);
+
+    console.info("globalChainId: ", globalChainId);
 
     const assetChainId = form.getValues("chainId");
 
@@ -170,6 +177,11 @@ export function DepositModal() {
       console.info("Switching chain to: ", assetChainId);
 
       switchChain({ chainId: assetChainId });
+      return;
+    }
+
+    if (!address) {
+      console.error("Address is not defined");
       return;
     }
 
@@ -204,13 +216,15 @@ export function DepositModal() {
       return;
     }
 
-    const res = await writeContract({
+    const res = writeContract({
       abi: erc20Abi,
-      address: form.getValues("asset.address") as Address,
-      chainId: form.getValues("chainId"),
+      address: addr,
+      chainId: globalChainId,
       functionName: "transfer",
       args: [wallet, BigInt(quantity)],
     });
+
+    console.error(error);
 
     console.info(res);
     // form.trigger();

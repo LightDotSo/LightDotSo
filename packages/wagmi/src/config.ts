@@ -13,8 +13,14 @@
 // limitations under the License.
 
 import { CHAINS } from "@lightdotso/const";
-import { createClient } from "viem";
-import { cookieStorage, createConfig, createStorage, http } from "wagmi";
+import { createClient, fallback } from "viem";
+import {
+  cookieStorage,
+  createConfig,
+  createStorage,
+  http,
+  unstable_connector,
+} from "wagmi";
 import {
   walletConnect,
   injected,
@@ -36,7 +42,13 @@ export const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!;
 export const wagmiConfig = createConfig({
   chains: CHAINS,
   client({ chain }) {
-    return createClient({ chain, transport: http() });
+    return createClient({
+      chain,
+      transport: fallback([
+        http(`https://rpc.light.so/${chain.id}`),
+        unstable_connector(injected),
+      ]),
+    });
   },
   connectors: [
     coinbaseWallet({
@@ -52,5 +64,5 @@ export const wagmiConfig = createConfig({
   storage: createStorage({
     storage: cookieStorage,
   }),
-  syncConnectedChain: false,
+  syncConnectedChain: true,
 });

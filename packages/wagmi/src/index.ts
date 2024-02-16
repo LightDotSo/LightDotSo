@@ -47,5 +47,6 @@ export {
   useReadContract,
   useSendTransaction,
   useSwitchChain,
+  useConnectorClient,
   useWriteContract,
 } from "wagmi";
