@@ -2049,6 +2049,9 @@ importers:
       '@types/lodash':
         specifier: ^4.14.202
         version: 4.14.202
+      '@wagmi/core':
+        specifier: ^2.6.5
+        version: 2.6.5(@types/react@18.2.55)(react@18.2.0)(typescript@5.3.3)(viem@2.7.9)(zod@3.22.4)
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -15188,7 +15191,7 @@ packages:
       '@metamask/sdk': 0.14.3(@types/react@18.2.55)(react-dom@18.2.0)(react-native@0.73.2)(react@18.2.0)
       '@safe-global/safe-apps-provider': 0.18.1(typescript@5.3.3)
       '@safe-global/safe-apps-sdk': 8.1.0(typescript@5.3.3)
-      '@wagmi/core': 2.6.5(@types/react@18.2.55)(react@18.2.0)(typescript@5.3.3)(viem@2.7.9)
+      '@wagmi/core': 2.6.5(@types/react@18.2.55)(react@18.2.0)(typescript@5.3.3)(viem@2.7.9)(zod@3.22.4)
       '@walletconnect/ethereum-provider': 2.11.1(@types/react@18.2.55)(react@18.2.0)
       '@walletconnect/modal': 2.6.2(@types/react@18.2.55)(react@18.2.0)
       typescript: 5.3.3
@@ -15218,7 +15221,7 @@ packages:
       - zod
     dev: false
 
-  /@wagmi/core@2.6.5(@types/react@18.2.55)(react@18.2.0)(typescript@5.3.3)(viem@2.7.9):
+  /@wagmi/core@2.6.5(@types/react@18.2.55)(react@18.2.0)(typescript@5.3.3)(viem@2.7.9)(zod@3.22.4):
     resolution: {integrity: sha512-DLyrc0o+dx05oIhBJuxnS7ekS5e6rB5mytlqPme+Km7aLdeBdcfYB4yJyYCyWoi93OLa7M5sbflTttz3o56bKw==}
     peerDependencies:
       '@tanstack/query-core': '>=5.0.0'
@@ -15231,7 +15234,7 @@ packages:
         optional: true
     dependencies:
       eventemitter3: 5.0.1
-      mipd: 0.0.5(typescript@5.3.3)
+      mipd: 0.0.5(typescript@5.3.3)(zod@3.22.4)
       typescript: 5.3.3
       viem: 2.7.9(typescript@5.3.3)(zod@3.22.4)
       zustand: 4.4.1(@types/react@18.2.55)(react@18.2.0)
@@ -27404,7 +27407,7 @@ packages:
       minipass: 3.3.6
       yallist: 4.0.0
 
-  /mipd@0.0.5(typescript@5.3.3):
+  /mipd@0.0.5(typescript@5.3.3)(zod@3.22.4):
     resolution: {integrity: sha512-gbKA784D2WKb5H/GtqEv+Ofd1S9Zj+Z/PGDIl1u1QAbswkxD28BQ5bSXQxkeBzPBABg1iDSbiwGG1XqlOxRspA==}
     peerDependencies:
       typescript: '>=5.0.4'
@@ -35498,7 +35501,7 @@ packages:
     dependencies:
       '@tanstack/react-query': 5.20.5(react@18.2.0)
       '@wagmi/connectors': 4.1.14(@types/react@18.2.55)(@wagmi/core@2.6.5)(react-dom@18.2.0)(react-native@0.73.2)(react@18.2.0)(typescript@5.3.3)(viem@2.7.9)
-      '@wagmi/core': 2.6.5(@types/react@18.2.55)(react@18.2.0)(typescript@5.3.3)(viem@2.7.9)
+      '@wagmi/core': 2.6.5(@types/react@18.2.55)(react@18.2.0)(typescript@5.3.3)(viem@2.7.9)(zod@3.22.4)
       react: 18.2.0
       typescript: 5.3.3
       use-sync-external-store: 1.2.0(react@18.2.0)
