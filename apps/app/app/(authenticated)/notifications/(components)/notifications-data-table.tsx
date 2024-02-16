@@ -93,7 +93,11 @@ export const NotificationsDataTable: FC = () => {
 
   return (
     <>
-      {!sessionId && <Login />}
+      {!sessionId && (
+        <div className="rounded-md border border-border bg-background">
+          <Login />
+        </div>
+      )}
       <TableSectionWrapper className={cn(sessionId ? "block" : "hidden")}>
         <DataTable
           isLoading={isLoading}

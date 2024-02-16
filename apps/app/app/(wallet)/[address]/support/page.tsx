@@ -23,5 +23,9 @@ export default async function Page() {
   // Render
   // ---------------------------------------------------------------------------
 
-  return <Support />;
+  return (
+    <div className="rounded-md border border-border bg-background">
+      <Support />
+    </div>
+  );
 }
