@@ -577,14 +577,13 @@ model Chain {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  billingBalances BillingBalance[]
-  metrics         Metrics[]
-  paymasters      Paymaster[]
-  protocols       Protocol[]
-  tokens          Token[]
-  transactions    Transaction[]
-  userOperations  UserOperation[]
-  walletBalances  WalletBalance[]
+  metrics        Metrics[]
+  paymasters     Paymaster[]
+  protocols      Protocol[]
+  tokens         Token[]
+  transactions   Transaction[]
+  userOperations UserOperation[]
+  walletBalances WalletBalance[]
 }
 
 // -----------------------------------------------------------------------------
@@ -1127,26 +1126,14 @@ model BillingBalance {
   timestamp DateTime @default(now())
 
   // ---------------------------------------------------------------------------
-  // Fields
-  // ---------------------------------------------------------------------------
-
-  balanceUSD Float
-
-  chainId   BigInt
-  amount    String?
-  stable    Boolean?
-  isLatest  Boolean  @default(false)
-  isSpam    Boolean  @default(false)
-  isTestnet Boolean  @default(false)
-
-  // ---------------------------------------------------------------------------
   // One-to-many
   // ---------------------------------------------------------------------------
 
   billing   Billing @relation(fields: [billingId], references: [id])
   billingId String
 
-  chain Chain @relation(fields: [chainId], references: [id])
+  walletBalance   WalletBalance @relation(fields: [walletBalanceId], references: [id])
+  walletBalanceId String
 
   // ---------------------------------------------------------------------------
   // None-to-many
@@ -1164,8 +1151,8 @@ model BillingBalance {
 
   // Relations
   @@index([billingId])
+  @@index([walletBalanceId])
   @@index([billingOperationId])
-  @@index([chainId])
   @@index([tokenId])
 }
 
@@ -1963,6 +1950,12 @@ model WalletBalance {
 
   tokenProtocol   TokenProtocol? @relation(fields: [tokenProtocolId], references: [id])
   tokenProtocolId String?
+
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
+  billingBalances BillingBalance[]
 
   // ---------------------------------------------------------------------------
   // Mappings
