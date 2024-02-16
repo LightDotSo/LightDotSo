@@ -1,0 +1,192 @@
+{
+  "success": true,
+  "result": [
+    {
+      "chainId": 1,
+      "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "decimals": 18,
+      "chainAgnosticId": null,
+      "icon": "https://assets.polygon.technology/tokenAssets/eth.svg",
+      "logoURI": "https://assets.polygon.technology/tokenAssets/eth.svg",
+      "amount": 0.004819415871555135
+    },
+    {
+      "chainId": 56,
+      "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "name": "BNB",
+      "symbol": "BNB",
+      "decimals": 18,
+      "chainAgnosticId": null,
+      "icon": "https://assets.polygon.technology/tokenAssets/bnb.svg",
+      "logoURI": "https://assets.polygon.technology/tokenAssets/bnb.svg",
+      "amount": 0.018373036014601322
+    },
+    {
+      "chainId": 137,
+      "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "name": "MATIC",
+      "symbol": "MATIC",
+      "decimals": 18,
+      "chainAgnosticId": null,
+      "icon": "https://assets.polygon.technology/tokenAssets/matic.svg",
+      "logoURI": "https://assets.polygon.technology/tokenAssets/matic.svg",
+      "amount": 4.730287069875342
+    },
+    {
+      "chainId": 137,
+      "address": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+      "name": "Tether USD",
+      "symbol": "USDT",
+      "decimals": 6,
+      "chainAgnosticId": "USDT",
+      "icon": "https://assets.polygon.technology/tokenAssets/usdt.svg",
+      "logoURI": "https://assets.polygon.technology/tokenAssets/usdt.svg",
+      "amount": 0.0143
+    },
+    {
+      "chainId": 42161,
+      "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "decimals": 18,
+      "chainAgnosticId": null,
+      "icon": "https://assets.polygon.technology/tokenAssets/eth.svg",
+      "logoURI": "https://assets.polygon.technology/tokenAssets/eth.svg",
+      "amount": 0.001043710179048333
+    },
+    {
+      "chainId": 42161,
+      "address": "0x82af49447d8a07e3bd95bd0d56f35241523fbab1",
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "chainAgnosticId": "ETH",
+      "icon": "https://assets.polygon.technology/tokenAssets/weth.svg",
+      "logoURI": "https://assets.polygon.technology/tokenAssets/weth.svg",
+      "amount": 0.0001
+    },
+    {
+      "chainId": 42161,
+      "address": "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8",
+      "name": "Bridged USDC",
+      "symbol": "USDC.E",
+      "decimals": 6,
+      "chainAgnosticId": "USDC",
+      "icon": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+      "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+      "amount": 0.013
+    },
+    {
+      "chainId": 43114,
+      "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "name": "Avalanche",
+      "symbol": "AVAX",
+      "decimals": 18,
+      "chainAgnosticId": null,
+      "icon": "https://assets.coingecko.com/coins/images/22943/small/AVAX_wh_small.png?1696522240",
+      "logoURI": "https://assets.coingecko.com/coins/images/22943/small/AVAX_wh_small.png?1696522240",
+      "amount": 0.5279117938003193
+    },
+    {
+      "chainId": 10,
+      "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "decimals": 18,
+      "chainAgnosticId": null,
+      "icon": "https://assets.polygon.technology/tokenAssets/eth.svg",
+      "logoURI": "https://assets.polygon.technology/tokenAssets/eth.svg",
+      "amount": 0.008114008480378698
+    },
+    {
+      "chainId": 10,
+      "address": "0x94b008aa00579c1307b0ef2c499ad98a8ce58e58",
+      "name": "Tether USD",
+      "symbol": "USDT",
+      "decimals": 6,
+      "chainAgnosticId": "USDT",
+      "icon": "https://assets.polygon.technology/tokenAssets/usdt.svg",
+      "logoURI": "https://assets.polygon.technology/tokenAssets/usdt.svg",
+      "amount": 0.99081
+    },
+    {
+      "chainId": 10,
+      "address": "0x7f5c764cbc14f9669b88837ca1490cca17c31607",
+      "name": "Bridged USD Coin",
+      "symbol": "USDC.E",
+      "decimals": 6,
+      "chainAgnosticId": "USDC",
+      "icon": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+      "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+      "amount": 1
+    },
+    {
+      "chainId": 100,
+      "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "name": "xDAI",
+      "symbol": "XDAI",
+      "decimals": 18,
+      "chainAgnosticId": null,
+      "icon": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
+      "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
+      "amount": 15.925966595339734
+    },
+    {
+      "chainId": 100,
+      "address": "0x6a023ccd1ff6f2045c3309768ead9e68f978f6e1",
+      "name": "Wrapped Ether on xDai",
+      "symbol": "WETH",
+      "decimals": 18,
+      "chainAgnosticId": "ETH",
+      "icon": "https://assets.polygon.technology/tokenAssets/weth.svg",
+      "logoURI": "https://assets.polygon.technology/tokenAssets/weth.svg",
+      "amount": 0.00198859911295515
+    },
+    {
+      "chainId": 324,
+      "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "decimals": 18,
+      "chainAgnosticId": null,
+      "icon": "https://assets.polygon.technology/tokenAssets/eth.svg",
+      "logoURI": "https://assets.polygon.technology/tokenAssets/eth.svg",
+      "amount": 0.003250189202555283
+    },
+    {
+      "chainId": 1101,
+      "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "decimals": 18,
+      "chainAgnosticId": null,
+      "icon": "https://assets.polygon.technology/tokenAssets/eth.svg",
+      "logoURI": "https://assets.polygon.technology/tokenAssets/eth.svg",
+      "amount": 0.0003
+    },
+    {
+      "chainId": 8453,
+      "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "decimals": 18,
+      "chainAgnosticId": "ETH",
+      "icon": "https://assets.polygon.technology/tokenAssets/eth.svg",
+      "logoURI": "https://assets.polygon.technology/tokenAssets/eth.svg",
+      "amount": 0.004735307697398413
+    },
+    {
+      "chainId": 7777777,
+      "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "decimals": 18,
+      "chainAgnosticId": null,
+      "icon": "https://assets.polygon.technology/tokenAssets/eth.svg",
+      "logoURI": "https://assets.polygon.technology/tokenAssets/eth.svg",
+      "amount": 0.002008996488789727
+    }
+  ]
+}

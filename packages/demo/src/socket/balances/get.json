@@ -1,0 +1,11 @@
+{
+  "chainId": 1,
+  "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+  "name": "Ethereum",
+  "symbol": "ETH",
+  "decimals": 18,
+  "chainAgnosticId": null,
+  "icon": "https://assets.polygon.technology/tokenAssets/eth.svg",
+  "logoURI": "https://assets.polygon.technology/tokenAssets/eth.svg",
+  "amount": 0.004819415871555135
+}

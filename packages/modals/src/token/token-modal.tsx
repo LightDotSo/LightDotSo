@@ -142,7 +142,7 @@ export const TokenModal: FC = () => {
             {renderedTokens.map(token => (
               // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
               <div
-                key={token.address}
+                key={`${token.address}-${token.chain_id}`}
                 className="flex cursor-pointer flex-row items-center rounded-md p-2 hover:bg-background-stronger"
                 onClick={() => onTokenSelect(token)}
               >

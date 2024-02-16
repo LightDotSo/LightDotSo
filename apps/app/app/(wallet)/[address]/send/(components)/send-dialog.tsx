@@ -1379,6 +1379,9 @@ export const SendDialog: FC<SendDialogProps> = ({
                                               setTokenModalProps({
                                                 address: address,
                                                 type: "native",
+                                                isTestnet:
+                                                  walletSettings?.is_enabled_testnet ??
+                                                  false,
                                                 onClose: () => {
                                                   hideTokenModal();
                                                   if (isInsideModal) {

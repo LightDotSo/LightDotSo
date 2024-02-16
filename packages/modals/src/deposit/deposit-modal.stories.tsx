@@ -14,9 +14,10 @@
 
 /* eslint-disable react-hooks/rules-of-hooks */
 
-import { useModals } from "@lightdotso/stores";
+import { useAuth, useModals } from "@lightdotso/stores";
 import type { Meta, StoryObj } from "@storybook/react";
 import { useEffect } from "react";
+import TokenModal from "../token/token-modal";
 import { DepositModal } from "./deposit-modal";
 
 // -----------------------------------------------------------------------------
@@ -44,14 +45,25 @@ type Story = StoryObj<typeof DepositModal>;
 
 export const Base: Story = {
   render: () => {
+    const { setAddress } = useAuth();
     const { showDepositModal } = useModals();
+
+    useEffect(() => {
+      setAddress("0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed");
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
       showDepositModal();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return <DepositModal />;
+    return (
+      <>
+        <DepositModal />
+        <TokenModal />
+      </>
+    );
   },
   args: {},
 };

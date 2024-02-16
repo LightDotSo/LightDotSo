@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { address } from "./address";
-export type { Address } from "./address";
-export type { AddressOrEns } from "./addressOrEns";
-export { addressOrEns } from "./addressOrEns";
-export type { Asset, Transfer } from "./transfer";
-export { asset, transfer } from "./transfer";
-export type { UserOperation } from "./userOperation";
-export { userOperation } from "./userOperation";
+import type {
+  SocketBalanceData,
+  SocketBalancePageData,
+} from "@lightdotso/data";
+import getJsonData from "./get.json";
+import listJsonData from "./list.json";
+
+export const socketBalancesGetData = getJsonData as SocketBalanceData;
+export const socketBalancesListData = listJsonData as SocketBalancePageData;

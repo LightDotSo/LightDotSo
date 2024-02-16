@@ -22,9 +22,9 @@ export type SocketBalanceData = {
   name: string;
   symbol: string;
   decimals: number;
-  price: number;
+  price?: number;
   amount: number;
-  currency: string;
+  currency?: string;
 };
 
 export type SocketBalancePageData = {

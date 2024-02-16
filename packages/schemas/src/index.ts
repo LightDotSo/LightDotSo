@@ -25,8 +25,6 @@ export type {
   PartialUserOperation,
   PartialUserOperations,
   ConfirmFormConfiguration,
-  Asset,
-  Transfer,
   SendFormConfiguration,
 } from "./form";
 export {
@@ -41,5 +39,11 @@ export type {
   SimplehashTestnetChain,
 } from "./simplehash";
 export { llamaGetSchema, llamaPostSchema } from "./llama";
-export { address, addressOrEns, userOperation } from "./web3";
-export type { Address, AddressOrEns, UserOperation } from "./web3";
+export { address, addressOrEns, asset, transfer, userOperation } from "./web3";
+export type {
+  Address,
+  AddressOrEns,
+  Asset,
+  Transfer,
+  UserOperation,
+} from "./web3";

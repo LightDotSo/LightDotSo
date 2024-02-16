@@ -2010,9 +2010,15 @@ importers:
       '@lightdotso/hooks':
         specifier: workspace:*
         version: link:../hooks
+      '@lightdotso/nuqs':
+        specifier: workspace:*
+        version: link:../nuqs
       '@lightdotso/query':
         specifier: workspace:*
         version: link:../query
+      '@lightdotso/query-keys':
+        specifier: workspace:*
+        version: link:../query-keys
       '@lightdotso/schemas':
         specifier: workspace:*
         version: link:../schemas
@@ -2037,6 +2043,15 @@ importers:
       '@storybook/react':
         specifier: ^7.6.15
         version: 7.6.15(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
+      '@tanstack/react-query':
+        specifier: ^5.20.5
+        version: 5.20.5(react@18.2.0)
+      '@types/lodash':
+        specifier: ^4.14.202
+        version: 4.14.202
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       react:
         specifier: ^18.2.0
         version: 18.2.0
