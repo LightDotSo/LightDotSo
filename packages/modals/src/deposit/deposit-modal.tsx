@@ -243,7 +243,13 @@ export function DepositModal() {
       isSwitchChainPending ||
       isConnecting
     );
-  }, [form.formState]);
+  }, [
+    form.formState,
+    isSendTransactionPending,
+    isWriteContractPending,
+    isSwitchChainPending,
+    isConnecting,
+  ]);
 
   const isFormValid = useMemo(() => {
     return form.formState.isValid && isEmpty(form.formState.errors);

@@ -13,12 +13,14 @@
 // limitations under the License.
 
 import { CHAINS } from "@lightdotso/const";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { createClient, fallback } from "viem";
 import {
   cookieStorage,
   createConfig,
   createStorage,
   http,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   unstable_connector,
 } from "wagmi";
 import {
@@ -41,14 +43,17 @@ export const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!;
 // Set up wagmi config
 export const wagmiConfig = createConfig({
   chains: CHAINS,
+  // client({ chain }) {
+  //   return createClient({
+  //     chain,
+  //     transport: fallback([
+  //       http(`https://rpc.light.so/${chain.id}`),
+  //       unstable_connector(injected),
+  //     ]),
+  //   });
+  // },
   client({ chain }) {
-    return createClient({
-      chain,
-      transport: fallback([
-        http(`https://rpc.light.so/${chain.id}`),
-        unstable_connector(injected),
-      ]),
-    });
+    return createClient({ chain, transport: http() });
   },
   connectors: [
     coinbaseWallet({
