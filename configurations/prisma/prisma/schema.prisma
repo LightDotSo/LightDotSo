@@ -898,7 +898,8 @@ model Transaction {
   // Relation Many-to-many
   // ---------------------------------------------------------------------------
 
-  userOperations UserOperation[]
+  billingOperations BillingOperation[]
+  userOperations    UserOperation[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1017,8 +1018,9 @@ model UserOperation {
   // Relation Many-to-many
   // ---------------------------------------------------------------------------
 
-  signatures  Signature[]
-  simulations Simulation[]
+  billingOperations BillingOperation[]
+  signatures        Signature[]
+  simulations       Simulation[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1151,11 +1153,23 @@ model BillingOperation {
   activities Activity[]
 
   // ---------------------------------------------------------------------------
+  // None-to-many
+  // ---------------------------------------------------------------------------
+
+  transaction     Transaction? @relation(fields: [transactionHash], references: [hash])
+  transactionHash String?
+
+  userOperation     UserOperation? @relation(fields: [userOperationHash], references: [hash])
+  userOperationHash String?
+
+  // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
 
   // Relations
   @@index([billingId])
+  @@index([transactionHash])
+  @@index([userOperationHash])
 }
 
 enum BillingOperationStatus {
@@ -2174,10 +2188,10 @@ model Activity {
   // Relations None-to-many
   // ---------------------------------------------------------------------------
 
-  user   User?   @relation(fields: [userId], references: [id])
+  user   User?   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   userId String?
 
-  wallet        Wallet? @relation(fields: [walletAddress], references: [address])
+  wallet        Wallet? @relation(fields: [walletAddress], references: [address], onDelete: NoAction, onUpdate: NoAction)
   walletAddress String?
 
   // ---------------------------------------------------------------------------
@@ -2187,31 +2201,31 @@ model Activity {
   billing   Billing? @relation(fields: [billingId], references: [id])
   billingId String?
 
-  billingOperation   BillingOperation? @relation(fields: [billingOperationId], references: [id])
+  billingOperation   BillingOperation? @relation(fields: [billingOperationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   billingOperationId String?
 
-  inviteCode   InviteCode? @relation(fields: [inviteCodeId], references: [id])
+  inviteCode   InviteCode? @relation(fields: [inviteCodeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   inviteCodeId String?
 
-  supportRequest   SupportRequest? @relation(fields: [supportRequestId], references: [id])
+  supportRequest   SupportRequest? @relation(fields: [supportRequestId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   supportRequestId String?
 
-  userSettings   UserSettings? @relation(fields: [userSettingsId], references: [id])
+  userSettings   UserSettings? @relation(fields: [userSettingsId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   userSettingsId String?
 
-  userNotificationSettings   UserNotificationSettings? @relation(fields: [userNotificationSettingsId], references: [id])
+  userNotificationSettings   UserNotificationSettings? @relation(fields: [userNotificationSettingsId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   userNotificationSettingsId String?
 
-  walletBilling   WalletBilling? @relation(fields: [walletBillingId], references: [id])
+  walletBilling   WalletBilling? @relation(fields: [walletBillingId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   walletBillingId String?
 
-  walletFeatures   WalletFeatures? @relation(fields: [walletFeaturesId], references: [id])
+  walletFeatures   WalletFeatures? @relation(fields: [walletFeaturesId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   walletFeaturesId String?
 
-  walletNotificationSettings   WalletNotificationSettings? @relation(fields: [walletNotificationSettingsId], references: [id])
+  walletNotificationSettings   WalletNotificationSettings? @relation(fields: [walletNotificationSettingsId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   walletNotificationSettingsId String?
 
-  walletSettings   WalletSettings? @relation(fields: [walletSettingsId], references: [id])
+  walletSettings   WalletSettings? @relation(fields: [walletSettingsId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   walletSettingsId String?
 
   // ---------------------------------------------------------------------------
