@@ -106,7 +106,7 @@ export const UserNav: FC = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button size="sm">
+        <Button>
           <Wallet className="mr-2 size-4" />
           {address
             ? ens ?? shortenAddress(address as Address)

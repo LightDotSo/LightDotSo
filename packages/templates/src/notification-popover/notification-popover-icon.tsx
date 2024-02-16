@@ -45,7 +45,7 @@ export const NotificationPopoverIcon: FC<NotificationPopoverIconProps> = ({
         notificationsCount !== 0 && (
           <BadgeIcon
             intent="info"
-            className="size-1 absolute -bottom-1.5 -right-1.5 p-2"
+            className="absolute -bottom-1.5 -right-1.5 size-1 p-2"
             size="unsized"
             type="number"
           >

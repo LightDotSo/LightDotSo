@@ -103,9 +103,10 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
         {kind === "beta" && "Public Beta"}
         {kind === "outage" && "Outage Alert"}
       </p>
+      <span className="hidden md:inline-flex">&middot;</span>{" "}
       {kind === "beta" && (
-        <div className="ml-2 flex items-center md:ml-4">
-          <p className="hidden text-xs leading-6 sm:block">
+        <div className="flex items-center text-sm">
+          <p className="hidden leading-6 sm:block">
             Please report any issues to{" "}
           </p>
           <ButtonIcon asChild size="xs" variant="link" intent="info">
@@ -138,17 +139,14 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
         </div>
       )}
       {kind === "demo" && (
-        <Link
-          className="ml-2 inline-flex text-xs hover:underline md:ml-4"
-          href="/?demo=true"
-        >
+        <Link className="inline-flex hover:underline" href="/?demo=true">
           Go to home
           <Undo2Icon className="ml-2 size-4 shrink-0 opacity-50" />
         </Link>
       )}
       {kind === "outage" && (
         <a
-          className="ml-2 inline-flex text-xs hover:underline md:ml-4"
+          className="inline-flex hover:underline"
           href={INTERNAL_LINKS["Status"]}
           target="_blank"
           rel="noopener noreferrer"
