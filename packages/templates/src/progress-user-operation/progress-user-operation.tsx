@@ -34,14 +34,14 @@ export const ProgressUserOperation: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address } = useAuth();
+  const { wallet } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
   const { userOperations, isUserOperationsLoading } = useQueryUserOperations({
-    address: address,
+    address: wallet,
     status: "pending",
     order: "desc",
     limit: Number.MAX_SAFE_INTEGER,
