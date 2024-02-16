@@ -577,13 +577,14 @@ model Chain {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  metrics        Metrics[]
-  paymasters     Paymaster[]
-  protocols      Protocol[]
-  tokens         Token[]
-  transactions   Transaction[]
-  userOperations UserOperation[]
-  walletBalances WalletBalance[]
+  billingBalances BillingBalance[]
+  metrics         Metrics[]
+  paymasters      Paymaster[]
+  protocols       Protocol[]
+  tokens          Token[]
+  transactions    Transaction[]
+  userOperations  UserOperation[]
+  walletBalances  WalletBalance[]
 }
 
 // -----------------------------------------------------------------------------
@@ -1113,6 +1114,57 @@ enum BillingStatus {
 }
 
 // -----------------------------------------------------------------------------
+// BillingBalance
+// -----------------------------------------------------------------------------
+
+model BillingBalance {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  timestamp DateTime @default(now())
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  balanceUSD Float
+
+  chainId   BigInt
+  amount    String?
+  stable    Boolean?
+  isLatest  Boolean  @default(false)
+  isSpam    Boolean  @default(false)
+  isTestnet Boolean  @default(false)
+
+  // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  chain Chain @relation(fields: [chainId], references: [id])
+
+  // ---------------------------------------------------------------------------
+  // None-to-many
+  // ---------------------------------------------------------------------------
+
+  billingOperation   BillingOperation? @relation(fields: [billingOperationId], references: [id])
+  billingOperationId String?
+
+  token   Token?  @relation(fields: [tokenId], references: [id])
+  tokenId String?
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
+  // Relations
+  @@index([billingOperationId])
+  @@index([chainId])
+  @@index([tokenId])
+}
+
+// -----------------------------------------------------------------------------
 // BillingOperation
 // -----------------------------------------------------------------------------
 
@@ -1150,11 +1202,15 @@ model BillingOperation {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  activities Activity[]
+  activities      Activity[]
+  billingBalances BillingBalance[]
 
   // ---------------------------------------------------------------------------
   // None-to-many
   // ---------------------------------------------------------------------------
+
+  paymasterOperation   PaymasterOperation? @relation(fields: [paymasterOperationId], references: [id])
+  paymasterOperationId String?
 
   transaction     Transaction? @relation(fields: [transactionHash], references: [hash])
   transactionHash String?
@@ -1168,6 +1224,7 @@ model BillingOperation {
 
   // Relations
   @@index([billingId])
+  @@index([paymasterOperationId])
   @@index([transactionHash])
   @@index([userOperationHash])
 }
@@ -1250,13 +1307,6 @@ model PaymasterOperation {
   validAfter  DateTime
 
   // ---------------------------------------------------------------------------
-  // One-to-one
-  // ---------------------------------------------------------------------------
-
-  // billingOperation   BillingOperation @relation(fields: [billingOperationId], references: [id])
-  billingOperationId String? @unique
-
-  // ---------------------------------------------------------------------------
   // One-to-many
   // ---------------------------------------------------------------------------
 
@@ -1277,6 +1327,12 @@ model PaymasterOperation {
   // ---------------------------------------------------------------------------
 
   userOperation UserOperation?
+
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
+  billingOperations BillingOperation[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1615,10 +1671,11 @@ model Token {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  assetChanges AssetChange[]
-  balances     WalletBalance[]
-  prices       TokenPrice[]
-  strategies   TokenProtocolStrategy[]
+  assetChanges    AssetChange[]
+  balances        WalletBalance[]
+  billingBalances BillingBalance[]
+  prices          TokenPrice[]
+  strategies      TokenProtocolStrategy[]
 
   // ---------------------------------------------------------------------------
   // Mappings
