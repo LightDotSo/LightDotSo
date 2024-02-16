@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ButtonIcon } from "@lightdotso/ui";
+import { BadgeIcon, ButtonIcon } from "@lightdotso/ui";
 import { BellIcon } from "lucide-react";
 import type { FC } from "react";
 
@@ -37,13 +37,21 @@ export const NotificationPopoverIcon: FC<NotificationPopoverIconProps> = ({
 
   return (
     <div className="relative">
-      <ButtonIcon variant="outline" className="rounded-full">
+      <ButtonIcon variant="outline">
         <BellIcon className="size-4" />
         <span className="sr-only">Open notificaitons</span>
       </ButtonIcon>
-      {notificationsCount && notificationsCount > 0 && (
-        <span className="translate-x-1/5 translate-y-1/5 absolute bottom-0 right-0 size-2 rounded-full bg-background-info" />
-      )}
+      {(notificationsCount || notificationsCount === 0) &&
+        notificationsCount !== 0 && (
+          <BadgeIcon
+            intent="info"
+            className="size-1 absolute -bottom-1.5 -right-1.5 p-2"
+            size="unsized"
+            type="number"
+          >
+            {notificationsCount > 99 ? "99+" : notificationsCount}
+          </BadgeIcon>
+        )}
     </div>
   );
 };
