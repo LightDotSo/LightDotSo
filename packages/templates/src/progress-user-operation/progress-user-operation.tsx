@@ -61,7 +61,7 @@ export const ProgressUserOperation: FC = () => {
 
     for (const userOperation of userOperations) {
       if (!hashedToasts.has(userOperation.hash)) {
-        toast.loading("Processing user operation...", {
+        toast.info("Processing user operation...", {
           action: {
             label: "View Progress",
             onClick: () => {
