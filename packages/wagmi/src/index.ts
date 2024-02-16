@@ -41,6 +41,7 @@ export {
   useSignMessage,
   useAccount,
   useChainId,
+  useConnectors,
   useEstimateGas,
   useEstimateFeesPerGas,
   useEstimateMaxPriorityFeePerGas,

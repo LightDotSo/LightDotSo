@@ -507,7 +507,6 @@ export const Transaction: FC<TransactionProps> = ({
   }, [
     chain,
     configuration?.threshold,
-    targetUserOperation.chainId,
     targetUserOperation.nonce,
     targetUserOperation.sender,
     userOperationWithHash?.hash,

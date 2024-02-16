@@ -41,13 +41,19 @@ export const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!;
 // Set up wagmi config
 export const wagmiConfig = createConfig({
   chains: CHAINS,
+  // client({ chain }) {
+  //   return createClient({
+  //     chain,
+  //     transport: fallback([
+  //       http(`https://rpc.light.so/${chain.id}`),
+  //       unstable_connector(injected),
+  //     ]),
+  //   });
+  // },
   client({ chain }) {
     return createClient({
       chain,
-      transport: fallback([
-        http(`https://rpc.light.so/${chain.id}`),
-        unstable_connector(injected),
-      ]),
+      transport: fallback([http(), unstable_connector(injected)]),
     });
   },
   connectors: [
