@@ -1235,8 +1235,8 @@ enum BillingOperationStatus {
   DEPOSIT
   WITHDRAWAL
   PAYMENT
-  PENDING
   SPONSORED
+  PENDING
 }
 
 // -----------------------------------------------------------------------------
