@@ -898,7 +898,8 @@ model Transaction {
   // Relation Many-to-many
   // ---------------------------------------------------------------------------
 
-  userOperations UserOperation[]
+  billingOperations BillingOperation[]
+  userOperations    UserOperation[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1017,8 +1018,9 @@ model UserOperation {
   // Relation Many-to-many
   // ---------------------------------------------------------------------------
 
-  signatures  Signature[]
-  simulations Simulation[]
+  billingOperations BillingOperation[]
+  signatures        Signature[]
+  simulations       Simulation[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1096,6 +1098,7 @@ model Billing {
   // ---------------------------------------------------------------------------
 
   activities        Activity[]
+  billingBalances   BillingBalance[]
   billingOperations BillingOperation[]
   walletBilling     WalletBilling[]
 }
@@ -1108,6 +1111,55 @@ enum BillingStatus {
   ADMIN
   SPONSORED
   USER
+}
+
+// -----------------------------------------------------------------------------
+// BillingBalance
+// -----------------------------------------------------------------------------
+
+model BillingBalance {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  timestamp DateTime @default(now())
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  amount String
+
+  // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  billing   Billing @relation(fields: [billingId], references: [id])
+  billingId String
+
+  walletBalance   WalletBalance @relation(fields: [walletBalanceId], references: [id])
+  walletBalanceId String
+
+  // ---------------------------------------------------------------------------
+  // None-to-many
+  // ---------------------------------------------------------------------------
+
+  billingOperation   BillingOperation? @relation(fields: [billingOperationId], references: [id])
+  billingOperationId String?
+
+  token   Token?  @relation(fields: [tokenId], references: [id])
+  tokenId String?
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
+  // Relations
+  @@index([billingId])
+  @@index([walletBalanceId])
+  @@index([billingOperationId])
+  @@index([tokenId])
 }
 
 // -----------------------------------------------------------------------------
@@ -1148,7 +1200,21 @@ model BillingOperation {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  activities Activity[]
+  activities      Activity[]
+  billingBalances BillingBalance[]
+
+  // ---------------------------------------------------------------------------
+  // None-to-many
+  // ---------------------------------------------------------------------------
+
+  paymasterOperation   PaymasterOperation? @relation(fields: [paymasterOperationId], references: [id])
+  paymasterOperationId String?
+
+  transaction     Transaction? @relation(fields: [transactionHash], references: [hash])
+  transactionHash String?
+
+  userOperation     UserOperation? @relation(fields: [userOperationHash], references: [hash])
+  userOperationHash String?
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1156,6 +1222,9 @@ model BillingOperation {
 
   // Relations
   @@index([billingId])
+  @@index([paymasterOperationId])
+  @@index([transactionHash])
+  @@index([userOperationHash])
 }
 
 enum BillingOperationStatus {
@@ -1166,6 +1235,7 @@ enum BillingOperationStatus {
   DEPOSIT
   WITHDRAWAL
   PAYMENT
+  PENDING
   SPONSORED
 }
 
@@ -1236,13 +1306,6 @@ model PaymasterOperation {
   validAfter  DateTime
 
   // ---------------------------------------------------------------------------
-  // One-to-one
-  // ---------------------------------------------------------------------------
-
-  // billingOperation   BillingOperation @relation(fields: [billingOperationId], references: [id])
-  billingOperationId String? @unique
-
-  // ---------------------------------------------------------------------------
   // One-to-many
   // ---------------------------------------------------------------------------
 
@@ -1263,6 +1326,12 @@ model PaymasterOperation {
   // ---------------------------------------------------------------------------
 
   userOperation UserOperation?
+
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
+  billingOperations BillingOperation[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1601,10 +1670,11 @@ model Token {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  assetChanges AssetChange[]
-  balances     WalletBalance[]
-  prices       TokenPrice[]
-  strategies   TokenProtocolStrategy[]
+  assetChanges    AssetChange[]
+  balances        WalletBalance[]
+  billingBalances BillingBalance[]
+  prices          TokenPrice[]
+  strategies      TokenProtocolStrategy[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1886,6 +1956,12 @@ model WalletBalance {
 
   tokenProtocol   TokenProtocol? @relation(fields: [tokenProtocolId], references: [id])
   tokenProtocolId String?
+
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
+  billingBalances BillingBalance[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -2174,10 +2250,10 @@ model Activity {
   // Relations None-to-many
   // ---------------------------------------------------------------------------
 
-  user   User?   @relation(fields: [userId], references: [id])
+  user   User?   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   userId String?
 
-  wallet        Wallet? @relation(fields: [walletAddress], references: [address])
+  wallet        Wallet? @relation(fields: [walletAddress], references: [address], onDelete: NoAction, onUpdate: NoAction)
   walletAddress String?
 
   // ---------------------------------------------------------------------------
@@ -2187,31 +2263,31 @@ model Activity {
   billing   Billing? @relation(fields: [billingId], references: [id])
   billingId String?
 
-  billingOperation   BillingOperation? @relation(fields: [billingOperationId], references: [id])
+  billingOperation   BillingOperation? @relation(fields: [billingOperationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   billingOperationId String?
 
-  inviteCode   InviteCode? @relation(fields: [inviteCodeId], references: [id])
+  inviteCode   InviteCode? @relation(fields: [inviteCodeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   inviteCodeId String?
 
-  supportRequest   SupportRequest? @relation(fields: [supportRequestId], references: [id])
+  supportRequest   SupportRequest? @relation(fields: [supportRequestId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   supportRequestId String?
 
-  userSettings   UserSettings? @relation(fields: [userSettingsId], references: [id])
+  userSettings   UserSettings? @relation(fields: [userSettingsId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   userSettingsId String?
 
-  userNotificationSettings   UserNotificationSettings? @relation(fields: [userNotificationSettingsId], references: [id])
+  userNotificationSettings   UserNotificationSettings? @relation(fields: [userNotificationSettingsId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   userNotificationSettingsId String?
 
-  walletBilling   WalletBilling? @relation(fields: [walletBillingId], references: [id])
+  walletBilling   WalletBilling? @relation(fields: [walletBillingId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   walletBillingId String?
 
-  walletFeatures   WalletFeatures? @relation(fields: [walletFeaturesId], references: [id])
+  walletFeatures   WalletFeatures? @relation(fields: [walletFeaturesId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   walletFeaturesId String?
 
-  walletNotificationSettings   WalletNotificationSettings? @relation(fields: [walletNotificationSettingsId], references: [id])
+  walletNotificationSettings   WalletNotificationSettings? @relation(fields: [walletNotificationSettingsId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   walletNotificationSettingsId String?
 
-  walletSettings   WalletSettings? @relation(fields: [walletSettingsId], references: [id])
+  walletSettings   WalletSettings? @relation(fields: [walletSettingsId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   walletSettingsId String?
 
   // ---------------------------------------------------------------------------
