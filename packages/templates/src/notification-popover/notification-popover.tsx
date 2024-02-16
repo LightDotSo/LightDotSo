@@ -33,6 +33,7 @@ import {
 import { Settings2 } from "lucide-react";
 import Link from "next/link";
 import type { FC } from "react";
+import { Login } from "../login";
 import { NotificationPopoverIcon } from "./notification-popover-icon";
 
 // -----------------------------------------------------------------------------
@@ -44,7 +45,7 @@ export const NotificationPopover: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { wallet } = useAuth();
+  const { sessionId, wallet } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -91,6 +92,7 @@ export const NotificationPopover: FC = () => {
             </ButtonIcon>
           </div>
           <TabsContent value="inbox">
+            {!sessionId && <Login />}
             {notifications &&
               notifications.map(notification => (
                 <div key={notification.id} className="p-4">
@@ -104,14 +106,20 @@ export const NotificationPopover: FC = () => {
             )}
           </TabsContent>
           <TabsContent value="archive">
-            <div className="w-full justify-center py-8 text-center">
-              <EmptyState entity="notification" />
-            </div>
+            {!sessionId && <Login />}
+            {notificationsCount?.count === 0 && (
+              <div className="w-full justify-center py-8 text-center">
+                <EmptyState entity="notification" />
+              </div>
+            )}
           </TabsContent>
           <TabsContent value="transactions">
-            <div className="w-full justify-center py-8 text-center">
-              <EmptyState entity="notification" />
-            </div>
+            {!sessionId && <Login />}
+            {notificationsCount?.count === 0 && (
+              <div className="w-full justify-center py-8 text-center">
+                <EmptyState entity="notification" />
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       </PopoverContent>

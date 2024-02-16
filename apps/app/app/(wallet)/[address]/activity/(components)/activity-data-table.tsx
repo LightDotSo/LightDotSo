@@ -95,7 +95,11 @@ export const ActivityDataTable: FC<ActivityDataTableProps> = ({ address }) => {
 
   return (
     <>
-      {!sessionId && <Login />}
+      {!sessionId && (
+        <div className="rounded-md border border-border bg-background">
+          <Login />
+        </div>
+      )}
       <TableSectionWrapper className={cn(sessionId ? "block" : "hidden")}>
         <DataTable
           isLoading={isLoading}

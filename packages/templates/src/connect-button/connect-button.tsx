@@ -51,7 +51,11 @@ export const ConnectButton: FC = () => {
     <ConnectKitButton.Custom>
       {({ isConnecting, show, address }) => {
         return (
-          <Button disabled={isConnecting} size="lg" onClick={show}>
+          <Button
+            disabled={isConnecting}
+            size={isDesktop ? "default" : "lg"}
+            onClick={show}
+          >
             <Wallet className="mr-2 size-4" />
             {address
               ? ens ?? shortenAddress(address as Address)

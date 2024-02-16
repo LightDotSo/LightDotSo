@@ -150,6 +150,16 @@ export const useMutationUserOperationSend = (params: UserOperationParams) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.user_operation.list({
           address: params.address as Address,
+          status: "pending",
+          order: "desc",
+          limit: Number.MAX_SAFE_INTEGER,
+          offset: 0,
+          is_testnet: true,
+        }).queryKey,
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.user_operation.list({
+          address: params.address as Address,
           status: "queued",
           order: "asc",
           limit: TRANSACTION_ROW_COUNT,
