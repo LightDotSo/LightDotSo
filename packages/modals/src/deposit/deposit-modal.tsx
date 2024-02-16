@@ -50,8 +50,9 @@ import { isEmpty } from "lodash";
 import { useEffect, useMemo } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
+import type { Address } from "viem";
+import { erc20Abi } from "viem";
 import type { z } from "zod";
-import { Address, erc20Abi } from "viem";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -387,6 +388,8 @@ export function DepositModal() {
                               render={({ field }) => (
                                 <Input
                                   {...field}
+                                  type="number"
+                                  className="w-full"
                                   onChange={e => {
                                     if (!e.target.value) {
                                       // Clear the value of key address
@@ -397,8 +400,6 @@ export function DepositModal() {
 
                                     field.onChange(quantity);
                                   }}
-                                  type="number"
-                                  className="w-full"
                                 />
                               )}
                             />
