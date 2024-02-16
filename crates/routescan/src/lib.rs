@@ -19,7 +19,8 @@ use constants::ROUTESCAN_BASE_URL;
 use eyre::Result;
 use lightdotso_contracts::utils::is_testnet;
 use reqwest::Response;
-use types::BalancesData;
+use serde_json::Value;
+use types::{BalancesData, NativeBalanceData};
 
 pub mod constants;
 pub mod types;
@@ -56,6 +57,33 @@ fn add_pagination_params(
 //     std::env::var("ROUTESCAN_API_KEY")
 //         .wrap_err("Could not read ROUTESCAN_API_KEY from environment variables")
 // }
+
+/// Get token balance information for an address
+pub async fn get_native_balance(chain_id: &u64, addr: &str) -> Result<NativeBalanceData> {
+    // let _api_key = get_api_key()?;
+
+    let is_testnet_str = if is_testnet(*chain_id) { "testnet" } else { "mainnet" };
+
+    let endpoint = format!(
+        "{}/network/{}/evm/{}/etherscan/api?module=account&action=balance&tag=latest&address={}",
+        *ROUTESCAN_BASE_URL, is_testnet_str, chain_id, addr,
+    );
+    println!("endpoint: {}", endpoint);
+
+    let resp = make_request(&endpoint).await?;
+
+    let mut value: Value = resp.json().await?;
+
+    if let Some(result_value) = value.get_mut("result") {
+        if let Value::String(s) = result_value {
+            let result_i64 = s.parse::<i64>()?;
+            *result_value = Value::Number(serde_json::Number::from(result_i64));
+        }
+    }
+    let resource: NativeBalanceData = serde_json::from_value(value)?;
+
+    Ok(resource)
+}
 
 /// Get token balance information for an address
 pub async fn get_token_balances(
