@@ -17,7 +17,7 @@
 import { useQueryUserOperation } from "@lightdotso/query";
 import { userOperationColumns } from "@lightdotso/tables";
 import { type FC } from "react";
-import type { Address, Hex } from "viem";
+import type { Hex } from "viem";
 import { DataTable } from "@/app/(user-operation)/(components)/data-table/data-table";
 
 // -----------------------------------------------------------------------------

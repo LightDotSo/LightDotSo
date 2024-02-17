@@ -59,7 +59,7 @@ export function BaseLayerWrapper({
   return (
     <div
       className={cn(
-        "flex w-full flex-row overflow-x-scroll",
+        "flex w-full flex-row overflow-x-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]",
         baseWidthWrapper,
         className,
       )}
