@@ -38,10 +38,10 @@
 
 ## Send USDB on Blast
 
-cast send --rpc-url=https://sepolia.blast.io/ \
-  0x4200000000000000000000000000000000000022 \
-  "transfer(address,uint256)" 0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F 1000000000000 \
-  -t
+# cast send --rpc-url=https://sepolia.blast.io/ \
+#   0x4200000000000000000000000000000000000022 \
+#   "transfer(address,uint256)" 0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F 1000000000000 \
+#   -t
 
 ## Bridge to Blast
 # cast send -i 0xc644cc19d2A9388b71dd1dEde07cFFC73237Dca8 --value 1.2ether --rpc-url https://rpc.sepolia.org \
@@ -50,3 +50,8 @@ cast send --rpc-url=https://sepolia.blast.io/ \
 ## Check balance
 
 # cast balance 0x35da762a35fcb3160738eecd60fa18438c273d5e --rpc-url https://sepolia.blast.io
+
+## Send ETH on Blast
+
+cast send -i 0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F --value 0.03ether --rpc-url https://sepolia.blast.io \
+  -t

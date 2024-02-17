@@ -52,7 +52,7 @@ pub async fn routescan_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
         if !native_balance.result != 0 {
             balances.items.push(WalletBalanceItem {
                 chain_id: Some(payload.chain_id.to_string()),
-                token_address: None,
+                token_address: Some("0x0000000000000000000000000000000000000000".to_string()),
                 token_name: None,
                 token_symbol: None,
                 // Hardcoded to 18 decimals for native balance
@@ -74,6 +74,7 @@ pub async fn routescan_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
                     item.token_address.is_some()
             })
             .collect::<Vec<_>>();
+        info!(?new_items);
 
         // Create the tokens
         let res = db
