@@ -12,15 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { notFound } from "next/navigation";
-import { isAddress } from "viem";
+import { isHex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Validator
 // -----------------------------------------------------------------------------
 
-export const validateAddress = (address: string) => {
-  if (!isAddress(address)) {
-    notFound();
+export const validateHex = (str: string): boolean => {
+  if (!isHex(str)) {
+    return false;
   }
+
+  return true;
 };

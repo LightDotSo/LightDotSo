@@ -13,10 +13,10 @@
 // limitations under the License.
 
 import { getWalletBilling } from "@lightdotso/services";
+import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
 import type { Address } from "viem";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
-import { validateAddress } from "@/handlers/validators/address";
 
 // -----------------------------------------------------------------------------
 // Handler

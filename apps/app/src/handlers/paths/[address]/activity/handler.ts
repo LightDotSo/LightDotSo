@@ -14,10 +14,10 @@
 
 import { paginationParser } from "@lightdotso/nuqs";
 import { getActivities, getActivitiesCount } from "@lightdotso/services";
+import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
 import type { Address } from "viem";
 import { verifyUserId } from "@/auth";
-import { validateAddress } from "@/handlers/validators/address";
 
 // -----------------------------------------------------------------------------
 // Handler

@@ -20,9 +20,9 @@ import {
   getTransactions,
   getTokens,
 } from "@lightdotso/services";
+import { validateAddress } from "@lightdotso/validators";
 import type { Address } from "viem";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
-import { validateAddress } from "@/handlers/validators/address";
 
 // -----------------------------------------------------------------------------
 // Handler

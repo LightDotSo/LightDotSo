@@ -23,11 +23,11 @@ import {
   getWallet,
 } from "@lightdotso/services";
 import { calculateInitCode } from "@lightdotso/solutions";
+import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
 import type { Address, Hex } from "viem";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
-import { validateAddress } from "@/handlers/validators/address";
 
 // -----------------------------------------------------------------------------
 // Handler

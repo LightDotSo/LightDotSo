@@ -17,10 +17,10 @@ import {
   getWallet,
   getWalletSettings,
 } from "@lightdotso/services";
+import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
 import type { Address } from "viem";
-import { validateAddress } from "@/handlers/validators/address";
 
 // -----------------------------------------------------------------------------
 // Handler

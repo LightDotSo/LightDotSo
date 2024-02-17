@@ -12,5 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { hexRegex } from "@/handlers/regexs/hexNumber";
-export { hexBytes32Regex } from "@/handlers/regexs/hexBytes32";
+import { hexBytes32Regex } from "@lightdotso/regexs";
+import { isHex } from "viem";
+
+// -----------------------------------------------------------------------------
+// Validator
+// -----------------------------------------------------------------------------
+
+export const validateUserOperationHash = (str: string): boolean => {
+  if (!isHex(str)) {
+    return false;
+  }
+
+  if (!hexBytes32Regex.test(str)) {
+    return false;
+  }
+
+  return true;
+};

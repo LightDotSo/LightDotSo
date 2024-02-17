@@ -12,23 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { notFound } from "next/navigation";
-import { hexRegex } from "@/handlers/regexs/hexNumber";
+import { hexRegex } from "@lightdotso/regexs";
 
 // -----------------------------------------------------------------------------
-// Validator
+// Parser
 // -----------------------------------------------------------------------------
 
-export const validateNumber = (value: string): void => {
+export const parseNumber = (value: string): number => {
   // Check if the value is a non-negative integer
   if (/^\d+$/.test(value)) {
-    return;
+    return parseInt(value, 10);
   }
 
   // Check if the value is Hex
   if (hexRegex.test(value)) {
-    return;
+    return parseInt(value, 16);
   }
 
-  notFound();
+  return parseInt(value);
 };

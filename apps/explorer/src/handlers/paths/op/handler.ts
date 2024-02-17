@@ -19,7 +19,6 @@ import {
 } from "@lightdotso/validators";
 import { notFound } from "next/navigation";
 import type { Hex } from "viem";
-import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 
 // -----------------------------------------------------------------------------
 // Handler
@@ -29,12 +28,6 @@ export const handler = async (params: {
   address: string;
   userOperationHash: string;
 }) => {
-  // ---------------------------------------------------------------------------
-  // Handlers
-  // ---------------------------------------------------------------------------
-
-  const { config, walletSettings } = await addressHandler(params);
-
   // ---------------------------------------------------------------------------
   // Validators
   // ---------------------------------------------------------------------------
@@ -58,9 +51,7 @@ export const handler = async (params: {
   return userOperation.match(
     userOperation => {
       return {
-        config: config,
         userOperation: userOperation,
-        walletSettings: walletSettings,
       };
     },
     () => {

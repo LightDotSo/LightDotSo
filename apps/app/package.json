@@ -53,6 +53,7 @@
     "@lightdotso/types": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
+    "@lightdotso/validators": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
     "@next/bundle-analyzer": "^14.1.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.48.0",

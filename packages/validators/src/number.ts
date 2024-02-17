@@ -12,15 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { notFound } from "next/navigation";
-import { isAddress } from "viem";
+import { hexRegex } from "@lightdotso/regexs";
 
 // -----------------------------------------------------------------------------
 // Validator
 // -----------------------------------------------------------------------------
 
-export const validateAddress = (address: string) => {
-  if (!isAddress(address)) {
-    notFound();
+export const validateNumber = (value: string): boolean => {
+  // Check if the value is a non-negative integer
+  if (/^\d+$/.test(value)) {
+    return true;
   }
+
+  // Check if the value is Hex
+  if (hexRegex.test(value)) {
+    return true;
+  }
+
+  return false;
 };

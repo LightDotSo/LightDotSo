@@ -12,22 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { hexRegex } from "@/handlers/regexs/hexNumber";
-
-// -----------------------------------------------------------------------------
-// Parser
-// -----------------------------------------------------------------------------
-
-export const parseNumber = (value: string) => {
-  // Check if the value is a non-negative integer
-  if (/^\d+$/.test(value)) {
-    return parseInt(value, 10);
-  }
-
-  // Check if the value is Hex
-  if (hexRegex.test(value)) {
-    return parseInt(value, 16);
-  }
-
-  return parseInt(value);
-};
+export { hexRegex } from "./hexNumber";
+export { hexBytes32Regex } from "./hexBytes32";

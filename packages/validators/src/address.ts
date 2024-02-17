@@ -12,7 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { validateAddress } from "@/handlers/validators/address";
-export { validateHex } from "@/handlers/validators/hex";
-export { validateNumber } from "@/handlers/validators/number";
-export { validateUserOperationHash } from "@/handlers/validators/userOperation";
+import { isAddress } from "viem";
+
+// -----------------------------------------------------------------------------
+// Validator
+// -----------------------------------------------------------------------------
+
+export const validateAddress = (address: string): boolean => {
+  if (!isAddress(address)) {
+    return false;
+  }
+
+  return true;
+};
