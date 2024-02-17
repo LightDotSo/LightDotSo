@@ -16,7 +16,6 @@
 
 import { ChainLogo } from "@lightdotso/svg";
 import type { FC } from "react";
-import { Chain } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props

@@ -15,9 +15,9 @@
 "use client";
 
 import type { TokenData } from "@lightdotso/data";
+import { ChainStack } from "@lightdotso/elements";
 import type { FC } from "react";
 import { ChainCard } from "../../(components)/card";
-import { ChainStack } from "@lightdotso/elements";
 
 // -----------------------------------------------------------------------------
 // Props

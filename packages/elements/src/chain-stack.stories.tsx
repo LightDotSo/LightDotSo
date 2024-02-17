@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { ChainStack } from "./chain-stack";
 import { mainnet, optimism, sepolia } from "viem/chains";
+import { ChainStack } from "./chain-stack";
 
 // -----------------------------------------------------------------------------
 // Meta
