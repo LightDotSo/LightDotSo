@@ -128,6 +128,17 @@ lazy_static! {
     };
 }
 
+// Routescan chain ids
+lazy_static! {
+    pub static ref ROUTESCAN_CHAIN_IDS: HashMap<u64, &'static str> = {
+        let mut m = HashMap::new();
+
+        m.insert(168587773, "Blast Sepolia Testnet");
+
+        m
+    };
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -20,9 +20,10 @@ use axum::{
     Json,
 };
 use ethers_main::{types::H160, utils::to_checksum};
-use lightdotso_contracts::constants::{ALL_CHAIN_IDS, MAINNET_CHAIN_IDS};
+use lightdotso_contracts::constants::{ALL_CHAIN_IDS, MAINNET_CHAIN_IDS, ROUTESCAN_CHAIN_IDS};
 use lightdotso_kafka::{
-    topics::covalent::produce_covalent_message, types::covalent::CovalentMessage,
+    topics::{covalent::produce_covalent_message, routescan::produce_routescan_message},
+    types::{covalent::CovalentMessage, routescan::RoutescanMessage},
 };
 use lightdotso_prisma::wallet;
 use lightdotso_redis::query::token::token_rate_limit;
@@ -116,6 +117,15 @@ pub(crate) async fn v1_queue_token_handler(
         produce_covalent_message(
             state.producer.clone(),
             &CovalentMessage { address: parsed_query_address, chain_id: *chain.0 },
+        )
+        .await?;
+    }
+
+    // For each chain in routescan, run the kafka producer.
+    for chain in ROUTESCAN_CHAIN_IDS.iter() {
+        produce_routescan_message(
+            state.producer.clone(),
+            &RoutescanMessage { address: parsed_query_address, chain_id: *chain.0 },
         )
         .await?;
     }
