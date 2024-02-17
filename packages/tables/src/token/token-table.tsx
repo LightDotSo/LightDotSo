@@ -195,7 +195,9 @@ export const TokenTable: FC<TokenTableProps> = ({
                 key={row.id}
                 className={cn(
                   row.getCanExpand() && "cursor-pointer",
-                  row.getCanExpand() && row.getIsExpanded() && "border-b-0",
+                  row.getCanExpand() &&
+                    row.getIsExpanded() &&
+                    "border-b-0 last:border-b",
                 )}
                 data-state={row.getIsSelected() && "selected"}
                 data-expanded={row.getParentRow() ? "true" : "false"}
