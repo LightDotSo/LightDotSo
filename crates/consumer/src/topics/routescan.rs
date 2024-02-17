@@ -35,7 +35,7 @@ pub async fn routescan_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
         let payload: RoutescanMessage = serde_json::from_slice(payload.as_bytes())?;
 
         // Log the payload
-        let mut balances =
+        let balances =
             get_token_balances(&payload.chain_id, &to_checksum(&payload.address, None), None, None)
                 .await?;
         info!(?balances);
@@ -46,11 +46,11 @@ pub async fn routescan_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>
         info!(?native_balance);
 
         // Get the items from the token balances
-        let items = balances.items.clone();
+        let mut items = balances.items.clone();
 
         // If the native balance is not zero, add it to the items
         if !native_balance.result != 0 {
-            balances.items.push(WalletBalanceItem {
+            items.push(WalletBalanceItem {
                 chain_id: Some(payload.chain_id.to_string()),
                 token_address: Some("0x0000000000000000000000000000000000000000".to_string()),
                 token_name: None,
