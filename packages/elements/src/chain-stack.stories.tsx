@@ -12,46 +12,35 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-"use client";
-
-import type { TokenData } from "@lightdotso/data";
-import { ChainStack } from "@lightdotso/elements";
-import type { FC } from "react";
-import { ChainCard } from "../../(components)/card";
+import type { Meta, StoryObj } from "@storybook/react";
+import { mainnet, optimism, sepolia } from "viem/chains";
+import { ChainStack } from "./chain-stack";
 
 // -----------------------------------------------------------------------------
-// Props
+// Meta
 // -----------------------------------------------------------------------------
 
-type TokenCardChainProps = {
-  token: TokenData;
-  isGrouped?: boolean;
-  leafTokens?: TokenData[];
+const meta: Meta<typeof ChainStack> = {
+  title: "element/ChainStack",
+  component: ChainStack,
+  tags: ["autodocs"],
+  argTypes: {},
 };
+export default meta;
 
 // -----------------------------------------------------------------------------
-// Component
+// Types
 // -----------------------------------------------------------------------------
 
-export const TokenCardChain: FC<TokenCardChainProps> = ({
-  token,
-  isGrouped,
-  leafTokens,
-}) => {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
+type Story = StoryObj<typeof ChainStack>;
 
-  if (isGrouped && leafTokens) {
-    // Get the grouped tokens w/ the same group
-    const chainIds = leafTokens.map(t => t.chain_id);
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
 
-    if (!chainIds) {
-      return null;
-    }
-
-    return <ChainStack chainIds={chainIds} />;
-  }
-
-  return <ChainCard chain_id={token?.chain_id} />;
+export const Base: Story = {
+  render: args => <ChainStack {...args} />,
+  args: {
+    chainIds: [mainnet.id, optimism.id, sepolia.id],
+  },
 };

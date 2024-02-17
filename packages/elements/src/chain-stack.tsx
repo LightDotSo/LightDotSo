@@ -14,44 +14,38 @@
 
 "use client";
 
-import type { TokenData } from "@lightdotso/data";
-import { ChainStack } from "@lightdotso/elements";
+import { ChainLogo } from "@lightdotso/svg";
 import type { FC } from "react";
-import { ChainCard } from "../../(components)/card";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type TokenCardChainProps = {
-  token: TokenData;
-  isGrouped?: boolean;
-  leafTokens?: TokenData[];
-};
+interface ChainStackProps {
+  chainIds: number[];
+}
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TokenCardChain: FC<TokenCardChainProps> = ({
-  token,
-  isGrouped,
-  leafTokens,
-}) => {
+export const ChainStack: FC<ChainStackProps> = ({ chainIds }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  if (isGrouped && leafTokens) {
-    // Get the grouped tokens w/ the same group
-    const chainIds = leafTokens.map(t => t.chain_id);
-
-    if (!chainIds) {
-      return null;
-    }
-
-    return <ChainStack chainIds={chainIds} />;
-  }
-
-  return <ChainCard chain_id={token?.chain_id} />;
+  return (
+    <div className="flex -space-x-1.5 overflow-hidden">
+      {chainIds &&
+        chainIds
+          .slice(0, 5)
+          .map(chainId => (
+            <ChainLogo
+              key={chainId}
+              chainId={chainId}
+              className="size-6 rounded-lg bg-border"
+            />
+          ))}
+    </div>
+  );
 };

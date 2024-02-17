@@ -50,9 +50,12 @@ pub struct PutQuery {
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
 pub struct TokenUpdateRequestParams {
-    /// The name of the wallet.
+    /// The name of the token.
     #[schema(example = "My Token", default = "My Token")]
     pub name: Option<String>,
+    /// The symbol of the token.
+    #[schema(example = "MT", default = "MT")]
+    pub symbol: Option<String>,
 }
 
 // -----------------------------------------------------------------------------
@@ -109,17 +112,25 @@ pub(crate) async fn v1_token_update_handler(
 
     // Get the token id from the post query.
     let token_id = query.token_id;
+
+    // Set the update params.
+    let mut update_params = vec![];
+
+    if let Some(name) = params.name.as_ref() {
+        update_params.push(token::name::set(Some(name.to_string())));
+    };
+
+    if let Some(symbol) = params.symbol.as_ref() {
+        update_params.push(token::symbol::set(Some(symbol.to_string())));
+    };
+
     // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
 
     // Update the token.
-    let token = state
-        .client
-        .token()
-        .update(token::id::equals(token_id), vec![token::name::set(params.name)])
-        .exec()
-        .await?;
+    let token =
+        state.client.token().update(token::id::equals(token_id), update_params).exec().await?;
 
     // -------------------------------------------------------------------------
     // Return
