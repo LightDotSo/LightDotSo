@@ -17,4 +17,5 @@ pub mod covalent;
 pub mod interpretation;
 pub mod notification;
 pub mod portfolio;
+pub mod routescan;
 pub mod user_operation;

@@ -66,3 +66,14 @@ pub struct BalancesData {
     pub count_type: Option<String>,
     pub link: ApiPaginationLink,
 }
+
+// -----------------------------------------------------------------------------
+// Native Balance Types
+// -----------------------------------------------------------------------------
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
+pub struct NativeBalanceData {
+    pub status: String,
+    pub message: String,
+    pub result: i64,
+}

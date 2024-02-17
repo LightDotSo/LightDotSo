@@ -21,8 +21,8 @@ use crate::{
         activity::activity_consumer, covalent::covalent_consumer,
         error_transaction::error_transaction_consumer, interpretation::interpretation_consumer,
         notification::notification_consumer, portfolio::portfolio_consumer,
-        transaction::transaction_consumer, unknown::unknown_consumer,
-        user_operation::user_operation_consumer,
+        routescan::routescan_consumer, transaction::transaction_consumer,
+        unknown::unknown_consumer, user_operation::user_operation_consumer,
     },
 };
 use clap::Parser;
@@ -34,7 +34,7 @@ use lightdotso_kafka::{
     namespace::{
         ACTIVITY, COVALENT, ERROR_TRANSACTION, INTERPRETATION, NOTIFICATION, PORTFOLIO,
         RETRY_TRANSACTION, RETRY_TRANSACTION_0, RETRY_TRANSACTION_1, RETRY_TRANSACTION_2,
-        TRANSACTION, USER_OPERATION,
+        ROUTESCAN, TRANSACTION, USER_OPERATION,
     },
 };
 use lightdotso_notifier::config::NotifierArgs;
@@ -169,6 +169,15 @@ impl Consumer {
                             if let Err(e) = res {
                                 // Log the error
                                 warn!("Portfolio consumer failed with error: {:?}", e);
+                            }
+                            let _ = self.consumer.commit_message(&m, CommitMode::Async);
+                        }
+                        topic if topic == ROUTESCAN.to_string() => {
+                            let res = routescan_consumer(&m, db.clone()).await;
+                            // If the consumer failed
+                            if let Err(e) = res {
+                                // Log the error
+                                warn!("Routescan consumer failed with error: {:?}", e);
                             }
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }

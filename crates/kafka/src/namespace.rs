@@ -39,6 +39,11 @@ lazy_static! {
     pub static ref PORTFOLIO: String = "portfolio".to_string();
 }
 
+// The routescan namesapce
+lazy_static! {
+    pub static ref ROUTESCAN: String = "routescan".to_string();
+}
+
 // The transaction namesapce
 lazy_static! {
     pub static ref TRANSACTION: String = "transaction".to_string();
