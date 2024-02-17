@@ -137,7 +137,7 @@ export const Modal: FC<ModalProps> = ({
         <DialogOverlay />
         <DialogContent
           className={cn(
-            "w-full overflow-scroll",
+            "w-full overflow-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]",
             modalDialogVariants({ size }),
             isHidden && "hidden",
           )}
