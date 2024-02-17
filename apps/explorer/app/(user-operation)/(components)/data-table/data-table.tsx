@@ -26,6 +26,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 // -----------------------------------------------------------------------------
 
 interface DataTableProps {
+  isDefaultOpen?: boolean;
   isLoading: boolean;
   columns: ColumnDef<UserOperationData>[];
   data: UserOperationData[];
@@ -38,6 +39,7 @@ interface DataTableProps {
 // -----------------------------------------------------------------------------
 
 export function DataTable({
+  isDefaultOpen,
   isLoading,
   columns,
   data,
@@ -100,6 +102,7 @@ export function DataTable({
 
   return (
     <UserOperationTable
+      isDefaultOpen={isDefaultOpen}
       isLoading={isLoading}
       pageSize={paginationState.pageSize}
       address={null}

@@ -15,39 +15,35 @@
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
-import { TransactionsDataTable } from "@/app/(transaction)/(components)/transactions-data-table";
-import { TransactionsDataTablePagination } from "@/app/(transaction)/(components)/transactions-data-table-pagination";
-import { handler } from "@/handlers/transactions/handler";
-import { preloader } from "@/preloaders/transactions/preloader";
+import type { Hex } from "viem";
+import { OpDataTable } from "@/app/(user-operation)/[userOperationHash]/(components)/op-data-table";
+import { handler } from "@/handlers/op/[userOperationHash]/handler";
+import { preloader } from "@/preloaders/op/[userOperationHash]/preloader";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
 type PageProps = {
-  searchParams: {
-    isTestnet?: string;
-    pagination?: string;
-  };
+  params: { address: string; userOperationHash: string };
 };
 
 // -----------------------------------------------------------------------------
 // Page
 // -----------------------------------------------------------------------------
 
-export default async function Page({ searchParams }: PageProps) {
+export default async function Page({ params }: PageProps) {
   // ---------------------------------------------------------------------------
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(searchParams);
+  preloader(params);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { isTestnetState, paginationState, transactions, transactionsCount } =
-    await handler(searchParams);
+  const { userOperation } = await handler(params);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -56,20 +52,10 @@ export default async function Page({ searchParams }: PageProps) {
   const queryClient = getQueryClient();
 
   queryClient.setQueryData(
-    queryKeys.transaction.list({
-      address: null,
-      limit: paginationState.pageSize,
-      offset: paginationState.pageIndex * paginationState.pageSize,
-      is_testnet: isTestnetState ?? false,
+    queryKeys.user_operation.get({
+      hash: params.userOperationHash as Hex,
     }).queryKey,
-    transactions,
-  );
-  queryClient.setQueryData(
-    queryKeys.transaction.listCount({
-      address: null,
-      is_testnet: isTestnetState ?? false,
-    }).queryKey,
-    transactionsCount,
+    userOperation,
   );
 
   // ---------------------------------------------------------------------------
@@ -78,8 +64,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <TransactionsDataTable address={null} />
-      <TransactionsDataTablePagination />
+      <OpDataTable userOperationHash={params.userOperationHash as Hex} />
     </HydrationBoundary>
   );
 }
