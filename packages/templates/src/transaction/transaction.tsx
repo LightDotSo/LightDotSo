@@ -261,10 +261,13 @@ export const Transaction: FC<TransactionProps> = ({
       maxFeePerGas:
         feesPerGas?.maxFeePerGas ?? targetUserOperation.maxFeePerGas,
       maxPriorityFeePerGas:
-        // Fallback to 1 if the maxPriorityFeePerGas is 0 from the RPC
-        maxPriorityFeePerGas === BigInt(0)
-          ? BigInt(1)
-          : maxPriorityFeePerGas ?? targetUserOperation.maxPriorityFeePerGas,
+        // If the chain is Celo, `maxFeePerGas` is the same as `maxPriorityFeePerGas`
+        targetUserOperation.chainId === BigInt(42220)
+          ? feesPerGas?.maxFeePerGas ?? targetUserOperation.maxFeePerGas
+          : // Fallback to 1 if the maxPriorityFeePerGas is 0 from the RPC
+            maxPriorityFeePerGas === BigInt(0)
+            ? BigInt(1)
+            : maxPriorityFeePerGas ?? targetUserOperation.maxPriorityFeePerGas,
     });
 
   // ---------------------------------------------------------------------------
