@@ -38,17 +38,17 @@
     "@lightdotso/utils": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
     "abitype": "^1.0.0",
-    "lucide-react": "^0.330.0",
+    "lucide-react": "^0.331.0",
     "react": "^18.2.0",
     "react-hook-form": "^7.50.1",
-    "viem": "^2.7.9",
+    "viem": "^2.7.10",
     "zod": "^3.22.4"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@storybook/react": "^7.6.15",
-    "@types/node": "^20.11.17",
-    "@types/react": "^18.2.55",
+    "@storybook/react": "^7.6.16",
+    "@types/node": "^20.11.19",
+    "@types/react": "^18.2.56",
     "@types/react-dom": "^18.2.19",
     "typescript": "^5.3.3"
   },

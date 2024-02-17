@@ -67,11 +67,11 @@
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "^0.68.0",
-    "@graphprotocol/graph-ts": "^0.32.0"
+    "@graphprotocol/graph-ts": "^0.33.0"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.11.17",
+    "@types/node": "^20.11.19",
     "assemblyscript": "^0.19.20",
     "matchstick-as": "^0.6.0",
     "typescript": "^5.3.3",
