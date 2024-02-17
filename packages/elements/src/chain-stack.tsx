@@ -23,27 +23,30 @@ import { Chain } from "viem";
 // -----------------------------------------------------------------------------
 
 interface ChainStackProps {
-  chains: Chain[];
+  chainIds: number[];
 }
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const ChainStack: FC<ChainStackProps> = ({ chains }) => {
+export const ChainStack: FC<ChainStackProps> = ({ chainIds }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
     <div className="flex -space-x-1.5 overflow-hidden">
-      {chains.slice(0, 5).map(chain => (
-        <ChainLogo
-          key={chain.id}
-          chainId={chain.id}
-          className="size-6 rounded-lg bg-border"
-        />
-      ))}
+      {chainIds &&
+        chainIds
+          .slice(0, 5)
+          .map(chainId => (
+            <ChainLogo
+              key={chainId}
+              chainId={chainId}
+              className="size-6 rounded-lg bg-border"
+            />
+          ))}
     </div>
   );
 };

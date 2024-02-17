@@ -18,7 +18,6 @@ import type { TokenData } from "@lightdotso/data";
 import type { FC } from "react";
 import { ChainCard } from "../../(components)/card";
 import { ChainStack } from "@lightdotso/elements";
-import { getChainById } from "@lightdotso/utils";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -27,7 +26,7 @@ import { getChainById } from "@lightdotso/utils";
 type TokenCardChainProps = {
   token: TokenData;
   isGrouped?: boolean;
-  tokens?: TokenData[];
+  leafTokens?: TokenData[];
 };
 
 // -----------------------------------------------------------------------------
@@ -35,26 +34,24 @@ type TokenCardChainProps = {
 // -----------------------------------------------------------------------------
 
 export const TokenCardChain: FC<TokenCardChainProps> = ({
-  token: { chain_id, group },
+  token,
   isGrouped,
-  tokens,
+  leafTokens,
 }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  if (isGrouped) {
+  if (isGrouped && leafTokens) {
     // Get the grouped tokens w/ the same group
-    const chains = tokens
-      ?.filter(t => t.group?.id === group?.id)
-      .map(t => getChainById(t.chain_id));
+    const chainIds = leafTokens.map(t => t.chain_id);
 
-    if (!chains) {
+    if (!chainIds) {
       return null;
     }
 
-    return <ChainStack chains={chains} />;
+    return <ChainStack chainIds={chainIds} />;
   }
 
-  return <ChainCard chain_id={chain_id} />;
+  return <ChainCard chain_id={token?.chain_id} />;
 };

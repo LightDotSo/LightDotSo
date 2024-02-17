@@ -74,8 +74,10 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
     cell: ({ row }) => (
       <TokenCardChain
         token={row.original}
-        isGrouped={typeof row.getParentRow() === "undefined"}
-        tokens={row.getAllCells().map(cell => cell.row.original)}
+        isGrouped={
+          typeof row.getParentRow() === "undefined" && row.getCanExpand()
+        }
+        leafTokens={row.getLeafRows().map(r => r.original)}
       />
     ),
     filterFn: (row, id, value) => {
