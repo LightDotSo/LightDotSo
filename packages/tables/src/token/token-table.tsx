@@ -190,30 +190,41 @@ export const TokenTable: FC<TokenTableProps> = ({
           table
             .getRowModel()
             .rows.slice(0, limit || table.getRowModel().rows?.length)
-            .map(row => (
-              <TableRow
-                key={row.id}
-                className={cn(
-                  row.getCanExpand() && "cursor-pointer",
-                  row.getCanExpand() &&
-                    row.getIsExpanded() &&
-                    "border-b-0 last:border-b",
-                )}
-                data-state={row.getIsSelected() && "selected"}
-                data-expanded={row.getParentRow() ? "true" : "false"}
-                onClick={() => {
-                  if (row.getCanExpand()) {
-                    row.getToggleExpandedHandler()();
-                  }
-                }}
-              >
-                {row.getVisibleCells().map(cell => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
+            .map(row => {
+              let isLastExpanded = false;
+
+              // Add a flag for handling the last expanded row
+              if (row.getIsExpanded() && row.getParentRow()) {
+                isLastExpanded = true;
+              }
+
+              return (
+                <TableRow
+                  key={row.id}
+                  className={cn(
+                    row.getCanExpand() && "cursor-pointer",
+                    row.getCanExpand() && row.getIsExpanded() && "border-b-0",
+                  )}
+                  data-state={row.getIsSelected() && "selected"}
+                  data-expanded={row.getParentRow() ? "true" : "false"}
+                  data-expanded-last={isLastExpanded && "true"}
+                  onClick={() => {
+                    if (row.getCanExpand()) {
+                      row.getToggleExpandedHandler()();
+                    }
+                  }}
+                >
+                  {row.getVisibleCells().map(cell => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              );
+            })
         ) : delayedIsLoading ? (
           Array(pageSize)
             .fill(null)
