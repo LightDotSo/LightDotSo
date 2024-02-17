@@ -103,6 +103,7 @@ const nextConfig = {
     "@lightdotso/types",
     "@lightdotso/ui",
     "@lightdotso/utils",
+    "@lightdotso/validators",
     "@lightdotso/wagmi",
   ],
   webpack: (config, { isServer }) => {

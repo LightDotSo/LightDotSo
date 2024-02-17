@@ -18,8 +18,8 @@ import { SettingsSectionWrapper } from "@lightdotso/ui";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { SettingsBillingBalanceCard } from "@/app/(wallet)/[address]/settings/billing/(components)/settings-billing-balance-card";
-import { handler } from "@/handlers/paths/[address]/settings/billing/handler";
-import { preloader } from "@/preloaders/paths/[address]/preloader";
+import { handler } from "@/handlers/[address]/settings/billing/handler";
+import { preloader } from "@/preloaders/[address]/preloader";
 
 // -----------------------------------------------------------------------------
 // Props

@@ -17,8 +17,8 @@ import { getQueryClient } from "@lightdotso/services";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { TransactionsDataTable } from "@/app/(transaction)/(components)/transactions-data-table";
 import { TransactionsDataTablePagination } from "@/app/(transaction)/(components)/transactions-data-table-pagination";
-import { handler } from "@/handlers/paths/tx/handler";
-import { preloader } from "@/preloaders/paths/tx/preloader";
+import { handler } from "@/handlers/transactions/handler";
+import { preloader } from "@/preloaders/transactions/preloader";
 
 // -----------------------------------------------------------------------------
 // Props

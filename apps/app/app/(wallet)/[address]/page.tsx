@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import { redirect } from "next/navigation";
-import { handler } from "@/handlers/paths/[address]/handler";
-import { preloader } from "@/preloaders/paths/[address]/preloader";
+import { handler } from "@/handlers/[address]/handler";
+import { preloader } from "@/preloaders/[address]/preloader";
 
 // -----------------------------------------------------------------------------
 // Props

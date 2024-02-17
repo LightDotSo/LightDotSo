@@ -20,8 +20,8 @@ import { TokensDataTable } from "@/app/(wallet)/[address]/overview/tokens/(compo
 import { TokensDataTablePagination } from "@/app/(wallet)/[address]/overview/tokens/(components)/tokens-data-table-pagination";
 import { PortfolioSection } from "@/components/section/portfolio-section";
 import { TokenPortfolio } from "@/components/token/token-portfolio";
-import { handler } from "@/handlers/paths/[address]/overview/tokens/handler";
-import { preloader } from "@/preloaders/paths/[address]/overview/tokens/preloader";
+import { handler } from "@/handlers/[address]/overview/tokens/handler";
+import { preloader } from "@/preloaders/[address]/overview/tokens/preloader";
 
 // -----------------------------------------------------------------------------
 // Props

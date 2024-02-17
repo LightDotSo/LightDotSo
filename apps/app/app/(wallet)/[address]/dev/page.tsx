@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { handler } from "@/handlers/paths/[address]/dev/handler";
-import { preloader } from "@/preloaders/paths/[address]/dev/preloader";
+import { handler } from "@/handlers/[address]/dev/handler";
+import { preloader } from "@/preloaders/[address]/dev/preloader";
 
 // -----------------------------------------------------------------------------
 // Props

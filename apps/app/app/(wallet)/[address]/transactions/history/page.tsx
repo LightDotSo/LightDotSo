@@ -18,8 +18,8 @@ import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { TransactionsDataTable } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table";
 import { TransactionsDataTablePagination } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table-pagination";
-import { handler } from "@/handlers/paths/[address]/transactions/history/handler";
-import { preloader } from "@/preloaders/paths/[address]/transactions/history/preloader";
+import { handler } from "@/handlers/[address]/transactions/history/handler";
+import { preloader } from "@/preloaders/[address]/transactions/history/preloader";
 
 // -----------------------------------------------------------------------------
 // Props

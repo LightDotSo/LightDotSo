@@ -23,7 +23,7 @@ import type { ReactNode } from "react";
 import type { Address, Hex } from "viem";
 import { OpInvokeButton } from "@/app/(wallet)/[address]/op/[userOperationHash]/(components)/op-invoke-button";
 import { TITLES } from "@/const";
-import { handler } from "@/handlers/paths/[address]/op/[userOperationHash]/handler";
+import { handler } from "@/handlers/[address]/op/[userOperationHash]/handler";
 
 // -----------------------------------------------------------------------------
 // Metadata

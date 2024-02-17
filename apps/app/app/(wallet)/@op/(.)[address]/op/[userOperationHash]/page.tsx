@@ -16,7 +16,7 @@ import { ModalInterception } from "@lightdotso/templates";
 import type { Address, Hex } from "viem";
 import { ModalInterceptionFooter } from "@/app/(wallet)/@op/(.)[address]/op/(components)/modal-interception-footer";
 import OriginalPage from "@/app/(wallet)/[address]/op/[userOperationHash]/page";
-import { handler } from "@/handlers/paths/[address]/op/[userOperationHash]/handler";
+import { handler } from "@/handlers/[address]/op/[userOperationHash]/handler";
 
 // -----------------------------------------------------------------------------
 // Props
