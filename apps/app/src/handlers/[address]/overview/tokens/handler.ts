@@ -34,7 +34,9 @@ export const handler = async (
   // Validators
   // ---------------------------------------------------------------------------
 
-  validateAddress(params.address);
+  if (!validateAddress(params.address)) {
+    return notFound();
+  }
 
   // ---------------------------------------------------------------------------
   // Parsers

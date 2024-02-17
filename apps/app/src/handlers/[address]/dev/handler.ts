@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { validateAddress } from "@lightdotso/validators";
-import { redirect } from "next/navigation";
+import { redirect, notFound } from "next/navigation";
 import { handler as addressHandler } from "@/handlers/[address]/handler";
 
 // -----------------------------------------------------------------------------
@@ -25,7 +25,9 @@ export const handler = async (params: { address: string }) => {
   // Validators
   // ---------------------------------------------------------------------------
 
-  validateAddress(params.address);
+  if (!validateAddress(params.address)) {
+    return notFound();
+  }
 
   // ---------------------------------------------------------------------------
   // Fetch

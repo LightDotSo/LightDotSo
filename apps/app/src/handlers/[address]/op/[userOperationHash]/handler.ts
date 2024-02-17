@@ -39,9 +39,13 @@ export const handler = async (params: {
   // Validators
   // ---------------------------------------------------------------------------
 
-  validateAddress(params.address);
+  if (!validateAddress(params.address)) {
+    return notFound();
+  }
 
-  validateUserOperationHash(params.userOperationHash);
+  if (!validateUserOperationHash(params.userOperationHash)) {
+    return notFound();
+  }
 
   // ---------------------------------------------------------------------------
   // Fetch
