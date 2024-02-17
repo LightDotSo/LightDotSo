@@ -14,47 +14,36 @@
 
 "use client";
 
-import type { TokenData } from "@lightdotso/data";
+import { ChainLogo } from "@lightdotso/svg";
 import type { FC } from "react";
-import { ChainCard } from "../../(components)/card";
-import { ChainStack } from "@lightdotso/elements";
-import { getChainById } from "@lightdotso/utils";
+import { Chain } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type TokenCardChainProps = {
-  token: TokenData;
-  isGrouped?: boolean;
-  tokens?: TokenData[];
-};
+interface ChainStackProps {
+  chains: Chain[];
+}
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TokenCardChain: FC<TokenCardChainProps> = ({
-  token: { chain_id, group },
-  isGrouped,
-  tokens,
-}) => {
+export const ChainStack: FC<ChainStackProps> = ({ chains }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  if (isGrouped) {
-    // Get the grouped tokens w/ the same group
-    const chains = tokens
-      ?.filter(t => t.group?.id === group?.id)
-      .map(t => getChainById(t.chain_id));
-
-    if (!chains) {
-      return null;
-    }
-
-    return <ChainStack chains={chains} />;
-  }
-
-  return <ChainCard chain_id={chain_id} />;
+  return (
+    <div className="flex -space-x-1.5 overflow-hidden">
+      {chains.slice(0, 5).map(chain => (
+        <ChainLogo
+          key={chain.id}
+          chainId={chain.id}
+          className="size-6 rounded-lg bg-border"
+        />
+      ))}
+    </div>
+  );
 };

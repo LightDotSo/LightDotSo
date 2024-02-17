@@ -71,7 +71,13 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader className="w-16" column={column} title="Chain" />
     ),
-    cell: ({ row }) => <TokenCardChain token={row.original} />,
+    cell: ({ row }) => (
+      <TokenCardChain
+        token={row.original}
+        isGrouped={typeof row.getParentRow() === "undefined"}
+        tokens={row.getAllCells().map(cell => cell.row.original)}
+      />
+    ),
     filterFn: (row, id, value) => {
       return value.includes((row.getValue(id) as number).toString());
     },
