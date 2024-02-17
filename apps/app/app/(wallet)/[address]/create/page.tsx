@@ -14,8 +14,8 @@
 
 import type { Address } from "viem";
 import { CreateTransaction } from "@/app/(wallet)/[address]/create/(components)/create-transaction";
-import { handler } from "@/handlers/paths/[address]/create/handler";
-import { preloader } from "@/preloaders/paths/[address]/create/preloader";
+import { handler } from "@/handlers/[address]/create/handler";
+import { preloader } from "@/preloaders/[address]/create/preloader";
 
 // ------------------------------------------------------c-----------------------
 // Props

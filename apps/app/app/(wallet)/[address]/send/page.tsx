@@ -17,8 +17,8 @@ import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import type { Address } from "viem";
 import { SendDialog } from "@/app/(wallet)/[address]/send/(components)/send-dialog";
-import { handler } from "@/handlers/paths/[address]/send/handler";
-import { preloader } from "@/preloaders/paths/[address]/send/preloader";
+import { handler } from "@/handlers/[address]/send/handler";
+import { preloader } from "@/preloaders/[address]/send/preloader";
 
 // -----------------------------------------------------------------------------
 // Props

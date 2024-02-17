@@ -17,8 +17,8 @@ import { getQueryClient } from "@lightdotso/services";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { OwnersDataTable } from "@/app/(wallet)/[address]/owners/(components)/owners-data-table";
-import { handler } from "@/handlers/paths/[address]/owners/handler";
-import { preloader } from "@/preloaders/paths/[address]/owners/preloader";
+import { handler } from "@/handlers/[address]/owners/handler";
+import { preloader } from "@/preloaders/[address]/owners/preloader";
 
 // -----------------------------------------------------------------------------
 // Props

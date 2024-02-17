@@ -20,8 +20,8 @@ import type { Address } from "viem";
 import { SettingsDevCard } from "@/app/(wallet)/[address]/settings/(components)/settings-dev-card";
 import { SettingsNameCard } from "@/app/(wallet)/[address]/settings/(components)/settings-name-card";
 import { SettingsTestnetCard } from "@/app/(wallet)/[address]/settings/(components)/settings-testnet-card";
-import { handler } from "@/handlers/paths/[address]/settings/handler";
-import { preloader } from "@/preloaders/paths/[address]/settings/preloader";
+import { handler } from "@/handlers/[address]/settings/handler";
+import { preloader } from "@/preloaders/[address]/settings/preloader";
 
 // -----------------------------------------------------------------------------
 // Props

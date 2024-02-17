@@ -21,8 +21,8 @@ import { NftsDataTable } from "@/app/(wallet)/[address]/overview/nfts/(component
 import { NftsDataTablePagination } from "@/app/(wallet)/[address]/overview/nfts/(components)/nfts-data-table-pagination";
 import { NftPortfolio } from "@/components/nft/nft-portfolio";
 import { PortfolioSection } from "@/components/section/portfolio-section";
-import { handler } from "@/handlers/paths/[address]/overview/nfts/handler";
-import { preloader } from "@/preloaders/paths/[address]/overview/nfts/preloader";
+import { handler } from "@/handlers/[address]/overview/nfts/handler";
+import { preloader } from "@/preloaders/[address]/overview/nfts/preloader";
 
 // -----------------------------------------------------------------------------
 // Props
