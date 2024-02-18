@@ -137,7 +137,7 @@ export const Modal: FC<ModalProps> = ({
         <DialogOverlay />
         <DialogContent
           className={cn(
-            "w-full overflow-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]",
+            "w-full overflow-scroll [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
             modalDialogVariants({ size }),
             isHidden && "hidden",
           )}
@@ -160,7 +160,7 @@ export const Modal: FC<ModalProps> = ({
               {bannerContent}
             </DialogHeader>
           )}
-          <DialogBody className={className}>
+          <DialogBody className={cn(className)}>
             <ModalContext.Provider value={true}>
               <Suspense
                 fallback={
