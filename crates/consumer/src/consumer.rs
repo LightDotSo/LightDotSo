@@ -18,11 +18,12 @@
 use crate::{
     config::ConsumerArgs,
     topics::{
-        activity::activity_consumer, covalent::covalent_consumer,
-        error_transaction::error_transaction_consumer, interpretation::interpretation_consumer,
-        notification::notification_consumer, portfolio::portfolio_consumer,
-        routescan::routescan_consumer, transaction::transaction_consumer,
-        unknown::unknown_consumer, user_operation::user_operation_consumer,
+        activity::activity_consumer, billing_operation::billing_operation_consumer,
+        covalent::covalent_consumer, error_transaction::error_transaction_consumer,
+        interpretation::interpretation_consumer, notification::notification_consumer,
+        portfolio::portfolio_consumer, routescan::routescan_consumer,
+        transaction::transaction_consumer, unknown::unknown_consumer,
+        user_operation::user_operation_consumer,
     },
 };
 use clap::Parser;
@@ -32,9 +33,9 @@ use lightdotso_indexer::config::IndexerArgs;
 use lightdotso_kafka::{
     get_consumer, get_producer,
     namespace::{
-        ACTIVITY, COVALENT, ERROR_TRANSACTION, INTERPRETATION, NOTIFICATION, PORTFOLIO,
-        RETRY_TRANSACTION, RETRY_TRANSACTION_0, RETRY_TRANSACTION_1, RETRY_TRANSACTION_2,
-        ROUTESCAN, TRANSACTION, USER_OPERATION,
+        ACTIVITY, BILLING_OPERATION, COVALENT, ERROR_TRANSACTION, INTERPRETATION, NOTIFICATION,
+        PORTFOLIO, RETRY_TRANSACTION, RETRY_TRANSACTION_0, RETRY_TRANSACTION_1,
+        RETRY_TRANSACTION_2, ROUTESCAN, TRANSACTION, USER_OPERATION,
     },
 };
 use lightdotso_notifier::config::NotifierArgs;
@@ -141,6 +142,15 @@ impl Consumer {
                             if let Err(e) = res {
                                 // Log the error
                                 warn!("Activity consumer failed with error: {:?}", e);
+                            }
+                            let _ = self.consumer.commit_message(&m, CommitMode::Async);
+                        }
+                        topic if topic == BILLING_OPERATION.to_string() => {
+                            let res = billing_operation_consumer(&m).await;
+                            // If the consumer failed
+                            if let Err(e) = res {
+                                // Log the error
+                                warn!("Billing operation consumer failed with error: {:?}", e);
                             }
                             let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
