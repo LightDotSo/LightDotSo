@@ -64,6 +64,7 @@ interface ModalProps extends VariantProps<typeof modalDialogVariants> {
   headerContent?: ReactNode;
   bannerContent?: ReactNode;
   footerContent?: ReactNode;
+  isHeightFixed?: boolean;
   open?: boolean;
   onClose?: () => void;
 }
@@ -92,6 +93,7 @@ export const Modal: FC<ModalProps> = ({
   isHidden,
   open,
   size,
+  isHeightFixed,
   headerContent,
   bannerContent,
   footerContent,
@@ -160,7 +162,7 @@ export const Modal: FC<ModalProps> = ({
               {bannerContent}
             </DialogHeader>
           )}
-          <DialogBody className={cn(className)}>
+          <DialogBody className={cn(isHeightFixed && "h-[128rem]", className)}>
             <ModalContext.Provider value={true}>
               <Suspense
                 fallback={

@@ -75,6 +75,7 @@ export const TokenModal: FC = () => {
   }, [isTestnet]);
 
   const renderedTokens: TokenData[] = useMemo(() => {
+    // Light index tokens
     if (type === "native") {
       const filtered_tokens =
         tokens && chainId > 0
@@ -84,6 +85,7 @@ export const TokenModal: FC = () => {
       return filtered_tokens || [];
     }
 
+    // Socket balances
     const filtered_balances =
       (balances && chainId > 0
         ? balances.filter(balance => balance.chainId === chainId)
