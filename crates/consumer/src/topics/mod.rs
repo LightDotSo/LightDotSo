@@ -13,6 +13,7 @@
 // limitations under the License.
 
 pub mod activity;
+pub mod billing_operation;
 pub mod covalent;
 pub mod error_transaction;
 pub mod interpretation;

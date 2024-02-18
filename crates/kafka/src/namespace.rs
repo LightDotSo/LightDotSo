@@ -19,6 +19,11 @@ lazy_static! {
     pub static ref ACTIVITY: String = "activity".to_string();
 }
 
+// The billing operation namesapce
+lazy_static! {
+    pub static ref BILLING_OPERATION: String = "billing-operation".to_string();
+}
+
 // The covalent namesapce
 lazy_static! {
     pub static ref COVALENT: String = "covalent".to_string();
