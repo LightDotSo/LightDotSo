@@ -194,8 +194,15 @@ export const TokenTable: FC<TokenTableProps> = ({
               let isLastExpanded = false;
 
               // Add a flag for handling the last expanded row
-              if (row.getIsExpanded() && row.getParentRow()) {
-                isLastExpanded = true;
+              if (row.getIsExpanded()) {
+                const parentRow = row.getParentRow();
+                if (parentRow) {
+                  const subRows = parentRow.getLeafRows();
+                  const lastSubRow = subRows[subRows.length - 1];
+                  if (lastSubRow === row) {
+                    isLastExpanded = true;
+                  }
+                }
               }
 
               return (
@@ -206,7 +213,13 @@ export const TokenTable: FC<TokenTableProps> = ({
                     row.getCanExpand() && row.getIsExpanded() && "border-b-0",
                   )}
                   data-state={row.getIsSelected() && "selected"}
-                  data-expanded={row.getParentRow() ? "true" : "false"}
+                  data-expanded={
+                    isLastExpanded
+                      ? "false"
+                      : row.getParentRow()
+                        ? "true"
+                        : "false"
+                  }
                   data-expanded-last={isLastExpanded && "true"}
                   onClick={() => {
                     if (row.getCanExpand()) {

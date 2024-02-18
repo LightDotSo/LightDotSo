@@ -2514,6 +2514,9 @@ importers:
       '@lightdotso/utils':
         specifier: workspace:*
         version: link:../utils
+      class-variance-authority:
+        specifier: ^0.7.0
+        version: 0.7.0
       react:
         specifier: ^18.2.0
         version: 18.2.0

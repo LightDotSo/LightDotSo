@@ -102,8 +102,8 @@ export const TokenImage: FC<TokenImageProps> = ({
           token={token}
           size={size}
         />
-        <span className="absolute bottom-0 right-0 inline-flex size-2.5 items-center justify-center rounded-md">
-          <ChainLogo chainId={token.chain_id} />
+        <span className="absolute -bottom-1 -right-1">
+          <ChainLogo chainId={token.chain_id} size="sm" />
         </span>
       </div>
     );

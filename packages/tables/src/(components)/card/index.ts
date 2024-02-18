@@ -16,4 +16,5 @@ export { AddressCard } from "./address-card";
 export { ChainCard } from "./chain-card";
 export { InterpretationActionCard } from "./interpretation-action-card";
 export { InterpretationCard } from "./interpretation-card";
+export { NotAvailableTestnetCard } from "./not-available-testnet-card";
 export { TimestampCard } from "./timestamp-card";

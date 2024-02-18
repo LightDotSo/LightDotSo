@@ -18,6 +18,7 @@ import type { TokenPriceParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { isTestnet } from "../../utils/src";
 
 // -----------------------------------------------------------------------------
 // Query
@@ -50,6 +51,10 @@ export const useQueryTokenPrice = (params: TokenPriceParams) => {
     }).queryKey,
     queryFn: async () => {
       if (!params.address) {
+        return null;
+      }
+
+      if (isTestnet(params.chain_id)) {
         return null;
       }
 

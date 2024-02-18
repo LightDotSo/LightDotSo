@@ -171,7 +171,7 @@ pub(crate) async fn v1_notification_list_count_handler(
     // Authentication
     // -------------------------------------------------------------------------
 
-    let auth_user_id = authenticate_user_id(
+    let user_id = unauthenticate_user_id(
         &query,
         &state,
         &mut session,
@@ -184,7 +184,7 @@ pub(crate) async fn v1_notification_list_count_handler(
     // -------------------------------------------------------------------------
 
     // If the address is provided, add it to the query.
-    let query_params = construct_activity_list_query_params(&query, auth_user_id);
+    let query_params = construct_activity_list_query_params(&query, user_id);
 
     // -------------------------------------------------------------------------
     // DB
@@ -203,6 +203,23 @@ pub(crate) async fn v1_notification_list_count_handler(
 // -----------------------------------------------------------------------------
 // Utils
 // -----------------------------------------------------------------------------
+
+/// Gets the user id from the session, regardless of whether the user is authenticated.
+async fn unauthenticate_user_id(
+    query: &ListQuery,
+    state: &AppState,
+    session: &mut Session,
+    auth_token: Option<String>,
+) -> AppResult<String> {
+    // If the user id is provided, authenticate the user.
+    let user_id = if query.user_id.is_some() {
+        authenticate_user(state, session, auth_token, query.user_id.clone()).await?
+    } else {
+        get_user_id(session)?
+    };
+
+    Ok(user_id)
+}
 
 /// Authenticates the user and returns the user id.
 async fn authenticate_user_id(
