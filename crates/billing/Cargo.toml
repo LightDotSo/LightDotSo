@@ -1,0 +1,32 @@
+[package]
+  name = "lightdotso-billing"
+
+  version.workspace = true
+  edition.workspace = true
+  rust-version.workspace = true
+  license.workspace = true
+  homepage.workspace = true
+  repository.workspace = true
+
+[dependencies]
+  autometrics = { workspace = true }
+  axum = { workspace = true }
+  backon = { workspace = true }
+  chrono = { workspace = true }
+  clap = { workspace = true, features = ["derive"] }
+  ethers = { workspace = true }
+  eyre = { workspace = true }
+  lazy_static = { workspace = true }
+  lightdotso-common = { workspace = true }
+  lightdotso-constants = { workspace = true }
+  lightdotso-contracts = { workspace = true }
+  lightdotso-db = { workspace = true }
+  lightdotso-graphql = { workspace = true }
+  lightdotso-kafka = { workspace = true }
+  lightdotso-opentelemetry = { workspace = true }
+  lightdotso-prisma = { workspace = true }
+  lightdotso-redis = { workspace = true }
+  lightdotso-solutions = { workspace = true }
+  lightdotso-tracing = { workspace = true }
+  serde_json = { workspace = true }
+  tokio = { workspace = true }

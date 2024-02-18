@@ -6053,6 +6053,33 @@ dependencies = [
 ]
 
 [[package]]
+name = "lightdotso-billing"
+version = "0.1.0"
+dependencies = [
+ "autometrics",
+ "axum 0.6.20",
+ "backon",
+ "chrono",
+ "clap 4.4.0",
+ "ethers 2.0.8",
+ "eyre",
+ "lazy_static",
+ "lightdotso-common",
+ "lightdotso-constants",
+ "lightdotso-contracts",
+ "lightdotso-db",
+ "lightdotso-graphql",
+ "lightdotso-kafka",
+ "lightdotso-opentelemetry",
+ "lightdotso-prisma",
+ "lightdotso-redis",
+ "lightdotso-solutions",
+ "lightdotso-tracing",
+ "serde_json",
+ "tokio",
+]
+
+[[package]]
 name = "lightdotso-bin"
 version = "0.1.0"
 dependencies = [
