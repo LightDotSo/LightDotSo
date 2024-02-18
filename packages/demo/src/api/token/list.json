@@ -11,17 +11,6 @@
     "group": null
   },
   {
-    "id": "cloupmjv60002jy08hud4y7mb",
-    "address": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
-    "chain_id": 137,
-    "name": null,
-    "symbol": "USDT",
-    "decimals": 6,
-    "amount": 155815,
-    "balance_usd": 0.15597083,
-    "group": null
-  },
-  {
     "id": "clp63391v000ot5qsbi5h3vpo",
     "address": "0x0000000000000000000000000000000000000000",
     "chain_id": 0,
@@ -57,5 +46,16 @@
         }
       ]
     }
+  },
+  {
+    "id": "cloupmjv60002jy08hud4y7mb",
+    "address": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
+    "chain_id": 137,
+    "name": null,
+    "symbol": "USDT",
+    "decimals": 6,
+    "amount": 155815,
+    "balance_usd": 0.15597083,
+    "group": null
   }
 ]
