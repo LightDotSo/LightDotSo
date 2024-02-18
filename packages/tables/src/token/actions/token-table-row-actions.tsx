@@ -15,6 +15,7 @@
 "use client";
 
 import type { TokenData } from "@lightdotso/data";
+import { useIsDemoPathname } from "@lightdotso/hooks";
 import { useAuth } from "@lightdotso/stores";
 import {
   ButtonIcon,
@@ -31,7 +32,7 @@ import type { FC } from "react";
 // Props
 // -----------------------------------------------------------------------------
 
-type TokenTableRowActionsProps = { token: TokenData };
+type TokenTableRowActionsProps = { token: TokenData; isExpanded?: boolean };
 
 // -----------------------------------------------------------------------------
 // Component
@@ -39,7 +40,14 @@ type TokenTableRowActionsProps = { token: TokenData };
 
 export const TokenTableRowActions: FC<TokenTableRowActionsProps> = ({
   token: { address: tokenAddress, chain_id, decimals, symbol },
+  isExpanded,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const isDemo = useIsDemoPathname();
+
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -50,7 +58,7 @@ export const TokenTableRowActions: FC<TokenTableRowActionsProps> = ({
   // Render
   // ---------------------------------------------------------------------------
 
-  if (chain_id === 0) {
+  if (chain_id === 0 || isExpanded) {
     return null;
   }
 
@@ -75,7 +83,7 @@ export const TokenTableRowActions: FC<TokenTableRowActionsProps> = ({
             <span>
               <ButtonIcon asChild size="sm" variant="shadow">
                 <Link
-                  href={`/${wallet}/send?transfers=0:_:_:${chain_id}:erc20:${tokenAddress}|${decimals}|0`}
+                  href={`/${isDemo ? "demo" : wallet}/send?transfers=0:_:_:${chain_id}:erc20:${tokenAddress}|${decimals}|0`}
                 >
                   <Send className="size-4" />
                   <span className="sr-only">Open send modal</span>

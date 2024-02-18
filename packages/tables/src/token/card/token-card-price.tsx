@@ -52,7 +52,7 @@ export const TokenCardPrice: FC<TokenCardPriceProps> = ({
   // ---------------------------------------------------------------------------
 
   if (isTestnet(chain_id)) {
-    <NotAvailableTestnetCard entityName="Token Price" />;
+    return <NotAvailableTestnetCard entityName="Token price" />;
   }
 
   if (!token_price || chain_id === 0 || isExpanded) {

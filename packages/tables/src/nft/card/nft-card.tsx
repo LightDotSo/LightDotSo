@@ -16,6 +16,7 @@
 
 import type { NftData } from "@lightdotso/data";
 import { NftImage } from "@lightdotso/elements";
+import { useIsDemoPathname } from "@lightdotso/hooks";
 import { useAuth } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import { Button } from "@lightdotso/ui";
@@ -55,6 +56,7 @@ export const NftCard: FC<NftCardProps> = ({
   // ---------------------------------------------------------------------------
 
   const { wallet } = useAuth();
+  const isDemo = useIsDemoPathname();
 
   // ---------------------------------------------------------------------------
   // Render
@@ -98,7 +100,7 @@ export const NftCard: FC<NftCardProps> = ({
           className="w-full rounded-none py-2 opacity-100 hover:bg-background-primary-strong"
         >
           <Link
-            href={`/${wallet}/send?transfers=0:_:_:${getChainIdBySimplehashChainName(
+            href={`/${isDemo ? wallet : "demo"}/send?transfers=0:_:_:${getChainIdBySimplehashChainName(
               nft.chain!,
             )}:${nft.contract.type?.toLowerCase()}:${nft.contract_address}|${
               nft.token_id

@@ -16,9 +16,11 @@
 
 import type { TokenData } from "@lightdotso/data";
 import { useQueryTokenPrice } from "@lightdotso/query";
+import { isTestnet } from "@lightdotso/utils";
 import { SparkAreaChart } from "@tremor/react";
 import type { FC } from "react";
 import type { Address } from "viem";
+import { NotAvailableTestnetCard } from "../../(components)/card";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -46,6 +48,10 @@ export const TokenCardSparkline: FC<TokenCardSparklineProps> = ({
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
+
+  if (isTestnet(chain_id)) {
+    return <NotAvailableTestnetCard entityName="Chart" />;
+  }
 
   if (!token_price || chain_id === 0 || isExpanded) {
     return null;

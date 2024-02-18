@@ -18,6 +18,7 @@ export { useCopy } from "./useCopy";
 export { useDelayedValue } from "./useDelayedValue";
 export { useDebounced } from "./useDebounced";
 export { useDebouncedValue } from "./useDebouncedValue";
+export { useIsDemoPathname } from "./useIsDemoPathname";
 export { useIsMounted } from "./useIsMounted";
 export { useMediaQuery } from "./useMediaQuery";
 export { useRefinement } from "./useRefinement";
