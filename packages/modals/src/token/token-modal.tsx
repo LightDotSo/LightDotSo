@@ -17,6 +17,7 @@
 import { CHAINS, MAINNET_CHAINS } from "@lightdotso/const";
 import type { TokenData } from "@lightdotso/data";
 import { EmptyState, TokenImage } from "@lightdotso/elements";
+import { useMediaQuery } from "@lightdotso/hooks";
 import { useQuerySocketBalances, useQueryTokens } from "@lightdotso/query";
 import { useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
@@ -38,6 +39,12 @@ export const TokenModal: FC = () => {
     tokenModalProps: { address, isTestnet, onClose, onTokenSelect, type },
     isTokenModalVisible,
   } = useModals();
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const isDesktop = useMediaQuery("md");
 
   // ---------------------------------------------------------------------------
   // Query
@@ -75,6 +82,7 @@ export const TokenModal: FC = () => {
   }, [isTestnet]);
 
   const renderedTokens: TokenData[] = useMemo(() => {
+    // Light index tokens
     if (type === "native") {
       const filtered_tokens =
         tokens && chainId > 0
@@ -84,6 +92,7 @@ export const TokenModal: FC = () => {
       return filtered_tokens || [];
     }
 
+    // Socket balances
     const filtered_balances =
       (balances && chainId > 0
         ? balances.filter(balance => balance.chainId === chainId)
@@ -111,11 +120,14 @@ export const TokenModal: FC = () => {
     return (
       <Modal
         open
+        isHeightFixed
         className="p-2"
         bannerContent={
           <div className="flex flex-row space-x-2">
             <Button
-              className={cn(chainId === 0 && "ring-2 ring-border-primary")}
+              className={cn(
+                chainId === 0 && "shrink-0 ring-2 ring-border-primary",
+              )}
               variant="shadow"
               onClick={() => setChainId(0)}
             >
@@ -161,8 +173,8 @@ export const TokenModal: FC = () => {
             ))}
           </div>
         ) : (
-          <div className="flex h-32 w-full justify-center text-center">
-            <EmptyState entity="token" />
+          <div className="flex size-full h-32 items-center justify-center text-center">
+            <EmptyState entity="token" size={isDesktop ? "xl" : "default"} />
           </div>
         )}
       </Modal>

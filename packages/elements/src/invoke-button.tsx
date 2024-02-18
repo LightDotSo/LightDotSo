@@ -49,6 +49,7 @@ export const InvokeButton: FC<InvokeButtonProps> = ({ onClick, isLoading }) => {
         <TooltipTrigger asChild>
           <span>
             <ButtonIcon
+              size="sm"
               className={cn(isLoading && "text-text-weaker")}
               disabled={isLoading}
               variant="shadow"

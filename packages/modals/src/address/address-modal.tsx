@@ -123,6 +123,7 @@ export function AddressModal() {
       <>
         <Form {...methods}>
           <Modal
+            isHeightFixed
             open
             className="p-2"
             headerContent={

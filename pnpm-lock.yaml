@@ -3054,9 +3054,6 @@ importers:
 
   packages/validators:
     dependencies:
-      '@lightdotso/const':
-        specifier: workspace:*
-        version: link:../const
       '@lightdotso/regexs':
         specifier: workspace:*
         version: link:../regexs

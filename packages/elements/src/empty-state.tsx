@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { cn } from "@lightdotso/utils";
+import type { VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 import { Wallet } from "lucide-react";
 import type { FC } from "react";
 
@@ -43,10 +46,40 @@ const entityStateDescription: Record<Entity, string> = {
 };
 
 // -----------------------------------------------------------------------------
+// Cva
+// -----------------------------------------------------------------------------
+
+const emptyStateVariants = cva([], {
+  variants: {
+    size: {
+      xl: "size-16",
+      lg: "size-12",
+      default: "size-10",
+    },
+  },
+  defaultVariants: {
+    size: "default",
+  },
+});
+
+const emptyStateTextVariants = cva([], {
+  variants: {
+    size: {
+      xl: "text-lg",
+      lg: "text-md",
+      default: "text-md",
+    },
+  },
+  defaultVariants: {
+    size: "default",
+  },
+});
+
+// -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface EmptyStateProps {
+interface EmptyStateProps extends VariantProps<typeof emptyStateVariants> {
   entity: Entity;
 }
 
@@ -54,7 +87,7 @@ interface EmptyStateProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export const EmptyState: FC<EmptyStateProps> = ({ entity }) => {
+export const EmptyState: FC<EmptyStateProps> = ({ entity, size }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -62,9 +95,14 @@ export const EmptyState: FC<EmptyStateProps> = ({ entity }) => {
   return (
     <div className="mt-3 space-y-3">
       <span className="inline-flex rounded-full border-2 border-border p-4">
-        <Wallet className="mx-auto size-10 text-lg text-border" />
+        <Wallet
+          className={cn(
+            "mx-auto text-lg text-border",
+            emptyStateVariants({ size }),
+          )}
+        />
       </span>
-      <div className="text-text-weaker">
+      <div className={cn("text-text-weaker", emptyStateTextVariants({ size }))}>
         No {entityStateDescription[entity]} in wallet.
       </div>
     </div>
