@@ -139,14 +139,13 @@ export const Modal: FC<ModalProps> = ({
         <DialogOverlay />
         <DialogContent
           className={cn(
-            "w-full overflow-scroll [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+            // "w-full overflow-scroll [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+            "w-full",
             modalDialogVariants({ size }),
             isHidden && "hidden",
           )}
         >
-          <DialogHeader
-            className={cn("sticky top-0", headerContent && "justify-between")}
-          >
+          <DialogHeader className={cn(headerContent && "justify-between")}>
             {headerContent && headerContent}
             <ButtonIcon
               className="ml-4"
@@ -162,7 +161,13 @@ export const Modal: FC<ModalProps> = ({
               {bannerContent}
             </DialogHeader>
           )}
-          <DialogBody className={cn(isHeightFixed && "h-[128rem]", className)}>
+          <DialogBody
+            className={cn(
+              "overflow-scroll [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+              isHeightFixed && "h-96",
+              className,
+            )}
+          >
             <ModalContext.Provider value={true}>
               <Suspense
                 fallback={
@@ -176,7 +181,7 @@ export const Modal: FC<ModalProps> = ({
             </ModalContext.Provider>
           </DialogBody>
           {footerContent && (
-            <DialogFooter className="sticky bottom-0 block w-full justify-start space-x-0">
+            <DialogFooter className="block w-full justify-start space-x-0">
               {footerContent}
             </DialogFooter>
           )}

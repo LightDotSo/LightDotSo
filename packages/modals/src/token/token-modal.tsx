@@ -17,6 +17,7 @@
 import { CHAINS, MAINNET_CHAINS } from "@lightdotso/const";
 import type { TokenData } from "@lightdotso/data";
 import { EmptyState, TokenImage } from "@lightdotso/elements";
+import { useMediaQuery } from "@lightdotso/hooks";
 import { useQuerySocketBalances, useQueryTokens } from "@lightdotso/query";
 import { useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
@@ -38,6 +39,12 @@ export const TokenModal: FC = () => {
     tokenModalProps: { address, isTestnet, onClose, onTokenSelect, type },
     isTokenModalVisible,
   } = useModals();
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const isDesktop = useMediaQuery("md");
 
   // ---------------------------------------------------------------------------
   // Query
@@ -114,10 +121,13 @@ export const TokenModal: FC = () => {
       <Modal
         open
         className="p-2"
+        isHeightFixed
         bannerContent={
           <div className="flex flex-row space-x-2">
             <Button
-              className={cn(chainId === 0 && "ring-2 ring-border-primary")}
+              className={cn(
+                chainId === 0 && "ring-2 ring-border-primary shrink-0",
+              )}
               variant="shadow"
               onClick={() => setChainId(0)}
             >
@@ -163,8 +173,8 @@ export const TokenModal: FC = () => {
             ))}
           </div>
         ) : (
-          <div className="flex h-32 w-full justify-center text-center">
-            <EmptyState entity="token" />
+          <div className="flex h-32 w-full h-full items-center justify-center text-center">
+            <EmptyState entity="token" size={isDesktop ? "xl" : "default"} />
           </div>
         )}
       </Modal>

@@ -15,6 +15,7 @@
 "use client";
 
 import { EmptyState, NftImage } from "@lightdotso/elements";
+import { useMediaQuery } from "@lightdotso/hooks";
 import { useQueryNfts } from "@lightdotso/query";
 import { useModals } from "@lightdotso/stores";
 import { Modal } from "@lightdotso/templates";
@@ -34,6 +35,12 @@ export function NftModal() {
   } = useModals();
 
   // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const isDesktop = useMediaQuery("md");
+
+  // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
@@ -50,7 +57,7 @@ export function NftModal() {
 
   if (isNftModalVisible) {
     return (
-      <Modal open className="p-2" onClose={onClose}>
+      <Modal isHeightFixed open className="p-2" onClose={onClose}>
         {nftPage && nftPage.nfts.length > 0 ? (
           <div className="grid grid-cols-3 gap-2">
             {nftPage.nfts
@@ -72,8 +79,8 @@ export function NftModal() {
               ))}
           </div>
         ) : (
-          <div className="flex h-32 w-full justify-center text-center">
-            <EmptyState entity="nft" />
+          <div className="flex h-32 w-full h-full items-center justify-center text-center">
+            <EmptyState entity="nft" size={isDesktop ? "xl" : "default"} />
           </div>
         )}
       </Modal>
