@@ -120,13 +120,13 @@ export const TokenModal: FC = () => {
     return (
       <Modal
         open
-        className="p-2"
         isHeightFixed
+        className="p-2"
         bannerContent={
           <div className="flex flex-row space-x-2">
             <Button
               className={cn(
-                chainId === 0 && "ring-2 ring-border-primary shrink-0",
+                chainId === 0 && "shrink-0 ring-2 ring-border-primary",
               )}
               variant="shadow"
               onClick={() => setChainId(0)}
@@ -173,7 +173,7 @@ export const TokenModal: FC = () => {
             ))}
           </div>
         ) : (
-          <div className="flex h-32 w-full h-full items-center justify-center text-center">
+          <div className="flex size-full h-32 items-center justify-center text-center">
             <EmptyState entity="token" size={isDesktop ? "xl" : "default"} />
           </div>
         )}

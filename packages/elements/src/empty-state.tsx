@@ -13,7 +13,8 @@
 // limitations under the License.
 
 import { cn } from "@lightdotso/utils";
-import { VariantProps, cva } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 import { Wallet } from "lucide-react";
 import type { FC } from "react";
 
