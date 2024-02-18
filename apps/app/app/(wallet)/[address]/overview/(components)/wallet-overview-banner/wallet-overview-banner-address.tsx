@@ -137,13 +137,13 @@ export const WalletOverviewBannerAddress: FC<
           <Tooltip>
             <TooltipTrigger asChild>
               <>
-                <p className="text-xs font-medium text-text-weak md:text-sm">
+                <p className="text-xs text-text-weak md:text-sm">
                   {shortenAddress(address)}
                 </p>
                 <ButtonIcon
                   variant="unstyled"
                   size="xs"
-                  className="text-text-weak"
+                  className="font-medium text-text-weak"
                   onClick={handleCopyClick}
                 >
                   {!isCopied ? (
