@@ -19,6 +19,7 @@ import { useQueryTokenPrice } from "@lightdotso/query";
 import { cn, isTestnet, refineNumberFormat } from "@lightdotso/utils";
 import type { FC } from "react";
 import type { Address } from "viem";
+import { NotAvailableTestnetCard } from "../../(components)/card";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -55,11 +56,7 @@ export const TokenCardPrice: FC<TokenCardPriceProps> = ({
   }
 
   if (isTestnet(chain_id)) {
-    return (
-      <div className="flex flex-col space-y-1.5">
-        <span className="text-sm text-text-weak">N/A</span>
-      </div>
-    );
+    <NotAvailableTestnetCard entityName="Token Price" />;
   }
 
   return (

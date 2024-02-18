@@ -14,34 +14,46 @@
 
 "use client";
 
-import type { TokenData } from "@lightdotso/data";
-import { Number } from "@lightdotso/ui";
-import { isTestnet } from "@lightdotso/utils";
+import {
+  ButtonIcon,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@lightdotso/ui";
+import { InfoIcon } from "lucide-react";
 import type { FC } from "react";
-import { NotAvailableTestnetCard } from "../../(components)/card";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type TokenCardBalanceProps = { token: TokenData };
+type NotAvailableTestnetCardProps = { entityName: string };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TokenCardBalance: FC<TokenCardBalanceProps> = ({
-  token: { balance_usd, chain_id },
+export const NotAvailableTestnetCard: FC<NotAvailableTestnetCardProps> = ({
+  entityName,
 }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  if (isTestnet(chain_id)) {
-    return <NotAvailableTestnetCard entityName="Balance" />;
-  }
-
   return (
-    <Number value={balance_usd} prefix="$" variant="neutral" size="balance" />
+    <div className="flex flex-row items-center space-x-1.5">
+      <span className="text-sm text-text-weak">N/A</span>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <ButtonIcon disabled size="xxs" variant="link">
+              <InfoIcon className="size-3" />
+            </ButtonIcon>
+          </TooltipTrigger>
+          <TooltipContent>{entityName} not available on testnet</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    </div>
   );
 };
