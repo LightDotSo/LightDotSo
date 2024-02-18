@@ -130,12 +130,7 @@ export const tokenColumns: ColumnDef<TokenData>[] = [
         className="text-right"
       />
     ),
-    cell: ({ row }) => (
-      <TokenTableRowActions
-        token={row.original}
-        isExpanded={typeof row.getParentRow() !== "undefined"}
-      />
-    ),
+    cell: ({ row }) => <TokenTableRowActions token={row.original} />,
     enableSorting: false,
     enableHiding: true,
   },
