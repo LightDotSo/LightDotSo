@@ -42,7 +42,7 @@ export const NotAvailableTestnetCard: FC<NotAvailableTestnetCardProps> = ({
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="flex flex-row items-center space-x-1.5">
+    <div className="flex flex-row items-center space-x-1">
       <span className="text-sm text-text-weak">N/A</span>
       <TooltipProvider>
         <Tooltip>
