@@ -79,7 +79,7 @@ export function NftModal() {
               ))}
           </div>
         ) : (
-          <div className="flex size-full h-32 items-center justify-center text-center">
+          <div className="flex h-full w-full items-center justify-center text-center">
             <EmptyState entity="nft" size={isDesktop ? "xl" : "default"} />
           </div>
         )}

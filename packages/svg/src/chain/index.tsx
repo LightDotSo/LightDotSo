@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { cn, getChainById, shortenName } from "@lightdotso/utils";
+import { VariantProps, cva } from "class-variance-authority";
 import type {
   FC,
   ForwardRefExoticComponent,
@@ -32,10 +33,40 @@ import { OptimismLogo } from "./optimism";
 import { PolygonLogo } from "./polygon";
 
 // -----------------------------------------------------------------------------
+// Styles
+// -----------------------------------------------------------------------------
+
+const chainLogoVariants = cva([], {
+  variants: {
+    size: {
+      default: "size-6",
+      sm: "size-4",
+    },
+  },
+  defaultVariants: {
+    size: "default",
+  },
+});
+
+const testnetChainLogoVariants = cva([], {
+  variants: {
+    size: {
+      default: "size-3 text-[6px]",
+      sm: "size-2 text-[4px]",
+    },
+  },
+  defaultVariants: {
+    size: "default",
+  },
+});
+
+// -----------------------------------------------------------------------------
 // Wrapper
 // -----------------------------------------------------------------------------
 
-interface TestnetChainLogoWrapperProps extends SVGProps<SVGSVGElement> {
+interface TestnetChainLogoWrapperProps
+  extends SVGProps<SVGSVGElement>,
+    VariantProps<typeof testnetChainLogoVariants> {
   logo: ForwardRefExoticComponent<
     PropsWithoutRef<SVGProps<SVGSVGElement>> & RefAttributes<SVGSVGElement>
   >;
@@ -45,15 +76,16 @@ interface TestnetChainLogoWrapperProps extends SVGProps<SVGSVGElement> {
 export const TestnetChainLogoWrapper: FC<TestnetChainLogoWrapperProps> = ({
   logo: Logo,
   chainId,
+  size,
   ref: _,
   ...props
 }) => (
-  <span className="relative inline-block">
+  <span className="relative">
     <Logo {...props} />
     <span
       className={cn(
-        "absolute bottom-0 right-0 inline-flex size-2 items-center justify-center rounded-full border border-border-primary-weak bg-background-stronger p-1 text-[6px]",
-        props.className?.includes("h-6 w-6") && "size-3 text-[8px]",
+        "absolute bottom-0 right-0 inline-flex items-center justify-center rounded-full border border-border-primary-weak bg-background-stronger",
+        testnetChainLogoVariants({ size }),
       )}
     >
       {shortenName(getChainById(chainId).name)}
@@ -65,7 +97,9 @@ export const TestnetChainLogoWrapper: FC<TestnetChainLogoWrapperProps> = ({
 // Props
 // -----------------------------------------------------------------------------
 
-interface ChainLogoProps extends SVGProps<SVGSVGElement> {
+interface ChainLogoProps
+  extends SVGProps<SVGSVGElement>,
+    VariantProps<typeof testnetChainLogoVariants> {
   chainId: number;
 }
 
@@ -76,31 +110,35 @@ interface ChainLogoProps extends SVGProps<SVGSVGElement> {
 export const ChainLogo: FC<ChainLogoProps> = ({
   chainId,
   ref: _,
+  className,
+  size,
   ...props
 }) => {
+  const variantClassName = cn(className, chainLogoVariants({ size }));
+
   switch (chainId) {
     // -------------------------------------------------------------------------
     // Mainnet
     // -------------------------------------------------------------------------
 
     case 1:
-      return <EthereumLogo {...props} />;
+      return <EthereumLogo className={variantClassName} {...props} />;
     case 10:
-      return <OptimismLogo {...props} />;
+      return <OptimismLogo className={variantClassName} {...props} />;
     case 56:
-      return <BscLogo {...props} />;
+      return <BscLogo className={variantClassName} {...props} />;
     case 100:
-      return <GnosisLogo {...props} />;
+      return <GnosisLogo className={variantClassName} {...props} />;
     case 137:
-      return <PolygonLogo {...props} />;
+      return <PolygonLogo className={variantClassName} {...props} />;
     case 8453:
-      return <BaseLogo {...props} />;
+      return <BaseLogo className={variantClassName} {...props} />;
     case 43114:
-      return <AvalancheLogo {...props} />;
+      return <AvalancheLogo className={variantClassName} {...props} />;
     case 42161:
-      return <ArbitrumLogo {...props} />;
+      return <ArbitrumLogo className={variantClassName} {...props} />;
     case 42220:
-      return <CeloLogo {...props} />;
+      return <CeloLogo className={variantClassName} {...props} />;
 
     // -------------------------------------------------------------------------
     // Testnet
@@ -108,53 +146,74 @@ export const ChainLogo: FC<ChainLogoProps> = ({
 
     case 44787:
       return (
-        <TestnetChainLogoWrapper logo={CeloLogo} chainId={chainId} {...props} />
+        <TestnetChainLogoWrapper
+          className={variantClassName}
+          logo={CeloLogo}
+          chainId={chainId}
+          size={size}
+          {...props}
+        />
       );
     case 80001:
       return (
         <TestnetChainLogoWrapper
+          className={variantClassName}
           logo={PolygonLogo}
           chainId={chainId}
+          size={size}
           {...props}
         />
       );
     case 84532:
       return (
-        <TestnetChainLogoWrapper logo={BaseLogo} chainId={chainId} {...props} />
+        <TestnetChainLogoWrapper
+          className={variantClassName}
+          logo={BaseLogo}
+          chainId={chainId}
+          {...props}
+        />
       );
     case 421614:
       return (
         <TestnetChainLogoWrapper
+          className={variantClassName}
           logo={ArbitrumLogo}
           chainId={chainId}
+          size={size}
           {...props}
         />
       );
     case 11155111:
       return (
         <TestnetChainLogoWrapper
+          className={variantClassName}
           logo={EthereumLogo}
           chainId={chainId}
+          size={size}
           {...props}
         />
       );
     case 11155420:
       return (
         <TestnetChainLogoWrapper
+          className={variantClassName}
           logo={OptimismLogo}
           chainId={chainId}
+          size={size}
           {...props}
         />
       );
     case 168587773:
       return (
         <TestnetChainLogoWrapper
+          className={variantClassName}
           logo={BlastLogo}
           chainId={chainId}
+          size={size}
           {...props}
         />
       );
     default:
-      return <BaseLogo {...props} />;
+      return <BaseLogo className={variantClassName} {...props} />;
   }
 };

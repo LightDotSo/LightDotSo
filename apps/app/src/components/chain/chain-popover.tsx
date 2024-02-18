@@ -126,7 +126,7 @@ export const ChainPopover: FC = () => {
                   className="flex items-center space-x-2"
                   value={chain.name.toString()}
                 >
-                  <ChainLogo chainId={chain.id} className="size-5" />
+                  <ChainLogo chainId={chain.id} className="size-5" size="sm" />
                   <span>{chain.name}</span>
                   <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50" />
                 </CommandItem>

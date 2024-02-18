@@ -85,3 +85,9 @@ export const Polygon: Story = {
     chainId: 137,
   },
 };
+export const Sepolia: Story = {
+  render: args => <ChainLogo {...args} />,
+  args: {
+    chainId: 11155111,
+  },
+};

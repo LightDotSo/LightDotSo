@@ -57,3 +57,13 @@ export const WithChainLogo: Story = {
   render: args => <TokenImage withChainLogo token={tokenGetData} />,
   args: {},
 };
+export const WithChainLogoTestnet: Story = {
+  render: args => (
+    <TokenImage
+      withChainLogo
+      token={{ ...tokenGetData, chain_id: 11155111 }}
+      size="sm"
+    />
+  ),
+  args: {},
+};
