@@ -20,7 +20,7 @@ import { usePathname } from "next/navigation";
 // Hook
 // -----------------------------------------------------------------------------
 
-export const useIsDemoPathname = () => {
+export const useIsDemoPathname = (): boolean => {
   // ---------------------------------------------------------------------------
   // Next Hooks
   // ---------------------------------------------------------------------------
@@ -31,5 +31,5 @@ export const useIsDemoPathname = () => {
   // Return
   // ---------------------------------------------------------------------------
 
-  return pathname.startsWith("/demo");
+  return pathname ? pathname.startsWith("/demo") : false;
 };

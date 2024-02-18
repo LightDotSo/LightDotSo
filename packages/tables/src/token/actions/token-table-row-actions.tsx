@@ -32,7 +32,7 @@ import type { FC } from "react";
 // Props
 // -----------------------------------------------------------------------------
 
-type TokenTableRowActionsProps = { token: TokenData };
+type TokenTableRowActionsProps = { token: TokenData; isExpanded?: boolean };
 
 // -----------------------------------------------------------------------------
 // Component
@@ -40,6 +40,7 @@ type TokenTableRowActionsProps = { token: TokenData };
 
 export const TokenTableRowActions: FC<TokenTableRowActionsProps> = ({
   token: { address: tokenAddress, chain_id, decimals, symbol },
+  isExpanded,
 }) => {
   // ---------------------------------------------------------------------------
   // Hooks
@@ -57,7 +58,7 @@ export const TokenTableRowActions: FC<TokenTableRowActionsProps> = ({
   // Render
   // ---------------------------------------------------------------------------
 
-  if (chain_id === 0) {
+  if (chain_id === 0 || isExpanded) {
     return null;
   }
 
