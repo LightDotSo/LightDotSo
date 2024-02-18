@@ -12,18 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { rpcHandlers } from "./rpc";
-import { simulationHandlers } from "./simulation";
-import { socketHandlers } from "./socket";
-import { tokenHandlers } from "./token";
-import { tokenPriceHandlers } from "./token_price";
-import { walletHandlers } from "./wallet";
+import {
+  BASE_API_AUTHENTICATED_URL,
+  BASE_API_URL,
+  BASE_LOCAL_API_URL,
+  BASE_LOCAL_API_ADMIN_URL,
+} from "@lightdotso/const";
+import { tokenListData } from "@lightdotso/demo";
+import { HttpResponse, http } from "msw";
 
-export const handlers = [
-  ...tokenPriceHandlers,
-  ...rpcHandlers,
-  ...simulationHandlers,
-  ...socketHandlers,
-  ...tokenHandlers,
-  ...walletHandlers,
+export const getTokens = (url: string) =>
+  http.get(`${url}/v1/token/list`, () => {
+    return HttpResponse.json(tokenListData);
+  });
+
+export const tokenHandlers = [
+  getTokens(BASE_LOCAL_API_URL),
+  getTokens(BASE_LOCAL_API_ADMIN_URL),
+  getTokens(BASE_API_AUTHENTICATED_URL),
+  getTokens(BASE_API_URL),
 ];
