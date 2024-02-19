@@ -42,6 +42,7 @@ const encodeDepositCalldata = () => {
 };
 
 // Run the encoding
+// eslint-disable-next-line no-console
 console.log(encodeDepositCalldata());
 
 // Result:
