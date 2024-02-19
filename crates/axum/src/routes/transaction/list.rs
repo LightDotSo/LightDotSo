@@ -22,6 +22,7 @@ use axum::{
 use lightdotso_prisma::{
     asset_change, interpretation, interpretation_action,
     transaction::{self, WhereParam},
+    wallet,
 };
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::{or, Direction};
@@ -191,7 +192,7 @@ fn construct_transaction_list_query_params(query: &ListQuery) -> Vec<WhereParam>
     let mut query_exp = match &query.address {
         Some(addr) => {
             vec![or![
-                transaction::wallet_address::equals(Some(addr.clone())),
+                transaction::wallets::some(vec![wallet::address::equals(addr.clone())]),
                 transaction::from::equals(addr.clone()),
                 transaction::to::equals(Some(addr.clone()))
             ]]

@@ -158,10 +158,10 @@ pub async fn upsert_transaction_with_log_receipt(
             transaction::hash::equals(format!("{:?}", transaction.hash)),
             vec![
                 transaction::chain::connect(chain::id::equals(chain_id)),
-                transaction::wallet::connect(wallet::address::equals(to_checksum(
+                transaction::wallets::connect(vec![wallet::address::equals(to_checksum(
                     &wallet_address,
                     None,
-                ))),
+                ))]),
             ],
         )
         .exec()
