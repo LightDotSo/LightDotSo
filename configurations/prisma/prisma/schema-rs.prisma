@@ -1169,7 +1169,7 @@ model BillingOperation {
   billingId String
 
   paymasterOperation   PaymasterOperation @relation(fields: [paymasterOperationId], references: [id])
-  paymasterOperationId String
+  paymasterOperationId String             @unique
 
   // ---------------------------------------------------------------------------
   // Many-to-many
@@ -1297,13 +1297,8 @@ model PaymasterOperation {
   // None-to-none
   // ---------------------------------------------------------------------------
 
-  userOperation UserOperation?
-
-  // ---------------------------------------------------------------------------
-  // Many-to-many
-  // ---------------------------------------------------------------------------
-
-  billingOperations BillingOperation[]
+  billingOperation BillingOperation?
+  userOperation    UserOperation?
 
   // ---------------------------------------------------------------------------
   // Mappings
