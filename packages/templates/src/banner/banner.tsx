@@ -158,6 +158,20 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
           <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50" />
         </a>
       )}
+      {(kind === "beta" || kind === "demo") && (
+        <>
+          <span className="hidden md:inline-flex">&middot;</span>{" "}
+          <a
+            className="inline-flex items-center text-sm hover:underline"
+            href={SOCIAL_LINKS["Waitlist"]}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Waitlist
+            <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50" />
+          </a>
+        </>
+      )}
       <div className="flex flex-1 justify-end">
         {kind === "beta" && (
           <ButtonIcon
