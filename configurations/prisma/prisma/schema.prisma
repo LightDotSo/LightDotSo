@@ -1181,18 +1181,14 @@ model BillingOperation {
   status     BillingOperationStatus
 
   // ---------------------------------------------------------------------------
-  // None-to-one
+  // One-to-many
   // ---------------------------------------------------------------------------
 
-  // paymasterOperation   PaymasterOperation?
-  // paymasterOperationId String?
+  billing   Billing @relation(fields: [billingId], references: [id])
+  billingId String
 
-  // ---------------------------------------------------------------------------
-  // None-to-many
-  // ---------------------------------------------------------------------------
-
-  billing   Billing? @relation(fields: [billingId], references: [id])
-  billingId String?
+  paymasterOperation   PaymasterOperation @relation(fields: [paymasterOperationId], references: [id])
+  paymasterOperationId String
 
   // ---------------------------------------------------------------------------
   // Many-to-many
@@ -1204,9 +1200,6 @@ model BillingOperation {
   // ---------------------------------------------------------------------------
   // None-to-many
   // ---------------------------------------------------------------------------
-
-  paymasterOperation   PaymasterOperation? @relation(fields: [paymasterOperationId], references: [id])
-  paymasterOperationId String?
 
   transaction     Transaction? @relation(fields: [transactionHash], references: [hash])
   transactionHash String?
@@ -1338,7 +1331,6 @@ model PaymasterOperation {
   // Unique
   @@unique([validAfter, paymasterId])
   // Relations
-  // @@index([billingOperationId])
   @@index([paymasterId])
   @@index([sender])
   @@index([sender, senderNonce])

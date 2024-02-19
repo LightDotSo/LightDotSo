@@ -36,8 +36,11 @@ use lightdotso_contracts::constants::LIGHT_PAYMASTER_ADDRESSES;
 // use lightdotso_contracts::{constants::LIGHT_PAYMASTER_ADDRESSES, paymaster::get_paymaster};
 use lightdotso_db::{
     db::create_client,
-    models::paymaster_operation::{
-        create_paymaster_operation, get_most_recent_paymaster_operation_with_sender,
+    models::{
+        billing_operation::create_billing_operation,
+        paymaster_operation::{
+            create_paymaster_operation, get_most_recent_paymaster_operation_with_sender,
+        },
     },
 };
 use lightdotso_gas::types::GasEstimation;
@@ -46,6 +49,7 @@ use lightdotso_jsonrpsee::{
     handle_response,
     types::{Request, Response},
 };
+use lightdotso_prisma::paymaster_operation;
 use lightdotso_signer::connect::connect_to_kms;
 use lightdotso_tracing::tracing::{info, warn};
 use serde_json::json;
@@ -185,7 +189,7 @@ pub async fn get_paymaster_and_data(
             info!("paymater_and_data: 0x{}", hex::encode(paymater_and_data.clone()));
 
             // Finally, create the paymaster operation.
-            db_create_paymaster_operation(
+            let op = db_create_paymaster_operation(
                 chain_id,
                 verifying_paymaster_address,
                 construct.sender,
@@ -196,9 +200,27 @@ pub async fn get_paymaster_and_data(
             .await
             .map_err(JsonRpcError::from)?;
 
+            // Before exit, create the billing operation.
+            db_create_billing_operation(construct.sender, op.id.clone())
+                .await
+                .map_err(JsonRpcError::from)?;
+
             Ok((paymater_and_data, paymaster_nonce))
         }
     }
+}
+
+pub async fn db_create_billing_operation(
+    sender_address: Address,
+    paymaster_operation_id: String,
+) -> Result<()> {
+    // Create the client.
+    let client = create_client().await?;
+
+    // Create the billing operation.
+    create_billing_operation(client.into(), sender_address, paymaster_operation_id).await?;
+
+    Ok(())
 }
 
 pub async fn db_create_paymaster_operation(
@@ -208,12 +230,12 @@ pub async fn db_create_paymaster_operation(
     sender_nonce: u64,
     valid_until: u64,
     valid_after: u64,
-) -> Result<()> {
+) -> Result<paymaster_operation::Data> {
     // Create the client.
-    let client = create_client().await.unwrap();
+    let client = create_client().await?;
 
     // Create the paymaster operation.
-    create_paymaster_operation(
+    let (_, op) = create_paymaster_operation(
         client.into(),
         chain_id as i64,
         paymaster_address,
@@ -224,7 +246,7 @@ pub async fn db_create_paymaster_operation(
     )
     .await?;
 
-    Ok(())
+    Ok(op)
 }
 
 pub async fn db_get_paymaster_nonce(
