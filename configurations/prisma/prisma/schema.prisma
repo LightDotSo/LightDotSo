@@ -866,17 +866,16 @@ model Transaction {
   maxFeePerGas         BigInt?
 
   // ---------------------------------------------------------------------------
-  // Eth One-to-none
-  // ---------------------------------------------------------------------------
-
-  wallet        Wallet? @relation(fields: [walletAddress], references: [address])
-  walletAddress String?
-
-  // ---------------------------------------------------------------------------
   // Eth None-to-none
   // ---------------------------------------------------------------------------
 
   receipt Receipt?
+
+  // ---------------------------------------------------------------------------
+  // Eth Many-to-many
+  // ---------------------------------------------------------------------------
+
+  wallets Wallet[]
 
   // ---------------------------------------------------------------------------
   // Relation One-to-many
@@ -906,7 +905,6 @@ model Transaction {
   // ---------------------------------------------------------------------------
 
   // Relations
-  @@index([walletAddress])
   @@index([chainId])
   @@index([activityId])
   @@index([interpretationId])
@@ -1214,7 +1212,7 @@ model BillingOperation {
   transactionHash String?
 
   userOperation     UserOperation? @relation(fields: [userOperationHash], references: [hash])
-  userOperationHash String?
+  userOperationHash String?        @unique
 
   // ---------------------------------------------------------------------------
   // Mappings

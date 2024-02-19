@@ -7,6 +7,7 @@
     "crates/app",
     "crates/autometrics",
     "crates/axum",
+    "crates/billing",
     "crates/bundler",
     "crates/client",
     "crates/common",
@@ -51,7 +52,7 @@
   [workspace.package]
     version = "0.1.0"
     edition = "2021"
-    rust-version = "1.75"
+    rust-version = "1.76"
     license = "Apache-2.0"
     homepage = "https://github.com/LightDotSo/LightDotSo"
     repository = "https://github.com/LightDotSo/LightDotSo"
@@ -109,6 +110,7 @@
     lightdotso-app = { path = "./crates/app" }
     lightdotso-autometrics = { path = "./crates/autometrics" }
     lightdotso-axum = { path = "./crates/axum" }
+    lightdotso-billing = { path = "./crates/billing" }
     lightdotso-bundler = { path = "./crates/bundler" }
     lightdotso-client = { path = "./crates/client" }
     lightdotso-common = { path = "./crates/common" }

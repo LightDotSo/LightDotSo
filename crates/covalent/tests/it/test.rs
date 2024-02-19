@@ -33,8 +33,10 @@ async fn test_integration_transactions_test() -> Result<()> {
     let _ = dotenvy::dotenv();
 
     let res =
-        get_transactions("1", "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed", None, None).await?;
+        get_transactions("137", "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed", None, None).await?;
     println!("{:#?}", res);
+
+    // insta::assert_debug_snapshot!(res);
 
     Ok(())
 }
