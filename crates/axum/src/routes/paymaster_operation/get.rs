@@ -112,6 +112,7 @@ pub(crate) async fn v1_paymaster_operation_get_handler(
             valid_after.into(),
             paymaster.id,
         ))
+        .with(paymaster_operation::billing_operation::fetch())
         .exec()
         .await?;
 

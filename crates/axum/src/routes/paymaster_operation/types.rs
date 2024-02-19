@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use crate::routes::billing_operation::types::BillingOperation;
 use lightdotso_prisma::paymaster_operation;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
@@ -26,6 +27,8 @@ use utoipa::ToSchema;
 pub(crate) struct PaymasterOperation {
     /// The id of the paymaster operation.
     id: String,
+    /// The billing operation of the operation.
+    billing_operation: Option<BillingOperation>,
 }
 
 // -----------------------------------------------------------------------------
@@ -35,6 +38,14 @@ pub(crate) struct PaymasterOperation {
 /// Implement From<paymaster_operation::Data> for PaymasterOperation.
 impl From<paymaster_operation::Data> for PaymasterOperation {
     fn from(paymaster_operation: paymaster_operation::Data) -> Self {
-        Self { id: paymaster_operation.id }
+        Self {
+            id: paymaster_operation.id,
+            billing_operation: paymaster_operation.billing_operation.and_then(
+                |maybe_billing_operation| {
+                    maybe_billing_operation
+                        .map(|interpretation| BillingOperation::from(*interpretation))
+                },
+            ),
+        }
     }
 }
