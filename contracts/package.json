@@ -19,10 +19,12 @@
   },
   "dependencies": {
     "@lightdotso/solutions": "workspace:*",
-    "@lightdotso/wagmi": "workspace:*"
+    "@lightdotso/wagmi": "workspace:*",
+    "viem": "^2.7.10"
   },
   "devDependencies": {
-    "@lightdotso/eslint-config": "workspace:*"
+    "@lightdotso/eslint-config": "workspace:*",
+    "ts-node": "^10.9.2"
   },
   "publishConfig": {
     "access": "public"
