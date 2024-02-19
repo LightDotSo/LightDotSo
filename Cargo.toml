@@ -52,7 +52,7 @@
   [workspace.package]
     version = "0.1.0"
     edition = "2021"
-    rust-version = "1.75"
+    rust-version = "1.76"
     license = "Apache-2.0"
     homepage = "https://github.com/LightDotSo/LightDotSo"
     repository = "https://github.com/LightDotSo/LightDotSo"
