@@ -54,7 +54,7 @@ lazy_static! {
         let mut m = HashMap::new();
 
         // Testnet
-        m.insert(1685877733, "GSV9eeURHDAoAVPacXKqTKKdDwE4cuUzTesWCvqQMJzU".to_string());
+        m.insert(168587773, "GSV9eeURHDAoAVPacXKqTKKdDwE4cuUzTesWCvqQMJzU".to_string());
 
         m
     };

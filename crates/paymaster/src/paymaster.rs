@@ -132,7 +132,7 @@ pub async fn get_paymaster_and_data(
             info!("paymater_and_data: 0x{}", hex::encode(paymater_and_data.clone()));
 
             // Finally, create the paymaster operation.
-            db_create_paymaster_operation(
+            let op = db_create_paymaster_operation(
                 chain_id,
                 verifying_paymaster_address,
                 construct.sender,
@@ -142,6 +142,11 @@ pub async fn get_paymaster_and_data(
             )
             .await
             .map_err(JsonRpcError::from)?;
+
+            // Before exit, create the billing operation.
+            db_create_billing_operation(construct.sender, op.id.clone())
+                .await
+                .map_err(JsonRpcError::from)?;
 
             Ok((paymater_and_data, paymaster_nonce))
         }

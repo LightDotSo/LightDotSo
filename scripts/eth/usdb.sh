@@ -44,8 +44,8 @@
 #   -t
 
 ## Bridge to Blast
-# cast send -i 0xc644cc19d2A9388b71dd1dEde07cFFC73237Dca8 --value 1.2ether --rpc-url https://rpc.sepolia.org \
-#   -t
+cast send -i 0xc644cc19d2A9388b71dd1dEde07cFFC73237Dca8 --value 0.5ether --rpc-url https://rpc.sepolia.org \
+  -t
 
 ## Check balance
 
@@ -53,5 +53,5 @@
 
 ## Send ETH on Blast
 
-cast send -i 0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F --value 0.03ether --rpc-url https://sepolia.blast.io \
-  -t
+# cast send -i 0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F --value 0.03ether --rpc-url https://sepolia.blast.io \
+#   -t
