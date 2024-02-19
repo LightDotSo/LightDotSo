@@ -13,15 +13,21 @@
 // limitations under the License.
 
 use super::types::BillingOperation;
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{
+    authentication::{authenticate_user, authenticate_wallet_user},
+    result::{AppJsonResult, AppResult},
+    state::AppState,
+};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
-    Json,
+    headers::{authorization::Bearer, Authorization},
+    Json, TypedHeader,
 };
-use lightdotso_prisma::billing_operation::{self, WhereParam};
-use prisma_client_rust::or;
+use ethers_main::types::H160;
+use lightdotso_prisma::paymaster_operation::{self, WhereParam};
 use serde::{Deserialize, Serialize};
+use tower_sessions::Session;
 use utoipa::{IntoParams, ToSchema};
 
 // -----------------------------------------------------------------------------
@@ -40,6 +46,10 @@ pub struct ListQuery {
     pub status: Option<String>,
     /// The id to filter by.
     pub id: Option<String>,
+    /// The user id to filter by.
+    pub user_id: Option<String>,
+    /// The wallet address to filter by.
+    pub address: String,
 }
 
 // -----------------------------------------------------------------------------
@@ -74,6 +84,8 @@ pub(crate) struct BillingOperationListCount {
 pub(crate) async fn v1_billing_operation_list_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
+    mut session: Session,
+    auth: Option<TypedHeader<Authorization<Bearer>>>,
 ) -> AppJsonResult<Vec<BillingOperation>> {
     // -------------------------------------------------------------------------
     // Parse
@@ -83,11 +95,18 @@ pub(crate) async fn v1_billing_operation_list_handler(
     let Query(query) = list_query;
 
     // -------------------------------------------------------------------------
+    // Authentication
+    // -------------------------------------------------------------------------
+
+    authenticate_user_id(&query, &state, &mut session, auth.map(|auth| auth.token().to_string()))
+        .await?;
+
+    // -------------------------------------------------------------------------
     // Params
     // -------------------------------------------------------------------------
 
     // If the address is provided, add it to the query.
-    let query_params = construct_billing_operation_list_query_params(&query);
+    let query_params = construct_paymaster_operation_list_query_params(&query);
 
     // -------------------------------------------------------------------------
     // DB
@@ -96,8 +115,9 @@ pub(crate) async fn v1_billing_operation_list_handler(
     // Get the billing operations from the database.
     let billing_operations = state
         .client
-        .billing_operation()
+        .paymaster_operation()
         .find_many(query_params)
+        .with(paymaster_operation::billing_operation::fetch())
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
         .exec()
@@ -108,8 +128,11 @@ pub(crate) async fn v1_billing_operation_list_handler(
     // -------------------------------------------------------------------------
 
     // Change the billing operations to the format that the API expects.
-    let billing_operations: Vec<BillingOperation> =
-        billing_operations.into_iter().map(BillingOperation::from).collect();
+    let billing_operations: Vec<BillingOperation> = billing_operations
+        .into_iter()
+        .filter_map(|bo| bo.billing_operation.and_then(|bop| bop))
+        .map(|bop| BillingOperation::from(*bop))
+        .collect();
 
     Ok(Json::from(billing_operations))
 }
@@ -130,6 +153,8 @@ pub(crate) async fn v1_billing_operation_list_handler(
 pub(crate) async fn v1_billing_operation_list_count_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
+    mut session: Session,
+    auth: Option<TypedHeader<Authorization<Bearer>>>,
 ) -> AppJsonResult<BillingOperationListCount> {
     // -------------------------------------------------------------------------
     // Parse
@@ -139,18 +164,25 @@ pub(crate) async fn v1_billing_operation_list_count_handler(
     let Query(query) = list_query;
 
     // -------------------------------------------------------------------------
+    // Authentication
+    // -------------------------------------------------------------------------
+
+    authenticate_user_id(&query, &state, &mut session, auth.map(|auth| auth.token().to_string()))
+        .await?;
+
+    // -------------------------------------------------------------------------
     // Params
     // -------------------------------------------------------------------------
 
     // If the address is provided, add it to the query.
-    let query_params = construct_billing_operation_list_query_params(&query);
+    let query_params = construct_paymaster_operation_list_query_params(&query);
 
     // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
 
     // Get the billing operations from the database.
-    let count = state.client.billing_operation().count(query_params).exec().await?;
+    let count = state.client.paymaster_operation().count(query_params).exec().await?;
 
     // -------------------------------------------------------------------------
     // Return
@@ -163,18 +195,35 @@ pub(crate) async fn v1_billing_operation_list_count_handler(
 // Utils
 // -----------------------------------------------------------------------------
 
-/// Constructs a query for billing operations.
-fn construct_billing_operation_list_query_params(query: &ListQuery) -> Vec<WhereParam> {
-    let mut query_exp = match &query.id {
-        Some(id) => vec![or![billing_operation::id::equals(id.to_string())]],
-        None => vec![],
-    };
+/// Authenticates the user and returns the user id.
+async fn authenticate_user_id(
+    query: &ListQuery,
+    state: &AppState,
+    session: &mut Session,
+    auth_token: Option<String>,
+) -> AppResult<()> {
+    // Parse the address.
+    let query_address: H160 = query.address.parse()?;
 
-    if let Some(_status) = &query.status {
-        query_exp.push(billing_operation::status::equals(
-            lightdotso_prisma::BillingOperationStatus::Sponsored,
-        ));
+    // Authenticate the user
+    if query.user_id.is_some() {
+        authenticate_user(state, session, auth_token.clone(), query.user_id.clone()).await?;
     }
 
-    query_exp
+    // If the wallet is specified, check to see if the user is an owner of the wallet.
+    authenticate_wallet_user(
+        state,
+        session,
+        &query_address,
+        auth_token.clone(),
+        query.user_id.clone(),
+    )
+    .await?;
+
+    Ok(())
+}
+
+/// Constructs a query for paymaster operations.
+fn construct_paymaster_operation_list_query_params(query: &ListQuery) -> Vec<WhereParam> {
+    vec![paymaster_operation::sender::equals(query.address.clone())]
 }

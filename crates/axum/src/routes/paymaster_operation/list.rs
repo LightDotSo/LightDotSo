@@ -19,6 +19,7 @@ use axum::{
     extract::{Query, State},
     Json,
 };
+use lightdotso_prisma::paymaster_operation;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -73,6 +74,7 @@ pub(crate) async fn v1_paymaster_operation_list_handler(
         .client
         .paymaster_operation()
         .find_many(vec![])
+        .with(paymaster_operation::billing_operation::fetch())
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
         .exec()

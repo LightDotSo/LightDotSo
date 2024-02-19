@@ -26,6 +26,8 @@ use utoipa::ToSchema;
 pub(crate) struct BillingOperation {
     /// The id of the billing operation.
     id: String,
+    /// The status of the billing operation.
+    status: String,
 }
 
 // -----------------------------------------------------------------------------
@@ -35,6 +37,6 @@ pub(crate) struct BillingOperation {
 /// Implement From<billing_operation::Data> for BillingOperation.
 impl From<billing_operation::Data> for BillingOperation {
     fn from(billing_operation: billing_operation::Data) -> Self {
-        Self { id: billing_operation.id }
+        Self { id: billing_operation.id, status: billing_operation.status.to_string() }
     }
 }
