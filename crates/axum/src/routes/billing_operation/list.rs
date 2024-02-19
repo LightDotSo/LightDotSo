@@ -25,7 +25,10 @@ use axum::{
     Json, TypedHeader,
 };
 use ethers_main::types::H160;
-use lightdotso_prisma::paymaster_operation::{self, WhereParam};
+use lightdotso_prisma::{
+    billing_operation::{self, WhereParam},
+    paymaster_operation,
+};
 use serde::{Deserialize, Serialize};
 use tower_sessions::Session;
 use utoipa::{IntoParams, ToSchema};
@@ -106,7 +109,7 @@ pub(crate) async fn v1_billing_operation_list_handler(
     // -------------------------------------------------------------------------
 
     // If the address is provided, add it to the query.
-    let query_params = construct_paymaster_operation_list_query_params(&query);
+    let query_params = construct_billing_operation_list_query_params(&query);
 
     // -------------------------------------------------------------------------
     // DB
@@ -115,9 +118,8 @@ pub(crate) async fn v1_billing_operation_list_handler(
     // Get the billing operations from the database.
     let billing_operations = state
         .client
-        .paymaster_operation()
+        .billing_operation()
         .find_many(query_params)
-        .with(paymaster_operation::billing_operation::fetch())
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
         .exec()
@@ -128,11 +130,8 @@ pub(crate) async fn v1_billing_operation_list_handler(
     // -------------------------------------------------------------------------
 
     // Change the billing operations to the format that the API expects.
-    let billing_operations: Vec<BillingOperation> = billing_operations
-        .into_iter()
-        .filter_map(|bo| bo.billing_operation.and_then(|bop| bop))
-        .map(|bop| BillingOperation::from(*bop))
-        .collect();
+    let billing_operations: Vec<BillingOperation> =
+        billing_operations.into_iter().map(BillingOperation::from).collect();
 
     Ok(Json::from(billing_operations))
 }
@@ -175,14 +174,14 @@ pub(crate) async fn v1_billing_operation_list_count_handler(
     // -------------------------------------------------------------------------
 
     // If the address is provided, add it to the query.
-    let query_params = construct_paymaster_operation_list_query_params(&query);
+    let query_params = construct_billing_operation_list_query_params(&query);
 
     // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
 
     // Get the billing operations from the database.
-    let count = state.client.paymaster_operation().count(query_params).exec().await?;
+    let count = state.client.billing_operation().count(query_params).exec().await?;
 
     // -------------------------------------------------------------------------
     // Return
@@ -224,6 +223,16 @@ async fn authenticate_user_id(
 }
 
 /// Constructs a query for paymaster operations.
-fn construct_paymaster_operation_list_query_params(query: &ListQuery) -> Vec<WhereParam> {
-    vec![paymaster_operation::sender::equals(query.address.clone())]
+fn construct_billing_operation_list_query_params(query: &ListQuery) -> Vec<WhereParam> {
+    let mut query_exp = vec![billing_operation::paymaster_operation::is(vec![
+        paymaster_operation::sender::equals(query.address.clone()),
+    ])];
+
+    if let Some(_status) = &query.status {
+        query_exp.push(billing_operation::status::equals(
+            lightdotso_prisma::BillingOperationStatus::Sponsored,
+        ));
+    }
+
+    query_exp
 }
