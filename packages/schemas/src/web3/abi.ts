@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Abi as zodAbi } from "abitype/zod";
 import { z } from "zod";
 
 // -----------------------------------------------------------------------------
@@ -19,7 +20,7 @@ import { z } from "zod";
 // -----------------------------------------------------------------------------
 
 export const abi = z.object({
-  abiJson: z.string(),
+  abi: zodAbi,
   functionName: z.string(),
   functionArguments: z.array(z.string()),
 });
