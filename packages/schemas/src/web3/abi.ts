@@ -19,19 +19,9 @@ import { z } from "zod";
 // -----------------------------------------------------------------------------
 
 export const abi = z.object({
-  chainId: z.bigint(),
-  hash: z.string(),
-  nonce: z.bigint(),
-  initCode: z.string(),
-  sender: z.string(),
-  callData: z.string(),
-  callGasLimit: z.bigint(),
-  verificationGasLimit: z.bigint(),
-  preVerificationGas: z.bigint(),
-  maxFeePerGas: z.bigint(),
-  maxPriorityFeePerGas: z.bigint(),
-  paymasterAndData: z.string(),
-  signature: z.string(),
+  abiJson: z.string(),
+  functionName: z.string(),
+  functionArguments: z.array(z.string()),
 });
 
 // -----------------------------------------------------------------------------

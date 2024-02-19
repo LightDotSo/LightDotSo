@@ -12,8 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { address } from "./address";
+export type { Abi } from "./abi";
+export { abi } from "./abi";
 export type { Address } from "./address";
+export { address } from "./address";
 export type { AddressOrEns } from "./addressOrEns";
 export { addressOrEns } from "./addressOrEns";
 export type { Asset, Transfer } from "./transfer";
