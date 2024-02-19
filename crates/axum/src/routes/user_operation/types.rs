@@ -14,7 +14,8 @@
 
 use crate::routes::{
     interpretation::types::Interpretation, paymaster::types::Paymaster,
-    signature::types::Signature, transaction::types::Transaction,
+    paymaster_operation::types::PaymasterOperation, signature::types::Signature,
+    transaction::types::Transaction,
 };
 use lightdotso_common::traits::VecU8ToHex;
 use lightdotso_prisma::user_operation;
@@ -91,6 +92,8 @@ pub(crate) struct UserOperation {
     status: String,
     /// The paymaster of the user operation.
     paymaster: Option<Paymaster>,
+    /// The paymaster operation of the user operation.
+    paymaster_operation: Option<PaymasterOperation>,
     /// The signatures of the user operation.
     signatures: Vec<Signature>,
     /// The transaction of the user operation.
@@ -123,6 +126,11 @@ impl From<user_operation::Data> for UserOperation {
             paymaster: user_operation
                 .paymaster
                 .and_then(|paymaster| paymaster.map(|data| Paymaster::from(*data))),
+            paymaster_operation: user_operation.paymaster_operation.and_then(
+                |paymaster_operation| {
+                    paymaster_operation.map(|data| PaymasterOperation::from(*data))
+                },
+            ),
             signatures: user_operation.signatures.map_or(Vec::new(), |signature| {
                 signature.into_iter().map(|sig| sig.into()).collect()
             }),
