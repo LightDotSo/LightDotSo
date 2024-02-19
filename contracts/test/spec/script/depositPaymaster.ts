@@ -32,7 +32,7 @@ const encodeDepositCalldata = () => {
     functionName: "execute",
     args: [
       // The verifying pamaster addr
-      "0x0000000000ffe8b47b3e2130213b802212439497",
+      "0x000000000003193FAcb32D1C120719892B7AE977",
       // The value of ETH
       BigInt(1_000_000),
       // `deposit()` in calldata
