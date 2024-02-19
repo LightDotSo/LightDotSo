@@ -23,3 +23,8 @@ lazy_static! {
 lazy_static! {
     pub static ref SATSUMA: String = "satsuma".to_string();
 }
+
+// The studio namesapce
+lazy_static! {
+    pub static ref STUDIO: String = "studio".to_string();
+}

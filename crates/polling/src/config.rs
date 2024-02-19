@@ -15,7 +15,7 @@
 #![allow(clippy::unwrap_used)]
 
 use crate::{
-    constants::{GRAPH, SATSUMA},
+    constants::{GRAPH, SATSUMA, STUDIO},
     polling::Polling,
 };
 use clap::Parser;
@@ -191,7 +191,7 @@ pub fn create_chain_mapping(
                 id
             );
             let child_map = chain_id_to_urls.entry(chain_id).or_insert_with(HashMap::new);
-            child_map.insert((*GRAPH).to_string(), url);
+            child_map.insert((*STUDIO).to_string(), url);
         }
     }
 
