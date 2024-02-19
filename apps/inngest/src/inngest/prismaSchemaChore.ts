@@ -25,7 +25,7 @@ export const prismaSchemaChore = inngest.createFunction(
   { event: "prisma/schema.chore" },
   async ({ step, prisma }) => {
     await step.run("Chores to run", async () => {
-      // const data = await prisma.wallet.findMany();
+      const data = await prisma.wallet.findMany();
 
       // For each wallet, add an empty wallet settings record if one does not exist
       // data.forEach(async wallet => {
@@ -46,18 +46,18 @@ export const prismaSchemaChore = inngest.createFunction(
       //   });
       // });
 
-      const data = await prisma.transaction.findMany();
+      // const data = await prisma.transaction.findMany();
 
-      // Insert the data in _TransactionToWallet table using raw SQL
-      for (let transaction of data) {
-        const { hash, walletAddress } = transaction;
+      // // Insert the data in _TransactionToWallet table using raw SQL
+      // for (let transaction of data) {
+      //   const { hash } = transaction;
 
-        if (!hash || !walletAddress) {
-          continue;
-        }
+      //   if (!hash) {
+      //     continue;
+      //   }
 
-        await prisma.$executeRaw`INSERT INTO _TransactionToWallet (A, B) VALUES (${hash}, ${walletAddress})`;
-      }
+      //   // await prisma.$executeRaw`INSERT INTO _TransactionToWallet (A, B) VALUES (${hash}, ${walletAddress})`;
+      // }
 
       return data;
     });
