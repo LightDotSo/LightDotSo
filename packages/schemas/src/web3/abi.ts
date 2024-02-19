@@ -12,13 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export type { Abi } from "./abi";
-export { abi } from "./abi";
-export type { Address } from "./address";
-export { address } from "./address";
-export type { AddressOrEns } from "./addressOrEns";
-export { addressOrEns } from "./addressOrEns";
-export type { Asset, Transfer } from "./transfer";
-export { asset, transfer } from "./transfer";
-export type { UserOperation } from "./userOperation";
-export { userOperation } from "./userOperation";
+import { Abi as zodAbi } from "abitype/zod";
+import { z } from "zod";
+
+// -----------------------------------------------------------------------------
+// Schema
+// -----------------------------------------------------------------------------
+
+export const abi = z.object({
+  abi: zodAbi,
+  functionName: z.string(),
+  functionArguments: z.array(z.string()),
+});
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type Abi = z.infer<typeof abi>;

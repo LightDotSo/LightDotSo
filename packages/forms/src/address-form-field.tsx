@@ -26,7 +26,7 @@ import { isAddress } from "viem";
 // Props
 // -----------------------------------------------------------------------------
 
-type AddressFormProps = {
+type AddressFormFieldProps = {
   isLabelHidden?: boolean;
   name: string;
 } & InputHTMLAttributes<HTMLInputElement>;
@@ -35,7 +35,7 @@ type AddressFormProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const AddressForm: FC<AddressFormProps> = ({
+export const AddressFormField: FC<AddressFormFieldProps> = ({
   isLabelHidden = true,
   name,
   onKeyDown,

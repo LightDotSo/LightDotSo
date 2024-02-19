@@ -14,7 +14,7 @@
 
 "use client";
 
-import { AddressForm } from "@lightdotso/forms";
+import { AddressFormField } from "@lightdotso/forms";
 import { useDebouncedValue, useRefinement } from "@lightdotso/hooks";
 import { useQueryEnsDomains, useQueryWallets } from "@lightdotso/query";
 import { addressOrEns } from "@lightdotso/schemas";
@@ -127,7 +127,7 @@ export function AddressModal() {
             open
             className="p-2"
             headerContent={
-              <AddressForm
+              <AddressFormField
                 name="addressOrEns"
                 onKeyDown={validEns.invalidate}
               />

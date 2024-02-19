@@ -16,7 +16,7 @@
 
 use crate::{
     config::PollingArgs,
-    constants::{GRAPH, SATSUMA},
+    constants::{GRAPH, SATSUMA, STUDIO},
 };
 use autometrics::autometrics;
 use axum::Json;
@@ -182,7 +182,10 @@ impl Polling {
 
         // Get the url from the chain mapping.
         let maybe_url = match chain {
-            Some(urls) => urls.get(&*GRAPH.to_string()).or(urls.get(&*SATSUMA.to_string())),
+            Some(urls) => urls
+                .get(&*GRAPH.to_string())
+                .or(urls.get(&*SATSUMA.to_string()))
+                .or(urls.get(&*STUDIO.to_string())),
             None => None,
         };
 

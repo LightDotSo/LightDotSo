@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { AddressForm } from "./address-form";
+export { AbiForm } from "./abi-form";
+export { AddressFormField } from "./address-form-field";
 export { FormDevTools } from "./form-dev-tools";
 export { InviteCodeForm } from "./invite-code-form";

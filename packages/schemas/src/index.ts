@@ -39,8 +39,16 @@ export type {
   SimplehashTestnetChain,
 } from "./simplehash";
 export { llamaGetSchema, llamaPostSchema } from "./llama";
-export { address, addressOrEns, asset, transfer, userOperation } from "./web3";
+export {
+  abi,
+  address,
+  addressOrEns,
+  asset,
+  transfer,
+  userOperation,
+} from "./web3";
 export type {
+  Abi,
   Address,
   AddressOrEns,
   Asset,

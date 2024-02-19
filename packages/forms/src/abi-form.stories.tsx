@@ -22,15 +22,15 @@ import { useForm } from "react-hook-form";
 import { isAddress } from "viem";
 import { normalize } from "viem/ens";
 import { z } from "zod";
-import { AddressForm } from "./address-form";
+import { AbiForm } from "./abi-form";
 
 // -----------------------------------------------------------------------------
 // Meta
 // -----------------------------------------------------------------------------
 
-const meta: Meta<typeof AddressForm> = {
-  title: "form/AddressForm",
-  component: AddressForm,
+const meta: Meta<typeof AbiForm> = {
+  title: "form/AbiForm",
+  component: AbiForm,
   tags: ["autodocs"],
   argTypes: {},
 };
@@ -40,7 +40,7 @@ export default meta;
 // Types
 // -----------------------------------------------------------------------------
 
-type Story = StoryObj<typeof AddressForm>;
+type Story = StoryObj<typeof AbiForm>;
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -89,7 +89,7 @@ export const Base: Story = {
 
     return (
       <Form {...methods}>
-        <AddressForm onKeyDown={validEns.invalidate} {...args} />
+        <AbiForm onKeyDown={validEns.invalidate} {...args} />
       </Form>
     );
   },
