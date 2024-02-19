@@ -18,7 +18,9 @@ use crate::types::Database;
 use autometrics::autometrics;
 use ethers::utils::to_checksum;
 use eyre::Result;
-use lightdotso_prisma::{wallet, wallet_billing};
+use lightdotso_prisma::{
+    billing, paymaster_operation, wallet, wallet_billing, BillingOperationStatus,
+};
 use lightdotso_tracing::tracing::info;
 
 // -----------------------------------------------------------------------------
@@ -30,6 +32,7 @@ use lightdotso_tracing::tracing::info;
 pub async fn create_billing_operation(
     db: Database,
     sender_address: ethers::types::H160,
+    paymaster_operation_id: String,
 ) -> Result<()> {
     info!("Creating new billing operation");
 
@@ -50,27 +53,18 @@ pub async fn create_billing_operation(
         .ok_or(eyre::eyre!("Billing not found"))?;
     info!(?billing);
 
-    // let billing_operation = db
-    //     .billing_operation()
-    //     .create(
-    //         sender_nonce,
-    //         DateTime::<Utc>::from_utc(
-    //             NaiveDateTime::from_timestamp_opt(valid_until, 0).unwrap(),
-    //             Utc,
-    //         )
-    //         .into(),
-    //         DateTime::<Utc>::from_utc(
-    //             NaiveDateTime::from_timestamp_opt(valid_after, 0).unwrap(),
-    //             Utc,
-    //         )
-    //         .into(),
-    //         billing::id::equals(billing.clone().id.clone()),
-    //         wallet::address::equals(to_checksum(&sender_address, None)),
-    //         vec![],
-    //     )
-    //     .exec()
-    //     .await?;
-    // info!(?billing_operation);
+    let billing_operation = db
+        .billing_operation()
+        .create(
+            0.0,
+            BillingOperationStatus::Sponsored,
+            billing::id::equals(billing.id),
+            paymaster_operation::id::equals(paymaster_operation_id),
+            vec![],
+        )
+        .exec()
+        .await?;
+    info!(?billing_operation);
 
     Ok(())
 }

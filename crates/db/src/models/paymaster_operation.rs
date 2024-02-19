@@ -41,7 +41,7 @@ pub async fn create_paymaster_operation(
     sender_nonce: i64,
     valid_until: i64,
     valid_after: i64,
-) -> Result<paymaster_operation::Data, eyre::Report> {
+) -> Result<(paymaster::Data, paymaster_operation::Data), eyre::Report> {
     info!("Creating new paymaster operation");
 
     let paymaster = db
@@ -81,7 +81,7 @@ pub async fn create_paymaster_operation(
         .await?;
     info!(?paymaster_operation);
 
-    Ok(paymaster_operation)
+    Ok((paymaster, paymaster_operation))
 }
 
 // -----------------------------------------------------------------------------
