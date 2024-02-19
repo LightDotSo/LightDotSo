@@ -29,6 +29,7 @@ import {
   Textarea,
 } from "@lightdotso/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Abi as zodAbi } from "abitype/zod";
 import {
   useEffect,
   type FC,
@@ -169,6 +170,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
                 placeholder="Paste your ABI here"
                 className="resize-none"
                 {...field}
+                onChange={value => field.onChange(zodAbi.parse(value))}
               />
             </FormControl>
             <FormDescription>
