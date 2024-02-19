@@ -168,7 +168,10 @@ export const TokenImageBase: FC<TokenImageBaseProps> = ({
 
   if (!isImageLoaded) {
     return (
-      <Skeleton className={cn(tokenImageBaseVariants({ size }), className)} />
+      <Skeleton
+        as="span"
+        className={cn(tokenImageBaseVariants({ size }), className)}
+      />
     );
   }
 
