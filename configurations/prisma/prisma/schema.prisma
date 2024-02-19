@@ -1338,7 +1338,6 @@ model PaymasterOperation {
   // Unique
   @@unique([validAfter, paymasterId])
   // Relations
-  // @@index([billingOperationId])
   @@index([paymasterId])
   @@index([sender])
   @@index([sender, senderNonce])
