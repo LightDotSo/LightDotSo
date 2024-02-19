@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { serve } from "inngest/next";
-import { walletRedisCron } from "@/inngest";
+import { prismaSchemaChore, walletRedisCron } from "@/inngest";
 import { inngest } from "@/inngest/client";
 
 // -----------------------------------------------------------------------------
@@ -23,5 +23,5 @@ import { inngest } from "@/inngest/client";
 // Create an API that serves zero functions
 export const { GET, POST, PUT } = serve({
   client: inngest,
-  functions: [walletRedisCron],
+  functions: [prismaSchemaChore, walletRedisCron],
 });
