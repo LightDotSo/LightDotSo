@@ -22,15 +22,15 @@ import { useForm } from "react-hook-form";
 import { isAddress } from "viem";
 import { normalize } from "viem/ens";
 import { z } from "zod";
-import { AddressForm } from "./address-form";
+import { AddressFormField } from "./address-form-field";
 
 // -----------------------------------------------------------------------------
 // Meta
 // -----------------------------------------------------------------------------
 
-const meta: Meta<typeof AddressForm> = {
-  title: "form/AddressForm",
-  component: AddressForm,
+const meta: Meta<typeof AddressFormField> = {
+  title: "form/AddressFormField",
+  component: AddressFormField,
   tags: ["autodocs"],
   argTypes: {},
 };
@@ -40,7 +40,7 @@ export default meta;
 // Types
 // -----------------------------------------------------------------------------
 
-type Story = StoryObj<typeof AddressForm>;
+type Story = StoryObj<typeof AddressFormField>;
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -89,7 +89,7 @@ export const Base: Story = {
 
     return (
       <Form {...methods}>
-        <AddressForm onKeyDown={validEns.invalidate} {...args} />
+        <AddressFormField onKeyDown={validEns.invalidate} {...args} />
       </Form>
     );
   },
