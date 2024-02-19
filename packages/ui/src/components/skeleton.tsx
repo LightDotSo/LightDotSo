@@ -13,8 +13,6 @@
 // limitations under the License.
 
 import { cn } from "@lightdotso/utils";
-import { Slot } from "@radix-ui/react-slot";
-import type { HTMLAttributes } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
