@@ -142,7 +142,7 @@ export function AddressModal() {
             <FooterButton
               className="pt-0"
               disabled={!methods.formState.isValid}
-              customSuccessText="Select"
+              customSuccessText="Select Address"
               onClick={() => {
                 onAddressSelect(watchName);
               }}
