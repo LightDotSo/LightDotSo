@@ -114,7 +114,7 @@ export const TokenModal: FC = () => {
       name: balance.name,
       symbol: balance.symbol,
     }));
-  }, [balances, chainId, tokens, type]);
+  }, [balances, chainId, tokens, type, chains]);
 
   // ---------------------------------------------------------------------------
   // Render

@@ -20,11 +20,11 @@ import { NftImage, TokenImage } from "@lightdotso/elements";
 import { useTransferQueryState } from "@lightdotso/nuqs";
 import { useQueryNfts, useQuerySocketBalances } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
-import {
+import type {
   SimplehashMainnetChain,
   SimplehashTestnetChain,
-  transfer,
 } from "@lightdotso/schemas";
+import { transfer } from "@lightdotso/schemas";
 import { useAuth, useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import { FooterButton, Modal, useIsInsideModal } from "@lightdotso/templates";
