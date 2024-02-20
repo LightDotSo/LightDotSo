@@ -324,6 +324,7 @@ export const NewWalletForm: FC = () => {
                   </a>
                 </CardDescription>
               </div>
+              {/* Show all errors for debugging */}
               {/* <div className="text-text">{JSON.stringify(field, null, 2)}</div> */}
               {/* <div className="text-text">{JSON.stringify(form, null, 2)}</div> */}
               <FooterButton

@@ -14,7 +14,6 @@
 
 "use client";
 
-import { getWallet } from "@lightdotso/client";
 import {
   useNameQueryState,
   useInviteCodeQueryState,
@@ -56,6 +55,8 @@ import { useForm } from "react-hook-form";
 import { isAddress } from "viem";
 import { normalize } from "viem/ens";
 import type * as z from "zod";
+import { useMutationWalletCreate } from "@lightdotso/query";
+import { getWallet } from "@lightdotso/client";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -78,9 +79,9 @@ export const ConfirmForm: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { clientType } = useAuth();
+  const { address, clientType } = useAuth();
   const { setFormControl } = useFormRef();
-  const { address, setFormValues, fetchToCreate } = useNewForm();
+  const { address: formAddress, setFormValues } = useNewForm();
 
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -139,51 +140,53 @@ export const ConfirmForm: FC = () => {
   });
 
   // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { mutate } = useMutationWalletCreate({ address: address });
+
+  // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
   // Create a function to submit the form
   const onSubmit = useCallback(
-    () => {
+    async () => {
       // Set the loading state
       setIsLoading(true);
-      // Navigate to the next step
-      const loadingToast = toast.loading("Creating wallet...");
-      // Set the form values
-      // setFormValues(values);
-      fetchToCreate(true)
-        .then(() => {
-          setIsLoading(false);
-          toast.dismiss(loadingToast);
-          toast.success("You can now use your wallet!");
 
-          backOff(() =>
-            getWallet(
-              { params: { query: { address: address! } } },
-              clientType,
-            ).then(res => res._unsafeUnwrap()),
-          )
-            .then(res => {
-              if (res) {
-                router.push(`/${address}`);
-              } else {
-                toast.error("There was a problem with your request.");
-                router.push("/");
-              }
-            })
-            .catch(() => {
-              toast.error(
-                "There was a problem with your request while creating.",
-              );
-              router.push("/");
-            });
+      // Set the form values
+      await mutate({
+        address: address,
+        simulate: false,
+        name: form.getValues("name"),
+        threshold: form.getValues("threshold"),
+        owners: form.getValues("owners").map(owner => ({
+          weight: owner.weight!,
+          address: owner.address!,
+        })),
+        invite_code: form.getValues("inviteCode"),
+        salt: form.getValues("salt"),
+      });
+
+      // Once the form is submitted, navigate to the next step w/ backoff
+      backOff(() =>
+        getWallet(
+          { params: { query: { address: address! } } },
+          clientType,
+        ).then(res => res._unsafeUnwrap()),
+      )
+        .then(res => {
+          if (res) {
+            router.push(`/${address}`);
+          } else {
+            toast.error("There was a problem with your request.");
+            router.push("/");
+          }
         })
         .catch(() => {
-          setIsLoading(false);
-          toast.dismiss(loadingToast);
-          toast.error(
-            "There was a problem with your request (invalid request likely).",
-          );
+          toast.error("There was a problem with your request while creating.");
+          router.push("/");
         });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
