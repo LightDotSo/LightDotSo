@@ -20,7 +20,14 @@ import { useQueryEnsDomains, useQueryWallets } from "@lightdotso/query";
 import { addressOrEns } from "@lightdotso/schemas";
 import { useAuth, useModals } from "@lightdotso/stores";
 import { FooterButton, Modal } from "@lightdotso/templates";
-import { Form } from "@lightdotso/ui";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandList,
+  CommandItem,
+  Form,
+} from "@lightdotso/ui";
 import { publicClient } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -120,73 +127,75 @@ export function AddressModal() {
   if (isAddressModalVisible) {
     return (
       // eslint-disable-next-line react/jsx-no-useless-fragment
-      <>
-        <Form {...methods}>
-          <Modal
-            isHeightFixed
-            open
-            className="p-2"
-            headerContent={
-              <AddressFormField
-                name="addressOrEns"
-                onKeyDown={validEns.invalidate}
-              />
-            }
-            footerContent={
-              <FooterButton
-                className="pt-0"
-                disabled={!methods.formState.isValid}
-                customSuccessText="Select"
-                onClick={() => {
-                  onAddressSelect(watchName);
-                }}
-              />
-            }
-            onClose={hideAddressModal}
-          >
-            {ensDomains && ensDomains.length > 0 && (
-              <div className="">
-                {ensDomains &&
-                  ensDomains
-                    .filter(ensDomain => ensDomain.name !== watchName)
-                    .map(ensDomain => (
-                      // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-                      <div
-                        key={ensDomain.id}
-                        className="flex cursor-pointer flex-row items-center space-x-2 rounded-md p-2 text-base font-light hover:bg-background-stronger"
-                        onClick={() => {
-                          methods.setValue("addressOrEns", ensDomain.name);
+      <Form {...methods}>
+        <Modal
+          isHeightFixed
+          open
+          className="p-2"
+          headerContent={
+            <AddressFormField
+              name="addressOrEns"
+              onKeyDown={validEns.invalidate}
+            />
+          }
+          footerContent={
+            <FooterButton
+              className="pt-0"
+              disabled={!methods.formState.isValid}
+              customSuccessText="Select"
+              onClick={() => {
+                onAddressSelect(watchName);
+              }}
+            />
+          }
+          onClose={hideAddressModal}
+        >
+          <Command className="bg-transparent">
+            <CommandList>
+              {(methods.getValues("addressOrEns") === "" ||
+                methods.getFieldState("addressOrEns").invalid) && (
+                <CommandEmpty>No results found.</CommandEmpty>
+              )}
+              {ensDomains && ensDomains.length > 0 && (
+                <CommandGroup>
+                  {ensDomains &&
+                    ensDomains
+                      .filter(ensDomain => ensDomain.name !== watchName)
+                      .map(ensDomain => (
+                        <CommandItem
+                          key={ensDomain.id}
+                          onSelect={() => {
+                            methods.setValue("addressOrEns", ensDomain.name);
+                            methods.trigger("addressOrEns");
+                            validEns.invalidate();
+                          }}
+                        >
+                          {ensDomain.name}
+                        </CommandItem>
+                      ))}
+                </CommandGroup>
+              )}
+              {wallets && wallets.length > 0 && (
+                <CommandGroup>
+                  {wallets &&
+                    wallets.map(wallet => (
+                      <CommandItem
+                        key={wallet.address}
+                        onSelect={() => {
+                          methods.setValue("addressOrEns", wallet.address);
                           methods.trigger("addressOrEns");
                           validEns.invalidate();
                         }}
                       >
-                        <div>{ensDomain.name}</div>
-                      </div>
+                        <div>{wallet.address}</div>
+                      </CommandItem>
                     ))}
-              </div>
-            )}
-            {wallets && wallets.length > 0 && (
-              <div className="">
-                {wallets &&
-                  wallets.map(wallet => (
-                    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-                    <div
-                      key={wallet.address}
-                      className="flex cursor-pointer flex-row items-center space-x-2 rounded-md p-2 text-base font-light hover:bg-background-stronger"
-                      onClick={() => {
-                        methods.setValue("addressOrEns", wallet.address);
-                        methods.trigger("addressOrEns");
-                        validEns.invalidate();
-                      }}
-                    >
-                      <div>{wallet.address}</div>
-                    </div>
-                  ))}
-              </div>
-            )}
-          </Modal>
-        </Form>
-      </>
+                </CommandGroup>
+              )}
+            </CommandList>
+          </Command>
+        </Modal>
+      </Form>
     );
   }
 
