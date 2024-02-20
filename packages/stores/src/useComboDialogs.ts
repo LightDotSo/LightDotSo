@@ -44,21 +44,21 @@ export const useComboDialogs = create(
           isChainComboDialogOpen: !state.isChainComboDialogOpen,
         })),
       setIsChainComboDialogOpen: isOpen =>
-        set(state => ({ isChainComboDialogOpen: isOpen })),
+        set(() => ({ isChainComboDialogOpen: isOpen })),
       isFeedbackComboDialogOpen: false,
       toggleIsFeedbackComboDialogOpen: () =>
         set(state => ({
           isFeedbackComboDialogOpen: !state.isFeedbackComboDialogOpen,
         })),
       setIsFeedbackComboDialogOpen: isOpen =>
-        set(state => ({ isFeedbackComboDialogOpen: isOpen })),
+        set(() => ({ isFeedbackComboDialogOpen: isOpen })),
       isNotificationComboDialogOpen: false,
       toggleIsNotificationComboDialogOpen: () =>
         set(state => ({
           isNotificationComboDialogOpen: !state.isNotificationComboDialogOpen,
         })),
       setIsNotificationComboDialogOpen: isOpen =>
-        set(state => ({ isNotificationComboDialogOpen: isOpen })),
+        set(() => ({ isNotificationComboDialogOpen: isOpen })),
     }),
     {
       anonymousActionType: "useComboDialogs",

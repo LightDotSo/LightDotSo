@@ -28,7 +28,6 @@ import {
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { cva, type VariantProps } from "class-variance-authority";
-import { useState } from "react";
 import type { FC, ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
