@@ -15,11 +15,15 @@
 "use client";
 
 import type { WalletSettingsData } from "@lightdotso/data";
-import { TokenImage } from "@lightdotso/elements";
+import { NftImage, TokenImage } from "@lightdotso/elements";
 import { useTransferQueryState } from "@lightdotso/nuqs";
-import { useQuerySocketBalances } from "@lightdotso/query";
+import { useQueryNfts, useQuerySocketBalances } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
-import { transfer } from "@lightdotso/schemas";
+import {
+  SimplehashMainnetChain,
+  SimplehashTestnetChain,
+  transfer,
+} from "@lightdotso/schemas";
 import { useAuth, useModals } from "@lightdotso/stores";
 import { FooterButton, Modal, useIsInsideModal } from "@lightdotso/templates";
 import {
@@ -52,10 +56,11 @@ import { useEffect, useMemo } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";
-import { erc20Abi } from "viem";
+import { erc20Abi, getAddress } from "viem";
 import type { z } from "zod";
 import { getChainById } from "@lightdotso/utils";
 import { ChainLogo } from "@lightdotso/svg";
+import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -86,6 +91,10 @@ export function DepositModal() {
     setTokenModalProps,
     showTokenModal,
     hideTokenModal,
+    setNftBackgroundModal,
+    setNftModalProps,
+    showNftModal,
+    hideNftModal,
   } = useModals();
 
   // ---------------------------------------------------------------------------
@@ -96,6 +105,13 @@ export function DepositModal() {
 
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
+
+  const { nftPage } = useQueryNfts({
+    address,
+    is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    limit: Number.MAX_SAFE_INTEGER,
+    cursor: null,
+  });
 
   const { balances } = useQuerySocketBalances({
     address,
@@ -555,7 +571,190 @@ export function DepositModal() {
             </Form>
           </TabsContent>
           <TabsContent value="nft">
-            <div>Not implemented yet</div>
+            <Form {...form}>
+              <form
+                // ref={formRef}
+                id="deposit-modal-form"
+                className="space-y-4"
+                onSubmit={form.handleSubmit(onSubmit)}
+              >
+                <FormField
+                  control={form.control}
+                  name="asset.quantity"
+                  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                  render={({ field: _field }) => {
+                    // Get the matching nft
+                    const nft =
+                      nftPage &&
+                      transfer &&
+                      transfer?.asset &&
+                      transfer?.asset?.address &&
+                      "tokenId" in
+                        // eslint-disable-next-line no-unsafe-optional-chaining, @typescript-eslint/no-non-null-asserted-optional-chain
+                        transfer?.asset! &&
+                      nftPage.nfts?.find(
+                        nft =>
+                          nft.contract_address ===
+                            (transfer?.asset?.address || "") &&
+                          parseInt(nft.token_id!) ===
+                            // prettier-ignore
+                            // @ts-expect-error
+                            transfer?.asset!.tokenId,
+                      );
+
+                    return (
+                      <FormControl>
+                        <div>
+                          <div className="w-full space-y-2">
+                            <Label htmlFor="weight">NFT</Label>
+                            <Button
+                              size="lg"
+                              type="button"
+                              variant="outline"
+                              className="flex w-full items-center justify-between px-4 text-sm"
+                              onClick={() => {
+                                if (!address) {
+                                  return;
+                                }
+
+                                setNftModalProps({
+                                  address: address,
+                                  onClose: () => {
+                                    hideNftModal();
+                                    if (isInsideModal) {
+                                      setDepositBackgroundModal(false);
+                                    }
+                                  },
+                                  onNftSelect: nft => {
+                                    if (nft.contract_address) {
+                                      form.setValue(
+                                        "asset.address",
+                                        getAddress(nft.contract_address),
+                                      );
+                                    }
+                                    if (nft.chain) {
+                                      form.setValue(
+                                        "chainId",
+                                        SIMPLEHASH_CHAIN_ID_MAPPING[
+                                          nft.chain! as
+                                            | SimplehashMainnetChain
+                                            | SimplehashTestnetChain
+                                        ],
+                                      );
+                                    }
+                                    if (nft.token_id) {
+                                      form.setValue(
+                                        "asset.tokenId",
+                                        parseInt(nft.token_id),
+                                      );
+                                    }
+
+                                    form.setValue(
+                                      "assetType",
+                                      nft.contract.type?.toLowerCase() ===
+                                        "erc721"
+                                        ? "erc721"
+                                        : "erc1155",
+                                    );
+
+                                    if (!form.getValues("asset.quantity")) {
+                                      form.setValue("asset.quantity", 1);
+                                    }
+
+                                    form.trigger();
+
+                                    hideNftModal();
+                                    if (isInsideModal) {
+                                      setDepositBackgroundModal(false);
+                                    }
+                                  },
+                                });
+                                setDepositBackgroundModal(true);
+                                showNftModal();
+                              }}
+                            >
+                              {nft ? (
+                                <>
+                                  <div className="mr-2 size-6">
+                                    <NftImage
+                                      className="rounded-md"
+                                      nft={nft}
+                                    />
+                                  </div>
+                                  &nbsp; &nbsp;
+                                  {nft.collection?.name}
+                                </>
+                              ) : (
+                                "Select Token"
+                              )}
+                              <div className="grow" />
+                            </Button>
+                          </div>
+                          <div className="w-full space-y-2">
+                            <Label htmlFor="weight">Amount</Label>
+                            <FormField
+                              control={form.control}
+                              name="asset.quantity"
+                              render={({ field }) => (
+                                <Input
+                                  {...field}
+                                  className="[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                                  type="text"
+                                  // onChange={e => {
+                                  //   if (!e.target.value) {
+                                  //     // Clear the value of key address
+                                  //     form.setValue("asset.quantity", 0);
+                                  //   }
+
+                                  //   const quantity = parseInt(e.target.value);
+
+                                  //   field.onChange(quantity);
+                                  // }}
+                                  onBlur={e => {
+                                    // Validate the address
+                                    if (!e.target.value) {
+                                      // Clear the value of key address
+                                      form.setValue("asset.quantity", 0);
+                                    }
+
+                                    const quantity = parseFloat(e.target.value);
+
+                                    validateTokenQuantity(quantity);
+                                  }}
+                                  onChange={e => {
+                                    // If the input ends with ".", or includes "." and ends with "0", set the value as string, as it can be assumed that the user is still typing
+                                    if (
+                                      e.target.value.endsWith(".") ||
+                                      (e.target.value.includes(".") &&
+                                        e.target.value.endsWith("0"))
+                                    ) {
+                                      field.onChange(e.target.value);
+                                    } else {
+                                      // Only parse to float if the value doesn't end with "."
+                                      field.onChange(
+                                        parseFloat(e.target.value) || 0,
+                                      );
+                                    }
+
+                                    // Validate the number
+                                    const quantity = parseFloat(e.target.value);
+
+                                    if (!isNaN(quantity)) {
+                                      validateTokenQuantity(quantity);
+                                    }
+                                  }}
+                                />
+                              )}
+                            />
+                            <FormMessage />
+                          </div>
+                        </div>
+                      </FormControl>
+                    );
+                  }}
+                />
+              </form>
+            </Form>
           </TabsContent>
         </Tabs>
       </Modal>
