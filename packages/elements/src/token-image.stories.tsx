@@ -42,6 +42,10 @@ export const Base: Story = {
   render: args => <TokenImage token={tokenGetData} />,
   args: {},
 };
+export const isLoading: Story = {
+  render: args => <TokenImage isLoading token={tokenGetData} />,
+  args: {},
+};
 export const NotFound: Story = {
   render: args => (
     <TokenImage
@@ -63,6 +67,22 @@ export const WithChainLogoTestnet: Story = {
       withChainLogo
       token={{ ...tokenGetData, chain_id: 11155111 }}
       size="sm"
+    />
+  ),
+  args: {},
+};
+export const WithChainLogoIsLoading: Story = {
+  render: args => <TokenImage withChainLogo isLoading token={tokenGetData} />,
+  args: {},
+};
+export const WithChainLogoNotFound: Story = {
+  render: args => (
+    <TokenImage
+      withChainLogo
+      token={{
+        ...tokenGetData,
+        address: "0x59b8eF31a1F76d17bc67C18a304E967B34fd7100",
+      }}
     />
   ),
   args: {},

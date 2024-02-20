@@ -76,6 +76,7 @@ type TokenImageProps = TokenImageBaseProps & {
 
 type TokenImageBaseProps = {
   className?: string;
+  isLoading?: boolean;
   token: TokenData;
   size?: VariantProps<typeof tokenImageBaseVariants>["size"];
 };
@@ -86,6 +87,7 @@ type TokenImageBaseProps = {
 
 export const TokenImage: FC<TokenImageProps> = ({
   className,
+  isLoading,
   token,
   size,
   withChainLogo,
@@ -99,6 +101,7 @@ export const TokenImage: FC<TokenImageProps> = ({
       <div className={cn("relative inline-block", className)}>
         <TokenImageBase
           className={cn(tokenImageBaseVariants({ size }), className)}
+          isLoading={isLoading}
           token={token}
           size={size}
         />
@@ -112,6 +115,7 @@ export const TokenImage: FC<TokenImageProps> = ({
   return (
     <TokenImageBase
       className={cn(tokenImageBaseVariants({ size }), className)}
+      isLoading={isLoading}
       token={token}
       size={size}
     />
@@ -120,6 +124,7 @@ export const TokenImage: FC<TokenImageProps> = ({
 
 export const TokenImageBase: FC<TokenImageBaseProps> = ({
   className,
+  isLoading,
   token,
   size,
 }) => {
@@ -166,9 +171,18 @@ export const TokenImageBase: FC<TokenImageBaseProps> = ({
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!isImageLoaded) {
+  if (!isImageLoaded || isLoading) {
     return (
-      <Skeleton className={cn(tokenImageBaseVariants({ size }), className)} />
+      <Skeleton
+        as="span"
+        className={cn(
+          "items-center justify-center border border-border-primary-weak",
+          tokenImageBaseVariants({ size }),
+          className,
+        )}
+      >
+        &nbsp;&nbsp;
+      </Skeleton>
     );
   }
 

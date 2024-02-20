@@ -13,15 +13,29 @@
 // limitations under the License.
 
 import { cn } from "@lightdotso/utils";
-import type { HTMLAttributes } from "react";
+import type { ReactNode, FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+interface SkeletonProps {
+  as?: keyof JSX.IntrinsicElements;
+  className?: string;
+  children?: ReactNode;
+}
 
 // -----------------------------------------------------------------------------
 // Components
 // -----------------------------------------------------------------------------
 
-function Skeleton({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+const Skeleton: FC<SkeletonProps> = ({
+  as: Element = "div",
+  className,
+  ...props
+}) => {
   return (
-    <div
+    <Element
       className={cn(
         "animate-pulse rounded-md bg-background-stronger",
         className,
@@ -29,7 +43,7 @@ function Skeleton({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
       {...props}
     />
   );
-}
+};
 
 // -----------------------------------------------------------------------------
 // Exports
