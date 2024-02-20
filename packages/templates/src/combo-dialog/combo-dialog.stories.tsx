@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Button, DialogDescription, DialogTitle } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui";
 import type { Meta, StoryObj } from "@storybook/react";
 import { ComboDialog } from "./combo-dialog";
 
@@ -41,7 +41,6 @@ type Story = StoryObj<typeof ComboDialog>;
 export const Base: Story = {
   render: args => (
     <ComboDialog
-      size="sm"
       buttonTrigger={
         <Button type="submit" size="sm" className="px-3">
           <span className="sr-only">Login</span>
