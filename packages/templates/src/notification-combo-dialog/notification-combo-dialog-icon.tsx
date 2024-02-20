@@ -20,7 +20,7 @@ import type { FC } from "react";
 // Props
 // -----------------------------------------------------------------------------
 
-export interface NotificationPopoverIconProps {
+export interface NotificationComboDialogIconProps {
   notificationsCount: number | null | undefined;
 }
 
@@ -28,9 +28,9 @@ export interface NotificationPopoverIconProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export const NotificationPopoverIcon: FC<NotificationPopoverIconProps> = ({
-  notificationsCount,
-}) => {
+export const NotificationComboDialogIcon: FC<
+  NotificationComboDialogIconProps
+> = ({ notificationsCount }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------

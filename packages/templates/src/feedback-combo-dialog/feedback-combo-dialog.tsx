@@ -15,23 +15,18 @@
 "use client";
 
 import { useIsMounted } from "@lightdotso/hooks";
-import { useAuth } from "@lightdotso/stores";
-import {
-  Popover,
-  PopoverTrigger,
-  Button,
-  PopoverContent,
-} from "@lightdotso/ui";
+import { useAuth, useComboDialogs } from "@lightdotso/stores";
+import { Button } from "@lightdotso/ui";
 import { Megaphone } from "lucide-react";
-import { useState } from "react";
 import type { FC } from "react";
+import { ComboDialog } from "../combo-dialog";
 import { FeedbackForm } from "./feedback-form";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const FeedbackPopover: FC = () => {
+export const FeedbackComboDialog: FC = () => {
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
@@ -39,16 +34,12 @@ export const FeedbackPopover: FC = () => {
   const isMounted = useIsMounted();
 
   // ---------------------------------------------------------------------------
-  // State Hooks
-  // ---------------------------------------------------------------------------
-
-  const [open, setOpen] = useState(false);
-
-  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
   const { address } = useAuth();
+  const { isFeedbackComboDialogOpen, toggleIsFeedbackComboDialogOpen } =
+    useComboDialogs();
 
   // ---------------------------------------------------------------------------
   // Render
@@ -60,17 +51,19 @@ export const FeedbackPopover: FC = () => {
   }
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+    <ComboDialog
+      className="w-80 p-4"
+      buttonTrigger={
         <Button variant="outline" className="px-2">
           <Megaphone className="mr-2 size-4 shrink-0" />
           Feedback
           <span className="sr-only">Open popover</span>
         </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-80">
-        <FeedbackForm onClose={() => setOpen(false)} />
-      </PopoverContent>
-    </Popover>
+      }
+      isOpen={isFeedbackComboDialogOpen}
+      onOpenChange={toggleIsFeedbackComboDialogOpen}
+    >
+      <FeedbackForm onClose={toggleIsFeedbackComboDialogOpen} />
+    </ComboDialog>
   );
 };

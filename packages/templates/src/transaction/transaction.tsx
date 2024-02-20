@@ -23,6 +23,7 @@ import {
   useQueryEstimateUserOperationGas,
   useQueryPaymasterGasAndPaymasterAndData,
   useQuerySimulation,
+  useQueryUserOperationNonce,
 } from "@lightdotso/query";
 import { userOperation, type UserOperation } from "@lightdotso/schemas";
 import { useFormRef, useModalSwiper } from "@lightdotso/stores";
@@ -136,6 +137,16 @@ export const Transaction: FC<TransactionProps> = ({
   const isInsideModal = useIsInsideModal();
 
   // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { userOperationNonce, isUserOperationNonceLoading } =
+    useQueryUserOperationNonce({
+      address: address,
+      chain_id: Number(initialUserOperation.chainId),
+    });
+
+  // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------
 
@@ -163,11 +174,18 @@ export const Transaction: FC<TransactionProps> = ({
         ? { ...userOperations[userOperationIndex], ...initialUserOperation }
         : { ...initialUserOperation };
 
+    const updatedMinimumNonce =
+      userOperationNonce && !isUserOperationNonceLoading
+        ? userOperationNonce?.nonce > partialUserOperation.nonce
+          ? BigInt(userOperationNonce?.nonce)
+          : partialUserOperation.nonce
+        : partialUserOperation.nonce;
+
     return {
       sender: partialUserOperation?.sender ?? address,
       chainId: partialUserOperation?.chainId ?? BigInt(0),
       initCode: partialUserOperation?.initCode ?? "0x",
-      nonce: partialUserOperation?.nonce ?? BigInt(0),
+      nonce: updatedMinimumNonce ?? BigInt(0),
       callData: partialUserOperation?.callData ?? "0x",
       callGasLimit: partialUserOperation?.callGasLimit ?? BigInt(0),
       verificationGasLimit:

@@ -17,13 +17,13 @@
 import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
 import { useAuth } from "@lightdotso/stores";
 import {
-  FeedbackPopover,
+  FeedbackComboDialog,
   MobileAppDrawer,
-  NotificationPopover,
+  NotificationComboDialog,
 } from "@lightdotso/templates";
 import type { Tab } from "@lightdotso/types";
 import type { FC, ReactNode } from "react";
-import { ChainPopover } from "@/components/chain/chain-popover";
+import { ChainComboDialog } from "@/components/chain/chain-combo-dialog";
 import { UserNav } from "@/components/nav/user-nav";
 
 // -----------------------------------------------------------------------------
@@ -69,9 +69,9 @@ export const AppNav: FC<AppNavProps> = ({ mobile, tabs }) => {
     <div className="ml-auto hidden items-center space-x-2.5 md:flex">
       {address && (
         <>
-          <ChainPopover />
-          <FeedbackPopover />
-          <NotificationPopover />
+          <ChainComboDialog />
+          <FeedbackComboDialog />
+          <NotificationComboDialog />
         </>
       )}
       <UserNav />

@@ -13,6 +13,7 @@
 // limitations under the License.
 
 export { Banner } from "./banner";
+export { ComboDialog } from "./combo-dialog";
 export { ConnectButton } from "./connect-button";
 export {
   DataTableColumnHeader,
@@ -20,7 +21,7 @@ export {
   DataTablePagination,
   DataTableViewOptions,
 } from "./data-table";
-export { FeedbackPopover } from "./feedback-popover";
+export { FeedbackComboDialog } from "./feedback-combo-dialog";
 export { Footer } from "./footer";
 export { FooterButton } from "./footer-button";
 export { MobileAppDrawer } from "./mobile-app-drawer";
@@ -29,7 +30,7 @@ export { Login } from "./login";
 export { Modal, useIsInsideModal } from "./modal";
 export { ModalInterception } from "./modal-interception";
 export { ModalSwiper } from "./modal-swiper";
-export { NotificationPopover } from "./notification-popover";
+export { NotificationComboDialog } from "./notification-combo-dialog";
 export { ProgressUserOperation } from "./progress-user-operation";
 export { Support } from "./support";
 export { Transaction } from "./transaction";

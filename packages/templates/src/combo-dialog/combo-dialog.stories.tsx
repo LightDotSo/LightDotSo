@@ -12,36 +12,44 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type {
-  UserOperationGetParams,
-  UserOperationListCountParams,
-  UserOperationListParams,
-  UserOperationNonceParams,
-} from "@lightdotso/params";
-import { createQueryKeys } from "@lukemorales/query-key-factory";
-import type { inferQueryKeys } from "@lukemorales/query-key-factory";
+import { Button } from "@lightdotso/ui";
+import type { Meta, StoryObj } from "@storybook/react";
+import { ComboDialog } from "./combo-dialog";
 
 // -----------------------------------------------------------------------------
-// Keys
+// Meta
 // -----------------------------------------------------------------------------
 
-export const user_operation = createQueryKeys("user_operation", {
-  get: (params: UserOperationGetParams) => ({
-    queryKey: [{ params }],
-  }),
-  list: (params: UserOperationListParams) => ({
-    queryKey: [{ params }],
-  }),
-  listCount: (params: UserOperationListCountParams) => ({
-    queryKey: [{ params }],
-  }),
-  nonce: (params: UserOperationNonceParams) => ({
-    queryKey: [{ params }],
-  }),
-});
+const meta: Meta<typeof ComboDialog> = {
+  title: "template/ComboDialog",
+  component: ComboDialog,
+  tags: ["autodocs"],
+  argTypes: {},
+};
+export default meta;
 
 // -----------------------------------------------------------------------------
-// Infer
+// Types
 // -----------------------------------------------------------------------------
 
-export type UserOperationKeys = inferQueryKeys<typeof user_operation>;
+type Story = StoryObj<typeof ComboDialog>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Base: Story = {
+  render: args => (
+    <ComboDialog
+      buttonTrigger={
+        <Button type="submit" size="sm" className="px-3">
+          <span className="sr-only">Login</span>
+          Login
+        </Button>
+      }
+    >
+      Hi.
+    </ComboDialog>
+  ),
+  args: {},
+};
