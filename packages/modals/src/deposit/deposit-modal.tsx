@@ -91,7 +91,6 @@ export function DepositModal() {
     setTokenModalProps,
     showTokenModal,
     hideTokenModal,
-    setNftBackgroundModal,
     setNftModalProps,
     showNftModal,
     hideNftModal,
@@ -245,6 +244,51 @@ export function DepositModal() {
         chainId: globalChainId,
         functionName: "transferFrom",
         args: [address, wallet, BigInt(tokenId)],
+      });
+
+      console.info(res);
+
+      return;
+    }
+
+    if (assetType === "erc1155") {
+      console.info("Sending NFT");
+
+      const tokenId = form.getValues("asset.tokenId");
+      console.info("Token ID: ", tokenId);
+
+      if (!tokenId) {
+        console.error("Token ID is not defined");
+        return;
+      }
+
+      const res = await writeContract({
+        abi: [
+          {
+            name: "from",
+            type: "address",
+          },
+          {
+            name: "to",
+            type: "address",
+          },
+          {
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            name: "value",
+            type: "uint256",
+          },
+          {
+            name: "data",
+            type: "bytes",
+          },
+        ],
+        address: addr,
+        chainId: globalChainId,
+        functionName: "safeTransferFrom",
+        args: [address, wallet, BigInt(tokenId), BigInt(quantity)],
       });
 
       console.info(res);
