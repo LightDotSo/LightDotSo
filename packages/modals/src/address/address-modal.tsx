@@ -151,7 +151,7 @@ export function AddressModal() {
           onClose={hideAddressModal}
         >
           <Command className="bg-transparent">
-            <CommandList>
+            <CommandList className="max-h-full">
               {(methods.getValues("addressOrEns") === "" ||
                 methods.getFieldState("addressOrEns").invalid) && (
                 <CommandEmpty>No results found.</CommandEmpty>
@@ -200,7 +200,12 @@ export function AddressModal() {
                           validEns.invalidate();
                         }}
                       >
-                        {wallet.address}
+                        <div className="flex items-center space-x-3">
+                          {wallet.name}
+                          <span className="ml-4 text-xs text-text-weak">
+                            ({wallet.address})
+                          </span>
+                        </div>
                       </CommandItem>
                     ))}
                 </CommandGroup>
