@@ -152,6 +152,11 @@ export const ConfirmForm: FC = () => {
   // Create a function to submit the form
   const onSubmit = useCallback(
     async () => {
+      if (!formAddress) {
+        toast.error("Form address is not set. Please try again.");
+        return;
+      }
+
       // Set the loading state
       setIsLoading(true);
 
@@ -200,7 +205,7 @@ export const ConfirmForm: FC = () => {
         });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [setFormValues],
+    [setFormValues, formAddress],
   );
 
   // ---------------------------------------------------------------------------
