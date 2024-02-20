@@ -193,9 +193,14 @@ export function DepositModal() {
     }
 
     const quantity = form.getValues("asset.quantity");
-
     if (!quantity) {
       console.error("Quantity is 0");
+      return;
+    }
+
+    const decimals = form.getValues("asset.decimals");
+    if (!decimals) {
+      console.error("Decimals is not defined");
       return;
     }
 
@@ -211,7 +216,7 @@ export function DepositModal() {
       const res = await sendTransaction({
         chainId: chainId,
         to: wallet,
-        value: BigInt(quantity),
+        value: BigInt(quantity ** Math.pow(10, decimals)),
       });
 
       console.info(res);
@@ -223,7 +228,7 @@ export function DepositModal() {
       address: addr,
       chainId: globalChainId,
       functionName: "transfer",
-      args: [wallet, BigInt(quantity)],
+      args: [wallet, BigInt(quantity ** Math.pow(10, decimals))],
     });
 
     console.error(error);
@@ -232,6 +237,55 @@ export function DepositModal() {
     // form.trigger();
     // router.push(href);
   };
+
+  // ---------------------------------------------------------------------------
+  // Validation
+  // ---------------------------------------------------------------------------
+
+  async function validateTokenQuantity(quantity: number) {
+    // If the quantity is empty, return
+    if (!quantity) {
+      return;
+    }
+
+    // Check if the quantity is a number and more than the token balance
+    if (quantity && quantity > 0) {
+      // If the quantity is valid, get the token balance
+      const token =
+        (balances &&
+          chainId &&
+          balances?.length > 0 &&
+          balances?.find(
+            token =>
+              token.address === transfer.asset?.address &&
+              token.chainId === transfer.chainId,
+          )) ||
+        undefined;
+
+      // If the token is not found or undefined, set an error
+      if (!token) {
+        // Show an error on the message
+        form.setError("asset.quantity", {
+          type: "manual",
+          message: "Please select a valid token",
+        });
+        // Clear the value of key address
+        form.setValue("asset.quantity", 0);
+      } else if (quantity > token?.amount) {
+        // Show an error on the message
+        form.setError("asset.quantity", {
+          type: "manual",
+          message: "Insufficient balance",
+        });
+        // Clear the value of key address
+        // form.setValue(`transfers.${index}.asset.quantity`, 0);
+      } else {
+        // If the quantity is valid, set the value of key quantity
+        form.setValue("asset.quantity", quantity);
+        form.clearErrors("asset.quantity");
+      }
+    }
+  }
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -315,12 +369,9 @@ export function DepositModal() {
               >
                 <FormField
                   control={form.control}
-                  name="asset"
+                  name="asset.quantity"
                   // eslint-disable-next-line @typescript-eslint/no-unused-vars
                   render={({ field: _field }) => {
-                    const tokenAddress = transfer.asset?.address;
-                    const chainId = transfer.chainId;
-
                     // Get the matching token
                     const token =
                       (balances &&
@@ -328,8 +379,8 @@ export function DepositModal() {
                         balances?.length > 0 &&
                         balances?.find(
                           token =>
-                            token.address === tokenAddress &&
-                            token.chainId === chainId,
+                            token.address === transfer.asset?.address &&
+                            token.chainId === transfer.chainId,
                         )) ||
                       undefined;
 
@@ -364,6 +415,10 @@ export function DepositModal() {
                                     form.setValue(
                                       "asset.address",
                                       token.address,
+                                    );
+                                    form.setValue(
+                                      "asset.decimals",
+                                      token.decimals,
                                     );
                                     form.setValue("assetType", "erc20");
 
@@ -410,7 +465,6 @@ export function DepositModal() {
                               <div className="grow" />
                               {/* <ChevronDown className="size-4 opacity-50" /> */}
                             </Button>
-                            <FormMessage />
                           </div>
                           <div className="w-full space-y-2">
                             <Label htmlFor="weight">Amount</Label>
@@ -420,21 +474,63 @@ export function DepositModal() {
                               render={({ field }) => (
                                 <Input
                                   {...field}
-                                  type="number"
-                                  className="w-full"
-                                  onChange={e => {
+                                  className="[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                                  type="text"
+                                  // onChange={e => {
+                                  //   if (!e.target.value) {
+                                  //     // Clear the value of key address
+                                  //     form.setValue("asset.quantity", 0);
+                                  //   }
+
+                                  //   const quantity = parseInt(e.target.value);
+
+                                  //   field.onChange(quantity);
+                                  // }}
+                                  onBlur={e => {
+                                    // Validate the address
                                     if (!e.target.value) {
                                       // Clear the value of key address
                                       form.setValue("asset.quantity", 0);
                                     }
 
-                                    const quantity = parseInt(e.target.value);
+                                    const quantity = parseFloat(e.target.value);
 
-                                    field.onChange(quantity);
+                                    validateTokenQuantity(quantity);
+                                  }}
+                                  onChange={e => {
+                                    // If the input ends with ".", or includes "." and ends with "0", set the value as string, as it can be assumed that the user is still typing
+                                    if (
+                                      e.target.value.endsWith(".") ||
+                                      (e.target.value.includes(".") &&
+                                        e.target.value.endsWith("0"))
+                                    ) {
+                                      field.onChange(e.target.value);
+                                    } else {
+                                      // Only parse to float if the value doesn't end with "."
+                                      field.onChange(
+                                        parseFloat(e.target.value) || 0,
+                                      );
+                                    }
+
+                                    // Validate the number
+                                    const quantity = parseFloat(e.target.value);
+
+                                    if (!isNaN(quantity)) {
+                                      validateTokenQuantity(quantity);
+                                    }
                                   }}
                                 />
                               )}
                             />
+                            <FormMessage />
+                            <div className="flex items-center justify-between text-xs text-text-weak">
+                              <div>{/* tokenPrice could come here */}</div>
+                              <div>
+                                {token
+                                  ? `${token.amount} ${token.symbol} available`
+                                  : ""}
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </FormControl>
