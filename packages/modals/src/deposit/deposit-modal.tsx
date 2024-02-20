@@ -56,7 +56,7 @@ import { useEffect, useMemo } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";
-import { erc20Abi, getAddress } from "viem";
+import { erc20Abi, erc721Abi, getAddress } from "viem";
 import type { z } from "zod";
 import { getChainById } from "@lightdotso/utils";
 import { ChainLogo } from "@lightdotso/svg";
@@ -209,22 +209,48 @@ export function DepositModal() {
     }
 
     const quantity = form.getValues("asset.quantity");
+    console.info("Quantity: ", quantity);
     if (!quantity) {
       console.error("Quantity is 0");
       return;
     }
 
     const decimals = form.getValues("asset.decimals");
+    console.info("Decimals: ", decimals);
     if (!decimals) {
       console.error("Decimals is not defined");
       return;
     }
 
-    console.info("Quantity: ", quantity);
+    const assetType = form.getValues("assetType");
+    console.info("Asset Type: ", assetType);
 
     const addr = form.getValues("asset.address") as Address;
-
     console.info("Address: ", addr);
+
+    if (assetType === "erc721") {
+      console.info("Sending NFT");
+
+      const tokenId = form.getValues("asset.tokenId");
+      console.info("Token ID: ", tokenId);
+
+      if (!tokenId) {
+        console.error("Token ID is not defined");
+        return;
+      }
+
+      const res = await writeContract({
+        abi: erc721Abi,
+        address: addr,
+        chainId: globalChainId,
+        functionName: "transferFrom",
+        args: [address, wallet, BigInt(tokenId)],
+      });
+
+      console.info(res);
+
+      return;
+    }
 
     if (addr === "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee") {
       console.info("Sending ETH");
