@@ -104,8 +104,6 @@ export const RootContext: FC = () => {
           "No. The process is done off-chain and does not require any gas. Your wallet will be created and synced across all networks in your first transaction - you will not need to do anything!",
       },
     ];
-
-    return [];
   }, [pathname]);
 
   const formWarnings = useMemo(() => {
@@ -122,7 +120,7 @@ export const RootContext: FC = () => {
     }
 
     return warnings;
-  }, [pathname]);
+  }, [pathname, formValues]);
 
   const formIssues = useMemo(() => {
     if (!errors) {
@@ -152,7 +150,7 @@ export const RootContext: FC = () => {
     }
 
     return errors.issues;
-  }, [errors]);
+  }, [errors, pathname]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -163,7 +161,7 @@ export const RootContext: FC = () => {
       <AnimatePresence>
         <motion.div className="rounded-md border border-border bg-background-weak">
           <TooltipProvider>
-            <div className="p-4 flex-col space-y-3">
+            <div className="flex-col space-y-3 p-4">
               <div className="flex justify-between">
                 {address && (
                   <>

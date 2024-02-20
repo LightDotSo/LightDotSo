@@ -14,6 +14,7 @@
 
 "use client";
 
+import { getWallet } from "@lightdotso/client";
 import {
   useNameQueryState,
   useInviteCodeQueryState,
@@ -22,6 +23,7 @@ import {
   useThresholdQueryState,
   useTypeQueryState,
 } from "@lightdotso/nuqs";
+import { useMutationWalletCreate } from "@lightdotso/query";
 import {
   newFormSchema,
   newFormConfigurationSchema,
@@ -55,8 +57,6 @@ import { useForm } from "react-hook-form";
 import { isAddress } from "viem";
 import { normalize } from "viem/ens";
 import type * as z from "zod";
-import { useMutationWalletCreate } from "@lightdotso/query";
-import { getWallet } from "@lightdotso/client";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -172,13 +172,13 @@ export const ConfirmForm: FC = () => {
       // Once the form is submitted, navigate to the next step w/ backoff
       backOff(() =>
         getWallet(
-          { params: { query: { address: address! } } },
+          { params: { query: { address: formAddress! } } },
           clientType,
         ).then(res => res._unsafeUnwrap()),
       )
         .then(res => {
           if (res) {
-            router.push(`/${address}`);
+            router.push(`/${formAddress}`);
           } else {
             toast.error("There was a problem with your request.");
             router.push("/");
