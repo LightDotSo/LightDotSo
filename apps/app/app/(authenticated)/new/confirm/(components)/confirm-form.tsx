@@ -143,7 +143,7 @@ export const ConfirmForm: FC = () => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const { mutate } = useMutationWalletCreate({ address: address });
+  const { mutate, isError } = useMutationWalletCreate({ address: address });
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -169,6 +169,14 @@ export const ConfirmForm: FC = () => {
         salt: form.getValues("salt"),
       });
 
+      if (isError) {
+        setIsLoading(false);
+        // If there is an error, return
+        return;
+      }
+
+      const loadingToast = toast.loading("Navigating to new wallet...");
+
       // Once the form is submitted, navigate to the next step w/ backoff
       backOff(() =>
         getWallet(
@@ -177,6 +185,8 @@ export const ConfirmForm: FC = () => {
         ).then(res => res._unsafeUnwrap()),
       )
         .then(res => {
+          toast.dismiss(loadingToast);
+
           if (res) {
             router.push(`/${formAddress}`);
           } else {
