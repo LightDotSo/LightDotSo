@@ -22,10 +22,10 @@ import { useIsMounted } from "@lightdotso/hooks";
 import { useQueryWallets } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import { ComboDialog } from "@lightdotso/templates";
+import type { PopoverTrigger } from "@lightdotso/ui";
 import {
   Avatar,
   Button,
-  PopoverTrigger,
   Command,
   CommandEmpty,
   CommandGroup,
