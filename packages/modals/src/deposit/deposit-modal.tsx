@@ -14,6 +14,7 @@
 
 "use client";
 
+import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
 import type { WalletSettingsData } from "@lightdotso/data";
 import { NftImage, TokenImage } from "@lightdotso/elements";
 import { useTransferQueryState } from "@lightdotso/nuqs";
@@ -25,6 +26,7 @@ import {
   transfer,
 } from "@lightdotso/schemas";
 import { useAuth, useModals } from "@lightdotso/stores";
+import { ChainLogo } from "@lightdotso/svg";
 import { FooterButton, Modal, useIsInsideModal } from "@lightdotso/templates";
 import {
   Button,
@@ -41,6 +43,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@lightdotso/ui";
+import { getChainById } from "@lightdotso/utils";
 import {
   useAccount,
   useChainId,
@@ -58,9 +61,6 @@ import { useForm } from "react-hook-form";
 import type { Address } from "viem";
 import { erc20Abi, erc721Abi, getAddress } from "viem";
 import type { z } from "zod";
-import { getChainById } from "@lightdotso/utils";
-import { ChainLogo } from "@lightdotso/svg";
-import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
 
 // -----------------------------------------------------------------------------
 // Types
