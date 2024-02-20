@@ -242,7 +242,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
         </Button>
       }
     >
-      <Command>
+      <Command className="bg-transparent">
         <CommandList>
           <CommandInput
             className="bg-transparent"
