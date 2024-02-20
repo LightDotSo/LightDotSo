@@ -54,6 +54,8 @@ import { useForm } from "react-hook-form";
 import type { Address } from "viem";
 import { erc20Abi } from "viem";
 import type { z } from "zod";
+import { getChainById } from "@lightdotso/utils";
+import { ChainLogo } from "@lightdotso/svg";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -270,12 +272,12 @@ export function DepositModal() {
       <Modal
         open
         bannerContent={
-          <>
+          <div className="p-2">
             <DialogTitle>Deposit</DialogTitle>
             <DialogDescription>
               Please choose assets to deposit to this wallet!
             </DialogDescription>
-          </>
+          </div>
         }
         footerContent={
           <FooterButton
@@ -365,6 +367,10 @@ export function DepositModal() {
                                     );
                                     form.setValue("assetType", "erc20");
 
+                                    if (!form.getValues("asset.quantity")) {
+                                      form.setValue("asset.quantity", 0);
+                                    }
+
                                     form.trigger();
 
                                     hideTokenModal();
@@ -391,6 +397,11 @@ export function DepositModal() {
                                     }}
                                   />
                                   {token?.symbol}
+                                  &nbsp; &nbsp;
+                                  <span className="text-text-weaker">
+                                    on {getChainById(token.chainId)?.name}
+                                  </span>{" "}
+                                  <ChainLogo chainId={token.chainId} />
                                 </>
                               ) : (
                                 "Select Token"
