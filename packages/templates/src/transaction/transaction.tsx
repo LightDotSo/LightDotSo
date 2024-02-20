@@ -525,7 +525,7 @@ export const Transaction: FC<TransactionProps> = ({
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="flex w-full max-w-lg items-center">
+    <div className="flex w-full items-center">
       <ModalSwiper>
         {pageIndex === 0 && (
           // eslint-disable-next-line react/jsx-no-useless-fragment
