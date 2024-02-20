@@ -245,11 +245,19 @@ export function DepositModal() {
   async function validateTokenQuantity(quantity: number) {
     // If the quantity is empty, return
     if (!quantity) {
+      // If the quantity is zero, set an error
+      if (quantity === 0) {
+        form.setError("asset.quantity", {
+          type: "manual",
+          message: "Quantity must be more than 0",
+        });
+      }
+
       return;
     }
 
     // Check if the quantity is a number and more than the token balance
-    if (quantity && quantity > 0) {
+    if (quantity) {
       // If the quantity is valid, get the token balance
       const token =
         (balances &&
@@ -432,6 +440,12 @@ export function DepositModal() {
                                     if (isInsideModal) {
                                       setDepositBackgroundModal(false);
                                     }
+
+                                    const quantity =
+                                      form.getValues("asset.quantity");
+                                    if (quantity) {
+                                      validateTokenQuantity(quantity);
+                                    }
                                   },
                                 });
 
@@ -541,10 +555,7 @@ export function DepositModal() {
             </Form>
           </TabsContent>
           <TabsContent value="nft">
-            <p className="text-sm text-text-primary">
-              Change your password here. After saving, you&apos;ll be logged
-              out.
-            </p>
+            <div>Not implemented yet</div>
           </TabsContent>
         </Tabs>
       </Modal>
