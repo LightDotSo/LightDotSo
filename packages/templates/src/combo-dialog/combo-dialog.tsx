@@ -102,8 +102,10 @@ export const ComboDialog: FC<ComboDialogProps> = ({
         <DrawerTrigger>{buttonTrigger}</DrawerTrigger>
         <DrawerContent>
           {headerContent && <DrawerHeader>{headerContent}</DrawerHeader>}
-          {bannerContent && bannerContent}
-          {children}
+          <DrawerBody>
+            {bannerContent && bannerContent}
+            {children}
+          </DrawerBody>
           {footerContent && <DrawerFooter>{footerContent}</DrawerFooter>}
         </DrawerContent>
       </Drawer>
