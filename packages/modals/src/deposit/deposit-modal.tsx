@@ -20,11 +20,11 @@ import { NftImage, TokenImage } from "@lightdotso/elements";
 import { useTransferQueryState } from "@lightdotso/nuqs";
 import { useQueryNfts, useQuerySocketBalances } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
-import {
+import type {
   SimplehashMainnetChain,
   SimplehashTestnetChain,
-  transfer,
 } from "@lightdotso/schemas";
+import { transfer } from "@lightdotso/schemas";
 import { useAuth, useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import { FooterButton, Modal, useIsInsideModal } from "@lightdotso/templates";
@@ -61,8 +61,6 @@ import { useForm } from "react-hook-form";
 import type { Address } from "viem";
 import { erc20Abi, erc721Abi, getAddress } from "viem";
 import type { z } from "zod";
-import { getChainById } from "@lightdotso/utils";
-import { ChainLogo } from "@lightdotso/svg";
 
 // -----------------------------------------------------------------------------
 // Types
