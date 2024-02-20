@@ -16,25 +16,19 @@
 
 import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
 import {
-  DialogBody,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogOverlay,
   Drawer,
   DrawerBody,
   DrawerContent,
   DrawerFooter,
+  DrawerHeader,
   DrawerTrigger,
   Popover,
   PopoverContent,
   PopoverTrigger,
-  Skeleton,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { cva, type VariantProps } from "class-variance-authority";
-import { X } from "lucide-react";
-import { Suspense, createContext, useContext, useState } from "react";
+import { useState } from "react";
 import type { FC, ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
@@ -74,7 +68,6 @@ interface ComboDialogProps extends VariantProps<typeof comboDialogVariants> {
 
 export const ComboDialog: FC<ComboDialogProps> = ({
   children,
-  className,
   size,
   isHeightFixed,
   buttonTrigger,
@@ -106,15 +99,11 @@ export const ComboDialog: FC<ComboDialogProps> = ({
   if (!isDesktop) {
     return (
       <Drawer shouldScaleBackground open={open} onOpenChange={setOpen}>
-        <DrawerTrigger asChild>{buttonTrigger}</DrawerTrigger>
+        <DrawerTrigger>{buttonTrigger}</DrawerTrigger>
         <DrawerContent>
-          {headerContent && <DialogHeader>{headerContent}</DialogHeader>}
-          <DrawerBody className={className}>
-            <Suspense fallback={<Skeleton className="h-64 w-full" />}>
-              {bannerContent && bannerContent}
-              {children}
-            </Suspense>
-          </DrawerBody>
+          {headerContent && <DrawerHeader>{headerContent}</DrawerHeader>}
+          {bannerContent && bannerContent}
+          {children}
           {footerContent && <DrawerFooter>{footerContent}</DrawerFooter>}
         </DrawerContent>
       </Drawer>
@@ -123,38 +112,28 @@ export const ComboDialog: FC<ComboDialogProps> = ({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>{buttonTrigger}</PopoverTrigger>
-      <PopoverContent>
-        <DialogOverlay />
-        <DialogContent className={cn(comboDialogVariants({ size }))}>
+      <PopoverTrigger>{buttonTrigger}</PopoverTrigger>
+      <PopoverContent className="w-96 p-0">
+        <div className={cn(comboDialogVariants({ size }))}>
           {bannerContent && (
-            <DialogHeader className="sticky top-0 block w-full justify-start space-x-0">
+            <div className="sticky top-0 block w-full justify-start space-x-0">
               {bannerContent}
-            </DialogHeader>
+            </div>
           )}
-          <DialogBody
+          <div
             className={cn(
               "overflow-scroll [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
               isHeightFixed && "h-96",
-              className,
             )}
           >
-            <Suspense
-              fallback={
-                <Skeleton
-                  className={cn("h-64 w-full", size === "lg" && "h-96")}
-                />
-              }
-            >
-              {children}
-            </Suspense>
-          </DialogBody>
+            {children}
+          </div>
           {footerContent && (
-            <DialogFooter className="block w-full justify-start space-x-0">
+            <div className="block w-full justify-start space-x-0">
               {footerContent}
-            </DialogFooter>
+            </div>
           )}
-        </DialogContent>
+        </div>
       </PopoverContent>
     </Popover>
   );

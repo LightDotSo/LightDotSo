@@ -49,10 +49,7 @@ export const Base: Story = {
         </Button>
       }
     >
-      <DialogTitle>Login</DialogTitle>
-      <DialogDescription>
-        Login with your wallet to access your account.
-      </DialogDescription>
+      Hi.
     </ComboDialog>
   ),
   args: {},

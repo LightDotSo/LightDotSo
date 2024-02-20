@@ -21,10 +21,8 @@ import {
 } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import {
+  Button,
   ButtonIcon,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
   Tabs,
   TabsContent,
   TabsList,
@@ -34,6 +32,7 @@ import { Settings2 } from "lucide-react";
 import Link from "next/link";
 import type { FC } from "react";
 import { Login } from "../login";
+import { ComboDialog } from "../combo-dialog";
 import { NotificationPopoverIcon } from "./notification-popover-icon";
 
 // -----------------------------------------------------------------------------
@@ -65,64 +64,64 @@ export const NotificationPopover: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <Popover>
-      <PopoverTrigger>
+    <ComboDialog
+      size="sm"
+      buttonTrigger={
         <NotificationPopoverIcon
           notificationsCount={notificationsCount?.count}
         />
-      </PopoverTrigger>
-      <PopoverContent className="w-96 p-0">
-        <Tabs variant="outline">
-          <div className="flex justify-between border-b border-border">
-            <TabsList>
-              <TabsTrigger value="inbox">Inbox</TabsTrigger>
-              <TabsTrigger value="archive">Archive</TabsTrigger>
-              <TabsTrigger value="transactions">Transactions</TabsTrigger>
-            </TabsList>
-            <ButtonIcon
-              asChild
-              size="sm"
-              variant="ghost"
-              className="m-1 rounded-full"
-            >
-              <Link href="/settings/notifications">
-                <Settings2 className="size-4" />
-                <span className="sr-only">Open settings</span>
-              </Link>
-            </ButtonIcon>
-          </div>
-          <TabsContent value="inbox">
-            {!sessionId && <Login />}
-            {notifications &&
-              notifications.map(notification => (
-                <div key={notification.id} className="p-4">
-                  <p className="text-sm text-text-primary">{notification.id}</p>
-                </div>
-              ))}
-            {notificationsCount?.count === 0 && (
-              <div className="w-full justify-center py-8 text-center">
-                <EmptyState entity="notification" />
+      }
+    >
+      <Tabs defaultValue="inbox" variant="outline">
+        <div className="flex justify-between border-b border-border">
+          <TabsList>
+            <TabsTrigger value="inbox">Inbox</TabsTrigger>
+            <TabsTrigger value="archive">Archive</TabsTrigger>
+            <TabsTrigger value="transactions">Transactions</TabsTrigger>
+          </TabsList>
+          <ButtonIcon
+            asChild
+            size="sm"
+            variant="ghost"
+            className="m-1 rounded-full"
+          >
+            <Link href="/settings/notifications">
+              <Settings2 className="size-4" />
+              <span className="sr-only">Open settings</span>
+            </Link>
+          </ButtonIcon>
+        </div>
+        <TabsContent value="inbox">
+          {!sessionId && <Login />}
+          {notifications &&
+            notifications.map(notification => (
+              <div key={notification.id} className="p-4">
+                <p className="text-sm text-text-primary">{notification.id}</p>
               </div>
-            )}
-          </TabsContent>
-          <TabsContent value="archive">
-            {!sessionId && <Login />}
-            {notificationsCount?.count === 0 && (
-              <div className="w-full justify-center py-8 text-center">
-                <EmptyState entity="notification" />
-              </div>
-            )}
-          </TabsContent>
-          <TabsContent value="transactions">
-            {!sessionId && <Login />}
-            {notificationsCount?.count === 0 && (
-              <div className="w-full justify-center py-8 text-center">
-                <EmptyState entity="notification" />
-              </div>
-            )}
-          </TabsContent>
-        </Tabs>
-      </PopoverContent>
-    </Popover>
+            ))}
+          {notificationsCount?.count === 0 && (
+            <div className="w-full justify-center py-8 text-center">
+              <EmptyState entity="notification" />
+            </div>
+          )}
+        </TabsContent>
+        <TabsContent value="archive">
+          {!sessionId && <Login />}
+          {notificationsCount?.count === 0 && (
+            <div className="w-full justify-center py-8 text-center">
+              <EmptyState entity="notification" />
+            </div>
+          )}
+        </TabsContent>
+        <TabsContent value="transactions">
+          {!sessionId && <Login />}
+          {notificationsCount?.count === 0 && (
+            <div className="w-full justify-center py-8 text-center">
+              <EmptyState entity="notification" />
+            </div>
+          )}
+        </TabsContent>
+      </Tabs>
+    </ComboDialog>
   );
 };
