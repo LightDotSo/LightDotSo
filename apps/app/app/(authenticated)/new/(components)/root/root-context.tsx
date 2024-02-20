@@ -14,6 +14,7 @@
 
 "use client";
 
+import { SOCIAL_LINKS } from "@lightdotso/const";
 import { useNewForm } from "@lightdotso/stores";
 import {
   Accordion,
@@ -28,6 +29,7 @@ import {
 } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useMemo, type FC } from "react";
 
@@ -61,9 +63,14 @@ export const RootContext: FC = () => {
             "You're about to create a new smart wallet that will work on the same address across all compatible EVM networks! This means you can use the same wallet on Ethereum, Optimism, and more!",
         },
         {
-          title: "Do I need to pay?",
+          title: "Is it free? Do you need to pay gas?",
           message:
-            "No. The process is done off-chain and does not require any gas. Your wallet will be created and synced across all networks in your first transaction - you will not need to do anything!",
+            "It's completely free! The wallet process is done off-chain and does not require any gas. Your wallet will be created and synced across all networks in your first transaction - you will not need to do anything!",
+        },
+        {
+          title: "How secure is it?",
+          message:
+            "The wallet has been audited, and is completely 100% open source for anyone to look. However, there may be bugs, so please use at your own risk. We hope to build your trust over time!",
         },
       ];
     }
@@ -162,9 +169,24 @@ export const RootContext: FC = () => {
         <motion.div className="rounded-md border border-border bg-background-weak">
           <TooltipProvider>
             <div className="flex-col space-y-3 p-4">
-              <div>Thank you for using Light!</div>
-              <div className="flex justify-between">
-                {address && (
+              <div>
+                Thank you for using Light!
+                <div className="text-sm mt-1.5 text-text-weak">
+                  We're currently in private beta. Get on waitlist here if you
+                  don't have an invite code yet. &nbsp;
+                  <a
+                    className="underline hover:text-text-weaker"
+                    href={SOCIAL_LINKS["Waitlist"]}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Waitlist
+                    <ArrowUpRight className="mb-3 ml-1 inline size-2" />
+                  </a>
+                </div>
+              </div>
+              {address && (
+                <div className="flex justify-between">
                   <>
                     Your New Address:{" "}
                     <Tooltip>
@@ -176,10 +198,10 @@ export const RootContext: FC = () => {
                       </TooltipContent>
                     </Tooltip>
                   </>
-                )}
-              </div>
-              <div className="flex justify-between">
-                {formValues && formValues?.name && (
+                </div>
+              )}
+              {formValues && formValues?.name && (
+                <div className="flex justify-between">
                   <>
                     Name:{" "}
                     <Tooltip>
@@ -191,10 +213,10 @@ export const RootContext: FC = () => {
                       </TooltipContent>
                     </Tooltip>
                   </>
-                )}
-              </div>
-              <div className="flex justify-between">
-                {formValues && formValues?.threshold && (
+                </div>
+              )}
+              {formValues && formValues?.threshold && (
+                <div className="flex justify-between">
                   <>
                     Threshold:{" "}
                     <Tooltip>
@@ -209,8 +231,8 @@ export const RootContext: FC = () => {
                       </TooltipContent>
                     </Tooltip>
                   </>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </TooltipProvider>
         </motion.div>
