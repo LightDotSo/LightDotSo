@@ -32,13 +32,13 @@ import Link from "next/link";
 import type { FC } from "react";
 import { Login } from "../login";
 import { ComboDialog } from "../combo-dialog";
-import { NotificationPopoverIcon } from "./notification-popover-icon";
+import { NotificationComboDialogIcon } from "./notification-combo-dialog-icon";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const NotificationPopover: FC = () => {
+export const NotificationComboDialog: FC = () => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -66,7 +66,7 @@ export const NotificationPopover: FC = () => {
     <ComboDialog
       size="sm"
       buttonTrigger={
-        <NotificationPopoverIcon
+        <NotificationComboDialogIcon
           notificationsCount={notificationsCount?.count}
         />
       }

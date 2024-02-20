@@ -13,15 +13,15 @@
 // limitations under the License.
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { NotificationPopover } from "./notification-popover";
+import { FeedbackComboDialog } from "./feedback-combo-dialog";
 
 // -----------------------------------------------------------------------------
 // Meta
 // -----------------------------------------------------------------------------
 
-const meta: Meta<typeof NotificationPopover> = {
-  title: "template/NotificationPopover",
-  component: NotificationPopover,
+const meta: Meta<typeof FeedbackComboDialog> = {
+  title: "template/FeedbackComboDialog",
+  component: FeedbackComboDialog,
   tags: ["autodocs"],
   argTypes: {},
 };
@@ -31,13 +31,13 @@ export default meta;
 // Types
 // -----------------------------------------------------------------------------
 
-type Story = StoryObj<typeof NotificationPopover>;
+type Story = StoryObj<typeof FeedbackComboDialog>;
 
 // -----------------------------------------------------------------------------
 // Story
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <NotificationPopover />,
+  render: args => <FeedbackComboDialog />,
   args: {},
 };

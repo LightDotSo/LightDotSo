@@ -14,15 +14,15 @@
 
 import { Popover, PopoverTrigger } from "@lightdotso/ui";
 import type { Meta, StoryObj } from "@storybook/react";
-import { NotificationPopoverIcon } from "./notification-popover-icon";
+import { NotificationComboDialogIcon } from "./notification-combo-dialog-icon";
 
 // -----------------------------------------------------------------------------
 // Meta
 // -----------------------------------------------------------------------------
 
-const meta: Meta<typeof NotificationPopoverIcon> = {
-  title: "template/NotificationPopover/NotificationPopoverIcon",
-  component: NotificationPopoverIcon,
+const meta: Meta<typeof NotificationComboDialogIcon> = {
+  title: "template/NotificationComboDialog/NotificationComboDialogIcon",
+  component: NotificationComboDialogIcon,
   tags: ["autodocs"],
   argTypes: {},
 };
@@ -32,7 +32,7 @@ export default meta;
 // Types
 // -----------------------------------------------------------------------------
 
-type Story = StoryObj<typeof NotificationPopoverIcon>;
+type Story = StoryObj<typeof NotificationComboDialogIcon>;
 
 // -----------------------------------------------------------------------------
 // Story
@@ -42,7 +42,7 @@ export const Base: Story = {
   render: args => (
     <Popover>
       <PopoverTrigger>
-        <NotificationPopoverIcon notificationsCount={0} />
+        <NotificationComboDialogIcon notificationsCount={0} />
       </PopoverTrigger>
     </Popover>
   ),
@@ -52,7 +52,7 @@ export const WithNotifications: Story = {
   render: args => (
     <Popover>
       <PopoverTrigger>
-        <NotificationPopoverIcon notificationsCount={1} />
+        <NotificationComboDialogIcon notificationsCount={1} />
       </PopoverTrigger>
     </Popover>
   ),
