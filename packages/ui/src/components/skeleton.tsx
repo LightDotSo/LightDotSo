@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { cn } from "@lightdotso/utils";
+import type { ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -21,6 +22,7 @@ import { cn } from "@lightdotso/utils";
 interface SkeletonProps {
   as?: keyof JSX.IntrinsicElements;
   className?: string;
+  children?: ReactNode;
 }
 
 // -----------------------------------------------------------------------------
