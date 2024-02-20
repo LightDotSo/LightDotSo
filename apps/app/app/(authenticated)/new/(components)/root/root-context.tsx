@@ -162,6 +162,7 @@ export const RootContext: FC = () => {
         <motion.div className="rounded-md border border-border bg-background-weak">
           <TooltipProvider>
             <div className="flex-col space-y-3 p-4">
+              <div>Thank you for using Light!</div>
               <div className="flex justify-between">
                 {address && (
                   <>
