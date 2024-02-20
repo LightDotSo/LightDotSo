@@ -1,0 +1,161 @@
+// Copyright 2023-2024 Light, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+"use client";
+
+import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
+import {
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogOverlay,
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerFooter,
+  DrawerTrigger,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Skeleton,
+} from "@lightdotso/ui";
+import { cn } from "@lightdotso/utils";
+import { cva, type VariantProps } from "class-variance-authority";
+import { X } from "lucide-react";
+import { Suspense, createContext, useContext, useState } from "react";
+import type { FC, ReactNode } from "react";
+
+// -----------------------------------------------------------------------------
+// Styles
+// -----------------------------------------------------------------------------
+
+const comboDialogVariants = cva(["max-h-[80%]"], {
+  variants: {
+    size: {
+      lg: "max-w-6xl",
+      default: "max-w-3xl",
+      sm: "max-w-md",
+    },
+  },
+  defaultVariants: {
+    size: "default",
+  },
+});
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+interface ComboDialogProps extends VariantProps<typeof comboDialogVariants> {
+  children: ReactNode;
+  className?: string;
+  buttonTrigger: ReactNode;
+  headerContent?: ReactNode;
+  bannerContent?: ReactNode;
+  footerContent?: ReactNode;
+  isHeightFixed?: boolean;
+}
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const ComboDialog: FC<ComboDialogProps> = ({
+  children,
+  className,
+  size,
+  isHeightFixed,
+  buttonTrigger,
+  headerContent,
+  bannerContent,
+  footerContent,
+}) => {
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [open, setOpen] = useState(false);
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const isMounted = useIsMounted();
+  const isDesktop = useMediaQuery("md");
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  if (!isMounted) {
+    return null;
+  }
+
+  if (!isDesktop) {
+    return (
+      <Drawer shouldScaleBackground open={open} onOpenChange={setOpen}>
+        <DrawerTrigger asChild>{buttonTrigger}</DrawerTrigger>
+        <DrawerContent>
+          {headerContent && <DialogHeader>{headerContent}</DialogHeader>}
+          <DrawerBody className={className}>
+            <Suspense fallback={<Skeleton className="h-64 w-full" />}>
+              {bannerContent && bannerContent}
+              {children}
+            </Suspense>
+          </DrawerBody>
+          {footerContent && <DrawerFooter>{footerContent}</DrawerFooter>}
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>{buttonTrigger}</PopoverTrigger>
+      <PopoverContent>
+        <DialogOverlay />
+        <DialogContent className={cn(comboDialogVariants({ size }))}>
+          {bannerContent && (
+            <DialogHeader className="sticky top-0 block w-full justify-start space-x-0">
+              {bannerContent}
+            </DialogHeader>
+          )}
+          <DialogBody
+            className={cn(
+              "overflow-scroll [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+              isHeightFixed && "h-96",
+              className,
+            )}
+          >
+            <Suspense
+              fallback={
+                <Skeleton
+                  className={cn("h-64 w-full", size === "lg" && "h-96")}
+                />
+              }
+            >
+              {children}
+            </Suspense>
+          </DialogBody>
+          {footerContent && (
+            <DialogFooter className="block w-full justify-start space-x-0">
+              {footerContent}
+            </DialogFooter>
+          )}
+        </DialogContent>
+      </PopoverContent>
+    </Popover>
+  );
+};
