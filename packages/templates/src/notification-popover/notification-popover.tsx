@@ -21,7 +21,6 @@ import {
 } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import {
-  Button,
   ButtonIcon,
   Tabs,
   TabsContent,

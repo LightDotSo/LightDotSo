@@ -20,19 +20,16 @@ import { useAuth } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import { ComboDialog } from "@lightdotso/templates";
 import {
+  Button,
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-  Popover,
-  PopoverTrigger,
-  Button,
-  PopoverContent,
 } from "@lightdotso/ui";
 import { getEtherscanUrl } from "@lightdotso/utils";
 import { ArrowUpRight, Globe } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import type { FC } from "react";
 import type { Address } from "viem";
 import { DEMO_WALLET_ADDRESS } from "@/const";
@@ -48,12 +45,6 @@ export const ChainPopover: FC = () => {
   // ---------------------------------------------------------------------------
 
   const pathType = usePathType();
-
-  // ---------------------------------------------------------------------------
-  // State Hooks
-  // ---------------------------------------------------------------------------
-
-  const [open, setOpen] = useState(false);
 
   // ---------------------------------------------------------------------------
   // Stores
@@ -95,7 +86,6 @@ export const ChainPopover: FC = () => {
           size="unsized"
           variant="outline"
           role="combobox"
-          aria-expanded={open}
         >
           <Globe className="size-4 shrink-0" />
           <div className="flex -space-x-1.5 overflow-hidden">
