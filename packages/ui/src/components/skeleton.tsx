@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { cn } from "@lightdotso/utils";
-import type { ReactNode } from "react";
+import type { ReactNode, FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -29,7 +29,7 @@ interface SkeletonProps {
 // Components
 // -----------------------------------------------------------------------------
 
-const Skeleton: React.FC<SkeletonProps> = ({
+const Skeleton: FC<SkeletonProps> = ({
   as: Element = "div",
   className,
   ...props
