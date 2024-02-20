@@ -19,7 +19,7 @@ import {
   useQueryNotifications,
   useQueryNotificationsCount,
 } from "@lightdotso/query";
-import { useAuth } from "@lightdotso/stores";
+import { useAuth, useComboDialogs } from "@lightdotso/stores";
 import {
   ButtonIcon,
   Tabs,
@@ -44,6 +44,8 @@ export const NotificationComboDialog: FC = () => {
   // ---------------------------------------------------------------------------
 
   const { sessionId, wallet } = useAuth();
+  const { isNotificationComboDialogOpen, toggleIsNotificationComboDialogOpen } =
+    useComboDialogs();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -70,6 +72,8 @@ export const NotificationComboDialog: FC = () => {
           notificationsCount={notificationsCount?.count}
         />
       }
+      isOpen={isNotificationComboDialogOpen}
+      onOpenChange={toggleIsNotificationComboDialogOpen}
     >
       <Tabs defaultValue="inbox" variant="outline">
         <div className="flex justify-between border-b border-border">

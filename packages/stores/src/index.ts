@@ -14,7 +14,7 @@
 
 export { useAuth } from "./useAuth";
 export { useBanners } from "./useBanners";
-export { useComboDialog } from "./useComboDialog";
+export { useComboDialogs } from "./useComboDialogs";
 export { useDev } from "./useDev";
 export { useFormRef } from "./useFormRef";
 export { useModals } from "./useModals";

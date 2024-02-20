@@ -15,7 +15,7 @@
 "use client";
 
 import { useIsMounted } from "@lightdotso/hooks";
-import { useAuth, useComboDialog } from "@lightdotso/stores";
+import { useAuth, useComboDialogs } from "@lightdotso/stores";
 import { Button } from "@lightdotso/ui";
 import { Megaphone } from "lucide-react";
 import type { FC } from "react";
@@ -38,7 +38,8 @@ export const FeedbackComboDialog: FC = () => {
   // ---------------------------------------------------------------------------
 
   const { address } = useAuth();
-  const { toggleIsComboDialogOpen } = useComboDialog();
+  const { isFeedbackComboDialogOpen, toggleIsFeedbackComboDialogOpen } =
+    useComboDialogs();
 
   // ---------------------------------------------------------------------------
   // Render
@@ -59,8 +60,10 @@ export const FeedbackComboDialog: FC = () => {
           <span className="sr-only">Open popover</span>
         </Button>
       }
+      isOpen={isFeedbackComboDialogOpen}
+      onOpenChange={toggleIsFeedbackComboDialogOpen}
     >
-      <FeedbackForm onClose={toggleIsComboDialogOpen} />
+      <FeedbackForm onClose={toggleIsFeedbackComboDialogOpen} />
     </ComboDialog>
   );
 };

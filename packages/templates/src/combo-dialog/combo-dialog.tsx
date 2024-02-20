@@ -15,7 +15,6 @@
 "use client";
 
 import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
-import { useComboDialog } from "@lightdotso/stores";
 import {
   Drawer,
   DrawerBody,
@@ -56,6 +55,8 @@ const comboDialogVariants = cva(["max-h-[80%]"], {
 interface ComboDialogProps extends VariantProps<typeof comboDialogVariants> {
   children: ReactNode;
   className?: string;
+  isOpen?: boolean;
+  onOpenChange?: (isOpen: boolean) => void;
   buttonTrigger: ReactNode;
   headerContent?: ReactNode;
   bannerContent?: ReactNode;
@@ -71,18 +72,14 @@ export const ComboDialog: FC<ComboDialogProps> = ({
   children,
   size,
   className,
+  isOpen,
+  onOpenChange,
   isHeightFixed,
   buttonTrigger,
   headerContent,
   bannerContent,
   footerContent,
 }) => {
-  // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { isComboDialogOpen: open, toggleIsComboDialogOpen } = useComboDialog();
-
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
@@ -100,11 +97,7 @@ export const ComboDialog: FC<ComboDialogProps> = ({
 
   if (!isDesktop) {
     return (
-      <Drawer
-        shouldScaleBackground
-        open={open}
-        onOpenChange={toggleIsComboDialogOpen}
-      >
+      <Drawer shouldScaleBackground open={isOpen} onOpenChange={onOpenChange}>
         <DrawerTrigger>{buttonTrigger}</DrawerTrigger>
         <DrawerContent>
           {headerContent && <DrawerHeader>{headerContent}</DrawerHeader>}
@@ -119,7 +112,7 @@ export const ComboDialog: FC<ComboDialogProps> = ({
   }
 
   return (
-    <Popover open={open} onOpenChange={toggleIsComboDialogOpen}>
+    <Popover open={isOpen} onOpenChange={onOpenChange}>
       <PopoverTrigger>{buttonTrigger}</PopoverTrigger>
       <PopoverContent className={cn("p-0", className)}>
         <div className={cn(comboDialogVariants({ size }))}>

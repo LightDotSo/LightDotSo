@@ -16,7 +16,7 @@
 
 import { CHAINS, MAINNET_CHAINS } from "@lightdotso/const";
 import { useQueryWalletSettings } from "@lightdotso/query";
-import { useAuth } from "@lightdotso/stores";
+import { useAuth, useComboDialogs } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import { ComboDialog } from "@lightdotso/templates";
 import {
@@ -51,6 +51,8 @@ export const ChainComboDialog: FC = () => {
   // ---------------------------------------------------------------------------
 
   const { wallet } = useAuth();
+  const { isChainComboDialogOpen, toggleIsChainComboDialogOpen } =
+    useComboDialogs();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -102,6 +104,8 @@ export const ChainComboDialog: FC = () => {
           </span>
         </Button>
       }
+      isOpen={isChainComboDialogOpen}
+      onOpenChange={toggleIsChainComboDialogOpen}
     >
       <Command>
         <CommandInput placeholder="Search chain..." />
