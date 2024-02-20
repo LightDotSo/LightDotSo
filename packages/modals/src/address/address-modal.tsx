@@ -109,12 +109,12 @@ export function AddressModal() {
   // Query
   // ---------------------------------------------------------------------------
 
-  const { ensDomains } = useQueryEnsDomains({
+  const { ensDomains, isEnsDomainsLoading } = useQueryEnsDomains({
     name: delayedName,
     limit: 6,
   });
 
-  const { wallets } = useQueryWallets({
+  const { wallets, isWalletsLoading } = useQueryWallets({
     address: address,
     offset: 0,
     limit: 6,
@@ -157,8 +157,15 @@ export function AddressModal() {
                 <CommandEmpty>No results found.</CommandEmpty>
               )}
               {ensDomains && ensDomains.length > 0 && (
-                <CommandGroup>
-                  {ensDomains &&
+                <CommandGroup heading="ENS Suggestions">
+                  {isEnsDomainsLoading &&
+                    [...Array(3)].map((_, i) => (
+                      <CommandItem key={i} disabled>
+                        Loading...
+                      </CommandItem>
+                    ))}
+                  {!isEnsDomainsLoading &&
+                    ensDomains &&
                     ensDomains
                       .filter(ensDomain => ensDomain.name !== watchName)
                       .map(ensDomain => (
@@ -175,8 +182,14 @@ export function AddressModal() {
                       ))}
                 </CommandGroup>
               )}
-              {wallets && wallets.length > 0 && (
-                <CommandGroup>
+              {isWalletsLoading &&
+                [...Array(3)].map((_, i) => (
+                  <CommandItem key={i} disabled>
+                    Loading...
+                  </CommandItem>
+                ))}
+              {!isWalletsLoading && wallets && wallets.length > 0 && (
+                <CommandGroup heading="Owned Wallets">
                   {wallets &&
                     wallets.map(wallet => (
                       <CommandItem
