@@ -675,15 +675,15 @@ export function DepositModal() {
                                       );
                                     }
 
-                                    form.setValue(
-                                      "assetType",
-                                      nft.contract.type?.toLowerCase() ===
-                                        "erc721"
-                                        ? "erc721"
-                                        : "erc1155",
-                                    );
+                                    const assetType =
+                                      nft.contract.type?.toLowerCase();
+                                    form.setValue("assetType", assetType);
 
-                                    if (!form.getValues("asset.quantity")) {
+                                    if (assetType === "erc721") {
+                                      form.setValue("asset.decimals", 1);
+                                    } else if (
+                                      !form.getValues("asset.quantity")
+                                    ) {
                                       form.setValue("asset.quantity", 1);
                                     }
 
@@ -723,6 +723,9 @@ export function DepositModal() {
                               name="asset.quantity"
                               render={({ field }) => (
                                 <Input
+                                  disabled={
+                                    nft ? nft.contract.type === "erc721" : false
+                                  }
                                   {...field}
                                   className="[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                                   type="text"
