@@ -70,7 +70,7 @@ export const useMutationWalletCreate = (params: WalletParams) => {
       // Return if the response is 200
       res.match(
         _ => {
-          toast.success("Successfully updated name!");
+          toast.success("Successfully created wallet!");
         },
         err => {
           if (failureCount % 3 !== 2) {
@@ -80,7 +80,7 @@ export const useMutationWalletCreate = (params: WalletParams) => {
           if (err instanceof Error) {
             toast.error(err.message);
           } else {
-            toast.error("Failed to update name.");
+            toast.error("Failed to create wallet.");
           }
 
           throw err;

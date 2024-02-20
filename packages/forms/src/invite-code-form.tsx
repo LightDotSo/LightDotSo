@@ -172,12 +172,14 @@ export const InviteCodeForm: FC<InviteCodeFormProps> = ({ name }) => {
                     field.onChange(e.target.value);
                   }
                   validInviteCode.invalidate();
+                  parentMethods.trigger();
                 }}
                 onChange={e => {
                   if (e.target.value.length === 7) {
                     field.onChange(e.target.value);
                   }
                   validInviteCode.invalidate();
+                  parentMethods.trigger();
                 }}
               />
               <FormDescription>Enter the invite code</FormDescription>

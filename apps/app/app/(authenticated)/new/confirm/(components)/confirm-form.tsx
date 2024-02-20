@@ -23,6 +23,7 @@ import {
   useThresholdQueryState,
   useTypeQueryState,
 } from "@lightdotso/nuqs";
+import { useMutationWalletCreate } from "@lightdotso/query";
 import {
   newFormSchema,
   newFormConfigurationSchema,
@@ -78,9 +79,9 @@ export const ConfirmForm: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { clientType } = useAuth();
+  const { address, clientType } = useAuth();
   const { setFormControl } = useFormRef();
-  const { address, setFormValues, fetchToCreate } = useNewForm();
+  const { address: formAddress, setFormValues } = useNewForm();
 
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -139,55 +140,72 @@ export const ConfirmForm: FC = () => {
   });
 
   // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { mutate, isError } = useMutationWalletCreate({ address: address });
+
+  // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
   // Create a function to submit the form
   const onSubmit = useCallback(
-    () => {
+    async () => {
+      if (!formAddress) {
+        toast.error("Form address is not set. Please try again.");
+        return;
+      }
+
       // Set the loading state
       setIsLoading(true);
-      // Navigate to the next step
-      const loadingToast = toast.loading("Creating wallet...");
-      // Set the form values
-      // setFormValues(values);
-      fetchToCreate(true)
-        .then(() => {
-          setIsLoading(false);
-          toast.dismiss(loadingToast);
-          toast.success("You can now use your wallet!");
 
-          backOff(() =>
-            getWallet(
-              { params: { query: { address: address! } } },
-              clientType,
-            ).then(res => res._unsafeUnwrap()),
-          )
-            .then(res => {
-              if (res) {
-                router.push(`/${address}`);
-              } else {
-                toast.error("There was a problem with your request.");
-                router.push("/");
-              }
-            })
-            .catch(() => {
-              toast.error(
-                "There was a problem with your request while creating.",
-              );
-              router.push("/");
-            });
+      // Set the form values
+      await mutate({
+        address: address,
+        simulate: false,
+        name: form.getValues("name"),
+        threshold: form.getValues("threshold"),
+        owners: form.getValues("owners").map(owner => ({
+          weight: owner.weight!,
+          address: owner.address!,
+        })),
+        invite_code: form.getValues("inviteCode"),
+        salt: form.getValues("salt"),
+      });
+
+      if (isError) {
+        setIsLoading(false);
+        // If there is an error, return
+        return;
+      }
+
+      const loadingToast = toast.loading("Navigating to new wallet...");
+
+      // Once the form is submitted, navigate to the next step w/ backoff
+      backOff(() =>
+        getWallet(
+          { params: { query: { address: formAddress! } } },
+          clientType,
+        ).then(res => res._unsafeUnwrap()),
+      )
+        .then(res => {
+          toast.dismiss(loadingToast);
+
+          if (res) {
+            router.push(`/${formAddress}`);
+          } else {
+            toast.error("There was a problem with your request.");
+            router.push("/");
+          }
         })
         .catch(() => {
-          setIsLoading(false);
-          toast.dismiss(loadingToast);
-          toast.error(
-            "There was a problem with your request (invalid request likely).",
-          );
+          toast.error("There was a problem with your request while creating.");
+          router.push("/");
         });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [setFormValues],
+    [setFormValues, formAddress],
   );
 
   // ---------------------------------------------------------------------------

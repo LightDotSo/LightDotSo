@@ -31,7 +31,7 @@ interface FormStore {
   formValues: Partial<NewFormStoreValues>;
   setFormValues: (values: Partial<NewFormStoreValues>) => void;
   validate: () => void;
-  fetchToCreate: (isCreate: boolean) => Promise<void>; // if your fetch returns an address
+  fetchToCreate: (isCreate: boolean) => Promise<void>;
   isValid: boolean;
   isLoading: boolean;
   errors: z.ZodError | null;
