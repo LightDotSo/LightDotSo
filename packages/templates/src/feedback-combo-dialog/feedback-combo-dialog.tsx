@@ -19,8 +19,8 @@ import { useAuth, useComboDialog } from "@lightdotso/stores";
 import { Button } from "@lightdotso/ui";
 import { Megaphone } from "lucide-react";
 import type { FC } from "react";
-import { FeedbackForm } from "./feedback-form";
 import { ComboDialog } from "../combo-dialog";
+import { FeedbackForm } from "./feedback-form";
 
 // -----------------------------------------------------------------------------
 // Component

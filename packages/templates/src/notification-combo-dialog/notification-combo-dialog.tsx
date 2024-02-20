@@ -30,8 +30,8 @@ import {
 import { Settings2 } from "lucide-react";
 import Link from "next/link";
 import type { FC } from "react";
-import { Login } from "../login";
 import { ComboDialog } from "../combo-dialog";
+import { Login } from "../login";
 import { NotificationComboDialogIcon } from "./notification-combo-dialog-icon";
 
 // -----------------------------------------------------------------------------
