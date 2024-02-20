@@ -400,7 +400,8 @@ export function DepositModal() {
                                   &nbsp; &nbsp;
                                   <span className="text-text-weaker">
                                     on {getChainById(token.chainId)?.name}
-                                  </span>{" "}
+                                  </span>
+                                  &nbsp;
                                   <ChainLogo chainId={token.chainId} />
                                 </>
                               ) : (
