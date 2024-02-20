@@ -14,13 +14,19 @@
 
 "use client";
 
+import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
 import type { WalletSettingsData } from "@lightdotso/data";
-import { TokenImage } from "@lightdotso/elements";
+import { NftImage, TokenImage } from "@lightdotso/elements";
 import { useTransferQueryState } from "@lightdotso/nuqs";
-import { useQuerySocketBalances } from "@lightdotso/query";
+import { useQueryNfts, useQuerySocketBalances } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
-import { transfer } from "@lightdotso/schemas";
+import {
+  SimplehashMainnetChain,
+  SimplehashTestnetChain,
+  transfer,
+} from "@lightdotso/schemas";
 import { useAuth, useModals } from "@lightdotso/stores";
+import { ChainLogo } from "@lightdotso/svg";
 import { FooterButton, Modal, useIsInsideModal } from "@lightdotso/templates";
 import {
   Button,
@@ -37,6 +43,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@lightdotso/ui";
+import { getChainById } from "@lightdotso/utils";
 import {
   useAccount,
   useChainId,
@@ -52,7 +59,7 @@ import { useEffect, useMemo } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";
-import { erc20Abi } from "viem";
+import { erc20Abi, erc721Abi, getAddress } from "viem";
 import type { z } from "zod";
 import { getChainById } from "@lightdotso/utils";
 import { ChainLogo } from "@lightdotso/svg";
@@ -86,6 +93,9 @@ export function DepositModal() {
     setTokenModalProps,
     showTokenModal,
     hideTokenModal,
+    setNftModalProps,
+    showNftModal,
+    hideNftModal,
   } = useModals();
 
   // ---------------------------------------------------------------------------
@@ -96,6 +106,13 @@ export function DepositModal() {
 
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
+
+  const { nftPage } = useQueryNfts({
+    address,
+    is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    limit: Number.MAX_SAFE_INTEGER,
+    cursor: null,
+  });
 
   const { balances } = useQuerySocketBalances({
     address,
@@ -193,17 +210,93 @@ export function DepositModal() {
     }
 
     const quantity = form.getValues("asset.quantity");
-
+    console.info("Quantity: ", quantity);
     if (!quantity) {
       console.error("Quantity is 0");
       return;
     }
 
-    console.info("Quantity: ", quantity);
+    const decimals = form.getValues("asset.decimals");
+    console.info("Decimals: ", decimals);
+    if (!decimals) {
+      console.error("Decimals is not defined");
+      return;
+    }
+
+    const assetType = form.getValues("assetType");
+    console.info("Asset Type: ", assetType);
 
     const addr = form.getValues("asset.address") as Address;
-
     console.info("Address: ", addr);
+
+    if (assetType === "erc721") {
+      console.info("Sending NFT");
+
+      const tokenId = form.getValues("asset.tokenId");
+      console.info("Token ID: ", tokenId);
+
+      if (!tokenId) {
+        console.error("Token ID is not defined");
+        return;
+      }
+
+      const res = await writeContract({
+        abi: erc721Abi,
+        address: addr,
+        chainId: globalChainId,
+        functionName: "transferFrom",
+        args: [address, wallet, BigInt(tokenId)],
+      });
+
+      console.info(res);
+
+      return;
+    }
+
+    if (assetType === "erc1155") {
+      console.info("Sending NFT");
+
+      const tokenId = form.getValues("asset.tokenId");
+      console.info("Token ID: ", tokenId);
+
+      if (!tokenId) {
+        console.error("Token ID is not defined");
+        return;
+      }
+
+      const res = await writeContract({
+        abi: [
+          {
+            name: "from",
+            type: "address",
+          },
+          {
+            name: "to",
+            type: "address",
+          },
+          {
+            name: "tokenId",
+            type: "uint256",
+          },
+          {
+            name: "value",
+            type: "uint256",
+          },
+          {
+            name: "data",
+            type: "bytes",
+          },
+        ],
+        address: addr,
+        chainId: globalChainId,
+        functionName: "safeTransferFrom",
+        args: [address, wallet, BigInt(tokenId), BigInt(quantity)],
+      });
+
+      console.info(res);
+
+      return;
+    }
 
     if (addr === "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee") {
       console.info("Sending ETH");
@@ -211,7 +304,7 @@ export function DepositModal() {
       const res = await sendTransaction({
         chainId: chainId,
         to: wallet,
-        value: BigInt(quantity),
+        value: BigInt(quantity ** Math.pow(10, decimals)),
       });
 
       console.info(res);
@@ -223,7 +316,7 @@ export function DepositModal() {
       address: addr,
       chainId: globalChainId,
       functionName: "transfer",
-      args: [wallet, BigInt(quantity)],
+      args: [wallet, BigInt(quantity ** Math.pow(10, decimals))],
     });
 
     console.error(error);
@@ -232,6 +325,63 @@ export function DepositModal() {
     // form.trigger();
     // router.push(href);
   };
+
+  // ---------------------------------------------------------------------------
+  // Validation
+  // ---------------------------------------------------------------------------
+
+  async function validateTokenQuantity(quantity: number) {
+    // If the quantity is empty, return
+    if (!quantity) {
+      // If the quantity is zero, set an error
+      if (quantity === 0) {
+        form.setError("asset.quantity", {
+          type: "manual",
+          message: "Quantity must be more than 0",
+        });
+      }
+
+      return;
+    }
+
+    // Check if the quantity is a number and more than the token balance
+    if (quantity) {
+      // If the quantity is valid, get the token balance
+      const token =
+        (balances &&
+          chainId &&
+          balances?.length > 0 &&
+          balances?.find(
+            token =>
+              token.address === transfer.asset?.address &&
+              token.chainId === transfer.chainId,
+          )) ||
+        undefined;
+
+      // If the token is not found or undefined, set an error
+      if (!token) {
+        // Show an error on the message
+        form.setError("asset.quantity", {
+          type: "manual",
+          message: "Please select a valid token",
+        });
+        // Clear the value of key address
+        form.setValue("asset.quantity", 0);
+      } else if (quantity > token?.amount) {
+        // Show an error on the message
+        form.setError("asset.quantity", {
+          type: "manual",
+          message: "Insufficient balance",
+        });
+        // Clear the value of key address
+        // form.setValue(`transfers.${index}.asset.quantity`, 0);
+      } else {
+        // If the quantity is valid, set the value of key quantity
+        form.setValue("asset.quantity", quantity);
+        form.clearErrors("asset.quantity");
+      }
+    }
+  }
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -315,12 +465,9 @@ export function DepositModal() {
               >
                 <FormField
                   control={form.control}
-                  name="asset"
+                  name="asset.quantity"
                   // eslint-disable-next-line @typescript-eslint/no-unused-vars
                   render={({ field: _field }) => {
-                    const tokenAddress = transfer.asset?.address;
-                    const chainId = transfer.chainId;
-
                     // Get the matching token
                     const token =
                       (balances &&
@@ -328,8 +475,8 @@ export function DepositModal() {
                         balances?.length > 0 &&
                         balances?.find(
                           token =>
-                            token.address === tokenAddress &&
-                            token.chainId === chainId,
+                            token.address === transfer.asset?.address &&
+                            token.chainId === transfer.chainId,
                         )) ||
                       undefined;
 
@@ -365,6 +512,10 @@ export function DepositModal() {
                                       "asset.address",
                                       token.address,
                                     );
+                                    form.setValue(
+                                      "asset.decimals",
+                                      token.decimals,
+                                    );
                                     form.setValue("assetType", "erc20");
 
                                     if (!form.getValues("asset.quantity")) {
@@ -376,6 +527,12 @@ export function DepositModal() {
                                     hideTokenModal();
                                     if (isInsideModal) {
                                       setDepositBackgroundModal(false);
+                                    }
+
+                                    const quantity =
+                                      form.getValues("asset.quantity");
+                                    if (quantity) {
+                                      validateTokenQuantity(quantity);
                                     }
                                   },
                                 });
@@ -400,7 +557,8 @@ export function DepositModal() {
                                   &nbsp; &nbsp;
                                   <span className="text-text-weaker">
                                     on {getChainById(token.chainId)?.name}
-                                  </span>{" "}
+                                  </span>
+                                  &nbsp;
                                   <ChainLogo chainId={token.chainId} />
                                 </>
                               ) : (
@@ -409,7 +567,6 @@ export function DepositModal() {
                               <div className="grow" />
                               {/* <ChevronDown className="size-4 opacity-50" /> */}
                             </Button>
-                            <FormMessage />
                           </div>
                           <div className="w-full space-y-2">
                             <Label htmlFor="weight">Amount</Label>
@@ -419,21 +576,63 @@ export function DepositModal() {
                               render={({ field }) => (
                                 <Input
                                   {...field}
-                                  type="number"
-                                  className="w-full"
-                                  onChange={e => {
+                                  className="[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                                  type="text"
+                                  // onChange={e => {
+                                  //   if (!e.target.value) {
+                                  //     // Clear the value of key address
+                                  //     form.setValue("asset.quantity", 0);
+                                  //   }
+
+                                  //   const quantity = parseInt(e.target.value);
+
+                                  //   field.onChange(quantity);
+                                  // }}
+                                  onBlur={e => {
+                                    // Validate the address
                                     if (!e.target.value) {
                                       // Clear the value of key address
                                       form.setValue("asset.quantity", 0);
                                     }
 
-                                    const quantity = parseInt(e.target.value);
+                                    const quantity = parseFloat(e.target.value);
 
-                                    field.onChange(quantity);
+                                    validateTokenQuantity(quantity);
+                                  }}
+                                  onChange={e => {
+                                    // If the input ends with ".", or includes "." and ends with "0", set the value as string, as it can be assumed that the user is still typing
+                                    if (
+                                      e.target.value.endsWith(".") ||
+                                      (e.target.value.includes(".") &&
+                                        e.target.value.endsWith("0"))
+                                    ) {
+                                      field.onChange(e.target.value);
+                                    } else {
+                                      // Only parse to float if the value doesn't end with "."
+                                      field.onChange(
+                                        parseFloat(e.target.value) || 0,
+                                      );
+                                    }
+
+                                    // Validate the number
+                                    const quantity = parseFloat(e.target.value);
+
+                                    if (!isNaN(quantity)) {
+                                      validateTokenQuantity(quantity);
+                                    }
                                   }}
                                 />
                               )}
                             />
+                            <FormMessage />
+                            <div className="flex items-center justify-between text-xs text-text-weak">
+                              <div>{/* tokenPrice could come here */}</div>
+                              <div>
+                                {token
+                                  ? `${token.amount} ${token.symbol} available`
+                                  : ""}
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </FormControl>
@@ -444,10 +643,193 @@ export function DepositModal() {
             </Form>
           </TabsContent>
           <TabsContent value="nft">
-            <p className="text-sm text-text-primary">
-              Change your password here. After saving, you&apos;ll be logged
-              out.
-            </p>
+            <Form {...form}>
+              <form
+                // ref={formRef}
+                id="deposit-modal-form"
+                className="space-y-4"
+                onSubmit={form.handleSubmit(onSubmit)}
+              >
+                <FormField
+                  control={form.control}
+                  name="asset.quantity"
+                  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                  render={({ field: _field }) => {
+                    // Get the matching nft
+                    const nft =
+                      nftPage &&
+                      transfer &&
+                      transfer?.asset &&
+                      transfer?.asset?.address &&
+                      "tokenId" in
+                        // eslint-disable-next-line no-unsafe-optional-chaining, @typescript-eslint/no-non-null-asserted-optional-chain
+                        transfer?.asset! &&
+                      nftPage.nfts?.find(
+                        nft =>
+                          nft.contract_address ===
+                            (transfer?.asset?.address || "") &&
+                          parseInt(nft.token_id!) ===
+                            // prettier-ignore
+                            // @ts-expect-error
+                            transfer?.asset!.tokenId,
+                      );
+
+                    return (
+                      <FormControl>
+                        <div>
+                          <div className="w-full space-y-2">
+                            <Label htmlFor="weight">NFT</Label>
+                            <Button
+                              size="lg"
+                              type="button"
+                              variant="outline"
+                              className="flex w-full items-center justify-between px-4 text-sm"
+                              onClick={() => {
+                                if (!address) {
+                                  return;
+                                }
+
+                                setNftModalProps({
+                                  address: address,
+                                  onClose: () => {
+                                    hideNftModal();
+                                    if (isInsideModal) {
+                                      setDepositBackgroundModal(false);
+                                    }
+                                  },
+                                  onNftSelect: nft => {
+                                    if (nft.contract_address) {
+                                      form.setValue(
+                                        "asset.address",
+                                        getAddress(nft.contract_address),
+                                      );
+                                    }
+                                    if (nft.chain) {
+                                      form.setValue(
+                                        "chainId",
+                                        SIMPLEHASH_CHAIN_ID_MAPPING[
+                                          nft.chain! as
+                                            | SimplehashMainnetChain
+                                            | SimplehashTestnetChain
+                                        ],
+                                      );
+                                    }
+                                    if (nft.token_id) {
+                                      form.setValue(
+                                        "asset.tokenId",
+                                        parseInt(nft.token_id),
+                                      );
+                                    }
+
+                                    const assetType =
+                                      nft.contract.type?.toLowerCase();
+                                    form.setValue("assetType", assetType);
+
+                                    if (assetType === "erc721") {
+                                      form.setValue("asset.decimals", 1);
+                                    } else if (
+                                      !form.getValues("asset.quantity")
+                                    ) {
+                                      form.setValue("asset.quantity", 1);
+                                    }
+
+                                    form.trigger();
+
+                                    hideNftModal();
+                                    if (isInsideModal) {
+                                      setDepositBackgroundModal(false);
+                                    }
+                                  },
+                                });
+                                setDepositBackgroundModal(true);
+                                showNftModal();
+                              }}
+                            >
+                              {nft ? (
+                                <>
+                                  <div className="mr-2 size-6">
+                                    <NftImage
+                                      className="rounded-md"
+                                      nft={nft}
+                                    />
+                                  </div>
+                                  &nbsp; &nbsp;
+                                  {nft.collection?.name}
+                                </>
+                              ) : (
+                                "Select Token"
+                              )}
+                              <div className="grow" />
+                            </Button>
+                          </div>
+                          <div className="w-full space-y-2">
+                            <Label htmlFor="weight">Amount</Label>
+                            <FormField
+                              control={form.control}
+                              name="asset.quantity"
+                              render={({ field }) => (
+                                <Input
+                                  disabled={
+                                    nft ? nft.contract.type === "erc721" : false
+                                  }
+                                  {...field}
+                                  className="[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                                  type="text"
+                                  // onChange={e => {
+                                  //   if (!e.target.value) {
+                                  //     // Clear the value of key address
+                                  //     form.setValue("asset.quantity", 0);
+                                  //   }
+
+                                  //   const quantity = parseInt(e.target.value);
+
+                                  //   field.onChange(quantity);
+                                  // }}
+                                  onBlur={e => {
+                                    // Validate the address
+                                    if (!e.target.value) {
+                                      // Clear the value of key address
+                                      form.setValue("asset.quantity", 0);
+                                    }
+
+                                    const quantity = parseFloat(e.target.value);
+
+                                    validateTokenQuantity(quantity);
+                                  }}
+                                  onChange={e => {
+                                    // If the input ends with ".", or includes "." and ends with "0", set the value as string, as it can be assumed that the user is still typing
+                                    if (
+                                      e.target.value.endsWith(".") ||
+                                      (e.target.value.includes(".") &&
+                                        e.target.value.endsWith("0"))
+                                    ) {
+                                      field.onChange(e.target.value);
+                                    } else {
+                                      // Only parse to float if the value doesn't end with "."
+                                      field.onChange(
+                                        parseFloat(e.target.value) || 0,
+                                      );
+                                    }
+
+                                    // Validate the number
+                                    const quantity = parseFloat(e.target.value);
+
+                                    if (!isNaN(quantity)) {
+                                      validateTokenQuantity(quantity);
+                                    }
+                                  }}
+                                />
+                              )}
+                            />
+                            <FormMessage />
+                          </div>
+                        </div>
+                      </FormControl>
+                    );
+                  }}
+                />
+              </form>
+            </Form>
           </TabsContent>
         </Tabs>
       </Modal>

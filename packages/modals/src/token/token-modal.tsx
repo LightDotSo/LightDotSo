@@ -94,9 +94,13 @@ export const TokenModal: FC = () => {
 
     // Socket balances
     const filtered_balances =
-      (balances && chainId > 0
-        ? balances.filter(balance => balance.chainId === chainId)
-        : balances) || [];
+      // Filter the balances by chain that is in the `MAINNET_CHAINS` array
+      balances
+        ? balances.filter(balance => {
+            const chain = chains.find(chain => chain.id === balance.chainId);
+            return chain !== undefined;
+          })
+        : [];
 
     // Map the balances to tokens
     return filtered_balances.map(balance => ({
