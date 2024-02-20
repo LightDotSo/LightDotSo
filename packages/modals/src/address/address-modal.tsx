@@ -200,7 +200,7 @@ export function AddressModal() {
                           validEns.invalidate();
                         }}
                       >
-                        <div>{wallet.address}</div>
+                        {wallet.address}
                       </CommandItem>
                     ))}
                 </CommandGroup>

@@ -44,11 +44,11 @@ type Story = StoryObj<typeof AddressModal>;
 
 export const Base: Story = {
   render: () => {
-    const { setWallet } = useAuth();
+    const { setAddress } = useAuth();
     const { showAddressModal } = useModals();
 
     useEffect(() => {
-      setWallet("0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed");
+      setAddress("0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed");
       showAddressModal();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
