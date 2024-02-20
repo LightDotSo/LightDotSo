@@ -21,6 +21,7 @@ import { useQuerySocketBalances } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import { transfer } from "@lightdotso/schemas";
 import { useAuth, useModals } from "@lightdotso/stores";
+import { ChainLogo } from "@lightdotso/svg";
 import { FooterButton, Modal, useIsInsideModal } from "@lightdotso/templates";
 import {
   Button,
@@ -37,6 +38,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@lightdotso/ui";
+import { getChainById } from "@lightdotso/utils";
 import {
   useAccount,
   useChainId,
@@ -54,8 +56,6 @@ import { useForm } from "react-hook-form";
 import type { Address } from "viem";
 import { erc20Abi } from "viem";
 import type { z } from "zod";
-import { getChainById } from "@lightdotso/utils";
-import { ChainLogo } from "@lightdotso/svg";
 
 // -----------------------------------------------------------------------------
 // Types
