@@ -66,7 +66,7 @@ export const NotificationComboDialog: FC = () => {
 
   return (
     <ComboDialog
-      className="w-96"
+      className="w-96 p-0"
       buttonTrigger={
         <NotificationComboDialogIcon
           notificationsCount={notificationsCount?.count}

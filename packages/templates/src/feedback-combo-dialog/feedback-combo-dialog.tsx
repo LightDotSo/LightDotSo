@@ -52,7 +52,7 @@ export const FeedbackComboDialog: FC = () => {
 
   return (
     <ComboDialog
-      className="w-80"
+      className="w-80 p-4"
       buttonTrigger={
         <Button variant="outline" className="px-2">
           <Megaphone className="mr-2 size-4 shrink-0" />

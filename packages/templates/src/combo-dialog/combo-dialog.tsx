@@ -113,7 +113,7 @@ export const ComboDialog: FC<ComboDialogProps> = ({
   return (
     <Popover open={isOpen} onOpenChange={onOpenChange}>
       <PopoverTrigger>{buttonTrigger}</PopoverTrigger>
-      <PopoverContent className={cn("p-0", className)}>
+      <PopoverContent className={className}>
         <div className={cn(comboDialogVariants({ size }))}>
           {bannerContent && (
             <div className="sticky top-0 block w-full justify-start space-x-0">
