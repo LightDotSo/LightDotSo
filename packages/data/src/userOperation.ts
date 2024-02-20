@@ -52,3 +52,7 @@ export type UserOperationData = {
 export type UserOperationCountData = {
   count: number;
 };
+
+export type UserOperationNonceData = {
+  nonce: number;
+};

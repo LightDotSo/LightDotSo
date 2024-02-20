@@ -16,6 +16,7 @@ import type {
   UserOperationGetParams,
   UserOperationListCountParams,
   UserOperationListParams,
+  UserOperationNonceParams,
 } from "@lightdotso/params";
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";
@@ -32,6 +33,9 @@ export const user_operation = createQueryKeys("user_operation", {
     queryKey: [{ params }],
   }),
   listCount: (params: UserOperationListCountParams) => ({
+    queryKey: [{ params }],
+  }),
+  nonce: (params: UserOperationNonceParams) => ({
     queryKey: [{ params }],
   }),
 });
