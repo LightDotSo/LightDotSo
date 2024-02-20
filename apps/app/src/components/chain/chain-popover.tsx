@@ -18,6 +18,7 @@ import { CHAINS, MAINNET_CHAINS } from "@lightdotso/const";
 import { useQueryWalletSettings } from "@lightdotso/query";
 import { useAuth } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
+import { ComboDialog } from "@lightdotso/templates";
 import {
   Command,
   CommandEmpty,
@@ -86,8 +87,9 @@ export const ChainPopover: FC = () => {
   }
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+    <ComboDialog
+      className="w-[200px] p-0"
+      buttonTrigger={
         <Button
           className="h-9 space-x-0.5 px-2 py-1"
           size="unsized"
@@ -109,32 +111,31 @@ export const ChainPopover: FC = () => {
             {chains.length}
           </span>
         </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
-        <Command>
-          <CommandInput placeholder="Search chain..." />
-          <CommandEmpty>No chain found.</CommandEmpty>
-          <CommandGroup>
-            {chains.map(chain => (
-              <a
-                key={chain.id}
-                target="_blank"
-                rel="noreferrer"
-                href={`${getEtherscanUrl(chain)}/address/${pathType === "demo" ? DEMO_WALLET_ADDRESS : wallet}`}
+      }
+    >
+      <Command>
+        <CommandInput placeholder="Search chain..." />
+        <CommandEmpty>No chain found.</CommandEmpty>
+        <CommandGroup>
+          {chains.map(chain => (
+            <a
+              key={chain.id}
+              target="_blank"
+              rel="noreferrer"
+              href={`${getEtherscanUrl(chain)}/address/${pathType === "demo" ? DEMO_WALLET_ADDRESS : wallet}`}
+            >
+              <CommandItem
+                className="flex items-center space-x-2"
+                value={chain.name.toString()}
               >
-                <CommandItem
-                  className="flex items-center space-x-2"
-                  value={chain.name.toString()}
-                >
-                  <ChainLogo chainId={chain.id} className="size-5" size="sm" />
-                  <span>{chain.name}</span>
-                  <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50" />
-                </CommandItem>
-              </a>
-            ))}
-          </CommandGroup>
-        </Command>
-      </PopoverContent>
-    </Popover>
+                <ChainLogo chainId={chain.id} className="size-5" size="sm" />
+                <span>{chain.name}</span>
+                <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50" />
+              </CommandItem>
+            </a>
+          ))}
+        </CommandGroup>
+      </Command>
+    </ComboDialog>
   );
 };

@@ -15,17 +15,12 @@
 "use client";
 
 import { useIsMounted } from "@lightdotso/hooks";
-import { useAuth } from "@lightdotso/stores";
-import {
-  Popover,
-  PopoverTrigger,
-  Button,
-  PopoverContent,
-} from "@lightdotso/ui";
+import { useAuth, useComboDialog } from "@lightdotso/stores";
+import { Button } from "@lightdotso/ui";
 import { Megaphone } from "lucide-react";
-import { useState } from "react";
 import type { FC } from "react";
 import { FeedbackForm } from "./feedback-form";
+import { ComboDialog } from "../combo-dialog";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -39,16 +34,11 @@ export const FeedbackPopover: FC = () => {
   const isMounted = useIsMounted();
 
   // ---------------------------------------------------------------------------
-  // State Hooks
-  // ---------------------------------------------------------------------------
-
-  const [open, setOpen] = useState(false);
-
-  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
   const { address } = useAuth();
+  const { toggleIsComboDialogOpen } = useComboDialog();
 
   // ---------------------------------------------------------------------------
   // Render
@@ -60,17 +50,17 @@ export const FeedbackPopover: FC = () => {
   }
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+    <ComboDialog
+      className="w-80"
+      buttonTrigger={
         <Button variant="outline" className="px-2">
           <Megaphone className="mr-2 size-4 shrink-0" />
           Feedback
           <span className="sr-only">Open popover</span>
         </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-80">
-        <FeedbackForm onClose={() => setOpen(false)} />
-      </PopoverContent>
-    </Popover>
+      }
+    >
+      <FeedbackForm onClose={toggleIsComboDialogOpen} />
+    </ComboDialog>
   );
 };

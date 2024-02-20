@@ -13,6 +13,7 @@
 // limitations under the License.
 
 export { Banner } from "./banner";
+export { ComboDialog } from "./combo-dialog";
 export { ConnectButton } from "./connect-button";
 export {
   DataTableColumnHeader,

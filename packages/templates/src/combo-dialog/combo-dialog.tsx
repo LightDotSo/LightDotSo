@@ -15,6 +15,7 @@
 "use client";
 
 import { useIsMounted, useMediaQuery } from "@lightdotso/hooks";
+import { useComboDialog } from "@lightdotso/stores";
 import {
   Drawer,
   DrawerBody,
@@ -69,6 +70,7 @@ interface ComboDialogProps extends VariantProps<typeof comboDialogVariants> {
 export const ComboDialog: FC<ComboDialogProps> = ({
   children,
   size,
+  className,
   isHeightFixed,
   buttonTrigger,
   headerContent,
@@ -76,10 +78,10 @@ export const ComboDialog: FC<ComboDialogProps> = ({
   footerContent,
 }) => {
   // ---------------------------------------------------------------------------
-  // State Hooks
+  // Stores
   // ---------------------------------------------------------------------------
 
-  const [open, setOpen] = useState(false);
+  const { isComboDialogOpen: open, toggleIsComboDialogOpen } = useComboDialog();
 
   // ---------------------------------------------------------------------------
   // Hooks
@@ -98,7 +100,11 @@ export const ComboDialog: FC<ComboDialogProps> = ({
 
   if (!isDesktop) {
     return (
-      <Drawer shouldScaleBackground open={open} onOpenChange={setOpen}>
+      <Drawer
+        shouldScaleBackground
+        open={open}
+        onOpenChange={toggleIsComboDialogOpen}
+      >
         <DrawerTrigger>{buttonTrigger}</DrawerTrigger>
         <DrawerContent>
           {headerContent && <DrawerHeader>{headerContent}</DrawerHeader>}
@@ -113,9 +119,9 @@ export const ComboDialog: FC<ComboDialogProps> = ({
   }
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={toggleIsComboDialogOpen}>
       <PopoverTrigger>{buttonTrigger}</PopoverTrigger>
-      <PopoverContent className="w-96 p-0">
+      <PopoverContent className={className}>
         <div className={cn(comboDialogVariants({ size }))}>
           {bannerContent && (
             <div className="sticky top-0 block w-full justify-start space-x-0">
