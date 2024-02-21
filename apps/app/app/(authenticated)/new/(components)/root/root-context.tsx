@@ -187,6 +187,7 @@ export const RootContext: FC = () => {
               </div>
               {address && (
                 <div className="flex justify-between">
+                  {/* eslint-disable-nextline react/jsx-no-useless-fragment */}
                   <>
                     Your New Address:{" "}
                     <Tooltip>
@@ -202,6 +203,7 @@ export const RootContext: FC = () => {
               )}
               {formValues && formValues?.name && (
                 <div className="flex justify-between">
+                  {/* eslint-disable-nextline react/jsx-no-useless-fragment */}
                   <>
                     Name:{" "}
                     <Tooltip>
@@ -217,6 +219,7 @@ export const RootContext: FC = () => {
               )}
               {formValues && formValues?.threshold && (
                 <div className="flex justify-between">
+                  {/* eslint-disable-nextline react/jsx-no-useless-fragment */}
                   <>
                     Threshold:{" "}
                     <Tooltip>

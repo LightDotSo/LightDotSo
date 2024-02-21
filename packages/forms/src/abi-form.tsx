@@ -37,10 +37,8 @@ import {
 } from "@lightdotso/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { Abi, AbiFunction, AbiParameter } from "abitype";
-import { Abi as zodAbi } from "abitype/zod";
-import { useEffect, type FC, type InputHTMLAttributes, useMemo } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
 import {
+  Abi as zodAbi,
   SolidityArray,
   SolidityAddress,
   SolidityBool,
@@ -50,9 +48,10 @@ import {
   SolidityString,
   SolidityTuple,
 } from "abitype/zod";
+import { useEffect, type FC, type InputHTMLAttributes, useMemo } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
 import {
   encodeAbiParameters,
-  encodeFunctionData,
   isAddress,
   isBytes,
   toFunctionSelector,
@@ -73,14 +72,14 @@ const abiFormSchema = abi;
 // -----------------------------------------------------------------------------
 
 type AbiFormProps = {
-  name: string;
+  name?: string;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const AbiForm: FC<AbiFormProps> = ({ name }) => {
+export const AbiForm: FC<AbiFormProps> = () => {
   // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------
@@ -157,6 +156,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
         func.stateMutability !== "view"
       );
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form, abiWatch]);
 
   const functionNameWatch = form.watch("functionName");
@@ -167,8 +167,6 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
     if (!abi) {
       return undefined;
     }
-
-    console.log(functionNameWatch);
 
     // Get the abi input value from the matching `functionName`
     // @ts-expect-error
@@ -183,17 +181,19 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
     const abiFunction = matchingAbiFunctions[0];
 
     return abiFunction.inputs;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form, executableFuncs, functionNameWatch]);
 
-  const encodedFunctionSelector = useMemo(() => {
-    // Get the `AbiFunction` value from the `functionName`
+  const functionAbiWatch = form.watch("abiArguments");
 
+  const encodedFunctionSelector = useMemo(() => {
     const abi = form.getValues("abi") as Abi | undefined;
 
     if (!abi) {
       return undefined;
     }
 
+    // Get the `AbiFunction` value from the `functionName`
     // @ts-expect-error
     const matchingAbiFunction: AbiFunction | undefined = abi.find(
       func => func.type === "function" && func.name === functionNameWatch,
@@ -202,7 +202,10 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
     if (matchingAbiFunction) {
       return toFunctionSelector(matchingAbiFunction);
     }
-  }, [functionNameWatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [functionNameWatch, functionAbiWatch]);
+
+  const abiInputsWatch = form.watch("abiArguments");
 
   const encodedAbiParameters = useMemo(() => {
     if (!form.formState.isValid) {
@@ -225,7 +228,8 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
     if (abiInputs && abiArgumentsValues) {
       return encodeAbiParameters(abiInputs, abiArgumentsValues);
     }
-  }, [form.formState.isValid]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.formState.isValid, abiInputs, abiInputsWatch]);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const encodedCallData = useMemo(() => {
@@ -356,7 +360,6 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
     }
 
     if (SolidityArray.safeParse(abiType).success) {
-      console.log(value);
       let parsedArray;
       try {
         parsedArray = JSON.parse(value);
