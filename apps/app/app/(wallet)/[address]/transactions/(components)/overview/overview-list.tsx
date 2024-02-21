@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+"use client";
+
 import { useIsDemoPathname } from "@lightdotso/hooks";
 import type { FC } from "react";
 import type { Address } from "viem";
