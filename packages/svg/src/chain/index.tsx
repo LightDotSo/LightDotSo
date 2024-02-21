@@ -171,6 +171,7 @@ export const ChainLogo: FC<ChainLogoProps> = ({
           className={variantClassName}
           logo={BaseLogo}
           chainId={chainId}
+          size={size}
           {...props}
         />
       );
