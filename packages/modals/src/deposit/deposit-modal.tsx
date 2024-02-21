@@ -247,7 +247,7 @@ export function DepositModal() {
       const res = await writeContract({
         abi: erc721Abi,
         address: contractAddress,
-        chainId: globalChainId,
+        chainId: chainId,
         functionName: "transferFrom",
         args: [address, wallet, bigIntTokenId],
       });
@@ -295,7 +295,7 @@ export function DepositModal() {
           },
         ],
         address: contractAddress,
-        chainId: globalChainId,
+        chainId: chainId,
         functionName: "safeTransferFrom",
         args: [address, wallet, bigIntTokenId, bigIntQuantity],
       });
