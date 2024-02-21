@@ -38,9 +38,19 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Abi as zodAbi } from "abitype/zod";
 import { useEffect, type FC, type InputHTMLAttributes, useMemo } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { Abi, AbiFunction, AbiParameter } from "abitype";
-import { AbiArgumentsFormField } from "./abi-arguments-form-field";
+import {
+  SolidityArray,
+  SolidityAddress,
+  SolidityBool,
+  SolidityBytes,
+  SolidityFunction,
+  SolidityInt,
+  SolidityString,
+  SolidityTuple,
+} from "abitype/zod";
+import { isAddress, isBytes } from "viem";
 // import type { z } from "zod";
 // import { AddressForm } from "./address-form";
 
@@ -114,6 +124,11 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
     // ),
   });
 
+  const { fields } = useFieldArray({
+    name: "abiArguments",
+    control: form.control,
+  });
+
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
@@ -173,6 +188,141 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
     form.setValue("abiArguments", abiInputs);
   }, [form, abiInputs]);
 
+  // From: https://github.com/hashgraph/hedera-accelerator-defi-dex-ui/blob/cc70c3972c121774d19327718758c30fbe165e2b/src/dao/pages/DAOProposals/Forms/DAOGenericProposal/FormMultiInputList.tsx
+  // License: MIT
+  // Thanks to the Hedera team for the inspiration!
+  function validateSolidityParam(
+    abiType: string,
+    value: string,
+    index: number,
+  ) {
+    if (SolidityString.safeParse(abiType).success) {
+      if (value?.length > 0) {
+        form.setValue(`abiArguments.${index}.value` as any, value);
+        form.clearErrors(`abiArguments.${index}.value`);
+        return;
+      }
+      form.setError(`abiArguments.${index}.value`, {
+        type: "manual",
+        message: "Invalid string",
+      });
+      return;
+    }
+    if (SolidityAddress.safeParse(abiType).success) {
+      if (
+        isAddress(value) ||
+        "0x000000000000000000000000000000000000000" === value
+      ) {
+        form.setValue(`abiArguments.${index}.value` as any, value);
+        form.clearErrors(`abiArguments.${index}.value`);
+        return;
+      }
+      form.setError(`abiArguments.${index}.value`, {
+        type: "manual",
+        message: "Invalid address",
+      });
+      return;
+    }
+    if (SolidityBool.safeParse(abiType).success) {
+      const boolValue = value.toLowerCase();
+      if (boolValue === "true" || boolValue === "false") {
+        form.setValue(
+          `abiArguments.${index}.value` as any,
+          boolValue === "true",
+        );
+        form.clearErrors(`abiArguments.${index}.value`);
+        return;
+      }
+      form.setError(`abiArguments.${index}.value`, {
+        type: "manual",
+        message: "Invalid bool",
+      });
+      return;
+    }
+    if (SolidityBytes.safeParse(abiType).success) {
+      if (isBytes(value)) {
+        form.setValue(`abiArguments.${index}.value` as any, value);
+        form.clearErrors(`abiArguments.${index}.value`);
+        return;
+      }
+      form.setError(`abiArguments.${index}.value`, {
+        type: "manual",
+        message: "Invalid bytes",
+      });
+    }
+    if (SolidityFunction.safeParse(abiType).success) {
+      /** TODO: Add validations for Function type inputs. */
+      if (value?.length > 0) {
+        form.setValue(`abiArguments.${index}.value` as any, value);
+        form.clearErrors(`abiArguments.${index}.value`);
+        return;
+      }
+      form.setError(`abiArguments.${index}.value`, {
+        type: "manual",
+        message: "Invalid function",
+      });
+    }
+    if (SolidityInt.safeParse(abiType).success) {
+      const parsedNumber = BigInt(value);
+      if (parsedNumber) {
+        form.setValue(
+          `abiArguments.${index}.value` as any,
+          Number(parsedNumber),
+        );
+        form.clearErrors(`abiArguments.${index}.value`);
+        return;
+      }
+      form.setError(`abiArguments.${index}.value`, {
+        type: "manual",
+        message: "Invalid integer",
+      });
+    }
+    if (SolidityTuple.safeParse(abiType).success) {
+      if (value?.length > 0) {
+        form.setValue(`abiArguments.${index}.value` as any, value);
+        form.clearErrors(`abiArguments.${index}.value`);
+        return;
+      }
+      form.setError(`abiArguments.${index}.value`, {
+        type: "manual",
+        message: "Invalid tuple",
+      });
+    }
+
+    if (SolidityArray.safeParse(abiType).success) {
+      console.log(value);
+      let parsedArray;
+      try {
+        parsedArray = JSON.parse(value);
+      } catch (error) {
+        // return "Invalid array.";
+      }
+      if (Array.isArray(parsedArray)) {
+        const arrayType = abiType.replace("[]", "");
+        /** TODO: Cover validations for all array types **/
+        const parseArrayType = arrayType.includes("int")
+          ? "number"
+          : arrayType.includes("bool")
+            ? "boolean"
+            : "string";
+        const areValuesValid = parsedArray.every(
+          (value: unknown) => typeof value === parseArrayType,
+        );
+        if (areValuesValid) {
+          form.setValue(`abiArguments.${index}.value` as any, parsedArray);
+          form.clearErrors(`abiArguments.${index}.value`);
+          return;
+        }
+
+        form.setError(`abiArguments.${index}.value`, {
+          type: "manual",
+          message: "Invalid array",
+        });
+      }
+    }
+
+    return;
+  }
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -278,7 +428,38 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
           </FormControl>
         )}
       />
-      <AbiArgumentsFormField />
+      {fields.map((rootField, index) => (
+        <FormField
+          key={rootField.id}
+          control={form.control}
+          name={`abiArguments.${index}.value`}
+          render={() => (
+            <FormItem>
+              {/* @ts-ignore */}
+              <FormLabel>{rootField.name.toString()}</FormLabel>
+              <FormDescription>
+                {/* @ts-ignore */}
+                {rootField.internalType}
+              </FormDescription>
+              <FormControl>
+                <Input
+                  type="text"
+                  onChange={e => {
+                    validateSolidityParam(
+                      // @ts-ignore
+                      rootField.type,
+                      e.target.value,
+                      index,
+                    );
+                  }}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      ))}
+      {/* <AbiArgumentsFormField /> */}
       {/* Show all errors for debugging */}
       {/* <div className="text-text">
         {JSON.stringify(form.getValues("abiArguments"), null, 2)}
