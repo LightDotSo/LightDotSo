@@ -17,9 +17,7 @@ import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Address } from "viem";
-import { OverviewSection } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-section";
-import { OverviewSectionEmpty } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-section-empty";
-import { TransactionsDataTable } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table";
+import { OverviewList } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-list";
 import { handler } from "@/handlers/[address]/transactions/handler";
 import { preloader } from "@/preloaders/[address]/transactions/preloader";
 
@@ -118,29 +116,7 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <OverviewSection
-        address={params.address as Address}
-        status="queued"
-        title="Queue"
-        href={`/${params.address}/transactions/queue`}
-      >
-        <TransactionsDataTable
-          address={params.address as Address}
-          status="queued"
-        />
-      </OverviewSection>
-      <OverviewSection
-        address={params.address as Address}
-        status="history"
-        title="History"
-        href={`/${params.address}/transactions/history`}
-      >
-        <TransactionsDataTable
-          address={params.address as Address}
-          status="history"
-        />
-      </OverviewSection>
-      <OverviewSectionEmpty address={params.address as Address} />
+      <OverviewList address={params.address as Address} />
     </HydrationBoundary>
   );
 }

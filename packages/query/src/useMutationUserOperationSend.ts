@@ -144,6 +144,9 @@ export const useMutationUserOperationSend = (params: UserOperationParams) => {
         },
       );
 
+      // Add 3 second delay for buffer
+      await new Promise(resolve => setTimeout(resolve, 3000));
+
       return { previousData };
     },
     onSettled: () => {
