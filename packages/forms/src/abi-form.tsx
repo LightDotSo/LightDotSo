@@ -464,7 +464,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
       {/* <div className="text-text">
         {JSON.stringify(form.getValues("abiArguments"), null, 2)}
       </div> */}
-      {/* <div className="text-text">{JSON.stringify(field, null, 2)}</div> */}
+      {/* <div className="text-text">{JSON.stringify(form.formState, null, 2)}</div> */}
       {/* <div className="text-text">
         {JSON.stringify(form.formState.errors, null, 2)}
       </div> */}
