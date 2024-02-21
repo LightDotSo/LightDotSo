@@ -284,8 +284,9 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
         {JSON.stringify(form.getValues("abiArguments"), null, 2)}
       </div> */}
       {/* <div className="text-text">{JSON.stringify(field, null, 2)}</div> */}
-      {/* <div className="text-text">{JSON.stringify(form, null, 2)}</div> */}
-      {/* <AddressForm name="address" onMouseLeave={validAbi.invalidate} /> */}
+      {/* <div className="text-text">
+        {JSON.stringify(form.formState.errors, null, 2)}
+      </div> */}
     </Form>
   );
 };

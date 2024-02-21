@@ -34,18 +34,20 @@ export const abi = z.object({
   abi: zodAbi,
   abiString: z.string(),
   abiArguments: z.array(
-    zodArgument,
-    z.object({
-      value: z.union([
-        SolidityAddress,
-        SolidityBool,
-        SolidityBytes,
-        SolidityFunction,
-        SolidityString,
-        SolidityInt,
-        SolidityArrayWithoutTuple,
-      ]),
-    }),
+    z.intersection(
+      zodArgument,
+      z.object({
+        value: z.union([
+          SolidityAddress,
+          SolidityBool,
+          SolidityBytes,
+          SolidityFunction,
+          SolidityString,
+          SolidityInt,
+          SolidityArrayWithoutTuple,
+        ]),
+      }),
+    ),
   ),
   address: zodAddress,
   functionName: z.string(),

@@ -23,7 +23,7 @@ import {
   FormMessage,
   Input,
 } from "@lightdotso/ui";
-import { type FC, type InputHTMLAttributes } from "react";
+import { type FC } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 
 // -----------------------------------------------------------------------------
@@ -35,7 +35,7 @@ export const AbiArgumentsFormField: FC = () => {
   // Form
   // ---------------------------------------------------------------------------
 
-  const { control } = useFormContext();
+  const { control, register } = useFormContext();
 
   // methods.register("abiArguments");
 
@@ -53,7 +53,7 @@ export const AbiArgumentsFormField: FC = () => {
       {/* {JSON.stringify(methods)} */}
       {/* {JSON.stringify(methods.getValues("abiArguments"))} */}
       <br />
-      {/* {JSON.stringify(fields)} */}
+      {JSON.stringify(fields)}
       {fields.map((field, index) => (
         <>
           {/* {JSON.stringify(field)} */}
