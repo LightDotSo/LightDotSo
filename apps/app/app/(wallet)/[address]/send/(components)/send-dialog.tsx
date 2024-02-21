@@ -32,6 +32,7 @@ import type {
   Transfer,
 } from "@lightdotso/schemas";
 import { useFormRef, useModals } from "@lightdotso/stores";
+import { ChainLogo } from "@lightdotso/svg";
 import { FooterButton, useIsInsideModal } from "@lightdotso/templates";
 import {
   Accordion,
@@ -83,7 +84,6 @@ import {
 import type { Address, Hex } from "viem";
 import { normalize } from "viem/ens";
 import { z } from "zod";
-import { ChainLogo } from "@lightdotso/svg";
 
 // -----------------------------------------------------------------------------
 // Types
