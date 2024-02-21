@@ -224,8 +224,8 @@ export function DepositModal() {
     const assetType = form.getValues("assetType");
     console.info("Asset Type: ", assetType);
 
-    const addr = form.getValues("asset.address") as Address;
-    console.info("Address: ", addr);
+    const contractAddress = form.getValues("asset.address") as Address;
+    console.info("Contract Adress: ", contractAddress);
 
     if (assetType === "erc721") {
       console.info("Sending NFT");
@@ -240,7 +240,7 @@ export function DepositModal() {
 
       const res = await writeContract({
         abi: erc721Abi,
-        address: addr,
+        address: contractAddress,
         chainId: globalChainId,
         functionName: "transferFrom",
         args: [address, wallet, BigInt(tokenId)],
@@ -285,7 +285,7 @@ export function DepositModal() {
             type: "bytes",
           },
         ],
-        address: addr,
+        address: contractAddress,
         chainId: globalChainId,
         functionName: "safeTransferFrom",
         args: [address, wallet, BigInt(tokenId), BigInt(quantity)],
@@ -296,7 +296,7 @@ export function DepositModal() {
       return;
     }
 
-    if (addr === "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee") {
+    if (contractAddress === "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee") {
       console.info("Sending ETH");
 
       const res = await sendTransaction({
@@ -311,8 +311,8 @@ export function DepositModal() {
 
     const res = writeContract({
       abi: erc20Abi,
-      address: addr,
-      chainId: globalChainId,
+      address: contractAddress,
+      chainId: chainId,
       functionName: "transfer",
       args: [wallet, BigInt(quantity ** Math.pow(10, decimals))],
     });

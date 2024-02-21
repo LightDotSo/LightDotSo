@@ -54,7 +54,12 @@ import {
   TabsTrigger,
   TooltipProvider,
 } from "@lightdotso/ui";
-import { cn, debounce, refineNumberFormat } from "@lightdotso/utils";
+import {
+  cn,
+  debounce,
+  getChainById,
+  refineNumberFormat,
+} from "@lightdotso/utils";
 import { lightWalletAbi, publicClient } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
@@ -78,6 +83,7 @@ import {
 import type { Address, Hex } from "viem";
 import { normalize } from "viem/ens";
 import { z } from "zod";
+import { ChainLogo } from "@lightdotso/svg";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -1181,168 +1187,151 @@ export const SendDialog: FC<SendDialogProps> = ({
                                 <FormField
                                   control={form.control}
                                   name={`transfers.${index}.asset.quantity`}
-                                  render={({ field }) => (
-                                    <div className="space-y-2">
-                                      <Label htmlFor="address">Quantity</Label>
-                                      <div className="flex items-center space-x-3">
-                                        <div className="relative inline-block w-full">
-                                          <Input
-                                            id="quantity"
-                                            className="[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                                            type="text"
-                                            {...field}
-                                            placeholder="Quantity of tokens to transfer"
-                                            onBlur={e => {
-                                              // Validate the address
-                                              if (!e.target.value) {
-                                                // Clear the value of key address
-                                                form.setValue(
-                                                  `transfers.${index}.asset.quantity`,
-                                                  0,
-                                                );
-                                              }
+                                  render={({ field }) => {
+                                    // Set the value of key quantity to the token balance
+                                    const token =
+                                      tokens &&
+                                      transfers &&
+                                      transfers?.length > 0 &&
+                                      transfers[index]?.asset?.address &&
+                                      tokens?.find(
+                                        token =>
+                                          token.address ===
+                                            (transfers?.[index]?.asset
+                                              ?.address || "") &&
+                                          token.chain_id ===
+                                            transfers?.[index]?.chainId,
+                                      );
 
-                                              const quantity = parseFloat(
-                                                e.target.value,
-                                              );
-
-                                              validateTokenQuantity(
-                                                quantity,
-                                                index,
-                                              );
-                                            }}
-                                            onChange={e => {
-                                              // If the input ends with ".", or includes "." and ends with "0", set the value as string, as it can be assumed that the user is still typing
-                                              if (
-                                                e.target.value.endsWith(".") ||
-                                                (e.target.value.includes(".") &&
-                                                  e.target.value.endsWith("0"))
-                                              ) {
-                                                field.onChange(e.target.value);
-                                              } else {
-                                                // Only parse to float if the value doesn't end with "."
-                                                field.onChange(
-                                                  parseFloat(e.target.value) ||
+                                    return (
+                                      <div className="space-y-2">
+                                        <Label htmlFor="address">
+                                          Quantity
+                                        </Label>
+                                        <div className="flex items-center space-x-3">
+                                          <div className="relative inline-block w-full">
+                                            <Input
+                                              id="quantity"
+                                              className="[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                                              type="text"
+                                              {...field}
+                                              placeholder="Quantity of tokens to transfer"
+                                              onBlur={e => {
+                                                // Validate the address
+                                                if (!e.target.value) {
+                                                  // Clear the value of key address
+                                                  form.setValue(
+                                                    `transfers.${index}.asset.quantity`,
                                                     0,
+                                                  );
+                                                }
+
+                                                const quantity = parseFloat(
+                                                  e.target.value,
                                                 );
-                                              }
 
-                                              // Validate the number
-                                              const quantity = parseFloat(
-                                                e.target.value,
-                                              );
-
-                                              if (!isNaN(quantity)) {
                                                 validateTokenQuantity(
                                                   quantity,
                                                   index,
                                                 );
-                                              }
-                                            }}
-                                          />
-                                          <div className="absolute inset-y-0 right-3 flex items-center">
-                                            <Button
-                                              size="unsized"
-                                              variant="outline"
-                                              type="button"
-                                              className="px-1 py-0.5 text-xs"
-                                              onClick={() => {
-                                                // Set the value of key quantity to the token balance
-                                                const token =
-                                                  tokens &&
-                                                  transfers &&
-                                                  transfers?.length > 0 &&
-                                                  transfers[index]?.asset
-                                                    ?.address &&
-                                                  tokens?.find(
-                                                    token =>
-                                                      token.address ===
-                                                        (transfers?.[index]
-                                                          ?.asset?.address ||
-                                                          "") &&
-                                                      token.chain_id ===
-                                                        transfers?.[index]
-                                                          ?.chainId,
+                                              }}
+                                              onChange={e => {
+                                                // If the input ends with ".", or includes "." and ends with "0", set the value as string, as it can be assumed that the user is still typing
+                                                if (
+                                                  e.target.value.endsWith(
+                                                    ".",
+                                                  ) ||
+                                                  (e.target.value.includes(
+                                                    ".",
+                                                  ) &&
+                                                    e.target.value.endsWith(
+                                                      "0",
+                                                    ))
+                                                ) {
+                                                  field.onChange(
+                                                    e.target.value,
                                                   );
-
-                                                if (token) {
-                                                  form.setValue(
-                                                    `transfers.${index}.asset.quantity`,
-                                                    token?.amount /
-                                                      Math.pow(
-                                                        10,
-                                                        token?.decimals,
-                                                      ),
+                                                } else {
+                                                  // Only parse to float if the value doesn't end with "."
+                                                  field.onChange(
+                                                    parseFloat(
+                                                      e.target.value,
+                                                    ) || 0,
                                                   );
                                                 }
 
-                                                // Validate the form
-                                                form.trigger();
+                                                // Validate the number
+                                                const quantity = parseFloat(
+                                                  e.target.value,
+                                                );
+
+                                                if (!isNaN(quantity)) {
+                                                  validateTokenQuantity(
+                                                    quantity,
+                                                    index,
+                                                  );
+                                                }
                                               }}
-                                            >
-                                              Max
-                                            </Button>
+                                            />
+                                            <div className="absolute inset-y-0 right-3 flex items-center">
+                                              <Button
+                                                size="unsized"
+                                                variant="outline"
+                                                type="button"
+                                                className="px-1 py-0.5 text-xs"
+                                                onClick={() => {
+                                                  if (token) {
+                                                    form.setValue(
+                                                      `transfers.${index}.asset.quantity`,
+                                                      token?.amount /
+                                                        Math.pow(
+                                                          10,
+                                                          token?.decimals,
+                                                        ),
+                                                    );
+                                                  }
+
+                                                  // Validate the form
+                                                  form.trigger();
+                                                }}
+                                              >
+                                                Max
+                                              </Button>
+                                            </div>
                                           </div>
                                         </div>
-                                      </div>
-                                      <div className="flex items-center justify-between text-xs text-text-weak">
-                                        <div>
-                                          {/* Get the current balance in USD */}
-                                          {tokens &&
-                                            tokens?.length > 0 &&
-                                            (() => {
-                                              const token = tokens.find(
-                                                token =>
-                                                  token.address ===
-                                                    (transfers?.[index]?.asset
-                                                      ?.address || "") &&
-                                                  token.chain_id ===
-                                                    transfers?.[index]?.chainId,
-                                              );
-                                              return token
-                                                ? "~ $" +
-                                                    // Get the current selected token balance in USD
-                                                    refineNumberFormat(
-                                                      (token?.balance_usd /
-                                                        (token.amount /
-                                                          Math.pow(
-                                                            10,
-                                                            token?.decimals,
-                                                          ))) *
-                                                        // Get the form value
-                                                        (field.value ?? 0),
-                                                    )
-                                                : "";
-                                            })()}
+                                        <div className="flex items-center justify-between text-xs text-text-weak">
+                                          <div>
+                                            {/* Get the current balance in USD */}
+                                            {token
+                                              ? "~ $" +
+                                                // Get the current selected token balance in USD
+                                                refineNumberFormat(
+                                                  (token?.balance_usd /
+                                                    (token.amount /
+                                                      Math.pow(
+                                                        10,
+                                                        token?.decimals,
+                                                      ))) *
+                                                    // Get the form value
+                                                    (field.value ?? 0),
+                                                )
+                                              : ""}
+                                          </div>
+                                          <div>
+                                            {token
+                                              ? (
+                                                  token?.amount /
+                                                  Math.pow(10, token?.decimals)
+                                                ).toString() +
+                                                ` ${token.symbol} available`
+                                              : ""}
+                                          </div>
                                         </div>
-                                        <div>
-                                          {tokens &&
-                                            tokens?.length > 0 &&
-                                            (() => {
-                                              const token = tokens.find(
-                                                token =>
-                                                  token.address ===
-                                                    (transfers?.[index]?.asset
-                                                      ?.address || "") &&
-                                                  token.chain_id ===
-                                                    transfers?.[index]?.chainId,
-                                              );
-                                              return token
-                                                ? (
-                                                    token?.amount /
-                                                    Math.pow(
-                                                      10,
-                                                      token?.decimals,
-                                                    )
-                                                  ).toString() +
-                                                    ` ${token.symbol} available`
-                                                : "";
-                                            })()}
-                                        </div>
+                                        <FormMessage />
                                       </div>
-                                      <FormMessage />
-                                    </div>
-                                  )}
+                                    );
+                                  }}
                                 />
                               </div>
                               <div className="relative col-span-4 inline-block w-full">
@@ -1426,6 +1415,18 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                   token={token}
                                                 />
                                                 {token?.symbol}
+                                                &nbsp; &nbsp;
+                                                <span className="text-text-weaker">
+                                                  on{" "}
+                                                  {
+                                                    getChainById(token.chain_id)
+                                                      ?.name
+                                                  }
+                                                </span>
+                                                &nbsp;
+                                                <ChainLogo
+                                                  chainId={token.chain_id}
+                                                />
                                               </>
                                             ) : (
                                               "Select Token"
