@@ -14,7 +14,6 @@
 
 "use client";
 
-import { useModals } from "@lightdotso/stores";
 import {
   Button,
   Tooltip,
@@ -23,6 +22,7 @@ import {
   TooltipProvider,
 } from "@lightdotso/ui";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 import type { FC } from "react";
 import type { Address } from "viem";
 import { WalletOverviewBannerAddress } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner-address";
@@ -44,12 +44,6 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
   address,
 }) => {
   // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { showDepositModal } = useModals();
-
-  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -65,13 +59,11 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button
-                type="button"
-                className="w-full md:w-28"
-                onClick={showDepositModal}
-              >
-                <PlusCircleIcon className="mr-2 size-5" />
-                Deposit
+              <Button asChild type="button" className="w-full md:w-28">
+                <Link href={`/${address}/deposit`}>
+                  <PlusCircleIcon className="mr-2 size-5" />
+                  Deposit
+                </Link>
               </Button>
             </TooltipTrigger>
             <TooltipContent>
