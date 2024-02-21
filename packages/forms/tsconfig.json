@@ -3,8 +3,7 @@
     "outDir": "./dist",
     "declaration": false,
     "declarationMap": false,
-    "resolveJsonModule": true,
-    "target": "ESNext"
+    "resolveJsonModule": true
   },
   "exclude": ["dist", "build", "node_modules"],
   "extends": "@lightdotso/tsconfig/react.json",
