@@ -71,7 +71,7 @@ export const AddressFormField: FC<AddressFormFieldProps> = ({
     const charLength = fieldValue ? fieldValue.length : 0;
 
     // Set the span left position based on the length of the input
-    setSpanLeft(charLength * 7 + 80);
+    setSpanLeft(charLength * 7 + 120);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watchedName, name, methods]);

@@ -15,6 +15,7 @@
 "use client";
 
 import { OVERVIEW_ROW_COUNT } from "@lightdotso/const";
+import { useIsDemoPathname } from "@lightdotso/hooks";
 import { AnimatePresence, Reorder } from "framer-motion";
 import { useState, type FC } from "react";
 import type { Address } from "viem";
@@ -49,6 +50,12 @@ export type OverviewListProps = {
 // -----------------------------------------------------------------------------
 
 export const OverviewList: FC<OverviewListProps> = ({ address }) => {
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const isDemo = useIsDemoPathname();
+
   // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
@@ -104,7 +111,7 @@ export const OverviewList: FC<OverviewListProps> = ({ address }) => {
           {items.map(item => (
             <OverviewCard
               key={item}
-              href={`/${address}${
+              href={`/${!isDemo ? address : "demo"}${
                 OVERVIEW_NAV_ITEMS.find(nav => nav.category === item)?.href ??
                 ""
               }`}
