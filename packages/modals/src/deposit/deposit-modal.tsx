@@ -227,6 +227,9 @@ export function DepositModal() {
     const contractAddress = form.getValues("asset.address") as Address;
     console.info("Contract Adress: ", contractAddress);
 
+    const bigIntQuantity = BigInt(quantity ** Math.pow(10, decimals));
+    console.info("BigInt Quantity: ", bigIntQuantity);
+
     if (assetType === "erc721") {
       console.info("Sending NFT");
 
@@ -238,12 +241,15 @@ export function DepositModal() {
         return;
       }
 
+      const bigIntTokenId = BigInt(tokenId);
+      console.info("BigInt Token ID: ", bigIntTokenId);
+
       const res = await writeContract({
         abi: erc721Abi,
         address: contractAddress,
         chainId: globalChainId,
         functionName: "transferFrom",
-        args: [address, wallet, BigInt(tokenId)],
+        args: [address, wallet, bigIntTokenId],
       });
 
       console.info(res);
@@ -261,6 +267,9 @@ export function DepositModal() {
         console.error("Token ID is not defined");
         return;
       }
+
+      const bigIntTokenId = BigInt(tokenId);
+      console.info("BigInt Token ID: ", bigIntTokenId);
 
       const res = await writeContract({
         abi: [
@@ -288,7 +297,7 @@ export function DepositModal() {
         address: contractAddress,
         chainId: globalChainId,
         functionName: "safeTransferFrom",
-        args: [address, wallet, BigInt(tokenId), BigInt(quantity)],
+        args: [address, wallet, bigIntTokenId, bigIntQuantity],
       });
 
       console.info(res);
@@ -302,7 +311,7 @@ export function DepositModal() {
       const res = await sendTransaction({
         chainId: chainId,
         to: wallet,
-        value: BigInt(quantity ** Math.pow(10, decimals)),
+        value: bigIntQuantity,
       });
 
       console.info(res);
@@ -314,7 +323,7 @@ export function DepositModal() {
       address: contractAddress,
       chainId: chainId,
       functionName: "transfer",
-      args: [wallet, BigInt(quantity ** Math.pow(10, decimals))],
+      args: [wallet, bigIntQuantity],
     });
 
     console.error(error);
