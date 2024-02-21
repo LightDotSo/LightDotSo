@@ -89,7 +89,12 @@ export const TokenModal: FC = () => {
           ? tokens.filter(token => token.chain_id === chainId)
           : tokens;
 
-      return filtered_tokens || [];
+      return filtered_tokens
+        ? filtered_tokens.map(token => ({
+            ...token,
+            amount: token.amount / Math.pow(10, token.decimals),
+          }))
+        : [];
     }
 
     // Socket balances
