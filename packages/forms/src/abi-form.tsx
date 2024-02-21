@@ -44,8 +44,10 @@ import {
   useCallback,
   useMemo,
 } from "react";
-import { useForm, useFormContext } from "react-hook-form";
-import { Abi } from "abitype";
+import { useFieldArray, useForm, useFormContext } from "react-hook-form";
+import { Abi, AbiFunction, AbiParameter } from "abitype";
+import { AbiArgumentsFormField } from "./abi-arguments-form-field";
+import { cn } from "@lightdotso/utils";
 // import type { z } from "zod";
 // import { AddressForm } from "./address-form";
 
@@ -73,8 +75,6 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
   // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------
-
-  const parentMethods = useFormContext();
 
   // const getAbi: RefinementCallback<AbiValues> = async ({
   //   abi,
@@ -122,53 +122,13 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
   });
 
   // ---------------------------------------------------------------------------
-  // Callback Hooks
-  // ---------------------------------------------------------------------------
-
-  const syncWithParent = useCallback(() => {
-    if (!parentMethods) {
-      return;
-    }
-
-    // Sync with parent
-    parentMethods.setValue(name, form.getValues(name));
-
-    // If the form is valid, clear the error
-    if (form.formState.isValid) {
-      parentMethods.clearErrors(name);
-    }
-
-    // If there is an error, sync with parent
-    if (!form.formState.isValid && form.formState.errors[name]) {
-      parentMethods.setError(name, form.formState.errors[name]!);
-    }
-  }, [form, name, parentMethods]);
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
-
-  // Only on mount
-  useEffect(() => {
-    syncWithParent();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Sync w/ every invalidation
-  useEffect(() => {
-    syncWithParent();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.formState.isValid, form.formState.errors]);
-
-  // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const abiWatch = form.watch("abi");
 
-  const executableFuncs = useMemo(() => {
+  // @ts-expect-error
+  const executableFuncs: AbiFunction[] = useMemo(() => {
     const abi = form.getValues("abi") as Abi | undefined;
 
     if (!abi) {
@@ -184,6 +144,41 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
       );
     });
   }, [form, abiWatch]);
+
+  const functionNameWatch = form.watch("functionName");
+
+  const abiInputs: readonly AbiParameter[] | undefined = useMemo(() => {
+    const abi = form.getValues("abi") as Abi | undefined;
+
+    if (!abi) {
+      return undefined;
+    }
+
+    console.log(functionNameWatch);
+
+    // Get the abi input value from the matching `functionName`
+    // @ts-expect-error
+    const matchingAbiFunctions: AbiFunction[] = abi.filter(func => {
+      return func.type === "function" && func.name === functionNameWatch;
+    });
+
+    if (matchingAbiFunctions.length < 1) {
+      return undefined;
+    }
+
+    const abiFunction = matchingAbiFunctions[0];
+
+    return abiFunction.inputs;
+  }, [form, executableFuncs, functionNameWatch]);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // Sync the `abiArguments` value with the `abiInputs`
+  useEffect(() => {
+    form.setValue("abiArguments", abiInputs);
+  }, [form, abiInputs]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -223,8 +218,13 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
             {/* <div className="text-text">
               {JSON.stringify(form.getValues("abi"), null, 2)}
             </div> */}
+            {/* <div className="text-text">
+              {JSON.stringify(abiInputs, null, 2)}
+            </div> */}
             {/* <div className="text-text">{JSON.stringify(field, null, 2)}</div> */}
-            {/* <div className="text-text">{JSON.stringify(form, null, 2)}</div> */}
+            <div className="text-text">
+              {JSON.stringify(form.formState.isValid, null, 2)}
+            </div>
           </FormItem>
         )}
       />
@@ -271,8 +271,8 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
                 </FormControl>
                 <SelectContent className="max-h-60">
                   {executableFuncs.map((func, i) => (
-                    <SelectItem key={i} value={i.toString()}>
-                      {func.type === "function" ? func.name : "Unknown"}
+                    <SelectItem key={i} value={func.name}>
+                      {func.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -285,6 +285,13 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
           </FormControl>
         )}
       />
+      <AbiArgumentsFormField name="abiArguments" />
+      {/* Show all errors for debugging */}
+      {/* <div className="text-text">
+        {JSON.stringify(form.getValues("abiArguments"), null, 2)}
+      </div> */}
+      {/* <div className="text-text">{JSON.stringify(field, null, 2)}</div> */}
+      {/* <div className="text-text">{JSON.stringify(form, null, 2)}</div> */}
       {/* <AddressForm name="address" onMouseLeave={validAbi.invalidate} /> */}
     </Form>
   );

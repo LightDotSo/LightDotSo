@@ -12,7 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Abi as zodAbi, Address as zodAddress } from "abitype/zod";
+import {
+  Abi as zodAbi,
+  Address as zodAddress,
+  AbiParameter as zodArgument,
+  SolidityAddress,
+  SolidityBool,
+  SolidityBytes,
+  SolidityFunction,
+  SolidityString,
+  SolidityInt,
+  SolidityArrayWithoutTuple,
+} from "abitype/zod";
 import { z } from "zod";
 
 // -----------------------------------------------------------------------------
@@ -22,9 +33,22 @@ import { z } from "zod";
 export const abi = z.object({
   abi: zodAbi,
   abiString: z.string(),
+  abiArguments: z.array(
+    zodArgument,
+    z.object({
+      value: z.union([
+        SolidityAddress,
+        SolidityBool,
+        SolidityBytes,
+        SolidityFunction,
+        SolidityString,
+        SolidityInt,
+        SolidityArrayWithoutTuple,
+      ]),
+    }),
+  ),
   address: zodAddress,
   functionName: z.string(),
-  functionArguments: z.array(z.string()),
 });
 
 // -----------------------------------------------------------------------------
