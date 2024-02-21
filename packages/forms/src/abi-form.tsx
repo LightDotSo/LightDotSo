@@ -36,10 +36,10 @@ import {
   Textarea,
 } from "@lightdotso/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { Abi, AbiFunction, AbiParameter } from "abitype";
 import { Abi as zodAbi } from "abitype/zod";
 import { useEffect, type FC, type InputHTMLAttributes, useMemo } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { Abi, AbiFunction, AbiParameter } from "abitype";
 import {
   SolidityArray,
   SolidityAddress,
@@ -227,6 +227,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
     }
   }, [form.formState.isValid]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const encodedCallData = useMemo(() => {
     if (!form.formState.isValid) {
       return undefined;
