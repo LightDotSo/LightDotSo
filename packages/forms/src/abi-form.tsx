@@ -50,7 +50,13 @@ import {
   SolidityString,
   SolidityTuple,
 } from "abitype/zod";
-import { isAddress, isBytes } from "viem";
+import {
+  encodeAbiParameters,
+  encodeFunctionData,
+  isAddress,
+  isBytes,
+  toFunctionSelector,
+} from "viem";
 // import type { z } from "zod";
 // import { AddressForm } from "./address-form";
 
@@ -179,6 +185,58 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
     return abiFunction.inputs;
   }, [form, executableFuncs, functionNameWatch]);
 
+  const encodedFunctionSelector = useMemo(() => {
+    // Get the `AbiFunction` value from the `functionName`
+
+    const abi = form.getValues("abi") as Abi | undefined;
+
+    if (!abi) {
+      return undefined;
+    }
+
+    // @ts-expect-error
+    const matchingAbiFunction: AbiFunction | undefined = abi.find(
+      func => func.type === "function" && func.name === functionNameWatch,
+    );
+
+    if (matchingAbiFunction) {
+      return toFunctionSelector(matchingAbiFunction);
+    }
+  }, [functionNameWatch]);
+
+  const encodedAbiParameters = useMemo(() => {
+    if (!form.formState.isValid) {
+      return undefined;
+    }
+
+    // Get the `abiInputs` and `abiArguments` values
+    const abiArguments = form.getValues("abiArguments");
+
+    // Check if all of the `value` of the `abiArguments` are valid
+    for (const arg of abiArguments) {
+      if (!arg?.value) {
+        return undefined;
+      }
+    }
+    // Map the `value` of the `abiArguments` to an array of values
+    // @ts-expect-error
+    const abiArgumentsValues = abiArguments.map(arg => arg.value);
+
+    if (abiInputs && abiArgumentsValues) {
+      return encodeAbiParameters(abiInputs, abiArgumentsValues);
+    }
+  }, [form.formState.isValid]);
+
+  const encodedCallData = useMemo(() => {
+    if (!form.formState.isValid) {
+      return undefined;
+    }
+
+    if (encodedFunctionSelector && encodedAbiParameters) {
+      return encodedFunctionSelector + encodedAbiParameters.slice(2);
+    }
+  }, [form.formState.isValid, encodedFunctionSelector, encodedAbiParameters]);
+
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
@@ -200,6 +258,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
       if (value?.length > 0) {
         form.setValue(`abiArguments.${index}.value` as any, value);
         form.clearErrors(`abiArguments.${index}.value`);
+        form.trigger();
         return;
       }
       form.setError(`abiArguments.${index}.value`, {
@@ -215,6 +274,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
       ) {
         form.setValue(`abiArguments.${index}.value` as any, value);
         form.clearErrors(`abiArguments.${index}.value`);
+        form.trigger();
         return;
       }
       form.setError(`abiArguments.${index}.value`, {
@@ -231,6 +291,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
           boolValue === "true",
         );
         form.clearErrors(`abiArguments.${index}.value`);
+        form.trigger();
         return;
       }
       form.setError(`abiArguments.${index}.value`, {
@@ -243,6 +304,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
       if (isBytes(value)) {
         form.setValue(`abiArguments.${index}.value` as any, value);
         form.clearErrors(`abiArguments.${index}.value`);
+        form.trigger();
         return;
       }
       form.setError(`abiArguments.${index}.value`, {
@@ -255,6 +317,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
       if (value?.length > 0) {
         form.setValue(`abiArguments.${index}.value` as any, value);
         form.clearErrors(`abiArguments.${index}.value`);
+        form.trigger();
         return;
       }
       form.setError(`abiArguments.${index}.value`, {
@@ -270,6 +333,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
           Number(parsedNumber),
         );
         form.clearErrors(`abiArguments.${index}.value`);
+        form.trigger();
         return;
       }
       form.setError(`abiArguments.${index}.value`, {
@@ -281,6 +345,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
       if (value?.length > 0) {
         form.setValue(`abiArguments.${index}.value` as any, value);
         form.clearErrors(`abiArguments.${index}.value`);
+        form.trigger();
         return;
       }
       form.setError(`abiArguments.${index}.value`, {
@@ -311,6 +376,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
         if (areValuesValid) {
           form.setValue(`abiArguments.${index}.value` as any, parsedArray);
           form.clearErrors(`abiArguments.${index}.value`);
+          form.trigger();
           return;
         }
 
@@ -365,9 +431,13 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
               {JSON.stringify(abiInputs, null, 2)}
             </div> */}
             {/* <div className="text-text">{JSON.stringify(field, null, 2)}</div> */}
-            <div className="text-text">
-              {JSON.stringify(form.formState.isValid, null, 2)}
-            </div>
+            {/* <div className="text-text">
+              {encodedAbiParameters && encodedAbiParameters}
+              <br />
+              {encodedFunctionSelector && encodedFunctionSelector}
+              <br />
+              {encodedCallData && encodedCallData}
+            </div> */}
           </FormItem>
         )}
       />
@@ -465,9 +535,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
         {JSON.stringify(form.getValues("abiArguments"), null, 2)}
       </div> */}
       {/* <div className="text-text">{JSON.stringify(form.formState, null, 2)}</div> */}
-      {/* <div className="text-text">
-        {JSON.stringify(form.formState.errors, null, 2)}
-      </div> */}
+      {/* <div className="text-text">{JSON.stringify(form, null, 2)}</div> */}
     </Form>
   );
 };
