@@ -26,6 +26,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  Input,
+  Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Textarea,
 } from "@lightdotso/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -35,8 +42,10 @@ import {
   type FC,
   type InputHTMLAttributes,
   useCallback,
+  useMemo,
 } from "react";
 import { useForm, useFormContext } from "react-hook-form";
+import { Abi } from "abitype";
 // import type { z } from "zod";
 // import { AddressForm } from "./address-form";
 
@@ -154,6 +163,29 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
   }, [form.formState.isValid, form.formState.errors]);
 
   // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const abiWatch = form.watch("abi");
+
+  const executableFuncs = useMemo(() => {
+    const abi = form.getValues("abi") as Abi | undefined;
+
+    if (!abi) {
+      return [];
+    }
+
+    // Filter the function names w/ state mutability `pure` or `view`
+    return abi.filter(func => {
+      return (
+        func.type === "function" &&
+        func.stateMutability !== "pure" &&
+        func.stateMutability !== "view"
+      );
+    });
+  }, [form, abiWatch]);
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -161,7 +193,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
     <Form {...form}>
       <FormField
         control={form.control}
-        name="abi"
+        name="abiString"
         render={({ field }) => (
           <FormItem>
             <FormLabel>ABI</FormLabel>
@@ -170,7 +202,13 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
                 placeholder="Paste your ABI here"
                 className="resize-none"
                 {...field}
-                onChange={value => field.onChange(zodAbi.parse(value))}
+                onChange={event => {
+                  field.onChange(event.target.value);
+                  const newValue = zodAbi.parse(JSON.parse(event.target.value));
+                  if (newValue) {
+                    form.setValue("abi", newValue);
+                  }
+                }}
               />
             </FormControl>
             <FormDescription>
@@ -178,7 +216,73 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
               interact with.
             </FormDescription>
             <FormMessage />
+            {/* <div className="text-text">
+              {JSON.stringify(executableFuncs, null, 2)}
+            </div> */}
+            {/* Show all errors for debugging */}
+            {/* <div className="text-text">
+              {JSON.stringify(form.getValues("abi"), null, 2)}
+            </div> */}
+            {/* <div className="text-text">{JSON.stringify(field, null, 2)}</div> */}
+            {/* <div className="text-text">{JSON.stringify(form, null, 2)}</div> */}
           </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="address"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel htmlFor="address">Address</FormLabel>
+            <Input
+              id="address"
+              placeholder="Contract Address"
+              defaultValue={field.value}
+              onChange={e => {
+                field.onChange(e);
+              }}
+            />
+            <FormDescription>
+              Enter the address of the contract to interact with.
+            </FormDescription>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name={"functionName"}
+        render={({ field }) => (
+          <FormControl>
+            <>
+              <Label htmlFor="weight">Function</Label>
+              <Select
+                onValueChange={value => {
+                  field.onChange(value);
+                }}
+                onOpenChange={value => {
+                  field.onChange(value);
+                }}
+              >
+                <FormControl>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select your function" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent className="max-h-60">
+                  {executableFuncs.map((func, i) => (
+                    <SelectItem key={i} value={i.toString()}>
+                      {func.type === "function" ? func.name : "Unknown"}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormDescription>
+                Select the function you want to interact with.
+              </FormDescription>
+              <FormMessage />
+            </>
+          </FormControl>
         )}
       />
       {/* <AddressForm name="address" onMouseLeave={validAbi.invalidate} /> */}
