@@ -57,6 +57,7 @@ import {
   isAddress,
   isBytes,
   toFunctionSelector,
+  isHex,
 } from "viem";
 // import type { z } from "zod";
 // import { AddressForm } from "./address-form";
@@ -308,11 +309,8 @@ export const AbiForm: FC<AbiFormProps> = () => {
       return;
     }
     if (SolidityBytes.safeParse(abiType).success) {
-      if (isBytes(hexToBytes(value as Hex))) {
-        form.setValue(
-          `abiArguments.${index}.value` as any,
-          hexToBytes(value as Hex),
-        );
+      if (isHex(value) && isBytes(hexToBytes(value as Hex))) {
+        form.setValue(`abiArguments.${index}.value` as any, value as Hex);
         form.clearErrors(`abiArguments.${index}.value`);
         form.trigger();
         return;
