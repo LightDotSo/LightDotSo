@@ -432,7 +432,7 @@ export function DepositModal() {
           <div className="p-2">
             <DialogTitle>Deposit</DialogTitle>
             <DialogDescription>
-              Please choose assets to deposit to this wallet!
+              Choose assets to deposit to this wallet!
             </DialogDescription>
           </div>
         }
