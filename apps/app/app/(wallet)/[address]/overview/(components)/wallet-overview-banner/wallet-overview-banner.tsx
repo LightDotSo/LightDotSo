@@ -14,6 +14,7 @@
 
 "use client";
 
+import { useIsDemoPathname } from "@lightdotso/hooks";
 import {
   Button,
   Tooltip,
@@ -44,6 +45,40 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
   address,
 }) => {
   // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const isDemo = useIsDemoPathname();
+
+  // ---------------------------------------------------------------------------
+  // Component
+  // ---------------------------------------------------------------------------
+
+  const DepositButton: FC = () => {
+    if (isDemo) {
+      return null;
+    }
+
+    return (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button asChild type="button" className="w-full md:w-28">
+              <Link href={`/${address}/deposit`}>
+                <PlusCircleIcon className="mr-2 size-5" />
+                Deposit
+              </Link>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Deposit Assets</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    );
+  };
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -56,21 +91,7 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
         <WalletOverviewBannerSparkline address={address} />
       </div>
       <div className="col-span-2 flex w-full items-center md:col-span-1 md:justify-end">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button asChild type="button" className="w-full md:w-28">
-                <Link href={`/${address}/deposit`}>
-                  <PlusCircleIcon className="mr-2 size-5" />
-                  Deposit
-                </Link>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Deposit Assets</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <DepositButton />
       </div>
     </div>
   );
