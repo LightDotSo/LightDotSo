@@ -227,7 +227,7 @@ export function DepositModal() {
     const contractAddress = form.getValues("asset.address") as Address;
     console.info("Contract Adress: ", contractAddress);
 
-    const bigIntQuantity = BigInt(quantity ** Math.pow(10, decimals));
+    const bigIntQuantity = BigInt(quantity * Math.pow(10, decimals));
     console.info("BigInt Quantity: ", bigIntQuantity);
 
     if (assetType === "erc721") {
