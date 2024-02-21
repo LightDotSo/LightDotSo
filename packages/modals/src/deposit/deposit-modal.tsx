@@ -217,8 +217,7 @@ export function DepositModal() {
     const decimals = form.getValues("asset.decimals");
     console.info("Decimals: ", decimals);
     if (!decimals) {
-      console.error("Decimals is not defined");
-      return;
+      console.warn("Decimals is not defined");
     }
 
     const assetType = form.getValues("assetType");
@@ -226,9 +225,6 @@ export function DepositModal() {
 
     const contractAddress = form.getValues("asset.address") as Address;
     console.info("Contract Adress: ", contractAddress);
-
-    const bigIntQuantity = BigInt(quantity * Math.pow(10, decimals));
-    console.info("BigInt Quantity: ", bigIntQuantity);
 
     if (assetType === "erc721") {
       console.info("Sending NFT");
@@ -271,39 +267,58 @@ export function DepositModal() {
       const bigIntTokenId = BigInt(tokenId);
       console.info("BigInt Token ID: ", bigIntTokenId);
 
+      const bigIntQuantity = BigInt(quantity);
+      console.info("BigInt Quantity: ", bigIntQuantity);
+
       const res = await writeContract({
         abi: [
           {
-            name: "from",
-            type: "address",
-          },
-          {
-            name: "to",
-            type: "address",
-          },
-          {
-            name: "tokenId",
-            type: "uint256",
-          },
-          {
-            name: "value",
-            type: "uint256",
-          },
-          {
-            name: "data",
-            type: "bytes",
+            type: "function",
+            name: "safeTransferFrom",
+            stateMutability: "nonpayable",
+            inputs: [
+              {
+                name: "from",
+                type: "address",
+              },
+              {
+                name: "to",
+                type: "address",
+              },
+              {
+                name: "id",
+                type: "uint256",
+              },
+              {
+                name: "amount",
+                type: "uint256",
+              },
+              {
+                name: "data",
+                type: "bytes",
+              },
+            ],
+            outputs: [],
           },
         ],
         address: contractAddress,
         chainId: chainId,
         functionName: "safeTransferFrom",
-        args: [address, wallet, bigIntTokenId, bigIntQuantity],
+        args: [address, wallet, bigIntTokenId, bigIntQuantity, "0x"],
       });
 
       console.info(res);
 
       return;
     }
+
+    if (!decimals) {
+      console.error("Decimals is not defined");
+      return;
+    }
+
+    const bigIntQuantity = BigInt(quantity * Math.pow(10, decimals));
+    console.info("BigInt Quantity: ", bigIntQuantity);
 
     if (contractAddress === "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee") {
       console.info("Sending ETH");
