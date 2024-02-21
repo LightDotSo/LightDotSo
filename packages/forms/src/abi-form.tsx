@@ -51,7 +51,9 @@ import {
 import { useEffect, type FC, type InputHTMLAttributes, useMemo } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import {
+  type Hex,
   encodeAbiParameters,
+  hexToBytes,
   isAddress,
   isBytes,
   toFunctionSelector,
@@ -306,8 +308,11 @@ export const AbiForm: FC<AbiFormProps> = () => {
       return;
     }
     if (SolidityBytes.safeParse(abiType).success) {
-      if (isBytes(value)) {
-        form.setValue(`abiArguments.${index}.value` as any, value);
+      if (isBytes(hexToBytes(value as Hex))) {
+        form.setValue(
+          `abiArguments.${index}.value` as any,
+          hexToBytes(value as Hex),
+        );
         form.clearErrors(`abiArguments.${index}.value`);
         form.trigger();
         return;
