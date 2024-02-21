@@ -36,10 +36,10 @@ import {
   Textarea,
 } from "@lightdotso/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { Abi, AbiFunction, AbiParameter } from "abitype";
 import { Abi as zodAbi } from "abitype/zod";
 import { useEffect, type FC, type InputHTMLAttributes, useMemo } from "react";
 import { useForm } from "react-hook-form";
-import { Abi, AbiFunction, AbiParameter } from "abitype";
 import { AbiArgumentsFormField } from "./abi-arguments-form-field";
 // import type { z } from "zod";
 // import { AddressForm } from "./address-form";
