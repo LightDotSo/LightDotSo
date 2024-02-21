@@ -12,47 +12,66 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { Address } from "viem";
-import { CreateTransactionDialog } from "@/app/(wallet)/[address]/create/(components)/create-transaction-dialog";
-import { handler } from "@/handlers/[address]/create/handler";
-import { preloader } from "@/preloaders/[address]/create/preloader";
+"use client";
 
-// ------------------------------------------------------c-----------------------
+import {
+  useTransferQueryState,
+  useUserOperationsIndexQueryState,
+  useUserOperationsQueryState,
+} from "@lightdotso/nuqs";
+import { useQueryConfiguration } from "@lightdotso/query";
+import type { Transfer } from "@lightdotso/schemas";
+import { useAuth, useDev } from "@lightdotso/stores";
+import { Transaction } from "@lightdotso/templates";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+} from "@lightdotso/ui";
+import { useEffect, useMemo } from "react";
+import type { FC } from "react";
+import { isAddressEqual } from "viem";
+import type { Address } from "viem";
+
+// -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type PageProps = {
-  params: { address: string };
-  searchParams: {
-    userOperations?: string;
-  };
+type DepositDialogProps = {
+  address: Address;
+  initialTransfer?: Transfer;
 };
 
 // -----------------------------------------------------------------------------
-// Page
+// Component
 // -----------------------------------------------------------------------------
 
-export default async function Page({ params, searchParams }: PageProps) {
+export const DepositDialog: FC<DepositDialogProps> = ({
+  address,
+  initialTransfer,
+}) => {
   // ---------------------------------------------------------------------------
-  // Preloaders
-  // ---------------------------------------------------------------------------
-
-  preloader(params, searchParams);
-
-  // ---------------------------------------------------------------------------
-  // Handlers
+  // Query State Hooks
   // ---------------------------------------------------------------------------
 
-  const { userOperations } = await handler(params, searchParams);
+  const [transfer, setTransfer] = useTransferQueryState();
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { configuration } = useQueryConfiguration({
+    address: address,
+  });
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <CreateTransactionDialog
-      address={params.address as Address}
-      userOperations={userOperations}
-    />
-  );
-}
+  if (!configuration) {
+    return null;
+  }
+
+  return null;
+};

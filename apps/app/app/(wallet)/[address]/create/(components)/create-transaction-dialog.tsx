@@ -37,7 +37,7 @@ import type { Address } from "viem";
 // Props
 // -----------------------------------------------------------------------------
 
-type CreateTransactionProps = {
+type CreateTransactionDialogProps = {
   address: Address;
   userOperations: Omit<
     UserOperation,
@@ -55,7 +55,7 @@ type CreateTransactionProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const CreateTransaction: FC<CreateTransactionProps> = ({
+export const CreateTransactionDialog: FC<CreateTransactionDialogProps> = ({
   address,
   userOperations,
 }) => {

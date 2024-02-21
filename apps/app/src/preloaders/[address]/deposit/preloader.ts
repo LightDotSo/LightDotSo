@@ -12,42 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { ReactNode } from "react";
+import { preloadGetNfts, preloadGetSocketBalances } from "@lightdotso/services";
+import type { Address } from "viem";
+import { preloader as addressPreloader } from "@/preloaders/[address]/preloader";
 
 // -----------------------------------------------------------------------------
-// Props
+// Preloader
 // -----------------------------------------------------------------------------
 
-type RootLayoutProps = {
-  children: ReactNode;
-  create: ReactNode;
-  deposit: ReactNode;
-  op: ReactNode;
-  send: ReactNode;
+export const preloader = async (params: { address: string }) => {
+  addressPreloader(params);
+
+  preloadGetSocketBalances({
+    address: params.address as Address,
+  });
+  preloadGetNfts({
+    address: params.address as Address,
+    limit: Number.MAX_SAFE_INTEGER,
+    is_testnet: false,
+    cursor: null,
+  });
 };
-
-// -----------------------------------------------------------------------------
-// Layout
-// -----------------------------------------------------------------------------
-
-export default function RootLayout({
-  children,
-  create,
-  deposit,
-  op,
-  send,
-}: RootLayoutProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <>
-      {children}
-      {create}
-      {deposit}
-      {op}
-      {send}
-    </>
-  );
-}

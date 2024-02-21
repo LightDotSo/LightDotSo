@@ -12,42 +12,53 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import {
+  BaseLayerWrapper,
+  BasicPageWrapper,
+  HStackFull,
+  BannerSection,
+} from "@lightdotso/ui";
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { TITLES } from "@/const";
+
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
+export const metadata: Metadata = {
+  title: TITLES.Deposit.title,
+  description: TITLES.Deposit.description,
+};
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type RootLayoutProps = {
+interface DepositLayoutProps {
   children: ReactNode;
-  create: ReactNode;
-  deposit: ReactNode;
-  op: ReactNode;
-  send: ReactNode;
-};
+}
 
 // -----------------------------------------------------------------------------
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function RootLayout({
-  children,
-  create,
-  deposit,
-  op,
-  send,
-}: RootLayoutProps) {
+export default function DepositLayout({ children }: DepositLayoutProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <>
-      {children}
-      {create}
-      {deposit}
-      {op}
-      {send}
-    </>
+    <BannerSection
+      title={TITLES.Deposit.title}
+      description={TITLES.Deposit.description}
+      size="sm"
+    >
+      <HStackFull>
+        <BaseLayerWrapper size="sm">
+          <BasicPageWrapper>{children}</BasicPageWrapper>
+        </BaseLayerWrapper>
+      </HStackFull>
+    </BannerSection>
   );
 }
