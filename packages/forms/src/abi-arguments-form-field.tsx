@@ -27,20 +27,10 @@ import { type FC, type InputHTMLAttributes } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 
 // -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-type AbiArgumentsFormFieldProps = {
-  name: string;
-} & InputHTMLAttributes<HTMLInputElement>;
-
-// -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const AbiArgumentsFormField: FC<AbiArgumentsFormFieldProps> = ({
-  name,
-}) => {
+export const AbiArgumentsFormField: FC = () => {
   // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------

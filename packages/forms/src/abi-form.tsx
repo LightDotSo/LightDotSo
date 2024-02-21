@@ -278,7 +278,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
           </FormControl>
         )}
       />
-      <AbiArgumentsFormField name="abiArguments" />
+      <AbiArgumentsFormField />
       {/* Show all errors for debugging */}
       {/* <div className="text-text">
         {JSON.stringify(form.getValues("abiArguments"), null, 2)}
