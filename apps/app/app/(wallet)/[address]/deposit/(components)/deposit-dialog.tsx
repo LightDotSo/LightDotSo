@@ -527,9 +527,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                                   walletSettings?.is_enabled_testnet ?? false,
                                 onClose: () => {
                                   hideTokenModal();
-                                  if (isInsideModal) {
-                                    setDepositBackgroundModal(false);
-                                  }
+                                  setDepositBackgroundModal(false);
                                 },
                                 onTokenSelect: token => {
                                   form.setValue("chainId", token.chain_id);
