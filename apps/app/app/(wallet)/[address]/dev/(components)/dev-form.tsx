@@ -108,7 +108,7 @@ export const DevForm: FC = () => {
   return (
     <Card className="flex flex-col space-y-6 p-4 lg:px-6 lg:pt-6">
       <CardHeader className="gap-3">
-        <CardTitle>Dev Form</CardTitle>
+        <CardTitle>Developer Form</CardTitle>
         <CardDescription>Input ABI to submit.</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-10">

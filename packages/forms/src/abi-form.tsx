@@ -155,7 +155,11 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
     }
 
     // Sync with parent
-    parentMethods.setValue(name, form.getValues(name));
+    parentMethods.setValue("abiArguments", form.getValues("abiArguments"));
+    parentMethods.setValue("abi", form.getValues("abi"));
+    parentMethods.setValue("abiString", form.getValues("abiString"));
+    parentMethods.setValue("address", form.getValues("address"));
+    parentMethods.setValue("functionName", form.getValues("functionName"));
 
     // If the form is valid, clear the error
     if (form.formState.isValid) {
@@ -166,6 +170,8 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
     if (!form.formState.isValid && form.formState.errors[name]) {
       parentMethods.setError(name, form.formState.errors[name]!);
     }
+
+    parentMethods.trigger();
   }, [form, name, parentMethods]);
 
   // ---------------------------------------------------------------------------
