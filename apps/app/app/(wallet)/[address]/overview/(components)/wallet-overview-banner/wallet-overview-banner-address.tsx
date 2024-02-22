@@ -34,7 +34,13 @@ import {
 } from "@lightdotso/ui";
 import { shortenAddress } from "@lightdotso/utils";
 import { useEnsName } from "@lightdotso/wagmi";
-import { ChevronDown, ClipboardCheck, Copy, Navigation } from "lucide-react";
+import {
+  ChevronDown,
+  ClipboardCheck,
+  Copy,
+  Navigation,
+  PlusCircle,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, type FC } from "react";
 import type { Address } from "viem";
@@ -83,6 +89,10 @@ export const WalletOverviewBannerAddress: FC<
     toast.success("Copied to clipboard!");
   }, [address, copy]);
 
+  const handleDepositClick = useCallback(() => {
+    router.push(`/${address}/deposit`);
+  }, [address, router]);
+
   const handleSendClick = useCallback(() => {
     router.push(`/${address}/send/new`);
   }, [address, router]);
@@ -121,6 +131,13 @@ export const WalletOverviewBannerAddress: FC<
                   <Copy className="mr-1.5 size-4" />
                   <span>Copy Address</span>
                   <DropdownMenuShortcut>⇧⌘A</DropdownMenuShortcut>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuGroup>
+                <DropdownMenuItem onClick={handleDepositClick}>
+                  <PlusCircle className="mr-1.5 size-4" />
+                  <span>Deposit</span>
+                  <DropdownMenuShortcut>⇧⌘D</DropdownMenuShortcut>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuGroup>
