@@ -136,7 +136,7 @@ export const TokenModal: FC = () => {
         isHeightFixed
         className="p-2"
         bannerContent={
-          <div className="flex flex-row space-x-2">
+          <div className="flex flex-row space-x-2 overflow-x-scroll [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <Button
               className={cn(
                 chainId === 0 && "shrink-0 ring-2 ring-border-primary",

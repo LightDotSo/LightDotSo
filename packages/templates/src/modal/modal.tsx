@@ -119,7 +119,13 @@ export const Modal: FC<ModalProps> = ({
       <Drawer shouldScaleBackground open={open} onClose={onClose}>
         <DrawerContent className={isHidden ? "hidden" : ""}>
           {headerContent && <DialogHeader>{headerContent}</DialogHeader>}
-          <DrawerBody className={cn(isHeightFixed && "h-96", className)}>
+          <DrawerBody
+            className={cn(
+              "overflow-scroll [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+              isHeightFixed && "h-96",
+              className,
+            )}
+          >
             <ModalContext.Provider value={true}>
               <Suspense fallback={<Skeleton className="h-64 w-full" />}>
                 {bannerContent && bannerContent}
