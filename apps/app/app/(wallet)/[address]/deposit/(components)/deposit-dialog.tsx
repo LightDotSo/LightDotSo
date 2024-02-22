@@ -58,7 +58,8 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
-import { FC, useEffect, useMemo } from "react";
+import type { FC } from "react";
+import { useEffect, useMemo } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";
@@ -94,7 +95,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
-  const [transfer, setTransfer] = useTransferQueryState();
+  const [transfer, setTransfer] = useTransferQueryState(initialTransfer);
 
   // ---------------------------------------------------------------------------
   // Stores
