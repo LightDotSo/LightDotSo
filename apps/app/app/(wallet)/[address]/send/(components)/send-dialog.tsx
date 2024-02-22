@@ -1373,11 +1373,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                   false,
                                                 onClose: () => {
                                                   hideTokenModal();
-                                                  if (isInsideModal) {
-                                                    setSendBackgroundModal(
-                                                      false,
-                                                    );
-                                                  }
+                                                  setSendBackgroundModal(false);
                                                 },
                                                 onTokenSelect: token => {
                                                   form.setValue(
