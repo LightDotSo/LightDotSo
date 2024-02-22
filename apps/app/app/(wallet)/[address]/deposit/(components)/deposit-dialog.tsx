@@ -30,6 +30,7 @@ import { useAuth, useFormRef, useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import { FooterButton, useIsInsideModal } from "@lightdotso/templates";
 import {
+  toast,
   Button,
   Form,
   FormControl,
@@ -513,6 +514,9 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                             className="flex w-full items-center justify-between px-4 text-sm"
                             onClick={() => {
                               if (!address) {
+                                toast.error(
+                                  "Please connect your wallet to proceed!",
+                                );
                                 return;
                               }
 
@@ -704,6 +708,9 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                             className="flex w-full items-center justify-between px-4 text-sm"
                             onClick={() => {
                               if (!address) {
+                                toast.error(
+                                  "Please connect your wallet to proceed!",
+                                );
                                 return;
                               }
 
