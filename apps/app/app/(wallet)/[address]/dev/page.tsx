@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { DevForm } from "./(components)/dev-form";
 import { handler } from "@/handlers/[address]/dev/handler";
 import { preloader } from "@/preloaders/[address]/dev/preloader";
-import { DevForm } from "./(components)/dev-form";
 
 // -----------------------------------------------------------------------------
 // Props
