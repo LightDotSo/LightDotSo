@@ -14,6 +14,7 @@
 
 export {
   confirmFormConfigurationSchema,
+  devFormConfigurationSchema,
   newFormSchema,
   newFormConfigurationSchema,
   newFormConfigurationRefinedSchema,

@@ -48,8 +48,14 @@ import {
   SolidityString,
   SolidityTuple,
 } from "abitype/zod";
-import { useEffect, type FC, type InputHTMLAttributes, useMemo } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import {
+  useEffect,
+  type FC,
+  type InputHTMLAttributes,
+  useMemo,
+  useCallback,
+} from "react";
+import { useFieldArray, useForm, useFormContext } from "react-hook-form";
 import {
   type Hex,
   encodeAbiParameters,
@@ -75,17 +81,19 @@ const abiFormSchema = abi;
 // -----------------------------------------------------------------------------
 
 type AbiFormProps = {
-  name?: string;
+  name: string;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const AbiForm: FC<AbiFormProps> = () => {
+export const AbiForm: FC<AbiFormProps> = ({ name }) => {
   // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------
+
+  const parentMethods = useFormContext();
 
   // const getAbi: RefinementCallback<AbiValues> = async ({
   //   abi,
@@ -136,6 +144,29 @@ export const AbiForm: FC<AbiFormProps> = () => {
     name: "abiArguments",
     control: form.control,
   });
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  const syncWithParent = useCallback(() => {
+    if (!parentMethods) {
+      return;
+    }
+
+    // Sync with parent
+    parentMethods.setValue(name, form.getValues(name));
+
+    // If the form is valid, clear the error
+    if (form.formState.isValid) {
+      parentMethods.clearErrors(name);
+    }
+
+    // If there is an error, sync with parent
+    if (!form.formState.isValid && form.formState.errors[name]) {
+      parentMethods.setError(name, form.formState.errors[name]!);
+    }
+  }, [form, name, parentMethods]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -396,6 +427,25 @@ export const AbiForm: FC<AbiFormProps> = () => {
 
     return;
   }
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // Only on mount
+  useEffect(() => {
+    syncWithParent();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Sync w/ every invalidation
+  useEffect(() => {
+    syncWithParent();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.formState.isValid, form.formState.errors]);
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------

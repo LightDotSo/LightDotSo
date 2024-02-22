@@ -14,6 +14,7 @@
 
 import { handler } from "@/handlers/[address]/dev/handler";
 import { preloader } from "@/preloaders/[address]/dev/preloader";
+import { DevForm } from "./(components)/dev-form";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -45,5 +46,5 @@ export default async function Page({ params }: PageProps) {
   // Render
   // ---------------------------------------------------------------------------
 
-  return null;
+  return <DevForm />;
 }
