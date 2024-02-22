@@ -136,7 +136,7 @@ export const TokenModal: FC = () => {
         isHeightFixed
         className="p-2"
         bannerContent={
-          <div className="flex flex-row p-2 space-x-2">
+          <div className="flex flex-row space-x-2 p-2">
             <Button
               className={cn(
                 "w-28 shrink-0",
