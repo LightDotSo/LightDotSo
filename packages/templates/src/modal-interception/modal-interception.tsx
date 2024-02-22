@@ -47,18 +47,22 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
 
   const {
     isCreateModalBackground,
+    isDepositModalBackground,
     isNotificationsModalBackground,
     isOpModalBackground,
     isSendModalBackground,
     isCreateModalVisible,
+    isDepositModalVisible,
     isNotificationsModalVisible,
     isOpModalVisible,
     isSendModalVisible,
     showCreateModal,
+    showDepositModal,
     showNotificationsModal,
     showOpModal,
     showSendModal,
     hideCreateModal,
+    hideDepositModal,
     hideNotificationsModal,
     hideOpModal,
     hideSendModal,
@@ -79,6 +83,8 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     switch (type) {
       case "create":
         return isCreateModalBackground;
+      case "deposit":
+        return isDepositModalBackground;
       case "op":
         return isOpModalBackground;
       case "notifications":
@@ -88,6 +94,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     }
   }, [
     isCreateModalBackground,
+    isDepositModalBackground,
     isNotificationsModalBackground,
     isOpModalBackground,
     isSendModalBackground,
@@ -98,6 +105,8 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     switch (type) {
       case "create":
         return isCreateModalVisible;
+      case "deposit":
+        return isDepositModalVisible;
       case "op":
         return isOpModalVisible;
       case "notifications":
@@ -107,6 +116,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     }
   }, [
     isCreateModalVisible,
+    isDepositModalVisible,
     isNotificationsModalVisible,
     isOpModalVisible,
     isSendModalVisible,
@@ -121,6 +131,10 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     switch (type) {
       case "create":
         hideCreateModal();
+        router.back();
+        break;
+      case "deposit":
+        hideDepositModal();
         router.back();
         break;
       case "op":
@@ -138,6 +152,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     }
   }, [
     hideCreateModal,
+    hideDepositModal,
     hideNotificationsModal,
     hideOpModal,
     hideSendModal,
@@ -158,6 +173,11 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
       case "create":
         if (pathname.includes("create")) {
           showCreateModal();
+        }
+        break;
+      case "deposit":
+        if (pathname.includes("deposit")) {
+          showDepositModal();
         }
         break;
       case "op":
