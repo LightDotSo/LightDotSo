@@ -14,14 +14,10 @@
 
 "use client";
 
-import {
-  useUserOperationsQueryState,
-  userOperationsParser,
-} from "@lightdotso/nuqs";
 import { useAuth, useFormRef, useModals } from "@lightdotso/stores";
 import { FooterButton } from "@lightdotso/templates";
 import { useRouter } from "next/navigation";
-import { useMemo, type FC, useCallback } from "react";
+import { type FC, useCallback } from "react";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -29,18 +25,12 @@ import { useMemo, type FC, useCallback } from "react";
 
 export const ModalInterceptionFooter: FC = () => {
   // ---------------------------------------------------------------------------
-  // Nuqs
-  // ---------------------------------------------------------------------------
-
-  const [userOperations] = useUserOperationsQueryState();
-
-  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { wallet } = useAuth();
-  const { isFormDisabled } = useFormRef();
-  const { setSendBackgroundModal } = useModals();
+  const { address } = useAuth();
+  const { isFormDisabled, isFormLoading } = useFormRef();
+  const { setDepositBackgroundModal } = useModals();
 
   // ---------------------------------------------------------------------------
   // Next Hooks
@@ -54,26 +44,9 @@ export const ModalInterceptionFooter: FC = () => {
 
   const onDismiss = useCallback(() => {
     router.back();
-    setSendBackgroundModal(true);
+    setDepositBackgroundModal(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
-
-  // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
-
-  const href = useMemo(() => {
-    return `/${wallet}/create?userOperations=${userOperationsParser.serialize(userOperations)}`;
-  }, [wallet, userOperations]);
-
-  // ---------------------------------------------------------------------------
-  // Callback Hooks
-  // ---------------------------------------------------------------------------
-
-  const onClick = useCallback(() => {
-    router.push(href ?? "/create");
-    setSendBackgroundModal(false);
-  }, [href, router, setSendBackgroundModal]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -83,9 +56,17 @@ export const ModalInterceptionFooter: FC = () => {
     <FooterButton
       isModal
       className="pt-0"
-      cancelClick={onDismiss}
+      form="deposit-modal-form"
       disabled={isFormDisabled}
-      onClick={onClick}
+      isLoading={isFormLoading}
+      cancelClick={onDismiss}
+      customSuccessText={
+        !address
+          ? "Connect Wallet"
+          : // : chainId !== form.getValues("chainId")
+            // ? "Change Network"
+            "Deposit"
+      }
     />
   );
 };

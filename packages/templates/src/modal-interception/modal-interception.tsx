@@ -26,7 +26,8 @@ import { Modal } from "../modal";
 
 interface ModalInterceptionProps {
   children: ReactNode;
-  type: "create" | "op" | "notifications" | "send";
+  type: "create" | "op" | "notifications" | "send" | "deposit";
+  bannerContent?: ReactNode;
   footerContent?: ReactNode;
 }
 
@@ -36,6 +37,7 @@ interface ModalInterceptionProps {
 
 export const ModalInterception: FC<ModalInterceptionProps> = ({
   children,
+  bannerContent,
   footerContent,
   type,
 }) => {
@@ -188,6 +190,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   return (
     <Modal
       isHidden={isBackground}
+      bannerContent={bannerContent}
       footerContent={footerContent}
       size={type === "op" ? "lg" : "default"}
       open={isOpen}

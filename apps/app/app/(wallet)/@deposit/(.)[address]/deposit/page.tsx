@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { ModalInterception } from "@lightdotso/templates";
+import { DialogDescription, DialogTitle } from "@lightdotso/ui";
 import { ModalInterceptionFooter } from "@/app/(wallet)/@deposit/(.)[address]/deposit/(components)/modal-interception-footer";
 import OriginalPage from "@/app/(wallet)/[address]/deposit/page";
 
@@ -37,7 +38,18 @@ export default async function Page({ params, searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <ModalInterception footerContent={<ModalInterceptionFooter />} type="send">
+    <ModalInterception
+      bannerContent={
+        <div className="p-2">
+          <DialogTitle>Deposit</DialogTitle>
+          <DialogDescription>
+            Choose assets to deposit to this wallet!
+          </DialogDescription>
+        </div>
+      }
+      footerContent={<ModalInterceptionFooter />}
+      type="send"
+    >
       <OriginalPage params={params} searchParams={searchParams} />
     </ModalInterception>
   );
