@@ -14,7 +14,7 @@
 
 "use client";
 
-import { useModals } from "@lightdotso/stores";
+import { useIsDemoPathname } from "@lightdotso/hooks";
 import {
   Button,
   Tooltip,
@@ -23,6 +23,7 @@ import {
   TooltipProvider,
 } from "@lightdotso/ui";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 import type { FC } from "react";
 import type { Address } from "viem";
 import { WalletOverviewBannerAddress } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner-address";
@@ -47,7 +48,35 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { showDepositModal } = useModals();
+  const isDemo = useIsDemoPathname();
+
+  // ---------------------------------------------------------------------------
+  // Component
+  // ---------------------------------------------------------------------------
+
+  const DepositButton: FC = () => {
+    if (isDemo) {
+      return null;
+    }
+
+    return (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button asChild type="button" className="w-full md:w-28">
+              <Link href={`/${address}/deposit`}>
+                <PlusCircleIcon className="mr-2 size-5" />
+                Deposit
+              </Link>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Deposit Assets</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    );
+  };
 
   // ---------------------------------------------------------------------------
   // Render
@@ -62,23 +91,7 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
         <WalletOverviewBannerSparkline address={address} />
       </div>
       <div className="col-span-2 flex w-full items-center md:col-span-1 md:justify-end">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                type="button"
-                className="w-full md:w-28"
-                onClick={showDepositModal}
-              >
-                <PlusCircleIcon className="mr-2 size-5" />
-                Deposit
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Deposit Assets</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <DepositButton />
       </div>
     </div>
   );

@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { Address } from "viem";
-import { CreateTransactionDialog } from "@/app/(wallet)/[address]/create/(components)/create-transaction-dialog";
-import { handler } from "@/handlers/[address]/create/handler";
-import { preloader } from "@/preloaders/[address]/create/preloader";
+import { ModalInterception } from "@lightdotso/templates";
+import { DialogDescription, DialogTitle } from "@lightdotso/ui";
+import { ModalInterceptionFooter } from "@/app/(wallet)/@deposit/(.)[address]/deposit/(components)/modal-interception-footer";
+import OriginalPage from "@/app/(wallet)/[address]/deposit/page";
 
-// ------------------------------------------------------c-----------------------
+// -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
 type PageProps = {
   params: { address: string };
   searchParams: {
-    userOperations?: string;
+    transfer?: string;
   };
 };
 
@@ -34,25 +34,29 @@ type PageProps = {
 
 export default async function Page({ params, searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
-  // Preloaders
-  // ---------------------------------------------------------------------------
-
-  preloader(params, searchParams);
-
-  // ---------------------------------------------------------------------------
-  // Handlers
-  // ---------------------------------------------------------------------------
-
-  const { userOperations } = await handler(params, searchParams);
-
-  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <CreateTransactionDialog
-      address={params.address as Address}
-      userOperations={userOperations}
-    />
+    <ModalInterception
+      bannerContent={
+        <div className="p-2">
+          <DialogTitle>Deposit</DialogTitle>
+          <DialogDescription>
+            Choose assets to deposit to this wallet!
+          </DialogDescription>
+        </div>
+      }
+      footerContent={<ModalInterceptionFooter />}
+      type="deposit"
+    >
+      <OriginalPage params={params} searchParams={searchParams} />
+    </ModalInterception>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Config
+// -----------------------------------------------------------------------------
+
+// export const runtime = "edge";

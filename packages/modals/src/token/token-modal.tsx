@@ -101,10 +101,14 @@ export const TokenModal: FC = () => {
     const filtered_balances =
       // Filter the balances by chain that is in the `MAINNET_CHAINS` array
       balances
-        ? balances.filter(balance => {
-            const chain = chains.find(chain => chain.id === balance.chainId);
-            return chain !== undefined;
-          })
+        ? balances
+            .filter(balance => {
+              const chain = chains.find(chain => chain.id === balance.chainId);
+              return chain !== undefined;
+            })
+            .filter(balance => {
+              return chainId === 0 || balance.chainId === chainId;
+            })
         : [];
 
     // Map the balances to tokens

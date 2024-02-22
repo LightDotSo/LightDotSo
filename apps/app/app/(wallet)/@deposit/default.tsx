@@ -12,42 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { ReactNode } from "react";
-
 // -----------------------------------------------------------------------------
-// Props
+// Default
 // -----------------------------------------------------------------------------
 
-type RootLayoutProps = {
-  children: ReactNode;
-  create: ReactNode;
-  deposit: ReactNode;
-  op: ReactNode;
-  send: ReactNode;
-};
-
-// -----------------------------------------------------------------------------
-// Layout
-// -----------------------------------------------------------------------------
-
-export default function RootLayout({
-  children,
-  create,
-  deposit,
-  op,
-  send,
-}: RootLayoutProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <>
-      {children}
-      {create}
-      {deposit}
-      {op}
-      {send}
-    </>
-  );
+export default function Default() {
+  return null;
 }

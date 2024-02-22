@@ -15,6 +15,7 @@
 import { SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { SendDialog } from "@/app/(wallet)/[address]/send/(components)/send-dialog";
 import { handler } from "@/handlers/[address]/send/handler";
@@ -87,9 +88,11 @@ export default async function Page({ params, searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <SendDialog
-      address={params.address as Address}
-      initialTransfers={transfers ?? []}
-    />
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <SendDialog
+        address={params.address as Address}
+        initialTransfers={transfers ?? []}
+      />
+    </HydrationBoundary>
   );
 }

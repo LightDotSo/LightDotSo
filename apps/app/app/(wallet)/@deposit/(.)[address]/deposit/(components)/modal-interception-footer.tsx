@@ -12,47 +12,55 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { Address } from "viem";
-import { CreateTransactionDialog } from "@/app/(wallet)/[address]/create/(components)/create-transaction-dialog";
-import { handler } from "@/handlers/[address]/create/handler";
-import { preloader } from "@/preloaders/[address]/create/preloader";
+"use client";
 
-// ------------------------------------------------------c-----------------------
-// Props
-// -----------------------------------------------------------------------------
-
-type PageProps = {
-  params: { address: string };
-  searchParams: {
-    userOperations?: string;
-  };
-};
+import { useAuth, useFormRef, useModals } from "@lightdotso/stores";
+import { FooterButton } from "@lightdotso/templates";
+import { useRouter } from "next/navigation";
+import { type FC, useCallback } from "react";
 
 // -----------------------------------------------------------------------------
-// Page
+// Component
 // -----------------------------------------------------------------------------
 
-export default async function Page({ params, searchParams }: PageProps) {
+export const ModalInterceptionFooter: FC = () => {
   // ---------------------------------------------------------------------------
-  // Preloaders
-  // ---------------------------------------------------------------------------
-
-  preloader(params, searchParams);
-
-  // ---------------------------------------------------------------------------
-  // Handlers
+  // Stores
   // ---------------------------------------------------------------------------
 
-  const { userOperations } = await handler(params, searchParams);
+  const { address } = useAuth();
+  const { isFormDisabled, isFormLoading } = useFormRef();
+  const { setDepositBackgroundModal } = useModals();
+
+  // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
+  const router = useRouter();
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  const onDismiss = useCallback(() => {
+    router.back();
+    setDepositBackgroundModal(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router]);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <CreateTransactionDialog
-      address={params.address as Address}
-      userOperations={userOperations}
+    <FooterButton
+      isModal
+      className="pt-0"
+      form="deposit-modal-form"
+      disabled={isFormDisabled}
+      isLoading={isFormLoading}
+      cancelClick={onDismiss}
+      customSuccessText={!address ? "Connect Wallet" : "Deposit"}
     />
   );
-}
+};

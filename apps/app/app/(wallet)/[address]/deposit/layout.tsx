@@ -12,58 +12,53 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/* eslint-disable react-hooks/rules-of-hooks */
-
-import { useAuth, useModals } from "@lightdotso/stores";
-import type { Meta, StoryObj } from "@storybook/react";
-import { useEffect } from "react";
-import TokenModal from "../token/token-modal";
-import { DepositModal } from "./deposit-modal";
+import {
+  BaseLayerWrapper,
+  BasicPageWrapper,
+  HStackFull,
+  BannerSection,
+} from "@lightdotso/ui";
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
+import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
-// Meta
+// Metadata
 // -----------------------------------------------------------------------------
 
-const meta: Meta<typeof DepositModal> = {
-  title: "modal/DepositModal",
-  component: DepositModal,
-  tags: ["autodocs"],
-  argTypes: {},
+export const metadata: Metadata = {
+  title: TITLES.Deposit.title,
+  description: TITLES.Deposit.description,
 };
 
-export default meta;
-
 // -----------------------------------------------------------------------------
-// Types
+// Props
 // -----------------------------------------------------------------------------
 
-type Story = StoryObj<typeof DepositModal>;
+interface DepositLayoutProps {
+  children: ReactNode;
+}
 
 // -----------------------------------------------------------------------------
-// Story
+// Layout
 // -----------------------------------------------------------------------------
 
-export const Base: Story = {
-  render: () => {
-    const { setAddress } = useAuth();
-    const { showDepositModal } = useModals();
+export default function DepositLayout({ children }: DepositLayoutProps) {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
-    useEffect(() => {
-      setAddress("0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed");
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    useEffect(() => {
-      showDepositModal();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    return (
-      <>
-        <DepositModal />
-        <TokenModal />
-      </>
-    );
-  },
-  args: {},
-};
+  return (
+    <BannerSection
+      title={TITLES.Deposit.title}
+      description={TITLES.Deposit.description}
+      size="sm"
+    >
+      <HStackFull>
+        <BaseLayerWrapper size="sm">
+          <BasicPageWrapper>{children}</BasicPageWrapper>
+        </BaseLayerWrapper>
+      </HStackFull>
+    </BannerSection>
+  );
+}

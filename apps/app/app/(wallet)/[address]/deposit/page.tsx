@@ -12,10 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
+import { queryKeys } from "@lightdotso/query-keys";
+import { getQueryClient } from "@lightdotso/services";
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Address } from "viem";
-import { CreateTransactionDialog } from "@/app/(wallet)/[address]/create/(components)/create-transaction-dialog";
-import { handler } from "@/handlers/[address]/create/handler";
-import { preloader } from "@/preloaders/[address]/create/preloader";
+import { DepositDialog } from "@/app/(wallet)/[address]/deposit/(components)/deposit-dialog";
+import { handler } from "@/handlers/[address]/deposit/handler";
+import { preloader } from "@/preloaders/[address]/deposit/preloader";
 
 // ------------------------------------------------------c-----------------------
 // Props
@@ -24,7 +28,7 @@ import { preloader } from "@/preloaders/[address]/create/preloader";
 type PageProps = {
   params: { address: string };
   searchParams: {
-    userOperations?: string;
+    transfer?: string;
   };
 };
 
@@ -37,22 +41,53 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(params, searchParams);
+  preloader(params);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { userOperations } = await handler(params, searchParams);
+  const { transfer, walletSettings, nfts, balances } = await handler(
+    params,
+    searchParams,
+  );
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const queryClient = getQueryClient();
+
+  queryClient.setQueryData(
+    queryKeys.wallet.settings({ address: params.address as Address }).queryKey,
+    walletSettings,
+  );
+  queryClient.setQueryData(
+    queryKeys.socket.balance({
+      address: params.address as Address,
+    }).queryKey,
+    balances,
+  );
+  queryClient.setQueryData(
+    queryKeys.nft.list({
+      address: params.address as Address,
+      is_testnet: walletSettings?.is_enabled_testnet,
+      limit: SIMPLEHASH_MAX_COUNT,
+      cursor: null,
+    }).queryKey,
+    nfts,
+  );
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <CreateTransactionDialog
-      address={params.address as Address}
-      userOperations={userOperations}
-    />
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <DepositDialog
+        address={params.address as Address}
+        initialTransfer={transfer ?? undefined}
+      />
+    </HydrationBoundary>
   );
 }

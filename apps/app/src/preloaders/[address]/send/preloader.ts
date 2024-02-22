@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { preloadGetTokens } from "@lightdotso/services";
+import { preloadGetNfts, preloadGetTokens } from "@lightdotso/services";
 import type { Address } from "viem";
 import { preloader as addressPreloader } from "@/preloaders/[address]/preloader";
 
@@ -30,5 +30,11 @@ export const preloader = async (params: { address: string }) => {
     is_testnet: false,
     group: false,
     chain_ids: null,
+  });
+  preloadGetNfts({
+    address: params.address as Address,
+    limit: Number.MAX_SAFE_INTEGER,
+    is_testnet: false,
+    cursor: null,
   });
 };

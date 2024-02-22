@@ -27,6 +27,10 @@ export {
   preloadGetNotificationsCount,
   getNotificationsCount,
 } from "./getNotificationsCount";
+export {
+  preloadGetSocketBalances,
+  getSocketBalances,
+} from "./getSocketBalances";
 export { preloadGetTokens, getTokens } from "./getTokens";
 export { preloadGetTokensCount, getTokensCount } from "./getTokensCount";
 export { preloadGetTransactions, getTransactions } from "./getTransactions";

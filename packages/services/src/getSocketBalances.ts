@@ -12,42 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { ReactNode } from "react";
+import { getSocketBalances as getClientSocketBalances } from "@lightdotso/client";
+import type { SocketBalanceParams } from "@lightdotso/params";
+import "server-only";
 
 // -----------------------------------------------------------------------------
-// Props
+// Pre
 // -----------------------------------------------------------------------------
 
-type RootLayoutProps = {
-  children: ReactNode;
-  create: ReactNode;
-  deposit: ReactNode;
-  op: ReactNode;
-  send: ReactNode;
+export const preloadGetSocketBalances = (params: SocketBalanceParams) => {
+  void getSocketBalances(params);
 };
 
 // -----------------------------------------------------------------------------
-// Layout
+// Service
 // -----------------------------------------------------------------------------
 
-export default function RootLayout({
-  children,
-  create,
-  deposit,
-  op,
-  send,
-}: RootLayoutProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <>
-      {children}
-      {create}
-      {deposit}
-      {op}
-      {send}
-    </>
+export const getSocketBalances = async (params: SocketBalanceParams) => {
+  return getClientSocketBalances(
+    {
+      parameters: {
+        query: {
+          userAddress: params.address!,
+        },
+      },
+    },
+    "admin",
   );
-}
+};
