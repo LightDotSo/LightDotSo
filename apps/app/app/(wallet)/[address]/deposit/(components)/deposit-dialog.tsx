@@ -18,11 +18,7 @@ import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
 import type { WalletSettingsData } from "@lightdotso/data";
 import { NftImage, TokenImage } from "@lightdotso/elements";
 import { useTransferQueryState } from "@lightdotso/nuqs";
-import {
-  useQueryConfiguration,
-  useQueryNfts,
-  useQuerySocketBalances,
-} from "@lightdotso/query";
+import { useQueryNfts, useQuerySocketBalances } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
 import type {
   SimplehashMainnetChain,
@@ -469,20 +465,8 @@ export const DepositDialog: FC<DepositDialogProps> = ({
   const isInsideModal = useIsInsideModal();
 
   // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
-
-  const { configuration } = useQueryConfiguration({
-    address: address,
-  });
-
-  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
-
-  if (!configuration) {
-    return null;
-  }
 
   return (
     <Tabs defaultValue="token" className="py-3">
