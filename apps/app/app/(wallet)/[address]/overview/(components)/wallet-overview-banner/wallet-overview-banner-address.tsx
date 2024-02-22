@@ -90,7 +90,7 @@ export const WalletOverviewBannerAddress: FC<
   }, [address, copy]);
 
   const handleDepositClick = useCallback(() => {
-    router.push(`/${address}/deposit`);
+    router.push(`/${address}/deposit/new`);
   }, [address, router]);
 
   const handleSendClick = useCallback(() => {
