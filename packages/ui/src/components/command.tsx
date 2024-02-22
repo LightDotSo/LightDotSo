@@ -64,10 +64,15 @@ const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
 
 const CommandInput = forwardRef<
   ElementRef<typeof CommandPrimitive.Input>,
-  ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
->(({ className, ...props }, ref) => (
+  ComponentPropsWithoutRef<typeof CommandPrimitive.Input> & {
+    wrapperClassName?: string;
+  }
+>(({ wrapperClassName, className, ...props }, ref) => (
   <div
-    className="flex items-center border-b border-b-border px-3"
+    className={cn(
+      "flex items-center border-b border-b-border px-3",
+      wrapperClassName,
+    )}
     // eslint-disable-next-line react/no-unknown-property
     cmdk-input-wrapper=""
   >
