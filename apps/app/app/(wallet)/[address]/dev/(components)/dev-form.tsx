@@ -90,16 +90,18 @@ export const DevForm: FC = () => {
   }, [form.formState]);
 
   // ---------------------------------------------------------------------------
-  // Callback Hooks
-  // ---------------------------------------------------------------------------
-
-  const onSubmit = useCallback((_data: DevFormValues) => {}, []);
-
-  // ---------------------------------------------------------------------------
   // Template Hooks
   // ---------------------------------------------------------------------------
 
   const isInsideModal = useIsInsideModal();
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  const onSubmit = useCallback(() => {
+    // console.log(encodedCallData);
+  }, []);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -114,7 +116,11 @@ export const DevForm: FC = () => {
       <CardContent className="grid gap-10">
         <TooltipProvider delayDuration={300}>
           <Form {...form}>
-            <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
+            <form
+              id="dev-form"
+              className="space-y-8"
+              onSubmit={form.handleSubmit(onSubmit)}
+            >
               <FormField
                 control={form.control}
                 name="chainId"
@@ -173,8 +179,9 @@ export const DevForm: FC = () => {
               <AbiForm name="abi" />
               {/* Show all errors for debugging */}
               {/* <div className="text-text">{JSON.stringify(field, null, 2)}</div> */}
-              <div className="text-text">{JSON.stringify(form, null, 2)}</div>
+              {/* <div className="text-text">{JSON.stringify(form, null, 2)}</div> */}
               <FooterButton
+                form="dev-form"
                 isModal={false}
                 cancelDisabled={true}
                 disabled={!isFormValid}
