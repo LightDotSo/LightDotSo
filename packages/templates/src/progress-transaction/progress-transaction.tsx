@@ -49,9 +49,12 @@ const ProgressTransactionInternal: FC<PendingTransaction> = ({
 
   useEffect(() => {
     if (isLoading) {
-      toast.loading("Transaction in progress...", { id: hash });
+      toast.loading("Transaction in progress...", {
+        id: hash,
+        position: "top-right",
+      });
     }
-  }, [isLoading]);
+  }, [isLoading, hash]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -70,7 +73,7 @@ const ProgressTransactionInternal: FC<PendingTransaction> = ({
       });
       removePendingTransaction(hash);
     }
-  }, [isSuccess]);
+  }, [isSuccess, hash, chainId, removePendingTransaction]);
 
   return null;
 };

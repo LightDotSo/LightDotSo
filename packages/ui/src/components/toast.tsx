@@ -91,7 +91,7 @@ const Toaster = () => {
           description: "text-sm opacity-90 text-ellipsis overflow-hidden",
           loader: "text-text",
           actionButton:
-            "group-[.toast]:ring-1 group-[.toast]:ring-border-primary",
+            "group-[.toast]:ring-1 group-[.toast]:ring-border-primary group-[.toast]:text-text-inverse",
           cancelButton:
             "group-[.toast]:border group-[.toast]:text-text-inverse",
           closeButton: "!hidden",
