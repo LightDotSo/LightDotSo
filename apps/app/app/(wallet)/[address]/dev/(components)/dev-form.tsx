@@ -15,8 +15,14 @@
 "use client";
 
 import { AbiForm } from "@lightdotso/forms";
+import {
+  useAbiEncodedCalldataQueryState,
+  userOperationsParser,
+} from "@lightdotso/nuqs";
 import type { devFormConfigurationSchema } from "@lightdotso/schemas";
 import { abi } from "@lightdotso/schemas";
+import { useModals } from "@lightdotso/stores";
+import { ChainLogo } from "@lightdotso/svg";
 import { FooterButton, useIsInsideModal } from "@lightdotso/templates";
 import {
   Button,
@@ -32,16 +38,18 @@ import {
   Label,
   TooltipProvider,
 } from "@lightdotso/ui";
+import { getChainById } from "@lightdotso/utils";
+import { lightWalletAbi } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isEmpty } from "lodash";
+import { ChevronDown } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 import type { FC } from "react";
 import { useForm } from "react-hook-form";
+import type { Address, Hex } from "viem";
+import { encodeFunctionData } from "viem";
 import type * as z from "zod";
-import { ChainLogo } from "@lightdotso/svg";
-import { ChevronDown } from "lucide-react";
-import { useModals } from "@lightdotso/stores";
-import { getChainById } from "@lightdotso/utils";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -50,15 +58,29 @@ import { getChainById } from "@lightdotso/utils";
 type DevFormValues = z.infer<typeof devFormConfigurationSchema>;
 
 // -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+export interface DevFormProps {
+  address: Address;
+}
+
+// -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const DevForm: FC = () => {
+export const DevForm: FC<DevFormProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
   // Next Hooks
   // ---------------------------------------------------------------------------
 
-  // const router = useRouter();
+  const router = useRouter();
+
+  // ---------------------------------------------------------------------------
+  // Query State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [abiEncodedCalldata] = useAbiEncodedCalldataQueryState();
 
   // ---------------------------------------------------------------------------
   // Stores
@@ -89,6 +111,22 @@ export const DevForm: FC = () => {
     return form.formState.isValid && isEmpty(form.formState.errors);
   }, [form.formState]);
 
+  const userOperationsParams = useMemo(() => {
+    return [
+      {
+        chainId: BigInt(form.getValues("chainId")),
+        callData: encodeFunctionData({
+          abi: lightWalletAbi,
+          functionName: "execute",
+          args: [address, BigInt(0), abiEncodedCalldata as Hex],
+        }),
+      },
+    ];
+  }, [abiEncodedCalldata, address, form.getValues("chainId")]);
+
+  const href = useMemo(() => {
+    return `/${address}/create?userOperations=${userOperationsParser.serialize(userOperationsParams!)}`;
+  }, [address, userOperationsParams]);
   // ---------------------------------------------------------------------------
   // Template Hooks
   // ---------------------------------------------------------------------------
@@ -100,8 +138,10 @@ export const DevForm: FC = () => {
   // ---------------------------------------------------------------------------
 
   const onSubmit = useCallback(() => {
-    // console.log(encodedCallData);
-  }, []);
+    if (href) {
+      router.push(href);
+    }
+  }, [abiEncodedCalldata, href, router]);
 
   // ---------------------------------------------------------------------------
   // Render

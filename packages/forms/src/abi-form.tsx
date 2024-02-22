@@ -17,6 +17,10 @@
 // import { getAbi as getClientAbi } from "@lightdotso/client";
 // import type { RefinementCallback } from "@lightdotso/hooks";
 // import { useRefinement } from "@lightdotso/hooks";
+import {
+  useAbiEncodedCalldataQueryState,
+  useAbiFunctionSelectorQueryState,
+} from "@lightdotso/nuqs";
 import { abi } from "@lightdotso/schemas";
 import {
   Form,
@@ -175,6 +179,13 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
   }, [form, name, parentMethods]);
 
   // ---------------------------------------------------------------------------
+  // Query State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [, setAbiFunctionSelector] = useAbiFunctionSelectorQueryState();
+  const [, setAbiEncodedCalldata] = useAbiEncodedCalldataQueryState();
+
+  // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
@@ -286,10 +297,28 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // SYnc the `encodedCallData` value
+  useEffect(() => {
+    if (encodedCallData) {
+      setAbiEncodedCalldata(encodedCallData);
+    }
+  }, [encodedCallData, setAbiEncodedCalldata]);
+
+  // Sync the `encodedFunctionSelector` value
+  useEffect(() => {
+    if (encodedFunctionSelector) {
+      setAbiFunctionSelector(encodedFunctionSelector);
+    }
+  }, [encodedFunctionSelector, setAbiFunctionSelector]);
+
   // Sync the `abiArguments` value with the `abiInputs`
   useEffect(() => {
     form.setValue("abiArguments", abiInputs);
   }, [form, abiInputs]);
+
+  // ---------------------------------------------------------------------------
+  // Validation
+  // ---------------------------------------------------------------------------
 
   // From: https://github.com/hashgraph/hedera-accelerator-defi-dex-ui/blob/cc70c3972c121774d19327718758c30fbe165e2b/src/dao/pages/DAOProposals/Forms/DAOGenericProposal/FormMultiInputList.tsx
   // License: MIT

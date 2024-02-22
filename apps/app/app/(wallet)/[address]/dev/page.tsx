@@ -15,6 +15,7 @@
 import { DevForm } from "./(components)/dev-form";
 import { handler } from "@/handlers/[address]/dev/handler";
 import { preloader } from "@/preloaders/[address]/dev/preloader";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -46,5 +47,5 @@ export default async function Page({ params }: PageProps) {
   // Render
   // ---------------------------------------------------------------------------
 
-  return <DevForm />;
+  return <DevForm address={params.address as Address} />;
 }
