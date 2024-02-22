@@ -84,7 +84,7 @@ const Toaster = () => {
         unstyled: true,
         classNames: {
           toast: cn(
-            "toast group border border-border",
+            "toast group border border-border text-text",
             toastVariants({ intent: "default" }),
           ),
           title: "text-sm font-semibold text-ellipsis overflow-hidden",
