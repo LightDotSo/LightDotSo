@@ -14,7 +14,7 @@
 
 use ethers::utils::hex;
 use eyre::Result;
-use lightdotso_solutions::{
+use lightdotso_sequence::{
     recover::recover_signature,
     types::{ECDSASignatureLeaf, ECDSASignatureType, SignatureLeaf},
     utils::{from_hex_string, parse_hex_to_bytes32},

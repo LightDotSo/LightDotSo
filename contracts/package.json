@@ -18,7 +18,7 @@
     "test-hh": "cd .. && pnpm run hardhat:test"
   },
   "dependencies": {
-    "@lightdotso/solutions": "workspace:*",
+    "@lightdotso/sequence": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
     "viem": "^2.7.10"
   },

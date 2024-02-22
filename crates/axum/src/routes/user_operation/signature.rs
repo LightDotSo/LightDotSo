@@ -34,7 +34,7 @@ use lightdotso_prisma::{
     user_operation,
     wallet,
 };
-use lightdotso_solutions::{
+use lightdotso_sequence::{
     builder::rooted_node_builder,
     config::WalletConfig,
     types::{
@@ -191,9 +191,9 @@ pub(crate) async fn v1_user_operation_signature_handler(
             signature_slice.copy_from_slice(&bytes[0..bytes.len() - 1]);
             let signature_type = match bytes.last() {
                 Some(&0x1) => {
-                    lightdotso_solutions::types::ECDSASignatureType::ECDSASignatureTypeEIP712
+                    lightdotso_sequence::types::ECDSASignatureType::ECDSASignatureTypeEIP712
                 }
-                _ => lightdotso_solutions::types::ECDSASignatureType::ECDSASignatureTypeEthSign,
+                _ => lightdotso_sequence::types::ECDSASignatureType::ECDSASignatureTypeEthSign,
             };
 
             Ok(SignerNode {

@@ -17,7 +17,7 @@
 import type { ConfigurationData } from "@lightdotso/data";
 import { useMutationUserOperationCreate } from "@lightdotso/query";
 import type { UserOperation } from "@lightdotso/schemas";
-import { subdigestOf } from "@lightdotso/solutions";
+import { subdigestOf } from "@lightdotso/sequence";
 import { useAuth, useModalSwiper } from "@lightdotso/stores";
 import {
   useSignMessage,

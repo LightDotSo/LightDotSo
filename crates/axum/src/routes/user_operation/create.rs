@@ -42,7 +42,7 @@ use lightdotso_prisma::{
     chain, configuration, owner, paymaster, paymaster_operation, user_operation, wallet,
     ActivityEntity, ActivityOperation, SignatureProcedure,
 };
-use lightdotso_solutions::{signature::recover_ecdsa_signature, utils::render_subdigest};
+use lightdotso_sequence::{signature::recover_ecdsa_signature, utils::render_subdigest};
 use lightdotso_tracing::tracing::{error, info};
 use prisma_client_rust::{
     chrono::{DateTime, NaiveDateTime, Utc},

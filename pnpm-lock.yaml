@@ -48,9 +48,9 @@ importers:
       '@lightdotso/prettier':
         specifier: workspace:*
         version: link:configurations/prettier
-      '@lightdotso/solutions':
+      '@lightdotso/sequence':
         specifier: workspace:*
-        version: link:packages/solutions
+        version: link:packages/sequence
       '@lightdotso/tailwindcss':
         specifier: workspace:*
         version: link:configurations/tailwindcss
@@ -360,12 +360,12 @@ importers:
       '@lightdotso/schemas':
         specifier: workspace:*
         version: link:../../packages/schemas
+      '@lightdotso/sequence':
+        specifier: workspace:*
+        version: link:../../packages/sequence
       '@lightdotso/services':
         specifier: workspace:*
         version: link:../../packages/services
-      '@lightdotso/solutions':
-        specifier: workspace:*
-        version: link:../../packages/solutions
       '@lightdotso/states':
         specifier: workspace:*
         version: link:../../packages/states
@@ -1583,9 +1583,9 @@ importers:
 
   contracts:
     dependencies:
-      '@lightdotso/solutions':
+      '@lightdotso/sequence':
         specifier: workspace:*
-        version: link:../packages/solutions
+        version: link:../packages/sequence
       '@lightdotso/wagmi':
         specifier: workspace:*
         version: link:../packages/wagmi
@@ -1912,9 +1912,9 @@ importers:
       '@lightdotso/schemas':
         specifier: workspace:*
         version: link:../schemas
-      '@lightdotso/solutions':
+      '@lightdotso/sequence':
         specifier: workspace:*
-        version: link:../solutions
+        version: link:../sequence
       '@lightdotso/stores':
         specifier: workspace:*
         version: link:../stores
@@ -2340,6 +2340,22 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
+  packages/sequence:
+    dependencies:
+      viem:
+        specifier: ^2.7.10
+        version: 2.7.10(typescript@5.3.3)(zod@3.22.4)
+    devDependencies:
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../../configurations/tsconfig
+      '@types/node':
+        specifier: ^20.11.19
+        version: 20.11.19
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
   packages/services:
     dependencies:
       '@lightdotso/client':
@@ -2373,22 +2389,6 @@ importers:
       '@types/react-dom':
         specifier: ^18.2.19
         version: 18.2.19
-      typescript:
-        specifier: ^5.3.3
-        version: 5.3.3
-
-  packages/solutions:
-    dependencies:
-      viem:
-        specifier: ^2.7.10
-        version: 2.7.10(typescript@5.3.3)(zod@3.22.4)
-    devDependencies:
-      '@lightdotso/tsconfig':
-        specifier: workspace:*
-        version: link:../../configurations/tsconfig
-      '@types/node':
-        specifier: ^20.11.19
-        version: 20.11.19
       typescript:
         specifier: ^5.3.3
         version: 5.3.3

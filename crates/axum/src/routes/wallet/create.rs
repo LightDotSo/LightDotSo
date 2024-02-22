@@ -39,7 +39,7 @@ use lightdotso_kafka::{
 };
 use lightdotso_prisma::{wallet, ActivityEntity, ActivityOperation, InviteCodeStatus};
 use lightdotso_redis::query::wallet::add_to_wallets;
-use lightdotso_solutions::{
+use lightdotso_sequence::{
     builder::rooted_node_builder,
     config::WalletConfig,
     hash::get_address,

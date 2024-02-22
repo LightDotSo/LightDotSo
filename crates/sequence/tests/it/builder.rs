@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use eyre::Result;
-use lightdotso_solutions::{
+use lightdotso_sequence::{
     builder::rooted_node_builder,
     recover::recover_signature,
     types::SignerNode,

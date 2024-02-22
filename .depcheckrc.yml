@@ -6,7 +6,7 @@ ignores:
   - "@evmts/core"
   - "@evmts/ts-plugin"
   - "@evmts/webpack-plugin"
-  - "@lightdotso/solutions"
+  - "@lightdotso/sequence"
   - "@lightdotso/tsconfig"
   - "@next/eslint-plugin-next"
   - "@openzeppelin/contracts"

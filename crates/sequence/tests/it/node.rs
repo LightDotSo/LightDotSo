@@ -14,7 +14,7 @@
 
 use ethers::types::Address;
 use eyre::Result;
-use lightdotso_solutions::{
+use lightdotso_sequence::{
     module::SigModule,
     types::{AddressSignatureLeaf, NestedLeaf, NodeLeaf, SignatureLeaf, Signer, SignerNode},
     utils::parse_hex_to_bytes32,

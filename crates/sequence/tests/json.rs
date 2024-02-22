@@ -14,7 +14,7 @@
 
 use ethers::types::Address;
 use eyre::Result;
-use lightdotso_solutions::{
+use lightdotso_sequence::{
     config::WalletConfig,
     io::{read_wallet_config, write_wallet_config},
     types::{

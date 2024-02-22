@@ -1,6 +1,6 @@
 ---
-source: crates/solutions/tests/it/builder.rs
-expression: config.clone().tree
+source: crates/sequence/tests/it/builder.rs
+expression: new_config_tree
 ---
 SignerNode {
     signer: None,

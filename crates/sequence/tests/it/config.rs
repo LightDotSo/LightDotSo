@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use eyre::Result;
-use lightdotso_solutions::{
+use lightdotso_sequence::{
     config::WalletConfig,
     types::{AddressSignatureLeaf, NestedLeaf, SignatureLeaf, Signer, SignerNode, SubdigestLeaf},
     utils::parse_hex_to_bytes32,

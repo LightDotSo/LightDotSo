@@ -1,5 +1,5 @@
 ---
-source: crates/solutions/src/builder.rs
+source: crates/sequence/src/builder.rs
 expression: topology
 ---
 SignerNode {

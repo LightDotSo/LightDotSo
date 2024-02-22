@@ -1,5 +1,5 @@
 ---
-source: crates/solutions/tests/it/signatures.rs
+source: crates/sequence/tests/it/signatures.rs
 expression: config.clone().tree
 ---
 SignerNode {

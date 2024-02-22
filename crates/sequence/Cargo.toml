@@ -1,5 +1,5 @@
 [package]
-  name = "lightdotso-solutions"
+  name = "lightdotso-sequence"
 
   version.workspace = true
   edition.workspace = true

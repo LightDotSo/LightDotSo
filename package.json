@@ -91,7 +91,7 @@
     "@evmts/webpack-plugin": "^0.11.2",
     "@lightdotso/eslint-config": "workspace:*",
     "@lightdotso/prettier": "workspace:*",
-    "@lightdotso/solutions": "workspace:*",
+    "@lightdotso/sequence": "workspace:*",
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.6",

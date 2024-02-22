@@ -7,7 +7,7 @@
 ## Contracts
 
 - [0xsequence/wallet-contracts](https://github.com/0xsequence/wallet-contracts) for base `MainModuleUpgradable.sol` for [LightWallet.sol](./contracts/src/LightWallet.sol)
-- [0xsequence/wallet-contracts](https://github.com/0xsequence/wallet-contracts) for entirety of rust implementation of signature decoding/encoding from [go-sequence](https://github.com/0xsequence/go-sequence) in rust at [./crates/solutions](./crates/solutions) and typescript at [./packages/solutions](./packages/solutions)
+- [0xsequence/wallet-contracts](https://github.com/0xsequence/wallet-contracts) for entirety of rust implementation of signature decoding/encoding from [go-sequence](https://github.com/0xsequence/go-sequence) in rust at [./crates/sequence](./crates/sequence) and typescript at [./packages/sequence](./packages/sequence)
 
 ## UI
 

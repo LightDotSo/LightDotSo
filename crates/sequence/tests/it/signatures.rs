@@ -29,7 +29,7 @@
 use ethers::types::Address;
 use eyre::Result;
 use lightdotso_common::traits::VecU8ToHex;
-use lightdotso_solutions::{
+use lightdotso_sequence::{
     io::write_wallet_config,
     recover::recover_signature,
     utils::{from_hex_string, parse_hex_to_bytes32},

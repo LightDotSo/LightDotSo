@@ -6027,8 +6027,8 @@ dependencies = [
  "lightdotso-prometheus",
  "lightdotso-redis",
  "lightdotso-rpc",
+ "lightdotso-sequence",
  "lightdotso-simulator",
- "lightdotso-solutions",
  "lightdotso-tracing",
  "prisma-client-rust",
  "reqwest",
@@ -6073,7 +6073,7 @@ dependencies = [
  "lightdotso-opentelemetry",
  "lightdotso-prisma",
  "lightdotso-redis",
- "lightdotso-solutions",
+ "lightdotso-sequence",
  "lightdotso-tracing",
  "serde_json",
  "tokio",
@@ -6480,7 +6480,7 @@ dependencies = [
  "lightdotso-opentelemetry",
  "lightdotso-prisma",
  "lightdotso-redis",
- "lightdotso-solutions",
+ "lightdotso-sequence",
  "lightdotso-tracing",
  "serde_json",
  "tokio",
@@ -6572,6 +6572,27 @@ dependencies = [
 ]
 
 [[package]]
+name = "lightdotso-sequence"
+version = "0.1.0"
+dependencies = [
+ "async-recursion",
+ "ethers 2.0.8",
+ "eyre",
+ "insta",
+ "lazy_static",
+ "lightdotso-common",
+ "lightdotso-contracts",
+ "lightdotso-tracing",
+ "rand 0.8.5",
+ "serde",
+ "serde_bytes",
+ "serde_json",
+ "serde_with 3.3.0",
+ "test-fuzz",
+ "tokio",
+]
+
+[[package]]
 name = "lightdotso-signer"
 version = "0.1.0"
 dependencies = [
@@ -6599,27 +6620,6 @@ dependencies = [
  "lightdotso-tracing",
  "revm",
  "serde",
- "tokio",
-]
-
-[[package]]
-name = "lightdotso-solutions"
-version = "0.1.0"
-dependencies = [
- "async-recursion",
- "ethers 2.0.8",
- "eyre",
- "insta",
- "lazy_static",
- "lightdotso-common",
- "lightdotso-contracts",
- "lightdotso-tracing",
- "rand 0.8.5",
- "serde",
- "serde_bytes",
- "serde_json",
- "serde_with 3.3.0",
- "test-fuzz",
  "tokio",
 ]
 

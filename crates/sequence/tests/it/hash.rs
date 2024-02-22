@@ -14,7 +14,7 @@
 
 use ethers::types::{Address, H256};
 use eyre::Result;
-use lightdotso_solutions::{
+use lightdotso_sequence::{
     config::WalletConfig,
     hash::get_address,
     types::{NodeLeaf, SignatureLeaf, Signer, SignerNode},

@@ -61,7 +61,7 @@ use lightdotso_kafka::{
 // use lightdotso_opentelemetry::billing::BillingMetrics;
 use lightdotso_prisma::{user_operation, ActivityEntity, ActivityOperation, PrismaClient};
 use lightdotso_redis::{get_redis_client, query::wallet::add_to_wallets, redis::Client};
-use lightdotso_solutions::init::get_image_hash_salt_from_init_code;
+use lightdotso_sequence::init::get_image_hash_salt_from_init_code;
 use lightdotso_tracing::tracing::{error, info, trace, warn};
 use std::{collections::HashMap, sync::Arc, time::Duration};
 

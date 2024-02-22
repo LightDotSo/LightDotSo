@@ -22,7 +22,7 @@ import {
   getUserOperations,
   getWallet,
 } from "@lightdotso/services";
-import { calculateInitCode } from "@lightdotso/solutions";
+import { calculateInitCode } from "@lightdotso/sequence";
 import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
