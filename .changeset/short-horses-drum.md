@@ -9,7 +9,7 @@
 "@lightdotso/background": patch
 "@lightdotso/query-keys": patch
 "@lightdotso/resources": patch
-"@lightdotso/solutions": patch
+"@lightdotso/sequence": patch
 "@lightdotso/templates": patch
 "@lightdotso/elements": patch
 "@lightdotso/services": patch

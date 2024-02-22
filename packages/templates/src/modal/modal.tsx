@@ -119,10 +119,20 @@ export const Modal: FC<ModalProps> = ({
       <Drawer shouldScaleBackground open={open} onClose={onClose}>
         <DrawerContent className={isHidden ? "hidden" : ""}>
           {headerContent && <DialogHeader>{headerContent}</DialogHeader>}
-          <DrawerBody className={className}>
+          {bannerContent && (
+            <DialogHeader className="w-full justify-start space-x-0 overflow-x-scroll [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {bannerContent}
+            </DialogHeader>
+          )}
+          <DrawerBody
+            className={cn(
+              "overflow-scroll [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+              isHeightFixed && "h-96",
+              className,
+            )}
+          >
             <ModalContext.Provider value={true}>
               <Suspense fallback={<Skeleton className="h-64 w-full" />}>
-                {bannerContent && bannerContent}
                 {children}
               </Suspense>
             </ModalContext.Provider>
@@ -157,7 +167,7 @@ export const Modal: FC<ModalProps> = ({
             </ButtonIcon>
           </DialogHeader>
           {bannerContent && (
-            <DialogHeader className="sticky top-0 block w-full justify-start space-x-0">
+            <DialogHeader className="w-full justify-start space-x-0 overflow-x-scroll [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {bannerContent}
             </DialogHeader>
           )}

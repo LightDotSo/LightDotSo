@@ -1,7 +1,7 @@
 ---
 "@lightdotso/eslint-config": patch
 "@lightdotso/prisma": patch
-"@lightdotso/solutions": patch
+"@lightdotso/sequence": patch
 "@lightdotso/templates": patch
 "@lightdotso/elements": patch
 "@lightdotso/schemas": patch
