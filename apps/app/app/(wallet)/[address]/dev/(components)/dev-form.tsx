@@ -15,7 +15,8 @@
 "use client";
 
 import { AbiForm } from "@lightdotso/forms";
-import { abi, devFormConfigurationSchema } from "@lightdotso/schemas";
+import type { devFormConfigurationSchema } from "@lightdotso/schemas";
+import { abi } from "@lightdotso/schemas";
 import { FooterButton } from "@lightdotso/templates";
 import {
   Card,
@@ -28,11 +29,11 @@ import {
 } from "@lightdotso/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isEmpty } from "lodash";
+import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 import type { FC } from "react";
 import { useForm } from "react-hook-form";
 import type * as z from "zod";
-import { useRouter } from "next/navigation";
 
 // -----------------------------------------------------------------------------
 // Types
