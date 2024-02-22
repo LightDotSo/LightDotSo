@@ -1719,7 +1719,7 @@ export const SendDialog: FC<SendDialogProps> = ({
               <FooterButton
                 isModal={false}
                 cancelDisabled={true}
-                disabled={false}
+                disabled={!isFormValid}
                 onClick={onClick}
               />
             )}

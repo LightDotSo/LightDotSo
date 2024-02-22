@@ -60,13 +60,7 @@ export const ModalInterceptionFooter: FC = () => {
       disabled={isFormDisabled}
       isLoading={isFormLoading}
       cancelClick={onDismiss}
-      customSuccessText={
-        !address
-          ? "Connect Wallet"
-          : // : chainId !== form.getValues("chainId")
-            // ? "Change Network"
-            "Deposit"
-      }
+      customSuccessText={!address ? "Connect Wallet" : "Deposit"}
     />
   );
 };
