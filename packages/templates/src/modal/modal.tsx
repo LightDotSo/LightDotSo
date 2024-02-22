@@ -119,7 +119,7 @@ export const Modal: FC<ModalProps> = ({
       <Drawer shouldScaleBackground open={open} onClose={onClose}>
         <DrawerContent className={isHidden ? "hidden" : ""}>
           {headerContent && <DialogHeader>{headerContent}</DialogHeader>}
-          <DrawerBody className={className}>
+          <DrawerBody className={cn(isHeightFixed && "h-96", className)}>
             <ModalContext.Provider value={true}>
               <Suspense fallback={<Skeleton className="h-64 w-full" />}>
                 {bannerContent && bannerContent}
