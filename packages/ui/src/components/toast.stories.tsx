@@ -135,7 +135,7 @@ export const Loading: Story = {
 };
 export const Action: Story = {
   args: {
-    message: "This is an informational message.",
+    message: "This is an action toast.",
     variant: "success",
     data: {
       action: {
@@ -148,14 +148,23 @@ export const Action: Story = {
     },
   },
 };
-export const Close: Story = {
+export const Cancel: Story = {
   args: {
-    message: "This is an informational message.",
+    message: "This is a cancel toast.",
     variant: "info",
     data: {
       cancel: {
         label: "Cancel",
       },
+    },
+  },
+};
+export const Close: Story = {
+  args: {
+    message: "This is an close toast.",
+    variant: "warning",
+    data: {
+      closeButton: true,
     },
   },
 };
