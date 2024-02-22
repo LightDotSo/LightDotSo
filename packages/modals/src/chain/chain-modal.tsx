@@ -14,7 +14,9 @@
 
 "use client";
 
+import { MAINNET_CHAINS, TESTNET_CHAINS } from "@lightdotso/const";
 import { useModals } from "@lightdotso/stores";
+import { ChainLogo } from "@lightdotso/svg";
 import { Modal } from "@lightdotso/templates";
 import {
   Command,
@@ -26,8 +28,6 @@ import {
   Tabs,
   TabsContent,
 } from "@lightdotso/ui";
-import { MAINNET_CHAINS, TESTNET_CHAINS } from "@lightdotso/const";
-import { ChainLogo } from "@lightdotso/svg";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -80,11 +80,11 @@ export function ChainModal() {
                 {MAINNET_CHAINS.map(chain => (
                   <CommandItem
                     key={chain.id}
+                    value={chain.name}
                     onSelect={() => {
                       onChainSelect(chain.id);
                       hideChainModal();
                     }}
-                    value={chain.name}
                   >
                     <>
                       <ChainLogo className="mr-2" chainId={chain.id} />
@@ -97,11 +97,11 @@ export function ChainModal() {
                 {TESTNET_CHAINS.map(chain => (
                   <CommandItem
                     key={chain.id}
+                    value={chain.name}
                     onSelect={() => {
                       onChainSelect(chain.id);
                       hideChainModal();
                     }}
-                    value={chain.name}
                   >
                     <div className="flex items-center space-x-2">
                       <ChainLogo chainId={chain.id} />
