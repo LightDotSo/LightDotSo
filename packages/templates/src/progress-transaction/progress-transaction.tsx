@@ -14,7 +14,7 @@
 
 "use client";
 
-import { type Transaction, useTransactions } from "@lightdotso/stores";
+import { type PendingTransaction, useTransactions } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import { useWaitForTransactionReceipt } from "@lightdotso/wagmi";
 import { type FC, useEffect } from "react";
@@ -23,7 +23,10 @@ import { type FC, useEffect } from "react";
 // Internal Component
 // -----------------------------------------------------------------------------
 
-const ProgressTransactionInternal: FC<Transaction> = ({ hash, chainId }) => {
+const ProgressTransactionInternal: FC<PendingTransaction> = ({
+  hash,
+  chainId,
+}) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------

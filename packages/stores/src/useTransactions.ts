@@ -20,7 +20,7 @@ import { createJSONStorage, devtools, persist } from "zustand/middleware";
 // Types
 // -----------------------------------------------------------------------------
 
-export type Transaction = {
+export type PendingTransaction = {
   hash: Hex;
   chainId: number;
 };
@@ -30,8 +30,8 @@ export type Transaction = {
 // -----------------------------------------------------------------------------
 
 type TransactionsStore = {
-  pendingTransactions: { [hash: string]: Transaction };
-  addPendingTransaction: (transaction: Transaction) => void;
+  pendingTransactions: { [hash: string]: PendingTransaction };
+  addPendingTransaction: (transaction: PendingTransaction) => void;
   removePendingTransaction: (hash: string) => void;
 };
 
