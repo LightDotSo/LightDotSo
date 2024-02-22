@@ -136,7 +136,7 @@ export const Loading: Story = {
 export const Action: Story = {
   args: {
     message: "This is an action toast.",
-    variant: "success",
+    variant: "info",
     data: {
       action: {
         label: "Action",

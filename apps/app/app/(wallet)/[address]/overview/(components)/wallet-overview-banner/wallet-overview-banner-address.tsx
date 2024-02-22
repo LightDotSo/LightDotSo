@@ -73,7 +73,7 @@ export const WalletOverviewBannerAddress: FC<
   const router = useRouter();
 
   // ---------------------------------------------------------------------------
-  // Wagmi Hooks
+  // Wagmi
   // ---------------------------------------------------------------------------
 
   const { data: ens } = useEnsName({

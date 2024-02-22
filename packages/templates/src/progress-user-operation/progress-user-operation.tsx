@@ -63,7 +63,7 @@ export const ProgressUserOperation: FC = () => {
       if (!hashedToasts.has(userOperation.hash)) {
         toast.info("Processing user operation...", {
           action: {
-            label: "View Progress",
+            label: "View",
             onClick: () => {
               window.open(
                 `https://explorer.light.so/op/${userOperation.hash}`,

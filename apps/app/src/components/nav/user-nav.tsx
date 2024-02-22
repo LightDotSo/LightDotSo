@@ -80,7 +80,7 @@ export const UserNav: FC = () => {
   const { setOpen, openSwitchNetworks } = useModal();
 
   // ---------------------------------------------------------------------------
-  // Wagmi Hooks
+  // Wagmi
   // ---------------------------------------------------------------------------
 
   const { disconnect } = useDisconnect();

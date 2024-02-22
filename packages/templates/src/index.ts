@@ -31,6 +31,7 @@ export { Modal, useIsInsideModal } from "./modal";
 export { ModalInterception } from "./modal-interception";
 export { ModalSwiper } from "./modal-swiper";
 export { NotificationComboDialog } from "./notification-combo-dialog";
+export { ProgressTransaction } from "./progress-transaction";
 export { ProgressUserOperation } from "./progress-user-operation";
 export { Support } from "./support";
 export { Transaction } from "./transaction";

@@ -14,7 +14,11 @@
 
 import { FormDevTools } from "@lightdotso/forms";
 import { AuthState, QueueState } from "@lightdotso/states";
-import { Footer, ProgressUserOperation } from "@lightdotso/templates";
+import {
+  Footer,
+  ProgressTransaction,
+  ProgressUserOperation,
+} from "@lightdotso/templates";
 import {
   TailwindIndicator,
   ThemeProvider,
@@ -130,6 +134,7 @@ export const Root: FC<RootProps> = ({ children }) => {
               <NftModal />
               <TokenModal />
               {/* Templates */}
+              <ProgressTransaction />
               <ProgressUserOperation />
               {/* States */}
               <AuthState />

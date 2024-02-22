@@ -26,7 +26,12 @@ import type {
   Transfer,
 } from "@lightdotso/schemas";
 import { transfer } from "@lightdotso/schemas";
-import { useAuth, useFormRef, useModals } from "@lightdotso/stores";
+import {
+  useAuth,
+  useFormRef,
+  useModals,
+  useTransactions,
+} from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import { FooterButton, useIsInsideModal } from "@lightdotso/templates";
 import {
@@ -113,6 +118,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
     showNftModal,
     hideNftModal,
   } = useModals();
+  const { addPendingTransaction } = useTransactions();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -172,13 +178,39 @@ export const DepositDialog: FC<DepositDialogProps> = ({
     chainId: form.getValues("chainId"),
   });
 
-  const { sendTransaction, isPending: isSendTransactionPending } =
-    useSendTransaction();
   const {
+    data: sendTransactionHash,
+    sendTransaction,
+    isPending: isSendTransactionPending,
+  } = useSendTransaction();
+  const {
+    data: writeContractHash,
     writeContract,
     error,
     isPending: isWriteContractPending,
   } = useWriteContract();
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    if (sendTransactionHash && chainId) {
+      addPendingTransaction({
+        hash: sendTransactionHash,
+        chainId: chainId,
+      });
+    }
+  }, [addPendingTransaction, chainId, sendTransactionHash]);
+
+  useEffect(() => {
+    if (writeContractHash && chainId) {
+      addPendingTransaction({
+        hash: writeContractHash,
+        chainId: chainId,
+      });
+    }
+  }, [addPendingTransaction, chainId, writeContractHash]);
 
   // ---------------------------------------------------------------------------
   // Submit Handler

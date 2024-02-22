@@ -84,14 +84,14 @@ const Toaster = () => {
         unstyled: true,
         classNames: {
           toast: cn(
-            "toast group border border-border",
+            "toast group border border-border text-text",
             toastVariants({ intent: "default" }),
           ),
           title: "text-sm font-semibold text-ellipsis overflow-hidden",
           description: "text-sm opacity-90 text-ellipsis overflow-hidden",
           loader: "text-text",
           actionButton:
-            "group-[.toast]:ring-1 group-[.toast]:ring-border-primary",
+            "group-[.toast]:ring-1 group-[.toast]:ring-border-primary group-[.toast]:text-text-inverse",
           cancelButton:
             "group-[.toast]:border group-[.toast]:text-text-inverse",
           closeButton: "!hidden",
