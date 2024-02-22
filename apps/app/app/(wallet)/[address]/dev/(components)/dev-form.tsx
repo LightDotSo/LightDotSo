@@ -17,23 +17,31 @@
 import { AbiForm } from "@lightdotso/forms";
 import type { devFormConfigurationSchema } from "@lightdotso/schemas";
 import { abi } from "@lightdotso/schemas";
-import { FooterButton } from "@lightdotso/templates";
+import { FooterButton, useIsInsideModal } from "@lightdotso/templates";
 import {
+  Button,
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
   Form,
+  FormControl,
+  FormField,
+  FormMessage,
+  Label,
   TooltipProvider,
 } from "@lightdotso/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isEmpty } from "lodash";
-import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 import type { FC } from "react";
 import { useForm } from "react-hook-form";
 import type * as z from "zod";
+import { ChainLogo } from "@lightdotso/svg";
+import { ChevronDown } from "lucide-react";
+import { useModals } from "@lightdotso/stores";
+import { getChainById } from "@lightdotso/utils";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -56,7 +64,12 @@ export const DevForm: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  // const { setFormControl } = useFormRef();
+  const {
+    setChainModalProps,
+    hideChainModal,
+    showChainModal,
+    setSendBackgroundModal,
+  } = useModals();
 
   // ---------------------------------------------------------------------------
   // Form
@@ -83,6 +96,12 @@ export const DevForm: FC = () => {
   const onSubmit = useCallback((_data: DevFormValues) => {}, []);
 
   // ---------------------------------------------------------------------------
+  // Template Hooks
+  // ---------------------------------------------------------------------------
+
+  const isInsideModal = useIsInsideModal();
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -96,10 +115,65 @@ export const DevForm: FC = () => {
         <TooltipProvider delayDuration={300}>
           <Form {...form}>
             <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
+              <FormField
+                control={form.control}
+                name="chainId"
+                render={({ field }) => {
+                  const chain = getChainById(field.value);
+
+                  return (
+                    <FormControl>
+                      <div className="w-full space-y-2">
+                        <Label htmlFor="chain">Chain</Label>
+                        <Button
+                          id="chain"
+                          size="lg"
+                          type="button"
+                          variant="outline"
+                          className="flex w-full items-center justify-between px-4 text-sm"
+                          onClick={() => {
+                            setChainModalProps({
+                              onClose: () => {
+                                hideChainModal();
+                                setSendBackgroundModal(false);
+                              },
+                              onChainSelect: chainId => {
+                                field.onChange(chainId);
+                                form.trigger();
+
+                                hideChainModal();
+                                if (isInsideModal) {
+                                  setSendBackgroundModal(false);
+                                }
+                              },
+                            });
+                            showChainModal();
+                          }}
+                        >
+                          {field.value ? (
+                            <>
+                              <ChainLogo
+                                className="mr-2"
+                                chainId={field.value}
+                              />
+                              {chain.name}
+                            </>
+                          ) : (
+                            "Select Chain"
+                          )}
+                          <div className="grow" />
+                          <ChevronDown className="size-4 opacity-50" />
+                        </Button>
+                        <FormMessage />
+                      </div>
+                    </FormControl>
+                  );
+                }}
+              />
               <AbiForm name="abi" />
               {/* Show all errors for debugging */}
               {/* <div className="text-text">{JSON.stringify(field, null, 2)}</div> */}
-              {/* <div className="text-text">{JSON.stringify(form, null, 2)}</div> */}
+              <div className="text-text">{JSON.stringify(form, null, 2)}</div>
               <FooterButton
                 isModal={false}
                 cancelDisabled={true}

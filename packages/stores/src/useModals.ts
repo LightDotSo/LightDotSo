@@ -29,8 +29,6 @@ export type AddressModalProps = {
 };
 
 export type ChainModalProps = {
-  chainId: string;
-  isTestnet?: boolean;
   onClose?: () => void;
   onChainSelect: (chainId: number) => void;
 };
