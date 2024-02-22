@@ -19,4 +19,5 @@ pub mod interpretation;
 pub mod notification;
 pub mod portfolio;
 pub mod routescan;
+pub mod transaction;
 pub mod user_operation;
