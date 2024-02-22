@@ -16,6 +16,7 @@
 
 import { type PendingTransaction, useTransactions } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
+import { getChainById, getEtherscanUrl } from "@lightdotso/utils";
 import { useWaitForTransactionReceipt } from "@lightdotso/wagmi";
 import { type FC, useEffect } from "react";
 
@@ -48,14 +49,25 @@ const ProgressTransactionInternal: FC<PendingTransaction> = ({
 
   useEffect(() => {
     if (isLoading) {
-      toast.loading("Transaction in progress", { id: hash });
+      toast.loading("Transaction in progress...", { id: hash });
     }
   }, [isLoading]);
 
   useEffect(() => {
     if (isSuccess) {
       toast.dismiss(hash);
-      toast.success("Transaction successful");
+      toast.success("Transaction successful!", {
+        action: {
+          label: "View",
+          onClick: () => {
+            window.open(
+              `${getEtherscanUrl(getChainById(chainId))}/tx/${hash}`,
+              "_blank",
+            );
+          },
+        },
+        position: "top-right",
+      });
       removePendingTransaction(hash);
     }
   }, [isSuccess]);
