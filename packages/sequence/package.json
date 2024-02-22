@@ -1,7 +1,7 @@
 {
-  "name": "@lightdotso/hooks",
-  "version": "0.0.2",
-  "private": true,
+  "name": "@lightdotso/sequence",
+  "version": "0.0.0",
+  "private": false,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
     "url": "https://github.com/LightDotSo/LightDotSo/issues"
@@ -26,30 +26,11 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@lightdotso/client": "workspace:*",
-    "@lightdotso/data": "workspace:*",
-    "@lightdotso/query": "workspace:*",
-    "@lightdotso/schemas": "workspace:*",
-    "@lightdotso/sequence": "workspace:*",
-    "@lightdotso/stores": "workspace:*",
-    "@lightdotso/tailwindcss": "workspace:*",
-    "@lightdotso/ui": "workspace:*",
-    "@lightdotso/wagmi": "workspace:*",
-    "copy-to-clipboard": "^3.3.3",
-    "lodash": "^4.17.21",
-    "next": "^14.1.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "siwe": "^2.1.4",
-    "tailwindcss": "^3.4.1",
     "viem": "^2.7.10"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/lodash": "^4.14.202",
     "@types/node": "^20.11.19",
-    "@types/react": "^18.2.56",
-    "@types/react-dom": "^18.2.19",
     "typescript": "^5.3.3"
   },
   "publishConfig": {

@@ -36,8 +36,8 @@
   lightdotso-prometheus = { workspace = true }
   lightdotso-redis = { workspace = true }
   lightdotso-rpc = { workspace = true }
+  lightdotso-sequence = { workspace = true }
   lightdotso-simulator = { workspace = true }
-  lightdotso-solutions = { workspace = true }
   lightdotso-tracing = { workspace = true }
   prisma-client-rust = { workspace = true }
   reqwest = { workspace = true }

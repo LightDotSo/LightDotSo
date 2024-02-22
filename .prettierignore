@@ -5,7 +5,7 @@ apps/docs/src/pages/posts/**/*.mdx
 apps/subgraph/generated/**/*.ts
 apps/extension/**
 configurations/prisma/src/zod/**
-crates/solutions/tests/samples/**
+crates/sequence/tests/samples/**
 packages/client/src/types/**/*.d.ts
 ios/LightWallet
 ios/LightWalletSafariExtension/Resources/**

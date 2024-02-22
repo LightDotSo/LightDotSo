@@ -16,7 +16,7 @@
 
 import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
 import { useMutationSignatureCreate } from "@lightdotso/query";
-import { subdigestOf } from "@lightdotso/solutions";
+import { subdigestOf } from "@lightdotso/sequence";
 import { useAuth } from "@lightdotso/stores";
 import { useSignMessage } from "@lightdotso/wagmi";
 import { useCallback, useEffect, useMemo, useState } from "react";

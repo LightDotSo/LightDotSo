@@ -6,7 +6,7 @@ First and firstmost this project woudln't have been possible without 0xSequence'
 
 Thank you for your hard work and dedication to the Ethereum community!
 
-Our rewrite implementation of [go-sequence](https://github.com/0xsequence/go-sequence) in rust is [here](./crates/solutions/).
+Our rewrite implementation of [go-sequence](https://github.com/0xsequence/go-sequence) in rust is [here](./crates/sequence/).
 
 ## 4337 Team, Rundler & Silius
 

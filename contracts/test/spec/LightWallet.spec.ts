@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { subdigestOf } from "@lightdotso/solutions";
+import { subdigestOf } from "@lightdotso/sequence";
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 import { describe, it, expect, test } from "vitest";
 // import { publicClient, walletClient } from "@/contracts/test/spec/utils";

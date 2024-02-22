@@ -35,9 +35,9 @@
     "crates/redis",
     "crates/routescan",
     "crates/rpc",
+    "crates/sequence",
     "crates/signer",
     "crates/simulator",
-    "crates/solutions",
     "crates/tauri",
     "crates/telegram",
     "crates/tracing",
@@ -137,7 +137,7 @@
     lightdotso-redis = { path = "./crates/redis" }
     lightdotso-routescan = { path = "./crates/routescan" }
     lightdotso-rpc = { path = "./crates/rpc" }
-    lightdotso-solutions = { path = "./crates/solutions" }
+    lightdotso-sequence = { path = "./crates/sequence" }
     lightdotso-signer = { path = "./crates/signer" }
     lightdotso-simulator = { path = "./crates/simulator" }
     lightdotso-tauri = { path = "./crates/tauri" }

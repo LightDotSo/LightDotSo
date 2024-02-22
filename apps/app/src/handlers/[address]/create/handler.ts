@@ -16,13 +16,13 @@ import { CONTRACT_ADDRESSES } from "@lightdotso/const";
 import type { ConfigurationData } from "@lightdotso/data";
 import { userOperationsParser } from "@lightdotso/nuqs";
 import type { UserOperation } from "@lightdotso/schemas";
+import { calculateInitCode } from "@lightdotso/sequence";
 import {
   getConfiguration,
   getUserOperationNonce,
   getUserOperations,
   getWallet,
 } from "@lightdotso/services";
-import { calculateInitCode } from "@lightdotso/solutions";
 import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
 import { notFound } from "next/navigation";

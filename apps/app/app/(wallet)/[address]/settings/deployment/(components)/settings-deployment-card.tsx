@@ -19,7 +19,7 @@ import type { WalletSettingsData } from "@lightdotso/data";
 import { userOperationsParser } from "@lightdotso/nuqs";
 import { useQueryUserOperations } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
-import { calculateInitCode } from "@lightdotso/solutions";
+import { calculateInitCode } from "@lightdotso/sequence";
 import { Button } from "@lightdotso/ui";
 import { getEtherscanUrl } from "@lightdotso/utils";
 import { useQueryClient } from "@tanstack/react-query";
