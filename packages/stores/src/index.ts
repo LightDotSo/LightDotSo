@@ -28,3 +28,5 @@ export { useNewForm } from "./useNewForm";
 export { useQueues } from "./useQueues";
 export { useSettings } from "./useSettings";
 export { useTables } from "./useTables";
+export type { Transaction } from "./useTransactions";
+export { useTransactions } from "./useTransactions";

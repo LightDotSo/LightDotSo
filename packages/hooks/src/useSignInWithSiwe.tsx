@@ -28,7 +28,7 @@ import { SiweMessage } from "siwe";
 
 export const useSignInWithSiwe = () => {
   // ---------------------------------------------------------------------------
-  // Wagmi Hooks
+  // Wagmi
   // ---------------------------------------------------------------------------
 
   const { isPending, signMessageAsync } = useSignMessage();
