@@ -136,10 +136,11 @@ export const TokenModal: FC = () => {
         isHeightFixed
         className="p-2"
         bannerContent={
-          <div className="flex flex-row space-x-2 overflow-x-scroll [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex flex-row p-2 space-x-2">
             <Button
               className={cn(
-                chainId === 0 && "shrink-0 ring-2 ring-border-primary",
+                "w-28 shrink-0",
+                chainId === 0 && "ring-2 ring-border-primary",
               )}
               variant="shadow"
               onClick={() => setChainId(0)}
@@ -149,7 +150,9 @@ export const TokenModal: FC = () => {
             {chains.map(chain => (
               <ButtonIcon
                 key={chain.id}
+                size="default"
                 className={cn(
+                  "shrink-0",
                   chainId === chain.id && "ring-2 ring-border-primary",
                 )}
                 variant="shadow"

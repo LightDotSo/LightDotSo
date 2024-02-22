@@ -163,7 +163,7 @@ export const Modal: FC<ModalProps> = ({
             </ButtonIcon>
           </DialogHeader>
           {bannerContent && (
-            <DialogHeader className="sticky top-0 block w-full justify-start space-x-0">
+            <DialogHeader className="sticky top-0 block w-full justify-start space-x-0 overflow-x-scroll [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {bannerContent}
             </DialogHeader>
           )}
