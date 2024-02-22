@@ -14,7 +14,7 @@
 
 /* eslint-disable react-hooks/rules-of-hooks */
 
-import { useAuth, useModals } from "@lightdotso/stores";
+import { useModals } from "@lightdotso/stores";
 import type { Meta, StoryObj } from "@storybook/react";
 import { useEffect } from "react";
 import { ChainModal } from "./chain-modal";

@@ -32,7 +32,7 @@ export type ChainModalProps = {
   chainId: string;
   isTestnet?: boolean;
   onClose?: () => void;
-  onChainSelect: (chainId: string) => void;
+  onChainSelect: (chainId: number) => void;
 };
 
 export type NftModalProps = {

@@ -14,9 +14,7 @@
 
 "use client";
 
-import { useDebouncedValue } from "@lightdotso/hooks";
-import { addressOrEns } from "@lightdotso/schemas";
-import { useAuth, useModals } from "@lightdotso/stores";
+import { useModals } from "@lightdotso/stores";
 import { Modal } from "@lightdotso/templates";
 import {
   Command,
@@ -28,19 +26,8 @@ import {
   Tabs,
   TabsContent,
 } from "@lightdotso/ui";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { MAINNET_CHAINS, TESTNET_CHAINS } from "@lightdotso/const";
 import { ChainLogo } from "@lightdotso/svg";
-
-// -----------------------------------------------------------------------------
-// Schema
-// -----------------------------------------------------------------------------
-
-const chainModalFormSchema = z.object({
-  addressOrEns: addressOrEns,
-});
 
 // -----------------------------------------------------------------------------
 // Component
@@ -51,31 +38,11 @@ export function ChainModal() {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address } = useAuth();
   const {
     isChainModalVisible,
     hideChainModal,
     chainModalProps: { onChainSelect },
   } = useModals();
-
-  // ---------------------------------------------------------------------------
-  // Form
-  // ---------------------------------------------------------------------------
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const methods = useForm({
-    mode: "all",
-    reValidateMode: "onBlur",
-    resolver: zodResolver(chainModalFormSchema),
-  });
-
-  const watchName = methods.watch("addressOrEns");
-
-  // ---------------------------------------------------------------------------
-  // Debounced Hooks
-  // ---------------------------------------------------------------------------
-
-  const delayedName = useDebouncedValue(watchName, 1000);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -114,7 +81,7 @@ export function ChainModal() {
                   <CommandItem
                     key={chain.id}
                     onSelect={() => {
-                      methods.setValue("chainId", chain.id);
+                      onChainSelect(chain.id);
                       hideChainModal();
                     }}
                     value={chain.name}
@@ -131,7 +98,7 @@ export function ChainModal() {
                   <CommandItem
                     key={chain.id}
                     onSelect={() => {
-                      methods.setValue("chainId", chain.id);
+                      onChainSelect(chain.id);
                       hideChainModal();
                     }}
                     value={chain.name}
