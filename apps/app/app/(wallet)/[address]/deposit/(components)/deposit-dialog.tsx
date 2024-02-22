@@ -574,8 +574,8 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                                   }}
                                 />
                                 {token?.symbol}
-                                &nbsp; &nbsp;
-                                <span className="text-text-weaker">
+                                &nbsp;
+                                <span className="text-text-weak">
                                   on {getChainById(token.chainId)?.name}
                                 </span>
                                 &nbsp;
@@ -773,7 +773,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                                 <div className="mr-2 size-6">
                                   <NftImage className="rounded-md" nft={nft} />
                                 </div>
-                                &nbsp; &nbsp;
+                                &nbsp;
                                 {nft.collection?.name}
                               </>
                             ) : (

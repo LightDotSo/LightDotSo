@@ -1411,8 +1411,8 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                   token={token}
                                                 />
                                                 {token?.symbol}
-                                                &nbsp; &nbsp;
-                                                <span className="text-text-weaker">
+                                                &nbsp;
+                                                <span className="text-text-weak">
                                                   on{" "}
                                                   {
                                                     getChainById(token.chain_id)
