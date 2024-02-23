@@ -125,11 +125,19 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
   }, [form.formState]);
 
   const userOperationsParams = useMemo(() => {
-    if (!formChainId || !abiEncoded || !abiEncoded.address) {
+    if (
+      !formChainId ||
+      !abiEncoded ||
+      !balance ||
+      !balance.data ||
+      !abiEncoded.address
+    ) {
       return;
     }
 
-    const value = formValue || 0;
+    const value = formValue
+      ? formValue * Math.pow(10, balance.data?.decimals)
+      : 0;
 
     return [
       {
