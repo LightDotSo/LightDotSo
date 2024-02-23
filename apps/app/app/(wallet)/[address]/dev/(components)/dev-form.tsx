@@ -35,6 +35,7 @@ import {
   FormControl,
   FormField,
   FormMessage,
+  Input,
   Label,
   TooltipProvider,
 } from "@lightdotso/ui";
@@ -228,6 +229,54 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
                   );
                 }}
               />
+              <FormControl>
+                <Label htmlFor="weight">Value</Label>
+                <FormField
+                  control={form.control}
+                  name="value"
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      className="[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                      type="text"
+                      onBlur={e => {
+                        // Validate the address
+                        if (!e.target.value) {
+                          // Clear the value of key address
+                          form.setValue("value", 0);
+                        }
+
+                        const quantity = parseFloat(e.target.value);
+                        form.setValue("value", quantity * Math.pow(10, 18));
+                      }}
+                      onChange={e => {
+                        // If the input ends with ".", or includes "." and ends with "0", set the value as string, as it can be assumed that the user is still typing
+                        if (
+                          e.target.value.endsWith(".") ||
+                          (e.target.value.includes(".") &&
+                            e.target.value.endsWith("0"))
+                        ) {
+                          field.onChange(e.target.value);
+                        } else {
+                          // Only parse to float if the value doesn't end with "."
+                          field.onChange(parseFloat(e.target.value) || 0);
+                        }
+
+                        // Validate the number
+                        const quantity = parseFloat(e.target.value);
+                        form.setValue("value", quantity * Math.pow(10, 18));
+                      }}
+                    />
+                  )}
+                />
+                <FormMessage />
+                <div className="flex items-center justify-between text-xs text-text-weak">
+                  <div>{/* tokenPrice could come here */}</div>
+                  <div>
+                    {/* {token ? `${token.amount} ${token.symbol} available` : ""} */}
+                  </div>
+                </div>
+              </FormControl>
               <AbiForm name="abi" />
               {/* Show all errors for debugging */}
               {/* <div className="text-text">{JSON.stringify(field, null, 2)}</div> */}

@@ -21,6 +21,7 @@ import { abi } from "../web3";
 
 export const devFormSchema = z.object({
   abi: abi,
+  value: z.number().optional(),
   chainId: z.number(),
 });
 
