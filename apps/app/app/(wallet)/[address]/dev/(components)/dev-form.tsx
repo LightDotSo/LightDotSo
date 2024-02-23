@@ -107,9 +107,7 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const formChainId = useMemo(() => {
-    return form.getValues("chainId");
-  }, [form]);
+  const formChainId = form.getValues("chainId");
 
   const isFormValid = useMemo(() => {
     return form.formState.isValid && isEmpty(form.formState.errors);
