@@ -95,14 +95,6 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
   } = useModals();
 
   // ---------------------------------------------------------------------------
-  // Wagmi
-  // ---------------------------------------------------------------------------
-
-  const balance = useBalance({
-    address: address,
-  });
-
-  // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------
 
@@ -112,12 +104,21 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
     resolver: zodResolver(abi),
   });
 
+  const formChainId = form.getValues("chainId");
+  const formValue = form.getValues("value");
+
+  // ---------------------------------------------------------------------------
+  // Wagmi
+  // ---------------------------------------------------------------------------
+
+  const balance = useBalance({
+    address: address,
+    chainId: formChainId,
+  });
+
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
-
-  const formChainId = form.getValues("chainId");
-  const formValue = form.getValues("value");
 
   const isFormValid = useMemo(() => {
     return form.formState.isValid && isEmpty(form.formState.errors);
@@ -196,6 +197,8 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
         });
         // Clear the value of key address
         form.setValue("value", 0);
+      } else if (quantity === 0) {
+        form.setValue("value", 0);
       } else if (
         quantity * Math.pow(10, balance?.data?.decimals) >
         balance?.data?.value
@@ -205,8 +208,6 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
           type: "manual",
           message: "Insufficient balance",
         });
-        // Clear the value of key address
-        // form.setValue(`transfers.${index}.asset.quantity`, 0);
       } else {
         // If the quantity is valid, set the value of key quantity
         form.setValue("value", quantity);
