@@ -42,6 +42,7 @@ export type {
 export { llamaGetSchema, llamaPostSchema } from "./llama";
 export {
   abi,
+  abiEncoded,
   address,
   addressOrEns,
   asset,
@@ -50,6 +51,7 @@ export {
 } from "./web3";
 export type {
   Abi,
+  AbiEncoded,
   Address,
   AddressOrEns,
   Asset,

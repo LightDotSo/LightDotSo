@@ -14,13 +14,7 @@
 
 "use client";
 
-// import { getAbi as getClientAbi } from "@lightdotso/client";
-// import type { RefinementCallback } from "@lightdotso/hooks";
-// import { useRefinement } from "@lightdotso/hooks";
-import {
-  useAbiEncodedCalldataQueryState,
-  useAbiFunctionSelectorQueryState,
-} from "@lightdotso/nuqs";
+import { useAbiEncodedQueryState } from "@lightdotso/nuqs";
 import { abi } from "@lightdotso/schemas";
 import {
   Form,
@@ -182,8 +176,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
-  const [, setAbiFunctionSelector] = useAbiFunctionSelectorQueryState();
-  const [, setAbiEncodedCalldata] = useAbiEncodedCalldataQueryState();
+  const [, setAbiEncoded] = useAbiEncodedQueryState();
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -297,19 +290,18 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  const formAddress = form.getValues("address");
+
   // SYnc the `encodedCallData` value
   useEffect(() => {
-    if (encodedCallData) {
-      setAbiEncodedCalldata(encodedCallData);
+    if (encodedCallData && encodedFunctionSelector) {
+      setAbiEncoded({
+        address: formAddress,
+        callData: encodedCallData,
+        functionName: encodedFunctionSelector,
+      });
     }
-  }, [encodedCallData, setAbiEncodedCalldata]);
-
-  // Sync the `encodedFunctionSelector` value
-  useEffect(() => {
-    if (encodedFunctionSelector) {
-      setAbiFunctionSelector(encodedFunctionSelector);
-    }
-  }, [encodedFunctionSelector, setAbiFunctionSelector]);
+  }, [encodedCallData, encodedFunctionSelector, setAbiEncoded, formAddress]);
 
   // Sync the `abiArguments` value with the `abiInputs`
   useEffect(() => {

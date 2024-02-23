@@ -16,7 +16,7 @@
 
 import { AbiForm } from "@lightdotso/forms";
 import {
-  useAbiEncodedCalldataQueryState,
+  useAbiEncodedQueryState,
   userOperationsParser,
 } from "@lightdotso/nuqs";
 import type { devFormConfigurationSchema } from "@lightdotso/schemas";
@@ -80,7 +80,7 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
-  const [abiEncodedCalldata] = useAbiEncodedCalldataQueryState();
+  const [abiEncoded] = useAbiEncodedQueryState();
 
   // ---------------------------------------------------------------------------
   // Stores
@@ -107,22 +107,30 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
+  const formChainId = useMemo(() => {
+    return form.getValues("chainId");
+  }, [form]);
+
   const isFormValid = useMemo(() => {
     return form.formState.isValid && isEmpty(form.formState.errors);
   }, [form.formState]);
 
   const userOperationsParams = useMemo(() => {
+    if (!abiEncoded || !abiEncoded.address) {
+      return;
+    }
+
     return [
       {
-        chainId: BigInt(form.getValues("chainId")),
+        chainId: BigInt(formChainId),
         callData: encodeFunctionData({
           abi: lightWalletAbi,
           functionName: "execute",
-          args: [address, BigInt(0), abiEncodedCalldata as Hex],
+          args: [abiEncoded.address, BigInt(0), abiEncoded.callData as Hex],
         }),
       },
     ];
-  }, [abiEncodedCalldata, address, form.getValues("chainId")]);
+  }, [abiEncoded, formChainId]);
 
   const href = useMemo(() => {
     return `/${address}/create?userOperations=${userOperationsParser.serialize(userOperationsParams!)}`;
@@ -141,7 +149,7 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
     if (href) {
       router.push(href);
     }
-  }, [abiEncodedCalldata, href, router]);
+  }, [href, router]);
 
   // ---------------------------------------------------------------------------
   // Render

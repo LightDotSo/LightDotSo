@@ -13,13 +13,9 @@
 // limitations under the License.
 
 export {
-  abiEncodedCalldataParser,
-  useAbiEncodedCalldataQueryState,
-} from "./useAbiEncodedCalldataQueryState";
-export {
-  abiFunctionSelectorParser,
-  useAbiFunctionSelectorQueryState,
-} from "./useAbiFunctionSelectorQueryState";
+  abiEncodedParser,
+  useAbiEncodedQueryState,
+} from "./useAbiEncodedQueryState";
 export { addressParser, useAddressQueryState } from "./useAddressQueryState";
 export { cursorParser, useCursorQueryState } from "./useCursorQueryState";
 export {

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { Address } from "viem";
-import { DevForm } from "./(components)/dev-form";
+import { DevForm } from "@/app/(wallet)/[address]/dev/(components)/dev-form";
 import { handler } from "@/handlers/[address]/dev/handler";
 import { preloader } from "@/preloaders/[address]/dev/preloader";
 

@@ -59,8 +59,20 @@ export const abi = z.object({
   functionName: z.string(),
 });
 
+export const abiEncoded = abi
+  .omit({ abiArguments: true, abiString: true, abi: true })
+  .partial()
+  .and(
+    z
+      .object({
+        callData: z.string(),
+      })
+      .partial(),
+  );
+
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
 
 export type Abi = z.infer<typeof abi>;
+export type AbiEncoded = z.infer<typeof abiEncoded>;
