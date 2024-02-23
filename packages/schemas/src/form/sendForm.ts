@@ -21,7 +21,7 @@ import { transfer } from "../web3";
 
 const transfers = z.array(transfer);
 
-export const sendFormConfigurationSchema = z.object({
+export const sendFormSchema = z.object({
   transfers: transfers,
 });
 
@@ -29,4 +29,4 @@ export const sendFormConfigurationSchema = z.object({
 // Types
 // -----------------------------------------------------------------------------
 
-export type SendFormConfiguration = z.infer<typeof sendFormConfigurationSchema>;
+export type SendForm = z.infer<typeof sendFormSchema>;

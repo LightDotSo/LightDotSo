@@ -15,11 +15,11 @@
 export type {
   PartialUserOperation,
   PartialUserOperations,
-  ConfirmFormConfiguration,
+  ConfirmForm,
 } from "./confirmForm";
-export { confirmFormConfigurationSchema } from "./confirmForm";
-export type { DevFormConfiguration } from "./devForm";
-export { devFormConfigurationSchema } from "./devForm";
+export { ConfirmFormSchema } from "./confirmForm";
+export type { DevForm } from "./devForm";
+export { devFormSchema } from "./devForm";
 export {
   newFormSchema,
   newFormConfirmSchema,
@@ -27,5 +27,5 @@ export {
   newFormConfigurationRefinedSchema,
   newFormStoreSchema,
 } from "./newForm";
-export type { SendFormConfiguration } from "./sendForm";
-export { sendFormConfigurationSchema } from "./sendForm";
+export type { SendForm } from "./sendForm";
+export { sendFormSchema } from "./sendForm";

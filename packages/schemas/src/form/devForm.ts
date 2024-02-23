@@ -19,7 +19,7 @@ import { abi } from "../web3";
 // Schema
 // -----------------------------------------------------------------------------
 
-export const devFormConfigurationSchema = z.object({
+export const devFormSchema = z.object({
   abi: abi,
   chainId: z.number(),
 });
@@ -28,4 +28,4 @@ export const devFormConfigurationSchema = z.object({
 // Types
 // -----------------------------------------------------------------------------
 
-export type DevFormConfiguration = z.infer<typeof devFormConfigurationSchema>;
+export type DevForm = z.infer<typeof devFormSchema>;

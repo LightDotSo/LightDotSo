@@ -25,7 +25,7 @@ import {
 } from "@lightdotso/nuqs";
 import { useQueryNfts, useQueryTokens } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
-import { sendFormConfigurationSchema } from "@lightdotso/schemas";
+import { sendFormSchema } from "@lightdotso/schemas";
 import type {
   SimplehashMainnetChain,
   SimplehashTestnetChain,
@@ -89,7 +89,7 @@ import { z } from "zod";
 // Types
 // -----------------------------------------------------------------------------
 
-type NewFormValues = z.infer<typeof sendFormConfigurationSchema>;
+type SendFormValues = z.infer<typeof sendFormSchema>;
 
 // -----------------------------------------------------------------------------
 // Props
@@ -210,7 +210,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   }, []);
 
   // The default values for the form
-  const defaultValues: Partial<NewFormValues> = useMemo(() => {
+  const defaultValues: Partial<SendFormValues> = useMemo(() => {
     // Check if the type is valid
     return {
       transfers:
@@ -225,11 +225,11 @@ export const SendDialog: FC<SendDialogProps> = ({
   // Form
   // ---------------------------------------------------------------------------
 
-  const form = useForm<NewFormValues>({
+  const form = useForm<SendFormValues>({
     mode: "all",
     reValidateMode: "onBlur",
     resolver: zodResolver(
-      sendFormConfigurationSchema.superRefine((value, ctx) => {
+      sendFormSchema.superRefine((value, ctx) => {
         // Check if no two transfers have the same address and asset address + chainId
         const duplicateTransfers = value.transfers.filter(
           (transfer, index, self) =>
@@ -854,7 +854,7 @@ export const SendDialog: FC<SendDialogProps> = ({
     router.push(href);
   }, [href, router]);
 
-  const onSubmit: SubmitHandler<NewFormValues> = () => {
+  const onSubmit: SubmitHandler<SendFormValues> = () => {
     form.trigger();
 
     router.push(href);

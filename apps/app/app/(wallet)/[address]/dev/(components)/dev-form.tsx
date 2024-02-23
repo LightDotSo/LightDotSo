@@ -19,7 +19,7 @@ import {
   useAbiEncodedQueryState,
   userOperationsParser,
 } from "@lightdotso/nuqs";
-import type { devFormConfigurationSchema } from "@lightdotso/schemas";
+import type { devFormSchema } from "@lightdotso/schemas";
 import { abi } from "@lightdotso/schemas";
 import { useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
@@ -55,7 +55,7 @@ import type * as z from "zod";
 // Types
 // -----------------------------------------------------------------------------
 
-type DevFormValues = z.infer<typeof devFormConfigurationSchema>;
+type DevFormValues = z.infer<typeof devFormSchema>;
 
 // -----------------------------------------------------------------------------
 // Props
