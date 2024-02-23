@@ -116,7 +116,7 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
   }, [form.formState]);
 
   const userOperationsParams = useMemo(() => {
-    if (!abiEncoded || !abiEncoded.address) {
+    if (!formChainId || !abiEncoded || !abiEncoded.address) {
       return;
     }
 
@@ -133,6 +133,10 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
   }, [abiEncoded, formChainId]);
 
   const href = useMemo(() => {
+    if (!userOperationsParams) {
+      return;
+    }
+
     return `/${address}/create?userOperations=${userOperationsParser.serialize(userOperationsParams!)}`;
   }, [address, userOperationsParams]);
   // ---------------------------------------------------------------------------
@@ -146,9 +150,11 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const onSubmit = useCallback(() => {
-    if (href) {
-      router.push(href);
+    if (!href) {
+      return;
     }
+
+    router.push(href);
   }, [href, router]);
 
   // ---------------------------------------------------------------------------
