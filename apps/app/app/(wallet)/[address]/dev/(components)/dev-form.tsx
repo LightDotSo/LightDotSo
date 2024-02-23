@@ -175,15 +175,7 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
   async function validateBalanceQuantity(quantity: number) {
     // If the quantity is empty, return
     if (!quantity) {
-      // If the quantity is zero, set an error
-      if (quantity === 0) {
-        form.setError("value", {
-          type: "manual",
-          message: "Quantity must be more than 0",
-        });
-      }
-
-      return;
+      form.setValue("value", 0);
     }
 
     // Check if the quantity is a number and more than the token balance
