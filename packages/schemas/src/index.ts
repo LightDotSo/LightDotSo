@@ -13,20 +13,20 @@
 // limitations under the License.
 
 export {
-  confirmFormConfigurationSchema,
-  devFormConfigurationSchema,
+  ConfirmFormSchema,
+  devFormSchema,
   newFormSchema,
   newFormConfigurationSchema,
   newFormConfigurationRefinedSchema,
   newFormConfirmSchema,
   newFormStoreSchema,
-  sendFormConfigurationSchema,
+  sendFormSchema,
 } from "./form";
 export type {
   PartialUserOperation,
   PartialUserOperations,
-  ConfirmFormConfiguration,
-  SendFormConfiguration,
+  ConfirmForm,
+  SendForm,
 } from "./form";
 export {
   simplehashMainnetChainSchema,

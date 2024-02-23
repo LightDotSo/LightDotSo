@@ -19,7 +19,7 @@ import {
   useAbiEncodedQueryState,
   userOperationsParser,
 } from "@lightdotso/nuqs";
-import type { devFormConfigurationSchema } from "@lightdotso/schemas";
+import type { devFormSchema } from "@lightdotso/schemas";
 import { abi } from "@lightdotso/schemas";
 import { useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
@@ -35,11 +35,12 @@ import {
   FormControl,
   FormField,
   FormMessage,
+  Input,
   Label,
   TooltipProvider,
 } from "@lightdotso/ui";
 import { getChainById } from "@lightdotso/utils";
-import { lightWalletAbi } from "@lightdotso/wagmi";
+import { lightWalletAbi, useBalance } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isEmpty } from "lodash";
 import { ChevronDown } from "lucide-react";
@@ -55,7 +56,7 @@ import type * as z from "zod";
 // Types
 // -----------------------------------------------------------------------------
 
-type DevFormValues = z.infer<typeof devFormConfigurationSchema>;
+type DevFormValues = z.infer<typeof devFormSchema>;
 
 // -----------------------------------------------------------------------------
 // Props
@@ -103,20 +104,40 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
     resolver: zodResolver(abi),
   });
 
+  const formChainId = form.getValues("chainId");
+  const formValue = form.getValues("value");
+
+  // ---------------------------------------------------------------------------
+  // Wagmi
+  // ---------------------------------------------------------------------------
+
+  const balance = useBalance({
+    address: address,
+    chainId: formChainId,
+  });
+
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
-
-  const formChainId = form.getValues("chainId");
 
   const isFormValid = useMemo(() => {
     return form.formState.isValid && isEmpty(form.formState.errors);
   }, [form.formState]);
 
   const userOperationsParams = useMemo(() => {
-    if (!formChainId || !abiEncoded || !abiEncoded.address) {
+    if (
+      !formChainId ||
+      !abiEncoded ||
+      !balance ||
+      !balance.data ||
+      !abiEncoded.address
+    ) {
       return;
     }
+
+    const value = formValue
+      ? formValue * Math.pow(10, balance.data?.decimals)
+      : 0;
 
     return [
       {
@@ -124,7 +145,7 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
         callData: encodeFunctionData({
           abi: lightWalletAbi,
           functionName: "execute",
-          args: [abiEncoded.address, BigInt(0), abiEncoded.callData as Hex],
+          args: [abiEncoded.address, BigInt(value), abiEncoded.callData as Hex],
         }),
       },
     ];
@@ -154,6 +175,46 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
 
     router.push(href);
   }, [href, router]);
+
+  // ---------------------------------------------------------------------------
+  // Validation
+  // ---------------------------------------------------------------------------
+
+  async function validateBalanceQuantity(quantity: number) {
+    // If the quantity is empty, return
+    if (!quantity) {
+      form.setValue("value", 0);
+    }
+
+    // Check if the quantity is a number and more than the token balance
+    if (quantity) {
+      // If the token is not found or undefined, set an error
+      if (!balance || !balance?.data) {
+        // Show an error on the message
+        form.setError("value", {
+          type: "manual",
+          message: "Value cannot be set",
+        });
+        // Clear the value of key address
+        form.setValue("value", 0);
+      } else if (quantity === 0) {
+        form.setValue("value", 0);
+      } else if (
+        quantity * Math.pow(10, balance?.data?.decimals) >
+        balance?.data?.value
+      ) {
+        // Show an error on the message
+        form.setError("value", {
+          type: "manual",
+          message: "Insufficient balance",
+        });
+      } else {
+        // If the quantity is valid, set the value of key quantity
+        form.setValue("value", quantity);
+        form.clearErrors("value");
+      }
+    }
+  }
 
   // ---------------------------------------------------------------------------
   // Render
@@ -227,6 +288,64 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
                     </FormControl>
                   );
                 }}
+              />
+              <FormField
+                control={form.control}
+                name="value"
+                render={({ field }) => (
+                  <FormControl>
+                    <div>
+                      <Label htmlFor="value">Value</Label>
+                      <Input
+                        {...field}
+                        className="[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                        type="text"
+                        onBlur={e => {
+                          // Validate the address
+                          if (!e.target.value) {
+                            // Clear the value of key address
+                            form.setValue("value", 0);
+                          }
+
+                          const quantity = parseFloat(e.target.value);
+
+                          if (!isNaN(quantity)) {
+                            validateBalanceQuantity(quantity);
+                          }
+                        }}
+                        onChange={e => {
+                          // If the input ends with ".", or includes "." and ends with "0", set the value as string, as it can be assumed that the user is still typing
+                          if (
+                            e.target.value.endsWith(".") ||
+                            (e.target.value.includes(".") &&
+                              e.target.value.endsWith("0"))
+                          ) {
+                            field.onChange(e.target.value);
+                          } else {
+                            // Only parse to float if the value doesn't end with "."
+                            field.onChange(parseFloat(e.target.value) || 0);
+                          }
+
+                          // Validate the number
+                          const quantity = parseFloat(e.target.value);
+
+                          if (!isNaN(quantity)) {
+                            validateBalanceQuantity(quantity);
+                          }
+                        }}
+                      />
+                      <FormMessage />
+                      <div className="mt-2 flex items-center justify-between text-xs text-text-weak">
+                        <div>{/* tokenPrice could come here */}</div>
+                        <div>
+                          {balance && balance.data
+                            ? `${balance.data?.value / BigInt(Math.pow(10, balance.data?.decimals))} ${balance.data?.symbol} available`
+                            : ""}
+                        </div>
+                      </div>
+                    </div>
+                  </FormControl>
+                )}
               />
               <AbiForm name="abi" />
               {/* Show all errors for debugging */}
