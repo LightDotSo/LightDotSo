@@ -109,6 +109,7 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const formChainId = form.getValues("chainId");
+  const formValue = form.getValues("value");
 
   const isFormValid = useMemo(() => {
     return form.formState.isValid && isEmpty(form.formState.errors);
@@ -119,13 +120,15 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
       return;
     }
 
+    const value = formValue || 0;
+
     return [
       {
         chainId: BigInt(formChainId),
         callData: encodeFunctionData({
           abi: lightWalletAbi,
           functionName: "execute",
-          args: [abiEncoded.address, BigInt(0), abiEncoded.callData as Hex],
+          args: [abiEncoded.address, BigInt(value), abiEncoded.callData as Hex],
         }),
       },
     ];
