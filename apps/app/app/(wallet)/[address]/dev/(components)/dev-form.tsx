@@ -327,7 +327,7 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
                         }}
                       />
                       <FormMessage />
-                      <div className="flex items-center justify-between text-xs text-text-weak mt-2">
+                      <div className="mt-2 flex items-center justify-between text-xs text-text-weak">
                         <div>{/* tokenPrice could come here */}</div>
                         <div>
                           {balance && balance.data
