@@ -40,7 +40,7 @@ import {
   TooltipProvider,
 } from "@lightdotso/ui";
 import { getChainById } from "@lightdotso/utils";
-import { lightWalletAbi } from "@lightdotso/wagmi";
+import { lightWalletAbi, useBalance } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isEmpty } from "lodash";
 import { ChevronDown } from "lucide-react";
@@ -93,6 +93,14 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
     showChainModal,
     setSendBackgroundModal,
   } = useModals();
+
+  // ---------------------------------------------------------------------------
+  // Wagmi
+  // ---------------------------------------------------------------------------
+
+  const balance = useBalance({
+    address: address,
+  });
 
   // ---------------------------------------------------------------------------
   // Form
@@ -158,6 +166,54 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
 
     router.push(href);
   }, [href, router]);
+
+  // ---------------------------------------------------------------------------
+  // Validation
+  // ---------------------------------------------------------------------------
+
+  async function validateBalanceQuantity(quantity: number) {
+    // If the quantity is empty, return
+    if (!quantity) {
+      // If the quantity is zero, set an error
+      if (quantity === 0) {
+        form.setError("value", {
+          type: "manual",
+          message: "Quantity must be more than 0",
+        });
+      }
+
+      return;
+    }
+
+    // Check if the quantity is a number and more than the token balance
+    if (quantity) {
+      // If the token is not found or undefined, set an error
+      if (!balance || !balance?.data) {
+        // Show an error on the message
+        form.setError("value", {
+          type: "manual",
+          message: "Value cannot be set",
+        });
+        // Clear the value of key address
+        form.setValue("value", 0);
+      } else if (
+        BigInt(quantity) >
+        balance?.data?.value * BigInt(Math.pow(10, balance?.data?.decimals))
+      ) {
+        // Show an error on the message
+        form.setError("value", {
+          type: "manual",
+          message: "Insufficient balance",
+        });
+        // Clear the value of key address
+        // form.setValue(`transfers.${index}.asset.quantity`, 0);
+      } else {
+        // If the quantity is valid, set the value of key quantity
+        form.setValue("value", quantity);
+        form.clearErrors("value");
+      }
+    }
+  }
 
   // ---------------------------------------------------------------------------
   // Render
@@ -250,7 +306,10 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
                         }
 
                         const quantity = parseFloat(e.target.value);
-                        form.setValue("value", quantity * Math.pow(10, 18));
+
+                        if (!isNaN(quantity)) {
+                          validateBalanceQuantity(quantity);
+                        }
                       }}
                       onChange={e => {
                         // If the input ends with ".", or includes "." and ends with "0", set the value as string, as it can be assumed that the user is still typing
@@ -267,7 +326,10 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
 
                         // Validate the number
                         const quantity = parseFloat(e.target.value);
-                        form.setValue("value", quantity * Math.pow(10, 18));
+
+                        if (!isNaN(quantity)) {
+                          validateBalanceQuantity(quantity);
+                        }
                       }}
                     />
                   )}
@@ -276,7 +338,9 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
                 <div className="flex items-center justify-between text-xs text-text-weak">
                   <div>{/* tokenPrice could come here */}</div>
                   <div>
-                    {/* {token ? `${token.amount} ${token.symbol} available` : ""} */}
+                    {balance && balance.data
+                      ? `${balance.data?.value / BigInt(Math.pow(10, balance.data?.decimals))} ${balance.data?.symbol} available`
+                      : ""}
                   </div>
                 </div>
               </FormControl>

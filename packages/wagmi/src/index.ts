@@ -31,6 +31,7 @@ export { ConnectKitButton, ConnectKitProvider, useModal } from "connectkit";
 export type { State } from "wagmi";
 export {
   WagmiProvider,
+  useBalance,
   useDisconnect,
   useEnsAddress,
   useEnsName,
