@@ -59,6 +59,13 @@ const AuthModal = dynamic(
   },
 );
 
+const ChainModal = dynamic(
+  () => import("@lightdotso/modals/src/chain/chain-modal"),
+  {
+    ssr: false,
+  },
+);
+
 const ConnectModal = dynamic(
   () => import("@lightdotso/modals/src/connect/connect-modal"),
   {
@@ -130,6 +137,7 @@ export const Root: FC<RootProps> = ({ children }) => {
               {/* Modals */}
               <AddressModal />
               <AuthModal />
+              <ChainModal />
               <ConnectModal />
               <NftModal />
               <TokenModal />

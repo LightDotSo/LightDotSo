@@ -12,20 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export type {
-  PartialUserOperation,
-  PartialUserOperations,
-  ConfirmFormConfiguration,
-} from "./confirmForm";
-export { confirmFormConfigurationSchema } from "./confirmForm";
-export type { DevFormConfiguration } from "./devForm";
-export { devFormConfigurationSchema } from "./devForm";
-export {
-  newFormSchema,
-  newFormConfirmSchema,
-  newFormConfigurationSchema,
-  newFormConfigurationRefinedSchema,
-  newFormStoreSchema,
-} from "./newForm";
-export type { SendFormConfiguration } from "./sendForm";
-export { sendFormConfigurationSchema } from "./sendForm";
+import { z } from "zod";
+import { abi } from "../web3";
+
+// -----------------------------------------------------------------------------
+// Schema
+// -----------------------------------------------------------------------------
+
+export const devFormConfigurationSchema = z.object({
+  abi: abi,
+  chainId: z.number(),
+});
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type DevFormConfiguration = z.infer<typeof devFormConfigurationSchema>;

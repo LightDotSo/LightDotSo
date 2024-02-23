@@ -14,9 +14,7 @@
 
 "use client";
 
-// import { getAbi as getClientAbi } from "@lightdotso/client";
-// import type { RefinementCallback } from "@lightdotso/hooks";
-// import { useRefinement } from "@lightdotso/hooks";
+import { useAbiEncodedQueryState } from "@lightdotso/nuqs";
 import { abi } from "@lightdotso/schemas";
 import {
   Form,
@@ -48,8 +46,14 @@ import {
   SolidityString,
   SolidityTuple,
 } from "abitype/zod";
-import { useEffect, type FC, type InputHTMLAttributes, useMemo } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import {
+  useEffect,
+  type FC,
+  type InputHTMLAttributes,
+  useMemo,
+  useCallback,
+} from "react";
+import { useFieldArray, useForm, useFormContext } from "react-hook-form";
 import {
   type Hex,
   encodeAbiParameters,
@@ -75,17 +79,19 @@ const abiFormSchema = abi;
 // -----------------------------------------------------------------------------
 
 type AbiFormProps = {
-  name?: string;
+  name: string;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const AbiForm: FC<AbiFormProps> = () => {
+export const AbiForm: FC<AbiFormProps> = ({ name }) => {
   // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------
+
+  const parentMethods = useFormContext();
 
   // const getAbi: RefinementCallback<AbiValues> = async ({
   //   abi,
@@ -136,6 +142,41 @@ export const AbiForm: FC<AbiFormProps> = () => {
     name: "abiArguments",
     control: form.control,
   });
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  const syncWithParent = useCallback(() => {
+    if (!parentMethods) {
+      return;
+    }
+
+    // Sync with parent
+    parentMethods.setValue("abiArguments", form.getValues("abiArguments"));
+    parentMethods.setValue("abi", form.getValues("abi"));
+    parentMethods.setValue("abiString", form.getValues("abiString"));
+    parentMethods.setValue("address", form.getValues("address"));
+    parentMethods.setValue("functionName", form.getValues("functionName"));
+
+    // If the form is valid, clear the error
+    if (form.formState.isValid) {
+      parentMethods.clearErrors(name);
+    }
+
+    // If there is an error, sync with parent
+    if (!form.formState.isValid && form.formState.errors[name]) {
+      parentMethods.setError(name, form.formState.errors[name]!);
+    }
+
+    parentMethods.trigger();
+  }, [form, name, parentMethods]);
+
+  // ---------------------------------------------------------------------------
+  // Query State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [, setAbiEncoded] = useAbiEncodedQueryState();
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -249,10 +290,27 @@ export const AbiForm: FC<AbiFormProps> = () => {
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  const formAddress = form.getValues("address");
+
+  // SYnc the `encodedCallData` value
+  useEffect(() => {
+    if (encodedCallData && encodedFunctionSelector) {
+      setAbiEncoded({
+        address: formAddress,
+        callData: encodedCallData,
+        functionName: encodedFunctionSelector,
+      });
+    }
+  }, [encodedCallData, encodedFunctionSelector, setAbiEncoded, formAddress]);
+
   // Sync the `abiArguments` value with the `abiInputs`
   useEffect(() => {
     form.setValue("abiArguments", abiInputs);
   }, [form, abiInputs]);
+
+  // ---------------------------------------------------------------------------
+  // Validation
+  // ---------------------------------------------------------------------------
 
   // From: https://github.com/hashgraph/hedera-accelerator-defi-dex-ui/blob/cc70c3972c121774d19327718758c30fbe165e2b/src/dao/pages/DAOProposals/Forms/DAOGenericProposal/FormMultiInputList.tsx
   // License: MIT
@@ -396,6 +454,25 @@ export const AbiForm: FC<AbiFormProps> = () => {
 
     return;
   }
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // Only on mount
+  useEffect(() => {
+    syncWithParent();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Sync w/ every invalidation
+  useEffect(() => {
+    syncWithParent();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.formState.isValid, form.formState.errors]);
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------

@@ -22,7 +22,7 @@ import { createParser, useQueryState } from "nuqs";
 export const userOperationsParser = createParser({
   parse(value) {
     const operations = value.split(";");
-    return operations.map<Partial<UserOperation>>(operation => {
+    return operations?.map<Partial<UserOperation>>(operation => {
       const [
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         _index,
@@ -100,7 +100,7 @@ export const userOperationsParser = createParser({
   },
   serialize(value: Array<Partial<UserOperation>>) {
     return value
-      .map(
+      ?.map(
         (operation, i) =>
           `${i}:${operation.chainId?.toString() ?? "_"}:${
             operation.hash ?? "_"

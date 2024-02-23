@@ -1845,6 +1845,9 @@ importers:
       '@lightdotso/hooks':
         specifier: workspace:*
         version: link:../hooks
+      '@lightdotso/nuqs':
+        specifier: workspace:*
+        version: link:../nuqs
       '@lightdotso/schemas':
         specifier: workspace:*
         version: link:../schemas

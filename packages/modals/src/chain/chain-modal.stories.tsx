@@ -12,53 +12,46 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {
-  HStackFull,
-  BannerSection,
-  BasicPageWrapper,
-  BaseLayerWrapper,
-} from "@lightdotso/ui";
-import type { Metadata } from "next";
-import type { ReactNode } from "react";
-import { TITLES } from "@/const";
+/* eslint-disable react-hooks/rules-of-hooks */
+
+import { useModals } from "@lightdotso/stores";
+import type { Meta, StoryObj } from "@storybook/react";
+import { useEffect } from "react";
+import { ChainModal } from "./chain-modal";
 
 // -----------------------------------------------------------------------------
-// Metadata
+// Meta
 // -----------------------------------------------------------------------------
 
-export const metadata: Metadata = {
-  title: TITLES.Dev.title,
-  description: TITLES.Dev.description,
+const meta: Meta<typeof ChainModal> = {
+  title: "modal/ChainModal",
+  component: ChainModal,
+  tags: ["autodocs"],
+  argTypes: {},
 };
 
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-interface DevLayoutProps {
-  children: ReactNode;
-}
+export default meta;
 
 // -----------------------------------------------------------------------------
-// Layout
+// Types
 // -----------------------------------------------------------------------------
 
-export default function DevLayout({ children }: DevLayoutProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
+type Story = StoryObj<typeof ChainModal>;
 
-  return (
-    <BannerSection
-      title={TITLES.Dev.title}
-      description={TITLES.Dev.description}
-      size="sm"
-    >
-      <HStackFull>
-        <BaseLayerWrapper size="sm">
-          <BasicPageWrapper>{children}</BasicPageWrapper>
-        </BaseLayerWrapper>
-      </HStackFull>
-    </BannerSection>
-  );
-}
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Base: Story = {
+  render: () => {
+    const { showChainModal } = useModals();
+
+    useEffect(() => {
+      showChainModal();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    return <ChainModal />;
+  },
+  args: {},
+};
