@@ -17,12 +17,12 @@
     "build:dev": "cross-env NODE_ENV=development node ./esbuild.config.js"
   },
   "dependencies": {
-    "@types/firefox-webext-browser": "^120.0.0",
+    "@types/firefox-webext-browser": "^120.0.1",
     "cross-env": "^7.0.3",
-    "dotenv": "^16.4.4"
+    "dotenv": "^16.4.5"
   },
   "devDependencies": {
-    "@types/node": "^20.11.19",
+    "@types/node": "^20.11.20",
     "typescript": "^5.3.3"
   },
   "publishConfig": {

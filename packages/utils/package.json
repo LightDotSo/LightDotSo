@@ -29,13 +29,13 @@
     "@lightdotso/const": "workspace:*",
     "clsx": "^2.1.0",
     "cross-env": "^7.0.3",
-    "dotenv": "^16.4.4",
+    "dotenv": "^16.4.5",
     "tailwind-merge": "^2.2.1",
-    "viem": "^2.7.10"
+    "viem": "^2.7.13"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.11.19",
+    "@types/node": "^20.11.20",
     "typescript": "^5.3.3"
   },
   "publishConfig": {
