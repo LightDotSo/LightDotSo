@@ -26,6 +26,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#![allow(clippy::unwrap_used)]
+
 use crate::{config::WalletConfig, module::SigModule, types::Signature, utils::read_uint24};
 use async_recursion::async_recursion;
 use ethers::{
@@ -101,6 +103,9 @@ async fn recover_chained(
     let (sig_size, rindex) = read_uint24(signature.as_slice(), rindex)?;
     let nrindex = rindex + (sig_size as usize);
 
+    // println!("sig_size: {}", sig_size);
+    // println!("rindex: {}", rindex);
+
     let initial_config = recover_signature(
         address,
         chain_id,
@@ -113,15 +118,23 @@ async fn recover_chained(
         return Err(eyre!("Less than threshold"));
     }
 
-    let mut config: Option<WalletConfig> = None;
+    // Set the current config to the initial config
+    let mut config = Some(initial_config.clone());
+
     let mut rindex = nrindex;
     let mut checkpoint = initial_config.checkpoint;
+
+    // println!("initial_config: {:?}", initial_config);
 
     while rindex < signature.len() {
         let (sig_size, sig_rindex) = read_uint24(signature.as_slice(), rindex)?;
         let nrindex = sig_rindex + (sig_size as usize);
 
-        let hashed_digest = set_image_hash(signature.as_slice()[sig_rindex..nrindex].to_vec())?;
+        // println!("sig_size: {}", sig_size);
+        // println!("sig_rindex: {}", sig_rindex);
+        // println!("nrindex: {}", nrindex);
+
+        let hashed_digest = set_image_hash(config.unwrap().image_hash.as_bytes().to_vec())?;
         config = Some(
             recover_signature(
                 address,
@@ -131,6 +144,9 @@ async fn recover_chained(
             )
             .await?,
         );
+
+        // println!("hashed_digest: {:?}", hashed_digest);
+        // println!("config: {:?}", config);
 
         if config.as_ref().ok_or_else(|| eyre!("config is None"))?.weight <
             config.as_ref().ok_or_else(|| eyre!("config is None"))?.threshold.into()
@@ -149,7 +165,7 @@ async fn recover_chained(
     match &mut config {
         // If the config is Some, return the config w/ the initial image hash
         Some(config) => {
-            config.image_hash = initial_config.image_hash;
+            // config.image_hash = initial_config.image_hash;
             Ok(config.clone())
         }
         // If the config is None, return the initial config

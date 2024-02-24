@@ -485,7 +485,7 @@ model Configuration {
 
   address    String
   checkpoint BigInt
-  imageHash  String
+  imageHash  String @unique
   threshold  BigInt
 
   // ---------------------------------------------------------------------------
