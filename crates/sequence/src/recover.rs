@@ -59,6 +59,8 @@ pub async fn recover_signature(
 
     let signature_type = sig.as_slice()[0];
 
+    // println!("signature_type: {}", signature_type);
+
     // Legacy signature
     if signature_type == 0x00 {
         let mut base_sig_module = SigModule::new(address, chain_id, digest, None);
@@ -146,7 +148,7 @@ async fn recover_chained(
         );
 
         // println!("hashed_digest: {:?}", hashed_digest);
-        // println!("config: {:?}", config);
+        println!("config: {:?}", config);
 
         if config.as_ref().ok_or_else(|| eyre!("config is None"))?.weight <
             config.as_ref().ok_or_else(|| eyre!("config is None"))?.threshold.into()
