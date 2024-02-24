@@ -18,15 +18,15 @@
   },
   "dependencies": {
     "@metamask/eth-sig-util": "^7.0.1",
-    "@types/firefox-webext-browser": "^120.0.0",
+    "@types/firefox-webext-browser": "^120.0.1",
     "buffer": "^6.0.3",
     "cross-env": "^7.0.3",
-    "dotenv": "^16.4.4",
+    "dotenv": "^16.4.5",
     "events": "^3.3.0",
     "isutf8": "^4.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20.11.19",
+    "@types/node": "^20.11.20",
     "typescript": "^5.3.3"
   },
   "publishConfig": {
