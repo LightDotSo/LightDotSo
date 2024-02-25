@@ -140,6 +140,7 @@ model User {
   owners                     Owner[]
   wallets                    Wallet[]
   walletNotificationSettings WalletNotificationSettings[]
+  ConfigurationOwner         ConfigurationOwner[]
 }
 
 // -----------------------------------------------------------------------------
@@ -275,6 +276,7 @@ model Wallet {
 
   activities                 Activity[]
   configurations             Configuration[]
+  configurationOperations    ConfigurationOperation[]
   notifications              Notification[]
   notificationSettings       NotificationSettings[]
   paymasterOperations        PaymasterOperation[]
@@ -527,7 +529,9 @@ model ConfigurationOperation {
   // ---------------------------------------------------------------------------
 
   activities              Activity[]
+  configurationOwners     ConfigurationOwner[]
   configurationSignatures ConfigurationSignature[]
+  wallets                 Wallet[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -550,6 +554,56 @@ enum ConfigurationOperationStatus {
 }
 
 // -----------------------------------------------------------------------------
+// ConfigurationOwner
+// -----------------------------------------------------------------------------
+
+model ConfigurationOwner {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  address String
+  weight  BigInt
+  index   Int
+
+  // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  configurationOperation   ConfigurationOperation @relation(fields: [configurationOperationId], references: [id])
+  configurationOperationId String
+
+  // ---------------------------------------------------------------------------
+  // None-to-many
+  // ---------------------------------------------------------------------------
+
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
+  configurationSignatures ConfigurationSignature[]
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
+  // Relations
+  @@index([configurationOperationId])
+  @@index([userId])
+}
+
+// -----------------------------------------------------------------------------
 // ConfigurationSignature
 // -----------------------------------------------------------------------------
 
@@ -569,13 +623,6 @@ model ConfigurationSignature {
   signature Bytes
 
   // ---------------------------------------------------------------------------
-  // One-to-many
-  // ---------------------------------------------------------------------------
-
-  configurationOperation   ConfigurationOperation @relation(fields: [configurationOperationId], references: [id])
-  configurationOperationId String
-
-  // ---------------------------------------------------------------------------
   // None-to-one
   // ---------------------------------------------------------------------------
 
@@ -589,21 +636,23 @@ model ConfigurationSignature {
   // One-to-many
   // ---------------------------------------------------------------------------
 
-  owner   Owner  @relation(fields: [ownerId], references: [id])
-  ownerId String
+  configurationOperation   ConfigurationOperation @relation(fields: [configurationOperationId], references: [id])
+  configurationOperationId String
+
+  configurationOwner   ConfigurationOwner @relation(fields: [configurationOwnerId], references: [id])
+  configurationOwnerId String
 
   // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
 
   // Unique
-  @@unique([configurationOperationId, ownerId])
-  @@unique([configurationId, ownerId])
+  @@unique([configurationOperationId, configurationOwnerId])
   // Relations
   @@index([activityId])
-  @@index([configurationOperationId])
   @@index([configurationId])
-  @@index([ownerId])
+  @@index([configurationOperationId])
+  @@index([configurationOwnerId])
 }
 
 // -----------------------------------------------------------------------------
@@ -645,8 +694,7 @@ model Owner {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  configurationSignatures ConfigurationSignature[]
-  signatures              Signature[]
+  signatures Signature[]
 
   // ---------------------------------------------------------------------------
   // Mappings
