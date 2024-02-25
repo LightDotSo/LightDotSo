@@ -132,6 +132,58 @@ impl WalletConfig {
         .concat())
     }
 
+    /// Encode the wallet config into bytes for chained wallet configs
+    /// Used for debugging purposes to check the encoding of the wallet config w/ the original
+    /// signature bytes
+    pub fn encode_chained_wallet(&self) -> Result<Vec<u8>> {
+        // Get the encoded bytes of the wallet config
+        let initial_encoded = self.encode()?;
+
+        // Get the length of the encoded bytes
+        let initial_length: u32 = initial_encoded.len().try_into()?;
+
+        // Get the encoded bytes of the `internal_recovered_configs`
+        let internal_recovered_configs = self
+            .internal_recovered_configs
+            .as_ref()
+            .map(|configs| {
+                configs.iter().map(|config| config.encode()).collect::<Result<Vec<Vec<u8>>>>()
+            })
+            .transpose()?
+            .unwrap_or_default();
+
+        // Get the length of the encoded bytes of each of the `internal_recovered_configs`
+        let internal_configs_length: Result<Vec<u32>> = internal_recovered_configs
+            .iter()
+            .map(|config| {
+                let len: Result<u32, _> =
+                    usize::try_into(config.len()).map_err(|_| eyre::eyre!("Failed to convert"));
+                len
+            })
+            .collect();
+
+        // For each of the `internal_recovered_configs`, prepend the length of the encoded bytes
+        let internal_configs: Vec<Vec<u8>> = internal_recovered_configs
+            .iter()
+            .zip(internal_configs_length?.iter())
+            .map(|(config, len)| {
+                let mut bytes = len.to_be_bytes().to_vec()[1..].to_vec();
+                bytes.extend(config);
+                bytes
+            })
+            .collect();
+
+        Ok([
+            vec![3_u8],
+            initial_length.to_be_bytes().to_vec()[1..].to_vec(),
+            self.threshold.to_be_bytes().to_vec(),
+            self.checkpoint.to_be_bytes().to_vec(),
+            self.tree.encode_hash_from_signers()?,
+            internal_configs.concat(),
+        ]
+        .concat())
+    }
+
     /// Reduce the tree in place - changes the tree structure to reduce the number of nodes more
     /// efficiently
     pub fn reduce(&mut self) {
@@ -246,3 +298,5 @@ mod tests {
         Ok(())
     }
 }
+
+// 0x030000ea000500000004020314327739c49f93a04c38623b54a4a75b49e6f646000062010001000000000001482fa2ca36fb44cf7aadeb0d5edb2058460a0e128ab8b1a25046b238077bc204536eb5fda70161b84a4c9aa90a7ea0ce2972eaebdb2237532d890b1c8d6cae251c020101b1f69536d293ee3764ce9881894a68029666a8510303000000000000000000000003c5b0a31f0bc8826cfa50ca7ff9ef8c9575b455cd04000044000299db45fa81db22da69760a8bd50cd7e05942d3cfbe2a7958964ff82ddee6ab6417694d85fba90531538345149694f75cc2706a682a8c841ea8f103b578f71aa71c02
