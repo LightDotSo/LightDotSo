@@ -146,7 +146,7 @@ export const useUserOperationSign = ({
 
       await signatureCreate({
         owner_id: userOwnerId,
-        signature: toHex(new Uint8Array([...toBytes(signedMessage), 2])),
+        signature: toHex(new Uint8Array(toBytes(signedMessage))),
         signature_type: 1,
       });
     };

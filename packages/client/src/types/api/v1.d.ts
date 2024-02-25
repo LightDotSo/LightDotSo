@@ -164,6 +164,62 @@ export interface paths {
      */
     get: operations["v1_configuration_list_handler"];
   };
+  "/configuration_operation/get": {
+    /**
+     * Get a configuration_operation
+     * @description Get a configuration_operation
+     */
+    get: operations["v1_configuration_operation_get_handler"];
+  };
+  "/configuration_operation/list": {
+    /**
+     * Returns a list of interpretation actions
+     * @description Returns a list of interpretation actions
+     */
+    get: operations["v1_configuration_operation_list_handler"];
+  };
+  "/configuration_operation/list/count": {
+    /**
+     * Returns a count of list of interpretation actions
+     * @description Returns a count of list of interpretation actions
+     */
+    get: operations["v1_configuration_operation_list_count_handler"];
+  };
+  "/configuration_owner/get": {
+    /**
+     * Get a owner
+     * @description Get a owner
+     */
+    get: operations["v1_configuration_owner_get_handler"];
+  };
+  "/configuration_owner/list": {
+    /**
+     * Returns a list of owners
+     * @description Returns a list of owners
+     */
+    get: operations["v1_configuration_owner_list_handler"];
+  };
+  "/configuration_signature/create": {
+    /**
+     * Create a configuration signature
+     * @description Create a configuration signature
+     */
+    post: operations["v1_configuration_signature_create_handler"];
+  };
+  "/configuration_signature/get": {
+    /**
+     * Get a signature
+     * @description Get a signature
+     */
+    get: operations["v1_configuration_signature_get_handler"];
+  };
+  "/configuration_signature/list": {
+    /**
+     * Returns a list of signatures
+     * @description Returns a list of signatures
+     */
+    get: operations["v1_configuration_signature_list_handler"];
+  };
   "/feedback/create": {
     /**
      * Create a feedback
@@ -724,6 +780,8 @@ export interface components {
       entity: string;
       /** @description The id of the activity. */
       id: string;
+      /** @description The log message of the activity. */
+      log: unknown;
       /** @description The operation type of the activity. */
       operation: string;
       /** @description The timestamp of the activity. */
@@ -835,6 +893,8 @@ export interface components {
     BillingOperation: {
       /** @description The id of the billing operation. */
       id: string;
+      /** @description The status of the billing operation. */
+      status: string;
     };
     /** @description BillingOperation errors */
     BillingOperationError: OneOf<[{
@@ -917,24 +977,80 @@ export interface components {
       /** @description Configuration not found by id. */
       NotFound: string;
     }]>;
-    /** @description Configuration Owner. */
+    /** @description ConfigurationOperation root type. */
+    ConfigurationOperation: {
+      /** @description The id of the paymaster operation. */
+      id: string;
+    };
+    /** @description ConfigurationOperation errors */
+    ConfigurationOperationError: OneOf<[{
+      /** @description ConfigurationOperation query error. */
+      BadRequest: string;
+    }, {
+      /** @description ConfigurationOperation not found by id. */
+      NotFound: string;
+    }]>;
+    /** @description Count of list of interpretation actions. */
+    ConfigurationOperationListCount: {
+      /**
+       * Format: int64
+       * @description The count of the list of interpretation actions.
+       */
+      count: number;
+    };
+    /** @description Owner root type. */
     ConfigurationOwner: {
       /** @description The address of the owner. */
       address: string;
       /** @description The id of the owner. */
       id: string;
       /**
-       * Format: int32
-       * @description The index of the owner.
-       */
-      index: number;
-      user?: components["schemas"]["User"] | null;
-      /**
        * Format: int64
        * @description The weight of the owner.
        */
       weight: number;
     };
+    /** @description Configuration owner operation errors */
+    ConfigurationOwnerError: OneOf<[{
+      /** @description Owner query error. */
+      BadRequest: string;
+    }, {
+      /** @description Owner not found by id. */
+      NotFound: string;
+    }]>;
+    /** @description Signature root type. */
+    ConfigurationSignature: {
+      /** @description The id of the owner of the signature. */
+      configuration_owner_id: string;
+      /** @description The created time of the signature. */
+      created_at: string;
+      /** @description The signature of the user operation in hex. */
+      signature: string;
+    };
+    /** @description Signature operation */
+    ConfigurationSignatureCreateParams: {
+      /** @description The id of the owner of the signature. */
+      configuration_owner_id: string;
+      /** @description The signature of the user operation in hex. */
+      signature: string;
+      /**
+       * Format: int32
+       * @description The type of the signature.
+       */
+      signature_type: number;
+    };
+    /** @description Signature operation post request params */
+    ConfigurationSignatureCreateRequestParams: {
+      signature: components["schemas"]["ConfigurationSignatureCreateParams"];
+    };
+    /** @description ConfigurationSignature operation errors */
+    ConfigurationSignatureError: OneOf<[{
+      /** @description ConfigurationSignature query error. */
+      BadRequest: string;
+    }, {
+      /** @description ConfigurationSignature not found by id. */
+      NotFound: string;
+    }]>;
     /** @description Feedback root type. */
     Feedback: {
       /** @description The emoji of the feedback. */
@@ -1121,6 +1237,7 @@ export interface components {
     }]>;
     /** @description PaymasterOperation root type. */
     PaymasterOperation: {
+      billing_operation?: components["schemas"]["BillingOperation"] | null;
       /** @description The id of the paymaster operation. */
       id: string;
     };
@@ -1440,11 +1557,17 @@ export interface components {
     }]>;
     TokenUpdateRequestParams: {
       /**
-       * @description The name of the wallet.
+       * @description The name of the token.
        * @default My Token
        * @example My Token
        */
       name?: string | null;
+      /**
+       * @description The symbol of the token.
+       * @default MT
+       * @example MT
+       */
+      symbol?: string | null;
     };
     /** @description Transaction root type. */
     Transaction: {
@@ -1551,6 +1674,7 @@ export interface components {
       paymaster?: components["schemas"]["Paymaster"] | null;
       /** @description The paymaster and data of the user operation. */
       paymaster_and_data: string;
+      paymaster_operation?: components["schemas"]["PaymasterOperation"] | null;
       /**
        * Format: int64
        * @description The pre verification gas of the user operation.
@@ -2206,7 +2330,7 @@ export interface operations {
    */
   v1_billing_operation_list_handler: {
     parameters: {
-      query?: {
+      query: {
         /** @description The offset of the first billing operation to return. */
         offset?: number | null;
         /** @description The maximum number of billing operations to return. */
@@ -2215,6 +2339,10 @@ export interface operations {
         status?: string | null;
         /** @description The id to filter by. */
         id?: string | null;
+        /** @description The user id to filter by. */
+        user_id?: string | null;
+        /** @description The wallet address to filter by. */
+        address: string;
       };
     };
     responses: {
@@ -2238,7 +2366,7 @@ export interface operations {
    */
   v1_billing_operation_list_count_handler: {
     parameters: {
-      query?: {
+      query: {
         /** @description The offset of the first billing operation to return. */
         offset?: number | null;
         /** @description The maximum number of billing operations to return. */
@@ -2247,6 +2375,10 @@ export interface operations {
         status?: string | null;
         /** @description The id to filter by. */
         id?: string | null;
+        /** @description The user id to filter by. */
+        user_id?: string | null;
+        /** @description The wallet address to filter by. */
+        address: string;
       };
     };
     responses: {
@@ -2448,6 +2580,249 @@ export interface operations {
       500: {
         content: {
           "application/json": components["schemas"]["ConfigurationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a configuration_operation
+   * @description Get a configuration_operation
+   */
+  v1_configuration_operation_get_handler: {
+    parameters: {
+      query: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Configuration operation returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ConfigurationOperation"];
+        };
+      };
+      /** @description Configuration operation not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["ConfigurationOperationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of interpretation actions
+   * @description Returns a list of interpretation actions
+   */
+  v1_configuration_operation_list_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first interpretation action to return. */
+        offset?: number | null;
+        /** @description The maximum number of interpretation actions to return. */
+        limit?: number | null;
+        /** @description The status to filter by. */
+        status?: string | null;
+        /** @description The address to filter by. */
+        address?: string | null;
+      };
+    };
+    responses: {
+      /** @description Configuration Operations returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ConfigurationOperation"][];
+        };
+      };
+      /** @description Configuration Operation bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["ConfigurationOperationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a count of list of interpretation actions
+   * @description Returns a count of list of interpretation actions
+   */
+  v1_configuration_operation_list_count_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first interpretation action to return. */
+        offset?: number | null;
+        /** @description The maximum number of interpretation actions to return. */
+        limit?: number | null;
+        /** @description The status to filter by. */
+        status?: string | null;
+        /** @description The address to filter by. */
+        address?: string | null;
+      };
+    };
+    responses: {
+      /** @description Configuration Operations returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ConfigurationOperationListCount"];
+        };
+      };
+      /** @description Configuration Operations bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["ConfigurationOperationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a owner
+   * @description Get a owner
+   */
+  v1_configuration_owner_get_handler: {
+    parameters: {
+      query: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description ConfigurationOwner returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ConfigurationOwner"];
+        };
+      };
+      /** @description ConfigurationOwner not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["ConfigurationOwnerError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of owners
+   * @description Returns a list of owners
+   */
+  v1_configuration_owner_list_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first owner to return. */
+        offset?: number | null;
+        /** @description The maximum number of owners to return. */
+        limit?: number | null;
+      };
+    };
+    responses: {
+      /** @description ConfigurationOwners returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ConfigurationOwner"][];
+        };
+      };
+      /** @description ConfigurationOwners bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["ConfigurationOwnerError"];
+        };
+      };
+    };
+  };
+  /**
+   * Create a configuration signature
+   * @description Create a configuration signature
+   */
+  v1_configuration_signature_create_handler: {
+    parameters: {
+      query: {
+        /** @description The operation of the configuration. */
+        configuration_operation_id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ConfigurationSignatureCreateRequestParams"];
+      };
+    };
+    responses: {
+      /** @description Signature created successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Signature"];
+        };
+      };
+      /** @description Invalid Configuration */
+      400: {
+        content: {
+          "application/json": components["schemas"]["SignatureError"];
+        };
+      };
+      /** @description Signature already exists */
+      409: {
+        content: {
+          "application/json": components["schemas"]["SignatureError"];
+        };
+      };
+      /** @description Signature internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["SignatureError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a signature
+   * @description Get a signature
+   */
+  v1_configuration_signature_get_handler: {
+    parameters: {
+      query: {
+        /** @description The configuration operation id of the signature. */
+        configuration_operation_id: string;
+        /** @description The configuration owner of the signature. */
+        configuration_owner_id: string;
+      };
+    };
+    responses: {
+      /** @description Configuration Signature returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ConfigurationSignature"];
+        };
+      };
+      /** @description Configuration Signature not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["ConfigurationSignatureError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of signatures
+   * @description Returns a list of signatures
+   */
+  v1_configuration_signature_list_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first signature to return. */
+        offset?: number | null;
+        /** @description The maximum number of signatures to return. */
+        limit?: number | null;
+        /** @description The configuration operation id to filter by. */
+        configuration_operation_id?: string | null;
+      };
+    };
+    responses: {
+      /** @description Configuration Signatures returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ConfigurationSignature"][];
+        };
+      };
+      /** @description Configuration Signature bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["ConfigurationSignatureError"];
         };
       };
     };

@@ -16,8 +16,8 @@ use crate::types::{AppJsonResult, Database};
 use autometrics::autometrics;
 use axum::extract::Json;
 use lightdotso_prisma::{
-    activity, feedback, notification, signature, simulation, transaction, user_operation,
-    ActivityEntity, ActivityOperation,
+    activity, configuration_signature, feedback, notification, signature, simulation, transaction,
+    user_operation, ActivityEntity, ActivityOperation,
 };
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
@@ -31,6 +31,7 @@ use serde_json::Value;
 pub struct CustomParams {
     pub user_id: Option<String>,
     pub wallet_address: Option<String>,
+    pub configuration_signature_id: Option<String>,
     pub invite_code_id: Option<String>,
     pub support_request_id: Option<String>,
     pub wallet_settings_id: Option<String>,
@@ -78,6 +79,12 @@ pub async fn create_activity_with_user_and_wallet(
 
     if let Some(wallet_settings_id) = custom_params.wallet_settings_id {
         params.push(activity::wallet_settings_id::set(Some(wallet_settings_id)));
+    }
+
+    if let Some(configuration_signature_id) = custom_params.configuration_signature_id {
+        params.push(activity::configuration_signature::connect(
+            configuration_signature::id::equals(configuration_signature_id),
+        ));
     }
 
     if let Some(feedback_id) = custom_params.feedback_id {

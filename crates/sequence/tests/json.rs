@@ -54,6 +54,7 @@ fn test_wallet_ecdsa_to_json() -> Result<()> {
         weight: 0,
         internal_root: Some([0; 32].into()),
         image_hash: [0; 32].into(),
+        internal_recovered_configs: None,
         tree: SignerNode {
             signer: Some(Signer {
                 weight: Some(1),
@@ -97,6 +98,7 @@ fn test_wallet_complex_to_json() -> Result<()> {
         weight: 0,
         internal_root: Some([0; 32].into()),
         image_hash: [0; 32].into(),
+        internal_recovered_configs: None,
         tree: SignerNode {
             signer: Some(Signer {
                 weight: None,

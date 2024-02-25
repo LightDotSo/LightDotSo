@@ -16,7 +16,10 @@ use crate::routes::{
     activity::error::ActivityError, asset_change::error::AssetChangeError, auth::error::AuthError,
     billing::error::BillingError, billing_operation::error::BillingOperationError,
     chain::error::ChainError, configuration::error::ConfigurationError,
-    feedback::error::FeedbackError, interpretation::error::InterpretationError,
+    configuration_operation::error::ConfigurationOperationError,
+    configuration_owner::error::ConfigurationOwnerError,
+    configuration_signature::error::ConfigurationSignatureError, feedback::error::FeedbackError,
+    interpretation::error::InterpretationError,
     interpretation_action::error::InterpretationActionError, invite_code::error::InviteCodeError,
     notification::error::NotificationError,
     notification_settings::error::NotificationSettingsError, owner::error::OwnerError,
@@ -46,6 +49,9 @@ pub(crate) enum RouteError {
     BillingOperationError(BillingOperationError),
     ChainError(ChainError),
     ConfigurationError(ConfigurationError),
+    ConfigurationOperationError(ConfigurationOperationError),
+    ConfigurationOwnerError(ConfigurationOwnerError),
+    ConfigurationSignatureError(ConfigurationSignatureError),
     FeedbackError(FeedbackError),
     InterpretationError(InterpretationError),
     InterpretationActionError(InterpretationActionError),
@@ -144,6 +150,37 @@ impl RouteErrorStatusCodeAndMsg for ConfigurationError {
         match self {
             ConfigurationError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
             ConfigurationError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+        }
+    }
+}
+
+impl RouteErrorStatusCodeAndMsg for ConfigurationOperationError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            ConfigurationOperationError::BadRequest(msg) => {
+                (StatusCode::BAD_REQUEST, msg.to_string())
+            }
+            ConfigurationOperationError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+        }
+    }
+}
+
+impl RouteErrorStatusCodeAndMsg for ConfigurationOwnerError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            ConfigurationOwnerError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
+            ConfigurationOwnerError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+        }
+    }
+}
+
+impl RouteErrorStatusCodeAndMsg for ConfigurationSignatureError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            ConfigurationSignatureError::BadRequest(msg) => {
+                (StatusCode::BAD_REQUEST, msg.to_string())
+            }
+            ConfigurationSignatureError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
         }
     }
 }
@@ -440,6 +477,9 @@ impl RouteErrorStatusCodeAndMsg for RouteError {
             RouteError::BillingOperationError(err) => err.error_status_code_and_msg(),
             RouteError::ChainError(err) => err.error_status_code_and_msg(),
             RouteError::ConfigurationError(err) => err.error_status_code_and_msg(),
+            RouteError::ConfigurationOperationError(err) => err.error_status_code_and_msg(),
+            RouteError::ConfigurationOwnerError(err) => err.error_status_code_and_msg(),
+            RouteError::ConfigurationSignatureError(err) => err.error_status_code_and_msg(),
             RouteError::FeedbackError(err) => err.error_status_code_and_msg(),
             RouteError::InterpretationError(err) => err.error_status_code_and_msg(),
             RouteError::InterpretationActionError(err) => err.error_status_code_and_msg(),

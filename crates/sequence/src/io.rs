@@ -59,6 +59,7 @@ mod tests {
             internal_root: Some([0; 32].into()),
             image_hash: [0; 32].into(),
             tree: SignerNode { signer: None, left: None, right: None },
+            internal_recovered_configs: None,
         };
 
         // Now you can use your WalletConfig struct

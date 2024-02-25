@@ -28,6 +28,7 @@ async fn test_integration_signatures() -> Result<()> {
       threshold: 11,
       image_hash: [0; 32].into(),
       internal_root: None,
+      internal_recovered_configs: None,
       tree: SignerNode{
         left: Some(Box::new(SignerNode {
             left: Some(Box::new(SignerNode {
@@ -93,6 +94,7 @@ async fn test_integration_signatures() -> Result<()> {
       threshold: 1,
       image_hash: [0; 32].into(),
       internal_root: None,
+      internal_recovered_configs: None,
       tree: SignerNode{
         left: Some(Box::new(SignerNode {
             left: Some(Box::new(SignerNode {
@@ -234,6 +236,7 @@ async fn test_integration_signatures() -> Result<()> {
       threshold: 2,
       image_hash: [0; 32].into(),
       internal_root: None,
+      internal_recovered_configs: None,
       tree: SignerNode{
         left: Some(Box::new(SignerNode {
             left: Some(Box::new(SignerNode {

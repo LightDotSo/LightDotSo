@@ -25,6 +25,7 @@ pub fn create_initial_wallet_config(signer: SignerNode, threshold: u16) -> Resul
         image_hash: [0; 32].into(),
         tree: signer,
         internal_root: None,
+        internal_recovered_configs: None,
     };
 
     Ok(wc)

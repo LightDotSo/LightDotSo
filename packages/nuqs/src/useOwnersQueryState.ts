@@ -61,7 +61,7 @@ export const ownerParser = createParser({
     const entry = Object.entries(value)
       // Filter out undefined values
       .filter(([, owner]) => owner !== undefined)
-      .map(
+      ?.map(
         ([id, owner]) =>
           `${id}:${owner?.address ?? "_"}:${owner?.addressOrEns ?? "_"}:${
             owner?.weight ?? 1

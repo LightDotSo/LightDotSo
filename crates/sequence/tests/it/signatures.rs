@@ -123,3 +123,53 @@ async fn test_integration_signature_reduce() -> Result<()> {
 
     Ok(())
 }
+
+// From: https://polygonscan.com/tx/0x8e95d8beba91c488a97cac3b8345b6d361ff535f674904477a834f4ad73946ab
+// And: https://sequence.xyz/blog/sequence-wallet-light-state-sync-full-merkle-wallets
+
+#[tokio::test(flavor = "multi_thread")]
+async fn test_integration_signature_chained() -> Result<()> {
+    let signature = "0x030000ea000500000004020314327739c49f93a04c38623b54a4a75b49e6f646000062010001000000000001482fa2ca36fb44cf7aadeb0d5edb2058460a0e128ab8b1a25046b238077bc204536eb5fda70161b84a4c9aa90a7ea0ce2972eaebdb2237532d890b1c8d6cae251c020101b1f69536d293ee3764ce9881894a68029666a8510303000000000000000000000003c5b0a31f0bc8826cfa50ca7ff9ef8c9575b455cd04000044000299db45fa81db22da69760a8bd50cd7e05942d3cfbe2a7958964ff82ddee6ab6417694d85fba90531538345149694f75cc2706a682a8c841ea8f103b578f71aa71c020000bb02000500000003010314327739c49f93a04c38623b54a4a75b49e6f6460003542ea3eadd73da47d8d21ef396b16de52a4a06966d38543e27f99451060f65200ff1156ae2e0d65b3e8744d69c605df7d0626c2170ded9106f6086cf83fac5661b02010249347ff9f42abbec20688c29dfd46b89833be98b0002aff316fdbebdecd551e44907d1d31ab8c9b1f90233e9a240e7cc997ec16f503136a31cd75bb25e95478abd15873feb01cb686e2adaa5dd3058fa66f22446fa901b020000dc020005000000000102434cafcb9284bcbf43e7ca0474332da42b1ec511020314327739c49f93a04c38623b54a4a75b49e6f64600006202000100000000000193103acf7b5de30967049e72c072b480bc94998d5db85901ecabaffcc18b8bf900b0a5d176ac0c60f87f3db2f235c4afc977972c4b9273b1111765412bf568131b020101b1f69536d293ee3764ce9881894a68029666a851030003ddbd5d2cfbce11ff281d20cff6e1a3d62e4c2b724c6169674adc5e47143dfcc32ecb3b06c7a79228b219b2824c799117bf24d79664ed19ab9f526778a36403b21c02";
+    let sig = from_hex_string(signature)?.into();
+    // Notice that the recovered addresses are hypothetical as we don't have the original
+    // user_op_hash that was used for the subdigest.
+
+    // user_op_hash that was used for the subdigest.
+    let user_op_hash =
+        parse_hex_to_bytes32("0x0000000000000000000000000000000000000000000000000000000000000001")?;
+
+    let config = recover_signature(
+        "0xb50C80e499b278f0af6A3633f751C72FDe2D9837".parse().unwrap(),
+        137,
+        user_op_hash,
+        sig,
+    )
+    .await?;
+
+    println!("tree: {:?}", config.tree);
+
+    println!("signers: {:?}", config.tree.get_signers());
+
+    // Check that the recovered config matches the expected config image hash
+    // assert_eq!(
+    //     config.image_hash,
+    //     parse_hex_to_bytes32(
+    //         "0xc9185cef7e5a78ba5220f4f1e7854a8e257cc0191aab3a3b8c3f9e2cca6f6bb2"
+    //     )
+    //     ?
+    //     .into()
+    // );
+
+    // Encode the config into bytes and print it
+    let recovered_signature = config.encode()?;
+    println!("{}", recovered_signature.to_hex_string());
+    println!("{}", signature);
+    // Print if the recovered signature matches the original signature (true or false)
+    // println!("{}", recovered_signature.to_hex_string() == signature);
+    // assert_eq!(&recovered_signature.to_hex_string(), signature);
+
+    // Write WalletConfig back to a different JSON file
+    write_wallet_config(&config.clone(), "tests/samples/wallet_config_chained.json")?;
+
+    Ok(())
+}

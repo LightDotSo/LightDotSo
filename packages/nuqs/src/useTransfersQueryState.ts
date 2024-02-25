@@ -99,7 +99,7 @@ export const transfersParser = createParser({
   serialize(value: Array<Transfer>) {
     const entry = Object.entries(value)
       .filter(([, transfer]) => transfer !== undefined)
-      .map(([id, transfer]) => {
+      ?.map(([id, transfer]) => {
         let assetString = "";
 
         if (transfer?.assetType === "erc20") {

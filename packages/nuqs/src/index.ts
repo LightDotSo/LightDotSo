@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+export {
+  abiEncodedParser,
+  useAbiEncodedQueryState,
+} from "./useAbiEncodedQueryState";
 export { addressParser, useAddressQueryState } from "./useAddressQueryState";
 export { cursorParser, useCursorQueryState } from "./useCursorQueryState";
 export {

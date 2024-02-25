@@ -52,9 +52,10 @@ export default function DevLayout({ children }: DevLayoutProps) {
     <BannerSection
       title={TITLES.Dev.title}
       description={TITLES.Dev.description}
+      size="sm"
     >
       <HStackFull>
-        <BaseLayerWrapper>
+        <BaseLayerWrapper size="sm">
           <BasicPageWrapper>{children}</BasicPageWrapper>
         </BaseLayerWrapper>
       </HStackFull>

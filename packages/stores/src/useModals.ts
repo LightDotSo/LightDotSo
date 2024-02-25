@@ -28,6 +28,11 @@ export type AddressModalProps = {
   onAddressSelect: (addressOrEns: string) => void;
 };
 
+export type ChainModalProps = {
+  onClose?: () => void;
+  onChainSelect: (chainId: number) => void;
+};
+
 export type NftModalProps = {
   address: Address;
   isTestnet?: boolean;
@@ -50,12 +55,15 @@ export type TokenModalProps = {
 type ModalsStore = {
   addressModalProps: AddressModalProps;
   setAddressModalProps: (props: AddressModalProps) => void;
+  chainModalProps: ChainModalProps;
+  setChainModalProps: (props: ChainModalProps) => void;
   nftModalProps: NftModalProps;
   setNftModalProps: (props: NftModalProps) => void;
   tokenModalProps: TokenModalProps;
   setTokenModalProps: (props: TokenModalProps) => void;
   isAddressModalBackground: boolean;
   isAuthModalBackground: boolean;
+  isChainModalBackground: boolean;
   isConnectModalBackground: boolean;
   isCreateModalBackground: boolean;
   isDepositModalBackground: boolean;
@@ -66,6 +74,7 @@ type ModalsStore = {
   isTokenModalBackground: boolean;
   isAddressModalVisible: boolean;
   isAuthModalVisible: boolean;
+  isChainModalVisible: boolean;
   isConnectModalVisible: boolean;
   isCreateModalVisible: boolean;
   isDepositModalVisible: boolean;
@@ -80,6 +89,9 @@ type ModalsStore = {
   showAuthModal: () => void;
   hideAuthModal: () => void;
   setAuthBackgroundModal: (isBackground: boolean) => void;
+  showChainModal: () => void;
+  hideChainModal: () => void;
+  setChainBackgroundModal: (isBackground: boolean) => void;
   showConnectModal: () => void;
   hideConnectModal: () => void;
   setConnectBackgroundModal: (isBackground: boolean) => void;
@@ -118,6 +130,15 @@ export const useModals = create(
         isAddressModalVisible: false,
         onAddressSelect: () => {},
       },
+      setAddressModalProps: (props: AddressModalProps) =>
+        set({ addressModalProps: props }),
+      chainModalProps: {
+        chainId: "",
+        isChainModalVisible: false,
+        onChainSelect: () => {},
+      },
+      setChainModalProps: (props: ChainModalProps) =>
+        set({ chainModalProps: props }),
       nftModalProps: {
         // @ts-expect-error
         address: "",
@@ -136,6 +157,7 @@ export const useModals = create(
         set({ tokenModalProps: props }),
       isAddressModalBackground: false,
       isAuthModalBackground: false,
+      isChainModalBackground: false,
       isConnectModalBackground: false,
       isCreateModalBackground: false,
       isDepositModalBackground: false,
@@ -145,6 +167,7 @@ export const useModals = create(
       isSendModalBackground: false,
       isTokenModalBackground: false,
       isAuthModalVisible: false,
+      isChainModalVisible: false,
       isConnectModalVisible: false,
       isCreateModalVisible: false,
       isDepositModalVisible: false,
@@ -167,6 +190,13 @@ export const useModals = create(
       hideAuthModal: () => set({ isAuthModalVisible: false }),
       setAuthBackgroundModal: (isBackground: boolean) =>
         set({ isAuthModalBackground: isBackground }),
+      showChainModal: () =>
+        set({
+          isChainModalVisible: true,
+        }),
+      hideChainModal: () => set({ isChainModalVisible: false }),
+      setChainBackgroundModal: (isBackground: boolean) =>
+        set({ isChainModalBackground: isBackground }),
       showConnectModal: () =>
         set({
           isConnectModalVisible: true,

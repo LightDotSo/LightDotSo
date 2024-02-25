@@ -34,12 +34,12 @@ use crate::{
     handle_error,
     routes::{
         activity, asset_change, auth, billing, billing_operation, chain, check, configuration,
-        feedback, health, interpretation, interpretation_action, invite_code, notification,
-        notification_settings, owner, paymaster, paymaster_operation, portfolio, protocol,
-        protocol_group, queue, signature, simplehash, simulation, socket, support_request, token,
-        token_group, token_price, transaction, user, user_notification_settings, user_operation,
-        user_settings, wallet, wallet_billing, wallet_features, wallet_notification_settings,
-        wallet_settings,
+        configuration_operation, configuration_owner, configuration_signature, feedback, health,
+        interpretation, interpretation_action, invite_code, notification, notification_settings,
+        owner, paymaster, paymaster_operation, portfolio, protocol, protocol_group, queue,
+        signature, simplehash, simulation, socket, support_request, token, token_group,
+        token_price, transaction, user, user_notification_settings, user_operation, user_settings,
+        wallet, wallet_billing, wallet_features, wallet_notification_settings, wallet_settings,
     },
     sessions::{authenticated, RedisStore},
     state::AppState,
@@ -105,6 +105,15 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(configuration::error::ConfigurationError),
         schemas(configuration::types::Configuration),
         schemas(configuration::types::ConfigurationOwner),
+        schemas(configuration_operation::error::ConfigurationOperationError),
+        schemas(configuration_operation::list::ConfigurationOperationListCount),
+        schemas(configuration_operation::types::ConfigurationOperation),
+        schemas(configuration_owner::error::ConfigurationOwnerError),
+        schemas(configuration_owner::types::ConfigurationOwner),
+        schemas(configuration_signature::create::ConfigurationSignatureCreateParams),
+        schemas(configuration_signature::create::ConfigurationSignatureCreateRequestParams),
+        schemas(configuration_signature::error::ConfigurationSignatureError),
+        schemas(configuration_signature::types::ConfigurationSignature),
         schemas(feedback::create::FeedbackCreateRequestParams),
         schemas(feedback::error::FeedbackError),
         schemas(feedback::types::Feedback),
@@ -226,6 +235,14 @@ use utoipa_swagger_ui::SwaggerUi;
         chain::v1_chain_update_handler,
         configuration::v1_configuration_get_handler,
         configuration::v1_configuration_list_handler,
+        configuration_operation::v1_configuration_operation_get_handler,
+        configuration_operation::v1_configuration_operation_list_handler,
+        configuration_operation::v1_configuration_operation_list_count_handler,
+        configuration_owner::v1_configuration_owner_get_handler,
+        configuration_owner::v1_configuration_owner_list_handler,
+        configuration_signature::v1_configuration_signature_create_handler,
+        configuration_signature::v1_configuration_signature_get_handler,
+        configuration_signature::v1_configuration_signature_list_handler,
         feedback::v1_feedback_create_handler,
         interpretation::v1_interpretation_get_handler,
         interpretation::v1_interpretation_list_handler,
@@ -314,6 +331,9 @@ use utoipa_swagger_ui::SwaggerUi;
         (name = "billing_operation", description = "Billing Operation API"),
         (name = "chain", description = "Chain API"),
         (name = "configuration", description = "Configuration API"),
+        (name = "configuration_operation", description = "Configuration Operation API"),
+        (name = "configuration_owner", description = "Configuration Owner API"),
+        (name = "configuration_signature", description = "Configuration Signature API"),
         (name = "check", description = "Check API"),
         (name = "feedback", description = "Feedback API"),
         (name = "interpretation", description = "Interpretation API"),
@@ -450,6 +470,9 @@ pub async fn start_api_server() -> Result<()> {
         .merge(billing_operation::router())
         .merge(chain::router())
         .merge(configuration::router())
+        .merge(configuration_operation::router())
+        .merge(configuration_owner::router())
+        .merge(configuration_signature::router())
         .merge(check::router())
         .merge(feedback::router())
         .merge(health::router())
