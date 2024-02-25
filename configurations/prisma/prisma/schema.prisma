@@ -544,13 +544,18 @@ model ConfigurationOperation {
   configurationId String?        @unique
 
   // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  wallet Wallet @relation(fields: [address], references: [address])
+
+  // ---------------------------------------------------------------------------
   // Many-to-many
   // ---------------------------------------------------------------------------
 
   activities              Activity[]
   configurationOwners     ConfigurationOwner[]
   configurationSignatures ConfigurationSignature[]
-  wallets                 Wallet[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -558,6 +563,7 @@ model ConfigurationOperation {
 
   // Relations
   @@index([configurationId])
+  @@index([address])
 }
 
 enum ConfigurationOperationStatus {
