@@ -181,7 +181,29 @@ async fn recover_chained(
     match &mut config {
         // If the config is Some, return the config w/ the initial image hash
         Some(config) => {
-            // config.image_hash = initial_config.image_hash;
+            // If the `internal_recovered_configs` is None, set it to the initial config
+            if config.internal_recovered_configs.is_none() {
+                config.internal_recovered_configs = Some(vec![initial_config.clone()]);
+            } else {
+                // If the `internal_recovered_configs` is Some, set the config to the last element
+                // of the `internal_recovered_configs`
+                let last = config
+                    .internal_recovered_configs
+                    .as_ref()
+                    .ok_or_else(|| eyre!("config is None"))?
+                    .last()
+                    .ok_or_else(|| eyre!("internal_recovered_configs is empty"))?;
+                config.checkpoint = last.checkpoint;
+                config.threshold = last.threshold;
+                config.weight = last.weight;
+                config.image_hash = last.image_hash;
+                config.tree = last.tree.clone();
+                config.signature_type = last.signature_type;
+                config.internal_root = last.internal_root;
+
+                // Drop the last element of the `internal_recovered_configs`
+                config.internal_recovered_configs.as_mut().unwrap().pop();
+            }
             Ok(config.clone())
         }
         // If the config is None, return the initial config

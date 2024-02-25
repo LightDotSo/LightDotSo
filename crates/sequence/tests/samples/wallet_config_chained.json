@@ -169,56 +169,6 @@
       },
       "signature_type": 2,
       "internal_root": "0x02d10021e5e1d7befd5ff0547248e2d57cd8cf7fe81e92c3b9698589ccc3e5b1"
-    },
-    {
-      "checkpoint": 0,
-      "threshold": 5,
-      "weight": 6,
-      "image_hash": "0x729340577c2fb373ace7abe162005ba83d4e1763606584f5e38c38e1bb05783f",
-      "tree": {
-        "left": {
-          "left": {
-            "signer": {
-              "weight": 2,
-              "leaf": {
-                "type": "AddressSignature",
-                "content": {
-                  "address": "0x434cafcb9284bcbf43e7ca0474332da42b1ec511"
-                }
-              }
-            }
-          },
-          "right": {
-            "signer": {
-              "weight": 3,
-              "leaf": {
-                "type": "DynamicSignature",
-                "content": {
-                  "address": "0x14327739c49f93a04c38623b54a4a75b49e6f646",
-                  "signature_type": "DynamicSignatureTypeEIP1271",
-                  "signature": "0x02000100000000000193103acf7b5de30967049e72c072b480bc94998d5db85901ecabaffcc18b8bf900b0a5d176ac0c60f87f3db2f235c4afc977972c4b9273b1111765412bf568131b020101b1f69536d293ee3764ce9881894a68029666a851",
-                  "size": 98
-                }
-              }
-            }
-          }
-        },
-        "right": {
-          "signer": {
-            "weight": 3,
-            "leaf": {
-              "type": "ECDSASignature",
-              "content": {
-                "address": "0xe11a0bd84b619d9bbfd99f6928707e04154b7af7",
-                "signature_type": "ECDSASignatureTypeEthSign",
-                "signature": "0xddbd5d2cfbce11ff281d20cff6e1a3d62e4c2b724c6169674adc5e47143dfcc32ecb3b06c7a79228b219b2824c799117bf24d79664ed19ab9f526778a36403b21c"
-              }
-            }
-          }
-        }
-      },
-      "signature_type": 2,
-      "internal_root": "0xbe5b1852dbe37f942906e825fba4ab8665e5cbd288e2df69396c78649609b30f"
     }
   ]
 }
