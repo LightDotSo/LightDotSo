@@ -36,11 +36,17 @@ pragma solidity ^0.8.18;
 // Link: https://github.com/0xsequence/wallet-contracts/blob/46838284e90baf27cf93b944b056c0b4a64c9733/contracts/modules/MainModuleUpgradable.sol
 // License: Apache-2.0
 
+// ECDSAValidator is heavily based by the work of @bcnmy's MultichainECDSAValidator
+// Link: https://raw.githubusercontent.com/bcnmy/scw-contracts/8c71c2a6404feb3eef85d1a2707042114b204878/contracts/smart-account/modules/MultichainECDSAValidator.sol
+// License: MIT
+
 // Thank you to both teams for the ever amazing work!
 
+import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {BaseAccount} from "@eth-infinitism/account-abstraction/contracts/core/BaseAccount.sol";
+import {_packValidationData} from "@eth-infinitism/account-abstraction/contracts/core/Helpers.sol";
 import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfaces/IEntryPoint.sol";
 import {UserOperation} from "@eth-infinitism/account-abstraction/contracts/interfaces/UserOperation.sol";
 import {TokenCallbackHandler} from
@@ -68,7 +74,7 @@ contract LightWallet is
     string public constant NAME = "LightWallet";
 
     /// @notice The version for this contract
-    string public constant VERSION = "0.0.0";
+    string public constant VERSION = "0.2.0";
 
     // -------------------------------------------------------------------------
     // Immutable Storage
@@ -161,11 +167,32 @@ contract LightWallet is
         override
         returns (uint256 validationData)
     {
-        (bool isValid,) = _signatureValidation(userOpHash, userOp.signature);
-        if (!isValid) {
-            return SIG_VALIDATION_FAILED;
+        bytes1 signatureType = userOp.signature[0];
+
+        if (signatureType == 0x00 || signatureType == 0x01 || signatureType == 0x02 || signatureType == 0x03) {
+            (bool isValid,) = _signatureValidation(userOpHash, userOp.signature);
+            if (!isValid) {
+                return SIG_VALIDATION_FAILED;
+            }
+            return 0;
         }
-        return 0;
+
+        if (signatureType == 0x04) {
+            (bytes32 merkleTreeRoot, bytes32[] memory merkleProof,) =
+                abi.decode(userOp.signature, (bytes32, bytes32[], bytes));
+
+            if (!MerkleProof.verify(merkleProof, merkleTreeRoot, userOpHash)) {
+                revert InvalidSignatureType(signatureType);
+            }
+
+            (bool isValid,) = _signatureValidation(merkleTreeRoot, userOp.signature[64:]);
+            if (!isValid) {
+                return SIG_VALIDATION_FAILED;
+            }
+            return 0;
+        }
+
+        revert InvalidSignatureType(signatureType);
     }
 
     /// @notice Executes a call to a target contract with specified value and data.
