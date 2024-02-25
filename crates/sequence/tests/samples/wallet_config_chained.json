@@ -1,22 +1,20 @@
 {
-  "checkpoint": 0,
+  "checkpoint": 4,
   "threshold": 5,
-  "weight": 6,
-  "image_hash": "0x729340577c2fb373ace7abe162005ba83d4e1763606584f5e38c38e1bb05783f",
+  "weight": 5,
+  "image_hash": "0xfbb8ade5680365fb6ed0d80e2484d24542b4c1c8871df5122d6dc15e10853294",
   "tree": {
+    "signer": {
+      "weight": 2,
+      "leaf": {
+        "type": "BranchSignature",
+        "content": {
+          "size": 68
+        }
+      }
+    },
     "left": {
       "left": {
-        "signer": {
-          "weight": 2,
-          "leaf": {
-            "type": "AddressSignature",
-            "content": {
-              "address": "0x434cafcb9284bcbf43e7ca0474332da42b1ec511"
-            }
-          }
-        }
-      },
-      "right": {
         "signer": {
           "weight": 3,
           "leaf": {
@@ -24,90 +22,42 @@
             "content": {
               "address": "0x14327739c49f93a04c38623b54a4a75b49e6f646",
               "signature_type": "DynamicSignatureTypeEIP1271",
-              "signature": "0x02000100000000000193103acf7b5de30967049e72c072b480bc94998d5db85901ecabaffcc18b8bf900b0a5d176ac0c60f87f3db2f235c4afc977972c4b9273b1111765412bf568131b020101b1f69536d293ee3764ce9881894a68029666a851",
+              "signature": "0x010001000000000001482fa2ca36fb44cf7aadeb0d5edb2058460a0e128ab8b1a25046b238077bc204536eb5fda70161b84a4c9aa90a7ea0ce2972eaebdb2237532d890b1c8d6cae251c020101b1f69536d293ee3764ce9881894a68029666a851",
               "size": 98
+            }
+          }
+        }
+      },
+      "right": {
+        "signer": {
+          "leaf": {
+            "type": "NodeSignature",
+            "content": {
+              "hash": "0x000000000000000000000003c5b0a31f0bc8826cfa50ca7ff9ef8c9575b455cd"
             }
           }
         }
       }
     },
     "right": {
-      "signer": {
-        "weight": 3,
-        "leaf": {
-          "type": "ECDSASignature",
-          "content": {
-            "address": "0xe11a0bd84b619d9bbfd99f6928707e04154b7af7",
-            "signature_type": "ECDSASignatureTypeEthSign",
-            "signature": "0xddbd5d2cfbce11ff281d20cff6e1a3d62e4c2b724c6169674adc5e47143dfcc32ecb3b06c7a79228b219b2824c799117bf24d79664ed19ab9f526778a36403b21c"
+      "left": {
+        "signer": {
+          "weight": 2,
+          "leaf": {
+            "type": "ECDSASignature",
+            "content": {
+              "address": "0x5beac5ba20f63fd99924aa9fca1580b2fe217e5f",
+              "signature_type": "ECDSASignatureTypeEthSign",
+              "signature": "0x99db45fa81db22da69760a8bd50cd7e05942d3cfbe2a7958964ff82ddee6ab6417694d85fba90531538345149694f75cc2706a682a8c841ea8f103b578f71aa71c"
+            }
           }
         }
       }
     }
   },
-  "signature_type": 2,
-  "internal_root": "0xbe5b1852dbe37f942906e825fba4ab8665e5cbd288e2df69396c78649609b30f",
+  "signature_type": 0,
+  "internal_root": "0xe5db36ccd5b41d714bde31eb984563b603ec25113f1ac796410cddb9d32e5104",
   "internal_recovered_configs": [
-    {
-      "checkpoint": 4,
-      "threshold": 5,
-      "weight": 5,
-      "image_hash": "0xfbb8ade5680365fb6ed0d80e2484d24542b4c1c8871df5122d6dc15e10853294",
-      "tree": {
-        "signer": {
-          "weight": 2,
-          "leaf": {
-            "type": "BranchSignature",
-            "content": {
-              "size": 68
-            }
-          }
-        },
-        "left": {
-          "left": {
-            "signer": {
-              "weight": 3,
-              "leaf": {
-                "type": "DynamicSignature",
-                "content": {
-                  "address": "0x14327739c49f93a04c38623b54a4a75b49e6f646",
-                  "signature_type": "DynamicSignatureTypeEIP1271",
-                  "signature": "0x010001000000000001482fa2ca36fb44cf7aadeb0d5edb2058460a0e128ab8b1a25046b238077bc204536eb5fda70161b84a4c9aa90a7ea0ce2972eaebdb2237532d890b1c8d6cae251c020101b1f69536d293ee3764ce9881894a68029666a851",
-                  "size": 98
-                }
-              }
-            }
-          },
-          "right": {
-            "signer": {
-              "leaf": {
-                "type": "NodeSignature",
-                "content": {
-                  "hash": "0x000000000000000000000003c5b0a31f0bc8826cfa50ca7ff9ef8c9575b455cd"
-                }
-              }
-            }
-          }
-        },
-        "right": {
-          "left": {
-            "signer": {
-              "weight": 2,
-              "leaf": {
-                "type": "ECDSASignature",
-                "content": {
-                  "address": "0x5beac5ba20f63fd99924aa9fca1580b2fe217e5f",
-                  "signature_type": "ECDSASignatureTypeEthSign",
-                  "signature": "0x99db45fa81db22da69760a8bd50cd7e05942d3cfbe2a7958964ff82ddee6ab6417694d85fba90531538345149694f75cc2706a682a8c841ea8f103b578f71aa71c"
-                }
-              }
-            }
-          }
-        }
-      },
-      "signature_type": 0,
-      "internal_root": "0xe5db36ccd5b41d714bde31eb984563b603ec25113f1ac796410cddb9d32e5104"
-    },
     {
       "checkpoint": 3,
       "threshold": 5,
@@ -169,6 +119,56 @@
       },
       "signature_type": 2,
       "internal_root": "0x02d10021e5e1d7befd5ff0547248e2d57cd8cf7fe81e92c3b9698589ccc3e5b1"
+    },
+    {
+      "checkpoint": 0,
+      "threshold": 5,
+      "weight": 6,
+      "image_hash": "0x729340577c2fb373ace7abe162005ba83d4e1763606584f5e38c38e1bb05783f",
+      "tree": {
+        "left": {
+          "left": {
+            "signer": {
+              "weight": 2,
+              "leaf": {
+                "type": "AddressSignature",
+                "content": {
+                  "address": "0x434cafcb9284bcbf43e7ca0474332da42b1ec511"
+                }
+              }
+            }
+          },
+          "right": {
+            "signer": {
+              "weight": 3,
+              "leaf": {
+                "type": "DynamicSignature",
+                "content": {
+                  "address": "0x14327739c49f93a04c38623b54a4a75b49e6f646",
+                  "signature_type": "DynamicSignatureTypeEIP1271",
+                  "signature": "0x02000100000000000193103acf7b5de30967049e72c072b480bc94998d5db85901ecabaffcc18b8bf900b0a5d176ac0c60f87f3db2f235c4afc977972c4b9273b1111765412bf568131b020101b1f69536d293ee3764ce9881894a68029666a851",
+                  "size": 98
+                }
+              }
+            }
+          }
+        },
+        "right": {
+          "signer": {
+            "weight": 3,
+            "leaf": {
+              "type": "ECDSASignature",
+              "content": {
+                "address": "0xe11a0bd84b619d9bbfd99f6928707e04154b7af7",
+                "signature_type": "ECDSASignatureTypeEthSign",
+                "signature": "0xddbd5d2cfbce11ff281d20cff6e1a3d62e4c2b724c6169674adc5e47143dfcc32ecb3b06c7a79228b219b2824c799117bf24d79664ed19ab9f526778a36403b21c"
+              }
+            }
+          }
+        }
+      },
+      "signature_type": 2,
+      "internal_root": "0xbe5b1852dbe37f942906e825fba4ab8665e5cbd288e2df69396c78649609b30f"
     }
   ]
 }
