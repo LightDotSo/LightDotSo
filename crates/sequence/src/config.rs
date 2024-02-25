@@ -56,6 +56,9 @@ pub struct WalletConfig {
     // Internal field used to store the image hash of the wallet config
     #[serde(skip_serializing_if = "Option::is_none")]
     pub internal_root: Option<H256>,
+    // The internal field used to store the history of the recovered wallet configs
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub internal_recovered_configs: Option<Vec<WalletConfig>>,
 }
 
 impl WalletConfig {
@@ -173,6 +176,7 @@ mod tests {
                 )?
                 .into(),
             ),
+            internal_recovered_configs: None,
         };
 
         let expected = parse_hex_to_bytes32(
@@ -229,6 +233,7 @@ mod tests {
             image_hash: [0; 32].into(),
             tree,
             internal_root: None,
+            internal_recovered_configs: None,
         };
 
         // The config has valid threshold

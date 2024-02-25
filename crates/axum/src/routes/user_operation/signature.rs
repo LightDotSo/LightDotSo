@@ -221,6 +221,7 @@ pub(crate) async fn v1_user_operation_signature_handler(
         tree,
         signature_type: signature_type as u8,
         internal_root: None,
+        internal_recovered_configs: None,
     };
 
     // Check if the configuration is valid.

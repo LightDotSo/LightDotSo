@@ -121,7 +121,7 @@ async fn recover_chained(
     }
 
     // Set the current config to the initial config
-    let mut config = Some(initial_config.clone());
+    let mut config: Option<WalletConfig> = None;
 
     let mut rindex = nrindex;
     let mut checkpoint = initial_config.checkpoint;
@@ -136,8 +136,10 @@ async fn recover_chained(
         // println!("sig_rindex: {}", sig_rindex);
         // println!("nrindex: {}", nrindex);
 
-        let hashed_digest = set_image_hash(config.unwrap().image_hash.as_bytes().to_vec())?;
-        config = Some(
+        let hashed_digest = set_image_hash(
+            config.clone().unwrap_or(initial_config.clone()).image_hash.as_bytes().to_vec(),
+        )?;
+        let mut new_config = Some(
             recover_signature(
                 address,
                 chain_id,
@@ -148,20 +150,36 @@ async fn recover_chained(
         );
 
         // println!("hashed_digest: {:?}", hashed_digest);
-        println!("config: {:?}", config);
+        // println!("config: {:?}", config);
 
-        if config.as_ref().ok_or_else(|| eyre!("config is None"))?.weight <
-            config.as_ref().ok_or_else(|| eyre!("config is None"))?.threshold.into()
+        if new_config.as_ref().ok_or_else(|| eyre!("config is None"))?.weight <
+            new_config.as_ref().ok_or_else(|| eyre!("config is None"))?.threshold.into()
         {
             return Err(eyre!("Less than threshold"));
         }
 
-        if config.as_ref().ok_or_else(|| eyre!("config is None"))?.checkpoint >= checkpoint {
+        if new_config.as_ref().ok_or_else(|| eyre!("config is None"))?.checkpoint >= checkpoint {
             return Err(eyre!("Invalid checkpoint"));
         }
 
-        checkpoint = config.as_ref().ok_or_else(|| eyre!("config is None"))?.checkpoint;
+        checkpoint = new_config.as_ref().ok_or_else(|| eyre!("config is None"))?.checkpoint;
         rindex = nrindex;
+
+        // Set the config to the new config,
+        if let Some(new_config) = &mut new_config {
+            if let Some(config) = &mut config {
+                new_config.internal_recovered_configs = config
+                    .internal_recovered_configs
+                    .clone()
+                    .map_or(Some(vec![new_config.clone()]), |mut v| {
+                        v.push(new_config.clone());
+                        Some(v)
+                    });
+            } else {
+                new_config.internal_recovered_configs = Some(vec![new_config.clone()]);
+            }
+        }
+        config = new_config;
     }
 
     match &mut config {
