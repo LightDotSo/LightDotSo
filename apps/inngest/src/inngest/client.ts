@@ -24,6 +24,9 @@ const eventsMap = {
   "prisma/schema.chore": {
     data: z.object({}),
   },
+  "portfolio/kafka.cron": {
+    data: z.object({}),
+  },
 };
 
 // -----------------------------------------------------------------------------
