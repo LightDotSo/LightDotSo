@@ -183,6 +183,7 @@ pub(crate) async fn v1_wallet_create_handler(
         image_hash: [0; 32].into(),
         tree,
         internal_root: None,
+        internal_recovered_configs: None,
     };
 
     // Simulate the image hash of the wallet config.

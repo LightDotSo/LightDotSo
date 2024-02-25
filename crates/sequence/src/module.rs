@@ -437,6 +437,7 @@ impl SigModule {
             weight: 0,
             tree: self.tree.clone(),
             internal_root: Some(internal_root),
+            internal_recovered_configs: None,
         })
     }
 
@@ -480,6 +481,7 @@ impl SigModule {
             weight: weight as u32,
             tree,
             internal_root,
+            internal_recovered_configs: None,
         })
     }
 }

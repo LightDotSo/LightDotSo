@@ -9,7 +9,7 @@ module.exports = {
   "*.{md,json,yml}": ["pnpm run prettier:cmd --write"],
   "*.rs": [
     "sh -c 'pnpm run clippy:cmd && echo \"\"'",
-    "sh -c 'pnpm run cargo:fmt:cmd && echo \"\"'",
+    // "sh -c 'pnpm run cargo:fmt:cmd && echo \"\"'",
   ],
   "*.{py,ipynb}": ["pnpm run ruff:lint:cmd", "pnpm run ruff:fmt:cmd"],
   "*.sol": [

@@ -29,6 +29,7 @@ async fn test_integration_hash_first() -> Result<()> {
         threshold: 1,
         weight: 1,
         image_hash: [0; 32].into(),
+        internal_recovered_configs: None,
         tree: SignerNode {
             signer: Some(Signer {
                 weight: None,

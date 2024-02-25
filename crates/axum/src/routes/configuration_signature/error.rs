@@ -12,21 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::{config::WalletConfig, types::SignerNode};
-use eyre::Result;
+use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
 
-pub fn create_initial_wallet_config(signer: SignerNode, threshold: u16) -> Result<WalletConfig> {
-    // Iterate over the signers and create a SignerNode for each one
-    let wc = WalletConfig {
-        signature_type: 0,
-        checkpoint: 1,
-        threshold,
-        weight: 1,
-        image_hash: [0; 32].into(),
-        tree: signer,
-        internal_root: None,
-        internal_recovered_configs: None,
-    };
+// -----------------------------------------------------------------------------
+// Error
+// -----------------------------------------------------------------------------
 
-    Ok(wc)
+/// ConfigurationSignature operation errors
+#[derive(Serialize, Deserialize, ToSchema)]
+pub(crate) enum ConfigurationSignatureError {
+    /// ConfigurationSignature query error.
+    #[schema(example = "Bad request")]
+    BadRequest(String),
+    /// ConfigurationSignature not found by id.
+    #[schema(example = "id = 1")]
+    NotFound(String),
 }
