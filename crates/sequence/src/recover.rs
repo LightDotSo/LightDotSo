@@ -126,8 +126,6 @@ async fn recover_chained(
     let mut rindex = nrindex;
     let mut checkpoint = initial_config.checkpoint;
 
-    // println!("initial_config: {:?}", initial_config);
-
     while rindex < signature.len() {
         let (sig_size, sig_rindex) = read_uint24(signature.as_slice(), rindex)?;
         let nrindex = sig_rindex + (sig_size as usize);
@@ -148,9 +146,8 @@ async fn recover_chained(
             )
             .await?,
         );
-
         // println!("hashed_digest: {:?}", hashed_digest);
-        // println!("config: {:?}", config);
+        // println!("new_config: {:?}", new_config);
 
         if new_config.as_ref().ok_or_else(|| eyre!("config is None"))?.weight <
             new_config.as_ref().ok_or_else(|| eyre!("config is None"))?.threshold.into()
@@ -168,18 +165,17 @@ async fn recover_chained(
         // Set the config to the new config,
         if let Some(new_config) = &mut new_config {
             if let Some(config) = &mut config {
-                new_config.internal_recovered_configs = config
-                    .internal_recovered_configs
-                    .clone()
-                    .map_or(Some(vec![new_config.clone()]), |mut v| {
+                new_config.internal_recovered_configs =
+                    config.internal_recovered_configs.clone().map(|mut v| {
                         v.push(new_config.clone());
-                        Some(v)
+                        v
                     });
             } else {
-                new_config.internal_recovered_configs = Some(vec![new_config.clone()]);
+                new_config.internal_recovered_configs =
+                    Some(vec![initial_config.clone(), new_config.clone()]);
             }
         }
-        config = new_config;
+        config = new_config.clone();
     }
 
     match &mut config {

@@ -138,7 +138,13 @@ async fn test_integration_signature_chained() -> Result<()> {
     let user_op_hash =
         parse_hex_to_bytes32("0x0000000000000000000000000000000000000000000000000000000000000001")?;
 
-    let config = recover_signature(Address::zero(), 137, user_op_hash, sig).await?;
+    let config = recover_signature(
+        "0xb50C80e499b278f0af6A3633f751C72FDe2D9837".parse().unwrap(),
+        137,
+        user_op_hash,
+        sig,
+    )
+    .await?;
 
     println!("tree: {:?}", config.tree);
 
