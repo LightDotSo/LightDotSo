@@ -81,7 +81,6 @@ pub(crate) async fn v1_user_operation_update_handler(
             user_operation::sender::equals(to_checksum(&address, None)),
             or![
                 user_operation::status::equals(UserOperationStatus::Executed),
-                user_operation::status::equals(UserOperationStatus::Pending),
                 user_operation::status::equals(UserOperationStatus::Reverted)
             ],
         ])
@@ -106,7 +105,10 @@ pub(crate) async fn v1_user_operation_update_handler(
                     user_operation::chain_id::equals(op.chain_id),
                     user_operation::nonce::lte(op.nonce),
                     user_operation::hash::not(op.hash),
-                    user_operation::status::equals(UserOperationStatus::Proposed),
+                    or![
+                        user_operation::status::equals(UserOperationStatus::Proposed),
+                        user_operation::status::equals(UserOperationStatus::Pending)
+                    ],
                 ],
                 vec![user_operation::status::set(UserOperationStatus::Invalid)],
             )
