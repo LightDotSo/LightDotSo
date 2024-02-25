@@ -133,6 +133,7 @@ model User {
   // ---------------------------------------------------------------------------
 
   activities                 Activity[]
+  configurationOwners        ConfigurationOwner[]
   feedbacks                  Feedback[]
   inviteCodes                InviteCode[]
   notifications              Notification[]
@@ -140,7 +141,6 @@ model User {
   owners                     Owner[]
   wallets                    Wallet[]
   walletNotificationSettings WalletNotificationSettings[]
-  ConfigurationOwner         ConfigurationOwner[]
 }
 
 // -----------------------------------------------------------------------------
