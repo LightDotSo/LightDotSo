@@ -489,11 +489,18 @@ model Configuration {
   threshold  BigInt
 
   // ---------------------------------------------------------------------------
+  // None-to-one
+  // ---------------------------------------------------------------------------
+
+  configurationOperation ConfigurationOperation?
+
+  // ---------------------------------------------------------------------------
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  owners  Owner[]
-  wallets Wallet[]
+  configurationSignatures ConfigurationSignature[]
+  owners                  Owner[]
+  wallets                 Wallet[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -501,6 +508,121 @@ model Configuration {
 
   // Unique
   @@unique([address, checkpoint])
+}
+
+// -----------------------------------------------------------------------------
+// ConfigurationOperation
+// -----------------------------------------------------------------------------
+
+model ConfigurationOperation {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  address    String
+  checkpoint BigInt
+  imageHash  String
+  threshold  BigInt
+
+  status ConfigurationOperationStatus @default(PROPOSED)
+
+  // ---------------------------------------------------------------------------
+  // None-to-one
+  // ---------------------------------------------------------------------------
+
+  configuration   Configuration? @relation(fields: [configurationId], references: [id])
+  configurationId String?        @unique
+
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
+  activities              Activity[]
+  configurationSignatures ConfigurationSignature[]
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
+  // Relations
+  @@index([configurationId])
+}
+
+enum ConfigurationOperationStatus {
+  // ---------------------------------------------------------------------------
+  // Enum Fields
+  // ---------------------------------------------------------------------------
+
+  PROPOSED
+  PENDING
+  CONFIRMED
+  REJECTED
+  INVALID
+}
+
+// -----------------------------------------------------------------------------
+// ConfigurationSignature
+// -----------------------------------------------------------------------------
+
+model ConfigurationSignature {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  signature Bytes
+
+  // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  configurationOperation   ConfigurationOperation @relation(fields: [configurationOperationId], references: [id])
+  configurationOperationId String
+
+  // ---------------------------------------------------------------------------
+  // None-to-one
+  // ---------------------------------------------------------------------------
+
+  activity   Activity? @relation(fields: [activityId], references: [id])
+  activityId String?   @unique
+
+  configuration   Configuration? @relation(fields: [configurationId], references: [id])
+  configurationId String?
+
+  // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  owner   Owner  @relation(fields: [ownerId], references: [id])
+  ownerId String
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
+  // Unique
+  @@unique([configurationOperationId, ownerId])
+  @@unique([configurationId, ownerId])
+  // Relations
+  @@index([activityId])
+  @@index([configurationOperationId])
+  @@index([configurationId])
+  @@index([ownerId])
 }
 
 // -----------------------------------------------------------------------------
@@ -542,7 +664,8 @@ model Owner {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  signatures Signature[]
+  configurationSignatures ConfigurationSignature[]
+  signatures              Signature[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -2251,6 +2374,9 @@ model Activity {
   billingOperation   BillingOperation? @relation(fields: [billingOperationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   billingOperationId String?
 
+  configurationOperation   ConfigurationOperation? @relation(fields: [configurationOperationId], references: [id])
+  configurationOperationId String?
+
   inviteCode   InviteCode? @relation(fields: [inviteCodeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   inviteCodeId String?
 
@@ -2279,14 +2405,15 @@ model Activity {
   // Immutable Relations None-to-none
   // ---------------------------------------------------------------------------
 
-  feedback           Feedback?
-  notification       Notification?
-  paymaster          Paymaster?
-  paymasterOperation PaymasterOperation?
-  signature          Signature?
-  simulation         Simulation?
-  transaction        Transaction?
-  userOperation      UserOperation?
+  configurationSignature ConfigurationSignature?
+  feedback               Feedback?
+  notification           Notification?
+  paymaster              Paymaster?
+  paymasterOperation     PaymasterOperation?
+  signature              Signature?
+  simulation             Simulation?
+  transaction            Transaction?
+  userOperation          UserOperation?
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -2297,6 +2424,7 @@ model Activity {
   @@index([walletAddress])
   @@index([billingId])
   @@index([billingOperationId])
+  @@index([configurationOperationId])
   @@index([inviteCodeId])
   @@index([supportRequestId])
   @@index([userSettingsId])
