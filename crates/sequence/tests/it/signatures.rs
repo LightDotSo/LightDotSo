@@ -146,6 +146,8 @@ async fn test_integration_signature_chained() -> Result<()> {
     )
     .await?;
 
+    println!("config: {:?}", config);
+
     println!("tree: {:?}", config.tree);
 
     println!("signers: {:?}", config.tree.get_signers());
@@ -161,12 +163,12 @@ async fn test_integration_signature_chained() -> Result<()> {
     // );
 
     // Encode the config into bytes and print it
-    let recovered_signature = config.encode()?;
+    let recovered_signature = config.encode_chained_wallet()?;
     println!("{}", recovered_signature.to_hex_string());
     println!("{}", signature);
     // Print if the recovered signature matches the original signature (true or false)
-    // println!("{}", recovered_signature.to_hex_string() == signature);
-    // assert_eq!(&recovered_signature.to_hex_string(), signature);
+    println!("{}", recovered_signature.to_hex_string() == signature);
+    assert_eq!(&recovered_signature.to_hex_string(), signature);
 
     // Write WalletConfig back to a different JSON file
     write_wallet_config(&config.clone(), "tests/samples/wallet_config_chained.json")?;
