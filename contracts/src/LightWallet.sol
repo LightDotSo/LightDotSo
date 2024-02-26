@@ -186,6 +186,7 @@ contract LightWallet is
             (bytes32 merkleTreeRoot, bytes32[] memory merkleProof,) =
                 abi.decode(userOp.signature, (bytes32, bytes32[], bytes));
 
+            // Verify the corresponding merkle proof for the userOpHash
             if (!MerkleProof.verify(merkleProof, merkleTreeRoot, userOpHash)) {
                 revert InvalidSignatureType(signatureType);
             }
