@@ -191,6 +191,7 @@ contract LightWallet is
             }
 
             // Get the bit length of the actual signature
+            // Hardcoded to the corresponding length depending on the merkleProof length
             uint256 bitAfter = 320 + merkleProof.length * 64 + 1;
             (bool isValid,) = _signatureValidation(merkleTreeRoot, userOp.signature[bitAfter:]);
             if (!isValid) {
