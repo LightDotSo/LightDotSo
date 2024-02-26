@@ -149,7 +149,7 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
         }),
       },
     ];
-  }, [abiEncoded, formChainId]);
+  }, [abiEncoded, formChainId, balance, formValue]);
 
   const href = useMemo(() => {
     if (!userOperationsParams) {
