@@ -26,7 +26,6 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@lightdotso/schemas": "workspace:*",
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "pusher-js": "^7.6.0"
