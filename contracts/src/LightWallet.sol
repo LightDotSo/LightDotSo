@@ -169,7 +169,9 @@ contract LightWallet is
     {
         bytes1 signatureType = userOp.signature[0];
 
-        if (signatureType == 0x00 || signatureType == 0x01 || signatureType == 0x02 || signatureType == 0x03) {
+        // Thank you to @pseudolabel & @sudolabel for the bitwise op suggestion!
+        // Equivalent to signatureType == 0x00 || signatureType == 0x01 || signatureType == 0x02 || signatureType == 0x03
+        if (signatureType & 0x03 == signatureType) {
             (bool isValid,) = _signatureValidation(userOpHash, userOp.signature);
             if (!isValid) {
                 return SIG_VALIDATION_FAILED;
@@ -177,6 +179,9 @@ contract LightWallet is
             return 0;
         }
 
+        // If the signature type is 0x04, it is a merkle proof signature
+        // This enables batch execution of transactions across chains
+        // Modeled after the work of @bcnmy's MultichainECDSAValidator
         if (signatureType == 0x04) {
             (bytes32 merkleTreeRoot, bytes32[] memory merkleProof,) =
                 abi.decode(userOp.signature, (bytes32, bytes32[], bytes));
@@ -185,13 +190,16 @@ contract LightWallet is
                 revert InvalidSignatureType(signatureType);
             }
 
-            (bool isValid,) = _signatureValidation(merkleTreeRoot, userOp.signature[64:]);
+            // Get the bit length of the actual signature
+            uint256 bitAfter = 320 + merkleProof.length * 64 + 1;
+            (bool isValid,) = _signatureValidation(merkleTreeRoot, userOp.signature[bitAfter:]);
             if (!isValid) {
                 return SIG_VALIDATION_FAILED;
             }
             return 0;
         }
 
+        // Revert if the signature type is not supported
         revert InvalidSignatureType(signatureType);
     }
 
