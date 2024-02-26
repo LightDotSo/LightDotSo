@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import { SESSION_COOKIE_ID } from "@lightdotso/const";
+import { redis } from "@lightdotso/redis";
 import { cookies } from "next/headers";
-import { redis } from "@/client/redis";
 
 // -----------------------------------------------------------------------------
 // Types

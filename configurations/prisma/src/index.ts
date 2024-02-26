@@ -12,6 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { PrismaClient } from "@lightdotso/prisma";
+import { PrismaClient } from "@prisma/client";
 
 export const prisma = new PrismaClient();

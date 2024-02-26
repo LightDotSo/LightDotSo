@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { prisma } from "@lightdotso/prisma";
 import { InngestMiddleware } from "inngest";
-import { prisma } from "@/client/prisma";
 
 // -----------------------------------------------------------------------------
 // Middleware

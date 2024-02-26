@@ -351,12 +351,18 @@ importers:
       '@lightdotso/prisma':
         specifier: workspace:*
         version: link:../../configurations/prisma
+      '@lightdotso/pusher':
+        specifier: workspace:*
+        version: link:../../packages/pusher
       '@lightdotso/query':
         specifier: workspace:*
         version: link:../../packages/query
       '@lightdotso/query-keys':
         specifier: workspace:*
         version: link:../../packages/query-keys
+      '@lightdotso/redis':
+        specifier: workspace:*
+        version: link:../../packages/redis
       '@lightdotso/schemas':
         specifier: workspace:*
         version: link:../../packages/schemas
@@ -1116,6 +1122,9 @@ importers:
       '@lightdotso/prisma':
         specifier: workspace:*
         version: link:../../configurations/prisma
+      '@lightdotso/redis':
+        specifier: workspace:*
+        version: link:../../packages/redis
       '@next/bundle-analyzer':
         specifier: ^14.1.0
         version: 14.1.0
@@ -2005,6 +2014,31 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
+  packages/kafka:
+    dependencies:
+      '@lightdotso/schemas':
+        specifier: workspace:*
+        version: link:../schemas
+      '@upstash/kafka':
+        specifier: ^1.3.5
+        version: 1.3.5
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
+    devDependencies:
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../../configurations/tsconfig
+      '@types/node':
+        specifier: ^20.11.20
+        version: 20.11.20
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
   packages/modals:
     dependencies:
       '@hookform/resolvers':
@@ -2230,6 +2264,31 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
+  packages/pusher:
+    dependencies:
+      '@lightdotso/schemas':
+        specifier: workspace:*
+        version: link:../schemas
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
+      pusher-js:
+        specifier: ^7.6.0
+        version: 7.6.0
+    devDependencies:
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../../configurations/tsconfig
+      '@types/node':
+        specifier: ^20.11.20
+        version: 20.11.20
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
   packages/query:
     dependencies:
       '@lightdotso/client':
@@ -2292,10 +2351,41 @@ importers:
         version: link:../schemas
       '@lukemorales/query-key-factory':
         specifier: ^1.3.3
-        version: 1.3.3(@tanstack/query-core@5.21.4)(@tanstack/react-query@5.22.2)
+        version: 1.3.3(@tanstack/query-core@5.22.2)(@tanstack/react-query@5.22.2)
       '@tanstack/react-query':
         specifier: ^5.22.2
         version: 5.22.2(react@18.2.0)
+    devDependencies:
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../../configurations/tsconfig
+      '@types/node':
+        specifier: ^20.11.20
+        version: 20.11.20
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
+  packages/redis:
+    dependencies:
+      '@lightdotso/schemas':
+        specifier: workspace:*
+        version: link:../schemas
+      '@upstash/edge-flags':
+        specifier: ^0.1.1
+        version: 0.1.1(react-dom@18.2.0)
+      '@upstash/ratelimit':
+        specifier: ^1.0.1
+        version: 1.0.1
+      '@upstash/redis':
+        specifier: ^1.28.4
+        version: 1.28.4
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
@@ -7111,14 +7201,14 @@ packages:
       '@lit-labs/ssr-dom-shim': 1.1.2
     dev: false
 
-  /@lukemorales/query-key-factory@1.3.3(@tanstack/query-core@5.21.4)(@tanstack/react-query@5.22.2):
+  /@lukemorales/query-key-factory@1.3.3(@tanstack/query-core@5.22.2)(@tanstack/react-query@5.22.2):
     resolution: {integrity: sha512-oB4q2lupWLqDN0eLCsKMdXMbB3dwAGuSQBA2U6StxwDmbmt6yw/x5yqNb28bUWzR1tlZR5PgFDRw7g0ee9qpmg==}
     engines: {node: '>=14'}
     peerDependencies:
       '@tanstack/query-core': '>= 4.0.0'
       '@tanstack/react-query': '>= 4.0.0'
     dependencies:
-      '@tanstack/query-core': 5.21.4
+      '@tanstack/query-core': 5.22.2
       '@tanstack/react-query': 5.22.2(react@18.2.0)
     dev: false
 
@@ -13540,10 +13630,6 @@ packages:
       tailwindcss: 3.4.1(ts-node@10.9.2)
     dev: false
 
-  /@tanstack/query-core@5.21.4:
-    resolution: {integrity: sha512-k3u4RcDAtcCurs8KVEIf52k4yUayc852v4ZQrtI8pkEii71riM9758A2WVGo5T/v4/X7b1RLON5g0aDvkoZYCA==}
-    dev: false
-
   /@tanstack/query-core@5.22.2:
     resolution: {integrity: sha512-z3PwKFUFACMUqe1eyesCIKg3Jv1mysSrYfrEW5ww5DCDUD4zlpTKBvUDaEjsfZzL3ULrFLDM9yVUxI/fega1Qg==}
     dev: false
@@ -14845,6 +14931,21 @@ packages:
     dependencies:
       '@upstash/redis': 1.28.4
       next: 14.1.0(@babel/core@7.23.9)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+      zod: 3.22.4
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@opentelemetry/api'
+      - babel-plugin-macros
+      - react-dom
+      - sass
+    dev: false
+
+  /@upstash/edge-flags@0.1.1(react-dom@18.2.0):
+    resolution: {integrity: sha512-rfiWaxom+YeSZuyryaX567xWqnjjaYEdYJoUCTmB9lIWLvw55T2dWdsfNw6bGd6zKya4R2UtFpU+JBRq4TOqJA==}
+    dependencies:
+      '@upstash/redis': 1.28.4
+      next: 14.1.0(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       zod: 3.22.4
     transitivePeerDependencies:
