@@ -12,16 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#![allow(clippy::unwrap_used)]
+
 use crate::{error::RouteError, result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use ethers_main::types::H256;
-use lightdotso_kafka::{
-    topics::transaction::produce_transaction_message, types::transaction::TransactionMessage,
-};
+use ethers::{providers::Middleware, types::H256};
+use lightdotso_contracts::provider::get_provider;
+use lightdotso_kafka::topics::transaction::produce_transaction_message;
 use lightdotso_redis::query::transaction::transaction_rate_limit;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -81,18 +82,37 @@ pub(crate) async fn v1_queue_transaction_handler(
     transaction_rate_limit(state.redis, full_op_hash)
         .map_err(|err| RouteError::QueueError(QueueError::RateLimitExceeded(err.to_string())))?;
 
-    let block = provider.get_block(block_number as u64).await.unwrap();
+    // -------------------------------------------------------------------------
+    // Provider
+    // -------------------------------------------------------------------------
+
+    let provider = get_provider(query.chain_id).await?;
+
+    let tx = provider
+        .get_transaction(parsed_query_hash)
+        .await
+        .map_err(|err| RouteError::QueueError(QueueError::ProviderError(err.to_string())))?;
+
+    // If the tx is not found, return a 404.
+    let tx = tx
+        .ok_or(RouteError::QueueError(QueueError::NotFound("Transaction not found".to_string())))?;
+
+    // Get the block.
+    let block = provider
+        .get_block(tx.block_number.unwrap())
+        .await
+        .map_err(|err| RouteError::QueueError(QueueError::ProviderError(err.to_string())))?;
+
+    let payload = serde_json::to_value((&block, &query.chain_id))
+        .unwrap_or_else(|_| serde_json::Value::Null)
+        .to_string();
 
     // -------------------------------------------------------------------------
     // Kafka
     // -------------------------------------------------------------------------
 
     // For each chain, run the kafka producer.
-    produce_transaction_message(
-        state.producer.clone(),
-        &TransactionMessage { hash: parsed_query_hash, chain_id: query.chain_id },
-    )
-    .await?;
+    produce_transaction_message(state.producer.clone(), &payload).await?;
 
     // -------------------------------------------------------------------------
     // Return

@@ -20,6 +20,7 @@ pub(crate) mod transaction;
 pub(crate) mod types;
 pub(crate) mod user_operation;
 
+use crate::state::AppState;
 use autometrics::autometrics;
 use axum::{routing::post, Router};
 

@@ -31,4 +31,7 @@ pub(crate) enum QueueError {
     /// Queue rate limit exceeded.
     #[schema(example = "id = 1")]
     RateLimitExceeded(String),
+    /// Provider error.
+    #[schema(example = "Provider error")]
+    ProviderError(String),
 }

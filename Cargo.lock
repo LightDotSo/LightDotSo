@@ -6006,6 +6006,7 @@ dependencies = [
  "axum-tracing-opentelemetry",
  "clap 4.4.0",
  "const-hex",
+ "ethers 2.0.8",
  "ethers 2.0.9 (git+https://github.com/gakonst/ethers-rs)",
  "eyre",
  "governor",
