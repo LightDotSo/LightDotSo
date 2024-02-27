@@ -174,12 +174,11 @@ export const Transaction: FC<TransactionProps> = ({
         ? { ...userOperations[userOperationIndex], ...initialUserOperation }
         : { ...initialUserOperation };
 
-    const updatedMinimumNonce =
-      userOperationNonce && !isUserOperationNonceLoading
-        ? userOperationNonce?.nonce > partialUserOperation.nonce
-          ? BigInt(userOperationNonce?.nonce)
-          : partialUserOperation.nonce
-        : partialUserOperation.nonce;
+    const updatedMinimumNonce = userOperationNonce
+      ? userOperationNonce?.nonce > partialUserOperation.nonce
+        ? BigInt(userOperationNonce?.nonce)
+        : partialUserOperation.nonce
+      : partialUserOperation.nonce;
 
     return {
       sender: partialUserOperation?.sender ?? address,
