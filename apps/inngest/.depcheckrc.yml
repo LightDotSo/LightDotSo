@@ -22,3 +22,7 @@ ignores:
   - "@next/bundle-analyzer"
   - "@sentry-internal/feedback"
   - "@sentry/react"
+  - "@upstash/edge-flags"
+  - "@upstash/kafka"
+  - "@upstash/ratelimit"
+  - "@upstash/redis"
