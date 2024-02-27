@@ -36,9 +36,14 @@ pragma solidity ^0.8.18;
 // Link: https://github.com/0xsequence/wallet-contracts/blob/46838284e90baf27cf93b944b056c0b4a64c9733/contracts/modules/MainModuleUpgradable.sol
 // License: Apache-2.0
 
+// ECDSAValidator is heavily based by the work of @bcnmy's MultichainECDSAValidator
+// Link: https://raw.githubusercontent.com/bcnmy/scw-contracts/8c71c2a6404feb3eef85d1a2707042114b204878/contracts/smart-account/modules/MultichainECDSAValidator.sol
+// License: MIT
+
 // Thank you to both teams for the ever amazing work!
 
 import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
+import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {BaseAccount} from "@eth-infinitism/account-abstraction/contracts/core/BaseAccount.sol";
 import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfaces/IEntryPoint.sol";
@@ -68,7 +73,7 @@ contract LightWallet is
     string public constant NAME = "LightWallet";
 
     /// @notice The version for this contract
-    string public constant VERSION = "0.0.0";
+    string public constant VERSION = "0.2.0";
 
     // -------------------------------------------------------------------------
     // Immutable Storage
@@ -161,11 +166,42 @@ contract LightWallet is
         override
         returns (uint256 validationData)
     {
-        (bool isValid,) = _signatureValidation(userOpHash, userOp.signature);
-        if (!isValid) {
-            return SIG_VALIDATION_FAILED;
+        bytes1 signatureType = userOp.signature[0];
+
+        // Thank you to @pseudolabel & @fiveoutofnine for the bitwise op suggestion!
+        // Equivalent to signatureType == 0x00 || signatureType == 0x01 || signatureType == 0x02 || signatureType == 0x03
+        if (signatureType & 0x03 == signatureType) {
+            (bool isValid,) = _signatureValidation(userOpHash, userOp.signature);
+            if (!isValid) {
+                return SIG_VALIDATION_FAILED;
+            }
+            return 0;
         }
-        return 0;
+
+        // If the signature type is 0x04, it is a merkle proof signature
+        // This enables batch execution of transactions across chains
+        // Modeled after the work of @bcnmy's MultichainECDSAValidator
+        if (signatureType == 0x04) {
+            (bytes32 merkleTreeRoot, bytes32[] memory merkleProof,) =
+                abi.decode(userOp.signature, (bytes32, bytes32[], bytes));
+
+            // Verify the corresponding merkle proof for the userOpHash
+            if (!MerkleProof.verify(merkleProof, merkleTreeRoot, userOpHash)) {
+                revert InvalidSignatureType(signatureType);
+            }
+
+            // Get the bit length of the actual signature
+            // Hardcoded to the corresponding length depending on the merkleProof length
+            uint256 bitAfter = 320 + merkleProof.length * 64 + 1;
+            (bool isValid,) = _signatureValidation(merkleTreeRoot, userOp.signature[bitAfter:]);
+            if (!isValid) {
+                return SIG_VALIDATION_FAILED;
+            }
+            return 0;
+        }
+
+        // Revert if the signature type is not supported
+        revert InvalidSignatureType(signatureType);
     }
 
     /// @notice Executes a call to a target contract with specified value and data.

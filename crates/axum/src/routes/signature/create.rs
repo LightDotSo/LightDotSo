@@ -14,7 +14,9 @@
 
 use super::types::Signature;
 use crate::{
-    error::RouteError, result::AppJsonResult, routes::signature::error::SignatureError,
+    error::RouteError,
+    result::{AppError, AppJsonResult},
+    routes::signature::error::SignatureError,
     state::AppState,
 };
 use autometrics::autometrics;
@@ -30,7 +32,8 @@ use lightdotso_kafka::{
 use lightdotso_prisma::{
     owner, user_operation, ActivityEntity, ActivityOperation, SignatureProcedure,
 };
-use lightdotso_tracing::tracing::info;
+use lightdotso_sequence::{signature::recover_ecdsa_signature, utils::render_subdigest};
+use lightdotso_tracing::tracing::{error, info};
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
@@ -132,6 +135,78 @@ pub(crate) async fn v1_signature_create_handler(
     // DB
     // -------------------------------------------------------------------------
 
+    // Get the user operation from the database.
+    let user_operation = state
+        .client
+        .user_operation()
+        .find_unique(user_operation::hash::equals(user_operation_hash.clone()))
+        .with(user_operation::wallet::fetch())
+        .exec()
+        .await?;
+
+    // If the user operation is not found, return a 404.
+    let user_operation = user_operation.ok_or(RouteError::SignatureError(
+        SignatureError::NotFound("User operation not found".to_string()),
+    ))?;
+
+    // Get the wallet from the database.
+    let wallet = user_operation.clone().wallet.ok_or(RouteError::SignatureError(
+        SignatureError::NotFound("Wallet not found".to_string()),
+    ))?;
+
+    // -------------------------------------------------------------------------
+    // Signature
+    // -------------------------------------------------------------------------
+
+    // Check that the signature is valid.
+    let sig_bytes = sig.signature.hex_to_bytes()?;
+
+    // Render the subdigest.
+    let subdigest = render_subdigest(
+        user_operation.clone().chain_id as u64,
+        wallet.clone().address.parse()?,
+        user_operation.hash.clone().hex_to_bytes32()?,
+    )?;
+    info!(?subdigest);
+
+    // Recover the signature.
+    let recovered_sig = recover_ecdsa_signature(&sig_bytes, &subdigest, 0)?;
+    info!(?recovered_sig);
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
+    // Get the owner from the database.
+    let owner = state
+        .client
+        .owner()
+        .find_unique(owner::id::equals(sig.clone().owner_id))
+        .with(owner::user::fetch())
+        .exec()
+        .await?;
+    info!(?owner);
+
+    // -------------------------------------------------------------------------
+    // Signature
+    // -------------------------------------------------------------------------
+
+    // If the owner is not found, return a 404.
+    let owner = owner.ok_or(AppError::NotFound)?;
+
+    // Check that the recovered signature is the same as the signature sender.
+    if recovered_sig.address != owner.address.parse()? {
+        error!(
+            "recovered_sig.address: {}, owner.address: {}",
+            recovered_sig.address, owner.address
+        );
+        return Err(AppError::BadRequest);
+    }
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
     // Create the signature the database.
     let signature = state
         .client
@@ -147,25 +222,6 @@ pub(crate) async fn v1_signature_create_handler(
         .exec()
         .await?;
     info!(?signature);
-
-    // Get the user operation from the database.
-    let user_operation = state
-        .client
-        .user_operation()
-        .find_unique(user_operation::hash::equals(user_operation_hash))
-        .with(user_operation::wallet::fetch())
-        .exec()
-        .await?;
-
-    // If the user operation is not found, return a 404.
-    let user_operation = user_operation.ok_or(RouteError::SignatureError(
-        SignatureError::NotFound("User operation not found".to_string()),
-    ))?;
-
-    // Get the wallet from the database.
-    let wallet = user_operation.clone().wallet.ok_or(RouteError::SignatureError(
-        SignatureError::NotFound("Wallet not found".to_string()),
-    ))?;
 
     // -------------------------------------------------------------------------
     // Kafka

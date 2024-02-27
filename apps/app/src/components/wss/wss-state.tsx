@@ -14,9 +14,9 @@
 
 "use client";
 
+import { pusherClient } from "@lightdotso/pusher";
 import { useEffect } from "react";
 import type { FC } from "react";
-import { pusherClient } from "@/client/pusher";
 
 // -----------------------------------------------------------------------------
 // Component

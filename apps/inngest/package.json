@@ -26,6 +26,7 @@
   "dependencies": {
     "@babel/core": "^7.23.9",
     "@lightdotso/prisma": "workspace:*",
+    "@lightdotso/redis": "workspace:*",
     "@next/bundle-analyzer": "^14.1.0",
     "@prisma/nextjs-monorepo-workaround-plugin": "^5.10.2",
     "@sentry-internal/feedback": "^7.102.1",

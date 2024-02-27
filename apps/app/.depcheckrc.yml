@@ -43,3 +43,7 @@ ignores:
   - permissionless
   - "@sentry/node"
   - "@hookform/devtools"
+  - "@upstash/kafka"
+  - "@upstash/ratelimit"
+  - "@upstash/redis"
+  - "pusher-js"
