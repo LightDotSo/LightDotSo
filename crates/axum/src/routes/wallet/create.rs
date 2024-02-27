@@ -176,10 +176,14 @@ pub(crate) async fn v1_wallet_create_handler(
 
     // Create a wallet config
     let mut config = WalletConfig {
+        // The signature type is 0 since it is not computed in the encoding.
         signature_type: 0,
+        // The checkpoint is 0, as it is the first checkpoint.
         checkpoint: 0,
         threshold: params.threshold,
+        // Can be 1 since it is not computed in the encoding.
         weight: 1,
+        // Can be 0 since it is not computed in the encoding.
         image_hash: [0; 32].into(),
         tree,
         internal_root: None,

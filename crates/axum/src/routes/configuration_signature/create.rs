@@ -12,10 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#![allow(clippy::unwrap_used)]
+
 use super::types::ConfigurationSignature;
 use crate::{
-    error::RouteError, result::AppJsonResult,
-    routes::configuration_signature::error::ConfigurationSignatureError, state::AppState,
+    error::RouteError,
+    result::{AppError, AppJsonResult},
+    routes::configuration_signature::error::ConfigurationSignatureError,
+    state::AppState,
 };
 use autometrics::autometrics;
 use axum::{
@@ -30,7 +34,14 @@ use lightdotso_kafka::{
 use lightdotso_prisma::{
     configuration_operation, configuration_owner, ActivityEntity, ActivityOperation,
 };
-use lightdotso_tracing::tracing::info;
+use lightdotso_sequence::{
+    builder::rooted_node_builder,
+    config::WalletConfig,
+    signature::recover_ecdsa_signature,
+    types::{AddressSignatureLeaf, SignatureLeaf, Signer, SignerNode},
+    utils::render_subdigest,
+};
+use lightdotso_tracing::tracing::{error, info};
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
@@ -107,6 +118,122 @@ pub(crate) async fn v1_configuration_signature_create_handler(
 
     // Get the signature from the post body.
     let sig = params.signature;
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
+    // Get the user operation from the database.
+    let configuration_operation = state
+        .client
+        .configuration_operation()
+        .find_unique(configuration_operation::id::equals(configuration_operation_id.clone()))
+        .with(configuration_operation::configuration_owners::fetch(vec![]))
+        .with(configuration_operation::wallet::fetch())
+        .exec()
+        .await?;
+
+    // If the user operation is not found, return a 404.
+    let configuration_operation =
+        configuration_operation.ok_or(RouteError::ConfigurationSignatureError(
+            ConfigurationSignatureError::NotFound("User operation not found".to_string()),
+        ))?;
+
+    // Get the owner from configuration operation.
+    let configuration_owners = configuration_operation.clone().configuration_owners.ok_or(
+        RouteError::ConfigurationSignatureError(ConfigurationSignatureError::NotFound(
+            "Owner not found".to_string(),
+        )),
+    )?;
+
+    // Get the wallet from the database.
+    let wallet =
+        configuration_operation.clone().wallet.ok_or(RouteError::ConfigurationSignatureError(
+            ConfigurationSignatureError::NotFound("Wallet not found".to_string()),
+        ))?;
+
+    // -------------------------------------------------------------------------
+    // Signature
+    // -------------------------------------------------------------------------
+
+    // Check that the signature is valid.
+    let sig_bytes = sig.signature.hex_to_bytes()?;
+
+    // Conver the owners to SignerNode.
+    let owner_nodes: Vec<SignerNode> = configuration_owners
+        .iter()
+        .map(|owner| SignerNode {
+            signer: Some(Signer {
+                weight: Some(owner.weight as u8),
+                leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
+                    address: owner.address.parse().unwrap(),
+                }),
+            }),
+            left: None,
+            right: None,
+        })
+        .collect();
+
+    // Build the node tree.
+    let tree = rooted_node_builder(owner_nodes)?;
+
+    // Create a wallet config
+    let mut config = WalletConfig {
+        signature_type: 0,
+        checkpoint: configuration_operation.checkpoint as u32,
+        threshold: configuration_operation.threshold as u16,
+        weight: 1,
+        image_hash: [0; 32].into(),
+        tree,
+        internal_root: None,
+        internal_recovered_configs: None,
+    };
+
+    // Simulate the image hash of the wallet config.
+    let res = config.regenerate_image_hash([0; 32])?;
+
+    // Render the subdigest.
+    let subdigest = render_subdigest(
+        // Chain agnostic signature type.
+        0,
+        wallet.clone().address.parse()?,
+        res,
+    )?;
+    info!(?subdigest);
+
+    // Recover the signature.
+    let recovered_sig = recover_ecdsa_signature(&sig_bytes, &subdigest, 0)?;
+    info!(?recovered_sig);
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
+    // Get the configuration_owner from the database.
+    let configuration_owner = state
+        .client
+        .configuration_owner()
+        .find_unique(configuration_owner::id::equals(sig.clone().configuration_owner_id))
+        .with(configuration_owner::user::fetch())
+        .exec()
+        .await?;
+    info!(?configuration_owner);
+
+    // -------------------------------------------------------------------------
+    // Signature
+    // -------------------------------------------------------------------------
+
+    // If the owner is not found, return a 404.
+    let configuration_owner = configuration_owner.ok_or(AppError::NotFound)?;
+
+    // Check that the recovered signature is the same as the signature sender.
+    if recovered_sig.address != configuration_owner.address.parse()? {
+        error!(
+            "recovered_sig.address: {}, configuration_owner.address: {}",
+            recovered_sig.address, configuration_owner.address
+        );
+        return Err(AppError::BadRequest);
+    }
 
     // -------------------------------------------------------------------------
     // DB
