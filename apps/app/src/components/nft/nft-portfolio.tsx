@@ -14,10 +14,8 @@
 
 "use client";
 
-import type { NftPortfolioData } from "@lightdotso/data";
-import { queryKeys } from "@lightdotso/query-keys";
+import { useQueryNftPortfolio } from "@lightdotso/query";
 import { Number } from "@lightdotso/ui";
-import { useQueryClient } from "@tanstack/react-query";
 import type { FC } from "react";
 import type { Address } from "viem";
 
@@ -44,26 +42,24 @@ export const NftPortfolio: FC<NftPortfolioProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
-
-  const portfolio: NftPortfolioData | undefined = queryClient.getQueryData(
-    queryKeys.nft_valuation.get({ address }).queryKey,
-  );
+  const { nftPortfolio } = useQueryNftPortfolio({
+    address,
+  });
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!portfolio) {
+  if (!nftPortfolio) {
     return null;
   }
 
   return (
-    portfolio &&
-    portfolio.wallets &&
-    portfolio.wallets.length > 0 && (
+    nftPortfolio &&
+    nftPortfolio.wallets &&
+    nftPortfolio.wallets.length > 0 && (
       <Number
-        value={portfolio.wallets[0].usd_value ?? 0.0}
+        value={nftPortfolio.wallets[0].usd_value ?? 0.0}
         size={size}
         prefix="$"
         variant={isNeutral ? "neutral" : undefined}

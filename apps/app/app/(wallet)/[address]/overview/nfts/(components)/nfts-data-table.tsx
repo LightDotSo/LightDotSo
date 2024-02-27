@@ -15,12 +15,9 @@
 "use client";
 
 import { SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
-import type { WalletSettingsData } from "@lightdotso/data";
 import { useCursorQueryState, usePaginationQueryState } from "@lightdotso/nuqs";
-import { useQueryNfts } from "@lightdotso/query";
-import { queryKeys } from "@lightdotso/query-keys";
+import { useQueryNfts, useQueryWalletSettings } from "@lightdotso/query";
 import { nftColumns } from "@lightdotso/tables";
-import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, type FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/data-table";
@@ -49,10 +46,9 @@ export const NftsDataTable: FC<NftsDataTableProps> = ({ address }) => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
-
-  const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
+  const { walletSettings } = useQueryWalletSettings({
+    address,
+  });
 
   const { nftPage, isNftsLoading } = useQueryNfts({
     address: address,

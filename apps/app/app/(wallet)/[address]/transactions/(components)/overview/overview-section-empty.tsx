@@ -14,14 +14,12 @@
 
 "use client";
 
-import type {
-  UserOperationCountData,
-  WalletSettingsData,
-} from "@lightdotso/data";
 import { EmptyState } from "@lightdotso/elements";
-import { queryKeys } from "@lightdotso/query-keys";
+import {
+  useQueryUserOperationsCount,
+  useQueryWalletSettings,
+} from "@lightdotso/query";
 import { Table, TableBody, TableCell, TableRow } from "@lightdotso/ui";
-import { useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
@@ -43,25 +41,21 @@ export const OverviewSectionEmpty = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
+  const { walletSettings } = useQueryWalletSettings({
+    address,
+  });
 
-  const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
-
-  const currentData: UserOperationCountData | undefined =
-    queryClient.getQueryData(
-      queryKeys.user_operation.listCount({
-        address: address,
-        status: null,
-        is_testnet: walletSettings?.is_enabled_testnet ?? false,
-      }).queryKey,
-    );
+  const { userOperationsCount } = useQueryUserOperationsCount({
+    address,
+    status: null,
+    is_testnet: walletSettings?.is_enabled_testnet ?? false,
+  });
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!currentData || currentData?.count > 0) {
+  if (!userOperationsCount || userOperationsCount?.count > 0) {
     return null;
   }
 

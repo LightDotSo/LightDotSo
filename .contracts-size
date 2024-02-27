@@ -19,10 +19,11 @@
 | LibBytesPointer              | 0.086     | 24.49       |
 | LibOptim                     | 0.086     | 24.49       |
 | LightVerifyingPaymaster      | 5.533     | 19.043      |
-| LightWallet                  | 12.548    | 12.028      |
+| LightWallet                  | 13.26     | 11.316      |
 | LightWalletFactory           | 3.34      | 21.236      |
 | LightWalletUtils             | 0.086     | 24.49       |
 | Math                         | 0.086     | 24.49       |
+| MerkleProof                  | 0.086     | 24.49       |
 | MockERC1155                  | 7.697     | 16.879      |
 | MockERC20                    | 3.561     | 21.015      |
 | MockERC721                   | 5.604     | 18.972      |

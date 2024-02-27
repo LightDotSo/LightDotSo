@@ -15,14 +15,14 @@
 "use client";
 
 import { CONTRACT_ADDRESSES } from "@lightdotso/const";
-import type { WalletSettingsData } from "@lightdotso/data";
 import { userOperationsParser } from "@lightdotso/nuqs";
-import { useQueryUserOperations } from "@lightdotso/query";
-import { queryKeys } from "@lightdotso/query-keys";
+import {
+  useQueryUserOperations,
+  useQueryWalletSettings,
+} from "@lightdotso/query";
 import { calculateInitCode } from "@lightdotso/sequence";
 import { Button } from "@lightdotso/ui";
 import { getEtherscanUrl } from "@lightdotso/utils";
-import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import type { FC } from "react";
 import type { Address, Chain, Hex } from "viem";
@@ -60,10 +60,9 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
-
-  const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
+  const { walletSettings } = useQueryWalletSettings({
+    address,
+  });
 
   const { userOperations } = useQueryUserOperations({
     address,

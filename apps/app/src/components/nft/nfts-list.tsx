@@ -14,12 +14,10 @@
 
 "use client";
 
-import type { NftData, WalletSettingsData } from "@lightdotso/data";
-import { useQueryNfts } from "@lightdotso/query";
-import { queryKeys } from "@lightdotso/query-keys";
+import type { NftData } from "@lightdotso/data";
+import { useQueryNfts, useQueryWalletSettings } from "@lightdotso/query";
 import { useTables } from "@lightdotso/stores";
 import { NftTable } from "@lightdotso/tables";
-import { useQueryClient } from "@tanstack/react-query";
 import type { FC } from "react";
 import type { Address } from "viem";
 
@@ -48,10 +46,9 @@ export const NftsList: FC<NftsListProps> = ({ address, limit }) => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
-
-  const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
+  const { walletSettings } = useQueryWalletSettings({
+    address,
+  });
 
   const { nftPage } = useQueryNfts({
     address: address,

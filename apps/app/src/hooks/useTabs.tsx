@@ -15,16 +15,14 @@
 // Full complete example from: https://github.com/hqasmei/youtube-tutorials/blob/ee44df8fbf6ab4f4c2f7675f17d67813947a7f61/vercel-animated-tabs/src/hooks/use-tabs.tsx
 // License: MIT
 
-import type { WalletSettingsData } from "@lightdotso/data";
 import {
   useQueryUserOperationsCount,
   useQueryConfiguration,
   useQueryWalletFeatures,
+  useQueryWalletSettings,
 } from "@lightdotso/query";
-import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import type { Tab } from "@lightdotso/types";
-import { useQueryClient } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useMemo } from "react";
 import type { Address } from "viem";
@@ -118,12 +116,9 @@ export function useTabs() {
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
-
-  const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(
-      queryKeys.wallet.settings({ address: walletAddress as Address }).queryKey,
-    );
+  const { walletSettings } = useQueryWalletSettings({
+    address: walletAddress as Address,
+  });
 
   const { configuration } = useQueryConfiguration({
     address: walletAddress as Address,

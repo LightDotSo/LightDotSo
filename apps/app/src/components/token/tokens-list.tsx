@@ -14,12 +14,9 @@
 
 "use client";
 
-import type { WalletSettingsData } from "@lightdotso/data";
-import { useQueryTokens } from "@lightdotso/query";
-import { queryKeys } from "@lightdotso/query-keys";
+import { useQueryTokens, useQueryWalletSettings } from "@lightdotso/query";
 import { useTables } from "@lightdotso/stores";
 import { TokenTable } from "@lightdotso/tables";
-import { useQueryClient } from "@tanstack/react-query";
 import { type FC } from "react";
 import type { Address } from "viem";
 
@@ -54,10 +51,9 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
-
-  const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
+  const { walletSettings } = useQueryWalletSettings({
+    address,
+  });
 
   const { tokens } = useQueryTokens({
     address: address,

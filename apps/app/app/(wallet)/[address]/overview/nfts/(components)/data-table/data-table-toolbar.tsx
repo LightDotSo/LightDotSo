@@ -15,12 +15,8 @@
 "use client";
 
 import { SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
-import type {
-  NftData,
-  NftDataPage,
-  WalletSettingsData,
-} from "@lightdotso/data";
-import { queryKeys } from "@lightdotso/query-keys";
+import type { NftData } from "@lightdotso/data";
+import { useQueryNfts, useQueryWalletSettings } from "@lightdotso/query";
 import { useAuth, useTables } from "@lightdotso/stores";
 import {
   DataTableFacetedFilter,
@@ -28,7 +24,6 @@ import {
 } from "@lightdotso/templates";
 import { Button } from "@lightdotso/ui";
 import { Cross2Icon } from "@radix-ui/react-icons";
-import { useQueryClient } from "@tanstack/react-query";
 import type { Table } from "@tanstack/react-table";
 import { useMemo } from "react";
 import type { Address } from "viem";
@@ -57,21 +52,16 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
+  const { walletSettings } = useQueryWalletSettings({
+    address: wallet as Address,
+  });
 
-  const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(
-      queryKeys.wallet.settings({ address: wallet as Address }).queryKey,
-    );
-
-  const currentData: NftDataPage | undefined = queryClient.getQueryData(
-    queryKeys.nft.list({
-      address: wallet as Address,
-      is_testnet: walletSettings?.is_enabled_testnet ?? false,
-      limit: SIMPLEHASH_MAX_COUNT,
-      cursor: null,
-    }).queryKey,
-  );
+  const { nftPage } = useQueryNfts({
+    address: wallet as Address,
+    is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    limit: SIMPLEHASH_MAX_COUNT,
+    cursor: null,
+  });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -80,11 +70,11 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const uniqueChainValues = useMemo(() => {
     // Get all unique weight values from current data
     const uniqueChainValues = new Set<string>();
-    currentData?.nfts?.forEach(nft => {
+    nftPage?.nfts?.forEach(nft => {
       uniqueChainValues.add(nft.chain!);
     });
     return uniqueChainValues;
-  }, [currentData]);
+  }, [nftPage]);
 
   // ---------------------------------------------------------------------------
   // Render

@@ -15,11 +15,13 @@
 "use client";
 
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
-import type { WalletSettingsData } from "@lightdotso/data";
 import { NftImage, TokenImage } from "@lightdotso/elements";
 import { useTransferQueryState } from "@lightdotso/nuqs";
-import { useQueryNfts, useQuerySocketBalances } from "@lightdotso/query";
-import { queryKeys } from "@lightdotso/query-keys";
+import {
+  useQueryNfts,
+  useQuerySocketBalances,
+  useQueryWalletSettings,
+} from "@lightdotso/query";
 import type {
   SimplehashMainnetChain,
   SimplehashTestnetChain,
@@ -58,7 +60,6 @@ import {
   useWriteContract,
 } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
 import type { FC } from "react";
 import { useEffect, useMemo } from "react";
@@ -124,10 +125,9 @@ export const DepositDialog: FC<DepositDialogProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
-
-  const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
+  const { walletSettings } = useQueryWalletSettings({
+    address,
+  });
 
   const { nftPage } = useQueryNfts({
     address,
@@ -536,7 +536,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
 
                   return (
                     <FormControl>
-                      <div>
+                      <div className="flex flex-col space-y-3">
                         <div className="w-full space-y-2">
                           <Label htmlFor="weight">Token</Label>
                           <Button
@@ -630,6 +630,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                                 {...field}
                                 className="[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                                 type="text"
+                                placeholder="Your amount"
                                 // onChange={e => {
                                 //   if (!e.target.value) {
                                 //     // Clear the value of key address

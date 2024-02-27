@@ -300,6 +300,7 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
                         {...field}
                         className="[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                         type="text"
+                        placeholder="Your value in native token"
                         onBlur={e => {
                           // Validate the address
                           if (!e.target.value) {

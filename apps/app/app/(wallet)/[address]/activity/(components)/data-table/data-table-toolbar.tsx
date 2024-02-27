@@ -16,7 +16,7 @@
 
 import type { ActivityData } from "@lightdotso/data";
 import { usePaginationQueryState } from "@lightdotso/nuqs";
-import { queryKeys } from "@lightdotso/query-keys";
+import { useQueryActivities } from "@lightdotso/query";
 import { useAuth, useTables } from "@lightdotso/stores";
 import {
   DataTableFacetedFilter,
@@ -24,7 +24,6 @@ import {
 } from "@lightdotso/templates";
 import { Button, ToolbarSectionWrapper } from "@lightdotso/ui";
 import { Cross2Icon } from "@radix-ui/react-icons";
-import { useQueryClient } from "@tanstack/react-query";
 import type { Table } from "@tanstack/react-table";
 import { useMemo } from "react";
 import type { Address } from "viem";
@@ -63,15 +62,11 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
-
-  const currentData: ActivityData[] | undefined = queryClient.getQueryData(
-    queryKeys.activity.list({
-      address: wallet as Address,
-      offset: offsetCount,
-      limit: paginationState.pageSize,
-    }).queryKey,
-  );
+  const { activities } = useQueryActivities({
+    address: wallet as Address,
+    offset: offsetCount,
+    limit: paginationState.pageSize,
+  });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -80,11 +75,11 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const uniqueEntityValues = useMemo(() => {
     // Get all unique weight values from current data
     const uniqueEntityValues = new Set<string>();
-    currentData?.forEach(activity => {
+    activities?.forEach(activity => {
       uniqueEntityValues.add(activity.entity);
     });
     return uniqueEntityValues;
-  }, [currentData]);
+  }, [activities]);
 
   // ---------------------------------------------------------------------------
   // Render

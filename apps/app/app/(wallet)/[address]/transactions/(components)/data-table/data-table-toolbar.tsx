@@ -14,9 +14,12 @@
 
 "use client";
 
-import type { UserOperationData, WalletSettingsData } from "@lightdotso/data";
+import type { UserOperationData } from "@lightdotso/data";
 import { usePaginationQueryState } from "@lightdotso/nuqs";
-import { queryKeys } from "@lightdotso/query-keys";
+import {
+  useQueryUserOperations,
+  useQueryWalletSettings,
+} from "@lightdotso/query";
 import { useAuth, useTables } from "@lightdotso/stores";
 import {
   DataTableFacetedFilter,
@@ -25,7 +28,6 @@ import {
 import { Button } from "@lightdotso/ui";
 import { getChainNameById } from "@lightdotso/utils";
 import { Cross2Icon } from "@radix-ui/react-icons";
-import { useQueryClient } from "@tanstack/react-query";
 import type { Table } from "@tanstack/react-table";
 import { useMemo } from "react";
 import type { Address } from "viem";
@@ -65,23 +67,18 @@ export function DataTableToolbar({ status, table }: DataTableToolbarProps) {
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
+  const { walletSettings } = useQueryWalletSettings({
+    address: wallet as Address,
+  });
 
-  const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(
-      queryKeys.wallet.settings({ address: wallet as Address }).queryKey,
-    );
-
-  const currentData: UserOperationData[] | undefined = queryClient.getQueryData(
-    queryKeys.user_operation.list({
-      address: wallet as Address,
-      status: status,
-      order: status === "queued" ? "asc" : "desc",
-      offset: offsetCount,
-      limit: paginationState.pageSize,
-      is_testnet: walletSettings?.is_enabled_testnet ?? false,
-    }).queryKey,
-  );
+  const { userOperations } = useQueryUserOperations({
+    address: wallet as Address,
+    status: status,
+    order: status === "queued" ? "asc" : "desc",
+    limit: paginationState.pageSize,
+    offset: offsetCount,
+    is_testnet: walletSettings?.is_enabled_testnet ?? false,
+  });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -90,11 +87,11 @@ export function DataTableToolbar({ status, table }: DataTableToolbarProps) {
   const uniqueChainValues = useMemo(() => {
     // Get all unique weight values from current data
     const uniqueChainValues = new Set<number>();
-    currentData?.forEach(userOperation => {
+    userOperations?.forEach(userOperation => {
       uniqueChainValues.add(userOperation.chain_id!);
     });
     return uniqueChainValues;
-  }, [currentData]);
+  }, [userOperations]);
 
   // ---------------------------------------------------------------------------
   // Render
