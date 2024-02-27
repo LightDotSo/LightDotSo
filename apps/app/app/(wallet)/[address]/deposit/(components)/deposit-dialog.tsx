@@ -15,11 +15,13 @@
 "use client";
 
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
-import type { WalletSettingsData } from "@lightdotso/data";
 import { NftImage, TokenImage } from "@lightdotso/elements";
 import { useTransferQueryState } from "@lightdotso/nuqs";
-import { useQueryNfts, useQuerySocketBalances } from "@lightdotso/query";
-import { queryKeys } from "@lightdotso/query-keys";
+import {
+  useQueryNfts,
+  useQuerySocketBalances,
+  useQueryWalletSettings,
+} from "@lightdotso/query";
 import type {
   SimplehashMainnetChain,
   SimplehashTestnetChain,
@@ -124,10 +126,9 @@ export const DepositDialog: FC<DepositDialogProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
-
-  const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
+  const { walletSettings } = useQueryWalletSettings({
+    address,
+  });
 
   const { nftPage } = useQueryNfts({
     address,

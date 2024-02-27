@@ -14,10 +14,11 @@
 
 "use client";
 
-import type { UserOperationData, WalletSettingsData } from "@lightdotso/data";
-import { queryKeys } from "@lightdotso/query-keys";
+import {
+  useQueryUserOperations,
+  useQueryWalletSettings,
+} from "@lightdotso/query";
 import { Button } from "@lightdotso/ui";
-import { useQueryClient } from "@tanstack/react-query";
 import { ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -50,27 +51,24 @@ export const OverviewSection = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
+  const { walletSettings } = useQueryWalletSettings({
+    address,
+  });
 
-  const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
-
-  const currentData: UserOperationData[] | undefined = queryClient.getQueryData(
-    queryKeys.user_operation.list({
-      address,
-      status,
-      order: status === "queued" ? "asc" : "desc",
-      limit: 10,
-      offset: 0,
-      is_testnet: walletSettings?.is_enabled_testnet ?? false,
-    }).queryKey,
-  );
+  const { userOperations } = useQueryUserOperations({
+    address,
+    status,
+    order: status === "queued" ? "asc" : "desc",
+    limit: 10,
+    offset: 0,
+    is_testnet: walletSettings?.is_enabled_testnet ?? false,
+  });
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!currentData || currentData.length === 0) {
+  if (!userOperations || userOperations.length === 0) {
     return null;
   }
 

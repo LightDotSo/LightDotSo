@@ -14,13 +14,14 @@
 
 "use client";
 
-import type { WalletSettingsData } from "@lightdotso/data";
 import { usePaginationQueryState } from "@lightdotso/nuqs";
-import { useQueryTokens, useQueryTokensCount } from "@lightdotso/query";
-import { queryKeys } from "@lightdotso/query-keys";
+import {
+  useQueryTokens,
+  useQueryTokensCount,
+  useQueryWalletSettings,
+} from "@lightdotso/query";
 import { tokenColumns } from "@lightdotso/tables";
 import { TableSectionWrapper } from "@lightdotso/ui";
-import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table";
@@ -56,10 +57,9 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
-
-  const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
+  const { walletSettings } = useQueryWalletSettings({
+    address,
+  });
 
   const { tokens, isTokensLoading } = useQueryTokens({
     address: address,

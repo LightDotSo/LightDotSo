@@ -15,7 +15,6 @@
 "use client";
 
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
-import type { WalletSettingsData } from "@lightdotso/data";
 import { NftImage, PlaceholderOrb, TokenImage } from "@lightdotso/elements";
 import {
   transfersParser,
@@ -23,8 +22,11 @@ import {
   useUserOperationsQueryState,
   userOperationsParser,
 } from "@lightdotso/nuqs";
-import { useQueryNfts, useQueryTokens } from "@lightdotso/query";
-import { queryKeys } from "@lightdotso/query-keys";
+import {
+  useQueryNfts,
+  useQueryTokens,
+  useQueryWalletSettings,
+} from "@lightdotso/query";
 import { sendFormSchema } from "@lightdotso/schemas";
 import type {
   SimplehashMainnetChain,
@@ -63,7 +65,6 @@ import {
 } from "@lightdotso/utils";
 import { lightWalletAbi, publicClient } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
 import { isEmpty } from "lodash";
 import { ChevronDown, Trash2Icon, UserPlus2 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -153,10 +154,9 @@ export const SendDialog: FC<SendDialogProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
-
-  const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queryKeys.wallet.settings({ address }).queryKey);
+  const { walletSettings } = useQueryWalletSettings({
+    address,
+  });
 
   const { nftPage } = useQueryNfts({
     address,

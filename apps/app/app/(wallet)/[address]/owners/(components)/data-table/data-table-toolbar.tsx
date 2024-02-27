@@ -14,8 +14,8 @@
 
 "use client";
 
-import type { ConfigurationData, OwnerData } from "@lightdotso/data";
-import { queryKeys } from "@lightdotso/query-keys";
+import type { OwnerData } from "@lightdotso/data";
+import { useQueryConfiguration } from "@lightdotso/query";
 import { useAuth, useTables } from "@lightdotso/stores";
 import {
   DataTableFacetedFilter,
@@ -23,7 +23,6 @@ import {
 } from "@lightdotso/templates";
 import { Button, Input, ToolbarSectionWrapper } from "@lightdotso/ui";
 import { Cross2Icon } from "@radix-ui/react-icons";
-import { useQueryClient } from "@tanstack/react-query";
 import type { Table } from "@tanstack/react-table";
 import { useMemo } from "react";
 import type { Address } from "viem";
@@ -52,11 +51,9 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
-
-  const currentData: ConfigurationData | undefined = queryClient.getQueryData(
-    queryKeys.configuration.get({ address: wallet as Address }).queryKey,
-  );
+  const { configuration } = useQueryConfiguration({
+    address: wallet as Address,
+  });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -65,11 +62,11 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const uniqueWeightValues = useMemo(() => {
     // Get all unique weight values from current data
     const uniqueWeightValues = new Set<number>();
-    currentData?.owners.forEach(owner => {
+    configuration?.owners.forEach(owner => {
       uniqueWeightValues.add(owner.weight);
     });
     return uniqueWeightValues;
-  }, [currentData]);
+  }, [configuration]);
 
   // ---------------------------------------------------------------------------
   // Render

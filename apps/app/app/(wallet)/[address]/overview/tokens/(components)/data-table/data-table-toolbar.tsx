@@ -14,9 +14,9 @@
 
 "use client";
 
-import type { TokenData, WalletSettingsData } from "@lightdotso/data";
+import type { TokenData } from "@lightdotso/data";
 import { usePaginationQueryState } from "@lightdotso/nuqs";
-import { queryKeys } from "@lightdotso/query-keys";
+import { useQueryTokens, useQueryWalletSettings } from "@lightdotso/query";
 import { useAuth, useTables } from "@lightdotso/stores";
 import {
   DataTableFacetedFilter,
@@ -70,21 +70,18 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
 
   const queryClient = useQueryClient();
 
-  const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(
-      queryKeys.wallet.settings({ address: wallet as Address }).queryKey,
-    );
+  const { walletSettings } = useQueryWalletSettings({
+    address: wallet as Address,
+  });
 
-  const currentData: TokenData[] | undefined = queryClient.getQueryData(
-    queryKeys.token.list({
-      address: wallet as Address,
-      offset: offsetCount,
-      limit: paginationState.pageSize,
-      is_testnet: walletSettings?.is_enabled_testnet ?? false,
-      group: true,
-      chain_ids: null,
-    }).queryKey,
-  );
+  const { tokens } = useQueryTokens({
+    address: wallet as Address,
+    is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    limit: paginationState.pageSize,
+    offset: offsetCount,
+    group: true,
+    chain_ids: null,
+  });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -93,7 +90,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const uniqueChainIdValues = useMemo(() => {
     // Get all unique weight values from current data
     const uniqueChainIdValues = new Set<number>();
-    currentData?.forEach(token => {
+    tokens?.forEach(token => {
       uniqueChainIdValues.add(token.chain_id);
       if (token.group?.tokens) {
         token.group.tokens.forEach(token => {
@@ -102,7 +99,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
       }
     });
     return uniqueChainIdValues;
-  }, [currentData]);
+  }, [tokens]);
 
   // ---------------------------------------------------------------------------
   // Render
