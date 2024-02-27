@@ -239,20 +239,6 @@ pub(crate) async fn v1_configuration_signature_create_handler(
     // DB
     // -------------------------------------------------------------------------
 
-    // Create the signature the database.
-    let configuration_signature = state
-        .client
-        .configuration_signature()
-        .create(
-            sig.signature.hex_to_bytes()?,
-            configuration_operation::id::equals(configuration_operation_id.clone()),
-            configuration_owner::id::equals(sig.configuration_owner_id),
-            vec![],
-        )
-        .exec()
-        .await?;
-    info!(?configuration_signature);
-
     // Get the configuration operation from the database.
     let configuration_operation = state
         .client
@@ -273,6 +259,20 @@ pub(crate) async fn v1_configuration_signature_create_handler(
         configuration_operation.clone().wallet.ok_or(RouteError::ConfigurationSignatureError(
             ConfigurationSignatureError::NotFound("Wallet not found".to_string()),
         ))?;
+
+    // Create the signature the database.
+    let configuration_signature = state
+        .client
+        .configuration_signature()
+        .create(
+            sig.signature.hex_to_bytes()?,
+            configuration_operation::id::equals(configuration_operation.id.clone()),
+            configuration_owner::id::equals(sig.configuration_owner_id),
+            vec![],
+        )
+        .exec()
+        .await?;
+    info!(?configuration_signature);
 
     // -------------------------------------------------------------------------
     // Kafka
