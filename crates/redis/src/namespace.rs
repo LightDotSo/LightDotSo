@@ -29,6 +29,11 @@ lazy_static! {
     pub static ref QUEUE_TOKEN: String = "queue:token".to_string();
 }
 
+// The transaction queue namespace
+lazy_static! {
+    pub static ref QUEUE_TRANSACTION: String = "queue:transaction".to_string();
+}
+
 // The user operation queue namespace
 lazy_static! {
     pub static ref QUEUE_USER_OPERATION: String = "queue:user_operation".to_string();

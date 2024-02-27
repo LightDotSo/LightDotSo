@@ -281,6 +281,7 @@ use utoipa_swagger_ui::SwaggerUi;
         queue::v1_queue_interpretation_handler,
         queue::v1_queue_portfolio_handler,
         queue::v1_queue_token_handler,
+        queue::v1_queue_transaction_handler,
         queue::v1_queue_user_operation_handler,
         signature::v1_signature_create_handler,
         signature::v1_signature_get_handler,

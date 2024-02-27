@@ -305,6 +305,7 @@ impl RouteErrorStatusCodeAndMsg for QueueError {
             QueueError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
             QueueError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
             QueueError::RateLimitExceeded(msg) => (StatusCode::TOO_MANY_REQUESTS, msg.to_string()),
+            QueueError::ProviderError(msg) => (StatusCode::INTERNAL_SERVER_ERROR, msg.to_string()),
         }
     }
 }

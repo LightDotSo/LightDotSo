@@ -12,26 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use crate::traits::ToJson;
+use ethers::types::H256;
 use serde::{Deserialize, Serialize};
-use utoipa::ToSchema;
+use serde_json::{json, Value};
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
 
-/// Queue operation errors
-#[derive(Serialize, Deserialize, ToSchema)]
-pub(crate) enum QueueError {
-    /// Queue query error.
-    #[schema(example = "Bad request")]
-    BadRequest(String),
-    /// Queue not found by id.
-    #[schema(example = "id = 1")]
-    NotFound(String),
-    /// Queue rate limit exceeded.
-    #[schema(example = "id = 1")]
-    RateLimitExceeded(String),
-    /// Provider error.
-    #[schema(example = "Provider error")]
-    ProviderError(String),
+#[derive(Debug, Serialize, Deserialize)]
+pub struct TransactionMessage {
+    pub hash: H256,
+    pub chain_id: u64,
+}
+
+// -----------------------------------------------------------------------------
+// Traits
+// -----------------------------------------------------------------------------
+
+impl ToJson for TransactionMessage {
+    fn to_json(&self) -> String {
+        let msg_value: Value = json!({
+            "hash": format!("{:?}", self.hash),
+            "chain_id": self.chain_id,
+        });
+
+        msg_value.to_string()
+    }
 }

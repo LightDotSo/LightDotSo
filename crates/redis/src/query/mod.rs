@@ -14,5 +14,6 @@
 
 pub mod portfolio;
 pub mod token;
+pub mod transaction;
 pub mod user_operation;
 pub mod wallet;
