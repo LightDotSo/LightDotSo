@@ -176,6 +176,10 @@ pub(crate) async fn v1_user_operation_create_handler(
     // Parse the user operation address.
     let sender_address: H160 = user_operation.sender.parse()?;
 
+    // -------------------------------------------------------------------------
+    // Signature
+    // -------------------------------------------------------------------------
+
     // Check that the signature is valid.
     let sig_bytes = sig.signature.hex_to_bytes()?;
     let digest_chain_id = match sig.signature_type {
@@ -186,6 +190,7 @@ pub(crate) async fn v1_user_operation_create_handler(
         // No chainId
         2 => 0,
         // Chained
+        // Can't be used for creating user operations
         // 3 => 0,
         _ => return Err(AppError::BadRequest),
     };
@@ -213,6 +218,10 @@ pub(crate) async fn v1_user_operation_create_handler(
         .await?;
     info!(?owner);
 
+    // -------------------------------------------------------------------------
+    // Signature
+    // -------------------------------------------------------------------------
+
     // If the owner is not found, return a 404.
     let owner = owner.ok_or(AppError::NotFound)?;
 
@@ -230,6 +239,10 @@ pub(crate) async fn v1_user_operation_create_handler(
         );
         return Err(AppError::BadRequest);
     }
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
 
     // Get the wallet from the database.
     let wallet = state

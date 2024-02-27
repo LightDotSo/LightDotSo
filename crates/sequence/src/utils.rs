@@ -26,6 +26,18 @@ pub fn hash_message_bytes32(msg: &[u8; 32]) -> Result<[u8; 32]> {
     ])?))
 }
 
+pub fn hash_image_bytes32(msg: &[u8; 32]) -> Result<[u8; 32]> {
+    Ok(keccak256(encode_packed(&[
+        Token::FixedBytes(
+            parse_hex_to_bytes32(
+                "0x8713a7c4465f6fbee2b6e9d6646d1d9f83fec929edfc4baf661f3c865bdd04d1",
+            )?
+            .to_vec(),
+        ),
+        Token::FixedBytes(msg.to_vec()),
+    ])?))
+}
+
 pub fn render_subdigest(chain_id: u64, address: Address, digest: [u8; 32]) -> Result<[u8; 32]> {
     Ok(keccak256(encode_packed(&[
         Token::String("\x19\x01".to_string()),
