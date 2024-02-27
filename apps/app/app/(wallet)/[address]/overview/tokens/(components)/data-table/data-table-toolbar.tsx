@@ -25,7 +25,6 @@ import {
 import { Button } from "@lightdotso/ui";
 import { getChainNameById } from "@lightdotso/utils";
 import { Cross2Icon } from "@radix-ui/react-icons";
-import { useQueryClient } from "@tanstack/react-query";
 import type { Table } from "@tanstack/react-table";
 import { useMemo } from "react";
 import type { Address } from "viem";
@@ -67,8 +66,6 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
-
-  const queryClient = useQueryClient();
 
   const { walletSettings } = useQueryWalletSettings({
     address: wallet as Address,
