@@ -35,6 +35,7 @@ use ethers_main::{
     types::{H160, H256},
     utils::to_checksum,
 };
+use eyre::Result;
 use lightdotso_common::traits::HexToBytes;
 use lightdotso_db::models::activity::CustomParams;
 use lightdotso_kafka::{
@@ -303,56 +304,68 @@ pub(crate) async fn v1_configuration_operation_create_handler(
         .await?;
     info!(?user_data);
 
-    // Create the signature the database.
-    let configuration_operation = state
+    // Create a new configuration_operation w/ the same contents as the configuration operation.
+    let configuration_operation: Result<configuration_operation::Data> = state
         .client
-        .configuration_operation()
-        .create(
-            configuration.checkpoint + 1,
-            format!("{:?}", image_hash_bytes),
-            0,
-            wallet::address::equals(query.address.clone()),
-            vec![],
-        )
-        .exec()
-        .await?;
+        ._transaction()
+        .run(|client| async move {
+            // Create the configuration to the database.
+            let configuration_operation = client
+                .configuration_operation()
+                .create(
+                    configuration.checkpoint + 1,
+                    format!("{:?}", image_hash_bytes),
+                    0,
+                    wallet::address::equals(query.address.clone()),
+                    vec![],
+                )
+                .exec()
+                .await?;
+            info!(?configuration_operation);
+
+            // Create the owners to the database.
+            let owner_data = client
+                .configuration_owner()
+                .create_many(
+                    owners
+                        .iter()
+                        .enumerate()
+                        .map(|(index, owner)| {
+                            configuration_owner::create_unchecked(
+                                to_checksum(&owner.address.parse::<H160>().unwrap(), None),
+                                owner.weight.into(),
+                                index as i32,
+                                configuration_operation.clone().id,
+                                vec![configuration_owner::user_id::set(Some(
+                                    user_data
+                                        .iter()
+                                        .find(|user| {
+                                            user.address ==
+                                                to_checksum(
+                                                    &owner.address.parse::<H160>().unwrap(),
+                                                    None,
+                                                )
+                                        })
+                                        .unwrap()
+                                        .id
+                                        .clone(),
+                                ))],
+                            )
+                        })
+                        .collect(),
+                )
+                .exec()
+                .await?;
+            info!(?owner_data);
+
+            Ok(configuration_operation)
+        })
+        .await;
     info!(?configuration_operation);
 
-    // Create the owners to the database.
-    let owner_data = state
-        .client
-        .configuration_owner()
-        .create_many(
-            owners
-                .iter()
-                .enumerate()
-                .map(|(index, owner)| {
-                    configuration_owner::create_unchecked(
-                        to_checksum(&owner.address.parse::<H160>().unwrap(), None),
-                        owner.weight.into(),
-                        index as i32,
-                        configuration_operation.clone().id,
-                        vec![configuration_owner::user_id::set(Some(
-                            user_data
-                                .iter()
-                                .find(|user| {
-                                    user.address ==
-                                        to_checksum(
-                                            &owner.address.parse::<H160>().unwrap(),
-                                            None,
-                                        )
-                                })
-                                .unwrap()
-                                .id
-                                .clone(),
-                        ))],
-                    )
-                })
-                .collect(),
-        )
-        .exec()
-        .await?;
-    info!(?owner_data);
+    // If the configuration_operation is not created, return a 500.
+    let configuration_operation = configuration_operation.map_err(|_| AppError::InternalError)?;
+    info!(?configuration_operation);
 
     // Create the signature the database.
     let configuration_signature = state
