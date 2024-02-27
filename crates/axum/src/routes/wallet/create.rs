@@ -292,6 +292,7 @@ pub(crate) async fn v1_wallet_create_handler(
                 .configuration()
                 .create(
                     to_checksum(&new_wallet_address, None),
+                    // Checkpoint is 0, as it is the first checkpoint.
                     0,
                     format!("{:?}", image_hash_bytes),
                     threshold.into(),

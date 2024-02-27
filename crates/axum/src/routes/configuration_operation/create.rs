@@ -14,11 +14,16 @@
 
 #![allow(clippy::unwrap_used)]
 
-use super::types::ConfigurationSignature;
+// use super::types::ConfigurationSignature;
 use crate::{
     error::RouteError,
     result::{AppError, AppJsonResult},
-    routes::configuration_signature::error::ConfigurationSignatureError,
+    routes::{
+        configuration_operation::{
+            error::ConfigurationOperationError, types::ConfigurationOperation,
+        },
+        configuration_signature::error::ConfigurationSignatureError,
+    },
     state::AppState,
 };
 use autometrics::autometrics;
@@ -26,13 +31,18 @@ use axum::{
     extract::{Query, State},
     Json,
 };
+use ethers_main::{
+    types::{H160, H256},
+    utils::to_checksum,
+};
 use lightdotso_common::traits::HexToBytes;
 use lightdotso_db::models::activity::CustomParams;
 use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
 use lightdotso_prisma::{
-    configuration_operation, configuration_owner, ActivityEntity, ActivityOperation,
+    configuration, configuration_operation, configuration_owner, user, wallet, ActivityEntity,
+    ActivityOperation,
 };
 use lightdotso_sequence::{
     builder::rooted_node_builder,
@@ -42,6 +52,7 @@ use lightdotso_sequence::{
     utils::{hash_image_bytes32, render_subdigest},
 };
 use lightdotso_tracing::tracing::{error, info};
+use prisma_client_rust::Direction;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
@@ -53,6 +64,8 @@ use utoipa::{IntoParams, ToSchema};
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct PostQuery {
+    /// The address of the wallet.
+    pub address: String,
     /// The operation of the configuration.
     pub configuration_operation_id: String,
 }
@@ -65,8 +78,25 @@ pub struct PostQuery {
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
 pub struct ConfigurationSignatureCreateRequestParams {
+    /// The array of owners of the wallet.
+    #[schema(example = json!([{"address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed", "weight": 1}]))]
+    pub owners: Vec<ConfigurationSignatureCreateOwnerParams>,
     /// The result of the signature.
     pub signature: ConfigurationSignatureCreateParams,
+    /// The threshold of the wallet.
+    #[schema(example = 3, default = 1)]
+    pub threshold: u16,
+}
+
+/// Wallet owner.
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
+#[schema(example = json!({"address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed", "weight": 1}))]
+pub(crate) struct ConfigurationSignatureCreateOwnerParams {
+    /// The address of the owner.
+    pub address: String,
+    /// The weight of the owner.
+    pub weight: u8,
 }
 
 /// Signature operation
@@ -77,8 +107,6 @@ pub struct ConfigurationSignatureCreateParams {
     pub configuration_owner_id: String,
     /// The signature of the user operation in hex.
     pub signature: String,
-    /// The type of the signature.
-    pub signature_type: i32,
 }
 
 // -----------------------------------------------------------------------------
@@ -88,7 +116,7 @@ pub struct ConfigurationSignatureCreateParams {
 /// Create a configuration signature
 #[utoipa::path(
         post,
-        path = "/configuration_signature/create",
+        path = "/configuration_operation/create",
         params(
             PostQuery
         ),
@@ -101,11 +129,11 @@ pub struct ConfigurationSignatureCreateParams {
         )
     )]
 #[autometrics]
-pub(crate) async fn v1_configuration_signature_create_handler(
+pub(crate) async fn v1_configuration_operation_create_handler(
     post_query: Query<PostQuery>,
     State(state): State<AppState>,
     Json(params): Json<ConfigurationSignatureCreateRequestParams>,
-) -> AppJsonResult<ConfigurationSignature> {
+) -> AppJsonResult<ConfigurationOperation> {
     // -------------------------------------------------------------------------
     // Parse
     // -------------------------------------------------------------------------
@@ -113,58 +141,33 @@ pub(crate) async fn v1_configuration_signature_create_handler(
     // Get the post query.
     let Query(query) = post_query;
 
-    // Get the chain id from the post query.
-    let configuration_operation_id = query.configuration_operation_id;
+    let owners = &params.owners;
+    let threshold = params.threshold;
 
     // Get the signature from the post body.
     let sig = params.signature;
 
     // -------------------------------------------------------------------------
-    // DB
+    // Validate
     // -------------------------------------------------------------------------
 
-    // Get the user operation from the database.
-    let configuration_operation = state
-        .client
-        .configuration_operation()
-        .find_unique(configuration_operation::id::equals(configuration_operation_id.clone()))
-        .with(configuration_operation::configuration_owners::fetch(vec![]))
-        .with(configuration_operation::wallet::fetch())
-        .exec()
-        .await?;
+    // Check if all of the owner address can be parsed to H160.
+    let owners_addresses = owners
+        .iter()
+        .map(|owner| owner.address.parse::<H160>())
+        .collect::<Result<Vec<H160>, _>>()?;
 
-    // If the user operation is not found, return a 404.
-    let configuration_operation =
-        configuration_operation.ok_or(RouteError::ConfigurationSignatureError(
-            ConfigurationSignatureError::NotFound("User operation not found".to_string()),
-        ))?;
-
-    // Get the owner from configuration operation.
-    let configuration_owners = configuration_operation.clone().configuration_owners.ok_or(
-        RouteError::ConfigurationSignatureError(ConfigurationSignatureError::NotFound(
-            "Owner not found".to_string(),
-        )),
-    )?;
-
-    // Get the wallet from the database.
-    let wallet =
-        configuration_operation.clone().wallet.ok_or(RouteError::ConfigurationSignatureError(
-            ConfigurationSignatureError::NotFound("Wallet not found".to_string()),
-        ))?;
-
-    // -------------------------------------------------------------------------
-    // Signature
-    // -------------------------------------------------------------------------
-
-    // Check that the signature is valid.
-    let sig_bytes = sig.signature.hex_to_bytes()?;
+    // Check if the threshold is greater than 0
+    if params.threshold == 0 {
+        return Err(AppError::BadRequest);
+    }
 
     // Conver the owners to SignerNode.
-    let owner_nodes: Vec<SignerNode> = configuration_owners
+    let owner_nodes: Vec<SignerNode> = owners
         .iter()
         .map(|owner| SignerNode {
             signer: Some(Signer {
-                weight: Some(owner.weight as u8),
+                weight: Some(owner.weight),
                 leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
                     address: owner.address.parse().unwrap(),
                 }),
@@ -179,10 +182,14 @@ pub(crate) async fn v1_configuration_signature_create_handler(
 
     // Create a wallet config
     let mut config = WalletConfig {
+        // The signature type is 0 since it is not computed in the encoding.
         signature_type: 0,
-        checkpoint: configuration_operation.checkpoint as u32,
-        threshold: configuration_operation.threshold as u16,
+        // The checkpoint is 0, as it is the first checkpoint.
+        checkpoint: 0,
+        threshold,
+        // Can be 1 since it is not computed in the encoding.
         weight: 1,
+        // Can be 0 since it is not computed in the encoding.
         image_hash: [0; 32].into(),
         tree,
         internal_root: None,
@@ -190,14 +197,44 @@ pub(crate) async fn v1_configuration_signature_create_handler(
     };
 
     // Simulate the image hash of the wallet config.
-    let res = config.regenerate_image_hash([0; 32])?;
+    let res = config.regenerate_image_hash([0; 32]);
+
+    // If the image hash of the wallet could not be simulated, return a 404.
+    let image_hash = res.map_err(|_| AppError::NotFound)?;
+
+    // Parse the image hash to bytes.
+    let image_hash_bytes: H256 = image_hash.into();
+
+    // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
+    // Get the wallet from the database.
+    let wallet = state
+        .client
+        .wallet()
+        .find_unique(wallet::address::equals(query.address.clone()))
+        .exec()
+        .await?;
+
+    // If the wallet is not found, return a 404.
+    let wallet = wallet.clone().ok_or(RouteError::ConfigurationOperationError(
+        ConfigurationOperationError::NotFound("Wallet not found".to_string()),
+    ))?;
+
+    // -------------------------------------------------------------------------
+    // Signature
+    // -------------------------------------------------------------------------
+
+    // Check that the signature is valid.
+    let sig_bytes = sig.signature.hex_to_bytes()?;
 
     // Render the subdigest.
     let subdigest = render_subdigest(
         // Chain agnostic signature type.
         0,
         wallet.clone().address.parse()?,
-        hash_image_bytes32(&res)?,
+        hash_image_bytes32(&image_hash)?,
     )?;
     info!(?subdigest);
 
@@ -208,6 +245,22 @@ pub(crate) async fn v1_configuration_signature_create_handler(
     // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
+
+    // Get the current configuration for the wallet.
+    let configuration = state
+        .client
+        .configuration()
+        .find_first(vec![configuration::address::equals(query.address.clone())])
+        .order_by(configuration::checkpoint::order(Direction::Desc))
+        .with(configuration::owners::fetch(vec![]))
+        .exec()
+        .await?;
+    info!(?configuration);
+
+    // If the configuration is not found, return a 404.
+    let configuration = configuration.ok_or(RouteError::ConfigurationSignatureError(
+        ConfigurationSignatureError::NotFound("Configuration not found".to_string()),
+    ))?;
 
     // Get the configuration_owner from the database.
     let configuration_owner = state
@@ -239,13 +292,75 @@ pub(crate) async fn v1_configuration_signature_create_handler(
     // DB
     // -------------------------------------------------------------------------
 
+    // Get the users from the database.
+    let user_data = state
+        .client
+        .user()
+        .find_many(vec![user::address::in_vec(
+            owners_addresses.iter().map(|addr| to_checksum(addr, None)).collect(),
+        )])
+        .exec()
+        .await?;
+    info!(?user_data);
+
+    // Create the signature the database.
+    let configuration_operation = state
+        .client
+        .configuration_operation()
+        .create(
+            configuration.checkpoint + 1,
+            format!("{:?}", image_hash_bytes),
+            0,
+            wallet::address::equals(query.address.clone()),
+            vec![],
+        )
+        .exec()
+        .await?;
+    info!(?configuration_operation);
+
+    // Create the owners to the database.
+    let owner_data = state
+        .client
+        .configuration_owner()
+        .create_many(
+            owners
+                .iter()
+                .enumerate()
+                .map(|(index, owner)| {
+                    configuration_owner::create_unchecked(
+                        to_checksum(&owner.address.parse::<H160>().unwrap(), None),
+                        owner.weight.into(),
+                        index as i32,
+                        configuration_operation.clone().id,
+                        vec![configuration_owner::user_id::set(Some(
+                            user_data
+                                .iter()
+                                .find(|user| {
+                                    user.address ==
+                                        to_checksum(
+                                            &owner.address.parse::<H160>().unwrap(),
+                                            None,
+                                        )
+                                })
+                                .unwrap()
+                                .id
+                                .clone(),
+                        ))],
+                    )
+                })
+                .collect(),
+        )
+        .exec()
+        .await?;
+    info!(?owner_data);
+
     // Create the signature the database.
     let configuration_signature = state
         .client
         .configuration_signature()
         .create(
             sig.signature.hex_to_bytes()?,
-            configuration_operation::id::equals(configuration_operation_id.clone()),
+            configuration_operation::id::equals(configuration_operation.id.clone()),
             configuration_owner::id::equals(sig.configuration_owner_id),
             vec![],
         )
@@ -253,30 +368,25 @@ pub(crate) async fn v1_configuration_signature_create_handler(
         .await?;
     info!(?configuration_signature);
 
-    // Get the configuration operation from the database.
-    let configuration_operation = state
-        .client
-        .configuration_operation()
-        .find_unique(configuration_operation::id::equals(configuration_operation_id))
-        .with(configuration_operation::wallet::fetch())
-        .exec()
-        .await?;
-
-    // If the user operation is not found, return a 404.
-    let configuration_operation =
-        configuration_operation.ok_or(RouteError::ConfigurationSignatureError(
-            ConfigurationSignatureError::NotFound("User operation not found".to_string()),
-        ))?;
-
-    // Get the wallet from the database.
-    let wallet =
-        configuration_operation.clone().wallet.ok_or(RouteError::ConfigurationSignatureError(
-            ConfigurationSignatureError::NotFound("Wallet not found".to_string()),
-        ))?;
-
     // -------------------------------------------------------------------------
     // Kafka
     // -------------------------------------------------------------------------
+
+    // Produce an activity message.
+    let _ = produce_activity_message(
+        state.producer.clone(),
+        ActivityEntity::ConfigurationOperation,
+        &ActivityMessage {
+            operation: ActivityOperation::Create,
+            log: serde_json::to_value(&configuration_operation)?,
+            params: CustomParams {
+                configuration_operation_id: Some(configuration_operation.id.clone()),
+                wallet_address: Some(wallet.address.clone()),
+                ..Default::default()
+            },
+        },
+    )
+    .await;
 
     // Produce an activity message.
     let _ = produce_activity_message(
@@ -287,6 +397,7 @@ pub(crate) async fn v1_configuration_signature_create_handler(
             log: serde_json::to_value(&configuration_signature)?,
             params: CustomParams {
                 configuration_signature_id: Some(configuration_signature.id.clone()),
+                configuration_operation_id: Some(configuration_operation.id.clone()),
                 wallet_address: Some(wallet.address.clone()),
                 ..Default::default()
             },
@@ -299,7 +410,7 @@ pub(crate) async fn v1_configuration_signature_create_handler(
     // -------------------------------------------------------------------------
 
     // Change the signatures to the format that the API expects.
-    let configuration_signature: ConfigurationSignature = configuration_signature.into();
+    let configuration_operation: ConfigurationOperation = configuration_operation.into();
 
-    Ok(Json::from(configuration_signature))
+    Ok(Json::from(configuration_operation))
 }

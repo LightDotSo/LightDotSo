@@ -235,6 +235,7 @@ use utoipa_swagger_ui::SwaggerUi;
         chain::v1_chain_update_handler,
         configuration::v1_configuration_get_handler,
         configuration::v1_configuration_list_handler,
+        configuration_operation::v1_configuration_operation_create_handler,
         configuration_operation::v1_configuration_operation_get_handler,
         configuration_operation::v1_configuration_operation_list_handler,
         configuration_operation::v1_configuration_operation_list_count_handler,

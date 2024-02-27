@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+pub(crate) mod create;
 pub(crate) mod error;
 pub(crate) mod get;
 pub(crate) mod list;
@@ -21,6 +22,9 @@ use crate::state::AppState;
 use autometrics::autometrics;
 use axum::{routing::get, Router};
 
+pub(crate) use create::{
+    __path_v1_configuration_operation_create_handler, v1_configuration_operation_create_handler,
+};
 pub(crate) use get::{
     __path_v1_configuration_operation_get_handler, v1_configuration_operation_get_handler,
 };
@@ -37,6 +41,7 @@ pub(crate) use list::{
 #[autometrics]
 pub(crate) fn router() -> Router<AppState> {
     Router::new()
+        .route("/configuration_operation/create", get(v1_configuration_operation_create_handler))
         .route("/configuration_operation/get", get(v1_configuration_operation_get_handler))
         .route("/configuration_operation/list", get(v1_configuration_operation_list_handler))
         .route(

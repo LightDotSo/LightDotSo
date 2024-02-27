@@ -31,6 +31,8 @@ use serde_json::Value;
 pub struct CustomParams {
     pub user_id: Option<String>,
     pub wallet_address: Option<String>,
+    pub billing_operation_id: Option<String>,
+    pub configuration_operation_id: Option<String>,
     pub configuration_signature_id: Option<String>,
     pub invite_code_id: Option<String>,
     pub support_request_id: Option<String>,
@@ -67,6 +69,14 @@ pub async fn create_activity_with_user_and_wallet(
 
     if let Some(wallet_address) = custom_params.wallet_address {
         params.push(activity::wallet_address::set(Some(wallet_address)));
+    }
+
+    if let Some(billing_operation_id) = custom_params.billing_operation_id {
+        params.push(activity::billing_operation_id::set(Some(billing_operation_id)));
+    }
+
+    if let Some(configuration_operation_id) = custom_params.configuration_operation_id {
+        params.push(activity::configuration_operation_id::set(Some(configuration_operation_id)));
     }
 
     if let Some(invite_code_id) = custom_params.invite_code_id {
