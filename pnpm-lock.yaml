@@ -2016,9 +2016,6 @@ importers:
 
   packages/kafka:
     dependencies:
-      '@lightdotso/schemas':
-        specifier: workspace:*
-        version: link:../schemas
       '@upstash/kafka':
         specifier: ^1.3.5
         version: 1.3.5
@@ -2266,9 +2263,6 @@ importers:
 
   packages/pusher:
     dependencies:
-      '@lightdotso/schemas':
-        specifier: workspace:*
-        version: link:../schemas
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -2368,9 +2362,6 @@ importers:
 
   packages/redis:
     dependencies:
-      '@lightdotso/schemas':
-        specifier: workspace:*
-        version: link:../schemas
       '@upstash/edge-flags':
         specifier: ^0.1.1
         version: 0.1.1(react-dom@18.2.0)

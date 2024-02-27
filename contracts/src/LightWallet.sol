@@ -42,8 +42,8 @@ pragma solidity ^0.8.18;
 
 // Thank you to both teams for the ever amazing work!
 
-import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
+import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {BaseAccount} from "@eth-infinitism/account-abstraction/contracts/core/BaseAccount.sol";
 import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfaces/IEntryPoint.sol";
@@ -168,7 +168,7 @@ contract LightWallet is
     {
         bytes1 signatureType = userOp.signature[0];
 
-        // Thank you to @pseudolabel & @sudolabel for the bitwise op suggestion!
+        // Thank you to @pseudolabel & @fiveoutofnine for the bitwise op suggestion!
         // Equivalent to signatureType == 0x00 || signatureType == 0x01 || signatureType == 0x02 || signatureType == 0x03
         if (signatureType & 0x03 == signatureType) {
             (bool isValid,) = _signatureValidation(userOpHash, userOp.signature);
