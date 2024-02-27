@@ -58,7 +58,6 @@ pub struct PostQuery {
         params(
             PostQuery
         ),
-        request_body = ChainCreateRequestParams,
         responses(
             (status = 200, description = "Chain created successfully", body = Chain),
             (status = 500, description = "Chain internal error", body = ChainError),
