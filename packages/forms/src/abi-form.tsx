@@ -554,6 +554,7 @@ export const AbiForm: FC<AbiFormProps> = ({ name }) => {
             <>
               <Label htmlFor="weight">Function</Label>
               <Select
+                disabled={executableFuncs.length < 1}
                 onValueChange={value => {
                   field.onChange(value);
                 }}
