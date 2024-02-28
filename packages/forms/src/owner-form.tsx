@@ -53,7 +53,8 @@ import { Trash2Icon, UserPlus2 } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import type { FC } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { Address, isAddress } from "viem";
+import type { Address } from "viem";
+import { isAddress } from "viem";
 import { normalize } from "viem/ens";
 import { z } from "zod";
 
