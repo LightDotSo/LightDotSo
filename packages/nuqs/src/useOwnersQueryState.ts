@@ -45,7 +45,7 @@ export const ownerParser = createParser({
       if (
         parsedAddress &&
         isAddress(parsedAddress) &&
-        parsedAddressOrEns &&
+        // parsedAddressOrEns &&
         !isNaN(parsedWeight)
       ) {
         acc[parseInt(id)] = {

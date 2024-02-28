@@ -17,7 +17,7 @@
 import { useQueryConfiguration } from "@lightdotso/query";
 import { ownerColumns } from "@lightdotso/tables";
 import { TableSectionWrapper } from "@lightdotso/ui";
-import { useMemo, type FC } from "react";
+import { useMemo, type FC, useEffect } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table";
 import {
@@ -44,7 +44,7 @@ export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const [isOwnerEdit] = useIsOwnerEditQueryState();
-  const [owners] = useOwnersQueryState();
+  const [owners, setOwners] = useOwnersQueryState();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -58,23 +58,42 @@ export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const ownersIndexedData: OwnerData[] | undefined = useMemo(() => {
-    return owners.map((owner, index) => {
-      return {
-        id: index.toString(),
-        address: owner.address ?? "",
-        weight: owner.weight,
-      };
-    });
-  }, [owners]);
-
   const ownerData: OwnerData[] | undefined = useMemo(() => {
     if (isOwnerEdit) {
-      return ownersIndexedData;
+      console.log("ownersIndexedData", owners);
+      return owners?.map((owner, index) => {
+        return {
+          id: index.toString(),
+          address: owner.address ?? "",
+          weight: owner.weight,
+        };
+      });
     }
 
     return configuration?.owners;
-  }, [configuration, isOwnerEdit, owners]);
+  }, [owners, isOwnerEdit, configuration?.owners]);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // If isOwnerEdit is true, set the owner data to the indexed data
+  // when the owners change.
+  useEffect(() => {
+    if (isOwnerEdit) {
+      setOwners(
+        configuration?.owners
+          ? configuration?.owners.map(owner => {
+              return {
+                address: owner.address as Address,
+                addressOrEns: undefined,
+                weight: owner.weight,
+              };
+            })
+          : null,
+      );
+    }
+  }, [isOwnerEdit]);
 
   // ---------------------------------------------------------------------------
   // Render
