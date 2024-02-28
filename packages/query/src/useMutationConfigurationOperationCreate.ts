@@ -47,7 +47,7 @@ export const useMutationConfigurationOperationCreate = (
   // ---------------------------------------------------------------------------
 
   const {
-    mutate: configurationCreate,
+    mutate: configurationOperationCreate,
     isPending,
     isSuccess,
     isError,
@@ -163,7 +163,7 @@ export const useMutationConfigurationOperationCreate = (
   });
 
   return {
-    configurationCreate,
+    configurationOperationCreate,
     isPending,
     isSuccess,
     isError,

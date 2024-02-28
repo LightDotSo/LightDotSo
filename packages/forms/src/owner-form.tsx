@@ -19,12 +19,12 @@ import {
   CONFIGURATION_MAX_WEIGHT,
 } from "@lightdotso/const";
 import { PlaceholderOrb } from "@lightdotso/elements";
-import {
-  useOwnersQueryState,
-  useThresholdQueryState,
-  useTypeQueryState,
-} from "@lightdotso/nuqs";
+import { useOwnersQueryState, useThresholdQueryState } from "@lightdotso/nuqs";
 import type { Owner, Owners } from "@lightdotso/nuqs";
+import {
+  useMutationConfigurationOperationCreate,
+  useQueryConfiguration,
+} from "@lightdotso/query";
 import { ownerFormSchema } from "@lightdotso/schemas";
 import { useAuth, useFormRef, useModals, useNewForm } from "@lightdotso/stores";
 import {
@@ -46,6 +46,7 @@ import {
   SelectTrigger,
   SelectValue,
   Separator,
+  toast,
 } from "@lightdotso/ui";
 import { cn, debounce } from "@lightdotso/utils";
 import { publicClient } from "@lightdotso/wagmi";
@@ -74,7 +75,7 @@ export const OwnerForm: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address: userAddress, ens: userEns } = useAuth();
+  const { address: userAddress, ens: userEns, wallet } = useAuth();
   const { setIsFormDisabled, setIsFormLoading, setFormControl } = useFormRef();
   const { setFormValues, fetchToCreate } = useNewForm();
   const {
@@ -87,6 +88,19 @@ export const OwnerForm: FC = () => {
 
   const [threshold, setThreshold] = useThresholdQueryState();
   const [owners, setOwners] = useOwnersQueryState();
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const {
+    configurationOperationCreate,
+    isPending: isConfigurationOperationCreatePending,
+  } = useMutationConfigurationOperationCreate({ address: userAddress });
+
+  const { configuration } = useQueryConfiguration({
+    address: wallet,
+  });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -281,9 +295,9 @@ export const OwnerForm: FC = () => {
     setIsFormDisabled(!isFormValid);
   }, [isFormValid, setIsFormDisabled]);
 
-  // useEffect(() => {
-  //   setIsFormLoading(isFormLoading);
-  // }, [isFormLoading, setIsFormLoading]);
+  useEffect(() => {
+    setIsFormLoading(isConfigurationOperationCreatePending);
+  }, [isConfigurationOperationCreatePending, setIsFormLoading]);
 
   useEffect(() => {
     setFormControl(form.control);
@@ -294,7 +308,30 @@ export const OwnerForm: FC = () => {
   // ---------------------------------------------------------------------------
 
   async function onSubmit(data: OwnerFormValues) {
-    console.info("OwnerFormValues", data);
+    if (!userAddress) {
+      toast.error("Please connect your wallet to continue.");
+      return;
+    }
+
+    // Try to get the matching owner id from the configuration.owners
+    const ownerId = configuration?.owners.find(
+      owner => owner.address === userAddress,
+    )?.id;
+
+    if (!ownerId) {
+      toast.error("You are not an owner of this wallet.");
+      return;
+    }
+
+    await configurationOperationCreate({
+      signedData: "0x",
+      ownerId: ownerId,
+      threshold: data.threshold,
+      owners: data.owners.map(owner => ({
+        address: owner.address!,
+        weight: owner.weight,
+      })),
+    });
   }
   // ---------------------------------------------------------------------------
   // Validation
