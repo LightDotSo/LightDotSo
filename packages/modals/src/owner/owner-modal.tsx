@@ -100,7 +100,7 @@ export function OwnerModal() {
           isHeightFixed
           open
           size="lg"
-          className="p-2 h-[36rem]"
+          className="h-[36rem] p-2"
           footerContent={
             <FooterButton
               className="pt-0"
