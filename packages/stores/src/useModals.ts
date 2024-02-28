@@ -33,6 +33,12 @@ export type ChainModalProps = {
   onChainSelect: (chainId: number) => void;
 };
 
+export type OwnerModalProps = {
+  address: Address;
+  onClose?: () => void;
+  onOwnerSelect: (address: Address) => void;
+};
+
 export type NftModalProps = {
   address: Address;
   isTestnet?: boolean;
@@ -57,6 +63,8 @@ type ModalsStore = {
   setAddressModalProps: (props: AddressModalProps) => void;
   chainModalProps: ChainModalProps;
   setChainModalProps: (props: ChainModalProps) => void;
+  ownerModalProps: OwnerModalProps;
+  setOwnerModalProps: (props: OwnerModalProps) => void;
   nftModalProps: NftModalProps;
   setNftModalProps: (props: NftModalProps) => void;
   tokenModalProps: TokenModalProps;
@@ -70,6 +78,7 @@ type ModalsStore = {
   isNftModalBackground: boolean;
   isNotificationsModalBackground: boolean;
   isOpModalBackground: boolean;
+  isOwnerModalBackground: boolean;
   isSendModalBackground: boolean;
   isTokenModalBackground: boolean;
   isAddressModalVisible: boolean;
@@ -81,6 +90,7 @@ type ModalsStore = {
   isNftModalVisible: boolean;
   isNotificationsModalVisible: boolean;
   isOpModalVisible: boolean;
+  isOwnerModalVisible: boolean;
   isSendModalVisible: boolean;
   isTokenModalVisible: boolean;
   showAddressModal: () => void;
@@ -101,6 +111,9 @@ type ModalsStore = {
   showDepositModal: () => void;
   hideDepositModal: () => void;
   setDepositBackgroundModal: (isBackground: boolean) => void;
+  showOwnerModal: () => void;
+  hideOwnerModal: () => void;
+  setOwnerBackgroundModal: (isBackground: boolean) => void;
   showNftModal: () => void;
   hideNftModal: () => void;
   setNftBackgroundModal: (isBackground: boolean) => void;
@@ -236,6 +249,13 @@ export const useModals = create(
         set({
           isNftModalVisible: true,
         }),
+      showOwnerModal: () =>
+        set({
+          isOwnerModalVisible: true,
+        }),
+      hideOwnerModal: () => set({ isOwnerModalVisible: false }),
+      setOwnerBackgroundModal: (isBackground: boolean) =>
+        set({ isOwnerModalBackground: isBackground }),
       hideNftModal: () => set({ isNftModalVisible: false }),
       setNftBackgroundModal: (isBackground: boolean) =>
         set({ isNftModalBackground: isBackground }),
