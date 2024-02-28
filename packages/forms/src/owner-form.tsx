@@ -85,7 +85,6 @@ export const OwnerForm: FC = () => {
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
-  const [type] = useTypeQueryState();
   const [threshold, setThreshold] = useThresholdQueryState();
   const [owners, setOwners] = useOwnersQueryState();
 
@@ -376,25 +375,22 @@ export const OwnerForm: FC = () => {
           {fields.map((field, index) => (
             <div key={index}>
               {/* A hack to make a padding above the separator */}
-              {type === "personal" && index === 1 && <div className="pt-4" />}
+              {index === 1 && <div className="pt-4" />}
               {/* If the type is personal, add a separator on index 1 */}
-              {type === "personal" && index === 1 && <Separator />}
+              {index === 1 && <Separator />}
               {/* A hack to make a padding below the separator */}
-              {type === "personal" && index === 1 && <div className="pb-6" />}
+              {index === 1 && <div className="pb-6" />}
               <FormLabel
-                className={cn(
-                  type === "personal" && index > 1 && "sr-only",
-                  type !== "personal" && index !== 0 && "sr-only",
-                )}
+                className={cn(index > 1 && "sr-only", index !== 0 && "sr-only")}
               >
-                {type === "personal" && index === 0 && "Primary Key"}
-                {type === "personal" && index === 1 && "Backup Keys"}
-                {type !== "personal" && "Owners"}
+                {index === 0 && "Primary Key"}
+                {index === 1 && "Backup Keys"}
+                Owners
               </FormLabel>
               <FormDescription
                 className={cn(
-                  type === "personal" && index > 1 && "sr-only",
-                  type !== "personal" && index !== 0 && "sr-only",
+                  index > 1 && "sr-only",
+                  index !== 0 && "sr-only",
                   index === 0 && "mb-6",
                 )}
               >
