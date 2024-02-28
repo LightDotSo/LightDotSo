@@ -58,9 +58,9 @@ export const OwnerOverviewBanner: FC = () => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
-              onClick={() => setIsOwnerEdit(!isOwnerEdit)}
               type="button"
               className="w-full md:w-28"
+              onClick={() => setIsOwnerEdit(!isOwnerEdit)}
             >
               <PlusCircleIcon className="mr-2 size-5" />
               Edit
