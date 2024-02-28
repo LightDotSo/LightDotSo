@@ -36,7 +36,7 @@ export const OwnerOverviewBanner: FC = () => {
   // ---------------------------------------------------------------------------
 
   const isDemo = useIsDemoPathname();
-  const { showOwnerModal } = useModals();
+  const { isOwnerModalVisible, showOwnerModal } = useModals();
 
   // ---------------------------------------------------------------------------
   // Component
@@ -52,6 +52,7 @@ export const OwnerOverviewBanner: FC = () => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
+              disabled={isOwnerModalVisible}
               type="button"
               className="w-full md:w-28"
               onClick={() => {
