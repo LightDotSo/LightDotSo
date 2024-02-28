@@ -29,11 +29,8 @@ import {
   useTypeQueryState,
 } from "@lightdotso/nuqs";
 import type { Owner, Owners } from "@lightdotso/nuqs";
-import {
-  newFormSchema,
-  newFormConfigurationSchema,
-  ownerFormSchema,
-} from "@lightdotso/schemas";
+import type { ownerFormSchema } from "@lightdotso/schemas";
+import { newFormSchema, newFormConfigurationSchema } from "@lightdotso/schemas";
 import { useAuth, useFormRef, useNewForm } from "@lightdotso/stores";
 import {
   Avatar,
