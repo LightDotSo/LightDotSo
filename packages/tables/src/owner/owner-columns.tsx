@@ -27,27 +27,6 @@ import { OwnerCardAddress } from "./card";
 
 export const ownerColumns: ColumnDef<OwnerData>[] = [
   {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        aria-label="Select all"
-        className="translate-y-[2px]"
-        onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        aria-label="Select row"
-        className="translate-y-[2px]"
-        onCheckedChange={value => row.toggleSelected(!!value)}
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
     id: "index",
     accessorKey: "index",
     header: ({ column }) => (
@@ -85,5 +64,29 @@ export const ownerColumns: ColumnDef<OwnerData>[] = [
   {
     id: "actions",
     cell: ({ row }) => <OwnerTableRowActions row={row} />,
+  },
+];
+
+export const ownerEditColumns: ColumnDef<OwnerData>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={table.getIsAllPageRowsSelected()}
+        aria-label="Select all"
+        className="translate-y-[2px]"
+        onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        aria-label="Select row"
+        className="translate-y-[2px]"
+        onCheckedChange={value => row.toggleSelected(!!value)}
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
   },
 ];

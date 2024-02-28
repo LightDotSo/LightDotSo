@@ -15,7 +15,10 @@
 "use client";
 
 import type { OwnerData } from "@lightdotso/data";
-import { usePaginationQueryState } from "@lightdotso/nuqs";
+import {
+  useIsOwnerEditQueryState,
+  usePaginationQueryState,
+} from "@lightdotso/nuqs";
 import { useTables } from "@lightdotso/stores";
 import { OwnerTable } from "@lightdotso/tables";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -40,6 +43,7 @@ export function DataTable({ isLoading, columns, data }: DataTableProps) {
   // ---------------------------------------------------------------------------
 
   const [paginationState, setPaginationState] = usePaginationQueryState();
+  const isOwnerEdit = useIsOwnerEditQueryState();
 
   // ---------------------------------------------------------------------------
   // Stores
@@ -83,6 +87,7 @@ export function DataTable({ isLoading, columns, data }: DataTableProps) {
   return (
     <OwnerTable
       isLoading={isLoading}
+      mode={isOwnerEdit ? "edit" : "view"}
       pageSize={paginationState.pageSize}
       data={data}
       columns={columns}
