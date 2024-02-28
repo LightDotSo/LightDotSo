@@ -23,9 +23,8 @@ import {
   TooltipTrigger,
   TooltipProvider,
 } from "@lightdotso/ui";
-import { PlusCircleIcon } from "@heroicons/react/24/outline";
+import { PencilIcon } from "lucide-react";
 import type { FC } from "react";
-import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -62,12 +61,12 @@ export const OwnerOverviewBanner: FC = () => {
               type="button"
               className="w-full md:w-28"
             >
-              <PlusCircleIcon className="mr-2 size-5" />
-              Edit
+              <PencilIcon className="mr-2 size-4" />
+              {isOwnerEdit ? "Editing" : "Edit"}
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Edit Assets</p>
+            <p>Edit Owners</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

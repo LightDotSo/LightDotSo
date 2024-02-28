@@ -27,16 +27,6 @@ import { OwnerCardAddress } from "./card";
 
 export const ownerColumns: ColumnDef<OwnerData>[] = [
   {
-    id: "index",
-    accessorKey: "index",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Index" />
-    ),
-    cell: ({ row }) => <div className="w-4">{row.getValue("index")}</div>,
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
     id: "address",
     accessorKey: "address",
     header: ({ column }) => (

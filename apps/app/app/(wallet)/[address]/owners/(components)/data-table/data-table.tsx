@@ -43,7 +43,7 @@ export function DataTable({ isLoading, columns, data }: DataTableProps) {
   // ---------------------------------------------------------------------------
 
   const [paginationState, setPaginationState] = usePaginationQueryState();
-  const isOwnerEdit = useIsOwnerEditQueryState();
+  const [isOwnerEdit] = useIsOwnerEditQueryState();
 
   // ---------------------------------------------------------------------------
   // Stores

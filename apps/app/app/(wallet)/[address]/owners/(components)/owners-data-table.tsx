@@ -17,9 +17,14 @@
 import { useQueryConfiguration } from "@lightdotso/query";
 import { ownerColumns } from "@lightdotso/tables";
 import { TableSectionWrapper } from "@lightdotso/ui";
-import { type FC } from "react";
+import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table";
+import {
+  useIsOwnerEditQueryState,
+  useOwnersQueryState,
+} from "@lightdotso/nuqs";
+import { OwnerData } from "@lightdotso/data";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -35,12 +40,38 @@ interface OwnersDataTableProps {
 
 export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
+  // Query State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [isOwnerEdit] = useIsOwnerEditQueryState();
+  const [owners] = useOwnersQueryState();
+
+  // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
   const { configuration, isConfigurationLoading } = useQueryConfiguration({
     address: address,
   });
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const ownerData: OwnerData[] | undefined = useMemo(() => {
+    if (isOwnerEdit) {
+      return owners.map(owner => {
+        return {
+          ...owner,
+          id: "",
+          address: "",
+          weight: 0,
+        };
+      });
+    }
+
+    return configuration?.owners;
+  }, [configuration, isOwnerEdit, owners]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -50,7 +81,7 @@ export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
     <TableSectionWrapper>
       <DataTable
         isLoading={isConfigurationLoading}
-        data={configuration?.owners ?? []}
+        data={ownerData ?? []}
         columns={ownerColumns}
       />
     </TableSectionWrapper>

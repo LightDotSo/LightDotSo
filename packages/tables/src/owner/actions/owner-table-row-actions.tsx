@@ -81,12 +81,12 @@ export function OwnerTableRowActions({
             Copy Address
           </DropdownMenuItem>
         </DropdownMenuContent>
-        {mode === "edit" && (
+        {/* {mode === "edit" && (
           <DropdownMenuContent align="end" className="w-[160px]">
             <DropdownMenuItem>Edit</DropdownMenuItem>
             <DropdownMenuItem>Delete</DropdownMenuItem>
           </DropdownMenuContent>
-        )}
+        )} */}
       </DropdownMenu>
     </div>
   );
