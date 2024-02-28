@@ -28,7 +28,8 @@ import {
 import type { Owner, Owners } from "@lightdotso/nuqs";
 import type { ownerFormSchema } from "@lightdotso/schemas";
 import { newFormSchema, newFormConfigurationSchema } from "@lightdotso/schemas";
-import { useAuth, useFormRef, useNewForm } from "@lightdotso/stores";
+import { useAuth, useFormRef, useModals, useNewForm } from "@lightdotso/stores";
+import { FooterButton } from "@lightdotso/templates";
 import {
   Avatar,
   Button,
@@ -65,7 +66,7 @@ import { z } from "zod";
 // Types
 // -----------------------------------------------------------------------------
 
-type NewFormValues = z.infer<typeof ownerFormSchema>;
+type OwnerFormValues = z.infer<typeof ownerFormSchema>;
 
 // -----------------------------------------------------------------------------
 // Component
@@ -79,6 +80,7 @@ export const OwnerForm: FC = () => {
   const { address: userAddress, ens: userEns } = useAuth();
   const { setFormControl } = useFormRef();
   const { setFormValues, fetchToCreate } = useNewForm();
+  const { hideOwnerModal } = useModals();
 
   // ---------------------------------------------------------------------------
   // Query State Hooks
@@ -103,7 +105,7 @@ export const OwnerForm: FC = () => {
   }, [userAddress, userEns]);
 
   // The default values for the form
-  const defaultValues: Partial<NewFormValues> = useMemo(() => {
+  const defaultValues: Partial<OwnerFormValues> = useMemo(() => {
     // Check if the type is valid
     return {
       threshold:
@@ -129,7 +131,7 @@ export const OwnerForm: FC = () => {
   // Form
   // ---------------------------------------------------------------------------
 
-  const form = useForm<NewFormValues>({
+  const form = useForm<OwnerFormValues>({
     mode: "all",
     reValidateMode: "onBlur",
     resolver: zodResolver(
@@ -289,6 +291,9 @@ export const OwnerForm: FC = () => {
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
+  async function onSubmit(data: OwnerFormValues) {
+    console.info("OwnerFormValues", data);
+  }
   // ---------------------------------------------------------------------------
   // Validation
   // ---------------------------------------------------------------------------
@@ -359,7 +364,11 @@ export const OwnerForm: FC = () => {
 
   return (
     <Form {...form}>
-      <form className="space-y-4">
+      <form
+        id="owner-form"
+        className="space-y-4"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
         <div className="space-y-4">
           {fields.map((field, index) => (
             <div key={index}>
@@ -590,12 +599,12 @@ export const OwnerForm: FC = () => {
             </FormItem>
           )}
         />
-        {/* <FooterButton
+        <FooterButton
+          form="owner-form"
           isModal={false}
           disabled={!isFormValid}
-          cancelClick={() => router.back()}
-          onClick={navigateToStep}
-        /> */}
+          cancelClick={hideOwnerModal}
+        />
       </form>
     </Form>
   );
