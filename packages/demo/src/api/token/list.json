@@ -1,51 +1,75 @@
 [
   {
-    "id": "clota6rxh0000l308gsist1ix",
+    "id": "cloyvckto0006ia081sgvezrn",
     "address": "0x0000000000000000000000000000000000000000",
-    "chain_id": 10,
-    "name": "Ether",
-    "symbol": "ETH",
+    "chain_id": 100,
+    "name": "xDai",
+    "symbol": "xDAI",
     "decimals": 18,
-    "amount": 1000000000000000,
-    "balance_usd": 2.6155005,
+    "amount": 7003000000010000000,
+    "balance_usd": 7.010002999999999,
+    "token_type": null,
     "group": null
   },
   {
-    "id": "clp63391v000ot5qsbi5h3vpo",
-    "address": "0x0000000000000000000000000000000000000000",
-    "chain_id": 0,
-    "name": "Ether",
-    "symbol": "ETH",
+    "id": "clt4vqmst008fpv8hu1agxx71",
+    "address": "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
+    "chain_id": 10,
+    "name": "Dai Stablecoin",
+    "symbol": "DAI",
     "decimals": 18,
-    "amount": 1030000000000000000,
-    "balance_usd": 0,
-    "group": {
-      "id": "clqpy70ab0000pn98y582g7wu",
-      "tokens": [
-        {
-          "id": "clp63391v000ot5qsbi5h3vpo",
-          "address": "0x0000000000000000000000000000000000000000",
-          "chain_id": 11155111,
-          "name": "Ether",
-          "symbol": "ETH",
-          "decimals": 18,
-          "amount": 30000000000000000,
-          "balance_usd": 0,
-          "group": null
-        },
-        {
-          "id": "clqpu5vc700i7pz8ipj4m4tt3",
-          "address": "0x0000000000000000000000000000000000000000",
-          "chain_id": 84532,
-          "name": "Ethereum",
-          "symbol": "ETH",
-          "decimals": 18,
-          "amount": 1000000000000000000,
-          "balance_usd": 0,
-          "group": null
-        }
-      ]
-    }
+    "amount": 6000000000000000000,
+    "balance_usd": 5.9981556,
+    "token_type": null,
+    "group": null
+  },
+  {
+    "id": "clqlyvpum0009pz8ilrzqfz3t",
+    "address": "0x0000000000000000000000000000000000000000",
+    "chain_id": 43114,
+    "name": "Avalanche Coin",
+    "symbol": "AVAX",
+    "decimals": 18,
+    "amount": 100000000000000000,
+    "balance_usd": 3.8706315,
+    "token_type": null,
+    "group": null
+  },
+  {
+    "id": "clsa3mcb9005mpz8hl2yka3el",
+    "address": "0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
+    "chain_id": 10,
+    "name": "USD Coin",
+    "symbol": "USDC",
+    "decimals": 6,
+    "amount": 1000000,
+    "balance_usd": 0.9990815999999999,
+    "token_type": null,
+    "group": null
+  },
+  {
+    "id": "cls7qzzad00s3pz8hyke2tny4",
+    "address": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
+    "chain_id": 42161,
+    "name": "USD Coin (Arb1)",
+    "symbol": "USDC",
+    "decimals": 6,
+    "amount": 985439,
+    "balance_usd": 0.9815231600000001,
+    "token_type": null,
+    "group": null
+  },
+  {
+    "id": "cloryfpbv0000l80809d6jsiu",
+    "address": "0x0000000000000000000000000000000000000000",
+    "chain_id": 137,
+    "name": "Matic",
+    "symbol": "MATIC",
+    "decimals": 18,
+    "amount": 970000000000000000,
+    "balance_usd": 0.9548679600000001,
+    "token_type": null,
+    "group": null
   },
   {
     "id": "cloupmjv60002jy08hud4y7mb",
@@ -54,8 +78,145 @@
     "name": null,
     "symbol": "USDT",
     "decimals": 6,
-    "amount": 155815,
-    "balance_usd": 0.15597083,
+    "amount": 195815,
+    "balance_usd": 0.195815,
+    "token_type": null,
+    "group": null
+  },
+  {
+    "id": "clsx7j708008xr98hdel3wlfb",
+    "address": "0x6A023CCd1ff6F2045C3309768eAd9E68F978f6e1",
+    "chain_id": 100,
+    "name": "Wrapped Ether on xDai",
+    "symbol": "WETH",
+    "decimals": 18,
+    "amount": 10000000000000,
+    "balance_usd": 0.03306924,
+    "token_type": null,
+    "group": null
+  },
+  {
+    "id": "clsrxnx3800b3rb8hufwhb2bg",
+    "address": "0x9c2C5fd7b07E95EE044DDeba0E97a665F142394f",
+    "chain_id": 137,
+    "name": "1Inch (PoS)",
+    "symbol": "1INCH",
+    "decimals": 18,
+    "amount": 2862638732315793,
+    "balance_usd": 0.001402693,
+    "token_type": null,
+    "group": null
+  },
+  {
+    "id": "clsrxnx3800b4rb8h37d2zybx",
+    "address": "0x0b3F868E0BE5597D5DB7fEB59E1CADBb0fdDa50a",
+    "chain_id": 137,
+    "name": "SushiToken (PoS)",
+    "symbol": "SUSHI",
+    "decimals": 18,
+    "amount": 486441058441,
+    "balance_usd": 7.09231e-7,
+    "token_type": null,
+    "group": null
+  },
+  {
+    "id": "clqr1rcfg00lbpz8itzki2ujj",
+    "address": "0x0000000000000000000000000000000000000000",
+    "chain_id": 11155420,
+    "name": "Sepolia Ether",
+    "symbol": "ETH",
+    "decimals": 18,
+    "amount": 4943192197277032935,
+    "balance_usd": 0.0,
+    "token_type": null,
+    "group": {
+      "id": "clqpy70ab0000pn98y582g7wu",
+      "tokens": [
+        {
+          "id": "clqpu5n5700gopz8i789juhrl",
+          "address": "0x0000000000000000000000000000000000000000",
+          "chain_id": 421614,
+          "name": "Sepolia Ether",
+          "symbol": "ETH",
+          "decimals": 18,
+          "amount": 1229922672940000000,
+          "balance_usd": 0.0,
+          "token_type": null,
+          "group": null
+        },
+        {
+          "id": "clqpu5vc700i7pz8ipj4m4tt3",
+          "address": "0x0000000000000000000000000000000000000000",
+          "chain_id": 84532,
+          "name": "Sepolia Ether",
+          "symbol": "ETH",
+          "decimals": 18,
+          "amount": 2516580000000000000,
+          "balance_usd": 0.0,
+          "token_type": null,
+          "group": null
+        },
+        {
+          "id": "clqr1rcfg00lbpz8itzki2ujj",
+          "address": "0x0000000000000000000000000000000000000000",
+          "chain_id": 11155420,
+          "name": "Sepolia Ether",
+          "symbol": "ETH",
+          "decimals": 18,
+          "amount": 1166689000000000000,
+          "balance_usd": 0.0,
+          "token_type": null,
+          "group": null
+        },
+        {
+          "id": "clspga8x20001q68hdpink629",
+          "address": "0x0000000000000000000000000000000000000000",
+          "chain_id": 168587773,
+          "name": "Sepolia Ether",
+          "symbol": "ETH",
+          "decimals": 18,
+          "amount": 30000524337032935,
+          "balance_usd": 0.0,
+          "token_type": null,
+          "group": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "clqzs8qs600sepz8imhjidybp",
+    "address": "0x0000000000000000000000000000000000000000",
+    "chain_id": 42220,
+    "name": "Celo",
+    "symbol": "CELO",
+    "decimals": 18,
+    "amount": 160000000000000000,
+    "balance_usd": 0.0,
+    "token_type": null,
+    "group": null
+  },
+  {
+    "id": "clqn3gnv50028pz8i9p8qw2rj",
+    "address": "0x0000000000000000000000000000000000000000",
+    "chain_id": 80001,
+    "name": "Matic Token",
+    "symbol": "MATIC",
+    "decimals": 18,
+    "amount": 938000000000000000,
+    "balance_usd": 0.0,
+    "token_type": null,
+    "group": null
+  },
+  {
+    "id": "clspdgvvn0000of8hyiz2wovd",
+    "address": "0x4200000000000000000000000000000000000022",
+    "chain_id": 168587773,
+    "name": "Rebasing USD",
+    "symbol": "USDB",
+    "decimals": 18,
+    "amount": 1002105726839,
+    "balance_usd": 0.0,
+    "token_type": null,
     "group": null
   }
 ]
