@@ -14,17 +14,17 @@
 
 "use client";
 
+import type { OwnerData } from "@lightdotso/data";
+import {
+  useIsOwnerEditQueryState,
+  useOwnersQueryState,
+} from "@lightdotso/nuqs";
 import { useQueryConfiguration } from "@lightdotso/query";
 import { ownerColumns } from "@lightdotso/tables";
 import { TableSectionWrapper } from "@lightdotso/ui";
 import { useMemo, type FC, useEffect } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table";
-import {
-  useIsOwnerEditQueryState,
-  useOwnersQueryState,
-} from "@lightdotso/nuqs";
-import { OwnerData } from "@lightdotso/data";
 
 // -----------------------------------------------------------------------------
 // Props
