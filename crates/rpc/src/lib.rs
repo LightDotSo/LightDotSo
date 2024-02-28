@@ -21,11 +21,10 @@ mod utils;
 
 use crate::{
     constants::{
-        ALCHEMY_RPC_URLS, ANKR_RPC_URLS, BICONOMY_RPC_URLS, BLASTAPI_RPC_URLS, BUNDLER_RPC_URL,
-        CANDIDE_RPC_URLS, CHAINNODES_RPC_URLS, ETHERSPOT_RPC_URLS, GAS_RPC_URL, INFURA_RPC_URLS,
-        LLAMANODES_RPC_URLS, NODEREAL_RPC_URLS, OFFICIAL_PUBLIC_RPC_URLS, PARTICLE_RPC_URLS,
-        PAYMASTER_RPC_URL, PIMLICO_RPC_URLS, PUBLIC_NODE_RPC_URLS, SILIUS_RPC_URLS,
-        THIRDWEB_RPC_URLS,
+        ALCHEMY_RPC_URLS, ANKR_RPC_URLS, BICONOMY_RPC_URLS, BLASTAPI_RPC_URLS, CANDIDE_RPC_URLS,
+        CHAINNODES_RPC_URLS, ETHERSPOT_RPC_URLS, GAS_RPC_URL, INFURA_RPC_URLS, LLAMANODES_RPC_URLS,
+        NODEREAL_RPC_URLS, OFFICIAL_PUBLIC_RPC_URLS, PARTICLE_RPC_URLS, PAYMASTER_RPC_URL,
+        PIMLICO_RPC_URLS, PUBLIC_NODE_RPC_URLS, SILIUS_RPC_URLS, THIRDWEB_RPC_URLS,
     },
     utils::shuffle_requests,
 };
@@ -374,23 +373,6 @@ pub async fn rpc_proxy_handler(
                 let mut params: Vec<Value> = body_json.params;
                 params.push(json!(chain_id));
                 trace!("params: {:?}", params);
-
-                let req_body = json!({
-                    "jsonrpc": "2.0",
-                    "method": method.as_str(),
-                    "params": params.clone(),
-                    "id": 1
-                });
-                // Convert the params to hyper Body
-                let hyper_body = Body::from(req_body.to_string());
-
-                // Get the result from the client
-                let result =
-                    get_client_result(BUNDLER_RPC_URL.to_string(), client.clone(), hyper_body)
-                        .await;
-                if let Some(resp) = result {
-                    return resp;
-                }
 
                 let mut requests = vec![
                     (&*CANDIDE_RPC_URLS, None),

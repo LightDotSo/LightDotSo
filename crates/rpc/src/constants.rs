@@ -26,11 +26,6 @@ lazy_static! {
         "http://lightdotso-paymaster.internal:3000".to_string();
 }
 
-// The internal bundler rpc urls
-lazy_static! {
-    pub static ref BUNDLER_RPC_URL: String = "http://lightdotso-bundler.internal:3000".to_string();
-}
-
 // The infura rpc urls
 // Thank you to the Infura team for providing the service!
 lazy_static! {
