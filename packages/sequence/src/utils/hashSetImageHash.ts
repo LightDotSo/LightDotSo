@@ -12,7 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { calculateImageHash } from "./calculateImageHash";
-export { calculateInitCode } from "./calculateInitCode";
-export { hashSetImageHash } from "./hashSetImageHash";
-export { subdigestOf } from "./subdigestOf";
+import { type Hex, encodePacked, keccak256 } from "viem";
+
+export const hashSetImageHash = (image_hash: Hex) => {
+  return keccak256(
+    encodePacked(
+      ["bytes32", "bytes32"],
+      [
+        // Hash of `SetImageHash(bytes32 imageHash)`
+        "0x8713a7c4465f6fbee2b6e9d6646d1d9f83fec929edfc4baf661f3c865bdd04d1",
+        image_hash,
+      ],
+    ),
+  );
+};

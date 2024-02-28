@@ -12,25 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { z } from "zod";
-import { userOperation } from "../web3";
-
 // -----------------------------------------------------------------------------
-// Schema
+// Max
 // -----------------------------------------------------------------------------
 
-const partialUserOperation = userOperation.partial();
-
-const partialUserOperations = z.array(partialUserOperation);
-
-export const confirmFormSchema = z.object({
-  transfers: partialUserOperations,
-});
-
-// -----------------------------------------------------------------------------
-// Types
-// -----------------------------------------------------------------------------
-
-export type PartialUserOperation = z.infer<typeof partialUserOperation>;
-export type PartialUserOperations = z.infer<typeof partialUserOperations>;
-export type ConfirmForm = z.infer<typeof confirmFormSchema>;
+export const CONFIGURATION_MAX_WEIGHT = 8;
+export const CONFIGURATION_MAX_THRESHOLD = 18;

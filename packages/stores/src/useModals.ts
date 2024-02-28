@@ -18,6 +18,16 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 // -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type Owner = {
+  address?: Address;
+  addressOrEns?: string;
+  weight: number;
+};
+
+// -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
@@ -31,6 +41,13 @@ export type AddressModalProps = {
 export type ChainModalProps = {
   onClose?: () => void;
   onChainSelect: (chainId: number) => void;
+};
+
+export type OwnerModalProps = {
+  initialOwners: Owner[];
+  initialThreshold: number;
+  onClose?: () => void;
+  onOwnerSelect: (address: Address) => void;
 };
 
 export type NftModalProps = {
@@ -57,6 +74,8 @@ type ModalsStore = {
   setAddressModalProps: (props: AddressModalProps) => void;
   chainModalProps: ChainModalProps;
   setChainModalProps: (props: ChainModalProps) => void;
+  ownerModalProps: OwnerModalProps;
+  setOwnerModalProps: (props: OwnerModalProps) => void;
   nftModalProps: NftModalProps;
   setNftModalProps: (props: NftModalProps) => void;
   tokenModalProps: TokenModalProps;
@@ -70,6 +89,7 @@ type ModalsStore = {
   isNftModalBackground: boolean;
   isNotificationsModalBackground: boolean;
   isOpModalBackground: boolean;
+  isOwnerModalBackground: boolean;
   isSendModalBackground: boolean;
   isTokenModalBackground: boolean;
   isAddressModalVisible: boolean;
@@ -81,6 +101,7 @@ type ModalsStore = {
   isNftModalVisible: boolean;
   isNotificationsModalVisible: boolean;
   isOpModalVisible: boolean;
+  isOwnerModalVisible: boolean;
   isSendModalVisible: boolean;
   isTokenModalVisible: boolean;
   showAddressModal: () => void;
@@ -101,6 +122,9 @@ type ModalsStore = {
   showDepositModal: () => void;
   hideDepositModal: () => void;
   setDepositBackgroundModal: (isBackground: boolean) => void;
+  showOwnerModal: () => void;
+  hideOwnerModal: () => void;
+  setOwnerBackgroundModal: (isBackground: boolean) => void;
   showNftModal: () => void;
   hideNftModal: () => void;
   setNftBackgroundModal: (isBackground: boolean) => void;
@@ -146,6 +170,14 @@ export const useModals = create(
         onNftSelect: () => {},
       },
       setNftModalProps: (props: NftModalProps) => set({ nftModalProps: props }),
+      ownerModalProps: {
+        initialOwners: [],
+        initialThreshold: 1,
+        isOwnerModalVisible: false,
+        onOwnerSelect: () => {},
+      },
+      setOwnerModalProps: (props: OwnerModalProps) =>
+        set({ ownerModalProps: props }),
       tokenModalProps: {
         // @ts-expect-error
         address: "",
@@ -236,6 +268,13 @@ export const useModals = create(
         set({
           isNftModalVisible: true,
         }),
+      showOwnerModal: () =>
+        set({
+          isOwnerModalVisible: true,
+        }),
+      hideOwnerModal: () => set({ isOwnerModalVisible: false }),
+      setOwnerBackgroundModal: (isBackground: boolean) =>
+        set({ isOwnerModalBackground: isBackground }),
       hideNftModal: () => set({ isNftModalVisible: false }),
       setNftBackgroundModal: (isBackground: boolean) =>
         set({ isNftModalBackground: isBackground }),

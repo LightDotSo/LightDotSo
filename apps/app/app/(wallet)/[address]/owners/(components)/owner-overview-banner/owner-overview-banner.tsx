@@ -15,7 +15,8 @@
 "use client";
 
 import { useIsDemoPathname } from "@lightdotso/hooks";
-import { useIsOwnerEditQueryState } from "@lightdotso/nuqs";
+import { useQueryConfiguration } from "@lightdotso/query";
+import { useAuth, useModals } from "@lightdotso/stores";
 import {
   Button,
   Tooltip,
@@ -25,6 +26,7 @@ import {
 } from "@lightdotso/ui";
 import { PencilIcon } from "lucide-react";
 import type { FC } from "react";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -32,16 +34,21 @@ import type { FC } from "react";
 
 export const OwnerOverviewBanner: FC = () => {
   // ---------------------------------------------------------------------------
-  // Query State Hooks
-  // ---------------------------------------------------------------------------
-
-  const [isOwnerEdit, setIsOwnerEdit] = useIsOwnerEditQueryState();
-
-  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
   const isDemo = useIsDemoPathname();
+  const { isOwnerModalVisible, showOwnerModal, setOwnerModalProps } =
+    useModals();
+  const { wallet } = useAuth();
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { configuration } = useQueryConfiguration({
+    address: wallet,
+  });
 
   // ---------------------------------------------------------------------------
   // Component
@@ -57,12 +64,30 @@ export const OwnerOverviewBanner: FC = () => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
+              disabled={isOwnerModalVisible}
               type="button"
               className="w-full md:w-28"
-              onClick={() => setIsOwnerEdit(!isOwnerEdit)}
+              onClick={() => {
+                console.log(configuration?.owners);
+                setOwnerModalProps({
+                  initialOwners: configuration?.owners
+                    ? configuration?.owners.map(owner => {
+                        return {
+                          address: owner.address as Address,
+                          addressOrEns: owner.address,
+                          weight: owner.weight,
+                        };
+                      })
+                    : [],
+                  initialThreshold: configuration?.threshold ?? 1,
+                  onOwnerSelect: () => {},
+                });
+
+                showOwnerModal();
+              }}
             >
               <PencilIcon className="mr-2 size-4" />
-              {isOwnerEdit ? "Editing" : "Edit"}
+              Edit
             </Button>
           </TooltipTrigger>
           <TooltipContent>

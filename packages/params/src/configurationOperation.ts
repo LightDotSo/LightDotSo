@@ -12,9 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import type { UserOperation } from "@lightdotso/schemas";
+import type { Address, Hex } from "viem";
+
 // -----------------------------------------------------------------------------
-// Max
+// Params
 // -----------------------------------------------------------------------------
 
-export const MAX_WEIGHT = 8;
-export const MAX_THRESHOLD = 18;
+export type ConfigurationOperationParams = {
+  address: Address | null | undefined;
+};
+
+// -----------------------------------------------------------------------------
+// Params Body
+// -----------------------------------------------------------------------------
+
+export type ConfigurationOperationCreateBodyParams = {
+  threshold: number;
+  ownerId: string;
+  signedData: Hex;
+  owners: {
+    address: string;
+    weight: number;
+  }[];
+};

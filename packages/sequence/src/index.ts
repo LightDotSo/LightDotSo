@@ -17,7 +17,12 @@ export {
   decodeSignature,
   decodeSignatureBody,
 } from "./decode";
-export { calculateImageHash, calculateInitCode, subdigestOf } from "./utils";
+export {
+  calculateImageHash,
+  calculateInitCode,
+  hashSetImageHash,
+  subdigestOf,
+} from "./utils";
 export type {
   SignatureType,
   SignaturePartType,

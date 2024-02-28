@@ -14,6 +14,7 @@
 
 export { useMutationAuthLogout } from "./useMutationAuthLogout";
 export { useMutationAuthVerify } from "./useMutationAuthVerify";
+export { useMutationConfigurationOperationCreate } from "./useMutationConfigurationOperationCreate";
 export { useMutationFeedbackCreate } from "./useMutationFeedbackCreate";
 export { useMutationNotificationRead } from "./useMutationNotificationRead";
 export { useMutationQueuePortfolio } from "./useMutationQueuePortfolio";

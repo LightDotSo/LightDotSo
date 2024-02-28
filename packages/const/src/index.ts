@@ -24,6 +24,10 @@ export {
 } from "./api_urls";
 export { CHAIN_IDS, CHAIN_ID_LABELS } from "./chain_ids";
 export { CHAINS, MAINNET_CHAINS, TESTNET_CHAINS } from "./chains";
+export {
+  CONFIGURATION_MAX_WEIGHT,
+  CONFIGURATION_MAX_THRESHOLD,
+} from "./configuration";
 export { CONTRACT_ADDRESSES } from "./contract_addresses";
 export {
   SESSION_COOKIE_ID,

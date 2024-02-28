@@ -15,6 +15,7 @@
 export { useAuthModal } from "./useAuthModal";
 export { useBaseSlug } from "./useBaseSlug";
 export { useCopy } from "./useCopy";
+export { useConfigurationOperationCreate } from "./useConfigurationOperationCreate";
 export { useDelayedValue } from "./useDelayedValue";
 export { useDebounced } from "./useDebounced";
 export { useDebouncedValue } from "./useDebouncedValue";

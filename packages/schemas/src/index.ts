@@ -13,19 +13,21 @@
 // limitations under the License.
 
 export {
-  ConfirmFormSchema,
+  confirmFormSchema,
   devFormSchema,
   newFormSchema,
   newFormConfigurationSchema,
   newFormConfigurationRefinedSchema,
   newFormConfirmSchema,
   newFormStoreSchema,
+  ownerFormSchema,
   sendFormSchema,
 } from "./form";
 export type {
   PartialUserOperation,
   PartialUserOperations,
   ConfirmForm,
+  OwnerForm,
   SendForm,
 } from "./form";
 export {

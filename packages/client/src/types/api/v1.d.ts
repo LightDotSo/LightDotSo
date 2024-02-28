@@ -164,6 +164,13 @@ export interface paths {
      */
     get: operations["v1_configuration_list_handler"];
   };
+  "/configuration_operation/create": {
+    /**
+     * Create a configuration signature
+     * @description Create a configuration signature
+     */
+    post: operations["v1_configuration_operation_create_handler"];
+  };
   "/configuration_operation/get": {
     /**
      * Get a configuration_operation
@@ -450,6 +457,13 @@ export interface paths {
      * @description Queue token handler
      */
     post: operations["v1_queue_token_handler"];
+  };
+  "/queue/transaction": {
+    /**
+     * Queue transaction handler
+     * @description Queue transaction handler
+     */
+    post: operations["v1_queue_transaction_handler"];
   };
   "/queue/user_operation": {
     /**
@@ -862,6 +876,11 @@ export interface components {
       /** @description The authenticated status. */
       is_authenticated: boolean;
     };
+    /** @description Auth success response. */
+    AuthSuccess: {
+      /** @description User logged out successfully. */
+      Logout: string;
+    };
     AuthVerifyCreateRequestParams: {
       message: string;
       signature: string;
@@ -982,6 +1001,43 @@ export interface components {
       /** @description The id of the paymaster operation. */
       id: string;
     };
+    /**
+     * @description Wallet owner.
+     * @example {
+     *   "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
+     *   "weight": 1
+     * }
+     */
+    ConfigurationOperationCreateOwnerParams: {
+      /** @description The address of the owner. */
+      address: string;
+      /**
+       * Format: int32
+       * @description The weight of the owner.
+       */
+      weight: number;
+    };
+    /** @description Signature operation post request params */
+    ConfigurationOperationCreateRequestParams: {
+      /**
+       * @description The array of owners of the wallet.
+       * @example [
+       *   {
+       *     "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
+       *     "weight": 1
+       *   }
+       * ]
+       */
+      owners: components["schemas"]["ConfigurationOperationCreateOwnerParams"][];
+      signature: components["schemas"]["ConfigurationOperationSignatureCreateParams"];
+      /**
+       * Format: int32
+       * @description The threshold of the wallet.
+       * @default 1
+       * @example 3
+       */
+      threshold: number;
+    };
     /** @description ConfigurationOperation errors */
     ConfigurationOperationError: OneOf<[{
       /** @description ConfigurationOperation query error. */
@@ -997,6 +1053,13 @@ export interface components {
        * @description The count of the list of interpretation actions.
        */
       count: number;
+    };
+    /** @description Signature operation */
+    ConfigurationOperationSignatureCreateParams: {
+      /** @description The id of the owner of the signature. */
+      owner_id: string;
+      /** @description The signature of the user operation in hex. */
+      signature: string;
     };
     /** @description Owner root type. */
     ConfigurationOwner: {
@@ -1326,6 +1389,9 @@ export interface components {
     }, {
       /** @description Queue rate limit exceeded. */
       RateLimitExceeded: string;
+    }, {
+      /** @description Provider error. */
+      ProviderError: string;
     }]>;
     /** @description Queue success response. */
     QueueSuccess: {
@@ -1761,6 +1827,9 @@ export interface components {
       /** @description UserSettings not found by id. */
       NotFound: string;
     }]>;
+    UserSettingsUpdateRequestParams: {
+      user_settings: components["schemas"]["UserSettingsOptional"];
+    };
     /** @description Wallet root type. */
     Wallet: {
       /** @description The address of the wallet. */
@@ -2411,11 +2480,6 @@ export interface operations {
         is_testnet: boolean;
       };
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["ChainCreateRequestParams"];
-      };
-    };
     responses: {
       /** @description Chain created successfully */
       200: {
@@ -2580,6 +2644,49 @@ export interface operations {
       500: {
         content: {
           "application/json": components["schemas"]["ConfigurationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Create a configuration signature
+   * @description Create a configuration signature
+   */
+  v1_configuration_operation_create_handler: {
+    parameters: {
+      query: {
+        /** @description The address of the wallet. */
+        address: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ConfigurationOperationCreateRequestParams"];
+      };
+    };
+    responses: {
+      /** @description Signature created successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Signature"];
+        };
+      };
+      /** @description Invalid Configuration */
+      400: {
+        content: {
+          "application/json": components["schemas"]["SignatureError"];
+        };
+      };
+      /** @description Signature already exists */
+      409: {
+        content: {
+          "application/json": components["schemas"]["SignatureError"];
+        };
+      };
+      /** @description Signature internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["SignatureError"];
         };
       };
     };
@@ -3690,6 +3797,34 @@ export interface operations {
       query: {
         /** @description The address of the target queue. */
         address: string;
+      };
+    };
+    responses: {
+      /** @description Queue created successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["QueueSuccess"];
+        };
+      };
+      /** @description Queue internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["QueueError"];
+        };
+      };
+    };
+  };
+  /**
+   * Queue transaction handler
+   * @description Queue transaction handler
+   */
+  v1_queue_transaction_handler: {
+    parameters: {
+      query: {
+        /** @description The transaction hash of the target queue. */
+        hash: string;
+        /** @description The chain id of the target queue. */
+        chain_id: number;
       };
     };
     responses: {
