@@ -14,9 +14,11 @@
 
 "use client";
 
-import { ConfigurationOperationCreateBodyParams } from "@lightdotso/params";
-import { useQueryConfiguration } from "@lightdotso/query";
-import { useMutationConfigurationOperationCreate } from "@lightdotso/query";
+import type { ConfigurationOperationCreateBodyParams } from "@lightdotso/params";
+import {
+  useQueryConfiguration,
+  useMutationConfigurationOperationCreate,
+} from "@lightdotso/query";
 // import { hashSetImageHash, subdigestOf } from "@lightdotso/sequence";
 import { useAuth } from "@lightdotso/stores";
 import { useSignMessage } from "@lightdotso/wagmi";
