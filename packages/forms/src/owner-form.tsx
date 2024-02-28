@@ -19,12 +19,9 @@ import {
   CONFIGURATION_MAX_WEIGHT,
 } from "@lightdotso/const";
 import { PlaceholderOrb } from "@lightdotso/elements";
+import { useConfigurationOperationCreate } from "@lightdotso/hooks";
 import { useOwnersQueryState, useThresholdQueryState } from "@lightdotso/nuqs";
 import type { Owner, Owners } from "@lightdotso/nuqs";
-import {
-  useMutationConfigurationOperationCreate,
-  useQueryConfiguration,
-} from "@lightdotso/query";
 import { ownerFormSchema } from "@lightdotso/schemas";
 import { useAuth, useFormRef, useModals, useNewForm } from "@lightdotso/stores";
 import {
@@ -56,7 +53,7 @@ import { Trash2Icon, UserPlus2 } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import type { FC } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { isAddress } from "viem";
+import { Address, isAddress } from "viem";
 import { normalize } from "viem/ens";
 import { z } from "zod";
 
@@ -88,19 +85,6 @@ export const OwnerForm: FC = () => {
 
   const [threshold, setThreshold] = useThresholdQueryState();
   const [owners, setOwners] = useOwnersQueryState();
-
-  // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
-
-  const {
-    configurationOperationCreate,
-    isPending: isConfigurationOperationCreatePending,
-  } = useMutationConfigurationOperationCreate({ address: userAddress });
-
-  const { configuration } = useQueryConfiguration({
-    address: wallet,
-  });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -295,13 +279,23 @@ export const OwnerForm: FC = () => {
     setIsFormDisabled(!isFormValid);
   }, [isFormValid, setIsFormDisabled]);
 
-  useEffect(() => {
-    setIsFormLoading(isConfigurationOperationCreatePending);
-  }, [isConfigurationOperationCreatePending, setIsFormLoading]);
+  // useEffect(() => {
+  //   setIsFormLoading(isConfigurationOperationCreatePending);
+  // }, [isConfigurationOperationCreatePending, setIsFormLoading]);
 
   useEffect(() => {
     setFormControl(form.control);
   }, [form.control, setFormControl]);
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const { isConfigurationOperationCreatable } = useConfigurationOperationCreate(
+    {
+      address: wallet as Address,
+    },
+  );
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -313,25 +307,10 @@ export const OwnerForm: FC = () => {
       return;
     }
 
-    // Try to get the matching owner id from the configuration.owners
-    const ownerId = configuration?.owners.find(
-      owner => owner.address === userAddress,
-    )?.id;
-
-    if (!ownerId) {
+    if (!isConfigurationOperationCreatable) {
       toast.error("You are not an owner of this wallet.");
       return;
     }
-
-    await configurationOperationCreate({
-      signedData: "0x",
-      ownerId: ownerId,
-      threshold: data.threshold,
-      owners: data.owners.map(owner => ({
-        address: owner.address!,
-        weight: owner.weight,
-      })),
-    });
   }
   // ---------------------------------------------------------------------------
   // Validation

@@ -998,8 +998,20 @@ export interface components {
     }]>;
     /** @description ConfigurationOperation root type. */
     ConfigurationOperation: {
-      /** @description The id of the paymaster operation. */
-      id: string;
+      /**
+       * Format: int64
+       * @description The checkpoint of the configuration operation.
+       */
+      checkpoint: number;
+      /** @description The image hash of the configuration operation. */
+      image_hash: string;
+      /** @description The status of the configuration operation. */
+      status: string;
+      /**
+       * Format: int64
+       * @description The threshold of the configuration operation.
+       */
+      threshold: number;
     };
     /**
      * @description Wallet owner.
@@ -2657,6 +2669,8 @@ export interface operations {
       query: {
         /** @description The address of the wallet. */
         address: string;
+        /** @description Whether to simulate the configuration operation. */
+        simulate?: boolean | null;
       };
     };
     requestBody: {

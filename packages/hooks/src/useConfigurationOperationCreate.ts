@@ -14,22 +14,16 @@
 
 "use client";
 
-import type { ConfigurationData } from "@lightdotso/data";
-import { useMutationConfigurationOperationCreate } from "@lightdotso/query";
+import { useQueryConfiguration } from "@lightdotso/query";
+// import { useMutationConfigurationOperationCreate } from "@lightdotso/query";
 // import { hashSetImageHash, subdigestOf } from "@lightdotso/sequence";
-import { useAuth, useModalSwiper } from "@lightdotso/stores";
-import {
-  useSignMessage,
-  // lightWalletAbi,
-  // lightWalletFactoryAbi,
-  // useReadLightVerifyingPaymasterGetHash,
-  // useReadLightVerifyingPaymasterSenderNonce,
-} from "@lightdotso/wagmi";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useAuth } from "@lightdotso/stores";
+import { useSignMessage } from "@lightdotso/wagmi";
+import { useCallback, useEffect, useMemo } from "react";
 import type { Address, Hex } from "viem";
 import {
   isAddressEqual,
-  // toBytes,
+  toBytes,
   // hexToBytes,
   // // fromHex,
   // decodeFunctionData,
@@ -39,14 +33,8 @@ import {
 // Props
 // -----------------------------------------------------------------------------
 
-type UserOperationCreateProps = {
+type ConfigurationOperationCreateProps = {
   address: Address;
-  configuration?: ConfigurationData | null | undefined;
-  threshold: number;
-  owners?: {
-    address: string;
-    weight: number;
-  }[];
 };
 
 // -----------------------------------------------------------------------------
@@ -55,10 +43,7 @@ type UserOperationCreateProps = {
 
 export const useConfigurationOperationCreate = ({
   address,
-  configuration,
-  threshold,
-  owners,
-}: UserOperationCreateProps) => {
+}: ConfigurationOperationCreateProps) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -67,31 +52,39 @@ export const useConfigurationOperationCreate = ({
   // const { setPageIndex } = useModalSwiper();
 
   // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { configuration } = useQueryConfiguration({
+    address,
+  });
+
+  // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
 
   // const [isUserOperationLoading, setIsUserOperationLoading] = useState(false);
   // const [signedData, setSignedData] = useState<Hex>();
 
-  // // ---------------------------------------------------------------------------
-  // // Local Variables
-  // // ---------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // Local Variables
+  // ---------------------------------------------------------------------------
 
-  // const subdigest = useMemo(() => {
-
-  //   return subdigestOf(
-  //     address,
-  //     hashSetImageHash(
-  //       calculateImageHash()
-  //     )
-  //   );
-  // }, [address, userOperation?.hash, userOperation?.chainId]);
+  const subdigest = useMemo(() => {
+    // return subdigestOf(
+    //   address,
+    //   hashSetImageHash(
+    //     calculateImageHash()
+    //   )
+    // );
+    return "0x";
+  }, [address]);
 
   // ---------------------------------------------------------------------------
   // Wagmi
   // ---------------------------------------------------------------------------
 
-  // const { data, signMessage, isPending: isSignLoading } = useSignMessage();
+  const { data, signMessage, isPending: isSignLoading } = useSignMessage();
 
   // const { data: paymasterNonce } = useReadLightVerifyingPaymasterSenderNonce({
   //   address: userOperation.paymasterAndData.slice(0, 42) as Address,
@@ -196,22 +189,13 @@ export const useConfigurationOperationCreate = ({
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
-  // const signUserOperation = useCallback(() => {
-  //   if (!subdigest) {
-  //     return;
-  //   }
+  const signConfigurationOperation = useCallback(() => {
+    if (!subdigest) {
+      return;
+    }
 
-  //   signMessage({ message: { raw: toBytes(subdigest) } });
-  // }, [subdigest, signMessage]);
-
-  // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
-
-  // const { configurationOperationCreate } =
-  //   useMutationConfigurationOperationCreate({
-  //     address: address,
-  //   });
+    signMessage({ message: { raw: toBytes(subdigest) } });
+  }, [subdigest, signMessage]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -254,26 +238,23 @@ export const useConfigurationOperationCreate = ({
   // // Memoized Hooks
   // // ---------------------------------------------------------------------------
 
-  // const isUserOperationCreatable = useMemo(() => {
-  //   return (
-  //     typeof owner !== "undefined" &&
-  //     isValidUserOperation
-  //   );
-  // }, [isUserOperationLoading, owner, isValidUserOperation]);
+  const isConfigurationOperationCreatable = useMemo(() => {
+    return typeof owner !== "undefined";
+  }, [owner]);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return {
-    // isUserOperationCreatable,
+    isConfigurationOperationCreatable,
     // isUserOperationLoading,
     // isValidUserOperation,
     // decodedCallData,
     // decodedInitCode,
     // // paymasterHash,
     // // paymasterNonce,
-    // signUserOperation,
+    signConfigurationOperation,
     // subdigest,
     owner,
     threshold: configuration?.threshold,

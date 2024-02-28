@@ -62,6 +62,7 @@ export const useMutationConfigurationOperationCreate = (
           params: {
             query: {
               address: params.address as Address,
+              simulate: params.simulate ?? true,
             },
           },
           body: {
