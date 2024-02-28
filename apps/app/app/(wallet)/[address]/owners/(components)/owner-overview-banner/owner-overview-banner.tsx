@@ -15,6 +15,7 @@
 "use client";
 
 import { useIsDemoPathname } from "@lightdotso/hooks";
+import { useModals } from "@lightdotso/stores";
 import {
   Button,
   Tooltip,
@@ -35,6 +36,7 @@ export const OwnerOverviewBanner: FC = () => {
   // ---------------------------------------------------------------------------
 
   const isDemo = useIsDemoPathname();
+  const { showOwnerModal } = useModals();
 
   // ---------------------------------------------------------------------------
   // Component
@@ -52,7 +54,9 @@ export const OwnerOverviewBanner: FC = () => {
             <Button
               type="button"
               className="w-full md:w-28"
-              // onClick={() => setIsOwnerEdit(!isOwnerEdit)}
+              onClick={() => {
+                showOwnerModal();
+              }}
             >
               <PencilIcon className="mr-2 size-4" />
               Edit
