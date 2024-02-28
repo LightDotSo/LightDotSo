@@ -15,6 +15,7 @@
 import type { OwnerData } from "@lightdotso/data";
 import { EmptyState } from "@lightdotso/elements";
 import { useDebounced, useMediaQuery } from "@lightdotso/hooks";
+import { useIsOwnerEditQueryState } from "@lightdotso/nuqs";
 import {
   Skeleton,
   Table,
@@ -74,6 +75,12 @@ export const OwnerTable: FC<OwnerTableProps> = ({
   setOwnerTable,
 }) => {
   // ---------------------------------------------------------------------------
+  // Query State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [isOwnerEdit] = useIsOwnerEditQueryState();
+
+  // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
 
@@ -84,12 +91,12 @@ export const OwnerTable: FC<OwnerTableProps> = ({
   // ---------------------------------------------------------------------------
 
   const tableColumns = useMemo(() => {
-    const ownerTableColumns = mode === "view" ? ownerColumns : ownerEditColumns;
+    const ownerTableColumns = isOwnerEdit ? ownerColumns : ownerEditColumns;
     if (isDesktop) {
       return ownerTableColumns;
     }
     return ownerTableColumns.filter(column => column.id !== "index");
-  }, [columns, isDesktop]);
+  }, [columns, isDesktop, isOwnerEdit]);
 
   // ---------------------------------------------------------------------------
   // Table
