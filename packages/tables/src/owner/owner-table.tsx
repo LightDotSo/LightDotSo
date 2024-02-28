@@ -91,7 +91,7 @@ export const OwnerTable: FC<OwnerTableProps> = ({
   // ---------------------------------------------------------------------------
 
   const tableColumns = useMemo(() => {
-    const ownerTableColumns = isOwnerEdit ? ownerColumns : ownerEditColumns;
+    const ownerTableColumns = isOwnerEdit ? ownerEditColumns : ownerColumns;
     if (isDesktop) {
       return ownerTableColumns;
     }

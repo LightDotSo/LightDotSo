@@ -16,6 +16,7 @@
 
 import type { OwnerData } from "@lightdotso/data";
 import { useCopy } from "@lightdotso/hooks";
+import { useIsOwnerEditQueryState } from "@lightdotso/nuqs";
 import {
   Button,
   DropdownMenu,
@@ -33,7 +34,6 @@ import { useCallback } from "react";
 // -----------------------------------------------------------------------------
 
 interface OwnerTableRowActionsProps {
-  mode?: "edit" | "view";
   row: Row<OwnerData>;
 }
 
@@ -41,10 +41,13 @@ interface OwnerTableRowActionsProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export function OwnerTableRowActions({
-  mode = "view",
-  row,
-}: OwnerTableRowActionsProps) {
+export function OwnerTableRowActions({ row }: OwnerTableRowActionsProps) {
+  // ---------------------------------------------------------------------------
+  // Query State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [isOwnerEdit] = useIsOwnerEditQueryState();
+
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
@@ -81,7 +84,7 @@ export function OwnerTableRowActions({
             Copy Address
           </DropdownMenuItem>
         </DropdownMenuContent>
-        {mode === "edit" && (
+        {isOwnerEdit && (
           <DropdownMenuContent align="end" className="w-[160px]">
             <DropdownMenuItem onClick={handleCopyClick}>
               Delete

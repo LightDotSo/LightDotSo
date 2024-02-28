@@ -82,6 +82,6 @@ export const ownerEditColumns: ColumnDef<OwnerData>[] = [
 
   {
     id: "actions",
-    cell: ({ row }) => <OwnerTableRowActions mode="edit" row={row} />,
+    cell: ({ row }) => <OwnerTableRowActions row={row} />,
   },
 ];
