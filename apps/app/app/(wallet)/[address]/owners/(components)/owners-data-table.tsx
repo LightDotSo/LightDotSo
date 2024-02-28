@@ -58,16 +58,19 @@ export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
+  const ownersIndexedData: OwnerData[] | undefined = useMemo(() => {
+    return owners.map((owner, index) => {
+      return {
+        id: index.toString(),
+        address: owner.address ?? "",
+        weight: owner.weight,
+      };
+    });
+  }, [owners]);
+
   const ownerData: OwnerData[] | undefined = useMemo(() => {
     if (isOwnerEdit) {
-      return owners.map(owner => {
-        return {
-          ...owner,
-          id: "",
-          address: "",
-          weight: 0,
-        };
-      });
+      return ownersIndexedData;
     }
 
     return configuration?.owners;
