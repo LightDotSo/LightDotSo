@@ -15,6 +15,7 @@
 export * from "./activity";
 export * from "./auth";
 export * from "./configuration";
+export * from "./configuration_operation";
 export * from "./feedback";
 export * from "./invite_code";
 export * from "./notification";

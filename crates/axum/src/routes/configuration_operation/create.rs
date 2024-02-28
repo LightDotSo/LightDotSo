@@ -42,8 +42,8 @@ use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
 use lightdotso_prisma::{
-    configuration, configuration_operation, configuration_owner, user, wallet, ActivityEntity,
-    ActivityOperation,
+    configuration, configuration_operation, configuration_owner, owner, user, wallet,
+    ActivityEntity, ActivityOperation,
 };
 use lightdotso_sequence::{
     builder::rooted_node_builder,
@@ -67,8 +67,6 @@ use utoipa::{IntoParams, ToSchema};
 pub struct PostQuery {
     /// The address of the wallet.
     pub address: String,
-    /// The operation of the configuration.
-    pub configuration_operation_id: String,
 }
 
 // -----------------------------------------------------------------------------
@@ -78,12 +76,12 @@ pub struct PostQuery {
 /// Signature operation post request params
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub struct ConfigurationSignatureCreateRequestParams {
+pub struct ConfigurationOperationCreateRequestParams {
     /// The array of owners of the wallet.
     #[schema(example = json!([{"address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed", "weight": 1}]))]
-    pub owners: Vec<ConfigurationSignatureCreateOwnerParams>,
+    pub owners: Vec<ConfigurationOperationCreateOwnerParams>,
     /// The result of the signature.
-    pub signature: ConfigurationSignatureCreateParams,
+    pub signature: ConfigurationOperationSignatureCreateParams,
     /// The threshold of the wallet.
     #[schema(example = 3, default = 1)]
     pub threshold: u16,
@@ -93,7 +91,7 @@ pub struct ConfigurationSignatureCreateRequestParams {
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
 #[schema(example = json!({"address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed", "weight": 1}))]
-pub(crate) struct ConfigurationSignatureCreateOwnerParams {
+pub(crate) struct ConfigurationOperationCreateOwnerParams {
     /// The address of the owner.
     pub address: String,
     /// The weight of the owner.
@@ -103,9 +101,9 @@ pub(crate) struct ConfigurationSignatureCreateOwnerParams {
 /// Signature operation
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub struct ConfigurationSignatureCreateParams {
+pub struct ConfigurationOperationSignatureCreateParams {
     /// The id of the owner of the signature.
-    pub configuration_owner_id: String,
+    pub owner_id: String,
     /// The signature of the user operation in hex.
     pub signature: String,
 }
@@ -121,7 +119,7 @@ pub struct ConfigurationSignatureCreateParams {
         params(
             PostQuery
         ),
-        request_body = ConfigurationSignatureCreateRequestParams,
+        request_body = ConfigurationOperationCreateRequestParams,
         responses(
             (status = 200, description = "Signature created successfully", body = Signature),
             (status = 400, description = "Invalid Configuration", body = SignatureError),
@@ -133,7 +131,7 @@ pub struct ConfigurationSignatureCreateParams {
 pub(crate) async fn v1_configuration_operation_create_handler(
     post_query: Query<PostQuery>,
     State(state): State<AppState>,
-    Json(params): Json<ConfigurationSignatureCreateRequestParams>,
+    Json(params): Json<ConfigurationOperationCreateRequestParams>,
 ) -> AppJsonResult<ConfigurationOperation> {
     // -------------------------------------------------------------------------
     // Parse
@@ -263,28 +261,29 @@ pub(crate) async fn v1_configuration_operation_create_handler(
         ConfigurationSignatureError::NotFound("Configuration not found".to_string()),
     ))?;
 
-    // Get the configuration_owner from the database.
-    let configuration_owner = state
+    // Get the owner from the database.
+    let owner = state
         .client
-        .configuration_owner()
-        .find_unique(configuration_owner::id::equals(sig.clone().configuration_owner_id))
-        .with(configuration_owner::user::fetch())
+        .owner()
+        .find_unique(owner::id::equals(sig.clone().owner_id))
+        .with(owner::user::fetch())
         .exec()
         .await?;
-    info!(?configuration_owner);
+    info!(?owner);
 
     // -------------------------------------------------------------------------
     // Signature
     // -------------------------------------------------------------------------
 
     // If the owner is not found, return a 404.
-    let configuration_owner = configuration_owner.ok_or(AppError::NotFound)?;
+    let owner = owner.ok_or(AppError::NotFound)?;
 
     // Check that the recovered signature is the same as the signature sender.
-    if recovered_sig.address != configuration_owner.address.parse()? {
+    if recovered_sig.address != owner.clone().address.parse()? {
         error!(
-            "recovered_sig.address: {}, configuration_owner.address: {}",
-            recovered_sig.address, configuration_owner.address
+            "recovered_sig.address: {}, owner.address: {}",
+            recovered_sig.address,
+            owner.clone().address
         );
         return Err(AppError::BadRequest);
     }
@@ -330,10 +329,10 @@ pub(crate) async fn v1_configuration_operation_create_handler(
                     owners
                         .iter()
                         .enumerate()
-                        .map(|(index, owner)| {
+                        .map(|(index, config_owner)| {
                             configuration_owner::create_unchecked(
-                                to_checksum(&owner.address.parse::<H160>().unwrap(), None),
-                                owner.weight.into(),
+                                to_checksum(&config_owner.address.parse::<H160>().unwrap(), None),
+                                config_owner.weight.into(),
                                 index as i32,
                                 configuration_operation.clone().id,
                                 vec![configuration_owner::user_id::set(Some(
@@ -342,7 +341,11 @@ pub(crate) async fn v1_configuration_operation_create_handler(
                                         .find(|user| {
                                             user.address ==
                                                 to_checksum(
-                                                    &owner.address.parse::<H160>().unwrap(),
+                                                    &config_owner
+                                                        .clone()
+                                                        .address
+                                                        .parse::<H160>()
+                                                        .unwrap(),
                                                     None,
                                                 )
                                         })
@@ -367,6 +370,28 @@ pub(crate) async fn v1_configuration_operation_create_handler(
     let configuration_operation = configuration_operation.map_err(|_| AppError::InternalError)?;
     info!(?configuration_operation);
 
+    // Get the configuration owner from the database.
+    let configuration_owner = state
+        .client
+        .configuration_owner()
+        .find_many(vec![configuration_owner::configuration_operation_id::equals(
+            configuration_operation.id.clone(),
+        )])
+        .exec()
+        .await?;
+
+    // Get the matching configuration owner same as the signature address.
+    let configuration_owner = configuration_owner
+        .iter()
+        .find(|config_owner| {
+            config_owner
+                .address
+                .parse::<H160>()
+                .map(|addr| addr == owner.clone().address.parse::<H160>().unwrap())
+                .unwrap_or(false)
+        })
+        .ok_or(AppError::NotFound)?;
+
     // Create the signature the database.
     let configuration_signature = state
         .client
@@ -374,7 +399,7 @@ pub(crate) async fn v1_configuration_operation_create_handler(
         .create(
             sig.signature.hex_to_bytes()?,
             configuration_operation::id::equals(configuration_operation.id.clone()),
-            configuration_owner::id::equals(sig.configuration_owner_id),
+            configuration_owner::id::equals(configuration_owner.id.clone()),
             vec![],
         )
         .exec()

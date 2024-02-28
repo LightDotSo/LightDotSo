@@ -15,13 +15,11 @@
 "use client";
 
 import { useQueryConfiguration } from "@lightdotso/query";
-import { useModals } from "@lightdotso/stores";
 import { ownerColumns } from "@lightdotso/tables";
 import { TableSectionWrapper } from "@lightdotso/ui";
-import { useEffect, type FC } from "react";
+import type { FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table";
-import { useIsMounted } from "@lightdotso/hooks";
 
 // -----------------------------------------------------------------------------
 // Props
