@@ -36,6 +36,7 @@
     "@lightdotso/nuqs": "workspace:*",
     "@lightdotso/schemas": "workspace:*",
     "@lightdotso/stores": "workspace:*",
+    "@lightdotso/templates": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",

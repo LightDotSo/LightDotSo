@@ -20,10 +20,8 @@ import {
 } from "@lightdotso/const";
 import { PlaceholderOrb } from "@lightdotso/elements";
 import {
-  useInviteCodeQueryState,
   useNameQueryState,
   useOwnersQueryState,
-  useSaltQueryState,
   useThresholdQueryState,
   useTypeQueryState,
 } from "@lightdotso/nuqs";
@@ -50,15 +48,13 @@ import {
   SelectTrigger,
   SelectValue,
   Separator,
-  TooltipProvider,
 } from "@lightdotso/ui";
 import { cn, debounce } from "@lightdotso/utils";
 import { publicClient } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isEmpty } from "lodash";
 import { Trash2Icon, UserPlus2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useEffect, useCallback, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import type { FC } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { isAddress } from "viem";
@@ -77,12 +73,6 @@ type NewFormValues = z.infer<typeof ownerFormSchema>;
 
 export const OwnerForm: FC = () => {
   // ---------------------------------------------------------------------------
-  // Next Hooks
-  // ---------------------------------------------------------------------------
-
-  const router = useRouter();
-
-  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
@@ -94,11 +84,9 @@ export const OwnerForm: FC = () => {
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
-  const [inviteCode] = useInviteCodeQueryState();
   const [name] = useNameQueryState();
   const [type] = useTypeQueryState();
   const [threshold, setThreshold] = useThresholdQueryState();
-  const [salt, setSalt] = useSaltQueryState();
   const [owners, setOwners] = useOwnersQueryState();
 
   // ---------------------------------------------------------------------------
