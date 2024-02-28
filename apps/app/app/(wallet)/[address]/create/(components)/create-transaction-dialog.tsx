@@ -18,7 +18,7 @@ import {
   useUserOperationsIndexQueryState,
   useUserOperationsQueryState,
 } from "@lightdotso/nuqs";
-import { useQueryConfiguration } from "@lightdotso/query";
+import { useQueryConfiguration, useQueryWallet } from "@lightdotso/query";
 import type { UserOperation } from "@lightdotso/schemas";
 import { useAuth, useDev } from "@lightdotso/stores";
 import { Transaction } from "@lightdotso/templates";
@@ -95,6 +95,10 @@ export const CreateTransactionDialog: FC<CreateTransactionDialogProps> = ({
     address: address,
   });
 
+  const { wallet } = useQueryWallet({
+    address: address,
+  });
+
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
@@ -114,7 +118,7 @@ export const CreateTransactionDialog: FC<CreateTransactionDialogProps> = ({
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!configuration) {
+  if (!configuration || !wallet) {
     return null;
   }
 
@@ -140,6 +144,7 @@ export const CreateTransactionDialog: FC<CreateTransactionDialogProps> = ({
           key={selectedOpIndex}
           address={address}
           configuration={configuration}
+          wallet={wallet}
           initialUserOperation={userOperations[selectedOpIndex]}
           userOperationIndex={selectedOpIndex}
           isDev={isDev}
