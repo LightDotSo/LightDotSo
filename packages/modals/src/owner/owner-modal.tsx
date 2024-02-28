@@ -14,7 +14,7 @@
 
 "use client";
 
-import { AddressFormField } from "@lightdotso/forms";
+import { AddressFormField, OwnerForm } from "@lightdotso/forms";
 import { useRefinement } from "@lightdotso/hooks";
 import { addressOrEns } from "@lightdotso/schemas";
 import { useAuth, useModals } from "@lightdotso/stores";
@@ -44,7 +44,6 @@ export function OwnerModal() {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address } = useAuth();
   const {
     isOwnerModalVisible,
     hideOwnerModal,
@@ -100,13 +99,8 @@ export function OwnerModal() {
         <Modal
           isHeightFixed
           open
-          className="p-2"
-          headerContent={
-            <AddressFormField
-              name="addressOrEns"
-              onKeyDown={validEns.invalidate}
-            />
-          }
+          size="lg"
+          className="p-2 h-[36rem]"
           footerContent={
             <FooterButton
               className="pt-0"
@@ -117,7 +111,9 @@ export function OwnerModal() {
           }
           onClose={hideOwnerModal}
         >
-          {address}
+          <div className="p-4">
+            <OwnerForm />
+          </div>
         </Modal>
       </Form>
     );

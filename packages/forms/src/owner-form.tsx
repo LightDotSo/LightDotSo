@@ -20,7 +20,6 @@ import {
 } from "@lightdotso/const";
 import { PlaceholderOrb } from "@lightdotso/elements";
 import {
-  ownerParser,
   useInviteCodeQueryState,
   useNameQueryState,
   useOwnersQueryState,
