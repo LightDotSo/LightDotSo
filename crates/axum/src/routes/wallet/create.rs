@@ -211,6 +211,10 @@ pub(crate) async fn v1_wallet_create_handler(
         return Err(eyre!("Invalid configuration").into());
     }
 
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
+
     // If the simulate flag is set, return the wallet address.
     if query.simulate.unwrap_or(false) {
         // Check if the wallet exists.

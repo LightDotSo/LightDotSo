@@ -24,8 +24,8 @@ use utoipa::ToSchema;
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
 pub(crate) struct ConfigurationOperation {
-    /// The id of the paymaster operation.
-    id: String,
+    /// The id of the configuration operation.
+    pub id: String,
 }
 
 // -----------------------------------------------------------------------------

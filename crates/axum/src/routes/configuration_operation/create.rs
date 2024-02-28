@@ -35,7 +35,7 @@ use ethers_main::{
     types::{H160, H256},
     utils::to_checksum,
 };
-use eyre::Result;
+use eyre::{eyre, Result};
 use lightdotso_common::traits::HexToBytes;
 use lightdotso_db::models::activity::CustomParams;
 use lightdotso_kafka::{
@@ -67,6 +67,8 @@ use utoipa::{IntoParams, ToSchema};
 pub struct PostQuery {
     /// The address of the wallet.
     pub address: String,
+    /// Whether to simulate the configuration operation.
+    pub simulate: Option<bool>,
 }
 
 // -----------------------------------------------------------------------------
@@ -147,6 +149,26 @@ pub(crate) async fn v1_configuration_operation_create_handler(
     let sig = params.signature;
 
     // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
+    // Get the current configuration for the wallet.
+    let configuration = state
+        .client
+        .configuration()
+        .find_first(vec![configuration::address::equals(query.address.clone())])
+        .order_by(configuration::checkpoint::order(Direction::Desc))
+        .with(configuration::owners::fetch(vec![]))
+        .exec()
+        .await?;
+    info!(?configuration);
+
+    // If the configuration is not found, return a 404.
+    let configuration = configuration.ok_or(RouteError::ConfigurationSignatureError(
+        ConfigurationSignatureError::NotFound("Configuration not found".to_string()),
+    ))?;
+
+    // -------------------------------------------------------------------------
     // Validate
     // -------------------------------------------------------------------------
 
@@ -183,8 +205,7 @@ pub(crate) async fn v1_configuration_operation_create_handler(
     let mut config = WalletConfig {
         // The signature type is 0 since it is not computed in the encoding.
         signature_type: 0,
-        // The checkpoint is 0, as it is the first checkpoint.
-        checkpoint: 0,
+        checkpoint: configuration.checkpoint as u32 + 1,
         threshold,
         // Can be 1 since it is not computed in the encoding.
         weight: 1,
@@ -203,6 +224,24 @@ pub(crate) async fn v1_configuration_operation_create_handler(
 
     // Parse the image hash to bytes.
     let image_hash_bytes: H256 = image_hash.into();
+
+    // Check if the wallet configuration is valid.
+    let valid = config.is_wallet_valid();
+
+    // If the wallet configuration is invalid, return a 500.
+    if !valid {
+        error!("Invalid configuration");
+        return Err(eyre!("Invalid configuration").into());
+    }
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
+
+    // If the simulate flag is set, return the wallet address.
+    if query.simulate.unwrap_or(false) {
+        return Ok(Json::from(ConfigurationOperation { id: "simulation".to_string() }));
+    }
 
     // -------------------------------------------------------------------------
     // DB
@@ -244,22 +283,6 @@ pub(crate) async fn v1_configuration_operation_create_handler(
     // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
-
-    // Get the current configuration for the wallet.
-    let configuration = state
-        .client
-        .configuration()
-        .find_first(vec![configuration::address::equals(query.address.clone())])
-        .order_by(configuration::checkpoint::order(Direction::Desc))
-        .with(configuration::owners::fetch(vec![]))
-        .exec()
-        .await?;
-    info!(?configuration);
-
-    // If the configuration is not found, return a 404.
-    let configuration = configuration.ok_or(RouteError::ConfigurationSignatureError(
-        ConfigurationSignatureError::NotFound("Configuration not found".to_string()),
-    ))?;
 
     // Get the owner from the database.
     let owner = state
