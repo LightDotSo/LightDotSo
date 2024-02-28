@@ -1860,18 +1860,12 @@ importers:
       '@lightdotso/nuqs':
         specifier: workspace:*
         version: link:../nuqs
-      '@lightdotso/query':
-        specifier: workspace:*
-        version: link:../query
       '@lightdotso/schemas':
         specifier: workspace:*
         version: link:../schemas
       '@lightdotso/stores':
         specifier: workspace:*
         version: link:../stores
-      '@lightdotso/templates':
-        specifier: workspace:*
-        version: link:../templates
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../ui
@@ -1933,6 +1927,9 @@ importers:
       '@lightdotso/data':
         specifier: workspace:*
         version: link:../data
+      '@lightdotso/params':
+        specifier: workspace:*
+        version: link:../params
       '@lightdotso/query':
         specifier: workspace:*
         version: link:../query

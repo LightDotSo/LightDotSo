@@ -68,7 +68,6 @@ export const OwnerOverviewBanner: FC = () => {
               type="button"
               className="w-full md:w-28"
               onClick={() => {
-                console.log(configuration?.owners);
                 setOwnerModalProps({
                   initialOwners: configuration?.owners
                     ? configuration?.owners.map(owner => {

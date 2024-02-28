@@ -28,6 +28,7 @@ export const createConfigurationOperation = async (
     params: {
       query: {
         address: string;
+        simulate: boolean | undefined;
       };
     };
     body: {

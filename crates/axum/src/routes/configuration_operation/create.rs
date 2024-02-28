@@ -240,7 +240,12 @@ pub(crate) async fn v1_configuration_operation_create_handler(
 
     // If the simulate flag is set, return the wallet address.
     if query.simulate.unwrap_or(false) {
-        return Ok(Json::from(ConfigurationOperation { id: "simulation".to_string() }));
+        return Ok(Json::from(ConfigurationOperation {
+            image_hash: format!("{:?}", image_hash_bytes),
+            checkpoint: configuration.checkpoint + 1,
+            threshold: params.threshold as i64,
+            status: "SIMULATED".to_string(),
+        }));
     }
 
     // -------------------------------------------------------------------------
