@@ -544,8 +544,7 @@ export const OwnerForm: FC = () => {
             }}
           >
             <UserPlus2 className="mr-2 size-5" />
-            {type === "personal" && "Add Backup Key"}
-            {type !== "personal" && "Add New Owner"}
+            Add New Owner
           </Button>
         </div>
         <FormField
