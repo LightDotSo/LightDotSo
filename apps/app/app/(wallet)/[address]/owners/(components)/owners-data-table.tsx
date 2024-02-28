@@ -60,7 +60,6 @@ export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
 
   const ownerData: OwnerData[] | undefined = useMemo(() => {
     if (isOwnerEdit) {
-      console.log("ownersIndexedData", owners);
       return owners?.map((owner, index) => {
         return {
           id: index.toString(),
@@ -93,6 +92,7 @@ export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
           : null,
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOwnerEdit]);
 
   // ---------------------------------------------------------------------------

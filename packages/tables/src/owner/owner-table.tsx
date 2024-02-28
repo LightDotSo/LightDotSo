@@ -52,7 +52,6 @@ type OwnerTableProps = {
   isLoading: boolean;
   pageSize: number;
   data: OwnerData[] | null;
-  mode?: "edit" | "view";
   tableOptions?: Omit<
     TableOptions<OwnerData>,
     "data" | "columns" | "getCoreRowModel"
@@ -69,7 +68,6 @@ export const OwnerTable: FC<OwnerTableProps> = ({
   isLoading,
   pageSize,
   data,
-  mode = "view",
   tableOptions,
   columns,
   setOwnerTable,
