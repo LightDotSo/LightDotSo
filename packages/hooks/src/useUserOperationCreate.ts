@@ -234,7 +234,7 @@ export const useUserOperationCreate = ({
         return;
       }
 
-      userOperationCreate({
+      await userOperationCreate({
         ownerId: owner.id,
         signedData: signedData as Hex,
         userOperation: userOperation,
