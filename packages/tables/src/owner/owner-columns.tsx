@@ -89,4 +89,9 @@ export const ownerEditColumns: ColumnDef<OwnerData>[] = [
     enableSorting: false,
     enableHiding: false,
   },
+
+  {
+    id: "actions",
+    cell: ({ row }) => <OwnerTableRowActions mode="edit" row={row} />,
+  },
 ];

@@ -33,6 +33,7 @@ import { useCallback } from "react";
 // -----------------------------------------------------------------------------
 
 interface OwnerTableRowActionsProps {
+  mode?: "edit" | "view";
   row: Row<OwnerData>;
 }
 
@@ -40,7 +41,10 @@ interface OwnerTableRowActionsProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export function OwnerTableRowActions({ row }: OwnerTableRowActionsProps) {
+export function OwnerTableRowActions({
+  mode = "view",
+  row,
+}: OwnerTableRowActionsProps) {
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
@@ -77,6 +81,12 @@ export function OwnerTableRowActions({ row }: OwnerTableRowActionsProps) {
             Copy Address
           </DropdownMenuItem>
         </DropdownMenuContent>
+        {mode === "edit" && (
+          <DropdownMenuContent align="end" className="w-[160px]">
+            <DropdownMenuItem>Edit</DropdownMenuItem>
+            <DropdownMenuItem>Delete</DropdownMenuItem>
+          </DropdownMenuContent>
+        )}
       </DropdownMenu>
     </div>
   );

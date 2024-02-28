@@ -41,7 +41,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, type FC, useMemo } from "react";
-import { ownerColumns } from "./owner-columns";
+import { ownerColumns, ownerEditColumns } from "./owner-columns";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -84,10 +84,11 @@ export const OwnerTable: FC<OwnerTableProps> = ({
   // ---------------------------------------------------------------------------
 
   const tableColumns = useMemo(() => {
+    const ownerColumns = mode === "view" ? columns : ownerEditColumns;
     if (isDesktop) {
-      return columns;
+      return ownerColumns;
     }
-    return columns.filter(column => column.id !== "index");
+    return ownerColumns.filter(column => column.id !== "index");
   }, [columns, isDesktop]);
 
   // ---------------------------------------------------------------------------
