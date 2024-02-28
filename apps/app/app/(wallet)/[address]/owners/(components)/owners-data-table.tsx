@@ -14,10 +14,15 @@
 
 "use client";
 
+import type { OwnerData } from "@lightdotso/data";
+import {
+  useIsOwnerEditQueryState,
+  useOwnersQueryState,
+} from "@lightdotso/nuqs";
 import { useQueryConfiguration } from "@lightdotso/query";
 import { ownerColumns } from "@lightdotso/tables";
 import { TableSectionWrapper } from "@lightdotso/ui";
-import { type FC } from "react";
+import { useMemo, type FC, useEffect } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table";
 
@@ -35,12 +40,60 @@ interface OwnersDataTableProps {
 
 export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
+  // Query State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [isOwnerEdit] = useIsOwnerEditQueryState();
+  const [owners, setOwners] = useOwnersQueryState();
+
+  // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
   const { configuration, isConfigurationLoading } = useQueryConfiguration({
     address: address,
   });
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const ownerData: OwnerData[] | undefined = useMemo(() => {
+    if (isOwnerEdit) {
+      return owners?.map((owner, index) => {
+        return {
+          id: index.toString(),
+          address: owner.address ?? "",
+          weight: owner.weight,
+        };
+      });
+    }
+
+    return configuration?.owners;
+  }, [owners, isOwnerEdit, configuration?.owners]);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // If isOwnerEdit is true, set the owner data to the indexed data
+  // when the owners change.
+  useEffect(() => {
+    if (isOwnerEdit) {
+      setOwners(
+        configuration?.owners
+          ? configuration?.owners.map(owner => {
+              return {
+                address: owner.address as Address,
+                addressOrEns: undefined,
+                weight: owner.weight,
+              };
+            })
+          : null,
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOwnerEdit]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -50,7 +103,7 @@ export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
     <TableSectionWrapper>
       <DataTable
         isLoading={isConfigurationLoading}
-        data={configuration?.owners ?? []}
+        data={ownerData ?? []}
         columns={ownerColumns}
       />
     </TableSectionWrapper>

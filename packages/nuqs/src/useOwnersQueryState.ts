@@ -38,6 +38,7 @@ export const ownerParser = createParser({
       // Parse the address as a string (if possible)
       const parsedAddress = address === "_" ? undefined : address;
       // Parse the addressOrEns as a string (if possible)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const parsedAddressOrEns =
         addressOrEns === "_" ? undefined : addressOrEns;
       // Parse the weight as a number (if possible)
@@ -45,7 +46,7 @@ export const ownerParser = createParser({
       if (
         parsedAddress &&
         isAddress(parsedAddress) &&
-        parsedAddressOrEns &&
+        // parsedAddressOrEns &&
         !isNaN(parsedWeight)
       ) {
         acc[parseInt(id)] = {

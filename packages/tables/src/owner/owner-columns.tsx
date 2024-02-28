@@ -27,37 +27,6 @@ import { OwnerCardAddress } from "./card";
 
 export const ownerColumns: ColumnDef<OwnerData>[] = [
   {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        aria-label="Select all"
-        className="translate-y-[2px]"
-        onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        aria-label="Select row"
-        className="translate-y-[2px]"
-        onCheckedChange={value => row.toggleSelected(!!value)}
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    id: "index",
-    accessorKey: "index",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Index" />
-    ),
-    cell: ({ row }) => <div className="w-4">{row.getValue("index")}</div>,
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
     id: "address",
     accessorKey: "address",
     header: ({ column }) => (
@@ -82,6 +51,35 @@ export const ownerColumns: ColumnDef<OwnerData>[] = [
       return value.includes((row.getValue(id) as number).toString());
     },
   },
+  {
+    id: "actions",
+    cell: ({ row }) => <OwnerTableRowActions row={row} />,
+  },
+];
+
+export const ownerEditColumns: ColumnDef<OwnerData>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={table.getIsAllPageRowsSelected()}
+        aria-label="Select all"
+        className="translate-y-[2px]"
+        onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        aria-label="Select row"
+        className="translate-y-[2px]"
+        onCheckedChange={value => row.toggleSelected(!!value)}
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+
   {
     id: "actions",
     cell: ({ row }) => <OwnerTableRowActions row={row} />,

@@ -15,6 +15,7 @@
 import type { OwnerData } from "@lightdotso/data";
 import { EmptyState } from "@lightdotso/elements";
 import { useDebounced, useMediaQuery } from "@lightdotso/hooks";
+import { useIsOwnerEditQueryState } from "@lightdotso/nuqs";
 import {
   Skeleton,
   Table,
@@ -41,7 +42,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, type FC, useMemo } from "react";
-import { ownerColumns } from "./owner-columns";
+import { ownerColumns, ownerEditColumns } from "./owner-columns";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -68,9 +69,15 @@ export const OwnerTable: FC<OwnerTableProps> = ({
   pageSize,
   data,
   tableOptions,
-  columns = ownerColumns,
+  columns,
   setOwnerTable,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Query State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [isOwnerEdit] = useIsOwnerEditQueryState();
+
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
@@ -82,11 +89,12 @@ export const OwnerTable: FC<OwnerTableProps> = ({
   // ---------------------------------------------------------------------------
 
   const tableColumns = useMemo(() => {
+    const ownerTableColumns = isOwnerEdit ? ownerEditColumns : ownerColumns;
     if (isDesktop) {
-      return columns;
+      return ownerTableColumns;
     }
-    return columns.filter(column => column.id !== "index");
-  }, [columns, isDesktop]);
+    return ownerTableColumns.filter(column => column.id !== "index");
+  }, [columns, isDesktop, isOwnerEdit]);
 
   // ---------------------------------------------------------------------------
   // Table
@@ -96,8 +104,8 @@ export const OwnerTable: FC<OwnerTableProps> = ({
     ...tableOptions,
     data: data || [],
     columns: tableColumns,
-    enableExpanding: true,
-    enableRowSelection: true,
+    enableExpanding: false,
+    enableRowSelection: isOwnerEdit ? true : false,
     manualPagination: true,
     paginateExpandedRows: true,
     getCoreRowModel: getCoreRowModel(),
@@ -193,7 +201,10 @@ export const OwnerTable: FC<OwnerTableProps> = ({
             ))
         ) : (
           <TableRow>
-            <TableCell colSpan={columns.length} className="h-24 text-center">
+            <TableCell
+              colSpan={tableColumns.length}
+              className="h-24 text-center"
+            >
               <EmptyState entity="owner" />
             </TableCell>
           </TableRow>
