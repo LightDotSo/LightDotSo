@@ -20,7 +20,6 @@ import {
 } from "@lightdotso/const";
 import { PlaceholderOrb } from "@lightdotso/elements";
 import {
-  useNameQueryState,
   useOwnersQueryState,
   useThresholdQueryState,
   useTypeQueryState,
@@ -28,7 +27,6 @@ import {
 import type { Owner, Owners } from "@lightdotso/nuqs";
 import { ownerFormSchema } from "@lightdotso/schemas";
 import { useAuth, useFormRef, useModals, useNewForm } from "@lightdotso/stores";
-import { FooterButton } from "@lightdotso/templates";
 import {
   Avatar,
   Button,
@@ -77,10 +75,9 @@ export const OwnerForm: FC = () => {
   // ---------------------------------------------------------------------------
 
   const { address: userAddress, ens: userEns } = useAuth();
-  const { setFormControl } = useFormRef();
+  const { setIsFormDisabled, setIsFormLoading, setFormControl } = useFormRef();
   const { setFormValues, fetchToCreate } = useNewForm();
   const {
-    hideOwnerModal,
     ownerModalProps: { initialOwners, initialThreshold },
   } = useModals();
 
@@ -109,18 +106,20 @@ export const OwnerForm: FC = () => {
   const defaultValues: Partial<OwnerFormValues> = useMemo(() => {
     // Check if the type is valid
     return {
-      threshold: initialThreshold
-        ? initialThreshold
-        : threshold &&
-            ownerFormSchema.shape.threshold.safeParse(threshold).success
-          ? ownerFormSchema.shape.threshold.parse(threshold)
-          : 1,
+      threshold:
+        initialThreshold !== undefined
+          ? initialThreshold
+          : threshold &&
+              ownerFormSchema.shape.threshold.safeParse(threshold).success
+            ? ownerFormSchema.shape.threshold.parse(threshold)
+            : 1,
       // If type is personal, add two owners
-      owners: initialOwners
-        ? initialOwners
-        : owners !== undefined && owners.length > 0
-          ? owners
-          : [defaultOwner],
+      owners:
+        initialOwners.length > 0
+          ? initialOwners
+          : owners !== undefined && owners.length > 0
+            ? owners
+            : [defaultOwner],
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialOwners, initialThreshold]);
@@ -274,6 +273,22 @@ export const OwnerForm: FC = () => {
   const isFormValid = useMemo(() => {
     return form.formState.isValid && isEmpty(form.formState.errors);
   }, [form.formState]);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    setIsFormDisabled(!isFormValid);
+  }, [isFormValid, setIsFormDisabled]);
+
+  // useEffect(() => {
+  //   setIsFormLoading(isFormLoading);
+  // }, [isFormLoading, setIsFormLoading]);
+
+  useEffect(() => {
+    setFormControl(form.control);
+  }, [form.control, setFormControl]);
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -586,12 +601,6 @@ export const OwnerForm: FC = () => {
               {/* <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre> */}
             </FormItem>
           )}
-        />
-        <FooterButton
-          form="owner-form"
-          isModal={false}
-          disabled={!isFormValid}
-          cancelClick={hideOwnerModal}
         />
       </form>
     </Form>
