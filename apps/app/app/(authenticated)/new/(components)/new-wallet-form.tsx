@@ -176,10 +176,6 @@ export const NewWalletForm: FC = () => {
     // Set the form values from the default values
     setFormValues(defaultValues);
 
-    if (defaultValues.inviteCode) {
-      form.setValue("inviteCode", defaultValues.inviteCode);
-    }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -290,7 +286,10 @@ export const NewWalletForm: FC = () => {
                   </div>
                 )}
               />
-              <InviteCodeForm name="inviteCode" />
+              <InviteCodeForm
+                name="inviteCode"
+                initialInviteCode={inviteCode}
+              />
               <FormField
                 control={form.control}
                 name="name"
