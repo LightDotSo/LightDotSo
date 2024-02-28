@@ -170,6 +170,14 @@ export const useModals = create(
         onNftSelect: () => {},
       },
       setNftModalProps: (props: NftModalProps) => set({ nftModalProps: props }),
+      ownerModalProps: {
+        initialOwners: [],
+        initialThreshold: 1,
+        isOwnerModalVisible: false,
+        onOwnerSelect: () => {},
+      },
+      setOwnerModalProps: (props: OwnerModalProps) =>
+        set({ ownerModalProps: props }),
       tokenModalProps: {
         // @ts-expect-error
         address: "",

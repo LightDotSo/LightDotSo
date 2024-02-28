@@ -15,7 +15,8 @@
 "use client";
 
 import { useIsDemoPathname } from "@lightdotso/hooks";
-import { useModals } from "@lightdotso/stores";
+import { useQueryConfiguration } from "@lightdotso/query";
+import { useAuth, useModals } from "@lightdotso/stores";
 import {
   Button,
   Tooltip,
@@ -24,7 +25,8 @@ import {
   TooltipProvider,
 } from "@lightdotso/ui";
 import { PencilIcon } from "lucide-react";
-import { useEffect, type FC } from "react";
+import type { FC } from "react";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -36,7 +38,17 @@ export const OwnerOverviewBanner: FC = () => {
   // ---------------------------------------------------------------------------
 
   const isDemo = useIsDemoPathname();
-  const { isOwnerModalVisible, showOwnerModal } = useModals();
+  const { isOwnerModalVisible, showOwnerModal, setOwnerModalProps } =
+    useModals();
+  const { wallet } = useAuth();
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { configuration } = useQueryConfiguration({
+    address: wallet,
+  });
 
   // ---------------------------------------------------------------------------
   // Component
@@ -56,6 +68,20 @@ export const OwnerOverviewBanner: FC = () => {
               type="button"
               className="w-full md:w-28"
               onClick={() => {
+                setOwnerModalProps({
+                  initialOwners: configuration?.owners
+                    ? configuration?.owners.map(owner => {
+                        return {
+                          address: owner.address as Address,
+                          addressOrEns: undefined,
+                          weight: owner.weight,
+                        };
+                      })
+                    : [],
+                  initialThreshold: configuration?.threshold ?? 1,
+                  onOwnerSelect: () => {},
+                });
+
                 showOwnerModal();
               }}
             >

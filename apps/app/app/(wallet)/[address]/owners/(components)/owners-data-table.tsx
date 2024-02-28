@@ -21,6 +21,7 @@ import { TableSectionWrapper } from "@lightdotso/ui";
 import { useEffect, type FC } from "react";
 import type { Address } from "viem";
 import { DataTable } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table";
+import { useIsMounted } from "@lightdotso/hooks";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -35,8 +36,6 @@ interface OwnersDataTableProps {
 // -----------------------------------------------------------------------------
 
 export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
-  const { setOwnerModalProps } = useModals();
-
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -44,26 +43,6 @@ export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
   const { configuration, isConfigurationLoading } = useQueryConfiguration({
     address: address,
   });
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
-
-  useEffect(() => {
-    setOwnerModalProps({
-      initialOwners: configuration?.owners
-        ? configuration?.owners.map(owner => {
-            return {
-              address: owner.address as Address,
-              addressOrEns: undefined,
-              weight: owner.weight,
-            };
-          })
-        : [],
-      initialThreshold: configuration?.threshold ?? 1,
-      onOwnerSelect: () => {},
-    });
-  }, [configuration, setOwnerModalProps]);
 
   // ---------------------------------------------------------------------------
   // Render
