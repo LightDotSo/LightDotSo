@@ -1869,9 +1869,6 @@ importers:
       '@lightdotso/stores':
         specifier: workspace:*
         version: link:../stores
-      '@lightdotso/templates':
-        specifier: workspace:*
-        version: link:../templates
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../ui

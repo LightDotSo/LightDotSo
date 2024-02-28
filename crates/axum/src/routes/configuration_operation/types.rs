@@ -26,6 +26,12 @@ use utoipa::ToSchema;
 pub(crate) struct ConfigurationOperation {
     /// The image hash of the configuration operation.
     pub image_hash: String,
+    /// The checkpoint of the configuration operation.
+    pub checkpoint: i64,
+    /// The threshold of the configuration operation.
+    pub threshold: i64,
+    /// The status of the configuration operation.
+    pub status: String,
 }
 
 // -----------------------------------------------------------------------------
@@ -35,6 +41,11 @@ pub(crate) struct ConfigurationOperation {
 /// Implement From<configuration_operation::Data> for ConfigurationOperation.
 impl From<configuration_operation::Data> for ConfigurationOperation {
     fn from(configuration_operation: configuration_operation::Data) -> Self {
-        Self { image_hash: configuration_operation.image_hash }
+        Self {
+            image_hash: configuration_operation.image_hash,
+            checkpoint: configuration_operation.checkpoint,
+            threshold: configuration_operation.threshold,
+            status: configuration_operation.status.to_string(),
+        }
     }
 }
