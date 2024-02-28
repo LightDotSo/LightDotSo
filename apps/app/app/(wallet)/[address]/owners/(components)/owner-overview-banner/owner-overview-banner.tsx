@@ -24,7 +24,7 @@ import {
   TooltipProvider,
 } from "@lightdotso/ui";
 import { PencilIcon } from "lucide-react";
-import type { FC } from "react";
+import { useEffect, type FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Component

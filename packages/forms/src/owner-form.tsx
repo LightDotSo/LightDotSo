@@ -26,8 +26,7 @@ import {
   useTypeQueryState,
 } from "@lightdotso/nuqs";
 import type { Owner, Owners } from "@lightdotso/nuqs";
-import type { ownerFormSchema } from "@lightdotso/schemas";
-import { newFormSchema, newFormConfigurationSchema } from "@lightdotso/schemas";
+import { ownerFormSchema } from "@lightdotso/schemas";
 import { useAuth, useFormRef, useModals, useNewForm } from "@lightdotso/stores";
 import { FooterButton } from "@lightdotso/templates";
 import {
@@ -80,13 +79,15 @@ export const OwnerForm: FC = () => {
   const { address: userAddress, ens: userEns } = useAuth();
   const { setFormControl } = useFormRef();
   const { setFormValues, fetchToCreate } = useNewForm();
-  const { hideOwnerModal } = useModals();
+  const {
+    hideOwnerModal,
+    ownerModalProps: { initialOwners, initialThreshold },
+  } = useModals();
 
   // ---------------------------------------------------------------------------
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
-  const [name] = useNameQueryState();
   const [type] = useTypeQueryState();
   const [threshold, setThreshold] = useThresholdQueryState();
   const [owners, setOwners] = useOwnersQueryState();
@@ -108,24 +109,21 @@ export const OwnerForm: FC = () => {
   const defaultValues: Partial<OwnerFormValues> = useMemo(() => {
     // Check if the type is valid
     return {
-      threshold:
-        threshold &&
-        newFormConfigurationSchema.shape.threshold.safeParse(threshold).success
-          ? newFormConfigurationSchema.shape.threshold.parse(threshold)
+      threshold: initialThreshold
+        ? initialThreshold
+        : threshold &&
+            ownerFormSchema.shape.threshold.safeParse(threshold).success
+          ? ownerFormSchema.shape.threshold.parse(threshold)
           : 1,
       // If type is personal, add two owners
-      owners:
-        defaultOwner !== undefined && owners !== undefined && owners.length > 0
+      owners: initialOwners
+        ? initialOwners
+        : owners !== undefined && owners.length > 0
           ? owners
-          : type === "personal"
-            ? [
-                { ...defaultOwner },
-                { address: undefined, addressOrEns: undefined, weight: 2 },
-              ]
-            : [defaultOwner],
+          : [defaultOwner],
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [defaultOwner]);
+  }, [initialOwners, initialThreshold]);
 
   // ---------------------------------------------------------------------------
   // Form
@@ -135,7 +133,7 @@ export const OwnerForm: FC = () => {
     mode: "all",
     reValidateMode: "onBlur",
     resolver: zodResolver(
-      newFormConfigurationSchema.superRefine((value, ctx) => {
+      ownerFormSchema.superRefine((value, ctx) => {
         // The sum of the weights of all owners must be greater than or equal to the threshold.
         const sum = value.owners.reduce((acc, owner) => acc + owner.weight, 0);
 
@@ -221,7 +219,7 @@ export const OwnerForm: FC = () => {
           setThreshold(null);
         } else {
           // Set the threshold if the value is valid integer
-          if (newFormConfigurationSchema.shape.threshold.safeParse(value)) {
+          if (ownerFormSchema.shape.threshold.safeParse(value)) {
             setThreshold(value.threshold);
           }
         }
@@ -247,16 +245,6 @@ export const OwnerForm: FC = () => {
 
   // Set the form values from the URL on mount
   useEffect(() => {
-    // Set the form values from the default values
-    setFormValues({
-      ...defaultValues,
-      name: name ?? "",
-      type:
-        type && newFormSchema.shape.type.safeParse(type).success
-          ? newFormSchema.shape.type.parse(type)
-          : "multi",
-    });
-
     // Recursively iterate the owners and validate the addresses on mount
     owners.forEach((owner, index) => {
       if (owner.address) {

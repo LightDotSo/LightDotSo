@@ -18,6 +18,16 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 // -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type Owner = {
+  address?: Address;
+  addressOrEns?: string;
+  weight: number;
+};
+
+// -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
@@ -34,7 +44,8 @@ export type ChainModalProps = {
 };
 
 export type OwnerModalProps = {
-  address: Address;
+  initialOwners: Owner[];
+  initialThreshold: number;
   onClose?: () => void;
   onOwnerSelect: (address: Address) => void;
 };
