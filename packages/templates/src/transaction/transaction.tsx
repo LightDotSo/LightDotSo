@@ -15,7 +15,7 @@
 "use client";
 
 import { CONTRACT_ADDRESSES } from "@lightdotso/const";
-import type { ConfigurationData } from "@lightdotso/data";
+import type { ConfigurationData, WalletData } from "@lightdotso/data";
 import { AssetChange } from "@lightdotso/elements";
 import { useUserOperationCreate } from "@lightdotso/hooks";
 import { useUserOperationsQueryState } from "@lightdotso/nuqs";
@@ -24,6 +24,7 @@ import {
   useQueryPaymasterGasAndPaymasterAndData,
   useQuerySimulation,
   useQueryUserOperationNonce,
+  useQueryUserOperations,
 } from "@lightdotso/query";
 import { userOperation, type UserOperation } from "@lightdotso/schemas";
 import { useFormRef, useModalSwiper } from "@lightdotso/stores";
@@ -58,6 +59,7 @@ import { useIsInsideModal } from "../modal";
 import { ModalSwiper } from "../modal-swiper";
 import { TransactionDetailInfo } from "./transaction-details-info";
 import { TransactionDevInfo } from "./transaction-dev-info";
+import { calculateInitCode } from "@lightdotso/sequence";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -84,6 +86,7 @@ type UserOperationFormValues = UserOperation;
 type TransactionProps = {
   address: Address;
   configuration: ConfigurationData;
+  wallet: WalletData;
   initialUserOperation: Omit<
     UserOperation,
     | "hash"
@@ -106,6 +109,7 @@ type TransactionProps = {
 export const Transaction: FC<TransactionProps> = ({
   address,
   configuration,
+  wallet,
   initialUserOperation,
   userOperationIndex = 0,
   isDev = false,
@@ -224,6 +228,17 @@ export const Transaction: FC<TransactionProps> = ({
     callData: targetUserOperation.callData,
   });
 
+  // Gets the history of user operations
+  const { userOperations: executedUserOperations } = useQueryUserOperations({
+    address: address as Address,
+    status: "executed",
+    offset: 0,
+    limit: 1,
+    order: "asc",
+    is_testnet: true,
+    chain_id: Number(targetUserOperation.chainId) as number,
+  });
+
   // ---------------------------------------------------------------------------
   // Wagmi
   // ---------------------------------------------------------------------------
@@ -259,7 +274,14 @@ export const Transaction: FC<TransactionProps> = ({
       sender: address as Address,
       chainId: targetUserOperation.chainId,
       nonce: targetUserOperation.nonce,
-      initCode: targetUserOperation.initCode,
+      initCode:
+        executedUserOperations && executedUserOperations?.length < 1
+          ? calculateInitCode(
+              CONTRACT_ADDRESSES["Factory"] as Address,
+              configuration.image_hash as Hex,
+              wallet.salt as Hex,
+            )
+          : targetUserOperation.initCode,
       callData: targetUserOperation.callData,
       callGasLimit: estimateUserOperationGasData?.callGasLimit
         ? fromHex(estimateUserOperationGasData?.callGasLimit as Hex, {

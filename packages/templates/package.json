@@ -37,6 +37,7 @@
     "@lightdotso/nuqs": "workspace:*",
     "@lightdotso/query": "workspace:*",
     "@lightdotso/schemas": "workspace:*",
+    "@lightdotso/sequence": "workspace:*",
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/svg": "workspace:*",
     "@lightdotso/types": "workspace:*",

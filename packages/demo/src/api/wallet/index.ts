@@ -13,6 +13,8 @@
 // limitations under the License.
 
 import type { WalletData } from "@lightdotso/data";
+import getJsonData from "./get.json";
 import listJsonData from "./list.json";
 
+export const walletGetData = getJsonData as WalletData;
 export const walletListData = listJsonData as WalletData[];
