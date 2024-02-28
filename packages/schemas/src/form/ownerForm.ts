@@ -13,24 +13,31 @@
 // limitations under the License.
 
 import { z } from "zod";
-import { userOperation } from "../web3";
+import { address, addressOrEns } from "../web3";
 
 // -----------------------------------------------------------------------------
 // Schema
 // -----------------------------------------------------------------------------
 
-const partialUserOperation = userOperation.partial();
-
-const partialUserOperations = z.array(partialUserOperation);
-
-export const confirmFormSchema = z.object({
-  transfers: partialUserOperations,
+export const ownerFormSchema = z.object({
+  threshold: z
+    .number()
+    .int()
+    .min(1, { message: "Threshold must be at least 1." }),
+  owners: z.array(
+    z.object({
+      address: address.optional(),
+      addressOrEns: addressOrEns.optional(),
+      weight: z
+        .number()
+        .int()
+        .min(1, { message: "Weight must be at least 1." }),
+    }),
+  ),
 });
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
 
-export type PartialUserOperation = z.infer<typeof partialUserOperation>;
-export type PartialUserOperations = z.infer<typeof partialUserOperations>;
-export type ConfirmForm = z.infer<typeof confirmFormSchema>;
+export type OwnerForm = z.infer<typeof ownerFormSchema>;

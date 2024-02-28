@@ -14,6 +14,10 @@
 
 "use client";
 
+import {
+  CONFIGURATION_MAX_THRESHOLD,
+  CONFIGURATION_MAX_WEIGHT,
+} from "@lightdotso/const";
 import { PlaceholderOrb } from "@lightdotso/elements";
 import {
   ownerParser,
@@ -67,7 +71,6 @@ import { isAddress } from "viem";
 import { normalize } from "viem/ens";
 import { z } from "zod";
 import { steps } from "@/app/(authenticated)/new/(components)/root/root";
-import { MAX_THRESHOLD, MAX_WEIGHT } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -556,14 +559,16 @@ export const ConfigurationForm: FC = () => {
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent className="max-h-60">
-                                  {[...Array(MAX_WEIGHT)].map((_, i) => (
-                                    <SelectItem
-                                      key={i}
-                                      value={(i + 1).toString()}
-                                    >
-                                      {i + 1}
-                                    </SelectItem>
-                                  ))}
+                                  {[...Array(CONFIGURATION_MAX_WEIGHT)].map(
+                                    (_, i) => (
+                                      <SelectItem
+                                        key={i}
+                                        value={(i + 1).toString()}
+                                      >
+                                        {i + 1}
+                                      </SelectItem>
+                                    ),
+                                  )}
                                 </SelectContent>
                               </Select>
                               <FormMessage />
@@ -636,11 +641,13 @@ export const ConfigurationForm: FC = () => {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            {[...Array(MAX_THRESHOLD)].map((_, i) => (
-                              <SelectItem key={i} value={(i + 1).toString()}>
-                                {i + 1}
-                              </SelectItem>
-                            ))}
+                            {[...Array(CONFIGURATION_MAX_THRESHOLD)].map(
+                              (_, i) => (
+                                <SelectItem key={i} value={(i + 1).toString()}>
+                                  {i + 1}
+                                </SelectItem>
+                              ),
+                            )}
                           </SelectContent>
                         </Select>
                       </FormControl>

@@ -1848,6 +1848,9 @@ importers:
       '@lightdotso/client':
         specifier: workspace:*
         version: link:../client
+      '@lightdotso/const':
+        specifier: workspace:*
+        version: link:../const
       '@lightdotso/elements':
         specifier: workspace:*
         version: link:../elements
@@ -1872,9 +1875,15 @@ importers:
       '@lightdotso/wagmi':
         specifier: workspace:*
         version: link:../wagmi
+      '@types/lodash':
+        specifier: ^4.14.202
+        version: 4.14.202
       abitype:
         specifier: ^1.0.0
         version: 1.0.0(typescript@5.3.3)(zod@3.22.4)
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       lucide-react:
         specifier: ^0.338.0
         version: 0.338.0(react@18.2.0)

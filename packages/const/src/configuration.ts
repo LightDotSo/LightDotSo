@@ -16,5 +16,5 @@
 // Max
 // -----------------------------------------------------------------------------
 
-export const MAX_WEIGHT = 8;
-export const MAX_THRESHOLD = 18;
+export const CONFIGURATION_MAX_WEIGHT = 8;
+export const CONFIGURATION_MAX_THRESHOLD = 18;
