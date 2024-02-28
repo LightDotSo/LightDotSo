@@ -24,8 +24,8 @@ use utoipa::ToSchema;
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
 pub(crate) struct ConfigurationOperation {
-    /// The id of the configuration operation.
-    pub id: String,
+    /// The image hash of the configuration operation.
+    pub image_hash: String,
 }
 
 // -----------------------------------------------------------------------------
@@ -35,6 +35,6 @@ pub(crate) struct ConfigurationOperation {
 /// Implement From<configuration_operation::Data> for ConfigurationOperation.
 impl From<configuration_operation::Data> for ConfigurationOperation {
     fn from(configuration_operation: configuration_operation::Data) -> Self {
-        Self { id: configuration_operation.id }
+        Self { image_hash: configuration_operation.image_hash }
     }
 }
