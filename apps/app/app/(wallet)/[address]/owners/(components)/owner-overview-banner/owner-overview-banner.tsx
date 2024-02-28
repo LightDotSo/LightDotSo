@@ -57,9 +57,9 @@ export const OwnerOverviewBanner: FC = () => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
-              onClick={() => setIsOwnerEdit(!isOwnerEdit)}
               type="button"
               className="w-full md:w-28"
+              onClick={() => setIsOwnerEdit(!isOwnerEdit)}
             >
               <PencilIcon className="mr-2 size-4" />
               {isOwnerEdit ? "Editing" : "Edit"}
