@@ -176,6 +176,10 @@ export const NewWalletForm: FC = () => {
     // Set the form values from the default values
     setFormValues(defaultValues);
 
+    if (defaultValues.inviteCode) {
+      form.setValue("inviteCode", defaultValues.inviteCode);
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
