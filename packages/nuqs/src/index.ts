@@ -23,10 +23,6 @@ export {
   useInviteCodeQueryState,
 } from "./useInviteCodeQueryState";
 export {
-  isOwnerEditParser,
-  useIsOwnerEditQueryState,
-} from "./useIsOwnerEditQueryState";
-export {
   isTestnetParser,
   useIsTestnetQueryState,
 } from "./useIsTestnetQueryState";

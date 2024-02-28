@@ -15,7 +15,6 @@
 "use client";
 
 import { useIsDemoPathname } from "@lightdotso/hooks";
-import { useIsOwnerEditQueryState } from "@lightdotso/nuqs";
 import {
   Button,
   Tooltip,
@@ -31,12 +30,6 @@ import type { FC } from "react";
 // -----------------------------------------------------------------------------
 
 export const OwnerOverviewBanner: FC = () => {
-  // ---------------------------------------------------------------------------
-  // Query State Hooks
-  // ---------------------------------------------------------------------------
-
-  const [isOwnerEdit, setIsOwnerEdit] = useIsOwnerEditQueryState();
-
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -59,10 +52,10 @@ export const OwnerOverviewBanner: FC = () => {
             <Button
               type="button"
               className="w-full md:w-28"
-              onClick={() => setIsOwnerEdit(!isOwnerEdit)}
+              // onClick={() => setIsOwnerEdit(!isOwnerEdit)}
             >
               <PencilIcon className="mr-2 size-4" />
-              {isOwnerEdit ? "Editing" : "Edit"}
+              Edit
             </Button>
           </TooltipTrigger>
           <TooltipContent>

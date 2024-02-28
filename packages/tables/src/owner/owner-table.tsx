@@ -15,7 +15,6 @@
 import type { OwnerData } from "@lightdotso/data";
 import { EmptyState } from "@lightdotso/elements";
 import { useDebounced, useMediaQuery } from "@lightdotso/hooks";
-import { useIsOwnerEditQueryState } from "@lightdotso/nuqs";
 import {
   Skeleton,
   Table,
@@ -42,7 +41,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, type FC, useMemo } from "react";
-import { ownerColumns, ownerEditColumns } from "./owner-columns";
+import { ownerColumns } from "./owner-columns";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -69,15 +68,9 @@ export const OwnerTable: FC<OwnerTableProps> = ({
   pageSize,
   data,
   tableOptions,
-  columns,
+  columns = ownerColumns,
   setOwnerTable,
 }) => {
-  // ---------------------------------------------------------------------------
-  // Query State Hooks
-  // ---------------------------------------------------------------------------
-
-  const [isOwnerEdit] = useIsOwnerEditQueryState();
-
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
@@ -89,12 +82,11 @@ export const OwnerTable: FC<OwnerTableProps> = ({
   // ---------------------------------------------------------------------------
 
   const tableColumns = useMemo(() => {
-    const ownerTableColumns = isOwnerEdit ? ownerEditColumns : ownerColumns;
     if (isDesktop) {
-      return ownerTableColumns;
+      return columns;
     }
-    return ownerTableColumns.filter(column => column.id !== "index");
-  }, [columns, isDesktop, isOwnerEdit]);
+    return columns.filter(column => column.id !== "index");
+  }, [columns, isDesktop]);
 
   // ---------------------------------------------------------------------------
   // Table
@@ -105,7 +97,7 @@ export const OwnerTable: FC<OwnerTableProps> = ({
     data: data || [],
     columns: tableColumns,
     enableExpanding: false,
-    enableRowSelection: isOwnerEdit ? true : false,
+    enableRowSelection: false,
     manualPagination: true,
     paginateExpandedRows: true,
     getCoreRowModel: getCoreRowModel(),
