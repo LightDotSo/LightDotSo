@@ -216,10 +216,12 @@ pub(crate) async fn v1_user_operation_signature_handler(
     let wallet_config = WalletConfig {
         checkpoint: configuration.checkpoint as u32,
         threshold: configuration.threshold as u16,
+        // Weight is not used in the signature.
         weight: 0,
         image_hash: configuration.image_hash.hex_to_bytes32()?.into(),
         tree,
         signature_type: signature_type as u8,
+        // Internal fields are not used in the signature.
         internal_root: None,
         internal_recovered_configs: None,
     };

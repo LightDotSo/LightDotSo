@@ -344,7 +344,7 @@ pub(crate) async fn v1_configuration_operation_create_handler(
                 .create(
                     configuration.checkpoint + 1,
                     format!("{:?}", image_hash_bytes),
-                    0,
+                    threshold as i64,
                     wallet::address::equals(query.address.clone()),
                     vec![],
                 )
