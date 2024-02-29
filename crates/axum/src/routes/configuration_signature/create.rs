@@ -26,15 +26,14 @@ use axum::{
     extract::{Query, State},
     Json,
 };
-use eyre::Result;
 use lightdotso_common::traits::HexToBytes;
 use lightdotso_db::models::activity::CustomParams;
 use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
 use lightdotso_prisma::{
-    configuration, configuration_operation, configuration_owner, configuration_signature, owner,
-    ActivityEntity, ActivityOperation, ConfigurationOperationStatus,
+    configuration_operation, configuration_owner, configuration_signature, ActivityEntity,
+    ActivityOperation,
 };
 use lightdotso_sequence::{
     builder::rooted_node_builder,
@@ -270,20 +269,6 @@ pub(crate) async fn v1_configuration_signature_create_handler(
             ConfigurationSignatureError::NotFound("Wallet not found".to_string()),
         ))?;
 
-    // Get the configuration signatures from the database.
-    let configuration_signatures = configuration_operation.clone().configuration_signatures.ok_or(
-        RouteError::ConfigurationSignatureError(ConfigurationSignatureError::NotFound(
-            "Configuration signatures not found".to_string(),
-        )),
-    )?;
-
-    // Get the configuration owners from the database.
-    let owners = configuration_operation.clone().configuration_owners.ok_or(
-        RouteError::ConfigurationSignatureError(ConfigurationSignatureError::NotFound(
-            "Configuration owners not found".to_string(),
-        )),
-    )?;
-
     // Create the signature the database.
     let configuration_signature = state
         .client
@@ -317,106 +302,6 @@ pub(crate) async fn v1_configuration_signature_create_handler(
         },
     )
     .await;
-
-    // Get the culmulative weight of the existing signatures.
-    let culmulative_weight:i64 =
-        // Unwrap is safe because we are fetching the configuration_owner.
-        configuration_signatures.iter().map(|sig| sig.configuration_owner.as_ref().unwrap().weight).sum();
-
-    // If the culmulative weight is greater than the threshold, update the configuration operation.
-    if culmulative_weight + configuration_owner.weight >= configuration_operation.threshold {
-        // Update the configuration operation.
-        let configuration_operation = state
-            .client
-            .configuration_operation()
-            .update(
-                configuration_operation::id::equals(configuration_operation.id.clone()),
-                vec![configuration_operation::status::set(ConfigurationOperationStatus::Confirmed)],
-            )
-            .exec()
-            .await?;
-        info!(?configuration_operation);
-
-        // ---------------------------------------------------------------------
-        // Kafka
-        // ---------------------------------------------------------------------
-
-        // Produce an activity message.
-        let _ = produce_activity_message(
-            state.producer.clone(),
-            ActivityEntity::ConfigurationOperation,
-            &ActivityMessage {
-                operation: ActivityOperation::Update,
-                log: serde_json::to_value(&configuration_operation.clone())?,
-                params: CustomParams {
-                    configuration_operation_id: Some(configuration_operation.clone().id.clone()),
-                    wallet_address: Some(wallet.address.clone()),
-                    ..Default::default()
-                },
-            },
-        )
-        .await;
-
-        // ---------------------------------------------------------------------
-        // DB
-        // ---------------------------------------------------------------------
-
-        // Create a new configuration w/ the same contents as the configuration operation.
-        let configuration: Result<configuration::Data> = state
-            .client
-            ._transaction()
-            .run(|client| async move {
-                // Create the configuration to the database.
-                let configuration_data = client
-                    .configuration()
-                    .create(
-                        configuration_operation.clone().address,
-                        configuration_operation.clone().checkpoint,
-                        configuration_operation.clone().image_hash,
-                        configuration_operation.clone().threshold,
-                        vec![],
-                    )
-                    .exec()
-                    .await?;
-                info!(?configuration_data);
-
-                // Create the owners to the database.
-                let owner_data = client
-                    .owner()
-                    .create_many(
-                        owners
-                            .iter()
-                            .enumerate()
-                            .map(|(_index, owner)| {
-                                owner::create_unchecked(
-                                    owner.clone().address,
-                                    owner.clone().weight,
-                                    owner.clone().index,
-                                    configuration_data.clone().id,
-                                    vec![owner::user_id::set(Some(
-                                        owner
-                                            .clone()
-                                            .user
-                                            .as_ref()
-                                            .unwrap()
-                                            .as_ref()
-                                            .unwrap()
-                                            .id
-                                            .clone(),
-                                    ))],
-                                )
-                            })
-                            .collect(),
-                    )
-                    .exec()
-                    .await?;
-                info!(?owner_data);
-
-                Ok(configuration_data)
-            })
-            .await;
-        info!(?configuration);
-    }
 
     // -------------------------------------------------------------------------
     // Return

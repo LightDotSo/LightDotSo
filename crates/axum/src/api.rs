@@ -244,6 +244,7 @@ use utoipa_swagger_ui::SwaggerUi;
         configuration_operation::v1_configuration_operation_get_handler,
         configuration_operation::v1_configuration_operation_list_handler,
         configuration_operation::v1_configuration_operation_list_count_handler,
+        configuration_operation::v1_configuration_operation_update_handler,
         configuration_owner::v1_configuration_owner_get_handler,
         configuration_owner::v1_configuration_owner_list_handler,
         configuration_signature::v1_configuration_signature_create_handler,
