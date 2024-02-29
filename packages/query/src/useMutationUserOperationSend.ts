@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import {
-  getSignatureUserOperation,
+  getUserOperationSignature,
   sendUserOperation,
 } from "@lightdotso/client";
 import { CONTRACT_ADDRESSES, TRANSACTION_ROW_COUNT } from "@lightdotso/const";
@@ -55,7 +55,7 @@ export const useMutationUserOperationSend = (params: UserOperationParams) => {
       const loadingToast = toast.loading("Submitting the transaction...");
 
       // Get the sig as bytes from caller
-      const sigRes = await getSignatureUserOperation({
+      const sigRes = await getUserOperationSignature({
         params: { query: { user_operation_hash: body.hash } },
       });
 

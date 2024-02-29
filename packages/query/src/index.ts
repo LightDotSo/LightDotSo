@@ -56,6 +56,7 @@ export { useQueryUserOperation } from "./useQueryUserOperation";
 export { useQueryUserOperations } from "./useQueryUserOperations";
 export { useQueryUserOperationsCount } from "./useQueryUserOperationsCount";
 export { useQueryUserOperationNonce } from "./useQueryUserOperationNonce";
+export { useQueryUserOperationSignature } from "./useQueryUserOperationSignature";
 export { useQueryWallet } from "./useQueryWallet";
 export { useQueryWallets } from "./useQueryWallets";
 export { useQueryWalletBilling } from "./useQueryWalletBilling";

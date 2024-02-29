@@ -68,7 +68,7 @@ export const getUserOperationNonce = async (
   });
 };
 
-export const getSignatureUserOperation = async (
+export const getUserOperationSignature = async (
   {
     params,
   }: {

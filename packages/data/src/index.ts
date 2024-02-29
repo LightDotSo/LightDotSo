@@ -38,6 +38,7 @@ export type {
   UserOperationData,
   UserOperationCountData,
   UserOperationNonceData,
+  UserOperationSignatureData,
 } from "./userOperation";
 export type { WalletData, WalletCountData } from "./wallet";
 export type { WalletBillingData } from "./walletBilling";

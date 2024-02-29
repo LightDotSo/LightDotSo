@@ -56,3 +56,5 @@ export type UserOperationCountData = {
 export type UserOperationNonceData = {
   nonce: number;
 };
+
+export type UserOperationSignatureData = string;

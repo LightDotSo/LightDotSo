@@ -38,6 +38,9 @@ export const user_operation = createQueryKeys("user_operation", {
   nonce: (params: UserOperationNonceParams) => ({
     queryKey: [{ params }],
   }),
+  signature: (params: UserOperationGetParams) => ({
+    queryKey: [{ params }],
+  }),
 });
 
 // -----------------------------------------------------------------------------
