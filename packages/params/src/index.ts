@@ -32,7 +32,9 @@ export type { PaymasterOperationGetParams } from "./paymasterOperation";
 export type { PortfolioParams } from "./portfolio";
 export type {
   QueueParams,
+  QueueMinimalParams,
   QueueInterpretationBodyParams,
+  QueueTransactionBodyParams,
   QueueUserOpeartionBodyParams,
 } from "./queue";
 export type { SignatureParams, SignatureCreateBodyParams } from "./signature";

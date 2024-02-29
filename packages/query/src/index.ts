@@ -20,6 +20,7 @@ export { useMutationNotificationRead } from "./useMutationNotificationRead";
 export { useMutationQueuePortfolio } from "./useMutationQueuePortfolio";
 export { useMutationQueueToken } from "./useMutationQueueToken";
 export { useMutationQueueInterpretation } from "./useMutationQueueInterpretation";
+export { useMutationQueueTransaction } from "./useMutationQueueTransaction";
 export { useMutationQueueUserOperation } from "./useMutationQueueUserOperation";
 export { useMutationSignatureCreate } from "./useMutationSignatureCreate";
 export { useMutationSimulationCreate } from "./useMutationSimulationCreate";
