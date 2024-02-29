@@ -230,20 +230,17 @@ export const useUserOperationCreate = ({
 
   useEffect(() => {
     const createUserOp = async () => {
-      if (!owner || !signedData || !userOperation || !isUserOperationLoading) {
+      if (!owner || !signedData || !userOperation) {
         return;
       }
 
-      setIsUserOperationLoading(true);
-
-      await userOperationCreate({
+      userOperationCreate({
         ownerId: owner.id,
         signedData: signedData as Hex,
         userOperation: userOperation,
       });
 
       setSignedData(undefined);
-      setIsUserOperationLoading(false);
     };
 
     createUserOp();
