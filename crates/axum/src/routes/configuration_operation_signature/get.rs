@@ -12,17 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::ConfigurationOwner;
+use super::types::ConfigurationOperationSignature;
 use crate::{
     error::RouteError, result::AppJsonResult,
-    routes::configuration_owner::error::ConfigurationOwnerError, state::AppState,
+    routes::configuration_operation_signature::error::ConfigurationOperationSignatureError,
+    state::AppState,
 };
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use lightdotso_prisma::configuration_owner;
+use lightdotso_prisma::configuration_operation_signature;
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -35,30 +36,33 @@ use utoipa::IntoParams;
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct GetQuery {
-    pub id: String,
+    /// The configuration operation id of the signature.
+    pub configuration_operation_id: String,
+    /// The configuration owner of the signature.
+    pub configuration_operation_owner_id: String,
 }
 
 // -----------------------------------------------------------------------------
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Get a owner
+/// Get a signature
 #[utoipa::path(
         get,
-        path = "/configuration_owner/get",
+        path = "/configuration_operation_signature/get",
         params(
             GetQuery
         ),
         responses(
-            (status = 200, description = "ConfigurationOwner returned successfully", body = ConfigurationOwner),
-            (status = 404, description = "ConfigurationOwner not found", body = ConfigurationOwnerError),
+            (status = 200, description = "Configuration Operation Signature returned successfully", body = ConfigurationOperationSignature),
+            (status = 404, description = "Configuration Operation Signature not found", body = ConfigurationOperationSignatureError),
         )
     )]
 #[autometrics]
-pub(crate) async fn v1_configuration_owner_get_handler(
+pub(crate) async fn v1_configuration_operation_signature_get_handler(
     get_query: Query<GetQuery>,
     State(state): State<AppState>,
-) -> AppJsonResult<ConfigurationOwner> {
+) -> AppJsonResult<ConfigurationOperationSignature> {
     // -------------------------------------------------------------------------
     // Parse
     // -------------------------------------------------------------------------
@@ -66,31 +70,45 @@ pub(crate) async fn v1_configuration_owner_get_handler(
     // Get the get query.
     let Query(query) = get_query;
 
-    info!("Get owner for address: {:?}", query);
+    info!("Get signature for address: {:?}", query);
+
+    let operation_id = query.configuration_operation_id;
+    let owner_id = query.configuration_operation_owner_id;
 
     // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
 
-    // Get the owners from the database.
-    let configuration_owner = state
+    // Get the signatures from the database.
+    let configuration_operation_signature = state
         .client
-        .configuration_owner()
-        .find_unique(configuration_owner::id::equals(query.id))
+        .configuration_operation_signature()
+        .find_unique(
+            configuration_operation_signature::configuration_operation_id_configuration_operation_owner_id(
+                operation_id,
+                owner_id,
+            ),
+        )
+        .with(configuration_operation_signature::configuration_operation_owner::fetch())
         .exec()
         .await?;
 
-    // If the configuration owner is not found, return a 404.
-    let configuration_owner = configuration_owner.ok_or(RouteError::ConfigurationOwnerError(
-        ConfigurationOwnerError::NotFound("ConfigurationOwner not found".to_string()),
-    ))?;
+    // If the signature is not found, return a 404.
+    let configuration_operation_signature = configuration_operation_signature.ok_or(
+        RouteError::ConfigurationOperationSignatureError(
+            ConfigurationOperationSignatureError::NotFound(
+                "Configuration Signature not found".to_string(),
+            ),
+        ),
+    )?;
 
     // -------------------------------------------------------------------------
     // Return
     // -------------------------------------------------------------------------
 
-    // Change the owner to the format that the API expects.
-    let configuration_owner: ConfigurationOwner = configuration_owner.into();
+    // Change the signature to the format that the API expects.
+    let configuration_operation_signature: ConfigurationOperationSignature =
+        configuration_operation_signature.into();
 
-    Ok(Json::from(configuration_owner))
+    Ok(Json::from(configuration_operation_signature))
 }

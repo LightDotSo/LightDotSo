@@ -12,29 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-pub(crate) mod error;
-pub(crate) mod get;
-pub(crate) mod list;
-pub(crate) mod types;
-
-use crate::state::AppState;
-use autometrics::autometrics;
-use axum::{routing::get, Router};
-
-pub(crate) use get::{
-    __path_v1_configuration_owner_get_handler, v1_configuration_owner_get_handler,
-};
-pub(crate) use list::{
-    __path_v1_configuration_owner_list_handler, v1_configuration_owner_list_handler,
-};
+use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
 
 // -----------------------------------------------------------------------------
-// Router
+// Error
 // -----------------------------------------------------------------------------
 
-#[autometrics]
-pub(crate) fn router() -> Router<AppState> {
-    Router::new()
-        .route("/configuration_owner/get", get(v1_configuration_owner_get_handler))
-        .route("/configuration_owner/list", get(v1_configuration_owner_list_handler))
+/// Configuration owner operation errors
+#[derive(Serialize, Deserialize, ToSchema)]
+pub(crate) enum ConfigurationOperationOwnerError {
+    /// Owner query error.
+    #[schema(example = "Bad request")]
+    BadRequest(String),
+    /// Owner not found by id.
+    #[schema(example = "id = 1")]
+    NotFound(String),
 }

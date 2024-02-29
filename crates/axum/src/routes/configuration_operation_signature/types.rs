@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use lightdotso_common::traits::VecU8ToHex;
-use lightdotso_prisma::configuration_signature;
+use lightdotso_prisma::configuration_operation_signature;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
@@ -24,9 +24,9 @@ use utoipa::ToSchema;
 /// Signature root type.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub(crate) struct ConfigurationSignature {
+pub(crate) struct ConfigurationOperationSignature {
     /// The id of the owner of the signature.
-    pub configuration_owner_id: String,
+    pub configuration_operation_owner_id: String,
     /// The signature of the user operation in hex.
     pub signature: String,
     /// The created time of the signature.
@@ -38,10 +38,12 @@ pub(crate) struct ConfigurationSignature {
 // -----------------------------------------------------------------------------
 
 /// Implement From<signature::Data> for Signature.
-impl From<configuration_signature::Data> for ConfigurationSignature {
-    fn from(signature: configuration_signature::Data) -> Self {
+impl From<configuration_operation_signature::Data> for ConfigurationOperationSignature {
+    fn from(signature: configuration_operation_signature::Data) -> Self {
         Self {
-            configuration_owner_id: signature.configuration_owner_id.to_string(),
+            configuration_operation_owner_id: signature
+                .configuration_operation_owner_id
+                .to_string(),
             signature: signature.signature.to_hex_string(),
             created_at: signature.created_at.to_rfc3339(),
         }

@@ -19,7 +19,7 @@ use crate::{
     result::AppJsonResult,
     routes::{
         configuration_operation::types::ConfigurationOperation,
-        configuration_signature::error::ConfigurationSignatureError,
+        configuration_operation_signature::error::ConfigurationOperationSignatureError,
     },
     state::AppState,
 };
@@ -34,8 +34,9 @@ use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
 use lightdotso_prisma::{
-    configuration, configuration_operation, configuration_owner, configuration_signature, owner,
-    ActivityEntity, ActivityOperation, ConfigurationOperationStatus,
+    configuration, configuration_operation, configuration_operation_owner,
+    configuration_operation_signature, owner, ActivityEntity, ActivityOperation,
+    ConfigurationOperationStatus,
 };
 use lightdotso_tracing::tracing::info;
 use serde::Deserialize;
@@ -96,40 +97,46 @@ pub(crate) async fn v1_configuration_operation_update_handler(
         .find_unique(configuration_operation::id::equals(configuration_operation_id))
         .with(configuration_operation::wallet::fetch())
         .with(
-            configuration_operation::configuration_signatures::fetch(vec![])
-                .with(configuration_signature::configuration_owner::fetch()),
+            configuration_operation::configuration_operation_signatures::fetch(vec![])
+                .with(configuration_operation_signature::configuration_operation_owner::fetch()),
         )
         .with(
-            configuration_operation::configuration_owners::fetch(vec![])
-                .with(configuration_owner::user::fetch()),
+            configuration_operation::configuration_operation_owners::fetch(vec![])
+                .with(configuration_operation_owner::user::fetch()),
         )
         .exec()
         .await?;
 
     // If the user operation is not found, return a 404.
     let configuration_operation =
-        configuration_operation.ok_or(RouteError::ConfigurationSignatureError(
-            ConfigurationSignatureError::NotFound("User operation not found".to_string()),
+        configuration_operation.ok_or(RouteError::ConfigurationOperationSignatureError(
+            ConfigurationOperationSignatureError::NotFound("User operation not found".to_string()),
         ))?;
 
     // Get the wallet from the database.
-    let wallet =
-        configuration_operation.clone().wallet.ok_or(RouteError::ConfigurationSignatureError(
-            ConfigurationSignatureError::NotFound("Wallet not found".to_string()),
-        ))?;
-
-    // Get the configuration signatures from the database.
-    let configuration_signatures = configuration_operation.clone().configuration_signatures.ok_or(
-        RouteError::ConfigurationSignatureError(ConfigurationSignatureError::NotFound(
-            "Configuration signatures not found".to_string(),
-        )),
+    let wallet = configuration_operation.clone().wallet.ok_or(
+        RouteError::ConfigurationOperationSignatureError(
+            ConfigurationOperationSignatureError::NotFound("Wallet not found".to_string()),
+        ),
     )?;
 
+    // Get the configuration signatures from the database.
+    let configuration_operation_signatures = configuration_operation
+        .clone()
+        .configuration_operation_signatures
+        .ok_or(RouteError::ConfigurationOperationSignatureError(
+            ConfigurationOperationSignatureError::NotFound(
+                "Configuration signatures not found".to_string(),
+            ),
+        ))?;
+
     // Get the configuration owners from the database.
-    let owners = configuration_operation.clone().configuration_owners.ok_or(
-        RouteError::ConfigurationSignatureError(ConfigurationSignatureError::NotFound(
-            "Configuration owners not found".to_string(),
-        )),
+    let owners = configuration_operation.clone().configuration_operation_owners.ok_or(
+        RouteError::ConfigurationOperationSignatureError(
+            ConfigurationOperationSignatureError::NotFound(
+                "Configuration owners not found".to_string(),
+            ),
+        ),
     )?;
 
     // -------------------------------------------------------------------------
@@ -138,8 +145,8 @@ pub(crate) async fn v1_configuration_operation_update_handler(
 
     // Get the culmulative weight of the existing signatures.
     let culmulative_weight:i64 =
-        // Unwrap is safe because we are fetching the configuration_owner.
-        configuration_signatures.iter().map(|sig| sig.configuration_owner.as_ref().unwrap().weight).sum();
+        // Unwrap is safe because we are fetching the configuration_operation_owner.
+        configuration_operation_signatures.iter().map(|sig| sig.configuration_operation_owner.as_ref().unwrap().weight).sum();
 
     // If the culmulative weight is greater than the threshold, update the configuration operation.
     if culmulative_weight >= configuration_operation.threshold {

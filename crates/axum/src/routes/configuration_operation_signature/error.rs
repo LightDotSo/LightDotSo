@@ -19,13 +19,13 @@ use utoipa::ToSchema;
 // Error
 // -----------------------------------------------------------------------------
 
-/// Configuration owner operation errors
+/// ConfigurationOperationSignature operation errors
 #[derive(Serialize, Deserialize, ToSchema)]
-pub(crate) enum ConfigurationOwnerError {
-    /// Owner query error.
+pub(crate) enum ConfigurationOperationSignatureError {
+    /// ConfigurationOperationSignature query error.
     #[schema(example = "Bad request")]
     BadRequest(String),
-    /// Owner not found by id.
+    /// ConfigurationOperationSignature not found by id.
     #[schema(example = "id = 1")]
     NotFound(String),
 }

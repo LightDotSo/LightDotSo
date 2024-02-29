@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use lightdotso_prisma::configuration_owner;
+use lightdotso_prisma::configuration_operation_owner;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
@@ -23,7 +23,7 @@ use utoipa::ToSchema;
 /// Owner root type.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub(crate) struct ConfigurationOwner {
+pub(crate) struct ConfigurationOperationOwner {
     /// The id of the owner.
     pub id: String,
     /// The address of the owner.
@@ -36,9 +36,9 @@ pub(crate) struct ConfigurationOwner {
 // From
 // -----------------------------------------------------------------------------
 
-/// Implement From<configuration_owner::Data> for Owner.
-impl From<configuration_owner::Data> for ConfigurationOwner {
-    fn from(owner: configuration_owner::Data) -> Self {
+/// Implement From<configuration_operation_owner::Data> for Owner.
+impl From<configuration_operation_owner::Data> for ConfigurationOperationOwner {
+    fn from(owner: configuration_operation_owner::Data) -> Self {
         Self { id: owner.id.to_string(), address: owner.address.to_string(), weight: owner.weight }
     }
 }

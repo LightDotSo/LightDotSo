@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use super::types::ConfigurationSignature;
+use super::types::ConfigurationOperationSignature;
 use crate::{result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
     Json,
 };
-use lightdotso_prisma::configuration_signature;
+use lightdotso_prisma::configuration_operation_signature;
 use prisma_client_rust::Direction;
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -47,20 +47,20 @@ pub struct ListQuery {
 /// Returns a list of signatures
 #[utoipa::path(
         get,
-        path = "/configuration_signature/list",
+        path = "/configuration_operation_signature/list",
         params(
             ListQuery
         ),
         responses(
-            (status = 200, description = "Configuration Signatures returned successfully", body = [ConfigurationSignature]),
-            (status = 500, description = "Configuration Signature bad request", body = ConfigurationSignatureError),
+            (status = 200, description = "Configuration Signatures returned successfully", body = [ConfigurationOperationSignature]),
+            (status = 500, description = "Configuration Signature bad request", body = ConfigurationOperationSignatureError),
         )
     )]
 #[autometrics]
-pub(crate) async fn v1_configuration_signature_list_handler(
+pub(crate) async fn v1_configuration_operation_signature_list_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
-) -> AppJsonResult<Vec<ConfigurationSignature>> {
+) -> AppJsonResult<Vec<ConfigurationOperationSignature>> {
     // -------------------------------------------------------------------------
     // Parse
     // -------------------------------------------------------------------------
@@ -75,7 +75,7 @@ pub(crate) async fn v1_configuration_signature_list_handler(
     // Construct the query parameters.
     let query_params = match query.configuration_operation_id {
         Some(configuration_operation_id) => {
-            vec![configuration_signature::configuration_operation_id::equals(
+            vec![configuration_operation_signature::configuration_operation_id::equals(
                 configuration_operation_id,
             )]
         }
@@ -87,11 +87,11 @@ pub(crate) async fn v1_configuration_signature_list_handler(
     // -------------------------------------------------------------------------
 
     // Get the signatures from the database.
-    let configuration_signatures = state
+    let configuration_operation_signatures = state
         .client
-        .configuration_signature()
+        .configuration_operation_signature()
         .find_many(query_params)
-        .order_by(configuration_signature::created_at::order(Direction::Desc))
+        .order_by(configuration_operation_signature::created_at::order(Direction::Desc))
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
         .exec()
@@ -101,9 +101,12 @@ pub(crate) async fn v1_configuration_signature_list_handler(
     // Return
     // -------------------------------------------------------------------------
 
-    // Change the configuration_signatures to the format that the API expects.
-    let configuration_signatures: Vec<ConfigurationSignature> =
-        configuration_signatures.into_iter().map(ConfigurationSignature::from).collect();
+    // Change the configuration_operation_signatures to the format that the API expects.
+    let configuration_operation_signatures: Vec<ConfigurationOperationSignature> =
+        configuration_operation_signatures
+            .into_iter()
+            .map(ConfigurationOperationSignature::from)
+            .collect();
 
-    Ok(Json::from(configuration_signatures))
+    Ok(Json::from(configuration_operation_signatures))
 }

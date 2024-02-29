@@ -14,7 +14,7 @@
 
 #![allow(clippy::unwrap_used)]
 
-// use super::types::ConfigurationSignature;
+// use super::types::ConfigurationOperationSignature;
 use crate::{
     error::RouteError,
     result::{AppError, AppJsonResult},
@@ -22,7 +22,7 @@ use crate::{
         configuration_operation::{
             error::ConfigurationOperationError, types::ConfigurationOperation,
         },
-        configuration_signature::error::ConfigurationSignatureError,
+        configuration_operation_signature::error::ConfigurationOperationSignatureError,
     },
     state::AppState,
 };
@@ -42,7 +42,7 @@ use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
 use lightdotso_prisma::{
-    configuration, configuration_operation, configuration_owner, owner, user, wallet,
+    configuration, configuration_operation, configuration_operation_owner, owner, user, wallet,
     ActivityEntity, ActivityOperation,
 };
 use lightdotso_sequence::{
@@ -165,8 +165,8 @@ pub(crate) async fn v1_configuration_operation_create_handler(
     info!(?configuration);
 
     // If the configuration is not found, return a 404.
-    let configuration = configuration.ok_or(RouteError::ConfigurationSignatureError(
-        ConfigurationSignatureError::NotFound("Configuration not found".to_string()),
+    let configuration = configuration.ok_or(RouteError::ConfigurationOperationSignatureError(
+        ConfigurationOperationSignatureError::NotFound("Configuration not found".to_string()),
     ))?;
 
     // -------------------------------------------------------------------------
@@ -355,18 +355,18 @@ pub(crate) async fn v1_configuration_operation_create_handler(
 
             // Create the owners to the database.
             let owner_data = client
-                .configuration_owner()
+                .configuration_operation_owner()
                 .create_many(
                     owners
                         .iter()
                         .enumerate()
                         .map(|(index, config_owner)| {
-                            configuration_owner::create_unchecked(
+                            configuration_operation_owner::create_unchecked(
                                 to_checksum(&config_owner.address.parse::<H160>().unwrap(), None),
                                 config_owner.weight.into(),
                                 index as i32,
                                 configuration_operation.clone().id,
-                                vec![configuration_owner::user_id::set(Some(
+                                vec![configuration_operation_owner::user_id::set(Some(
                                     user_data
                                         .iter()
                                         .find(|user| {
@@ -402,17 +402,17 @@ pub(crate) async fn v1_configuration_operation_create_handler(
     info!(?configuration_operation);
 
     // Get the configuration owner from the database.
-    let configuration_owner = state
+    let configuration_operation_owner = state
         .client
-        .configuration_owner()
-        .find_many(vec![configuration_owner::configuration_operation_id::equals(
+        .configuration_operation_owner()
+        .find_many(vec![configuration_operation_owner::configuration_operation_id::equals(
             configuration_operation.id.clone(),
         )])
         .exec()
         .await?;
 
     // Get the matching configuration owner same as the signature address.
-    let configuration_owner = configuration_owner
+    let configuration_operation_owner = configuration_operation_owner
         .iter()
         .find(|config_owner| {
             config_owner
@@ -424,18 +424,18 @@ pub(crate) async fn v1_configuration_operation_create_handler(
         .ok_or(AppError::NotFound)?;
 
     // Create the signature the database.
-    let configuration_signature = state
+    let configuration_operation_signature = state
         .client
-        .configuration_signature()
+        .configuration_operation_signature()
         .create(
             sig.signature.hex_to_bytes()?,
             configuration_operation::id::equals(configuration_operation.id.clone()),
-            configuration_owner::id::equals(configuration_owner.id.clone()),
+            configuration_operation_owner::id::equals(configuration_operation_owner.id.clone()),
             vec![],
         )
         .exec()
         .await?;
-    info!(?configuration_signature);
+    info!(?configuration_operation_signature);
 
     // -------------------------------------------------------------------------
     // Kafka
@@ -460,12 +460,14 @@ pub(crate) async fn v1_configuration_operation_create_handler(
     // Produce an activity message.
     let _ = produce_activity_message(
         state.producer.clone(),
-        ActivityEntity::ConfigurationSignature,
+        ActivityEntity::ConfigurationOperationSignature,
         &ActivityMessage {
             operation: ActivityOperation::Create,
-            log: serde_json::to_value(&configuration_signature)?,
+            log: serde_json::to_value(&configuration_operation_signature)?,
             params: CustomParams {
-                configuration_signature_id: Some(configuration_signature.id.clone()),
+                configuration_operation_signature_id: Some(
+                    configuration_operation_signature.id.clone(),
+                ),
                 configuration_operation_id: Some(configuration_operation.id.clone()),
                 wallet_address: Some(wallet.address.clone()),
                 ..Default::default()
