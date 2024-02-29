@@ -158,8 +158,10 @@ export const useConfigurationOperationCreate = ({
 
   // Sync the loading state
   useEffect(() => {
-    setIsConfigurationOperationLoading(isSignLoading);
-  }, [isSignLoading]);
+    setIsConfigurationOperationLoading(
+      isSignLoading || isConfigurationOperationSimulationLoading,
+    );
+  }, [isSignLoading, isConfigurationOperationSimulationLoading]);
 
   // Sync the signed data
   useEffect(() => {
