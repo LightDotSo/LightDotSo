@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getWalletBilling } from "@lightdotso/client";
-import type { WalletBillingData } from "@lightdotso/data";
-import type { WalletBillingParams } from "@lightdotso/params";
+import { createConfigurationOperation } from "@lightdotso/client";
+import type { ConfigurationOperationData } from "@lightdotso/data";
+import type { ConfigurationOperationSimulationParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -23,7 +23,9 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 // Query
 // -----------------------------------------------------------------------------
 
-export const useQueryWalletBilling = (params: WalletBillingParams) => {
+export const useQueryConfigurationOperationSimulation = (
+  params: ConfigurationOperationSimulationParams,
+) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -36,27 +38,36 @@ export const useQueryWalletBilling = (params: WalletBillingParams) => {
 
   const queryClient = useQueryClient();
 
-  const currentData: WalletBillingData | undefined = queryClient.getQueryData(
-    queryKeys.wallet.billing({ address: params.address }).queryKey,
-  );
+  const currentData: ConfigurationOperationData | undefined =
+    queryClient.getQueryData(
+      queryKeys.configuration.get({ address: params.address }).queryKey,
+    );
 
   const {
-    data: walletBilling,
-    isLoading: isWalletBillingLoading,
-    refetch: refetchWalletBilling,
+    data: configurationOperationSimulation,
+    isLoading: isConfigurationOperationSimulationLoading,
     failureCount,
-  } = useQuery<WalletBillingData | null>({
-    queryKey: queryKeys.wallet.billing({ address: params.address }).queryKey,
+  } = useQuery<ConfigurationOperationData | null>({
+    queryKey: queryKeys.configuration.get({ address: params.address }).queryKey,
     queryFn: async () => {
       if (!params.address) {
         return null;
       }
 
-      const res = await getWalletBilling(
+      const res = await createConfigurationOperation(
         {
           params: {
             query: {
               address: params.address,
+              simulate: true,
+            },
+          },
+          body: {
+            owners: params.owners,
+            threshold: params.threshold,
+            signature: {
+              owner_id: params.ownerId,
+              signature: "0x",
             },
           },
         },
@@ -78,8 +89,7 @@ export const useQueryWalletBilling = (params: WalletBillingParams) => {
   });
 
   return {
-    walletBilling,
-    isWalletBillingLoading,
-    refetchWalletBilling,
+    configurationOperationSimulation,
+    isConfigurationOperationSimulationLoading,
   };
 };

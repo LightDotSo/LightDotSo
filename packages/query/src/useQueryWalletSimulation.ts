@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getWalletBilling } from "@lightdotso/client";
-import type { WalletBillingData } from "@lightdotso/data";
-import type { WalletBillingParams } from "@lightdotso/params";
+import { createWallet } from "@lightdotso/client";
+import type { WalletData } from "@lightdotso/data";
+import type { WalletCreateBodyParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -23,7 +23,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 // Query
 // -----------------------------------------------------------------------------
 
-export const useQueryWalletBilling = (params: WalletBillingParams) => {
+export const useQueryWalletSimulation = (params: WalletCreateBodyParams) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -36,28 +36,30 @@ export const useQueryWalletBilling = (params: WalletBillingParams) => {
 
   const queryClient = useQueryClient();
 
-  const currentData: WalletBillingData | undefined = queryClient.getQueryData(
-    queryKeys.wallet.billing({ address: params.address }).queryKey,
+  const currentData: WalletData | undefined = queryClient.getQueryData(
+    queryKeys.wallet.get({ address: params.address }).queryKey,
   );
 
-  const {
-    data: walletBilling,
-    isLoading: isWalletBillingLoading,
-    refetch: refetchWalletBilling,
-    failureCount,
-  } = useQuery<WalletBillingData | null>({
-    queryKey: queryKeys.wallet.billing({ address: params.address }).queryKey,
+  const { data: walletSimulation, failureCount } = useQuery<WalletData | null>({
+    queryKey: queryKeys.wallet.get({ address: params.address }).queryKey,
     queryFn: async () => {
       if (!params.address) {
         return null;
       }
 
-      const res = await getWalletBilling(
+      const res = await createWallet(
         {
           params: {
             query: {
-              address: params.address,
+              simulate: true,
             },
+          },
+          body: {
+            invite_code: params.invite_code,
+            name: params.name,
+            salt: params.salt,
+            threshold: params.threshold,
+            owners: params.owners,
           },
         },
         clientType,
@@ -78,8 +80,6 @@ export const useQueryWalletBilling = (params: WalletBillingParams) => {
   });
 
   return {
-    walletBilling,
-    isWalletBillingLoading,
-    refetchWalletBilling,
+    walletSimulation,
   };
 };

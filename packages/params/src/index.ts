@@ -17,6 +17,7 @@ export type { AuthParams, AuthVerifyBodyParams } from "./auth";
 export type { ConfigurationParams } from "./configuration";
 export type {
   ConfigurationOperationParams,
+  ConfigurationOperationSimulationParams,
   ConfigurationOperationCreateBodyParams,
 } from "./configurationOperation";
 export type { EnsListParams } from "./ens";

@@ -2682,25 +2682,25 @@ export interface operations {
       /** @description Signature created successfully */
       200: {
         content: {
-          "application/json": components["schemas"]["Signature"];
+          "application/json": components["schemas"]["ConfigurationOperation"];
         };
       };
       /** @description Invalid Configuration */
       400: {
         content: {
-          "application/json": components["schemas"]["SignatureError"];
+          "application/json": components["schemas"]["ConfigurationOperationError"];
         };
       };
       /** @description Signature already exists */
       409: {
         content: {
-          "application/json": components["schemas"]["SignatureError"];
+          "application/json": components["schemas"]["ConfigurationOperationError"];
         };
       };
       /** @description Signature internal error */
       500: {
         content: {
-          "application/json": components["schemas"]["SignatureError"];
+          "application/json": components["schemas"]["ConfigurationOperationError"];
         };
       };
     };

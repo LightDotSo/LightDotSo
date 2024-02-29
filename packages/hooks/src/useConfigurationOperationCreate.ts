@@ -18,19 +18,14 @@ import type { ConfigurationOperationCreateBodyParams } from "@lightdotso/params"
 import {
   useQueryConfiguration,
   useMutationConfigurationOperationCreate,
+  useQueryConfigurationOperationSimulation,
 } from "@lightdotso/query";
-// import { hashSetImageHash, subdigestOf } from "@lightdotso/sequence";
+import { hashSetImageHash, subdigestOf } from "@lightdotso/sequence";
 import { useAuth } from "@lightdotso/stores";
 import { useSignMessage } from "@lightdotso/wagmi";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Address, Hex } from "viem";
-import {
-  isAddressEqual,
-  toBytes,
-  // hexToBytes,
-  // // fromHex,
-  // decodeFunctionData,
-} from "viem";
+import { isAddressEqual, toBytes } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -38,7 +33,7 @@ import {
 
 type ConfigurationOperationCreateProps = {
   address: Address;
-  params?: ConfigurationOperationCreateBodyParams;
+  params: Omit<ConfigurationOperationCreateBodyParams, "signedData">;
 };
 
 // -----------------------------------------------------------------------------
@@ -54,7 +49,6 @@ export const useConfigurationOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   const { address: userAddress } = useAuth();
-  // const { setPageIndex } = useModalSwiper();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -63,6 +57,14 @@ export const useConfigurationOperationCreate = ({
   const { configuration } = useQueryConfiguration({
     address,
   });
+
+  const { configurationOperationSimulation } =
+    useQueryConfigurationOperationSimulation({
+      address,
+      threshold: params.threshold,
+      ownerId: params.ownerId,
+      owners: params.owners,
+    });
 
   const { configurationOperationCreate } =
     useMutationConfigurationOperationCreate({
@@ -83,14 +85,14 @@ export const useConfigurationOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   const subdigest = useMemo(() => {
-    // return subdigestOf(
-    //   address,
-    //   hashSetImageHash(
-    //     calculateImageHash()
-    //   )
-    // );
-    return "0x";
-  }, [address]);
+    return subdigestOf(
+      address,
+      toBytes(
+        hashSetImageHash(configurationOperationSimulation?.image_hash as Hex),
+      ),
+      BigInt(0),
+    );
+  }, [address, configurationOperationSimulation?.image_hash]);
 
   // ---------------------------------------------------------------------------
   // Wagmi
@@ -143,7 +145,7 @@ export const useConfigurationOperationCreate = ({
   }, [data]);
 
   useEffect(() => {
-    const createUserOp = async () => {
+    const createConfigurationOp = async () => {
       if (!owner || !signedData || !params) {
         return;
       }
@@ -158,7 +160,7 @@ export const useConfigurationOperationCreate = ({
       setSignedData(undefined);
     };
 
-    createUserOp();
+    createConfigurationOp();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signedData, owner, configuration?.threshold, address, params]);
 

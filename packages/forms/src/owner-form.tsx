@@ -22,6 +22,7 @@ import { PlaceholderOrb } from "@lightdotso/elements";
 import { useConfigurationOperationCreate } from "@lightdotso/hooks";
 import { useOwnersQueryState, useThresholdQueryState } from "@lightdotso/nuqs";
 import type { Owner, Owners } from "@lightdotso/nuqs";
+import { useQueryConfiguration } from "@lightdotso/query";
 import { ownerFormSchema } from "@lightdotso/schemas";
 import { useAuth, useFormRef, useModals, useNewForm } from "@lightdotso/stores";
 import {
@@ -54,7 +55,7 @@ import { useEffect, useMemo } from "react";
 import type { FC } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import type { Address } from "viem";
-import { isAddress } from "viem";
+import { isAddress, isAddressEqual } from "viem";
 import { normalize } from "viem/ens";
 import { z } from "zod";
 
@@ -74,7 +75,7 @@ export const OwnerForm: FC = () => {
   // ---------------------------------------------------------------------------
 
   const { address: userAddress, ens: userEns, wallet } = useAuth();
-  const { setIsFormDisabled, setIsFormLoading, setFormControl } = useFormRef();
+  const { setIsFormDisabled, setFormControl } = useFormRef();
   const { setFormValues, fetchToCreate } = useNewForm();
   const {
     ownerModalProps: { initialOwners, initialThreshold },
@@ -265,12 +266,30 @@ export const OwnerForm: FC = () => {
   }, [form.control, setFormControl]);
 
   // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { configuration } = useQueryConfiguration({
+    address: wallet,
+  });
+
+  // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const isFormValid = useMemo(() => {
     return form.formState.isValid && isEmpty(form.formState.errors);
   }, [form.formState]);
+
+  const owner = useMemo(() => {
+    if (!userAddress) {
+      return;
+    }
+
+    return configuration?.owners?.find(owner =>
+      isAddressEqual(owner.address as Address, userAddress),
+    );
+  }, [configuration?.owners, userAddress]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -292,17 +311,24 @@ export const OwnerForm: FC = () => {
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const { isConfigurationOperationCreatable } = useConfigurationOperationCreate(
-    {
+  const { isConfigurationOperationCreatable, signConfigurationOperation } =
+    useConfigurationOperationCreate({
       address: wallet as Address,
-    },
-  );
+      params: {
+        threshold: form.watch("threshold"),
+        owners: form.watch("owners").map((owner: Owner) => ({
+          address: owner.address as string,
+          weight: owner.weight,
+        })),
+        ownerId: owner!.id,
+      },
+    });
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
-  async function onSubmit(data: OwnerFormValues) {
+  async function onSubmit() {
     if (!userAddress) {
       toast.error("Please connect your wallet to continue.");
       return;
@@ -312,6 +338,8 @@ export const OwnerForm: FC = () => {
       toast.error("You are not an owner of this wallet.");
       return;
     }
+
+    signConfigurationOperation();
   }
   // ---------------------------------------------------------------------------
   // Validation

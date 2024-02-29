@@ -1860,6 +1860,9 @@ importers:
       '@lightdotso/nuqs':
         specifier: workspace:*
         version: link:../nuqs
+      '@lightdotso/query':
+        specifier: workspace:*
+        version: link:../query
       '@lightdotso/schemas':
         specifier: workspace:*
         version: link:../schemas

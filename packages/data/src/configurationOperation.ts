@@ -12,33 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { Address, Hex } from "viem";
-
 // -----------------------------------------------------------------------------
-// Params
+// Data
 // -----------------------------------------------------------------------------
 
-export type ConfigurationOperationParams = {
-  address: Address | null | undefined;
-  simulate: boolean | null | undefined;
-};
-
-export type ConfigurationOperationSimulationParams = Omit<
-  ConfigurationOperationParams,
-  "simulate"
-> &
-  Omit<ConfigurationOperationCreateBodyParams, "signedData">;
-
-// -----------------------------------------------------------------------------
-// Params Body
-// -----------------------------------------------------------------------------
-
-export type ConfigurationOperationCreateBodyParams = {
+export type ConfigurationOperationData = {
+  checkpoint: number;
+  image_hash: string;
+  status: string;
   threshold: number;
-  ownerId: string;
-  signedData: Hex;
-  owners: {
-    address: string;
-    weight: number;
-  }[];
 };

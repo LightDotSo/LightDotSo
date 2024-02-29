@@ -83,7 +83,7 @@ const ProgressTransactionInternal: FC<PendingTransaction> = ({
       removePendingTransaction(hash);
       queueTransaction({ chain_id: chainId, hash });
     }
-  }, [isSuccess, hash, chainId, removePendingTransaction]);
+  }, [isSuccess, hash, chainId, removePendingTransaction, queueTransaction]);
 
   return null;
 };

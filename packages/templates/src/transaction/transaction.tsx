@@ -25,6 +25,7 @@ import {
   useQuerySimulation,
   useQueryUserOperationNonce,
   useQueryUserOperations,
+  useQueryWalletBilling,
 } from "@lightdotso/query";
 import { userOperation, type UserOperation } from "@lightdotso/schemas";
 import { calculateInitCode } from "@lightdotso/sequence";
@@ -143,6 +144,10 @@ export const Transaction: FC<TransactionProps> = ({
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
+
+  const { walletBilling, isWalletBillingLoading } = useQueryWalletBilling({
+    address,
+  });
 
   // Gets the user operation nonce
   const { userOperationNonce, isUserOperationNonceLoading } =
@@ -643,6 +648,10 @@ export const Transaction: FC<TransactionProps> = ({
       data: executedUserOperations,
     },
     {
+      title: "walletBilling",
+      data: walletBilling,
+    },
+    {
       title: "owners",
       data: configuration.owners,
     },
@@ -685,6 +694,10 @@ export const Transaction: FC<TransactionProps> = ({
     {
       title: "isValidUserOperation",
       data: isValidUserOperation,
+    },
+    {
+      title: "isWalletBillingLoading",
+      data: isWalletBillingLoading,
     },
   ];
 
