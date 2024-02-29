@@ -126,6 +126,7 @@ export const useConfigurationOperationCreate = ({
     if (!subdigest) {
       return;
     }
+    console.info("subdigest:", subdigest);
 
     signMessage({ message: { raw: toBytes(subdigest) } });
   }, [subdigest, signMessage]);
