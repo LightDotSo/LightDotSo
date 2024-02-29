@@ -18,10 +18,13 @@ import type { Address } from "viem";
 // Params
 // -----------------------------------------------------------------------------
 
-export type QueueParams = {
-  address: Address | null | undefined;
+export type QueueMinimalParams = {
   isMinimal?: boolean;
 };
+
+export type QueueParams = {
+  address: Address | null | undefined;
+} & QueueMinimalParams;
 
 // -----------------------------------------------------------------------------
 // Params Body
@@ -30,6 +33,11 @@ export type QueueParams = {
 export type QueueInterpretationBodyParams = {
   transaction_hash?: string | null | undefined;
   user_operation_hash?: string | null | undefined;
+};
+
+export type QueueTransactionBodyParams = {
+  chain_id: number;
+  hash: string;
 };
 
 export type QueueUserOpeartionBodyParams = {

@@ -95,6 +95,33 @@ export const createQueueInterpretation = async (
   });
 };
 
+export const createQueueTransaction = async (
+  {
+    params,
+  }: {
+    params: {
+      query: {
+        chain_id: number;
+        hash: string;
+      };
+    };
+  },
+  clientType?: ClientType,
+) => {
+  const client = getClient(clientType);
+
+  return ResultAsync.fromPromise(
+    client.POST("/queue/transaction", {
+      // @ts-ignore
+      next: { revalidate: 0 },
+      params,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
 export const createQueueUserOperation = async (
   {
     params,

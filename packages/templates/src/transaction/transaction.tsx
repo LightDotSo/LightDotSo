@@ -27,6 +27,7 @@ import {
   useQueryUserOperations,
 } from "@lightdotso/query";
 import { userOperation, type UserOperation } from "@lightdotso/schemas";
+import { calculateInitCode } from "@lightdotso/sequence";
 import { useFormRef, useModalSwiper } from "@lightdotso/stores";
 import {
   Button,
@@ -59,7 +60,6 @@ import { useIsInsideModal } from "../modal";
 import { ModalSwiper } from "../modal-swiper";
 import { TransactionDetailInfo } from "./transaction-details-info";
 import { TransactionDevInfo } from "./transaction-dev-info";
-import { calculateInitCode } from "@lightdotso/sequence";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -144,11 +144,26 @@ export const Transaction: FC<TransactionProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
+  // Gets the user operation nonce
   const { userOperationNonce, isUserOperationNonceLoading } =
     useQueryUserOperationNonce({
       address: address,
       chain_id: Number(initialUserOperation.chainId),
     });
+
+  // Gets the history of user operations
+  const {
+    userOperations: executedUserOperations,
+    isUserOperationsLoading: isExecutedUserOperationsLoading,
+  } = useQueryUserOperations({
+    address: address as Address,
+    status: "executed",
+    offset: 0,
+    limit: 1,
+    order: "asc",
+    is_testnet: true,
+    chain_id: Number(initialUserOperation.chainId) as number,
+  });
 
   // ---------------------------------------------------------------------------
   // Form
@@ -185,10 +200,19 @@ export const Transaction: FC<TransactionProps> = ({
           : partialUserOperation.nonce
         : partialUserOperation.nonce;
 
+    const updatedInitCode =
+      executedUserOperations && executedUserOperations?.length < 1
+        ? calculateInitCode(
+            CONTRACT_ADDRESSES["Factory"] as Address,
+            configuration.image_hash as Hex,
+            wallet.salt as Hex,
+          )
+        : partialUserOperation.initCode;
+
     return {
       sender: partialUserOperation?.sender ?? address,
       chainId: partialUserOperation?.chainId ?? BigInt(0),
-      initCode: partialUserOperation?.initCode ?? "0x",
+      initCode: updatedInitCode ?? "0x",
       nonce: updatedMinimumNonce ?? BigInt(0),
       callData: partialUserOperation?.callData ?? "0x",
       callGasLimit: partialUserOperation?.callGasLimit ?? BigInt(0),
@@ -200,7 +224,7 @@ export const Transaction: FC<TransactionProps> = ({
         partialUserOperation?.maxPriorityFeePerGas ?? BigInt(0),
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userOperations]);
+  }, [userOperations, executedUserOperations]);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -226,17 +250,6 @@ export const Transaction: FC<TransactionProps> = ({
     nonce: targetUserOperation.nonce,
     initCode: targetUserOperation.initCode,
     callData: targetUserOperation.callData,
-  });
-
-  // Gets the history of user operations
-  const { userOperations: executedUserOperations } = useQueryUserOperations({
-    address: address as Address,
-    status: "executed",
-    offset: 0,
-    limit: 1,
-    order: "asc",
-    is_testnet: true,
-    chain_id: Number(targetUserOperation.chainId) as number,
   });
 
   // ---------------------------------------------------------------------------
@@ -274,14 +287,7 @@ export const Transaction: FC<TransactionProps> = ({
       sender: address as Address,
       chainId: targetUserOperation.chainId,
       nonce: targetUserOperation.nonce,
-      initCode:
-        executedUserOperations && executedUserOperations?.length < 1
-          ? calculateInitCode(
-              CONTRACT_ADDRESSES["Factory"] as Address,
-              configuration.image_hash as Hex,
-              wallet.salt as Hex,
-            )
-          : targetUserOperation.initCode,
+      initCode: targetUserOperation.initCode,
       callData: targetUserOperation.callData,
       callGasLimit: estimateUserOperationGasData?.callGasLimit
         ? fromHex(estimateUserOperationGasData?.callGasLimit as Hex, {
@@ -561,6 +567,128 @@ export const Transaction: FC<TransactionProps> = ({
   ]);
 
   // ---------------------------------------------------------------------------
+  // Local Variables
+  // ---------------------------------------------------------------------------
+
+  const transactionInfoData: Array<{
+    title: string;
+    data: any;
+    isNumber?: boolean;
+  }> = [
+    { title: "targetUserOperation", data: targetUserOperation },
+    { title: "updatedUserOperation", data: updatedUserOperation },
+    { title: "userOperationWithHash", data: userOperationWithHash },
+    {
+      title: "estimateUserOperationGasData",
+      data: estimateUserOperationGasData,
+    },
+    {
+      title: "feesPerGas",
+      data: feesPerGas,
+    },
+    {
+      title: "estimateGas",
+      data: estimateGas,
+    },
+    {
+      title: "maxPriorityFeePerGas",
+      data: maxPriorityFeePerGas,
+    },
+    {
+      title: "estimateGasError",
+      data: estimateGasError,
+    },
+    {
+      title: "estimateFeesPerGasError",
+      data: estimateFeesPerGasError,
+    },
+    {
+      title: "estimateMaxPriorityFeePerGasError",
+      data: estimateMaxPriorityFeePerGasError,
+    },
+    {
+      title: "estimateUserOperationGasDataError",
+      data: estimateUserOperationGasDataError,
+    },
+    {
+      title: "paymasterAndDataError",
+      data: paymasterAndDataError,
+    },
+    {
+      title: "decodedInitCode",
+      data: decodedInitCode,
+    },
+    {
+      title: "decodedCallData",
+      data: decodedCallData,
+    },
+    {
+      title: "subdigest",
+      data: subdigest,
+    },
+    {
+      title: "paymasterAndData",
+      data: paymasterAndData,
+    },
+    {
+      title: "simulation",
+      data: simulation,
+    },
+    {
+      title: "userOperationNonce",
+      data: userOperationNonce,
+    },
+    {
+      title: "executedUserOperations",
+      data: executedUserOperations,
+    },
+    {
+      title: "owners",
+      data: configuration.owners,
+    },
+    {
+      title: "owner",
+      data: owner,
+    },
+    {
+      title: "isUserOperationCreatable",
+      data: isUserOperationCreatable,
+    },
+    {
+      title: "isEstimateUserOperationGasDataLoading",
+      data: isEstimateUserOperationGasDataLoading,
+    },
+    {
+      title: "isUserOperationLoading",
+      data: isUserOperationLoading,
+    },
+    {
+      title: "isUserOperationNonceLoading",
+      data: isUserOperationNonceLoading,
+    },
+    {
+      title: "isExecutedUserOperationsLoading",
+      data: isExecutedUserOperationsLoading,
+    },
+    {
+      title: "isPaymasterAndDataLoading",
+      data: isPaymasterAndDataLoading,
+    },
+    {
+      title: "isLoading",
+      data: isLoading,
+    },
+    {
+      title: "isUpdating",
+      data: isUpdating,
+    },
+    {
+      title: "isValidUserOperation",
+      data: isValidUserOperation,
+    },
+  ];
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -644,94 +772,14 @@ export const Transaction: FC<TransactionProps> = ({
               </TabsContent>
               <TabsContent value="dev">
                 <div className="grid gap-4 py-4">
-                  <TransactionDevInfo
-                    title="targetUserOperation"
-                    data={targetUserOperation}
-                  />
-                  <TransactionDevInfo
-                    title="updatedUserOperation"
-                    data={updatedUserOperation}
-                  />
-                  <TransactionDevInfo
-                    title="userOperationWithHash"
-                    data={userOperationWithHash}
-                  />
-                  <TransactionDevInfo
-                    title="estimateUserOperationGasData"
-                    data={estimateUserOperationGasData}
-                  />
-                  <TransactionDevInfo title="feesPerGas" data={feesPerGas} />
-                  <TransactionDevInfo
-                    isNumber
-                    title="estimateGas"
-                    data={estimateGas}
-                  />
-                  <TransactionDevInfo
-                    isNumber
-                    title="maxPriorityFeePerGas"
-                    data={maxPriorityFeePerGas}
-                  />
-                  <TransactionDevInfo
-                    title="estimateGasError"
-                    data={estimateGasError}
-                  />
-                  <TransactionDevInfo
-                    title="estimateFeesPerGasError"
-                    data={estimateFeesPerGasError}
-                  />
-                  <TransactionDevInfo
-                    title="estimateMaxPriorityFeePerGasError"
-                    data={estimateMaxPriorityFeePerGasError}
-                  />
-                  <TransactionDevInfo
-                    title="estimateUserOperationGasDataError"
-                    data={estimateUserOperationGasDataError}
-                  />
-                  <TransactionDevInfo
-                    title="paymasterAndDataError"
-                    data={paymasterAndDataError}
-                  />
-                  <TransactionDevInfo
-                    title="decodedInitCode"
-                    data={decodedInitCode}
-                  />
-                  <TransactionDevInfo
-                    title="decodedCallData"
-                    data={decodedCallData}
-                  />
-                  <TransactionDevInfo title="subdigest" data={subdigest} />
-                  <TransactionDevInfo
-                    title="paymasterAndData"
-                    data={paymasterAndData}
-                  />
-                  <TransactionDevInfo title="simulation" data={simulation} />
-                  <TransactionDevInfo
-                    title="owners"
-                    data={configuration.owners}
-                  />
-                  <TransactionDevInfo title="owner" data={owner} />
-                  <TransactionDevInfo
-                    title="isUserOperationCreatable"
-                    data={isUserOperationCreatable}
-                  />
-                  <TransactionDevInfo
-                    title="isEstimateUserOperationGasDataLoading"
-                    data={isEstimateUserOperationGasDataLoading}
-                  />
-                  <TransactionDevInfo
-                    title="isUserOperationLoading"
-                    data={isUserOperationLoading}
-                  />
-                  <TransactionDevInfo
-                    title="isPaymasterAndDataLoading"
-                    data={isPaymasterAndDataLoading}
-                  />
-                  <TransactionDevInfo title="isLoading" data={isLoading} />
-                  <TransactionDevInfo title="isUpdating" data={isUpdating} />
-                  <TransactionDevInfo
-                    title="isValidUserOperation"
-                    data={isValidUserOperation}
-                  />
+                  {transactionInfoData.map(({ title, data, isNumber }) => (
+                    <TransactionDevInfo
+                      key={title}
+                      title={title}
+                      data={data}
+                      isNumber={isNumber}
+                    />
+                  ))}
                 </div>
               </TabsContent>
             </Tabs>
