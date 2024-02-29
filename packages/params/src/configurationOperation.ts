@@ -23,8 +23,11 @@ export type ConfigurationOperationParams = {
   simulate: boolean | null | undefined;
 };
 
-export type ConfigurationOperationSimulationParams =
-  ConfigurationOperationParams & ConfigurationOperationCreateBodyParams;
+export type ConfigurationOperationSimulationParams = Omit<
+  ConfigurationOperationParams,
+  "simulate"
+> &
+  Omit<ConfigurationOperationCreateBodyParams, "signedData">;
 
 // -----------------------------------------------------------------------------
 // Params Body

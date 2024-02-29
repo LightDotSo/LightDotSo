@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { createWallet, getWallet } from "@lightdotso/client";
+import { createWallet } from "@lightdotso/client";
 import type { WalletData } from "@lightdotso/data";
-import type { WalletCreateBodyParams, WalletParams } from "@lightdotso/params";
+import type { WalletCreateBodyParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { useQuery, useQueryClient } from "@tanstack/react-query";

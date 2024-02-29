@@ -45,8 +45,8 @@ export const useQueryConfigurationOperationSimulation = (
     );
 
   const {
-    data: configuration,
-    isLoading: isConfigurationLoading,
+    data: configurationOperationSimulation,
+    isLoading: isConfigurationOperationSimulationLoading,
     failureCount,
   } = useQuery<ConfigurationOperationData | null>({
     queryKey: queryKeys.configuration.get({ address: params.address }).queryKey,
@@ -68,9 +68,7 @@ export const useQueryConfigurationOperationSimulation = (
             threshold: params.threshold,
             signature: {
               owner_id: params.ownerId,
-              signature: toHex(
-                new Uint8Array([...toBytes(params.signedData), 2]),
-              ),
+              signature: "0x",
             },
           },
         },
@@ -92,7 +90,7 @@ export const useQueryConfigurationOperationSimulation = (
   });
 
   return {
-    configuration,
-    isConfigurationLoading,
+    configurationOperationSimulation,
+    isConfigurationOperationSimulationLoading,
   };
 };
