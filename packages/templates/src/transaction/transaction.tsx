@@ -20,6 +20,7 @@ import { AssetChange } from "@lightdotso/elements";
 import { useUserOperationCreate } from "@lightdotso/hooks";
 import { useUserOperationsQueryState } from "@lightdotso/nuqs";
 import {
+  useQueryConfiguration,
   useQueryEstimateUserOperationGas,
   useQueryPaymasterGasAndPaymasterAndData,
   useQuerySimulation,
@@ -86,8 +87,8 @@ type UserOperationFormValues = UserOperation;
 
 type TransactionProps = {
   address: Address;
-  configuration: ConfigurationData;
   wallet: WalletData;
+  initialConfiguration: ConfigurationData;
   initialUserOperation: Omit<
     UserOperation,
     | "hash"
@@ -109,8 +110,8 @@ type TransactionProps = {
 
 export const Transaction: FC<TransactionProps> = ({
   address,
-  configuration,
   wallet,
+  initialConfiguration,
   initialUserOperation,
   userOperationIndex = 0,
   isDev = false,
@@ -147,6 +148,11 @@ export const Transaction: FC<TransactionProps> = ({
 
   const { walletBilling, isWalletBillingLoading } = useQueryWalletBilling({
     address,
+  });
+
+  const { configuration } = useQueryConfiguration({
+    address: address,
+    // image_hash:
   });
 
   // Gets the user operation nonce
@@ -209,7 +215,10 @@ export const Transaction: FC<TransactionProps> = ({
       executedUserOperations && executedUserOperations?.length < 1
         ? calculateInitCode(
             CONTRACT_ADDRESSES["Factory"] as Address,
-            configuration.image_hash as Hex,
+            // This is the latest image hash for the initial configuration
+            (configuration?.image_hash as Hex) ??
+              // Fallback to the initial configuration image hash
+              (initialConfiguration.image_hash as Hex),
             wallet.salt as Hex,
           )
         : partialUserOperation.initCode;
@@ -504,7 +513,10 @@ export const Transaction: FC<TransactionProps> = ({
     const items: TransactionDetailsItem[] = [
       { title: "Nonce", value: Number(targetUserOperation.nonce) },
       { title: "Sender", value: shortenAddress(targetUserOperation.sender) },
-      { title: "Threshold", value: configuration?.threshold },
+      {
+        title: "Threshold",
+        value: configuration?.threshold ?? initialConfiguration.threshold,
+      },
       { title: "Chain", value: chain?.name },
     ];
 
@@ -653,7 +665,7 @@ export const Transaction: FC<TransactionProps> = ({
     },
     {
       title: "owners",
-      data: configuration.owners,
+      data: configuration?.owners,
     },
     {
       title: "owner",
