@@ -102,9 +102,12 @@ pub(crate) async fn v1_user_operation_signature_handler(
         .client
         .user_operation()
         .find_unique(user_operation::hash::equals(query.user_operation_hash))
-        .with(user_operation::signatures::fetch(vec![signature::user_operation_hash::equals(
-            user_operation_hash,
-        )]))
+        .with(
+            user_operation::signatures::fetch(vec![signature::user_operation_hash::equals(
+                user_operation_hash,
+            )])
+            .with(signature::owner::fetch()),
+        )
         .exec()
         .await?;
     info!(?user_operation);
@@ -145,13 +148,21 @@ pub(crate) async fn v1_user_operation_signature_handler(
     configurations.sort_by(|a, b| b.checkpoint.cmp(&a.checkpoint));
     info!(?configurations);
 
-    // Get the current configuration with the highest checkpoint.
-    let configuration = configurations
+    // Get the current configuration for the matching signature -> owner id -> configuration id.
+    let op_configuration = configurations
         .clone()
         .into_iter()
-        .max_by_key(|configuration| configuration.checkpoint)
+        .find(|configuration| {
+            configuration.owners.as_ref().map_or(false, |owners| {
+                owners.iter().any(|owner| {
+                    user_operation.signatures.as_ref().map_or(false, |signatures| {
+                        signatures.iter().any(|signature| signature.owner_id == owner.id)
+                    })
+                })
+            })
+        })
         .ok_or(AppError::NotFound)?;
-    info!(?configuration);
+    info!(?op_configuration);
 
     // Get the configurations needed to build the wallet configuration - should be uprooted from the
     // query configuration id, to the most recent configuration. Start with the query configuration
@@ -168,7 +179,7 @@ pub(crate) async fn v1_user_operation_signature_handler(
             // equal to the current configuration.
             .filter(|configuration| {
                 configuration.checkpoint > query_configuration.checkpoint &&
-                    configuration.id != query_configuration.id
+                    configuration.id != op_configuration.id
             })
             .collect::<Vec<_>>();
         info!(?uproot_configurations);
@@ -178,7 +189,7 @@ pub(crate) async fn v1_user_operation_signature_handler(
     };
     info!(?uproot_configurations);
 
-    let mut owners = configuration.owners.ok_or(AppError::NotFound)?;
+    let mut owners = op_configuration.owners.ok_or(AppError::NotFound)?;
     owners.sort_by(|a, b| a.index.cmp(&b.index));
     info!(?owners);
 
@@ -283,11 +294,11 @@ pub(crate) async fn v1_user_operation_signature_handler(
             info!(?tree);
 
             let wallet_config = WalletConfig {
-                checkpoint: configuration.checkpoint as u32,
-                threshold: configuration.threshold as u16,
+                checkpoint: op_configuration.checkpoint as u32,
+                threshold: op_configuration.threshold as u16,
                 // Weight is not used in the signature.
                 weight: 0,
-                image_hash: configuration.image_hash.hex_to_bytes32()?.into(),
+                image_hash: op_configuration.image_hash.hex_to_bytes32()?.into(),
                 tree,
                 signature_type: signature_type as u8,
                 // Internal fields are not used in the signature.
@@ -301,11 +312,11 @@ pub(crate) async fn v1_user_operation_signature_handler(
     info!(?recovered_configs);
 
     let wallet_config = WalletConfig {
-        checkpoint: configuration.checkpoint as u32,
-        threshold: configuration.threshold as u16,
+        checkpoint: op_configuration.checkpoint as u32,
+        threshold: op_configuration.threshold as u16,
         // Weight is not used in the signature.
         weight: 0,
-        image_hash: configuration.image_hash.hex_to_bytes32()?.into(),
+        image_hash: op_configuration.image_hash.hex_to_bytes32()?.into(),
         tree,
         signature_type: signature_type as u8,
         // Internal fields are not used in the signature.
