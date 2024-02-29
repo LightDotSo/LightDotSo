@@ -41,7 +41,7 @@ export const useQueryWalletSimulation = (params: WalletCreateBodyParams) => {
   );
 
   const { data: walletSimulation, failureCount } = useQuery<WalletData | null>({
-    queryKey: queryKeys.wallet.get({ address: params.address }).queryKey,
+    queryKey: queryKeys.wallet.simulation({ address: params.address }).queryKey,
     queryFn: async () => {
       if (!params.address) {
         return null;

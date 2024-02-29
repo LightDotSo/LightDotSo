@@ -85,6 +85,10 @@ export const useConfigurationOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   const subdigest = useMemo(() => {
+    if (!address || !configurationOperationSimulation?.image_hash) {
+      return;
+    }
+
     return subdigestOf(
       address,
       toBytes(
@@ -179,13 +183,8 @@ export const useConfigurationOperationCreate = ({
   return {
     isConfigurationOperationCreatable,
     isConfigurationOperationLoading,
-    // isValidConfigurationOperation,
-    // decodedCallData,
-    // decodedInitCode,
-    // // paymasterHash,
-    // // paymasterNonce,
     signConfigurationOperation,
-    // subdigest,
+    subdigest,
     owner,
     threshold: configuration?.threshold,
   };

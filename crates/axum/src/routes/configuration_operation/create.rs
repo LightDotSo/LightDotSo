@@ -36,7 +36,7 @@ use ethers_main::{
     utils::to_checksum,
 };
 use eyre::{eyre, Result};
-use lightdotso_common::traits::HexToBytes;
+use lightdotso_common::traits::{HexToBytes, VecU8ToHex};
 use lightdotso_db::models::activity::CustomParams;
 use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
@@ -141,6 +141,7 @@ pub(crate) async fn v1_configuration_operation_create_handler(
 
     // Get the post query.
     let Query(query) = post_query;
+    info!(?query);
 
     let owners = &params.owners;
     let threshold = params.threshold;
@@ -221,6 +222,7 @@ pub(crate) async fn v1_configuration_operation_create_handler(
 
     // If the image hash of the wallet could not be simulated, return a 404.
     let image_hash = res.map_err(|_| AppError::NotFound)?;
+    info!("image_hash: {}", image_hash.to_vec().to_hex_string());
 
     // Parse the image hash to bytes.
     let image_hash_bytes: H256 = image_hash.into();
