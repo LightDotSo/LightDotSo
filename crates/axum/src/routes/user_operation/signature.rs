@@ -328,7 +328,11 @@ pub(crate) async fn v1_user_operation_signature_handler(
     // -------------------------------------------------------------------------
 
     // Get the encoded user operation.
-    let sig = wallet_config.encode()?.to_hex_string();
+    let sig = if wallet_config.internal_recovered_configs.is_none() {
+        wallet_config.encode()?.to_hex_string()
+    } else {
+        wallet_config.encode_chained_wallet()?.to_hex_string()
+    };
 
     Ok(Json::from(sig))
 }
