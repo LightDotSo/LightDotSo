@@ -192,6 +192,13 @@ export interface paths {
      */
     get: operations["v1_configuration_operation_list_count_handler"];
   };
+  "/configuration_operation/update": {
+    /**
+     * Create a configuration signature
+     * @description Create a configuration signature
+     */
+    put: operations["v1_configuration_operation_update_handler"];
+  };
   "/configuration_owner/get": {
     /**
      * Get a owner
@@ -1003,6 +1010,8 @@ export interface components {
        * @description The checkpoint of the configuration operation.
        */
       checkpoint: number;
+      /** @description The id of the configuration operation. */
+      id: string;
       /** @description The image hash of the configuration operation. */
       image_hash: string;
       /** @description The status of the configuration operation. */
@@ -2790,6 +2799,38 @@ export interface operations {
       500: {
         content: {
           "application/json": components["schemas"]["ConfigurationOperationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Create a configuration signature
+   * @description Create a configuration signature
+   */
+  v1_configuration_operation_update_handler: {
+    parameters: {
+      query: {
+        /** @description The operation of the configuration. */
+        configuration_operation_id: string;
+      };
+    };
+    responses: {
+      /** @description Configuration operation updated successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ConfigurationOperation"];
+        };
+      };
+      /** @description Invalid Configuration */
+      400: {
+        content: {
+          "application/json": components["schemas"]["SignatureError"];
+        };
+      };
+      /** @description Configuration operation internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["SignatureError"];
         };
       };
     };
