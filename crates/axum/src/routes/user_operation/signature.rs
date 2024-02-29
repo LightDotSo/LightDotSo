@@ -59,6 +59,8 @@ pub struct GetQuery {
     pub user_operation_hash: String,
     /// The type of signature to get for.
     pub signature_type: Option<i64>,
+    /// The optional configuration id that is on the current wallet.
+    pub configuration_id: Option<String>,
 }
 
 // -----------------------------------------------------------------------------
@@ -127,7 +129,7 @@ pub(crate) async fn v1_user_operation_signature_handler(
                 user_operation.clone().sender,
             )])
             .with(
-                configuration::owners::fetch(vec![]).order_by(owner::weight::order(Direction::Asc)),
+                configuration::owners::fetch(vec![]).order_by(owner::index::order(Direction::Asc)),
             ),
         )
         .exec()
@@ -138,15 +140,43 @@ pub(crate) async fn v1_user_operation_signature_handler(
     let wallet = wallet.ok_or(AppError::NotFound)?;
 
     // Parse the current wallet configuration.
-    // TODO: This should be the configuration with the signature required to upsert the most up to
-    // date configuration.
-    let configuration = wallet
-        .configurations
-        .ok_or(AppError::NotFound)?
+    // Sort the configurations by checkpoint.
+    let mut configurations = wallet.configurations.ok_or(AppError::NotFound)?;
+    configurations.sort_by(|a, b| b.checkpoint.cmp(&a.checkpoint));
+    info!(?configurations);
+
+    // Get the current configuration with the highest checkpoint.
+    let configuration = configurations
+        .clone()
         .into_iter()
         .max_by_key(|configuration| configuration.checkpoint)
         .ok_or(AppError::NotFound)?;
     info!(?configuration);
+
+    // Get the configurations needed to build the wallet configuration - should be uprooted from the
+    // query configuration id, to the most recent configuration. Start with the query configuration
+    // id, and then get up to the most recent configuration (don't include the most recent)
+    let uproot_configurations = if let Some(configuration_id) = query.configuration_id {
+        let query_configuration = configurations
+            .clone()
+            .into_iter()
+            .find(|configuration| configuration.id == configuration_id)
+            .ok_or(AppError::NotFound)?;
+        let uproot_configurations = configurations
+            .into_iter()
+            // Filter the configurations that are greater than the query configuration, and not
+            // equal to the current configuration.
+            .filter(|configuration| {
+                configuration.checkpoint > query_configuration.checkpoint &&
+                    configuration.id != query_configuration.id
+            })
+            .collect::<Vec<_>>();
+        info!(?uproot_configurations);
+        uproot_configurations
+    } else {
+        vec![]
+    };
+    info!(?uproot_configurations);
 
     let mut owners = configuration.owners.ok_or(AppError::NotFound)?;
     owners.sort_by(|a, b| a.index.cmp(&b.index));
@@ -213,6 +243,63 @@ pub(crate) async fn v1_user_operation_signature_handler(
     tree.replace_node(signer_nodes?);
     info!(?tree);
 
+    // If the uproot configurations are not empty, then we need to uproot the wallet configuration.
+    // For each uproot configuration, fetch the owners, and convert them to SignerNode. Then, append
+    // to the recovered_configs vector.
+    let recovered_configs = uproot_configurations
+        .into_iter()
+        .map(|recovered_configuration| {
+            let mut recovered_config_owners = recovered_configuration
+                .owners
+                .ok_or(AppError::NotFound)
+                .map_err(|_err| eyre!("Error fetching recovered configuration owners"))?;
+            recovered_config_owners.sort_by(|a, b| a.index.cmp(&b.index));
+            info!(?recovered_config_owners);
+
+            // Map the signatures into type from the user_operation
+            let recovered_config_owners: Vec<Owner> =
+                recovered_config_owners.into_iter().map(Owner::from).collect();
+
+            // Convert the owners to SignerNode.
+            let owner_nodes: Result<Vec<SignerNode>> = recovered_config_owners
+                .iter()
+                .map(|owner| {
+                    Ok(SignerNode {
+                        signer: Some(Signer {
+                            weight: Some(owner.weight.try_into()?),
+                            leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
+                                address: owner.address.parse()?,
+                            }),
+                        }),
+                        left: None,
+                        right: None,
+                    })
+                })
+                .collect();
+            let owner_nodes = owner_nodes?;
+
+            // Build the node tree.
+            let tree = rooted_node_builder(owner_nodes)?;
+            info!(?tree);
+
+            let wallet_config = WalletConfig {
+                checkpoint: configuration.checkpoint as u32,
+                threshold: configuration.threshold as u16,
+                // Weight is not used in the signature.
+                weight: 0,
+                image_hash: configuration.image_hash.hex_to_bytes32()?.into(),
+                tree,
+                signature_type: signature_type as u8,
+                // Internal fields are not used in the signature.
+                internal_root: None,
+                internal_recovered_configs: None,
+            };
+
+            Ok(wallet_config)
+        })
+        .collect::<Result<Vec<WalletConfig>>>()?;
+    info!(?recovered_configs);
+
     let wallet_config = WalletConfig {
         checkpoint: configuration.checkpoint as u32,
         threshold: configuration.threshold as u16,
@@ -223,8 +310,9 @@ pub(crate) async fn v1_user_operation_signature_handler(
         signature_type: signature_type as u8,
         // Internal fields are not used in the signature.
         internal_root: None,
-        internal_recovered_configs: None,
+        internal_recovered_configs: Some(recovered_configs),
     };
+    info!(?wallet_config);
 
     // Check if the configuration is valid.
     let is_valid = wallet_config.is_wallet_valid();

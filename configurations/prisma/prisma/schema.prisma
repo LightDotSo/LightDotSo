@@ -510,6 +510,7 @@ model Configuration {
 
   // Unique
   @@unique([address, checkpoint])
+  @@unique([address, imageHash])
 }
 
 // -----------------------------------------------------------------------------

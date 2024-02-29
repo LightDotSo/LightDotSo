@@ -39,8 +39,8 @@ use utoipa::IntoParams;
 pub struct GetQuery {
     /// The address of the configuration to query.
     pub address: String,
-    /// The optional checkpoint to filter by.
-    pub checkpoint: Option<i64>,
+    /// The optional image_hash to filter by.
+    pub image_hash: Option<String>,
 }
 
 // -----------------------------------------------------------------------------
@@ -83,12 +83,12 @@ pub(crate) async fn v1_configuration_get_handler(
     // -------------------------------------------------------------------------
 
     // Get the configurations from the database.
-    let configuration = match query.checkpoint {
-        Some(checkpoint) => {
+    let configuration = match query.image_hash {
+        Some(image_hash) => {
             state
                 .client
                 .configuration()
-                .find_unique(configuration::address_checkpoint(checksum_address, checkpoint))
+                .find_unique(configuration::address_image_hash(checksum_address, image_hash))
                 .with(configuration::owners::fetch(vec![]).with(owner::user::fetch()))
                 .exec()
                 .await?
