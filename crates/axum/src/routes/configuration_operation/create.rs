@@ -123,10 +123,10 @@ pub struct ConfigurationOperationSignatureCreateParams {
         ),
         request_body = ConfigurationOperationCreateRequestParams,
         responses(
-            (status = 200, description = "Signature created successfully", body = Signature),
-            (status = 400, description = "Invalid Configuration", body = SignatureError),
-            (status = 409, description = "Signature already exists", body = SignatureError),
-            (status = 500, description = "Signature internal error", body = SignatureError),
+            (status = 200, description = "Signature created successfully", body = ConfigurationOperation),
+            (status = 400, description = "Invalid Configuration", body = ConfigurationOperationError),
+            (status = 409, description = "Signature already exists", body = ConfigurationOperationError),
+            (status = 500, description = "Signature internal error", body = ConfigurationOperationError),
         )
     )]
 #[autometrics]

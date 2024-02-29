@@ -17,8 +17,8 @@
 // -----------------------------------------------------------------------------
 
 export type ConfigurationOperationData = {
-  created_at: string;
-  owner_id: string;
-  signature: string;
-  signature_type: number;
+  checkpoint: number;
+  image_hash: string;
+  status: string;
+  threshold: number;
 };
