@@ -27,6 +27,7 @@ import {
   useQueryUserOperations,
 } from "@lightdotso/query";
 import { userOperation, type UserOperation } from "@lightdotso/schemas";
+import { calculateInitCode } from "@lightdotso/sequence";
 import { useFormRef, useModalSwiper } from "@lightdotso/stores";
 import {
   Button,
@@ -59,7 +60,6 @@ import { useIsInsideModal } from "../modal";
 import { ModalSwiper } from "../modal-swiper";
 import { TransactionDetailInfo } from "./transaction-details-info";
 import { TransactionDevInfo } from "./transaction-dev-info";
-import { calculateInitCode } from "@lightdotso/sequence";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -144,11 +144,23 @@ export const Transaction: FC<TransactionProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
+  // Gets the user operation nonce
   const { userOperationNonce, isUserOperationNonceLoading } =
     useQueryUserOperationNonce({
       address: address,
       chain_id: Number(initialUserOperation.chainId),
     });
+
+  // Gets the history of user operations
+  const { userOperations: executedUserOperations } = useQueryUserOperations({
+    address: address as Address,
+    status: "executed",
+    offset: 0,
+    limit: 1,
+    order: "asc",
+    is_testnet: true,
+    chain_id: Number(initialUserOperation.chainId) as number,
+  });
 
   // ---------------------------------------------------------------------------
   // Form
@@ -185,10 +197,19 @@ export const Transaction: FC<TransactionProps> = ({
           : partialUserOperation.nonce
         : partialUserOperation.nonce;
 
+    const updatedInitCode =
+      executedUserOperations && executedUserOperations?.length < 1
+        ? calculateInitCode(
+            CONTRACT_ADDRESSES["Factory"] as Address,
+            configuration.image_hash as Hex,
+            wallet.salt as Hex,
+          )
+        : partialUserOperation.initCode;
+
     return {
       sender: partialUserOperation?.sender ?? address,
       chainId: partialUserOperation?.chainId ?? BigInt(0),
-      initCode: partialUserOperation?.initCode ?? "0x",
+      initCode: updatedInitCode ?? "0x",
       nonce: updatedMinimumNonce ?? BigInt(0),
       callData: partialUserOperation?.callData ?? "0x",
       callGasLimit: partialUserOperation?.callGasLimit ?? BigInt(0),
@@ -228,17 +249,6 @@ export const Transaction: FC<TransactionProps> = ({
     callData: targetUserOperation.callData,
   });
 
-  // Gets the history of user operations
-  const { userOperations: executedUserOperations } = useQueryUserOperations({
-    address: address as Address,
-    status: "executed",
-    offset: 0,
-    limit: 1,
-    order: "asc",
-    is_testnet: true,
-    chain_id: Number(targetUserOperation.chainId) as number,
-  });
-
   // ---------------------------------------------------------------------------
   // Wagmi
   // ---------------------------------------------------------------------------
@@ -274,14 +284,7 @@ export const Transaction: FC<TransactionProps> = ({
       sender: address as Address,
       chainId: targetUserOperation.chainId,
       nonce: targetUserOperation.nonce,
-      initCode:
-        executedUserOperations && executedUserOperations?.length < 1
-          ? calculateInitCode(
-              CONTRACT_ADDRESSES["Factory"] as Address,
-              configuration.image_hash as Hex,
-              wallet.salt as Hex,
-            )
-          : targetUserOperation.initCode,
+      initCode: targetUserOperation.initCode,
       callData: targetUserOperation.callData,
       callGasLimit: estimateUserOperationGasData?.callGasLimit
         ? fromHex(estimateUserOperationGasData?.callGasLimit as Hex, {
