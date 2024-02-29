@@ -22,6 +22,7 @@ import { PlaceholderOrb } from "@lightdotso/elements";
 import { useConfigurationOperationCreate } from "@lightdotso/hooks";
 import { useOwnersQueryState, useThresholdQueryState } from "@lightdotso/nuqs";
 import type { Owner, Owners } from "@lightdotso/nuqs";
+import { useQueryConfiguration } from "@lightdotso/query";
 import { ownerFormSchema } from "@lightdotso/schemas";
 import { useAuth, useFormRef, useModals, useNewForm } from "@lightdotso/stores";
 import {
@@ -57,7 +58,6 @@ import type { Address } from "viem";
 import { isAddress, isAddressEqual } from "viem";
 import { normalize } from "viem/ens";
 import { z } from "zod";
-import { useQueryConfiguration } from "@lightdotso/query";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -311,8 +311,8 @@ export const OwnerForm: FC = () => {
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const { isConfigurationOperationCreatable } = useConfigurationOperationCreate(
-    {
+  const { isConfigurationOperationCreatable, signConfigurationOperation } =
+    useConfigurationOperationCreate({
       address: wallet as Address,
       params: {
         threshold: form.watch("threshold"),
@@ -322,14 +322,13 @@ export const OwnerForm: FC = () => {
         })),
         ownerId: owner!.id,
       },
-    },
-  );
+    });
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
-  async function onSubmit(data: OwnerFormValues) {
+  async function onSubmit() {
     if (!userAddress) {
       toast.error("Please connect your wallet to continue.");
       return;
@@ -339,6 +338,8 @@ export const OwnerForm: FC = () => {
       toast.error("You are not an owner of this wallet.");
       return;
     }
+
+    signConfigurationOperation();
   }
   // ---------------------------------------------------------------------------
   // Validation
