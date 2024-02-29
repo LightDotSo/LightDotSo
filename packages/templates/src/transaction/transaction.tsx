@@ -221,7 +221,7 @@ export const Transaction: FC<TransactionProps> = ({
         partialUserOperation?.maxPriorityFeePerGas ?? BigInt(0),
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userOperations]);
+  }, [userOperations, executedUserOperations]);
 
   // ---------------------------------------------------------------------------
   // Query
