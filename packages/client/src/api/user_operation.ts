@@ -73,7 +73,10 @@ export const getUserOperationSignature = async (
     params,
   }: {
     params: {
-      query: { user_operation_hash: string };
+      query: {
+        user_operation_hash: string;
+        configuration_id?: string | null | undefined;
+      };
     };
   },
   clientType?: ClientType,

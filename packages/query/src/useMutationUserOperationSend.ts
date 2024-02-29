@@ -56,7 +56,12 @@ export const useMutationUserOperationSend = (params: UserOperationParams) => {
 
       // Get the sig as bytes from caller
       const sigRes = await getUserOperationSignature({
-        params: { query: { user_operation_hash: body.hash } },
+        params: {
+          query: {
+            user_operation_hash: body.hash,
+            configuration_id: body.configuration_id,
+          },
+        },
       });
 
       await sigRes.match(

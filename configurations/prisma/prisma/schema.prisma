@@ -151,15 +151,15 @@ model User {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  activities                 Activity[]
-  configurationOwners        ConfigurationOwner[]
-  feedbacks                  Feedback[]
-  inviteCodes                InviteCode[]
-  notifications              Notification[]
-  notificationSettings       NotificationSettings[]
-  owners                     Owner[]
-  wallets                    Wallet[]
-  walletNotificationSettings WalletNotificationSettings[]
+  activities                   Activity[]
+  configurationOperationOwners ConfigurationOperationOwner[]
+  feedbacks                    Feedback[]
+  inviteCodes                  InviteCode[]
+  notifications                Notification[]
+  notificationSettings         NotificationSettings[]
+  owners                       Owner[]
+  wallets                      Wallet[]
+  walletNotificationSettings   WalletNotificationSettings[]
 }
 
 // -----------------------------------------------------------------------------
@@ -500,9 +500,9 @@ model Configuration {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  configurationSignatures ConfigurationSignature[]
-  owners                  Owner[]
-  wallets                 Wallet[]
+  configurationOperationSignatures ConfigurationOperationSignature[]
+  owners                           Owner[]
+  wallets                          Wallet[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -554,9 +554,9 @@ model ConfigurationOperation {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  activities              Activity[]
-  configurationOwners     ConfigurationOwner[]
-  configurationSignatures ConfigurationSignature[]
+  activities                       Activity[]
+  configurationOperationOwners     ConfigurationOperationOwner[]
+  configurationOperationSignatures ConfigurationOperationSignature[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -580,10 +580,10 @@ enum ConfigurationOperationStatus {
 }
 
 // -----------------------------------------------------------------------------
-// ConfigurationOwner
+// ConfigurationOperationOwner
 // -----------------------------------------------------------------------------
 
-model ConfigurationOwner {
+model ConfigurationOperationOwner {
   // ---------------------------------------------------------------------------
   // Core
   // ---------------------------------------------------------------------------
@@ -618,7 +618,7 @@ model ConfigurationOwner {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  configurationSignatures ConfigurationSignature[]
+  configurationOperationSignatures ConfigurationOperationSignature[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -630,10 +630,10 @@ model ConfigurationOwner {
 }
 
 // -----------------------------------------------------------------------------
-// ConfigurationSignature
+// ConfigurationOperationSignature
 // -----------------------------------------------------------------------------
 
-model ConfigurationSignature {
+model ConfigurationOperationSignature {
   // ---------------------------------------------------------------------------
   // Core
   // ---------------------------------------------------------------------------
@@ -665,20 +665,20 @@ model ConfigurationSignature {
   configurationOperation   ConfigurationOperation @relation(fields: [configurationOperationId], references: [id])
   configurationOperationId String
 
-  configurationOwner   ConfigurationOwner @relation(fields: [configurationOwnerId], references: [id])
-  configurationOwnerId String
+  configurationOperationOwner   ConfigurationOperationOwner @relation(fields: [configurationOperationOwnerId], references: [id])
+  configurationOperationOwnerId String
 
   // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
 
   // Unique
-  @@unique([configurationOperationId, configurationOwnerId])
+  @@unique([configurationOperationId, configurationOperationOwnerId])
   // Relations
   @@index([activityId])
   @@index([configurationId])
   @@index([configurationOperationId])
-  @@index([configurationOwnerId])
+  @@index([configurationOperationOwnerId])
 }
 
 // -----------------------------------------------------------------------------
@@ -2460,15 +2460,15 @@ model Activity {
   // Immutable Relations None-to-none
   // ---------------------------------------------------------------------------
 
-  configurationSignature ConfigurationSignature?
-  feedback               Feedback?
-  notification           Notification?
-  paymaster              Paymaster?
-  paymasterOperation     PaymasterOperation?
-  signature              Signature?
-  simulation             Simulation?
-  transaction            Transaction?
-  userOperation          UserOperation?
+  configurationOperationSignature ConfigurationOperationSignature?
+  feedback                        Feedback?
+  notification                    Notification?
+  paymaster                       Paymaster?
+  paymasterOperation              PaymasterOperation?
+  signature                       Signature?
+  simulation                      Simulation?
+  transaction                     Transaction?
+  userOperation                   UserOperation?
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -2536,7 +2536,7 @@ enum ActivityEntity {
   // Mutable
   CONFIGURATION_OPERATION
   // Immutable
-  CONFIGURATION_SIGNATURE
+  CONFIGURATION_OPERATION_SIGNATURE
 }
 
 enum ActivityOperation {

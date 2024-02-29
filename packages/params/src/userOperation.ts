@@ -61,4 +61,6 @@ export type UserOperationCreateBodyParams = {
 
 export type UserOperationUpdateBodyParams = Partial<UserOperation>;
 
-export type UserOperationSendBodyParams = UserOperationData;
+export type UserOperationSendBodyParams = UserOperationData & {
+  configuration_id?: string | null | undefined;
+};

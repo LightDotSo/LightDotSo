@@ -16,8 +16,9 @@ use crate::types::{AppJsonResult, Database};
 use autometrics::autometrics;
 use axum::extract::Json;
 use lightdotso_prisma::{
-    activity, configuration_signature, feedback, notification, paymaster, paymaster_operation,
-    signature, simulation, transaction, user_operation, ActivityEntity, ActivityOperation,
+    activity, configuration_operation_signature, feedback, notification, paymaster,
+    paymaster_operation, signature, simulation, transaction, user_operation, ActivityEntity,
+    ActivityOperation,
 };
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
@@ -55,7 +56,7 @@ pub struct CustomParams {
     // Mutable
     pub configuration_operation_id: Option<String>,
     // Immutable
-    pub configuration_signature_id: Option<String>,
+    pub configuration_operation_signature_id: Option<String>,
 }
 
 // -----------------------------------------------------------------------------
@@ -187,9 +188,11 @@ pub async fn create_activity_with_user_and_wallet(
     // Immutable
     // -------------------------------------------------------------------------
 
-    if let Some(configuration_signature_id) = custom_params.configuration_signature_id {
-        params.push(activity::configuration_signature::connect(
-            configuration_signature::id::equals(configuration_signature_id),
+    if let Some(configuration_operation_signature_id) =
+        custom_params.configuration_operation_signature_id
+    {
+        params.push(activity::configuration_operation_signature::connect(
+            configuration_operation_signature::id::equals(configuration_operation_signature_id),
         ));
     }
 

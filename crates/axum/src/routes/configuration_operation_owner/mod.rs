@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-pub(crate) mod create;
 pub(crate) mod error;
 pub(crate) mod get;
 pub(crate) mod list;
@@ -20,19 +19,15 @@ pub(crate) mod types;
 
 use crate::state::AppState;
 use autometrics::autometrics;
-use axum::{
-    routing::{get, post},
-    Router,
-};
+use axum::{routing::get, Router};
 
-pub(crate) use create::{
-    __path_v1_configuration_signature_create_handler, v1_configuration_signature_create_handler,
-};
 pub(crate) use get::{
-    __path_v1_configuration_signature_get_handler, v1_configuration_signature_get_handler,
+    __path_v1_configuration_operation_owner_get_handler,
+    v1_configuration_operation_owner_get_handler,
 };
 pub(crate) use list::{
-    __path_v1_configuration_signature_list_handler, v1_configuration_signature_list_handler,
+    __path_v1_configuration_operation_owner_list_handler,
+    v1_configuration_operation_owner_list_handler,
 };
 
 // -----------------------------------------------------------------------------
@@ -42,7 +37,12 @@ pub(crate) use list::{
 #[autometrics]
 pub(crate) fn router() -> Router<AppState> {
     Router::new()
-        .route("/configuration_signature/create", post(v1_configuration_signature_create_handler))
-        .route("/configuration_signature/get", get(v1_configuration_signature_get_handler))
-        .route("/configuration_signature/list", get(v1_configuration_signature_list_handler))
+        .route(
+            "/configuration_operation_owner/get",
+            get(v1_configuration_operation_owner_get_handler),
+        )
+        .route(
+            "/configuration_operation_owner/list",
+            get(v1_configuration_operation_owner_list_handler),
+        )
 }

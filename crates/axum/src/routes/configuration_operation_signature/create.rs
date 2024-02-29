@@ -14,11 +14,11 @@
 
 #![allow(clippy::unwrap_used)]
 
-use super::types::ConfigurationSignature;
+use super::types::ConfigurationOperationSignature;
 use crate::{
     error::RouteError,
     result::{AppError, AppJsonResult},
-    routes::configuration_signature::error::ConfigurationSignatureError,
+    routes::configuration_operation_signature::error::ConfigurationOperationSignatureError,
     state::AppState,
 };
 use autometrics::autometrics;
@@ -32,8 +32,8 @@ use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
 use lightdotso_prisma::{
-    configuration_operation, configuration_owner, configuration_signature, ActivityEntity,
-    ActivityOperation,
+    configuration_operation, configuration_operation_owner, configuration_operation_signature,
+    ActivityEntity, ActivityOperation,
 };
 use lightdotso_sequence::{
     builder::rooted_node_builder,
@@ -65,17 +65,17 @@ pub struct PostQuery {
 /// Signature operation post request params
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub struct ConfigurationSignatureCreateRequestParams {
+pub struct ConfigurationOperationSignatureCreateRequestParams {
     /// The result of the signature.
-    pub signature: ConfigurationSignatureCreateParams,
+    pub signature: ConfigurationOperationSignatureCreateParams,
 }
 
 /// Signature operation
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub struct ConfigurationSignatureCreateParams {
+pub struct ConfigurationOperationSignatureCreateParams {
     /// The id of the owner of the signature.
-    pub configuration_owner_id: String,
+    pub configuration_operation_owner_id: String,
     /// The signature of the user operation in hex.
     pub signature: String,
     /// The type of the signature.
@@ -89,11 +89,11 @@ pub struct ConfigurationSignatureCreateParams {
 /// Create a configuration signature
 #[utoipa::path(
         post,
-        path = "/configuration_signature/create",
+        path = "/configuration_operation_signature/create",
         params(
             PostQuery
         ),
-        request_body = ConfigurationSignatureCreateRequestParams,
+        request_body = ConfigurationOperationSignatureCreateRequestParams,
         responses(
             (status = 200, description = "Signature created successfully", body = Signature),
             (status = 400, description = "Invalid Configuration", body = SignatureError),
@@ -102,11 +102,11 @@ pub struct ConfigurationSignatureCreateParams {
         )
     )]
 #[autometrics]
-pub(crate) async fn v1_configuration_signature_create_handler(
+pub(crate) async fn v1_configuration_operation_signature_create_handler(
     post_query: Query<PostQuery>,
     State(state): State<AppState>,
-    Json(params): Json<ConfigurationSignatureCreateRequestParams>,
-) -> AppJsonResult<ConfigurationSignature> {
+    Json(params): Json<ConfigurationOperationSignatureCreateRequestParams>,
+) -> AppJsonResult<ConfigurationOperationSignature> {
     // -------------------------------------------------------------------------
     // Parse
     // -------------------------------------------------------------------------
@@ -129,29 +129,31 @@ pub(crate) async fn v1_configuration_signature_create_handler(
         .client
         .configuration_operation()
         .find_unique(configuration_operation::id::equals(configuration_operation_id.clone()))
-        .with(configuration_operation::configuration_owners::fetch(vec![]))
+        .with(configuration_operation::configuration_operation_owners::fetch(vec![]))
         .with(configuration_operation::wallet::fetch())
         .exec()
         .await?;
 
     // If the user operation is not found, return a 404.
     let configuration_operation =
-        configuration_operation.ok_or(RouteError::ConfigurationSignatureError(
-            ConfigurationSignatureError::NotFound("User operation not found".to_string()),
+        configuration_operation.ok_or(RouteError::ConfigurationOperationSignatureError(
+            ConfigurationOperationSignatureError::NotFound("User operation not found".to_string()),
         ))?;
 
     // Get the owner from configuration operation.
-    let configuration_owners = configuration_operation.clone().configuration_owners.ok_or(
-        RouteError::ConfigurationSignatureError(ConfigurationSignatureError::NotFound(
-            "Owner not found".to_string(),
-        )),
-    )?;
+    let configuration_operation_owners = configuration_operation
+        .clone()
+        .configuration_operation_owners
+        .ok_or(RouteError::ConfigurationOperationSignatureError(
+            ConfigurationOperationSignatureError::NotFound("Owner not found".to_string()),
+        ))?;
 
     // Get the wallet from the database.
-    let wallet =
-        configuration_operation.clone().wallet.ok_or(RouteError::ConfigurationSignatureError(
-            ConfigurationSignatureError::NotFound("Wallet not found".to_string()),
-        ))?;
+    let wallet = configuration_operation.clone().wallet.ok_or(
+        RouteError::ConfigurationOperationSignatureError(
+            ConfigurationOperationSignatureError::NotFound("Wallet not found".to_string()),
+        ),
+    )?;
 
     // -------------------------------------------------------------------------
     // Signature
@@ -161,7 +163,7 @@ pub(crate) async fn v1_configuration_signature_create_handler(
     let sig_bytes = sig.signature.hex_to_bytes()?;
 
     // Conver the owners to SignerNode.
-    let owner_nodes: Vec<SignerNode> = configuration_owners
+    let owner_nodes: Vec<SignerNode> = configuration_operation_owners
         .iter()
         .map(|owner| SignerNode {
             signer: Some(Signer {
@@ -210,28 +212,30 @@ pub(crate) async fn v1_configuration_signature_create_handler(
     // DB
     // -------------------------------------------------------------------------
 
-    // Get the configuration_owner from the database.
-    let configuration_owner = state
+    // Get the configuration_operation_owner from the database.
+    let configuration_operation_owner = state
         .client
-        .configuration_owner()
-        .find_unique(configuration_owner::id::equals(sig.clone().configuration_owner_id))
-        .with(configuration_owner::user::fetch())
+        .configuration_operation_owner()
+        .find_unique(configuration_operation_owner::id::equals(
+            sig.clone().configuration_operation_owner_id,
+        ))
+        .with(configuration_operation_owner::user::fetch())
         .exec()
         .await?;
-    info!(?configuration_owner);
+    info!(?configuration_operation_owner);
 
     // -------------------------------------------------------------------------
     // Signature
     // -------------------------------------------------------------------------
 
     // If the owner is not found, return a 404.
-    let configuration_owner = configuration_owner.ok_or(AppError::NotFound)?;
+    let configuration_operation_owner = configuration_operation_owner.ok_or(AppError::NotFound)?;
 
     // Check that the recovered signature is the same as the signature sender.
-    if recovered_sig.address != configuration_owner.address.parse()? {
+    if recovered_sig.address != configuration_operation_owner.address.parse()? {
         error!(
-            "recovered_sig.address: {}, configuration_owner.address: {}",
-            recovered_sig.address, configuration_owner.address
+            "recovered_sig.address: {}, configuration_operation_owner.address: {}",
+            recovered_sig.address, configuration_operation_owner.address
         );
         return Err(AppError::BadRequest);
     }
@@ -247,41 +251,42 @@ pub(crate) async fn v1_configuration_signature_create_handler(
         .find_unique(configuration_operation::id::equals(configuration_operation_id))
         .with(configuration_operation::wallet::fetch())
         .with(
-            configuration_operation::configuration_signatures::fetch(vec![])
-                .with(configuration_signature::configuration_owner::fetch()),
+            configuration_operation::configuration_operation_signatures::fetch(vec![])
+                .with(configuration_operation_signature::configuration_operation_owner::fetch()),
         )
         .with(
-            configuration_operation::configuration_owners::fetch(vec![])
-                .with(configuration_owner::user::fetch()),
+            configuration_operation::configuration_operation_owners::fetch(vec![])
+                .with(configuration_operation_owner::user::fetch()),
         )
         .exec()
         .await?;
 
     // If the user operation is not found, return a 404.
     let configuration_operation =
-        configuration_operation.ok_or(RouteError::ConfigurationSignatureError(
-            ConfigurationSignatureError::NotFound("User operation not found".to_string()),
+        configuration_operation.ok_or(RouteError::ConfigurationOperationSignatureError(
+            ConfigurationOperationSignatureError::NotFound("User operation not found".to_string()),
         ))?;
 
     // Get the wallet from the database.
-    let wallet =
-        configuration_operation.clone().wallet.ok_or(RouteError::ConfigurationSignatureError(
-            ConfigurationSignatureError::NotFound("Wallet not found".to_string()),
-        ))?;
+    let wallet = configuration_operation.clone().wallet.ok_or(
+        RouteError::ConfigurationOperationSignatureError(
+            ConfigurationOperationSignatureError::NotFound("Wallet not found".to_string()),
+        ),
+    )?;
 
     // Create the signature the database.
-    let configuration_signature = state
+    let configuration_operation_signature = state
         .client
-        .configuration_signature()
+        .configuration_operation_signature()
         .create(
             sig.signature.hex_to_bytes()?,
             configuration_operation::id::equals(configuration_operation.id.clone()),
-            configuration_owner::id::equals(sig.configuration_owner_id),
+            configuration_operation_owner::id::equals(sig.configuration_operation_owner_id),
             vec![],
         )
         .exec()
         .await?;
-    info!(?configuration_signature);
+    info!(?configuration_operation_signature);
 
     // -------------------------------------------------------------------------
     // Kafka
@@ -290,12 +295,14 @@ pub(crate) async fn v1_configuration_signature_create_handler(
     // Produce an activity message.
     let _ = produce_activity_message(
         state.producer.clone(),
-        ActivityEntity::ConfigurationSignature,
+        ActivityEntity::ConfigurationOperationSignature,
         &ActivityMessage {
             operation: ActivityOperation::Create,
-            log: serde_json::to_value(&configuration_signature)?,
+            log: serde_json::to_value(&configuration_operation_signature)?,
             params: CustomParams {
-                configuration_signature_id: Some(configuration_signature.id.clone()),
+                configuration_operation_signature_id: Some(
+                    configuration_operation_signature.id.clone(),
+                ),
                 wallet_address: Some(wallet.address.clone()),
                 ..Default::default()
             },
@@ -308,7 +315,8 @@ pub(crate) async fn v1_configuration_signature_create_handler(
     // -------------------------------------------------------------------------
 
     // Change the signatures to the format that the API expects.
-    let configuration_signature: ConfigurationSignature = configuration_signature.into();
+    let configuration_operation_signature: ConfigurationOperationSignature =
+        configuration_operation_signature.into();
 
-    Ok(Json::from(configuration_signature))
+    Ok(Json::from(configuration_operation_signature))
 }

@@ -50,6 +50,7 @@ import {
   useEstimateFeesPerGas,
   useEstimateGas,
   useEstimateMaxPriorityFeePerGas,
+  useReadLightWalletImageHash,
 } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getUserOperationHash } from "permissionless";
@@ -143,6 +144,15 @@ export const Transaction: FC<TransactionProps> = ({
   const isInsideModal = useIsInsideModal();
 
   // ---------------------------------------------------------------------------
+  // Wagmi
+  // ---------------------------------------------------------------------------
+
+  const { data: imageHash } = useReadLightWalletImageHash({
+    address: address,
+    chainId: Number(initialUserOperation.chainId),
+  });
+
+  // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
@@ -152,7 +162,7 @@ export const Transaction: FC<TransactionProps> = ({
 
   const { configuration } = useQueryConfiguration({
     address: address,
-    // image_hash:
+    image_hash: imageHash,
   });
 
   // Gets the user operation nonce
@@ -238,7 +248,7 @@ export const Transaction: FC<TransactionProps> = ({
         partialUserOperation?.maxPriorityFeePerGas ?? BigInt(0),
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userOperations, executedUserOperations]);
+  }, [userOperations, executedUserOperations, configuration]);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -630,6 +640,18 @@ export const Transaction: FC<TransactionProps> = ({
     {
       title: "paymasterAndDataError",
       data: paymasterAndDataError,
+    },
+    {
+      title: "configuration",
+      data: configuration,
+    },
+    {
+      title: "initialConfiguration",
+      data: initialConfiguration,
+    },
+    {
+      title: "configuration",
+      data: configuration,
     },
     {
       title: "decodedInitCode",
