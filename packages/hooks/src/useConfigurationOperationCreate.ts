@@ -58,13 +58,16 @@ export const useConfigurationOperationCreate = ({
     address,
   });
 
-  const { configurationOperationSimulation } =
-    useQueryConfigurationOperationSimulation({
-      address,
-      threshold: params.threshold,
-      ownerId: params.ownerId,
-      owners: params.owners,
-    });
+  const {
+    configurationOperationSimulation,
+    isConfigurationOperationSimulationLoading,
+    refetchConfigurationOperationSimulation,
+  } = useQueryConfigurationOperationSimulation({
+    address,
+    threshold: params.threshold,
+    ownerId: params.ownerId,
+    owners: params.owners,
+  });
 
   const { configurationOperationCreate } =
     useMutationConfigurationOperationCreate({
@@ -85,9 +88,18 @@ export const useConfigurationOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   const subdigest = useMemo(() => {
-    if (!address || !configurationOperationSimulation?.image_hash) {
+    if (
+      !address ||
+      !configurationOperationSimulation?.image_hash ||
+      isConfigurationOperationSimulationLoading
+    ) {
       return;
     }
+
+    console.info(
+      "configurationOperationSimulation:",
+      configurationOperationSimulation,
+    );
 
     return subdigestOf(
       address,
@@ -96,7 +108,11 @@ export const useConfigurationOperationCreate = ({
       ),
       BigInt(0),
     );
-  }, [address, configurationOperationSimulation?.image_hash]);
+  }, [
+    address,
+    configurationOperationSimulation?.image_hash,
+    isConfigurationOperationSimulationLoading,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Wagmi
@@ -126,6 +142,7 @@ export const useConfigurationOperationCreate = ({
     if (!subdigest) {
       return;
     }
+    console.info("subdigest:", subdigest);
 
     signMessage({ message: { raw: toBytes(subdigest) } });
   }, [subdigest, signMessage]);
@@ -133,6 +150,11 @@ export const useConfigurationOperationCreate = ({
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
+
+  // Refetch the simulation when the parameters change
+  useEffect(() => {
+    refetchConfigurationOperationSimulation();
+  }, [params]);
 
   // Sync the loading state
   useEffect(() => {

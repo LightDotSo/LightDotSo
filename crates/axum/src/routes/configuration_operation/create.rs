@@ -237,20 +237,6 @@ pub(crate) async fn v1_configuration_operation_create_handler(
     }
 
     // -------------------------------------------------------------------------
-    // Return
-    // -------------------------------------------------------------------------
-
-    // If the simulate flag is set, return the wallet address.
-    if query.simulate.unwrap_or(false) {
-        return Ok(Json::from(ConfigurationOperation {
-            image_hash: format!("{:?}", image_hash_bytes),
-            checkpoint: configuration.checkpoint + 1,
-            threshold: params.threshold as i64,
-            status: "SIMULATED".to_string(),
-        }));
-    }
-
-    // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
 
@@ -281,11 +267,21 @@ pub(crate) async fn v1_configuration_operation_create_handler(
         wallet.clone().address.parse()?,
         hash_image_bytes32(&image_hash)?,
     )?;
-    info!(?subdigest);
+    info!("subdigest: {}", subdigest.to_vec().to_hex_string());
 
-    // Recover the signature.
-    let recovered_sig = recover_ecdsa_signature(&sig_bytes, &subdigest, 0)?;
-    info!(?recovered_sig);
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
+
+    // If the simulate flag is set, return the wallet address.
+    if query.simulate.unwrap_or(false) {
+        return Ok(Json::from(ConfigurationOperation {
+            image_hash: format!("{:?}", image_hash_bytes),
+            checkpoint: configuration.checkpoint + 1,
+            threshold: params.threshold as i64,
+            status: "SIMULATED".to_string(),
+        }));
+    }
 
     // -------------------------------------------------------------------------
     // DB
@@ -304,6 +300,10 @@ pub(crate) async fn v1_configuration_operation_create_handler(
     // -------------------------------------------------------------------------
     // Signature
     // -------------------------------------------------------------------------
+
+    // Recover the signature.
+    let recovered_sig = recover_ecdsa_signature(&sig_bytes, &subdigest, 0)?;
+    info!(?recovered_sig);
 
     // If the owner is not found, return a 404.
     let owner = owner.ok_or(AppError::NotFound)?;

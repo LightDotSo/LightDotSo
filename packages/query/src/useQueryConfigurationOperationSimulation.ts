@@ -47,6 +47,7 @@ export const useQueryConfigurationOperationSimulation = (
   const {
     data: configurationOperationSimulation,
     isLoading: isConfigurationOperationSimulationLoading,
+    refetch: refetchConfigurationOperationSimulation,
     failureCount,
   } = useQuery<ConfigurationOperationData | null>({
     queryKey: queryKeys.configuration_operation.simulation({
@@ -90,6 +91,7 @@ export const useQueryConfigurationOperationSimulation = (
 
   return {
     configurationOperationSimulation,
+    refetchConfigurationOperationSimulation,
     isConfigurationOperationSimulationLoading,
   };
 };
