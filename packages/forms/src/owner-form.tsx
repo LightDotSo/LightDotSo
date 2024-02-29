@@ -196,6 +196,9 @@ export const OwnerForm: FC = () => {
     control: form.control,
   });
 
+  const formThreshold = form.watch("threshold");
+  const formOwners = form.watch("owners");
+
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
@@ -315,8 +318,8 @@ export const OwnerForm: FC = () => {
     useConfigurationOperationCreate({
       address: wallet as Address,
       params: {
-        threshold: form.watch("threshold"),
-        owners: form.watch("owners").map((owner: Owner) => ({
+        threshold: formThreshold as number,
+        owners: formOwners.map((owner: Owner) => ({
           address: owner.address as string,
           weight: owner.weight,
         })),

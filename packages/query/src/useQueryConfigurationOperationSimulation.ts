@@ -18,6 +18,7 @@ import type { ConfigurationOperationSimulationParams } from "@lightdotso/params"
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Query
@@ -48,17 +49,16 @@ export const useQueryConfigurationOperationSimulation = (
     isLoading: isConfigurationOperationSimulationLoading,
     failureCount,
   } = useQuery<ConfigurationOperationData | null>({
-    queryKey: queryKeys.configuration.get({ address: params.address }).queryKey,
+    queryKey: queryKeys.configuration_operation.simulation({
+      address: params.address,
+      simulate: true,
+    }).queryKey,
     queryFn: async () => {
-      if (!params.address) {
-        return null;
-      }
-
       const res = await createConfigurationOperation(
         {
           params: {
             query: {
-              address: params.address,
+              address: params.address as Address,
               simulate: true,
             },
           },

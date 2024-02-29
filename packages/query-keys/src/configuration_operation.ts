@@ -12,11 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type {
-  WalletListParams,
-  WalletListCountParams,
-  WalletParams,
-} from "@lightdotso/params";
+import type { ConfigurationOperationParams } from "@lightdotso/params";
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
@@ -24,35 +20,19 @@ import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 // Keys
 // -----------------------------------------------------------------------------
 
-export const wallet = createQueryKeys("wallet", {
-  get: (params: WalletParams) => ({
-    queryKey: [{ params }],
-  }),
-  list: (params: WalletListParams) => ({
-    queryKey: [{ params }],
-  }),
-  listCount: (params: WalletListCountParams) => ({
-    queryKey: [{ params }],
-  }),
-  billing: (params: WalletParams) => ({
-    queryKey: [{ params }],
-  }),
-  features: (params: WalletParams) => ({
-    queryKey: [{ params }],
-  }),
-  notificationSettings: (params: WalletParams) => ({
-    queryKey: [{ params }],
-  }),
-  settings: (params: WalletParams) => ({
-    queryKey: [{ params }],
-  }),
-  simulation: (params: WalletParams) => ({
-    queryKey: [{ params }],
-  }),
-});
+export const configuration_operation = createQueryKeys(
+  "configuration_operation",
+  {
+    simulation: (params: ConfigurationOperationParams) => ({
+      queryKey: [{ params }],
+    }),
+  },
+);
 
 // -----------------------------------------------------------------------------
 // Infer
 // -----------------------------------------------------------------------------
 
-export type WalletKeys = inferQueryKeys<typeof wallet>;
+export type ConfigurationOperationKeys = inferQueryKeys<
+  typeof configuration_operation
+>;
