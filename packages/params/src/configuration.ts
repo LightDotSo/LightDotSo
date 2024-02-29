@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { Address } from "viem";
+import type { Address, Hex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Params
@@ -20,4 +20,5 @@ import type { Address } from "viem";
 
 export type ConfigurationParams = {
   address: Address | null | undefined;
+  image_hash?: Hex | null | undefined;
 };

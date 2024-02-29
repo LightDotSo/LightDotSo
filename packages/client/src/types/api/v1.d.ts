@@ -2622,8 +2622,8 @@ export interface operations {
       query: {
         /** @description The address of the configuration to query. */
         address: string;
-        /** @description The optional checkpoint to filter by. */
-        checkpoint?: number | null;
+        /** @description The optional image_hash to filter by. */
+        image_hash?: string | null;
       };
     };
     responses: {
@@ -4857,6 +4857,8 @@ export interface operations {
         user_operation_hash: string;
         /** @description The type of signature to get for. */
         signature_type?: number | null;
+        /** @description The optional configuration id that is on the current wallet. */
+        configuration_id?: string | null;
       };
     };
     responses: {

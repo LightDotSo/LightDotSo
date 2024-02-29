@@ -143,8 +143,8 @@ export const CreateTransactionDialog: FC<CreateTransactionDialogProps> = ({
         <Transaction
           key={selectedOpIndex}
           address={address}
-          configuration={configuration}
           wallet={wallet}
+          initialConfiguration={configuration}
           initialUserOperation={userOperations[selectedOpIndex]}
           userOperationIndex={selectedOpIndex}
           isDev={isDev}

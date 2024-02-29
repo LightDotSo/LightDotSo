@@ -310,7 +310,11 @@ pub(crate) async fn v1_user_operation_signature_handler(
         signature_type: signature_type as u8,
         // Internal fields are not used in the signature.
         internal_root: None,
-        internal_recovered_configs: Some(recovered_configs),
+        internal_recovered_configs: if recovered_configs.is_empty() {
+            None
+        } else {
+            Some(recovered_configs)
+        },
     };
     info!(?wallet_config);
 
