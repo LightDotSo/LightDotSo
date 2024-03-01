@@ -121,12 +121,13 @@ pub(crate) async fn v1_user_operation_signature_handler(
         .map_or(Vec::new(), |signature| signature.into_iter().map(Signature::from).collect());
     info!("{}", signatures.len());
 
-    // Get the wallet from the database.
+    // Get the configurations from the database.
     let configurations = state
         .client
         .configuration()
         .find_many(vec![configuration::address::equals(user_operation.clone().sender)])
         .with(configuration::owners::fetch(vec![]).order_by(owner::index::order(Direction::Asc)))
+        .with(configuration::configuration_operation_signatures::fetch(vec![]))
         .order_by(configuration::checkpoint::order(Direction::Desc))
         .exec()
         .await?;
@@ -156,11 +157,11 @@ pub(crate) async fn v1_user_operation_signature_handler(
     // Get the configurations needed to build the wallet configuration - should be uprooted from the
     // query configuration id, to the most recent configuration. Start with the query configuration
     // id, and then get up to the most recent configuration (don't include the most recent)
-    let mut uproot_configurations = if let Some(configuration_id) = query.configuration_id {
+    let mut uproot_configurations = if let Some(query_configuration_id) = query.configuration_id {
         let query_configuration = configurations
             .clone()
             .into_iter()
-            .find(|configuration| configuration.id == configuration_id)
+            .find(|configuration| configuration.id == query_configuration_id)
             .ok_or(AppError::NotFound)?;
         info!(?query_configuration);
 
@@ -176,7 +177,6 @@ pub(crate) async fn v1_user_operation_signature_handler(
 
     // Order the uproot configurations by checkpoint in descending order.
     uproot_configurations.sort_by(|a, b| b.checkpoint.cmp(&a.checkpoint));
-
     info!(?uproot_configurations);
 
     let mut owners = op_configuration.owners.ok_or(AppError::NotFound)?;
@@ -280,15 +280,59 @@ pub(crate) async fn v1_user_operation_signature_handler(
             let owner_nodes = owner_nodes?;
 
             // Build the node tree.
-            let tree = rooted_node_builder(owner_nodes)?;
+            let mut tree = rooted_node_builder(owner_nodes)?;
+            info!(?tree);
+
+            // Get the configuration signatures from the matching recovered configuration.
+            let upgrade_signatures = recovered_configuration
+                .configuration_operation_signatures
+                .ok_or(AppError::NotFound)
+                .map_err(|_err| eyre!("Error fetching recovered configuration signatures"))?;
+
+            // Conver the signatures to SignerNode.
+            let signer_nodes: Result<Vec<SignerNode>> = upgrade_signatures
+                .iter()
+                .map(|sig| {
+                    // Filter the owner with the same id from `owners`
+                    let owner = recovered_config_owners
+                        .iter()
+                        .find(|&owner| owner.id == "id")
+                        .ok_or(eyre!("Owner not found"))?;
+
+                    let mut signature_slice = [0; ECDSA_SIGNATURE_LENGTH];
+                    let bytes = &sig.signature;
+                    signature_slice.copy_from_slice(&bytes[0..bytes.len() - 1]);
+                    let signature_type = match bytes.last() {
+                        Some(&0x1) => {
+                            lightdotso_sequence::types::ECDSASignatureType::ECDSASignatureTypeEIP712
+                        }
+                        _ => lightdotso_sequence::types::ECDSASignatureType::ECDSASignatureTypeEthSign,
+                    };
+
+                    Ok(SignerNode {
+                        signer: Some(Signer {
+                            weight: Some(owner.weight.try_into()?),
+                            leaf: SignatureLeaf::ECDSASignature(ECDSASignatureLeaf {
+                                address: owner.address.parse()?,
+                                signature: signature_slice.try_into()?,
+                                signature_type,
+                            }),
+                        }),
+                        left: None,
+                        right: None,
+                    })
+                })
+                .collect();
+
+            tree.replace_node(signer_nodes?);
             info!(?tree);
 
             let wallet_config = WalletConfig {
-                checkpoint: op_configuration.checkpoint as u32,
-                threshold: op_configuration.threshold as u16,
+                checkpoint: recovered_configuration.checkpoint as u32,
+                threshold: recovered_configuration.threshold as u16,
                 // Weight is not used in the signature.
                 weight: 0,
-                image_hash: op_configuration.image_hash.hex_to_bytes32()?.into(),
+                image_hash: recovered_configuration.image_hash.hex_to_bytes32()?.into(),
                 tree,
                 signature_type: signature_type as u8,
                 // Internal fields are not used in the signature.
