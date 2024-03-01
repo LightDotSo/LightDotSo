@@ -17,11 +17,13 @@
 pragma solidity ^0.8.18;
 
 import {Merkle} from "murky/Merkle.sol";
+import "solidity-bytes-utils/BytesLib.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
+using BytesLib for bytes;
 using ERC4337Utils for EntryPoint;
 
 /// @notice Integration tests for `LightWallet` sending ETH
@@ -85,12 +87,12 @@ contract MerkleSendEthIntegrationTest is BaseIntegrationTest {
         bytes memory signatureAndProof = abi.encodePacked(hex"04", abi.encode(root, proof, signature));
 
         // Attempt to decode the signature and proof
-        // (bytes32 merkleTreeRoot, bytes32[] memory merkleProof,) =
-        //     abi.decode(signatureAndProof[1:], (bytes32, bytes32[], bytes));
+        (bytes32 merkleTreeRoot, bytes32[] memory merkleProof,) =
+            abi.decode(signatureAndProof.slice(1, signatureAndProof.length - 1), (bytes32, bytes32[], bytes));
 
         // Assert that the merkle tree root is the same
-        // assertEq(merkleTreeRoot, root);
-        // assertEq(merkleProof[0], proof[0]);
+        assertEq(merkleTreeRoot, root);
+        assertEq(merkleProof[0], proof[0]);
 
         // Assert that the signature and proof is the correct length
         assertEq(signatureAndProof.length, 289);
