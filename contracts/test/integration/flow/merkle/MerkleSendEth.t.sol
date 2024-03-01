@@ -84,9 +84,9 @@ contract MerkleSendEthIntegrationTest is BaseIntegrationTest {
         assertTrue(verified);
 
         // Encode the signature and proof
-        bytes memory merkleSignature = entryPoint.signHash(vm, userKey, root);
+        bytes memory merkleSignature =
+            entryPoint.signPackMerkleRoot(vm, address(account), root, userKey, weight, threshold, checkpoint);
         bytes memory signatureAndProof = abi.encodePacked(hex"04", abi.encode(root, proof, merkleSignature));
-        op.signature = signatureAndProof;
 
         // Attempt to decode the signature and proof
         (bytes32 merkleTreeRoot, bytes32[] memory merkleProof,) =
@@ -105,9 +105,12 @@ contract MerkleSendEthIntegrationTest is BaseIntegrationTest {
         // uint256 offset = 193;
         // console.logBytes(signatureAndProof.slice(offset, signature.length));
 
-        // entryPoint.handleOps(ops, beneficiary);
+        // Set the signature and proof
+        op.signature = signatureAndProof;
+
+        entryPoint.handleOps(ops, beneficiary);
 
         // Assert that the balance of the account is 1
-        // assertEq(address(1).balance, 1);
+        assertEq(address(1).balance, 1);
     }
 }
