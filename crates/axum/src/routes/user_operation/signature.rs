@@ -122,11 +122,12 @@ pub(crate) async fn v1_user_operation_signature_handler(
     info!("{}", signatures.len());
 
     // Get the wallet from the database.
-    let mut configurations = state
+    let configurations = state
         .client
         .configuration()
         .find_many(vec![configuration::address::equals(user_operation.clone().sender)])
         .with(configuration::owners::fetch(vec![]).order_by(owner::index::order(Direction::Asc)))
+        .order_by(configuration::checkpoint::order(Direction::Desc))
         .exec()
         .await?;
     info!(?configurations);
@@ -135,10 +136,6 @@ pub(crate) async fn v1_user_operation_signature_handler(
     if configurations.is_empty() {
         return Err(AppError::NotFound);
     }
-
-    // Sort the configurations by checkpoint.
-    configurations.sort_by(|a, b| b.checkpoint.cmp(&a.checkpoint));
-    info!(?configurations);
 
     // Get the current configuration for the matching signature -> owner id -> configuration id.
     let op_configuration = configurations
