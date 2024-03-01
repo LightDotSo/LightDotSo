@@ -67,19 +67,17 @@ pub struct PostQuery {
 #[serde(rename_all = "snake_case")]
 pub struct ConfigurationOperationSignatureCreateRequestParams {
     /// The result of the signature.
-    pub signature: ConfigurationOperationSignatureCreateParams,
+    pub signature: ConfigurationOperationSignatureSignatureCreateParams,
 }
 
 /// Signature operation
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub struct ConfigurationOperationSignatureCreateParams {
+pub struct ConfigurationOperationSignatureSignatureCreateParams {
     /// The id of the owner of the signature.
     pub configuration_operation_owner_id: String,
     /// The signature of the user operation in hex.
     pub signature: String,
-    /// The type of the signature.
-    pub signature_type: i32,
 }
 
 // -----------------------------------------------------------------------------

@@ -115,7 +115,7 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(configuration_operation::types::ConfigurationOperation),
         schemas(configuration_operation_owner::error::ConfigurationOperationOwnerError),
         schemas(configuration_operation_owner::types::ConfigurationOperationOwner),
-        schemas(configuration_operation_signature::create::ConfigurationOperationSignatureCreateParams),
+        schemas(configuration_operation_signature::create::ConfigurationOperationSignatureSignatureCreateParams),
         schemas(configuration_operation_signature::create::ConfigurationOperationSignatureCreateRequestParams),
         schemas(configuration_operation_signature::error::ConfigurationOperationSignatureError),
         schemas(configuration_operation_signature::types::ConfigurationOperationSignature),

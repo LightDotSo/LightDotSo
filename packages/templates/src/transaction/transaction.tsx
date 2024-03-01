@@ -89,7 +89,7 @@ type UserOperationFormValues = UserOperation;
 type TransactionProps = {
   address: Address;
   wallet: WalletData;
-  initialConfiguration: ConfigurationData;
+  genesisConfiguration: ConfigurationData;
   initialUserOperation: Omit<
     UserOperation,
     | "hash"
@@ -112,7 +112,7 @@ type TransactionProps = {
 export const Transaction: FC<TransactionProps> = ({
   address,
   wallet,
-  initialConfiguration,
+  genesisConfiguration,
   initialUserOperation,
   userOperationIndex = 0,
   isDev = false,
@@ -224,11 +224,9 @@ export const Transaction: FC<TransactionProps> = ({
     const updatedInitCode =
       executedUserOperations && executedUserOperations?.length < 1
         ? calculateInitCode(
-            CONTRACT_ADDRESSES["Factory"] as Address,
-            // This is the latest image hash for the initial configuration
-            (configuration?.image_hash as Hex) ??
-              // Fallback to the initial configuration image hash
-              (initialConfiguration.image_hash as Hex),
+            wallet.factory_address as Address,
+            // Compute w/ the genesis configuration image hash
+            genesisConfiguration.image_hash as Hex,
             wallet.salt as Hex,
           )
         : partialUserOperation.initCode;
@@ -525,7 +523,7 @@ export const Transaction: FC<TransactionProps> = ({
       { title: "Sender", value: shortenAddress(targetUserOperation.sender) },
       {
         title: "Threshold",
-        value: configuration?.threshold ?? initialConfiguration.threshold,
+        value: configuration?.threshold!,
       },
       { title: "Chain", value: chain?.name },
     ];
@@ -646,8 +644,8 @@ export const Transaction: FC<TransactionProps> = ({
       data: configuration,
     },
     {
-      title: "initialConfiguration",
-      data: initialConfiguration,
+      title: "genesisConfiguration",
+      data: genesisConfiguration,
     },
     {
       title: "configuration",

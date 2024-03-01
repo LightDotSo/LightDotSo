@@ -41,6 +41,8 @@ pub struct GetQuery {
     pub address: String,
     /// The optional image_hash to filter by.
     pub image_hash: Option<String>,
+    /// The optional checkpoint to filter by.
+    pub checkpoint: Option<i64>,
 }
 
 // -----------------------------------------------------------------------------
@@ -93,16 +95,27 @@ pub(crate) async fn v1_configuration_get_handler(
                 .exec()
                 .await?
         }
-        None => {
-            state
-                .client
-                .configuration()
-                .find_first(vec![configuration::address::equals(checksum_address)])
-                .order_by(configuration::checkpoint::order(Direction::Desc))
-                .with(configuration::owners::fetch(vec![]).with(owner::user::fetch()))
-                .exec()
-                .await?
-        }
+        None => match query.checkpoint {
+            Some(checkpoint) => {
+                state
+                    .client
+                    .configuration()
+                    .find_unique(configuration::address_checkpoint(checksum_address, checkpoint))
+                    .with(configuration::owners::fetch(vec![]).with(owner::user::fetch()))
+                    .exec()
+                    .await?
+            }
+            None => {
+                state
+                    .client
+                    .configuration()
+                    .find_first(vec![configuration::address::equals(checksum_address)])
+                    .order_by(configuration::checkpoint::order(Direction::Desc))
+                    .with(configuration::owners::fetch(vec![]).with(owner::user::fetch()))
+                    .exec()
+                    .await?
+            }
+        },
     };
 
     // If the configuration is not found, return a 404.

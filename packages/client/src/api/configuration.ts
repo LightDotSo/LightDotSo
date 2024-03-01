@@ -25,7 +25,11 @@ export const getConfiguration = async (
     params,
   }: {
     params: {
-      query: { address: string };
+      query: {
+        address: string;
+        image_hash?: string | null;
+        checkpoint?: number | null;
+      };
     };
   },
   clientType?: ClientType,

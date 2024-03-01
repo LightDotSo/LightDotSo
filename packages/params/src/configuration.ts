@@ -21,4 +21,5 @@ import type { Address, Hex } from "viem";
 export type ConfigurationParams = {
   address: Address | null | undefined;
   image_hash?: Hex | null | undefined;
+  checkpoint?: number | null | undefined;
 };
