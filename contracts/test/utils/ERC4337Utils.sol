@@ -69,6 +69,33 @@ library ERC4337Utils {
         signature = abi.encodePacked(r, s, v);
     }
 
+    /// @dev Signs a merkle root with a user's key
+    /// @param _vm The VM contract
+    /// @param _account The account to sign the UserOperation with
+    /// @param _root The merkle root to sign
+    /// @param _key The user's private key to sign the UserOperation with
+    /// @param _weight The weight for the signature
+    /// @param _threshold The threshold for the signature
+    /// @param _checkpoint The checkpoint for the signature
+    function signPackMerkleRoot(
+        EntryPoint,
+        Vm _vm,
+        address _account,
+        bytes32 _root,
+        uint256 _key,
+        uint8 _weight,
+        uint16 _threshold,
+        uint32 _checkpoint
+    ) internal view returns (bytes memory op) {
+        // Sign the hash
+        bytes memory sig = LightWalletUtils.signDigest(_vm, _root, _account, _key, false);
+
+        // Pack the signature
+        bytes memory signature = LightWalletUtils.packLegacySignature(sig, _weight, _threshold, _checkpoint);
+
+        return signature;
+    }
+
     /// @dev Signs a UserOperation with a user's key
     /// @param _entryPoint The entry point contract
     /// @param _vm The VM contract

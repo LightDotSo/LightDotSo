@@ -20,7 +20,7 @@ import {
 } from "@lightdotso/nuqs";
 import { useQueryConfiguration, useQueryWallet } from "@lightdotso/query";
 import type { UserOperation } from "@lightdotso/schemas";
-import { useAuth, useDev } from "@lightdotso/stores";
+import { useDev } from "@lightdotso/stores";
 import { Transaction } from "@lightdotso/templates";
 import {
   Pagination,
@@ -28,9 +28,8 @@ import {
   PaginationItem,
   PaginationLink,
 } from "@lightdotso/ui";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import type { FC } from "react";
-import { isAddressEqual } from "viem";
 import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
@@ -71,7 +70,6 @@ export const CreateTransactionDialog: FC<CreateTransactionDialogProps> = ({
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address: userAddress } = useAuth();
   const { isDev } = useDev();
 
   // ---------------------------------------------------------------------------
