@@ -5,6 +5,7 @@ murky/=lib/murky/src/
 openzeppelin-contracts/=lib/openzeppelin-contracts/
 seaport/=lib/seaport/
 solady/=lib/solady/src/
+solidity-bytes-utils/=lib/solidity-bytes-utils/contracts/
 solmate/=lib/solmate/src/
 src/=lib/kernel/src/
 surl/=lib/surl/src/
