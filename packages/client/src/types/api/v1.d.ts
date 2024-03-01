@@ -199,40 +199,40 @@ export interface paths {
      */
     put: operations["v1_configuration_operation_update_handler"];
   };
-  "/configuration_owner/get": {
+  "/configuration_operation_owner/get": {
     /**
      * Get a owner
      * @description Get a owner
      */
-    get: operations["v1_configuration_owner_get_handler"];
+    get: operations["v1_configuration_operation_owner_get_handler"];
   };
-  "/configuration_owner/list": {
+  "/configuration_operation_owner/list": {
     /**
      * Returns a list of owners
      * @description Returns a list of owners
      */
-    get: operations["v1_configuration_owner_list_handler"];
+    get: operations["v1_configuration_operation_owner_list_handler"];
   };
-  "/configuration_signature/create": {
+  "/configuration_operation_signature/create": {
     /**
      * Create a configuration signature
      * @description Create a configuration signature
      */
-    post: operations["v1_configuration_signature_create_handler"];
+    post: operations["v1_configuration_operation_signature_create_handler"];
   };
-  "/configuration_signature/get": {
+  "/configuration_operation_signature/get": {
     /**
      * Get a signature
      * @description Get a signature
      */
-    get: operations["v1_configuration_signature_get_handler"];
+    get: operations["v1_configuration_operation_signature_get_handler"];
   };
-  "/configuration_signature/list": {
+  "/configuration_operation_signature/list": {
     /**
      * Returns a list of signatures
      * @description Returns a list of signatures
      */
-    get: operations["v1_configuration_signature_list_handler"];
+    get: operations["v1_configuration_operation_signature_list_handler"];
   };
   "/feedback/create": {
     /**
@@ -988,7 +988,7 @@ export interface components {
       /** @description The image hash of the configuration. */
       image_hash: string;
       /** @description The owners of the configuration. */
-      owners: components["schemas"]["ConfigurationOwner"][];
+      owners: components["schemas"]["ConfigurationOperationOwner"][];
       /**
        * Format: int64
        * @description The threshold of the configuration.
@@ -1075,15 +1075,8 @@ export interface components {
        */
       count: number;
     };
-    /** @description Signature operation */
-    ConfigurationOperationSignatureCreateParams: {
-      /** @description The id of the owner of the signature. */
-      owner_id: string;
-      /** @description The signature of the user operation in hex. */
-      signature: string;
-    };
     /** @description Owner root type. */
-    ConfigurationOwner: {
+    ConfigurationOperationOwner: {
       /** @description The address of the owner. */
       address: string;
       /** @description The id of the owner. */
@@ -1095,7 +1088,7 @@ export interface components {
       weight: number;
     };
     /** @description Configuration owner operation errors */
-    ConfigurationOwnerError: OneOf<[{
+    ConfigurationOperationOwnerError: OneOf<[{
       /** @description Owner query error. */
       BadRequest: string;
     }, {
@@ -1103,38 +1096,40 @@ export interface components {
       NotFound: string;
     }]>;
     /** @description Signature root type. */
-    ConfigurationSignature: {
+    ConfigurationOperationSignature: {
       /** @description The id of the owner of the signature. */
-      configuration_owner_id: string;
+      configuration_operation_owner_id: string;
       /** @description The created time of the signature. */
       created_at: string;
       /** @description The signature of the user operation in hex. */
       signature: string;
     };
     /** @description Signature operation */
-    ConfigurationSignatureCreateParams: {
+    ConfigurationOperationSignatureCreateParams: {
       /** @description The id of the owner of the signature. */
-      configuration_owner_id: string;
+      owner_id: string;
       /** @description The signature of the user operation in hex. */
       signature: string;
-      /**
-       * Format: int32
-       * @description The type of the signature.
-       */
-      signature_type: number;
     };
     /** @description Signature operation post request params */
-    ConfigurationSignatureCreateRequestParams: {
-      signature: components["schemas"]["ConfigurationSignatureCreateParams"];
+    ConfigurationOperationSignatureCreateRequestParams: {
+      signature: components["schemas"]["ConfigurationOperationSignatureSignatureCreateParams"];
     };
-    /** @description ConfigurationSignature operation errors */
-    ConfigurationSignatureError: OneOf<[{
-      /** @description ConfigurationSignature query error. */
+    /** @description ConfigurationOperationSignature operation errors */
+    ConfigurationOperationSignatureError: OneOf<[{
+      /** @description ConfigurationOperationSignature query error. */
       BadRequest: string;
     }, {
-      /** @description ConfigurationSignature not found by id. */
+      /** @description ConfigurationOperationSignature not found by id. */
       NotFound: string;
     }]>;
+    /** @description Signature operation */
+    ConfigurationOperationSignatureSignatureCreateParams: {
+      /** @description The id of the owner of the signature. */
+      configuration_operation_owner_id: string;
+      /** @description The signature of the user operation in hex. */
+      signature: string;
+    };
     /** @description Feedback root type. */
     Feedback: {
       /** @description The emoji of the feedback. */
@@ -2624,6 +2619,8 @@ export interface operations {
         address: string;
         /** @description The optional image_hash to filter by. */
         image_hash?: string | null;
+        /** @description The optional checkpoint to filter by. */
+        checkpoint?: number | null;
       };
     };
     responses: {
@@ -2839,23 +2836,23 @@ export interface operations {
    * Get a owner
    * @description Get a owner
    */
-  v1_configuration_owner_get_handler: {
+  v1_configuration_operation_owner_get_handler: {
     parameters: {
       query: {
         id: string;
       };
     };
     responses: {
-      /** @description ConfigurationOwner returned successfully */
+      /** @description ConfigurationOperationOwner returned successfully */
       200: {
         content: {
-          "application/json": components["schemas"]["ConfigurationOwner"];
+          "application/json": components["schemas"]["ConfigurationOperationOwner"];
         };
       };
-      /** @description ConfigurationOwner not found */
+      /** @description ConfigurationOperationOwner not found */
       404: {
         content: {
-          "application/json": components["schemas"]["ConfigurationOwnerError"];
+          "application/json": components["schemas"]["ConfigurationOperationOwnerError"];
         };
       };
     };
@@ -2864,7 +2861,7 @@ export interface operations {
    * Returns a list of owners
    * @description Returns a list of owners
    */
-  v1_configuration_owner_list_handler: {
+  v1_configuration_operation_owner_list_handler: {
     parameters: {
       query?: {
         /** @description The offset of the first owner to return. */
@@ -2874,16 +2871,16 @@ export interface operations {
       };
     };
     responses: {
-      /** @description ConfigurationOwners returned successfully */
+      /** @description Configuration Operation Owners returned successfully */
       200: {
         content: {
-          "application/json": components["schemas"]["ConfigurationOwner"][];
+          "application/json": components["schemas"]["ConfigurationOperationOwner"][];
         };
       };
-      /** @description ConfigurationOwners bad request */
+      /** @description Configuration Operation Owners bad request */
       500: {
         content: {
-          "application/json": components["schemas"]["ConfigurationOwnerError"];
+          "application/json": components["schemas"]["ConfigurationOperationOwnerError"];
         };
       };
     };
@@ -2892,7 +2889,7 @@ export interface operations {
    * Create a configuration signature
    * @description Create a configuration signature
    */
-  v1_configuration_signature_create_handler: {
+  v1_configuration_operation_signature_create_handler: {
     parameters: {
       query: {
         /** @description The operation of the configuration. */
@@ -2901,7 +2898,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["ConfigurationSignatureCreateRequestParams"];
+        "application/json": components["schemas"]["ConfigurationOperationSignatureCreateRequestParams"];
       };
     };
     responses: {
@@ -2935,26 +2932,26 @@ export interface operations {
    * Get a signature
    * @description Get a signature
    */
-  v1_configuration_signature_get_handler: {
+  v1_configuration_operation_signature_get_handler: {
     parameters: {
       query: {
         /** @description The configuration operation id of the signature. */
         configuration_operation_id: string;
         /** @description The configuration owner of the signature. */
-        configuration_owner_id: string;
+        configuration_operation_owner_id: string;
       };
     };
     responses: {
-      /** @description Configuration Signature returned successfully */
+      /** @description Configuration Operation Signature returned successfully */
       200: {
         content: {
-          "application/json": components["schemas"]["ConfigurationSignature"];
+          "application/json": components["schemas"]["ConfigurationOperationSignature"];
         };
       };
-      /** @description Configuration Signature not found */
+      /** @description Configuration Operation Signature not found */
       404: {
         content: {
-          "application/json": components["schemas"]["ConfigurationSignatureError"];
+          "application/json": components["schemas"]["ConfigurationOperationSignatureError"];
         };
       };
     };
@@ -2963,7 +2960,7 @@ export interface operations {
    * Returns a list of signatures
    * @description Returns a list of signatures
    */
-  v1_configuration_signature_list_handler: {
+  v1_configuration_operation_signature_list_handler: {
     parameters: {
       query?: {
         /** @description The offset of the first signature to return. */
@@ -2978,13 +2975,13 @@ export interface operations {
       /** @description Configuration Signatures returned successfully */
       200: {
         content: {
-          "application/json": components["schemas"]["ConfigurationSignature"][];
+          "application/json": components["schemas"]["ConfigurationOperationSignature"][];
         };
       };
       /** @description Configuration Signature bad request */
       500: {
         content: {
-          "application/json": components["schemas"]["ConfigurationSignatureError"];
+          "application/json": components["schemas"]["ConfigurationOperationSignatureError"];
         };
       };
     };

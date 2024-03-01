@@ -91,8 +91,9 @@ export const CreateTransactionDialog: FC<CreateTransactionDialogProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { configuration } = useQueryConfiguration({
+  const { configuration: genesisConfiguration } = useQueryConfiguration({
     address: address,
+    checkpoint: 0,
   });
 
   const { wallet } = useQueryWallet({
@@ -100,25 +101,10 @@ export const CreateTransactionDialog: FC<CreateTransactionDialogProps> = ({
   });
 
   // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const owner = useMemo(() => {
-    if (!userAddress || !configuration || !configuration.owners) {
-      return;
-    }
-
-    return configuration.owners?.find(owner =>
-      isAddressEqual(owner.address as Address, userAddress),
-    );
-  }, [configuration, userAddress]);
-
-  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!configuration || !wallet) {
+  if (!genesisConfiguration || !wallet) {
     return null;
   }
 
@@ -144,7 +130,7 @@ export const CreateTransactionDialog: FC<CreateTransactionDialogProps> = ({
           key={selectedOpIndex}
           address={address}
           wallet={wallet}
-          initialConfiguration={configuration}
+          genesisConfiguration={genesisConfiguration}
           initialUserOperation={userOperations[selectedOpIndex]}
           userOperationIndex={selectedOpIndex}
           isDev={isDev}
