@@ -199,7 +199,9 @@ pub(crate) async fn v1_configuration_operation_update_handler(
                         configuration_operation.clone().checkpoint,
                         configuration_operation.clone().image_hash,
                         configuration_operation.clone().threshold,
-                        vec![],
+                        vec![configuration::configuration_operation::connect(
+                            configuration_operation::id::equals(configuration_operation.clone().id),
+                        )],
                     )
                     .exec()
                     .await?;
@@ -233,6 +235,7 @@ pub(crate) async fn v1_configuration_operation_update_handler(
                             })
                             .collect(),
                     )
+                    .skip_duplicates()
                     .exec()
                     .await?;
                 info!(?owner_data);
@@ -292,6 +295,34 @@ pub(crate) async fn v1_configuration_operation_update_handler(
                             .unwrap()
                             .clone()
                             .id,
+                    ))
+                })
+                .collect(),
+        )
+        .exec()
+        .await?;
+    info!(?configuration_operation_signature_data);
+
+    // Upsert the configurationId for each configuration operation signature.
+    let configuration_operation_signature_data = state
+        .client
+        .configuration_operation_signature()
+        .update_many(
+            // Enumerate and map the id of the configuration operation signature
+            configuration_operation_signatures
+                .iter()
+                .enumerate()
+                .map(|(_index, signature)| {
+                    configuration_operation_signature::id::equals(signature.clone().id.clone())
+                })
+                .collect(),
+            // Map the configuration id to the configuration operation signature.
+            configuration_operation_signatures
+                .iter()
+                .enumerate()
+                .map(|(_index, _signature)| {
+                    configuration_operation_signature::configuration_id::set(Some(
+                        configuration_operation.clone().id.clone(),
                     ))
                 })
                 .collect(),
