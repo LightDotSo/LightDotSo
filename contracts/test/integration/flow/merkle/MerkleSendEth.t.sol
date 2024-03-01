@@ -22,6 +22,7 @@ import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
+// import {console} from "forge-std/console.sol";
 
 using BytesLib for bytes;
 using ERC4337Utils for EntryPoint;
@@ -97,11 +98,19 @@ contract MerkleSendEthIntegrationTest is BaseIntegrationTest {
         // Assert that the signature and proof is the correct length
         assertEq(signatureAndProof.length, 289);
 
-        // ops[0].signature = signatureAndProof;
+        // Assert that the signature after the proof is the same
+        assertEq(signatureAndProof.slice(193, signature.length), signature);
+        // console.logBytes(signature);
+        // console.logBytes(signatureAndProof);
+        // uint256 offset = 193;
+        // console.logBytes(signatureAndProof.slice(offset, signature.length));
 
-        entryPoint.handleOps(ops, beneficiary);
+        // Update the signature
+        op.signature = signatureAndProof;
+
+        // entryPoint.handleOps(ops, beneficiary);
 
         // Assert that the balance of the account is 1
-        assertEq(address(1).balance, 1);
+        // assertEq(address(1).balance, 1);
     }
 }

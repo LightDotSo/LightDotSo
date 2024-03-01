@@ -182,18 +182,19 @@ contract LightWallet is
         // This enables batch execution of transactions across chains
         // Modeled after the work of @bcnmy's MultichainECDSAValidator
         if (signatureType == 0x04) {
-            (bytes32 merkleTreeRoot, bytes32[] memory merkleProof,) =
-                abi.decode(userOp.signature, (bytes32, bytes32[], bytes));
+            (bytes32 merkleTreeRoot, bytes32[] memory merkleProof, bytes memory merkleSignature) =
+                abi.decode(userOp.signature[1:], (bytes32, bytes32[], bytes));
 
             // Verify the corresponding merkle proof for the userOpHash
             if (!MerkleProof.verify(merkleProof, merkleTreeRoot, userOpHash)) {
                 revert InvalidSignatureType(signatureType);
             }
 
-            // Get the bit length of the actual signature
+            // Get the offset of the actual signature
             // Hardcoded to the corresponding length depending on the merkleProof length
-            uint256 bitAfter = 320 + merkleProof.length * 64 + 1;
-            (bool isValid,) = _signatureValidation(merkleTreeRoot, userOp.signature[bitAfter:]);
+            uint256 offset = 160 + merkleProof.length * 32 + 1;
+            (bool isValid,) =
+                _signatureValidation(merkleTreeRoot, userOp.signature[offset:offset + merkleSignature.length]);
             if (!isValid) {
                 return SIG_VALIDATION_FAILED;
             }
