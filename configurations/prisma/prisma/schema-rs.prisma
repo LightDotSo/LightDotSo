@@ -650,6 +650,13 @@ model ConfigurationOperationSignature {
   configurationOperationOwnerId String
 
   // ---------------------------------------------------------------------------
+  // None-to-many
+  // ---------------------------------------------------------------------------
+
+  owner   Owner?  @relation(fields: [ownerId], references: [id])
+  ownerId String?
+
+  // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
 
@@ -660,6 +667,7 @@ model ConfigurationOperationSignature {
   @@index([configurationId])
   @@index([configurationOperationId])
   @@index([configurationOperationOwnerId])
+  @@index([ownerId])
 }
 
 // -----------------------------------------------------------------------------
@@ -701,7 +709,8 @@ model Owner {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  signatures Signature[]
+  configurationOperationSignatures ConfigurationOperationSignature[]
+  signatures                       Signature[]
 
   // ---------------------------------------------------------------------------
   // Mappings

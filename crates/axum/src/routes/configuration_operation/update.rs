@@ -243,6 +243,63 @@ pub(crate) async fn v1_configuration_operation_update_handler(
         info!(?configuration);
     }
 
+    // Get all the owners from the database for the configuration operation.
+    let configuration_operation_owner_data = state
+        .client
+        .owner()
+        .find_many(vec![owner::configuration_operation_signatures::every(
+            configuration_operation_signatures
+                .iter()
+                .map(|signature| {
+                    configuration_operation_signature::id::equals(signature.clone().id)
+                })
+                .collect(),
+        )])
+        .exec()
+        .await?;
+    info!(?configuration_operation_owner_data);
+
+    // Upsert the ownerId for each configuration operation signature.
+    let configuration_operation_signature_data = state
+        .client
+        .configuration_operation_signature()
+        .update_many(
+            // Enumerate and map the id of the configuration operation signature
+            configuration_operation_signatures
+                .iter()
+                .enumerate()
+                .map(|(_index, signature)| {
+                    configuration_operation_signature::id::equals(signature.clone().id.clone())
+                })
+                .collect(),
+            // Map the owner id to the configuration operation signature.
+            configuration_operation_signatures
+                .iter()
+                .enumerate()
+                .map(|(_index, signature)| {
+                    configuration_operation_signature::owner_id::set(Some(
+                        configuration_operation_owner_data
+                            .iter()
+                            .find(|owner| {
+                                owner.address ==
+                                    signature
+                                        .clone()
+                                        .configuration_operation_owner
+                                        .as_ref()
+                                        .unwrap()
+                                        .address
+                            })
+                            .unwrap()
+                            .clone()
+                            .id,
+                    ))
+                })
+                .collect(),
+        )
+        .exec()
+        .await?;
+    info!(?configuration_operation_signature_data);
+
     // -------------------------------------------------------------------------
     // Return
     // -------------------------------------------------------------------------
