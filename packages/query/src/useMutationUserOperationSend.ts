@@ -28,6 +28,7 @@ import { useReadLightWalletImageHash } from "@lightdotso/wagmi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { toHex } from "viem";
+import { useQueryConfiguration } from "./useQueryConfiguration";
 
 // -----------------------------------------------------------------------------
 // Query Mutation
@@ -51,6 +52,11 @@ export const useMutationUserOperationSend = (
   // ---------------------------------------------------------------------------
 
   const queryClient = useQueryClient();
+
+  const { configuration } = useQueryConfiguration({
+    address: params.address as Address,
+    image_hash: imageHash,
+  });
 
   // ---------------------------------------------------------------------------
   // Query Mutation
@@ -78,7 +84,7 @@ export const useMutationUserOperationSend = (
         params: {
           query: {
             user_operation_hash: body.hash,
-            configuration_id: body.configuration_id,
+            configuration_id: configuration?.id,
           },
         },
       });
