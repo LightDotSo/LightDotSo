@@ -32,7 +32,6 @@ use lightdotso_prisma::{
     owner,
     signature,
     user_operation,
-    wallet,
 };
 use lightdotso_sequence::{
     builder::rooted_node_builder,
@@ -123,28 +122,21 @@ pub(crate) async fn v1_user_operation_signature_handler(
     info!("{}", signatures.len());
 
     // Get the wallet from the database.
-    let wallet = state
+    let mut configurations = state
         .client
-        .wallet()
-        .find_unique(wallet::address::equals(user_operation.clone().sender))
-        .with(
-            wallet::configurations::fetch(vec![configuration::address::equals(
-                user_operation.clone().sender,
-            )])
-            .with(
-                configuration::owners::fetch(vec![]).order_by(owner::index::order(Direction::Asc)),
-            ),
-        )
+        .configuration()
+        .find_many(vec![configuration::address::equals(user_operation.clone().sender)])
+        .with(configuration::owners::fetch(vec![]).order_by(owner::index::order(Direction::Asc)))
         .exec()
         .await?;
-    info!(?wallet);
+    info!(?configurations);
 
-    // If the wallet is not found, return a 404.
-    let wallet = wallet.ok_or(AppError::NotFound)?;
+    // If the configurations is not found, return a 404.
+    if configurations.is_empty() {
+        return Err(AppError::NotFound);
+    }
 
-    // Parse the current wallet configuration.
     // Sort the configurations by checkpoint.
-    let mut configurations = wallet.configurations.ok_or(AppError::NotFound)?;
     configurations.sort_by(|a, b| b.checkpoint.cmp(&a.checkpoint));
     info!(?configurations);
 
@@ -173,16 +165,16 @@ pub(crate) async fn v1_user_operation_signature_handler(
             .into_iter()
             .find(|configuration| configuration.id == configuration_id)
             .ok_or(AppError::NotFound)?;
+        info!(?query_configuration);
+
         let uproot_configurations = configurations
             .into_iter()
             // Filter the configurations that are greater than the query configuration, and not
             // equal to the current configuration.
-            .filter(|configuration| {
-                configuration.checkpoint > query_configuration.checkpoint &&
-                    configuration.id != op_configuration.id
-            })
+            .filter(|configuration| configuration.checkpoint > query_configuration.checkpoint)
             .collect::<Vec<_>>();
         info!(?uproot_configurations);
+
         uproot_configurations
     } else {
         vec![]

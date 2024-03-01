@@ -34,6 +34,10 @@ export type UserOperationNonceParams = {
   chain_id: number;
 };
 
+export type UserOperationSendParams = UserOperationParams & {
+  chain_id: number | null | undefined;
+};
+
 export type UserOperationListParams = {
   address: Address | null | undefined;
   status: "queued" | "history" | "executed" | "pending" | null;

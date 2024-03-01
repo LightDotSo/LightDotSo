@@ -19,11 +19,12 @@ import {
 import { CONTRACT_ADDRESSES, TRANSACTION_ROW_COUNT } from "@lightdotso/const";
 import type { UserOperationData } from "@lightdotso/data";
 import type {
-  UserOperationParams,
+  UserOperationSendParams,
   UserOperationSendBodyParams,
 } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { toast } from "@lightdotso/ui";
+import { useReadLightWalletImageHash } from "@lightdotso/wagmi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { toHex } from "viem";
@@ -32,7 +33,19 @@ import { toHex } from "viem";
 // Query Mutation
 // -----------------------------------------------------------------------------
 
-export const useMutationUserOperationSend = (params: UserOperationParams) => {
+export const useMutationUserOperationSend = (
+  params: UserOperationSendParams,
+) => {
+  // ---------------------------------------------------------------------------
+  // Wagmi
+  // ---------------------------------------------------------------------------
+
+  const { data: imageHash, isLoading: isImageHashLoading } =
+    useReadLightWalletImageHash({
+      address: params.address as Address,
+      chainId: params.chain_id ?? undefined,
+    });
+
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -53,6 +66,12 @@ export const useMutationUserOperationSend = (params: UserOperationParams) => {
     retry: 10,
     mutationFn: async (body: UserOperationSendBodyParams) => {
       const loadingToast = toast.loading("Submitting the transaction...");
+
+      if (!params.chain_id || !imageHash || isImageHashLoading) {
+        toast.dismiss(loadingToast);
+        toast.error("Failed to get the image hash!");
+        return;
+      }
 
       // Get the sig as bytes from caller
       const sigRes = await getUserOperationSignature({

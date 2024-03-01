@@ -58,6 +58,7 @@ export const OpInvokeButton: FC<OpInvokeButtonProps> = ({
   const { userOperationSend, isUserOperationSendPending } =
     useMutationUserOperationSend({
       address,
+      chain_id: userOperation?.chain_id,
     });
 
   // ---------------------------------------------------------------------------
