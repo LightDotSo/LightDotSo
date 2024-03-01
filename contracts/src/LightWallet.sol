@@ -187,7 +187,7 @@ contract LightWallet is
 
             // Verify the corresponding merkle proof for the userOpHash
             if (!MerkleProof.verify(merkleProof, merkleTreeRoot, userOpHash)) {
-                revert InvalidSignatureType(signatureType);
+                revert InvalidMerkleProof(merkleTreeRoot, userOpHash);
             }
 
             // Get the offset of the actual signature

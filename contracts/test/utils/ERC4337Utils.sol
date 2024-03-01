@@ -54,6 +54,15 @@ library ERC4337Utils {
         op.maxPriorityFeePerGas = 1;
     }
 
+    /// @dev Signs the hash of an arbitrary bytes32
+    /// @param _vm The VM contract
+    /// @param _key The user's private key to sign with
+    /// @param _hash The hash to sign
+    function signHash(EntryPoint, Vm _vm, uint256 _key, bytes32 _hash) internal pure returns (bytes memory signature) {
+        (uint8 v, bytes32 r, bytes32 s) = _vm.sign(_key, ECDSA.toEthSignedMessageHash(_hash));
+        signature = abi.encodePacked(r, s, v);
+    }
+
     /// @dev Signs the hash of a UserOperation
     /// @param _entryPoint The entry point contract
     /// @param _vm The VM contract

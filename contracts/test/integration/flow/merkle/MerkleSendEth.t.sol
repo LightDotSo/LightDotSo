@@ -84,8 +84,9 @@ contract MerkleSendEthIntegrationTest is BaseIntegrationTest {
         assertTrue(verified);
 
         // Encode the signature and proof
-        bytes memory signature = op.signature;
-        bytes memory signatureAndProof = abi.encodePacked(hex"04", abi.encode(root, proof, signature));
+        bytes memory merkleSignature = entryPoint.signHash(vm, userKey, root);
+        bytes memory signatureAndProof = abi.encodePacked(hex"04", abi.encode(root, proof, merkleSignature));
+        op.signature = signatureAndProof;
 
         // Attempt to decode the signature and proof
         (bytes32 merkleTreeRoot, bytes32[] memory merkleProof,) =
@@ -99,14 +100,10 @@ contract MerkleSendEthIntegrationTest is BaseIntegrationTest {
         assertEq(signatureAndProof.length, 289);
 
         // Assert that the signature after the proof is the same
-        assertEq(signatureAndProof.slice(193, signature.length), signature);
+        assertEq(signatureAndProof.slice(193, merkleSignature.length), merkleSignature);
         // console.logBytes(signature);
-        // console.logBytes(signatureAndProof);
         // uint256 offset = 193;
         // console.logBytes(signatureAndProof.slice(offset, signature.length));
-
-        // Update the signature
-        // op.signature = signatureAndProof;
 
         // entryPoint.handleOps(ops, beneficiary);
 
