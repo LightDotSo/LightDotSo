@@ -44,7 +44,7 @@ LightWalletFactoryIntegrationTest:test_revertWhenIncorrectSignature_simulateVali
 LightWalletFactoryIntegrationTest:test_simulateValidation_revertWithValidationResult() (gas: 42469)
 LightWalletProxyIntegrationTest:test_proxy_initialize() (gas: 2731509)
 LightWalletProxyIntegrationTest:test_revertWhenAlreadyInitialized_proxy() (gas: 16198)
-MerkleSendEthIntegrationTest:test_merkle_transferEth() (gas: 78138)
+MerkleSendEthIntegrationTest:test_merkle_transferEth() (gas: 78118)
 PaymasterGetHash:test_getHash() (gas: 1179237)
 PaymasterGetHash:test_getHash_callData() (gas: 1178359)
 PaymasterGetHash:test_getHash_initCode() (gas: 1178351)

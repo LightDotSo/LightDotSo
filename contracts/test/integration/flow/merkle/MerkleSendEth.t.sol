@@ -106,7 +106,7 @@ contract MerkleSendEthIntegrationTest is BaseIntegrationTest {
         // console.logBytes(signatureAndProof.slice(offset, signature.length));
 
         // Update the signature
-        op.signature = signatureAndProof;
+        // op.signature = signatureAndProof;
 
         // entryPoint.handleOps(ops, beneficiary);
 
