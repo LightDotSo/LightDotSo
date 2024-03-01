@@ -52,6 +52,7 @@ export type {
   UserOperationParams,
   UserOperationGetParams,
   UserOperationNonceParams,
+  UserOperationSendParams,
   UserOperationListParams,
   UserOperationListCountParams,
   UserOperationCreateBodyParams,
