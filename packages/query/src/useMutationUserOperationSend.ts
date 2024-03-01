@@ -53,7 +53,7 @@ export const useMutationUserOperationSend = (
 
   const queryClient = useQueryClient();
 
-  const { configuration } = useQueryConfiguration({
+  const { configuration, isConfigurationLoading } = useQueryConfiguration({
     address: params.address as Address,
     image_hash: imageHash,
   });
@@ -71,9 +71,13 @@ export const useMutationUserOperationSend = (
   } = useMutation({
     retry: 10,
     mutationFn: async (body: UserOperationSendBodyParams) => {
+      if (isImageHashLoading || isConfigurationLoading) {
+        return;
+      }
+
       const loadingToast = toast.loading("Submitting the transaction...");
 
-      if (!params.chain_id || !imageHash || isImageHashLoading) {
+      if (!params.chain_id || !imageHash) {
         toast.dismiss(loadingToast);
         toast.error("Failed to get the image hash!");
         return;
