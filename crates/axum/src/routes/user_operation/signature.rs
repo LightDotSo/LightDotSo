@@ -334,7 +334,8 @@ pub(crate) async fn v1_user_operation_signature_handler(
                 weight: 0,
                 image_hash: recovered_configuration.image_hash.hex_to_bytes32()?.into(),
                 tree,
-                signature_type: signature_type as u8,
+                // All recovered configurations are in chain agnostic mode.
+                signature_type: 2,
                 // Internal fields are not used in the signature.
                 internal_root: None,
                 internal_recovered_configs: None,
