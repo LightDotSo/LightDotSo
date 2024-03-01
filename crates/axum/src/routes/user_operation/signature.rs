@@ -156,7 +156,7 @@ pub(crate) async fn v1_user_operation_signature_handler(
     // Get the configurations needed to build the wallet configuration - should be uprooted from the
     // query configuration id, to the most recent configuration. Start with the query configuration
     // id, and then get up to the most recent configuration (don't include the most recent)
-    let uproot_configurations = if let Some(configuration_id) = query.configuration_id {
+    let mut uproot_configurations = if let Some(configuration_id) = query.configuration_id {
         let query_configuration = configurations
             .clone()
             .into_iter()
@@ -164,18 +164,19 @@ pub(crate) async fn v1_user_operation_signature_handler(
             .ok_or(AppError::NotFound)?;
         info!(?query_configuration);
 
-        let uproot_configurations = configurations
+        configurations
             .into_iter()
             // Filter the configurations that are greater than the query configuration, and not
             // equal to the current configuration.
-            .filter(|configuration| configuration.checkpoint > query_configuration.checkpoint)
-            .collect::<Vec<_>>();
-        info!(?uproot_configurations);
-
-        uproot_configurations
+            .filter(|configuration| configuration.checkpoint < query_configuration.checkpoint)
+            .collect::<Vec<_>>()
     } else {
         vec![]
     };
+
+    // Order the uproot configurations by checkpoint in descending order.
+    uproot_configurations.sort_by(|a, b| b.checkpoint.cmp(&a.checkpoint));
+
     info!(?uproot_configurations);
 
     let mut owners = op_configuration.owners.ok_or(AppError::NotFound)?;

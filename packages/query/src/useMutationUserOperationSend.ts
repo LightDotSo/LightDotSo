@@ -41,11 +41,10 @@ export const useMutationUserOperationSend = (
   // Wagmi
   // ---------------------------------------------------------------------------
 
-  const { data: imageHash, isLoading: isImageHashLoading } =
-    useReadLightWalletImageHash({
-      address: params.address as Address,
-      chainId: params.chain_id ?? undefined,
-    });
+  const { data: imageHash } = useReadLightWalletImageHash({
+    address: params.address as Address,
+    chainId: params.chain_id ?? undefined,
+  });
 
   // ---------------------------------------------------------------------------
   // Query
@@ -71,17 +70,11 @@ export const useMutationUserOperationSend = (
   } = useMutation({
     retry: 10,
     mutationFn: async (body: UserOperationSendBodyParams) => {
-      if (isImageHashLoading || isConfigurationLoading) {
+      if (isConfigurationLoading) {
         return;
       }
 
       const loadingToast = toast.loading("Submitting the transaction...");
-
-      if (!params.chain_id || !imageHash) {
-        toast.dismiss(loadingToast);
-        toast.error("Failed to get the image hash!");
-        return;
-      }
 
       // Get the sig as bytes from caller
       const sigRes = await getUserOperationSignature({
