@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#![allow(clippy::unwrap_used)]
 #![allow(clippy::unnecessary_fallible_conversions)]
 
 use crate::{
@@ -296,7 +297,7 @@ pub(crate) async fn v1_user_operation_signature_handler(
                     // Filter the owner with the same id from `owners`
                     let owner = recovered_config_owners
                         .iter()
-                        .find(|&owner| owner.id == "id")
+                        .find(|&owner| owner.id == sig.clone().owner_id.unwrap())
                         .ok_or(eyre!("Owner not found"))?;
 
                     let mut signature_slice = [0; ECDSA_SIGNATURE_LENGTH];
