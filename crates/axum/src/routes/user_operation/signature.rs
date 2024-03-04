@@ -299,6 +299,11 @@ pub(crate) async fn v1_user_operation_signature_handler(
                 .ok_or(AppError::NotFound)
                 .map_err(|_err| eyre!("Error fetching recovered configuration signatures"))?;
 
+            // If the upgrade signatures is empty, return an error.
+            if upgrade_signatures.is_empty() {
+                return Err(eyre!("Upgrade signatures are empty"));
+            }
+
             // Conver the signatures to SignerNode.
             let signer_nodes: Result<Vec<SignerNode>> = upgrade_signatures
                 .iter()
