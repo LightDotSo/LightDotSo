@@ -39,7 +39,7 @@ pub struct GetQuery {
     /// The configuration operation id of the signature.
     pub configuration_operation_id: String,
     /// The configuration owner of the signature.
-    pub configuration_operation_owner_id: String,
+    pub owner_id: String,
 }
 
 // -----------------------------------------------------------------------------
@@ -73,7 +73,7 @@ pub(crate) async fn v1_configuration_operation_signature_get_handler(
     info!("Get signature for address: {:?}", query);
 
     let operation_id = query.configuration_operation_id;
-    let owner_id = query.configuration_operation_owner_id;
+    let owner_id = query.owner_id;
 
     // -------------------------------------------------------------------------
     // DB
@@ -83,13 +83,11 @@ pub(crate) async fn v1_configuration_operation_signature_get_handler(
     let configuration_operation_signature = state
         .client
         .configuration_operation_signature()
-        .find_unique(
-            configuration_operation_signature::configuration_operation_id_configuration_operation_owner_id(
-                operation_id,
-                owner_id,
-            ),
-        )
-        .with(configuration_operation_signature::configuration_operation_owner::fetch())
+        .find_unique(configuration_operation_signature::configuration_operation_id_owner_id(
+            operation_id,
+            owner_id,
+        ))
+        .with(configuration_operation_signature::owner::fetch())
         .exec()
         .await?;
 

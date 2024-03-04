@@ -615,12 +615,6 @@ model ConfigurationOperationOwner {
   userId String?
 
   // ---------------------------------------------------------------------------
-  // Many-to-many
-  // ---------------------------------------------------------------------------
-
-  configurationOperationSignatures ConfigurationOperationSignature[]
-
-  // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
 
@@ -665,20 +659,20 @@ model ConfigurationOperationSignature {
   configurationOperation   ConfigurationOperation @relation(fields: [configurationOperationId], references: [id])
   configurationOperationId String
 
-  configurationOperationOwner   ConfigurationOperationOwner @relation(fields: [configurationOperationOwnerId], references: [id])
-  configurationOperationOwnerId String
+  owner   Owner  @relation(fields: [ownerId], references: [id])
+  ownerId String
 
   // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
 
   // Unique
-  @@unique([configurationOperationId, configurationOperationOwnerId])
+  @@unique([configurationOperationId, ownerId])
   // Relations
   @@index([activityId])
   @@index([configurationId])
   @@index([configurationOperationId])
-  @@index([configurationOperationOwnerId])
+  @@index([ownerId])
 }
 
 // -----------------------------------------------------------------------------
@@ -720,7 +714,8 @@ model Owner {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  signatures Signature[]
+  configurationOperationSignatures ConfigurationOperationSignature[]
+  signatures                       Signature[]
 
   // ---------------------------------------------------------------------------
   // Mappings

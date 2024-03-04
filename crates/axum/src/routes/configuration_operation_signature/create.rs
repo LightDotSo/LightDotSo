@@ -32,8 +32,8 @@ use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
 use lightdotso_prisma::{
-    configuration_operation, configuration_operation_owner, configuration_operation_signature,
-    ActivityEntity, ActivityOperation,
+    configuration, configuration_operation, configuration_operation_owner,
+    configuration_operation_signature, owner, ActivityEntity, ActivityOperation,
 };
 use lightdotso_sequence::{
     builder::rooted_node_builder,
@@ -75,7 +75,7 @@ pub struct ConfigurationOperationSignatureCreateRequestParams {
 #[serde(rename_all = "snake_case")]
 pub struct ConfigurationOperationSignatureSignatureCreateParams {
     /// The id of the owner of the signature.
-    pub configuration_operation_owner_id: String,
+    pub owner_id: String,
     /// The signature of the user operation in hex.
     pub signature: String,
 }
@@ -153,6 +153,39 @@ pub(crate) async fn v1_configuration_operation_signature_create_handler(
         ),
     )?;
 
+    // Get the previous configuration.
+    let configuration = state
+        .client
+        .configuration()
+        .find_unique(configuration::address_checkpoint(
+            wallet.address.clone(),
+            configuration_operation.clone().checkpoint - 1,
+        ))
+        .with(configuration::owners::fetch(vec![]).with(owner::user::fetch()))
+        .exec()
+        .await?;
+
+    let configuration = configuration.ok_or(RouteError::ConfigurationOperationSignatureError(
+        ConfigurationOperationSignatureError::NotFound("Configuration not found".to_string()),
+    ))?;
+
+    let configuration_owners =
+        configuration.clone().owners.ok_or(RouteError::ConfigurationOperationSignatureError(
+            ConfigurationOperationSignatureError::NotFound(
+                "Configuration owners not found".to_string(),
+            ),
+        ))?;
+
+    // -------------------------------------------------------------------------
+    // Validate
+    // -------------------------------------------------------------------------
+
+    // Check if the signature `owner_id` is in the configuration owners.
+    configuration_owners
+        .iter()
+        .find(|owner| owner.id == sig.owner_id)
+        .ok_or(AppError::BadRequest)?;
+
     // -------------------------------------------------------------------------
     // Signature
     // -------------------------------------------------------------------------
@@ -211,29 +244,28 @@ pub(crate) async fn v1_configuration_operation_signature_create_handler(
     // -------------------------------------------------------------------------
 
     // Get the configuration_operation_owner from the database.
-    let configuration_operation_owner = state
+    let configuration_operation_signature_owner = state
         .client
-        .configuration_operation_owner()
-        .find_unique(configuration_operation_owner::id::equals(
-            sig.clone().configuration_operation_owner_id,
-        ))
-        .with(configuration_operation_owner::user::fetch())
+        .owner()
+        .find_unique(owner::id::equals(sig.clone().owner_id))
+        .with(owner::user::fetch())
         .exec()
         .await?;
-    info!(?configuration_operation_owner);
+    info!(?configuration_operation_signature_owner);
 
     // -------------------------------------------------------------------------
     // Signature
     // -------------------------------------------------------------------------
 
     // If the owner is not found, return a 404.
-    let configuration_operation_owner = configuration_operation_owner.ok_or(AppError::NotFound)?;
+    let configuration_operation_signature_owner =
+        configuration_operation_signature_owner.ok_or(AppError::NotFound)?;
 
     // Check that the recovered signature is the same as the signature sender.
-    if recovered_sig.address != configuration_operation_owner.address.parse()? {
+    if recovered_sig.address != configuration_operation_signature_owner.address.parse()? {
         error!(
-            "recovered_sig.address: {}, configuration_operation_owner.address: {}",
-            recovered_sig.address, configuration_operation_owner.address
+            "recovered_sig.address: {}, configuration_operation_signature_owner.address: {}",
+            recovered_sig.address, configuration_operation_signature_owner.address
         );
         return Err(AppError::BadRequest);
     }
@@ -250,7 +282,7 @@ pub(crate) async fn v1_configuration_operation_signature_create_handler(
         .with(configuration_operation::wallet::fetch())
         .with(
             configuration_operation::configuration_operation_signatures::fetch(vec![])
-                .with(configuration_operation_signature::configuration_operation_owner::fetch()),
+                .with(configuration_operation_signature::owner::fetch()),
         )
         .with(
             configuration_operation::configuration_operation_owners::fetch(vec![])
@@ -279,7 +311,7 @@ pub(crate) async fn v1_configuration_operation_signature_create_handler(
         .create(
             sig.signature.hex_to_bytes()?,
             configuration_operation::id::equals(configuration_operation.id.clone()),
-            configuration_operation_owner::id::equals(sig.configuration_operation_owner_id),
+            owner::id::equals(sig.owner_id),
             vec![],
         )
         .exec()
