@@ -28,9 +28,10 @@ export const CONTRACT_ADDRESSES: {
     "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
 };
 
+// @ts-expect-error
 export const WALLET_FACTORY_ENTRYPOINT_MAPPING: {
-  readonly [key in ContractAddress]: ContractAddress;
+  readonly [key in ContractAddress]: Address;
 } = {
-  [ContractAddress.V010_FACTORY]: ContractAddress.V060_ENTRYPOINT,
-  [ContractAddress.V060_ENTRYPOINT]: ContractAddress.V060_ENTRYPOINT,
+  [ContractAddress.V010_FACTORY]:
+    CONTRACT_ADDRESSES[ContractAddress.V060_ENTRYPOINT],
 };

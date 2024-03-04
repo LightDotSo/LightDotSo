@@ -286,7 +286,7 @@ export const Transaction: FC<TransactionProps> = ({
     data: targetUserOperation.callData as Hex,
     to: WALLET_FACTORY_ENTRYPOINT_MAPPING[
       findContractAddressByAddress(wallet.factory_address as Address)!
-    ] as unknown as Address,
+    ],
   });
 
   // Get the max fee per gas, fallbacks to mainnet
@@ -428,9 +428,10 @@ export const Transaction: FC<TransactionProps> = ({
 
       const hash = await getUserOperationHash({
         userOperation: userOperation as PermissionlessUserOperation,
-        entryPoint: WALLET_FACTORY_ENTRYPOINT_MAPPING[
-          findContractAddressByAddress(wallet.factory_address as Address)!
-        ] as unknown as Address,
+        entryPoint:
+          WALLET_FACTORY_ENTRYPOINT_MAPPING[
+            findContractAddressByAddress(wallet.factory_address as Address)!
+          ],
         chainId: Number(updatedUserOperation.chainId) as number,
       });
 

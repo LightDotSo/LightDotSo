@@ -99,7 +99,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
     return calculateInitCode(
       WALLET_FACTORY_ENTRYPOINT_MAPPING[
         findContractAddressByAddress(wallet.factory_address as Address)!
-      ] as unknown as Address,
+      ],
       image_hash,
       salt,
     );

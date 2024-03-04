@@ -198,7 +198,7 @@ export const handler = async (
         initCode: calculateInitCode(
           WALLET_FACTORY_ENTRYPOINT_MAPPING[
             findContractAddressByAddress(wallet.factory_address as Address)!
-          ] as unknown as Address,
+          ],
           configuration.image_hash as Hex,
           wallet.salt as Hex,
         ),
