@@ -27,13 +27,13 @@ import type {
 } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { toast } from "@lightdotso/ui";
+import { findContractAddressByAddress } from "@lightdotso/utils";
 import { useReadLightWalletImageHash } from "@lightdotso/wagmi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { toHex } from "viem";
 import { useQueryConfiguration } from "./useQueryConfiguration";
 import { useQueryWallet } from "./useQueryWallet";
-import { findContractAddressByAddress } from "@lightdotso/utils";
 
 // -----------------------------------------------------------------------------
 // Query Mutation

@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { queryKeys } from "@lightdotso/query-keys";
+import { getQueryClient } from "@lightdotso/services";
 import type { Address } from "viem";
 import { CreateTransactionDialog } from "@/app/(wallet)/[address]/create/(components)/create-transaction-dialog";
 import { handler } from "@/handlers/[address]/create/handler";
 import { preloader } from "@/preloaders/[address]/create/preloader";
-import { queryKeys } from "@lightdotso/query-keys";
-import { getQueryClient } from "@lightdotso/services";
 
 // ------------------------------------------------------c-----------------------
 // Props

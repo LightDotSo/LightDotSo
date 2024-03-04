@@ -12,10 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {
-  CONTRACT_ADDRESSES,
-  WALLET_FACTORY_ENTRYPOINT_MAPPING,
-} from "@lightdotso/const";
+import { WALLET_FACTORY_ENTRYPOINT_MAPPING } from "@lightdotso/const";
 import type { ConfigurationData } from "@lightdotso/data";
 import { userOperationsParser } from "@lightdotso/nuqs";
 import type { UserOperation } from "@lightdotso/schemas";
@@ -26,12 +23,12 @@ import {
   getUserOperations,
   getWallet,
 } from "@lightdotso/services";
+import { findContractAddressByAddress } from "@lightdotso/utils";
 import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
 import type { Address, Hex } from "viem";
 import { handler as addressHandler } from "@/handlers/[address]/handler";
-import { findContractAddressByAddress } from "@lightdotso/utils";
 
 // -----------------------------------------------------------------------------
 // Handler

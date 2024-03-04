@@ -12,8 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { CONTRACT_ADDRESSES, ContractAddress } from "@lightdotso/const";
-import { Address } from "viem";
+import type { ContractAddress } from "@lightdotso/const";
+import { CONTRACT_ADDRESSES } from "@lightdotso/const";
+import type { Address } from "viem";
 
 export const findContractAddressByAddress = (
   value: Address,

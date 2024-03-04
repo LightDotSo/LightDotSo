@@ -14,10 +14,7 @@
 
 "use client";
 
-import {
-  CONTRACT_ADDRESSES,
-  WALLET_FACTORY_ENTRYPOINT_MAPPING,
-} from "@lightdotso/const";
+import { WALLET_FACTORY_ENTRYPOINT_MAPPING } from "@lightdotso/const";
 import type { ConfigurationData, WalletData } from "@lightdotso/data";
 import { AssetChange } from "@lightdotso/elements";
 import { useUserOperationCreate } from "@lightdotso/hooks";
@@ -29,7 +26,6 @@ import {
   useQuerySimulation,
   useQueryUserOperationNonce,
   useQueryUserOperations,
-  useQueryWallet,
   useQueryWalletBilling,
 } from "@lightdotso/query";
 import { userOperation, type UserOperation } from "@lightdotso/schemas";

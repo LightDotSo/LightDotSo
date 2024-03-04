@@ -103,7 +103,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
       image_hash,
       salt,
     );
-  }, [image_hash, salt]);
+  }, [image_hash, salt, wallet]);
 
   // ---------------------------------------------------------------------------
   // Submit Button

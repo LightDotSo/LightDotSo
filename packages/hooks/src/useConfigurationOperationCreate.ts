@@ -110,7 +110,7 @@ export const useConfigurationOperationCreate = ({
     );
   }, [
     address,
-    configurationOperationSimulation?.image_hash,
+    configurationOperationSimulation,
     isConfigurationOperationSimulationLoading,
   ]);
 
@@ -154,7 +154,7 @@ export const useConfigurationOperationCreate = ({
   // Refetch the simulation when the parameters change
   useEffect(() => {
     refetchConfigurationOperationSimulation();
-  }, [params]);
+  }, [params, refetchConfigurationOperationSimulation]);
 
   // Sync the loading state
   useEffect(() => {
