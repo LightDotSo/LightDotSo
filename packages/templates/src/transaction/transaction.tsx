@@ -14,7 +14,7 @@
 
 "use client";
 
-import { CONTRACT_ADDRESSES } from "@lightdotso/const";
+import { WALLET_FACTORY_ENTRYPOINT_MAPPING } from "@lightdotso/const";
 import type { ConfigurationData, WalletData } from "@lightdotso/data";
 import { AssetChange } from "@lightdotso/elements";
 import { useUserOperationCreate } from "@lightdotso/hooks";
@@ -42,6 +42,7 @@ import {
 } from "@lightdotso/ui";
 import {
   cn,
+  findContractAddressByAddress,
   getChainById,
   shortenAddress,
   shortenBytes32,
@@ -283,7 +284,9 @@ export const Transaction: FC<TransactionProps> = ({
     chainId: Number(targetUserOperation.chainId ?? 1),
     account: address as Address,
     data: targetUserOperation.callData as Hex,
-    to: CONTRACT_ADDRESSES["Entrypoint"],
+    to: WALLET_FACTORY_ENTRYPOINT_MAPPING[
+      findContractAddressByAddress(wallet.factory_address as Address)!
+    ],
   });
 
   // Get the max fee per gas, fallbacks to mainnet
@@ -425,7 +428,10 @@ export const Transaction: FC<TransactionProps> = ({
 
       const hash = await getUserOperationHash({
         userOperation: userOperation as PermissionlessUserOperation,
-        entryPoint: CONTRACT_ADDRESSES["Entrypoint"],
+        entryPoint:
+          WALLET_FACTORY_ENTRYPOINT_MAPPING[
+            findContractAddressByAddress(wallet.factory_address as Address)!
+          ],
         chainId: Number(updatedUserOperation.chainId) as number,
       });
 

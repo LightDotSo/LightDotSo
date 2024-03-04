@@ -12,26 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import type { ContractAddress } from "@lightdotso/const";
+import { CONTRACT_ADDRESSES } from "@lightdotso/const";
 import type { Address } from "viem";
 
-/* eslint-disable no-unused-vars */
-export enum ContractAddress {
-  V010_FACTORY = "v0.1.0 Factory",
-  V060_ENTRYPOINT = "v0.6.0 Entrypoint",
-}
-
-export const CONTRACT_ADDRESSES: {
-  readonly [key in ContractAddress]: Address;
-} = {
-  [ContractAddress.V010_FACTORY]: "0x0000000000756D3E6464f5efe7e413a0Af1C7474",
-  [ContractAddress.V060_ENTRYPOINT]:
-    "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
-};
-
-// @ts-expect-error
-export const WALLET_FACTORY_ENTRYPOINT_MAPPING: {
-  readonly [key in ContractAddress]: Address;
-} = {
-  [ContractAddress.V010_FACTORY]:
-    CONTRACT_ADDRESSES[ContractAddress.V060_ENTRYPOINT],
+export const findContractAddressByAddress = (
+  value: Address,
+): ContractAddress | undefined => {
+  return Object.keys(CONTRACT_ADDRESSES).find(
+    key => CONTRACT_ADDRESSES[key as ContractAddress] === value,
+  ) as ContractAddress | undefined;
 };

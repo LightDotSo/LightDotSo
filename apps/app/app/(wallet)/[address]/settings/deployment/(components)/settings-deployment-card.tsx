@@ -14,17 +14,21 @@
 
 "use client";
 
-import { CONTRACT_ADDRESSES } from "@lightdotso/const";
+import { WALLET_FACTORY_ENTRYPOINT_MAPPING } from "@lightdotso/const";
 import { userOperationsParser } from "@lightdotso/nuqs";
 import {
   useQueryUserOperations,
+  useQueryWallet,
   useQueryWalletSettings,
 } from "@lightdotso/query";
 import { calculateInitCode } from "@lightdotso/sequence";
 import { Button } from "@lightdotso/ui";
-import { getEtherscanUrl } from "@lightdotso/utils";
+import {
+  findContractAddressByAddress,
+  getEtherscanUrl,
+} from "@lightdotso/utils";
 import Link from "next/link";
-import type { FC } from "react";
+import { useMemo, type FC } from "react";
 import type { Address, Chain, Hex } from "viem";
 import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const";
@@ -60,6 +64,10 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
+  const { wallet } = useQueryWallet({
+    address,
+  });
+
   const { walletSettings } = useQueryWalletSettings({
     address,
   });
@@ -80,11 +88,22 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // Try to extract a matching operation w/ the current chain id
   const deployed_op = userOperations?.find(op => op.chain_id === chain.id);
 
-  let initCode = calculateInitCode(
-    CONTRACT_ADDRESSES["Factory"] as Address,
-    image_hash,
-    salt,
-  );
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const initCode = useMemo(() => {
+    if (!wallet) {
+      return;
+    }
+    return calculateInitCode(
+      WALLET_FACTORY_ENTRYPOINT_MAPPING[
+        findContractAddressByAddress(wallet.factory_address as Address)!
+      ],
+      image_hash,
+      salt,
+    );
+  }, [image_hash, salt, wallet]);
 
   // ---------------------------------------------------------------------------
   // Submit Button

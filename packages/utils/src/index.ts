@@ -20,6 +20,7 @@ export {
   isTestnet,
 } from "./chain";
 export { cn } from "./cn";
+export { findContractAddressByAddress } from "./contract";
 export { debounce } from "./debounce";
 export { getEtherscanUrl } from "./etherscan";
 export { refineNumberFormat } from "./number";
