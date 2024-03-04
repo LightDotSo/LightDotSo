@@ -33,7 +33,7 @@ use lightdotso_kafka::{
 };
 use lightdotso_prisma::{
     configuration_operation, configuration_operation_owner, configuration_operation_signature,
-    ActivityEntity, ActivityOperation,
+    owner, ActivityEntity, ActivityOperation,
 };
 use lightdotso_sequence::{
     builder::rooted_node_builder,
@@ -75,7 +75,7 @@ pub struct ConfigurationOperationSignatureCreateRequestParams {
 #[serde(rename_all = "snake_case")]
 pub struct ConfigurationOperationSignatureSignatureCreateParams {
     /// The id of the owner of the signature.
-    pub configuration_operation_owner_id: String,
+    pub owner_id: String,
     /// The signature of the user operation in hex.
     pub signature: String,
 }
@@ -214,9 +214,7 @@ pub(crate) async fn v1_configuration_operation_signature_create_handler(
     let configuration_operation_owner = state
         .client
         .configuration_operation_owner()
-        .find_unique(configuration_operation_owner::id::equals(
-            sig.clone().configuration_operation_owner_id,
-        ))
+        .find_unique(configuration_operation_owner::id::equals(sig.clone().owner_id))
         .with(configuration_operation_owner::user::fetch())
         .exec()
         .await?;
@@ -250,7 +248,7 @@ pub(crate) async fn v1_configuration_operation_signature_create_handler(
         .with(configuration_operation::wallet::fetch())
         .with(
             configuration_operation::configuration_operation_signatures::fetch(vec![])
-                .with(configuration_operation_signature::configuration_operation_owner::fetch()),
+                .with(configuration_operation_signature::owner::fetch()),
         )
         .with(
             configuration_operation::configuration_operation_owners::fetch(vec![])
@@ -279,7 +277,7 @@ pub(crate) async fn v1_configuration_operation_signature_create_handler(
         .create(
             sig.signature.hex_to_bytes()?,
             configuration_operation::id::equals(configuration_operation.id.clone()),
-            configuration_operation_owner::id::equals(sig.configuration_operation_owner_id),
+            owner::id::equals(sig.owner_id),
             vec![],
         )
         .exec()

@@ -18,7 +18,9 @@ use crate::{
     error::RouteError,
     result::AppJsonResult,
     routes::{
-        configuration_operation::types::ConfigurationOperation,
+        configuration_operation::{
+            error::ConfigurationOperationError, types::ConfigurationOperation,
+        },
         configuration_operation_signature::error::ConfigurationOperationSignatureError,
     },
     state::AppState,
@@ -98,7 +100,7 @@ pub(crate) async fn v1_configuration_operation_update_handler(
         .with(configuration_operation::wallet::fetch())
         .with(
             configuration_operation::configuration_operation_signatures::fetch(vec![])
-                .with(configuration_operation_signature::configuration_operation_owner::fetch()),
+                .with(configuration_operation_signature::owner::fetch()),
         )
         .with(
             configuration_operation::configuration_operation_owners::fetch(vec![])
@@ -114,29 +116,38 @@ pub(crate) async fn v1_configuration_operation_update_handler(
         ))?;
 
     // Get the wallet from the database.
-    let wallet = configuration_operation.clone().wallet.ok_or(
-        RouteError::ConfigurationOperationSignatureError(
-            ConfigurationOperationSignatureError::NotFound("Wallet not found".to_string()),
-        ),
-    )?;
+    let wallet =
+        configuration_operation.clone().wallet.ok_or(RouteError::ConfigurationOperationError(
+            ConfigurationOperationError::NotFound("Wallet not found".to_string()),
+        ))?;
+
+    // Get the current configuration.
+    let configuration = state
+        .client
+        .configuration()
+        .find_first(vec![configuration::address::equals(wallet.address.clone())])
+        .with(configuration::owners::fetch(vec![]).with(owner::user::fetch()))
+        .exec()
+        .await?;
+
+    // If the configuration is not found, return a 404.
+    let configuration = configuration.ok_or(RouteError::ConfigurationOperationError(
+        ConfigurationOperationError::NotFound("Configuration not found".to_string()),
+    ))?;
 
     // Get the configuration signatures from the database.
     let configuration_operation_signatures = configuration_operation
         .clone()
         .configuration_operation_signatures
-        .ok_or(RouteError::ConfigurationOperationSignatureError(
-            ConfigurationOperationSignatureError::NotFound(
-                "Configuration signatures not found".to_string(),
-            ),
-        ))?;
+        .ok_or(RouteError::ConfigurationOperationError(ConfigurationOperationError::NotFound(
+            "Configuration signatures not found".to_string(),
+        )))?;
 
     // Get the configuration owners from the database.
     let owners = configuration_operation.clone().configuration_operation_owners.ok_or(
-        RouteError::ConfigurationOperationSignatureError(
-            ConfigurationOperationSignatureError::NotFound(
-                "Configuration owners not found".to_string(),
-            ),
-        ),
+        RouteError::ConfigurationOperationError(ConfigurationOperationError::NotFound(
+            "Configuration owners not found".to_string(),
+        )),
     )?;
 
     // -------------------------------------------------------------------------
@@ -146,10 +157,10 @@ pub(crate) async fn v1_configuration_operation_update_handler(
     // Get the culmulative weight of the existing signatures.
     let culmulative_weight:i64 =
         // Unwrap is safe because we are fetching the configuration_operation_owner.
-        configuration_operation_signatures.iter().map(|sig| sig.configuration_operation_owner.as_ref().unwrap().weight).sum();
+        configuration_operation_signatures.iter().map(|sig| sig.owner.as_ref().unwrap().weight).sum();
 
     // If the culmulative weight is greater than the threshold, update the configuration operation.
-    if culmulative_weight >= configuration_operation.threshold {
+    if culmulative_weight >= configuration.threshold {
         // Update the configuration operation.
         let configuration_operation = state
             .client
@@ -261,47 +272,6 @@ pub(crate) async fn v1_configuration_operation_update_handler(
         .exec()
         .await?;
     info!(?configuration_operation_owner_data);
-
-    // Upsert the ownerId for each configuration operation signature.
-    let configuration_operation_signature_data = state
-        .client
-        .configuration_operation_signature()
-        .update_many(
-            // Enumerate and map the id of the configuration operation signature
-            configuration_operation_signatures
-                .iter()
-                .enumerate()
-                .map(|(_index, signature)| {
-                    configuration_operation_signature::id::equals(signature.clone().id.clone())
-                })
-                .collect(),
-            // Map the owner id to the configuration operation signature.
-            configuration_operation_signatures
-                .iter()
-                .enumerate()
-                .map(|(_index, signature)| {
-                    configuration_operation_signature::owner_id::set(Some(
-                        configuration_operation_owner_data
-                            .iter()
-                            .find(|owner| {
-                                owner.address ==
-                                    signature
-                                        .clone()
-                                        .configuration_operation_owner
-                                        .as_ref()
-                                        .unwrap()
-                                        .address
-                            })
-                            .unwrap()
-                            .clone()
-                            .id,
-                    ))
-                })
-                .collect(),
-        )
-        .exec()
-        .await?;
-    info!(?configuration_operation_signature_data);
 
     // Upsert the configurationId for each configuration operation signature.
     let configuration_operation_signature_data = state

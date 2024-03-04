@@ -26,7 +26,7 @@ use utoipa::ToSchema;
 #[serde(rename_all = "snake_case")]
 pub(crate) struct ConfigurationOperationSignature {
     /// The id of the owner of the signature.
-    pub configuration_operation_owner_id: String,
+    pub owner_id: String,
     /// The signature of the user operation in hex.
     pub signature: String,
     /// The created time of the signature.
@@ -41,9 +41,7 @@ pub(crate) struct ConfigurationOperationSignature {
 impl From<configuration_operation_signature::Data> for ConfigurationOperationSignature {
     fn from(signature: configuration_operation_signature::Data) -> Self {
         Self {
-            configuration_operation_owner_id: signature
-                .configuration_operation_owner_id
-                .to_string(),
+            owner_id: signature.owner_id.to_string(),
             signature: signature.signature.to_hex_string(),
             created_at: signature.created_at.to_rfc3339(),
         }

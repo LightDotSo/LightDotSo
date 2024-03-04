@@ -401,28 +401,6 @@ pub(crate) async fn v1_configuration_operation_create_handler(
     let configuration_operation = configuration_operation.map_err(|_| AppError::InternalError)?;
     info!(?configuration_operation);
 
-    // Get the configuration owner from the database.
-    let configuration_operation_owner = state
-        .client
-        .configuration_operation_owner()
-        .find_many(vec![configuration_operation_owner::configuration_operation_id::equals(
-            configuration_operation.id.clone(),
-        )])
-        .exec()
-        .await?;
-
-    // Get the matching configuration owner same as the signature address.
-    let configuration_operation_owner = configuration_operation_owner
-        .iter()
-        .find(|config_owner| {
-            config_owner
-                .address
-                .parse::<H160>()
-                .map(|addr| addr == owner.clone().address.parse::<H160>().unwrap())
-                .unwrap_or(false)
-        })
-        .ok_or(AppError::NotFound)?;
-
     // Create the signature the database.
     let configuration_operation_signature = state
         .client
@@ -430,7 +408,7 @@ pub(crate) async fn v1_configuration_operation_create_handler(
         .create(
             sig.signature.hex_to_bytes()?,
             configuration_operation::id::equals(configuration_operation.id.clone()),
-            configuration_operation_owner::id::equals(configuration_operation_owner.id.clone()),
+            owner::id::equals(owner.id.clone()),
             vec![],
         )
         .exec()
