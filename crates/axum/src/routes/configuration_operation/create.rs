@@ -169,9 +169,20 @@ pub(crate) async fn v1_configuration_operation_create_handler(
         ConfigurationOperationSignatureError::NotFound("Configuration not found".to_string()),
     ))?;
 
+    let configuration_owners =
+        configuration.clone().owners.ok_or(RouteError::ConfigurationOperationError(
+            ConfigurationOperationError::NotFound("Configuration owners not found".to_string()),
+        ))?;
+
     // -------------------------------------------------------------------------
     // Validate
     // -------------------------------------------------------------------------
+
+    // Check if the signature `owner_id` is in the configuration owners.
+    configuration_owners
+        .iter()
+        .find(|owner| owner.id == sig.owner_id)
+        .ok_or(AppError::BadRequest)?;
 
     // Check if all of the owner address can be parsed to H160.
     let owners_addresses = owners

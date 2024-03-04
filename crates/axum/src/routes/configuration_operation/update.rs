@@ -118,11 +118,14 @@ pub(crate) async fn v1_configuration_operation_update_handler(
             ConfigurationOperationError::NotFound("Wallet not found".to_string()),
         ))?;
 
-    // Get the current configuration.
+    // Get the previous configuration.
     let configuration = state
         .client
         .configuration()
-        .find_first(vec![configuration::address::equals(wallet.address.clone())])
+        .find_unique(configuration::address_checkpoint(
+            wallet.address.clone(),
+            configuration_operation.clone().checkpoint - 1,
+        ))
         .with(configuration::owners::fetch(vec![]).with(owner::user::fetch()))
         .exec()
         .await?;
