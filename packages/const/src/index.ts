@@ -28,7 +28,11 @@ export {
   CONFIGURATION_MAX_WEIGHT,
   CONFIGURATION_MAX_THRESHOLD,
 } from "./configuration";
-export { CONTRACT_ADDRESSES } from "./contract_addresses";
+export { ContractAddress } from "./contract_addresses";
+export {
+  CONTRACT_ADDRESSES,
+  WALLET_FACTORY_ENTRYPOINT_MAPPING,
+} from "./contract_addresses";
 export {
   SESSION_COOKIE_ID,
   USER_COOKIE_ID,

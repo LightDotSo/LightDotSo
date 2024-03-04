@@ -16,6 +16,8 @@ import type { Address } from "viem";
 import { CreateTransactionDialog } from "@/app/(wallet)/[address]/create/(components)/create-transaction-dialog";
 import { handler } from "@/handlers/[address]/create/handler";
 import { preloader } from "@/preloaders/[address]/create/preloader";
+import { queryKeys } from "@lightdotso/query-keys";
+import { getQueryClient } from "@lightdotso/services";
 
 // ------------------------------------------------------c-----------------------
 // Props
@@ -43,7 +45,21 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { userOperations } = await handler(params, searchParams);
+  const { configuration, userOperations } = await handler(params, searchParams);
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const queryClient = getQueryClient();
+
+  queryClient.setQueryData(
+    queryKeys.configuration.get({
+      address: params.address as Address,
+      checkpoint: 0,
+    }).queryKey,
+    configuration,
+  );
 
   // ---------------------------------------------------------------------------
   // Render

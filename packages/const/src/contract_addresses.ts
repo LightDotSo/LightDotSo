@@ -15,14 +15,22 @@
 import type { Address } from "viem";
 
 /* eslint-disable no-unused-vars */
-export enum Contract {
+export enum ContractAddress {
   V010_FACTORY = "v0.1.0 Factory",
-  V060_ENTRYPOINT = "Entrypoint",
+  V060_ENTRYPOINT = "v0.6.0 Entrypoint",
 }
 
 export const CONTRACT_ADDRESSES: {
-  readonly [key in Contract]: Address;
+  readonly [key in ContractAddress]: Address;
 } = {
-  [Contract.V010_FACTORY]: "0x0000000000756D3E6464f5efe7e413a0Af1C7474",
-  [Contract.V060_ENTRYPOINT]: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+  [ContractAddress.V010_FACTORY]: "0x0000000000756D3E6464f5efe7e413a0Af1C7474",
+  [ContractAddress.V060_ENTRYPOINT]:
+    "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+};
+
+export const WALLET_FACTORY_ENTRYPOINT_MAPPING: {
+  readonly [key in ContractAddress]: ContractAddress;
+} = {
+  [ContractAddress.V010_FACTORY]: ContractAddress.V060_ENTRYPOINT,
+  [ContractAddress.V060_ENTRYPOINT]: ContractAddress.V060_ENTRYPOINT,
 };

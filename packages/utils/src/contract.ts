@@ -12,16 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export {
-  getChainById,
-  getChainNameById,
-  getChainBySimplehashChainName,
-  getChainIdBySimplehashChainName,
-  isTestnet,
-} from "./chain";
-export { cn } from "./cn";
-export { findContractAddressByAddress } from "./contract";
-export { debounce } from "./debounce";
-export { getEtherscanUrl } from "./etherscan";
-export { refineNumberFormat } from "./number";
-export { shortenAddress, shortenBytes32, shortenName } from "./shorten";
+import { CONTRACT_ADDRESSES, ContractAddress } from "@lightdotso/const";
+import { Address } from "viem";
+
+export const findContractAddressByAddress = (
+  value: Address,
+): ContractAddress | undefined => {
+  return Object.keys(CONTRACT_ADDRESSES).find(
+    key => CONTRACT_ADDRESSES[key as ContractAddress] === value,
+  ) as ContractAddress | undefined;
+};

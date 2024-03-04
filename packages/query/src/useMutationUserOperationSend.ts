@@ -16,7 +16,10 @@ import {
   getUserOperationSignature,
   sendUserOperation,
 } from "@lightdotso/client";
-import { CONTRACT_ADDRESSES, TRANSACTION_ROW_COUNT } from "@lightdotso/const";
+import {
+  TRANSACTION_ROW_COUNT,
+  WALLET_FACTORY_ENTRYPOINT_MAPPING,
+} from "@lightdotso/const";
 import type { UserOperationData } from "@lightdotso/data";
 import type {
   UserOperationSendParams,
@@ -30,6 +33,7 @@ import type { Address } from "viem";
 import { toHex } from "viem";
 import { useQueryConfiguration } from "./useQueryConfiguration";
 import { useQueryWallet } from "./useQueryWallet";
+import { findContractAddressByAddress } from "@lightdotso/utils";
 
 // -----------------------------------------------------------------------------
 // Query Mutation
@@ -75,7 +79,7 @@ export const useMutationUserOperationSend = (
   } = useMutation({
     retry: 10,
     mutationFn: async (body: UserOperationSendBodyParams) => {
-      if (isConfigurationLoading) {
+      if (!wallet || isConfigurationLoading) {
         return;
       }
 
@@ -108,9 +112,9 @@ export const useMutationUserOperationSend = (
               maxPriorityFeePerGas: toHex(body.max_priority_fee_per_gas),
               signature: sig,
             },
-            wallet?.factory_address === CONTRACT_ADDRESSES["v0.1.0 Factory"]
-              ? CONTRACT_ADDRESSES["Entrypoint"]
-              : CONTRACT_ADDRESSES["Entrypoint"],
+            WALLET_FACTORY_ENTRYPOINT_MAPPING[
+              findContractAddressByAddress(wallet.factory_address as Address)!
+            ] as unknown as Address,
           ]);
 
           toast.dismiss(loadingToast);
