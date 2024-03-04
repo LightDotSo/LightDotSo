@@ -60,6 +60,7 @@ export const useMutationUserOperationSend = (
   const { configuration, isConfigurationLoading } = useQueryConfiguration({
     address: params.address as Address,
     image_hash: imageHash,
+    checkpoint: !imageHash ? 0 : undefined,
   });
 
   const { wallet } = useQueryWallet({
