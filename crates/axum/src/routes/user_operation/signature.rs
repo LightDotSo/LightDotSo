@@ -155,22 +155,31 @@ pub(crate) async fn v1_user_operation_signature_handler(
         .ok_or(AppError::NotFound)?;
     info!(?op_configuration);
 
+    // Get the configurations up to the op_configuration checkpoint.
+    let up_to_configurations = configurations
+        .into_iter()
+        // Filter the configurations that are less than or equal to the op_configuration
+        // checkpoint.
+        .filter(|configuration| configuration.checkpoint <= op_configuration.checkpoint)
+        .collect::<Vec<_>>();
+    info!(?up_to_configurations);
+
     // Get the configurations needed to build the wallet configuration - should be uprooted from the
     // query configuration id, to the most recent configuration. Start with the query configuration
     // id, and then get up to the most recent configuration (don't include the most recent)
     let mut uproot_configurations = if let Some(query_configuration_id) = query.configuration_id {
-        let query_configuration = configurations
+        let query_configuration = up_to_configurations
             .clone()
             .into_iter()
             .find(|configuration| configuration.id == query_configuration_id)
             .ok_or(AppError::NotFound)?;
         info!(?query_configuration);
 
-        configurations
+        up_to_configurations
             .into_iter()
-            // Filter the configurations that are greater than the query configuration, and not
-            // equal to the current configuration.
-            .filter(|configuration| configuration.checkpoint < query_configuration.checkpoint)
+            // Filter the configurations that are smaller or equal to than the current query
+            // configuration, and not equal to the current configuration.
+            .filter(|configuration| configuration.checkpoint <= query_configuration.checkpoint)
             .collect::<Vec<_>>()
     } else {
         vec![]
@@ -289,6 +298,11 @@ pub(crate) async fn v1_user_operation_signature_handler(
                 .configuration_operation_signatures
                 .ok_or(AppError::NotFound)
                 .map_err(|_err| eyre!("Error fetching recovered configuration signatures"))?;
+
+            // If the upgrade signatures is empty, return an error.
+            if upgrade_signatures.is_empty() {
+                return Err(eyre!("Upgrade signatures are empty"));
+            }
 
             // Conver the signatures to SignerNode.
             let signer_nodes: Result<Vec<SignerNode>> = upgrade_signatures
