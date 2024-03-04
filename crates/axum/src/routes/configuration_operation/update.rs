@@ -17,11 +17,8 @@
 use crate::{
     error::RouteError,
     result::AppJsonResult,
-    routes::{
-        configuration_operation::{
-            error::ConfigurationOperationError, types::ConfigurationOperation,
-        },
-        configuration_operation_signature::error::ConfigurationOperationSignatureError,
+    routes::configuration_operation::{
+        error::ConfigurationOperationError, types::ConfigurationOperation,
     },
     state::AppState,
 };
@@ -96,7 +93,7 @@ pub(crate) async fn v1_configuration_operation_update_handler(
     let configuration_operation = state
         .client
         .configuration_operation()
-        .find_unique(configuration_operation::id::equals(configuration_operation_id))
+        .find_unique(configuration_operation::id::equals(configuration_operation_id.clone()))
         .with(configuration_operation::wallet::fetch())
         .with(
             configuration_operation::configuration_operation_signatures::fetch(vec![])
@@ -111,8 +108,8 @@ pub(crate) async fn v1_configuration_operation_update_handler(
 
     // If the user operation is not found, return a 404.
     let configuration_operation =
-        configuration_operation.ok_or(RouteError::ConfigurationOperationSignatureError(
-            ConfigurationOperationSignatureError::NotFound("User operation not found".to_string()),
+        configuration_operation.ok_or(RouteError::ConfigurationOperationError(
+            ConfigurationOperationError::NotFound("Configuration operation not found".to_string()),
         ))?;
 
     // Get the wallet from the database.
@@ -158,6 +155,9 @@ pub(crate) async fn v1_configuration_operation_update_handler(
     let culmulative_weight:i64 =
         // Unwrap is safe because we are fetching the configuration_operation_owner.
         configuration_operation_signatures.iter().map(|sig| sig.owner.as_ref().unwrap().weight).sum();
+
+    // Check if all of the owners of the configuration operation signatures are in the current
+    // configuration owners.
 
     // If the culmulative weight is greater than the threshold, update the configuration operation.
     if culmulative_weight >= configuration.threshold {
@@ -292,7 +292,7 @@ pub(crate) async fn v1_configuration_operation_update_handler(
                 .enumerate()
                 .map(|(_index, _signature)| {
                     configuration_operation_signature::configuration_id::set(Some(
-                        configuration_operation.clone().id.clone(),
+                        configuration.clone().id.clone(),
                     ))
                 })
                 .collect(),
@@ -300,6 +300,29 @@ pub(crate) async fn v1_configuration_operation_update_handler(
         .exec()
         .await?;
     info!(?configuration_operation_signature_data);
+
+    // Refresh the configuration operation.
+    let configuration_operation = state
+        .client
+        .configuration_operation()
+        .find_unique(configuration_operation::id::equals(configuration_operation_id))
+        .with(configuration_operation::wallet::fetch())
+        .with(
+            configuration_operation::configuration_operation_signatures::fetch(vec![])
+                .with(configuration_operation_signature::owner::fetch()),
+        )
+        .with(
+            configuration_operation::configuration_operation_owners::fetch(vec![])
+                .with(configuration_operation_owner::user::fetch()),
+        )
+        .exec()
+        .await?;
+
+    // If the user operation is not found, return a 404.
+    let configuration_operation =
+        configuration_operation.ok_or(RouteError::ConfigurationOperationError(
+            ConfigurationOperationError::NotFound("Configuration operation not found".to_string()),
+        ))?;
 
     // -------------------------------------------------------------------------
     // Return
