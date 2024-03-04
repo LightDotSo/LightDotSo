@@ -85,6 +85,9 @@ export const useMutationUserOperationSend = (
 
       const loadingToast = toast.loading("Submitting the transaction...");
 
+      console.info("imageHash", imageHash);
+      console.info("configuration", configuration);
+
       // Get the sig as bytes from caller
       const sigRes = await getUserOperationSignature({
         params: {
