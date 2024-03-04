@@ -81,7 +81,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   const deployed_op = userOperations?.find(op => op.chain_id === chain.id);
 
   let initCode = calculateInitCode(
-    CONTRACT_ADDRESSES["Factory"] as Address,
+    CONTRACT_ADDRESSES["v0.1.0 Factory"] as Address,
     image_hash,
     salt,
   );

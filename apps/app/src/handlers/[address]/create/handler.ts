@@ -194,7 +194,7 @@ export const handler = async (
       return {
         ...op,
         initCode: calculateInitCode(
-          CONTRACT_ADDRESSES["Factory"] as Address,
+          CONTRACT_ADDRESSES["v0.1.0 Factory"] as Address,
           configuration.image_hash as Hex,
           wallet.salt as Hex,
         ),

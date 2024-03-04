@@ -29,6 +29,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { toHex } from "viem";
 import { useQueryConfiguration } from "./useQueryConfiguration";
+import { useQueryWallet } from "./useQueryWallet";
 
 // -----------------------------------------------------------------------------
 // Query Mutation
@@ -55,6 +56,10 @@ export const useMutationUserOperationSend = (
   const { configuration, isConfigurationLoading } = useQueryConfiguration({
     address: params.address as Address,
     image_hash: imageHash,
+  });
+
+  const { wallet } = useQueryWallet({
+    address: params.address as Address,
   });
 
   // ---------------------------------------------------------------------------
@@ -103,7 +108,9 @@ export const useMutationUserOperationSend = (
               maxPriorityFeePerGas: toHex(body.max_priority_fee_per_gas),
               signature: sig,
             },
-            CONTRACT_ADDRESSES["Entrypoint"],
+            wallet?.factory_address === CONTRACT_ADDRESSES["v0.1.0 Factory"]
+              ? CONTRACT_ADDRESSES["Entrypoint"]
+              : CONTRACT_ADDRESSES["Entrypoint"],
           ]);
 
           toast.dismiss(loadingToast);

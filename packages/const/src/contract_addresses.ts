@@ -16,7 +16,7 @@ import type { Address } from "viem";
 
 /* eslint-disable no-unused-vars */
 export enum Contract {
-  V010_FACTORY = "Factory",
+  V010_FACTORY = "v0.1.0 Factory",
   V060_ENTRYPOINT = "Entrypoint",
 }
 
