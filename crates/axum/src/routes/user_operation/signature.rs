@@ -27,13 +27,7 @@ use axum::{
 };
 use eyre::{eyre, Result};
 use lightdotso_common::traits::{HexToBytes, VecU8ToHex};
-use lightdotso_prisma::{
-    configuration,
-    // log,
-    owner,
-    signature,
-    user_operation,
-};
+use lightdotso_prisma::{configuration, owner, signature, user_operation};
 use lightdotso_sequence::{
     builder::rooted_node_builder,
     config::WalletConfig,
@@ -177,9 +171,8 @@ pub(crate) async fn v1_user_operation_signature_handler(
 
         up_to_configurations
             .into_iter()
-            // Filter the configurations that are smaller or equal to than the current query
-            // configuration, and not equal to the current configuration.
-            .filter(|configuration| configuration.checkpoint <= query_configuration.checkpoint)
+            // Filter the configurations that are smaller than the current query configuration
+            .filter(|configuration| configuration.checkpoint < query_configuration.checkpoint)
             .collect::<Vec<_>>()
     } else {
         vec![]
