@@ -1,6 +1,7 @@
 | Contract                     | Size (kB) | Margin (kB) |
 |------------------------------|-----------|-------------|
 | Address                      | 0.086     | 24.49       |
+| BytesLib                     | 0.086     | 24.49       |
 | Create2                      | 0.086     | 24.49       |
 | ECDSA                        | 0.086     | 24.49       |
 | ECDSAKernelFactory           | 1.16      | 23.416      |
@@ -19,10 +20,11 @@
 | LibBytesPointer              | 0.086     | 24.49       |
 | LibOptim                     | 0.086     | 24.49       |
 | LightVerifyingPaymaster      | 5.533     | 19.043      |
-| LightWallet                  | 13.26     | 11.316      |
+| LightWallet                  | 13.266    | 11.31       |
 | LightWalletFactory           | 3.34      | 21.236      |
 | LightWalletUtils             | 0.086     | 24.49       |
 | Math                         | 0.086     | 24.49       |
+| Merkle                       | 2.522     | 22.054      |
 | MerkleProof                  | 0.086     | 24.49       |
 | MockERC1155                  | 7.697     | 16.879      |
 | MockERC20                    | 3.561     | 21.015      |
