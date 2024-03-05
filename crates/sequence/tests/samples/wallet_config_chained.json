@@ -55,7 +55,7 @@
       }
     }
   },
-  "signature_type": 0,
+  "signature_type": 2,
   "internal_root": "0xe5db36ccd5b41d714bde31eb984563b603ec25113f1ac796410cddb9d32e5104",
   "internal_recovered_configs": [
     {

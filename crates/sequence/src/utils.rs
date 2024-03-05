@@ -52,7 +52,7 @@ pub(crate) fn read_uint8_address(data: &[u8], index: usize) -> Result<(u8, Addre
     let new_pointer = index + 21;
 
     if data.len() < new_pointer {
-        return Err(eyre!("index is out of bounds of the input data"));
+        return Err(eyre!("index is out of bounds of the `read_uint8_address` input data"));
     }
 
     let slice = &data[index..new_pointer];
@@ -71,7 +71,7 @@ pub(crate) fn read_uint8(data: &[u8], index: usize) -> Result<(u8, usize)> {
     let new_pointer = index + 1;
 
     if data.len() < new_pointer {
-        return Err(eyre!("index is out of bounds of the input data"));
+        return Err(eyre!("index is out of bounds of the `read_uint8` input data"));
     }
 
     let a = data[index];
@@ -83,7 +83,7 @@ pub(crate) fn read_uint16(data: &[u8], index: usize) -> Result<(u16, usize)> {
     let new_pointer = index + 2;
 
     if data.len() < new_pointer {
-        return Err(eyre!("index is out of bounds of the input data"));
+        return Err(eyre!("index is out of bounds of the `read_uint16` input data"));
     }
 
     let slice = &data[index..new_pointer];
@@ -97,7 +97,7 @@ pub(crate) fn read_uint24(data: &[u8], index: usize) -> Result<(u32, usize), eyr
     let new_pointer = index + 3;
 
     if data.len() < new_pointer {
-        return Err(eyre!("index out of bounds of the input data"));
+        return Err(eyre!("index out of bounds of the `read_uint24` input data"));
     }
 
     let slice = &data[index..new_pointer];
@@ -112,7 +112,7 @@ pub(crate) fn read_uint32(data: &[u8], index: usize) -> Result<(u32, usize), eyr
     let new_pointer = index + 4;
 
     if data.len() < new_pointer {
-        return Err(eyre!("Index out of bounds of the input data"));
+        return Err(eyre!("index out of bounds of the `read_uint32` input data"));
     }
 
     let slice = &data[index..new_pointer];
@@ -126,7 +126,7 @@ pub(crate) fn read_bytes32(data: &[u8], index: usize) -> Result<([u8; 32], usize
     let new_pointer = index + 32;
 
     if data.len() < new_pointer {
-        return Err(eyre!("index is out of bounds of the input data"));
+        return Err(eyre!("index is out of bounds of the `read_bytes32` input data"));
     }
 
     let slice = &data[index..new_pointer];
