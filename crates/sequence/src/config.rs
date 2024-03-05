@@ -186,6 +186,7 @@ impl WalletConfig {
         Ok([
             vec![3_u8],
             initial_length.to_be_bytes().to_vec()[1..].to_vec(),
+            self.signature_type.to_be_bytes().to_vec(),
             self.threshold.to_be_bytes().to_vec(),
             self.checkpoint.to_be_bytes().to_vec(),
             self.tree.encode_hash_from_signers()?,
