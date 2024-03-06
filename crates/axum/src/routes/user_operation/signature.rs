@@ -171,8 +171,8 @@ pub(crate) async fn v1_user_operation_signature_handler(
 
         up_to_configurations
             .into_iter()
-            // Filter the configurations that are smaller than the current query configuration
-            .filter(|configuration| configuration.checkpoint < query_configuration.checkpoint)
+            // Filter the configurations that are larger than the current query configuration
+            .filter(|configuration| configuration.checkpoint > query_configuration.checkpoint)
             .collect::<Vec<_>>()
     } else {
         vec![]
