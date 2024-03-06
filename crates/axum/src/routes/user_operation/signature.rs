@@ -151,6 +151,7 @@ pub(crate) async fn v1_user_operation_signature_handler(
 
     // Get the configurations up to the op_configuration checkpoint.
     let up_to_configurations = configurations
+        .clone()
         .into_iter()
         // Filter the configurations that are less than or equal to the op_configuration
         // checkpoint.
@@ -162,7 +163,7 @@ pub(crate) async fn v1_user_operation_signature_handler(
     // query configuration id, to the most recent configuration. Start with the query configuration
     // id, and then get up to the most recent configuration (don't include the most recent)
     let mut uproot_configurations = if let Some(query_configuration_id) = query.configuration_id {
-        let query_configuration = up_to_configurations
+        let query_configuration = configurations
             .clone()
             .into_iter()
             .find(|configuration| configuration.id == query_configuration_id)
