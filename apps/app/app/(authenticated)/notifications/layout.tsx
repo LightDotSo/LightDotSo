@@ -63,3 +63,9 @@ export default function NotificationsLayout({
     </BannerSection>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Data
+// -----------------------------------------------------------------------------
+
+export const revalidate = false;

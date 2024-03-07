@@ -62,3 +62,9 @@ export default function DepositLayout({ children }: DepositLayoutProps) {
     </BannerSection>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Data
+// -----------------------------------------------------------------------------
+
+export const revalidate = 300;
