@@ -67,7 +67,7 @@ abstract contract BaseTest is Test {
 
     // LightWalletFactory address
     // v0.01: address internal constant LIGHT_FACTORY_ADDRESS = address(0x0000000000756D3E6464f5efe7e413a0Af1C7474);
-    address internal constant LIGHT_FACTORY_ADDRESS = address(0x0000000000756D3E6464f5efe7e413a0Af1C7474);
+    address internal constant LIGHT_FACTORY_ADDRESS = address(0x00000000008a9c880B53dE6F83c894eb1CE42530);
 
     // LightVerifyingPaymaster address
     // v1: address internal constant LIGHT_PAYMASTER_ADDRESS = address(0x000000000018d32DF916ff115A25fbeFC70bAf8b);
