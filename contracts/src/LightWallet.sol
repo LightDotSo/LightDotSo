@@ -201,8 +201,8 @@ contract LightWallet is
             return 0;
         }
 
-        // Revert if the signature type is not supported
-        revert InvalidSignatureType(signatureType);
+        // Return an error if the signature type is not recognized
+        return SIG_VALIDATION_FAILED;
     }
 
     /// @notice Executes a call to a target contract with specified value and data.
