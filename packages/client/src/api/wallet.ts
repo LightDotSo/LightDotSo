@@ -34,8 +34,6 @@ export const getWallet = async (
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/get", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -65,8 +63,6 @@ export const getWallets = async (
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/list", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -96,8 +92,6 @@ export const getWalletsCount = async (
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/list/count", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -135,8 +129,6 @@ export const createWallet = async (
 
   return ResultAsync.fromPromise(
     client.POST("/wallet/create", {
-      // @ts-ignore
-      next: { revalidate: 0 },
       params,
       body,
     }),
@@ -168,8 +160,6 @@ export const updateWallet = async (
 
   return ResultAsync.fromPromise(
     client.PUT("/wallet/update", {
-      // @ts-ignore
-      next: { revalidate: 0 },
       params,
       body,
     }),

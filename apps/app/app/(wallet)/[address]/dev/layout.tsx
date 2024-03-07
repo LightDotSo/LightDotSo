@@ -62,3 +62,9 @@ export default function DevLayout({ children }: DevLayoutProps) {
     </BannerSection>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Data
+// -----------------------------------------------------------------------------
+
+export const revalidate = 300;

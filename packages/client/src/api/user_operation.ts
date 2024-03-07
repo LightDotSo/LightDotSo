@@ -34,8 +34,6 @@ export const getUserOperation = async (
 
   return ResultAsync.fromPromise(
     client.GET("/user_operation/get", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -128,8 +126,6 @@ export const getUserOperations = async (
 
   return ResultAsync.fromPromise(
     client.GET("/user_operation/list", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -167,8 +163,6 @@ export const getUserOperationsCount = async (
 
   return ResultAsync.fromPromise(
     client.GET("/user_operation/list/count", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -251,8 +245,6 @@ export const updateUserOperation = async (
 
   return ResultAsync.fromPromise(
     client.PUT("/user_operation/update", {
-      // @ts-ignore
-      next: { revalidate: 0 },
       params,
     }),
     () => new Error("Database error"),

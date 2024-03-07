@@ -41,8 +41,6 @@ export const createFeedback = async (
 
   return ResultAsync.fromPromise(
     client.POST("/feedback/create", {
-      // @ts-ignore
-      next: { revalidate: 0 },
       params,
       body,
     }),

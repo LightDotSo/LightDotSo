@@ -57,3 +57,9 @@ export default function NewLayout({ children }: NewLayoutProps) {
     </BannerSection>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Data
+// -----------------------------------------------------------------------------
+
+export const revalidate = 300;

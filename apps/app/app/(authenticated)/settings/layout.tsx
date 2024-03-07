@@ -80,3 +80,9 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
     </BannerSection>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Data
+// -----------------------------------------------------------------------------
+
+export const revalidate = 300;

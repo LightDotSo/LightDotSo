@@ -34,8 +34,6 @@ export const getPortfolio = async (
 
   return ResultAsync.fromPromise(
     client.GET("/portfolio/get", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),

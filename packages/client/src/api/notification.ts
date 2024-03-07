@@ -41,8 +41,6 @@ export const getNotifications = async (
 
   return ResultAsync.fromPromise(
     client.GET("/notification/list", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -72,8 +70,6 @@ export const getNotificationsCount = async (
 
   return ResultAsync.fromPromise(
     client.GET("/notification/list/count", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -104,8 +100,6 @@ export const readNotification = async (
 
   return ResultAsync.fromPromise(
     client.POST("/notification/read", {
-      // @ts-ignore
-      next: { revalidate: 0 },
       params,
       body,
     }),

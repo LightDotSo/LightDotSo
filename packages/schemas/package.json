@@ -26,14 +26,14 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "abitype": "^1.0.0",
-    "viem": "^2.7.13",
+    "abitype": "^1.0.1",
+    "viem": "^2.7.20",
     "zod": "^3.22.4"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.11.20",
-    "typescript": "^5.3.3"
+    "@types/node": "^20.11.25",
+    "typescript": "^5.4.2"
   },
   "publishConfig": {
     "access": "public"

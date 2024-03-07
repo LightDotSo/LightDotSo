@@ -62,3 +62,9 @@ export default function SendLayout({ children }: SendLayoutProps) {
     </BannerSection>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Data
+// -----------------------------------------------------------------------------
+
+export const revalidate = 300;

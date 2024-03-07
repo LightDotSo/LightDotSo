@@ -36,15 +36,15 @@
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
-    "@tanstack/react-query": "^5.22.2",
+    "@tanstack/react-query": "^5.25.0",
     "exponential-backoff": "^3.1.1",
     "neverthrow": "^6.1.0",
-    "viem": "^2.7.13"
+    "viem": "^2.7.20"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.11.20",
-    "typescript": "^5.3.3"
+    "@types/node": "^20.11.25",
+    "typescript": "^5.4.2"
   },
   "publishConfig": {
     "access": "public"

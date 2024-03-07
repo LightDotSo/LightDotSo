@@ -55,7 +55,10 @@ import {
 } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getUserOperationHash } from "permissionless";
-import type { UserOperation as PermissionlessUserOperation } from "permissionless";
+import type {
+  UserOperation as PermissionlessUserOperation,
+  ENTRYPOINT_ADDRESS_V06,
+} from "permissionless";
 import { type FC, useMemo, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { type Hex, type Address, fromHex } from "viem";
@@ -427,12 +430,11 @@ export const Transaction: FC<TransactionProps> = ({
       };
 
       const hash = await getUserOperationHash({
-        userOperation: userOperation as PermissionlessUserOperation,
-        entryPoint:
-          WALLET_FACTORY_ENTRYPOINT_MAPPING[
-            findContractAddressByAddress(wallet.factory_address as Address)!
-          ],
+        userOperation: userOperation as PermissionlessUserOperation<"v0.6">,
         chainId: Number(updatedUserOperation.chainId) as number,
+        entryPoint: WALLET_FACTORY_ENTRYPOINT_MAPPING[
+          findContractAddressByAddress(wallet.factory_address as Address)!
+        ] as typeof ENTRYPOINT_ADDRESS_V06,
       });
 
       setUserOperationWithHash({

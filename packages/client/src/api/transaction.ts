@@ -41,8 +41,6 @@ export const getTransactions = async (
 
   return ResultAsync.fromPromise(
     client.GET("/transaction/list", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -72,8 +70,6 @@ export const getTransactionsCount = async (
 
   return ResultAsync.fromPromise(
     client.GET("/transaction/list/count", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),

@@ -34,8 +34,6 @@ export const getWalletNotificationSettings = async (
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/notification/settings/get", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -68,8 +66,6 @@ export const updateWalletNotificationSettings = async (
 
   return ResultAsync.fromPromise(
     client.PUT("/wallet/notification/settings/update", {
-      // @ts-ignore
-      next: { revalidate: 0 },
       params,
       body,
     }),
