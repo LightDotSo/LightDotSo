@@ -34,8 +34,6 @@ export const getWalletBilling = async (
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/billing/get", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),

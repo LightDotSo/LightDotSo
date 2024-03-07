@@ -2285,8 +2285,8 @@ importers:
         specifier: ^16.4.5
         version: 16.4.5
       pusher-js:
-        specifier: ^8.3.0
-        version: 8.3.0
+        specifier: ^7.6.0
+        version: 7.6.0
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
@@ -2363,7 +2363,7 @@ importers:
         version: link:../schemas
       '@lukemorales/query-key-factory':
         specifier: ^1.3.4
-        version: 1.3.4(@tanstack/query-core@5.22.2)(@tanstack/react-query@5.25.0)
+        version: 1.3.4(@tanstack/query-core@5.25.0)(@tanstack/react-query@5.25.0)
       '@tanstack/react-query':
         specifier: ^5.25.0
         version: 5.25.0(react@18.2.0)
@@ -7252,14 +7252,14 @@ packages:
       '@lit-labs/ssr-dom-shim': 1.1.2
     dev: false
 
-  /@lukemorales/query-key-factory@1.3.4(@tanstack/query-core@5.22.2)(@tanstack/react-query@5.25.0):
+  /@lukemorales/query-key-factory@1.3.4(@tanstack/query-core@5.25.0)(@tanstack/react-query@5.25.0):
     resolution: {integrity: sha512-A3frRDdkmaNNQi6mxIshsDk4chRXWoXa05US8fBo4kci/H+lVmujS6QrwQLLGIkNIRFGjMqp2uKjC4XsLdydRw==}
     engines: {node: '>=14'}
     peerDependencies:
       '@tanstack/query-core': '>= 4.0.0'
       '@tanstack/react-query': '>= 4.0.0'
     dependencies:
-      '@tanstack/query-core': 5.22.2
+      '@tanstack/query-core': 5.25.0
       '@tanstack/react-query': 5.25.0(react@18.2.0)
     dev: false
 
@@ -11318,7 +11318,7 @@ packages:
       '@babel/plugin-transform-sticky-regex': 7.23.3(@babel/core@7.24.0)
       '@babel/plugin-transform-typescript': 7.23.4(@babel/core@7.24.0)
       '@babel/plugin-transform-unicode-regex': 7.23.3(@babel/core@7.24.0)
-      '@babel/template': 7.23.9
+      '@babel/template': 7.24.0
       '@react-native/babel-plugin-codegen': 0.73.2(@babel/preset-env@7.23.3)
       babel-plugin-transform-flow-enums: 0.0.2(@babel/core@7.24.0)
       react-refresh: 0.14.0
@@ -11333,7 +11333,7 @@ packages:
     peerDependencies:
       '@babel/preset-env': ^7.1.6
     dependencies:
-      '@babel/parser': 7.23.9
+      '@babel/parser': 7.24.0
       '@babel/preset-env': 7.23.3(@babel/core@7.24.0)
       flow-parser: 0.206.0
       glob: 7.2.3
@@ -13643,10 +13643,6 @@ packages:
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
       tailwindcss: 3.4.1(ts-node@10.9.2)
-    dev: false
-
-  /@tanstack/query-core@5.22.2:
-    resolution: {integrity: sha512-z3PwKFUFACMUqe1eyesCIKg3Jv1mysSrYfrEW5ww5DCDUD4zlpTKBvUDaEjsfZzL3ULrFLDM9yVUxI/fega1Qg==}
     dev: false
 
   /@tanstack/query-core@5.25.0:
@@ -16739,9 +16735,9 @@ packages:
     resolution: {integrity: sha512-kDdugMl7id9COE8R7MHF5jWk7Dqt/fs4Pv+JXoICnYwqpjjjbUurz6w5fT5IG6brLdJhv6/VoHB0H7oyIBXd+Q==}
     engines: {node: '>= 0.4'}
     dependencies:
-      call-bind: 1.0.2
+      call-bind: 1.0.7
       define-properties: 1.2.1
-      es-abstract: 1.22.1
+      es-abstract: 1.22.5
       es-array-method-boxes-properly: 1.0.0
       is-string: 1.0.7
     dev: true
@@ -25603,7 +25599,7 @@ packages:
       '@babel/preset-env': ^7.1.6
     dependencies:
       '@babel/core': 7.24.0
-      '@babel/parser': 7.23.9
+      '@babel/parser': 7.24.0
       '@babel/plugin-proposal-class-properties': 7.18.6(@babel/core@7.24.0)
       '@babel/plugin-proposal-nullish-coalescing-operator': 7.18.6(@babel/core@7.24.0)
       '@babel/plugin-proposal-optional-chaining': 7.21.0(@babel/core@7.24.0)
@@ -27182,8 +27178,8 @@ packages:
     resolution: {integrity: sha512-x+0By55ml6IcGqY9x9HE0hyU0S+uDssrTQ0bPvuydG+iKCX85DzGnlT8k0Vs+EYgZl3KMWcvQ9TpGHW4LRL4GQ==}
     engines: {node: '>=18'}
     dependencies:
-      '@babel/traverse': 7.23.9(supports-color@5.5.0)
-      '@babel/types': 7.23.9
+      '@babel/traverse': 7.24.0
+      '@babel/types': 7.24.0
       invariant: 2.2.4
       metro-symbolicate: 0.80.4
       nullthrows: 1.1.1
@@ -27215,8 +27211,8 @@ packages:
     dependencies:
       '@babel/core': 7.24.0
       '@babel/generator': 7.23.6
-      '@babel/template': 7.23.9
-      '@babel/traverse': 7.23.9(supports-color@5.5.0)
+      '@babel/template': 7.24.0
+      '@babel/traverse': 7.24.0
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - supports-color
@@ -27228,8 +27224,8 @@ packages:
     dependencies:
       '@babel/core': 7.24.0
       '@babel/generator': 7.23.6
-      '@babel/parser': 7.23.9
-      '@babel/types': 7.23.9
+      '@babel/parser': 7.24.0
+      '@babel/types': 7.24.0
       metro: 0.80.4
       metro-babel-transformer: 0.80.4
       metro-cache: 0.80.4
@@ -27252,10 +27248,10 @@ packages:
       '@babel/code-frame': 7.23.5
       '@babel/core': 7.24.0
       '@babel/generator': 7.23.6
-      '@babel/parser': 7.23.9
-      '@babel/template': 7.23.9
-      '@babel/traverse': 7.23.9(supports-color@5.5.0)
-      '@babel/types': 7.23.9
+      '@babel/parser': 7.24.0
+      '@babel/template': 7.24.0
+      '@babel/traverse': 7.24.0
+      '@babel/types': 7.24.0
       accepts: 1.3.8
       chalk: 4.1.2
       ci-info: 2.0.0
@@ -29299,10 +29295,10 @@ packages:
     engines: {node: '>= 0.8'}
     dependencies:
       array.prototype.reduce: 1.0.5
-      call-bind: 1.0.2
+      call-bind: 1.0.7
       define-properties: 1.2.1
-      es-abstract: 1.22.1
-      safe-array-concat: 1.0.1
+      es-abstract: 1.22.5
+      safe-array-concat: 1.1.0
     dev: true
 
   /object.groupby@1.0.1:
@@ -30923,12 +30919,6 @@ packages:
     dependencies:
       '@types/express-serve-static-core': 4.17.28
       '@types/node': 14.18.33
-      tweetnacl: 1.0.3
-    dev: false
-
-  /pusher-js@8.3.0:
-    resolution: {integrity: sha512-6GohP06WlVeomAQQe9qWh1IDzd3+InluWt+ZUOcecVK1SEQkg6a8uYVsvxSJm7cbccfmHhE0jDkmhKIhue8vmA==}
-    dependencies:
       tweetnacl: 1.0.3
     dev: false
 
