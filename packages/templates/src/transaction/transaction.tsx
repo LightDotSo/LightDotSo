@@ -54,8 +54,11 @@ import {
   useReadLightWalletImageHash,
 } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ENTRYPOINT_ADDRESS_V06, getUserOperationHash } from "permissionless";
-import type { UserOperation as PermissionlessUserOperation } from "permissionless";
+import { getUserOperationHash } from "permissionless";
+import type {
+  UserOperation as PermissionlessUserOperation,
+  ENTRYPOINT_ADDRESS_V06,
+} from "permissionless";
 import { type FC, useMemo, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { type Hex, type Address, fromHex } from "viem";
