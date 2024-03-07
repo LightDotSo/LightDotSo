@@ -192,7 +192,7 @@ contract LightWallet is
 
             // Get the offset of the actual signature
             // Hardcoded to the corresponding length depending on the merkleProof length
-            uint256 offset = 160 + merkleProof.length * 32 + 1;
+            uint256 offset = 161 + merkleProof.length * 32;
             (bool isValid,) =
                 _signatureValidation(merkleTreeRoot, userOp.signature[offset:offset + merkleSignature.length]);
             if (!isValid) {
