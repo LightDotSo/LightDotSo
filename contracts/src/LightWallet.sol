@@ -192,6 +192,12 @@ contract LightWallet is
 
             // Get the offset of the actual signature
             // Hardcoded to the corresponding length depending on the merkleProof length
+            // 1st part is the bytes32 merkleTreeRoot
+            // 2nd part is the offset of the bytes32[] merkleProof
+            // 3rd part is the offset of the bytes merkleSignature
+            // 4th part is the length of the bytes32[] merkleProof, and the contents of the array (32 bytes each)
+            // 5th part is the length of the bytes merkleSignature
+            // 1byte is added to the offset to account for the signatureType
             uint256 offset = 161 + merkleProof.length * 32;
             (bool isValid,) =
                 _signatureValidation(merkleTreeRoot, userOp.signature[offset:offset + merkleSignature.length]);
