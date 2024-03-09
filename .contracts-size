@@ -20,7 +20,7 @@
 | LibBytesPointer              | 0.086     | 24.49       |
 | LibOptim                     | 0.086     | 24.49       |
 | LightVerifyingPaymaster      | 5.533     | 19.043      |
-| LightWallet                  | 13.266    | 11.31       |
+| LightWallet                  | 13.265    | 11.311      |
 | LightWalletFactory           | 3.34      | 21.236      |
 | LightWalletUtils             | 0.086     | 24.49       |
 | Math                         | 0.086     | 24.49       |
