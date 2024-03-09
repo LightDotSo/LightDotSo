@@ -1180,6 +1180,7 @@ model UserOperation {
   // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
+  UserOperationMerkleProof UserOperationMerkleProof[]
 
   // Unique
   @@index([sender, status, isTestnet])
@@ -1257,6 +1258,9 @@ model UserOperationMerkleProof {
   // One-to-many
   // ---------------------------------------------------------------------------
 
+  userOperation     UserOperation @relation(fields: [userOperationHash], references: [hash])
+  userOperationHash String
+
   userOperationMerkle   UserOperationMerkle @relation(fields: [userOperationMerkleId], references: [id])
   userOperationMerkleId String
 
@@ -1265,6 +1269,7 @@ model UserOperationMerkleProof {
   // ---------------------------------------------------------------------------
 
   // Relations
+  @@index([userOperationHash])
   @@index([userOperationMerkleId])
 }
 
