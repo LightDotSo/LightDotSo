@@ -64,9 +64,17 @@ lazy_static! {
 // The factory implementation addresses
 lazy_static! {
     #[derive(Debug)]
-    pub static ref LIGHT_WALLET_FACTORY_IMPLEMENTATION_ADDRESS: Address =
+    pub static ref LIGHT_WALLET_FACTORY_IMPLEMENTATION_V010_ADDRESS: Address =
       // v0.1.0
       "0x8fb3cfdf2082c2be7d3205d361067748ea1abf63".parse().unwrap();
+}
+
+// The factory implementation addresses
+lazy_static! {
+    #[derive(Debug)]
+    pub static ref LIGHT_WALLET_FACTORY_IMPLEMENTATION_ADDRESS: Address =
+      // v0.2.0
+      "0x040d53c5dde1762f7cac48d5467e88236d4873d7".parse().unwrap();
 }
 
 // The example wallet addresses

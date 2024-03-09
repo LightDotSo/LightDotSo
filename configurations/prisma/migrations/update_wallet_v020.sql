@@ -1,0 +1,27 @@
+UPDATE `Wallet`
+SET `address` = "0xC0d0a645fba3a5F761042fA1d5002491C0E515Ac"
+WHERE `address` = "0x696f37dc8A8a1C7C096F0eDBD2696305607D5404";
+
+UPDATE `Configuration`
+SET `address` = "0xC0d0a645fba3a5F761042fA1d5002491C0E515Ac"
+WHERE `id` = "cltjohh4r000uq099dgbp6zvg";
+
+UPDATE `_ConfigurationToWallet`
+SET `B` = "0xC0d0a645fba3a5F761042fA1d5002491C0E515Ac"
+WHERE `A` = "cltjohh4r000uq099dgbp6zvg";
+
+UPDATE `_UserToWallet`
+SET `B` = "0xC0d0a645fba3a5F761042fA1d5002491C0E515Ac"
+WHERE `B` = "0x696f37dc8A8a1C7C096F0eDBD2696305607D5404";
+
+DELETE FROM `WalletSettings` WHERE id = 'cltjohkbh000ysj9b6m8bcdn7';
+
+UPDATE `Activity`
+SET `walletAddress` = "0xC0d0a645fba3a5F761042fA1d5002491C0E515Ac"
+WHERE `walletAddress` = "0x696f37dc8A8a1C7C096F0eDBD2696305607D5404";
+
+DELETE FROM `WalletBilling` WHERE id = 'cltjokdfc001nsj9bbqjzvktt';
+
+DELETE FROM `WalletBalance` WHERE `walletAddress` = '0x696f37dc8A8a1C7C096F0eDBD2696305607D5404';
+
+DELETE FROM `WalletFeatures` WHERE `walletAddress` = '0x696f37dc8A8a1C7C096F0eDBD2696305607D5404';
