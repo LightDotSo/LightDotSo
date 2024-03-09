@@ -351,7 +351,7 @@ pub(crate) async fn v1_user_operation_create_handler(
                 let user_operation = client
                     .user_operation()
                     .create(
-                        "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789".parse()?,
+                        to_checksum(&ENTRYPOINT_V060_ADDRESS, None),
                         user_operation.hash,
                         user_operation.nonce,
                         user_operation.init_code.hex_to_bytes()?,
