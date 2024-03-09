@@ -39,8 +39,8 @@ use crate::{
         notification_settings, owner, paymaster, paymaster_operation, portfolio, protocol,
         protocol_group, queue, signature, simplehash, simulation, socket, support_request, token,
         token_group, token_price, transaction, user, user_notification_settings, user_operation,
-        user_settings, wallet, wallet_billing, wallet_features, wallet_notification_settings,
-        wallet_settings,
+        user_operation_merkle, user_settings, wallet, wallet_billing, wallet_features,
+        wallet_notification_settings, wallet_settings,
     },
     sessions::{authenticated, RedisStore},
     state::AppState,
@@ -191,6 +191,8 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(user_operation::nonce::UserOperationNonce),
         schemas(user_operation::types::UserOperation),
         schemas(user_operation::types::UserOperationSuccess),
+        schemas(user_operation_merkle::error::UserOperationMerkleError),
+        schemas(user_operation_merkle::types::UserOperationMerkle),
         schemas(user_settings::error::UserSettingsError),
         schemas(user_settings::types::UserSettings),
         schemas(user_settings::update::UserSettingsUpdateRequestParams),
@@ -314,6 +316,9 @@ use utoipa_swagger_ui::SwaggerUi;
         user_operation::v1_user_operation_list_count_handler,
         user_operation::v1_user_operation_signature_handler,
         user_operation::v1_user_operation_update_handler,
+        user_operation_merkle::v1_user_operation_merkle_create_handler,
+        user_operation_merkle::v1_user_operation_merkle_get_handler,
+        user_operation_merkle::v1_user_operation_merkle_list_handler,
         user_settings::v1_user_settings_get_handler,
         user_settings::v1_user_settings_update_handler,
         wallet::v1_wallet_create_handler,
@@ -367,6 +372,7 @@ use utoipa_swagger_ui::SwaggerUi;
         (name = "user", description = "User API"),
         (name = "user_notification_settings", description = "User Notification Settings API"),
         (name = "user_operation", description = "User Operation API"),
+        (name = "user_operation_merkle", description = "User Operation Merkle API"),
         (name = "user_settings", description = "User Settings API"),
         (name = "wallet", description = "Wallet API"),
         (name = "wallet_billing", description = "Wallet Billing API"),
@@ -508,6 +514,7 @@ pub async fn start_api_server() -> Result<()> {
         .merge(user::router())
         .merge(user_notification_settings::router())
         .merge(user_operation::router())
+        .merge(user_operation_merkle::router())
         .merge(user_settings::router())
         .merge(wallet::router())
         .merge(wallet_billing::router())

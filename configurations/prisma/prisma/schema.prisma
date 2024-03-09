@@ -1244,7 +1244,7 @@ model UserOperationMerkle {
   // Fields
   // ---------------------------------------------------------------------------
 
-  root String
+  root String @unique
 
   // ---------------------------------------------------------------------------
   // Many-to-many
@@ -1287,6 +1287,8 @@ model UserOperationMerkleProof {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Unique
+  @@unique([index, userOperationHash])
   // Relations
   @@index([userOperationHash])
   @@index([userOperationMerkleId])
