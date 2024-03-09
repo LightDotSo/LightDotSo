@@ -44,3 +44,9 @@ export default function Layout({ children }: SettingsDeploymentLayoutProps) {
 
   return children;
 }
+
+// -----------------------------------------------------------------------------
+// Data
+// -----------------------------------------------------------------------------
+
+export const revalidate = false;
