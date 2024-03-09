@@ -1192,9 +1192,10 @@ model UserOperation {
   // Relation Many-to-many
   // ---------------------------------------------------------------------------
 
-  billingOperations BillingOperation[]
-  signatures        Signature[]
-  simulations       Simulation[]
+  billingOperations         BillingOperation[]
+  signatures                Signature[]
+  simulations               Simulation[]
+  userOperationMerkleProofs UserOperationMerkleProof[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1243,7 +1244,7 @@ model UserOperationMerkle {
   // Fields
   // ---------------------------------------------------------------------------
 
-  root String
+  root String @unique
 
   // ---------------------------------------------------------------------------
   // Many-to-many
@@ -1276,6 +1277,9 @@ model UserOperationMerkleProof {
   // One-to-many
   // ---------------------------------------------------------------------------
 
+  userOperation     UserOperation @relation(fields: [userOperationHash], references: [hash])
+  userOperationHash String
+
   userOperationMerkle   UserOperationMerkle @relation(fields: [userOperationMerkleId], references: [id])
   userOperationMerkleId String
 
@@ -1283,7 +1287,10 @@ model UserOperationMerkleProof {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Unique
+  @@unique([index, userOperationHash])
   // Relations
+  @@index([userOperationHash])
   @@index([userOperationMerkleId])
 }
 

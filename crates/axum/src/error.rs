@@ -31,9 +31,11 @@ use crate::routes::{
     token_group::error::TokenGroupError, token_price::error::TokenPriceError,
     transaction::error::TransactionError, user::error::UserError,
     user_notification_settings::error::UserNotificationSettingsError,
-    user_operation::error::UserOperationError, user_settings::error::UserSettingsError,
-    wallet::error::WalletError, wallet_billing::error::WalletBillingError,
-    wallet_features::error::WalletFeaturesError,
+    user_operation::error::UserOperationError,
+    user_operation_merkle::error::UserOperationMerkleError,
+    user_operation_merkle_proof::error::UserOperationMerkleProofError,
+    user_settings::error::UserSettingsError, wallet::error::WalletError,
+    wallet_billing::error::WalletBillingError, wallet_features::error::WalletFeaturesError,
     wallet_notification_settings::error::WalletNotificationSettingsError,
     wallet_settings::error::WalletSettingsError,
 };
@@ -74,6 +76,8 @@ pub(crate) enum RouteError {
     TransactionError(TransactionError),
     UserError(UserError),
     UserOperationError(UserOperationError),
+    UserOperationMerkleError(UserOperationMerkleError),
+    UserOperationMerkleProofError(UserOperationMerkleProofError),
     UserNotificationSettingsError(UserNotificationSettingsError),
     UserSettingsError(UserSettingsError),
     WalletError(WalletError),
@@ -390,6 +394,31 @@ impl RouteErrorStatusCodeAndMsg for UserOperationError {
     }
 }
 
+impl RouteErrorStatusCodeAndMsg for UserOperationMerkleError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            UserOperationMerkleError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
+            UserOperationMerkleError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+            UserOperationMerkleError::Unauthorized(msg) => {
+                (StatusCode::UNAUTHORIZED, msg.to_string())
+            }
+        }
+    }
+}
+
+impl RouteErrorStatusCodeAndMsg for UserOperationMerkleProofError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            UserOperationMerkleProofError::BadRequest(msg) => {
+                (StatusCode::BAD_REQUEST, msg.to_string())
+            }
+            UserOperationMerkleProofError::NotFound(msg) => {
+                (StatusCode::NOT_FOUND, msg.to_string())
+            }
+        }
+    }
+}
+
 impl RouteErrorStatusCodeAndMsg for UserError {
     fn error_status_code_and_msg(&self) -> (StatusCode, String) {
         match self {
@@ -512,6 +541,8 @@ impl RouteErrorStatusCodeAndMsg for RouteError {
             RouteError::UserError(err) => err.error_status_code_and_msg(),
             RouteError::UserNotificationSettingsError(err) => err.error_status_code_and_msg(),
             RouteError::UserOperationError(err) => err.error_status_code_and_msg(),
+            RouteError::UserOperationMerkleError(err) => err.error_status_code_and_msg(),
+            RouteError::UserOperationMerkleProofError(err) => err.error_status_code_and_msg(),
             RouteError::UserSettingsError(err) => err.error_status_code_and_msg(),
             RouteError::WalletError(err) => err.error_status_code_and_msg(),
             RouteError::WalletBillingError(err) => err.error_status_code_and_msg(),
