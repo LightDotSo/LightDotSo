@@ -43,12 +43,12 @@ contract LightWalletFactoryDeployer is BaseLightDeployer, Script {
         // solhint-disable-next-line no-console
         console.logBytes32(keccak256(initCode));
         // The init code hash of the LightWalletFactory
-        bytes32 initCodeHash = 0x6c1d0a1e8ebde3a6cb3d027c3cc36ddbeaa6624775948eba317b62474bd00073;
+        bytes32 initCodeHash = 0xf4c4f9c17838bc4acd13fa7c5c2f66c3c015a44cde5e795980c2bd4c89c87068;
         // Assert that the init code is the expected value
-        // assert(keccak256(initCode) == initCodeHash);
+        assert(keccak256(initCode) == initCodeHash);
 
         // Salt for deterministic deployment
-        bytes32 salt = 0x0000000000000000000000000000000000000000000000000000000000000008;
+        bytes32 salt = 0x0000000000000000000000000000000000000000473bb6920a760f10ddaebb74;
 
         // If testing on a local chain, use without a safe create2
         if (block.chainid == 0x7a69) {
@@ -64,13 +64,11 @@ contract LightWalletFactoryDeployer is BaseLightDeployer, Script {
             // Use regular broadcast
             vm.startBroadcast();
 
-            factory = new LightWalletFactory(EntryPoint(payable(address(0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789))));
-
             // Create LightWalletFactory
             factory = LightWalletFactory(IMMUTABLE_CREATE2_FACTORY.safeCreate2(salt, initCode));
 
             // Assert that the factory is the expected address
-            // assert(address(factory) == LIGHT_FACTORY_ADDRESS);
+            assert(address(factory) == LIGHT_FACTORY_ADDRESS);
         }
 
         // Stop the broadcast
