@@ -1173,14 +1173,14 @@ model UserOperation {
   // Relation Many-to-many
   // ---------------------------------------------------------------------------
 
-  billingOperations BillingOperation[]
-  signatures        Signature[]
-  simulations       Simulation[]
+  billingOperations         BillingOperation[]
+  signatures                Signature[]
+  simulations               Simulation[]
+  userOperationMerkleProofs UserOperationMerkleProof[]
 
   // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
-  UserOperationMerkleProof UserOperationMerkleProof[]
 
   // Unique
   @@index([sender, status, isTestnet])
@@ -1225,7 +1225,7 @@ model UserOperationMerkle {
   // Fields
   // ---------------------------------------------------------------------------
 
-  root String
+  root String @unique
 
   // ---------------------------------------------------------------------------
   // Many-to-many
@@ -1268,6 +1268,8 @@ model UserOperationMerkleProof {
   // Mappings
   // ---------------------------------------------------------------------------
 
+  // Unique
+  @@unique([index, userOperationHash])
   // Relations
   @@index([userOperationHash])
   @@index([userOperationMerkleId])
