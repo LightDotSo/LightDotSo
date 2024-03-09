@@ -51,6 +51,7 @@ pub(crate) mod user;
 pub(crate) mod user_notification_settings;
 pub(crate) mod user_operation;
 pub(crate) mod user_operation_merkle;
+pub(crate) mod user_operation_merkle_proof;
 pub(crate) mod user_settings;
 pub(crate) mod wallet;
 pub(crate) mod wallet_billing;
