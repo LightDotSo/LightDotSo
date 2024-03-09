@@ -1185,8 +1185,8 @@ model UserOperation {
   paymaster   Paymaster? @relation(fields: [paymasterId], references: [id])
   paymasterId String?
 
-  userOperationMerkle   UserOperationMerkle? @relation(fields: [userOperationMerkleId], references: [id])
-  userOperationMerkleId String?
+  userOperationMerkle     UserOperationMerkle? @relation(fields: [userOperationMerkleRoot], references: [root])
+  userOperationMerkleRoot String?
 
   // ---------------------------------------------------------------------------
   // Relation Many-to-many
@@ -1212,7 +1212,7 @@ model UserOperation {
   @@index([chainId])
   @@index([sender])
   @@index([paymasterId])
-  @@index([userOperationMerkleId])
+  @@index([userOperationMerkleRoot])
 }
 
 enum UserOperationStatus {
@@ -1233,18 +1233,10 @@ enum UserOperationStatus {
 
 model UserOperationMerkle {
   // ---------------------------------------------------------------------------
-  // Core
-  // ---------------------------------------------------------------------------
-
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // ---------------------------------------------------------------------------
   // Fields
   // ---------------------------------------------------------------------------
 
-  root String @unique
+  root String @id
 
   // ---------------------------------------------------------------------------
   // Many-to-many
@@ -1280,8 +1272,8 @@ model UserOperationMerkleProof {
   userOperation     UserOperation @relation(fields: [userOperationHash], references: [hash])
   userOperationHash String
 
-  userOperationMerkle   UserOperationMerkle @relation(fields: [userOperationMerkleId], references: [id])
-  userOperationMerkleId String
+  userOperationMerkle     UserOperationMerkle @relation(fields: [userOperationMerkleRoot], references: [root])
+  userOperationMerkleRoot String
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1291,7 +1283,7 @@ model UserOperationMerkleProof {
   @@unique([index, userOperationHash])
   // Relations
   @@index([userOperationHash])
-  @@index([userOperationMerkleId])
+  @@index([userOperationMerkleRoot])
 }
 
 // -----------------------------------------------------------------------------
@@ -1608,8 +1600,8 @@ model Signature {
   activity   Activity? @relation(fields: [activityId], references: [id])
   activityId String?   @unique
 
-  userOperationMerkle   UserOperationMerkle? @relation(fields: [userOperationMerkleId], references: [id])
-  userOperationMerkleId String?              @unique
+  userOperationMerkle     UserOperationMerkle? @relation(fields: [userOperationMerkleRoot], references: [root])
+  userOperationMerkleRoot String?              @unique
 
   // ---------------------------------------------------------------------------
   // One-to-many

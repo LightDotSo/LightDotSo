@@ -15,10 +15,7 @@
 "use client";
 
 import { useUserOperationCreate } from "@lightdotso/hooks";
-import {
-  useUserOperationsIndexQueryState,
-  useUserOperationsQueryState,
-} from "@lightdotso/nuqs";
+import { useUserOperationsQueryState } from "@lightdotso/nuqs";
 import { useQueryConfiguration } from "@lightdotso/query";
 import { useFormRef, useModals } from "@lightdotso/stores";
 import { FooterButton } from "@lightdotso/templates";
@@ -66,7 +63,6 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
   // ---------------------------------------------------------------------------
 
   const [userOperations] = useUserOperationsQueryState();
-  const [selectedOpIndex] = useUserOperationsIndexQueryState();
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -86,9 +82,7 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
     address: address,
     configuration: configuration,
     userOperation:
-      userOperations && userOperations.length > 0
-        ? userOperations[selectedOpIndex ?? 0]
-        : {},
+      userOperations && userOperations.length > 0 ? userOperations[0] : {},
   });
 
   // ---------------------------------------------------------------------------

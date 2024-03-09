@@ -46,10 +46,6 @@ export {
 export { typeParser, useTypeQueryState } from "./useTypeQueryState";
 export type { WalletType } from "./useTypeQueryState";
 export {
-  userOperationsIndexParser,
-  useUserOperationsIndexQueryState,
-} from "./useUserOperationsIndexQueryState";
-export {
   userOperationsParser,
   useUserOperationsQueryState,
 } from "./useUserOperationsQueryState";
