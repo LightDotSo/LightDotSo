@@ -22,7 +22,8 @@ import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
-// import {console} from "forge-std/console.sol";
+// solhint-disable-next-line no-console
+import {console} from "forge-std/console.sol";
 
 using BytesLib for bytes;
 using ERC4337Utils for EntryPoint;
@@ -89,7 +90,7 @@ contract MerkleSendEthIntegrationTest is BaseIntegrationTest {
         bytes memory signatureAndProof = abi.encodePacked(hex"04", abi.encode(root, proof, merkleSignature));
 
         // Attempt to decode the signature and proof
-        (bytes32 merkleTreeRoot, bytes32[] memory merkleProof,) =
+        (bytes32 merkleTreeRoot, bytes32[] memory merkleProof, bytes memory merkleDecodedSignature) =
             abi.decode(signatureAndProof.slice(1, signatureAndProof.length - 1), (bytes32, bytes32[], bytes));
 
         // Assert that the merkle tree root is the same
@@ -97,13 +98,17 @@ contract MerkleSendEthIntegrationTest is BaseIntegrationTest {
         assertEq(merkleProof[0], proof[0]);
 
         // Assert that the signature and proof is the correct length
+        assertEq(merkleSignature, merkleDecodedSignature);
         assertEq(signatureAndProof.length, 289);
 
         // Assert that the signature after the proof is the same
         assertEq(signatureAndProof.slice(193, merkleSignature.length), merkleSignature);
         // console.logBytes(signature);
-        // uint256 offset = 193;
-        // console.logBytes(signatureAndProof.slice(offset, signature.length));
+        uint256 offset = 193;
+        // solhint-disable-next-line no-console
+        console.logBytes(signatureAndProof.slice(offset, merkleSignature.length));
+        // solhint-disable-next-line no-console
+        console.logBytes(merkleSignature);
 
         // Set the signature and proof
         op.signature = signatureAndProof;

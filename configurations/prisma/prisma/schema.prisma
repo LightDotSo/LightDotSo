@@ -1185,6 +1185,9 @@ model UserOperation {
   paymaster   Paymaster? @relation(fields: [paymasterId], references: [id])
   paymasterId String?
 
+  userOperationMerkle   UserOperationMerkle? @relation(fields: [userOperationMerkleId], references: [id])
+  userOperationMerkleId String?
+
   // ---------------------------------------------------------------------------
   // Relation Many-to-many
   // ---------------------------------------------------------------------------
@@ -1208,6 +1211,7 @@ model UserOperation {
   @@index([chainId])
   @@index([sender])
   @@index([paymasterId])
+  @@index([userOperationMerkleId])
 }
 
 enum UserOperationStatus {
@@ -1221,6 +1225,71 @@ enum UserOperationStatus {
   REVERTED
   INVALID
 }
+
+// -----------------------------------------------------------------------------
+// UserOperationMerkle
+// -----------------------------------------------------------------------------
+
+model UserOperationMerkle {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  root String
+
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
+  signatures                Signature[]
+  userOperations            UserOperation[]
+  userOperationMerkleProofs UserOperationMerkleProof[]
+}
+
+// -----------------------------------------------------------------------------
+// UserOperationMerkleProof
+// -----------------------------------------------------------------------------
+
+model UserOperationMerkleProof {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id String @id @default(cuid())
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  index Int
+  proof String
+
+  // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  userOperationMerkle   UserOperationMerkle @relation(fields: [userOperationMerkleId], references: [id])
+  userOperationMerkleId String
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
+  // Relations
+  @@index([userOperationMerkleId])
+}
+
+// -----------------------------------------------------------------------------
+// UserOperationMetadata
+// -----------------------------------------------------------------------------
 
 model UserOperationMetadata {
   // ---------------------------------------------------------------------------
@@ -1531,6 +1600,9 @@ model Signature {
 
   activity   Activity? @relation(fields: [activityId], references: [id])
   activityId String?   @unique
+
+  userOperationMerkle   UserOperationMerkle? @relation(fields: [userOperationMerkleId], references: [id])
+  userOperationMerkleId String?              @unique
 
   // ---------------------------------------------------------------------------
   // One-to-many
