@@ -24,8 +24,8 @@ use utoipa::ToSchema;
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
 pub(crate) struct UserOperationMerkle {
-    /// The id of the protocol group.
-    id: String,
+    /// The root of the merkle tree.
+    root: String,
 }
 
 // -----------------------------------------------------------------------------
@@ -35,6 +35,6 @@ pub(crate) struct UserOperationMerkle {
 /// Implement From<user_operation_merkle::Data> for UserOperationMerkle.
 impl From<user_operation_merkle::Data> for UserOperationMerkle {
     fn from(user_operation_merkle: user_operation_merkle::Data) -> Self {
-        Self { id: user_operation_merkle.id }
+        Self { root: user_operation_merkle.root }
     }
 }
