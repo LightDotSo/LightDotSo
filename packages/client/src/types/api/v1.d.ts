@@ -696,6 +696,41 @@ export interface paths {
      */
     put: operations["v1_user_operation_update_handler"];
   };
+  "/user_operation_merkle/create": {
+    /**
+     * Create a user operation merkle
+     * @description Create a user operation merkle
+     */
+    post: operations["v1_user_operation_merkle_create_handler"];
+  };
+  "/user_operation_merkle/get": {
+    /**
+     * Get a protocol group
+     * @description Get a protocol group
+     */
+    get: operations["v1_user_operation_merkle_get_handler"];
+  };
+  "/user_operation_merkle/list": {
+    /**
+     * Returns a list of protocol groups
+     * @description Returns a list of protocol groups
+     */
+    get: operations["v1_user_operation_merkle_list_handler"];
+  };
+  "/user_operation_merkle_proof/get": {
+    /**
+     * Get a user operation merkle proof
+     * @description Get a user operation merkle proof
+     */
+    get: operations["v1_user_operation_merkle_proof_get_handler"];
+  };
+  "/user_operation_merkle_proof/list": {
+    /**
+     * Returns a list of user operation merkle proofs
+     * @description Returns a list of user operation merkle proofs
+     */
+    get: operations["v1_user_operation_merkle_proof_list_handler"];
+  };
   "/wallet/billing/get": {
     /**
      * Get a wallet billing
@@ -938,6 +973,8 @@ export interface components {
        */
       count: number;
     };
+    /** @enum {string} */
+    BillingQueryStatus: "sponsored" | "user";
     BillingUpdateRequestParams: {
       /**
        * Format: double
@@ -1097,10 +1134,10 @@ export interface components {
     }]>;
     /** @description Signature root type. */
     ConfigurationOperationSignature: {
-      /** @description The id of the owner of the signature. */
-      configuration_operation_owner_id: string;
       /** @description The created time of the signature. */
       created_at: string;
+      /** @description The id of the owner of the signature. */
+      owner_id: string;
       /** @description The signature of the user operation in hex. */
       signature: string;
     };
@@ -1126,7 +1163,7 @@ export interface components {
     /** @description Signature operation */
     ConfigurationOperationSignatureSignatureCreateParams: {
       /** @description The id of the owner of the signature. */
-      configuration_operation_owner_id: string;
+      owner_id: string;
       /** @description The signature of the user operation in hex. */
       signature: string;
     };
@@ -1818,6 +1855,35 @@ export interface components {
        */
       count: number;
     };
+    /** @description UserOperationMerkle root type. */
+    UserOperationMerkle: {
+      /** @description The id of the protocol group. */
+      id: string;
+    };
+    /** @description UserOperationMerkle errors */
+    UserOperationMerkleError: OneOf<[{
+      /** @description UserOperationMerkle query error. */
+      BadRequest: string;
+    }, {
+      /** @description UserOperationMerkle not found by id. */
+      NotFound: string;
+    }, {
+      /** @description UserOperationMerkle unauthorized. */
+      Unauthorized: string;
+    }]>;
+    /** @description UserOperationMerkleProof root type. */
+    UserOperationMerkleProof: {
+      /** @description The id of the user operation merkle proof. */
+      id: string;
+    };
+    /** @description UserOperationMerkleProof errors */
+    UserOperationMerkleProofError: OneOf<[{
+      /** @description UserOperationMerkleProof query error. */
+      BadRequest: string;
+    }, {
+      /** @description UserOperationMerkleProof not found by id. */
+      NotFound: string;
+    }]>;
     /** @description Nonce */
     UserOperationNonce: {
       /**
@@ -1843,6 +1909,11 @@ export interface components {
       /** @description UserSettings not found by id. */
       NotFound: string;
     }]>;
+    /** @description Optional UserSettings root type. */
+    UserSettingsOptional: {
+      /** @description The update query of user_settings of whether the testnet is enabled. */
+      is_enabled_testnet?: boolean | null;
+    };
     UserSettingsUpdateRequestParams: {
       user_settings: components["schemas"]["UserSettingsOptional"];
     };
@@ -2938,7 +3009,7 @@ export interface operations {
         /** @description The configuration operation id of the signature. */
         configuration_operation_id: string;
         /** @description The configuration owner of the signature. */
-        configuration_operation_owner_id: string;
+        owner_id: string;
       };
     };
     responses: {
@@ -4895,6 +4966,138 @@ export interface operations {
       404: {
         content: {
           "application/json": components["schemas"]["UserOperationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Create a user operation merkle
+   * @description Create a user operation merkle
+   */
+  v1_user_operation_merkle_create_handler: {
+    parameters: {
+      query: {
+        /** @description The id of the merkle id to post for. */
+        user_operation_merkle_id: string;
+      };
+    };
+    responses: {
+      /** @description User operation merkle created successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserOperationMerkle"];
+        };
+      };
+      /** @description User operation merkle internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["UserOperationMerkleError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a protocol group
+   * @description Get a protocol group
+   */
+  v1_user_operation_merkle_get_handler: {
+    parameters: {
+      query: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Protocola group returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserOperationMerkle"];
+        };
+      };
+      /** @description Protocola group not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["UserOperationMerkleError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of protocol groups
+   * @description Returns a list of protocol groups
+   */
+  v1_user_operation_merkle_list_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first protocol group to return. */
+        offset?: number | null;
+        /** @description The maximum number of protocol groups to return. */
+        limit?: number | null;
+      };
+    };
+    responses: {
+      /** @description Protocol groups returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserOperationMerkle"][];
+        };
+      };
+      /** @description Protocol group bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["UserOperationMerkleError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a user operation merkle proof
+   * @description Get a user operation merkle proof
+   */
+  v1_user_operation_merkle_proof_get_handler: {
+    parameters: {
+      query: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description User operation merkle proof returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserOperationMerkleProof"];
+        };
+      };
+      /** @description User operation merkle proof not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["UserOperationMerkleProofError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of user operation merkle proofs
+   * @description Returns a list of user operation merkle proofs
+   */
+  v1_user_operation_merkle_proof_list_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first User operation merkle proof to return. */
+        offset?: number | null;
+        /** @description The maximum number of User operation merkle proofs to return. */
+        limit?: number | null;
+      };
+    };
+    responses: {
+      /** @description User operation merkle proofs returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserOperationMerkleProof"][];
+        };
+      };
+      /** @description User operation merkle proofs bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["UserOperationMerkleProofError"];
         };
       };
     };
