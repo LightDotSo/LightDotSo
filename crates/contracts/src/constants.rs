@@ -157,6 +157,8 @@ lazy_static! {
 
 #[cfg(test)]
 mod tests {
+    use ethers::utils::to_checksum;
+
     use super::*;
 
     #[test]
@@ -165,6 +167,14 @@ mod tests {
             format!("{:?}", LIGHT_PAYMASTER_ADDRESSES[0]),
             "0x000000000018d32df916ff115a25fbefc70baf8b".to_string(),
             "The expected and actual paymaster addresses should match"
+        );
+    }
+
+    #[test]
+    fn test_address_to_string() {
+        assert_eq!(
+            to_checksum(&ENTRYPOINT_V060_ADDRESS, None),
+            "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789".to_string(),
         );
     }
 }

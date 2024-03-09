@@ -31,8 +31,8 @@ use utoipa::IntoParams;
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct PostQuery {
-    /// The id of the merkle id to post for.
-    user_operation_merkle_id: String,
+    /// The root of the merkle root to post for.
+    user_operation_merkle_root: String,
 }
 
 // -----------------------------------------------------------------------------
@@ -63,8 +63,8 @@ pub(crate) async fn v1_user_operation_merkle_create_handler(
     // Get the post query.
     let Query(query) = post_query;
 
-    // Get the merkle id.
-    let user_operation_merkle_id = query.user_operation_merkle_id;
+    // Get the merkle root.
+    let user_operation_merkle_root = query.user_operation_merkle_root;
 
     // -------------------------------------------------------------------------
     // DB
@@ -75,8 +75,8 @@ pub(crate) async fn v1_user_operation_merkle_create_handler(
         .client
         .user_operation_merkle()
         .upsert(
-            user_operation_merkle::id::equals(user_operation_merkle_id.clone()),
-            user_operation_merkle::create(user_operation_merkle_id.clone(), vec![]),
+            user_operation_merkle::root::equals(user_operation_merkle_root.clone()),
+            user_operation_merkle::create(user_operation_merkle_root.clone(), vec![]),
             vec![],
         )
         .exec()

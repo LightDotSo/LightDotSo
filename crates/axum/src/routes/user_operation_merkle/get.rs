@@ -35,7 +35,7 @@ use utoipa::IntoParams;
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct GetQuery {
-    pub id: String,
+    pub root: String,
 }
 
 // -----------------------------------------------------------------------------
@@ -76,7 +76,7 @@ pub(crate) async fn v1_user_operation_merkle_get_handler(
     let user_operation_merkle = state
         .client
         .user_operation_merkle()
-        .find_unique(user_operation_merkle::id::equals(query.id))
+        .find_unique(user_operation_merkle::root::equals(query.root))
         .exec()
         .await?;
 

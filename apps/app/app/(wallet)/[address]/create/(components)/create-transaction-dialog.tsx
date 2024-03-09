@@ -14,20 +14,11 @@
 
 "use client";
 
-import {
-  useUserOperationsIndexQueryState,
-  useUserOperationsQueryState,
-} from "@lightdotso/nuqs";
+import { useUserOperationsQueryState } from "@lightdotso/nuqs";
 import { useQueryConfiguration, useQueryWallet } from "@lightdotso/query";
 import type { UserOperation } from "@lightdotso/schemas";
 import { useDev } from "@lightdotso/stores";
 import { Transaction } from "@lightdotso/templates";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-} from "@lightdotso/ui";
 import { useEffect } from "react";
 import type { FC } from "react";
 import type { Address } from "viem";
@@ -62,8 +53,6 @@ export const CreateTransactionDialog: FC<CreateTransactionDialogProps> = ({
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
-  const [selectedOpIndex, setSelectedOpIndex] =
-    useUserOperationsIndexQueryState();
   const [, setUserOperations] = useUserOperationsQueryState(userOperations);
 
   // ---------------------------------------------------------------------------
@@ -108,29 +97,14 @@ export const CreateTransactionDialog: FC<CreateTransactionDialogProps> = ({
 
   return (
     <div className="mt-4 flex flex-col items-center justify-center">
-      {userOperations && userOperations.length > 1 && (
-        <Pagination>
-          <PaginationContent>
-            {userOperations &&
-              userOperations.map((_, index) => (
-                <PaginationItem
-                  key={index}
-                  onClick={() => setSelectedOpIndex(index)}
-                >
-                  <PaginationLink>{index + 1}</PaginationLink>
-                </PaginationItem>
-              ))}
-          </PaginationContent>
-        </Pagination>
-      )}
       {userOperations && userOperations.length > 0 && (
         <Transaction
-          key={selectedOpIndex}
+          key={0}
           address={address}
           wallet={wallet}
           genesisConfiguration={genesisConfiguration}
-          initialUserOperation={userOperations[selectedOpIndex]}
-          userOperationIndex={selectedOpIndex}
+          initialUserOperation={userOperations[0]}
+          userOperationIndex={0}
           isDev={isDev}
         />
       )}
