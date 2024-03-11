@@ -89,6 +89,7 @@ export const useUserOperations = create<UserOperationsStore>(set => ({
       return { userOperationDetails };
     }),
   resetUserOperationDetails: () =>
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     set(state => {
       return { userOperationDetails: {} };
     }),
@@ -113,6 +114,7 @@ export const useUserOperations = create<UserOperationsStore>(set => ({
       return { userOperationDevInfo };
     }),
   resetUserOperationDevInfo: () =>
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     set(state => {
       return { userOperationDevInfo: {} };
     }),
@@ -139,10 +141,12 @@ export const useUserOperations = create<UserOperationsStore>(set => ({
       return { userOperationSimulations };
     }),
   resetUserOperationSimulation: () =>
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     set(state => {
       return { userOperationSimulations: {} };
     }),
   resetAll: () =>
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     set(state => {
       return {
         userOperationDetails: {},
