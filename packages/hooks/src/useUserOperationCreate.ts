@@ -279,6 +279,23 @@ export const useUserOperationCreate = ({
       setSignedData(undefined);
     };
 
+    const createUserOpBatch = async () => {
+      if (!owner || !signedData || !merkleTree || !userOperations) {
+        return;
+      }
+
+      console.info(merkleTree);
+
+      // userOperationCreateBatch({
+      //   ownerId: owner.id,
+      //   signedData: signedData as Hex,
+      //   userOperations: userOperations,
+      //   merkleRoot: merkleTree.getRoot(),
+      // });
+
+      setSignedData(undefined);
+    };
+
     // If the userOperations length is 0, return
     if (userOperations.length === 0) {
       return;
@@ -288,9 +305,14 @@ export const useUserOperationCreate = ({
     const userOperation = userOperations[0];
     if (userOperations.length === 1) {
       createUserOp();
+      return;
     }
 
     // If the userOperations length is greater than 1
+    if (userOperations.length > 1) {
+      createUserOpBatch();
+      return;
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signedData, owner, userOperations, configuration?.threshold, address]);
