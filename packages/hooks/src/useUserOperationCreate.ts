@@ -29,13 +29,15 @@ import {
   // useReadLightVerifyingPaymasterSenderNonce,
 } from "@lightdotso/wagmi";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { MerkleTree } from "merkletreejs";
 import type { Address, Hex } from "viem";
 import {
   isAddressEqual,
   toBytes,
   hexToBytes,
+  keccak256,
   // fromHex,
-  decodeFunctionData,
+  // decodeFunctionData,
 } from "viem";
 
 // -----------------------------------------------------------------------------
@@ -93,16 +95,26 @@ export const useUserOperationCreate = ({
 
     // If the userOperation length is 1, get the first userOperation
     const userOperation = userOperations[0];
-
     if (!userOperation?.hash || !userOperation?.chainId) {
       return;
     }
 
-    return subdigestOf(
-      address,
-      hexToBytes(userOperation?.hash as Hex),
-      userOperation?.chainId,
-    );
+    if (userOperations.length === 1) {
+      return subdigestOf(
+        address,
+        hexToBytes(userOperation?.hash as Hex),
+        userOperation?.chainId,
+      );
+    }
+
+    // If the userOperation length is greater than 1, get the merkle root of the userOperations
+    if (userOperations.length > 1) {
+      const leaves = userOperations.map(userOperation =>
+        hexToBytes(userOperation.hash as Hex),
+      );
+      const tree = new MerkleTree(leaves, keccak256, { sort: true });
+      return subdigestOf(address, tree.getRoot(), BigInt(0));
+    }
   }, [address, userOperations]);
 
   // ---------------------------------------------------------------------------
@@ -272,8 +284,12 @@ export const useUserOperationCreate = ({
 
     // If the userOperations length is 1, get the first userOperation
     const userOperation = userOperations[0];
+    if (userOperations.length === 1) {
+      createUserOp();
+    }
 
-    createUserOp();
+    // If the userOperations length is greater than 1
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signedData, owner, userOperations, configuration?.threshold, address]);
 
