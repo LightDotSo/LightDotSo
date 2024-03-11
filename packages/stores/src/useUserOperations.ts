@@ -14,7 +14,6 @@
 
 import type { SimulationData } from "@lightdotso/data";
 import { create } from "zustand";
-import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -61,87 +60,70 @@ type UserOperationsStore = {
 // Hook
 // -----------------------------------------------------------------------------
 
-export const useUserOperations = create(
-  devtools(
-    persist<UserOperationsStore>(
-      set => ({
-        userOperationDetails: {},
-        userOperationDevInfo: {},
-        userOperationSimulations: {},
-        addUserOperationDetails: (chainId, details) =>
-          set(state => {
-            return {
-              userOperationDetails: {
-                ...state.userOperationDetails,
-                [chainId]: details,
-              },
-            };
-          }),
-        removeUserOperationDetails: chainId =>
-          set(state => {
-            // Checks if the transaction is not in the state to prevent errors.
-            if (!state.userOperationDetails[chainId])
-              throw new Error("Details for this chainId are not present.");
+export const useUserOperations = create<UserOperationsStore>(set => ({
+  userOperationDetails: {},
+  userOperationDevInfo: {},
+  userOperationSimulations: {},
+  addUserOperationDetails: (chainId, details) =>
+    set(state => {
+      return {
+        userOperationDetails: {
+          ...state.userOperationDetails,
+          [chainId]: details,
+        },
+      };
+    }),
+  removeUserOperationDetails: chainId =>
+    set(state => {
+      // Checks if the transaction is not in the state to prevent errors.
+      if (!state.userOperationDetails[chainId])
+        throw new Error("Details for this chainId are not present.");
 
-            const userOperationDetails = { ...state.userOperationDetails };
-            delete userOperationDetails[chainId];
+      const userOperationDetails = { ...state.userOperationDetails };
+      delete userOperationDetails[chainId];
 
-            return { userOperationDetails };
-          }),
-        addUserOperationDevInfo: (chainId, info) =>
-          set(state => {
-            return {
-              userOperationDevInfo: {
-                ...state.userOperationDevInfo,
-                [chainId]: info,
-              },
-            };
-          }),
-        removeUserOperationDevInfo: chainId =>
-          set(state => {
-            // Checks if the transaction is not in the state to prevent errors.
-            if (!state.userOperationDevInfo[chainId])
-              throw new Error("DevInfo for this chainId are not present.");
+      return { userOperationDetails };
+    }),
+  addUserOperationDevInfo: (chainId, info) =>
+    set(state => {
+      return {
+        userOperationDevInfo: {
+          ...state.userOperationDevInfo,
+          [chainId]: info,
+        },
+      };
+    }),
+  removeUserOperationDevInfo: chainId =>
+    set(state => {
+      // Checks if the transaction is not in the state to prevent errors.
+      if (!state.userOperationDevInfo[chainId])
+        throw new Error("DevInfo for this chainId are not present.");
 
-            const userOperationDevInfo = { ...state.userOperationDevInfo };
-            delete userOperationDevInfo[chainId];
+      const userOperationDevInfo = { ...state.userOperationDevInfo };
+      delete userOperationDevInfo[chainId];
 
-            return { userOperationDevInfo };
-          }),
-        addUserOperationSimulation: (chainId, simulation) =>
-          set(state => {
-            return {
-              userOperationSimulations: {
-                ...state.userOperationSimulations,
-                [chainId]: simulation,
-              },
-            };
-          }),
-        removeUserOperationSimulation: chainId =>
-          set(state => {
-            // Checks if the transaction is not in the state to prevent errors.
-            if (!state.userOperationSimulations[chainId])
-              throw new Error("Simulation for this chainId are not present.");
+      return { userOperationDevInfo };
+    }),
+  addUserOperationSimulation: (chainId, simulation) =>
+    set(state => {
+      return {
+        userOperationSimulations: {
+          ...state.userOperationSimulations,
+          [chainId]: simulation,
+        },
+      };
+    }),
+  removeUserOperationSimulation: chainId =>
+    set(state => {
+      // Checks if the transaction is not in the state to prevent errors.
+      if (!state.userOperationSimulations[chainId])
+        throw new Error("Simulation for this chainId are not present.");
 
-            const userOperationSimulations = {
-              ...state.userOperationSimulations,
-            };
-            delete userOperationSimulations[chainId];
+      const userOperationSimulations = {
+        ...state.userOperationSimulations,
+      };
+      delete userOperationSimulations[chainId];
 
-            return { userOperationSimulations };
-          }),
-      }),
-      {
-        name: "user-operations-state-v1",
-        storage: createJSONStorage(() => sessionStorage),
-        skipHydration: true,
-        version: 0,
-      },
-    ),
-    {
-      anonymousActionType: "useUserOperations",
-      name: "UserOperationsStore",
-      serialize: { options: true },
-    },
-  ),
-);
+      return { userOperationSimulations };
+    }),
+}));
