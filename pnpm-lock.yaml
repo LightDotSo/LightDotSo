@@ -151,8 +151,8 @@ importers:
         specifier: ^16.4.5
         version: 16.4.5
       dotenv-cli:
-        specifier: ^7.4.0
-        version: 7.4.0
+        specifier: ^7.4.1
+        version: 7.4.1
       esbuild:
         specifier: ^0.20.1
         version: 0.20.1
@@ -496,17 +496,17 @@ importers:
         specifier: ^11.0.8
         version: 11.0.8(react-dom@18.2.0)(react@18.2.0)
       immer:
-        specifier: ^10.0.3
-        version: 10.0.3
+        specifier: ^10.0.4
+        version: 10.0.4
       kysely-postgres-js:
         specifier: ^2.0.0
-        version: 2.0.0(kysely@0.27.2)(postgres@3.4.3)
+        version: 2.0.0(kysely@0.27.3)(postgres@3.4.3)
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
       lucide-react:
-        specifier: ^0.352.0
-        version: 0.352.0(react@18.2.0)
+        specifier: ^0.354.0
+        version: 0.354.0(react@18.2.0)
       msw:
         specifier: ^2.2.3
         version: 2.2.3(typescript@5.4.2)
@@ -520,8 +520,8 @@ importers:
         specifier: ^0.2.1
         version: 0.2.1(next@14.1.3)(react-dom@18.2.0)(react@18.2.0)
       permissionless:
-        specifier: ^0.1.8
-        version: 0.1.8(viem@2.7.22)
+        specifier: ^0.1.10
+        version: 0.1.10(viem@2.7.22)
       postgres:
         specifier: ^3.4.3
         version: 3.4.3
@@ -566,7 +566,7 @@ importers:
         version: 3.22.4
       zustand:
         specifier: ^4.5.2
-        version: 4.5.2(@types/react@18.2.64)(immer@10.0.3)(react@18.2.0)
+        version: 4.5.2(@types/react@18.2.64)(immer@10.0.4)(react@18.2.0)
     devDependencies:
       '@lightdotso/eslint-config':
         specifier: workspace:*
@@ -880,10 +880,10 @@ importers:
         version: 8.13.2(react-dom@18.2.0)(react@18.2.0)
       kysely-postgres-js:
         specifier: ^2.0.0
-        version: 2.0.0(kysely@0.27.2)(postgres@3.4.3)
+        version: 2.0.0(kysely@0.27.3)(postgres@3.4.3)
       lucide-react:
-        specifier: ^0.352.0
-        version: 0.352.0(react@18.2.0)
+        specifier: ^0.354.0
+        version: 0.354.0(react@18.2.0)
       neverthrow:
         specifier: ^6.1.0
         version: 6.1.0
@@ -1500,11 +1500,11 @@ importers:
         specifier: workspace:*
         version: link:../prisma
       kysely:
-        specifier: ^0.27.2
-        version: 0.27.2
+        specifier: ^0.27.3
+        version: 0.27.3
       kysely-planetscale:
         specifier: ^1.4.0
-        version: 1.4.0(@planetscale/database@1.11.0)(kysely@0.27.2)
+        version: 1.4.0(@planetscale/database@1.11.0)(kysely@0.27.3)
       postgres:
         specifier: ^3.4.3
         version: 3.4.3
@@ -1535,7 +1535,7 @@ importers:
         version: 5.10.2(prisma@5.10.2)
       kysely-postgres-js:
         specifier: ^2.0.0
-        version: 2.0.0(kysely@0.27.2)(postgres@3.4.3)
+        version: 2.0.0(kysely@0.27.3)(postgres@3.4.3)
       postgres:
         specifier: ^3.4.3
         version: 3.4.3
@@ -1636,8 +1636,8 @@ importers:
   packages/background:
     dependencies:
       '@types/firefox-webext-browser':
-        specifier: ^120.0.2
-        version: 120.0.2
+        specifier: ^120.0.3
+        version: 120.0.3
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -1720,8 +1720,8 @@ importers:
   packages/content:
     dependencies:
       '@types/firefox-webext-browser':
-        specifier: ^120.0.2
-        version: 120.0.2
+        specifier: ^120.0.3
+        version: 120.0.3
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -1800,8 +1800,8 @@ importers:
         specifier: ^0.7.0
         version: 0.7.0
       lucide-react:
-        specifier: ^0.352.0
-        version: 0.352.0(react@18.2.0)
+        specifier: ^0.354.0
+        version: 0.354.0(react@18.2.0)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -1888,8 +1888,8 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       lucide-react:
-        specifier: ^0.352.0
-        version: 0.352.0(react@18.2.0)
+        specifier: ^0.354.0
+        version: 0.354.0(react@18.2.0)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -1930,15 +1930,15 @@ importers:
       '@lightdotso/data':
         specifier: workspace:*
         version: link:../data
+      '@lightdotso/nuqs':
+        specifier: workspace:*
+        version: link:../nuqs
       '@lightdotso/params':
         specifier: workspace:*
         version: link:../params
       '@lightdotso/query':
         specifier: workspace:*
         version: link:../query
-      '@lightdotso/schemas':
-        specifier: workspace:*
-        version: link:../schemas
       '@lightdotso/sequence':
         specifier: workspace:*
         version: link:../sequence
@@ -2007,8 +2007,8 @@ importers:
         specifier: ^7.0.1
         version: 7.0.1
       '@types/firefox-webext-browser':
-        specifier: ^120.0.2
-        version: 120.0.2
+        specifier: ^120.0.3
+        version: 120.0.3
       buffer:
         specifier: ^6.0.3
         version: 6.0.3
@@ -2230,8 +2230,8 @@ importers:
         specifier: ^7.0.1
         version: 7.0.1
       '@types/firefox-webext-browser':
-        specifier: ^120.0.2
-        version: 120.0.2
+        specifier: ^120.0.3
+        version: 120.0.3
       buffer:
         specifier: ^6.0.3
         version: 6.0.3
@@ -2587,7 +2587,7 @@ importers:
         version: 3.22.4
       zustand:
         specifier: ^4.5.2
-        version: 4.5.2(@types/react@18.2.64)(immer@10.0.3)(react@18.2.0)
+        version: 4.5.2(@types/react@18.2.64)(immer@10.0.4)(react@18.2.0)
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
@@ -2693,8 +2693,8 @@ importers:
         specifier: ^3.14.1
         version: 3.14.1(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.4.1)
       lucide-react:
-        specifier: ^0.352.0
-        version: 0.352.0(react@18.2.0)
+        specifier: ^0.354.0
+        version: 0.354.0(react@18.2.0)
       next:
         specifier: 14.1.3
         version: 14.1.3(react-dom@18.2.0)(react@18.2.0)
@@ -2796,8 +2796,8 @@ importers:
         specifier: ^11.0.8
         version: 11.0.8(react-dom@18.2.0)(react@18.2.0)
       lucide-react:
-        specifier: ^0.352.0
-        version: 0.352.0(react@18.2.0)
+        specifier: ^0.354.0
+        version: 0.354.0(react@18.2.0)
       next:
         specifier: 14.1.3
         version: 14.1.3(react-dom@18.2.0)(react@18.2.0)
@@ -2805,8 +2805,8 @@ importers:
         specifier: ^0.2.1
         version: 0.2.1(next@14.1.3)(react-dom@18.2.0)(react@18.2.0)
       permissionless:
-        specifier: ^0.1.8
-        version: 0.1.8(viem@2.7.22)
+        specifier: ^0.1.10
+        version: 0.1.10(viem@2.7.22)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -14393,8 +14393,8 @@ packages:
   /@types/find-cache-dir@3.2.1:
     resolution: {integrity: sha512-frsJrz2t/CeGifcu/6uRo4b+SzAwT4NYCVPu1GN8IB9XTzrpPkGuV0tmh9mN+/L0PklAlsC3u5Fxt0ju00LXIw==}
 
-  /@types/firefox-webext-browser@120.0.2:
-    resolution: {integrity: sha512-I7zLXF06uOcNk1ZvCjK5EgxyKTOsr8tM3gMqOrpDc7M6fCBnjvPPQlsVvYpKS/wlkr/dpKUpgnr2LRUXvkfBtQ==}
+  /@types/firefox-webext-browser@120.0.3:
+    resolution: {integrity: sha512-APbBSxOvFMbKwXy/4YrEVa5Di6N0C9yl4w0WA0xzdkOrChAfPQ/KlcC8QLyhemHCHpF1CB/zHy52+oUQurViOg==}
     dev: false
 
   /@types/form-data@0.0.33:
@@ -20132,8 +20132,8 @@ packages:
       is-obj: 2.0.0
     dev: true
 
-  /dotenv-cli@7.4.0:
-    resolution: {integrity: sha512-fZGFOGCC5rEz1OJ0Pp+1LN8y78ClMcyXDmBEmjvJwqCqZVsPHcQ85bLCh5hZ4Bqotw4dptXOLvvw0vxm2MD30g==}
+  /dotenv-cli@7.4.1:
+    resolution: {integrity: sha512-fE1aywjRrWGxV3miaiUr3d2zC/VAiuzEGghi+QzgIA9fEf/M5hLMaRSXb4IxbUAwGmaLi0IozdZddnVU96acag==}
     hasBin: true
     dependencies:
       cross-spawn: 7.0.3
@@ -24367,8 +24367,8 @@ packages:
   /immediate@3.0.6:
     resolution: {integrity: sha512-XXOFtyqDjNDAQxVfYxuF7g9Il/IbWmmlQg2MYKOH8ExIT1qg6xc4zyS3HaEEATgs1btfzxq15ciUiY7gjSXRGQ==}
 
-  /immer@10.0.3:
-    resolution: {integrity: sha512-pwupu3eWfouuaowscykeckFmVTpqbzW+rXFCX8rQLkZzM9ftBmU/++Ra+o+L27mz03zJTlyV4UUr+fdKNffo4A==}
+  /immer@10.0.4:
+    resolution: {integrity: sha512-cuBuGK40P/sk5IzWa9QPUaAdvPHjkk1c+xYsd9oZw+YQQEV+10G0P5uMpGctZZKnyQ+ibRO08bD25nWLmYi2pw==}
     dev: false
 
   /immutable@4.2.1:
@@ -25982,7 +25982,7 @@ packages:
       - supports-color
     dev: false
 
-  /kysely-planetscale@1.4.0(@planetscale/database@1.11.0)(kysely@0.27.2):
+  /kysely-planetscale@1.4.0(@planetscale/database@1.11.0)(kysely@0.27.3):
     resolution: {integrity: sha512-dM2xgOM50+IiOIrSCEn/6lgXcE7J752oNpV6NcIYNgG/AfYGMtWm2ZK7PyeIPy5JG1jZvQvqwTFbGK4HGH/hJw==}
     peerDependencies:
       '@planetscale/database': '*'
@@ -25990,21 +25990,21 @@ packages:
     dependencies:
       '@planetscale/database': 1.11.0
       date-fns: 2.30.0
-      kysely: 0.27.2
+      kysely: 0.27.3
     dev: false
 
-  /kysely-postgres-js@2.0.0(kysely@0.27.2)(postgres@3.4.3):
+  /kysely-postgres-js@2.0.0(kysely@0.27.3)(postgres@3.4.3):
     resolution: {integrity: sha512-R1tWx6/x3tSatWvsmbHJxpBZYhNNxcnMw52QzZaHKg7ZOWtHib4iZyEaw4gb2hNKVctWQ3jfMxZT/ZaEMK6kBQ==}
     peerDependencies:
       kysely: '>= 0.24.0 < 1'
       postgres: '>= 3.4.0 < 4'
     dependencies:
-      kysely: 0.27.2
+      kysely: 0.27.3
       postgres: 3.4.3
     dev: false
 
-  /kysely@0.27.2:
-    resolution: {integrity: sha512-DmRvEfiR/NLpgsTbSxma2ldekhsdcd65+MNiKXyd/qj7w7X5e3cLkXxcj+MypsRDjPhHQ/CD5u3Eq1sBYzX0bw==}
+  /kysely@0.27.3:
+    resolution: {integrity: sha512-lG03Ru+XyOJFsjH3OMY6R/9U38IjDPfnOfDgO3ynhbDr+Dz8fak+X6L62vqu3iybQnj+lG84OttBuU9KY3L9kA==}
     engines: {node: '>=14.0.0'}
     dev: false
 
@@ -26594,8 +26594,8 @@ packages:
       react: 18.2.0
     dev: false
 
-  /lucide-react@0.352.0(react@18.2.0):
-    resolution: {integrity: sha512-GKzcxx6H6PT9onMPN9zxyD4KNqgHDoVaY+ad14vhTzBdXFm3FQZhH5XeP8sHJRhLk9imHHta/8DZe55kd/KerQ==}
+  /lucide-react@0.354.0(react@18.2.0):
+    resolution: {integrity: sha512-qI0x/hhcuHieaUUxFejesm5T/ditszQ2x1gUkqKnTMZRAOdxT2nGzbOFYrhc0wRjuA2MN1o5JCrcRPYcHH3l8A==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0
     dependencies:
@@ -30060,8 +30060,8 @@ packages:
       is-reference: 3.0.1
     dev: false
 
-  /permissionless@0.1.8(viem@2.7.22):
-    resolution: {integrity: sha512-J3WNxFUXirl7SN1wV8A6PFvjUq+xOUXQvxIKctSQuqfVeTPsT2xfw1lEeSlks7Yp8Gf3Gc/w0LNPDO6rlYkNBA==}
+  /permissionless@0.1.10(viem@2.7.22):
+    resolution: {integrity: sha512-LVjGVLRfARHhuWSktiO5wd2tA0iTzP+Se8oDKRVyzb5Z/X4jCL+3hqWJMeERkjn3bOK0al2cv55sIABFOo+XKg==}
     peerDependencies:
       viem: ^2.0.0
     dependencies:
@@ -37125,7 +37125,7 @@ packages:
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
 
-  /zustand@4.5.2(@types/react@18.2.64)(immer@10.0.3)(react@18.2.0):
+  /zustand@4.5.2(@types/react@18.2.64)(immer@10.0.4)(react@18.2.0):
     resolution: {integrity: sha512-2cN1tPkDVkwCy5ickKrI7vijSjPksFRfqS6237NzT0vqSsztTNnQdHw9mmN7uBdk3gceVXU0a+21jFzFzAc9+g==}
     engines: {node: '>=12.7.0'}
     peerDependencies:
@@ -37141,7 +37141,7 @@ packages:
         optional: true
     dependencies:
       '@types/react': 18.2.64
-      immer: 10.0.3
+      immer: 10.0.4
       react: 18.2.0
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false

@@ -57,8 +57,7 @@ export const Base: Story = {
       address="0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F"
       wallet={walletGetData}
       genesisConfiguration={configurationGetData}
-      initialUserOperation={userOperationCreateData}
-      userOperationIndex={0}
+      initialUserOperations={[userOperationCreateData]}
       isDev={true}
     />
   ),

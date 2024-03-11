@@ -15,8 +15,6 @@
 "use client";
 
 import { useUserOperationCreate } from "@lightdotso/hooks";
-import { useUserOperationsQueryState } from "@lightdotso/nuqs";
-import { useQueryConfiguration } from "@lightdotso/query";
 import { useFormRef, useModals } from "@lightdotso/stores";
 import { FooterButton } from "@lightdotso/templates";
 import { useRouter } from "next/navigation";
@@ -51,20 +49,6 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
   const router = useRouter();
 
   // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
-
-  const { configuration } = useQueryConfiguration({
-    address: address,
-  });
-
-  // ---------------------------------------------------------------------------
-  // Query State
-  // ---------------------------------------------------------------------------
-
-  const [userOperations] = useUserOperationsQueryState();
-
-  // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
@@ -80,9 +64,6 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
 
   const { signUserOperation } = useUserOperationCreate({
     address: address,
-    configuration: configuration,
-    userOperation:
-      userOperations && userOperations.length > 0 ? userOperations[0] : {},
   });
 
   // ---------------------------------------------------------------------------

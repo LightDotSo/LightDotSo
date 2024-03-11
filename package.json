@@ -125,7 +125,7 @@
     "cross-env": "^7.0.3",
     "depcheck": "^1.4.7",
     "dotenv": "^16.4.5",
-    "dotenv-cli": "^7.4.0",
+    "dotenv-cli": "^7.4.1",
     "esbuild": "^0.20.1",
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.1.3",

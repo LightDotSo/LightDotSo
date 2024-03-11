@@ -14,26 +14,30 @@
 
 "use client";
 
-import type { ConfigurationData } from "@lightdotso/data";
-import { useMutationUserOperationCreate } from "@lightdotso/query";
-import type { UserOperation } from "@lightdotso/schemas";
+import { useUserOperationsQueryState } from "@lightdotso/nuqs";
+import {
+  useMutationUserOperationCreate,
+  useQueryConfiguration,
+} from "@lightdotso/query";
 import { subdigestOf } from "@lightdotso/sequence";
 import { useAuth, useModalSwiper } from "@lightdotso/stores";
 import {
   useSignMessage,
-  lightWalletAbi,
-  lightWalletFactoryAbi,
+  // lightWalletAbi,
+  // lightWalletFactoryAbi,
   // useReadLightVerifyingPaymasterGetHash,
   // useReadLightVerifyingPaymasterSenderNonce,
 } from "@lightdotso/wagmi";
+import { MerkleTree } from "merkletreejs";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Address, Hex } from "viem";
 import {
   isAddressEqual,
   toBytes,
   hexToBytes,
+  keccak256,
   // fromHex,
-  decodeFunctionData,
+  // decodeFunctionData,
 } from "viem";
 
 // -----------------------------------------------------------------------------
@@ -42,8 +46,6 @@ import {
 
 type UserOperationCreateProps = {
   address: Address;
-  configuration?: ConfigurationData | null | undefined;
-  userOperation?: Partial<UserOperation> | null | undefined;
 };
 
 // -----------------------------------------------------------------------------
@@ -52,8 +54,6 @@ type UserOperationCreateProps = {
 
 export const useUserOperationCreate = ({
   address,
-  configuration,
-  userOperation,
 }: UserOperationCreateProps) => {
   // ---------------------------------------------------------------------------
   // Stores
@@ -67,23 +67,57 @@ export const useUserOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   const [isUserOperationLoading, setIsUserOperationLoading] = useState(false);
+  const [merkleTree, setMerkleTree] = useState<MerkleTree | undefined>();
   const [signedData, setSignedData] = useState<Hex>();
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { configuration } = useQueryConfiguration({
+    address: address,
+  });
+
+  // ---------------------------------------------------------------------------
+  // Query State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [userOperations] = useUserOperationsQueryState();
 
   // ---------------------------------------------------------------------------
   // Local Variables
   // ---------------------------------------------------------------------------
 
   const subdigest = useMemo(() => {
+    // If the userOperation length is 0, return
+    if (userOperations.length === 0) {
+      return;
+    }
+
+    // If the userOperation length is 1, get the first userOperation
+    const userOperation = userOperations[0];
     if (!userOperation?.hash || !userOperation?.chainId) {
       return;
     }
 
-    return subdigestOf(
-      address,
-      hexToBytes(userOperation?.hash as Hex),
-      userOperation?.chainId,
-    );
-  }, [address, userOperation?.hash, userOperation?.chainId]);
+    if (userOperations.length === 1) {
+      return subdigestOf(
+        address,
+        hexToBytes(userOperation?.hash as Hex),
+        userOperation?.chainId,
+      );
+    }
+
+    // If the userOperation length is greater than 1, get the merkle root of the userOperations
+    if (userOperations.length > 1) {
+      const leaves = userOperations.map(userOperation =>
+        hexToBytes(userOperation.hash as Hex),
+      );
+      const tree = new MerkleTree(leaves, keccak256, { sort: true });
+      setMerkleTree(tree);
+      return subdigestOf(address, tree.getRoot(), BigInt(0));
+    }
+  }, [address, userOperations]);
 
   // ---------------------------------------------------------------------------
   // Wagmi
@@ -133,62 +167,64 @@ export const useUserOperationCreate = ({
     );
   }, [configuration?.owners, userAddress]);
 
-  const decodedInitCode = useMemo(() => {
-    // If the initCode is `0x`, return
-    if (
-      !userOperation?.callData ||
-      !userOperation?.initCode ||
-      userOperation?.initCode === "0x"
-    ) {
-      return;
-    }
+  // const decodedInitCode = useMemo(() => {
+  //   // If the initCode is `0x`, return
+  //   if (
+  //     !userOperation?.callData ||
+  //     !userOperation?.initCode ||
+  //     userOperation?.initCode === "0x"
+  //   ) {
+  //     return;
+  //   }
 
-    // Parse the initCode of the userOperation
-    return decodeFunctionData({
-      abi: lightWalletFactoryAbi,
-      data: `0x${userOperation?.initCode.slice(42)}` as Hex,
-    }).args;
-  }, [userOperation?.initCode, userOperation?.callData]);
+  //   // Parse the initCode of the userOperation
+  //   return decodeFunctionData({
+  //     abi: lightWalletFactoryAbi,
+  //     data: `0x${userOperation?.initCode.slice(42)}` as Hex,
+  //   }).args;
+  // }, [userOperation?.initCode, userOperation?.callData]);
 
-  const decodedCallData = useMemo(() => {
-    // If the callData is `0x`, return
-    if (!userOperation?.callData || userOperation?.callData === "0x") {
-      return;
-    }
+  // const decodedCallData = useMemo(() => {
+  //   // If the callData is `0x`, return
+  //   if (!userOperation?.callData || userOperation?.callData === "0x") {
+  //     return;
+  //   }
 
-    // Parse the callData of tha args depending on the args type
-    switch (userOperation?.callData.slice(0, 10)) {
-      // If the function selector is `execute` or `executeBatch`
-      case "0xb61d27f6":
-      case "0x47e1da2a":
-        return decodeFunctionData({
-          abi: lightWalletAbi,
-          data: userOperation?.callData as Hex,
-        }).args;
-      default:
-        return userOperation?.callData;
-    }
-  }, [userOperation?.callData]);
+  //   // Parse the callData of tha args depending on the args type
+  //   switch (userOperation?.callData.slice(0, 10)) {
+  //     // If the function selector is `execute` or `executeBatch`
+  //     case "0xb61d27f6":
+  //     case "0x47e1da2a":
+  //       return decodeFunctionData({
+  //         abi: lightWalletAbi,
+  //         data: userOperation?.callData as Hex,
+  //       }).args;
+  //     default:
+  //       return userOperation?.callData;
+  //   }
+  // }, [userOperation?.callData]);
 
-  const isValidUserOperation = useMemo(() => {
-    return !!(
-      typeof owner !== "undefined" &&
-      userOperation &&
-      userOperation.chainId &&
-      userOperation.hash &&
-      userOperation.nonce !== undefined &&
-      userOperation.nonce !== null &&
-      userOperation.initCode &&
-      userOperation.sender &&
-      userOperation.callData &&
-      userOperation.callGasLimit &&
-      userOperation.verificationGasLimit &&
-      userOperation.preVerificationGas &&
-      userOperation.maxFeePerGas &&
-      userOperation.maxPriorityFeePerGas &&
-      userOperation.paymasterAndData
-    );
-  }, [owner, userOperation]);
+  const isValidUserOperations = useMemo(() => {
+    return userOperations.every(userOperation => {
+      return !!(
+        typeof owner !== "undefined" &&
+        userOperation &&
+        userOperation.chainId &&
+        userOperation.hash &&
+        userOperation.nonce !== undefined &&
+        userOperation.nonce !== null &&
+        userOperation.initCode &&
+        userOperation.sender &&
+        userOperation.callData &&
+        userOperation.callGasLimit &&
+        userOperation.verificationGasLimit &&
+        userOperation.preVerificationGas &&
+        userOperation.maxFeePerGas &&
+        userOperation.maxPriorityFeePerGas &&
+        userOperation.paymasterAndData
+      );
+    });
+  }, [owner, userOperations]);
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -243,9 +279,43 @@ export const useUserOperationCreate = ({
       setSignedData(undefined);
     };
 
-    createUserOp();
+    const createUserOpBatch = async () => {
+      if (!owner || !signedData || !merkleTree || !userOperations) {
+        return;
+      }
+
+      console.info(merkleTree);
+
+      // userOperationCreateBatch({
+      //   ownerId: owner.id,
+      //   signedData: signedData as Hex,
+      //   userOperations: userOperations,
+      //   merkleRoot: merkleTree.getRoot(),
+      // });
+
+      setSignedData(undefined);
+    };
+
+    // If the userOperations length is 0, return
+    if (userOperations.length === 0) {
+      return;
+    }
+
+    // If the userOperations length is 1, get the first userOperation
+    const userOperation = userOperations[0];
+    if (userOperations.length === 1) {
+      createUserOp();
+      return;
+    }
+
+    // If the userOperations length is greater than 1
+    if (userOperations.length > 1) {
+      createUserOpBatch();
+      return;
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [signedData, owner, userOperation, configuration?.threshold, address]);
+  }, [signedData, owner, userOperations, configuration?.threshold, address]);
 
   useEffect(() => {
     if (isUserOperationLoading) {
@@ -263,9 +333,9 @@ export const useUserOperationCreate = ({
     return (
       !isUserOperationLoading &&
       typeof owner !== "undefined" &&
-      isValidUserOperation
+      isValidUserOperations
     );
-  }, [isUserOperationLoading, owner, isValidUserOperation]);
+  }, [isUserOperationLoading, owner, isValidUserOperations]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -274,9 +344,9 @@ export const useUserOperationCreate = ({
   return {
     isUserOperationCreatable,
     isUserOperationLoading,
-    isValidUserOperation,
-    decodedCallData,
-    decodedInitCode,
+    isValidUserOperations,
+    // decodedCallData,
+    // decodedInitCode,
     // paymasterHash,
     // paymasterNonce,
     signUserOperation,

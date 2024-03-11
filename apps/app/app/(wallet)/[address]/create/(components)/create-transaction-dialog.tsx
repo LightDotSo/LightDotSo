@@ -103,8 +103,7 @@ export const CreateTransactionDialog: FC<CreateTransactionDialogProps> = ({
           address={address}
           wallet={wallet}
           genesisConfiguration={genesisConfiguration}
-          initialUserOperation={userOperations[0]}
-          userOperationIndex={0}
+          initialUserOperations={userOperations}
           isDev={isDev}
         />
       )}
