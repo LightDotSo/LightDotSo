@@ -571,11 +571,11 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
         MerkleTree::<KeccakAlgorithm>::from_leaves(&leaf_hashes);
 
     // Get the merkle root from the merkle tree.
-    let merkle_root = merkle_tree.root_hex().unwrap_or_default();
+    let merkle_root = format!("0x{}", merkle_tree.root_hex().unwrap_or_default());
     info!(?merkle_root);
 
     // Check that the merkle root is the same as the one provided.
-    if params.merkle_root != format!("0x{}", merkle_root) {
+    if params.merkle_root != merkle_root {
         error!("params.merkle_root: {}, merkle_root: 0x{}", params.merkle_root, merkle_root);
         return Err(AppError::BadRequest);
     }
@@ -770,6 +770,20 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
         // Clone the sig to be used in the closure.
         let chained_sig = sig.clone();
 
+        // Get the rundler hash for the user operation.
+        let rundler_user_operation = RundlerUserOperation::try_from(user_operation.clone())?;
+        let rundler_hash =
+            rundler_user_operation.op_hash(*ENTRYPOINT_V060_ADDRESS, chain_id as u64);
+
+        // Get the merkle proof for the user operation.
+        let merkle_proof = merkle_tree
+            .proof(&[leaf_hashes.iter().position(|x| x == &rundler_hash.0).unwrap()])
+            .proof_hashes_hex()
+            // Prepend 0x to each hash
+            .iter()
+            .map(|x| format!("0x{}", x))
+            .collect::<Vec<String>>();
+
         // Create the user operation in the database w/ the sig.
         let res: Result<(
             lightdotso_prisma::signature::Data,
@@ -826,6 +840,30 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
         // If the user_operation is not created, return a 500.
         let (signature, user_operation) = res.map_err(|_| AppError::InternalError)?;
         info!(?user_operation);
+
+        // For each merkle proof, create a user_operation_merkle_proof in the database, w/
+        // create_many.
+        let m_proof = state
+            .client
+            .user_operation_merkle_proof()
+            .create_many(
+                merkle_proof
+                    .iter()
+                    .enumerate()
+                    .map(|(i, proof_hash)| {
+                        (
+                            i as i32,
+                            proof_hash.clone(),
+                            user_operation.hash.clone(),
+                            merkle_root.clone(),
+                            vec![],
+                        )
+                    })
+                    .collect::<Vec<_>>(),
+            )
+            .exec()
+            .await;
+        info!(?m_proof);
 
         // Add the user operation to the return value.
         return_user_operations.push(user_operation.clone());
