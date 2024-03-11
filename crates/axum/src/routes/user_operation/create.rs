@@ -39,8 +39,8 @@ use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
 use lightdotso_prisma::{
-    chain, configuration, owner, paymaster, paymaster_operation, user_operation, wallet,
-    ActivityEntity, ActivityOperation, SignatureProcedure,
+    chain, configuration, owner, paymaster, paymaster_operation, user_operation,
+    user_operation_merkle, wallet, ActivityEntity, ActivityOperation, SignatureProcedure,
 };
 use lightdotso_sequence::{signature::recover_ecdsa_signature, utils::render_subdigest};
 use lightdotso_tracing::tracing::{error, info};
@@ -684,6 +684,19 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
         return Err(AppError::BadRequest);
     }
 
+    // Create the merkle root in the database.
+    let uop_merkle = state
+        .client
+        .user_operation_merkle()
+        .upsert(
+            user_operation_merkle::root::equals(merkle_root.clone()),
+            user_operation_merkle::create(merkle_root.clone(), vec![]),
+            vec![],
+        )
+        .exec()
+        .await?;
+    info!(?uop_merkle);
+
     // The return value of the user operations.
     let mut return_user_operations = vec![];
 
@@ -693,7 +706,12 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
         let user_operation_hash = user_operation.clone().hash;
 
         // The optional params to connect paymaster to user_operation.
-        let mut params = vec![user_operation::is_testnet::set(is_testnet(chain_id as u64))];
+        let mut params = vec![
+            user_operation::is_testnet::set(is_testnet(chain_id as u64)),
+            user_operation::user_operation_merkle::connect(user_operation_merkle::root::equals(
+                uop_merkle.clone().root,
+            )),
+        ];
 
         // Parse the paymaster_and_data for the paymaster data if the paymaster is provided.
         if user_operation.paymaster_and_data.len() > 2 {
