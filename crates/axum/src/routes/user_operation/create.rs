@@ -506,6 +506,12 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
     // let user_operation_hash = params.user_operation.clone().hash;
     let sig = params.signature;
 
+    // If the signature type is not 2, return a 400.
+    if sig.signature_type != 2 {
+        error!("sig.signature_type: {}", sig.signature_type);
+        return Err(AppError::BadRequest);
+    }
+
     // Iterate through the user operations and check if they are valid.
     for user_operation in user_operations.clone().into_iter() {
         let chain_id = user_operation.chain_id;
