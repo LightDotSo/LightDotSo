@@ -177,8 +177,7 @@ export const Transaction: FC<TransactionProps> = ({
                   )}
                 </TabsContent>
                 <TabsContent value="details">
-                  {/* {JSON.stringify(userOperationDetails)} */}
-                  {/* {Object.values(userOperationDetails).map((details, index) => {
+                  {Object.values(userOperationDetails).map((details, index) => {
                     return details.map(item => {
                       return (
                         <TransactionDetailInfo
@@ -188,7 +187,7 @@ export const Transaction: FC<TransactionProps> = ({
                         />
                       );
                     });
-                  })} */}
+                  })}
                 </TabsContent>
                 <TabsContent value="data">
                   {userOperations &&

@@ -672,16 +672,17 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
 
   // Sync the user operation details
-  // useEffect(() => {
-  //   if (!userOperationWithHash) {
-  //     return;
-  //   }
+  useEffect(() => {
+    if (!targetUserOperation) {
+      return;
+    }
 
-  //   setUserOperationDetails(
-  //     Number(userOperationWithHash.chainId),
-  //     userOperationDetails,
-  //   );
-  // }, [userOperationWithHash]);
+    setUserOperationDetails(
+      Number(targetUserOperation.chainId),
+      userOperationDetails,
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userOperationDetails]);
 
   // // Sync the user operation dev info
   // useEffect(() => {
@@ -692,14 +693,15 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [userOperationDevInfo]);
 
-  // // Sync the user operation simulation
-  // useEffect(() => {
-  //   if (!simulation) {
-  //     return;
-  //   }
+  // Sync the user operation simulation
+  useEffect(() => {
+    if (!simulation) {
+      return;
+    }
 
-  //   setUserOperationSimulation(Number(targetUserOperation.chainId), simulation);
-  // }, [simulation, setUserOperationSimulation, targetUserOperation.chainId]);
+    setUserOperationSimulation(Number(targetUserOperation.chainId), simulation);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [simulation]);
 
   // ---------------------------------------------------------------------------
   // Render
