@@ -654,6 +654,13 @@ export interface paths {
      */
     post: operations["v1_user_operation_create_handler"];
   };
+  "/user_operation/create/batch": {
+    /**
+     * Create a user operation
+     * @description Create a user operation
+     */
+    post: operations["v1_user_operation_create_batch_handler"];
+  };
   "/user_operation/get": {
     /**
      * Get a user operation
@@ -1813,6 +1820,11 @@ export interface components {
        * @description The verification gas of the user operation.
        */
       verification_gas_limit: number;
+    };
+    UserOperationCreateBatchRequestParams: {
+      merkle_root: string;
+      signature: components["schemas"]["SignatureCreateParams"];
+      user_operations: components["schemas"]["UserOperationCreateParams"][];
     };
     /** @description Item to create. */
     UserOperationCreateParams: {
@@ -4756,6 +4768,43 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["UserOperation"];
+        };
+      };
+      /** @description Invalid Configuration */
+      400: {
+        content: {
+          "application/json": components["schemas"]["UserOperationError"];
+        };
+      };
+      /** @description User Operation already exists */
+      409: {
+        content: {
+          "application/json": components["schemas"]["UserOperationError"];
+        };
+      };
+      /** @description User Operation internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["UserOperationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Create a user operation
+   * @description Create a user operation
+   */
+  v1_user_operation_create_batch_handler: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UserOperationCreateBatchRequestParams"];
+      };
+    };
+    responses: {
+      /** @description User Operation created successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserOperation"][];
         };
       };
       /** @description Invalid Configuration */
