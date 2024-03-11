@@ -17,6 +17,7 @@
 import { useUserOperationsQueryState } from "@lightdotso/nuqs";
 import {
   useMutationUserOperationCreate,
+  useMutationUserOperationCreateBatch,
   useQueryConfiguration,
 } from "@lightdotso/query";
 import { subdigestOf } from "@lightdotso/sequence";
@@ -246,6 +247,10 @@ export const useUserOperationCreate = ({
     address: address,
   });
 
+  const { userOperationCreateBatch } = useMutationUserOperationCreateBatch({
+    address: address,
+  });
+
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
@@ -286,12 +291,12 @@ export const useUserOperationCreate = ({
 
       console.info(merkleTree);
 
-      // userOperationCreateBatch({
-      //   ownerId: owner.id,
-      //   signedData: signedData as Hex,
-      //   userOperations: userOperations,
-      //   merkleRoot: merkleTree.getRoot(),
-      // });
+      userOperationCreateBatch({
+        ownerId: owner.id,
+        signedData: signedData as Hex,
+        userOperations: userOperations,
+        merkleRoot: `0x${merkleTree.getRoot().toString("hex")}` as Hex,
+      });
 
       setSignedData(undefined);
     };
