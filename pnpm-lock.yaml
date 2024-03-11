@@ -1939,9 +1939,6 @@ importers:
       '@lightdotso/query':
         specifier: workspace:*
         version: link:../query
-      '@lightdotso/schemas':
-        specifier: workspace:*
-        version: link:../schemas
       '@lightdotso/sequence':
         specifier: workspace:*
         version: link:../sequence
