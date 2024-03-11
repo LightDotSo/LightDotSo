@@ -16,7 +16,7 @@
 
 import { WALLET_FACTORY_ENTRYPOINT_MAPPING } from "@lightdotso/const";
 import type { ConfigurationData, WalletData } from "@lightdotso/data";
-import { useUserOperationCreate } from "@lightdotso/hooks";
+import { useDebouncedValue } from "@lightdotso/hooks";
 import { useUserOperationsQueryState } from "@lightdotso/nuqs";
 import {
   useQueryConfiguration,
@@ -114,7 +114,10 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { setIsFormDisabled, setIsFormLoading } = useFormRef();
+  const {
+    // setIsFormDisabled,
+    setIsFormLoading,
+  } = useFormRef();
   const {
     setUserOperationDetails,
     setUserOperationDevInfo,
@@ -668,6 +671,15 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   ];
 
   // ---------------------------------------------------------------------------
+  // Debounced Hooks
+  // ---------------------------------------------------------------------------
+
+  const debouncedUserOperationDevInfo = useDebouncedValue(
+    userOperationDevInfo,
+    1500,
+  );
+
+  // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
@@ -684,14 +696,14 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userOperationDetails]);
 
-  // // Sync the user operation dev info
-  // useEffect(() => {
-  //   setUserOperationDevInfo(
-  //     Number(targetUserOperation.chainId),
-  //     userOperationDevInfo,
-  //   );
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [userOperationDevInfo]);
+  // Sync the user operation dev info
+  useEffect(() => {
+    setUserOperationDevInfo(
+      Number(targetUserOperation.chainId),
+      debouncedUserOperationDevInfo,
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedUserOperationDevInfo]);
 
   // Sync the user operation simulation
   useEffect(() => {

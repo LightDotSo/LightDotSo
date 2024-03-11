@@ -67,6 +67,7 @@ export const useUserOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   const [isUserOperationLoading, setIsUserOperationLoading] = useState(false);
+  const [merkleTree, setMerkleTree] = useState<MerkleTree | undefined>();
   const [signedData, setSignedData] = useState<Hex>();
 
   // ---------------------------------------------------------------------------
@@ -113,6 +114,7 @@ export const useUserOperationCreate = ({
         hexToBytes(userOperation.hash as Hex),
       );
       const tree = new MerkleTree(leaves, keccak256, { sort: true });
+      setMerkleTree(tree);
       return subdigestOf(address, tree.getRoot(), BigInt(0));
     }
   }, [address, userOperations]);
