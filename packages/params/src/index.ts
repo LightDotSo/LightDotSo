@@ -56,6 +56,7 @@ export type {
   UserOperationListParams,
   UserOperationListCountParams,
   UserOperationCreateBodyParams,
+  UserOperationCreateBatchBodyParams,
   UserOperationUpdateBodyParams,
   UserOperationSendBodyParams,
 } from "./userOperation";

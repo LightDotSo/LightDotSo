@@ -227,6 +227,55 @@ export const createUserOperation = async (
   });
 };
 
+export const createBatchUserOperation = async (
+  {
+    params,
+    body,
+  }: {
+    params: {};
+    body: {
+      paymaster?: {
+        address: string;
+        sender: string;
+        sender_nonce: number;
+      };
+      merkle_root: string;
+      signature: {
+        owner_id: string;
+        signature: string;
+        signature_type: number;
+      };
+      user_operations: {
+        chain_id: number;
+        call_data: string;
+        call_gas_limit: number;
+        hash: string;
+        init_code: string;
+        max_fee_per_gas: number;
+        max_priority_fee_per_gas: number;
+        nonce: number;
+        paymaster_and_data: string;
+        pre_verification_gas: number;
+        sender: string;
+        verification_gas_limit: number;
+      }[];
+    };
+  },
+  clientType?: ClientType,
+) => {
+  const client = getClient(clientType);
+
+  return ResultAsync.fromPromise(
+    client.POST("/user_operation/create/batch", {
+      params,
+      body,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
 // -----------------------------------------------------------------------------
 // PUT
 // -----------------------------------------------------------------------------

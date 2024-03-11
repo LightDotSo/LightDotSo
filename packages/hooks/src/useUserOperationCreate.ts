@@ -17,6 +17,7 @@
 import { useUserOperationsQueryState } from "@lightdotso/nuqs";
 import {
   useMutationUserOperationCreate,
+  useMutationUserOperationCreateBatch,
   useQueryConfiguration,
 } from "@lightdotso/query";
 import { subdigestOf } from "@lightdotso/sequence";
@@ -110,9 +111,9 @@ export const useUserOperationCreate = ({
 
     // If the userOperation length is greater than 1, get the merkle root of the userOperations
     if (userOperations.length > 1) {
-      const leaves = userOperations.map(userOperation =>
-        hexToBytes(userOperation.hash as Hex),
-      );
+      const leaves = userOperations
+        .sort((a, b) => Number(a.chainId) - Number(b.chainId))
+        .map(userOperation => hexToBytes(userOperation.hash as Hex));
       const tree = new MerkleTree(leaves, keccak256, { sort: true });
       setMerkleTree(tree);
       return subdigestOf(address, tree.getRoot(), BigInt(0));
@@ -246,6 +247,10 @@ export const useUserOperationCreate = ({
     address: address,
   });
 
+  const { userOperationCreateBatch } = useMutationUserOperationCreateBatch({
+    address: address,
+  });
+
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
@@ -286,12 +291,12 @@ export const useUserOperationCreate = ({
 
       console.info(merkleTree);
 
-      // userOperationCreateBatch({
-      //   ownerId: owner.id,
-      //   signedData: signedData as Hex,
-      //   userOperations: userOperations,
-      //   merkleRoot: merkleTree.getRoot(),
-      // });
+      userOperationCreateBatch({
+        ownerId: owner.id,
+        signedData: signedData as Hex,
+        userOperations: userOperations,
+        merkleRoot: `0x${merkleTree.getRoot().toString("hex")}` as Hex,
+      });
 
       setSignedData(undefined);
     };

@@ -29,7 +29,8 @@ use axum::{
 };
 
 pub(crate) use create::{
-    __path_v1_user_operation_create_handler, v1_user_operation_create_handler,
+    __path_v1_user_operation_create_batch_handler, __path_v1_user_operation_create_handler,
+    v1_user_operation_create_batch_handler, v1_user_operation_create_handler,
 };
 pub(crate) use get::{__path_v1_user_operation_get_handler, v1_user_operation_get_handler};
 pub(crate) use list::{
@@ -57,5 +58,6 @@ pub(crate) fn router() -> Router<AppState> {
         .route("/user_operation/list", get(v1_user_operation_list_handler))
         .route("/user_operation/list/count", get(v1_user_operation_list_count_handler))
         .route("/user_operation/create", post(v1_user_operation_create_handler))
+        .route("/user_operation/create/batch", post(v1_user_operation_create_batch_handler))
         .route("/user_operation/signature", get(v1_user_operation_signature_handler))
 }

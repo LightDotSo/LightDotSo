@@ -654,6 +654,13 @@ export interface paths {
      */
     post: operations["v1_user_operation_create_handler"];
   };
+  "/user_operation/create/batch": {
+    /**
+     * Create a user operation
+     * @description Create a user operation
+     */
+    post: operations["v1_user_operation_create_batch_handler"];
+  };
   "/user_operation/get": {
     /**
      * Get a user operation
@@ -1814,6 +1821,11 @@ export interface components {
        */
       verification_gas_limit: number;
     };
+    UserOperationCreateBatchRequestParams: {
+      merkle_root: string;
+      signature: components["schemas"]["SignatureCreateParams"];
+      user_operations: components["schemas"]["UserOperationCreateParams"][];
+    };
     /** @description Item to create. */
     UserOperationCreateParams: {
       call_data: string;
@@ -1857,8 +1869,8 @@ export interface components {
     };
     /** @description UserOperationMerkle root type. */
     UserOperationMerkle: {
-      /** @description The id of the protocol group. */
-      id: string;
+      /** @description The root of the merkle tree. */
+      root: string;
     };
     /** @description UserOperationMerkle errors */
     UserOperationMerkleError: OneOf<[{
@@ -4779,6 +4791,43 @@ export interface operations {
     };
   };
   /**
+   * Create a user operation
+   * @description Create a user operation
+   */
+  v1_user_operation_create_batch_handler: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UserOperationCreateBatchRequestParams"];
+      };
+    };
+    responses: {
+      /** @description User Operation created successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserOperation"][];
+        };
+      };
+      /** @description Invalid Configuration */
+      400: {
+        content: {
+          "application/json": components["schemas"]["UserOperationError"];
+        };
+      };
+      /** @description User Operation already exists */
+      409: {
+        content: {
+          "application/json": components["schemas"]["UserOperationError"];
+        };
+      };
+      /** @description User Operation internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["UserOperationError"];
+        };
+      };
+    };
+  };
+  /**
    * Get a user operation
    * @description Get a user operation
    */
@@ -4977,8 +5026,8 @@ export interface operations {
   v1_user_operation_merkle_create_handler: {
     parameters: {
       query: {
-        /** @description The id of the merkle id to post for. */
-        user_operation_merkle_id: string;
+        /** @description The root of the merkle root to post for. */
+        user_operation_merkle_root: string;
       };
     };
     responses: {
@@ -5003,7 +5052,7 @@ export interface operations {
   v1_user_operation_merkle_get_handler: {
     parameters: {
       query: {
-        id: string;
+        root: string;
       };
     };
     responses: {

@@ -12,25 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { createUserOperation } from "@lightdotso/client";
+import { createBatchUserOperation } from "@lightdotso/client";
 import { TRANSACTION_ROW_COUNT } from "@lightdotso/const";
 import type { UserOperationData } from "@lightdotso/data";
 import type {
-  UserOperationCreateBodyParams,
+  UserOperationCreateBatchBodyParams,
   UserOperationParams,
 } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import type { Address } from "viem";
-import { toBytes, toHex } from "viem";
+import { type Address, toBytes, toHex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Query Mutation
 // -----------------------------------------------------------------------------
 
-export const useMutationUserOperationCreate = (params: UserOperationParams) => {
+export const useMutationUserOperationCreateBatch = (
+  params: UserOperationParams,
+) => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -48,69 +49,70 @@ export const useMutationUserOperationCreate = (params: UserOperationParams) => {
   // ---------------------------------------------------------------------------
 
   const {
-    mutate: userOperationCreate,
+    mutate: userOperationCreateBatch,
     isPending,
     isSuccess,
     isError,
     failureCount,
   } = useMutation({
-    mutationFn: async (body: UserOperationCreateBodyParams) => {
-      if (
-        !body.userOperation.chainId ||
-        !body.userOperation.hash ||
-        body.userOperation.nonce === undefined ||
-        body.userOperation.nonce === null ||
-        !body.userOperation.initCode ||
-        !body.userOperation.sender ||
-        !body.userOperation.callData ||
-        !body.userOperation.callGasLimit ||
-        !body.userOperation.verificationGasLimit ||
-        !body.userOperation.preVerificationGas ||
-        !body.userOperation.maxFeePerGas ||
-        !body.userOperation.maxPriorityFeePerGas ||
-        !body.userOperation.paymasterAndData
-      ) {
+    mutationFn: async (body: UserOperationCreateBatchBodyParams) => {
+      let hasInvalidData = body.userOperations.some(userOperation => {
+        return (
+          !userOperation.chainId ||
+          !userOperation.hash ||
+          userOperation.nonce === undefined ||
+          userOperation.nonce === null ||
+          !userOperation.initCode ||
+          !userOperation.sender ||
+          !userOperation.callData ||
+          !userOperation.callGasLimit ||
+          !userOperation.verificationGasLimit ||
+          !userOperation.preVerificationGas ||
+          !userOperation.maxFeePerGas ||
+          !userOperation.maxPriorityFeePerGas ||
+          !userOperation.paymasterAndData
+        );
+      });
+
+      if (hasInvalidData) {
         return;
       }
 
       const loadingToast = toast.loading("Creating the transaction...");
 
       // Replace with your actual fetch logic
-      const res = await createUserOperation(
+      const res = await createBatchUserOperation(
         {
-          params: {
-            query: {
-              chain_id: Number(body.userOperation.chainId),
-            },
-          },
+          params: {},
           body: {
+            merkle_root: body.merkleRoot,
             signature: {
               owner_id: body.ownerId,
               signature: toHex(
                 new Uint8Array([...toBytes(body.signedData), 2]),
               ),
-              signature_type: 1,
+              signature_type: 2,
             },
-            user_operation: {
-              chain_id: Number(body.userOperation.chainId),
-              hash: body.userOperation.hash,
-              nonce: Number(body.userOperation.nonce),
-              init_code: body.userOperation.initCode,
-              sender: body.userOperation.sender,
-              call_data: body.userOperation.callData,
-              call_gas_limit: Number(body.userOperation.callGasLimit),
-              verification_gas_limit: Number(
-                body.userOperation.verificationGasLimit,
-              ),
-              pre_verification_gas: Number(
-                body.userOperation.preVerificationGas,
-              ),
-              max_fee_per_gas: Number(body.userOperation.maxFeePerGas),
-              max_priority_fee_per_gas: Number(
-                body.userOperation.maxPriorityFeePerGas,
-              ),
-              paymaster_and_data: body.userOperation.paymasterAndData,
-            },
+            user_operations: body.userOperations.map(userOperation => {
+              return {
+                chain_id: Number(userOperation.chainId),
+                hash: userOperation.hash!,
+                nonce: Number(userOperation.nonce),
+                init_code: userOperation.initCode!,
+                sender: userOperation.sender!,
+                call_data: userOperation.callData!,
+                call_gas_limit: Number(userOperation.callGasLimit),
+                verification_gas_limit: Number(
+                  userOperation.verificationGasLimit,
+                ),
+                pre_verification_gas: Number(userOperation.preVerificationGas),
+                max_fee_per_gas: Number(userOperation.maxFeePerGas),
+                max_priority_fee_per_gas: Number(
+                  userOperation.maxPriorityFeePerGas,
+                ),
+                paymaster_and_data: userOperation.paymasterAndData!,
+              };
+            }),
           },
         },
         clientType,
@@ -135,29 +137,29 @@ export const useMutationUserOperationCreate = (params: UserOperationParams) => {
         },
       );
     },
-    onMutate: async (data: UserOperationCreateBodyParams) => {
-      const uopData = {
-        call_data: data.userOperation.callData
-          ? toHex(data.userOperation.callData)
+    onMutate: async (data: UserOperationCreateBatchBodyParams) => {
+      const uopsData = data.userOperations.map(userOperation => ({
+        call_data: userOperation.callData
+          ? toHex(userOperation.callData)
           : "0x",
-        call_gas_limit: data.userOperation.callGasLimit
-          ? toHex(data.userOperation.callGasLimit)
+        call_gas_limit: userOperation.callGasLimit
+          ? toHex(userOperation.callGasLimit)
           : "0x",
-        chain_id: data.userOperation.chainId ? data.userOperation.chainId : 0,
-        hash: data.userOperation.hash,
-        init_code: data.userOperation.initCode,
-        max_fee_per_gas: data.userOperation.maxFeePerGas
-          ? toHex(data.userOperation.maxFeePerGas)
+        chain_id: userOperation.chainId ? userOperation.chainId : 0,
+        hash: userOperation.hash,
+        init_code: userOperation.initCode,
+        max_fee_per_gas: userOperation.maxFeePerGas
+          ? toHex(userOperation.maxFeePerGas)
           : "0x",
-        max_priority_fee_per_gas: data.userOperation.maxPriorityFeePerGas
-          ? toHex(data.userOperation.maxPriorityFeePerGas)
+        max_priority_fee_per_gas: userOperation.maxPriorityFeePerGas
+          ? toHex(userOperation.maxPriorityFeePerGas)
           : "0x",
-        nonce: data.userOperation.nonce ? Number(data.userOperation.nonce) : 0,
-        paymaster_and_data: data.userOperation.paymasterAndData,
-        pre_verification_gas: data.userOperation.preVerificationGas
-          ? toHex(data.userOperation.preVerificationGas)
+        nonce: userOperation.nonce ? Number(userOperation.nonce) : 0,
+        paymaster_and_data: userOperation.paymasterAndData,
+        pre_verification_gas: userOperation.preVerificationGas
+          ? toHex(userOperation.preVerificationGas)
           : "0x",
-        sender: data.userOperation.sender,
+        sender: userOperation.sender,
         signatures: [
           {
             owner_id: data.ownerId,
@@ -167,12 +169,12 @@ export const useMutationUserOperationCreate = (params: UserOperationParams) => {
           },
         ],
         status: "PROPOSED",
-        verification_gas_limit: data.userOperation.verificationGasLimit
-          ? toHex(data.userOperation.verificationGasLimit)
+        verification_gas_limit: userOperation.verificationGasLimit
+          ? toHex(userOperation.verificationGasLimit)
           : "0x",
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
-      };
+      }));
 
       const previousData: UserOperationData[] | undefined =
         queryClient.getQueryData(
@@ -197,7 +199,7 @@ export const useMutationUserOperationCreate = (params: UserOperationParams) => {
         (old: UserOperationData[]) => {
           return {
             ...old,
-            ...uopData,
+            ...uopsData,
           };
         },
       );
@@ -213,7 +215,7 @@ export const useMutationUserOperationCreate = (params: UserOperationParams) => {
   });
 
   return {
-    userOperationCreate,
+    userOperationCreateBatch,
     isPending,
     isSuccess,
     isError,

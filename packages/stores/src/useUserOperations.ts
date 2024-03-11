@@ -44,16 +44,20 @@ type UserOperationsStore = {
     details: UserOperationDetailsItem[],
   ) => void;
   removeUserOperationDetails: (chainId: number) => void;
+  resetUserOperationDetails: () => void;
   setUserOperationDevInfo: (
     chainId: number,
     info: UserOperationDevInfo[],
   ) => void;
   removeUserOperationDevInfo: (chainId: number) => void;
+  resetUserOperationDevInfo: () => void;
   setUserOperationSimulation: (
     chainId: number,
     simulation: SimulationData,
   ) => void;
   removeUserOperationSimulation: (chainId: number) => void;
+  resetUserOperationSimulation: () => void;
+  resetAll: () => void;
 };
 
 // -----------------------------------------------------------------------------
@@ -84,6 +88,11 @@ export const useUserOperations = create<UserOperationsStore>(set => ({
 
       return { userOperationDetails };
     }),
+  resetUserOperationDetails: () =>
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    set(state => {
+      return { userOperationDetails: {} };
+    }),
   setUserOperationDevInfo: (chainId, info) =>
     set(state => {
       return {
@@ -103,6 +112,11 @@ export const useUserOperations = create<UserOperationsStore>(set => ({
       delete userOperationDevInfo[chainId];
 
       return { userOperationDevInfo };
+    }),
+  resetUserOperationDevInfo: () =>
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    set(state => {
+      return { userOperationDevInfo: {} };
     }),
   setUserOperationSimulation: (chainId, simulation) =>
     set(state => {
@@ -125,5 +139,19 @@ export const useUserOperations = create<UserOperationsStore>(set => ({
       delete userOperationSimulations[chainId];
 
       return { userOperationSimulations };
+    }),
+  resetUserOperationSimulation: () =>
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    set(state => {
+      return { userOperationSimulations: {} };
+    }),
+  resetAll: () =>
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    set(state => {
+      return {
+        userOperationDetails: {},
+        userOperationDevInfo: {},
+        userOperationSimulations: {},
+      };
     }),
 }));

@@ -63,6 +63,13 @@ export type UserOperationCreateBodyParams = {
   userOperation: Partial<UserOperation>;
 };
 
+export type UserOperationCreateBatchBodyParams = {
+  merkleRoot: Hex;
+  ownerId: string;
+  signedData: Hex;
+  userOperations: Partial<UserOperation>[];
+};
+
 export type UserOperationUpdateBodyParams = Partial<UserOperation>;
 
 export type UserOperationSendBodyParams = UserOperationData & {
