@@ -110,9 +110,9 @@ export const useUserOperationCreate = ({
 
     // If the userOperation length is greater than 1, get the merkle root of the userOperations
     if (userOperations.length > 1) {
-      const leaves = userOperations.map(userOperation =>
-        hexToBytes(userOperation.hash as Hex),
-      );
+      const leaves = userOperations
+        .sort((a, b) => Number(a.chainId) - Number(b.chainId))
+        .map(userOperation => hexToBytes(userOperation.hash as Hex));
       const tree = new MerkleTree(leaves, keccak256, { sort: true });
       setMerkleTree(tree);
       return subdigestOf(address, tree.getRoot(), BigInt(0));

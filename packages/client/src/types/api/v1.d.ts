@@ -1857,8 +1857,8 @@ export interface components {
     };
     /** @description UserOperationMerkle root type. */
     UserOperationMerkle: {
-      /** @description The id of the protocol group. */
-      id: string;
+      /** @description The root of the merkle tree. */
+      root: string;
     };
     /** @description UserOperationMerkle errors */
     UserOperationMerkleError: OneOf<[{
@@ -4977,8 +4977,8 @@ export interface operations {
   v1_user_operation_merkle_create_handler: {
     parameters: {
       query: {
-        /** @description The id of the merkle id to post for. */
-        user_operation_merkle_id: string;
+        /** @description The root of the merkle root to post for. */
+        user_operation_merkle_root: string;
       };
     };
     responses: {
@@ -5003,7 +5003,7 @@ export interface operations {
   v1_user_operation_merkle_get_handler: {
     parameters: {
       query: {
-        id: string;
+        root: string;
       };
     };
     responses: {
