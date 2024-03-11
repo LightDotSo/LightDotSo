@@ -32,7 +32,7 @@ import { calculateInitCode } from "@lightdotso/sequence";
 import { useFormRef, useUserOperations } from "@lightdotso/stores";
 import type {
   UserOperationDevInfo,
-  type UserOperationDetailsItem,
+  UserOperationDetailsItem,
 } from "@lightdotso/stores";
 import {
   findContractAddressByAddress,
