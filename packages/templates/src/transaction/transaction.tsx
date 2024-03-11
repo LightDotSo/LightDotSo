@@ -15,7 +15,9 @@
 "use client";
 
 import type { ConfigurationData, WalletData } from "@lightdotso/data";
+import { AssetChange } from "@lightdotso/elements";
 import { useUserOperationCreate } from "@lightdotso/hooks";
+import { useUserOperationsQueryState } from "@lightdotso/nuqs";
 import { type UserOperation } from "@lightdotso/schemas";
 import { useModalSwiper, useUserOperations } from "@lightdotso/stores";
 import {
@@ -35,8 +37,6 @@ import { ModalSwiper } from "../modal-swiper";
 import { TransactionDetailInfo } from "./transaction-details-info";
 import { TransactionDevInfo } from "./transaction-dev-info";
 import { TransactionFetcher } from "./transaction-fetcher";
-import { useUserOperationsQueryState } from "@lightdotso/nuqs";
-import { AssetChange } from "@lightdotso/elements";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -195,8 +195,8 @@ export const Transaction: FC<TransactionProps> = ({
                     userOperations.map((userOperation, index) => {
                       return (
                         <div
-                          className="w-full rounded-md bg-background-weak py-3"
                           key={index}
+                          className="w-full rounded-md bg-background-weak py-3"
                         >
                           <pre className="text-sm italic">
                             <Textarea
