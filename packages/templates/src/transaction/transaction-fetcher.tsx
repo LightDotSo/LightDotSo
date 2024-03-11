@@ -116,9 +116,9 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   const { setIsFormDisabled, setIsFormLoading } = useFormRef();
   const {
-    addUserOperationDetails,
-    addUserOperationDevInfo,
-    addUserOperationSimulation,
+    setUserOperationDetails,
+    setUserOperationDevInfo,
+    setUserOperationSimulation,
   } = useUserOperations();
 
   // ---------------------------------------------------------------------------
@@ -715,34 +715,34 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
 
   // Sync the user operation details
-  useEffect(() => {
-    if (!userOperationWithHash) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (!userOperationWithHash) {
+  //     return;
+  //   }
 
-    addUserOperationDetails(
-      Number(userOperationWithHash.chainId),
-      userOperationDetails,
-    );
-  }, [userOperationWithHash, addUserOperationDetails, userOperationDetails]);
+  //   setUserOperationDetails(
+  //     Number(userOperationWithHash.chainId),
+  //     userOperationDetails,
+  //   );
+  // }, [userOperationWithHash]);
 
-  // Sync the user operation dev info
-  useEffect(() => {
-    addUserOperationDevInfo(
-      Number(targetUserOperation.chainId),
-      userOperationDevInfo,
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userOperationDevInfo]);
+  // // Sync the user operation dev info
+  // useEffect(() => {
+  //   setUserOperationDevInfo(
+  //     Number(targetUserOperation.chainId),
+  //     userOperationDevInfo,
+  //   );
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [userOperationDevInfo]);
 
-  // Sync the user operation simulation
-  useEffect(() => {
-    if (!simulation) {
-      return;
-    }
+  // // Sync the user operation simulation
+  // useEffect(() => {
+  //   if (!simulation) {
+  //     return;
+  //   }
 
-    addUserOperationSimulation(Number(targetUserOperation.chainId), simulation);
-  }, [simulation, addUserOperationSimulation, targetUserOperation.chainId]);
+  //   setUserOperationSimulation(Number(targetUserOperation.chainId), simulation);
+  // }, [simulation, setUserOperationSimulation, targetUserOperation.chainId]);
 
   // ---------------------------------------------------------------------------
   // Render

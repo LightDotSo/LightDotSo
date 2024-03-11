@@ -39,17 +39,17 @@ type UserOperationsStore = {
   userOperationDetails: { [chainId: number]: UserOperationDetailsItem[] };
   userOperationDevInfo: { [chainId: number]: UserOperationDevInfo[] };
   userOperationSimulations: { [chainId: number]: SimulationData };
-  addUserOperationDetails: (
+  setUserOperationDetails: (
     chainId: number,
     details: UserOperationDetailsItem[],
   ) => void;
   removeUserOperationDetails: (chainId: number) => void;
-  addUserOperationDevInfo: (
+  setUserOperationDevInfo: (
     chainId: number,
     info: UserOperationDevInfo[],
   ) => void;
   removeUserOperationDevInfo: (chainId: number) => void;
-  addUserOperationSimulation: (
+  setUserOperationSimulation: (
     chainId: number,
     simulation: SimulationData,
   ) => void;
@@ -64,7 +64,7 @@ export const useUserOperations = create<UserOperationsStore>(set => ({
   userOperationDetails: {},
   userOperationDevInfo: {},
   userOperationSimulations: {},
-  addUserOperationDetails: (chainId, details) =>
+  setUserOperationDetails: (chainId, details) =>
     set(state => {
       return {
         userOperationDetails: {
@@ -84,7 +84,7 @@ export const useUserOperations = create<UserOperationsStore>(set => ({
 
       return { userOperationDetails };
     }),
-  addUserOperationDevInfo: (chainId, info) =>
+  setUserOperationDevInfo: (chainId, info) =>
     set(state => {
       return {
         userOperationDevInfo: {
@@ -104,7 +104,7 @@ export const useUserOperations = create<UserOperationsStore>(set => ({
 
       return { userOperationDevInfo };
     }),
-  addUserOperationSimulation: (chainId, simulation) =>
+  setUserOperationSimulation: (chainId, simulation) =>
     set(state => {
       return {
         userOperationSimulations: {
