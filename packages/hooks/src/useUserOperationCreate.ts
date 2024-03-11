@@ -28,8 +28,8 @@ import {
   // useReadLightVerifyingPaymasterGetHash,
   // useReadLightVerifyingPaymasterSenderNonce,
 } from "@lightdotso/wagmi";
-import { useCallback, useEffect, useMemo, useState } from "react";
 import { MerkleTree } from "merkletreejs";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Address, Hex } from "viem";
 import {
   isAddressEqual,
