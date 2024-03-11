@@ -53,7 +53,7 @@ import type {
   UserOperation as PermissionlessUserOperation,
   ENTRYPOINT_ADDRESS_V06,
 } from "permissionless";
-import { type FC, useMemo, useEffect, useState, use } from "react";
+import { type FC, useMemo, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { type Hex, type Address, fromHex } from "viem";
 
@@ -429,18 +429,16 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   const {
     isUserOperationLoading,
     isUserOperationCreatable,
-    isValidUserOperation,
+    isValidUserOperations,
     signUserOperation,
-    decodedCallData,
-    decodedInitCode,
+    // decodedCallData,
+    // decodedInitCode,
     // paymasterHash,
     // paymasterNonce,
     owner,
     subdigest,
   } = useUserOperationCreate({
     address: address,
-    configuration: configuration,
-    userOperation: userOperationWithHash,
   });
 
   // ---------------------------------------------------------------------------
@@ -464,8 +462,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   }, [isPaymasterAndDataLoading]);
 
   const isDisabled = useMemo(() => {
-    return !isUserOperationCreatable || !isValidUserOperation || isLoading;
-  }, [isUserOperationCreatable, isValidUserOperation, isLoading]);
+    return !isUserOperationCreatable || !isValidUserOperations || isLoading;
+  }, [isUserOperationCreatable, isValidUserOperations, isLoading]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -631,14 +629,14 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       title: "configuration",
       data: configuration,
     },
-    {
-      title: "decodedInitCode",
-      data: decodedInitCode,
-    },
-    {
-      title: "decodedCallData",
-      data: decodedCallData,
-    },
+    // {
+    //   title: "decodedInitCode",
+    //   data: decodedInitCode,
+    // },
+    // {
+    //   title: "decodedCallData",
+    //   data: decodedCallData,
+    // },
     {
       title: "subdigest",
       data: subdigest,
@@ -704,8 +702,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       data: isUpdating,
     },
     {
-      title: "isValidUserOperation",
-      data: isValidUserOperation,
+      title: "isValidUserOperations",
+      data: isValidUserOperations,
     },
     {
       title: "isWalletBillingLoading",
