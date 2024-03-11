@@ -27,7 +27,7 @@ use axum::{
 };
 use ethers_main::{
     types::H160,
-    utils::{hex, to_checksum},
+    utils::{hex, keccak256, to_checksum},
 };
 use eyre::{Report, Result};
 use lightdotso_common::{traits::HexToBytes, utils::hex_to_bytes};
@@ -48,9 +48,25 @@ use prisma_client_rust::{
     chrono::{DateTime, NaiveDateTime, Utc},
     Direction,
 };
+use rs_merkle::{Hasher as MerkleHasher, MerkleTree};
 use rundler_types::UserOperation as RundlerUserOperation;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
+
+// -----------------------------------------------------------------------------
+// Generic
+// -----------------------------------------------------------------------------
+
+#[derive(Clone)]
+pub struct KeccakAlgorithm {}
+
+impl MerkleHasher for KeccakAlgorithm {
+    type Hash = [u8; 32];
+
+    fn hash(data: &[u8]) -> [u8; 32] {
+        keccak256(data)
+    }
+}
 
 // -----------------------------------------------------------------------------
 // Query
@@ -527,6 +543,42 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
 
     // Get the sender address.
     let sender_address: H160 = user_operations[0].sender.parse()?;
+
+    // -------------------------------------------------------------------------
+    // Merkle
+    // -------------------------------------------------------------------------
+
+    // Order the user operations by their chain id, and put the hashes into a vector.
+
+    // First, sort the user operations by their chain id.
+    let mut sorted_user_operations = user_operations.clone();
+    sorted_user_operations.sort_by(|a, b| a.chain_id.cmp(&b.chain_id));
+
+    // Then, get the hashes of the user operations.
+    let leaf_hashes: Vec<[u8; 32]> = sorted_user_operations
+        .iter()
+        .map(|user_operation| {
+            let rundler_user_operation =
+                RundlerUserOperation::try_from(user_operation.clone()).unwrap();
+            let rundler_hash = rundler_user_operation
+                .op_hash(*ENTRYPOINT_V060_ADDRESS, user_operation.chain_id as u64);
+            rundler_hash.0
+        })
+        .collect();
+
+    // Create the merkle tree from the hashes.
+    let merkle_tree: MerkleTree<KeccakAlgorithm> =
+        MerkleTree::<KeccakAlgorithm>::from_leaves(&leaf_hashes);
+
+    // Get the merkle root from the merkle tree.
+    let merkle_root = merkle_tree.root_hex().unwrap_or_default();
+    info!(?merkle_root);
+
+    // Check that the merkle root is the same as the one provided.
+    if params.merkle_root != format!("0x{}", merkle_root) {
+        error!("params.merkle_root: {}, merkle_root: 0x{}", params.merkle_root, merkle_root);
+        return Err(AppError::BadRequest);
+    }
 
     // -------------------------------------------------------------------------
     // Signature
