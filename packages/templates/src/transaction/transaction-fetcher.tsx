@@ -674,9 +674,14 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Debounced Hooks
   // ---------------------------------------------------------------------------
 
+  const debouncedUserOperationDetails = useDebouncedValue(
+    userOperationDetails,
+    3000,
+  );
+
   const debouncedUserOperationDevInfo = useDebouncedValue(
     userOperationDevInfo,
-    1500,
+    3000,
   );
 
   // ---------------------------------------------------------------------------
@@ -691,10 +696,10 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
     setUserOperationDetails(
       Number(targetUserOperation.chainId),
-      userOperationDetails,
+      debouncedUserOperationDetails,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userOperationDetails]);
+  }, [debouncedUserOperationDetails]);
 
   // Sync the user operation dev info
   useEffect(() => {
