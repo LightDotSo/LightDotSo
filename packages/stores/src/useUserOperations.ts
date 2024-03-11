@@ -44,16 +44,20 @@ type UserOperationsStore = {
     details: UserOperationDetailsItem[],
   ) => void;
   removeUserOperationDetails: (chainId: number) => void;
+  resetUserOperationDetails: () => void;
   setUserOperationDevInfo: (
     chainId: number,
     info: UserOperationDevInfo[],
   ) => void;
   removeUserOperationDevInfo: (chainId: number) => void;
+  resetUserOperationDevInfo: () => void;
   setUserOperationSimulation: (
     chainId: number,
     simulation: SimulationData,
   ) => void;
   removeUserOperationSimulation: (chainId: number) => void;
+  resetUserOperationSimulation: () => void;
+  resetAll: () => void;
 };
 
 // -----------------------------------------------------------------------------
@@ -84,6 +88,10 @@ export const useUserOperations = create<UserOperationsStore>(set => ({
 
       return { userOperationDetails };
     }),
+  resetUserOperationDetails: () =>
+    set(state => {
+      return { userOperationDetails: {} };
+    }),
   setUserOperationDevInfo: (chainId, info) =>
     set(state => {
       return {
@@ -103,6 +111,10 @@ export const useUserOperations = create<UserOperationsStore>(set => ({
       delete userOperationDevInfo[chainId];
 
       return { userOperationDevInfo };
+    }),
+  resetUserOperationDevInfo: () =>
+    set(state => {
+      return { userOperationDevInfo: {} };
     }),
   setUserOperationSimulation: (chainId, simulation) =>
     set(state => {
@@ -125,5 +137,17 @@ export const useUserOperations = create<UserOperationsStore>(set => ({
       delete userOperationSimulations[chainId];
 
       return { userOperationSimulations };
+    }),
+  resetUserOperationSimulation: () =>
+    set(state => {
+      return { userOperationSimulations: {} };
+    }),
+  resetAll: () =>
+    set(state => {
+      return {
+        userOperationDetails: {},
+        userOperationDevInfo: {},
+        userOperationSimulations: {},
+      };
     }),
 }));

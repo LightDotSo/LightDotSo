@@ -15,7 +15,7 @@
 "use client";
 
 import { useUserOperationCreate } from "@lightdotso/hooks";
-import { useFormRef, useModals } from "@lightdotso/stores";
+import { useFormRef, useModals, useUserOperations } from "@lightdotso/stores";
 import { FooterButton } from "@lightdotso/templates";
 import { useRouter } from "next/navigation";
 import { type FC, useCallback } from "react";
@@ -41,6 +41,7 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
   // ---------------------------------------------------------------------------
 
   const { hideOpModal } = useModals();
+  const { resetAll } = useUserOperations();
 
   // ---------------------------------------------------------------------------
   // Next Hooks
@@ -54,6 +55,7 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
 
   const onDismiss = useCallback(() => {
     hideOpModal();
+    resetAll();
     router.back();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
