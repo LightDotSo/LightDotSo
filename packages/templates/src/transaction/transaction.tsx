@@ -159,7 +159,10 @@ export const Transaction: FC<TransactionProps> = ({
                     return simulation.interpretation.asset_changes.map(
                       (assetChange, index) => {
                         return (
-                          <AssetChange key={index} assetChange={assetChange} />
+                          <AssetChange
+                            key={`${assetChange.id}-${index}`}
+                            assetChange={assetChange}
+                          />
                         );
                       },
                     );
@@ -178,10 +181,10 @@ export const Transaction: FC<TransactionProps> = ({
                 </TabsContent>
                 <TabsContent value="details">
                   {Object.values(userOperationDetails).map((details, index) => {
-                    return details.map(item => {
+                    return details.map((item, itemIndex) => {
                       return (
                         <TransactionDetailInfo
-                          key={index}
+                          key={`${index}-${itemIndex}`}
                           title={item.title}
                           value={item.value}
                         />
@@ -211,10 +214,10 @@ export const Transaction: FC<TransactionProps> = ({
                 </TabsContent>
                 <TabsContent value="dev">
                   {Object.values(userOperationDevInfo).map((info, index) => {
-                    return info.map(item => {
+                    return info.map((item, itemIndex) => {
                       return (
                         <TransactionDevInfo
-                          key={index}
+                          key={`${index}-${itemIndex}`}
                           data={item.data}
                           title={item.title}
                           isNumber={item.isNumber}
