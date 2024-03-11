@@ -422,55 +422,24 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   }, [updatedUserOperation, address]);
 
   // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  const {
-    isUserOperationLoading,
-    isUserOperationCreatable,
-    isValidUserOperations,
-    signUserOperation,
-    // decodedCallData,
-    // decodedInitCode,
-    // paymasterHash,
-    // paymasterNonce,
-    owner,
-    subdigest,
-  } = useUserOperationCreate({
-    address: address,
-  });
-
-  // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const isLoading = useMemo(() => {
-    return (
-      isEstimateUserOperationGasDataLoading ||
-      isUserOperationLoading ||
-      isPaymasterAndDataLoading
-    );
-  }, [
-    isEstimateUserOperationGasDataLoading,
-    isUserOperationLoading,
-    isPaymasterAndDataLoading,
-  ]);
+    return isEstimateUserOperationGasDataLoading || isPaymasterAndDataLoading;
+  }, [isEstimateUserOperationGasDataLoading, isPaymasterAndDataLoading]);
 
   const isUpdating = useMemo(() => {
     return isPaymasterAndDataLoading;
   }, [isPaymasterAndDataLoading]);
 
-  const isDisabled = useMemo(() => {
-    return !isUserOperationCreatable || !isValidUserOperations || isLoading;
-  }, [isUserOperationCreatable, isValidUserOperations, isLoading]);
-
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
-  useEffect(() => {
-    setIsFormDisabled(isDisabled);
-  }, [isDisabled, setIsFormDisabled]);
+  // useEffect(() => {
+  //   setIsFormDisabled(isDisabled);
+  // }, [isDisabled, setIsFormDisabled]);
 
   useEffect(() => {
     setIsFormLoading(isLoading);
@@ -636,10 +605,10 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     //   title: "decodedCallData",
     //   data: decodedCallData,
     // },
-    {
-      title: "subdigest",
-      data: subdigest,
-    },
+    // {
+    //   title: "subdigest",
+    //   data: subdigest,
+    // },
     {
       title: "paymasterAndData",
       data: paymasterAndData,
@@ -665,20 +634,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       data: configuration?.owners,
     },
     {
-      title: "owner",
-      data: owner,
-    },
-    {
-      title: "isUserOperationCreatable",
-      data: isUserOperationCreatable,
-    },
-    {
       title: "isEstimateUserOperationGasDataLoading",
       data: isEstimateUserOperationGasDataLoading,
-    },
-    {
-      title: "isUserOperationLoading",
-      data: isUserOperationLoading,
     },
     {
       title: "isUserOperationNonceLoading",
@@ -700,10 +657,10 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       title: "isUpdating",
       data: isUpdating,
     },
-    {
-      title: "isValidUserOperations",
-      data: isValidUserOperations,
-    },
+    // {
+    //   title: "isValidUserOperations",
+    //   data: isValidUserOperations,
+    // },
     {
       title: "isWalletBillingLoading",
       data: isWalletBillingLoading,
