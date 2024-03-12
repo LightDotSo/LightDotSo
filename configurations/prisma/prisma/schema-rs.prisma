@@ -2309,26 +2309,22 @@ model Feedback {
   emoji String
 
   // ---------------------------------------------------------------------------
-  // One-to-many
-  // ---------------------------------------------------------------------------
-
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
-
-  // ---------------------------------------------------------------------------
   // None-to-one
   // ---------------------------------------------------------------------------
 
   activity   Activity? @relation(fields: [activityId], references: [id])
   activityId String?   @unique
 
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
   // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
 
   // Relations
-  @@index([userId])
   @@index([activityId])
+  @@index([userId])
 }
 
 model InviteCode {

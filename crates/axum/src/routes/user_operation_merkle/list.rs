@@ -19,6 +19,7 @@ use axum::{
     extract::{Query, State},
     Json,
 };
+use lightdotso_prisma::user_operation_merkle;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -73,6 +74,7 @@ pub(crate) async fn v1_user_operation_merkle_list_handler(
         .client
         .user_operation_merkle()
         .find_many(vec![])
+        .with(user_operation_merkle::user_operation_merkle_proofs::fetch(vec![]))
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
         .exec()
