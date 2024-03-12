@@ -25,16 +25,21 @@ use axum::{
     extract::{Query, State},
     Json,
 };
+use const_hex::hex;
 use eyre::{eyre, Result};
 use lightdotso_common::traits::{HexToBytes, VecU8ToHex};
-use lightdotso_prisma::{configuration, owner, signature, user_operation};
+use lightdotso_prisma::{
+    configuration, owner, signature, user_operation, user_operation_merkle_proof,
+};
 use lightdotso_sequence::{
     builder::rooted_node_builder,
     config::WalletConfig,
+    merkle::render_merkle,
     types::{
         AddressSignatureLeaf, ECDSASignatureLeaf, SignatureLeaf, Signer, SignerNode,
         ECDSA_SIGNATURE_LENGTH,
     },
+    utils::parse_hex_to_bytes32,
 };
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::Direction;
@@ -51,8 +56,6 @@ use utoipa::IntoParams;
 pub struct GetQuery {
     /// The user operation hash to get.
     pub user_operation_hash: String,
-    /// The type of signature to get for.
-    pub signature_type: Option<i64>,
     /// The optional configuration id that is on the current wallet.
     pub configuration_id: Option<String>,
 }
@@ -85,7 +88,6 @@ pub(crate) async fn v1_user_operation_signature_handler(
     // Get the get query.
     let Query(query) = get_query;
     let user_operation_hash = query.user_operation_hash.clone();
-    let signature_type = query.signature_type.unwrap_or(1);
 
     // -------------------------------------------------------------------------
     // DB
@@ -101,6 +103,10 @@ pub(crate) async fn v1_user_operation_signature_handler(
                 user_operation_hash,
             )])
             .with(signature::owner::fetch()),
+        )
+        .with(
+            user_operation::user_operation_merkle_proofs::fetch(vec![])
+                .order_by(user_operation_merkle_proof::index::order(Direction::Asc)),
         )
         .exec()
         .await?;
@@ -363,7 +369,14 @@ pub(crate) async fn v1_user_operation_signature_handler(
         weight: 0,
         image_hash: op_configuration.image_hash.hex_to_bytes32()?.into(),
         tree,
-        signature_type: signature_type as u8,
+        // The default signature type is chain dependent.
+        signature_type: if user_operation.clone().user_operation_merkle_proofs.unwrap().is_empty() {
+            // Chain dependent if the user operation merkle proofs is empty.
+            1
+        } else {
+            // Chain agnostic if the user operation merkle proofs is not empty.
+            2
+        },
         // Internal fields are not used in the signature.
         internal_root: None,
         internal_recovered_configs: if recovered_configs.is_empty() {
@@ -393,6 +406,42 @@ pub(crate) async fn v1_user_operation_signature_handler(
     } else {
         wallet_config.encode_chained_wallet()?.to_hex_string()
     };
+    info!(?sig);
+
+    // If a merkle proof is not empty, then the concatenated merkle proof is returned.
+    if !user_operation.clone().user_operation_merkle_proofs.unwrap().is_empty() {
+        // Get the merkle proof from the user operation.
+        let merkle_proof = user_operation
+            .clone()
+            .user_operation_merkle_proofs
+            .unwrap()
+            .iter()
+            .map(|proof| parse_hex_to_bytes32(&proof.proof))
+            .collect::<Result<Vec<[u8; 32]>>>()?;
+        info!(?merkle_proof);
+
+        // Get the merkle root from the user operation.
+        let merkle_root = parse_hex_to_bytes32(
+            &user_operation
+                .clone()
+                .user_operation_merkle_proofs
+                .unwrap()
+                .first()
+                .unwrap()
+                .user_operation_merkle_root
+                .clone(),
+        )?;
+        info!(?merkle_root);
+
+        // Decode the signature.
+        let decoded_sig = hex::decode(&sig[2..])?;
+        info!(?decoded_sig);
+
+        return Ok(Json::from(format!(
+            "0x{}",
+            hex::encode(render_merkle(merkle_root, merkle_proof, decoded_sig)?)
+        )));
+    }
 
     Ok(Json::from(sig))
 }
