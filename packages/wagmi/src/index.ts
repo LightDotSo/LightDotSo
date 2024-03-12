@@ -41,6 +41,7 @@ export {
   createStorage,
   serialize,
   useSignMessage,
+  useStorageAt,
   useAccount,
   useChainId,
   useConnectors,

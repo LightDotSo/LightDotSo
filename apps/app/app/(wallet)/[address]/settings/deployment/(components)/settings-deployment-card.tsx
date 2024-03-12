@@ -14,7 +14,10 @@
 
 "use client";
 
-import { WALLET_FACTORY_ENTRYPOINT_MAPPING } from "@lightdotso/const";
+import {
+  PROXY_IMPLEMENTAION_VERSION_MAPPING,
+  WALLET_FACTORY_ENTRYPOINT_MAPPING,
+} from "@lightdotso/const";
 import { userOperationsParser } from "@lightdotso/nuqs";
 import {
   useQueryUserOperations,
@@ -27,9 +30,10 @@ import {
   findContractAddressByAddress,
   getEtherscanUrl,
 } from "@lightdotso/utils";
+import { useStorageAt } from "@lightdotso/wagmi";
 import Link from "next/link";
 import { useMemo, type FC } from "react";
-import type { Address, Chain, Hex } from "viem";
+import { getAddress, type Address, type Chain, type Hex } from "viem";
 import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const";
 
@@ -82,6 +86,18 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   });
 
   // ---------------------------------------------------------------------------
+  // Wagmi
+  // ---------------------------------------------------------------------------
+
+  const { data: implAddressBytes32 } = useStorageAt({
+    address: address,
+    chainId: chain.id,
+    // The logic address as defined in the 1967 EIP
+    // From: https://eips.ethereum.org/EIPS/eip-1967
+    slot: "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+  });
+
+  // ---------------------------------------------------------------------------
   // Local Variables
   // ---------------------------------------------------------------------------
 
@@ -91,6 +107,26 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
+
+  const implAddress = useMemo(() => {
+    if (!implAddressBytes32) {
+      return;
+    }
+
+    // Convert the bytes32 impl address to an address
+    return getAddress(`0x${implAddressBytes32.slice(26)}`);
+  }, [implAddressBytes32]);
+
+  const implVersion = useMemo(() => {
+    if (!implAddress) {
+      return;
+    }
+
+    // Get the version of the implementation
+    return (
+      PROXY_IMPLEMENTAION_VERSION_MAPPING[implAddress as Address] ?? "Unknown"
+    );
+  }, [implAddress]);
 
   const initCode = useMemo(() => {
     if (!wallet) {
@@ -138,6 +174,8 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
       }
       footerContent={<SettingsDeploymentCardSubmitButton />}
     >
+      {implAddress}
+      {implVersion}
       {deployed_op && (
         <Button asChild variant="link">
           <a
