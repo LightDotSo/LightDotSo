@@ -31,7 +31,9 @@ export {
 export { ContractAddress } from "./contract_addresses";
 export {
   CONTRACT_ADDRESSES,
+  PROXY_IMPLEMENTAION_VERSION_MAPPING,
   WALLET_FACTORY_ENTRYPOINT_MAPPING,
+  WALLET_FACTORY_IMPLEMENTATION_MAPPING,
 } from "./contract_addresses";
 export {
   SESSION_COOKIE_ID,

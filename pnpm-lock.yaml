@@ -493,7 +493,7 @@ importers:
         specifier: ^3.1.1
         version: 3.1.1
       framer-motion:
-        specifier: ^11.0.12
+        specifier: ^11.0.8
         version: 11.0.12(react-dom@18.2.0)(react@18.2.0)
       immer:
         specifier: ^10.0.4
@@ -2793,7 +2793,7 @@ importers:
         specifier: ^0.7.0
         version: 0.7.0
       framer-motion:
-        specifier: ^11.0.12
+        specifier: ^11.0.8
         version: 11.0.12(react-dom@18.2.0)(react@18.2.0)
       lucide-react:
         specifier: ^0.356.0
@@ -3020,7 +3020,7 @@ importers:
         specifier: ^0.17.3
         version: 0.17.19
       framer-motion:
-        specifier: ^11.0.12
+        specifier: ^11.0.8
         version: 11.0.12(react-dom@18.2.0)(react@18.2.0)
       lucide-react:
         specifier: ^0.263.1
