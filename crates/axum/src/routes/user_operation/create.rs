@@ -490,17 +490,12 @@ pub(crate) async fn v1_user_operation_create_handler(
     )]
 #[autometrics]
 pub(crate) async fn v1_user_operation_create_batch_handler(
-    post_query: Query<PostQuery>,
     State(state): State<AppState>,
     Json(params): Json<UserOperationCreateBatchRequestParams>,
 ) -> AppJsonResult<Vec<UserOperation>> {
     // -------------------------------------------------------------------------
     // Parse
     // -------------------------------------------------------------------------
-
-    // Get the post query.
-    let Query(query) = post_query;
-    info!(?query);
 
     let user_operations = params.user_operations.clone();
     // let user_operation_hash = params.user_operation.clone().hash;

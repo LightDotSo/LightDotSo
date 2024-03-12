@@ -77,6 +77,7 @@ pub(crate) async fn v1_user_operation_merkle_get_handler(
         .client
         .user_operation_merkle()
         .find_unique(user_operation_merkle::root::equals(query.root))
+        .with(user_operation_merkle::user_operation_merkle_proofs::fetch(vec![]))
         .exec()
         .await?;
 
