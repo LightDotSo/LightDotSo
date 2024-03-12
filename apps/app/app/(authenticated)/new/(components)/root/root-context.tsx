@@ -173,8 +173,8 @@ export const RootContext: FC = () => {
                 <div>
                   Thank you for using Light!
                   <div className="mt-1.5 text-sm text-text-weak">
-                    We&apos;re currently in public beta. Get on waitlist here if
-                    you don&apos;t have an invite code yet.&nbsp;
+                    We&apos;re currently in private beta. Get on waitlist here
+                    if you don&apos;t have an invite code yet.&nbsp;
                     <a
                       className="underline hover:text-text-weaker"
                       href={SOCIAL_LINKS["Waitlist"]}
