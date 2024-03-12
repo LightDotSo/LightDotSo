@@ -86,7 +86,7 @@
     "blurhash": "^2.0.5",
     "class-variance-authority": "^0.7.0",
     "exponential-backoff": "^3.1.1",
-    "framer-motion": "^11.0.12",
+    "framer-motion": "^11.0.8",
     "immer": "^10.0.4",
     "kysely-postgres-js": "^2.0.0",
     "lodash": "^4.17.21",
