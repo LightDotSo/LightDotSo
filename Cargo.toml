@@ -8,7 +8,6 @@
     "crates/autometrics",
     "crates/axum",
     "crates/billing",
-    "crates/bundler",
     "crates/client",
     "crates/common",
     "crates/constants",
@@ -111,7 +110,6 @@
     lightdotso-autometrics = { path = "./crates/autometrics" }
     lightdotso-axum = { path = "./crates/axum" }
     lightdotso-billing = { path = "./crates/billing" }
-    lightdotso-bundler = { path = "./crates/bundler" }
     lightdotso-client = { path = "./crates/client" }
     lightdotso-common = { path = "./crates/common" }
     lightdotso-consumer = { path = "./crates/consumer" }

@@ -2802,27 +2802,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "enumset"
-version = "1.1.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e875f1719c16de097dee81ed675e2d9bb63096823ed3f0ca827b7dea3028bbbb"
-dependencies = [
- "enumset_derive",
-]
-
-[[package]]
-name = "enumset_derive"
-version = "0.8.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e08b6c6ab82d70f08844964ba10c7babb716de2ecaeab9be5717918a5177d3af"
-dependencies = [
- "darling 0.20.3",
- "proc-macro2",
- "quote",
- "syn 2.0.48",
-]
-
-[[package]]
 name = "equivalent"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3677,17 +3656,6 @@ name = "event-listener"
 version = "2.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0206175f82b8d6bf6652ff7d71a1e27fd2e4efde587fd368662814d6ec1d9ce0"
-
-[[package]]
-name = "expanded-pathbuf"
-version = "0.1.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5e87ea7f4db701f0c2c0be7866dd733dbf7ee82ec2e2936280699a601799f40e"
-dependencies = [
- "anyhow",
- "derive_more",
- "shellexpand 3.1.0",
-]
 
 [[package]]
 name = "eyre"
@@ -6094,7 +6062,6 @@ dependencies = [
  "http",
  "lightdotso-autometrics",
  "lightdotso-axum",
- "lightdotso-bundler",
  "lightdotso-consumer",
  "lightdotso-db",
  "lightdotso-gas",
@@ -6115,34 +6082,6 @@ dependencies = [
  "tower-http 0.4.3",
  "tower_governor",
  "vergen",
-]
-
-[[package]]
-name = "lightdotso-bundler"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "async-trait",
- "clap 4.4.0",
- "enumset",
- "ethers 2.0.9 (registry+https://github.com/rust-lang/crates.io-index)",
- "expanded-pathbuf",
- "eyre",
- "jsonrpsee",
- "lazy_static",
- "lightdotso-contracts",
- "lightdotso-jsonrpsee",
- "lightdotso-tracing",
- "lightdotso-utils",
- "pin-utils",
- "rundler-provider",
- "rundler-sim",
- "rundler-types",
- "rundler-utils",
- "serde",
- "serde_json",
- "thiserror",
- "tokio",
 ]
 
 [[package]]
@@ -10153,47 +10092,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e666a5496a0b2186dbcd0ff6106e29e093c15591bde62c20d3842007c6978a09"
 
 [[package]]
-name = "rundler-provider"
-version = "0.1.0-beta"
-source = "git+https://github.com/alchemyplatform/rundler?rev=b253c4870b069ffdc16a8ca936fe9ad24e1ac44d#b253c4870b069ffdc16a8ca936fe9ad24e1ac44d"
-dependencies = [
- "anyhow",
- "async-trait",
- "ethers 2.0.9 (registry+https://github.com/rust-lang/crates.io-index)",
- "rundler-types",
- "rundler-utils",
- "serde",
- "thiserror",
- "tokio",
-]
-
-[[package]]
-name = "rundler-sim"
-version = "0.1.0-beta"
-source = "git+https://github.com/alchemyplatform/rundler?rev=b253c4870b069ffdc16a8ca936fe9ad24e1ac44d#b253c4870b069ffdc16a8ca936fe9ad24e1ac44d"
-dependencies = [
- "anyhow",
- "arrayvec",
- "async-trait",
- "ethers 2.0.9 (registry+https://github.com/rust-lang/crates.io-index)",
- "futures-util",
- "indexmap 2.1.0",
- "parse-display",
- "rand 0.8.5",
- "reqwest",
- "rundler-provider",
- "rundler-types",
- "rundler-utils",
- "serde",
- "serde_json",
- "serde_with 3.3.0",
- "thiserror",
- "tokio",
- "tracing",
- "url",
-]
-
-[[package]]
 name = "rundler-types"
 version = "0.1.0-beta"
 source = "git+https://github.com/alchemyplatform/rundler?rev=b253c4870b069ffdc16a8ca936fe9ad24e1ac44d#b253c4870b069ffdc16a8ca936fe9ad24e1ac44d"
@@ -10341,7 +10239,7 @@ dependencies = [
  "proc-macro2",
  "quote",
  "rust-embed-utils",
- "shellexpand 2.1.2",
+ "shellexpand",
  "syn 2.0.48",
  "walkdir",
 ]
@@ -11232,15 +11130,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7ccc8076840c4da029af4f87e4e8daeb0fca6b87bbb02e10cb60b791450e11e4"
 dependencies = [
  "dirs 4.0.0",
-]
-
-[[package]]
-name = "shellexpand"
-version = "3.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "da03fa3b94cc19e3ebfc88c4229c49d8f08cdbd1228870a45f0ffdf84988e14b"
-dependencies = [
- "dirs 5.0.1",
 ]
 
 [[package]]

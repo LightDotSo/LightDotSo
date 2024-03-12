@@ -91,7 +91,6 @@ RUN apt update && apt install -y libsasl2-dev libssl3 ca-certificates
 # Copy over the binaries.
 COPY --from=builder /app/target/release/lightdotso-bin /usr/local/bin
 COPY --from=builder /app/target/release/api /usr/local/bin
-COPY --from=builder /app/target/release/bundler /usr/local/bin
 COPY --from=builder /app/target/release/cli /usr/local/bin
 COPY --from=builder /app/target/release/consumer /usr/local/bin
 COPY --from=builder /app/target/release/gas /usr/local/bin
