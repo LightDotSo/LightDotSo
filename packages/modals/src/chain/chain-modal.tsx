@@ -104,7 +104,7 @@ export function ChainModal() {
                     }}
                   >
                     <div className="flex items-center space-x-2">
-                      <ChainLogo chainId={chain.id} />
+                      <ChainLogo className="mr-2" chainId={chain.id} />
                       {chain.name}
                     </div>
                   </CommandItem>

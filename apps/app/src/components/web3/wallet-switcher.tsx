@@ -43,6 +43,7 @@ import {
   PlusCircledIcon,
   StackIcon,
 } from "@radix-ui/react-icons";
+import { HomeIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { Suspense, useCallback, useEffect, useState } from "react";
 import type { UIEvent, FC, ComponentPropsWithoutRef } from "react";
@@ -324,6 +325,16 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
             >
               <GridIcon className="mr-2 size-5" />
               All Wallets
+            </CommandItem>
+            <CommandItem
+              className="text-sm"
+              onSelect={() => {
+                setOpen(false);
+                router.push(`/?ref=address=${address}`);
+              }}
+            >
+              <HomeIcon className="mr-2 size-5" />
+              Home
             </CommandItem>
           </CommandGroup>
         </CommandList>
