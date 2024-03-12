@@ -86,7 +86,7 @@
     "blurhash": "^2.0.5",
     "class-variance-authority": "^0.7.0",
     "exponential-backoff": "^3.1.1",
-    "framer-motion": "^11.0.8",
+    "framer-motion": "^11.0.12",
     "immer": "^10.0.4",
     "kysely-postgres-js": "^2.0.0",
     "lodash": "^4.17.21",
@@ -108,7 +108,7 @@
     "siwe": "^2.1.4",
     "sonner": "^1.4.3",
     "superjson": "^2.2.1",
-    "viem": "^2.8.4",
+    "viem": "^2.8.5",
     "zod": "^3.22.4",
     "zustand": "^4.5.2"
   },
