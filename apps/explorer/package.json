@@ -64,7 +64,7 @@
     "react-error-boundary": "^4.0.13",
     "server-only": "^0.0.1",
     "superjson": "^2.2.1",
-    "viem": "^2.8.4"
+    "viem": "^2.8.5"
   },
   "devDependencies": {
     "@lightdotso/eslint-config": "workspace:*",
