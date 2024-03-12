@@ -589,8 +589,8 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
     let sig_bytes = sig.signature.hex_to_bytes()?;
 
     let subdigest = render_subdigest(
-        // Hardcode to 2 because it's a chain agnostic operation
-        2_u64,
+        // Hardcode to 0 because it's a chain agnostic operation
+        0_u64,
         sender_address,
         params.merkle_root.hex_to_bytes32()?,
     )?;
