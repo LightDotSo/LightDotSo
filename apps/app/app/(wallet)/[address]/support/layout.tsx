@@ -62,3 +62,9 @@ export default function SupportLayout({ children }: SupportLayoutProps) {
     </BannerSection>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Data
+// -----------------------------------------------------------------------------
+
+export const revalidate = 300;

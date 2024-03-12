@@ -61,3 +61,9 @@ export default function WalletsLayout({ children }: WalletsLayoutProps) {
     </BannerSection>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Data
+// -----------------------------------------------------------------------------
+
+export const revalidate = 300;

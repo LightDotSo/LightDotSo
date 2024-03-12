@@ -34,8 +34,6 @@ export const getWalletFeatures = async (
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/features/get", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -68,8 +66,6 @@ export const updateWalletFeatures = async (
 
   return ResultAsync.fromPromise(
     client.PUT("/wallet/features/update", {
-      // @ts-ignore
-      next: { revalidate: 0 },
       params,
       body,
     }),

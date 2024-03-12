@@ -34,8 +34,6 @@ export const getPaymasterOperation = async (
 
   return ResultAsync.fromPromise(
     client.GET("/paymaster_operation/get", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),

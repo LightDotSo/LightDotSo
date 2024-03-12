@@ -41,8 +41,6 @@ export const getActivities = async (
 
   return ResultAsync.fromPromise(
     client.GET("/activity/list", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -70,8 +68,6 @@ export const getActivitiesCount = async (
 
   return ResultAsync.fromPromise(
     client.GET("/activity/list/count", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),

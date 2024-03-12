@@ -25,8 +25,6 @@ export const getNonce = async (params?: {}, clientType?: ClientType) => {
 
   return ResultAsync.fromPromise(
     client.GET("/auth/nonce", {
-      // @ts-ignore
-      next: { revalidate: 0 },
       params,
     }),
     () => new Error("Database error"),
@@ -40,8 +38,6 @@ export const getAuthSession = async (params?: {}, clientType?: ClientType) => {
 
   return ResultAsync.fromPromise(
     client.GET("/auth/session", {
-      // @ts-ignore
-      next: { revalidate: 0 },
       params,
     }),
     () => new Error("Database error"),
@@ -59,8 +55,6 @@ export const authLogout = async (params?: {}, clientType?: ClientType) => {
 
   return ResultAsync.fromPromise(
     client.POST("/auth/logout", {
-      // @ts-ignore
-      next: { revalidate: 0 },
       params,
     }),
     () => new Error("Database error"),
@@ -88,8 +82,6 @@ export const authVerify = async (
 
   return ResultAsync.fromPromise(
     client.POST("/auth/verify", {
-      // @ts-ignore
-      next: { revalidate: 0 },
       params,
       body,
     }),

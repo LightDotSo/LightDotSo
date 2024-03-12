@@ -34,8 +34,6 @@ export const getUserOperation = async (
 
   return ResultAsync.fromPromise(
     client.GET("/user_operation/get", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -68,12 +66,15 @@ export const getUserOperationNonce = async (
   });
 };
 
-export const getSignatureUserOperation = async (
+export const getUserOperationSignature = async (
   {
     params,
   }: {
     params: {
-      query: { user_operation_hash: string };
+      query: {
+        user_operation_hash: string;
+        configuration_id?: string | null | undefined;
+      };
     };
   },
   clientType?: ClientType,
@@ -125,8 +126,6 @@ export const getUserOperations = async (
 
   return ResultAsync.fromPromise(
     client.GET("/user_operation/list", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -164,8 +163,6 @@ export const getUserOperationsCount = async (
 
   return ResultAsync.fromPromise(
     client.GET("/user_operation/list/count", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -230,6 +227,55 @@ export const createUserOperation = async (
   });
 };
 
+export const createBatchUserOperation = async (
+  {
+    params,
+    body,
+  }: {
+    params: {};
+    body: {
+      paymaster?: {
+        address: string;
+        sender: string;
+        sender_nonce: number;
+      };
+      merkle_root: string;
+      signature: {
+        owner_id: string;
+        signature: string;
+        signature_type: number;
+      };
+      user_operations: {
+        chain_id: number;
+        call_data: string;
+        call_gas_limit: number;
+        hash: string;
+        init_code: string;
+        max_fee_per_gas: number;
+        max_priority_fee_per_gas: number;
+        nonce: number;
+        paymaster_and_data: string;
+        pre_verification_gas: number;
+        sender: string;
+        verification_gas_limit: number;
+      }[];
+    };
+  },
+  clientType?: ClientType,
+) => {
+  const client = getClient(clientType);
+
+  return ResultAsync.fromPromise(
+    client.POST("/user_operation/create/batch", {
+      params,
+      body,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
 // -----------------------------------------------------------------------------
 // PUT
 // -----------------------------------------------------------------------------
@@ -248,8 +294,6 @@ export const updateUserOperation = async (
 
   return ResultAsync.fromPromise(
     client.PUT("/user_operation/update", {
-      // @ts-ignore
-      next: { revalidate: 0 },
       params,
     }),
     () => new Error("Database error"),

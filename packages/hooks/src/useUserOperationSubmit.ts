@@ -129,6 +129,7 @@ export const useUserOperationSubmit = ({
   } = useMutationUserOperationSend({
     address,
     is_testnet,
+    chain_id: userOperation.chain_id,
   });
 
   // ---------------------------------------------------------------------------

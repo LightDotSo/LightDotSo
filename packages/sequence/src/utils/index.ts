@@ -14,4 +14,5 @@
 
 export { calculateImageHash } from "./calculateImageHash";
 export { calculateInitCode } from "./calculateInitCode";
+export { hashSetImageHash } from "./hashSetImageHash";
 export { subdigestOf } from "./subdigestOf";

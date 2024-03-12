@@ -51,13 +51,17 @@ type InviteCodeValues = z.infer<typeof inviteCodeSchema>;
 
 type InviteCodeFormProps = {
   name: string;
+  initialInviteCode?: string;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const InviteCodeForm: FC<InviteCodeFormProps> = ({ name }) => {
+export const InviteCodeForm: FC<InviteCodeFormProps> = ({
+  name,
+  initialInviteCode,
+}) => {
   // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------
@@ -137,6 +141,10 @@ export const InviteCodeForm: FC<InviteCodeFormProps> = ({ name }) => {
 
   // Only on mount
   useEffect(() => {
+    if (initialInviteCode) {
+      form.setValue(name, initialInviteCode);
+    }
+
     syncWithParent();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

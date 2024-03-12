@@ -15,6 +15,11 @@
 export type { ActivityListParams, ActivityListCountParams } from "./activity";
 export type { AuthParams, AuthVerifyBodyParams } from "./auth";
 export type { ConfigurationParams } from "./configuration";
+export type {
+  ConfigurationOperationParams,
+  ConfigurationOperationSimulationParams,
+  ConfigurationOperationCreateBodyParams,
+} from "./configurationOperation";
 export type { EnsListParams } from "./ens";
 export type { FeedbackParams, FeedbackCreateBodyParams } from "./feedback";
 export type { NftListParams } from "./nft";
@@ -28,7 +33,9 @@ export type { PaymasterOperationGetParams } from "./paymasterOperation";
 export type { PortfolioParams } from "./portfolio";
 export type {
   QueueParams,
+  QueueMinimalParams,
   QueueInterpretationBodyParams,
+  QueueTransactionBodyParams,
   QueueUserOpeartionBodyParams,
 } from "./queue";
 export type { SignatureParams, SignatureCreateBodyParams } from "./signature";
@@ -45,9 +52,11 @@ export type {
   UserOperationParams,
   UserOperationGetParams,
   UserOperationNonceParams,
+  UserOperationSendParams,
   UserOperationListParams,
   UserOperationListCountParams,
   UserOperationCreateBodyParams,
+  UserOperationCreateBatchBodyParams,
   UserOperationUpdateBodyParams,
   UserOperationSendBodyParams,
 } from "./userOperation";

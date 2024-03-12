@@ -164,6 +164,13 @@ export interface paths {
      */
     get: operations["v1_configuration_list_handler"];
   };
+  "/configuration_operation/create": {
+    /**
+     * Create a configuration signature
+     * @description Create a configuration signature
+     */
+    post: operations["v1_configuration_operation_create_handler"];
+  };
   "/configuration_operation/get": {
     /**
      * Get a configuration_operation
@@ -185,40 +192,47 @@ export interface paths {
      */
     get: operations["v1_configuration_operation_list_count_handler"];
   };
-  "/configuration_owner/get": {
-    /**
-     * Get a owner
-     * @description Get a owner
-     */
-    get: operations["v1_configuration_owner_get_handler"];
-  };
-  "/configuration_owner/list": {
-    /**
-     * Returns a list of owners
-     * @description Returns a list of owners
-     */
-    get: operations["v1_configuration_owner_list_handler"];
-  };
-  "/configuration_signature/create": {
+  "/configuration_operation/update": {
     /**
      * Create a configuration signature
      * @description Create a configuration signature
      */
-    post: operations["v1_configuration_signature_create_handler"];
+    put: operations["v1_configuration_operation_update_handler"];
   };
-  "/configuration_signature/get": {
+  "/configuration_operation_owner/get": {
+    /**
+     * Get a owner
+     * @description Get a owner
+     */
+    get: operations["v1_configuration_operation_owner_get_handler"];
+  };
+  "/configuration_operation_owner/list": {
+    /**
+     * Returns a list of owners
+     * @description Returns a list of owners
+     */
+    get: operations["v1_configuration_operation_owner_list_handler"];
+  };
+  "/configuration_operation_signature/create": {
+    /**
+     * Create a configuration signature
+     * @description Create a configuration signature
+     */
+    post: operations["v1_configuration_operation_signature_create_handler"];
+  };
+  "/configuration_operation_signature/get": {
     /**
      * Get a signature
      * @description Get a signature
      */
-    get: operations["v1_configuration_signature_get_handler"];
+    get: operations["v1_configuration_operation_signature_get_handler"];
   };
-  "/configuration_signature/list": {
+  "/configuration_operation_signature/list": {
     /**
      * Returns a list of signatures
      * @description Returns a list of signatures
      */
-    get: operations["v1_configuration_signature_list_handler"];
+    get: operations["v1_configuration_operation_signature_list_handler"];
   };
   "/feedback/create": {
     /**
@@ -451,6 +465,13 @@ export interface paths {
      */
     post: operations["v1_queue_token_handler"];
   };
+  "/queue/transaction": {
+    /**
+     * Queue transaction handler
+     * @description Queue transaction handler
+     */
+    post: operations["v1_queue_transaction_handler"];
+  };
   "/queue/user_operation": {
     /**
      * Queue user operation handler
@@ -633,6 +654,13 @@ export interface paths {
      */
     post: operations["v1_user_operation_create_handler"];
   };
+  "/user_operation/create/batch": {
+    /**
+     * Create a user operation
+     * @description Create a user operation
+     */
+    post: operations["v1_user_operation_create_batch_handler"];
+  };
   "/user_operation/get": {
     /**
      * Get a user operation
@@ -674,6 +702,41 @@ export interface paths {
      * @description Get a user operation
      */
     put: operations["v1_user_operation_update_handler"];
+  };
+  "/user_operation_merkle/create": {
+    /**
+     * Create a user operation merkle
+     * @description Create a user operation merkle
+     */
+    post: operations["v1_user_operation_merkle_create_handler"];
+  };
+  "/user_operation_merkle/get": {
+    /**
+     * Get a protocol group
+     * @description Get a protocol group
+     */
+    get: operations["v1_user_operation_merkle_get_handler"];
+  };
+  "/user_operation_merkle/list": {
+    /**
+     * Returns a list of protocol groups
+     * @description Returns a list of protocol groups
+     */
+    get: operations["v1_user_operation_merkle_list_handler"];
+  };
+  "/user_operation_merkle_proof/get": {
+    /**
+     * Get a user operation merkle proof
+     * @description Get a user operation merkle proof
+     */
+    get: operations["v1_user_operation_merkle_proof_get_handler"];
+  };
+  "/user_operation_merkle_proof/list": {
+    /**
+     * Returns a list of user operation merkle proofs
+     * @description Returns a list of user operation merkle proofs
+     */
+    get: operations["v1_user_operation_merkle_proof_list_handler"];
   };
   "/wallet/billing/get": {
     /**
@@ -862,6 +925,11 @@ export interface components {
       /** @description The authenticated status. */
       is_authenticated: boolean;
     };
+    /** @description Auth success response. */
+    AuthSuccess: {
+      /** @description User logged out successfully. */
+      Logout: string;
+    };
     AuthVerifyCreateRequestParams: {
       message: string;
       signature: string;
@@ -912,6 +980,8 @@ export interface components {
        */
       count: number;
     };
+    /** @enum {string} */
+    BillingQueryStatus: "sponsored" | "user";
     BillingUpdateRequestParams: {
       /**
        * Format: double
@@ -962,7 +1032,7 @@ export interface components {
       /** @description The image hash of the configuration. */
       image_hash: string;
       /** @description The owners of the configuration. */
-      owners: components["schemas"]["ConfigurationOwner"][];
+      owners: components["schemas"]["ConfigurationOperationOwner"][];
       /**
        * Format: int64
        * @description The threshold of the configuration.
@@ -979,8 +1049,59 @@ export interface components {
     }]>;
     /** @description ConfigurationOperation root type. */
     ConfigurationOperation: {
-      /** @description The id of the paymaster operation. */
+      /**
+       * Format: int64
+       * @description The checkpoint of the configuration operation.
+       */
+      checkpoint: number;
+      /** @description The id of the configuration operation. */
       id: string;
+      /** @description The image hash of the configuration operation. */
+      image_hash: string;
+      /** @description The status of the configuration operation. */
+      status: string;
+      /**
+       * Format: int64
+       * @description The threshold of the configuration operation.
+       */
+      threshold: number;
+    };
+    /**
+     * @description Wallet owner.
+     * @example {
+     *   "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
+     *   "weight": 1
+     * }
+     */
+    ConfigurationOperationCreateOwnerParams: {
+      /** @description The address of the owner. */
+      address: string;
+      /**
+       * Format: int32
+       * @description The weight of the owner.
+       */
+      weight: number;
+    };
+    /** @description Signature operation post request params */
+    ConfigurationOperationCreateRequestParams: {
+      /**
+       * @description The array of owners of the wallet.
+       * @example [
+       *   {
+       *     "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
+       *     "weight": 1
+       *   }
+       * ]
+       */
+      owners: components["schemas"]["ConfigurationOperationCreateOwnerParams"][];
+      signature: components["schemas"]["ConfigurationOperationSignatureCreateParams"];
+      /**
+       * Format: int32
+       * @description The threshold of the wallet.
+       * @default 1
+       * @example 3
+       */
+      threshold: number;
     };
     /** @description ConfigurationOperation errors */
     ConfigurationOperationError: OneOf<[{
@@ -999,7 +1120,7 @@ export interface components {
       count: number;
     };
     /** @description Owner root type. */
-    ConfigurationOwner: {
+    ConfigurationOperationOwner: {
       /** @description The address of the owner. */
       address: string;
       /** @description The id of the owner. */
@@ -1011,7 +1132,7 @@ export interface components {
       weight: number;
     };
     /** @description Configuration owner operation errors */
-    ConfigurationOwnerError: OneOf<[{
+    ConfigurationOperationOwnerError: OneOf<[{
       /** @description Owner query error. */
       BadRequest: string;
     }, {
@@ -1019,38 +1140,40 @@ export interface components {
       NotFound: string;
     }]>;
     /** @description Signature root type. */
-    ConfigurationSignature: {
-      /** @description The id of the owner of the signature. */
-      configuration_owner_id: string;
+    ConfigurationOperationSignature: {
       /** @description The created time of the signature. */
       created_at: string;
+      /** @description The id of the owner of the signature. */
+      owner_id: string;
       /** @description The signature of the user operation in hex. */
       signature: string;
     };
     /** @description Signature operation */
-    ConfigurationSignatureCreateParams: {
+    ConfigurationOperationSignatureCreateParams: {
       /** @description The id of the owner of the signature. */
-      configuration_owner_id: string;
+      owner_id: string;
       /** @description The signature of the user operation in hex. */
       signature: string;
-      /**
-       * Format: int32
-       * @description The type of the signature.
-       */
-      signature_type: number;
     };
     /** @description Signature operation post request params */
-    ConfigurationSignatureCreateRequestParams: {
-      signature: components["schemas"]["ConfigurationSignatureCreateParams"];
+    ConfigurationOperationSignatureCreateRequestParams: {
+      signature: components["schemas"]["ConfigurationOperationSignatureSignatureCreateParams"];
     };
-    /** @description ConfigurationSignature operation errors */
-    ConfigurationSignatureError: OneOf<[{
-      /** @description ConfigurationSignature query error. */
+    /** @description ConfigurationOperationSignature operation errors */
+    ConfigurationOperationSignatureError: OneOf<[{
+      /** @description ConfigurationOperationSignature query error. */
       BadRequest: string;
     }, {
-      /** @description ConfigurationSignature not found by id. */
+      /** @description ConfigurationOperationSignature not found by id. */
       NotFound: string;
     }]>;
+    /** @description Signature operation */
+    ConfigurationOperationSignatureSignatureCreateParams: {
+      /** @description The id of the owner of the signature. */
+      owner_id: string;
+      /** @description The signature of the user operation in hex. */
+      signature: string;
+    };
     /** @description Feedback root type. */
     Feedback: {
       /** @description The emoji of the feedback. */
@@ -1326,6 +1449,9 @@ export interface components {
     }, {
       /** @description Queue rate limit exceeded. */
       RateLimitExceeded: string;
+    }, {
+      /** @description Provider error. */
+      ProviderError: string;
     }]>;
     /** @description Queue success response. */
     QueueSuccess: {
@@ -1695,6 +1821,11 @@ export interface components {
        */
       verification_gas_limit: number;
     };
+    UserOperationCreateBatchRequestParams: {
+      merkle_root: string;
+      signature: components["schemas"]["SignatureCreateParams"];
+      user_operations: components["schemas"]["UserOperationCreateParams"][];
+    };
     /** @description Item to create. */
     UserOperationCreateParams: {
       call_data: string;
@@ -1736,6 +1867,35 @@ export interface components {
        */
       count: number;
     };
+    /** @description UserOperationMerkle root type. */
+    UserOperationMerkle: {
+      /** @description The root of the merkle tree. */
+      root: string;
+    };
+    /** @description UserOperationMerkle errors */
+    UserOperationMerkleError: OneOf<[{
+      /** @description UserOperationMerkle query error. */
+      BadRequest: string;
+    }, {
+      /** @description UserOperationMerkle not found by id. */
+      NotFound: string;
+    }, {
+      /** @description UserOperationMerkle unauthorized. */
+      Unauthorized: string;
+    }]>;
+    /** @description UserOperationMerkleProof root type. */
+    UserOperationMerkleProof: {
+      /** @description The id of the user operation merkle proof. */
+      id: string;
+    };
+    /** @description UserOperationMerkleProof errors */
+    UserOperationMerkleProofError: OneOf<[{
+      /** @description UserOperationMerkleProof query error. */
+      BadRequest: string;
+    }, {
+      /** @description UserOperationMerkleProof not found by id. */
+      NotFound: string;
+    }]>;
     /** @description Nonce */
     UserOperationNonce: {
       /**
@@ -1761,6 +1921,14 @@ export interface components {
       /** @description UserSettings not found by id. */
       NotFound: string;
     }]>;
+    /** @description Optional UserSettings root type. */
+    UserSettingsOptional: {
+      /** @description The update query of user_settings of whether the testnet is enabled. */
+      is_enabled_testnet?: boolean | null;
+    };
+    UserSettingsUpdateRequestParams: {
+      user_settings: components["schemas"]["UserSettingsOptional"];
+    };
     /** @description Wallet root type. */
     Wallet: {
       /** @description The address of the wallet. */
@@ -2411,11 +2579,6 @@ export interface operations {
         is_testnet: boolean;
       };
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["ChainCreateRequestParams"];
-      };
-    };
     responses: {
       /** @description Chain created successfully */
       200: {
@@ -2537,6 +2700,8 @@ export interface operations {
       query: {
         /** @description The address of the configuration to query. */
         address: string;
+        /** @description The optional image_hash to filter by. */
+        image_hash?: string | null;
         /** @description The optional checkpoint to filter by. */
         checkpoint?: number | null;
       };
@@ -2580,6 +2745,51 @@ export interface operations {
       500: {
         content: {
           "application/json": components["schemas"]["ConfigurationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Create a configuration signature
+   * @description Create a configuration signature
+   */
+  v1_configuration_operation_create_handler: {
+    parameters: {
+      query: {
+        /** @description The address of the wallet. */
+        address: string;
+        /** @description Whether to simulate the configuration operation. */
+        simulate?: boolean | null;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ConfigurationOperationCreateRequestParams"];
+      };
+    };
+    responses: {
+      /** @description Signature created successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ConfigurationOperation"];
+        };
+      };
+      /** @description Invalid Configuration */
+      400: {
+        content: {
+          "application/json": components["schemas"]["ConfigurationOperationError"];
+        };
+      };
+      /** @description Signature already exists */
+      409: {
+        content: {
+          "application/json": components["schemas"]["ConfigurationOperationError"];
+        };
+      };
+      /** @description Signature internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["ConfigurationOperationError"];
         };
       };
     };
@@ -2674,26 +2884,58 @@ export interface operations {
     };
   };
   /**
+   * Create a configuration signature
+   * @description Create a configuration signature
+   */
+  v1_configuration_operation_update_handler: {
+    parameters: {
+      query: {
+        /** @description The operation of the configuration. */
+        configuration_operation_id: string;
+      };
+    };
+    responses: {
+      /** @description Configuration operation updated successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ConfigurationOperation"];
+        };
+      };
+      /** @description Invalid Configuration */
+      400: {
+        content: {
+          "application/json": components["schemas"]["SignatureError"];
+        };
+      };
+      /** @description Configuration operation internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["SignatureError"];
+        };
+      };
+    };
+  };
+  /**
    * Get a owner
    * @description Get a owner
    */
-  v1_configuration_owner_get_handler: {
+  v1_configuration_operation_owner_get_handler: {
     parameters: {
       query: {
         id: string;
       };
     };
     responses: {
-      /** @description ConfigurationOwner returned successfully */
+      /** @description ConfigurationOperationOwner returned successfully */
       200: {
         content: {
-          "application/json": components["schemas"]["ConfigurationOwner"];
+          "application/json": components["schemas"]["ConfigurationOperationOwner"];
         };
       };
-      /** @description ConfigurationOwner not found */
+      /** @description ConfigurationOperationOwner not found */
       404: {
         content: {
-          "application/json": components["schemas"]["ConfigurationOwnerError"];
+          "application/json": components["schemas"]["ConfigurationOperationOwnerError"];
         };
       };
     };
@@ -2702,7 +2944,7 @@ export interface operations {
    * Returns a list of owners
    * @description Returns a list of owners
    */
-  v1_configuration_owner_list_handler: {
+  v1_configuration_operation_owner_list_handler: {
     parameters: {
       query?: {
         /** @description The offset of the first owner to return. */
@@ -2712,16 +2954,16 @@ export interface operations {
       };
     };
     responses: {
-      /** @description ConfigurationOwners returned successfully */
+      /** @description Configuration Operation Owners returned successfully */
       200: {
         content: {
-          "application/json": components["schemas"]["ConfigurationOwner"][];
+          "application/json": components["schemas"]["ConfigurationOperationOwner"][];
         };
       };
-      /** @description ConfigurationOwners bad request */
+      /** @description Configuration Operation Owners bad request */
       500: {
         content: {
-          "application/json": components["schemas"]["ConfigurationOwnerError"];
+          "application/json": components["schemas"]["ConfigurationOperationOwnerError"];
         };
       };
     };
@@ -2730,7 +2972,7 @@ export interface operations {
    * Create a configuration signature
    * @description Create a configuration signature
    */
-  v1_configuration_signature_create_handler: {
+  v1_configuration_operation_signature_create_handler: {
     parameters: {
       query: {
         /** @description The operation of the configuration. */
@@ -2739,7 +2981,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["ConfigurationSignatureCreateRequestParams"];
+        "application/json": components["schemas"]["ConfigurationOperationSignatureCreateRequestParams"];
       };
     };
     responses: {
@@ -2773,26 +3015,26 @@ export interface operations {
    * Get a signature
    * @description Get a signature
    */
-  v1_configuration_signature_get_handler: {
+  v1_configuration_operation_signature_get_handler: {
     parameters: {
       query: {
         /** @description The configuration operation id of the signature. */
         configuration_operation_id: string;
         /** @description The configuration owner of the signature. */
-        configuration_owner_id: string;
+        owner_id: string;
       };
     };
     responses: {
-      /** @description Configuration Signature returned successfully */
+      /** @description Configuration Operation Signature returned successfully */
       200: {
         content: {
-          "application/json": components["schemas"]["ConfigurationSignature"];
+          "application/json": components["schemas"]["ConfigurationOperationSignature"];
         };
       };
-      /** @description Configuration Signature not found */
+      /** @description Configuration Operation Signature not found */
       404: {
         content: {
-          "application/json": components["schemas"]["ConfigurationSignatureError"];
+          "application/json": components["schemas"]["ConfigurationOperationSignatureError"];
         };
       };
     };
@@ -2801,7 +3043,7 @@ export interface operations {
    * Returns a list of signatures
    * @description Returns a list of signatures
    */
-  v1_configuration_signature_list_handler: {
+  v1_configuration_operation_signature_list_handler: {
     parameters: {
       query?: {
         /** @description The offset of the first signature to return. */
@@ -2816,13 +3058,13 @@ export interface operations {
       /** @description Configuration Signatures returned successfully */
       200: {
         content: {
-          "application/json": components["schemas"]["ConfigurationSignature"][];
+          "application/json": components["schemas"]["ConfigurationOperationSignature"][];
         };
       };
       /** @description Configuration Signature bad request */
       500: {
         content: {
-          "application/json": components["schemas"]["ConfigurationSignatureError"];
+          "application/json": components["schemas"]["ConfigurationOperationSignatureError"];
         };
       };
     };
@@ -3708,6 +3950,34 @@ export interface operations {
     };
   };
   /**
+   * Queue transaction handler
+   * @description Queue transaction handler
+   */
+  v1_queue_transaction_handler: {
+    parameters: {
+      query: {
+        /** @description The transaction hash of the target queue. */
+        hash: string;
+        /** @description The chain id of the target queue. */
+        chain_id: number;
+      };
+    };
+    responses: {
+      /** @description Queue created successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["QueueSuccess"];
+        };
+      };
+      /** @description Queue internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["QueueError"];
+        };
+      };
+    };
+  };
+  /**
    * Queue user operation handler
    * @description Queue user operation handler
    */
@@ -4521,6 +4791,43 @@ export interface operations {
     };
   };
   /**
+   * Create a user operation
+   * @description Create a user operation
+   */
+  v1_user_operation_create_batch_handler: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UserOperationCreateBatchRequestParams"];
+      };
+    };
+    responses: {
+      /** @description User Operation created successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserOperation"][];
+        };
+      };
+      /** @description Invalid Configuration */
+      400: {
+        content: {
+          "application/json": components["schemas"]["UserOperationError"];
+        };
+      };
+      /** @description User Operation already exists */
+      409: {
+        content: {
+          "application/json": components["schemas"]["UserOperationError"];
+        };
+      };
+      /** @description User Operation internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["UserOperationError"];
+        };
+      };
+    };
+  };
+  /**
    * Get a user operation
    * @description Get a user operation
    */
@@ -4667,6 +4974,8 @@ export interface operations {
         user_operation_hash: string;
         /** @description The type of signature to get for. */
         signature_type?: number | null;
+        /** @description The optional configuration id that is on the current wallet. */
+        configuration_id?: string | null;
       };
     };
     responses: {
@@ -4706,6 +5015,138 @@ export interface operations {
       404: {
         content: {
           "application/json": components["schemas"]["UserOperationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Create a user operation merkle
+   * @description Create a user operation merkle
+   */
+  v1_user_operation_merkle_create_handler: {
+    parameters: {
+      query: {
+        /** @description The root of the merkle root to post for. */
+        user_operation_merkle_root: string;
+      };
+    };
+    responses: {
+      /** @description User operation merkle created successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserOperationMerkle"];
+        };
+      };
+      /** @description User operation merkle internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["UserOperationMerkleError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a protocol group
+   * @description Get a protocol group
+   */
+  v1_user_operation_merkle_get_handler: {
+    parameters: {
+      query: {
+        root: string;
+      };
+    };
+    responses: {
+      /** @description Protocola group returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserOperationMerkle"];
+        };
+      };
+      /** @description Protocola group not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["UserOperationMerkleError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of protocol groups
+   * @description Returns a list of protocol groups
+   */
+  v1_user_operation_merkle_list_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first protocol group to return. */
+        offset?: number | null;
+        /** @description The maximum number of protocol groups to return. */
+        limit?: number | null;
+      };
+    };
+    responses: {
+      /** @description Protocol groups returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserOperationMerkle"][];
+        };
+      };
+      /** @description Protocol group bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["UserOperationMerkleError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a user operation merkle proof
+   * @description Get a user operation merkle proof
+   */
+  v1_user_operation_merkle_proof_get_handler: {
+    parameters: {
+      query: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description User operation merkle proof returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserOperationMerkleProof"];
+        };
+      };
+      /** @description User operation merkle proof not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["UserOperationMerkleProofError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of user operation merkle proofs
+   * @description Returns a list of user operation merkle proofs
+   */
+  v1_user_operation_merkle_proof_list_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first User operation merkle proof to return. */
+        offset?: number | null;
+        /** @description The maximum number of User operation merkle proofs to return. */
+        limit?: number | null;
+      };
+    };
+    responses: {
+      /** @description User operation merkle proofs returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserOperationMerkleProof"][];
+        };
+      };
+      /** @description User operation merkle proofs bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["UserOperationMerkleProofError"];
         };
       };
     };

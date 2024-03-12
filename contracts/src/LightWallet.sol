@@ -182,26 +182,33 @@ contract LightWallet is
         // This enables batch execution of transactions across chains
         // Modeled after the work of @bcnmy's MultichainECDSAValidator
         if (signatureType == 0x04) {
-            (bytes32 merkleTreeRoot, bytes32[] memory merkleProof,) =
-                abi.decode(userOp.signature, (bytes32, bytes32[], bytes));
+            (bytes32 merkleTreeRoot, bytes32[] memory merkleProof, bytes memory merkleSignature) =
+                abi.decode(userOp.signature[1:], (bytes32, bytes32[], bytes));
 
             // Verify the corresponding merkle proof for the userOpHash
             if (!MerkleProof.verify(merkleProof, merkleTreeRoot, userOpHash)) {
-                revert InvalidSignatureType(signatureType);
+                revert InvalidMerkleProof(merkleTreeRoot, userOpHash);
             }
 
-            // Get the bit length of the actual signature
+            // Get the offset of the actual signature
             // Hardcoded to the corresponding length depending on the merkleProof length
-            uint256 bitAfter = 320 + merkleProof.length * 64 + 1;
-            (bool isValid,) = _signatureValidation(merkleTreeRoot, userOp.signature[bitAfter:]);
+            // 1st part is the bytes32 merkleTreeRoot
+            // 2nd part is the offset of the bytes32[] merkleProof
+            // 3rd part is the offset of the bytes merkleSignature
+            // 4th part is the length of the bytes32[] merkleProof, and the contents of the array (32 bytes each)
+            // 5th part is the length of the bytes merkleSignature
+            // 1byte is added to the offset to account for the signatureType
+            uint256 offset = 161 + merkleProof.length * 32;
+            (bool isValid,) =
+                _signatureValidation(merkleTreeRoot, userOp.signature[offset:offset + merkleSignature.length]);
             if (!isValid) {
                 return SIG_VALIDATION_FAILED;
             }
             return 0;
         }
 
-        // Revert if the signature type is not supported
-        revert InvalidSignatureType(signatureType);
+        // Return an error if the signature type is not recognized
+        return SIG_VALIDATION_FAILED;
     }
 
     /// @notice Executes a call to a target contract with specified value and data.

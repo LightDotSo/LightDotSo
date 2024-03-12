@@ -54,11 +54,11 @@ mod tests {
     #[test]
     fn test_get_address() -> Result<()> {
         let hash: H256 =
-            "0xb7f285c774a1c925209bebaab24662b22e7cf32e2f7a412bfcb1bf52294b9ed6".parse()?;
+            "0x3c01efabf2ce62868626005b468fcc0cd03c644030e51dad0d5df74b0fbd4e95".parse()?;
         let nonce: H256 =
-            "0x0000000000000000000000000000000000000000000000000000000000000001".parse()?;
+            "0x0000000000000000000000000000000000000000000000000000018e21cdb159".parse()?;
 
-        let expected: Address = "0x10DbbE70128929723c1b982e53c51653232e4Ff2".parse()?;
+        let expected: Address = "0xc0d0a645fba3a5f761042fa1d5002491c0e515ac".parse()?;
 
         assert_eq!(expected, get_address(hash, nonce)?);
 

@@ -15,16 +15,18 @@
 "use client";
 
 import type { OwnerData } from "@lightdotso/data";
+import { useCopy } from "@lightdotso/hooks";
 import {
   Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
+  toast,
 } from "@lightdotso/ui";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import type { Row } from "@tanstack/react-table";
+import { useCallback } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -38,7 +40,22 @@ interface OwnerTableRowActionsProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export function OwnerTableRowActions({ row: _ }: OwnerTableRowActionsProps) {
+export function OwnerTableRowActions({ row }: OwnerTableRowActionsProps) {
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const [, copy] = useCopy();
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  const handleCopyClick = useCallback(() => {
+    copy(row.original.address);
+    toast.success("Copied to clipboard!");
+  }, [row, copy]);
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -56,12 +73,17 @@ export function OwnerTableRowActions({ row: _ }: OwnerTableRowActionsProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[160px]">
-          <DropdownMenuItem>Copy Address</DropdownMenuItem>
-          <DropdownMenuItem>
-            Delete
-            <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+          <DropdownMenuItem onClick={handleCopyClick}>
+            Copy Address
           </DropdownMenuItem>
         </DropdownMenuContent>
+        {false && (
+          <DropdownMenuContent align="end" className="w-[160px]">
+            <DropdownMenuItem onClick={handleCopyClick}>
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        )}
       </DropdownMenu>
     </div>
   );

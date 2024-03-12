@@ -49,6 +49,7 @@ test("LightWallet: Correct humanReadableAbi", () => {
       "constructor(address anEntryPoint)",
       "error EmptySignature()",
       "error ImageHashIsZero()",
+      "error InvalidMerkleProof(bytes32 root, bytes32 leaf)",
       "error InvalidNestedSignature(bytes32 _hash, address _addr, bytes _signature)",
       "error InvalidSValue(bytes _signature, bytes32 _s)",
       "error InvalidSignatureFlag(uint256 _flag)",

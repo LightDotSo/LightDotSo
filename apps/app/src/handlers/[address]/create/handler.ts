@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { CONTRACT_ADDRESSES } from "@lightdotso/const";
+import { WALLET_FACTORY_ENTRYPOINT_MAPPING } from "@lightdotso/const";
 import type { ConfigurationData } from "@lightdotso/data";
 import { userOperationsParser } from "@lightdotso/nuqs";
 import type { UserOperation } from "@lightdotso/schemas";
@@ -23,6 +23,7 @@ import {
   getUserOperations,
   getWallet,
 } from "@lightdotso/services";
+import { findContractAddressByAddress } from "@lightdotso/utils";
 import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
@@ -104,6 +105,7 @@ export const handler = async (
 
   const configurationPromise = getConfiguration({
     address: params.address as Address,
+    checkpoint: 0,
   });
 
   const [walletRes, configurationRes] = await Promise.all([
@@ -194,7 +196,9 @@ export const handler = async (
       return {
         ...op,
         initCode: calculateInitCode(
-          CONTRACT_ADDRESSES["Factory"] as Address,
+          WALLET_FACTORY_ENTRYPOINT_MAPPING[
+            findContractAddressByAddress(wallet.factory_address as Address)!
+          ],
           configuration.image_hash as Hex,
           wallet.salt as Hex,
         ),

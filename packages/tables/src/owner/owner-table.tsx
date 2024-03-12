@@ -96,8 +96,8 @@ export const OwnerTable: FC<OwnerTableProps> = ({
     ...tableOptions,
     data: data || [],
     columns: tableColumns,
-    enableExpanding: true,
-    enableRowSelection: true,
+    enableExpanding: false,
+    enableRowSelection: false,
     manualPagination: true,
     paginateExpandedRows: true,
     getCoreRowModel: getCoreRowModel(),
@@ -193,7 +193,10 @@ export const OwnerTable: FC<OwnerTableProps> = ({
             ))
         ) : (
           <TableRow>
-            <TableCell colSpan={columns.length} className="h-24 text-center">
+            <TableCell
+              colSpan={tableColumns.length}
+              className="h-24 text-center"
+            >
               <EmptyState entity="owner" />
             </TableCell>
           </TableRow>

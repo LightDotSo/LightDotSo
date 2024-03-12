@@ -64,3 +64,9 @@ export default function UserOperationLayout({
     </BannerSection>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Data
+// -----------------------------------------------------------------------------
+
+export const revalidate = false;

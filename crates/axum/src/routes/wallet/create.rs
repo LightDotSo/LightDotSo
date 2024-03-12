@@ -131,6 +131,7 @@ pub(crate) async fn v1_wallet_create_handler(
 
     // Get the post query.
     let Query(query) = post_query;
+    info!(?query);
 
     let factory_address: H160 = *LIGHT_WALLET_FACTORY_ADDRESS;
 
@@ -210,6 +211,10 @@ pub(crate) async fn v1_wallet_create_handler(
         error!("Invalid configuration");
         return Err(eyre!("Invalid configuration").into());
     }
+
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
 
     // If the simulate flag is set, return the wallet address.
     if query.simulate.unwrap_or(false) {

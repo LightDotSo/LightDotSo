@@ -17,6 +17,7 @@ export type { AssetChangeData } from "./assetChange";
 export type { AuthNonceData, AuthSessionData } from "./auth";
 export type { BillingData } from "./billing";
 export type { ConfigurationData } from "./configuration";
+export type { ConfigurationOperationData } from "./configurationOperation";
 export type { EnsDataPage } from "./ens";
 export type { InterpretationData } from "./interpretation";
 export type { NotificationData, NotificationCountData } from "./notification";
@@ -37,6 +38,7 @@ export type {
   UserOperationData,
   UserOperationCountData,
   UserOperationNonceData,
+  UserOperationSignatureData,
 } from "./userOperation";
 export type { WalletData, WalletCountData } from "./wallet";
 export type { WalletBillingData } from "./walletBilling";

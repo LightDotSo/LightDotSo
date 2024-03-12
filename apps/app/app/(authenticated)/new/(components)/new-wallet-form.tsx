@@ -286,7 +286,10 @@ export const NewWalletForm: FC = () => {
                   </div>
                 )}
               />
-              <InviteCodeForm name="inviteCode" />
+              <InviteCodeForm
+                name="inviteCode"
+                initialInviteCode={inviteCode}
+              />
               <FormField
                 control={form.control}
                 name="name"

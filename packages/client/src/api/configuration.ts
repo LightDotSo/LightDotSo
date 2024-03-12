@@ -25,7 +25,11 @@ export const getConfiguration = async (
     params,
   }: {
     params: {
-      query: { address: string };
+      query: {
+        address: string;
+        image_hash?: string | null;
+        checkpoint?: number | null;
+      };
     };
   },
   clientType?: ClientType,
@@ -34,8 +38,6 @@ export const getConfiguration = async (
 
   return ResultAsync.fromPromise(
     client.GET("/configuration/get", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),

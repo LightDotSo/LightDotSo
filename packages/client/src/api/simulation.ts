@@ -38,8 +38,6 @@ export const createSimulation = async (
 
   return ResultAsync.fromPromise(
     client.POST("/simulation/create", {
-      // @ts-ignore
-      next: { revalidate: 0 },
       params: {},
       body,
     }),

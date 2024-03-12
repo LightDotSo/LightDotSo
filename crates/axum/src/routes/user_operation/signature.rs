@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#![allow(clippy::unwrap_used)]
 #![allow(clippy::unnecessary_fallible_conversions)]
 
 use crate::{
@@ -24,23 +25,21 @@ use axum::{
     extract::{Query, State},
     Json,
 };
+use const_hex::hex;
 use eyre::{eyre, Result};
 use lightdotso_common::traits::{HexToBytes, VecU8ToHex};
 use lightdotso_prisma::{
-    configuration,
-    // log,
-    owner,
-    signature,
-    user_operation,
-    wallet,
+    configuration, owner, signature, user_operation, user_operation_merkle_proof,
 };
 use lightdotso_sequence::{
     builder::rooted_node_builder,
     config::WalletConfig,
+    merkle::render_merkle,
     types::{
         AddressSignatureLeaf, ECDSASignatureLeaf, SignatureLeaf, Signer, SignerNode,
         ECDSA_SIGNATURE_LENGTH,
     },
+    utils::parse_hex_to_bytes32,
 };
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::Direction;
@@ -57,8 +56,8 @@ use utoipa::IntoParams;
 pub struct GetQuery {
     /// The user operation hash to get.
     pub user_operation_hash: String,
-    /// The type of signature to get for.
-    pub signature_type: Option<i64>,
+    /// The optional configuration id that is on the current wallet.
+    pub configuration_id: Option<String>,
 }
 
 // -----------------------------------------------------------------------------
@@ -89,7 +88,6 @@ pub(crate) async fn v1_user_operation_signature_handler(
     // Get the get query.
     let Query(query) = get_query;
     let user_operation_hash = query.user_operation_hash.clone();
-    let signature_type = query.signature_type.unwrap_or(1);
 
     // -------------------------------------------------------------------------
     // DB
@@ -100,9 +98,16 @@ pub(crate) async fn v1_user_operation_signature_handler(
         .client
         .user_operation()
         .find_unique(user_operation::hash::equals(query.user_operation_hash))
-        .with(user_operation::signatures::fetch(vec![signature::user_operation_hash::equals(
-            user_operation_hash,
-        )]))
+        .with(
+            user_operation::signatures::fetch(vec![signature::user_operation_hash::equals(
+                user_operation_hash,
+            )])
+            .with(signature::owner::fetch()),
+        )
+        .with(
+            user_operation::user_operation_merkle_proofs::fetch(vec![])
+                .order_by(user_operation_merkle_proof::index::order(Direction::Asc)),
+        )
         .exec()
         .await?;
     info!(?user_operation);
@@ -117,38 +122,75 @@ pub(crate) async fn v1_user_operation_signature_handler(
         .map_or(Vec::new(), |signature| signature.into_iter().map(Signature::from).collect());
     info!("{}", signatures.len());
 
-    // Get the wallet from the database.
-    let wallet = state
+    // Get the configurations from the database.
+    let configurations = state
         .client
-        .wallet()
-        .find_unique(wallet::address::equals(user_operation.clone().sender))
-        .with(
-            wallet::configurations::fetch(vec![configuration::address::equals(
-                user_operation.clone().sender,
-            )])
-            .with(
-                configuration::owners::fetch(vec![]).order_by(owner::weight::order(Direction::Asc)),
-            ),
-        )
+        .configuration()
+        .find_many(vec![configuration::address::equals(user_operation.clone().sender)])
+        .with(configuration::owners::fetch(vec![]).order_by(owner::index::order(Direction::Asc)))
+        .with(configuration::configuration_operation_signatures::fetch(vec![]))
+        .order_by(configuration::checkpoint::order(Direction::Desc))
         .exec()
         .await?;
-    info!(?wallet);
+    info!(?configurations);
 
-    // If the wallet is not found, return a 404.
-    let wallet = wallet.ok_or(AppError::NotFound)?;
+    // If the configurations is not found, return a 404.
+    if configurations.is_empty() {
+        return Err(AppError::NotFound);
+    }
 
-    // Parse the current wallet configuration.
-    // TODO: This should be the configuration with the signature required to upsert the most up to
-    // date configuration.
-    let configuration = wallet
-        .configurations
-        .ok_or(AppError::NotFound)?
+    // Get the current configuration for the matching signature -> owner id -> configuration id.
+    let op_configuration = configurations
+        .clone()
         .into_iter()
-        .max_by_key(|configuration| configuration.checkpoint)
+        .find(|configuration| {
+            configuration.owners.as_ref().map_or(false, |owners| {
+                owners.iter().any(|owner| {
+                    user_operation.signatures.as_ref().map_or(false, |signatures| {
+                        signatures.iter().any(|signature| signature.owner_id == owner.id)
+                    })
+                })
+            })
+        })
         .ok_or(AppError::NotFound)?;
-    info!(?configuration);
+    info!(?op_configuration);
 
-    let mut owners = configuration.owners.ok_or(AppError::NotFound)?;
+    // Get the configurations up to the op_configuration checkpoint.
+    let up_to_configurations = configurations
+        .clone()
+        .into_iter()
+        // Filter the configurations that are less than or equal to the op_configuration
+        // checkpoint.
+        .filter(|configuration| configuration.checkpoint < op_configuration.checkpoint)
+        .collect::<Vec<_>>();
+    info!(?up_to_configurations);
+
+    // Get the configurations needed to build the wallet configuration - should be uprooted from the
+    // query configuration id, to the most recent configuration. Start with the query configuration
+    // id, and then get up to the most recent configuration (don't include the most recent)
+    let mut uproot_configurations = if let Some(query_configuration_id) = query.configuration_id {
+        let query_configuration = configurations
+            .clone()
+            .into_iter()
+            .find(|configuration| configuration.id == query_configuration_id)
+            .ok_or(AppError::NotFound)?;
+        info!(?query_configuration);
+
+        up_to_configurations
+            .into_iter()
+            // Filter the configurations that are smaller than or equal to than the query
+            // configuration
+            .filter(|configuration| configuration.checkpoint <= query_configuration.checkpoint)
+            .collect::<Vec<_>>()
+    } else {
+        vec![]
+    };
+
+    // Order the uproot configurations by checkpoint in descending order.
+    uproot_configurations.sort_by(|a, b| b.checkpoint.cmp(&a.checkpoint));
+    info!(?uproot_configurations);
+
+    let mut owners = op_configuration.owners.ok_or(AppError::NotFound)?;
     owners.sort_by(|a, b| a.index.cmp(&b.index));
     info!(?owners);
 
@@ -213,16 +255,137 @@ pub(crate) async fn v1_user_operation_signature_handler(
     tree.replace_node(signer_nodes?);
     info!(?tree);
 
+    // If the uproot configurations are not empty, then we need to uproot the wallet configuration.
+    // For each uproot configuration, fetch the owners, and convert them to SignerNode. Then, append
+    // to the recovered_configs vector.
+    let recovered_configs = uproot_configurations
+        .into_iter()
+        .map(|recovered_configuration| {
+            let mut recovered_config_owners = recovered_configuration
+                .owners
+                .ok_or(AppError::NotFound)
+                .map_err(|_err| eyre!("Error fetching recovered configuration owners"))?;
+            recovered_config_owners.sort_by(|a, b| a.index.cmp(&b.index));
+            info!(?recovered_config_owners);
+
+            // Map the signatures into type from the user_operation
+            let recovered_config_owners: Vec<Owner> =
+                recovered_config_owners.into_iter().map(Owner::from).collect();
+
+            // Convert the owners to SignerNode.
+            let owner_nodes: Result<Vec<SignerNode>> = recovered_config_owners
+                .iter()
+                .map(|owner| {
+                    Ok(SignerNode {
+                        signer: Some(Signer {
+                            weight: Some(owner.weight.try_into()?),
+                            leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
+                                address: owner.address.parse()?,
+                            }),
+                        }),
+                        left: None,
+                        right: None,
+                    })
+                })
+                .collect();
+            let owner_nodes = owner_nodes?;
+
+            // Build the node tree.
+            let mut tree = rooted_node_builder(owner_nodes)?;
+            info!(?tree);
+
+            // Get the configuration signatures from the matching recovered configuration.
+            let upgrade_signatures = recovered_configuration
+                .configuration_operation_signatures
+                .ok_or(AppError::NotFound)
+                .map_err(|_err| eyre!("Error fetching recovered configuration signatures"))?;
+
+            // If the upgrade signatures is empty, return an error.
+            if upgrade_signatures.is_empty() {
+                return Err(eyre!("Upgrade signatures are empty"));
+            }
+
+            // Conver the signatures to SignerNode.
+            let signer_nodes: Result<Vec<SignerNode>> = upgrade_signatures
+                .iter()
+                .map(|sig| {
+                    // Filter the owner with the same id from `owners`
+                    let owner = recovered_config_owners
+                        .iter()
+                        .find(|&owner| owner.id == sig.clone().owner_id)
+                        .ok_or(eyre!("Owner not found"))?;
+
+                    let mut signature_slice = [0; ECDSA_SIGNATURE_LENGTH];
+                    let bytes = &sig.signature;
+                    signature_slice.copy_from_slice(&bytes[0..bytes.len() - 1]);
+                    let signature_type = match bytes.last() {
+                        Some(&0x1) => {
+                            lightdotso_sequence::types::ECDSASignatureType::ECDSASignatureTypeEIP712
+                        }
+                        _ => lightdotso_sequence::types::ECDSASignatureType::ECDSASignatureTypeEthSign,
+                    };
+
+                    Ok(SignerNode {
+                        signer: Some(Signer {
+                            weight: Some(owner.weight.try_into()?),
+                            leaf: SignatureLeaf::ECDSASignature(ECDSASignatureLeaf {
+                                address: owner.address.parse()?,
+                                signature: signature_slice.try_into()?,
+                                signature_type,
+                            }),
+                        }),
+                        left: None,
+                        right: None,
+                    })
+                })
+                .collect();
+
+            tree.replace_node(signer_nodes?);
+            info!(?tree);
+
+            let wallet_config = WalletConfig {
+                checkpoint: recovered_configuration.checkpoint as u32,
+                threshold: recovered_configuration.threshold as u16,
+                // Weight is not used in the signature.
+                weight: 0,
+                image_hash: recovered_configuration.image_hash.hex_to_bytes32()?.into(),
+                tree,
+                // All recovered configurations are in chain agnostic mode.
+                signature_type: 2,
+                // Internal fields are not used in the signature.
+                internal_root: None,
+                internal_recovered_configs: None,
+            };
+
+            Ok(wallet_config)
+        })
+        .collect::<Result<Vec<WalletConfig>>>()?;
+    info!(?recovered_configs);
+
     let wallet_config = WalletConfig {
-        checkpoint: configuration.checkpoint as u32,
-        threshold: configuration.threshold as u16,
+        checkpoint: op_configuration.checkpoint as u32,
+        threshold: op_configuration.threshold as u16,
+        // Weight is not used in the signature.
         weight: 0,
-        image_hash: configuration.image_hash.hex_to_bytes32()?.into(),
+        image_hash: op_configuration.image_hash.hex_to_bytes32()?.into(),
         tree,
-        signature_type: signature_type as u8,
+        // The default signature type is chain dependent.
+        signature_type: if user_operation.clone().user_operation_merkle_proofs.unwrap().is_empty() {
+            // Chain dependent if the user operation merkle proofs is empty.
+            1
+        } else {
+            // Chain agnostic if the user operation merkle proofs is not empty.
+            2
+        },
+        // Internal fields are not used in the signature.
         internal_root: None,
-        internal_recovered_configs: None,
+        internal_recovered_configs: if recovered_configs.is_empty() {
+            None
+        } else {
+            Some(recovered_configs)
+        },
     };
+    info!(?wallet_config);
 
     // Check if the configuration is valid.
     let is_valid = wallet_config.is_wallet_valid();
@@ -238,7 +401,47 @@ pub(crate) async fn v1_user_operation_signature_handler(
     // -------------------------------------------------------------------------
 
     // Get the encoded user operation.
-    let sig = wallet_config.encode()?.to_hex_string();
+    let sig = if wallet_config.internal_recovered_configs.is_none() {
+        wallet_config.encode()?.to_hex_string()
+    } else {
+        wallet_config.encode_chained_wallet()?.to_hex_string()
+    };
+    info!(?sig);
+
+    // If a merkle proof is not empty, then the concatenated merkle proof is returned.
+    if !user_operation.clone().user_operation_merkle_proofs.unwrap().is_empty() {
+        // Get the merkle proof from the user operation.
+        let merkle_proof = user_operation
+            .clone()
+            .user_operation_merkle_proofs
+            .unwrap()
+            .iter()
+            .map(|proof| parse_hex_to_bytes32(&proof.proof))
+            .collect::<Result<Vec<[u8; 32]>>>()?;
+        info!(?merkle_proof);
+
+        // Get the merkle root from the user operation.
+        let merkle_root = parse_hex_to_bytes32(
+            &user_operation
+                .clone()
+                .user_operation_merkle_proofs
+                .unwrap()
+                .first()
+                .unwrap()
+                .user_operation_merkle_root
+                .clone(),
+        )?;
+        info!(?merkle_root);
+
+        // Decode the signature.
+        let decoded_sig = hex::decode(&sig[2..])?;
+        info!(?decoded_sig);
+
+        return Ok(Json::from(format!(
+            "0x{}",
+            hex::encode(render_merkle(merkle_root, merkle_proof, decoded_sig)?)
+        )));
+    }
 
     Ok(Json::from(sig))
 }

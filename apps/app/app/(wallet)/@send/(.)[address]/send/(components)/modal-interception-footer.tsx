@@ -29,7 +29,7 @@ import { useMemo, type FC, useCallback } from "react";
 
 export const ModalInterceptionFooter: FC = () => {
   // ---------------------------------------------------------------------------
-  // Nuqs
+  // Query State Hooks
   // ---------------------------------------------------------------------------
 
   const [userOperations] = useUserOperationsQueryState();

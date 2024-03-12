@@ -14,7 +14,7 @@
 
 "use client";
 
-// @ts-expect-error
+// @ts-ignore
 import * as config from "@lightdotso/tailwindcss";
 import { useEffect, useState } from "react";
 import resolveConfig from "tailwindcss/resolveConfig";
@@ -26,6 +26,7 @@ import resolveConfig from "tailwindcss/resolveConfig";
 // Const
 // -----------------------------------------------------------------------------
 
+// @ts-ignore
 const fullConfig = resolveConfig(config);
 const screens = fullConfig.theme?.screens as Record<string, string>;
 

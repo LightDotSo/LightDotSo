@@ -14,6 +14,7 @@
 
 "use client";
 
+import { useMutationQueueTransaction } from "@lightdotso/query";
 import { type PendingTransaction, useTransactions } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import { getChainById, getEtherscanUrl } from "@lightdotso/utils";
@@ -28,6 +29,14 @@ const ProgressTransactionInternal: FC<PendingTransaction> = ({
   hash,
   chainId,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { queueTransaction } = useMutationQueueTransaction({
+    isMinimal: true,
+  });
+
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -72,8 +81,9 @@ const ProgressTransactionInternal: FC<PendingTransaction> = ({
         position: "top-right",
       });
       removePendingTransaction(hash);
+      queueTransaction({ chain_id: chainId, hash });
     }
-  }, [isSuccess, hash, chainId, removePendingTransaction]);
+  }, [isSuccess, hash, chainId, removePendingTransaction, queueTransaction]);
 
   return null;
 };

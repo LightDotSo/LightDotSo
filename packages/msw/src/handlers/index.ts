@@ -15,15 +15,15 @@
 import { rpcHandlers } from "./rpc";
 import { simulationHandlers } from "./simulation";
 import { socketHandlers } from "./socket";
-import { tokenHandlers } from "./token";
-import { tokenPriceHandlers } from "./token_price";
+// import { tokenHandlers } from "./token";
+// import { tokenPriceHandlers } from "./token_price";
 import { walletHandlers } from "./wallet";
 
 export const handlers = [
-  ...tokenPriceHandlers,
   ...rpcHandlers,
   ...simulationHandlers,
   ...socketHandlers,
-  ...tokenHandlers,
+  // ...tokenPriceHandlers,
+  // ...tokenHandlers,
   ...walletHandlers,
 ];

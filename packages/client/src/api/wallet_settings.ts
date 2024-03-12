@@ -69,8 +69,6 @@ export const updateWalletSettings = async (
 
   return ResultAsync.fromPromise(
     client.PUT("/wallet/settings/update", {
-      // @ts-ignore
-      next: { revalidate: 0 },
       params,
       body,
     }),

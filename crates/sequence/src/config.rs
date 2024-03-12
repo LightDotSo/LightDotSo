@@ -26,6 +26,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#![allow(clippy::unwrap_used)]
+
 use crate::types::SignerNode;
 use ethers::{
     abi::{encode, Token},
@@ -33,6 +35,8 @@ use ethers::{
     utils::keccak256,
 };
 use eyre::{eyre, Result};
+use lightdotso_common::traits::VecU8ToHex;
+use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 
 /// The struct representation of a wallet config
@@ -138,6 +142,7 @@ impl WalletConfig {
     pub fn encode_chained_wallet(&self) -> Result<Vec<u8>> {
         // Get the encoded bytes of the wallet config
         let initial_encoded = self.encode()?;
+        info!("initial_encoded: {:?}", initial_encoded.to_hex_string());
 
         // Get the length of the encoded bytes
         let initial_length: u32 = initial_encoded.len().try_into()?;
@@ -150,7 +155,12 @@ impl WalletConfig {
                 configs.iter().map(|config| config.encode()).collect::<Result<Vec<Vec<u8>>>>()
             })
             .transpose()?
-            .unwrap_or_default();
+            .unwrap();
+
+        // Log the encoded bytes of the `internal_recovered_configs`
+        for (i, config) in internal_recovered_configs.iter().enumerate() {
+            info!("internal_recovered_configs[{}]: {:?}", i, config.to_hex_string());
+        }
 
         // Get the length of the encoded bytes of each of the `internal_recovered_configs`
         let internal_configs_length: Result<Vec<u32>> = internal_recovered_configs
@@ -176,6 +186,7 @@ impl WalletConfig {
         Ok([
             vec![3_u8],
             initial_length.to_be_bytes().to_vec()[1..].to_vec(),
+            self.signature_type.to_be_bytes().to_vec(),
             self.threshold.to_be_bytes().to_vec(),
             self.checkpoint.to_be_bytes().to_vec(),
             self.tree.encode_hash_from_signers()?,

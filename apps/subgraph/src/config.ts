@@ -17,4 +17,6 @@ import { Address } from "@graphprotocol/graph-ts";
 export const lightWalletFactories: Address[] = [
   // v0.1.0
   Address.fromString("0x0000000000756D3E6464f5efe7e413a0Af1C7474"),
+  // v0.2.0
+  Address.fromString("0x00000000001269b052C004FFB71B47AB22C898B0"),
 ];

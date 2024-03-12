@@ -19,14 +19,14 @@
   ],
   "dependencies": {
     "@lightdotso/prisma": "workspace:*",
-    "kysely": "^0.27.2",
+    "kysely": "^0.27.3",
     "kysely-planetscale": "^1.4.0",
     "postgres": "^3.4.3"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.11.20",
-    "typescript": "^5.3.3"
+    "@types/node": "^20.11.26",
+    "typescript": "^5.4.2"
   },
   "publishConfig": {
     "access": "public"

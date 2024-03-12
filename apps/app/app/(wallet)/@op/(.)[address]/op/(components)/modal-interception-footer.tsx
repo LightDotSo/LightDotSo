@@ -64,6 +64,7 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
   const { userOperationSend, isUserOperationSendPending } =
     useMutationUserOperationSend({
       address,
+      chain_id: userOperation?.chain_id,
     });
 
   // ---------------------------------------------------------------------------

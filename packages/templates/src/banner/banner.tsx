@@ -100,7 +100,7 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
       )}
       <p className="text-sm leading-6">
         {kind === "demo" && "Demo Mode"}
-        {kind === "beta" && "Public Beta"}
+        {kind === "beta" && "Private Beta"}
         {kind === "outage" && "Outage Alert"}
       </p>
       <span className="hidden md:inline-flex">&middot;</span>{" "}

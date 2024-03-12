@@ -17,9 +17,9 @@ use crate::routes::{
     billing::error::BillingError, billing_operation::error::BillingOperationError,
     chain::error::ChainError, configuration::error::ConfigurationError,
     configuration_operation::error::ConfigurationOperationError,
-    configuration_owner::error::ConfigurationOwnerError,
-    configuration_signature::error::ConfigurationSignatureError, feedback::error::FeedbackError,
-    interpretation::error::InterpretationError,
+    configuration_operation_owner::error::ConfigurationOperationOwnerError,
+    configuration_operation_signature::error::ConfigurationOperationSignatureError,
+    feedback::error::FeedbackError, interpretation::error::InterpretationError,
     interpretation_action::error::InterpretationActionError, invite_code::error::InviteCodeError,
     notification::error::NotificationError,
     notification_settings::error::NotificationSettingsError, owner::error::OwnerError,
@@ -31,9 +31,11 @@ use crate::routes::{
     token_group::error::TokenGroupError, token_price::error::TokenPriceError,
     transaction::error::TransactionError, user::error::UserError,
     user_notification_settings::error::UserNotificationSettingsError,
-    user_operation::error::UserOperationError, user_settings::error::UserSettingsError,
-    wallet::error::WalletError, wallet_billing::error::WalletBillingError,
-    wallet_features::error::WalletFeaturesError,
+    user_operation::error::UserOperationError,
+    user_operation_merkle::error::UserOperationMerkleError,
+    user_operation_merkle_proof::error::UserOperationMerkleProofError,
+    user_settings::error::UserSettingsError, wallet::error::WalletError,
+    wallet_billing::error::WalletBillingError, wallet_features::error::WalletFeaturesError,
     wallet_notification_settings::error::WalletNotificationSettingsError,
     wallet_settings::error::WalletSettingsError,
 };
@@ -50,8 +52,8 @@ pub(crate) enum RouteError {
     ChainError(ChainError),
     ConfigurationError(ConfigurationError),
     ConfigurationOperationError(ConfigurationOperationError),
-    ConfigurationOwnerError(ConfigurationOwnerError),
-    ConfigurationSignatureError(ConfigurationSignatureError),
+    ConfigurationOperationOwnerError(ConfigurationOperationOwnerError),
+    ConfigurationOperationSignatureError(ConfigurationOperationSignatureError),
     FeedbackError(FeedbackError),
     InterpretationError(InterpretationError),
     InterpretationActionError(InterpretationActionError),
@@ -74,6 +76,8 @@ pub(crate) enum RouteError {
     TransactionError(TransactionError),
     UserError(UserError),
     UserOperationError(UserOperationError),
+    UserOperationMerkleError(UserOperationMerkleError),
+    UserOperationMerkleProofError(UserOperationMerkleProofError),
     UserNotificationSettingsError(UserNotificationSettingsError),
     UserSettingsError(UserSettingsError),
     WalletError(WalletError),
@@ -165,22 +169,28 @@ impl RouteErrorStatusCodeAndMsg for ConfigurationOperationError {
     }
 }
 
-impl RouteErrorStatusCodeAndMsg for ConfigurationOwnerError {
+impl RouteErrorStatusCodeAndMsg for ConfigurationOperationOwnerError {
     fn error_status_code_and_msg(&self) -> (StatusCode, String) {
         match self {
-            ConfigurationOwnerError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
-            ConfigurationOwnerError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+            ConfigurationOperationOwnerError::BadRequest(msg) => {
+                (StatusCode::BAD_REQUEST, msg.to_string())
+            }
+            ConfigurationOperationOwnerError::NotFound(msg) => {
+                (StatusCode::NOT_FOUND, msg.to_string())
+            }
         }
     }
 }
 
-impl RouteErrorStatusCodeAndMsg for ConfigurationSignatureError {
+impl RouteErrorStatusCodeAndMsg for ConfigurationOperationSignatureError {
     fn error_status_code_and_msg(&self) -> (StatusCode, String) {
         match self {
-            ConfigurationSignatureError::BadRequest(msg) => {
+            ConfigurationOperationSignatureError::BadRequest(msg) => {
                 (StatusCode::BAD_REQUEST, msg.to_string())
             }
-            ConfigurationSignatureError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+            ConfigurationOperationSignatureError::NotFound(msg) => {
+                (StatusCode::NOT_FOUND, msg.to_string())
+            }
         }
     }
 }
@@ -384,6 +394,31 @@ impl RouteErrorStatusCodeAndMsg for UserOperationError {
     }
 }
 
+impl RouteErrorStatusCodeAndMsg for UserOperationMerkleError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            UserOperationMerkleError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
+            UserOperationMerkleError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+            UserOperationMerkleError::Unauthorized(msg) => {
+                (StatusCode::UNAUTHORIZED, msg.to_string())
+            }
+        }
+    }
+}
+
+impl RouteErrorStatusCodeAndMsg for UserOperationMerkleProofError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            UserOperationMerkleProofError::BadRequest(msg) => {
+                (StatusCode::BAD_REQUEST, msg.to_string())
+            }
+            UserOperationMerkleProofError::NotFound(msg) => {
+                (StatusCode::NOT_FOUND, msg.to_string())
+            }
+        }
+    }
+}
+
 impl RouteErrorStatusCodeAndMsg for UserError {
     fn error_status_code_and_msg(&self) -> (StatusCode, String) {
         match self {
@@ -479,8 +514,10 @@ impl RouteErrorStatusCodeAndMsg for RouteError {
             RouteError::ChainError(err) => err.error_status_code_and_msg(),
             RouteError::ConfigurationError(err) => err.error_status_code_and_msg(),
             RouteError::ConfigurationOperationError(err) => err.error_status_code_and_msg(),
-            RouteError::ConfigurationOwnerError(err) => err.error_status_code_and_msg(),
-            RouteError::ConfigurationSignatureError(err) => err.error_status_code_and_msg(),
+            RouteError::ConfigurationOperationOwnerError(err) => err.error_status_code_and_msg(),
+            RouteError::ConfigurationOperationSignatureError(err) => {
+                err.error_status_code_and_msg()
+            }
             RouteError::FeedbackError(err) => err.error_status_code_and_msg(),
             RouteError::InterpretationError(err) => err.error_status_code_and_msg(),
             RouteError::InterpretationActionError(err) => err.error_status_code_and_msg(),
@@ -504,6 +541,8 @@ impl RouteErrorStatusCodeAndMsg for RouteError {
             RouteError::UserError(err) => err.error_status_code_and_msg(),
             RouteError::UserNotificationSettingsError(err) => err.error_status_code_and_msg(),
             RouteError::UserOperationError(err) => err.error_status_code_and_msg(),
+            RouteError::UserOperationMerkleError(err) => err.error_status_code_and_msg(),
+            RouteError::UserOperationMerkleProofError(err) => err.error_status_code_and_msg(),
             RouteError::UserSettingsError(err) => err.error_status_code_and_msg(),
             RouteError::WalletError(err) => err.error_status_code_and_msg(),
             RouteError::WalletBillingError(err) => err.error_status_code_and_msg(),

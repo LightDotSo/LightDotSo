@@ -14,6 +14,7 @@
 
 import {
   configurationGetData,
+  walletGetData,
   userOperationCreateData,
 } from "@lightdotso/demo";
 import type { Meta, StoryObj } from "@storybook/react";
@@ -54,9 +55,9 @@ export const Base: Story = {
   render: args => (
     <Transaction
       address="0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F"
-      configuration={configurationGetData}
-      initialUserOperation={userOperationCreateData}
-      userOperationIndex={0}
+      wallet={walletGetData}
+      genesisConfiguration={configurationGetData}
+      initialUserOperations={[userOperationCreateData]}
       isDev={true}
     />
   ),

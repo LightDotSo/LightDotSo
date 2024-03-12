@@ -23,7 +23,7 @@ const partialUserOperation = userOperation.partial();
 
 const partialUserOperations = z.array(partialUserOperation);
 
-export const ConfirmFormSchema = z.object({
+export const confirmFormSchema = z.object({
   transfers: partialUserOperations,
 });
 
@@ -33,4 +33,4 @@ export const ConfirmFormSchema = z.object({
 
 export type PartialUserOperation = z.infer<typeof partialUserOperation>;
 export type PartialUserOperations = z.infer<typeof partialUserOperations>;
-export type ConfirmForm = z.infer<typeof ConfirmFormSchema>;
+export type ConfirmForm = z.infer<typeof confirmFormSchema>;

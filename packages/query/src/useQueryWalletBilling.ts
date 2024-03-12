@@ -42,6 +42,7 @@ export const useQueryWalletBilling = (params: WalletBillingParams) => {
 
   const {
     data: walletBilling,
+    isLoading: isWalletBillingLoading,
     refetch: refetchWalletBilling,
     failureCount,
   } = useQuery<WalletBillingData | null>({
@@ -78,6 +79,7 @@ export const useQueryWalletBilling = (params: WalletBillingParams) => {
 
   return {
     walletBilling,
+    isWalletBillingLoading,
     refetchWalletBilling,
   };
 };

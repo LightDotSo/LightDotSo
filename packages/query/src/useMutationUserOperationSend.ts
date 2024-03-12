@@ -13,31 +13,59 @@
 // limitations under the License.
 
 import {
-  getSignatureUserOperation,
+  getUserOperationSignature,
   sendUserOperation,
 } from "@lightdotso/client";
-import { CONTRACT_ADDRESSES, TRANSACTION_ROW_COUNT } from "@lightdotso/const";
+import {
+  TRANSACTION_ROW_COUNT,
+  WALLET_FACTORY_ENTRYPOINT_MAPPING,
+} from "@lightdotso/const";
 import type { UserOperationData } from "@lightdotso/data";
 import type {
-  UserOperationParams,
+  UserOperationSendParams,
   UserOperationSendBodyParams,
 } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { toast } from "@lightdotso/ui";
+import { findContractAddressByAddress } from "@lightdotso/utils";
+import { useReadLightWalletImageHash } from "@lightdotso/wagmi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { toHex } from "viem";
+import { useQueryConfiguration } from "./useQueryConfiguration";
+import { useQueryWallet } from "./useQueryWallet";
 
 // -----------------------------------------------------------------------------
 // Query Mutation
 // -----------------------------------------------------------------------------
 
-export const useMutationUserOperationSend = (params: UserOperationParams) => {
+export const useMutationUserOperationSend = (
+  params: UserOperationSendParams,
+) => {
+  // ---------------------------------------------------------------------------
+  // Wagmi
+  // ---------------------------------------------------------------------------
+
+  const { data: imageHash } = useReadLightWalletImageHash({
+    address: params.address as Address,
+    chainId: params.chain_id ?? undefined,
+  });
+
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
   const queryClient = useQueryClient();
+
+  const { configuration, isConfigurationLoading } = useQueryConfiguration({
+    address: params.address as Address,
+    image_hash: imageHash,
+    checkpoint: !imageHash ? 0 : undefined,
+  });
+
+  const { wallet } = useQueryWallet({
+    address: params.address as Address,
+  });
 
   // ---------------------------------------------------------------------------
   // Query Mutation
@@ -52,11 +80,23 @@ export const useMutationUserOperationSend = (params: UserOperationParams) => {
   } = useMutation({
     retry: 10,
     mutationFn: async (body: UserOperationSendBodyParams) => {
+      if (!wallet || isConfigurationLoading) {
+        return;
+      }
+
       const loadingToast = toast.loading("Submitting the transaction...");
 
+      console.info("imageHash", imageHash);
+      console.info("configuration", configuration);
+
       // Get the sig as bytes from caller
-      const sigRes = await getSignatureUserOperation({
-        params: { query: { user_operation_hash: body.hash } },
+      const sigRes = await getUserOperationSignature({
+        params: {
+          query: {
+            user_operation_hash: body.hash,
+            configuration_id: configuration?.id,
+          },
+        },
       });
 
       await sigRes.match(
@@ -76,7 +116,9 @@ export const useMutationUserOperationSend = (params: UserOperationParams) => {
               maxPriorityFeePerGas: toHex(body.max_priority_fee_per_gas),
               signature: sig,
             },
-            CONTRACT_ADDRESSES["Entrypoint"],
+            WALLET_FACTORY_ENTRYPOINT_MAPPING[
+              findContractAddressByAddress(wallet.factory_address as Address)!
+            ],
           ]);
 
           toast.dismiss(loadingToast);

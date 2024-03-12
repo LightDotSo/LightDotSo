@@ -1,14 +1,13 @@
 # Security Policy
 
-## Supported Versions
+## Contract Versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+The below table shows the versions of the contract and versions of the factory and their respective addresses.
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 0.0.x   | :white_check_mark: |
-| 0.1.x   | :x:                |
+| Version | Address                                                                                                                |
+| ------- | ---------------------------------------------------------------------------------------------------------------------- |
+| 0.1.0   | [0x0000000000756D3E6464f5efe7e413a0Af1C7474](https://blockscan.com/address/0x0000000000756D3E6464f5efe7e413a0Af1C7474) |
+| 0.2.0   | [0x00000000001269b052C004FFB71B47AB22C898B0](https://blockscan.com/address/0x00000000001269b052C004FFB71B47AB22C898B0) |
 
 ## Reporting a Vulnerability
 

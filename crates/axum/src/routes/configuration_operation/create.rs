@@ -14,7 +14,7 @@
 
 #![allow(clippy::unwrap_used)]
 
-// use super::types::ConfigurationSignature;
+// use super::types::ConfigurationOperationSignature;
 use crate::{
     error::RouteError,
     result::{AppError, AppJsonResult},
@@ -22,7 +22,7 @@ use crate::{
         configuration_operation::{
             error::ConfigurationOperationError, types::ConfigurationOperation,
         },
-        configuration_signature::error::ConfigurationSignatureError,
+        configuration_operation_signature::error::ConfigurationOperationSignatureError,
     },
     state::AppState,
 };
@@ -35,15 +35,15 @@ use ethers_main::{
     types::{H160, H256},
     utils::to_checksum,
 };
-use eyre::Result;
-use lightdotso_common::traits::HexToBytes;
+use eyre::{eyre, Result};
+use lightdotso_common::traits::{HexToBytes, VecU8ToHex};
 use lightdotso_db::models::activity::CustomParams;
 use lightdotso_kafka::{
     topics::activity::produce_activity_message, types::activity::ActivityMessage,
 };
 use lightdotso_prisma::{
-    configuration, configuration_operation, configuration_owner, user, wallet, ActivityEntity,
-    ActivityOperation,
+    configuration, configuration_operation, configuration_operation_owner, owner, user, wallet,
+    ActivityEntity, ActivityOperation,
 };
 use lightdotso_sequence::{
     builder::rooted_node_builder,
@@ -67,8 +67,8 @@ use utoipa::{IntoParams, ToSchema};
 pub struct PostQuery {
     /// The address of the wallet.
     pub address: String,
-    /// The operation of the configuration.
-    pub configuration_operation_id: String,
+    /// Whether to simulate the configuration operation.
+    pub simulate: Option<bool>,
 }
 
 // -----------------------------------------------------------------------------
@@ -78,12 +78,12 @@ pub struct PostQuery {
 /// Signature operation post request params
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub struct ConfigurationSignatureCreateRequestParams {
+pub struct ConfigurationOperationCreateRequestParams {
     /// The array of owners of the wallet.
     #[schema(example = json!([{"address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed", "weight": 1}]))]
-    pub owners: Vec<ConfigurationSignatureCreateOwnerParams>,
+    pub owners: Vec<ConfigurationOperationCreateOwnerParams>,
     /// The result of the signature.
-    pub signature: ConfigurationSignatureCreateParams,
+    pub signature: ConfigurationOperationSignatureCreateParams,
     /// The threshold of the wallet.
     #[schema(example = 3, default = 1)]
     pub threshold: u16,
@@ -93,7 +93,7 @@ pub struct ConfigurationSignatureCreateRequestParams {
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
 #[schema(example = json!({"address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed", "weight": 1}))]
-pub(crate) struct ConfigurationSignatureCreateOwnerParams {
+pub(crate) struct ConfigurationOperationCreateOwnerParams {
     /// The address of the owner.
     pub address: String,
     /// The weight of the owner.
@@ -103,9 +103,9 @@ pub(crate) struct ConfigurationSignatureCreateOwnerParams {
 /// Signature operation
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub struct ConfigurationSignatureCreateParams {
+pub struct ConfigurationOperationSignatureCreateParams {
     /// The id of the owner of the signature.
-    pub configuration_owner_id: String,
+    pub owner_id: String,
     /// The signature of the user operation in hex.
     pub signature: String,
 }
@@ -121,19 +121,19 @@ pub struct ConfigurationSignatureCreateParams {
         params(
             PostQuery
         ),
-        request_body = ConfigurationSignatureCreateRequestParams,
+        request_body = ConfigurationOperationCreateRequestParams,
         responses(
-            (status = 200, description = "Signature created successfully", body = Signature),
-            (status = 400, description = "Invalid Configuration", body = SignatureError),
-            (status = 409, description = "Signature already exists", body = SignatureError),
-            (status = 500, description = "Signature internal error", body = SignatureError),
+            (status = 200, description = "Signature created successfully", body = ConfigurationOperation),
+            (status = 400, description = "Invalid Configuration", body = ConfigurationOperationError),
+            (status = 409, description = "Signature already exists", body = ConfigurationOperationError),
+            (status = 500, description = "Signature internal error", body = ConfigurationOperationError),
         )
     )]
 #[autometrics]
 pub(crate) async fn v1_configuration_operation_create_handler(
     post_query: Query<PostQuery>,
     State(state): State<AppState>,
-    Json(params): Json<ConfigurationSignatureCreateRequestParams>,
+    Json(params): Json<ConfigurationOperationCreateRequestParams>,
 ) -> AppJsonResult<ConfigurationOperation> {
     // -------------------------------------------------------------------------
     // Parse
@@ -141,6 +141,7 @@ pub(crate) async fn v1_configuration_operation_create_handler(
 
     // Get the post query.
     let Query(query) = post_query;
+    info!(?query);
 
     let owners = &params.owners;
     let threshold = params.threshold;
@@ -149,8 +150,39 @@ pub(crate) async fn v1_configuration_operation_create_handler(
     let sig = params.signature;
 
     // -------------------------------------------------------------------------
+    // DB
+    // -------------------------------------------------------------------------
+
+    // Get the current configuration for the wallet.
+    let configuration = state
+        .client
+        .configuration()
+        .find_first(vec![configuration::address::equals(query.address.clone())])
+        .order_by(configuration::checkpoint::order(Direction::Desc))
+        .with(configuration::owners::fetch(vec![]))
+        .exec()
+        .await?;
+    info!(?configuration);
+
+    // If the configuration is not found, return a 404.
+    let configuration = configuration.ok_or(RouteError::ConfigurationOperationSignatureError(
+        ConfigurationOperationSignatureError::NotFound("Configuration not found".to_string()),
+    ))?;
+
+    let configuration_owners =
+        configuration.clone().owners.ok_or(RouteError::ConfigurationOperationError(
+            ConfigurationOperationError::NotFound("Configuration owners not found".to_string()),
+        ))?;
+
+    // -------------------------------------------------------------------------
     // Validate
     // -------------------------------------------------------------------------
+
+    // Check if the signature `owner_id` is in the configuration owners.
+    configuration_owners
+        .iter()
+        .find(|owner| owner.id == sig.owner_id)
+        .ok_or(AppError::BadRequest)?;
 
     // Check if all of the owner address can be parsed to H160.
     let owners_addresses = owners
@@ -185,8 +217,7 @@ pub(crate) async fn v1_configuration_operation_create_handler(
     let mut config = WalletConfig {
         // The signature type is 0 since it is not computed in the encoding.
         signature_type: 0,
-        // The checkpoint is 0, as it is the first checkpoint.
-        checkpoint: 0,
+        checkpoint: configuration.checkpoint as u32 + 1,
         threshold,
         // Can be 1 since it is not computed in the encoding.
         weight: 1,
@@ -202,9 +233,19 @@ pub(crate) async fn v1_configuration_operation_create_handler(
 
     // If the image hash of the wallet could not be simulated, return a 404.
     let image_hash = res.map_err(|_| AppError::NotFound)?;
+    info!("image_hash: {}", image_hash.to_vec().to_hex_string());
 
     // Parse the image hash to bytes.
     let image_hash_bytes: H256 = image_hash.into();
+
+    // Check if the wallet configuration is valid.
+    let valid = config.is_wallet_valid();
+
+    // If the wallet configuration is invalid, return a 500.
+    if !valid {
+        error!("Invalid configuration");
+        return Err(eyre!("Invalid configuration").into());
+    }
 
     // -------------------------------------------------------------------------
     // DB
@@ -237,54 +278,54 @@ pub(crate) async fn v1_configuration_operation_create_handler(
         wallet.clone().address.parse()?,
         hash_image_bytes32(&image_hash)?,
     )?;
-    info!(?subdigest);
+    info!("subdigest: {}", subdigest.to_vec().to_hex_string());
 
-    // Recover the signature.
-    let recovered_sig = recover_ecdsa_signature(&sig_bytes, &subdigest, 0)?;
-    info!(?recovered_sig);
+    // -------------------------------------------------------------------------
+    // Return
+    // -------------------------------------------------------------------------
+
+    // If the simulate flag is set, return the wallet address.
+    if query.simulate.unwrap_or(false) {
+        return Ok(Json::from(ConfigurationOperation {
+            id: "0".to_string(),
+            image_hash: format!("{:?}", image_hash_bytes),
+            checkpoint: configuration.checkpoint + 1,
+            threshold: params.threshold as i64,
+            status: "SIMULATED".to_string(),
+        }));
+    }
 
     // -------------------------------------------------------------------------
     // DB
     // -------------------------------------------------------------------------
 
-    // Get the current configuration for the wallet.
-    let configuration = state
+    // Get the owner from the database.
+    let owner = state
         .client
-        .configuration()
-        .find_first(vec![configuration::address::equals(query.address.clone())])
-        .order_by(configuration::checkpoint::order(Direction::Desc))
-        .with(configuration::owners::fetch(vec![]))
+        .owner()
+        .find_unique(owner::id::equals(sig.clone().owner_id))
+        .with(owner::user::fetch())
         .exec()
         .await?;
-    info!(?configuration);
-
-    // If the configuration is not found, return a 404.
-    let configuration = configuration.ok_or(RouteError::ConfigurationSignatureError(
-        ConfigurationSignatureError::NotFound("Configuration not found".to_string()),
-    ))?;
-
-    // Get the configuration_owner from the database.
-    let configuration_owner = state
-        .client
-        .configuration_owner()
-        .find_unique(configuration_owner::id::equals(sig.clone().configuration_owner_id))
-        .with(configuration_owner::user::fetch())
-        .exec()
-        .await?;
-    info!(?configuration_owner);
+    info!(?owner);
 
     // -------------------------------------------------------------------------
     // Signature
     // -------------------------------------------------------------------------
 
+    // Recover the signature.
+    let recovered_sig = recover_ecdsa_signature(&sig_bytes, &subdigest, 0)?;
+    info!(?recovered_sig);
+
     // If the owner is not found, return a 404.
-    let configuration_owner = configuration_owner.ok_or(AppError::NotFound)?;
+    let owner = owner.ok_or(AppError::NotFound)?;
 
     // Check that the recovered signature is the same as the signature sender.
-    if recovered_sig.address != configuration_owner.address.parse()? {
+    if recovered_sig.address != owner.clone().address.parse()? {
         error!(
-            "recovered_sig.address: {}, configuration_owner.address: {}",
-            recovered_sig.address, configuration_owner.address
+            "recovered_sig.address: {}, owner.address: {}",
+            recovered_sig.address,
+            owner.clone().address
         );
         return Err(AppError::BadRequest);
     }
@@ -315,7 +356,7 @@ pub(crate) async fn v1_configuration_operation_create_handler(
                 .create(
                     configuration.checkpoint + 1,
                     format!("{:?}", image_hash_bytes),
-                    0,
+                    threshold as i64,
                     wallet::address::equals(query.address.clone()),
                     vec![],
                 )
@@ -325,24 +366,28 @@ pub(crate) async fn v1_configuration_operation_create_handler(
 
             // Create the owners to the database.
             let owner_data = client
-                .configuration_owner()
+                .configuration_operation_owner()
                 .create_many(
                     owners
                         .iter()
                         .enumerate()
-                        .map(|(index, owner)| {
-                            configuration_owner::create_unchecked(
-                                to_checksum(&owner.address.parse::<H160>().unwrap(), None),
-                                owner.weight.into(),
+                        .map(|(index, config_owner)| {
+                            configuration_operation_owner::create_unchecked(
+                                to_checksum(&config_owner.address.parse::<H160>().unwrap(), None),
+                                config_owner.weight.into(),
                                 index as i32,
                                 configuration_operation.clone().id,
-                                vec![configuration_owner::user_id::set(Some(
+                                vec![configuration_operation_owner::user_id::set(Some(
                                     user_data
                                         .iter()
                                         .find(|user| {
                                             user.address ==
                                                 to_checksum(
-                                                    &owner.address.parse::<H160>().unwrap(),
+                                                    &config_owner
+                                                        .clone()
+                                                        .address
+                                                        .parse::<H160>()
+                                                        .unwrap(),
                                                     None,
                                                 )
                                         })
@@ -368,18 +413,18 @@ pub(crate) async fn v1_configuration_operation_create_handler(
     info!(?configuration_operation);
 
     // Create the signature the database.
-    let configuration_signature = state
+    let configuration_operation_signature = state
         .client
-        .configuration_signature()
+        .configuration_operation_signature()
         .create(
             sig.signature.hex_to_bytes()?,
             configuration_operation::id::equals(configuration_operation.id.clone()),
-            configuration_owner::id::equals(sig.configuration_owner_id),
+            owner::id::equals(owner.id.clone()),
             vec![],
         )
         .exec()
         .await?;
-    info!(?configuration_signature);
+    info!(?configuration_operation_signature);
 
     // -------------------------------------------------------------------------
     // Kafka
@@ -404,12 +449,14 @@ pub(crate) async fn v1_configuration_operation_create_handler(
     // Produce an activity message.
     let _ = produce_activity_message(
         state.producer.clone(),
-        ActivityEntity::ConfigurationSignature,
+        ActivityEntity::ConfigurationOperationSignature,
         &ActivityMessage {
             operation: ActivityOperation::Create,
-            log: serde_json::to_value(&configuration_signature)?,
+            log: serde_json::to_value(&configuration_operation_signature)?,
             params: CustomParams {
-                configuration_signature_id: Some(configuration_signature.id.clone()),
+                configuration_operation_signature_id: Some(
+                    configuration_operation_signature.id.clone(),
+                ),
                 configuration_operation_id: Some(configuration_operation.id.clone()),
                 wallet_address: Some(wallet.address.clone()),
                 ..Default::default()

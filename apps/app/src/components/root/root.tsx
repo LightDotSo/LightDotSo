@@ -73,6 +73,13 @@ const ConnectModal = dynamic(
   },
 );
 
+const OwnerModal = dynamic(
+  () => import("@lightdotso/modals/src/owner/owner-modal"),
+  {
+    ssr: false,
+  },
+);
+
 const NftModal = dynamic(() => import("@lightdotso/modals/src/nft/nft-modal"), {
   ssr: false,
 });
@@ -139,6 +146,7 @@ export const Root: FC<RootProps> = ({ children }) => {
               <AuthModal />
               <ChainModal />
               <ConnectModal />
+              <OwnerModal />
               <NftModal />
               <TokenModal />
               {/* Templates */}

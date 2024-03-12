@@ -15,12 +15,7 @@
 "use client";
 
 import { useUserOperationCreate } from "@lightdotso/hooks";
-import {
-  useUserOperationsIndexQueryState,
-  useUserOperationsQueryState,
-} from "@lightdotso/nuqs";
-import { useQueryConfiguration } from "@lightdotso/query";
-import { useFormRef, useModals } from "@lightdotso/stores";
+import { useFormRef, useModals, useUserOperations } from "@lightdotso/stores";
 import { FooterButton } from "@lightdotso/templates";
 import { useRouter } from "next/navigation";
 import { type FC, useCallback } from "react";
@@ -46,6 +41,7 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
   // ---------------------------------------------------------------------------
 
   const { hideOpModal } = useModals();
+  const { resetAll } = useUserOperations();
 
   // ---------------------------------------------------------------------------
   // Next Hooks
@@ -54,26 +50,12 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
   const router = useRouter();
 
   // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
-
-  const { configuration } = useQueryConfiguration({
-    address: address,
-  });
-
-  // ---------------------------------------------------------------------------
-  // Query State
-  // ---------------------------------------------------------------------------
-
-  const [userOperations] = useUserOperationsQueryState();
-  const [selectedOpIndex] = useUserOperationsIndexQueryState();
-
-  // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
   const onDismiss = useCallback(() => {
     hideOpModal();
+    resetAll();
     router.back();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
@@ -84,11 +66,6 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
 
   const { signUserOperation } = useUserOperationCreate({
     address: address,
-    configuration: configuration,
-    userOperation:
-      userOperations && userOperations.length > 0
-        ? userOperations[selectedOpIndex ?? 0]
-        : {},
   });
 
   // ---------------------------------------------------------------------------
@@ -106,7 +83,7 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
       isModal
       className="pt-0"
       customSuccessText="Execute Transaction"
-      disabled={isFormDisabled}
+      disabled={isFormDisabled || isFormLoading}
       isLoading={isFormLoading}
       cancelClick={onDismiss}
       onClick={signUserOperation}

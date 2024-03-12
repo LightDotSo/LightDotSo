@@ -14,23 +14,13 @@
 
 "use client";
 
-import {
-  useUserOperationsIndexQueryState,
-  useUserOperationsQueryState,
-} from "@lightdotso/nuqs";
-import { useQueryConfiguration } from "@lightdotso/query";
+import { useUserOperationsQueryState } from "@lightdotso/nuqs";
+import { useQueryConfiguration, useQueryWallet } from "@lightdotso/query";
 import type { UserOperation } from "@lightdotso/schemas";
-import { useAuth, useDev } from "@lightdotso/stores";
+import { useDev } from "@lightdotso/stores";
 import { Transaction } from "@lightdotso/templates";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-} from "@lightdotso/ui";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import type { FC } from "react";
-import { isAddressEqual } from "viem";
 import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
@@ -63,15 +53,12 @@ export const CreateTransactionDialog: FC<CreateTransactionDialogProps> = ({
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
-  const [selectedOpIndex, setSelectedOpIndex] =
-    useUserOperationsIndexQueryState();
   const [, setUserOperations] = useUserOperationsQueryState(userOperations);
 
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address: userAddress } = useAuth();
   const { isDev } = useDev();
 
   // ---------------------------------------------------------------------------
@@ -91,57 +78,32 @@ export const CreateTransactionDialog: FC<CreateTransactionDialogProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { configuration } = useQueryConfiguration({
+  const { configuration: genesisConfiguration } = useQueryConfiguration({
     address: address,
+    checkpoint: 0,
   });
 
-  // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const owner = useMemo(() => {
-    if (!userAddress || !configuration || !configuration.owners) {
-      return;
-    }
-
-    return configuration.owners?.find(owner =>
-      isAddressEqual(owner.address as Address, userAddress),
-    );
-  }, [configuration, userAddress]);
+  const { wallet } = useQueryWallet({
+    address: address,
+  });
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!configuration) {
+  if (!genesisConfiguration || !wallet) {
     return null;
   }
 
   return (
     <div className="mt-4 flex flex-col items-center justify-center">
-      {userOperations && userOperations.length > 1 && (
-        <Pagination>
-          <PaginationContent>
-            {userOperations &&
-              userOperations.map((_, index) => (
-                <PaginationItem
-                  key={index}
-                  onClick={() => setSelectedOpIndex(index)}
-                >
-                  <PaginationLink>{index + 1}</PaginationLink>
-                </PaginationItem>
-              ))}
-          </PaginationContent>
-        </Pagination>
-      )}
       {userOperations && userOperations.length > 0 && (
         <Transaction
-          key={selectedOpIndex}
+          key={0}
           address={address}
-          configuration={configuration}
-          initialUserOperation={userOperations[selectedOpIndex]}
-          userOperationIndex={selectedOpIndex}
+          wallet={wallet}
+          genesisConfiguration={genesisConfiguration}
+          initialUserOperations={userOperations}
           isDev={isDev}
         />
       )}

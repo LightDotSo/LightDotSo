@@ -42,6 +42,7 @@
   lightdotso-tracing = { workspace = true }
   prisma-client-rust = { workspace = true }
   reqwest = { workspace = true }
+  rs_merkle = "1.1.0"
   rundler-types = { workspace = true }
   rustc-hex = { workspace = true }
   serde = { workspace = true, features = ["derive"] }

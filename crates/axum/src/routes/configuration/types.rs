@@ -36,13 +36,13 @@ pub(crate) struct Configuration {
     /// The threshold of the configuration.
     threshold: i64,
     /// The owners of the configuration.
-    owners: Vec<ConfigurationOwner>,
+    owners: Vec<ConfigurationOperationOwner>,
 }
 
 /// Configuration Owner.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 #[serde(rename_all = "snake_case")]
-pub(crate) struct ConfigurationOwner {
+pub(crate) struct ConfigurationOperationOwner {
     /// The id of the owner.
     id: String,
     /// The index of the owner.
@@ -69,14 +69,14 @@ impl From<configuration::Data> for Configuration {
             checkpoint: configuration.checkpoint,
             threshold: configuration.threshold,
             owners: configuration.owners.map_or(Vec::new(), |owners| {
-                owners.into_iter().map(ConfigurationOwner::from).collect()
+                owners.into_iter().map(ConfigurationOperationOwner::from).collect()
             }),
         }
     }
 }
 
 /// Implement From<owner::Data> for Owner.
-impl From<owner::Data> for ConfigurationOwner {
+impl From<owner::Data> for ConfigurationOperationOwner {
     fn from(owner: owner::Data) -> Self {
         Self {
             id: owner.id.to_string(),

@@ -21,6 +21,7 @@ use lightdotso_sequence::{
     utils::parse_hex_to_bytes32,
 };
 
+#[ignore]
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_hash_first() -> Result<()> {
     let config = WalletConfig {

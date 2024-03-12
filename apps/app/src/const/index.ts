@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { MAX_WEIGHT, MAX_THRESHOLD } from "./configuration";
 export { DEMO_WALLET_ADDRESS } from "./demo";
 export {
   Category,

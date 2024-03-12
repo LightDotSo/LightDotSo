@@ -26,6 +26,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#![allow(clippy::expect_used)]
+
 use ethers::{
     types::{Address, H256},
     utils::hex,
@@ -106,6 +108,15 @@ pub const ERC1271_MAGICVALUE_BYTES32: [u8; 4] = [22, 38, 186, 126];
 
 #[derive(Clone, PartialEq)]
 pub struct ECDSASignature(pub [u8; ECDSA_SIGNATURE_LENGTH]);
+
+impl From<&str> for ECDSASignature {
+    fn from(s: &str) -> Self {
+        let vec = hex::decode(s).expect("Decoding failed");
+        let mut arr = [0u8; ECDSA_SIGNATURE_LENGTH];
+        arr.copy_from_slice(vec.as_slice());
+        ECDSASignature(arr)
+    }
+}
 
 #[serde_as]
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]

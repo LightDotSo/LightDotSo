@@ -37,7 +37,11 @@ export const useQueryConfiguration = (params: ConfigurationParams) => {
   const queryClient = useQueryClient();
 
   const currentData: ConfigurationData | undefined = queryClient.getQueryData(
-    queryKeys.configuration.get({ address: params.address }).queryKey,
+    queryKeys.configuration.get({
+      address: params.address,
+      image_hash: params.image_hash,
+      checkpoint: params.checkpoint,
+    }).queryKey,
   );
 
   const {
@@ -45,7 +49,11 @@ export const useQueryConfiguration = (params: ConfigurationParams) => {
     isLoading: isConfigurationLoading,
     failureCount,
   } = useQuery<ConfigurationData | null>({
-    queryKey: queryKeys.configuration.get({ address: params.address }).queryKey,
+    queryKey: queryKeys.configuration.get({
+      address: params.address,
+      image_hash: params.image_hash,
+      checkpoint: params.checkpoint,
+    }).queryKey,
     queryFn: async () => {
       if (!params.address) {
         return null;
@@ -56,6 +64,8 @@ export const useQueryConfiguration = (params: ConfigurationParams) => {
           params: {
             query: {
               address: params.address,
+              image_hash: params.image_hash,
+              checkpoint: params.checkpoint,
             },
           },
         },

@@ -132,15 +132,15 @@ model User {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  activities                 Activity[]
-  configurationOwners        ConfigurationOwner[]
-  feedbacks                  Feedback[]
-  inviteCodes                InviteCode[]
-  notifications              Notification[]
-  notificationSettings       NotificationSettings[]
-  owners                     Owner[]
-  wallets                    Wallet[]
-  walletNotificationSettings WalletNotificationSettings[]
+  activities                   Activity[]
+  configurationOperationOwners ConfigurationOperationOwner[]
+  feedbacks                    Feedback[]
+  inviteCodes                  InviteCode[]
+  notifications                Notification[]
+  notificationSettings         NotificationSettings[]
+  owners                       Owner[]
+  wallets                      Wallet[]
+  walletNotificationSettings   WalletNotificationSettings[]
 }
 
 // -----------------------------------------------------------------------------
@@ -481,9 +481,9 @@ model Configuration {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  configurationSignatures ConfigurationSignature[]
-  owners                  Owner[]
-  wallets                 Wallet[]
+  configurationOperationSignatures ConfigurationOperationSignature[]
+  owners                           Owner[]
+  wallets                          Wallet[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -491,6 +491,7 @@ model Configuration {
 
   // Unique
   @@unique([address, checkpoint])
+  @@unique([address, imageHash])
 }
 
 // -----------------------------------------------------------------------------
@@ -534,9 +535,9 @@ model ConfigurationOperation {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  activities              Activity[]
-  configurationOwners     ConfigurationOwner[]
-  configurationSignatures ConfigurationSignature[]
+  activities                       Activity[]
+  configurationOperationOwners     ConfigurationOperationOwner[]
+  configurationOperationSignatures ConfigurationOperationSignature[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -560,10 +561,10 @@ enum ConfigurationOperationStatus {
 }
 
 // -----------------------------------------------------------------------------
-// ConfigurationOwner
+// ConfigurationOperationOwner
 // -----------------------------------------------------------------------------
 
-model ConfigurationOwner {
+model ConfigurationOperationOwner {
   // ---------------------------------------------------------------------------
   // Core
   // ---------------------------------------------------------------------------
@@ -595,12 +596,6 @@ model ConfigurationOwner {
   userId String?
 
   // ---------------------------------------------------------------------------
-  // Many-to-many
-  // ---------------------------------------------------------------------------
-
-  configurationSignatures ConfigurationSignature[]
-
-  // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
 
@@ -610,10 +605,10 @@ model ConfigurationOwner {
 }
 
 // -----------------------------------------------------------------------------
-// ConfigurationSignature
+// ConfigurationOperationSignature
 // -----------------------------------------------------------------------------
 
-model ConfigurationSignature {
+model ConfigurationOperationSignature {
   // ---------------------------------------------------------------------------
   // Core
   // ---------------------------------------------------------------------------
@@ -645,20 +640,20 @@ model ConfigurationSignature {
   configurationOperation   ConfigurationOperation @relation(fields: [configurationOperationId], references: [id])
   configurationOperationId String
 
-  configurationOwner   ConfigurationOwner @relation(fields: [configurationOwnerId], references: [id])
-  configurationOwnerId String
+  owner   Owner  @relation(fields: [ownerId], references: [id])
+  ownerId String
 
   // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
 
   // Unique
-  @@unique([configurationOperationId, configurationOwnerId])
+  @@unique([configurationOperationId, ownerId])
   // Relations
   @@index([activityId])
   @@index([configurationId])
   @@index([configurationOperationId])
-  @@index([configurationOwnerId])
+  @@index([ownerId])
 }
 
 // -----------------------------------------------------------------------------
@@ -700,7 +695,8 @@ model Owner {
   // Many-to-many
   // ---------------------------------------------------------------------------
 
-  signatures Signature[]
+  configurationOperationSignatures ConfigurationOperationSignature[]
+  signatures                       Signature[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1170,13 +1166,17 @@ model UserOperation {
   paymaster   Paymaster? @relation(fields: [paymasterId], references: [id])
   paymasterId String?
 
+  userOperationMerkle     UserOperationMerkle? @relation(fields: [userOperationMerkleRoot], references: [root])
+  userOperationMerkleRoot String?
+
   // ---------------------------------------------------------------------------
   // Relation Many-to-many
   // ---------------------------------------------------------------------------
 
-  billingOperations BillingOperation[]
-  signatures        Signature[]
-  simulations       Simulation[]
+  billingOperations         BillingOperation[]
+  signatures                Signature[]
+  simulations               Simulation[]
+  userOperationMerkleProofs UserOperationMerkleProof[]
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -1193,6 +1193,7 @@ model UserOperation {
   @@index([chainId])
   @@index([sender])
   @@index([paymasterId])
+  @@index([userOperationMerkleRoot])
 }
 
 enum UserOperationStatus {
@@ -1206,6 +1207,69 @@ enum UserOperationStatus {
   REVERTED
   INVALID
 }
+
+// -----------------------------------------------------------------------------
+// UserOperationMerkle
+// -----------------------------------------------------------------------------
+
+model UserOperationMerkle {
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  root String @id
+
+  // ---------------------------------------------------------------------------
+  // Many-to-many
+  // ---------------------------------------------------------------------------
+
+  signatures                Signature[]
+  userOperations            UserOperation[]
+  userOperationMerkleProofs UserOperationMerkleProof[]
+}
+
+// -----------------------------------------------------------------------------
+// UserOperationMerkleProof
+// -----------------------------------------------------------------------------
+
+model UserOperationMerkleProof {
+  // ---------------------------------------------------------------------------
+  // Core
+  // ---------------------------------------------------------------------------
+
+  id String @id @default(cuid())
+
+  // ---------------------------------------------------------------------------
+  // Fields
+  // ---------------------------------------------------------------------------
+
+  index Int
+  proof String
+
+  // ---------------------------------------------------------------------------
+  // One-to-many
+  // ---------------------------------------------------------------------------
+
+  userOperation     UserOperation @relation(fields: [userOperationHash], references: [hash])
+  userOperationHash String
+
+  userOperationMerkle     UserOperationMerkle @relation(fields: [userOperationMerkleRoot], references: [root])
+  userOperationMerkleRoot String
+
+  // ---------------------------------------------------------------------------
+  // Mappings
+  // ---------------------------------------------------------------------------
+
+  // Unique
+  @@unique([index, userOperationHash])
+  // Relations
+  @@index([userOperationHash])
+  @@index([userOperationMerkleRoot])
+}
+
+// -----------------------------------------------------------------------------
+// UserOperationMetadata
+// -----------------------------------------------------------------------------
 
 model UserOperationMetadata {
   // ---------------------------------------------------------------------------
@@ -1516,6 +1580,9 @@ model Signature {
 
   activity   Activity? @relation(fields: [activityId], references: [id])
   activityId String?   @unique
+
+  userOperationMerkle     UserOperationMerkle? @relation(fields: [userOperationMerkleRoot], references: [root])
+  userOperationMerkleRoot String?              @unique
 
   // ---------------------------------------------------------------------------
   // One-to-many
@@ -2242,26 +2309,22 @@ model Feedback {
   emoji String
 
   // ---------------------------------------------------------------------------
-  // One-to-many
-  // ---------------------------------------------------------------------------
-
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
-
-  // ---------------------------------------------------------------------------
   // None-to-one
   // ---------------------------------------------------------------------------
 
   activity   Activity? @relation(fields: [activityId], references: [id])
   activityId String?   @unique
 
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
   // ---------------------------------------------------------------------------
   // Mappings
   // ---------------------------------------------------------------------------
 
   // Relations
-  @@index([userId])
   @@index([activityId])
+  @@index([userId])
 }
 
 model InviteCode {
@@ -2440,15 +2503,15 @@ model Activity {
   // Immutable Relations None-to-none
   // ---------------------------------------------------------------------------
 
-  configurationSignature ConfigurationSignature?
-  feedback               Feedback?
-  notification           Notification?
-  paymaster              Paymaster?
-  paymasterOperation     PaymasterOperation?
-  signature              Signature?
-  simulation             Simulation?
-  transaction            Transaction?
-  userOperation          UserOperation?
+  configurationOperationSignature ConfigurationOperationSignature?
+  feedback                        Feedback?
+  notification                    Notification?
+  paymaster                       Paymaster?
+  paymasterOperation              PaymasterOperation?
+  signature                       Signature?
+  simulation                      Simulation?
+  transaction                     Transaction?
+  userOperation                   UserOperation?
 
   // ---------------------------------------------------------------------------
   // Mappings
@@ -2516,7 +2579,7 @@ enum ActivityEntity {
   // Mutable
   CONFIGURATION_OPERATION
   // Immutable
-  CONFIGURATION_SIGNATURE
+  CONFIGURATION_OPERATION_SIGNATURE
 }
 
 enum ActivityOperation {

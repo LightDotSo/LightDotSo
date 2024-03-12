@@ -17,7 +17,7 @@ export type {
   PartialUserOperations,
   ConfirmForm,
 } from "./confirmForm";
-export { ConfirmFormSchema } from "./confirmForm";
+export { confirmFormSchema } from "./confirmForm";
 export type { DevForm } from "./devForm";
 export { devFormSchema } from "./devForm";
 export {
@@ -27,5 +27,7 @@ export {
   newFormConfigurationRefinedSchema,
   newFormStoreSchema,
 } from "./newForm";
+export type { OwnerForm } from "./ownerForm";
+export { ownerFormSchema } from "./ownerForm";
 export type { SendForm } from "./sendForm";
 export { sendFormSchema } from "./sendForm";

@@ -34,8 +34,6 @@ export const createQueuePortfolio = async (
 
   return ResultAsync.fromPromise(
     client.POST("/queue/portfolio", {
-      // @ts-ignore
-      next: { revalidate: 0 },
       params,
     }),
     () => new Error("Database error"),
@@ -58,8 +56,6 @@ export const createQueueToken = async (
 
   return ResultAsync.fromPromise(
     client.POST("/queue/token", {
-      // @ts-ignore
-      next: { revalidate: 0 },
       params,
     }),
     () => new Error("Database error"),
@@ -85,8 +81,31 @@ export const createQueueInterpretation = async (
 
   return ResultAsync.fromPromise(
     client.POST("/queue/interpretation", {
-      // @ts-ignore
-      next: { revalidate: 0 },
+      params,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
+export const createQueueTransaction = async (
+  {
+    params,
+  }: {
+    params: {
+      query: {
+        chain_id: number;
+        hash: string;
+      };
+    };
+  },
+  clientType?: ClientType,
+) => {
+  const client = getClient(clientType);
+
+  return ResultAsync.fromPromise(
+    client.POST("/queue/transaction", {
       params,
     }),
     () => new Error("Database error"),
@@ -111,8 +130,6 @@ export const createQueueUserOperation = async (
 
   return ResultAsync.fromPromise(
     client.POST("/queue/user_operation", {
-      // @ts-ignore
-      next: { revalidate: 0 },
       params,
     }),
     () => new Error("Database error"),

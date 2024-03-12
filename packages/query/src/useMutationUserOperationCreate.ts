@@ -137,16 +137,26 @@ export const useMutationUserOperationCreate = (params: UserOperationParams) => {
     },
     onMutate: async (data: UserOperationCreateBodyParams) => {
       const uopData = {
-        call_data: data.userOperation.callData,
-        call_gas_limit: data.userOperation.callGasLimit,
-        chain_id: data.userOperation.chainId,
+        call_data: data.userOperation.callData
+          ? toHex(data.userOperation.callData)
+          : "0x",
+        call_gas_limit: data.userOperation.callGasLimit
+          ? toHex(data.userOperation.callGasLimit)
+          : "0x",
+        chain_id: data.userOperation.chainId ? data.userOperation.chainId : 0,
         hash: data.userOperation.hash,
         init_code: data.userOperation.initCode,
-        max_fee_per_gas: data.userOperation.maxFeePerGas,
-        max_priority_fee_per_gas: data.userOperation.maxPriorityFeePerGas,
-        nonce: data.userOperation.nonce,
+        max_fee_per_gas: data.userOperation.maxFeePerGas
+          ? toHex(data.userOperation.maxFeePerGas)
+          : "0x",
+        max_priority_fee_per_gas: data.userOperation.maxPriorityFeePerGas
+          ? toHex(data.userOperation.maxPriorityFeePerGas)
+          : "0x",
+        nonce: data.userOperation.nonce ? Number(data.userOperation.nonce) : 0,
         paymaster_and_data: data.userOperation.paymasterAndData,
-        pre_verification_gas: data.userOperation.preVerificationGas,
+        pre_verification_gas: data.userOperation.preVerificationGas
+          ? toHex(data.userOperation.preVerificationGas)
+          : "0x",
         sender: data.userOperation.sender,
         signatures: [
           {
@@ -157,7 +167,9 @@ export const useMutationUserOperationCreate = (params: UserOperationParams) => {
           },
         ],
         status: "PROPOSED",
-        verification_gas_limit: data.userOperation.verificationGasLimit,
+        verification_gas_limit: data.userOperation.verificationGasLimit
+          ? toHex(data.userOperation.verificationGasLimit)
+          : "0x",
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       };

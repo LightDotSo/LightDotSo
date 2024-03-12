@@ -48,17 +48,33 @@ lazy_static! {
 // The factory addresses
 lazy_static! {
     #[derive(Debug)]
-    pub static ref LIGHT_WALLET_FACTORY_ADDRESS: Address =
+    pub static ref LIGHT_WALLET_FACTORY_V010_ADDRESS: Address =
       // v0.1.0
       "0x0000000000756D3E6464f5efe7e413a0Af1C7474".parse().unwrap();
+}
+
+// The factory addresses
+lazy_static! {
+    #[derive(Debug)]
+    pub static ref LIGHT_WALLET_FACTORY_ADDRESS: Address =
+      // v0.2.0
+      "0x00000000001269b052C004FFB71B47AB22C898B0".parse().unwrap();
+}
+
+// The factory implementation addresses
+lazy_static! {
+    #[derive(Debug)]
+    pub static ref LIGHT_WALLET_FACTORY_IMPLEMENTATION_V010_ADDRESS: Address =
+      // v0.1.0
+      "0x8fb3cfdf2082c2be7d3205d361067748ea1abf63".parse().unwrap();
 }
 
 // The factory implementation addresses
 lazy_static! {
     #[derive(Debug)]
     pub static ref LIGHT_WALLET_FACTORY_IMPLEMENTATION_ADDRESS: Address =
-      // v0.1.0
-      "0x8fb3cfdf2082c2be7d3205d361067748ea1abf63".parse().unwrap();
+      // v0.2.0
+      "0x040d53c5dde1762f7cac48d5467e88236d4873d7".parse().unwrap();
 }
 
 // The example wallet addresses
@@ -141,6 +157,8 @@ lazy_static! {
 
 #[cfg(test)]
 mod tests {
+    use ethers::utils::to_checksum;
+
     use super::*;
 
     #[test]
@@ -149,6 +167,14 @@ mod tests {
             format!("{:?}", LIGHT_PAYMASTER_ADDRESSES[0]),
             "0x000000000018d32df916ff115a25fbefc70baf8b".to_string(),
             "The expected and actual paymaster addresses should match"
+        );
+    }
+
+    #[test]
+    fn test_address_to_string() {
+        assert_eq!(
+            to_checksum(&ENTRYPOINT_V060_ADDRESS, None),
+            "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789".to_string(),
         );
     }
 }
