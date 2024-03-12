@@ -115,8 +115,9 @@ export const useUserOperationCreate = ({
         .sort((a, b) => Number(a.chainId) - Number(b.chainId))
         .map(userOperation => hexToBytes(userOperation.hash as Hex));
       const tree = new MerkleTree(leaves, keccak256, { sort: true });
+      console.info(`0x${tree.getRoot().toString("hex")}` as Hex);
       setMerkleTree(tree);
-      return subdigestOf(address, tree.getRoot(), BigInt(0));
+      return subdigestOf(address, tree.getRoot(), BigInt(2));
     }
   }, [address, userOperations]);
 
