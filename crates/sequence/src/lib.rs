@@ -18,6 +18,7 @@ pub mod create;
 pub mod hash;
 pub mod init;
 pub mod io;
+pub mod merkle;
 pub mod module;
 pub mod node;
 pub mod recover;

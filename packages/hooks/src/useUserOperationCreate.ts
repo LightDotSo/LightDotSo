@@ -291,6 +291,7 @@ export const useUserOperationCreate = ({
       }
 
       console.info(merkleTree);
+      console.info(`0x${merkleTree.getRoot().toString("hex")}` as Hex);
 
       userOperationCreateBatch({
         ownerId: owner.id,

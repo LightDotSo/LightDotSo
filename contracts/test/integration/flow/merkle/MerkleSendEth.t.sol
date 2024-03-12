@@ -95,11 +95,17 @@ contract MerkleSendEthIntegrationTest is BaseIntegrationTest {
 
         // Assert that the merkle tree root is the same
         assertEq(merkleTreeRoot, root);
+        // solhint-disable-next-line no-console
+        console.logBytes32(merkleTreeRoot);
         assertEq(merkleProof[0], proof[0]);
+        // solhint-disable-next-line no-console
+        console.logBytes32(merkleProof[0]);
 
         // Assert that the signature and proof is the correct length
         assertEq(merkleSignature, merkleDecodedSignature);
         assertEq(signatureAndProof.length, 289);
+        // solhint-disable-next-line no-console
+        console.logBytes(signatureAndProof);
 
         // Assert that the signature after the proof is the same
         assertEq(signatureAndProof.slice(193, merkleSignature.length), merkleSignature);
@@ -114,6 +120,18 @@ contract MerkleSendEthIntegrationTest is BaseIntegrationTest {
         op.signature = signatureAndProof;
 
         entryPoint.handleOps(ops, beneficiary);
+
+        // Attempt to decode the signature and proof
+        (bytes32 decodedMerkleRoot, bytes32[] memory decodedMerkleProofs, bytes memory decodedSignature) = abi.decode(
+            hex"9ca174e7f8cbb8170c135f1a5a9a5ad293916907ef44f87b4f960278f0a686b2000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000162b3593f95d92384963531ae52b0cf95d43d0964939e71ad51a76b80483733100000000000000000000000000000000000000000000000000000000000000061020001000000000001158aa56ea34c217ad11df23a1ee6f0fe36e41bbb34f1e403220604b782b19c7e17e63ad5fe3484b7305fd8c8d4bae55329f5b7dbee5c7807b9f88e4463c1339f1b0201017f4c8bd0acc303599a1ae92414b055514ffb6f8100000000000000000000000000000000000000000000000000000000000000",
+            (bytes32, bytes32[], bytes)
+        );
+        // solhint-disable-next-line no-console
+        console.logBytes32(decodedMerkleRoot);
+        // solhint-disable-next-line no-console
+        console.logBytes32(decodedMerkleProofs[0]);
+        // solhint-disable-next-line no-console
+        console.logBytes(decodedSignature);
 
         // Assert that the balance of the account is 1
         assertEq(address(1).balance, 1);
