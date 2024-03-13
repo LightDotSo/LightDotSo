@@ -12,10 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import OriginalDefault from "@/app/(wallet)/@op/default";
+import OriginalPage from "@/app/(wallet)/[address]/op/[userOperationHash]/page";
+import { DEMO_WALLET_ADDRESS } from "@/const";
 
 // -----------------------------------------------------------------------------
-// Original Default
+// Props
 // -----------------------------------------------------------------------------
 
-export default OriginalDefault;
+interface PageProps {
+  params: { userOperationHash: string };
+}
+
+// -----------------------------------------------------------------------------
+// Original Page
+// -----------------------------------------------------------------------------
+
+export default async function Page({ params }: PageProps) {
+  return OriginalPage({
+    params: {
+      address: DEMO_WALLET_ADDRESS,
+      userOperationHash: params.userOperationHash,
+    },
+  });
+}

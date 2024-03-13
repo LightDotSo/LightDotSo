@@ -35,6 +35,7 @@ export enum Category {
   Owners = "Owners",
   Deposit = "Deposit",
   Send = "Send",
+  Create = "Create",
   Support = "Support",
 }
 
@@ -47,6 +48,7 @@ export enum DemoSubCategory {
   UserOperation = Category.UserOperation,
   Transactions = Category.Transactions,
   Activity = Category.Activity,
+  Create = Category.Create,
   Owners = Category.Owners,
   Send = Category.Send,
 }
@@ -277,6 +279,11 @@ export const TITLES: Record<Category, CategoryObject> = {
     description: "Deposit assets into your wallet.",
     subcategories: {},
   },
+  [Category.Create]: {
+    title: "Create",
+    description: "Create a new transaction.",
+    subcategories: {},
+  },
   [Category.Send]: {
     title: "Send",
     description: "Send assets to another wallet.",
@@ -351,6 +358,11 @@ export const TITLES: Record<Category, CategoryObject> = {
       [DemoSubCategory.Activity]: {
         title: "Demo Activity",
         description: "[Demo] View your wallet activity.",
+        subcategories: {},
+      },
+      [DemoSubCategory.Create]: {
+        title: "Demo Create",
+        description: "[Demo] Create a new transaction.",
         subcategories: {},
       },
       [DemoSubCategory.Send]: {

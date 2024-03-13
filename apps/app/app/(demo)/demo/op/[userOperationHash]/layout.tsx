@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import type { Metadata } from "next";
-import OriginalLayout from "@/app/(wallet)/[address]/create/layout";
+import OriginalLayout from "@/app/(wallet)/[address]/op/[userOperationHash]/layout";
 import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------

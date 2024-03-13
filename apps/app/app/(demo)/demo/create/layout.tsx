@@ -12,10 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import OriginalDefault from "@/app/(wallet)/@op/default";
+import type { Metadata } from "next";
+import OriginalLayout from "@/app/(wallet)/[address]/create/layout";
+import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
-// Original Default
+// Metadata
 // -----------------------------------------------------------------------------
 
-export default OriginalDefault;
+export const metadata: Metadata = {
+  title: TITLES.Demo.subcategories.Create.title,
+  description: TITLES.Demo.subcategories.Create.description,
+};
+
+// -----------------------------------------------------------------------------
+// Original Layout
+// -----------------------------------------------------------------------------
+
+export default OriginalLayout;
+
+// -----------------------------------------------------------------------------
+// Data
+// -----------------------------------------------------------------------------
+
+export const revalidate = 300;
