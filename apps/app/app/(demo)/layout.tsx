@@ -21,21 +21,13 @@ import { MSWState } from "@/components/msw/msw-state";
 
 type RootLayoutProps = {
   children: ReactNode;
-  create: ReactNode;
-  op: ReactNode;
-  send: ReactNode;
 };
 
 // -----------------------------------------------------------------------------
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function RootLayout({
-  children,
-  create,
-  op,
-  send,
-}: RootLayoutProps) {
+export default function RootLayout({ children }: RootLayoutProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -44,9 +36,6 @@ export default function RootLayout({
     <>
       <MSWState />
       {children}
-      {create}
-      {op}
-      {send}
     </>
   );
 }
