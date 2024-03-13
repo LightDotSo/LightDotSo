@@ -20,7 +20,7 @@ import { DEMO_WALLET_ADDRESS } from "@/const";
 // -----------------------------------------------------------------------------
 
 interface PageProps {
-  params: { address: string; userOperationHash: string };
+  params: { userOperationHash: string };
 }
 
 // -----------------------------------------------------------------------------
