@@ -16,6 +16,7 @@
 
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
 import { NftImage, TokenImage } from "@lightdotso/elements";
+import { useDelayedValue } from "@lightdotso/hooks";
 import { useTransferQueryState } from "@lightdotso/nuqs";
 import {
   useQueryNfts,
@@ -54,9 +55,11 @@ import { getChainById } from "@lightdotso/utils";
 import {
   useAccount,
   useChainId,
+  useModal,
   useReadContract,
   useSendTransaction,
   useSwitchChain,
+  useWaitForTransactionReceipt,
   useWriteContract,
 } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -101,6 +104,12 @@ export const DepositDialog: FC<DepositDialogProps> = ({
   const [transfer, setTransfer] = useTransferQueryState(initialTransfer);
 
   // ---------------------------------------------------------------------------
+  // Connectkit
+  // ---------------------------------------------------------------------------
+
+  const { setOpen } = useModal();
+
+  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
@@ -109,7 +118,13 @@ export const DepositDialog: FC<DepositDialogProps> = ({
   const globalChainId = useChainId();
   const { switchChainAsync, isPending: isSwitchChainPending } =
     useSwitchChain();
-  const { setIsFormDisabled, setIsFormLoading, setFormControl } = useFormRef();
+  const {
+    setIsFormDisabled,
+    setIsFormLoading,
+    setFormControl,
+    customFormSuccessText,
+    setCustomFormSuccessText,
+  } = useFormRef();
   const {
     setDepositBackgroundModal,
     setTokenModalProps,
@@ -150,6 +165,8 @@ export const DepositDialog: FC<DepositDialogProps> = ({
     resolver: zodResolver(depositSchema),
   });
 
+  const assetChainId = form.getValues("chainId");
+
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
@@ -184,11 +201,77 @@ export const DepositDialog: FC<DepositDialogProps> = ({
     isPending: isSendTransactionPending,
   } = useSendTransaction();
   const {
+    isSuccess: isWaitForTransactionSuccess,
+    isLoading: isWaitForTransactionLoading,
+  } = useWaitForTransactionReceipt({
+    hash: sendTransactionHash,
+    chainId: chainId,
+  });
+  const {
     data: writeContractHash,
     writeContract,
     error,
     isPending: isWriteContractPending,
   } = useWriteContract();
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const delayedIsSuccess = useDelayedValue<boolean>(
+    isWaitForTransactionSuccess,
+    false,
+    3000,
+  );
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const formStateText = useMemo(() => {
+    if (!address || !chainId) {
+      return "Connect Wallet";
+    }
+
+    if (!assetChainId) {
+      return "Deposit";
+    }
+
+    if (isConnecting) {
+      return "Connecting...";
+    }
+
+    if (isSwitchChainPending) {
+      return "Switching Chain...";
+    }
+
+    if (chainId !== assetChainId) {
+      return "Switch Chain";
+    }
+
+    if (isSendTransactionPending) {
+      return "Depositing...";
+    }
+
+    if (isWaitForTransactionLoading) {
+      return "Waiting for confirmation...";
+    }
+
+    if (delayedIsSuccess) {
+      return "Success!";
+    }
+
+    return "Deposit";
+  }, [
+    address,
+    chainId,
+    assetChainId,
+    isConnecting,
+    isSwitchChainPending,
+    isSendTransactionPending,
+    isWaitForTransactionLoading,
+    delayedIsSuccess,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -212,12 +295,24 @@ export const DepositDialog: FC<DepositDialogProps> = ({
     }
   }, [addPendingTransaction, chainId, writeContractHash]);
 
+  useEffect(() => {
+    if (!formStateText) {
+      return;
+    }
+    setCustomFormSuccessText(formStateText);
+  }, [formStateText, setCustomFormSuccessText]);
+
   // ---------------------------------------------------------------------------
   // Submit Handler
   // ---------------------------------------------------------------------------
 
   const onSubmit: SubmitHandler<DepositFormValues> = async () => {
     console.info("Deposit form submitted!");
+
+    if (!address) {
+      setOpen(true);
+      return;
+    }
 
     console.info(data);
 
@@ -238,11 +333,6 @@ export const DepositDialog: FC<DepositDialogProps> = ({
       console.info("Switching chain to: ", assetChainId);
 
       await switchChainAsync({ chainId: assetChainId });
-    }
-
-    if (!address) {
-      console.error("Address is not defined");
-      return;
     }
 
     if (!wallet) {
@@ -456,6 +546,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
     return (
       form.formState.isSubmitting ||
       isSendTransactionPending ||
+      isWaitForTransactionLoading ||
       isWriteContractPending ||
       isSwitchChainPending ||
       isConnecting
@@ -463,6 +554,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
   }, [
     form.formState,
     isSendTransactionPending,
+    isWaitForTransactionLoading,
     isWriteContractPending,
     isSwitchChainPending,
     isConnecting,
@@ -955,8 +1047,9 @@ export const DepositDialog: FC<DepositDialogProps> = ({
           form="deposit-modal-form"
           isModal={false}
           cancelDisabled={true}
+          isLoading={isFormLoading}
           disabled={!isFormValid || isFormLoading}
-          customSuccessText={!address ? "Connect Wallet" : "Deposit"}
+          customSuccessText={customFormSuccessText}
         />
       )}
     </div>

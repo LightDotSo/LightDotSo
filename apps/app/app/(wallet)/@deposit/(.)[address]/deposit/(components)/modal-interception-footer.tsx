@@ -14,7 +14,7 @@
 
 "use client";
 
-import { useAuth, useFormRef } from "@lightdotso/stores";
+import { useFormRef } from "@lightdotso/stores";
 import { FooterButton } from "@lightdotso/templates";
 import { useRouter } from "next/navigation";
 import { type FC, useCallback } from "react";
@@ -28,8 +28,7 @@ export const ModalInterceptionFooter: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { address } = useAuth();
-  const { isFormDisabled, isFormLoading } = useFormRef();
+  const { isFormDisabled, isFormLoading, customFormSuccessText } = useFormRef();
 
   // ---------------------------------------------------------------------------
   // Next Hooks
@@ -58,7 +57,7 @@ export const ModalInterceptionFooter: FC = () => {
       disabled={isFormDisabled}
       isLoading={isFormLoading}
       cancelClick={onDismiss}
-      customSuccessText={!address ? "Connect Wallet" : "Deposit"}
+      customSuccessText={customFormSuccessText}
     />
   );
 };
