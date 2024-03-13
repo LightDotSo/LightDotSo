@@ -12,32 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { ReactNode } from "react";
-import { MSWState } from "@/components/msw/msw-state";
+import OriginalPage from "@/app/(wallet)/@op/(.)[address]/op/[userOperationHash]/page";
+import { DEMO_WALLET_ADDRESS } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type RootLayoutProps = {
-  children: ReactNode;
-  op: ReactNode;
-};
+interface PageProps {
+  params: { userOperationHash: string };
+}
 
 // -----------------------------------------------------------------------------
-// Layout
+// Original Page
 // -----------------------------------------------------------------------------
 
-export default function RootLayout({ children, op }: RootLayoutProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <>
-      <MSWState />
-      {children}
-      {op}
-    </>
-  );
+export default async function Page({ params }: PageProps) {
+  return OriginalPage({
+    params: {
+      address: DEMO_WALLET_ADDRESS,
+      userOperationHash: params.userOperationHash,
+    },
+  });
 }

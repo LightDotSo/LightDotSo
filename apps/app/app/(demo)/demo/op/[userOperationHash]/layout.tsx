@@ -12,32 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { ReactNode } from "react";
-import { MSWState } from "@/components/msw/msw-state";
+import type { Metadata } from "next";
+import OriginalLayout from "@/app/(wallet)/[address]/op/[userOperationHash]/layout";
+import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
-// Props
+// Metadata
 // -----------------------------------------------------------------------------
 
-type RootLayoutProps = {
-  children: ReactNode;
-  op: ReactNode;
+export const metadata: Metadata = {
+  title: TITLES.Demo.subcategories.UserOperation.title,
+  description: TITLES.Demo.subcategories.UserOperation.description,
 };
 
 // -----------------------------------------------------------------------------
-// Layout
+// Original Layout
 // -----------------------------------------------------------------------------
 
-export default function RootLayout({ children, op }: RootLayoutProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
+export default OriginalLayout;
 
-  return (
-    <>
-      <MSWState />
-      {children}
-      {op}
-    </>
-  );
-}
+// -----------------------------------------------------------------------------
+// Data
+// -----------------------------------------------------------------------------
+
+export const revalidate = 300;

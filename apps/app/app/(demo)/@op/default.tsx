@@ -12,32 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { ReactNode } from "react";
-import { MSWState } from "@/components/msw/msw-state";
+import OriginalDefault from "@/app/(wallet)/@op/default";
 
 // -----------------------------------------------------------------------------
-// Props
+// Original Default
 // -----------------------------------------------------------------------------
 
-type RootLayoutProps = {
-  children: ReactNode;
-  op: ReactNode;
-};
-
-// -----------------------------------------------------------------------------
-// Layout
-// -----------------------------------------------------------------------------
-
-export default function RootLayout({ children, op }: RootLayoutProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <>
-      <MSWState />
-      {children}
-      {op}
-    </>
-  );
-}
+export default OriginalDefault;

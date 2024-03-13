@@ -97,16 +97,13 @@ export const CreateTransactionDialog: FC<CreateTransactionDialogProps> = ({
 
   return (
     <div className="mt-4 flex flex-col items-center justify-center">
-      {userOperations && userOperations.length > 0 && (
-        <Transaction
-          key={0}
-          address={address}
-          wallet={wallet}
-          genesisConfiguration={genesisConfiguration}
-          initialUserOperations={userOperations}
-          isDev={isDev}
-        />
-      )}
+      <Transaction
+        address={address}
+        wallet={wallet}
+        genesisConfiguration={genesisConfiguration}
+        initialUserOperations={userOperations}
+        isDev={isDev}
+      />
     </div>
   );
 };

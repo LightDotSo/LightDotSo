@@ -14,7 +14,7 @@
 
 import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
 import { UserOperationTimeline } from "@lightdotso/elements";
-import { useCopy } from "@lightdotso/hooks";
+import { useCopy, useIsDemoPathname } from "@lightdotso/hooks";
 import {
   Button,
   Card,
@@ -87,6 +87,7 @@ export const UserOperationCardTransaction: FC<
   // ---------------------------------------------------------------------------
 
   const [isCopying, copy] = useCopy();
+  const isDemo = useIsDemoPathname();
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -235,7 +236,7 @@ export const UserOperationCardTransaction: FC<
                       className="w-full bg-background-stronger"
                     >
                       <Link
-                        href={`/${userOperation.sender}/op/${userOperation.hash}`}
+                        href={`/${!isDemo ? userOperation.sender : "demo"}/op/${userOperation.hash}`}
                       >
                         See Details
                       </Link>
