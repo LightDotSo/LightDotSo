@@ -339,6 +339,7 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
                       <div className="mt-2 flex items-center justify-between text-xs text-text-weak">
                         <div>{/* tokenPrice could come here */}</div>
                         <div>
+                          &nbsp;
                           {balance && balance.data
                             ? `${balance.data?.value / BigInt(Math.pow(10, balance.data?.decimals))} ${balance.data?.symbol} available`
                             : ""}
