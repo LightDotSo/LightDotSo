@@ -129,7 +129,7 @@ export const Root: FC<RootProps> = ({ children }) => {
       lang="en"
       className={`${inter.variable} font-sans`}
     >
-      <body className="min-h-[100dvh] bg-background-body">
+      <body className="min-h-dvh bg-background-body">
         <ThemeProvider attribute="class">
           <ReactQueryProvider showDevTools>
             <Web3Provider initialState={initialState}>

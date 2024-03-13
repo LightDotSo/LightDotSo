@@ -40,7 +40,7 @@ import type { FC, ReactNode } from "react";
 // Styles
 // -----------------------------------------------------------------------------
 
-const modalDialogVariants = cva(["flex flex-col max-h-[80%]"], {
+const modalDialogVariants = cva(["flex max-h-[80%] flex-col"], {
   variants: {
     size: {
       lg: "max-w-6xl",
