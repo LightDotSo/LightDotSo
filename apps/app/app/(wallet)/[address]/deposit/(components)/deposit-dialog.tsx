@@ -681,6 +681,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                           <div className="flex items-center justify-between text-xs text-text-weak">
                             <div>{/* tokenPrice could come here */}</div>
                             <div>
+                              &nbsp;
                               {token
                                 ? `${token.amount} ${token.symbol} available`
                                 : ""}
@@ -729,7 +730,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
 
                   return (
                     <FormControl>
-                      <div>
+                      <div className="flex flex-col space-y-3">
                         <div className="w-full space-y-2">
                           <Label htmlFor="weight">NFT</Label>
                           <Button
@@ -875,6 +876,10 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                             )}
                           />
                           <FormMessage />
+                          {/* Placeholder text for alignment purposes */}
+                          <div className="flex items-center justify-between text-xs text-text-weak">
+                            &nbsp;
+                          </div>
                         </div>
                       </div>
                     </FormControl>
