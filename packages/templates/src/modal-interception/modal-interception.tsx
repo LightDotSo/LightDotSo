@@ -83,6 +83,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
+  // Determine if the modal is a background modal
   const isBackground = useMemo(() => {
     switch (type) {
       case "create":
@@ -105,6 +106,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     type,
   ]);
 
+  // Determine if the modal is open
   const isOpen = useMemo(() => {
     switch (type) {
       case "create":
@@ -131,8 +133,11 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
+  // Dismiss the modal and go back to the previous page
   const onDismiss = useCallback(() => {
     switch (type) {
+      // Only the create modal can be nested opened from the send modal
+      // Hence, we need to set the send modal to visible when the create modal is dismissed
       case "create":
         setSendBackgroundModal(false);
         hideCreateModal();
@@ -169,6 +174,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // Show the modal when the path matches the modal type
   useEffect(() => {
     if (isOpen) {
       return;
@@ -176,6 +182,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
 
     switch (type) {
       case "create":
+        // Open the create modal and set the send modal to background
         if (pathname.includes("create")) {
           setSendBackgroundModal(true);
           showCreateModal();
@@ -205,19 +212,23 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, type]);
 
+  // Hide all modals background when the modal is opened
+  // This is to prevent the modal sent to background and not being visible when the modal is opened
+  // Except for the create modal, which can be nested opened from the send modal
   useEffect(() => {
-    if (isBackground) {
+    if (type !== "create") {
       return;
     }
 
-    // hideAllModalsBackground();
+    hideAllModalsBackground();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isBackground]);
+  }, []);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
+  // If the modal is not open, return null
   if (!isOpen) {
     return null;
   }
