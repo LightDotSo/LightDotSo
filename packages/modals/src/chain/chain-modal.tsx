@@ -87,8 +87,8 @@ export function ChainModal() {
                     }}
                   >
                     <>
-                      <ChainLogo className="mr-2" chainId={chain.id} />
-                      {chain.name}
+                      <ChainLogo chainId={chain.id} />
+                      <span className="ml-2">{chain.name}</span>
                     </>
                   </CommandItem>
                 ))}
@@ -104,8 +104,8 @@ export function ChainModal() {
                     }}
                   >
                     <div className="flex items-center space-x-2">
-                      <ChainLogo className="mr-2" chainId={chain.id} />
-                      {chain.name}
+                      <ChainLogo chainId={chain.id} />
+                      <span className="ml-2">{chain.name}</span>
                     </div>
                   </CommandItem>
                 ))}
