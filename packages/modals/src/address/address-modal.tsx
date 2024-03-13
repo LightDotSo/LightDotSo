@@ -31,11 +31,11 @@ import {
 import { cn } from "@lightdotso/utils";
 import { publicClient, useEnsAddress } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { isAddress } from "viem";
 import { normalize } from "viem/ens";
 import { z } from "zod";
-import { useEffect } from "react";
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -203,7 +203,7 @@ export function AddressModal() {
                     className={cn(
                       methods.formState.isValid
                         ? "text-text-primary"
-                        : "text-text-weak cursor-not-allowed",
+                        : "cursor-not-allowed text-text-weak",
                     )}
                     disabled={!methods.formState.isValid}
                     onSelect={() => {
