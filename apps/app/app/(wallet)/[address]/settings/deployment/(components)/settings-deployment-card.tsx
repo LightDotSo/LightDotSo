@@ -31,6 +31,7 @@ import { Button } from "@lightdotso/ui";
 import {
   findContractAddressByAddress,
   getEtherscanUrl,
+  shortenBytes32,
 } from "@lightdotso/utils";
 import { lightWalletAbi } from "@lightdotso/wagmi";
 import Link from "next/link";
@@ -122,6 +123,8 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
     if (!wallet) {
       return;
     }
+
+    // Get the initCode from the initial configuration
     return calculateInitCode(
       WALLET_FACTORY_ENTRYPOINT_MAPPING[
         findContractAddressByAddress(wallet.factory_address as Address)!
@@ -169,7 +172,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
     return userOperationsParser.serialize([
       {
         chainId: BigInt(chain.id),
-        initCode: initCode,
+        initCode: !deployed_op ? initCode : "0x",
         callData: callData,
       },
     ]);
@@ -212,21 +215,24 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
       }
       footerContent={<SettingsDeploymentCardSubmitButton />}
     >
-      <div className="flex flex-row items-center px-4">
+      <div className="flex flex-row items-center">
         {implVersion}
         <span className="ml-2 text-sm text-text-weak">({implAddress})</span>
       </div>
-      <div className="flex flex-row">
-        {deployed_op && (
-          <Button asChild variant="link">
-            <a
-              target="_blank"
-              rel="noreferrer"
-              href={`${getEtherscanUrl(chain)}/tx/${deployed_op.transaction?.hash}`}
-            >
-              {deployed_op.transaction?.hash}
-            </a>
-          </Button>
+      <div className="flex flex-row items-center">
+        {deployed_op && deployed_op.transaction?.hash && (
+          <>
+            Tx:{" "}
+            <Button asChild variant="link">
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href={`${getEtherscanUrl(chain)}/tx/${deployed_op.transaction?.hash}`}
+              >
+                {shortenBytes32(deployed_op.transaction?.hash)}
+              </a>
+            </Button>
+          </>
         )}
         {!deployed_op && (
           <p className="text-sm text-text-weak">
