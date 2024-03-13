@@ -117,7 +117,7 @@ const Number = forwardRef<HTMLSpanElement, NumberProps>(
 
     useEffect(() => {
       // Delay the spring animation to give the component time to mount
-      const timeout = setTimeout(() => {
+      setTimeout(() => {
         spring.set(parseFloat(value.toFixed(2)));
       }, 300);
     }, [spring, value]);

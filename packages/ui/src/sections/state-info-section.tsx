@@ -48,7 +48,7 @@ function StateInfoSection({
         {title}
       </h3>
       <p className="mt-1 text-sm text-text-weak md:text-base">{description}</p>
-      <div className="mt-6 flex justify-center">{children}</div>
+      <div className="mt-6 flex justify-center p-4">{children}</div>
     </div>
   );
 }
