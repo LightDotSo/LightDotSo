@@ -89,13 +89,14 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // Wagmi
   // ---------------------------------------------------------------------------
 
-  const { data: implAddressBytes32 } = useStorageAt({
-    address: address,
-    chainId: chain.id,
-    // The logic address as defined in the 1967 EIP
-    // From: https://eips.ethereum.org/EIPS/eip-1967
-    slot: "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
-  });
+  const { data: implAddressBytes32, isSuccess: isImplAddressBytes32Success } =
+    useStorageAt({
+      address: address,
+      chainId: chain.id,
+      // The logic address as defined in the 1967 EIP
+      // From: https://eips.ethereum.org/EIPS/eip-1967
+      slot: "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+    });
 
   // ---------------------------------------------------------------------------
   // Local Variables
@@ -109,13 +110,13 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // ---------------------------------------------------------------------------
 
   const implAddress = useMemo(() => {
-    if (!implAddressBytes32) {
+    if (!implAddressBytes32 || !isImplAddressBytes32Success) {
       return;
     }
 
     // Convert the bytes32 impl address to an address
     return getAddress(`0x${implAddressBytes32.slice(26)}`);
-  }, [implAddressBytes32]);
+  }, [implAddressBytes32, isImplAddressBytes32Success]);
 
   const implVersion = useMemo(() => {
     if (!implAddress) {

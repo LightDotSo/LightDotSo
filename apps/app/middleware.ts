@@ -32,7 +32,8 @@ export async function middleware(req: NextRequest) {
   if (
     process.env.NODE_ENV === "production" &&
     pathArray.some(path => req.nextUrl.pathname === path) &&
-    wallet_cookie
+    wallet_cookie &&
+    req.nextUrl.searchParams.size === 0
   ) {
     const wallet = wallet_cookie.value;
 
