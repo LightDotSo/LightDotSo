@@ -19,7 +19,11 @@ import { AssetChange } from "@lightdotso/elements";
 import { useUserOperationCreate } from "@lightdotso/hooks";
 import { useUserOperationsQueryState } from "@lightdotso/nuqs";
 import { type UserOperation } from "@lightdotso/schemas";
-import { useModalSwiper, useUserOperations } from "@lightdotso/stores";
+import {
+  useFormRef,
+  useModalSwiper,
+  useUserOperations,
+} from "@lightdotso/stores";
 import {
   Button,
   Tabs,
@@ -91,6 +95,7 @@ export const Transaction: FC<TransactionProps> = ({
     userOperationSimulations,
     resetAll,
   } = useUserOperations();
+  const { setIsFormDisabled } = useFormRef();
 
   // ---------------------------------------------------------------------------
   // Query State Hooks
@@ -134,6 +139,14 @@ export const Transaction: FC<TransactionProps> = ({
     resetAll();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, resetAll]);
+
+  // If all of the items in the userOperations array have a hash, set form disabled to false
+  useEffect(() => {
+    if (userOperations) {
+      const isValid = userOperations.every(userOperation => userOperation.hash);
+      setIsFormDisabled(!isValid);
+    }
+  }, [userOperations, setIsFormDisabled]);
 
   // ---------------------------------------------------------------------------
   // Render
