@@ -215,15 +215,17 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
       }
       footerContent={<SettingsDeploymentCardSubmitButton />}
     >
-      <div className="flex flex-row items-center">
-        {implVersion}
-        <span className="ml-2 text-sm text-text-weak">({implAddress})</span>
-      </div>
+      {deployed_op && implAddress && (
+        <div className="flex flex-row items-center">
+          {implVersion}
+          <span className="ml-2 text-sm text-text-weak">({implAddress})</span>
+        </div>
+      )}
       <div className="flex flex-row items-center">
         {deployed_op && deployed_op.transaction?.hash && (
           <>
             Tx:{" "}
-            <Button asChild variant="link">
+            <Button asChild size="sm" variant="link">
               <a
                 target="_blank"
                 rel="noreferrer"
