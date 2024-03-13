@@ -24,7 +24,7 @@ import { forwardRef } from "react";
 // Styles
 // -----------------------------------------------------------------------------
 
-const buttonGroupVariants = cva("inline-flex space-x-[-1px] rounded-md", {
+const buttonGroupVariants = cva("inline-flex -space-x-px rounded-md", {
   variants: {
     variant: {
       default: "button group p-1",
