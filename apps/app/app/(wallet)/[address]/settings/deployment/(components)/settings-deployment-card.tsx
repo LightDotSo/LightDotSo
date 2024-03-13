@@ -189,7 +189,11 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
         <Link
           href={`/${address}/create?userOperations=${deployedUserOperation}`}
         >
-          {typeof deployed_op !== "undefined" ? "Already Deployed" : "Deploy"}
+          {typeof deployed_op !== "undefined"
+            ? callData === "0x"
+              ? "Already Deployed"
+              : "Upgrade"
+            : "Deploy"}
         </Link>
       </Button>
     );

@@ -386,6 +386,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Remove the user operation itself
   useEffect(() => {
     if (
+      userOperationIndex > 0 &&
       implAddress &&
       implAddress === CONTRACT_ADDRESSES["v0.1.0 Implementation"]
     ) {
