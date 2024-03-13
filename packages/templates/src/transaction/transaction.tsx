@@ -29,8 +29,8 @@ import {
   Textarea,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
-import { useEffect, type FC } from "react";
 import { usePathname } from "next/navigation";
+import { useEffect, type FC } from "react";
 import { type Address } from "viem";
 import { Loading } from "../loading";
 import { useIsInsideModal } from "../modal";
@@ -132,7 +132,8 @@ export const Transaction: FC<TransactionProps> = ({
   // On pathname change, reset all user operations
   useEffect(() => {
     resetAll();
-  }, [pathname]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname, resetAll]);
 
   // ---------------------------------------------------------------------------
   // Render

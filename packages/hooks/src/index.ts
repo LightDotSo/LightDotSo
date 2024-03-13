@@ -22,6 +22,7 @@ export { useDebouncedValue } from "./useDebouncedValue";
 export { useIsDemoPathname } from "./useIsDemoPathname";
 export { useIsMounted } from "./useIsMounted";
 export { useMediaQuery } from "./useMediaQuery";
+export { useProxyImplementationAddress } from "./useProxyImplementationAddress";
 export { useRefinement } from "./useRefinement";
 export type { RefinementCallback, Refinement } from "./useRefinement";
 export { useSignInWithSiwe } from "./useSignInWithSiwe";

@@ -14,9 +14,15 @@
 
 "use client";
 
-import { WALLET_FACTORY_ENTRYPOINT_MAPPING } from "@lightdotso/const";
+import {
+  CONTRACT_ADDRESSES,
+  WALLET_FACTORY_ENTRYPOINT_MAPPING,
+} from "@lightdotso/const";
 import type { ConfigurationData, WalletData } from "@lightdotso/data";
-import { useDebouncedValue } from "@lightdotso/hooks";
+import {
+  useDebouncedValue,
+  useProxyImplementationAddress,
+} from "@lightdotso/hooks";
 import { useUserOperationsQueryState } from "@lightdotso/nuqs";
 import {
   useQueryConfiguration,
@@ -101,6 +107,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // State Hooks
   // ---------------------------------------------------------------------------
 
+  const [isDisabled, setIsDisabled] = useState(false);
   const [userOperationWithHash, setUserOperationWithHash] =
     useState<UserOperation>();
 
@@ -123,6 +130,15 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     setUserOperationDevInfo,
     setUserOperationSimulation,
   } = useUserOperations();
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const implAddress = useProxyImplementationAddress({
+    address: address,
+    chainId: Number(initialUserOperation.chainId),
+  });
 
   // ---------------------------------------------------------------------------
   // Wagmi
@@ -365,6 +381,25 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
+
+  // If the implementation address is available and is the version 0.1.0 and is after index 0
+  // Remove the user operation itself
+  useEffect(() => {
+    if (
+      implAddress &&
+      implAddress === CONTRACT_ADDRESSES["v0.1.0 Implementation"]
+    ) {
+      // Remove the user operation from the list
+      setUserOperations(prev => {
+        const next = [...prev];
+        next.splice(userOperationIndex, 1);
+        return next;
+      });
+
+      // Set the disabled state
+      setIsDisabled(true);
+    }
+  }, [implAddress, setUserOperations, userOperationIndex]);
 
   useEffect(() => {
     const fetchHashAndUpdateOperation = async () => {
@@ -690,7 +725,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   // Sync the user operation details
   useEffect(() => {
-    if (!targetUserOperation) {
+    if (!targetUserOperation || isDisabled) {
       return;
     }
 
@@ -703,6 +738,10 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   // Sync the user operation dev info
   useEffect(() => {
+    if (isDisabled) {
+      return;
+    }
+
     setUserOperationDevInfo(
       Number(targetUserOperation.chainId),
       debouncedUserOperationDevInfo,
@@ -712,7 +751,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   // Sync the user operation simulation
   useEffect(() => {
-    if (!simulation) {
+    if (!simulation || isDisabled) {
       return;
     }
 

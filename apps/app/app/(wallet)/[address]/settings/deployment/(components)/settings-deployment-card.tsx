@@ -18,6 +18,7 @@ import {
   PROXY_IMPLEMENTAION_VERSION_MAPPING,
   WALLET_FACTORY_ENTRYPOINT_MAPPING,
 } from "@lightdotso/const";
+import { useProxyImplementationAddress } from "@lightdotso/hooks";
 import { userOperationsParser } from "@lightdotso/nuqs";
 import {
   useQueryUserOperations,
@@ -30,10 +31,9 @@ import {
   findContractAddressByAddress,
   getEtherscanUrl,
 } from "@lightdotso/utils";
-import { useStorageAt } from "@lightdotso/wagmi";
 import Link from "next/link";
 import { useMemo, type FC } from "react";
-import { getAddress, type Address, type Chain, type Hex } from "viem";
+import { type Address, type Chain, type Hex } from "viem";
 import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const";
 
@@ -86,17 +86,13 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   });
 
   // ---------------------------------------------------------------------------
-  // Wagmi
+  // Hooks
   // ---------------------------------------------------------------------------
 
-  const { data: implAddressBytes32, isSuccess: isImplAddressBytes32Success } =
-    useStorageAt({
-      address: address,
-      chainId: chain.id,
-      // The logic address as defined in the 1967 EIP
-      // From: https://eips.ethereum.org/EIPS/eip-1967
-      slot: "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
-    });
+  const implAddress = useProxyImplementationAddress({
+    address: address,
+    chainId: chain.id,
+  });
 
   // ---------------------------------------------------------------------------
   // Local Variables
@@ -108,21 +104,6 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
-
-  const implAddress = useMemo(() => {
-    // Don't continue if the impl address is not available or the call failed
-    if (!implAddressBytes32 || !isImplAddressBytes32Success) {
-      return;
-    }
-
-    // Don't continue if the impl address is not the correct length
-    if (implAddressBytes32.length !== 66) {
-      return;
-    }
-
-    // Convert the bytes32 impl address to an address
-    return getAddress(`0x${implAddressBytes32.slice(26)}`);
-  }, [implAddressBytes32, isImplAddressBytes32Success]);
 
   const implVersion = useMemo(() => {
     if (!implAddress) {
