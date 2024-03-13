@@ -64,7 +64,7 @@ export function AddressModal() {
 
   const getEns = async ({ name }: { name: string }) =>
     publicClient.getEnsAddress({ name: normalize(name) }).then(addr => {
-      console.log(addr);
+      console.info(addr);
       return !!addr;
     });
 
