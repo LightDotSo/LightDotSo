@@ -140,6 +140,8 @@ type ModalsStore = {
   showTokenModal: () => void;
   hideTokenModal: () => void;
   setTokenBackgroundModal: (isBackground: boolean) => void;
+  hideAllModals: () => void;
+  hideAllModalsBackground: () => void;
 };
 
 // -----------------------------------------------------------------------------
@@ -292,6 +294,36 @@ export const useModals = create(
       hideTokenModal: () => set({ isTokenModalVisible: false }),
       setTokenBackgroundModal: (isBackground: boolean) =>
         set({ isTokenModalBackground: isBackground }),
+      hideAllModals: () =>
+        set({
+          isAddressModalVisible: false,
+          isAuthModalVisible: false,
+          isChainModalVisible: false,
+          isConnectModalVisible: false,
+          isCreateModalVisible: false,
+          isDepositModalVisible: false,
+          isNftModalVisible: false,
+          isNotificationsModalVisible: false,
+          isOpModalVisible: false,
+          isOwnerModalVisible: false,
+          isSendModalVisible: false,
+          isTokenModalVisible: false,
+        }),
+      hideAllModalsBackground: () =>
+        set({
+          isAddressModalBackground: false,
+          isAuthModalBackground: false,
+          isChainModalBackground: false,
+          isConnectModalBackground: false,
+          isCreateModalBackground: false,
+          isDepositModalBackground: false,
+          isNftModalBackground: false,
+          isNotificationsModalBackground: false,
+          isOpModalBackground: false,
+          isOwnerModalBackground: false,
+          isSendModalBackground: false,
+          isTokenModalBackground: false,
+        }),
     }),
     {
       anonymousActionType: "useModals",

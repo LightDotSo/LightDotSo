@@ -40,7 +40,7 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { hideOpModal } = useModals();
+  const { hideCreateModal, setSendBackgroundModal } = useModals();
   const { resetAll } = useUserOperations();
 
   // ---------------------------------------------------------------------------
@@ -54,7 +54,8 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
   // ---------------------------------------------------------------------------
 
   const onDismiss = useCallback(() => {
-    hideOpModal();
+    setSendBackgroundModal(false);
+    hideCreateModal();
     resetAll();
     router.back();
     // eslint-disable-next-line react-hooks/exhaustive-deps

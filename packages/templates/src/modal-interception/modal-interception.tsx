@@ -58,6 +58,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     isNotificationsModalVisible,
     isOpModalVisible,
     isSendModalVisible,
+    setSendBackgroundModal,
     showCreateModal,
     showDepositModal,
     showNotificationsModal,
@@ -68,6 +69,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     hideNotificationsModal,
     hideOpModal,
     hideSendModal,
+    hideAllModalsBackground,
   } = useModals();
 
   // ---------------------------------------------------------------------------
@@ -132,6 +134,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   const onDismiss = useCallback(() => {
     switch (type) {
       case "create":
+        setSendBackgroundModal(false);
         hideCreateModal();
         router.back();
         break;
@@ -174,6 +177,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     switch (type) {
       case "create":
         if (pathname.includes("create")) {
+          setSendBackgroundModal(true);
           showCreateModal();
         }
         break;
@@ -200,6 +204,15 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, type]);
+
+  useEffect(() => {
+    if (isBackground) {
+      return;
+    }
+
+    // hideAllModalsBackground();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isBackground]);
 
   // ---------------------------------------------------------------------------
   // Render

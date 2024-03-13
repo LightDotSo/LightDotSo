@@ -685,6 +685,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                                 <div className="absolute inset-y-0 right-3 flex items-center">
                                   <Button
                                     size="unsized"
+                                    disabled={!token}
                                     variant="outline"
                                     type="button"
                                     className="px-1 py-0.5 text-xs"
@@ -913,6 +914,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                                 </div>
                                 <div className="absolute inset-y-0 right-3 flex items-center">
                                   <Button
+                                    disabled={!nft}
                                     size="unsized"
                                     variant="outline"
                                     type="button"
