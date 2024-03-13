@@ -15,6 +15,7 @@
 "use client";
 
 import {
+  LATEST_IMPLEMENTATION_ADDRESS,
   PROXY_IMPLEMENTAION_VERSION_MAPPING,
   WALLET_FACTORY_ENTRYPOINT_MAPPING,
 } from "@lightdotso/const";
@@ -31,9 +32,10 @@ import {
   findContractAddressByAddress,
   getEtherscanUrl,
 } from "@lightdotso/utils";
+import { lightWalletAbi } from "@lightdotso/wagmi";
 import Link from "next/link";
 import { useMemo, type FC } from "react";
-import { type Address, type Chain, type Hex } from "viem";
+import { encodeFunctionData, type Address, type Chain, type Hex } from "viem";
 import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const";
 
@@ -129,6 +131,50 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
     );
   }, [image_hash, salt, wallet]);
 
+  const callData = useMemo(() => {
+    if (implAddress === LATEST_IMPLEMENTATION_ADDRESS) {
+      return "0x";
+    }
+
+    // Upgrade to the latest implementation
+    return encodeFunctionData({
+      abi: lightWalletAbi,
+      functionName: "execute",
+      args: [
+        address,
+        BigInt(0),
+        encodeFunctionData({
+          abi: [
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "newImplementation",
+                  type: "address",
+                },
+              ],
+              name: "upgradeTo",
+              outputs: [],
+              stateMutability: "nonpayable",
+              type: "function",
+            },
+          ],
+          args: [LATEST_IMPLEMENTATION_ADDRESS],
+        }),
+      ],
+    });
+  }, [implAddress]);
+
+  const deployedUserOperation = useMemo(() => {
+    return userOperationsParser.serialize([
+      {
+        chainId: BigInt(chain.id),
+        initCode: initCode,
+        callData: callData,
+      },
+    ]);
+  }, [initCode, callData, chain.id]);
+
   // ---------------------------------------------------------------------------
   // Submit Button
   // ---------------------------------------------------------------------------
@@ -138,10 +184,10 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
       <Button
         type="submit"
         form="settings-deployment-card-form"
-        disabled={typeof deployed_op !== "undefined"}
+        disabled={deployed_op && callData === "0x"}
       >
         <Link
-          href={`/${address}/create?userOperations=${userOperationsParser.serialize([{ chainId: BigInt(chain.id), initCode: initCode }])}`}
+          href={`/${address}/create?userOperations=${deployedUserOperation}`}
         >
           {typeof deployed_op !== "undefined" ? "Already Deployed" : "Deploy"}
         </Link>
@@ -162,24 +208,28 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
       }
       footerContent={<SettingsDeploymentCardSubmitButton />}
     >
-      {implAddress}
-      {implVersion}
-      {deployed_op && (
-        <Button asChild variant="link">
-          <a
-            target="_blank"
-            rel="noreferrer"
-            href={`${getEtherscanUrl(chain)}/tx/${deployed_op.transaction?.hash}`}
-          >
-            {deployed_op.transaction?.hash}
-          </a>
-        </Button>
-      )}
-      {!deployed_op && (
-        <p className="text-sm text-text-weak">
-          No deployment found. <br />
-        </p>
-      )}
+      <div className="flex flex-row">
+        {implVersion}
+        <span className="text-sm text-text-weak">{implAddress}</span>
+      </div>
+      <div className="flex flex-row">
+        {deployed_op && (
+          <Button asChild variant="link">
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href={`${getEtherscanUrl(chain)}/tx/${deployed_op.transaction?.hash}`}
+            >
+              {deployed_op.transaction?.hash}
+            </a>
+          </Button>
+        )}
+        {!deployed_op && (
+          <p className="text-sm text-text-weak">
+            No deployment found. <br />
+          </p>
+        )}
+      </div>
     </SettingsCard>
   );
 };
