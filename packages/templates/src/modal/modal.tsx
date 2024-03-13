@@ -40,7 +40,7 @@ import type { FC, ReactNode } from "react";
 // Styles
 // -----------------------------------------------------------------------------
 
-const modalDialogVariants = cva(["max-h-[80%]"], {
+const modalDialogVariants = cva(["flex flex-col max-h-[80%]"], {
   variants: {
     size: {
       lg: "max-w-6xl",
@@ -149,7 +149,6 @@ export const Modal: FC<ModalProps> = ({
         <DialogOverlay />
         <DialogContent
           className={cn(
-            // "w-full overflow-scroll [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
             "w-full",
             modalDialogVariants({ size }),
             isHidden && "hidden",
@@ -173,8 +172,8 @@ export const Modal: FC<ModalProps> = ({
           )}
           <DialogBody
             className={cn(
-              "overflow-scroll [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
-              isHeightFixed && "h-96",
+              "overflow-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+              isHeightFixed ? "h-96" : "max-h-full",
               className,
             )}
           >
