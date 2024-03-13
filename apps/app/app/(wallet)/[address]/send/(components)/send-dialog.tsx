@@ -122,6 +122,9 @@ export const SendDialog: FC<SendDialogProps> = ({
     setTokenModalProps,
     showTokenModal,
     hideTokenModal,
+    setAddressModalProps,
+    showAddressModal,
+    hideAddressModal,
   } = useModals();
 
   // ---------------------------------------------------------------------------
@@ -1082,63 +1085,84 @@ export const SendDialog: FC<SendDialogProps> = ({
                               </Label>
                               <div className="flex items-center space-x-3">
                                 <div className="relative inline-block w-full">
-                                  <Input
-                                    className="pl-12"
-                                    {...field}
-                                    placeholder="Recepient's Address or ENS name"
-                                    onBlur={e => {
-                                      // Validate the address
-                                      if (!e.target.value) {
-                                        // Clear the value of key address
-                                        form.setValue(
-                                          `transfers.${index}.address`,
-                                          "",
-                                        );
-                                      }
-                                      const address = e.target.value;
-
-                                      validateAddress(address, index);
-                                    }}
-                                    onChange={e => {
-                                      // Update the field value
-                                      field.onChange(e.target.value || "");
-
-                                      // Validate the address
-                                      const address = e.target.value;
-
-                                      if (address) {
-                                        debouncedValidateAddress(
+                                  <Button
+                                    size="lg"
+                                    type="button"
+                                    variant="outline"
+                                    className="flex w-full items-center justify-between px-4 text-sm"
+                                    onClick={() => {
+                                      setAddressModalProps({
+                                        addressOrEns: address,
+                                        isTestnet:
+                                          walletSettings?.is_enabled_testnet ??
+                                          false,
+                                        onClose: () => {
+                                          hideAddressModal();
+                                          setSendBackgroundModal(false);
+                                        },
+                                        onAddressSelect: ({
                                           address,
-                                          index,
-                                        );
-                                      }
+                                          addressOrEns,
+                                        }) => {
+                                          form.setValue(
+                                            `transfers.${index}.address`,
+                                            address,
+                                          );
+                                          form.setValue(
+                                            `transfers.${index}.addressOrEns`,
+                                            addressOrEns,
+                                          );
+                                          form.trigger();
+
+                                          hideAddressModal();
+                                          if (isInsideModal) {
+                                            setSendBackgroundModal(false);
+                                          }
+                                        },
+                                      });
+                                      setSendBackgroundModal(true);
+                                      showAddressModal();
                                     }}
-                                  />
-                                  <div className="absolute inset-y-0 left-3 flex items-center">
-                                    <Avatar className="size-6">
-                                      {/* If the address is valid, try resolving an ens Avatar */}
-                                      <PlaceholderOrb
-                                        address={
-                                          // If the address is a valid address
-                                          field?.value && isAddress(field.value)
-                                            ? field?.value
-                                            : "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
-                                        }
-                                        className={cn(
-                                          // If the field is not valid, add opacity
-                                          form.formState.errors.transfers &&
-                                            form.formState.errors.transfers[
-                                              index
-                                            ] &&
-                                            form.formState.errors.transfers[
-                                              index
-                                            ]?.addressOrEns
-                                            ? "opacity-50"
-                                            : "opacity-100",
+                                  >
+                                    <div className="flex items-center w-full">
+                                      <Avatar className="size-6">
+                                        {/* If the address is valid, try resolving an ens Avatar */}
+                                        <PlaceholderOrb
+                                          address={
+                                            // If the address is a valid address
+                                            field?.value &&
+                                            isAddress(field.value)
+                                              ? field?.value
+                                              : "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
+                                          }
+                                          className={cn(
+                                            // If the field is not valid, add opacity
+                                            form.formState.errors.transfers &&
+                                              form.formState.errors.transfers[
+                                                index
+                                              ] &&
+                                              form.formState.errors.transfers[
+                                                index
+                                              ]?.addressOrEns
+                                              ? "opacity-50"
+                                              : "opacity-100",
+                                          )}
+                                        />
+                                      </Avatar>
+                                      <span className="ml-2">
+                                        {field.value ? (
+                                          <>
+                                            {field.value}
+                                            &nbsp;
+                                          </>
+                                        ) : (
+                                          "Select Address"
                                         )}
-                                      />
-                                    </Avatar>
-                                  </div>
+                                      </span>
+                                      <div className="grow" />
+                                      <ChevronDown className="size-4 opacity-50" />
+                                    </div>
+                                  </Button>
                                 </div>
                                 <div
                                   className={cn(
