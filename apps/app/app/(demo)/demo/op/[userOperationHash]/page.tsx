@@ -12,40 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import "@lightdotso/styles/global.css";
-import type { ReactNode } from "react";
-import { Root } from "@/components/root/root";
+import OriginalPage from "@/app/(wallet)/[address]/op/[userOperationHash]/page";
+import { DEMO_WALLET_ADDRESS } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface RootLayoutProps {
-  children: ReactNode;
-  notifications: ReactNode;
-  create: ReactNode;
-  send: ReactNode;
-  op: ReactNode;
+interface PageProps {
+  params: { userOperationHash: string };
 }
 
 // -----------------------------------------------------------------------------
-// Layout
+// Original Page
 // -----------------------------------------------------------------------------
 
-export default function RootLayout({
-  children,
-  notifications,
-  create,
-  send,
-  op,
-}: RootLayoutProps) {
-  return (
-    <Root>
-      {children}
-      {notifications}
-      {create}
-      {send}
-      {op}
-    </Root>
-  );
+export default async function Page({ params }: PageProps) {
+  return OriginalPage({
+    params: {
+      address: DEMO_WALLET_ADDRESS,
+      userOperationHash: params.userOperationHash,
+    },
+  });
 }

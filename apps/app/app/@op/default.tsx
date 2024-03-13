@@ -12,40 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import "@lightdotso/styles/global.css";
-import type { ReactNode } from "react";
-import { Root } from "@/components/root/root";
+import OriginalDefault from "@/app/(wallet)/@op/default";
 
 // -----------------------------------------------------------------------------
-// Props
+// Original Default
 // -----------------------------------------------------------------------------
 
-interface RootLayoutProps {
-  children: ReactNode;
-  notifications: ReactNode;
-  create: ReactNode;
-  send: ReactNode;
-  op: ReactNode;
-}
-
-// -----------------------------------------------------------------------------
-// Layout
-// -----------------------------------------------------------------------------
-
-export default function RootLayout({
-  children,
-  notifications,
-  create,
-  send,
-  op,
-}: RootLayoutProps) {
-  return (
-    <Root>
-      {children}
-      {notifications}
-      {create}
-      {send}
-      {op}
-    </Root>
-  );
-}
+export default OriginalDefault;

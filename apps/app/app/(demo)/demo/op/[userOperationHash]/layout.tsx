@@ -12,40 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import "@lightdotso/styles/global.css";
-import type { ReactNode } from "react";
-import { Root } from "@/components/root/root";
+import type { Metadata } from "next";
+import OriginalLayout from "@/app/(wallet)/[address]/op/[userOperationHash]/layout";
+import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
-// Props
+// Metadata
 // -----------------------------------------------------------------------------
 
-interface RootLayoutProps {
-  children: ReactNode;
-  notifications: ReactNode;
-  create: ReactNode;
-  send: ReactNode;
-  op: ReactNode;
-}
+export const metadata: Metadata = {
+  title: TITLES.Demo.subcategories.UserOperation.title,
+  description: TITLES.Demo.subcategories.UserOperation.description,
+};
 
 // -----------------------------------------------------------------------------
-// Layout
+// Original Layout
 // -----------------------------------------------------------------------------
 
-export default function RootLayout({
-  children,
-  notifications,
-  create,
-  send,
-  op,
-}: RootLayoutProps) {
-  return (
-    <Root>
-      {children}
-      {notifications}
-      {create}
-      {send}
-      {op}
-    </Root>
-  );
-}
+export default OriginalLayout;
+
+// -----------------------------------------------------------------------------
+// Data
+// -----------------------------------------------------------------------------
+
+export const revalidate = 300;
