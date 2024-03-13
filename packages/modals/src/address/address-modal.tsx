@@ -100,20 +100,24 @@ export function AddressModal() {
     ),
   });
 
+  const watchAddress = methods.watch("address");
   const watchName = methods.watch("addressOrEns");
 
   // ---------------------------------------------------------------------------
   // Debounced Hooks
   // ---------------------------------------------------------------------------
 
-  const delayedName = useDebouncedValue(watchName, 1000);
+  const delayedName = useDebouncedValue(watchName, 300);
 
   // ---------------------------------------------------------------------------
   // Wagmi
   // ---------------------------------------------------------------------------
 
   const { data: ensAddress } = useEnsAddress({
-    name: delayedName ? normalize(delayedName) : "",
+    name:
+      delayedName && delayedName !== "" && delayedName?.length > 3
+        ? normalize(delayedName || "")
+        : undefined,
     chainId: 1,
   });
 
@@ -126,6 +130,19 @@ export function AddressModal() {
       methods.setValue("addressOrEns", delayedName);
       methods.setValue("address", ensAddress);
       methods.trigger("addressOrEns");
+    } else {
+      methods.setValue("address", "");
+
+      if (isAddress(delayedName)) {
+        methods.setValue("address", delayedName);
+        methods.setValue("addressOrEns", delayedName);
+        methods.trigger("addressOrEns");
+      } else {
+        methods.setError("addressOrEns", {
+          type: "manual",
+          message: "Ens name is not valid",
+        });
+      }
     }
   }, [ensAddress]);
 
@@ -194,7 +211,10 @@ export function AddressModal() {
                       methods.trigger("addressOrEns");
 
                       if (methods.formState.isValid) {
-                        onAddressSelect(watchName);
+                        onAddressSelect({
+                          address: watchAddress,
+                          addressOrEns: watchName,
+                        });
                       }
                     }}
                   >
