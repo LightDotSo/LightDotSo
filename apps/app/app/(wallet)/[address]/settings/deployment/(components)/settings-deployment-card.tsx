@@ -163,7 +163,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
         }),
       ],
     });
-  }, [implAddress]);
+  }, [implAddress, address]);
 
   const deployedUserOperation = useMemo(() => {
     return userOperationsParser.serialize([
@@ -212,9 +212,9 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
       }
       footerContent={<SettingsDeploymentCardSubmitButton />}
     >
-      <div className="flex flex-row">
+      <div className="flex flex-row items-center px-4">
         {implVersion}
-        <span className="text-sm text-text-weak">{implAddress}</span>
+        <span className="ml-2 text-sm text-text-weak">({implAddress})</span>
       </div>
       <div className="flex flex-row">
         {deployed_op && (
