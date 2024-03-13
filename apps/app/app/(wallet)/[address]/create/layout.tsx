@@ -17,6 +17,7 @@ import {
   BasicPageWrapper,
   HStackFull,
   BannerSection,
+  DialogSectionWrapper,
 } from "@lightdotso/ui";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
@@ -58,7 +59,9 @@ export default function UserOperationLayout({
     >
       <HStackFull>
         <BaseLayerWrapper size="sm">
-          <BasicPageWrapper>{children}</BasicPageWrapper>
+          <BasicPageWrapper>
+            <DialogSectionWrapper>{children}</DialogSectionWrapper>
+          </BasicPageWrapper>
         </BaseLayerWrapper>
       </HStackFull>
     </BannerSection>

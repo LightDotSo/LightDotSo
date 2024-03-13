@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+export { DialogSectionWrapper } from "./dialog-section-wrapper";
 export { SettingsSectionWrapper } from "./settings-section-wrapper";
 export { TableSectionWrapper } from "./table-section-wrapper";
 export { ToolbarSectionWrapper } from "./toolbar-section-wrapper";

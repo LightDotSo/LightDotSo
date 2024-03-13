@@ -119,9 +119,9 @@ const badgeVariants = cva(
         ],
       },
       size: {
-        sm: "h-4 min-w-[1rem] text-xs",
-        md: "h-5 min-w-[1.25rem] text-sm",
-        lg: "h-6 min-w-[1.5rem] text-base",
+        sm: "h-4 min-w-4 text-xs",
+        md: "h-5 min-w-5 text-sm",
+        lg: "h-6 min-w-6 text-base",
         unsized: "",
       },
       type: {
