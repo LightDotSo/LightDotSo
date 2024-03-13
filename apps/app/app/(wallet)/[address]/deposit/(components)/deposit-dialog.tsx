@@ -1048,7 +1048,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
           isModal={false}
           cancelDisabled={true}
           isLoading={isFormLoading}
-          disabled={!isFormValid || isFormLoading}
+          disabled={!isFormValid || isFormLoading || delayedIsSuccess}
           customSuccessText={customFormSuccessText}
         />
       )}
