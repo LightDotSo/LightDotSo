@@ -166,6 +166,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     hideNotificationsModal,
     hideOpModal,
     hideSendModal,
+    setSendBackgroundModal,
     router,
     type,
   ]);

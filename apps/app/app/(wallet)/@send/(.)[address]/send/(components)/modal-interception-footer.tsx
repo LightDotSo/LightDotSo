@@ -70,7 +70,7 @@ export const ModalInterceptionFooter: FC = () => {
 
   const onClick = useCallback(() => {
     router.push(href ?? `${wallet}/create`);
-  }, [href, router]);
+  }, [href, router, wallet]);
 
   // ---------------------------------------------------------------------------
   // Render

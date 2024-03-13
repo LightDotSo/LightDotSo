@@ -15,9 +15,11 @@
 "use client";
 
 import {
+  LATEST_IMPLEMENTATION_ADDRESS,
   PROXY_IMPLEMENTAION_VERSION_MAPPING,
   WALLET_FACTORY_ENTRYPOINT_MAPPING,
 } from "@lightdotso/const";
+import { useProxyImplementationAddress } from "@lightdotso/hooks";
 import { userOperationsParser } from "@lightdotso/nuqs";
 import {
   useQueryUserOperations,
@@ -29,11 +31,12 @@ import { Button } from "@lightdotso/ui";
 import {
   findContractAddressByAddress,
   getEtherscanUrl,
+  shortenBytes32,
 } from "@lightdotso/utils";
-import { useStorageAt } from "@lightdotso/wagmi";
+import { lightWalletAbi } from "@lightdotso/wagmi";
 import Link from "next/link";
 import { useMemo, type FC } from "react";
-import { getAddress, type Address, type Chain, type Hex } from "viem";
+import { encodeFunctionData, type Address, type Chain, type Hex } from "viem";
 import { SettingsCard } from "@/components/settings/settings-card";
 import { TITLES } from "@/const";
 
@@ -86,17 +89,13 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   });
 
   // ---------------------------------------------------------------------------
-  // Wagmi
+  // Hooks
   // ---------------------------------------------------------------------------
 
-  const { data: implAddressBytes32, isSuccess: isImplAddressBytes32Success } =
-    useStorageAt({
-      address: address,
-      chainId: chain.id,
-      // The logic address as defined in the 1967 EIP
-      // From: https://eips.ethereum.org/EIPS/eip-1967
-      slot: "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
-    });
+  const implAddress = useProxyImplementationAddress({
+    address: address,
+    chainId: chain.id,
+  });
 
   // ---------------------------------------------------------------------------
   // Local Variables
@@ -108,21 +107,6 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
-
-  const implAddress = useMemo(() => {
-    // Don't continue if the impl address is not available or the call failed
-    if (!implAddressBytes32 || !isImplAddressBytes32Success) {
-      return;
-    }
-
-    // Don't continue if the impl address is not the correct length
-    if (implAddressBytes32.length !== 66) {
-      return;
-    }
-
-    // Convert the bytes32 impl address to an address
-    return getAddress(`0x${implAddressBytes32.slice(26)}`);
-  }, [implAddressBytes32, isImplAddressBytes32Success]);
 
   const implVersion = useMemo(() => {
     if (!implAddress) {
@@ -139,6 +123,8 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
     if (!wallet) {
       return;
     }
+
+    // Get the initCode from the initial configuration
     return calculateInitCode(
       WALLET_FACTORY_ENTRYPOINT_MAPPING[
         findContractAddressByAddress(wallet.factory_address as Address)!
@@ -147,6 +133,50 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
       salt,
     );
   }, [image_hash, salt, wallet]);
+
+  const callData = useMemo(() => {
+    if (implAddress === LATEST_IMPLEMENTATION_ADDRESS) {
+      return "0x";
+    }
+
+    // Upgrade to the latest implementation
+    return encodeFunctionData({
+      abi: lightWalletAbi,
+      functionName: "execute",
+      args: [
+        address,
+        BigInt(0),
+        encodeFunctionData({
+          abi: [
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "newImplementation",
+                  type: "address",
+                },
+              ],
+              name: "upgradeTo",
+              outputs: [],
+              stateMutability: "nonpayable",
+              type: "function",
+            },
+          ],
+          args: [LATEST_IMPLEMENTATION_ADDRESS],
+        }),
+      ],
+    });
+  }, [implAddress, address]);
+
+  const deployedUserOperation = useMemo(() => {
+    return userOperationsParser.serialize([
+      {
+        chainId: BigInt(chain.id),
+        initCode: !deployed_op ? initCode : "0x",
+        callData: callData,
+      },
+    ]);
+  }, [initCode, callData, chain.id]);
 
   // ---------------------------------------------------------------------------
   // Submit Button
@@ -157,12 +187,16 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
       <Button
         type="submit"
         form="settings-deployment-card-form"
-        disabled={typeof deployed_op !== "undefined"}
+        disabled={deployed_op && callData === "0x"}
       >
         <Link
-          href={`/${address}/create?userOperations=${userOperationsParser.serialize([{ chainId: BigInt(chain.id), initCode: initCode }])}`}
+          href={`/${address}/create?userOperations=${deployedUserOperation}`}
         >
-          {typeof deployed_op !== "undefined" ? "Already Deployed" : "Deploy"}
+          {typeof deployed_op !== "undefined"
+            ? callData === "0x"
+              ? "Already Deployed"
+              : "Upgrade"
+            : "Deploy"}
         </Link>
       </Button>
     );
@@ -181,24 +215,33 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
       }
       footerContent={<SettingsDeploymentCardSubmitButton />}
     >
-      {implAddress}
-      {implVersion}
-      {deployed_op && (
-        <Button asChild variant="link">
-          <a
-            target="_blank"
-            rel="noreferrer"
-            href={`${getEtherscanUrl(chain)}/tx/${deployed_op.transaction?.hash}`}
-          >
-            {deployed_op.transaction?.hash}
-          </a>
-        </Button>
+      {deployed_op && implAddress && (
+        <div className="flex flex-row items-center">
+          {implVersion}
+          <span className="ml-2 text-sm text-text-weak">({implAddress})</span>
+        </div>
       )}
-      {!deployed_op && (
-        <p className="text-sm text-text-weak">
-          No deployment found. <br />
-        </p>
-      )}
+      <div className="flex flex-row items-center">
+        {deployed_op && deployed_op.transaction?.hash && (
+          <>
+            Tx:{" "}
+            <Button asChild size="sm" variant="link">
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href={`${getEtherscanUrl(chain)}/tx/${deployed_op.transaction?.hash}`}
+              >
+                {shortenBytes32(deployed_op.transaction?.hash)}
+              </a>
+            </Button>
+          </>
+        )}
+        {!deployed_op && (
+          <p className="text-sm text-text-weak">
+            No deployment found. <br />
+          </p>
+        )}
+      </div>
     </SettingsCard>
   );
 };
