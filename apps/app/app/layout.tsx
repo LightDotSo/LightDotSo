@@ -23,6 +23,9 @@ import { Root } from "@/components/root/root";
 interface RootLayoutProps {
   children: ReactNode;
   notifications: ReactNode;
+  create: ReactNode;
+  op: ReactNode;
+  send: ReactNode;
 }
 
 // -----------------------------------------------------------------------------
@@ -32,11 +35,17 @@ interface RootLayoutProps {
 export default function RootLayout({
   children,
   notifications,
+  create,
+  op,
+  send,
 }: RootLayoutProps) {
   return (
     <Root>
       {children}
       {notifications}
+      {create}
+      {op}
+      {send}
     </Root>
   );
 }
