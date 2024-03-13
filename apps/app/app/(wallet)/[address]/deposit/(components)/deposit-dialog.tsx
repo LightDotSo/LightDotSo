@@ -569,8 +569,8 @@ export const DepositDialog: FC<DepositDialogProps> = ({
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    setIsFormDisabled(!isFormValid);
-  }, [isFormValid, setIsFormDisabled]);
+    setIsFormDisabled(!isFormValid || delayedIsSuccess);
+  }, [isFormValid, setIsFormDisabled, delayedIsSuccess]);
 
   useEffect(() => {
     setIsFormLoading(isFormLoading);
