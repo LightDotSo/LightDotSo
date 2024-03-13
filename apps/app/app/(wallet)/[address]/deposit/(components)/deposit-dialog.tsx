@@ -620,7 +620,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                             {/* <ChevronDown className="size-4 opacity-50" /> */}
                           </Button>
                         </div>
-                        <div className=" w-full space-y-2">
+                        <div className="w-full space-y-2">
                           <Label htmlFor="weight">Amount</Label>
                           <FormField
                             control={form.control}
