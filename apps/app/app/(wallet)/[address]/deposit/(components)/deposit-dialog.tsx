@@ -851,57 +851,85 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                             control={form.control}
                             name="asset.quantity"
                             render={({ field }) => (
-                              <Input
-                                disabled={
-                                  nft ? nft.contract.type === "erc721" : false
-                                }
-                                {...field}
-                                className="[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                                type="text"
-                                // onChange={e => {
-                                //   if (!e.target.value) {
-                                //     // Clear the value of key address
-                                //     form.setValue("asset.quantity", 0);
-                                //   }
+                              <div className="relative flex items-center space-x-3">
+                                <div className="relative inline-block w-full">
+                                  <Input
+                                    disabled={
+                                      nft
+                                        ? nft.contract.type === "erc721"
+                                        : false
+                                    }
+                                    {...field}
+                                    className="[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                                    type="text"
+                                    // onChange={e => {
+                                    //   if (!e.target.value) {
+                                    //     // Clear the value of key address
+                                    //     form.setValue("asset.quantity", 0);
+                                    //   }
 
-                                //   const quantity = parseInt(e.target.value);
+                                    //   const quantity = parseInt(e.target.value);
 
-                                //   field.onChange(quantity);
-                                // }}
-                                onBlur={e => {
-                                  // Validate the address
-                                  if (!e.target.value) {
-                                    // Clear the value of key address
-                                    form.setValue("asset.quantity", 0);
-                                  }
+                                    //   field.onChange(quantity);
+                                    // }}
+                                    onBlur={e => {
+                                      // Validate the address
+                                      if (!e.target.value) {
+                                        // Clear the value of key address
+                                        form.setValue("asset.quantity", 0);
+                                      }
 
-                                  const quantity = parseFloat(e.target.value);
+                                      const quantity = parseFloat(
+                                        e.target.value,
+                                      );
 
-                                  validateTokenQuantity(quantity);
-                                }}
-                                onChange={e => {
-                                  // If the input ends with ".", or includes "." and ends with "0", set the value as string, as it can be assumed that the user is still typing
-                                  if (
-                                    e.target.value.endsWith(".") ||
-                                    (e.target.value.includes(".") &&
-                                      e.target.value.endsWith("0"))
-                                  ) {
-                                    field.onChange(e.target.value);
-                                  } else {
-                                    // Only parse to float if the value doesn't end with "."
-                                    field.onChange(
-                                      parseFloat(e.target.value) || 0,
-                                    );
-                                  }
+                                      validateTokenQuantity(quantity);
+                                    }}
+                                    onChange={e => {
+                                      // If the input ends with ".", or includes "." and ends with "0", set the value as string, as it can be assumed that the user is still typing
+                                      if (
+                                        e.target.value.endsWith(".") ||
+                                        (e.target.value.includes(".") &&
+                                          e.target.value.endsWith("0"))
+                                      ) {
+                                        field.onChange(e.target.value);
+                                      } else {
+                                        // Only parse to float if the value doesn't end with "."
+                                        field.onChange(
+                                          parseFloat(e.target.value) || 0,
+                                        );
+                                      }
 
-                                  // Validate the number
-                                  const quantity = parseFloat(e.target.value);
+                                      // Validate the number
+                                      const quantity = parseFloat(
+                                        e.target.value,
+                                      );
 
-                                  if (!isNaN(quantity)) {
-                                    validateTokenQuantity(quantity);
-                                  }
-                                }}
-                              />
+                                      if (!isNaN(quantity)) {
+                                        validateTokenQuantity(quantity);
+                                      }
+                                    }}
+                                  />
+                                </div>
+                                <div className="absolute inset-y-0 right-3 flex items-center">
+                                  <Button
+                                    size="unsized"
+                                    variant="outline"
+                                    type="button"
+                                    className="px-1 py-0.5 text-xs"
+                                    onClick={() => {
+                                      if (nft) {
+                                        form.setValue("asset.quantity", 1);
+                                      }
+
+                                      // Validate the form
+                                      form.trigger();
+                                    }}
+                                  >
+                                    Max
+                                  </Button>
+                                </div>
+                              </div>
                             )}
                           />
                           <FormMessage />
