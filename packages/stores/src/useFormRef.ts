@@ -32,6 +32,8 @@ export interface FormRefState {
   setIsFormDisabled: (isFormDisabled: boolean) => void;
   isFormLoading: boolean;
   setIsFormLoading: (isFormLoading: boolean) => void;
+  customFormSuccessText?: string;
+  setCustomFormSuccessText: (customFormSuccessText: string) => void;
 }
 
 // -----------------------------------------------------------------------------
@@ -52,6 +54,9 @@ export const useFormRef = create(
       setIsFormDisabled: (isFormDisabled: boolean) => set({ isFormDisabled }),
       isFormLoading: false,
       setIsFormLoading: (isFormLoading: boolean) => set({ isFormLoading }),
+      customFormSuccessText: undefined,
+      setCustomFormSuccessText: (customFormSuccessText: string) =>
+        set({ customFormSuccessText }),
     }),
     {
       anonymousActionType: "useFormRef",
