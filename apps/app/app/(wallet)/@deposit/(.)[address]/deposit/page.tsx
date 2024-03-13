@@ -43,7 +43,7 @@ export default async function Page({ params, searchParams }: PageProps) {
         <div className="p-2">
           <DialogTitle>Deposit</DialogTitle>
           <DialogDescription>
-            Choose assets to deposit to this wallet!
+            Choose assets to deposit to this smart wallet.
           </DialogDescription>
         </div>
       }

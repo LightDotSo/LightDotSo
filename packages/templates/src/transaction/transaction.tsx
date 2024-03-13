@@ -29,7 +29,8 @@ import {
   Textarea,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
-import { type FC } from "react";
+import { useEffect, type FC } from "react";
+import { usePathname } from "next/navigation";
 import { type Address } from "viem";
 import { Loading } from "../loading";
 import { useIsInsideModal } from "../modal";
@@ -74,6 +75,12 @@ export const Transaction: FC<TransactionProps> = ({
   isDev = false,
 }) => {
   // ---------------------------------------------------------------------------
+  // Next Hooks
+  // ---------------------------------------------------------------------------
+
+  const pathname = usePathname();
+
+  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
@@ -82,6 +89,7 @@ export const Transaction: FC<TransactionProps> = ({
     userOperationDetails,
     userOperationDevInfo,
     userOperationSimulations,
+    resetAll,
   } = useUserOperations();
 
   // ---------------------------------------------------------------------------
@@ -116,6 +124,15 @@ export const Transaction: FC<TransactionProps> = ({
     // configuration: configuration,
     // userOperation: userOperationWithHash,
   });
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // On pathname change, reset all user operations
+  useEffect(() => {
+    resetAll();
+  }, [pathname]);
 
   // ---------------------------------------------------------------------------
   // Render

@@ -31,7 +31,10 @@ use ethers::{
     utils::{hash_message, hex, keccak256, to_checksum},
 };
 use eyre::{eyre, Result};
-use jsonrpsee::core::RpcResult;
+use jsonrpsee::{
+    core::RpcResult,
+    types::{error::ErrorCode, ErrorObject},
+};
 use lightdotso_contracts::constants::LIGHT_PAYMASTER_ADDRESSES;
 // use lightdotso_contracts::{constants::LIGHT_PAYMASTER_ADDRESSES, paymaster::get_paymaster};
 use lightdotso_db::{
@@ -130,6 +133,15 @@ pub async fn get_paymaster_and_data(
                 Some(&msg),
             );
             info!("paymater_and_data: 0x{}", hex::encode(paymater_and_data.clone()));
+
+            // Return an error if paymaster_and_data is empty.
+            if paymater_and_data.is_empty() {
+                return Err(ErrorObject::owned(
+                    ErrorCode::InternalError.code(),
+                    format!("eyre error: {}", eyre!("paymaster and data is empty")),
+                    None::<bool>,
+                ));
+            }
 
             // Finally, create the paymaster operation.
             let op = db_create_paymaster_operation(
