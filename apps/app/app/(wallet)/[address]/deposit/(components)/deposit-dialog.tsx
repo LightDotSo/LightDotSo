@@ -863,6 +863,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                                     {...field}
                                     className="[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                                     type="text"
+                                    placeholder="Your amount"
                                     // onChange={e => {
                                     //   if (!e.target.value) {
                                     //     // Clear the value of key address
