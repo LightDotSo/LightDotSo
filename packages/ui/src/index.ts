@@ -281,6 +281,7 @@ export {
   SettingsPageWrapper,
 } from "./wrappers/page";
 export {
+  DialogSectionWrapper,
   SettingsSectionWrapper,
   TableSectionWrapper,
   ToolbarSectionWrapper,
