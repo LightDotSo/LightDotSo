@@ -110,7 +110,13 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // ---------------------------------------------------------------------------
 
   const implAddress = useMemo(() => {
+    // Don't continue if the impl address is not available or the call failed
     if (!implAddressBytes32 || !isImplAddressBytes32Success) {
+      return;
+    }
+
+    // Don't continue if the impl address is not the correct length
+    if (implAddressBytes32.length !== 66) {
       return;
     }
 
