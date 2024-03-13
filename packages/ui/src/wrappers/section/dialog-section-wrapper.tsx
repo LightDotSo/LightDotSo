@@ -28,7 +28,7 @@ interface DialogSectionWrapperProps {
 
 export function DialogSectionWrapper({ children }: DialogSectionWrapperProps) {
   return (
-    <div className="rounded-lg border border-border bg-background-weak shadow-sm p-4">
+    <div className="rounded-lg border border-border bg-background-weak p-4 shadow-sm">
       {children}
     </div>
   );
