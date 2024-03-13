@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import OriginalPage from "@/app/(wallet)/[address]/op/[userOperationHash]/page";
+import OriginalPage from "@/app/(wallet)/@op/(.)[address]/op/[userOperationHash]/page";
 import { DEMO_WALLET_ADDRESS } from "@/const";
 
 // -----------------------------------------------------------------------------
