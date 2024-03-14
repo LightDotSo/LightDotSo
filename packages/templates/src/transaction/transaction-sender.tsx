@@ -15,11 +15,8 @@
 "use client";
 
 import type { ConfigurationData } from "@lightdotso/data";
-import { useUserOperationSubmit } from "@lightdotso/hooks";
-import {
-  useQueryConfiguration,
-  useQueryUserOperation,
-} from "@lightdotso/query";
+import { useUserOperationSend } from "@lightdotso/hooks";
+import { useQueryConfiguration } from "@lightdotso/query";
 import { useUserOperations } from "@lightdotso/stores";
 import { StateInfoSection } from "@lightdotso/ui";
 import { LoaderIcon } from "lucide-react";
@@ -42,26 +39,21 @@ interface TransactionSenderOpProps {
 
 export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
   address,
-  configuration,
   hash,
 }) => {
   // ---------------------------------------------------------------------------
-  // Query
+  // Hooks
   // ---------------------------------------------------------------------------
 
-  const { userOperation } = useQueryUserOperation({ hash: hash });
-
-  // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { isLoading, isIdle, isSuccess, handleConfirm } =
-    useUserOperationSubmit({
-      address: address,
-      is_testnet: true,
-      configuration: configuration,
-      userOperation: userOperation!,
-    });
+  const {
+    isUserOperationSendLoading,
+    isUserOperationSendIdle,
+    isUserOperationSendSuccess,
+    handleSubmit,
+  } = useUserOperationSend({
+    address: address,
+    hash: hash,
+  });
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -69,10 +61,10 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
 
   // Confirm the user operation on mount
   useEffect(() => {
-    if (isIdle && !isSuccess) {
-      handleConfirm();
+    if (isUserOperationSendIdle && !isUserOperationSendSuccess) {
+      handleSubmit();
     }
-  }, [isIdle, isSuccess, handleConfirm]);
+  }, [isUserOperationSendIdle, isUserOperationSendSuccess, handleSubmit]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -80,8 +72,8 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
 
   return (
     <div>
-      {isLoading && "Loading..."}
-      {isSuccess && "Suucess!"}
+      {isUserOperationSendLoading && "Loading..."}
+      {isUserOperationSendSuccess && "Suucess!"}
     </div>
   );
 };
