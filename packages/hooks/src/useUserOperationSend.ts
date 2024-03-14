@@ -14,67 +14,78 @@
 
 "use client";
 
-import { useUserOperationSend } from "@lightdotso/hooks";
-import { FooterButton } from "@lightdotso/templates";
-import { useRouter } from "next/navigation";
-import { useCallback, type FC } from "react";
-import type { Address, Hex } from "viem";
+import {
+  useMutationQueueUserOperation,
+  useMutationUserOperationSend,
+  useQueryUserOperation,
+} from "@lightdotso/query";
+import { toast } from "@lightdotso/ui";
+import { useCallback } from "react";
+import type { Hex, Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface ModalInterceptionFooterProps {
+type UserOperationSendProps = {
   address: Address;
-  userOperationHash: Hex;
-}
+  hash: Hex;
+};
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
+export const useUserOperationSend = ({
   address,
-  userOperationHash,
-}) => {
+  hash,
+}: UserOperationSendProps) => {
   // ---------------------------------------------------------------------------
-  // Next Hooks
-  // ---------------------------------------------------------------------------
-
-  const router = useRouter();
-
-  // ---------------------------------------------------------------------------
-  // Hooks
+  // Query
   // ---------------------------------------------------------------------------
 
-  const { handleSubmit, isUserOperationSendLoading, isUserOperationDisabled } =
-    useUserOperationSend({
-      address: address,
-      hash: userOperationHash,
+  const { queueUserOperation } = useMutationQueueUserOperation({
+    address: hash,
+  });
+
+  const { userOperation, isUserOperationLoading } = useQueryUserOperation({
+    hash: hash,
+  });
+
+  const { userOperationSend, isUserOperationSendPending } =
+    useMutationUserOperationSend({
+      address,
+      chain_id: userOperation?.chain_id,
     });
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
-  const onDismiss = useCallback(() => {
-    router.back();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router]);
+  const handleSubmit = useCallback(async () => {
+    if (!userOperation) {
+      toast.error("User operation not found.");
+      return;
+    }
+
+    await userOperationSend(userOperation);
+
+    queueUserOperation({ hash: hash });
+  }, [userOperation, userOperationSend, queueUserOperation, hash]);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <FooterButton
-      isModal
-      className="pt-0"
-      disabled={isUserOperationSendLoading || isUserOperationDisabled}
-      isLoading={isUserOperationSendLoading}
-      customSuccessText="Refresh"
-      cancelClick={onDismiss}
-      onClick={handleSubmit}
-    />
-  );
+  return {
+    handleSubmit,
+    isUserOperationDisabled:
+      userOperation?.status !== "PROPOSED" &&
+      userOperation?.status !== "PENDING",
+    isUserOperationSendLoading: isUserOperationSendPending,
+    isUserOperationSendIdle:
+      !isUserOperationSendPending && !isUserOperationLoading,
+    isUserOperationSendSuccess:
+      !isUserOperationSendPending && !isUserOperationLoading,
+  };
 };
