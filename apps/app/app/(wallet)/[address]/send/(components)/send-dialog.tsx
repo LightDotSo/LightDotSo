@@ -15,7 +15,12 @@
 "use client";
 
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
-import { NftImage, PlaceholderOrb, TokenImage } from "@lightdotso/elements";
+import {
+  EnsAddress,
+  NftImage,
+  PlaceholderOrb,
+  TokenImage,
+} from "@lightdotso/elements";
 import {
   transfersParser,
   useTransfersQueryState,
@@ -85,6 +90,7 @@ import {
 import type { Address, Hex } from "viem";
 import { normalize } from "viem/ens";
 import { z } from "zod";
+import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -444,18 +450,6 @@ export const SendDialog: FC<SendDialogProps> = ({
           throw new Error("No matching token found");
         }
 
-        // Encode the native eth `transfer`
-        if (
-          transfer.asset.address ===
-          "0x0000000000000000000000000000000000000000"
-        ) {
-          return [
-            transfer.address as Address,
-            BigInt(transfer.asset.quantity! * Math.pow(10, token.decimals!)),
-            "0x" as Hex,
-          ];
-        }
-
         // Get the amount
         const amount =
           // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
@@ -463,6 +457,14 @@ export const SendDialog: FC<SendDialogProps> = ({
 
         // If the amount is a float, convert to a integer
         const intAmount = Math.floor(amount);
+
+        // Encode the native eth `transfer`
+        if (
+          transfer.asset.address ===
+          "0x0000000000000000000000000000000000000000"
+        ) {
+          return [transfer.address as Address, BigInt(intAmount), "0x" as Hex];
+        }
 
         // Encode the erc20 `transfer`
         return [
@@ -1159,6 +1161,25 @@ export const SendDialog: FC<SendDialogProps> = ({
                                           "Select Address"
                                         )}
                                       </span>
+                                      {field.value &&
+                                        isEmpty(
+                                          form?.formState?.errors?.transfers?.[
+                                            index
+                                          ]?.addressOrEns,
+                                        ) && (
+                                          <span className="flex items-center space-x-1">
+                                            <CheckBadgeIcon className="size-4 text-text-info" />
+                                            <span className="text-xs text-text-weak">
+                                              <EnsAddress
+                                                name={
+                                                  form.getValues(
+                                                    `transfers.${index}.addressOrEns`,
+                                                  ) || ""
+                                                }
+                                              />
+                                            </span>
+                                          </span>
+                                        )}
                                       <div className="grow" />
                                       <ChevronDown className="size-4 opacity-50" />
                                     </div>
