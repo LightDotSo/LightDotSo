@@ -21,7 +21,12 @@ import {
   useQueryConfiguration,
 } from "@lightdotso/query";
 import { subdigestOf } from "@lightdotso/sequence";
-import { useAuth, useFormRef, useModalSwiper } from "@lightdotso/stores";
+import {
+  useAuth,
+  useFormRef,
+  useModalSwiper,
+  useUserOperations,
+} from "@lightdotso/stores";
 import {
   useAccount,
   useSignMessage,

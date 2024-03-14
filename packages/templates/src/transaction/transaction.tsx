@@ -46,7 +46,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
-import { type Address } from "viem";
+import { Hex, type Address } from "viem";
 import type * as z from "zod";
 import { FooterButton } from "../footer-button";
 import { Loading } from "../loading";
@@ -113,6 +113,7 @@ export const Transaction: FC<TransactionProps> = ({
     userOperationDetails,
     userOperationDevInfo,
     userOperationSimulations,
+    setPendingSubmitUserOperationHashes,
     resetAll,
   } = useUserOperations();
   const { customFormSuccessText, isFormLoading, setIsFormDisabled } =
@@ -176,6 +177,19 @@ export const Transaction: FC<TransactionProps> = ({
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
+
+  // Set the pending submit userOperation hashes
+  useEffect(() => {
+    if (!isUserOperationCreateSuccess) {
+      return;
+    }
+
+    const hashes = userOperations.map(
+      userOperation => userOperation.hash as Hex,
+    );
+
+    setPendingSubmitUserOperationHashes(hashes);
+  }, [isUserOperationCreateSuccess, setPendingSubmitUserOperationHashes]);
 
   // Change the page index depending on the sign loading state
   useEffect(() => {
