@@ -176,7 +176,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
         callData: callData,
       },
     ]);
-  }, [initCode, callData, chain.id]);
+  }, [initCode, callData, chain.id, deployed_op]);
 
   // ---------------------------------------------------------------------------
   // Submit Button
