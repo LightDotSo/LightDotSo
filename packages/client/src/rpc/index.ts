@@ -50,6 +50,37 @@ const HexStringSchema = z
   });
 
 // -----------------------------------------------------------------------------
+// GetUserOperation
+// -----------------------------------------------------------------------------
+
+const GetUserOperationReceiptResponse = z.string();
+
+const GetUserOperationReceiptRequest = z.array(HexStringSchema);
+
+type GetUserOperationReceiptRequestType = z.infer<
+  typeof GetUserOperationReceiptRequest
+>;
+
+export const getUserOperationReceipt = async (
+  chainId: number,
+  params: GetUserOperationReceiptRequestType,
+  clientType?: ClientType,
+) => {
+  return ResultAsync.fromPromise(
+    zodJsonRpcFetch(
+      rpcClient(chainId, clientType),
+      "eth_getUserOperation",
+      params,
+      GetUserOperationReceiptResponse,
+      {
+        revalidate: 0,
+      },
+    ),
+    e => e,
+  );
+};
+
+// -----------------------------------------------------------------------------
 // SendUserOperation
 // -----------------------------------------------------------------------------
 

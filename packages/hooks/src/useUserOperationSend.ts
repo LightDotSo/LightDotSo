@@ -14,13 +14,14 @@
 
 "use client";
 
+import { getUserOperationReceipt } from "@lightdotso/client";
 import {
   useMutationQueueUserOperation,
   useMutationUserOperationSend,
   useQueryUserOperation,
 } from "@lightdotso/query";
 import { toast } from "@lightdotso/ui";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import type { Hex, Address } from "viem";
 
 // -----------------------------------------------------------------------------
@@ -48,15 +49,27 @@ export const useUserOperationSend = ({
     address: hash,
   });
 
-  const { userOperation, isUserOperationLoading } = useQueryUserOperation({
-    hash: hash,
-  });
+  const { userOperation, isUserOperationLoading, refetchUserOperation } =
+    useQueryUserOperation({
+      hash: hash,
+    });
 
   const { userOperationSend, isUserOperationSendPending } =
     useMutationUserOperationSend({
       address,
       chain_id: userOperation?.chain_id,
     });
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const isUserOperationDisabled = useMemo(
+    () =>
+      userOperation?.status !== "PROPOSED" &&
+      userOperation?.status !== "PENDING",
+    [userOperation],
+  );
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -68,10 +81,32 @@ export const useUserOperationSend = ({
       return;
     }
 
-    await userOperationSend(userOperation);
+    if (!isUserOperationDisabled) {
+      await userOperationSend(userOperation);
+    }
 
-    queueUserOperation({ hash: hash });
-  }, [userOperation, userOperationSend, queueUserOperation, hash]);
+    const res = await getUserOperationReceipt(userOperation.chain_id, [
+      userOperation.hash,
+    ]);
+
+    res.match(
+      () => {
+        // Refetch the user operation on success
+        if (!isUserOperationDisabled) {
+          refetchUserOperation();
+        }
+      },
+      _ => {
+        queueUserOperation({ hash: hash });
+      },
+    );
+  }, [
+    userOperation,
+    isUserOperationDisabled,
+    userOperationSend,
+    queueUserOperation,
+    hash,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -79,9 +114,7 @@ export const useUserOperationSend = ({
 
   return {
     handleSubmit,
-    isUserOperationDisabled:
-      userOperation?.status !== "PROPOSED" &&
-      userOperation?.status !== "PENDING",
+    isUserOperationDisabled: isUserOperationDisabled,
     isUserOperationSendLoading: isUserOperationSendPending,
     isUserOperationSendIdle:
       !isUserOperationSendPending && !isUserOperationLoading,
