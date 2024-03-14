@@ -98,7 +98,12 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   // Mutate
   // ---------------------------------------------------------------------------
 
-  const { mutate, isSuccess, isError, isPending } = useMutationWalletUpdate({
+  const {
+    mutate,
+    isWalletUpdateSuccess,
+    isWalletUpdateError,
+    isWalletUpdatePending,
+  } = useMutationWalletUpdate({
     address: address,
   });
 
@@ -139,7 +144,11 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
-  const delayedIsSuccess = useDelayedValue<boolean>(isSuccess, false, 3000);
+  const delayedIsSuccess = useDelayedValue<boolean>(
+    isWalletUpdateSuccess,
+    false,
+    3000,
+  );
 
   useEffect(() => {
     if (delayedIsSuccess) {
@@ -152,10 +161,10 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   }, [defaultValues, formValues, delayedIsSuccess]);
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isWalletUpdateSuccess) {
       setKey(Math.random());
     }
-  }, [isSuccess]);
+  }, [isWalletUpdateSuccess]);
 
   useEffect(() => {
     setFormControl(form.control);
@@ -172,9 +181,9 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
 
     return (
       <Button
-        isLoading={isPending}
+        isLoading={isWalletUpdatePending}
         disabled={
-          isPending ||
+          isWalletUpdatePending ||
           delayedIsSuccess ||
           !isFormChanged ||
           typeof form.getFieldState("name").error !== "undefined"
@@ -183,9 +192,9 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
         // Issue: https://github.com/jaredpalmer/formik/issues/1332#issuecomment-799930718
         onMouseDown={() => form.handleSubmit(onSubmit)()}
       >
-        {!isError && delayedIsSuccess
+        {!isWalletUpdateError && delayedIsSuccess
           ? "Success"
-          : isPending
+          : isWalletUpdatePending
             ? "Updating name..."
             : "Update name"}
       </Button>

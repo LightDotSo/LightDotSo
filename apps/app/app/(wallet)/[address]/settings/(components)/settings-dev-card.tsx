@@ -88,10 +88,14 @@ export const SettingsDevCard: FC<SettingsDevCardProps> = ({ address }) => {
   // Mutate
   // ---------------------------------------------------------------------------
 
-  const { mutate, isSuccess, isError, isPending } =
-    useMutationWalletSettingsUpdate({
-      address: address,
-    });
+  const {
+    mutate,
+    isWalletSettingsUpdateSuccess,
+    isWalletSettingsUpdateError,
+    isWalletSettingsUpdatePending,
+  } = useMutationWalletSettingsUpdate({
+    address: address,
+  });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -130,7 +134,11 @@ export const SettingsDevCard: FC<SettingsDevCardProps> = ({ address }) => {
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const delayedIsSuccess = useDelayedValue<boolean>(isSuccess, false, 3000);
+  const delayedIsSuccess = useDelayedValue<boolean>(
+    isWalletSettingsUpdateSuccess,
+    false,
+    3000,
+  );
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -147,10 +155,10 @@ export const SettingsDevCard: FC<SettingsDevCardProps> = ({ address }) => {
   }, [defaultValues, formValues, delayedIsSuccess]);
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isWalletSettingsUpdateSuccess) {
       setKey(Math.random());
     }
-  }, [isSuccess]);
+  }, [isWalletSettingsUpdateSuccess]);
 
   useEffect(() => {
     setFormControl(form.control);
@@ -165,17 +173,17 @@ export const SettingsDevCard: FC<SettingsDevCardProps> = ({ address }) => {
       <Button
         type="submit"
         form="settings-dev-card-form"
-        isLoading={isPending}
+        isLoading={isWalletSettingsUpdatePending}
         disabled={
-          isPending ||
+          isWalletSettingsUpdatePending ||
           delayedIsSuccess ||
           !isFormChanged ||
           typeof form.getFieldState("enabled").error !== "undefined"
         }
       >
-        {!isError && delayedIsSuccess
+        {!isWalletSettingsUpdateError && delayedIsSuccess
           ? "Success"
-          : isPending
+          : isWalletSettingsUpdatePending
             ? "Saving..."
             : "Save"}
       </Button>
