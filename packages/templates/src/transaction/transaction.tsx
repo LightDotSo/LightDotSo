@@ -139,6 +139,7 @@ export const Transaction: FC<TransactionProps> = ({
     // isUserOperationCreatable,
     // isValidUserOperation,
     isUserOperationCreateLoading,
+    isUserOperationCreateSuccess,
     isUserOperationCreateSubmittable,
     signUserOperation,
     // decodedCallData,
@@ -184,6 +185,13 @@ export const Transaction: FC<TransactionProps> = ({
       setPageIndex(0);
     }
   }, [isUserOperationCreateLoading, setPageIndex]);
+
+  // Change the page index depending on the sign success state
+  useEffect(() => {
+    if (isUserOperationCreateSuccess && form.getValues("isDirectSubmit")) {
+      setPageIndex(2);
+    }
+  }, [isUserOperationCreateSuccess, setPageIndex]);
 
   // On pathname change, reset all user operations
   useEffect(() => {
