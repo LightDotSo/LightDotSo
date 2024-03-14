@@ -131,7 +131,10 @@ export function AddressModal() {
 
   const { data: ensAddress } = useEnsAddress({
     name:
-      delayedName && delayedName !== "" && delayedName?.length > 3
+      delayedName &&
+      delayedName !== "" &&
+      delayedName?.length > 3 &&
+      !delayedName.endsWith(".")
         ? normalize(delayedName || "")
         : undefined,
     chainId: 1,
@@ -158,7 +161,8 @@ export function AddressModal() {
         });
       }
     }
-  }, [ensAddress]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ensAddress, delayedName]);
 
   // ---------------------------------------------------------------------------
   // Query
