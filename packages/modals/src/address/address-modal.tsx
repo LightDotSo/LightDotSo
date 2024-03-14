@@ -47,6 +47,12 @@ const addressModalFormSchema = z.object({
 });
 
 // -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+type AddressModalFormValues = z.infer<typeof addressModalFormSchema>;
+
+// -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
@@ -78,7 +84,7 @@ export function AddressModal() {
   // ---------------------------------------------------------------------------
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const methods = useForm({
+  const methods = useForm<AddressModalFormValues>({
     mode: "all",
     reValidateMode: "onBlur",
     resolver: zodResolver(
@@ -131,8 +137,6 @@ export function AddressModal() {
       methods.setValue("address", ensAddress);
       methods.trigger("addressOrEns");
     } else {
-      methods.setValue("address", "");
-
       if (isAddress(delayedName)) {
         methods.setValue("address", delayedName);
         methods.setValue("addressOrEns", delayedName);
@@ -185,7 +189,10 @@ export function AddressModal() {
               disabled={!methods.formState.isValid}
               customSuccessText="Select Address"
               onClick={() => {
-                onAddressSelect(watchName);
+                onAddressSelect({
+                  address: watchAddress,
+                  addressOrEns: watchName,
+                });
               }}
             />
           }
@@ -238,7 +245,10 @@ export function AddressModal() {
                           key={ensDomain.id}
                           value={ensDomain.name ?? undefined}
                           onSelect={() => {
-                            methods.setValue("addressOrEns", ensDomain.name);
+                            methods.setValue(
+                              "addressOrEns",
+                              ensDomain.name ?? "",
+                            );
                             methods.trigger("addressOrEns");
                             validEns.invalidate();
                           }}
