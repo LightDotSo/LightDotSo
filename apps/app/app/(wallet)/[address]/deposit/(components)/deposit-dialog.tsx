@@ -591,7 +591,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="grid gap-10">
+    <div className="grid gap-6">
       <Tabs defaultValue="token" className="py-3">
         <TabsList className="w-full">
           <TabsTrigger className="w-full" value="token">
