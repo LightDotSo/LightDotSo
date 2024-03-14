@@ -105,6 +105,7 @@ export const useUserOperationSend = ({
     isUserOperationDisabled,
     userOperationSend,
     queueUserOperation,
+    refetchUserOperation,
     hash,
   ]);
 

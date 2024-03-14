@@ -19,6 +19,7 @@ import { useUserOperationSend } from "@lightdotso/hooks";
 import { useQueryConfiguration } from "@lightdotso/query";
 import { useUserOperations } from "@lightdotso/stores";
 import { Button, StateInfoSection } from "@lightdotso/ui";
+import { getChainById, getEtherscanUrl } from "@lightdotso/utils";
 import { LoaderIcon } from "lucide-react";
 import { useEffect, type FC } from "react";
 import type { Address, Hex } from "viem";
@@ -75,9 +76,15 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
     <div>
       {isUserOperationSendLoading && "Loading..."}
       {isUserOperationSendSuccess && "Success!"}
-      {isUserOperationSendSuccess && (
+      {isUserOperationSendSuccess && userOperation?.chain_id && (
         <Button asChild>
-          <a>{userOperation?.transaction?.hash}</a>
+          <a
+            href={`${getEtherscanUrl(
+              getChainById(userOperation?.chain_id),
+            )}/tx/${userOperation.hash}`}
+          >
+            {userOperation?.transaction?.hash}
+          </a>
         </Button>
       )}
     </div>

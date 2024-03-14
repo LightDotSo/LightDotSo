@@ -268,7 +268,7 @@ export const useUserOperationCreate = ({
     // }
 
     return "Sign";
-  }, [address, chainId, isConnecting, isSignLoading]);
+  }, [address, isConnecting, isSignLoading]);
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
