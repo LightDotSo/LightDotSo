@@ -121,6 +121,7 @@ export const Transaction: FC<TransactionProps> = ({
     // isUserOperationLoading,
     // isUserOperationCreatable,
     // isValidUserOperation,
+    isUserOperationSubmittable,
     signUserOperation,
     // decodedCallData,
     // decodedInitCode,
@@ -130,8 +131,6 @@ export const Transaction: FC<TransactionProps> = ({
     // subdigest,
   } = useUserOperationCreate({
     address: address,
-    // configuration: configuration,
-    // userOperation: userOperationWithHash,
   });
 
   // ---------------------------------------------------------------------------
@@ -190,29 +189,31 @@ export const Transaction: FC<TransactionProps> = ({
                   )}
                 </TabsList>
                 <TabsContent value="transaction">
-                  {Object.values(userOperationSimulations).map(simulation => {
-                    return simulation.interpretation.asset_changes.map(
-                      (assetChange, index) => {
-                        return (
-                          <AssetChange
-                            key={`${assetChange.id}-${index}`}
-                            assetChange={assetChange}
-                          />
-                        );
-                      },
-                    );
-                  })}
-                  {!isInsideModal && (
-                    <div className="flex w-full flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-                      <Button
-                        disabled={isFormDisabled || isFormLoading}
-                        isLoading={isFormLoading}
-                        onClick={signUserOperation}
-                      >
-                        Sign Transaction
-                      </Button>
-                    </div>
-                  )}
+                  <div className="pt-3">
+                    {Object.values(userOperationSimulations).map(simulation => {
+                      return simulation.interpretation.asset_changes.map(
+                        (assetChange, index) => {
+                          return (
+                            <AssetChange
+                              key={`${assetChange.id}-${index}`}
+                              assetChange={assetChange}
+                            />
+                          );
+                        },
+                      );
+                    })}
+                    {!isInsideModal && (
+                      <div className="flex w-full flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
+                        <Button
+                          disabled={isFormDisabled || isFormLoading}
+                          isLoading={isFormLoading}
+                          onClick={signUserOperation}
+                        >
+                          Sign Transaction
+                        </Button>
+                      </div>
+                    )}
+                  </div>
                 </TabsContent>
                 <TabsContent value="details">
                   <div className="pt-3">
@@ -268,7 +269,7 @@ export const Transaction: FC<TransactionProps> = ({
                               value={`value-${index}`}
                             >
                               <AccordionTrigger className="px-1 py-0 text-xl font-medium md:text-2xl">
-                                User Operation #{index + 1}
+                                Calldata #{index + 1}
                               </AccordionTrigger>
                               <AccordionContent className="px-1 pt-4">
                                 <pre className="text-sm italic">

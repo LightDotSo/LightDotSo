@@ -228,6 +228,15 @@ export const useUserOperationCreate = ({
     });
   }, [owner, userOperations]);
 
+  const isUserOperationSubmittable = useMemo(() => {
+    return (
+      typeof configuration?.threshold !== "undefined" &&
+      typeof owner !== "undefined" &&
+      configuration?.threshold <= owner?.weight &&
+      isValidUserOperations
+    );
+  }, [isUserOperationLoading, owner, isValidUserOperations]);
+
   // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
@@ -351,6 +360,7 @@ export const useUserOperationCreate = ({
   return {
     isUserOperationCreatable,
     isUserOperationLoading,
+    isUserOperationSubmittable,
     isValidUserOperations,
     // decodedCallData,
     // decodedInitCode,
