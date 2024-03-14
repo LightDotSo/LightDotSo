@@ -260,7 +260,7 @@ export const Transaction: FC<TransactionProps> = ({
                             key={index}
                             collapsible
                             defaultValue="value-0"
-                            className="rounded-md bg-background-weak py-3"
+                            className="rounded-md border border-border bg-background-weak p-4"
                             type="single"
                           >
                             <AccordionItem
@@ -274,7 +274,7 @@ export const Transaction: FC<TransactionProps> = ({
                                 <pre className="text-sm italic">
                                   <Textarea
                                     readOnly
-                                    className="w-full"
+                                    className="w-full h-auto"
                                     value={userOperation.callData}
                                   />
                                 </pre>
