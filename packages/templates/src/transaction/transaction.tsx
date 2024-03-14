@@ -29,7 +29,6 @@ import {
   AccordionItem,
   AccordionContent,
   AccordionTrigger,
-  Button,
   Tabs,
   TabsContent,
   TabsList,
@@ -56,6 +55,7 @@ import { ModalSwiper } from "../modal-swiper";
 import { TransactionDetailInfo } from "./transaction-details-info";
 import { TransactionDevInfo } from "./transaction-dev-info";
 import { TransactionFetcher } from "./transaction-fetcher";
+import { TransactionSubmitter } from "./transaction-submitter";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -108,7 +108,7 @@ export const Transaction: FC<TransactionProps> = ({
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { pageIndex } = useModalSwiper();
+  const { pageIndex, setPageIndex } = useModalSwiper();
   const {
     userOperationDetails,
     userOperationDevInfo,
@@ -138,7 +138,8 @@ export const Transaction: FC<TransactionProps> = ({
     // isUserOperationLoading,
     // isUserOperationCreatable,
     // isValidUserOperation,
-    isUserOperationSubmittable,
+    isUserOperationCreateLoading,
+    isUserOperationCreateSubmittable,
     signUserOperation,
     // decodedCallData,
     // decodedInitCode,
@@ -156,9 +157,9 @@ export const Transaction: FC<TransactionProps> = ({
 
   const defaultValues: TransactionFormValues = useMemo(() => {
     return {
-      isDirectSubmit: isUserOperationSubmittable,
+      isDirectSubmit: isUserOperationCreateSubmittable,
     };
-  }, [isUserOperationSubmittable]);
+  }, [isUserOperationCreateSubmittable]);
 
   // ---------------------------------------------------------------------------
   // Form
@@ -175,6 +176,15 @@ export const Transaction: FC<TransactionProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // Change the page index depending on the sign loading state
+  useEffect(() => {
+    if (isUserOperationCreateLoading) {
+      setPageIndex(1);
+    } else {
+      setPageIndex(0);
+    }
+  }, [isUserOperationCreateLoading, setPageIndex]);
+
   // On pathname change, reset all user operations
   useEffect(() => {
     resetAll();
@@ -189,10 +199,10 @@ export const Transaction: FC<TransactionProps> = ({
     }
   }, [userOperations, setIsFormDisabled]);
 
-  // Sync the `isDirectSubmit` field with the `isUserOperationSubmittable` value
+  // Sync the `isDirectSubmit` field with the `isUserOperationCreateSubmittable` value
   useEffect(() => {
-    form.setValue("isDirectSubmit", isUserOperationSubmittable);
-  }, [form, isUserOperationSubmittable]);
+    form.setValue("isDirectSubmit", isUserOperationCreateSubmittable);
+  }, [form, isUserOperationCreateSubmittable]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -255,7 +265,7 @@ export const Transaction: FC<TransactionProps> = ({
                               <FormControl>
                                 <Checkbox
                                   checked={field.value}
-                                  disabled={!isUserOperationSubmittable}
+                                  disabled={!isUserOperationCreateSubmittable}
                                   onCheckedChange={field.onChange}
                                   onBlur={() => {
                                     form.trigger();
@@ -383,6 +393,7 @@ export const Transaction: FC<TransactionProps> = ({
             </>
           )}
           {pageIndex === 1 && <Loading />}
+          {pageIndex === 2 && <TransactionSubmitter />}
         </ModalSwiper>
       </div>
       {initialUserOperations &&

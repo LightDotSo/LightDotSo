@@ -68,7 +68,6 @@ export const useUserOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   const { address: userAddress } = useAuth();
-  const { setPageIndex } = useModalSwiper();
   const { setCustomFormSuccessText } = useFormRef();
 
   // ---------------------------------------------------------------------------
@@ -235,7 +234,7 @@ export const useUserOperationCreate = ({
     });
   }, [owner, userOperations]);
 
-  const isUserOperationSubmittable = useMemo(() => {
+  const isUserOperationCreateSubmittable = useMemo(() => {
     return (
       typeof configuration?.threshold !== "undefined" &&
       typeof owner !== "undefined" &&
@@ -287,11 +286,19 @@ export const useUserOperationCreate = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { userOperationCreate } = useMutationUserOperationCreate({
+  const {
+    userOperationCreate,
+    isUserOperactionCreateLoading,
+    isUserOperactionCreateSuccess,
+  } = useMutationUserOperationCreate({
     address: address,
   });
 
-  const { userOperationCreateBatch } = useMutationUserOperationCreateBatch({
+  const {
+    userOperationCreateBatch,
+    isUserOperactionCreateBatchLoading,
+    isUserOperactionCreateBatchSuccess,
+  } = useMutationUserOperationCreateBatch({
     address: address,
   });
 
@@ -362,14 +369,35 @@ export const useUserOperationCreate = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signedData, owner, userOperations, configuration?.threshold, address]);
 
-  // Change the page index depending on the sign loading state
-  useEffect(() => {
-    if (isSignLoading) {
-      setPageIndex(1);
-    } else {
-      setPageIndex(0);
-    }
-  }, [isSignLoading, setPageIndex]);
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const isUserOperationCreateable = useMemo(() => {
+    return (
+      !isSignLoading && typeof owner !== "undefined" && isValidUserOperations
+    );
+  }, [isSignLoading, owner, isValidUserOperations]);
+
+  const isUserOperationCreateLoading = useMemo(() => {
+    return (
+      isSignLoading ||
+      isUserOperactionCreateLoading ||
+      isUserOperactionCreateBatchLoading
+    );
+  }, [
+    isSignLoading,
+    isUserOperactionCreateLoading,
+    isUserOperactionCreateBatchLoading,
+  ]);
+
+  const isUserOperationCreateSuccess = useMemo(() => {
+    return isUserOperactionCreateSuccess || isUserOperactionCreateBatchSuccess;
+  }, [isUserOperactionCreateSuccess, isUserOperactionCreateBatchSuccess]);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   // Set the custom form success text
   useEffect(() => {
@@ -380,22 +408,14 @@ export const useUserOperationCreate = ({
   }, [formStateText, setCustomFormSuccessText]);
 
   // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
-
-  const isUserOperationCreatable = useMemo(() => {
-    return (
-      !isSignLoading && typeof owner !== "undefined" && isValidUserOperations
-    );
-  }, [isSignLoading, owner, isValidUserOperations]);
-
-  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return {
-    isUserOperationCreatable,
-    isUserOperationSubmittable,
+    isUserOperationCreateable,
+    isUserOperationCreateLoading,
+    isUserOperationCreateSubmittable,
+    isUserOperationCreateSuccess,
     isValidUserOperations,
     // decodedCallData,
     // decodedInitCode,
