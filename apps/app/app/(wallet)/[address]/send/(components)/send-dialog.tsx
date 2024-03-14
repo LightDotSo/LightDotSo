@@ -1124,7 +1124,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                       showAddressModal();
                                     }}
                                   >
-                                    <div className="flex items-center w-full">
+                                    <div className="flex w-full items-center">
                                       <Avatar className="size-6">
                                         {/* If the address is valid, try resolving an ens Avatar */}
                                         <PlaceholderOrb
