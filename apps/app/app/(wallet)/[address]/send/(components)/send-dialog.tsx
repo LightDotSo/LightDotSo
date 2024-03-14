@@ -62,12 +62,7 @@ import {
   TabsTrigger,
   TooltipProvider,
 } from "@lightdotso/ui";
-import {
-  cn,
-  debounce,
-  getChainById,
-  refineNumberFormat,
-} from "@lightdotso/utils";
+import { cn, getChainById, refineNumberFormat } from "@lightdotso/utils";
 import { lightWalletAbi, publicClient } from "@lightdotso/wagmi";
 import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
