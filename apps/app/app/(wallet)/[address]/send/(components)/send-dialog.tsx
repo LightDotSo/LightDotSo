@@ -1206,9 +1206,11 @@ export const SendDialog: FC<SendDialogProps> = ({
                         <Tabs
                           className="col-span-8"
                           defaultValue={
-                            transfers[index]?.assetType !== "erc20"
-                              ? "nft"
-                              : "token"
+                            typeof transfers[index] === "undefined"
+                              ? "token"
+                              : transfers[index]?.assetType !== "erc20"
+                                ? "nft"
+                                : "token"
                           }
                         >
                           <TabsList>

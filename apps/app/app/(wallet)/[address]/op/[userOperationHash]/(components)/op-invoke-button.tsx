@@ -15,13 +15,7 @@
 "use client";
 
 import { InvokeButton } from "@lightdotso/elements";
-import {
-  useMutationQueueUserOperation,
-  useMutationUserOperationSend,
-  useQueryUserOperation,
-} from "@lightdotso/query";
-import { toast } from "@lightdotso/ui";
-import { useCallback } from "react";
+import { useUserOperationSend } from "@lightdotso/hooks";
 import type { FC } from "react";
 import type { Address, Hex } from "viem";
 
@@ -43,38 +37,13 @@ export const OpInvokeButton: FC<OpInvokeButtonProps> = ({
   userOperationHash,
 }) => {
   // ---------------------------------------------------------------------------
-  // Query
+  // Hooks
   // ---------------------------------------------------------------------------
 
-  const { queueUserOperation, isLoadingQueueUserOperation } =
-    useMutationQueueUserOperation({
-      address: userOperationHash,
-    });
-
-  const { userOperation, isUserOperationLoading } = useQueryUserOperation({
+  const { handleSubmit, isUserOperationSendLoading } = useUserOperationSend({
+    address: address,
     hash: userOperationHash,
   });
-
-  const { userOperationSend, isUserOperationSendPending } =
-    useMutationUserOperationSend({
-      address,
-      chain_id: userOperation?.chain_id,
-    });
-
-  // ---------------------------------------------------------------------------
-  // Callback Hooks
-  // ---------------------------------------------------------------------------
-
-  const onClick = useCallback(async () => {
-    if (!userOperation) {
-      toast.error("User operation not found.");
-      return;
-    }
-
-    await userOperationSend(userOperation);
-
-    queueUserOperation({ hash: userOperationHash });
-  }, [userOperation, userOperationSend, queueUserOperation, userOperationHash]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -82,12 +51,8 @@ export const OpInvokeButton: FC<OpInvokeButtonProps> = ({
 
   return (
     <InvokeButton
-      isLoading={
-        isLoadingQueueUserOperation ||
-        isUserOperationLoading ||
-        isUserOperationSendPending
-      }
-      onClick={onClick}
+      isLoading={isUserOperationSendLoading}
+      onClick={handleSubmit}
     />
   );
 };

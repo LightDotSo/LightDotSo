@@ -46,13 +46,7 @@ export const useMutationConfigurationOperationCreate = (
   // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const {
-    mutate: configurationOperationCreate,
-    isPending,
-    isSuccess,
-    isError,
-    failureCount,
-  } = useMutation({
+  const { mutate: configurationOperationCreate, failureCount } = useMutation({
     mutationFn: async (body: ConfigurationOperationCreateBodyParams) => {
       const loadingToast = toast.loading("Upgrading the wallet...");
 
@@ -165,8 +159,5 @@ export const useMutationConfigurationOperationCreate = (
 
   return {
     configurationOperationCreate,
-    isPending,
-    isSuccess,
-    isError,
   };
 };

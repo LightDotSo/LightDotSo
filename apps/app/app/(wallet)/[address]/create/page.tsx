@@ -15,7 +15,7 @@
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import type { Address } from "viem";
-import { CreateTransactionDialog } from "@/app/(wallet)/[address]/create/(components)/create-transaction-dialog";
+import { CreateDialog } from "@/app/(wallet)/[address]/create/(components)/create-dialog";
 import { handler } from "@/handlers/[address]/create/handler";
 import { preloader } from "@/preloaders/[address]/create/preloader";
 
@@ -66,7 +66,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <CreateTransactionDialog
+    <CreateDialog
       address={params.address as Address}
       userOperations={userOperations}
     />

@@ -18,30 +18,44 @@ import type { ConfigurationData, WalletData } from "@lightdotso/data";
 import { AssetChange } from "@lightdotso/elements";
 import { useUserOperationCreate } from "@lightdotso/hooks";
 import { useUserOperationsQueryState } from "@lightdotso/nuqs";
-import { type UserOperation } from "@lightdotso/schemas";
+import { type UserOperation, transactionFormSchema } from "@lightdotso/schemas";
 import {
   useFormRef,
   useModalSwiper,
   useUserOperations,
 } from "@lightdotso/stores";
 import {
-  Button,
+  Accordion,
+  AccordionItem,
+  AccordionContent,
+  AccordionTrigger,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
   Textarea,
+  Form,
+  FormItem,
+  FormField,
+  FormControl,
+  Checkbox,
+  FormLabel,
 } from "@lightdotso/ui";
-import { cn } from "@lightdotso/utils";
+import { cn, getChainById } from "@lightdotso/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname } from "next/navigation";
-import { useEffect, type FC } from "react";
-import { type Address } from "viem";
+import { useEffect, useMemo, type FC } from "react";
+import { useForm } from "react-hook-form";
+import type { Hex, Address } from "viem";
+import type * as z from "zod";
+import { FooterButton } from "../footer-button";
 import { Loading } from "../loading";
 import { useIsInsideModal } from "../modal";
 import { ModalSwiper } from "../modal-swiper";
 import { TransactionDetailInfo } from "./transaction-details-info";
 import { TransactionDevInfo } from "./transaction-dev-info";
 import { TransactionFetcher } from "./transaction-fetcher";
+import { TransactionSender } from "./transaction-sender";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -68,6 +82,12 @@ type TransactionProps = {
 };
 
 // -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+type TransactionFormValues = z.infer<typeof transactionFormSchema>;
+
+// -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
@@ -88,14 +108,16 @@ export const Transaction: FC<TransactionProps> = ({
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { pageIndex } = useModalSwiper();
+  const { pageIndex, setPageIndex } = useModalSwiper();
   const {
     userOperationDetails,
     userOperationDevInfo,
     userOperationSimulations,
+    setPendingSubmitUserOperationHashes,
     resetAll,
   } = useUserOperations();
-  const { setIsFormDisabled } = useFormRef();
+  const { customFormSuccessText, isFormLoading, setIsFormDisabled } =
+    useFormRef();
 
   // ---------------------------------------------------------------------------
   // Query State Hooks
@@ -117,6 +139,9 @@ export const Transaction: FC<TransactionProps> = ({
     // isUserOperationLoading,
     // isUserOperationCreatable,
     // isValidUserOperation,
+    isUserOperationCreateLoading,
+    isUserOperationCreateSuccess,
+    isUserOperationCreateSubmittable,
     signUserOperation,
     // decodedCallData,
     // decodedInitCode,
@@ -126,13 +151,67 @@ export const Transaction: FC<TransactionProps> = ({
     // subdigest,
   } = useUserOperationCreate({
     address: address,
-    // configuration: configuration,
-    // userOperation: userOperationWithHash,
   });
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const defaultValues: TransactionFormValues = useMemo(() => {
+    return {
+      isDirectSubmit: isUserOperationCreateSubmittable,
+    };
+  }, [isUserOperationCreateSubmittable]);
+
+  // ---------------------------------------------------------------------------
+  // Form
+  // ---------------------------------------------------------------------------
+
+  const form = useForm<TransactionFormValues>({
+    mode: "all",
+    reValidateMode: "onBlur",
+    // @ts-expect-error
+    resolver: zodResolver(transactionFormSchema, defaultValues),
+  });
+
+  const watchIsDirectSubmit = form.watch("isDirectSubmit");
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
+
+  // Set the pending submit userOperation hashes
+  useEffect(() => {
+    if (!isUserOperationCreateSuccess) {
+      return;
+    }
+
+    const hashes = userOperations.map(
+      userOperation => userOperation.hash as Hex,
+    );
+
+    setPendingSubmitUserOperationHashes(hashes);
+  }, [
+    userOperations,
+    isUserOperationCreateSuccess,
+    setPendingSubmitUserOperationHashes,
+  ]);
+
+  // Change the page index depending on the sign loading state
+  useEffect(() => {
+    if (isUserOperationCreateLoading) {
+      setPageIndex(1);
+    } else {
+      setPageIndex(0);
+    }
+  }, [isUserOperationCreateLoading, setPageIndex]);
+
+  // Change the page index depending on the sign success state
+  useEffect(() => {
+    if (isUserOperationCreateSuccess && watchIsDirectSubmit) {
+      setPageIndex(2);
+    }
+  }, [isUserOperationCreateSuccess, watchIsDirectSubmit, setPageIndex]);
 
   // On pathname change, reset all user operations
   useEffect(() => {
@@ -147,6 +226,11 @@ export const Transaction: FC<TransactionProps> = ({
       setIsFormDisabled(!isValid);
     }
   }, [userOperations, setIsFormDisabled]);
+
+  // Sync the `isDirectSubmit` field with the `isUserOperationCreateSubmittable` value
+  useEffect(() => {
+    form.setValue("isDirectSubmit", isUserOperationCreateSubmittable);
+  }, [form, isUserOperationCreateSubmittable]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -186,81 +270,158 @@ export const Transaction: FC<TransactionProps> = ({
                   )}
                 </TabsList>
                 <TabsContent value="transaction">
-                  {Object.values(userOperationSimulations).map(simulation => {
-                    return simulation.interpretation.asset_changes.map(
-                      (assetChange, index) => {
-                        return (
-                          <AssetChange
-                            key={`${assetChange.id}-${index}`}
-                            assetChange={assetChange}
-                          />
-                        );
-                      },
-                    );
-                  })}
-                  {!isInsideModal && (
-                    <div className="flex w-full flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-                      <Button
-                        // disabled={isDisabled}
-                        // isLoading={isLoading}
-                        onClick={signUserOperation}
-                      >
-                        Sign Transaction
-                      </Button>
-                    </div>
-                  )}
-                </TabsContent>
-                <TabsContent value="details">
-                  {Object.values(userOperationDetails).map((details, index) => {
-                    return details.map((item, itemIndex) => {
-                      return (
-                        <TransactionDetailInfo
-                          key={`${index}-${itemIndex}`}
-                          title={item.title}
-                          value={item.value}
-                        />
-                      );
-                    });
-                  })}
-                </TabsContent>
-                <TabsContent value="data">
-                  {userOperations &&
-                    userOperations.length > 0 &&
-                    userOperations.map((userOperation, index) => {
-                      return (
-                        <div
-                          key={index}
-                          className="w-full rounded-md bg-background-weak py-3"
-                        >
-                          <pre className="text-sm italic">
-                            <Textarea
-                              readOnly
-                              className="h-96 w-full"
-                              value={userOperation.callData}
+                  <div className="pt-3">
+                    {Object.values(userOperationSimulations).map(simulation => {
+                      return simulation.interpretation.asset_changes.map(
+                        (assetChange, index) => {
+                          return (
+                            <AssetChange
+                              key={`${assetChange.id}-${index}`}
+                              assetChange={assetChange}
                             />
-                          </pre>
-                        </div>
+                          );
+                        },
                       );
                     })}
+                    <Form {...form}>
+                      <form className="space-y-4">
+                        <FormField
+                          control={form.control}
+                          name="isDirectSubmit"
+                          render={({ field }) => (
+                            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                              <FormControl>
+                                <Checkbox
+                                  checked={field.value}
+                                  // disabled={!isUserOperationCreateSubmittable}
+                                  onCheckedChange={field.onChange}
+                                  onBlur={() => {
+                                    form.trigger();
+                                  }}
+                                />
+                              </FormControl>
+                              <div className="space-y-1 leading-none">
+                                <FormLabel className="cursor-pointer">
+                                  Confirm to directly execute the transaction
+                                  upon signing.
+                                </FormLabel>
+                              </div>
+                            </FormItem>
+                          )}
+                        />
+                        {/* Show all errors for debugging */}
+                        {/* <pre>{JSON.stringify(defaultValues, null, 2)}</pre> */}
+                        {/* <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre> */}
+                      </form>
+                    </Form>
+                    {!isInsideModal && (
+                      <FooterButton
+                        form="transaction-modal-form"
+                        isModal={false}
+                        cancelDisabled={true}
+                        isLoading={isFormLoading}
+                        disabled={
+                          isFormLoading
+                          // !isFormValid || isFormLoading || delayedIsSuccess
+                        }
+                        customSuccessText={customFormSuccessText}
+                        onClick={signUserOperation}
+                      />
+                    )}
+                  </div>
+                </TabsContent>
+                <TabsContent value="details">
+                  <div className="pt-3">
+                    {Object.entries(userOperationDetails).map(
+                      ([chainId, details], index) => {
+                        const chain = getChainById(Number(chainId));
+                        return (
+                          <Accordion
+                            key={index}
+                            collapsible
+                            defaultValue="value-0"
+                            className="rounded-md border border-border bg-background-weak p-4"
+                            type="single"
+                          >
+                            <AccordionItem
+                              className="border-0"
+                              value={`value-${index}`}
+                            >
+                              <AccordionTrigger className="px-1 py-0 text-xl font-medium md:text-2xl">
+                                Transaction on {chain.name}
+                              </AccordionTrigger>
+                              <AccordionContent className="px-1 pt-4">
+                                {details.map((item, itemIndex) => (
+                                  <TransactionDetailInfo
+                                    key={`${index}-${itemIndex}`}
+                                    title={item.title}
+                                    value={item.value}
+                                  />
+                                ))}
+                              </AccordionContent>
+                            </AccordionItem>
+                          </Accordion>
+                        );
+                      },
+                    )}
+                  </div>
+                </TabsContent>
+                <TabsContent value="data">
+                  <div className="pt-3">
+                    {userOperations &&
+                      userOperations.length > 0 &&
+                      userOperations.map((userOperation, index) => {
+                        return (
+                          <Accordion
+                            key={index}
+                            collapsible
+                            defaultValue="value-0"
+                            className="rounded-md border border-border bg-background-weak p-4"
+                            type="single"
+                          >
+                            <AccordionItem
+                              className="border-0"
+                              value={`value-${index}`}
+                            >
+                              <AccordionTrigger className="px-1 py-0 text-xl font-medium md:text-2xl">
+                                Calldata #{index + 1}
+                              </AccordionTrigger>
+                              <AccordionContent className="px-1 pt-4">
+                                <pre className="text-sm italic">
+                                  <Textarea
+                                    readOnly
+                                    className="h-auto w-full"
+                                    value={userOperation.callData}
+                                  />
+                                </pre>
+                              </AccordionContent>
+                            </AccordionItem>
+                          </Accordion>
+                        );
+                      })}
+                  </div>
                 </TabsContent>
                 <TabsContent value="dev">
-                  {Object.values(userOperationDevInfo).map((info, index) => {
-                    return info.map((item, itemIndex) => {
-                      return (
-                        <TransactionDevInfo
-                          key={`${index}-${itemIndex}`}
-                          data={item.data}
-                          title={item.title}
-                          isNumber={item.isNumber}
-                        />
-                      );
-                    });
-                  })}
+                  <div className="pt-3">
+                    {Object.values(userOperationDevInfo).map((info, index) => {
+                      return info.map((item, itemIndex) => {
+                        return (
+                          <TransactionDevInfo
+                            key={`${index}-${itemIndex}`}
+                            data={item.data}
+                            title={item.title}
+                            isNumber={item.isNumber}
+                          />
+                        );
+                      });
+                    })}
+                  </div>
                 </TabsContent>
               </Tabs>
             </>
           )}
           {pageIndex === 1 && <Loading />}
+          {pageIndex === 2 && <TransactionSender address={address} />}
         </ModalSwiper>
       </div>
       {initialUserOperations &&

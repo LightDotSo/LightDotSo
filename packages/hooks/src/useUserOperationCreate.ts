@@ -21,8 +21,9 @@ import {
   useQueryConfiguration,
 } from "@lightdotso/query";
 import { subdigestOf } from "@lightdotso/sequence";
-import { useAuth, useModalSwiper } from "@lightdotso/stores";
+import { useAuth, useFormRef } from "@lightdotso/stores";
 import {
+  useAccount,
   useSignMessage,
   // lightWalletAbi,
   // lightWalletFactoryAbi,
@@ -57,17 +58,22 @@ export const useUserOperationCreate = ({
   address,
 }: UserOperationCreateProps) => {
   // ---------------------------------------------------------------------------
+  // Wagmi
+  // ---------------------------------------------------------------------------
+
+  const { isConnecting } = useAccount();
+
+  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
   const { address: userAddress } = useAuth();
-  const { setPageIndex } = useModalSwiper();
+  const { setCustomFormSuccessText } = useFormRef();
 
   // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
 
-  const [isUserOperationLoading, setIsUserOperationLoading] = useState(false);
   const [merkleTree, setMerkleTree] = useState<MerkleTree | undefined>();
   const [signedData, setSignedData] = useState<Hex>();
 
@@ -228,6 +234,42 @@ export const useUserOperationCreate = ({
     });
   }, [owner, userOperations]);
 
+  const isUserOperationCreateSubmittable = useMemo(() => {
+    return (
+      typeof configuration?.threshold !== "undefined" &&
+      typeof owner !== "undefined" &&
+      configuration?.threshold <= owner?.weight
+    );
+  }, [owner, configuration?.threshold]);
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const formStateText = useMemo(() => {
+    if (!address) {
+      return "Connect Wallet";
+    }
+
+    if (isConnecting) {
+      return "Connecting...";
+    }
+
+    if (isSignLoading) {
+      return "Signing...";
+    }
+
+    // if (isWaitForTransactionLoading) {
+    //   return "Waiting for execution...";
+    // }
+
+    // if (delayedIsSuccess) {
+    //   return "Success!";
+    // }
+
+    return "Sign";
+  }, [address, isConnecting, isSignLoading]);
+
   // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
@@ -244,22 +286,25 @@ export const useUserOperationCreate = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { userOperationCreate } = useMutationUserOperationCreate({
+  const {
+    userOperationCreate,
+    isUserOperactionCreateLoading,
+    isUserOperactionCreateSuccess,
+  } = useMutationUserOperationCreate({
     address: address,
   });
 
-  const { userOperationCreateBatch } = useMutationUserOperationCreateBatch({
+  const {
+    userOperationCreateBatch,
+    isUserOperactionCreateBatchLoading,
+    isUserOperactionCreateBatchSuccess,
+  } = useMutationUserOperationCreateBatch({
     address: address,
   });
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
-
-  // Sync the loading state
-  useEffect(() => {
-    setIsUserOperationLoading(isSignLoading);
-  }, [isSignLoading]);
 
   // Sync the signed data
   useEffect(() => {
@@ -324,33 +369,53 @@ export const useUserOperationCreate = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signedData, owner, userOperations, configuration?.threshold, address]);
 
-  useEffect(() => {
-    if (isUserOperationLoading) {
-      setPageIndex(1);
-    } else {
-      setPageIndex(0);
-    }
-  }, [isUserOperationLoading, setPageIndex]);
-
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const isUserOperationCreatable = useMemo(() => {
+  const isUserOperationCreateable = useMemo(() => {
     return (
-      !isUserOperationLoading &&
-      typeof owner !== "undefined" &&
-      isValidUserOperations
+      !isSignLoading && typeof owner !== "undefined" && isValidUserOperations
     );
-  }, [isUserOperationLoading, owner, isValidUserOperations]);
+  }, [isSignLoading, owner, isValidUserOperations]);
+
+  const isUserOperationCreateLoading = useMemo(() => {
+    return (
+      isSignLoading ||
+      isUserOperactionCreateLoading ||
+      isUserOperactionCreateBatchLoading
+    );
+  }, [
+    isSignLoading,
+    isUserOperactionCreateLoading,
+    isUserOperactionCreateBatchLoading,
+  ]);
+
+  const isUserOperationCreateSuccess = useMemo(() => {
+    return isUserOperactionCreateSuccess || isUserOperactionCreateBatchSuccess;
+  }, [isUserOperactionCreateSuccess, isUserOperactionCreateBatchSuccess]);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // Set the custom form success text
+  useEffect(() => {
+    if (!formStateText) {
+      return;
+    }
+    setCustomFormSuccessText(formStateText);
+  }, [formStateText, setCustomFormSuccessText]);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return {
-    isUserOperationCreatable,
-    isUserOperationLoading,
+    isUserOperationCreateable,
+    isUserOperationCreateLoading,
+    isUserOperationCreateSubmittable,
+    isUserOperationCreateSuccess,
     isValidUserOperations,
     // decodedCallData,
     // decodedInitCode,

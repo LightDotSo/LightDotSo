@@ -39,7 +39,13 @@ export const useMutationWalletSettingsUpdate = (
   // Query Mutation
   // ---------------------------------------------------------------------------
 
-  const { mutate, isPending, isSuccess, isError, failureCount } = useMutation({
+  const {
+    mutate,
+    isSuccess: isWalletSettingsUpdateSuccess,
+    isError: isWalletSettingsUpdateError,
+    isPending: isWalletSettingsUpdatePending,
+    failureCount,
+  } = useMutation({
     mutationFn: async (body: WaleltSettingsUpdateBodyParams) => {
       if (!params.address) {
         return;
@@ -137,8 +143,8 @@ export const useMutationWalletSettingsUpdate = (
 
   return {
     mutate,
-    isPending,
-    isSuccess,
-    isError,
+    isWalletSettingsUpdateSuccess,
+    isWalletSettingsUpdateError,
+    isWalletSettingsUpdatePending,
   };
 };

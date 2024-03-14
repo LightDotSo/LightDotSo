@@ -143,7 +143,9 @@ export const ConfirmForm: FC = () => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const { mutate, isError } = useMutationWalletCreate({ address: address });
+  const { mutate, isWalletCreateError } = useMutationWalletCreate({
+    address: address,
+  });
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -174,7 +176,7 @@ export const ConfirmForm: FC = () => {
         salt: form.getValues("salt"),
       });
 
-      if (isError) {
+      if (isWalletCreateError) {
         setIsLoading(false);
         // If there is an error, return
         return;

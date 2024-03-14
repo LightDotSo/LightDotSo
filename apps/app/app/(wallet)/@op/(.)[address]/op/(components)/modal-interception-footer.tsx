@@ -14,13 +14,8 @@
 
 "use client";
 
-import {
-  useMutationQueueUserOperation,
-  useMutationUserOperationSend,
-  useQueryUserOperation,
-} from "@lightdotso/query";
+import { useUserOperationSend } from "@lightdotso/hooks";
 import { FooterButton } from "@lightdotso/templates";
-import { toast } from "@lightdotso/ui";
 import { useRouter } from "next/navigation";
 import { useCallback, type FC } from "react";
 import type { Address, Hex } from "viem";
@@ -49,38 +44,18 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
   const router = useRouter();
 
   // ---------------------------------------------------------------------------
-  // Query
+  // Hooks
   // ---------------------------------------------------------------------------
 
-  const { queueUserOperation, isLoadingQueueUserOperation } =
-    useMutationQueueUserOperation({
-      address: userOperationHash,
-    });
-
-  const { userOperation, isUserOperationLoading } = useQueryUserOperation({
-    hash: userOperationHash,
-  });
-
-  const { userOperationSend, isUserOperationSendPending } =
-    useMutationUserOperationSend({
-      address,
-      chain_id: userOperation?.chain_id,
+  const { handleSubmit, isUserOperationSendLoading, isUserOperationDisabled } =
+    useUserOperationSend({
+      address: address,
+      hash: userOperationHash,
     });
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
-
-  const onClick = useCallback(async () => {
-    if (!userOperation) {
-      toast.error("User operation not found.");
-      return;
-    }
-
-    await userOperationSend(userOperation);
-
-    queueUserOperation({ hash: userOperationHash });
-  }, [userOperation, userOperationSend, queueUserOperation, userOperationHash]);
 
   const onDismiss = useCallback(() => {
     router.back();
@@ -95,21 +70,11 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
     <FooterButton
       isModal
       className="pt-0"
-      disabled={
-        isLoadingQueueUserOperation ||
-        isUserOperationLoading ||
-        isUserOperationSendPending ||
-        (userOperation?.status !== "PROPOSED" &&
-          userOperation?.status !== "PENDING")
-      }
-      isLoading={
-        isLoadingQueueUserOperation ||
-        isUserOperationSendPending ||
-        isUserOperationLoading
-      }
+      disabled={isUserOperationSendLoading || isUserOperationDisabled}
+      isLoading={isUserOperationSendLoading}
       customSuccessText="Refresh"
       cancelClick={onDismiss}
-      onClick={onClick}
+      onClick={handleSubmit}
     />
   );
 };

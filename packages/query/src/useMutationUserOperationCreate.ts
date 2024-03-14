@@ -49,9 +49,8 @@ export const useMutationUserOperationCreate = (params: UserOperationParams) => {
 
   const {
     mutate: userOperationCreate,
-    isPending,
-    isSuccess,
-    isError,
+    isPending: isUserOperactionCreateLoading,
+    isSuccess: isUserOperactionCreateSuccess,
     failureCount,
   } = useMutation({
     mutationFn: async (body: UserOperationCreateBodyParams) => {
@@ -214,8 +213,7 @@ export const useMutationUserOperationCreate = (params: UserOperationParams) => {
 
   return {
     userOperationCreate,
-    isPending,
-    isSuccess,
-    isError,
+    isUserOperactionCreateLoading,
+    isUserOperactionCreateSuccess,
   };
 };
