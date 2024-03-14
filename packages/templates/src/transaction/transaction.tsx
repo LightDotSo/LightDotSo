@@ -174,6 +174,8 @@ export const Transaction: FC<TransactionProps> = ({
     resolver: zodResolver(transactionFormSchema, defaultValues),
   });
 
+  const watchIsDirectSubmit = form.watch("isDirectSubmit");
+
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
@@ -202,10 +204,19 @@ export const Transaction: FC<TransactionProps> = ({
 
   // Change the page index depending on the sign success state
   useEffect(() => {
-    if (isUserOperationCreateSuccess && form.getValues("isDirectSubmit")) {
+    if (
+      isUserOperationCreateSuccess &&
+      isUserOperationCreateSubmittable &&
+      watchIsDirectSubmit
+    ) {
       setPageIndex(2);
     }
-  }, [isUserOperationCreateSuccess, setPageIndex]);
+  }, [
+    isUserOperationCreateSuccess,
+    isUserOperationCreateSubmittable,
+    watchIsDirectSubmit,
+    setPageIndex,
+  ]);
 
   // On pathname change, reset all user operations
   useEffect(() => {

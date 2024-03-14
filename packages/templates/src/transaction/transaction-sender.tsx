@@ -18,7 +18,7 @@ import type { ConfigurationData } from "@lightdotso/data";
 import { useUserOperationSend } from "@lightdotso/hooks";
 import { useQueryConfiguration } from "@lightdotso/query";
 import { useUserOperations } from "@lightdotso/stores";
-import { StateInfoSection } from "@lightdotso/ui";
+import { Button, StateInfoSection } from "@lightdotso/ui";
 import { LoaderIcon } from "lucide-react";
 import { useEffect, type FC } from "react";
 import type { Address, Hex } from "viem";
@@ -46,6 +46,7 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
   // ---------------------------------------------------------------------------
 
   const {
+    userOperation,
     isUserOperationSendLoading,
     isUserOperationSendIdle,
     isUserOperationSendSuccess,
@@ -73,7 +74,12 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
   return (
     <div>
       {isUserOperationSendLoading && "Loading..."}
-      {isUserOperationSendSuccess && "Suucess!"}
+      {isUserOperationSendSuccess && "Success!"}
+      {isUserOperationSendSuccess && (
+        <Button asChild>
+          <a>{userOperation?.transaction?.hash}</a>
+        </Button>
+      )}
     </div>
   );
 };

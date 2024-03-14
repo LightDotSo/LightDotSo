@@ -114,6 +114,7 @@ export const useUserOperationSend = ({
 
   return {
     handleSubmit,
+    userOperation,
     isUserOperationDisabled: isUserOperationDisabled,
     isUserOperationSendLoading: isUserOperationSendPending,
     isUserOperationSendIdle:
