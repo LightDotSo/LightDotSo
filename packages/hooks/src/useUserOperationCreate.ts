@@ -21,8 +21,9 @@ import {
   useQueryConfiguration,
 } from "@lightdotso/query";
 import { subdigestOf } from "@lightdotso/sequence";
-import { useAuth, useModalSwiper } from "@lightdotso/stores";
+import { useAuth, useFormRef, useModalSwiper } from "@lightdotso/stores";
 import {
+  useAccount,
   useSignMessage,
   // lightWalletAbi,
   // lightWalletFactoryAbi,
@@ -57,11 +58,18 @@ export const useUserOperationCreate = ({
   address,
 }: UserOperationCreateProps) => {
   // ---------------------------------------------------------------------------
+  // Wagmi
+  // ---------------------------------------------------------------------------
+
+  const { chainId, isConnecting } = useAccount();
+
+  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
   const { address: userAddress } = useAuth();
   const { setPageIndex } = useModalSwiper();
+  const { setCustomFormSuccessText } = useFormRef();
 
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -236,6 +244,34 @@ export const useUserOperationCreate = ({
   }, [owner, configuration?.threshold]);
 
   // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const formStateText = useMemo(() => {
+    if (!address) {
+      return "Connect Wallet";
+    }
+
+    if (isConnecting) {
+      return "Connecting...";
+    }
+
+    if (isSignLoading) {
+      return "Signing...";
+    }
+
+    // if (isWaitForTransactionLoading) {
+    //   return "Waiting for execution...";
+    // }
+
+    // if (delayedIsSuccess) {
+    //   return "Success!";
+    // }
+
+    return "Sign";
+  }, [address, chainId, isConnecting, isSignLoading]);
+
+  // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
@@ -326,6 +362,7 @@ export const useUserOperationCreate = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signedData, owner, userOperations, configuration?.threshold, address]);
 
+  // Change the page index depending on the sign loading state
   useEffect(() => {
     if (isSignLoading) {
       setPageIndex(1);
@@ -333,6 +370,14 @@ export const useUserOperationCreate = ({
       setPageIndex(0);
     }
   }, [isSignLoading, setPageIndex]);
+
+  // Set the custom form success text
+  useEffect(() => {
+    if (!formStateText) {
+      return;
+    }
+    setCustomFormSuccessText(formStateText);
+  }, [formStateText, setCustomFormSuccessText]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks

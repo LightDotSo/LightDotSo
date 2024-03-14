@@ -110,11 +110,16 @@ export const DepositDialog: FC<DepositDialogProps> = ({
   const { setOpen } = useModal();
 
   // ---------------------------------------------------------------------------
+  // Wagmi
+  // ---------------------------------------------------------------------------
+
+  const { chainId, isConnecting } = useAccount();
+
+  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
   const { address } = useAuth();
-  const { chainId, isConnecting } = useAccount();
   const globalChainId = useChainId();
   const { switchChainAsync, isPending: isSwitchChainPending } =
     useSwitchChain();

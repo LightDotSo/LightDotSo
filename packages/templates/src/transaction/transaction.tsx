@@ -49,6 +49,7 @@ import { useEffect, useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
 import { type Address } from "viem";
 import type * as z from "zod";
+import { FooterButton } from "../footer-button";
 import { Loading } from "../loading";
 import { useIsInsideModal } from "../modal";
 import { ModalSwiper } from "../modal-swiper";
@@ -114,7 +115,8 @@ export const Transaction: FC<TransactionProps> = ({
     userOperationSimulations,
     resetAll,
   } = useUserOperations();
-  const { isFormDisabled, isFormLoading, setIsFormDisabled } = useFormRef();
+  const { customFormSuccessText, isFormLoading, setIsFormDisabled } =
+    useFormRef();
 
   // ---------------------------------------------------------------------------
   // Query State Hooks
@@ -275,15 +277,18 @@ export const Transaction: FC<TransactionProps> = ({
                       </form>
                     </Form>
                     {!isInsideModal && (
-                      <div className="flex w-full flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-                        <Button
-                          disabled={isFormDisabled || isFormLoading}
-                          isLoading={isFormLoading}
-                          onClick={signUserOperation}
-                        >
-                          Sign Transaction
-                        </Button>
-                      </div>
+                      <FooterButton
+                        form="transaction-modal-form"
+                        isModal={false}
+                        cancelDisabled={true}
+                        isLoading={isFormLoading}
+                        disabled={
+                          isFormLoading
+                          // !isFormValid || isFormLoading || delayedIsSuccess
+                        }
+                        onClick={signUserOperation}
+                        customSuccessText={customFormSuccessText}
+                      />
                     )}
                   </div>
                 </TabsContent>
