@@ -18,7 +18,7 @@ import type { ConfigurationData, WalletData } from "@lightdotso/data";
 import { AssetChange } from "@lightdotso/elements";
 import { useUserOperationCreate } from "@lightdotso/hooks";
 import { useUserOperationsQueryState } from "@lightdotso/nuqs";
-import { type UserOperation } from "@lightdotso/schemas";
+import { type UserOperation, transactionFormSchema } from "@lightdotso/schemas";
 import {
   useFormRef,
   useModalSwiper,
@@ -35,11 +35,20 @@ import {
   TabsList,
   TabsTrigger,
   Textarea,
+  Form,
+  FormItem,
+  FormField,
+  FormControl,
+  Checkbox,
+  FormLabel,
 } from "@lightdotso/ui";
 import { cn, getChainById } from "@lightdotso/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname } from "next/navigation";
-import { useEffect, type FC } from "react";
+import { useEffect, useMemo, type FC } from "react";
+import { useForm } from "react-hook-form";
 import { type Address } from "viem";
+import type * as z from "zod";
 import { Loading } from "../loading";
 import { useIsInsideModal } from "../modal";
 import { ModalSwiper } from "../modal-swiper";
@@ -70,6 +79,12 @@ type TransactionProps = {
   >;
   isDev?: boolean;
 };
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+type TransactionFormValues = z.infer<typeof transactionFormSchema>;
 
 // -----------------------------------------------------------------------------
 // Component
@@ -134,6 +149,27 @@ export const Transaction: FC<TransactionProps> = ({
   });
 
   // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const defaultValues: TransactionFormValues = useMemo(() => {
+    return {
+      isDirectSubmit: isUserOperationSubmittable,
+    };
+  }, [isUserOperationSubmittable]);
+
+  // ---------------------------------------------------------------------------
+  // Form
+  // ---------------------------------------------------------------------------
+
+  const form = useForm<TransactionFormValues>({
+    mode: "all",
+    reValidateMode: "onBlur",
+    // @ts-expect-error
+    resolver: zodResolver(transactionFormSchema, defaultValues),
+  });
+
+  // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
@@ -150,6 +186,11 @@ export const Transaction: FC<TransactionProps> = ({
       setIsFormDisabled(!isValid);
     }
   }, [userOperations, setIsFormDisabled]);
+
+  // Sync the `isDirectSubmit` field with the `isUserOperationSubmittable` value
+  useEffect(() => {
+    form.setValue("isDirectSubmit", isUserOperationSubmittable);
+  }, [form, isUserOperationSubmittable]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -202,6 +243,36 @@ export const Transaction: FC<TransactionProps> = ({
                         },
                       );
                     })}
+                    <Form {...form}>
+                      <form className="space-y-4">
+                        <FormField
+                          control={form.control}
+                          name="isDirectSubmit"
+                          render={({ field }) => (
+                            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                              <FormControl>
+                                <Checkbox
+                                  checked={field.value}
+                                  onCheckedChange={field.onChange}
+                                  onBlur={() => {
+                                    form.trigger();
+                                  }}
+                                />
+                              </FormControl>
+                              <div className="space-y-1 leading-none">
+                                <FormLabel className="cursor-pointer">
+                                  Confirm to directly execute the transaction
+                                  upon signing.
+                                </FormLabel>
+                              </div>
+                            </FormItem>
+                          )}
+                        />
+                        {/* Show all errors for debugging */}
+                        {/* <pre>{JSON.stringify(defaultValues, null, 2)}</pre> */}
+                        {/* <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre> */}
+                      </form>
+                    </Form>
                     {!isInsideModal && (
                       <div className="flex w-full flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
                         <Button
