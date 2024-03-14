@@ -46,7 +46,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
-import { Hex, type Address } from "viem";
+import type { Hex, type Address } from "viem";
 import type * as z from "zod";
 import { FooterButton } from "../footer-button";
 import { Loading } from "../loading";

@@ -14,7 +14,7 @@
 
 "use client";
 
-import { ConfigurationData } from "@lightdotso/data";
+import type { ConfigurationData } from "@lightdotso/data";
 import { useUserOperationSubmit } from "@lightdotso/hooks";
 import {
   useQueryConfiguration,
