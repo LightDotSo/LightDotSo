@@ -61,7 +61,7 @@ export const useUserOperationCreate = ({
   // Wagmi
   // ---------------------------------------------------------------------------
 
-  const { chainId, isConnecting } = useAccount();
+  const { isConnecting } = useAccount();
 
   // ---------------------------------------------------------------------------
   // Stores

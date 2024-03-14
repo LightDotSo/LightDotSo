@@ -191,7 +191,11 @@ export const Transaction: FC<TransactionProps> = ({
     );
 
     setPendingSubmitUserOperationHashes(hashes);
-  }, [isUserOperationCreateSuccess, setPendingSubmitUserOperationHashes]);
+  }, [
+    userOperations,
+    isUserOperationCreateSuccess,
+    setPendingSubmitUserOperationHashes,
+  ]);
 
   // Change the page index depending on the sign loading state
   useEffect(() => {
@@ -204,19 +208,10 @@ export const Transaction: FC<TransactionProps> = ({
 
   // Change the page index depending on the sign success state
   useEffect(() => {
-    if (
-      isUserOperationCreateSuccess &&
-      isUserOperationCreateSubmittable &&
-      watchIsDirectSubmit
-    ) {
+    if (isUserOperationCreateSuccess && watchIsDirectSubmit) {
       setPageIndex(2);
     }
-  }, [
-    isUserOperationCreateSuccess,
-    isUserOperationCreateSubmittable,
-    watchIsDirectSubmit,
-    setPageIndex,
-  ]);
+  }, [isUserOperationCreateSuccess, watchIsDirectSubmit, setPageIndex]);
 
   // On pathname change, reset all user operations
   useEffect(() => {
