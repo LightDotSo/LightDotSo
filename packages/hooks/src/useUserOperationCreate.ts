@@ -95,38 +95,6 @@ export const useUserOperationCreate = ({
   // Local Variables
   // ---------------------------------------------------------------------------
 
-  const subdigest = useMemo(() => {
-    // If the userOperation length is 0, return
-    if (userOperations.length === 0) {
-      return;
-    }
-
-    // If the userOperation length is 1, get the first userOperation
-    const userOperation = userOperations[0];
-    if (!userOperation?.hash || !userOperation?.chainId) {
-      return;
-    }
-
-    if (userOperations.length === 1) {
-      return subdigestOf(
-        address,
-        hexToBytes(userOperation?.hash as Hex),
-        userOperation?.chainId,
-      );
-    }
-
-    // If the userOperation length is greater than 1, get the merkle root of the userOperations
-    if (userOperations.length > 1) {
-      const leaves = userOperations
-        .sort((a, b) => Number(a.chainId) - Number(b.chainId))
-        .map(userOperation => hexToBytes(userOperation.hash as Hex));
-      const tree = new MerkleTree(leaves, keccak256, { sort: true });
-      console.info(`0x${tree.getRoot().toString("hex")}` as Hex);
-      setMerkleTree(tree);
-      return subdigestOf(address, tree.getRoot(), BigInt(0));
-    }
-  }, [address, userOperations]);
-
   // ---------------------------------------------------------------------------
   // Wagmi
   // ---------------------------------------------------------------------------
@@ -233,6 +201,38 @@ export const useUserOperationCreate = ({
       );
     });
   }, [owner, userOperations]);
+
+  const subdigest = useMemo(() => {
+    // If the userOperation length is 0 or is not valid return
+    if (userOperations.length === 0 || isValidUserOperations) {
+      return;
+    }
+
+    // If the userOperation length is 1, get the first userOperation
+    const userOperation = userOperations[0];
+    if (!userOperation?.hash || !userOperation?.chainId) {
+      return;
+    }
+
+    if (userOperations.length === 1) {
+      return subdigestOf(
+        address,
+        hexToBytes(userOperation?.hash as Hex),
+        userOperation?.chainId,
+      );
+    }
+
+    // If the userOperation length is greater than 1, get the merkle root of the userOperations
+    if (userOperations.length > 1) {
+      const leaves = userOperations
+        .sort((a, b) => Number(a.chainId) - Number(b.chainId))
+        .map(userOperation => hexToBytes(userOperation.hash as Hex));
+      const tree = new MerkleTree(leaves, keccak256, { sort: true });
+      console.info(`0x${tree.getRoot().toString("hex")}` as Hex);
+      setMerkleTree(tree);
+      return subdigestOf(address, tree.getRoot(), BigInt(0));
+    }
+  }, [address, userOperations, isValidUserOperations]);
 
   const isUserOperationCreateSubmittable = useMemo(() => {
     return (
