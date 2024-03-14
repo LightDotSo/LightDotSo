@@ -215,7 +215,7 @@ export const Transaction: FC<TransactionProps> = ({
                   )}
                 </TabsContent>
                 <TabsContent value="details">
-                  <div className="py-3">
+                  <div className="pt-3">
                     {Object.entries(userOperationDetails).map(
                       ([chainId, details], index) => {
                         const chain = getChainById(Number(chainId));
@@ -251,7 +251,7 @@ export const Transaction: FC<TransactionProps> = ({
                   </div>
                 </TabsContent>
                 <TabsContent value="data">
-                  <div className="py-3">
+                  <div className="pt-3">
                     {userOperations &&
                       userOperations.length > 0 &&
                       userOperations.map((userOperation, index) => {
@@ -286,7 +286,7 @@ export const Transaction: FC<TransactionProps> = ({
                   </div>
                 </TabsContent>
                 <TabsContent value="dev">
-                  <div className="py-3">
+                  <div className="pt-3">
                     {Object.values(userOperationDevInfo).map((info, index) => {
                       return info.map((item, itemIndex) => {
                         return (
