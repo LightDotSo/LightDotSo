@@ -31,7 +31,7 @@ import {
 import { cn } from "@lightdotso/utils";
 import { publicClient, useEnsAddress } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { isAddress } from "viem";
 import { normalize } from "viem/ens";
@@ -65,6 +65,7 @@ export function AddressModal() {
   const {
     isAddressModalVisible,
     hideAddressModal,
+    setSendBackgroundModal,
     addressModalProps: { onAddressSelect },
   } = useModals();
 
@@ -108,6 +109,15 @@ export function AddressModal() {
 
   const watchAddress = methods.watch("address");
   const watchName = methods.watch("addressOrEns");
+
+  // ---------------------------------------------------------------------------
+  // Callback Hooks
+  // ---------------------------------------------------------------------------
+
+  const onDismiss = useCallback(() => {
+    setSendBackgroundModal(false);
+    hideAddressModal();
+  }, [setSendBackgroundModal, hideAddressModal]);
 
   // ---------------------------------------------------------------------------
   // Debounced Hooks
@@ -196,7 +206,7 @@ export function AddressModal() {
               }}
             />
           }
-          onClose={hideAddressModal}
+          onClose={onDismiss}
         >
           <Command className="bg-transparent">
             <CommandList className="max-h-full">
