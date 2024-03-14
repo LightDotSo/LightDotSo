@@ -30,7 +30,7 @@ import type { Address, Hex } from "viem";
 // Props
 // -----------------------------------------------------------------------------
 
-interface TransactionSubmitterOpProps {
+interface TransactionSenderOpProps {
   address: Address;
   configuration: ConfigurationData;
   hash: Hex;
@@ -40,7 +40,7 @@ interface TransactionSubmitterOpProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export const TransactionSubmitterOp: FC<TransactionSubmitterOpProps> = ({
+export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
   address,
   configuration,
   hash,
@@ -90,7 +90,7 @@ export const TransactionSubmitterOp: FC<TransactionSubmitterOpProps> = ({
 // Props
 // -----------------------------------------------------------------------------
 
-type TransactionSubmitterProps = {
+type TransactionSenderProps = {
   address: Address;
 };
 
@@ -98,9 +98,7 @@ type TransactionSubmitterProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const TransactionSubmitter: FC<TransactionSubmitterProps> = ({
-  address,
-}) => {
+export const TransactionSender: FC<TransactionSenderProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -124,12 +122,12 @@ export const TransactionSubmitter: FC<TransactionSubmitterProps> = ({
       icon={
         <LoaderIcon className="mx-auto size-8 animate-spin rounded-full border border-border p-2 text-text-weak duration-1000 md:size-10" />
       }
-      title="Submitting Transaction..."
+      title="Sending Transaction..."
       description="Please wait while we handle your request..."
     >
       {configuration &&
         pendingSubmitUserOperationHashes.map((hash, index) => (
-          <TransactionSubmitterOp
+          <TransactionSenderOp
             key={index}
             address={address}
             configuration={configuration}

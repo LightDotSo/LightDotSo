@@ -55,7 +55,7 @@ import { ModalSwiper } from "../modal-swiper";
 import { TransactionDetailInfo } from "./transaction-details-info";
 import { TransactionDevInfo } from "./transaction-dev-info";
 import { TransactionFetcher } from "./transaction-fetcher";
-import { TransactionSubmitter } from "./transaction-submitter";
+import { TransactionSender } from "./transaction-sender";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -415,7 +415,7 @@ export const Transaction: FC<TransactionProps> = ({
             </>
           )}
           {pageIndex === 1 && <Loading />}
-          {pageIndex === 2 && <TransactionSubmitter address={address} />}
+          {pageIndex === 2 && <TransactionSender address={address} />}
         </ModalSwiper>
       </div>
       {initialUserOperations &&
