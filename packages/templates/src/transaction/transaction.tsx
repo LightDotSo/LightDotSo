@@ -25,6 +25,10 @@ import {
   useUserOperations,
 } from "@lightdotso/stores";
 import {
+  Accordion,
+  AccordionItem,
+  AccordionContent,
+  AccordionTrigger,
   Button,
   Tabs,
   TabsContent,
@@ -32,7 +36,7 @@ import {
   TabsTrigger,
   Textarea,
 } from "@lightdotso/ui";
-import { cn } from "@lightdotso/utils";
+import { cn, getChainById } from "@lightdotso/utils";
 import { usePathname } from "next/navigation";
 import { useEffect, type FC } from "react";
 import { type Address } from "viem";
@@ -95,7 +99,7 @@ export const Transaction: FC<TransactionProps> = ({
     userOperationSimulations,
     resetAll,
   } = useUserOperations();
-  const { setIsFormDisabled } = useFormRef();
+  const { isFormDisabled, isFormLoading, setIsFormDisabled } = useFormRef();
 
   // ---------------------------------------------------------------------------
   // Query State Hooks
@@ -201,8 +205,8 @@ export const Transaction: FC<TransactionProps> = ({
                   {!isInsideModal && (
                     <div className="flex w-full flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
                       <Button
-                        // disabled={isDisabled}
-                        // isLoading={isLoading}
+                        disabled={isFormDisabled || isFormLoading}
+                        isLoading={isFormLoading}
                         onClick={signUserOperation}
                       >
                         Sign Transaction
@@ -211,51 +215,91 @@ export const Transaction: FC<TransactionProps> = ({
                   )}
                 </TabsContent>
                 <TabsContent value="details">
-                  {Object.values(userOperationDetails).map((details, index) => {
-                    return details.map((item, itemIndex) => {
-                      return (
-                        <TransactionDetailInfo
-                          key={`${index}-${itemIndex}`}
-                          title={item.title}
-                          value={item.value}
-                        />
-                      );
-                    });
-                  })}
+                  <div className="py-3">
+                    {Object.entries(userOperationDetails).map(
+                      ([chainId, details], index) => {
+                        const chain = getChainById(Number(chainId));
+                        return (
+                          <Accordion
+                            key={index}
+                            collapsible
+                            defaultValue="value-0"
+                            className="rounded-md border border-border bg-background-weak p-4"
+                            type="single"
+                          >
+                            <AccordionItem
+                              className="border-0"
+                              value={`value-${index}`}
+                            >
+                              <AccordionTrigger className="px-1 py-0 text-xl font-medium md:text-2xl">
+                                Transaction on {chain.name}
+                              </AccordionTrigger>
+                              <AccordionContent className="px-1 pt-4">
+                                {details.map((item, itemIndex) => (
+                                  <TransactionDetailInfo
+                                    key={`${index}-${itemIndex}`}
+                                    title={item.title}
+                                    value={item.value}
+                                  />
+                                ))}
+                              </AccordionContent>
+                            </AccordionItem>
+                          </Accordion>
+                        );
+                      },
+                    )}
+                  </div>
                 </TabsContent>
                 <TabsContent value="data">
-                  {userOperations &&
-                    userOperations.length > 0 &&
-                    userOperations.map((userOperation, index) => {
-                      return (
-                        <div
-                          key={index}
-                          className="w-full rounded-md bg-background-weak py-3"
-                        >
-                          <pre className="text-sm italic">
-                            <Textarea
-                              readOnly
-                              className="h-96 w-full"
-                              value={userOperation.callData}
-                            />
-                          </pre>
-                        </div>
-                      );
-                    })}
+                  <div className="py-3">
+                    {userOperations &&
+                      userOperations.length > 0 &&
+                      userOperations.map((userOperation, index) => {
+                        return (
+                          <Accordion
+                            key={index}
+                            collapsible
+                            defaultValue="value-0"
+                            className="rounded-md bg-background-weak py-3"
+                            type="single"
+                          >
+                            <AccordionItem
+                              className="border-0"
+                              value={`value-${index}`}
+                            >
+                              <AccordionTrigger className="px-1 py-0 text-xl font-medium md:text-2xl">
+                                User Operation #{index + 1}
+                              </AccordionTrigger>
+                              <AccordionContent className="px-1 pt-4">
+                                <pre className="text-sm italic">
+                                  <Textarea
+                                    readOnly
+                                    className="w-full"
+                                    value={userOperation.callData}
+                                  />
+                                </pre>
+                              </AccordionContent>
+                            </AccordionItem>
+                          </Accordion>
+                        );
+                      })}
+                  </div>
                 </TabsContent>
                 <TabsContent value="dev">
-                  {Object.values(userOperationDevInfo).map((info, index) => {
-                    return info.map((item, itemIndex) => {
-                      return (
-                        <TransactionDevInfo
-                          key={`${index}-${itemIndex}`}
-                          data={item.data}
-                          title={item.title}
-                          isNumber={item.isNumber}
-                        />
-                      );
-                    });
-                  })}
+                  <div className="py-3">
+                    {Object.values(userOperationDevInfo).map((info, index) => {
+                      return info.map((item, itemIndex) => {
+                        return (
+                          <TransactionDevInfo
+                            key={`${index}-${itemIndex}`}
+                            data={item.data}
+                            title={item.title}
+                            isNumber={item.isNumber}
+                          />
+                        );
+                      });
+                    })}
+                  </div>
                 </TabsContent>
               </Tabs>
             </>
