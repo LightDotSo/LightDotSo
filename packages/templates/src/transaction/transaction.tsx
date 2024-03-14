@@ -286,8 +286,8 @@ export const Transaction: FC<TransactionProps> = ({
                           isFormLoading
                           // !isFormValid || isFormLoading || delayedIsSuccess
                         }
-                        onClick={signUserOperation}
                         customSuccessText={customFormSuccessText}
+                        onClick={signUserOperation}
                       />
                     )}
                   </div>
@@ -352,7 +352,7 @@ export const Transaction: FC<TransactionProps> = ({
                                 <pre className="text-sm italic">
                                   <Textarea
                                     readOnly
-                                    className="w-full h-auto"
+                                    className="h-auto w-full"
                                     value={userOperation.callData}
                                   />
                                 </pre>
