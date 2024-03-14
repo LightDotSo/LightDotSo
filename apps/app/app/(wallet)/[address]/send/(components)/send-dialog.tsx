@@ -69,6 +69,7 @@ import {
   refineNumberFormat,
 } from "@lightdotso/utils";
 import { lightWalletAbi, publicClient } from "@lightdotso/wagmi";
+import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isEmpty } from "lodash";
 import { ChevronDown, Trash2Icon, UserPlus2 } from "lucide-react";
@@ -90,7 +91,6 @@ import {
 import type { Address, Hex } from "viem";
 import { normalize } from "viem/ens";
 import { z } from "zod";
-import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 
 // -----------------------------------------------------------------------------
 // Types
