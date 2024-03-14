@@ -253,6 +253,7 @@ export const Transaction: FC<TransactionProps> = ({
                               <FormControl>
                                 <Checkbox
                                   checked={field.value}
+                                  disabled={!isUserOperationSubmittable}
                                   onCheckedChange={field.onChange}
                                   onBlur={() => {
                                     form.trigger();

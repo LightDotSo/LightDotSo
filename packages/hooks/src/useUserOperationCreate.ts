@@ -232,10 +232,9 @@ export const useUserOperationCreate = ({
     return (
       typeof configuration?.threshold !== "undefined" &&
       typeof owner !== "undefined" &&
-      configuration?.threshold <= owner?.weight &&
-      isValidUserOperations
+      configuration?.threshold <= owner?.weight
     );
-  }, [isUserOperationLoading, owner, isValidUserOperations]);
+  }, [owner, configuration?.threshold]);
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
