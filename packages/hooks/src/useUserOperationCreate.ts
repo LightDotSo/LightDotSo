@@ -67,7 +67,6 @@ export const useUserOperationCreate = ({
   // State Hooks
   // ---------------------------------------------------------------------------
 
-  const [isUserOperationLoading, setIsUserOperationLoading] = useState(false);
   const [merkleTree, setMerkleTree] = useState<MerkleTree | undefined>();
   const [signedData, setSignedData] = useState<Hex>();
 
@@ -264,11 +263,6 @@ export const useUserOperationCreate = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
-  // Sync the loading state
-  useEffect(() => {
-    setIsUserOperationLoading(isSignLoading);
-  }, [isSignLoading]);
-
   // Sync the signed data
   useEffect(() => {
     if (!data) {
@@ -333,12 +327,12 @@ export const useUserOperationCreate = ({
   }, [signedData, owner, userOperations, configuration?.threshold, address]);
 
   useEffect(() => {
-    if (isUserOperationLoading) {
+    if (isSignLoading) {
       setPageIndex(1);
     } else {
       setPageIndex(0);
     }
-  }, [isUserOperationLoading, setPageIndex]);
+  }, [isSignLoading, setPageIndex]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -346,11 +340,9 @@ export const useUserOperationCreate = ({
 
   const isUserOperationCreatable = useMemo(() => {
     return (
-      !isUserOperationLoading &&
-      typeof owner !== "undefined" &&
-      isValidUserOperations
+      !isSignLoading && typeof owner !== "undefined" && isValidUserOperations
     );
-  }, [isUserOperationLoading, owner, isValidUserOperations]);
+  }, [isSignLoading, owner, isValidUserOperations]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -358,7 +350,6 @@ export const useUserOperationCreate = ({
 
   return {
     isUserOperationCreatable,
-    isUserOperationLoading,
     isUserOperationSubmittable,
     isValidUserOperations,
     // decodedCallData,
