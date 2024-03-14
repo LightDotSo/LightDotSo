@@ -17,7 +17,7 @@
 import { AddressFormField } from "@lightdotso/forms";
 import { useDebouncedValue, useRefinement } from "@lightdotso/hooks";
 import { useQueryEnsDomains, useQueryWallets } from "@lightdotso/query";
-import { addressOrEns } from "@lightdotso/schemas";
+import { address, addressOrEns } from "@lightdotso/schemas";
 import { useAuth, useModals } from "@lightdotso/stores";
 import { FooterButton, Modal } from "@lightdotso/templates";
 import {
@@ -28,8 +28,10 @@ import {
   CommandItem,
   Form,
 } from "@lightdotso/ui";
-import { publicClient } from "@lightdotso/wagmi";
+import { cn } from "@lightdotso/utils";
+import { publicClient, useEnsAddress } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { isAddress } from "viem";
 import { normalize } from "viem/ens";
@@ -40,8 +42,15 @@ import { z } from "zod";
 // -----------------------------------------------------------------------------
 
 const addressModalFormSchema = z.object({
+  address: address,
   addressOrEns: addressOrEns,
 });
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+type AddressModalFormValues = z.infer<typeof addressModalFormSchema>;
 
 // -----------------------------------------------------------------------------
 // Component
@@ -61,7 +70,7 @@ export function AddressModal() {
 
   const getEns = async ({ name }: { name: string }) =>
     publicClient.getEnsAddress({ name: normalize(name) }).then(addr => {
-      // console.log(addr);
+      console.info(addr);
       return !!addr;
     });
 
@@ -75,7 +84,7 @@ export function AddressModal() {
   // ---------------------------------------------------------------------------
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const methods = useForm({
+  const methods = useForm<AddressModalFormValues>({
     mode: "all",
     reValidateMode: "onBlur",
     resolver: zodResolver(
@@ -97,13 +106,49 @@ export function AddressModal() {
     ),
   });
 
+  const watchAddress = methods.watch("address");
   const watchName = methods.watch("addressOrEns");
 
   // ---------------------------------------------------------------------------
   // Debounced Hooks
   // ---------------------------------------------------------------------------
 
-  const delayedName = useDebouncedValue(watchName, 1000);
+  const delayedName = useDebouncedValue(watchName, 300);
+
+  // ---------------------------------------------------------------------------
+  // Wagmi
+  // ---------------------------------------------------------------------------
+
+  const { data: ensAddress } = useEnsAddress({
+    name:
+      delayedName && delayedName !== "" && delayedName?.length > 3
+        ? normalize(delayedName || "")
+        : undefined,
+    chainId: 1,
+  });
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    if (ensAddress) {
+      methods.setValue("addressOrEns", delayedName);
+      methods.setValue("address", ensAddress);
+      methods.trigger("addressOrEns");
+    } else {
+      if (isAddress(delayedName)) {
+        methods.setValue("address", delayedName);
+        methods.setValue("addressOrEns", delayedName);
+        methods.trigger("addressOrEns");
+      } else {
+        methods.setError("addressOrEns", {
+          type: "manual",
+          message: "Ens name is not valid",
+        });
+      }
+    }
+  }, [ensAddress]);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -144,7 +189,10 @@ export function AddressModal() {
               disabled={!methods.formState.isValid}
               customSuccessText="Select Address"
               onClick={() => {
-                onAddressSelect(watchName);
+                onAddressSelect({
+                  address: watchAddress,
+                  addressOrEns: watchName,
+                });
               }}
             />
           }
@@ -156,14 +204,38 @@ export function AddressModal() {
                 methods.getFieldState("addressOrEns").invalid) && (
                 <CommandEmpty>No results found.</CommandEmpty>
               )}
+              {watchName && watchName.length > 0 && (
+                <CommandGroup heading="Current Input">
+                  <CommandItem
+                    className={cn(
+                      methods.formState.isValid
+                        ? "text-text-primary"
+                        : "cursor-not-allowed text-text-weak",
+                    )}
+                    disabled={!methods.formState.isValid}
+                    onSelect={() => {
+                      methods.setValue("addressOrEns", watchName);
+                      methods.trigger("addressOrEns");
+
+                      if (methods.formState.isValid) {
+                        onAddressSelect({
+                          address: watchAddress,
+                          addressOrEns: watchName,
+                        });
+                      }
+                    }}
+                  >
+                    <div className="flex items-center space-x-3">
+                      {watchName}
+                      <span className="ml-4 text-xs text-text-weak">
+                        (Select to enter)
+                      </span>
+                    </div>
+                  </CommandItem>
+                </CommandGroup>
+              )}
               {ensDomains && ensDomains.length > 0 && (
                 <CommandGroup heading="ENS Suggestions">
-                  {isEnsDomainsLoading &&
-                    [...Array(3)].map((_, i) => (
-                      <CommandItem key={i} disabled>
-                        Loading...
-                      </CommandItem>
-                    ))}
                   {!isEnsDomainsLoading &&
                     ensDomains &&
                     ensDomains
@@ -171,29 +243,33 @@ export function AddressModal() {
                       .map(ensDomain => (
                         <CommandItem
                           key={ensDomain.id}
+                          value={ensDomain.name ?? undefined}
                           onSelect={() => {
-                            methods.setValue("addressOrEns", ensDomain.name);
+                            methods.setValue(
+                              "addressOrEns",
+                              ensDomain.name ?? "",
+                            );
                             methods.trigger("addressOrEns");
                             validEns.invalidate();
                           }}
                         >
-                          {ensDomain.name}
+                          <div className="flex items-center space-x-3">
+                            {ensDomain.name}
+                            <span className="ml-4 text-xs text-text-weak">
+                              ({ensDomain.id})
+                            </span>
+                          </div>
                         </CommandItem>
                       ))}
                 </CommandGroup>
               )}
-              {isWalletsLoading &&
-                [...Array(3)].map((_, i) => (
-                  <CommandItem key={i} disabled>
-                    Loading...
-                  </CommandItem>
-                ))}
               {!isWalletsLoading && wallets && wallets.length > 0 && (
                 <CommandGroup heading="Owned Wallets">
                   {wallets &&
                     wallets.map(wallet => (
                       <CommandItem
                         key={wallet.address}
+                        value={wallet.address}
                         onSelect={() => {
                           methods.setValue("addressOrEns", wallet.address);
                           methods.trigger("addressOrEns");

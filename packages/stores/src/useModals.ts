@@ -35,7 +35,13 @@ export type AddressModalProps = {
   addressOrEns: string;
   isTestnet?: boolean;
   onClose?: () => void;
-  onAddressSelect: (addressOrEns: string) => void;
+  onAddressSelect: ({
+    address,
+    addressOrEns,
+  }: {
+    address: string;
+    addressOrEns: string;
+  }) => void;
 };
 
 export type ChainModalProps = {

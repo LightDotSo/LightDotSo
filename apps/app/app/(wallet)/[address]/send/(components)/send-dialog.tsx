@@ -15,7 +15,12 @@
 "use client";
 
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@lightdotso/const";
-import { NftImage, PlaceholderOrb, TokenImage } from "@lightdotso/elements";
+import {
+  EnsAddress,
+  NftImage,
+  PlaceholderOrb,
+  TokenImage,
+} from "@lightdotso/elements";
 import {
   transfersParser,
   useTransfersQueryState,
@@ -64,6 +69,7 @@ import {
   refineNumberFormat,
 } from "@lightdotso/utils";
 import { lightWalletAbi, publicClient } from "@lightdotso/wagmi";
+import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isEmpty } from "lodash";
 import { ChevronDown, Trash2Icon, UserPlus2 } from "lucide-react";
@@ -122,6 +128,9 @@ export const SendDialog: FC<SendDialogProps> = ({
     setTokenModalProps,
     showTokenModal,
     hideTokenModal,
+    setAddressModalProps,
+    showAddressModal,
+    hideAddressModal,
   } = useModals();
 
   // ---------------------------------------------------------------------------
@@ -441,18 +450,6 @@ export const SendDialog: FC<SendDialogProps> = ({
           throw new Error("No matching token found");
         }
 
-        // Encode the native eth `transfer`
-        if (
-          transfer.asset.address ===
-          "0x0000000000000000000000000000000000000000"
-        ) {
-          return [
-            transfer.address as Address,
-            BigInt(transfer.asset.quantity! * Math.pow(10, token.decimals!)),
-            "0x" as Hex,
-          ];
-        }
-
         // Get the amount
         const amount =
           // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
@@ -460,6 +457,14 @@ export const SendDialog: FC<SendDialogProps> = ({
 
         // If the amount is a float, convert to a integer
         const intAmount = Math.floor(amount);
+
+        // Encode the native eth `transfer`
+        if (
+          transfer.asset.address ===
+          "0x0000000000000000000000000000000000000000"
+        ) {
+          return [transfer.address as Address, BigInt(intAmount), "0x" as Hex];
+        }
 
         // Encode the erc20 `transfer`
         return [
@@ -1082,63 +1087,103 @@ export const SendDialog: FC<SendDialogProps> = ({
                               </Label>
                               <div className="flex items-center space-x-3">
                                 <div className="relative inline-block w-full">
-                                  <Input
-                                    className="pl-12"
-                                    {...field}
-                                    placeholder="Recepient's Address or ENS name"
-                                    onBlur={e => {
-                                      // Validate the address
-                                      if (!e.target.value) {
-                                        // Clear the value of key address
-                                        form.setValue(
-                                          `transfers.${index}.address`,
-                                          "",
-                                        );
-                                      }
-                                      const address = e.target.value;
-
-                                      validateAddress(address, index);
-                                    }}
-                                    onChange={e => {
-                                      // Update the field value
-                                      field.onChange(e.target.value || "");
-
-                                      // Validate the address
-                                      const address = e.target.value;
-
-                                      if (address) {
-                                        debouncedValidateAddress(
+                                  <Button
+                                    size="lg"
+                                    type="button"
+                                    variant="outline"
+                                    className="flex w-full items-center justify-between px-4 text-sm"
+                                    onClick={() => {
+                                      setAddressModalProps({
+                                        addressOrEns: address,
+                                        isTestnet:
+                                          walletSettings?.is_enabled_testnet ??
+                                          false,
+                                        onClose: () => {
+                                          hideAddressModal();
+                                          setSendBackgroundModal(false);
+                                        },
+                                        onAddressSelect: ({
                                           address,
-                                          index,
-                                        );
-                                      }
+                                          addressOrEns,
+                                        }) => {
+                                          form.setValue(
+                                            `transfers.${index}.address`,
+                                            address,
+                                          );
+                                          form.setValue(
+                                            `transfers.${index}.addressOrEns`,
+                                            addressOrEns,
+                                          );
+                                          form.trigger();
+
+                                          hideAddressModal();
+                                          if (isInsideModal) {
+                                            setSendBackgroundModal(false);
+                                          }
+                                        },
+                                      });
+                                      setSendBackgroundModal(true);
+                                      showAddressModal();
                                     }}
-                                  />
-                                  <div className="absolute inset-y-0 left-3 flex items-center">
-                                    <Avatar className="size-6">
-                                      {/* If the address is valid, try resolving an ens Avatar */}
-                                      <PlaceholderOrb
-                                        address={
-                                          // If the address is a valid address
-                                          field?.value && isAddress(field.value)
-                                            ? field?.value
-                                            : "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
-                                        }
-                                        className={cn(
-                                          // If the field is not valid, add opacity
-                                          form.formState.errors.transfers &&
-                                            form.formState.errors.transfers[
-                                              index
-                                            ] &&
-                                            form.formState.errors.transfers[
-                                              index
-                                            ]?.addressOrEns
-                                            ? "opacity-50"
-                                            : "opacity-100",
+                                  >
+                                    <div className="flex w-full items-center">
+                                      <Avatar className="size-6">
+                                        {/* If the address is valid, try resolving an ens Avatar */}
+                                        <PlaceholderOrb
+                                          address={
+                                            // If the address is a valid address
+                                            field?.value &&
+                                            isAddress(field.value)
+                                              ? field?.value
+                                              : "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
+                                          }
+                                          className={cn(
+                                            // If the field is not valid, add opacity
+                                            form.formState.errors.transfers &&
+                                              form.formState.errors.transfers[
+                                                index
+                                              ] &&
+                                              form.formState.errors.transfers[
+                                                index
+                                              ]?.addressOrEns
+                                              ? "opacity-50"
+                                              : "opacity-100",
+                                          )}
+                                        />
+                                      </Avatar>
+                                      <span className="ml-2">
+                                        {field.value ? (
+                                          <>
+                                            {field.value}
+                                            &nbsp;
+                                          </>
+                                        ) : (
+                                          "Select Address"
                                         )}
-                                      />
-                                    </Avatar>
-                                  </div>
+                                      </span>
+                                      {field.value &&
+                                        isEmpty(
+                                          form?.formState?.errors?.transfers?.[
+                                            index
+                                          ]?.addressOrEns,
+                                        ) && (
+                                          <span className="flex items-center space-x-1">
+                                            <CheckBadgeIcon className="size-4 text-text-info" />
+                                            <span className="text-xs text-text-weak">
+                                              <EnsAddress
+                                                name={
+                                                  form.getValues(
+                                                    `transfers.${index}.addressOrEns`,
+                                                  ) || ""
+                                                }
+                                              />
+                                            </span>
+                                          </span>
+                                        )}
+                                      <div className="grow" />
+                                      <ChevronDown className="size-4 opacity-50" />
+                                    </div>
+                                  </Button>
                                 </div>
                                 <div
                                   className={cn(
@@ -1172,9 +1217,9 @@ export const SendDialog: FC<SendDialogProps> = ({
                         <Tabs
                           className="col-span-8"
                           defaultValue={
-                            transfers[index]?.assetType === "erc20"
-                              ? "token"
-                              : "nft"
+                            transfers[index]?.assetType !== "erc20"
+                              ? "nft"
+                              : "token"
                           }
                         >
                           <TabsList>
