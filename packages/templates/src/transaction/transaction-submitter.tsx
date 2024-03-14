@@ -14,25 +14,107 @@
 
 "use client";
 
+import { ConfigurationData } from "@lightdotso/data";
+import { useUserOperationSubmit } from "@lightdotso/hooks";
+import {
+  useQueryConfiguration,
+  useQueryUserOperation,
+} from "@lightdotso/query";
+import { useUserOperations } from "@lightdotso/stores";
 import { StateInfoSection } from "@lightdotso/ui";
 import { LoaderIcon } from "lucide-react";
-import type { FC, ReactNode } from "react";
+import { useEffect, type FC } from "react";
+import type { Address, Hex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface TransactionSubmitterProps {
-  children?: ReactNode;
+interface TransactionSubmitterOpProps {
+  address: Address;
+  configuration: ConfigurationData;
+  hash: Hex;
 }
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TransactionSubmitter: FC<TransactionSubmitterProps> = ({
-  children,
+export const TransactionSubmitterOp: FC<TransactionSubmitterOpProps> = ({
+  address,
+  configuration,
+  hash,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { userOperation } = useQueryUserOperation({ hash: hash });
+
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { isLoading, isIdle, isSuccess, handleConfirm } =
+    useUserOperationSubmit({
+      address: address,
+      is_testnet: true,
+      configuration: configuration,
+      userOperation: userOperation!,
+    });
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // Confirm the user operation on mount
+  useEffect(() => {
+    if (isIdle && !isSuccess) {
+      handleConfirm();
+    }
+  }, [isIdle, isSuccess, handleConfirm]);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  return (
+    <div>
+      {isLoading && "Loading..."}
+      {isSuccess && "Suucess!"}
+    </div>
+  );
+};
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type TransactionSubmitterProps = {
+  address: Address;
+};
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const TransactionSubmitter: FC<TransactionSubmitterProps> = ({
+  address,
+}) => {
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { configuration } = useQueryConfiguration({
+    address: address,
+  });
+
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { pendingSubmitUserOperationHashes } = useUserOperations();
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
@@ -45,7 +127,15 @@ export const TransactionSubmitter: FC<TransactionSubmitterProps> = ({
       title="Submitting Transaction..."
       description="Please wait while we handle your request..."
     >
-      {children}
+      {configuration &&
+        pendingSubmitUserOperationHashes.map((hash, index) => (
+          <TransactionSubmitterOp
+            key={index}
+            address={address}
+            configuration={configuration}
+            hash={hash}
+          />
+        ))}
     </StateInfoSection>
   );
 };

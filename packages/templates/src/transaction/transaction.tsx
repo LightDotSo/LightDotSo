@@ -415,7 +415,7 @@ export const Transaction: FC<TransactionProps> = ({
             </>
           )}
           {pageIndex === 1 && <Loading />}
-          {pageIndex === 2 && <TransactionSubmitter />}
+          {pageIndex === 2 && <TransactionSubmitter address={address} />}
         </ModalSwiper>
       </div>
       {initialUserOperations &&
