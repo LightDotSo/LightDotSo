@@ -103,16 +103,27 @@ export const useUserOperationCreate = ({
 
     // If the userOperation length is 1, get the first userOperation
     const userOperation = userOperations[0];
+
+    // Check if the userOperation has hash and chainId
     if (!userOperation?.hash || !userOperation?.chainId) {
       return;
     }
 
+    // Return the subdigest of the userOperation w/ hash and chainId encoded (type 1)
     if (userOperations.length === 1) {
       return subdigestOf(
         address,
         hexToBytes(userOperation?.hash as Hex),
         userOperation?.chainId,
       );
+    }
+
+    // Check if all of the userOperations have hash
+    const isAllHashed = userOperations.every(
+      userOperation => userOperation.hash,
+    );
+    if (!isAllHashed) {
+      return;
     }
 
     // If the userOperation length is greater than 1, get the merkle root of the userOperations
