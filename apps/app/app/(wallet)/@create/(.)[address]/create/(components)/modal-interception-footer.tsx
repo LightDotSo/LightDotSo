@@ -84,7 +84,7 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
       isModal
       className="pt-0"
       customSuccessText={customFormSuccessText}
-      disabled={isFormDisabled || isFormLoading}
+      disabled={isFormLoading || isFormDisabled}
       isLoading={isFormLoading}
       cancelClick={onDismiss}
       onClick={signUserOperation}
