@@ -270,7 +270,7 @@ export const Transaction: FC<TransactionProps> = ({
                   )}
                 </TabsList>
                 <TabsContent value="transaction">
-                  <div className="pt-3 space-y-3">
+                  <div className="space-y-3 pt-3">
                     {Object.values(userOperationSimulations).map(simulation => {
                       return simulation.interpretation.asset_changes.map(
                         (assetChange, index) => {
@@ -331,7 +331,7 @@ export const Transaction: FC<TransactionProps> = ({
                   </div>
                 </TabsContent>
                 <TabsContent value="details">
-                  <div className="pt-3 space-y-3">
+                  <div className="space-y-3 pt-3">
                     {Object.entries(userOperationDetails).map(
                       ([chainId, details], index) => {
                         const chain = getChainById(Number(chainId));
@@ -367,7 +367,7 @@ export const Transaction: FC<TransactionProps> = ({
                   </div>
                 </TabsContent>
                 <TabsContent value="data">
-                  <div className="pt-3 space-y-3">
+                  <div className="space-y-3 pt-3">
                     {userOperations &&
                       userOperations.length > 0 &&
                       userOperations.map((userOperation, index) => {
