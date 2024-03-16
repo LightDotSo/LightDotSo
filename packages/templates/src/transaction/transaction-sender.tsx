@@ -100,6 +100,8 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
 
   return (
     <div>
+      {address}
+      {hash}
       {isUserOperationSendLoading && "Loading..."}
       {isUserOperationSendSuccess && "Success!"}
       {isUserOperationSendSuccess && userOperation?.chain_id && (
