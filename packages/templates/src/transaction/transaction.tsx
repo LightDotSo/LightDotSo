@@ -185,9 +185,20 @@ export const Transaction: FC<TransactionProps> = ({
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
+  // Set the transaction loading state
   const isTransactionLoading = useMemo(() => {
     return isUserOperationCreateLoading;
   }, [isUserOperationCreateLoading]);
+
+  // Set the transaction disabled state
+  const isTransactionDisabled = useMemo(() => {
+    return (
+      !isUserOperationCreateSubmittable ||
+      // If all of the items in the userOperations array have a hash, set form disabled to false
+      userOperations.every(userOperation => userOperation.hash)
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isUserOperationCreateSubmittable, isTransactionLoading]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -234,21 +245,13 @@ export const Transaction: FC<TransactionProps> = ({
 
   // If the transaction is loading, set the form loading to true
   useEffect(() => {
-    if (isTransactionLoading) {
-      setIsFormLoading(true);
-    } else {
-      setIsFormLoading(false);
-    }
+    setIsFormLoading(isTransactionLoading);
   }, [isTransactionLoading, setIsFormLoading]);
 
-  // If all of the items in the userOperations array have a hash, set form disabled to false
+  // If the transaction is disabled, set the form disabled to true
   useEffect(() => {
-    if (userOperations) {
-      const isValid = userOperations.every(userOperation => userOperation.hash);
-      console.info("isValid", isValid);
-      setIsFormDisabled(!isValid);
-    }
-  }, [userOperations, setIsFormDisabled]);
+    setIsFormDisabled(isTransactionDisabled);
+  }, [isTransactionDisabled, setIsFormDisabled]);
 
   // Sync the `isDirectSubmit` field with the `isUserOperationCreateSubmittable` value
   useEffect(() => {
