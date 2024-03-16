@@ -143,7 +143,7 @@ export const Transaction: FC<TransactionProps> = ({
   const {
     // isUserOperationLoading,
     // isUserOperationCreatable,
-    // isValidUserOperation,
+    isValidUserOperations,
     isUserOperationCreateable,
     isUserOperationCreateLoading,
     isUserOperationCreateSuccess,
@@ -193,8 +193,8 @@ export const Transaction: FC<TransactionProps> = ({
 
   // Set the transaction disabled state
   const isTransactionDisabled = useMemo(() => {
-    return !isUserOperationCreateable;
-  }, [isUserOperationCreateable]);
+    return !isValidUserOperations;
+  }, [isValidUserOperations]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks

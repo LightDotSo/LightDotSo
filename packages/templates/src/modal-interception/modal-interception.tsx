@@ -60,6 +60,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     isSendModalVisible,
     setSendBackgroundModal,
     showCreateModal,
+    setDepositBackgroundModal,
     showDepositModal,
     showNotificationsModal,
     showOpModal,
@@ -191,6 +192,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
         break;
       case "deposit":
         if (pathname.includes("deposit")) {
+          setDepositBackgroundModal(false);
           showDepositModal();
         }
         break;
