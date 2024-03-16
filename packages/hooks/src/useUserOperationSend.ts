@@ -94,7 +94,7 @@ export const useUserOperationSend = ({
     }
 
     return "Send";
-  }, [address, delayedIsSuccess]);
+  }, [address, delayedIsSuccess, isMutationUserOperationSendLoading]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks

@@ -14,9 +14,7 @@
 
 "use client";
 
-import type { ConfigurationData } from "@lightdotso/data";
 import { useUserOperationSend } from "@lightdotso/hooks";
-import { useQueryConfiguration } from "@lightdotso/query";
 import { useUserOperations } from "@lightdotso/stores";
 import { Button, StateInfoSection } from "@lightdotso/ui";
 import { getChainById, getEtherscanUrl } from "@lightdotso/utils";
