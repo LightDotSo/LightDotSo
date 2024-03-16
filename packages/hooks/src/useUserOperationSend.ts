@@ -90,14 +90,18 @@ export const useUserOperationSend = ({
     args: [
       {
         sender: userOperation?.sender as Address,
-        nonce: BigInt(userOperation?.nonce!),
+        nonce: BigInt(userOperation?.nonce ?? 0),
         initCode: userOperation?.init_code as Hex,
         callData: userOperation?.call_data as Hex,
-        callGasLimit: BigInt(userOperation?.call_gas_limit!),
-        verificationGasLimit: BigInt(userOperation?.verification_gas_limit!),
-        preVerificationGas: BigInt(userOperation?.pre_verification_gas!),
-        maxFeePerGas: BigInt(userOperation?.max_fee_per_gas!),
-        maxPriorityFeePerGas: BigInt(userOperation?.max_priority_fee_per_gas!),
+        callGasLimit: BigInt(userOperation?.call_gas_limit ?? 0),
+        verificationGasLimit: BigInt(
+          userOperation?.verification_gas_limit ?? 0,
+        ),
+        preVerificationGas: BigInt(userOperation?.pre_verification_gas ?? 0),
+        maxFeePerGas: BigInt(userOperation?.max_fee_per_gas ?? 0),
+        maxPriorityFeePerGas: BigInt(
+          userOperation?.max_priority_fee_per_gas ?? 0,
+        ),
         paymasterAndData: userOperation?.paymaster_and_data as Hex,
         signature: toHex(new Uint8Array([2])),
       },
