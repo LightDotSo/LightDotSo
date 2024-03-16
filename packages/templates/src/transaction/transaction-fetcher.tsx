@@ -499,7 +499,9 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // }, [isDisabled, setIsFormDisabled]);
 
   useEffect(() => {
-    setIsFormLoading(isLoading);
+    if (isLoading) {
+      setIsFormLoading(isLoading);
+    }
   }, [isLoading, setIsFormLoading]);
 
   // ---------------------------------------------------------------------------

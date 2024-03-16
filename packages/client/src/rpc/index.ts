@@ -50,7 +50,9 @@ const HexStringSchema = z
 // GetUserOperation
 // -----------------------------------------------------------------------------
 
-const GetUserOperationReceiptResponse = z.string();
+const GetUserOperationReceiptResponse = z
+  .any()
+  .refine(value => typeof value !== "undefined" && !!value);
 
 const GetUserOperationReceiptRequest = z.array(HexStringSchema);
 
