@@ -64,10 +64,22 @@ export const useUserOperationSend = ({
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const isUserOperationDisabled = useMemo(
+  const isUserOperationSendDisabled = useMemo(
     () =>
       userOperation?.status !== "PROPOSED" &&
       userOperation?.status !== "PENDING",
+    [userOperation],
+  );
+
+  const isUserOperationSendLoading = useMemo(
+    () => isUserOperationLoading || isUserOperationSendPending,
+    [isUserOperationLoading, isUserOperationSendPending],
+  );
+
+  const isUserOperationSendSuccess = useMemo(
+    () =>
+      userOperation?.status === "EXECUTED" ||
+      userOperation?.status === "REVERTED",
     [userOperation],
   );
 
@@ -81,7 +93,7 @@ export const useUserOperationSend = ({
       return;
     }
 
-    if (!isUserOperationDisabled) {
+    if (!isUserOperationSendDisabled) {
       await userOperationSend(userOperation);
     }
 
@@ -92,7 +104,7 @@ export const useUserOperationSend = ({
     res.match(
       () => {
         // Refetch the user operation on success
-        if (!isUserOperationDisabled) {
+        if (!isUserOperationSendDisabled) {
           refetchUserOperation();
         }
       },
@@ -102,7 +114,7 @@ export const useUserOperationSend = ({
     );
   }, [
     userOperation,
-    isUserOperationDisabled,
+    isUserOperationSendDisabled,
     userOperationSend,
     queueUserOperation,
     refetchUserOperation,
@@ -116,11 +128,8 @@ export const useUserOperationSend = ({
   return {
     handleSubmit,
     userOperation,
-    isUserOperationDisabled: isUserOperationDisabled,
-    isUserOperationSendLoading: isUserOperationSendPending,
-    isUserOperationSendIdle:
-      !isUserOperationSendPending && !isUserOperationLoading,
-    isUserOperationSendSuccess:
-      !isUserOperationSendPending && !isUserOperationLoading,
+    isUserOperationSendDisabled: isUserOperationSendDisabled,
+    isUserOperationSendLoading: isUserOperationSendLoading,
+    isUserOperationSendSuccess: isUserOperationSendSuccess,
   };
 };

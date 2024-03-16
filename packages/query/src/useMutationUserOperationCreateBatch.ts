@@ -77,7 +77,7 @@ export const useMutationUserOperationCreateBatch = (
         return;
       }
 
-      const loadingToast = toast.loading("Creating the transaction...");
+      const loadingToast = toast.loading("Creating the transactions...");
 
       // Replace with your actual fetch logic
       const res = await createBatchUserOperation(
@@ -121,14 +121,14 @@ export const useMutationUserOperationCreateBatch = (
 
       res.match(
         _ => {
-          toast.success("Successfully created transaction!");
+          toast.success("Successfully created transactions!");
         },
         err => {
           if (failureCount === 10) {
             if (err instanceof Error) {
               toast.error(err.message);
             } else {
-              toast.error("Failed to submit the transaction.");
+              toast.error("Failed to submit the transactions.");
             }
           }
 
