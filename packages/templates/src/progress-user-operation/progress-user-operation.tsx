@@ -14,6 +14,7 @@
 
 "use client";
 
+import { useUserOperationSend } from "@lightdotso/hooks";
 import {
   useQueryUserOperation,
   useQueryUserOperations,
@@ -21,7 +22,7 @@ import {
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import { type FC, useEffect, useState } from "react";
-import type { Hex } from "viem";
+import type { Address, Hex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -29,6 +30,7 @@ import type { Hex } from "viem";
 
 type PendingUserOperationOpProps = {
   hash: Hex;
+  onExecuted: () => void;
 };
 
 // -----------------------------------------------------------------------------
@@ -37,6 +39,7 @@ type PendingUserOperationOpProps = {
 
 export const ProgressUserOperationOp: FC<PendingUserOperationOpProps> = ({
   hash,
+  onExecuted,
 }) => {
   // ---------------------------------------------------------------------------
   // Query
@@ -47,9 +50,28 @@ export const ProgressUserOperationOp: FC<PendingUserOperationOpProps> = ({
   });
 
   // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const { handleSubmit } = useUserOperationSend({
+    address: userOperation?.sender as Address,
+    hash: userOperation?.hash as Hex,
+  });
+
+  // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // Refetch user operation every 30 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleSubmit();
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [handleSubmit]);
+
+  // Display a `toast.success` when the user operation is executed
   useEffect(() => {
     if (userOperation && userOperation.status === "EXECUTED") {
       toast.dismiss(hash);
@@ -57,6 +79,8 @@ export const ProgressUserOperationOp: FC<PendingUserOperationOpProps> = ({
       toast.success("User operation executed", {
         position: "top-right",
       });
+
+      onExecuted();
     }
   }, [hash, userOperation]);
 
@@ -90,6 +114,7 @@ export const ProgressUserOperation: FC = () => {
   const {
     userOperations: pendingUserOperations,
     isUserOperationsLoading: isPendingUserOperationsLoading,
+    refetchUserOperations: refetchPendingUserOperations,
   } = useQueryUserOperations({
     address: wallet,
     status: "pending",
@@ -142,6 +167,7 @@ export const ProgressUserOperation: FC = () => {
     <ProgressUserOperationOp
       key={pendingUserOperation.hash}
       hash={pendingUserOperation.hash as Hex}
+      onExecuted={refetchPendingUserOperations}
     />
   ));
 };
