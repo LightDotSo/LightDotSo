@@ -284,7 +284,7 @@ export const useUserOperationSend = ({
     }
 
     if (userOperationReceipt) {
-      if (!isUserOperationSendPending) {
+      if (isUserOperationSendPending) {
         // Queue the user operation if the user operation has been sent but isn't indexed yet
         await queueUserOperation({ hash: hash });
         // Finally, return
