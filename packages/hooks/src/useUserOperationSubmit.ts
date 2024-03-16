@@ -14,14 +14,16 @@
 
 "use client";
 
-import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
+import type { UserOperationData } from "@lightdotso/data";
 import {
   useMutationUserOperationSend,
+  useQueryConfiguration,
   useQueryPaymasterOperation,
 } from "@lightdotso/query";
 import {
   useReadLightVerifyingPaymasterGetHash,
   useReadLightVerifyingPaymasterSenderNonce,
+  useReadLightWalletImageHash,
 } from "@lightdotso/wagmi";
 import { useCallback, useState, useEffect } from "react";
 import { toHex, fromHex, recoverMessageAddress } from "viem";
@@ -34,7 +36,6 @@ import type { Hex, Address } from "viem";
 type UserOperationSubmitProps = {
   address: Address;
   is_testnet: boolean;
-  configuration: ConfigurationData;
   userOperation: UserOperationData;
 };
 
@@ -45,7 +46,6 @@ type UserOperationSubmitProps = {
 export const useUserOperationSubmit = ({
   address,
   is_testnet,
-  configuration,
   userOperation,
 }: UserOperationSubmitProps) => {
   // ---------------------------------------------------------------------------
@@ -53,22 +53,6 @@ export const useUserOperationSubmit = ({
   // ---------------------------------------------------------------------------
 
   const [recoveredAddress, setRecoveredAddress] = useState<Address>();
-
-  // ---------------------------------------------------------------------------
-  // Local Variables
-  // ---------------------------------------------------------------------------
-
-  // Get the cumulative weight of all owners in the userOperation signatures array and check if it is greater than or equal to the threshold
-  const isValid =
-    userOperation.signatures.reduce((acc, signature) => {
-      return (
-        acc +
-        ((configuration &&
-          configuration.owners.find(owner => owner.id === signature?.owner_id)
-            ?.weight) ||
-          0)
-      );
-    }, 0) >= (configuration ? configuration.threshold : 0);
 
   // ---------------------------------------------------------------------------
   // Wagmi
@@ -108,9 +92,20 @@ export const useUserOperationSubmit = ({
     args: [userOperation.sender as Address],
   });
 
+  const { data: imageHash } = useReadLightWalletImageHash({
+    address: userOperation.sender as Address,
+    chainId: userOperation.chain_id ?? undefined,
+  });
+
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
+
+  const { configuration } = useQueryConfiguration({
+    address: address as Address,
+    image_hash: imageHash,
+    checkpoint: !imageHash ? 0 : undefined,
+  });
 
   const { paymasterOperation } = useQueryPaymasterOperation({
     address: userOperation.paymaster_and_data.slice(0, 42) as Address,
@@ -127,9 +122,10 @@ export const useUserOperationSubmit = ({
     isUserOperationSendIdle: isIdle,
     isUserOperationSendSuccess: isSuccess,
   } = useMutationUserOperationSend({
-    address,
-    is_testnet,
-    chain_id: userOperation.chain_id,
+    address: address as Address,
+    configuration: configuration,
+    hash: userOperation.hash as Hex,
+    is_testnet: is_testnet,
   });
 
   // ---------------------------------------------------------------------------
@@ -139,6 +135,18 @@ export const useUserOperationSubmit = ({
   const paymasterSignedMsg = `0x${userOperation.paymaster_and_data.slice(
     170,
   )}` as Hex;
+
+  // Get the cumulative weight of all owners in the userOperation signatures array and check if it is greater than or equal to the threshold
+  const isValid =
+    userOperation.signatures.reduce((acc, signature) => {
+      return (
+        acc +
+        ((configuration &&
+          configuration.owners.find(owner => owner.id === signature?.owner_id)
+            ?.weight) ||
+          0)
+      );
+    }, 0) >= (configuration ? configuration.threshold : 0);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks

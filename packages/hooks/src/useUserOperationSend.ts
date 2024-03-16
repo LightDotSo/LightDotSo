@@ -14,16 +14,18 @@
 
 "use client";
 
-import { getUserOperationReceipt } from "@lightdotso/client";
 import {
   useMutationQueueUserOperation,
   useMutationUserOperationSend,
+  useQueryConfiguration,
   useQueryUserOperation,
+  useQueryUserOperationReceipt,
 } from "@lightdotso/query";
 import { useFormRef } from "@lightdotso/stores";
 import { useCallback, useEffect, useMemo } from "react";
 import type { Hex, Address } from "viem";
 import { useDelayedValue } from "./useDelayedValue";
+import { useReadLightWalletImageHash } from "@lightdotso/wagmi";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -61,13 +63,38 @@ export const useUserOperationSend = ({
       hash: hash,
     });
 
+  // ---------------------------------------------------------------------------
+  // Wagmi
+  // ---------------------------------------------------------------------------
+
+  const { data: imageHash } = useReadLightWalletImageHash({
+    address: userOperation?.sender as Address,
+    chainId: userOperation?.chain_id ?? undefined,
+  });
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { configuration } = useQueryConfiguration({
+    address: address as Address,
+    image_hash: imageHash,
+    checkpoint: !imageHash ? 0 : undefined,
+  });
+
+  const { userOperationReceipt } = useQueryUserOperationReceipt({
+    chainId: userOperation?.chain_id!,
+    hash: hash,
+  });
+
   const {
     userOperationSend,
     isUserOperationSendSuccess: isMutationUserOperationSendSuccess,
     isUserOperationSendPending: isMutationUserOperationSendLoading,
   } = useMutationUserOperationSend({
-    address,
-    chain_id: userOperation?.chain_id,
+    address: address as Address,
+    configuration: configuration,
+    hash: userOperation?.hash as Hex,
   });
 
   // ---------------------------------------------------------------------------
@@ -151,29 +178,22 @@ export const useUserOperationSend = ({
       return;
     }
 
-    // Get the user operation receipt to check if the user operation has been sent directly
-    const res = await getUserOperationReceipt(userOperation.chain_id, [
-      userOperation.hash,
-    ]);
-
-    res.match(
-      async () => {
-        if (!isUserOperationSendPending) {
-          // Queue the user operation if the user operation has been sent but isn't indexed yet
-          await queueUserOperation({ hash: hash });
-          // Finally, return
-          return;
-        }
-      },
-      async _ => {
-        // Send the user operation if the user operation hasn't been sent yet
-        await userOperationSend(userOperation);
-        // Finally, refetch the user operation
-        await refetchUserOperation();
-      },
-    );
+    if (userOperationReceipt) {
+      if (!isUserOperationSendPending) {
+        // Queue the user operation if the user operation has been sent but isn't indexed yet
+        await queueUserOperation({ hash: hash });
+        // Finally, return
+        return;
+      }
+    } else {
+      // Send the user operation if the user operation hasn't been sent yet
+      await userOperationSend(userOperation);
+      // Finally, refetch the user operation
+      await refetchUserOperation();
+    }
   }, [
     userOperation,
+    userOperationReceipt,
     isUserOperationSendPending,
     userOperationSend,
     queueUserOperation,

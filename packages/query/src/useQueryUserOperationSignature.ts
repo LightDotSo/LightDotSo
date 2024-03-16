@@ -14,7 +14,7 @@
 
 import { getUserOperationSignature } from "@lightdotso/client";
 import type { UserOperationSignatureData } from "@lightdotso/data";
-import type { UserOperationGetParams } from "@lightdotso/params";
+import type { UserOperationSignatureGetParams } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -24,7 +24,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 // -----------------------------------------------------------------------------
 
 export const useQueryUserOperationSignature = (
-  params: UserOperationGetParams,
+  params: UserOperationSignatureGetParams,
 ) => {
   // ---------------------------------------------------------------------------
   // Stores
@@ -42,16 +42,18 @@ export const useQueryUserOperationSignature = (
     queryClient.getQueryData(
       queryKeys.user_operation.signature({
         hash: params.hash,
+        configuration_id: params.configuration_id,
       }).queryKey,
     );
 
   const {
-    data: userOperationNonce,
-    isLoading: isUserOperationNonceLoading,
+    data: userOperationSignature,
+    isLoading: isUserOperationSignatureLoading,
     failureCount,
   } = useQuery<UserOperationSignatureData | null>({
     queryKey: queryKeys.user_operation.signature({
       hash: params.hash,
+      configuration_id: params.configuration_id,
     }).queryKey,
     queryFn: async () => {
       const res = await getUserOperationSignature(
@@ -59,6 +61,7 @@ export const useQueryUserOperationSignature = (
           params: {
             query: {
               user_operation_hash: params.hash,
+              configuration_id: params.configuration_id,
             },
           },
         },
@@ -80,7 +83,7 @@ export const useQueryUserOperationSignature = (
   });
 
   return {
-    userOperationNonce,
-    isUserOperationNonceLoading,
+    userOperationSignature,
+    isUserOperationSignatureLoading,
   };
 };

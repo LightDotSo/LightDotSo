@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { UserOperationData } from "@lightdotso/data";
+import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
 import type { UserOperation } from "@lightdotso/schemas";
 import type { Address, Hex } from "viem";
 
@@ -34,8 +34,14 @@ export type UserOperationNonceParams = {
   chain_id: number;
 };
 
-export type UserOperationSendParams = UserOperationParams & {
-  chain_id: number | null | undefined;
+export type UserOperationSendParams = UserOperationGetParams & {
+  address: Address | null | undefined;
+  configuration: ConfigurationData | null | undefined;
+  is_testnet?: boolean;
+};
+
+export type UserOperationSignatureGetParams = UserOperationGetParams & {
+  configuration_id: string | null | undefined;
 };
 
 export type UserOperationListParams = {
