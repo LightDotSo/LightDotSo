@@ -245,6 +245,7 @@ export const Transaction: FC<TransactionProps> = ({
   useEffect(() => {
     if (userOperations) {
       const isValid = userOperations.every(userOperation => userOperation.hash);
+      console.info("isValid", isValid);
       setIsFormDisabled(!isValid);
     }
   }, [userOperations, setIsFormDisabled]);
