@@ -14,8 +14,8 @@
 
 "use client";
 
-import type { ConfigurationData, UserOperationData } from "@lightdotso/data";
-import { useUserOperationSubmit } from "@lightdotso/hooks";
+import type { UserOperationData } from "@lightdotso/data";
+import { useUserOperationSend } from "@lightdotso/hooks";
 import {
   Button,
   Tooltip,
@@ -24,7 +24,7 @@ import {
   TooltipTrigger,
 } from "@lightdotso/ui";
 import type { FC } from "react";
-import type { Address } from "viem";
+import type { Address, Hex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -47,12 +47,16 @@ export const UserOperationCardTransactionExecuteButton: FC<
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const { isLoading, isValid, isIdle, isSuccess, handleConfirm } =
-    useUserOperationSubmit({
-      address: address,
-      is_testnet: isTestnet,
-      userOperation: userOperation,
-    });
+  const {
+    isUserOperationSendValid,
+    isUserOperationSendLoading,
+    isUserOperationSendIdle,
+    isUserOperationSendSuccess,
+    handleSubmit,
+  } = useUserOperationSend({
+    address: address,
+    hash: userOperation.hash as Hex,
+  });
 
   // ---------------------------------------------------------------------------
   // Render
@@ -64,15 +68,15 @@ export const UserOperationCardTransactionExecuteButton: FC<
         <TooltipTrigger asChild>
           <Button
             disabled={
-              !isValid ||
-              isLoading ||
-              (!isIdle && isSuccess) ||
+              !isUserOperationSendValid ||
+              isUserOperationSendLoading ||
+              (!isUserOperationSendIdle && isUserOperationSendSuccess) ||
               userOperation.status !== "PROPOSED"
             }
-            isLoading={isLoading}
-            variant={isValid ? "default" : "outline"}
+            isLoading={isUserOperationSendLoading}
+            variant={isUserOperationSendValid ? "default" : "outline"}
             className="w-full"
-            onClick={handleConfirm}
+            onClick={handleSubmit}
           >
             {userOperation.status === "PROPOSED"
               ? "Execute"
