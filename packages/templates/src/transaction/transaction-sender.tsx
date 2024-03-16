@@ -71,8 +71,9 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
       return;
     }
   }, [
-    isUserOperationSendPending,
+    // Invoke the handleSubmit function when the user operation is reloading
     isUserOperationReloading,
+    isUserOperationSendPending,
     handleSubmit,
     refetchUserOperation,
   ]);
@@ -92,7 +93,8 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
     }, 30000);
 
     return () => clearInterval(interval);
-  }, [isUserOperationSendPending, handleSubmit]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // ---------------------------------------------------------------------------
   // Render
