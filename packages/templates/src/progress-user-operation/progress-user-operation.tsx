@@ -45,7 +45,7 @@ export const ProgressUserOperationOp: FC<PendingUserOperationOpProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { userOperation, refetchUserOperation } = useQueryUserOperation({
+  const { userOperation } = useQueryUserOperation({
     hash: hash,
   });
 
@@ -65,11 +65,11 @@ export const ProgressUserOperationOp: FC<PendingUserOperationOpProps> = ({
   // Refetch user operation every 30 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      handleSubmit().then(() => refetchUserOperation());
+      handleSubmit();
     }, 30000);
 
     return () => clearInterval(interval);
-  }, [refetchUserOperation]);
+  }, [handleSubmit]);
 
   // Display a `toast.success` when the user operation is executed
   useEffect(() => {
