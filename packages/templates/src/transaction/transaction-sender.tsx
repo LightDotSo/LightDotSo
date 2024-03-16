@@ -70,15 +70,21 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
 
   // Refetch the user operation and handle every 30 seconds if the operation is still pending
   useEffect(() => {
-    const interval = setInterval(() => {
+    const checkUserOperation = () => {
       if (isUserOperationSendPending) {
         handleSubmit();
       }
-    }, 30000);
+    };
 
+    // Run the function immediately on mount.
+    checkUserOperation();
+
+    // Run the function every 30 seconds.
+    const interval = setInterval(checkUserOperation, 30000);
+
+    // Clear the interval when the component unmounts.
     return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, []); // Empty dependency array makes this run on mount and unmount only.
 
   // ---------------------------------------------------------------------------
   // Render
