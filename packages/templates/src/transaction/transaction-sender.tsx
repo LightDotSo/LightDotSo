@@ -14,9 +14,7 @@
 
 "use client";
 
-import type { ConfigurationData } from "@lightdotso/data";
 import { useUserOperationSend } from "@lightdotso/hooks";
-import { useQueryConfiguration } from "@lightdotso/query";
 import { useUserOperations } from "@lightdotso/stores";
 import { Button, StateInfoSection } from "@lightdotso/ui";
 import { getChainById, getEtherscanUrl } from "@lightdotso/utils";
@@ -30,7 +28,6 @@ import type { Address, Hex } from "viem";
 
 interface TransactionSenderOpProps {
   address: Address;
-  configuration: ConfigurationData;
   hash: Hex;
 }
 
@@ -48,8 +45,8 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
 
   const {
     userOperation,
+    refetchUserOperation,
     isUserOperationSendLoading,
-    isUserOperationSendIdle,
     isUserOperationSendSuccess,
     handleSubmit,
   } = useUserOperationSend({
@@ -61,12 +58,27 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
-  // Confirm the user operation on mount
+  // Handle on mount
   useEffect(() => {
-    if (isUserOperationSendIdle && !isUserOperationSendSuccess) {
+    handleSubmit();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Refetch the user operation on mount
+  useEffect(() => {
+    refetchUserOperation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Handle submit on mount every 10 seconds upon mount
+  useEffect(() => {
+    const interval = setInterval(() => {
       handleSubmit();
-    }
-  }, [isUserOperationSendIdle, isUserOperationSendSuccess, handleSubmit]);
+    }, 10000);
+
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -105,14 +117,6 @@ type TransactionSenderProps = {
 
 export const TransactionSender: FC<TransactionSenderProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
-
-  const { configuration } = useQueryConfiguration({
-    address: address,
-  });
-
-  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
@@ -130,15 +134,9 @@ export const TransactionSender: FC<TransactionSenderProps> = ({ address }) => {
       title="Sending Transaction..."
       description="Please wait while we handle your request..."
     >
-      {configuration &&
-        pendingSubmitUserOperationHashes.map((hash, index) => (
-          <TransactionSenderOp
-            key={index}
-            address={address}
-            configuration={configuration}
-            hash={hash}
-          />
-        ))}
+      {pendingSubmitUserOperationHashes.map((hash, index) => (
+        <TransactionSenderOp key={index} address={address} hash={hash} />
+      ))}
     </StateInfoSection>
   );
 };

@@ -46,7 +46,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
-import type { Hex, Address } from "viem";
+import type { Address } from "viem";
 import type * as z from "zod";
 import { FooterButton } from "../footer-button";
 import { Loading } from "../loading";
@@ -113,7 +113,6 @@ export const Transaction: FC<TransactionProps> = ({
     userOperationDetails,
     userOperationDevInfo,
     userOperationSimulations,
-    setPendingSubmitUserOperationHashes,
     resetAll,
   } = useUserOperations();
   const {
@@ -143,8 +142,8 @@ export const Transaction: FC<TransactionProps> = ({
   const {
     // isUserOperationLoading,
     // isUserOperationCreatable,
-    // isValidUserOperation,
-    isUserOperationCreateable,
+    isValidUserOperations,
+    // isUserOperationCreateable,
     isUserOperationCreateLoading,
     isUserOperationCreateSuccess,
     isUserOperationCreateSubmittable,
@@ -154,7 +153,7 @@ export const Transaction: FC<TransactionProps> = ({
     // paymasterHash,
     // paymasterNonce,
     // owner,
-    // subdigest,
+    subdigest,
   } = useUserOperationCreate({
     address: address,
   });
@@ -193,29 +192,16 @@ export const Transaction: FC<TransactionProps> = ({
 
   // Set the transaction disabled state
   const isTransactionDisabled = useMemo(() => {
-    return !isUserOperationCreateable;
-  }, [isUserOperationCreateable]);
+    return (
+      typeof subdigest === "undefined" ||
+      !userOperations.every(userOperation => userOperation.hash) ||
+      !isValidUserOperations
+    );
+  }, [subdigest, userOperations, isValidUserOperations]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
-
-  // Set the pending submit userOperation hashes
-  useEffect(() => {
-    if (!isUserOperationCreateSuccess) {
-      return;
-    }
-
-    const hashes = userOperations.map(
-      userOperation => userOperation.hash as Hex,
-    );
-
-    setPendingSubmitUserOperationHashes(hashes);
-  }, [
-    userOperations,
-    isUserOperationCreateSuccess,
-    setPendingSubmitUserOperationHashes,
-  ]);
 
   // Change the page index depending on the sign loading state
   useEffect(() => {

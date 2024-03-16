@@ -53,10 +53,6 @@ export const getNftsByOwner = async (
       }`,
       nftsByOwnerSchema,
       "GET",
-      {
-        revalidate: 300,
-        tags: [address],
-      },
       headers,
     ),
     err => {

@@ -21,7 +21,7 @@ import {
   useQueryConfiguration,
 } from "@lightdotso/query";
 import { subdigestOf } from "@lightdotso/sequence";
-import { useAuth, useFormRef } from "@lightdotso/stores";
+import { useAuth, useFormRef, useUserOperations } from "@lightdotso/stores";
 import {
   useAccount,
   useSignMessage,
@@ -41,6 +41,7 @@ import {
   // fromHex,
   // decodeFunctionData,
 } from "viem";
+import { useDelayedValue } from "./useDelayedValue";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -69,6 +70,10 @@ export const useUserOperationCreate = ({
 
   const { address: userAddress } = useAuth();
   const { setCustomFormSuccessText } = useFormRef();
+  const {
+    pendingSubmitUserOperationHashes,
+    setPendingSubmitUserOperationHashes,
+  } = useUserOperations();
 
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -225,64 +230,6 @@ export const useUserOperationCreate = ({
   //   }
   // }, [userOperation?.callData]);
 
-  const isValidUserOperations = useMemo(() => {
-    return userOperations.every(userOperation => {
-      return !!(
-        typeof owner !== "undefined" &&
-        userOperation &&
-        userOperation.chainId &&
-        userOperation.hash &&
-        userOperation.nonce !== undefined &&
-        userOperation.nonce !== null &&
-        userOperation.initCode &&
-        userOperation.sender &&
-        userOperation.callData &&
-        userOperation.callGasLimit &&
-        userOperation.verificationGasLimit &&
-        userOperation.preVerificationGas &&
-        userOperation.maxFeePerGas &&
-        userOperation.maxPriorityFeePerGas &&
-        userOperation.paymasterAndData
-      );
-    });
-  }, [owner, userOperations]);
-
-  const isUserOperationCreateSubmittable = useMemo(() => {
-    return (
-      typeof configuration?.threshold !== "undefined" &&
-      typeof owner !== "undefined" &&
-      configuration?.threshold <= owner?.weight
-    );
-  }, [owner, configuration?.threshold]);
-
-  // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
-
-  const formStateText = useMemo(() => {
-    if (!address) {
-      return "Connect Wallet";
-    }
-
-    if (isConnecting) {
-      return "Connecting...";
-    }
-
-    if (isSignLoading) {
-      return "Signing...";
-    }
-
-    // if (isWaitForTransactionLoading) {
-    //   return "Waiting for execution...";
-    // }
-
-    // if (delayedIsSuccess) {
-    //   return "Success!";
-    // }
-
-    return "Sign";
-  }, [address, isConnecting, isSignLoading]);
-
   // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
@@ -345,6 +292,11 @@ export const useUserOperationCreate = ({
         userOperation: userOperation,
       });
 
+      setPendingSubmitUserOperationHashes([
+        ...pendingSubmitUserOperationHashes,
+        userOperation.hash as Hex,
+      ]);
+
       setSignedData(undefined);
     };
 
@@ -363,6 +315,13 @@ export const useUserOperationCreate = ({
         userOperations: userOperations,
         merkleRoot: `0x${merkleTree.getRoot().toString("hex")}` as Hex,
       });
+
+      for (const userOperation of userOperations) {
+        setPendingSubmitUserOperationHashes([
+          ...pendingSubmitUserOperationHashes,
+          userOperation.hash as Hex,
+        ]);
+      }
 
       setSignedData(undefined);
     };
@@ -392,6 +351,36 @@ export const useUserOperationCreate = ({
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
+  const isValidUserOperations = useMemo(() => {
+    return userOperations.every(userOperation => {
+      return !!(
+        typeof owner !== "undefined" &&
+        userOperation &&
+        userOperation.chainId &&
+        userOperation.hash &&
+        userOperation.nonce !== undefined &&
+        userOperation.nonce !== null &&
+        userOperation.initCode &&
+        userOperation.sender &&
+        userOperation.callData &&
+        userOperation.callGasLimit &&
+        userOperation.verificationGasLimit &&
+        userOperation.preVerificationGas &&
+        userOperation.maxFeePerGas &&
+        userOperation.maxPriorityFeePerGas &&
+        userOperation.paymasterAndData
+      );
+    });
+  }, [owner, userOperations]);
+
+  const isUserOperationCreateSubmittable = useMemo(() => {
+    return (
+      typeof configuration?.threshold !== "undefined" &&
+      typeof owner !== "undefined" &&
+      configuration?.threshold <= owner?.weight
+    );
+  }, [owner, configuration?.threshold]);
+
   const isUserOperationCreateable = useMemo(() => {
     return typeof owner !== "undefined" && typeof subdigest !== "undefined";
   }, [owner, subdigest]);
@@ -411,6 +400,55 @@ export const useUserOperationCreate = ({
   const isUserOperationCreateSuccess = useMemo(() => {
     return isUserOperactionCreateSuccess || isUserOperactionCreateBatchSuccess;
   }, [isUserOperactionCreateSuccess, isUserOperactionCreateBatchSuccess]);
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const delayedIsSuccess = useDelayedValue<boolean>(
+    isUserOperationCreateSuccess,
+    false,
+    3000,
+  );
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const formStateText = useMemo(() => {
+    if (!address) {
+      return "Connect Wallet";
+    }
+
+    if (isConnecting) {
+      return "Connecting...";
+    }
+
+    if (isSignLoading) {
+      return "Signing...";
+    }
+
+    if (isUserOperactionCreateLoading) {
+      return "Creating transaction...";
+    }
+
+    if (isUserOperactionCreateBatchLoading) {
+      return "Creating transactions...";
+    }
+
+    if (delayedIsSuccess) {
+      return "Success";
+    }
+
+    return "Sign";
+  }, [
+    address,
+    isConnecting,
+    isSignLoading,
+    isUserOperactionCreateLoading,
+    isUserOperactionCreateBatchLoading,
+    delayedIsSuccess,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks

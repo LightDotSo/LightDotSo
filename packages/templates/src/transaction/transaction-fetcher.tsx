@@ -431,7 +431,9 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       ) {
         setUserOperations(prev => {
           const next = [...prev];
-          next[userOperationIndex] = updatedUserOperation;
+          if (next[userOperationIndex]) {
+            next[userOperationIndex] = updatedUserOperation;
+          }
           return next;
         });
       }
@@ -442,6 +444,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         signature: "0x",
       };
 
+      // Get the hash
       const hash = await getUserOperationHash({
         userOperation: userOperation as PermissionlessUserOperation<"v0.6">,
         chainId: Number(updatedUserOperation.chainId) as number,
@@ -450,6 +453,21 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         ] as typeof ENTRYPOINT_ADDRESS_V06,
       });
 
+      // If the hash field differs, update the user operation
+      if (userOperationWithHash?.hash !== hash) {
+        setUserOperations(prev => {
+          const next = [...prev];
+          if (next[userOperationIndex]) {
+            next[userOperationIndex] = {
+              ...updatedUserOperation,
+              hash,
+            };
+          }
+          return next;
+        });
+      }
+
+      // Update the user operation with the hash
       setUserOperationWithHash({
         ...userOperation,
         hash,
@@ -483,18 +501,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   useEffect(() => {
     setIsFormLoading(isLoading);
   }, [isLoading, setIsFormLoading]);
-
-  useEffect(() => {
-    setUserOperations(prev => {
-      // Set the userOperationWithHash at the userOperationIndex
-      const next = [...prev];
-      if (!userOperationWithHash) {
-        return next;
-      }
-      next[userOperationIndex] = userOperationWithHash;
-      return next;
-    });
-  }, [userOperationWithHash, userOperationIndex, setUserOperations]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks

@@ -22,22 +22,19 @@ import { zodJsonRpcFetch } from "../zod";
 // Rpc
 // -----------------------------------------------------------------------------
 
-const EthChainIdResultSchema = z
+const EthChainIdResponse = z
   .string()
   .refine(value => /^0x[0-9a-fA-F]+$/.test(value), {
     message: "ChainId must be a hexadecimal string",
   });
 
-export const getChainId = async () => {
+export const getChainId = async (chainId: number, clientType?: ClientType) => {
   return ResultAsync.fromPromise(
     zodJsonRpcFetch(
-      "https://rpc.light.so/1",
+      rpcClient(chainId, clientType),
       "eth_chainId",
       [],
-      EthChainIdResultSchema,
-      {
-        revalidate: 0,
-      },
+      EthChainIdResponse,
     ),
     e => e,
   );
@@ -53,7 +50,9 @@ const HexStringSchema = z
 // GetUserOperation
 // -----------------------------------------------------------------------------
 
-const GetUserOperationReceiptResponse = z.string();
+const GetUserOperationReceiptResponse = z
+  .any()
+  .refine(value => typeof value !== "undefined" && !!value);
 
 const GetUserOperationReceiptRequest = z.array(HexStringSchema);
 
@@ -69,12 +68,9 @@ export const getUserOperationReceipt = async (
   return ResultAsync.fromPromise(
     zodJsonRpcFetch(
       rpcClient(chainId, clientType),
-      "eth_getUserOperation",
+      "eth_getUserOperationReceipt",
       params,
       GetUserOperationReceiptResponse,
-      {
-        revalidate: 0,
-      },
     ),
     e => e,
   );
@@ -117,9 +113,6 @@ export const sendUserOperation = async (
       "eth_sendUserOperation",
       params,
       SendUserOperationResponse,
-      {
-        revalidate: 0,
-      },
     ),
     e => e,
   );
@@ -169,9 +162,6 @@ export const estimateUserOperationGas = async (
       "eth_estimateUserOperationGas",
       params,
       EstimateUserOperationGasResponse,
-      {
-        revalidate: 0,
-      },
     ),
     e => e,
   );
@@ -222,9 +212,6 @@ export const getPaymasterGasAndPaymasterAndData = async (
       "paymaster_requestGasAndPaymasterAndData",
       params,
       PaymasterGasAndPaymasterAndDataResponse,
-      {
-        revalidate: 0,
-      },
     ),
     e => e,
   );

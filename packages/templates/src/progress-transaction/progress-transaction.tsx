@@ -58,7 +58,8 @@ const ProgressTransactionInternal: FC<PendingTransaction> = ({
 
   useEffect(() => {
     if (isLoading) {
-      toast.loading("Transaction in progress...", {
+      toast.info("Transaction in progress...", {
+        duration: Infinity,
         id: hash,
         position: "top-right",
       });

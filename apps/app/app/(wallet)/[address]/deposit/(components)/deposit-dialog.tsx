@@ -263,7 +263,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
     }
 
     if (delayedIsSuccess) {
-      return "Success!";
+      return "Success";
     }
 
     return "Deposit";

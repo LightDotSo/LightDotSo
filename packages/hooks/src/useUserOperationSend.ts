@@ -20,9 +20,10 @@ import {
   useMutationUserOperationSend,
   useQueryUserOperation,
 } from "@lightdotso/query";
-import { toast } from "@lightdotso/ui";
-import { useCallback, useMemo } from "react";
+import { useFormRef } from "@lightdotso/stores";
+import { useCallback, useEffect, useMemo } from "react";
 import type { Hex, Address } from "viem";
+import { useDelayedValue } from "./useDelayedValue";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -42,6 +43,12 @@ export const useUserOperationSend = ({
   hash,
 }: UserOperationSendProps) => {
   // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { setCustomFormSuccessText } = useFormRef();
+
+  // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
@@ -49,27 +56,91 @@ export const useUserOperationSend = ({
     address: hash,
   });
 
-  const { userOperation, isUserOperationLoading, refetchUserOperation } =
+  const { userOperation, isUserOperationFetching, refetchUserOperation } =
     useQueryUserOperation({
       hash: hash,
     });
 
-  const { userOperationSend, isUserOperationSendPending } =
-    useMutationUserOperationSend({
-      address,
-      chain_id: userOperation?.chain_id,
-    });
+  const {
+    userOperationSend,
+    isUserOperationSendSuccess: isMutationUserOperationSendSuccess,
+    isUserOperationSendPending: isMutationUserOperationSendLoading,
+  } = useMutationUserOperationSend({
+    address,
+    chain_id: userOperation?.chain_id,
+  });
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const delayedIsSuccess = useDelayedValue<boolean>(
+    isMutationUserOperationSendSuccess,
+    false,
+    3000,
+  );
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const isUserOperationDisabled = useMemo(
+  const formStateText = useMemo(() => {
+    if (isMutationUserOperationSendLoading) {
+      return "Sending transaction...";
+    }
+
+    if (delayedIsSuccess) {
+      return "Success";
+    }
+
+    return "Send";
+  }, [address, delayedIsSuccess, isMutationUserOperationSendLoading]);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // Set the custom form success text
+  useEffect(() => {
+    if (!formStateText) {
+      return;
+    }
+    setCustomFormSuccessText(formStateText);
+  }, [formStateText, setCustomFormSuccessText]);
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const isUserOperationSendPending = useMemo(
     () =>
-      userOperation?.status !== "PROPOSED" &&
-      userOperation?.status !== "PENDING",
+      userOperation
+        ? userOperation?.status === "PROPOSED" ||
+          userOperation?.status === "PENDING"
+        : // Send is pending if the operation is not found
+          true,
     [userOperation],
   );
+
+  const isUserOperationReloading = useMemo(
+    () => isUserOperationFetching,
+    [isUserOperationFetching],
+  );
+
+  const isUserOperationSendLoading = useMemo(
+    () => isMutationUserOperationSendLoading,
+    [isMutationUserOperationSendLoading],
+  );
+
+  const isUserOperationSendDisabled = useMemo(
+    () =>
+      userOperation?.status === "INVALID" ||
+      userOperation?.status === "EXECUTED" ||
+      userOperation?.status === "REVERTED",
+    [userOperation],
+  );
+
+  const isUserOperationSendSuccess = isUserOperationSendDisabled;
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -77,32 +148,33 @@ export const useUserOperationSend = ({
 
   const handleSubmit = useCallback(async () => {
     if (!userOperation) {
-      toast.error("User operation not found.");
       return;
     }
 
-    if (!isUserOperationDisabled) {
-      await userOperationSend(userOperation);
-    }
-
+    // Get the user operation receipt to check if the user operation has been sent directly
     const res = await getUserOperationReceipt(userOperation.chain_id, [
       userOperation.hash,
     ]);
 
     res.match(
-      () => {
-        // Refetch the user operation on success
-        if (!isUserOperationDisabled) {
-          refetchUserOperation();
+      async () => {
+        if (!isUserOperationSendPending) {
+          // Queue the user operation if the user operation has been sent but isn't indexed yet
+          await queueUserOperation({ hash: hash });
+          // Finally, return
+          return;
         }
       },
-      _ => {
-        queueUserOperation({ hash: hash });
+      async _ => {
+        // Send the user operation if the user operation hasn't been sent yet
+        await userOperationSend(userOperation);
+        // Finally, refetch the user operation
+        await refetchUserOperation();
       },
     );
   }, [
     userOperation,
-    isUserOperationDisabled,
+    isUserOperationSendPending,
     userOperationSend,
     queueUserOperation,
     refetchUserOperation,
@@ -115,12 +187,12 @@ export const useUserOperationSend = ({
 
   return {
     handleSubmit,
+    refetchUserOperation,
     userOperation,
-    isUserOperationDisabled: isUserOperationDisabled,
-    isUserOperationSendLoading: isUserOperationSendPending,
-    isUserOperationSendIdle:
-      !isUserOperationSendPending && !isUserOperationLoading,
-    isUserOperationSendSuccess:
-      !isUserOperationSendPending && !isUserOperationLoading,
+    isUserOperationReloading: isUserOperationReloading,
+    isUserOperationSendPending: isUserOperationSendPending,
+    isUserOperationSendDisabled: isUserOperationSendDisabled,
+    isUserOperationSendLoading: isUserOperationSendLoading,
+    isUserOperationSendSuccess: isUserOperationSendSuccess,
   };
 };
