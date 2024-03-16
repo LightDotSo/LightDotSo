@@ -14,7 +14,6 @@
 
 "use client";
 
-import { authLogout } from "@lightdotso/client";
 import type { AuthSessionData, UserData } from "@lightdotso/data";
 import { useQueryAuthSession, useQueryUser } from "@lightdotso/query";
 import { queryKeys } from "@lightdotso/query-keys";
@@ -117,18 +116,13 @@ export const AuthState: FC = () => {
   // On component mount, or when the address from useAccount changes,
   // update the auth state's address
   useEffect(() => {
-    const logout = async () => {
-      if (address) {
-        setAddress(address);
-      } else {
-        // On logout, clear the user
-        setAddress(undefined);
-        setSessionId(undefined);
-        await authLogout();
-      }
-    };
-
-    logout();
+    if (address) {
+      setAddress(address);
+    } else {
+      // On logout, clear the user
+      setAddress(undefined);
+      setSessionId(undefined);
+    }
   }, [address, setAddress, setSessionId]);
 
   // Subscribe to the user query

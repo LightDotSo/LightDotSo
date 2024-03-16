@@ -26,11 +26,11 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "viem": "^2.8.5"
+    "viem": "^2.8.10"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.11.26",
+    "@types/node": "^20.11.28",
     "typescript": "^5.4.2"
   },
   "publishConfig": {
