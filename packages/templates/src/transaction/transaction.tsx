@@ -144,6 +144,7 @@ export const Transaction: FC<TransactionProps> = ({
     // isUserOperationLoading,
     // isUserOperationCreatable,
     // isValidUserOperation,
+    isUserOperationCreateable,
     isUserOperationCreateLoading,
     isUserOperationCreateSuccess,
     isUserOperationCreateSubmittable,
@@ -192,13 +193,8 @@ export const Transaction: FC<TransactionProps> = ({
 
   // Set the transaction disabled state
   const isTransactionDisabled = useMemo(() => {
-    return (
-      !isUserOperationCreateSubmittable ||
-      // If all of the items in the userOperations array have a hash, set form disabled to false
-      userOperations.every(userOperation => userOperation.hash)
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isUserOperationCreateSubmittable, isTransactionLoading]);
+    return !isUserOperationCreateable;
+  }, [isUserOperationCreateable]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
