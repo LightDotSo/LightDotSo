@@ -69,7 +69,7 @@ export const useUserOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   const { address: userAddress } = useAuth();
-  const { setCustomFormSuccessText } = useFormRef();
+  const { setCustomFormSuccessText, setIsFormLoading } = useFormRef();
   const {
     pendingSubmitUserOperationHashes,
     setPendingSubmitUserOperationHashes,
@@ -461,6 +461,17 @@ export const useUserOperationCreate = ({
     }
     setCustomFormSuccessText(formStateText);
   }, [formStateText, setCustomFormSuccessText]);
+
+  // Set the form loading state to true if the status is success
+  useEffect(() => {
+    if (isUserOperationCreateSuccess) {
+      setIsFormLoading(isUserOperactionCreateLoading);
+    }
+  }, [
+    isUserOperationCreateSuccess,
+    isUserOperactionCreateLoading,
+    setIsFormLoading,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Render

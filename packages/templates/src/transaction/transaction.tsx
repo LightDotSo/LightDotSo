@@ -118,7 +118,6 @@ export const Transaction: FC<TransactionProps> = ({
   const {
     customFormSuccessText,
     isFormLoading,
-    setIsFormLoading,
     isFormDisabled,
     setIsFormDisabled,
   } = useFormRef();
@@ -143,7 +142,7 @@ export const Transaction: FC<TransactionProps> = ({
     // isUserOperationLoading,
     // isUserOperationCreatable,
     isValidUserOperations,
-    // isUserOperationCreateable,
+    isUserOperationCreateable,
     isUserOperationCreateLoading,
     isUserOperationCreateSuccess,
     isUserOperationCreateSubmittable,
@@ -186,18 +185,30 @@ export const Transaction: FC<TransactionProps> = ({
   // ---------------------------------------------------------------------------
 
   // Set the transaction loading state
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isTransactionLoading = useMemo(() => {
-    return isUserOperationCreateLoading;
-  }, [isUserOperationCreateLoading]);
+    // Only set the loading state if the user operation is not yet created
+    if (isUserOperationCreateSuccess) {
+      return isUserOperationCreateLoading;
+    }
+    // Otherwise, the transaction loading state is set from the individual transaction fetcher
+    return false;
+  }, [isUserOperationCreateSuccess, isUserOperationCreateLoading]);
 
   // Set the transaction disabled state
   const isTransactionDisabled = useMemo(() => {
     return (
       typeof subdigest === "undefined" ||
       !userOperations.every(userOperation => userOperation.hash) ||
-      !isValidUserOperations
+      !isValidUserOperations ||
+      !isUserOperationCreateable
     );
-  }, [subdigest, userOperations, isValidUserOperations]);
+  }, [
+    subdigest,
+    userOperations,
+    isValidUserOperations,
+    isUserOperationCreateable,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -224,11 +235,6 @@ export const Transaction: FC<TransactionProps> = ({
     resetAll();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, resetAll]);
-
-  // If the transaction is loading, set the form loading to true
-  useEffect(() => {
-    setIsFormLoading(isTransactionLoading);
-  }, [isTransactionLoading, setIsFormLoading]);
 
   // If the transaction is disabled, set the form disabled to true
   useEffect(() => {
