@@ -289,6 +289,8 @@ export const useUserOperationCreate = ({
       return;
     }
 
+    console.info(subdigest);
+
     signMessage({ message: { raw: toBytes(subdigest) } });
   }, [subdigest, signMessage]);
 
@@ -331,6 +333,9 @@ export const useUserOperationCreate = ({
         return;
       }
 
+      console.info("sign");
+      console.info(signedData);
+
       userOperationCreate({
         ownerId: owner.id,
         signedData: signedData as Hex,
@@ -345,6 +350,7 @@ export const useUserOperationCreate = ({
         return;
       }
 
+      console.info("signBatch");
       console.info(merkleTree);
       console.info(`0x${merkleTree.getRoot().toString("hex")}` as Hex);
 
