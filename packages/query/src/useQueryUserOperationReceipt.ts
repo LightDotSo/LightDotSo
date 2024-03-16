@@ -42,9 +42,6 @@ export const useQueryUserOperationReceipt = (
     error: userOperationReceiptError,
   } = useQuery({
     retry: 10,
-    queryKeyHashFn: key => {
-      return serialize(key);
-    },
     queryKey: queryKeys.rpc.get_user_operation_receipt({
       chainId: params.chainId,
       hash: params.hash,

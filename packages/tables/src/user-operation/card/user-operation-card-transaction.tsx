@@ -308,7 +308,6 @@ export const UserOperationCardTransaction: FC<
                   )}
                   <UserOperationCardTransactionExecuteButton
                     address={address}
-                    isTestnet={isTestnet}
                     userOperation={userOperation}
                   />
                 </CardFooter>

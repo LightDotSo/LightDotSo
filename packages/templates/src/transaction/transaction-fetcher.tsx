@@ -507,6 +507,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       }
       return next;
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userOperationWithHash]);
 
   // useEffect(() => {

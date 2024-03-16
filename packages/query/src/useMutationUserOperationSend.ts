@@ -75,16 +75,6 @@ export const useMutationUserOperationSend = (
 
       const loadingToast = toast.loading("Submitting the transaction...");
 
-      // Get the sig as bytes from caller
-      const sigRes = await getUserOperationSignature({
-        params: {
-          query: {
-            user_operation_hash: body.hash,
-            configuration_id: params.configuration?.id,
-          },
-        },
-      });
-
       // Sned the user operation
       const res = await sendUserOperation(body.chain_id, [
         {

@@ -203,7 +203,7 @@ export const useUserOperationSend = ({
     }
 
     return "Send";
-  }, [address, delayedIsSuccess, isMutationUserOperationSendLoading]);
+  }, [delayedIsSuccess, isMutationUserOperationSendLoading]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
