@@ -55,7 +55,7 @@ export const useQueryNotifications = (params: NotificationListParams) => {
       offset: params.offset,
     }).queryKey,
     queryFn: async () => {
-      if (!params.address) {
+      if (!params.address || clientType !== "authenticated") {
         return null;
       }
 

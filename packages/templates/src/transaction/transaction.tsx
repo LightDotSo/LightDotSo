@@ -116,8 +116,13 @@ export const Transaction: FC<TransactionProps> = ({
     setPendingSubmitUserOperationHashes,
     resetAll,
   } = useUserOperations();
-  const { customFormSuccessText, isFormLoading, setIsFormDisabled } =
-    useFormRef();
+  const {
+    customFormSuccessText,
+    isFormLoading,
+    setIsFormLoading,
+    isFormDisabled,
+    setIsFormDisabled,
+  } = useFormRef();
 
   // ---------------------------------------------------------------------------
   // Query State Hooks
@@ -139,6 +144,7 @@ export const Transaction: FC<TransactionProps> = ({
     // isUserOperationLoading,
     // isUserOperationCreatable,
     // isValidUserOperation,
+    isUserOperationCreateable,
     isUserOperationCreateLoading,
     isUserOperationCreateSuccess,
     isUserOperationCreateSubmittable,
@@ -175,6 +181,20 @@ export const Transaction: FC<TransactionProps> = ({
   });
 
   const watchIsDirectSubmit = form.watch("isDirectSubmit");
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  // Set the transaction loading state
+  const isTransactionLoading = useMemo(() => {
+    return isUserOperationCreateLoading;
+  }, [isUserOperationCreateLoading]);
+
+  // Set the transaction disabled state
+  const isTransactionDisabled = useMemo(() => {
+    return !isUserOperationCreateable;
+  }, [isUserOperationCreateable]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -219,13 +239,15 @@ export const Transaction: FC<TransactionProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, resetAll]);
 
-  // If all of the items in the userOperations array have a hash, set form disabled to false
+  // If the transaction is loading, set the form loading to true
   useEffect(() => {
-    if (userOperations) {
-      const isValid = userOperations.every(userOperation => userOperation.hash);
-      setIsFormDisabled(!isValid);
-    }
-  }, [userOperations, setIsFormDisabled]);
+    setIsFormLoading(isTransactionLoading);
+  }, [isTransactionLoading, setIsFormLoading]);
+
+  // If the transaction is disabled, set the form disabled to true
+  useEffect(() => {
+    setIsFormDisabled(isTransactionDisabled);
+  }, [isTransactionDisabled, setIsFormDisabled]);
 
   // Sync the `isDirectSubmit` field with the `isUserOperationCreateSubmittable` value
   useEffect(() => {
@@ -270,7 +292,7 @@ export const Transaction: FC<TransactionProps> = ({
                   )}
                 </TabsList>
                 <TabsContent value="transaction">
-                  <div className="pt-3">
+                  <div className="space-y-3 pt-3">
                     {Object.values(userOperationSimulations).map(simulation => {
                       return simulation.interpretation.asset_changes.map(
                         (assetChange, index) => {
@@ -316,14 +338,10 @@ export const Transaction: FC<TransactionProps> = ({
                     </Form>
                     {!isInsideModal && (
                       <FooterButton
-                        form="transaction-modal-form"
+                        cancelDisabled
                         isModal={false}
-                        cancelDisabled={true}
                         isLoading={isFormLoading}
-                        disabled={
-                          isFormLoading
-                          // !isFormValid || isFormLoading || delayedIsSuccess
-                        }
+                        disabled={isFormLoading || isFormDisabled}
                         customSuccessText={customFormSuccessText}
                         onClick={signUserOperation}
                       />
@@ -331,7 +349,7 @@ export const Transaction: FC<TransactionProps> = ({
                   </div>
                 </TabsContent>
                 <TabsContent value="details">
-                  <div className="pt-3">
+                  <div className="space-y-3 pt-3">
                     {Object.entries(userOperationDetails).map(
                       ([chainId, details], index) => {
                         const chain = getChainById(Number(chainId));
@@ -367,7 +385,7 @@ export const Transaction: FC<TransactionProps> = ({
                   </div>
                 </TabsContent>
                 <TabsContent value="data">
-                  <div className="pt-3">
+                  <div className="space-y-3 pt-3">
                     {userOperations &&
                       userOperations.length > 0 &&
                       userOperations.map((userOperation, index) => {

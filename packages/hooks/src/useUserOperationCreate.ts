@@ -103,10 +103,13 @@ export const useUserOperationCreate = ({
 
     // If the userOperation length is 1, get the first userOperation
     const userOperation = userOperations[0];
+
+    // Check if the userOperation has hash and chainId
     if (!userOperation?.hash || !userOperation?.chainId) {
       return;
     }
 
+    // Return the subdigest of the userOperation w/ hash and chainId encoded (type 1)
     if (userOperations.length === 1) {
       return subdigestOf(
         address,
@@ -115,17 +118,27 @@ export const useUserOperationCreate = ({
       );
     }
 
+    // Check if all of the userOperations have hash
+    const isAllHashed = userOperations.every(
+      userOperation => userOperation.hash,
+    );
+    if (!isAllHashed) {
+      return;
+    }
+
     // If the userOperation length is greater than 1, get the merkle root of the userOperations
     if (userOperations.length > 1) {
       const leaves = userOperations
         .sort((a, b) => Number(a.chainId) - Number(b.chainId))
         .map(userOperation => hexToBytes(userOperation.hash as Hex));
       const tree = new MerkleTree(leaves, keccak256, { sort: true });
-      console.info(`0x${tree.getRoot().toString("hex")}` as Hex);
       setMerkleTree(tree);
       return subdigestOf(address, tree.getRoot(), BigInt(0));
     }
   }, [address, userOperations]);
+
+  // Add a cached subdigest constant
+  const cachedSubdigest = useMemo(() => subdigest, [subdigest]);
 
   // ---------------------------------------------------------------------------
   // Wagmi
@@ -275,12 +288,14 @@ export const useUserOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   const signUserOperation = useCallback(() => {
-    if (!subdigest) {
+    console.info(cachedSubdigest);
+
+    if (!cachedSubdigest) {
       return;
     }
 
-    signMessage({ message: { raw: toBytes(subdigest) } });
-  }, [subdigest, signMessage]);
+    signMessage({ message: { raw: toBytes(cachedSubdigest) } });
+  }, [cachedSubdigest, signMessage]);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -321,6 +336,9 @@ export const useUserOperationCreate = ({
         return;
       }
 
+      console.info("sign");
+      console.info(signedData);
+
       userOperationCreate({
         ownerId: owner.id,
         signedData: signedData as Hex,
@@ -335,6 +353,7 @@ export const useUserOperationCreate = ({
         return;
       }
 
+      console.info("signBatch");
       console.info(merkleTree);
       console.info(`0x${merkleTree.getRoot().toString("hex")}` as Hex);
 
@@ -374,10 +393,8 @@ export const useUserOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   const isUserOperationCreateable = useMemo(() => {
-    return (
-      !isSignLoading && typeof owner !== "undefined" && isValidUserOperations
-    );
-  }, [isSignLoading, owner, isValidUserOperations]);
+    return typeof owner !== "undefined" && typeof subdigest !== "undefined";
+  }, [owner, subdigest]);
 
   const isUserOperationCreateLoading = useMemo(() => {
     return (
