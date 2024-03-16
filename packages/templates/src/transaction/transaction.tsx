@@ -44,7 +44,7 @@ import {
 import { cn, getChainById } from "@lightdotso/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname } from "next/navigation";
-import { useEffect, useMemo, type FC } from "react";
+import { use, useEffect, useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
 import type { Hex, Address } from "viem";
 import type * as z from "zod";
@@ -116,8 +116,13 @@ export const Transaction: FC<TransactionProps> = ({
     setPendingSubmitUserOperationHashes,
     resetAll,
   } = useUserOperations();
-  const { customFormSuccessText, isFormLoading, setIsFormDisabled } =
-    useFormRef();
+  const {
+    customFormSuccessText,
+    isFormLoading,
+    setIsFormLoading,
+    isFormDisabled,
+    setIsFormDisabled,
+  } = useFormRef();
 
   // ---------------------------------------------------------------------------
   // Query State Hooks
@@ -177,6 +182,14 @@ export const Transaction: FC<TransactionProps> = ({
   const watchIsDirectSubmit = form.watch("isDirectSubmit");
 
   // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const isTransactionLoading = useMemo(() => {
+    return isUserOperationCreateLoading;
+  }, [isUserOperationCreateLoading]);
+
+  // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
@@ -218,6 +231,15 @@ export const Transaction: FC<TransactionProps> = ({
     resetAll();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, resetAll]);
+
+  // If the transaction is loading, set the form loading to true
+  useEffect(() => {
+    if (isTransactionLoading) {
+      setIsFormLoading(true);
+    } else {
+      setIsFormLoading(false);
+    }
+  }, [isTransactionLoading]);
 
   // If all of the items in the userOperations array have a hash, set form disabled to false
   useEffect(() => {
@@ -321,7 +343,7 @@ export const Transaction: FC<TransactionProps> = ({
                         cancelDisabled={true}
                         isLoading={isFormLoading}
                         disabled={
-                          isFormLoading
+                          isFormLoading || isFormDisabled
                           // !isFormValid || isFormLoading || delayedIsSuccess
                         }
                         customSuccessText={customFormSuccessText}
