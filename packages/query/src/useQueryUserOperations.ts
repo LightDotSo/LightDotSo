@@ -51,6 +51,7 @@ export const useQueryUserOperations = (params: UserOperationListParams) => {
   const {
     data: userOperations,
     isLoading: isUserOperationsLoading,
+    refetch: refetchUserOperations,
     failureCount,
   } = useQuery<UserOperationData[] | null>({
     queryKey: queryKeys.user_operation.list({
@@ -101,5 +102,6 @@ export const useQueryUserOperations = (params: UserOperationListParams) => {
   return {
     userOperations,
     isUserOperationsLoading,
+    refetchUserOperations,
   };
 };
