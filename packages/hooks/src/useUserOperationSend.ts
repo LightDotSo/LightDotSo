@@ -146,10 +146,11 @@ export const useUserOperationSend = ({
     ),
   });
 
-  const { userOperationReceipt } = useQueryUserOperationReceipt({
-    chainId: userOperation?.chain_id!,
-    hash: hash,
-  });
+  const { userOperationReceipt, isUserOperationReceiptError } =
+    useQueryUserOperationReceipt({
+      chainId: userOperation?.chain_id!,
+      hash: hash,
+    });
 
   const {
     userOperationSend,
@@ -294,7 +295,9 @@ export const useUserOperationSend = ({
         // Finally, return
         return;
       }
-    } else {
+    }
+
+    if (isUserOperationReceiptError) {
       // Send the user operation if the user operation hasn't been sent yet
       await userOperationSend(userOperation);
       // Finally, refetch the user operation
@@ -303,6 +306,7 @@ export const useUserOperationSend = ({
   }, [
     userOperation,
     userOperationReceipt,
+    isUserOperationReceiptError,
     isUserOperationSendPending,
     userOperationSend,
     queueUserOperation,

@@ -37,7 +37,8 @@ export const useQueryUserOperationReceipt = (
 
   const {
     data: userOperationReceipt,
-    isLoading: isuserOperationReceiptLoading,
+    isLoading: isUserOperationReceiptLoading,
+    isError: isUserOperationReceiptError,
     error: userOperationReceiptError,
   } = useQuery({
     retry: 10,
@@ -59,7 +60,8 @@ export const useQueryUserOperationReceipt = (
 
   return {
     userOperationReceipt,
-    isuserOperationReceiptLoading,
+    isUserOperationReceiptLoading,
+    isUserOperationReceiptError,
     userOperationReceiptError,
   };
 };
