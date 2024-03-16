@@ -68,8 +68,8 @@ export const useUserOperationSend = ({
   const isUserOperationSendPending = useMemo(
     () =>
       userOperation
-        ? userOperation?.status !== "PROPOSED" &&
-          userOperation?.status !== "PENDING"
+        ? userOperation?.status === "PROPOSED" ||
+          userOperation?.status === "PENDING"
         : // Send is pending if the operation is not found
           true,
     [userOperation],
@@ -87,6 +87,7 @@ export const useUserOperationSend = ({
 
   const isUserOperationSendDisabled = useMemo(
     () =>
+      userOperation?.status === "INVALID" ||
       userOperation?.status === "EXECUTED" ||
       userOperation?.status === "REVERTED",
     [userOperation],
