@@ -497,7 +497,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   const debounceddUserOperationWithHash = useDebouncedValue(
     userOperationWithHash,
-    300,
+    3000,
   );
 
   // ---------------------------------------------------------------------------
