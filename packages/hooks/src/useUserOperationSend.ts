@@ -106,11 +106,11 @@ export const useUserOperationSend = ({
         signature: toHex(new Uint8Array([2])),
       },
       fromHex(
-        `0x${userOperation?.paymaster_and_data.slice(154, 162)}`,
+        `0x${userOperation?.paymaster_and_data ? userOperation?.paymaster_and_data.slice(154, 162) : 0}`,
         "number",
       ),
       fromHex(
-        `0x${userOperation?.paymaster_and_data.slice(162, 170)}`,
+        `0x${userOperation?.paymaster_and_data ? userOperation?.paymaster_and_data.slice(162, 170) : 0}`,
         "number",
       ),
     ],
@@ -141,7 +141,7 @@ export const useUserOperationSend = ({
     address: userOperation?.paymaster_and_data.slice(0, 42) as Address,
     chain_id: userOperation?.chain_id!,
     valid_after: fromHex(
-      `0x${userOperation?.paymaster_and_data.slice(162, 170)}`,
+      `0x${userOperation?.paymaster_and_data ? userOperation?.paymaster_and_data.slice(162, 170) : 0}`,
       "number",
     ),
   });
