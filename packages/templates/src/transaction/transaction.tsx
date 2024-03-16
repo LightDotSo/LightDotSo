@@ -338,14 +338,10 @@ export const Transaction: FC<TransactionProps> = ({
                     </Form>
                     {!isInsideModal && (
                       <FooterButton
-                        form="transaction-modal-form"
+                        cancelDisabled
                         isModal={false}
-                        cancelDisabled={true}
                         isLoading={isFormLoading}
-                        disabled={
-                          isFormLoading || isFormDisabled
-                          // !isFormValid || isFormLoading || delayedIsSuccess
-                        }
+                        disabled={isFormLoading || isFormDisabled}
                         customSuccessText={customFormSuccessText}
                         onClick={signUserOperation}
                       />

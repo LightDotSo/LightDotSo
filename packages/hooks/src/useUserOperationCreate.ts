@@ -288,11 +288,11 @@ export const useUserOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   const signUserOperation = useCallback(() => {
+    console.info(cachedSubdigest);
+
     if (!cachedSubdigest) {
       return;
     }
-
-    console.info(subdigest);
 
     signMessage({ message: { raw: toBytes(cachedSubdigest) } });
   }, [cachedSubdigest, signMessage]);
