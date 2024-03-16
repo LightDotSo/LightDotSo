@@ -216,11 +216,11 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, type]);
 
-  // Hide all modals background when the modal is opened
+  // Disable hide all modals background when the interception modal is opened
   // This is to prevent the modal sent to background and not being visible when the modal is opened
   // Except for the create modal, which can be nested opened from the send modal
   useEffect(() => {
-    if (type !== "create") {
+    if (type === "create") {
       return;
     }
 

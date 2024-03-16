@@ -193,7 +193,7 @@ export const Transaction: FC<TransactionProps> = ({
 
   // Set the transaction disabled state
   const isTransactionDisabled = useMemo(() => {
-    return !!subdigest;
+    return !subdigest;
   }, [subdigest]);
 
   // ---------------------------------------------------------------------------
