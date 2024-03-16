@@ -48,6 +48,7 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
 
   const {
     userOperation,
+    isUserOperationSendPending,
     isUserOperationSendLoading,
     isUserOperationSendSuccess,
     handleSubmit,
@@ -62,10 +63,10 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
 
   // Confirm the user operation on mount
   useEffect(() => {
-    if (isUserOperationSendSuccess) {
+    if (isUserOperationSendPending) {
       handleSubmit();
     }
-  }, [isUserOperationSendSuccess, handleSubmit]);
+  }, [isUserOperationSendPending, handleSubmit]);
 
   // ---------------------------------------------------------------------------
   // Render

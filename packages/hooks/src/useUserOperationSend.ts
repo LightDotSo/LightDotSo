@@ -49,22 +49,20 @@ export const useUserOperationSend = ({
     address: hash,
   });
 
-  const { userOperation, isUserOperationLoading, refetchUserOperation } =
-    useQueryUserOperation({
-      hash: hash,
-    });
+  const { userOperation, refetchUserOperation } = useQueryUserOperation({
+    hash: hash,
+  });
 
-  const { userOperationSend, isUserOperationSendPending } =
-    useMutationUserOperationSend({
-      address,
-      chain_id: userOperation?.chain_id,
-    });
+  const { userOperationSend } = useMutationUserOperationSend({
+    address,
+    chain_id: userOperation?.chain_id,
+  });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const isUserOperationSendDisabled = useMemo(
+  const isUserOperationSendPending = useMemo(
     () =>
       userOperation?.status !== "PROPOSED" &&
       userOperation?.status !== "PENDING",
@@ -72,16 +70,18 @@ export const useUserOperationSend = ({
   );
 
   const isUserOperationSendLoading = useMemo(
-    () => isUserOperationLoading || isUserOperationSendPending,
-    [isUserOperationLoading, isUserOperationSendPending],
+    () => isUserOperationSendPending,
+    [isUserOperationSendPending],
   );
 
-  const isUserOperationSendSuccess = useMemo(
+  const isUserOperationSendDisabled = useMemo(
     () =>
       userOperation?.status === "EXECUTED" ||
       userOperation?.status === "REVERTED",
     [userOperation],
   );
+
+  const isUserOperationSendSuccess = isUserOperationSendDisabled;
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -93,7 +93,7 @@ export const useUserOperationSend = ({
       return;
     }
 
-    if (!isUserOperationSendDisabled) {
+    if (!isUserOperationSendPending) {
       await userOperationSend(userOperation);
     }
 
@@ -104,7 +104,7 @@ export const useUserOperationSend = ({
     res.match(
       () => {
         // Refetch the user operation on success
-        if (!isUserOperationSendDisabled) {
+        if (!isUserOperationSendPending) {
           refetchUserOperation();
         }
       },
@@ -114,7 +114,7 @@ export const useUserOperationSend = ({
     );
   }, [
     userOperation,
-    isUserOperationSendDisabled,
+    isUserOperationSendPending,
     userOperationSend,
     queueUserOperation,
     refetchUserOperation,
@@ -128,6 +128,7 @@ export const useUserOperationSend = ({
   return {
     handleSubmit,
     userOperation,
+    isUserOperationSendPending: isUserOperationSendPending,
     isUserOperationSendDisabled: isUserOperationSendDisabled,
     isUserOperationSendLoading: isUserOperationSendLoading,
     isUserOperationSendSuccess: isUserOperationSendSuccess,
