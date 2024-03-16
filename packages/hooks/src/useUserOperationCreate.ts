@@ -137,6 +137,9 @@ export const useUserOperationCreate = ({
     }
   }, [address, userOperations]);
 
+  // Add a cached subdigest constant
+  const cachedSubdigest = useMemo(() => subdigest, [subdigest]);
+
   // ---------------------------------------------------------------------------
   // Wagmi
   // ---------------------------------------------------------------------------
@@ -285,14 +288,14 @@ export const useUserOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   const signUserOperation = useCallback(() => {
-    if (!subdigest) {
+    if (!cachedSubdigest) {
       return;
     }
 
     console.info(subdigest);
 
-    signMessage({ message: { raw: toBytes(subdigest) } });
-  }, [subdigest, signMessage]);
+    signMessage({ message: { raw: toBytes(cachedSubdigest) } });
+  }, [cachedSubdigest, signMessage]);
 
   // ---------------------------------------------------------------------------
   // Query
