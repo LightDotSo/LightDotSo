@@ -143,7 +143,7 @@ export const Transaction: FC<TransactionProps> = ({
     // isUserOperationLoading,
     // isUserOperationCreatable,
     isValidUserOperations,
-    // isUserOperationCreateable,
+    isUserOperationCreateable,
     isUserOperationCreateLoading,
     isUserOperationCreateSuccess,
     isUserOperationCreateSubmittable,
@@ -187,7 +187,12 @@ export const Transaction: FC<TransactionProps> = ({
 
   // Set the transaction loading state
   const isTransactionLoading = useMemo(() => {
-    return isUserOperationCreateLoading;
+    // Only set the loading state if the user operation is not yet created
+    if (isUserOperationCreateSuccess) {
+      return isUserOperationCreateLoading;
+    }
+    // Otherwise, the transaction loading state is set from the individual transaction fetcher
+    return false;
   }, [isUserOperationCreateLoading]);
 
   // Set the transaction disabled state
@@ -195,9 +200,15 @@ export const Transaction: FC<TransactionProps> = ({
     return (
       typeof subdigest === "undefined" ||
       !userOperations.every(userOperation => userOperation.hash) ||
-      !isValidUserOperations
+      !isValidUserOperations ||
+      !isUserOperationCreateable
     );
-  }, [subdigest, userOperations, isValidUserOperations]);
+  }, [
+    subdigest,
+    userOperations,
+    isValidUserOperations,
+    isUserOperationCreateable,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
