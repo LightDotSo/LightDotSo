@@ -14,7 +14,7 @@
 
 "use client";
 
-import { useUserOperationSend } from "@lightdotso/hooks";
+import { useIsMounted, useUserOperationSend } from "@lightdotso/hooks";
 import { useUserOperations } from "@lightdotso/stores";
 import { Button, StateInfoSection } from "@lightdotso/ui";
 import { getChainById, getEtherscanUrl } from "@lightdotso/utils";
@@ -43,6 +43,7 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
   // Hooks
   // ---------------------------------------------------------------------------
 
+  const isMounted = useIsMounted();
   const {
     userOperation,
     refetchUserOperation,
@@ -60,21 +61,34 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
 
   // Handle on mount
   useEffect(() => {
-    handleSubmit();
+    const executeSubmit = async () => {
+      await handleSubmit();
+    };
+
+    executeSubmit();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isMounted]);
 
   // Refetch the user operation on mount
   useEffect(() => {
-    refetchUserOperation();
+    const fetchUserOperation = async () => {
+      await refetchUserOperation();
+    };
+
+    fetchUserOperation();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Handle submit on mount every 10 seconds upon mount
   useEffect(() => {
-    const interval = setInterval(() => {
-      handleSubmit();
-    }, 10000);
+    let interval: NodeJS.Timeout;
+
+    const executeSubmit = async () => {
+      await handleSubmit();
+      interval = setInterval(executeSubmit, 10000);
+    };
+
+    executeSubmit();
 
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
