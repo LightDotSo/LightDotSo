@@ -50,7 +50,6 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
     userOperation,
     refetchUserOperation,
     isUserOperationSendPending,
-    isUserOperationReloading,
     isUserOperationSendLoading,
     isUserOperationSendSuccess,
     handleSubmit,
@@ -62,21 +61,6 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
-
-  // Confirm the user operation on mount
-  useEffect(() => {
-    // If the user operation is pending, submit the operation
-    if (!isUserOperationSendPending) {
-      handleSubmit();
-      return;
-    }
-  }, [
-    // Invoke the handleSubmit function when the user operation is reloading
-    isUserOperationReloading,
-    isUserOperationSendPending,
-    handleSubmit,
-    refetchUserOperation,
-  ]);
 
   // Refetch the user operation on mount
   useEffect(() => {
