@@ -26,7 +26,6 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@lightdotso/client": "workspace:*",
     "@lightdotso/data": "workspace:*",
     "@lightdotso/query": "workspace:*",
     "@lightdotso/query-keys": "workspace:*",
