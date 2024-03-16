@@ -22,7 +22,10 @@ import type {
 // import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
+import {
+  // useQueryClient,
+  useMutation,
+} from "@tanstack/react-query";
 // import type { Address } from "viem";
 import { toBytes, toHex } from "viem";
 
@@ -30,6 +33,7 @@ import { toBytes, toHex } from "viem";
 // Query Mutation
 // -----------------------------------------------------------------------------
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const useMutationUserOperationCreate = (params: UserOperationParams) => {
   // ---------------------------------------------------------------------------
   // Stores
@@ -41,7 +45,7 @@ export const useMutationUserOperationCreate = (params: UserOperationParams) => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   // ---------------------------------------------------------------------------
   // Query Mutation

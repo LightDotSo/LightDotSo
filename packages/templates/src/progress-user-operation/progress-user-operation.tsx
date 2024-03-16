@@ -82,7 +82,7 @@ export const ProgressUserOperationOp: FC<PendingUserOperationOpProps> = ({
 
       onExecuted();
     }
-  }, [hash, userOperation]);
+  }, [hash, userOperation, onExecuted]);
 
   // ---------------------------------------------------------------------------
   // Render
