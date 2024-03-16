@@ -70,10 +70,7 @@ export const useUserOperationCreate = ({
 
   const { address: userAddress } = useAuth();
   const { setCustomFormSuccessText, setIsFormLoading } = useFormRef();
-  const {
-    pendingSubmitUserOperationHashes,
-    setPendingSubmitUserOperationHashes,
-  } = useUserOperations();
+  const { addPendingSubmitUserOperationHash } = useUserOperations();
 
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -292,10 +289,7 @@ export const useUserOperationCreate = ({
         userOperation: userOperation,
       });
 
-      setPendingSubmitUserOperationHashes([
-        ...pendingSubmitUserOperationHashes,
-        userOperation.hash as Hex,
-      ]);
+      addPendingSubmitUserOperationHash(userOperation.hash as Hex);
 
       setSignedData(undefined);
     };
@@ -317,10 +311,7 @@ export const useUserOperationCreate = ({
       });
 
       for (const userOperation of userOperations) {
-        setPendingSubmitUserOperationHashes([
-          ...pendingSubmitUserOperationHashes,
-          userOperation.hash as Hex,
-        ]);
+        addPendingSubmitUserOperationHash(userOperation.hash as Hex);
       }
 
       setSignedData(undefined);
