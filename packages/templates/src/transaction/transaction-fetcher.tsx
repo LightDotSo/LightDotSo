@@ -391,11 +391,11 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       implAddress === CONTRACT_ADDRESSES["v0.1.0 Implementation"]
     ) {
       // Remove the user operation from the list
-      setUserOperations(prev => {
-        const next = [...prev];
-        next.splice(userOperationIndex, 1);
-        return next;
-      });
+      // setUserOperations(prev => {
+      //   const next = [...prev];
+      //   next.splice(userOperationIndex, 1);
+      //   return next;
+      // });
 
       // Set the disabled state
       setIsDisabled(true);
@@ -454,18 +454,18 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       });
 
       // If the hash field differs, update the user operation
-      if (userOperationWithHash?.hash !== hash) {
-        setUserOperations(prev => {
-          const next = [...prev];
-          if (next[userOperationIndex]) {
-            next[userOperationIndex] = {
-              ...updatedUserOperation,
-              hash,
-            };
-          }
-          return next;
-        });
-      }
+      // if (userOperationWithHash?.hash !== hash) {
+      //   setUserOperations(prev => {
+      //     const next = [...prev];
+      //     if (next[userOperationIndex]) {
+      //       next[userOperationIndex] = {
+      //         ...updatedUserOperation,
+      //         hash,
+      //       };
+      //     }
+      //     return next;
+      //   });
+      // }
 
       // Update the user operation with the hash
       setUserOperationWithHash({
@@ -493,6 +493,21 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
+
+  // Sync `userOperationWithHash` to the store
+  useEffect(() => {
+    setUserOperations(prev => {
+      const next = [...prev];
+      if (next[userOperationIndex]) {
+        next[userOperationIndex] = {
+          ...updatedUserOperation,
+          ...userOperationWithHash,
+          hash: userOperationWithHash?.hash,
+        };
+      }
+      return next;
+    });
+  }, [userOperationWithHash]);
 
   // useEffect(() => {
   //   setIsFormDisabled(isDisabled);
