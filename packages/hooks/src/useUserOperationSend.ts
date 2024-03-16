@@ -20,8 +20,10 @@ import {
   useMutationUserOperationSend,
   useQueryUserOperation,
 } from "@lightdotso/query";
-import { useCallback, useMemo } from "react";
+import { useFormRef } from "@lightdotso/stores";
+import { useCallback, useEffect, useMemo } from "react";
 import type { Hex, Address } from "viem";
+import { useDelayedValue } from "./useDelayedValue";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -41,6 +43,12 @@ export const useUserOperationSend = ({
   hash,
 }: UserOperationSendProps) => {
   // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { setCustomFormSuccessText } = useFormRef();
+
+  // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
@@ -55,11 +63,50 @@ export const useUserOperationSend = ({
 
   const {
     userOperationSend,
+    isUserOperationSendSuccess: isMutationUserOperationSendSuccess,
     isUserOperationSendPending: isMutationUserOperationSendLoading,
   } = useMutationUserOperationSend({
     address,
     chain_id: userOperation?.chain_id,
   });
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const delayedIsSuccess = useDelayedValue<boolean>(
+    isMutationUserOperationSendSuccess,
+    false,
+    3000,
+  );
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const formStateText = useMemo(() => {
+    if (isMutationUserOperationSendLoading) {
+      return "Sending transaction...";
+    }
+
+    if (delayedIsSuccess) {
+      return "Success";
+    }
+
+    return "Send";
+  }, [address, delayedIsSuccess]);
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // Set the custom form success text
+  useEffect(() => {
+    if (!formStateText) {
+      return;
+    }
+    setCustomFormSuccessText(formStateText);
+  }, [formStateText, setCustomFormSuccessText]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -114,15 +161,17 @@ export const useUserOperationSend = ({
         if (!isUserOperationSendPending) {
           // Queue the user operation if the user operation has been sent but isn't indexed yet
           await queueUserOperation({ hash: hash });
+          // Finally, return
+          return;
         }
       },
       async _ => {
         // Send the user operation if the user operation hasn't been sent yet
         await userOperationSend(userOperation);
+        // Finally, refetch the user operation
+        await refetchUserOperation();
       },
     );
-    // Finally, refetch the user operation
-    await refetchUserOperation();
   }, [
     userOperation,
     isUserOperationSendPending,

@@ -49,7 +49,6 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
   const {
     userOperation,
     refetchUserOperation,
-    isUserOperationSendPending,
     isUserOperationSendLoading,
     isUserOperationSendSuccess,
     handleSubmit,
@@ -62,29 +61,27 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
+  // Handle on mount
+  useEffect(() => {
+    handleSubmit();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Refetch the user operation on mount
   useEffect(() => {
     refetchUserOperation();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Refetch the user operation and handle every 30 seconds if the operation is still pending
+  // Handle submit on mount every 10 seconds upon mount
   useEffect(() => {
-    const checkUserOperation = async () => {
-      if (isUserOperationSendPending) {
-        await handleSubmit();
-      }
-    };
+    const interval = setInterval(() => {
+      handleSubmit();
+    }, 10000);
 
-    // Run the function immediately on mount.
-    checkUserOperation();
-
-    // Run the function every 30 seconds.
-    const interval = setInterval(checkUserOperation, 30000);
-
-    // Clear the interval when the component unmounts.
     return () => clearInterval(interval);
-  }, []); // Empty dependency array makes this run on mount and unmount only.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // ---------------------------------------------------------------------------
   // Render
