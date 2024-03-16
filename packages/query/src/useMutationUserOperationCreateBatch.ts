@@ -13,17 +13,21 @@
 // limitations under the License.
 
 import { createBatchUserOperation } from "@lightdotso/client";
-import { TRANSACTION_ROW_COUNT } from "@lightdotso/const";
-import type { UserOperationData } from "@lightdotso/data";
+// import { TRANSACTION_ROW_COUNT } from "@lightdotso/const";
+// import type { UserOperationData } from "@lightdotso/data";
 import type {
   UserOperationCreateBatchBodyParams,
   UserOperationParams,
 } from "@lightdotso/params";
-import { queryKeys } from "@lightdotso/query-keys";
+// import { queryKeys } from "@lightdotso/query-keys";
 import { useAuth } from "@lightdotso/stores";
 import { toast } from "@lightdotso/ui";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { type Address, toBytes, toHex } from "viem";
+import {
+  // type Address,
+  toBytes,
+  toHex,
+} from "viem";
 
 // -----------------------------------------------------------------------------
 // Query Mutation
@@ -136,74 +140,74 @@ export const useMutationUserOperationCreateBatch = (
         },
       );
     },
-    onMutate: async (data: UserOperationCreateBatchBodyParams) => {
-      const uopsData = data.userOperations.map(userOperation => ({
-        call_data: userOperation.callData
-          ? toHex(userOperation.callData)
-          : "0x",
-        call_gas_limit: userOperation.callGasLimit
-          ? toHex(userOperation.callGasLimit)
-          : "0x",
-        chain_id: userOperation.chainId ? userOperation.chainId : 0,
-        hash: userOperation.hash,
-        init_code: userOperation.initCode,
-        max_fee_per_gas: userOperation.maxFeePerGas
-          ? toHex(userOperation.maxFeePerGas)
-          : "0x",
-        max_priority_fee_per_gas: userOperation.maxPriorityFeePerGas
-          ? toHex(userOperation.maxPriorityFeePerGas)
-          : "0x",
-        nonce: userOperation.nonce ? Number(userOperation.nonce) : 0,
-        paymaster_and_data: userOperation.paymasterAndData,
-        pre_verification_gas: userOperation.preVerificationGas
-          ? toHex(userOperation.preVerificationGas)
-          : "0x",
-        sender: userOperation.sender,
-        signatures: [
-          {
-            owner_id: data.ownerId,
-            signature: toHex(new Uint8Array([...toBytes(data.signedData), 2])),
-            signature_type: 1,
-            created_at: new Date().toISOString(),
-          },
-        ],
-        status: "PROPOSED",
-        verification_gas_limit: userOperation.verificationGasLimit
-          ? toHex(userOperation.verificationGasLimit)
-          : "0x",
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      }));
+    // onMutate: async (data: UserOperationCreateBatchBodyParams) => {
+    //   const uopsData = data.userOperations.map(userOperation => ({
+    //     call_data: userOperation.callData
+    //       ? toHex(userOperation.callData)
+    //       : "0x",
+    //     call_gas_limit: userOperation.callGasLimit
+    //       ? toHex(userOperation.callGasLimit)
+    //       : "0x",
+    //     chain_id: userOperation.chainId ? userOperation.chainId : 0,
+    //     hash: userOperation.hash,
+    //     init_code: userOperation.initCode,
+    //     max_fee_per_gas: userOperation.maxFeePerGas
+    //       ? toHex(userOperation.maxFeePerGas)
+    //       : "0x",
+    //     max_priority_fee_per_gas: userOperation.maxPriorityFeePerGas
+    //       ? toHex(userOperation.maxPriorityFeePerGas)
+    //       : "0x",
+    //     nonce: userOperation.nonce ? Number(userOperation.nonce) : 0,
+    //     paymaster_and_data: userOperation.paymasterAndData,
+    //     pre_verification_gas: userOperation.preVerificationGas
+    //       ? toHex(userOperation.preVerificationGas)
+    //       : "0x",
+    //     sender: userOperation.sender,
+    //     signatures: [
+    //       {
+    //         owner_id: data.ownerId,
+    //         signature: toHex(new Uint8Array([...toBytes(data.signedData), 2])),
+    //         signature_type: 1,
+    //         created_at: new Date().toISOString(),
+    //       },
+    //     ],
+    //     status: "PROPOSED",
+    //     verification_gas_limit: userOperation.verificationGasLimit
+    //       ? toHex(userOperation.verificationGasLimit)
+    //       : "0x",
+    //     created_at: new Date().toISOString(),
+    //     updated_at: new Date().toISOString(),
+    //   }));
 
-      const previousData: UserOperationData[] | undefined =
-        queryClient.getQueryData(
-          queryKeys.user_operation.list({
-            address: params.address as Address,
-            status: "queued",
-            order: "asc",
-            limit: TRANSACTION_ROW_COUNT,
-            offset: 0,
-            is_testnet: params.is_testnet ?? false,
-          }).queryKey,
-        );
-      queryClient.setQueryData(
-        queryKeys.user_operation.list({
-          address: params.address as Address,
-          status: "queued",
-          order: "asc",
-          limit: TRANSACTION_ROW_COUNT,
-          offset: 0,
-          is_testnet: params.is_testnet ?? false,
-        }).queryKey,
-        (old: UserOperationData[]) => {
-          return {
-            ...old,
-            ...uopsData,
-          };
-        },
-      );
-      return { previousData };
-    },
+    //   const previousData: UserOperationData[] | undefined =
+    //     queryClient.getQueryData(
+    //       queryKeys.user_operation.list({
+    //         address: params.address as Address,
+    //         status: "queued",
+    //         order: "asc",
+    //         limit: TRANSACTION_ROW_COUNT,
+    //         offset: 0,
+    //         is_testnet: params.is_testnet ?? false,
+    //       }).queryKey,
+    //     );
+    //   queryClient.setQueryData(
+    //     queryKeys.user_operation.list({
+    //       address: params.address as Address,
+    //       status: "queued",
+    //       order: "asc",
+    //       limit: TRANSACTION_ROW_COUNT,
+    //       offset: 0,
+    //       is_testnet: params.is_testnet ?? false,
+    //     }).queryKey,
+    //     (old: UserOperationData[]) => {
+    //       return {
+    //         ...old,
+    //         ...uopsData,
+    //       };
+    //     },
+    //   );
+    //   return { previousData };
+    // },
     onError: (err, _newWalletSettings, _context) => {
       if (err instanceof Error) {
         toast.error(err.message);
