@@ -143,7 +143,7 @@ export const Transaction: FC<TransactionProps> = ({
   const {
     // isUserOperationLoading,
     // isUserOperationCreatable,
-    // isValidUserOperations,
+    isValidUserOperations,
     // isUserOperationCreateable,
     isUserOperationCreateLoading,
     isUserOperationCreateSuccess,
@@ -193,7 +193,11 @@ export const Transaction: FC<TransactionProps> = ({
 
   // Set the transaction disabled state
   const isTransactionDisabled = useMemo(() => {
-    return !subdigest;
+    return (
+      !subdigest ||
+      !userOperations.every(userOperation => userOperation.hash) ||
+      isValidUserOperations
+    );
   }, [subdigest]);
 
   // ---------------------------------------------------------------------------
