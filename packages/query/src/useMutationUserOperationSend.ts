@@ -12,10 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {
-  getUserOperationSignature,
-  sendUserOperation,
-} from "@lightdotso/client";
+import { sendUserOperation } from "@lightdotso/client";
 import {
   TRANSACTION_ROW_COUNT,
   WALLET_FACTORY_ENTRYPOINT_MAPPING,

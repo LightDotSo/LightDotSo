@@ -16,7 +16,6 @@ import { getUserOperationReceipt } from "@lightdotso/client";
 import { queryKeys } from "@lightdotso/query-keys";
 import type { UserOperation } from "@lightdotso/schemas";
 import { useAuth } from "@lightdotso/stores";
-import { serialize } from "@lightdotso/wagmi";
 import { useQuery } from "@tanstack/react-query";
 
 // -----------------------------------------------------------------------------

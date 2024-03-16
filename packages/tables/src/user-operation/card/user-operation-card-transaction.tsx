@@ -74,14 +74,7 @@ type UserOperationCardTransactionProps = {
 
 export const UserOperationCardTransaction: FC<
   UserOperationCardTransactionProps
-> = ({
-  address,
-  isTestnet,
-  configuration,
-  userOperation,
-  row,
-  isDefaultOpen = false,
-}) => {
+> = ({ address, configuration, userOperation, row, isDefaultOpen = false }) => {
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
