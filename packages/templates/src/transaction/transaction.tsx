@@ -118,7 +118,6 @@ export const Transaction: FC<TransactionProps> = ({
   const {
     customFormSuccessText,
     isFormLoading,
-    setIsFormLoading,
     isFormDisabled,
     setIsFormDisabled,
   } = useFormRef();
@@ -193,7 +192,7 @@ export const Transaction: FC<TransactionProps> = ({
     }
     // Otherwise, the transaction loading state is set from the individual transaction fetcher
     return false;
-  }, [isUserOperationCreateLoading]);
+  }, [isUserOperationCreateSuccess, isUserOperationCreateLoading]);
 
   // Set the transaction disabled state
   const isTransactionDisabled = useMemo(() => {
@@ -235,11 +234,6 @@ export const Transaction: FC<TransactionProps> = ({
     resetAll();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, resetAll]);
-
-  // If the transaction is loading, set the form loading to true
-  useEffect(() => {
-    setIsFormLoading(isTransactionLoading);
-  }, [isTransactionLoading, setIsFormLoading]);
 
   // If the transaction is disabled, set the form disabled to true
   useEffect(() => {
