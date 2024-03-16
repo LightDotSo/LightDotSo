@@ -41,7 +41,7 @@ export const useQueryUserOperationReceipt = (
     isError: isUserOperationReceiptError,
     error: userOperationReceiptError,
   } = useQuery({
-    retry: 10,
+    retry: false,
     queryKey: queryKeys.rpc.get_user_operation_receipt({
       chainId: params.chainId,
       hash: params.hash,
