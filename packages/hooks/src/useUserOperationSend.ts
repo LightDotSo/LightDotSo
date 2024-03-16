@@ -288,6 +288,18 @@ export const useUserOperationSend = ({
       return;
     }
 
+    console.info("isUserOperationReceiptError", isUserOperationReceiptError);
+    console.info("isUserOperationSendPending", isUserOperationSendPending);
+    console.info("userOperationReceipt", userOperationReceipt);
+
+    // If the user operation receipt is an error, send the user operation
+    if (isUserOperationReceiptError) {
+      // Send the user operation if the user operation hasn't been sent yet
+      await userOperationSend(userOperation);
+      // Finally, refetch the user operation
+      await refetchUserOperation();
+    }
+
     if (userOperationReceipt) {
       if (isUserOperationSendPending) {
         // Queue the user operation if the user operation has been sent but isn't indexed yet
@@ -295,13 +307,6 @@ export const useUserOperationSend = ({
         // Finally, return
         return;
       }
-    }
-
-    if (isUserOperationReceiptError) {
-      // Send the user operation if the user operation hasn't been sent yet
-      await userOperationSend(userOperation);
-      // Finally, refetch the user operation
-      await refetchUserOperation();
     }
   }, [
     userOperation,
