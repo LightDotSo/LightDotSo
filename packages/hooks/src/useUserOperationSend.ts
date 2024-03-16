@@ -20,7 +20,6 @@ import {
   useMutationUserOperationSend,
   useQueryUserOperation,
 } from "@lightdotso/query";
-import { toast } from "@lightdotso/ui";
 import { useCallback, useMemo } from "react";
 import type { Hex, Address } from "viem";
 
@@ -49,11 +48,15 @@ export const useUserOperationSend = ({
     address: hash,
   });
 
-  const { userOperation, refetchUserOperation } = useQueryUserOperation({
-    hash: hash,
-  });
+  const { userOperation, isUserOperationFetching, refetchUserOperation } =
+    useQueryUserOperation({
+      hash: hash,
+    });
 
-  const { userOperationSend } = useMutationUserOperationSend({
+  const {
+    userOperationSend,
+    isUserOperationSendPending: isMutationUserOperationSendLoading,
+  } = useMutationUserOperationSend({
     address,
     chain_id: userOperation?.chain_id,
   });
@@ -64,14 +67,21 @@ export const useUserOperationSend = ({
 
   const isUserOperationSendPending = useMemo(
     () =>
-      userOperation?.status !== "PROPOSED" &&
-      userOperation?.status !== "PENDING",
+      userOperation
+        ? userOperation?.status !== "PROPOSED" &&
+          userOperation?.status !== "PENDING"
+        : false,
     [userOperation],
   );
 
+  const isUserOperationReloading = useMemo(
+    () => isUserOperationFetching,
+    [isUserOperationFetching],
+  );
+
   const isUserOperationSendLoading = useMemo(
-    () => isUserOperationSendPending,
-    [isUserOperationSendPending],
+    () => isMutationUserOperationSendLoading,
+    [isMutationUserOperationSendLoading],
   );
 
   const isUserOperationSendDisabled = useMemo(
@@ -89,7 +99,6 @@ export const useUserOperationSend = ({
 
   const handleSubmit = useCallback(async () => {
     if (!userOperation) {
-      toast.error("User operation not found.");
       return;
     }
 
@@ -127,7 +136,9 @@ export const useUserOperationSend = ({
 
   return {
     handleSubmit,
+    refetchUserOperation,
     userOperation,
+    isUserOperationReloading: isUserOperationReloading,
     isUserOperationSendPending: isUserOperationSendPending,
     isUserOperationSendDisabled: isUserOperationSendDisabled,
     isUserOperationSendLoading: isUserOperationSendLoading,

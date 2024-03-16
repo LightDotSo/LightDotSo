@@ -48,7 +48,9 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
 
   const {
     userOperation,
+    refetchUserOperation,
     isUserOperationSendPending,
+    isUserOperationReloading,
     isUserOperationSendLoading,
     isUserOperationSendSuccess,
     handleSubmit,
@@ -63,10 +65,23 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
 
   // Confirm the user operation on mount
   useEffect(() => {
-    if (isUserOperationSendPending) {
+    // If the user operation is pending, submit the operation
+    if (!isUserOperationSendPending) {
       handleSubmit();
+      return;
     }
-  }, [isUserOperationSendPending, handleSubmit]);
+  }, [
+    isUserOperationSendPending,
+    isUserOperationReloading,
+    handleSubmit,
+    refetchUserOperation,
+  ]);
+
+  // Refetch the user operation on mount
+  useEffect(() => {
+    refetchUserOperation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // ---------------------------------------------------------------------------
   // Render
