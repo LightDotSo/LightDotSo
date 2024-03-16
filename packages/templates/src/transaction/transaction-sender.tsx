@@ -70,9 +70,9 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
 
   // Refetch the user operation and handle every 30 seconds if the operation is still pending
   useEffect(() => {
-    const checkUserOperation = () => {
+    const checkUserOperation = async () => {
       if (isUserOperationSendPending) {
-        handleSubmit();
+        await handleSubmit();
       }
     };
 

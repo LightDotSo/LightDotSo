@@ -15,9 +15,9 @@
 "use client";
 
 // @ts-ignore
-import * as config from "@lightdotso/tailwindcss";
+// import * as config from "@lightdotso/tailwindcss";
 import { useEffect, useState } from "react";
-import resolveConfig from "tailwindcss/resolveConfig";
+// import resolveConfig from "tailwindcss/resolveConfig";
 
 // From: https://github.com/shadcn-ui/ui/blob/fb614ac2921a84b916c56e9091aa0ae8e129c565/apps/www/hooks/use-media-query.tsx#L4
 // License: MIT
@@ -27,8 +27,16 @@ import resolveConfig from "tailwindcss/resolveConfig";
 // -----------------------------------------------------------------------------
 
 // @ts-ignore
-const fullConfig = resolveConfig(config);
-const screens = fullConfig.theme?.screens as Record<string, string>;
+// const fullConfig = resolveConfig(config);
+// const screens = fullConfig.theme?.screens as Record<string, string>;
+
+const screens = {
+  sm: "640px",
+  md: "768px",
+  lg: "1024px",
+  xl: "1280px",
+  "2xl": "1536px",
+};
 
 // -----------------------------------------------------------------------------
 // Hook
