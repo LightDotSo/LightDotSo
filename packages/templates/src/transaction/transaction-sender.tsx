@@ -18,7 +18,7 @@ import { useUserOperationSend } from "@lightdotso/hooks";
 import { useUserOperations } from "@lightdotso/stores";
 import { Button, StateInfoSection } from "@lightdotso/ui";
 import { getChainById, getEtherscanUrl } from "@lightdotso/utils";
-import { LoaderIcon } from "lucide-react";
+import { CheckCircle2, LoaderIcon } from "lucide-react";
 import { useEffect, type FC } from "react";
 import type { Address, Hex } from "viem";
 
@@ -129,10 +129,22 @@ export const TransactionSender: FC<TransactionSenderProps> = ({ address }) => {
   return (
     <StateInfoSection
       icon={
-        <LoaderIcon className="mx-auto size-8 animate-spin rounded-full border border-border p-2 text-text-weak duration-1000 md:size-10" />
+        pendingSubmitUserOperationHashes.length > 0 ? (
+          <LoaderIcon className="mx-auto size-8 animate-spin rounded-full border border-border p-2 text-text-weak duration-1000 md:size-10" />
+        ) : (
+          <CheckCircle2 className="mx-auto size-8 rounded-full border border-border p-2 text-text-weak md:size-10" />
+        )
       }
-      title="Sending Transaction..."
-      description="Please wait while we handle your request..."
+      title={
+        pendingSubmitUserOperationHashes.length > 0
+          ? "Sending Transaction..."
+          : "Success"
+      }
+      description={
+        pendingSubmitUserOperationHashes.length > 0
+          ? "Please wait while we handle your request..."
+          : "Your transaction has been sent successfully."
+      }
     >
       {pendingSubmitUserOperationHashes.map((hash, index) => (
         <TransactionSenderOp key={index} address={address} hash={hash} />
