@@ -54,7 +54,7 @@ export const useQueryNotificationsCount = (
       address: params.address as Address,
     }).queryKey,
     queryFn: async () => {
-      if (!params.address) {
+      if (!params.address || clientType !== "authenticated") {
         return null;
       }
 

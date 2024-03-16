@@ -246,7 +246,8 @@ export const Transaction: FC<TransactionProps> = ({
 
   // If the transaction is disabled, set the form disabled to true
   useEffect(() => {
-    setIsFormDisabled(isTransactionDisabled);
+    setIsFormDisabled(false);
+    // setIsFormDisabled(isTransactionDisabled);
   }, [isTransactionDisabled, setIsFormDisabled]);
 
   // Sync the `isDirectSubmit` field with the `isUserOperationCreateSubmittable` value
