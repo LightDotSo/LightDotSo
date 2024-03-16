@@ -113,7 +113,6 @@ export const Transaction: FC<TransactionProps> = ({
     userOperationDetails,
     userOperationDevInfo,
     userOperationSimulations,
-    setPendingSubmitUserOperationHashes,
     resetAll,
   } = useUserOperations();
   const {
@@ -203,23 +202,6 @@ export const Transaction: FC<TransactionProps> = ({
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
-
-  // Set the pending submit userOperation hashes
-  useEffect(() => {
-    if (!isUserOperationCreateSuccess) {
-      return;
-    }
-
-    const hashes = userOperations.map(
-      userOperation => userOperation.hash as Hex,
-    );
-
-    setPendingSubmitUserOperationHashes(hashes);
-  }, [
-    userOperations,
-    isUserOperationCreateSuccess,
-    setPendingSubmitUserOperationHashes,
-  ]);
 
   // Change the page index depending on the sign loading state
   useEffect(() => {

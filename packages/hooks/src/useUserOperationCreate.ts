@@ -21,7 +21,7 @@ import {
   useQueryConfiguration,
 } from "@lightdotso/query";
 import { subdigestOf } from "@lightdotso/sequence";
-import { useAuth, useFormRef } from "@lightdotso/stores";
+import { useAuth, useFormRef, useUserOperations } from "@lightdotso/stores";
 import {
   useAccount,
   useSignMessage,
@@ -70,6 +70,10 @@ export const useUserOperationCreate = ({
 
   const { address: userAddress } = useAuth();
   const { setCustomFormSuccessText } = useFormRef();
+  const {
+    pendingSubmitUserOperationHashes,
+    setPendingSubmitUserOperationHashes,
+  } = useUserOperations();
 
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -288,6 +292,11 @@ export const useUserOperationCreate = ({
         userOperation: userOperation,
       });
 
+      setPendingSubmitUserOperationHashes([
+        ...pendingSubmitUserOperationHashes,
+        userOperation.hash as Hex,
+      ]);
+
       setSignedData(undefined);
     };
 
@@ -306,6 +315,13 @@ export const useUserOperationCreate = ({
         userOperations: userOperations,
         merkleRoot: `0x${merkleTree.getRoot().toString("hex")}` as Hex,
       });
+
+      for (const userOperation of userOperations) {
+        setPendingSubmitUserOperationHashes([
+          ...pendingSubmitUserOperationHashes,
+          userOperation.hash as Hex,
+        ]);
+      }
 
       setSignedData(undefined);
     };

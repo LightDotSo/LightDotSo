@@ -30,7 +30,6 @@ import type { Address, Hex } from "viem";
 
 interface TransactionSenderOpProps {
   address: Address;
-  configuration: ConfigurationData;
   hash: Hex;
 }
 
@@ -120,14 +119,6 @@ type TransactionSenderProps = {
 
 export const TransactionSender: FC<TransactionSenderProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
-
-  const { configuration } = useQueryConfiguration({
-    address: address,
-  });
-
-  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
@@ -145,15 +136,9 @@ export const TransactionSender: FC<TransactionSenderProps> = ({ address }) => {
       title="Sending Transaction..."
       description="Please wait while we handle your request..."
     >
-      {configuration &&
-        pendingSubmitUserOperationHashes.map((hash, index) => (
-          <TransactionSenderOp
-            key={index}
-            address={address}
-            configuration={configuration}
-            hash={hash}
-          />
-        ))}
+      {pendingSubmitUserOperationHashes.map((hash, index) => (
+        <TransactionSenderOp key={index} address={address} hash={hash} />
+      ))}
     </StateInfoSection>
   );
 };
