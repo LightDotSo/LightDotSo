@@ -56,8 +56,6 @@ export const getUserOperationNonce = async (
 
   return ResultAsync.fromPromise(
     client.GET("/user_operation/nonce", {
-      // @ts-ignore
-      next: { revalidate: 0, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -83,8 +81,6 @@ export const getUserOperationSignature = async (
 
   return ResultAsync.fromPromise(
     client.GET("/user_operation/signature", {
-      // @ts-ignore
-      next: { revalidate: 300 },
       params,
     }),
     () => new Error("Database error"),

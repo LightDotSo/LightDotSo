@@ -35,9 +35,6 @@ export const getChainId = async () => {
       "eth_chainId",
       [],
       EthChainIdResultSchema,
-      {
-        revalidate: 0,
-      },
     ),
     e => e,
   );
@@ -69,12 +66,9 @@ export const getUserOperationReceipt = async (
   return ResultAsync.fromPromise(
     zodJsonRpcFetch(
       rpcClient(chainId, clientType),
-      "eth_getUserOperation",
+      "eth_getUserOperationReceipt",
       params,
       GetUserOperationReceiptResponse,
-      {
-        revalidate: 0,
-      },
     ),
     e => e,
   );
@@ -117,9 +111,6 @@ export const sendUserOperation = async (
       "eth_sendUserOperation",
       params,
       SendUserOperationResponse,
-      {
-        revalidate: 0,
-      },
     ),
     e => e,
   );
@@ -169,9 +160,6 @@ export const estimateUserOperationGas = async (
       "eth_estimateUserOperationGas",
       params,
       EstimateUserOperationGasResponse,
-      {
-        revalidate: 0,
-      },
     ),
     e => e,
   );
@@ -222,9 +210,6 @@ export const getPaymasterGasAndPaymasterAndData = async (
       "paymaster_requestGasAndPaymasterAndData",
       params,
       PaymasterGasAndPaymasterAndDataResponse,
-      {
-        revalidate: 0,
-      },
     ),
     e => e,
   );

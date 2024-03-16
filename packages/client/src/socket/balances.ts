@@ -36,8 +36,6 @@ export const getSocketBalances = async (
 
   return ResultAsync.fromPromise(
     client.GET("/v2/balances", {
-      // @ts-ignore
-      next: { revalidate: 300, tags: [parameters?.query?.address] },
       params: parameters,
     }),
     () => new Error("Database error"),

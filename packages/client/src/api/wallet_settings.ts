@@ -34,8 +34,6 @@ export const getWalletSettings = async (
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/settings/get", {
-      // @ts-ignore
-      next: { revalidate: 0, tags: [params?.query?.address] },
       params,
     }),
     () => new Error("Database error"),

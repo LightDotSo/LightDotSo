@@ -40,10 +40,6 @@ export const getNftValuation = async (
       `${getSimplehashClient()}/v0/nfts/owners/value?chains=${chains}&wallet_addresses=${address}`,
       nftWalletValuationsSchema,
       "GET",
-      {
-        revalidate: 300,
-        tags: [address],
-      },
       headers,
     ),
     err => {

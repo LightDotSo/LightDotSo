@@ -26,10 +26,6 @@ export const getLlama = async (address: string) => {
       `https://api.llamafolio.com/balances/${address}`,
       llamaGetSchema,
       "GET",
-      {
-        revalidate: 300,
-        tags: [address],
-      },
     ),
     err => {
       if (err instanceof Error) {
