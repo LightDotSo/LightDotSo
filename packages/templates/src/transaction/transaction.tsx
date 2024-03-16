@@ -198,7 +198,7 @@ export const Transaction: FC<TransactionProps> = ({
       !userOperations.every(userOperation => userOperation.hash) ||
       !isValidUserOperations
     );
-  }, [subdigest]);
+  }, [subdigest, userOperations, isValidUserOperations]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
