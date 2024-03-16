@@ -92,7 +92,7 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
     }, 30000);
 
     return () => clearInterval(interval);
-  }, [isUserOperationSendPending, refetchUserOperation]);
+  }, [isUserOperationSendPending, handleSubmit]);
 
   // ---------------------------------------------------------------------------
   // Render

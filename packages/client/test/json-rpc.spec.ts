@@ -17,6 +17,7 @@ import { getChainId } from "../src"; // Replace with your actual file path
 
 test("getChainId", async () => {
   const result = await getChainId(1);
+  // eslint-disable-next-line no-console
   console.log(result);
 
   expect(result._unsafeUnwrap()).toBe("0x1");

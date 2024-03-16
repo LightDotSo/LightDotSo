@@ -103,26 +103,25 @@ export const useUserOperationSend = ({
       return;
     }
 
-    if (!isUserOperationSendPending) {
-      await userOperationSend(userOperation);
-    }
-
+    // Get the user operation receipt to check if the user operation has been sent directly
     const res = await getUserOperationReceipt(userOperation.chain_id, [
       userOperation.hash,
     ]);
 
     res.match(
-      () => {
-        // Refetch the user operation on success
+      async () => {
         if (!isUserOperationSendPending) {
-          refetchUserOperation();
+          // Queue the user operation if the user operation has been sent but isn't indexed yet
+          await queueUserOperation({ hash: hash });
         }
-        return;
       },
-      _ => {
-        queueUserOperation({ hash: hash });
+      async _ => {
+        // Send the user operation if the user operation hasn't been sent yet
+        await userOperationSend(userOperation);
       },
     );
+    // Finally, refetch the user operation
+    await refetchUserOperation();
   }, [
     userOperation,
     isUserOperationSendPending,
