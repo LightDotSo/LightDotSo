@@ -208,6 +208,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
         break;
       case "send":
         if (pathname.includes("send")) {
+          setSendBackgroundModal(false);
           showSendModal();
         }
         break;

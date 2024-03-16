@@ -154,7 +154,7 @@ export const Transaction: FC<TransactionProps> = ({
     // paymasterHash,
     // paymasterNonce,
     // owner,
-    // subdigest,
+    subdigest,
   } = useUserOperationCreate({
     address: address,
   });
@@ -193,8 +193,8 @@ export const Transaction: FC<TransactionProps> = ({
 
   // Set the transaction disabled state
   const isTransactionDisabled = useMemo(() => {
-    return !userOperations.every(userOperation => userOperation.hash);
-  }, [userOperations]);
+    return !!subdigest;
+  }, [subdigest]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
