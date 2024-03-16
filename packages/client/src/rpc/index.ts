@@ -22,19 +22,19 @@ import { zodJsonRpcFetch } from "../zod";
 // Rpc
 // -----------------------------------------------------------------------------
 
-const EthChainIdResultSchema = z
+const EthChainIdResponse = z
   .string()
   .refine(value => /^0x[0-9a-fA-F]+$/.test(value), {
     message: "ChainId must be a hexadecimal string",
   });
 
-export const getChainId = async () => {
+export const getChainId = async (chainId: number, clientType?: ClientType) => {
   return ResultAsync.fromPromise(
     zodJsonRpcFetch(
-      "https://rpc.light.so/1",
+      rpcClient(chainId, clientType),
       "eth_chainId",
       [],
-      EthChainIdResultSchema,
+      EthChainIdResponse,
     ),
     e => e,
   );

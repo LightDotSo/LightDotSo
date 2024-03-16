@@ -27,8 +27,6 @@ export const zodFetch = async <TResponseSchema extends z.Schema>(
   headers?: Record<string, string>,
 ): Promise<z.infer<TResponseSchema>> => {
   const response = await fetch(url, {
-    // @ts-ignore
-    next: next,
     method: method ?? "GET",
     headers: {
       "content-type": "application/json",
@@ -87,8 +85,6 @@ export async function zodJsonRpcFetch<
 ): Promise<z.infer<TResponseSchema>> {
   const id = Math.floor(Math.random() * 100);
   const response = await fetch(url, {
-    // @ts-ignore
-    next: next,
     method: "POST",
     headers: {
       "content-type": "application/json",

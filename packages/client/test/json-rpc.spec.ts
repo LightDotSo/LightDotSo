@@ -16,7 +16,8 @@ import { expect, test } from "vitest";
 import { getChainId } from "../src"; // Replace with your actual file path
 
 test("getChainId", async () => {
-  const result = await getChainId();
+  const result = await getChainId(1);
+  console.log(result);
 
   expect(result._unsafeUnwrap()).toBe("0x1");
 });
