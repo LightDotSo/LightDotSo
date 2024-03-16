@@ -83,6 +83,17 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Refetch the user operation and handle every 30 seconds if the operation is still pending
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (isUserOperationSendPending) {
+        handleSubmit();
+      }
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [isUserOperationSendPending, refetchUserOperation]);
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------

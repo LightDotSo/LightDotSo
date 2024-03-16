@@ -70,7 +70,8 @@ export const useUserOperationSend = ({
       userOperation
         ? userOperation?.status !== "PROPOSED" &&
           userOperation?.status !== "PENDING"
-        : false,
+        : // Send is pending if the operation is not found
+          true,
     [userOperation],
   );
 
@@ -116,6 +117,7 @@ export const useUserOperationSend = ({
         if (!isUserOperationSendPending) {
           refetchUserOperation();
         }
+        return;
       },
       _ => {
         queueUserOperation({ hash: hash });
