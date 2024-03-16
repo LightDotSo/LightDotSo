@@ -14,15 +14,28 @@
 
 "use client";
 
-import { getUserOperationReceipt } from "@lightdotso/client";
 import {
   useMutationQueueUserOperation,
   useMutationUserOperationSend,
+  useQueryConfiguration,
+  useQueryPaymasterOperation,
   useQueryUserOperation,
+  useQueryUserOperationReceipt,
 } from "@lightdotso/query";
 import { useFormRef } from "@lightdotso/stores";
-import { useCallback, useEffect, useMemo } from "react";
-import type { Hex, Address } from "viem";
+import {
+  useReadLightVerifyingPaymasterGetHash,
+  useReadLightVerifyingPaymasterSenderNonce,
+  useReadLightWalletImageHash,
+} from "@lightdotso/wagmi";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  type Hex,
+  type Address,
+  toHex,
+  fromHex,
+  recoverMessageAddress,
+} from "viem";
 import { useDelayedValue } from "./useDelayedValue";
 
 // -----------------------------------------------------------------------------
@@ -43,6 +56,12 @@ export const useUserOperationSend = ({
   hash,
 }: UserOperationSendProps) => {
   // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [recoveredAddress, setRecoveredAddress] = useState<Address>();
+
+  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
@@ -61,13 +80,86 @@ export const useUserOperationSend = ({
       hash: hash,
     });
 
+  // ---------------------------------------------------------------------------
+  // Wagmi
+  // ---------------------------------------------------------------------------
+
+  const { data: paymasterHash } = useReadLightVerifyingPaymasterGetHash({
+    address: userOperation?.paymaster_and_data.slice(0, 42) as Address,
+    chainId: userOperation?.chain_id,
+    args: [
+      {
+        sender: userOperation?.sender as Address,
+        nonce: BigInt(userOperation?.nonce ?? 0),
+        initCode: userOperation?.init_code as Hex,
+        callData: userOperation?.call_data as Hex,
+        callGasLimit: BigInt(userOperation?.call_gas_limit ?? 0),
+        verificationGasLimit: BigInt(
+          userOperation?.verification_gas_limit ?? 0,
+        ),
+        preVerificationGas: BigInt(userOperation?.pre_verification_gas ?? 0),
+        maxFeePerGas: BigInt(userOperation?.max_fee_per_gas ?? 0),
+        maxPriorityFeePerGas: BigInt(
+          userOperation?.max_priority_fee_per_gas ?? 0,
+        ),
+        paymasterAndData: userOperation?.paymaster_and_data as Hex,
+        signature: toHex(new Uint8Array([2])),
+      },
+      fromHex(
+        `0x${userOperation?.paymaster_and_data ? userOperation?.paymaster_and_data.slice(154, 162) : 0}`,
+        "number",
+      ),
+      fromHex(
+        `0x${userOperation?.paymaster_and_data ? userOperation?.paymaster_and_data.slice(162, 170) : 0}`,
+        "number",
+      ),
+    ],
+  });
+
+  const { data: paymasterNonce } = useReadLightVerifyingPaymasterSenderNonce({
+    address: userOperation?.paymaster_and_data.slice(0, 42) as Address,
+    chainId: Number(userOperation?.chain_id),
+    args: [userOperation?.sender as Address],
+  });
+
+  const { data: imageHash } = useReadLightWalletImageHash({
+    address: userOperation?.sender as Address,
+    chainId: userOperation?.chain_id ?? undefined,
+  });
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { configuration } = useQueryConfiguration({
+    address: address as Address,
+    image_hash: imageHash,
+    checkpoint: !imageHash ? 0 : undefined,
+  });
+
+  const { paymasterOperation } = useQueryPaymasterOperation({
+    address: userOperation?.paymaster_and_data.slice(0, 42) as Address,
+    chain_id: userOperation?.chain_id!,
+    valid_after: fromHex(
+      `0x${userOperation?.paymaster_and_data ? userOperation?.paymaster_and_data.slice(162, 170) : 0}`,
+      "number",
+    ),
+  });
+
+  const { userOperationReceipt } = useQueryUserOperationReceipt({
+    chainId: userOperation?.chain_id!,
+    hash: hash,
+  });
+
   const {
     userOperationSend,
+    isUserOperationSendIdle: isMutationUserOperationSendIdle,
     isUserOperationSendSuccess: isMutationUserOperationSendSuccess,
     isUserOperationSendPending: isMutationUserOperationSendLoading,
   } = useMutationUserOperationSend({
-    address,
-    chain_id: userOperation?.chain_id,
+    address: address as Address,
+    configuration: configuration,
+    hash: userOperation?.hash as Hex,
   });
 
   // ---------------------------------------------------------------------------
@@ -79,6 +171,27 @@ export const useUserOperationSend = ({
     false,
     3000,
   );
+
+  // ---------------------------------------------------------------------------
+  // Local Variables
+  // ---------------------------------------------------------------------------
+
+  const paymasterSignedMsg = `0x${userOperation?.paymaster_and_data.slice(
+    170,
+  )}` as Hex;
+
+  // Get the cumulative weight of all owners in the userOperation signatures array and check if it is greater than or equal to the threshold
+  const isUserOperationSendValid = userOperation
+    ? userOperation.signatures.reduce((acc, signature) => {
+        return (
+          acc +
+          ((configuration &&
+            configuration.owners.find(owner => owner.id === signature?.owner_id)
+              ?.weight) ||
+            0)
+        );
+      }, 0) >= (configuration ? configuration.threshold : 0)
+    : false;
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -94,11 +207,29 @@ export const useUserOperationSend = ({
     }
 
     return "Send";
-  }, [address, delayedIsSuccess, isMutationUserOperationSendLoading]);
+  }, [delayedIsSuccess, isMutationUserOperationSendLoading]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    const recoverAddress = async () => {
+      if (paymasterHash) {
+        try {
+          const address = await recoverMessageAddress({
+            message: { raw: paymasterHash },
+            signature: paymasterSignedMsg,
+          });
+          setRecoveredAddress(address);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    };
+
+    recoverAddress();
+  }, [paymasterHash, paymasterSignedMsg]);
 
   // Set the custom form success text
   useEffect(() => {
@@ -127,6 +258,11 @@ export const useUserOperationSend = ({
     [isUserOperationFetching],
   );
 
+  const isUserOperationSendIdle = useMemo(
+    () => isMutationUserOperationSendIdle,
+    [isMutationUserOperationSendIdle],
+  );
+
   const isUserOperationSendLoading = useMemo(
     () => isMutationUserOperationSendLoading,
     [isMutationUserOperationSendLoading],
@@ -151,29 +287,22 @@ export const useUserOperationSend = ({
       return;
     }
 
-    // Get the user operation receipt to check if the user operation has been sent directly
-    const res = await getUserOperationReceipt(userOperation.chain_id, [
-      userOperation.hash,
-    ]);
-
-    res.match(
-      async () => {
-        if (!isUserOperationSendPending) {
-          // Queue the user operation if the user operation has been sent but isn't indexed yet
-          await queueUserOperation({ hash: hash });
-          // Finally, return
-          return;
-        }
-      },
-      async _ => {
-        // Send the user operation if the user operation hasn't been sent yet
-        await userOperationSend(userOperation);
-        // Finally, refetch the user operation
-        await refetchUserOperation();
-      },
-    );
+    if (userOperationReceipt) {
+      if (isUserOperationSendPending) {
+        // Queue the user operation if the user operation has been sent but isn't indexed yet
+        await queueUserOperation({ hash: hash });
+        // Finally, return
+        return;
+      }
+    } else {
+      // Send the user operation if the user operation hasn't been sent yet
+      await userOperationSend(userOperation);
+      // Finally, refetch the user operation
+      await refetchUserOperation();
+    }
   }, [
     userOperation,
+    userOperationReceipt,
     isUserOperationSendPending,
     userOperationSend,
     queueUserOperation,
@@ -189,7 +318,13 @@ export const useUserOperationSend = ({
     handleSubmit,
     refetchUserOperation,
     userOperation,
+    paymasterNonce,
+    paymasterOperation,
+    paymasterSignedMsg,
+    recoveredAddress,
+    isUserOperationSendValid,
     isUserOperationReloading: isUserOperationReloading,
+    isUserOperationSendIdle: isUserOperationSendIdle,
     isUserOperationSendPending: isUserOperationSendPending,
     isUserOperationSendDisabled: isUserOperationSendDisabled,
     isUserOperationSendLoading: isUserOperationSendLoading,

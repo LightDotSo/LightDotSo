@@ -48,7 +48,7 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
       return serialize(key);
     },
     queryKey: queryKeys.rpc.get_paymaster_gas_and_paymaster_and_data({
-      chainId: params.nonce,
+      chainId: params.chainId,
       nonce: params.nonce,
       initCode: params.initCode,
       sender: params.sender,

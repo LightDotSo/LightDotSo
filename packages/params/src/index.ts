@@ -53,6 +53,7 @@ export type {
   UserOperationGetParams,
   UserOperationNonceParams,
   UserOperationSendParams,
+  UserOperationSignatureGetParams,
   UserOperationListParams,
   UserOperationListCountParams,
   UserOperationCreateBodyParams,

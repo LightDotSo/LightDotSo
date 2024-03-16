@@ -12,10 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {
-  getUserOperationSignature,
-  sendUserOperation,
-} from "@lightdotso/client";
+import { sendUserOperation } from "@lightdotso/client";
 import {
   TRANSACTION_ROW_COUNT,
   WALLET_FACTORY_ENTRYPOINT_MAPPING,
@@ -28,11 +25,10 @@ import type {
 import { queryKeys } from "@lightdotso/query-keys";
 import { toast } from "@lightdotso/ui";
 import { findContractAddressByAddress } from "@lightdotso/utils";
-import { useReadLightWalletImageHash } from "@lightdotso/wagmi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { toHex } from "viem";
-import { useQueryConfiguration } from "./useQueryConfiguration";
+import { useQueryUserOperationSignature } from "./useQueryUserOperationSignature";
 import { useQueryWallet } from "./useQueryWallet";
 
 // -----------------------------------------------------------------------------
@@ -43,28 +39,18 @@ export const useMutationUserOperationSend = (
   params: UserOperationSendParams,
 ) => {
   // ---------------------------------------------------------------------------
-  // Wagmi
-  // ---------------------------------------------------------------------------
-
-  const { data: imageHash } = useReadLightWalletImageHash({
-    address: params.address as Address,
-    chainId: params.chain_id ?? undefined,
-  });
-
-  // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
   const queryClient = useQueryClient();
 
-  const { configuration, isConfigurationLoading } = useQueryConfiguration({
-    address: params.address as Address,
-    image_hash: imageHash,
-    checkpoint: !imageHash ? 0 : undefined,
-  });
-
   const { wallet } = useQueryWallet({
     address: params.address as Address,
+  });
+
+  const { userOperationSignature } = useQueryUserOperationSignature({
+    hash: params.hash,
+    configuration_id: params.configuration?.id,
   });
 
   // ---------------------------------------------------------------------------
@@ -80,73 +66,48 @@ export const useMutationUserOperationSend = (
   } = useMutation({
     retry: 10,
     mutationFn: async (body: UserOperationSendBodyParams) => {
-      if (!wallet || isConfigurationLoading) {
+      if (!wallet || !userOperationSignature) {
         return;
       }
 
       const loadingToast = toast.loading("Submitting the transaction...");
 
-      console.info("imageHash", imageHash);
-      console.info("configuration", configuration);
-
-      // Get the sig as bytes from caller
-      const sigRes = await getUserOperationSignature({
-        params: {
-          query: {
-            user_operation_hash: body.hash,
-            configuration_id: configuration?.id,
-          },
+      // Sned the user operation
+      const res = await sendUserOperation(body.chain_id, [
+        {
+          sender: body.sender,
+          nonce: toHex(body.nonce),
+          initCode: body.init_code,
+          callData: body.call_data,
+          paymasterAndData: body.paymaster_and_data,
+          callGasLimit: toHex(body.call_gas_limit),
+          verificationGasLimit: toHex(body.verification_gas_limit),
+          preVerificationGas: toHex(body.pre_verification_gas),
+          maxFeePerGas: toHex(body.max_fee_per_gas),
+          maxPriorityFeePerGas: toHex(body.max_priority_fee_per_gas),
+          signature: userOperationSignature,
         },
-      });
+        WALLET_FACTORY_ENTRYPOINT_MAPPING[
+          findContractAddressByAddress(wallet.factory_address as Address)!
+        ],
+      ]);
 
-      await sigRes.match(
-        async sig => {
-          // Sned the user operation
-          const res = await sendUserOperation(body.chain_id, [
-            {
-              sender: body.sender,
-              nonce: toHex(body.nonce),
-              initCode: body.init_code,
-              callData: body.call_data,
-              paymasterAndData: body.paymaster_and_data,
-              callGasLimit: toHex(body.call_gas_limit),
-              verificationGasLimit: toHex(body.verification_gas_limit),
-              preVerificationGas: toHex(body.pre_verification_gas),
-              maxFeePerGas: toHex(body.max_fee_per_gas),
-              maxPriorityFeePerGas: toHex(body.max_priority_fee_per_gas),
-              signature: sig,
-            },
-            WALLET_FACTORY_ENTRYPOINT_MAPPING[
-              findContractAddressByAddress(wallet.factory_address as Address)!
-            ],
-          ]);
+      toast.dismiss(loadingToast);
 
-          toast.dismiss(loadingToast);
-
-          res.match(
-            _ => {
-              toast.success("You submitted the transaction!");
-            },
-            err => {
-              if (failureCount === 10) {
-                if (err instanceof Error) {
-                  toast.error(err.message);
-                } else {
-                  toast.error("Failed to submit the transaction.");
-                }
-              }
-
-              throw err;
-            },
-          );
+      res.match(
+        _ => {
+          toast.success("You submitted the transaction!");
         },
-        async err => {
-          toast.dismiss(loadingToast);
-          if (err instanceof Error) {
-            toast.error(err.message);
-          } else {
-            toast.error("Failed to get signature.");
+        err => {
+          if (failureCount === 10) {
+            if (err instanceof Error) {
+              toast.error(err.message);
+            } else {
+              toast.error("Failed to submit the transaction.");
+            }
           }
+
+          throw err;
         },
       );
     },

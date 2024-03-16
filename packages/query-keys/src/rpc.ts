@@ -41,6 +41,11 @@ export const rpc = createQueryKeys("rpc", {
   ) => ({
     queryKey: [{ params }],
   }),
+  get_user_operation_receipt: (
+    params: Pick<UserOperation, "hash"> & { chainId: number },
+  ) => ({
+    queryKey: [{ params }],
+  }),
 });
 
 // -----------------------------------------------------------------------------
