@@ -185,6 +185,7 @@ export const Transaction: FC<TransactionProps> = ({
   // ---------------------------------------------------------------------------
 
   // Set the transaction loading state
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isTransactionLoading = useMemo(() => {
     // Only set the loading state if the user operation is not yet created
     if (isUserOperationCreateSuccess) {
