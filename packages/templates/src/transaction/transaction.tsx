@@ -194,9 +194,9 @@ export const Transaction: FC<TransactionProps> = ({
   // Set the transaction disabled state
   const isTransactionDisabled = useMemo(() => {
     return (
-      !subdigest ||
+      typeof subdigest === "undefined" ||
       !userOperations.every(userOperation => userOperation.hash) ||
-      isValidUserOperations
+      !isValidUserOperations
     );
   }, [subdigest]);
 
