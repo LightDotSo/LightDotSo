@@ -22,10 +22,10 @@ import {
   useQueryUserOperationReceipt,
 } from "@lightdotso/query";
 import { useFormRef } from "@lightdotso/stores";
+import { useReadLightWalletImageHash } from "@lightdotso/wagmi";
 import { useCallback, useEffect, useMemo } from "react";
 import type { Hex, Address } from "viem";
 import { useDelayedValue } from "./useDelayedValue";
-import { useReadLightWalletImageHash } from "@lightdotso/wagmi";
 
 // -----------------------------------------------------------------------------
 // Props
