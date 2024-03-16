@@ -39,6 +39,7 @@ export interface UserOperationDevInfo {
 type UserOperationsStore = {
   pendingSubmitUserOperationHashes: Hex[];
   addPendingSubmitUserOperationHash: (hash: Hex) => void;
+  resetPendingSubmitUserOperationHashes: () => void;
   userOperationDetails: { [chainId: number]: UserOperationDetailsItem[] };
   userOperationDevInfo: { [chainId: number]: UserOperationDevInfo[] };
   userOperationSimulations: { [chainId: number]: SimulationData };
@@ -77,6 +78,10 @@ export const useUserOperations = create<UserOperationsStore>(set => ({
           hash,
         ],
       };
+    }),
+  resetPendingSubmitUserOperationHashes: () =>
+    set(() => {
+      return { pendingSubmitUserOperationHashes: [] };
     }),
   userOperationDetails: {},
   userOperationDevInfo: {},
