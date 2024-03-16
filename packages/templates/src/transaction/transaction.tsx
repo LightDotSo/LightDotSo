@@ -44,7 +44,7 @@ import {
 import { cn, getChainById } from "@lightdotso/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname } from "next/navigation";
-import { use, useEffect, useMemo, type FC } from "react";
+import { useEffect, useMemo, type FC } from "react";
 import { useForm } from "react-hook-form";
 import type { Hex, Address } from "viem";
 import type * as z from "zod";
@@ -239,7 +239,7 @@ export const Transaction: FC<TransactionProps> = ({
     } else {
       setIsFormLoading(false);
     }
-  }, [isTransactionLoading]);
+  }, [isTransactionLoading, setIsFormLoading]);
 
   // If all of the items in the userOperations array have a hash, set form disabled to false
   useEffect(() => {

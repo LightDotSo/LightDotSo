@@ -387,10 +387,11 @@ export const useUserOperationCreate = ({
   const isUserOperationCreateable = useMemo(() => {
     return (
       !isSignLoading &&
+      typeof owner !== "undefined" &&
       typeof subdigest !== "undefined" &&
       isValidUserOperations
     );
-  }, [isSignLoading, owner, isValidUserOperations]);
+  }, [isSignLoading, owner, subdigest, isValidUserOperations]);
 
   const isUserOperationCreateLoading = useMemo(() => {
     return (
