@@ -17,3 +17,9 @@ We would like to acknowledge the projects below whose work has been instrumental
 - [@shadcn/ui](https://github.com/shadcn/ui): The web UI is all based on the work done by @shadcn, and we are grateful for the work that he has done to provide a beautiful and functional UI foundation for us to build upon.
 
 See more in [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md) and [REFERENCES.md](REFERENCES.md) for more details.
+
+## License
+
+We use the [account-abstraction](https://github.com/eth-infinitism/account-abstraction) contracts and [rundler](https://github.com/alchemyplatform/rundler) as a library. These contracts are licensed under [GPLv3](https://github.com/eth-infinitism/account-abstraction/blob/develop/LICENSE) and [LGPL v3](https://github.com/alchemyplatform/rundler/blob/main/COPYING.lesser) respectively.
+
+All other code in this repository is licensed under [Apache 2.0](./LICENSE.md) or [MIT](./LICENSE.md), at your preference.
