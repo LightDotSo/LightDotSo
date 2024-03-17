@@ -22,7 +22,7 @@ The below table shows the versions of the contract and versions of the factory a
 
 ### Cross-chain Deployment Addresses
 
-| Version          | LightWalletFactory v0.2.0                                                                                                              | LightWalletFactory v0.1.0                                                                                                              |
+| Version          | Factory v0.2.0                                                                                                                         | Factory v0.1.0                                                                                                                         |
 | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | Mainnet          | [0x00000000001269b052C004FFB71B47AB22C898B0](https://etherscan.io/address/0x00000000001269b052C004FFB71B47AB22C898B0)                  | [0x0000000000756D3E6464f5efe7e413a0Af1C7474](https://etherscan.io/address/0x0000000000756D3E6464f5efe7e413a0Af1C7474)                  |
 | Sepolia          | [0x00000000001269b052C004FFB71B47AB22C898B0](https://sepolia.etherscan.io/address/0x00000000001269b052C004FFB71B47AB22C898B0)          | [0x0000000000756D3E6464f5efe7e413a0Af1C7474](https://sepolia.etherscan.io/address/0x0000000000756D3E6464f5efe7e413a0Af1C7474)          |

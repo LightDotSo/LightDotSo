@@ -178,6 +178,7 @@ export const useUserOperationCreate = ({
 
   // Sign the message of the subdigest
   const { data, signMessage, isPending: isSignLoading } = useSignMessage();
+  console.info("isSignLoading", isSignLoading);
 
   // const { data: paymasterNonce } = useReadLightVerifyingPaymasterSenderNonce({
   //   address: userOperation.paymasterAndData.slice(0, 42) as Address,
@@ -286,6 +287,8 @@ export const useUserOperationCreate = ({
   } = useMutationUserOperationCreate({
     address: address,
   });
+  console.info("isUserOperactionCreateSuccess", isUserOperactionCreateSuccess);
+  console.info("isUserOperactionCreateLoading", isUserOperactionCreateLoading);
 
   const {
     userOperationCreateBatch,
@@ -294,6 +297,14 @@ export const useUserOperationCreate = ({
   } = useMutationUserOperationCreateBatch({
     address: address,
   });
+  console.info(
+    "isUserOperactionCreateBatchSuccess",
+    isUserOperactionCreateBatchSuccess,
+  );
+  console.info(
+    "isUserOperactionCreateBatchLoading",
+    isUserOperactionCreateBatchLoading,
+  );
 
   // ---------------------------------------------------------------------------
   // Effect Hooks

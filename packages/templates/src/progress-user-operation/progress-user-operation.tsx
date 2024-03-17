@@ -45,7 +45,7 @@ export const ProgressUserOperationOp: FC<PendingUserOperationOpProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { userOperation } = useQueryUserOperation({
+  const { userOperation, refetchUserOperation } = useQueryUserOperation({
     hash: hash,
   });
 
@@ -65,11 +65,13 @@ export const ProgressUserOperationOp: FC<PendingUserOperationOpProps> = ({
   // Refetch user operation every 30 seconds
   useEffect(() => {
     const interval = setInterval(() => {
+      refetchUserOperation();
       handleSubmit();
     }, 30000);
 
     return () => clearInterval(interval);
-  }, [handleSubmit]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Display a `toast.success` when the user operation is executed
   useEffect(() => {

@@ -216,7 +216,7 @@ export const useMutationUserOperationCreateBatch = (
       if (err instanceof Error) {
         toast.error(err.message);
       } else {
-        toast.error("Failed to create transaction.");
+        toast.error("Failed to create transactions.");
       }
     },
   });

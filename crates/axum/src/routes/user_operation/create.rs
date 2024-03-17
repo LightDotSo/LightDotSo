@@ -556,7 +556,7 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
     sorted_user_operations.sort_by(|a, b| a.chain_id.cmp(&b.chain_id));
 
     // Then, get the hashes of the user operations.
-    let leaf_hashes: Vec<[u8; 32]> = sorted_user_operations
+    let mut leaf_hashes: Vec<[u8; 32]> = sorted_user_operations
         .iter()
         .map(|user_operation| {
             let rundler_user_operation =
@@ -566,6 +566,9 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
             rundler_hash.0
         })
         .collect();
+
+    // Sort the leaf hashes.
+    leaf_hashes.sort();
 
     // Create the merkle tree from the hashes.
     let merkle_tree: MerkleTree<KeccakAlgorithm> =
