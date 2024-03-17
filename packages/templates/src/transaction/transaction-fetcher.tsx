@@ -400,7 +400,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
       // The target user operation is required to compute the default fields
-      targetUserOperation,
+      // targetUserOperation,
       // Paymaster and data is required to compute the gas limits and paymaster
       paymasterAndData,
     ]);

@@ -78,8 +78,20 @@ export const useUserOperations = create<UserOperationsStore>(set => ({
   internalUserOperations: [],
   setInternalUserOperationByChainId: (chainId, operation) =>
     set(state => {
-      const internalUserOperations = { ...state.internalUserOperations };
-      internalUserOperations[chainId] = operation;
+      // Gets the current internalUserOperations
+      const internalUserOperations = [...state.internalUserOperations];
+
+      // Finds the index of the operation matching the chainId
+      const operationIndex = internalUserOperations.findIndex(
+        op => Number(op.chainId) === chainId,
+      );
+
+      // If the operation is found, it updates it, otherwise it adds it to the array
+      if (operationIndex !== -1) {
+        internalUserOperations[operationIndex] = operation;
+      } else {
+        internalUserOperations.push(operation);
+      }
 
       return { internalUserOperations };
     }),
