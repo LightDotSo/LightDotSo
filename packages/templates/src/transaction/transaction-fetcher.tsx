@@ -110,6 +110,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   const [isDisabled, setIsDisabled] = useState(false);
   const [userOperationWithHash, setUserOperationWithHash] =
     useState<UserOperation>();
+  console.info("userOperationWithHash", userOperationWithHash);
 
   // ---------------------------------------------------------------------------
   // Query State Hooks
@@ -126,6 +127,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     setIsFormLoading,
   } = useFormRef();
   const {
+    setInternalUserOperationByChainId,
     setUserOperationDetails,
     setUserOperationDevInfo,
     setUserOperationSimulation,
@@ -207,6 +209,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
 
   // Turns the partial userOperation into an userOperation w/ default values
+  // Should not change from the initial user operation
   const targetUserOperation: Omit<
     UserOperation,
     "hash" | "paymasterAndData" | "signature"
@@ -252,13 +255,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         partialUserOperation?.maxPriorityFeePerGas ?? BigInt(0),
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    genesisConfiguration,
-    // Should recompute if the executed user operations change, for init code
-    executedUserOperations,
-    // Should recompute if the user operation nonce changes
-    userOperationNonce,
-  ]);
+  }, []);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -537,16 +534,14 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   // Sync `userOperationWithHash` to the store
   useEffect(() => {
-    setUserOperations(prev => {
-      const next = [...prev];
-      const nextUop = next[userOperationIndex];
-      if (nextUop.hash !== debouncedUserOperationWithHash?.hash) {
-        if (userOperationWithHash !== undefined) {
-          next[userOperationIndex] = userOperationWithHash;
-        }
-      }
-      return next;
-    });
+    if (!debouncedUserOperationWithHash) {
+      return;
+    }
+
+    setInternalUserOperationByChainId(
+      Number(targetUserOperation.chainId),
+      debouncedUserOperationWithHash,
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     // Debounced user operation with hash is the only dependency

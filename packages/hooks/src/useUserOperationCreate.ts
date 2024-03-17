@@ -70,7 +70,8 @@ export const useUserOperationCreate = ({
 
   const { address: userAddress } = useAuth();
   const { setCustomFormSuccessText, setIsFormLoading } = useFormRef();
-  const { addPendingSubmitUserOperationHash } = useUserOperations();
+  const { internalUserOperations, addPendingSubmitUserOperationHash } =
+    useUserOperations();
 
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -91,20 +92,18 @@ export const useUserOperationCreate = ({
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
-  const [userOperations] = useUserOperationsQueryState();
-
   // ---------------------------------------------------------------------------
   // Local Variables
   // ---------------------------------------------------------------------------
 
   const subdigest = useMemo(() => {
     // If the userOperation length is 0, return
-    if (userOperations.length === 0) {
+    if (internalUserOperations.length === 0) {
       return;
     }
 
     // If the userOperation length is 1, get the first userOperation
-    const userOperation = userOperations[0];
+    const userOperation = internalUserOperations[0];
 
     // Check if the userOperation has hash and chainId
     if (!userOperation?.hash || !userOperation?.chainId) {
@@ -112,7 +111,7 @@ export const useUserOperationCreate = ({
     }
 
     // Return the subdigest of the userOperation w/ hash and chainId encoded (type 1)
-    if (userOperations.length === 1) {
+    if (internalUserOperations.length === 1) {
       return subdigestOf(
         address,
         hexToBytes(userOperation?.hash as Hex),
@@ -120,17 +119,17 @@ export const useUserOperationCreate = ({
       );
     }
 
-    // Check if all of the userOperations have hash
-    const isAllHashed = userOperations.every(
+    // Check if all of the internalUserOperations have hash
+    const isAllHashed = internalUserOperations.every(
       userOperation => userOperation.hash,
     );
     if (!isAllHashed) {
       return;
     }
 
-    // If the userOperation length is greater than 1, get the merkle root of the userOperations
-    if (userOperations.length > 1) {
-      const leaves = userOperations
+    // If the userOperation length is greater than 1, get the merkle root of the internalUserOperations
+    if (internalUserOperations.length > 1) {
+      const leaves = internalUserOperations
         .sort((a, b) => Number(a.chainId) - Number(b.chainId))
         .map(userOperation => hexToBytes(userOperation.hash as Hex));
       const tree = new MerkleTree(leaves, keccak256, { sort: true });
@@ -139,8 +138,8 @@ export const useUserOperationCreate = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    // Solely dependent on userOperations for the subdigest
-    userOperations,
+    // Solely dependent on internalUserOperations for the subdigest
+    internalUserOperations,
   ]);
   console.info("subdigest", subdigest);
 
@@ -287,7 +286,7 @@ export const useUserOperationCreate = ({
   useEffect(() => {
     // Create a single user operation
     const createUserOp = async () => {
-      if (!owner || !signedData || !userOperation) {
+      if (!owner || !signedData || !internalUserOperation) {
         return;
       }
 
@@ -297,17 +296,17 @@ export const useUserOperationCreate = ({
       userOperationCreate({
         ownerId: owner.id,
         signedData: signedData as Hex,
-        userOperation: userOperation,
+        userOperation: internalUserOperation,
       });
 
-      addPendingSubmitUserOperationHash(userOperation.hash as Hex);
+      addPendingSubmitUserOperationHash(internalUserOperation.hash as Hex);
 
       setSignedData(undefined);
     };
 
     // Create a batch of user operations
     const createUserOpBatch = async () => {
-      if (!owner || !signedData || !merkleTree || !userOperations) {
+      if (!owner || !signedData || !merkleTree || !internalUserOperations) {
         return;
       }
 
@@ -318,46 +317,52 @@ export const useUserOperationCreate = ({
       userOperationCreateBatch({
         ownerId: owner.id,
         signedData: signedData as Hex,
-        userOperations: userOperations,
+        userOperations: internalUserOperations,
         merkleRoot: `0x${merkleTree.getRoot().toString("hex")}` as Hex,
       });
 
-      for (const userOperation of userOperations) {
+      for (const userOperation of internalUserOperations) {
         addPendingSubmitUserOperationHash(userOperation.hash as Hex);
       }
 
       setSignedData(undefined);
     };
 
-    // If the userOperations length is 0, return
-    if (userOperations.length === 0) {
+    // If the internalUserOperations length is 0, return
+    if (internalUserOperations.length === 0) {
       return;
     }
 
-    // If the userOperations length is 1, get the first userOperation
-    const userOperation = userOperations[0];
-    if (userOperations.length === 1) {
+    // If the internalUserOperations length is 1, get the first userOperation
+    const internalUserOperation = internalUserOperations[0];
+    if (internalUserOperations.length === 1) {
       createUserOp();
       return;
     }
 
-    // If the userOperations length is greater than 1
-    if (userOperations.length > 1) {
+    // If the internalUserOperations length is greater than 1
+    if (internalUserOperations.length > 1) {
       createUserOpBatch();
       return;
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [signedData, owner, userOperations, configuration?.threshold, address]);
+  }, [
+    signedData,
+    owner,
+    internalUserOperations,
+    configuration?.threshold,
+    address,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  // Check if the userOperations are valid
+  // Check if the internalUserOperations are valid
   // Should be all defined and not undefined for all required fields
   const isValidUserOperations = useMemo(() => {
-    return userOperations.every(userOperation => {
+    return internalUserOperations.every(userOperation => {
       return !!(
         typeof owner !== "undefined" &&
         userOperation &&
@@ -375,7 +380,7 @@ export const useUserOperationCreate = ({
         userOperation.paymasterAndData
       );
     });
-  }, [owner, userOperations]);
+  }, [owner, internalUserOperations]);
 
   // Check if the userOperation is submittable under the current owner signature
   // The configuration threshold should be defined and the owner weight should be greater than or equal to the threshold

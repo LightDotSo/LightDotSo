@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import type { SimulationData } from "@lightdotso/data";
+import type { UserOperation } from "@lightdotso/schemas";
 import type { Hex } from "viem";
 import { create } from "zustand";
 
@@ -37,6 +38,11 @@ export interface UserOperationDevInfo {
 // -----------------------------------------------------------------------------
 
 type UserOperationsStore = {
+  internalUserOperations: UserOperation[];
+  setInternalUserOperationByChainId: (
+    chainId: number,
+    operation: UserOperation,
+  ) => void;
   pendingSubmitUserOperationHashes: Hex[];
   addPendingSubmitUserOperationHash: (hash: Hex) => void;
   resetPendingSubmitUserOperationHashes: () => void;
@@ -69,6 +75,14 @@ type UserOperationsStore = {
 // -----------------------------------------------------------------------------
 
 export const useUserOperations = create<UserOperationsStore>(set => ({
+  internalUserOperations: [],
+  setInternalUserOperationByChainId: (chainId, operation) =>
+    set(state => {
+      const internalUserOperations = [...state.internalUserOperations];
+      internalUserOperations[chainId] = operation;
+
+      return { internalUserOperations };
+    }),
   pendingSubmitUserOperationHashes: [],
   addPendingSubmitUserOperationHash: hash =>
     set(state => {
