@@ -1214,7 +1214,8 @@ export const SendDialog: FC<SendDialogProps> = ({
                         <Tabs
                           className="col-span-8"
                           defaultValue={
-                            typeof transfers[index] === "undefined"
+                            // Default to token if the asset type is not defined
+                            transfers[index]
                               ? "token"
                               : transfers[index]?.assetType !== "erc20"
                                 ? "nft"
