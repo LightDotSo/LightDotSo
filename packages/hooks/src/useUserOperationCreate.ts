@@ -137,7 +137,12 @@ export const useUserOperationCreate = ({
       setMerkleTree(tree);
       return subdigestOf(address, tree.getRoot(), BigInt(0));
     }
-  }, [address, userOperations]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    // Solely dependent on userOperations for the subdigest
+    userOperations,
+  ]);
+  console.info(subdigest);
 
   // Add a cached subdigest constant
   const cachedSubdigest = useMemo(() => subdigest, [subdigest]);
@@ -146,6 +151,7 @@ export const useUserOperationCreate = ({
   // Wagmi
   // ---------------------------------------------------------------------------
 
+  // Sign the message of the subdigest
   const { data, signMessage, isPending: isSignLoading } = useSignMessage();
 
   // const { data: paymasterNonce } = useReadLightVerifyingPaymasterSenderNonce({
@@ -180,6 +186,8 @@ export const useUserOperationCreate = ({
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
+  // Get the owner of the userOperation from the configuration
+  // Should default to lastest configuration
   const owner = useMemo(() => {
     if (!userAddress) {
       return;
@@ -231,6 +239,7 @@ export const useUserOperationCreate = ({
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
+  // Sign the userOperation
   const signUserOperation = useCallback(() => {
     console.info(cachedSubdigest);
 
@@ -274,7 +283,9 @@ export const useUserOperationCreate = ({
     setSignedData(data);
   }, [data]);
 
+  // Create the userOperation (single or batch)
   useEffect(() => {
+    // Create a single user operation
     const createUserOp = async () => {
       if (!owner || !signedData || !userOperation) {
         return;
@@ -294,6 +305,7 @@ export const useUserOperationCreate = ({
       setSignedData(undefined);
     };
 
+    // Create a batch of user operations
     const createUserOpBatch = async () => {
       if (!owner || !signedData || !merkleTree || !userOperations) {
         return;
@@ -342,6 +354,8 @@ export const useUserOperationCreate = ({
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
+  // Check if the userOperations are valid
+  // Should be all defined and not undefined for all required fields
   const isValidUserOperations = useMemo(() => {
     return userOperations.every(userOperation => {
       return !!(
@@ -349,8 +363,7 @@ export const useUserOperationCreate = ({
         userOperation &&
         userOperation.chainId &&
         userOperation.hash &&
-        userOperation.nonce !== undefined &&
-        userOperation.nonce !== null &&
+        userOperation.nonce &&
         userOperation.initCode &&
         userOperation.sender &&
         userOperation.callData &&
@@ -364,6 +377,8 @@ export const useUserOperationCreate = ({
     });
   }, [owner, userOperations]);
 
+  // Check if the userOperation is submittable under the current owner signature
+  // The configuration threshold should be defined and the owner weight should be greater than or equal to the threshold
   const isUserOperationCreateSubmittable = useMemo(() => {
     return (
       typeof configuration?.threshold !== "undefined" &&
@@ -372,10 +387,12 @@ export const useUserOperationCreate = ({
     );
   }, [owner, configuration?.threshold]);
 
+  // Check if the userOperation is createable
   const isUserOperationCreateable = useMemo(() => {
     return typeof owner !== "undefined" && typeof subdigest !== "undefined";
   }, [owner, subdigest]);
 
+  // Check if the userOperation is loading
   const isUserOperationCreateLoading = useMemo(() => {
     return (
       isSignLoading ||
@@ -388,6 +405,7 @@ export const useUserOperationCreate = ({
     isUserOperactionCreateBatchLoading,
   ]);
 
+  // Check if the userOperation is success
   const isUserOperationCreateSuccess = useMemo(() => {
     return isUserOperactionCreateSuccess || isUserOperactionCreateBatchSuccess;
   }, [isUserOperactionCreateSuccess, isUserOperactionCreateBatchSuccess]);
@@ -396,6 +414,7 @@ export const useUserOperationCreate = ({
   // Hooks
   // ---------------------------------------------------------------------------
 
+  // Get the delayed success value
   const delayedIsSuccess = useDelayedValue<boolean>(
     isUserOperationCreateSuccess,
     false,
