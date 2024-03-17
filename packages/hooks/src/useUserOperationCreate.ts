@@ -443,7 +443,7 @@ export const useUserOperationCreate = ({
     }
 
     return true;
-  }, [internalUserOperations.length, merkleTree, subdigest]);
+  }, [address, internalUserOperations.length, merkleTree, subdigest]);
 
   // Check if the userOperation is submittable under the current owner signature
   // The configuration threshold should be defined and the owner weight should be greater than or equal to the threshold
