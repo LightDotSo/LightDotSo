@@ -566,7 +566,13 @@ export const DepositDialog: FC<DepositDialogProps> = ({
   ]);
 
   const isFormValid = useMemo(() => {
-    return form.formState.isValid && isEmpty(form.formState.errors);
+    return (
+      form.formState.isValid &&
+      isEmpty(form.formState.errors) &&
+      // Hack to check if the asset address is defined
+      typeof form.getValues().asset?.address !== "undefined"
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.formState]);
 
   // ---------------------------------------------------------------------------
