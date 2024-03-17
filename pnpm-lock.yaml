@@ -1598,6 +1598,9 @@ importers:
       '@lightdotso/wagmi':
         specifier: workspace:*
         version: link:../packages/wagmi
+      merkletreejs:
+        specifier: ^0.3.11
+        version: 0.3.11
       viem:
         specifier: ^2.7.10
         version: 2.7.10(typescript@5.4.2)
@@ -27165,7 +27168,7 @@ packages:
     resolution: {integrity: sha512-CWIvf0zmL4jKHSj81zjUAbEwjTqFQmETI0NIQvN4JNwTSHiz50WPOuHnUUcmwM6Dye/ta6KNTELnERp0tKEYYg==}
     engines: {node: '>=18'}
     dependencies:
-      '@babel/runtime': 7.23.8
+      '@babel/runtime': 7.24.0
     dev: false
 
   /metro-source-map@0.80.4:

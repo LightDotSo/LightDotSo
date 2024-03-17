@@ -157,8 +157,8 @@ export const useUserOperationCreate = ({
     if (internalUserOperations.length > 1) {
       // Get the leaves of the merkle tree
       const leaves = internalUserOperations
-        .sort((a, b) => Number(a.chainId) - Number(b.chainId))
-        .map(userOperation => hexToBytes(userOperation.hash as Hex));
+        .map(userOperation => hexToBytes(userOperation.hash as Hex))
+        .sort(Buffer.compare);
 
       // If the number of leaves is not 2, add a leaf w/ 0
       if (leaves.length % 2 !== 0) {
@@ -438,7 +438,7 @@ export const useUserOperationCreate = ({
     if (internalUserOperations.length > 1) {
       return (
         typeof merkleTree !== "undefined" &&
-        `0x${merkleTree.getRoot().toString("hex")}` === subdigest
+        subdigest === subdigestOf(address, merkleTree.getRoot(), BigInt(0))
       );
     }
 
