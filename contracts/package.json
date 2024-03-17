@@ -20,6 +20,7 @@
   "dependencies": {
     "@lightdotso/sequence": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
+    "@openzeppelin/merkle-tree": "git+https://github.com/OpenZeppelin/merkle-tree.git#master",
     "merkletreejs": "^0.3.11",
     "viem": "^2.7.10"
   },

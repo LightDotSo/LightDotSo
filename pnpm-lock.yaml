@@ -1598,6 +1598,9 @@ importers:
       '@lightdotso/wagmi':
         specifier: workspace:*
         version: link:../packages/wagmi
+      '@openzeppelin/merkle-tree':
+        specifier: git+https://github.com/OpenZeppelin/merkle-tree.git#master
+        version: github.com/OpenZeppelin/merkle-tree/5d8941e4cdafabeb2d3691e08bc3ff2f8d99528f
       merkletreejs:
         specifier: ^0.3.11
         version: 0.3.11
@@ -6476,7 +6479,6 @@ packages:
       '@ethersproject/logger': 5.7.0
       '@ethersproject/properties': 5.7.0
       '@ethersproject/strings': 5.7.0
-    dev: true
 
   /@ethersproject/abstract-provider@5.7.0:
     resolution: {integrity: sha512-R41c9UkchKCpAqStMYUpdunjo3pkEvZC3FAwZn5S5MGbXoMQOHIdHItezTETxAO5bevtMApSyEhn9+CHcDsWBw==}
@@ -37097,4 +37099,17 @@ packages:
 
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
+    dev: false
+
+  github.com/OpenZeppelin/merkle-tree/5d8941e4cdafabeb2d3691e08bc3ff2f8d99528f:
+    resolution: {tarball: https://codeload.github.com/OpenZeppelin/merkle-tree/tar.gz/5d8941e4cdafabeb2d3691e08bc3ff2f8d99528f}
+    name: '@openzeppelin/merkle-tree'
+    version: 1.0.6
+    prepare: true
+    requiresBuild: true
+    dependencies:
+      '@ethersproject/abi': 5.7.0
+      '@ethersproject/bytes': 5.7.0
+      '@ethersproject/constants': 5.7.0
+      '@ethersproject/keccak256': 5.7.0
     dev: false

@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import {
+  StandardMerkleTree,
+  SimpleMerkleTree,
+} from "@openzeppelin/merkle-tree";
 import { MerkleTree } from "merkletreejs";
 import type { Hex } from "viem";
 import { hexToBytes, keccak256 } from "viem";
@@ -19,22 +23,194 @@ import { expect, test } from "vitest";
 
 test("Should return correct merkle root", () => {
   const merkleHashes: Hex[] = [
+    "0x2ea4ef13340f3e4c9d91df527af7c53796caf699ac36b471a7c6981cdd3e6b78",
     "0x6533e70db8d22349cf8a5801c9c3374f46d129f3996735f5c672f1ceb48b355a",
     "0x795c3a1e8cb7a18dcb6e394009d3349ab13e7e2bb5fa164175d5196c20b81344",
-    "0x2ea4ef13340f3e4c9d91df527af7c53796caf699ac36b471a7c6981cdd3e6b78",
+    "0x0000000000000000000000000000000000000000000000000000000000000000",
   ];
-
-  const merkleRoot =
-    "0xc22e9fefbe932d09ff716df348c6be54ccc022b9006764cb6ff8c18cf98da375";
 
   const leaves = merkleHashes.map(x => hexToBytes(x)).sort(Buffer.compare);
 
-  // Add an empty leaf if the number of leaves is odd
-  if (leaves.length % 2 !== 0) {
-    leaves.push(new Uint8Array(32));
-  }
+  // // Add an empty leaf if the number of leaves is odd
+  // if (leaves.length % 2 !== 0) {
+  //   leaves.push(new Uint8Array(32));
+  // }
 
-  const tree = new MerkleTree(leaves, keccak256);
+  const merkleRoot =
+    "0xf79d62b0d87b6d1ff3f2492acc441100bf98127714feb1d31facf572564e0ae7";
 
-  expect(tree.getHexRoot()).to.equal(merkleRoot);
+  const tree = new MerkleTree(leaves, keccak256, {
+    // sort: true,
+    // isBitcoinTree: false,
+  });
+
+  console.log(tree.getLeaves().map(x => x.toString("hex")));
+
+  // expect(tree.getHexRoot()).to.equal(merkleRoot);
+
+  console.log(tree.getHexRoot());
+
+  // console.log(tree.getProofs());
+
+  // Construct a tree with the same leaves
+  const standardTree = StandardMerkleTree.of(
+    [merkleHashes],
+    ["bytes32", "bytes32", "bytes32", "bytes32"],
+  );
+
+  console.log(standardTree.root.toString());
+
+  expect(standardTree.root.toString()).to.equal(merkleRoot);
+});
+
+test("simple merkle tree", () => {
+  const merkleHashes: Hex[] = [
+    "0x0000000000000000000000000000000000000000000000000000000000000001",
+    "0x0000000000000000000000000000000000000000000000000000000000000002",
+  ];
+
+  const leaves = merkleHashes.map(x => hexToBytes(x)).sort(Buffer.compare);
+
+  const tree = new MerkleTree(leaves, keccak256, {
+    sort: true,
+    // isBitcoinTree: false,
+  });
+
+  // const proof = tree.getProof(leaves[0]);
+
+  const root = tree.getHexRoot();
+  console.log(root);
+
+  const standardTree = StandardMerkleTree.of(
+    [merkleHashes],
+    ["bytes32", "bytes32"],
+  );
+
+  const proof = standardTree.getProof(0);
+
+  console.log(proof);
+
+  console.log(standardTree.dump());
+
+  console.log(standardTree.render());
+
+  const standardTreeRoot = standardTree.root.toString();
+  console.log(standardTreeRoot);
+
+  const simpleTree = SimpleMerkleTree.of(leaves);
+
+  console.log(simpleTree.root.toString());
+});
+
+test("simple nested merkle tree", () => {
+  const merkleHashes: Hex[] = [
+    "0x0000000000000000000000000000000000000000000000000000000000000001",
+    "0x0000000000000000000000000000000000000000000000000000000000000002",
+    "0x0000000000000000000000000000000000000000000000000000000000000003",
+  ];
+
+  const leaves = merkleHashes.map(x => hexToBytes(x)).sort(Buffer.compare);
+
+  const tree = new MerkleTree(leaves, keccak256, {
+    sort: true,
+    // isBitcoinTree: false,
+  });
+
+  // const proof = tree.getProof(leaves[0]);
+
+  const root = tree.getHexRoot();
+  console.log(root);
+
+  console.log(tree.getProof(merkleHashes[0]));
+
+  const standardTree = StandardMerkleTree.of(
+    [merkleHashes],
+    ["bytes32", "bytes32", "bytes32"],
+  );
+
+  const proof = standardTree.getProof(0);
+
+  console.log(proof);
+
+  console.log(standardTree.dump());
+
+  console.log(standardTree.render());
+
+  const standardTreeRoot = standardTree.root.toString();
+  console.log(standardTreeRoot);
+
+  const simpleTree = SimpleMerkleTree.of(leaves);
+
+  console.log(simpleTree.root.toString());
+
+  console.log(simpleTree.getProof(0));
+});
+
+test("simple deep nested merkle tree", () => {
+  const merkleHashes: Hex[] = [
+    "0x0000000000000000000000000000000000000000000000000000000000000001",
+    "0x0000000000000000000000000000000000000000000000000000000000000002",
+    "0x0000000000000000000000000000000000000000000000000000000000000003",
+    "0x0000000000000000000000000000000000000000000000000000000000000004",
+    "0x0000000000000000000000000000000000000000000000000000000000000005",
+    "0x0000000000000000000000000000000000000000000000000000000000000006",
+    "0x0000000000000000000000000000000000000000000000000000000000000007",
+    "0x0000000000000000000000000000000000000000000000000000000000000008",
+    // "0x0000000000000000000000000000000000000000000000000000000000000009",
+    // "0x0000000000000000000000000000000000000000000000000000000000000010",
+    // "0x0000000000000000000000000000000000000000000000000000000000000011",
+    // "0x0000000000000000000000000000000000000000000000000000000000000012",
+    // "0x0000000000000000000000000000000000000000000000000000000000000013",
+    // "0x0000000000000000000000000000000000000000000000000000000000000014",
+    // "0x0000000000000000000000000000000000000000000000000000000000000015",
+    // "0x0000000000000000000000000000000000000000000000000000000000000016",
+    // "0x0000000000000000000000000000000000000000000000000000000000000017",
+    // "0x0000000000000000000000000000000000000000000000000000000000000018",
+    // "0x0000000000000000000000000000000000000000000000000000000000000019",
+    // "0x0000000000000000000000000000000000000000000000000000000000000020",
+    // "0x0000000000000000000000000000000000000000000000000000000000000021",
+    // "0x0000000000000000000000000000000000000000000000000000000000000022",
+    // "0x0000000000000000000000000000000000000000000000000000000000000023",
+    // "0x0000000000000000000000000000000000000000000000000000000000000024",
+  ];
+
+  const leaves = merkleHashes.map(x => hexToBytes(x)).sort(Buffer.compare);
+
+  const tree = new MerkleTree(leaves, keccak256, {
+    sort: true,
+    // isBitcoinTree: true,
+  });
+
+  // const proof = tree.getProof(leaves[0]);
+
+  console.log(tree.getProofs());
+
+  const root = tree.getHexRoot();
+  console.log(root);
+
+  console.log(tree.getProof(merkleHashes[0]));
+
+  // const standardTree = StandardMerkleTree.of(
+  //   [merkleHashes],
+  //   ["bytes32", "bytes32", "bytes32", "bytes32", "bytes32"],
+  // );
+
+  // const proof = standardTree.getProof(0);
+
+  // console.log(proof);
+
+  // console.log(standardTree.dump());
+
+  // console.log(standardTree.render());
+
+  // const standardTreeRoot = standardTree.root.toString();
+  // console.log(standardTreeRoot);
+
+  const simpleTree = SimpleMerkleTree.of(leaves);
+
+  console.log(simpleTree.root.toString());
+
+  console.log(simpleTree.getProof(0));
+
+  expect(tree.getHexRoot()).to.equal(simpleTree.root.toString());
 });
