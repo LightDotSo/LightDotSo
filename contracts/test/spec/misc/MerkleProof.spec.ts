@@ -19,13 +19,13 @@ import { expect, test } from "vitest";
 
 test("Should return correct merkle root", () => {
   const merkleHashes: Hex[] = [
-    "0x834b700bc560239a677f06e26ff6abcc1cf6d794bed54dd0089ee990ba466565",
-    "0x84f406077106fc9292d17749f6f1d1de9b4847fe2a37f484d3ca209a55a56557",
-    "0x8fb31ec39c87ecfd9c0d00056dcdb3f690df52b0996447cfa2d8d588b7b0da0a",
+    "0x6533e70db8d22349cf8a5801c9c3374f46d129f3996735f5c672f1ceb48b355a",
+    "0x795c3a1e8cb7a18dcb6e394009d3349ab13e7e2bb5fa164175d5196c20b81344",
+    "0x2ea4ef13340f3e4c9d91df527af7c53796caf699ac36b471a7c6981cdd3e6b78",
   ];
 
   const merkleRoot =
-    "0x1bb0308011ace89210f9abe59b08424fea75761f59073f8ead92f5cc932d5dce";
+    "0xc22e9fefbe932d09ff716df348c6be54ccc022b9006764cb6ff8c18cf98da375";
 
   const leaves = merkleHashes.map(x => hexToBytes(x)).sort(Buffer.compare);
 
