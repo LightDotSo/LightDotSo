@@ -142,6 +142,7 @@ export const Transaction: FC<TransactionProps> = ({
     // isUserOperationLoading,
     // isUserOperationCreatable,
     isValidUserOperations,
+    isUserOperationMerkleEqual,
     isUserOperationCreateable,
     isUserOperationCreateLoading,
     isUserOperationCreateSuccess,
@@ -156,6 +157,7 @@ export const Transaction: FC<TransactionProps> = ({
   } = useUserOperationCreate({
     address: address,
   });
+  console.info("isUserOperationMerkleEqual", isUserOperationMerkleEqual);
   console.info("isUserOperationCreateSuccess", isUserOperationCreateSuccess);
   console.info("isUserOperationCreateLoading", isUserOperationCreateLoading);
   console.info(

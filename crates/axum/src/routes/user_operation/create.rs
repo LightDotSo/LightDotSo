@@ -570,6 +570,11 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
     // Sort the leaf hashes.
     leaf_hashes.sort();
 
+    // If the number of leaf hashes is not divisible by 2, add a empty hash to the end.
+    if leaf_hashes.len() % 2 != 0 {
+        leaf_hashes.push([0; 32]);
+    }
+
     // Create the merkle tree from the hashes.
     let merkle_tree: MerkleTree<KeccakAlgorithm> =
         MerkleTree::<KeccakAlgorithm>::from_leaves(&leaf_hashes);
