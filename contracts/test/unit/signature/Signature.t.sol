@@ -51,6 +51,20 @@ contract StorageUnitTest is BaseTest {
     // Tests
     // -------------------------------------------------------------------------
 
+    function test_merkle_verify() public {
+        bytes32[] memory proofs = new bytes32[](2);
+        proofs[0] = bytes32(0x0000000000000000000000000000000000000000000000000000000000000002);
+        proofs[1] = bytes32(0x0000000000000000000000000000000000000000000000000000000000000003);
+
+        assertTrue(
+            MerkleProof.verify(
+                proofs,
+                bytes32(0x9b0225f2c6f59eeaf8302811ea290e95258763189b82dc033158e99a6ef45a87),
+                bytes32(0x0000000000000000000000000000000000000000000000000000000000000001)
+            )
+        );
+    }
+
     /// Tests that the account can correctly transfer ETH
     function test_merkle_decoding() public {
         // Attempt to decode the signature and proof
