@@ -24,5 +24,6 @@
 
 ## Extra
 
+- [Merkle Hasher](https://github.com/arslanpixpel/dex-bridge) for [./crates/axum](./crates/axum)
 - [Frames Tutorial](https://github.com/Zizzamia/a-frame-in-100-line) for [./apps/app/frames](./apps/app/frames)
 - [Storybook Gotchas](https://raw.githubusercontent.com/bendigiorgio/kiso) for [./apps/app/storybook](./apps/app/storybook)
