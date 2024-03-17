@@ -255,7 +255,15 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         partialUserOperation?.maxPriorityFeePerGas ?? BigInt(0),
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [
+    // The genesis configuration is static
+    genesisConfiguration,
+    // Should recompute if the executed user operations change, for init code
+    executedUserOperations,
+    // Should recompute if the user operation nonce changes
+    userOperationNonce,
+  ]);
+  console.info("targetUserOperation", targetUserOperation);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -396,6 +404,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       // Paymaster and data is required to compute the gas limits and paymaster
       paymasterAndData,
     ]);
+  console.info("updatedUserOperation", updatedUserOperation);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
