@@ -185,7 +185,6 @@ export const Transaction: FC<TransactionProps> = ({
   // ---------------------------------------------------------------------------
 
   // Set the transaction loading state
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isTransactionLoading = useMemo(() => {
     // Only set the loading state if the user operation is not yet created
     if (isUserOperationCreateSuccess) {
@@ -194,14 +193,21 @@ export const Transaction: FC<TransactionProps> = ({
     // Otherwise, the transaction loading state is set from the individual transaction fetcher
     return false;
   }, [isUserOperationCreateSuccess, isUserOperationCreateLoading]);
+  console.info("isTransactionLoading", isTransactionLoading);
 
   // Set the transaction disabled state
   const isTransactionDisabled = useMemo(() => {
-    return (
-      typeof subdigest === "undefined" ||
-      !userOperations.every(userOperation => userOperation.hash) ||
-      !isValidUserOperations ||
-      !isUserOperationCreateable
+    return !(
+      // If the subdigest is not undefined
+      (
+        typeof subdigest === "undefined" ||
+        // Nor if the user operations all have a hash
+        !userOperations.every(userOperation => userOperation.hash) ||
+        // Nor if the user operations are not valid
+        !isValidUserOperations ||
+        // Nor if the user operations are not createable
+        !isUserOperationCreateable
+      )
     );
   }, [
     subdigest,
@@ -209,6 +215,7 @@ export const Transaction: FC<TransactionProps> = ({
     isValidUserOperations,
     isUserOperationCreateable,
   ]);
+  console.info("isTransactionDisabled", isTransactionDisabled);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -439,7 +446,7 @@ export const Transaction: FC<TransactionProps> = ({
         initialUserOperations.map((userOperation, index) => {
           return (
             <TransactionFetcher
-              key={index}
+              key={userOperation.chainId || index}
               address={address}
               wallet={wallet}
               genesisConfiguration={genesisConfiguration}

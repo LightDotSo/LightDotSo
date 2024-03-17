@@ -14,7 +14,7 @@
 
 "use client";
 
-import { useUserOperationsQueryState } from "@lightdotso/nuqs";
+import { useInternalUserOperationsQueryState } from "@lightdotso/nuqs";
 import {
   useMutationUserOperationCreate,
   useMutationUserOperationCreateBatch,
@@ -41,6 +41,7 @@ import {
   // fromHex,
   // decodeFunctionData,
 } from "viem";
+import { useDebouncedValue } from "./useDebouncedValue";
 import { useDelayedValue } from "./useDelayedValue";
 
 // -----------------------------------------------------------------------------
@@ -70,7 +71,8 @@ export const useUserOperationCreate = ({
 
   const { address: userAddress } = useAuth();
   const { setCustomFormSuccessText, setIsFormLoading } = useFormRef();
-  const { addPendingSubmitUserOperationHash } = useUserOperations();
+  const { internalUserOperations, addPendingSubmitUserOperationHash } =
+    useUserOperations();
 
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -91,7 +93,30 @@ export const useUserOperationCreate = ({
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
-  const [userOperations] = useUserOperationsQueryState();
+  const [, setInternalUserOperations] = useInternalUserOperationsQueryState();
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  // Get the delayed internalUserOperations value
+  const debouncedInternalUserOperations = useDebouncedValue(
+    internalUserOperations,
+    1000,
+  );
+  console.info(
+    "debouncedInternalUserOperations",
+    debouncedInternalUserOperations,
+  );
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // Set the internalUserOperations state
+  useEffect(() => {
+    setInternalUserOperations(debouncedInternalUserOperations);
+  }, [debouncedInternalUserOperations, setInternalUserOperations]);
 
   // ---------------------------------------------------------------------------
   // Local Variables
@@ -99,12 +124,12 @@ export const useUserOperationCreate = ({
 
   const subdigest = useMemo(() => {
     // If the userOperation length is 0, return
-    if (userOperations.length === 0) {
+    if (internalUserOperations.length === 0) {
       return;
     }
 
     // If the userOperation length is 1, get the first userOperation
-    const userOperation = userOperations[0];
+    const userOperation = internalUserOperations[0];
 
     // Check if the userOperation has hash and chainId
     if (!userOperation?.hash || !userOperation?.chainId) {
@@ -112,7 +137,7 @@ export const useUserOperationCreate = ({
     }
 
     // Return the subdigest of the userOperation w/ hash and chainId encoded (type 1)
-    if (userOperations.length === 1) {
+    if (internalUserOperations.length === 1) {
       return subdigestOf(
         address,
         hexToBytes(userOperation?.hash as Hex),
@@ -120,24 +145,29 @@ export const useUserOperationCreate = ({
       );
     }
 
-    // Check if all of the userOperations have hash
-    const isAllHashed = userOperations.every(
+    // Check if all of the internalUserOperations have hash
+    const isAllHashed = internalUserOperations.every(
       userOperation => userOperation.hash,
     );
     if (!isAllHashed) {
       return;
     }
 
-    // If the userOperation length is greater than 1, get the merkle root of the userOperations
-    if (userOperations.length > 1) {
-      const leaves = userOperations
+    // If the userOperation length is greater than 1, get the merkle root of the internalUserOperations
+    if (internalUserOperations.length > 1) {
+      const leaves = internalUserOperations
         .sort((a, b) => Number(a.chainId) - Number(b.chainId))
         .map(userOperation => hexToBytes(userOperation.hash as Hex));
       const tree = new MerkleTree(leaves, keccak256, { sort: true });
       setMerkleTree(tree);
       return subdigestOf(address, tree.getRoot(), BigInt(0));
     }
-  }, [address, userOperations]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    // Solely dependent on internalUserOperations for the subdigest
+    internalUserOperations,
+  ]);
+  console.info("subdigest", subdigest);
 
   // Add a cached subdigest constant
   const cachedSubdigest = useMemo(() => subdigest, [subdigest]);
@@ -146,6 +176,7 @@ export const useUserOperationCreate = ({
   // Wagmi
   // ---------------------------------------------------------------------------
 
+  // Sign the message of the subdigest
   const { data, signMessage, isPending: isSignLoading } = useSignMessage();
 
   // const { data: paymasterNonce } = useReadLightVerifyingPaymasterSenderNonce({
@@ -180,6 +211,8 @@ export const useUserOperationCreate = ({
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
+  // Get the owner of the userOperation from the configuration
+  // Should default to lastest configuration
   const owner = useMemo(() => {
     if (!userAddress) {
       return;
@@ -231,6 +264,7 @@ export const useUserOperationCreate = ({
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
+  // Sign the userOperation
   const signUserOperation = useCallback(() => {
     console.info(cachedSubdigest);
 
@@ -274,9 +308,11 @@ export const useUserOperationCreate = ({
     setSignedData(data);
   }, [data]);
 
+  // Create the userOperation (single or batch)
   useEffect(() => {
+    // Create a single user operation
     const createUserOp = async () => {
-      if (!owner || !signedData || !userOperation) {
+      if (!owner || !signedData || !internalUserOperation) {
         return;
       }
 
@@ -286,16 +322,17 @@ export const useUserOperationCreate = ({
       userOperationCreate({
         ownerId: owner.id,
         signedData: signedData as Hex,
-        userOperation: userOperation,
+        userOperation: internalUserOperation,
       });
 
-      addPendingSubmitUserOperationHash(userOperation.hash as Hex);
+      addPendingSubmitUserOperationHash(internalUserOperation.hash as Hex);
 
       setSignedData(undefined);
     };
 
+    // Create a batch of user operations
     const createUserOpBatch = async () => {
-      if (!owner || !signedData || !merkleTree || !userOperations) {
+      if (!owner || !signedData || !merkleTree || !internalUserOperations) {
         return;
       }
 
@@ -306,64 +343,77 @@ export const useUserOperationCreate = ({
       userOperationCreateBatch({
         ownerId: owner.id,
         signedData: signedData as Hex,
-        userOperations: userOperations,
+        userOperations: internalUserOperations,
         merkleRoot: `0x${merkleTree.getRoot().toString("hex")}` as Hex,
       });
 
-      for (const userOperation of userOperations) {
+      for (const userOperation of internalUserOperations) {
         addPendingSubmitUserOperationHash(userOperation.hash as Hex);
       }
 
       setSignedData(undefined);
     };
 
-    // If the userOperations length is 0, return
-    if (userOperations.length === 0) {
+    // If the internalUserOperations length is 0, return
+    if (internalUserOperations.length === 0) {
       return;
     }
 
-    // If the userOperations length is 1, get the first userOperation
-    const userOperation = userOperations[0];
-    if (userOperations.length === 1) {
+    // If the internalUserOperations length is 1, get the first userOperation
+    const internalUserOperation = internalUserOperations[0];
+    if (internalUserOperations.length === 1) {
       createUserOp();
       return;
     }
 
-    // If the userOperations length is greater than 1
-    if (userOperations.length > 1) {
+    // If the internalUserOperations length is greater than 1
+    if (internalUserOperations.length > 1) {
       createUserOpBatch();
       return;
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [signedData, owner, userOperations, configuration?.threshold, address]);
+  }, [
+    signedData,
+    owner,
+    internalUserOperations,
+    configuration?.threshold,
+    address,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
+  // Check if the internalUserOperations are valid
+  // Should be all defined and not undefined for all required fields
   const isValidUserOperations = useMemo(() => {
-    return userOperations.every(userOperation => {
-      return !!(
-        typeof owner !== "undefined" &&
-        userOperation &&
-        userOperation.chainId &&
-        userOperation.hash &&
-        userOperation.nonce !== undefined &&
-        userOperation.nonce !== null &&
-        userOperation.initCode &&
-        userOperation.sender &&
-        userOperation.callData &&
-        userOperation.callGasLimit &&
-        userOperation.verificationGasLimit &&
-        userOperation.preVerificationGas &&
-        userOperation.maxFeePerGas &&
-        userOperation.maxPriorityFeePerGas &&
-        userOperation.paymasterAndData
-      );
-    });
-  }, [owner, userOperations]);
+    return (
+      internalUserOperations &&
+      internalUserOperations.length > 0 &&
+      internalUserOperations.every(userOperation => {
+        return !!(
+          typeof owner !== "undefined" &&
+          userOperation &&
+          userOperation.chainId &&
+          userOperation.hash &&
+          userOperation.nonce &&
+          userOperation.initCode &&
+          userOperation.sender &&
+          userOperation.callData &&
+          userOperation.callGasLimit &&
+          userOperation.verificationGasLimit &&
+          userOperation.preVerificationGas &&
+          userOperation.maxFeePerGas &&
+          userOperation.maxPriorityFeePerGas &&
+          userOperation.paymasterAndData
+        );
+      })
+    );
+  }, [owner, internalUserOperations]);
 
+  // Check if the userOperation is submittable under the current owner signature
+  // The configuration threshold should be defined and the owner weight should be greater than or equal to the threshold
   const isUserOperationCreateSubmittable = useMemo(() => {
     return (
       typeof configuration?.threshold !== "undefined" &&
@@ -372,10 +422,12 @@ export const useUserOperationCreate = ({
     );
   }, [owner, configuration?.threshold]);
 
+  // Check if the userOperation is createable
   const isUserOperationCreateable = useMemo(() => {
     return typeof owner !== "undefined" && typeof subdigest !== "undefined";
   }, [owner, subdigest]);
 
+  // Check if the userOperation is loading
   const isUserOperationCreateLoading = useMemo(() => {
     return (
       isSignLoading ||
@@ -388,6 +440,7 @@ export const useUserOperationCreate = ({
     isUserOperactionCreateBatchLoading,
   ]);
 
+  // Check if the userOperation is success
   const isUserOperationCreateSuccess = useMemo(() => {
     return isUserOperactionCreateSuccess || isUserOperactionCreateBatchSuccess;
   }, [isUserOperactionCreateSuccess, isUserOperactionCreateBatchSuccess]);
@@ -396,6 +449,7 @@ export const useUserOperationCreate = ({
   // Hooks
   // ---------------------------------------------------------------------------
 
+  // Get the delayed success value
   const delayedIsSuccess = useDelayedValue<boolean>(
     isUserOperationCreateSuccess,
     false,
