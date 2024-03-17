@@ -41,8 +41,8 @@ import {
   // fromHex,
   // decodeFunctionData,
 } from "viem";
-import { useDelayedValue } from "./useDelayedValue";
 import { useDebouncedValue } from "./useDebouncedValue";
+import { useDelayedValue } from "./useDelayedValue";
 
 // -----------------------------------------------------------------------------
 // Props
