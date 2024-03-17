@@ -388,24 +388,28 @@ export const useUserOperationCreate = ({
   // Check if the internalUserOperations are valid
   // Should be all defined and not undefined for all required fields
   const isValidUserOperations = useMemo(() => {
-    return internalUserOperations.every(userOperation => {
-      return !!(
-        typeof owner !== "undefined" &&
-        userOperation &&
-        userOperation.chainId &&
-        userOperation.hash &&
-        userOperation.nonce &&
-        userOperation.initCode &&
-        userOperation.sender &&
-        userOperation.callData &&
-        userOperation.callGasLimit &&
-        userOperation.verificationGasLimit &&
-        userOperation.preVerificationGas &&
-        userOperation.maxFeePerGas &&
-        userOperation.maxPriorityFeePerGas &&
-        userOperation.paymasterAndData
-      );
-    });
+    return (
+      internalUserOperations &&
+      internalUserOperations.length > 0 &&
+      internalUserOperations.every(userOperation => {
+        return !!(
+          typeof owner !== "undefined" &&
+          userOperation &&
+          userOperation.chainId &&
+          userOperation.hash &&
+          userOperation.nonce &&
+          userOperation.initCode &&
+          userOperation.sender &&
+          userOperation.callData &&
+          userOperation.callGasLimit &&
+          userOperation.verificationGasLimit &&
+          userOperation.preVerificationGas &&
+          userOperation.maxFeePerGas &&
+          userOperation.maxPriorityFeePerGas &&
+          userOperation.paymasterAndData
+        );
+      })
+    );
   }, [owner, internalUserOperations]);
 
   // Check if the userOperation is submittable under the current owner signature
