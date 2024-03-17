@@ -155,11 +155,21 @@ export const useUserOperationCreate = ({
 
     // If the userOperation length is greater than 1, get the merkle root of the internalUserOperations
     if (internalUserOperations.length > 1) {
+      // Get the leaves of the merkle tree
       const leaves = internalUserOperations
         .sort((a, b) => Number(a.chainId) - Number(b.chainId))
         .map(userOperation => hexToBytes(userOperation.hash as Hex));
+
+      // If the number of leaves is not 2, add a leaf w/ 0
+      if (leaves.length % 2 !== 0) {
+        leaves.push(new Uint8Array(32));
+      }
+
+      // Create a merkle tree from the leaves
       const tree = new MerkleTree(leaves, keccak256, { sort: true });
+
       setMerkleTree(tree);
+
       return subdigestOf(address, tree.getRoot(), BigInt(0));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -423,6 +433,18 @@ export const useUserOperationCreate = ({
     );
   }, [owner, internalUserOperations]);
 
+  // Check if the current subdigest is equal to the merkle tree root if the internalUserOperations length is greater than 1
+  const isUserOperationMerkleEqual = useMemo(() => {
+    if (internalUserOperations.length > 1) {
+      return (
+        typeof merkleTree !== "undefined" &&
+        `0x${merkleTree.getRoot().toString("hex")}` === subdigest
+      );
+    }
+
+    return true;
+  }, [internalUserOperations.length, merkleTree, subdigest]);
+
   // Check if the userOperation is submittable under the current owner signature
   // The configuration threshold should be defined and the owner weight should be greater than or equal to the threshold
   const isUserOperationCreateSubmittable = useMemo(() => {
@@ -535,6 +557,7 @@ export const useUserOperationCreate = ({
 
   return {
     isUserOperationCreateable,
+    isUserOperationMerkleEqual,
     isUserOperationCreateLoading,
     isUserOperationCreateSubmittable,
     isUserOperationCreateSuccess,
