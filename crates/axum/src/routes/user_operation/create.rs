@@ -552,8 +552,7 @@ pub(crate) async fn v1_user_operation_create_batch_handler(
     // Order the user operations by their chain id, and put the hashes into a vector.
 
     // First, sort the user operations by their chain id.
-    let mut sorted_user_operations = user_operations.clone();
-    sorted_user_operations.sort_by(|a, b| a.chain_id.cmp(&b.chain_id));
+    let sorted_user_operations = user_operations.clone();
 
     // Then, get the hashes of the user operations.
     let mut leaf_hashes: Vec<[u8; 32]> = sorted_user_operations
