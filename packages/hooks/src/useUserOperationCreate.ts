@@ -161,12 +161,12 @@ export const useUserOperationCreate = ({
         .sort(Buffer.compare);
 
       // If the number of leaves is not 2, add a leaf w/ 0
-      if (leaves.length % 2 !== 0) {
-        leaves.push(new Uint8Array(32));
-      }
+      // if (leaves.length % 2 !== 0) {
+      //   leaves.push(new Uint8Array(32));
+      // }
 
-      // Create a merkle tree from the leaves, don't sort because it's already sorted, and the odd leaf is already added
-      const tree = new MerkleTree(leaves, keccak256);
+      // Create a merkle tree from the leaves, with sort option enabled
+      const tree = new MerkleTree(leaves, keccak256, { sort: true });
 
       setMerkleTree(tree);
 
