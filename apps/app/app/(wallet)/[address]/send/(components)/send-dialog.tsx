@@ -419,7 +419,9 @@ export const SendDialog: FC<SendDialogProps> = ({
   }, [form.formState]);
 
   const userOperationsParams = useMemo(() => {
-    const encodeTransfer = (transfer: Transfer): [Address, bigint, Hex] => {
+    const encodeTransfer = (
+      transfer: Transfer,
+    ): [Address, bigint, Hex] | undefined => {
       if (
         transfer &&
         transfer.address &&
@@ -442,7 +444,7 @@ export const SendDialog: FC<SendDialogProps> = ({
           );
 
         if (!token) {
-          throw new Error("No matching token found");
+          return undefined;
         }
 
         // Get the amount
@@ -516,7 +518,7 @@ export const SendDialog: FC<SendDialogProps> = ({
           );
 
         if (!nft) {
-          throw new Error("No matching token found");
+          return undefined;
         }
 
         // Encode the erc1155 `safeTransferFrom`
@@ -675,7 +677,7 @@ export const SendDialog: FC<SendDialogProps> = ({
         }
       }
 
-      throw new Error("Invalid transfer");
+      return undefined;
     };
 
     // Get the call data of the first transfer
@@ -796,6 +798,12 @@ export const SendDialog: FC<SendDialogProps> = ({
           const encodedTransfers = transformedTransfers.map(transfer =>
             encodeTransfer(transfer),
           );
+
+          // Check if all transfers are valid and not undefined
+          if (encodedTransfers.some(transfer => transfer === undefined)) {
+            return [];
+          }
+
           // If the transfer count is more than one, encode as `executeBatch`
           userOperationsParams.push({
             chainId: BigInt(chainId),
@@ -803,9 +811,9 @@ export const SendDialog: FC<SendDialogProps> = ({
               abi: lightWalletAbi,
               functionName: "executeBatch",
               args: [
-                encodedTransfers.map(transfer => transfer[0]),
-                encodedTransfers.map(transfer => transfer[1]),
-                encodedTransfers.map(transfer => transfer[2]),
+                encodedTransfers.map(transfer => transfer![0]),
+                encodedTransfers.map(transfer => transfer![1]),
+                encodedTransfers.map(transfer => transfer![2]),
               ] as [Address[], bigint[], Hex[]],
             }),
           });
