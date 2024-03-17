@@ -6006,6 +6006,7 @@ dependencies = [
  "rustc-hex",
  "serde",
  "serde_json",
+ "sha3",
  "siwe",
  "thiserror",
  "time 0.3.30",

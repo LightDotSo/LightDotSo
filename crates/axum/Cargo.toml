@@ -47,6 +47,7 @@
   rustc-hex = { workspace = true }
   serde = { workspace = true, features = ["derive"] }
   serde_json = { workspace = true }
+  sha3 = "0.10"
   siwe = { version = "0.6.0", features = ["serde"] }
   thiserror = { workspace = true }
   time = { workspace = true }

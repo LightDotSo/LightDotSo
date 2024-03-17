@@ -27,7 +27,7 @@ use axum::{
 };
 use ethers_main::{
     types::H160,
-    utils::{hex, keccak256, to_checksum},
+    utils::{hex, to_checksum},
 };
 use eyre::{Report, Result};
 use lightdotso_common::{traits::HexToBytes, utils::hex_to_bytes};
@@ -64,7 +64,32 @@ impl MerkleHasher for KeccakAlgorithm {
     type Hash = [u8; 32];
 
     fn hash(data: &[u8]) -> [u8; 32] {
-        keccak256(data)
+        use sha3::Digest;
+        sha3::Keccak256::digest(data).into()
+    }
+
+    // The OpenZeppelin contract computes the hash of inner nodes by ordering them
+    // lexicographically first. So we must override the default implementation.
+    fn concat_and_hash(left: &Self::Hash, right: Option<&Self::Hash>) -> Self::Hash {
+        use sha3::Digest;
+        let mut hasher = sha3::Keccak256::new();
+        match right {
+            Some(right_node) => {
+                if left <= right_node {
+                    hasher.update(left);
+                    hasher.update(right_node);
+                } else {
+                    hasher.update(right_node);
+                    hasher.update(left);
+                }
+                hasher.finalize().into()
+            }
+            None => *left,
+        }
+    }
+
+    fn hash_size() -> usize {
+        std::mem::size_of::<Self::Hash>()
     }
 }
 
@@ -956,9 +981,9 @@ mod tests {
     #[test]
     fn test_merkle_tree() {
         let hashes = [
-            "0x6533e70db8d22349cf8a5801c9c3374f46d129f3996735f5c672f1ceb48b355a",
-            "0x795c3a1e8cb7a18dcb6e394009d3349ab13e7e2bb5fa164175d5196c20b81344",
-            "0x2ea4ef13340f3e4c9d91df527af7c53796caf699ac36b471a7c6981cdd3e6b78",
+            "0x0000000000000000000000000000000000000000000000000000000000000003",
+            "0x0000000000000000000000000000000000000000000000000000000000000001",
+            "0x0000000000000000000000000000000000000000000000000000000000000002",
         ];
 
         let mut leaf_hashes: Vec<[u8; 32]> =
@@ -966,18 +991,80 @@ mod tests {
 
         leaf_hashes.sort();
 
-        if (leaf_hashes.len() % 2) != 0 {
-            leaf_hashes.push([0; 32]);
+        for hash in leaf_hashes.iter() {
+            println!("0x{}", hex::encode(hash));
         }
 
-        let merkle_tree: MerkleTree<KeccakAlgorithm> =
-            MerkleTree::<KeccakAlgorithm>::from_leaves(&leaf_hashes);
+        let mut merkle_tree: MerkleTree<KeccakAlgorithm> = MerkleTree::<KeccakAlgorithm>::new();
+
+        for hash in leaf_hashes.into_iter() {
+            merkle_tree.insert(hash);
+        }
+
+        merkle_tree.commit();
 
         let merkle_root = format!("0x{}", merkle_tree.root_hex().unwrap_or_default());
 
         assert_eq!(
             merkle_root,
-            "0xc22e9fefbe932d09ff716df348c6be54ccc022b9006764cb6ff8c18cf98da375"
+            "0x9b0225f2c6f59eeaf8302811ea290e95258763189b82dc033158e99a6ef45a87"
+        );
+    }
+
+    #[test]
+    fn test_merkle_tree_simple() {
+        let hashes = [
+            "0x0000000000000000000000000000000000000000000000000000000000000001",
+            "0x0000000000000000000000000000000000000000000000000000000000000002",
+        ];
+
+        let leaf_hashes: Vec<[u8; 32]> =
+            hashes.iter().map(|hash| hash.hex_to_bytes32().unwrap()).collect();
+
+        // leaf_hashes.sort();
+
+        for hash in leaf_hashes.iter() {
+            println!("0x{}", hex::encode(hash));
+        }
+
+        let merkle_tree: MerkleTree<KeccakAlgorithm> =
+            MerkleTree::<KeccakAlgorithm>::from_leaves(&leaf_hashes.to_vec());
+
+        let merkle_root = format!("0x{}", merkle_tree.root_hex().unwrap_or_default());
+
+        assert_eq!(
+            merkle_root,
+            "0xe90b7bceb6e7df5418fb78d8ee546e97c83a08bbccc01a0644d599ccd2a7c2e0"
+        );
+    }
+
+    #[test]
+    fn test_merkle_tree_simple_deep() {
+        let hashes = [
+            "0x0000000000000000000000000000000000000000000000000000000000000001",
+            "0x0000000000000000000000000000000000000000000000000000000000000002",
+            "0x0000000000000000000000000000000000000000000000000000000000000003",
+            "0x0000000000000000000000000000000000000000000000000000000000000004",
+            "0x0000000000000000000000000000000000000000000000000000000000000005",
+        ];
+
+        let mut leaf_hashes: Vec<[u8; 32]> =
+            hashes.iter().map(|hash| hash.hex_to_bytes32().unwrap()).collect();
+
+        leaf_hashes.sort();
+
+        for hash in leaf_hashes.iter() {
+            println!("0x{}", hex::encode(hash));
+        }
+
+        let merkle_tree: MerkleTree<KeccakAlgorithm> =
+            MerkleTree::<KeccakAlgorithm>::from_leaves(&leaf_hashes.to_vec());
+
+        let merkle_root = format!("0x{}", merkle_tree.root_hex().unwrap_or_default());
+
+        assert_eq!(
+            merkle_root,
+            "0xf6c00687a2a50c87101e36eddc215e458f8ca89ee0fb3be978e73e0ea380b768"
         );
     }
 }
