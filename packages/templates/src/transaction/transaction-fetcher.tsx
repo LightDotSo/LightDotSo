@@ -116,7 +116,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
-  const [userOperations, setUserOperations] = useUserOperationsQueryState();
+  const [userOperations] = useUserOperationsQueryState();
 
   // ---------------------------------------------------------------------------
   // Stores

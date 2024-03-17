@@ -222,7 +222,7 @@ export const Transaction: FC<TransactionProps> = ({
     } else {
       setPageIndex(0);
     }
-  }, [isTransactionLoading, setPageIndex]);
+  }, [isUserOperationCreateLoading, setPageIndex]);
 
   // Change the page index depending on the sign success state
   useEffect(() => {
