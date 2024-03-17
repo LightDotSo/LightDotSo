@@ -135,6 +135,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Hooks
   // ---------------------------------------------------------------------------
 
+  // Get the implementation address
   const implAddress = useProxyImplementationAddress({
     address: address,
     chainId: Number(initialUserOperation.chainId),
@@ -144,6 +145,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Wagmi
   // ---------------------------------------------------------------------------
 
+  // Get the image hash for the light wallet
   const { data: imageHash } = useReadLightWalletImageHash({
     address: address,
     chainId: Number(initialUserOperation.chainId),
@@ -153,10 +155,12 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
+  // Also, get the wallet billing
   const { walletBilling, isWalletBillingLoading } = useQueryWalletBilling({
     address,
   });
 
+  // Gets the configuration for the chain w/ the image hash
   const { configuration } = useQueryConfiguration({
     address: address,
     image_hash: imageHash,
@@ -187,6 +191,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Form
   // ---------------------------------------------------------------------------
 
+  // Create the form
   const form = useForm<UserOperationFormValues>({
     mode: "all",
     reValidateMode: "onBlur",
@@ -388,7 +393,12 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         paymasterAndData: paymasterAndData?.paymasterAndData ?? "0x",
       };
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [targetUserOperation, paymasterAndData]);
+    }, [
+      // The target user operation is required to compute the default fields
+      targetUserOperation,
+      // Paymaster and data is required to compute the gas limits and paymaster
+      paymasterAndData,
+    ]);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -490,7 +500,10 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     // Run the async function
     fetchHashAndUpdateOperation();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [updatedUserOperation]);
+  }, [
+    // Sole dependency is the updated user operation w/ paymaster and data values
+    updatedUserOperation,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
