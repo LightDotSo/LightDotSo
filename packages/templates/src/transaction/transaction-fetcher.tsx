@@ -206,11 +206,13 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     UserOperation,
     "hash" | "paymasterAndData" | "signature"
   > = useMemo(() => {
+    // Get the user operation at the index, fallback to the initial user operation
     const partialUserOperation =
       userOperations.length > 0
         ? { ...userOperations[userOperationIndex], ...initialUserOperation }
         : { ...initialUserOperation };
 
+    // Get the minimum nonce from the user operation nonce and the partial user operation
     const updatedMinimumNonce =
       userOperationNonce && !isUserOperationNonceLoading
         ? userOperationNonce?.nonce > partialUserOperation.nonce
@@ -218,6 +220,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
           : partialUserOperation.nonce
         : partialUserOperation.nonce;
 
+    // Get the init code from the executed user operations or the partial user operation
     const updatedInitCode =
       executedUserOperations && executedUserOperations?.length < 1
         ? calculateInitCode(
@@ -228,6 +231,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
           )
         : partialUserOperation.initCode;
 
+    // Return the user operation
     return {
       sender: partialUserOperation?.sender ?? address,
       chainId: partialUserOperation?.chainId ?? BigInt(0),
@@ -243,7 +247,13 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         partialUserOperation?.maxPriorityFeePerGas ?? BigInt(0),
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [executedUserOperations, configuration]);
+  }, [
+    genesisConfiguration,
+    // Should recompute if the executed user operations change, for init code
+    executedUserOperations,
+    // Should recompute if the user operation nonce changes
+    userOperationNonce,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -303,6 +313,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
+  // Get the paymaster and data from the target user operation
   const { paymasterAndData, isPaymasterAndDataLoading, paymasterAndDataError } =
     useQueryPaymasterGasAndPaymasterAndData({
       sender: address as Address,
@@ -341,6 +352,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
+  // Construct the updated user operation
   const updatedUserOperation: Omit<UserOperation, "hash" | "signature"> =
     useMemo(() => {
       return {
@@ -405,7 +417,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   useEffect(() => {
     const fetchHashAndUpdateOperation = async () => {
-      // Check if all the fields are filled in
+      // Don't update the user operation if the below required fields are empty
       if (
         updatedUserOperation.callGasLimit === 0n ||
         updatedUserOperation.verificationGasLimit === 0n ||
@@ -439,13 +451,13 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       //   });
       // }
 
-      // Add the dummy signature to get the hash
+      // Add the dummy signature to get the hash for the user operation
       const userOperation = {
         ...updatedUserOperation,
         signature: "0x",
       };
 
-      // Get the hash
+      // Get the hash for the user operation w/ the corresponding entry point
       const hash = await getUserOperationHash({
         userOperation: userOperation as PermissionlessUserOperation<"v0.6">,
         chainId: Number(updatedUserOperation.chainId) as number,
@@ -468,28 +480,25 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       //   });
       // }
 
-      // Update the user operation with the hash
+      // Update the user operation hash state for computation
       setUserOperationWithHash({
         ...userOperation,
         hash,
       });
     };
 
+    // Run the async function
     fetchHashAndUpdateOperation();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [updatedUserOperation, address]);
+  }, [updatedUserOperation]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
-  const isLoading = useMemo(() => {
+  const isTransactionFetcherLoading = useMemo(() => {
     return isEstimateUserOperationGasDataLoading || isPaymasterAndDataLoading;
   }, [isEstimateUserOperationGasDataLoading, isPaymasterAndDataLoading]);
-
-  const isUpdating = useMemo(() => {
-    return isPaymasterAndDataLoading;
-  }, [isPaymasterAndDataLoading]);
 
   // ---------------------------------------------------------------------------
   // Hooks
@@ -530,8 +539,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // }, [isDisabled, setIsFormDisabled]);
 
   useEffect(() => {
-    setIsFormLoading(isLoading);
-  }, [isLoading, setIsFormLoading]);
+    setIsFormLoading(isTransactionFetcherLoading);
+  }, [isTransactionFetcherLoading, setIsFormLoading]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -726,12 +735,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       data: isPaymasterAndDataLoading,
     },
     {
-      title: "isLoading",
-      data: isLoading,
-    },
-    {
-      title: "isUpdating",
-      data: isUpdating,
+      title: "isTransactionFetcherLoading",
+      data: isTransactionFetcherLoading,
     },
     // {
     //   title: "isValidUserOperations",
