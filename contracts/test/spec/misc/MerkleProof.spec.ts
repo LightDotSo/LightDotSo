@@ -30,7 +30,7 @@ test("Should return correct merkle root", () => {
   const leaves = merkleHashes.map(x => hexToBytes(x)).sort(Buffer.compare);
 
   // Add an empty leaf if the number of leaves is odd
-  if (leaves.length % 2 === 1) {
+  if (leaves.length % 2 !== 0) {
     leaves.push(new Uint8Array(32));
   }
 
