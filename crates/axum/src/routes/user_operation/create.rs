@@ -952,4 +952,32 @@ mod tests {
 
         assert!(result.is_ok());
     }
+
+    #[test]
+    fn test_merkle_tree() {
+        let hashes = [
+            "0x6533e70db8d22349cf8a5801c9c3374f46d129f3996735f5c672f1ceb48b355a",
+            "0x795c3a1e8cb7a18dcb6e394009d3349ab13e7e2bb5fa164175d5196c20b81344",
+            "0x2ea4ef13340f3e4c9d91df527af7c53796caf699ac36b471a7c6981cdd3e6b78",
+        ];
+
+        let mut leaf_hashes: Vec<[u8; 32]> =
+            hashes.iter().map(|hash| hash.hex_to_bytes32().unwrap()).collect();
+
+        leaf_hashes.sort();
+
+        if (leaf_hashes.len() % 2) != 0 {
+            leaf_hashes.push([0; 32]);
+        }
+
+        let merkle_tree: MerkleTree<KeccakAlgorithm> =
+            MerkleTree::<KeccakAlgorithm>::from_leaves(&leaf_hashes);
+
+        let merkle_root = format!("0x{}", merkle_tree.root_hex().unwrap_or_default());
+
+        assert_eq!(
+            merkle_root,
+            "0xc22e9fefbe932d09ff716df348c6be54ccc022b9006764cb6ff8c18cf98da375"
+        );
+    }
 }

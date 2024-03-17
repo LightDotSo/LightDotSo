@@ -165,8 +165,8 @@ export const useUserOperationCreate = ({
         leaves.push(new Uint8Array(32));
       }
 
-      // Create a merkle tree from the leaves
-      const tree = new MerkleTree(leaves, keccak256, { sort: true });
+      // Create a merkle tree from the leaves, don't sort because it's already sorted, and the odd leaf is already added
+      const tree = new MerkleTree(leaves, keccak256);
 
       setMerkleTree(tree);
 
