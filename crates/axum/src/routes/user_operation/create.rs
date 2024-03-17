@@ -60,6 +60,10 @@ use utoipa::{IntoParams, ToSchema};
 #[derive(Clone)]
 pub struct KeccakAlgorithm {}
 
+// Custom implementation of the MerkleHasher trait for the KeccakAlgorithm
+// Code from: https://github.com/arslanpixpel/dex-bridge/blob/a2bf3dc2a1ad2c5baea1db1876e8da56d32aafcd/relayer/src/merkle.rs#L87-L118
+// License: MIT
+
 impl MerkleHasher for KeccakAlgorithm {
     type Hash = [u8; 32];
 
