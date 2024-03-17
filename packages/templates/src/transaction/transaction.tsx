@@ -185,7 +185,6 @@ export const Transaction: FC<TransactionProps> = ({
   // ---------------------------------------------------------------------------
 
   // Set the transaction loading state
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isTransactionLoading = useMemo(() => {
     // Only set the loading state if the user operation is not yet created
     if (isUserOperationCreateSuccess) {
@@ -194,6 +193,7 @@ export const Transaction: FC<TransactionProps> = ({
     // Otherwise, the transaction loading state is set from the individual transaction fetcher
     return false;
   }, [isUserOperationCreateSuccess, isUserOperationCreateLoading]);
+  console.info("isTransactionLoading", isTransactionLoading);
 
   // Set the transaction disabled state
   const isTransactionDisabled = useMemo(() => {
@@ -209,6 +209,7 @@ export const Transaction: FC<TransactionProps> = ({
     isValidUserOperations,
     isUserOperationCreateable,
   ]);
+  console.info("isTransactionDisabled", isTransactionDisabled);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -216,12 +217,12 @@ export const Transaction: FC<TransactionProps> = ({
 
   // Change the page index depending on the sign loading state
   useEffect(() => {
-    if (isUserOperationCreateLoading) {
+    if (isTransactionLoading) {
       setPageIndex(1);
     } else {
       setPageIndex(0);
     }
-  }, [isUserOperationCreateLoading, setPageIndex]);
+  }, [isTransactionLoading, setPageIndex]);
 
   // Change the page index depending on the sign success state
   useEffect(() => {

@@ -417,26 +417,26 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       }
 
       // IF the fields differ, update the user operation
-      if (
-        targetUserOperation.callGasLimit !==
-          updatedUserOperation.callGasLimit ||
-        targetUserOperation.verificationGasLimit !==
-          updatedUserOperation.verificationGasLimit ||
-        targetUserOperation.preVerificationGas !==
-          updatedUserOperation.preVerificationGas ||
-        targetUserOperation.maxFeePerGas !==
-          updatedUserOperation.maxFeePerGas ||
-        targetUserOperation.maxPriorityFeePerGas !==
-          updatedUserOperation.maxPriorityFeePerGas
-      ) {
-        setUserOperations(prev => {
-          const next = [...prev];
-          if (next[userOperationIndex]) {
-            next[userOperationIndex] = updatedUserOperation;
-          }
-          return next;
-        });
-      }
+      // if (
+      //   targetUserOperation.callGasLimit !==
+      //     updatedUserOperation.callGasLimit ||
+      //   targetUserOperation.verificationGasLimit !==
+      //     updatedUserOperation.verificationGasLimit ||
+      //   targetUserOperation.preVerificationGas !==
+      //     updatedUserOperation.preVerificationGas ||
+      //   targetUserOperation.maxFeePerGas !==
+      //     updatedUserOperation.maxFeePerGas ||
+      //   targetUserOperation.maxPriorityFeePerGas !==
+      //     updatedUserOperation.maxPriorityFeePerGas
+      // ) {
+      //   setUserOperations(prev => {
+      //     const next = [...prev];
+      //     if (next[userOperationIndex]) {
+      //       next[userOperationIndex] = updatedUserOperation;
+      //     }
+      //     return next;
+      //   });
+      // }
 
       // Add the dummy signature to get the hash
       const userOperation = {
