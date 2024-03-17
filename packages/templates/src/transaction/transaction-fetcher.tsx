@@ -21,7 +21,6 @@ import {
 import type { ConfigurationData, WalletData } from "@lightdotso/data";
 import {
   useDebouncedValue,
-  useDelayedValue,
   useProxyImplementationAddress,
 } from "@lightdotso/hooks";
 import { useUserOperationsQueryState } from "@lightdotso/nuqs";
@@ -495,7 +494,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const debounceddUserOperationWithHash = useDebouncedValue(
+  const debouncedUserOperationWithHash = useDebouncedValue(
     userOperationWithHash,
     3000,
   );
@@ -508,7 +507,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   useEffect(() => {
     setUserOperations(prev => {
       const next = [...prev];
-      if (next[userOperationIndex]) {
+      const nextUop = next[userOperationIndex];
+      if (nextUop.hash !== debouncedUserOperationWithHash?.hash) {
         next[userOperationIndex] = {
           ...updatedUserOperation,
           ...userOperationWithHash,
@@ -518,7 +518,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       return next;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debounceddUserOperationWithHash]);
+  }, [debouncedUserOperationWithHash]);
 
   // useEffect(() => {
   //   setIsFormDisabled(isDisabled);
