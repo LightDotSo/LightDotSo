@@ -285,7 +285,7 @@ export const useUserOperationSend = ({
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
-  const handleSubmit = useCallback(async () => {
+  const handleSubmit = useCallback(() => {
     if (!userOperation) {
       return;
     }
@@ -297,9 +297,9 @@ export const useUserOperationSend = ({
     // If the user operation receipt is an error, send the user operation
     if (isUserOperationReceiptError) {
       // Send the user operation if the user operation hasn't been sent yet
-      await userOperationSend(userOperation);
+      userOperationSend(userOperation);
       // Then, refetch the user operation
-      await refetchUserOperation();
+      refetchUserOperation();
       // Finally, return
       return;
     }
@@ -307,7 +307,7 @@ export const useUserOperationSend = ({
     if (userOperationReceipt) {
       if (isUserOperationSendPending) {
         // Queue the user operation if the user operation has been sent but isn't indexed yet
-        await queueUserOperation({ hash: hash });
+        queueUserOperation({ hash: hash });
         // Finally, return
         return;
       }
