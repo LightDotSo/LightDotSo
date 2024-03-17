@@ -14,7 +14,7 @@
 
 "use client";
 
-import { useUserOperationsQueryState } from "@lightdotso/nuqs";
+import { useInternalUserOperationsQueryState } from "@lightdotso/nuqs";
 import {
   useMutationUserOperationCreate,
   useMutationUserOperationCreateBatch,
@@ -42,6 +42,7 @@ import {
   // decodeFunctionData,
 } from "viem";
 import { useDelayedValue } from "./useDelayedValue";
+import { useDebouncedValue } from "./useDebouncedValue";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -91,6 +92,27 @@ export const useUserOperationCreate = ({
   // ---------------------------------------------------------------------------
   // Query State Hooks
   // ---------------------------------------------------------------------------
+
+  const [, setInternalUserOperations] = useInternalUserOperationsQueryState();
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  // Get the delayed internalUserOperations value
+  const debouncedInternalUserOperations = useDebouncedValue(
+    internalUserOperations,
+    1000,
+  );
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  // Set the internalUserOperations state
+  useEffect(() => {
+    setInternalUserOperations(debouncedInternalUserOperations);
+  }, [debouncedInternalUserOperations, setInternalUserOperations]);
 
   // ---------------------------------------------------------------------------
   // Local Variables
