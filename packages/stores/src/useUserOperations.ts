@@ -78,7 +78,7 @@ export const useUserOperations = create<UserOperationsStore>(set => ({
   internalUserOperations: [],
   setInternalUserOperationByChainId: (chainId, operation) =>
     set(state => {
-      const internalUserOperations = [...state.internalUserOperations];
+      const internalUserOperations = { ...state.internalUserOperations };
       internalUserOperations[chainId] = operation;
 
       return { internalUserOperations };
