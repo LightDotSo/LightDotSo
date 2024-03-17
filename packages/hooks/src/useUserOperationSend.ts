@@ -151,6 +151,8 @@ export const useUserOperationSend = ({
       chainId: userOperation?.chain_id!,
       hash: hash,
     });
+  console.info("userOperationReceipt", userOperationReceipt);
+  console.info("isUserOperationReceiptError", isUserOperationReceiptError);
 
   const {
     userOperationSend,
@@ -296,8 +298,10 @@ export const useUserOperationSend = ({
     if (isUserOperationReceiptError) {
       // Send the user operation if the user operation hasn't been sent yet
       await userOperationSend(userOperation);
-      // Finally, refetch the user operation
+      // Then, refetch the user operation
       await refetchUserOperation();
+      // Finally, return
+      return;
     }
 
     if (userOperationReceipt) {
