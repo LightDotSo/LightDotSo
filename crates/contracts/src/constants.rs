@@ -33,7 +33,7 @@ lazy_static! {
 
 // The factory addresses
 lazy_static! {
-    pub static ref LIGHT_WALLET_FACTORY_ADDRESSES: [Address; 4] = [
+    pub static ref LIGHT_WALLET_FACTORY_ADDRESSES: [Address; 5] = [
       // Local
       "0x262aD6Becda7CE4B047a3130491978A8f35F9aeC".parse().unwrap(),
       // v0.0.0
@@ -42,6 +42,8 @@ lazy_static! {
       "0x426Ff63A09eFa1E7ccb3517E046956346e311881".parse().unwrap(),
       // v0.1.0
       "0x0000000000756D3E6464f5efe7e413a0Af1C7474".parse().unwrap(),
+      // v0.2.0
+      "0x00000000001269b052C004FFB71B47AB22C898B0".parse().unwrap(),
     ];
 }
 

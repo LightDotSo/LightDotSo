@@ -400,7 +400,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       // Set the disabled state
       setIsDisabled(true);
     }
-  }, [implAddress, setUserOperations, userOperationIndex]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [implAddress, userOperationIndex]);
 
   useEffect(() => {
     const fetchHashAndUpdateOperation = async () => {
@@ -454,18 +455,18 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       });
 
       // If the hash field differs, update the user operation
-      // if (userOperationWithHash?.hash !== hash) {
-      //   setUserOperations(prev => {
-      //     const next = [...prev];
-      //     if (next[userOperationIndex]) {
-      //       next[userOperationIndex] = {
-      //         ...updatedUserOperation,
-      //         hash,
-      //       };
-      //     }
-      //     return next;
-      //   });
-      // }
+      if (userOperationWithHash?.hash !== hash) {
+        setUserOperations(prev => {
+          const next = [...prev];
+          if (next[userOperationIndex]) {
+            next[userOperationIndex] = {
+              ...updatedUserOperation,
+              hash,
+            };
+          }
+          return next;
+        });
+      }
 
       // Update the user operation with the hash
       setUserOperationWithHash({
@@ -496,7 +497,11 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   const debouncedUserOperationWithHash = useDebouncedValue(
     userOperationWithHash,
-    3000,
+    300,
+  );
+  console.info(
+    "debouncedUserOperationWithHash",
+    debouncedUserOperationWithHash,
   );
 
   // ---------------------------------------------------------------------------
@@ -504,21 +509,21 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
 
   // Sync `userOperationWithHash` to the store
-  useEffect(() => {
-    setUserOperations(prev => {
-      const next = [...prev];
-      const nextUop = next[userOperationIndex];
-      if (nextUop.hash !== debouncedUserOperationWithHash?.hash) {
-        next[userOperationIndex] = {
-          ...updatedUserOperation,
-          ...userOperationWithHash,
-          hash: userOperationWithHash?.hash,
-        };
-      }
-      return next;
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedUserOperationWithHash]);
+  // useEffect(() => {
+  //   setUserOperations(prev => {
+  //     const next = [...prev];
+  //     const nextUop = next[userOperationIndex];
+  //     if (nextUop.hash !== debouncedUserOperationWithHash?.hash) {
+  //       next[userOperationIndex] = {
+  //         ...updatedUserOperation,
+  //         ...userOperationWithHash,
+  //         hash: userOperationWithHash?.hash,
+  //       };
+  //     }
+  //     return next;
+  //   });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [debouncedUserOperationWithHash]);
 
   // useEffect(() => {
   //   setIsFormDisabled(isDisabled);
