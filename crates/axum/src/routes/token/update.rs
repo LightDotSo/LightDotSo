@@ -56,6 +56,9 @@ pub struct TokenUpdateRequestParams {
     /// The symbol of the token.
     #[schema(example = "MT", default = "MT")]
     pub symbol: Option<String>,
+    /// The decimals of the token.
+    #[schema(example = "18", default = "18")]
+    pub decimals: Option<i32>,
 }
 
 // -----------------------------------------------------------------------------
@@ -122,6 +125,10 @@ pub(crate) async fn v1_token_update_handler(
 
     if let Some(symbol) = params.symbol.as_ref() {
         update_params.push(token::symbol::set(Some(symbol.to_string())));
+    };
+
+    if let Some(decimals) = params.decimals {
+        update_params.push(token::decimals::set(Some(decimals)));
     };
 
     // -------------------------------------------------------------------------

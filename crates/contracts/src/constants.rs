@@ -112,6 +112,7 @@ lazy_static! {
         m.insert(42220, "Celo Mainnet");
         m.insert(43114, "Avalanche Mainnet");
         m.insert(59144, "Linea Mainnet");
+        m.insert(81457, "Blast Mainnet");
         m.insert(534352, "Scroll Mainnet");
         m.insert(7777777, "Zora Mainnet");
 
