@@ -21,12 +21,14 @@ import { userOperationsParser } from "./useUserOperationsQueryState";
 // -----------------------------------------------------------------------------
 
 export const useInternalUserOperationsQueryState = (
-  defaultUserOperations?: Array<Partial<UserOperation>>,
+  defaultInternalUserOperations?: Array<Partial<UserOperation>>,
 ) => {
   return useQueryState(
     "internalUserOperations",
-    userOperationsParser.withDefault(defaultUserOperations ?? []).withOptions({
-      throttleMs: 3000,
-    }),
+    userOperationsParser
+      .withDefault(defaultInternalUserOperations ?? [])
+      .withOptions({
+        throttleMs: 3000,
+      }),
   );
 };
