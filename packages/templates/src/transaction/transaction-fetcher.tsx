@@ -243,7 +243,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         partialUserOperation?.maxPriorityFeePerGas ?? BigInt(0),
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userOperations, executedUserOperations, configuration]);
+  }, [executedUserOperations, configuration]);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -455,18 +455,18 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       });
 
       // If the hash field differs, update the user operation
-      if (userOperationWithHash?.hash !== hash) {
-        setUserOperations(prev => {
-          const next = [...prev];
-          if (next[userOperationIndex]) {
-            next[userOperationIndex] = {
-              ...updatedUserOperation,
-              hash,
-            };
-          }
-          return next;
-        });
-      }
+      // if (userOperationWithHash?.hash !== hash) {
+      //   setUserOperations(prev => {
+      //     const next = [...prev];
+      //     if (next[userOperationIndex]) {
+      //       next[userOperationIndex] = {
+      //         ...updatedUserOperation,
+      //         hash,
+      //       };
+      //     }
+      //     return next;
+      //   });
+      // }
 
       // Update the user operation with the hash
       setUserOperationWithHash({
@@ -509,21 +509,21 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
 
   // Sync `userOperationWithHash` to the store
-  // useEffect(() => {
-  //   setUserOperations(prev => {
-  //     const next = [...prev];
-  //     const nextUop = next[userOperationIndex];
-  //     if (nextUop.hash !== debouncedUserOperationWithHash?.hash) {
-  //       next[userOperationIndex] = {
-  //         ...updatedUserOperation,
-  //         ...userOperationWithHash,
-  //         hash: userOperationWithHash?.hash,
-  //       };
-  //     }
-  //     return next;
-  //   });
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [debouncedUserOperationWithHash]);
+  useEffect(() => {
+    setUserOperations(prev => {
+      const next = [...prev];
+      const nextUop = next[userOperationIndex];
+      if (nextUop.hash !== debouncedUserOperationWithHash?.hash) {
+        next[userOperationIndex] = {
+          ...updatedUserOperation,
+          ...userOperationWithHash,
+          hash: userOperationWithHash?.hash,
+        };
+      }
+      return next;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedUserOperationWithHash]);
 
   // useEffect(() => {
   //   setIsFormDisabled(isDisabled);
