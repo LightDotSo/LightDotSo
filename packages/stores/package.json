@@ -34,7 +34,7 @@
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.51.0",
+    "react-hook-form": "^7.51.1",
     "viem": "^2.8.10",
     "zod": "^3.22.4",
     "zustand": "^4.5.2"

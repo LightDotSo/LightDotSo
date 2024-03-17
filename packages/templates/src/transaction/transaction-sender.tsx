@@ -61,21 +61,13 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
 
   // Handle on mount
   useEffect(() => {
-    const executeSubmit = async () => {
-      await handleSubmit();
-    };
-
-    executeSubmit();
+    handleSubmit();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMounted]);
 
   // Refetch the user operation on mount
   useEffect(() => {
-    const fetchUserOperation = async () => {
-      await refetchUserOperation();
-    };
-
-    fetchUserOperation();
+    refetchUserOperation();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -83,8 +75,8 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
   useEffect(() => {
     let interval: NodeJS.Timeout;
 
-    const executeSubmit = async () => {
-      await handleSubmit();
+    const executeSubmit = () => {
+      handleSubmit();
       interval = setInterval(executeSubmit, 10000);
     };
 

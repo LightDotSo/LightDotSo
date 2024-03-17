@@ -156,6 +156,12 @@ export const Transaction: FC<TransactionProps> = ({
   } = useUserOperationCreate({
     address: address,
   });
+  console.info("isUserOperationCreateSuccess", isUserOperationCreateSuccess);
+  console.info("isUserOperationCreateLoading", isUserOperationCreateLoading);
+  console.info(
+    "isUserOperationCreateSubmittable",
+    isUserOperationCreateSubmittable,
+  );
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
