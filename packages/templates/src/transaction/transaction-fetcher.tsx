@@ -476,6 +476,11 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         ] as typeof ENTRYPOINT_ADDRESS_V06,
       });
 
+      // Don't update the user operation if the hash is same as the previous one
+      if (hash === userOperationWithHash?.hash) {
+        return;
+      }
+
       // If the hash field differs, update the user operation
       // if (userOperationWithHash?.hash !== hash) {
       //   setUserOperations(prev => {
@@ -536,16 +541,17 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       const next = [...prev];
       const nextUop = next[userOperationIndex];
       if (nextUop.hash !== debouncedUserOperationWithHash?.hash) {
-        next[userOperationIndex] = {
-          ...updatedUserOperation,
-          ...userOperationWithHash,
-          hash: userOperationWithHash?.hash,
-        };
+        if (userOperationWithHash !== undefined) {
+          next[userOperationIndex] = userOperationWithHash;
+        }
       }
       return next;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedUserOperationWithHash]);
+  }, [
+    // Debounced user operation with hash is the only dependency
+    debouncedUserOperationWithHash,
+  ]);
 
   // useEffect(() => {
   //   setIsFormDisabled(isDisabled);

@@ -142,7 +142,7 @@ export const useUserOperationCreate = ({
     // Solely dependent on userOperations for the subdigest
     userOperations,
   ]);
-  console.info(subdigest);
+  console.info("subdigest", subdigest);
 
   // Add a cached subdigest constant
   const cachedSubdigest = useMemo(() => subdigest, [subdigest]);
