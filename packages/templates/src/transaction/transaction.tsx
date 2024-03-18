@@ -14,12 +14,9 @@
 
 "use client";
 
-import { AssetChange, TokenImage } from "@lightdotso/elements";
+import { TokenImage } from "@lightdotso/elements";
 import { useUserOperationCreate } from "@lightdotso/hooks";
-import {
-  useTransfersQueryState,
-  useUserOperationsQueryState,
-} from "@lightdotso/nuqs";
+import { useUserOperationsQueryState } from "@lightdotso/nuqs";
 import { transactionFormSchema } from "@lightdotso/schemas";
 import {
   useDev,
@@ -133,7 +130,6 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
-  const [transfers, setTransfers] = useTransfersQueryState();
   const [userOperations] = useUserOperationsQueryState();
 
   // ---------------------------------------------------------------------------
