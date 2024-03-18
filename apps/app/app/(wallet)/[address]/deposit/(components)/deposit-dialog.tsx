@@ -312,16 +312,10 @@ export const DepositDialog: FC<DepositDialogProps> = ({
   // ---------------------------------------------------------------------------
 
   const onSubmit: SubmitHandler<DepositFormValues> = async () => {
-    console.info("Deposit form submitted!");
-
     if (!address) {
       setOpen(true);
       return;
     }
-
-    console.info(data);
-
-    console.info("globalChainId: ", globalChainId);
 
     const assetChainId = form.getValues("chainId");
 
@@ -330,12 +324,10 @@ export const DepositDialog: FC<DepositDialogProps> = ({
       return;
     }
 
-    console.info("assetChainId: ", assetChainId);
-
     if (chainId !== assetChainId) {
       console.error("ChainId does not match");
-      console.info("Current chain: ", chainId);
-      console.info("Switching chain to: ", assetChainId);
+      console.warn("Current chain: ", chainId);
+      console.warn("Switching chain to: ", assetChainId);
 
       await switchChainAsync({ chainId: assetChainId });
     }
@@ -346,29 +338,25 @@ export const DepositDialog: FC<DepositDialogProps> = ({
     }
 
     const quantity = form.getValues("asset.quantity");
-    console.info("Quantity: ", quantity);
+
     if (!quantity) {
       console.error("Quantity is 0");
+      console.warn("quantity: ", quantity);
       return;
     }
 
     const decimals = form.getValues("asset.decimals");
-    console.info("Decimals: ", decimals);
     if (!decimals) {
-      console.warn("Decimals is not defined");
+      console.error("Decimals is not defined");
+      console.warn("Decimals: ", decimals);
     }
 
     const assetType = form.getValues("assetType");
-    console.info("Asset Type: ", assetType);
 
     const contractAddress = form.getValues("asset.address") as Address;
-    console.info("Contract Adress: ", contractAddress);
 
     if (assetType === "erc721") {
-      console.info("Sending NFT");
-
       const tokenId = form.getValues("asset.tokenId");
-      console.info("Token ID: ", tokenId);
 
       if (!tokenId) {
         console.error("Token ID is not defined");
@@ -376,7 +364,6 @@ export const DepositDialog: FC<DepositDialogProps> = ({
       }
 
       const bigIntTokenId = BigInt(tokenId);
-      console.info("BigInt Token ID: ", bigIntTokenId);
 
       const res = await writeContract({
         abi: erc721Abi,
@@ -392,10 +379,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
     }
 
     if (assetType === "erc1155") {
-      console.info("Sending NFT");
-
       const tokenId = form.getValues("asset.tokenId");
-      console.info("Token ID: ", tokenId);
 
       if (!tokenId) {
         console.error("Token ID is not defined");
@@ -403,10 +387,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
       }
 
       const bigIntTokenId = BigInt(tokenId);
-      console.info("BigInt Token ID: ", bigIntTokenId);
-
       const bigIntQuantity = BigInt(quantity);
-      console.info("BigInt Quantity: ", bigIntQuantity);
 
       const res = await writeContract({
         abi: [
@@ -456,11 +437,8 @@ export const DepositDialog: FC<DepositDialogProps> = ({
     }
 
     const bigIntQuantity = BigInt(quantity * Math.pow(10, decimals));
-    console.info("BigInt Quantity: ", bigIntQuantity);
 
     if (contractAddress === "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee") {
-      console.info("Sending ETH");
-
       const res = await sendTransaction({
         chainId: chainId,
         to: wallet,

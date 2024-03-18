@@ -32,9 +32,9 @@ export const WssState: FC = () => {
     const channel = pusherClient.subscribe("test-channel");
 
     // Bind to an event on the channel
-    channel.bind("test-event", function (data: any) {
-      console.info("test-event data:", data);
-    });
+    // channel.bind("test-event", function (data: any) {
+    //   console.info("test-event data:", data);
+    // });
 
     // Unsubscribe from the channel when the component unmounts
     return () => {

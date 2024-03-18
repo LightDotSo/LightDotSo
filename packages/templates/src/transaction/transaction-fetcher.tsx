@@ -97,7 +97,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   const [isDisabled, setIsDisabled] = useState(false);
   const [userOperationWithHash, setUserOperationWithHash] =
     useState<UserOperation>();
-  console.info("userOperationWithHash", userOperationWithHash);
 
   // ---------------------------------------------------------------------------
   // Stores
@@ -155,7 +154,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       address: address,
       chain_id: Number(initialUserOperation.chainId),
     });
-  console.info("userOperationNonce", userOperationNonce);
 
   // Gets the history of user operations
   const {
@@ -170,7 +168,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     is_testnet: true,
     chain_id: Number(initialUserOperation.chainId) as number,
   });
-  console.info("executedUserOperations", executedUserOperations);
 
   // ---------------------------------------------------------------------------
   // Form
@@ -260,7 +257,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     // Should recompute if the user operation nonce changes
     userOperationNonce,
   ]);
-  console.info("targetUserOperation", targetUserOperation);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -401,7 +397,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       // Paymaster and data is required to compute the gas limits and paymaster
       paymasterAndData,
     ]);
-  console.info("updatedUserOperation", updatedUserOperation);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks

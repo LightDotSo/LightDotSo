@@ -74,7 +74,7 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
       {isUserOperationSendLoading && "Loading..."}
       {isUserOperationSendSuccess && "Sent!"}
       {userOperation?.transaction?.hash && (
-        <Button variant="link" asChild>
+        <Button asChild variant="link">
           <a
             target="_blank"
             rel="noopener noreferrer"
