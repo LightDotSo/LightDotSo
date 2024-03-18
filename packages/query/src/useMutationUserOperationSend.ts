@@ -24,7 +24,6 @@ import { toast } from "@lightdotso/ui";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { toHex } from "viem";
-import { useQueryUserOperationSignature } from "./useQueryUserOperationSignature";
 
 // -----------------------------------------------------------------------------
 // Query Mutation
@@ -39,11 +38,6 @@ export const useMutationUserOperationSend = (
 
   const queryClient = useQueryClient();
 
-  const { userOperationSignature } = useQueryUserOperationSignature({
-    hash: params.hash,
-    configuration_id: params.configuration?.id,
-  });
-
   // ---------------------------------------------------------------------------
   // Query Mutation
   // ---------------------------------------------------------------------------
@@ -57,27 +51,23 @@ export const useMutationUserOperationSend = (
   } = useMutation({
     retry: 10,
     mutationFn: async (body: UserOperationSendBodyParams) => {
-      if (!userOperationSignature) {
-        console.warn("userOperationSignature not found.");
-        console.warn("userOperationSignature:", userOperationSignature);
-        throw new Error("userOperationSignature not found.");
-      }
-
       const loadingToast = toast.loading("Submitting the transaction...");
 
+      const { userOperation, userOperationSignature } = body;
+
       // Sned the user operation
-      const res = await sendUserOperation(body.chain_id, [
+      const res = await sendUserOperation(userOperation.chain_id, [
         {
-          sender: body.sender,
-          nonce: toHex(body.nonce),
-          initCode: body.init_code,
-          callData: body.call_data,
-          paymasterAndData: body.paymaster_and_data,
-          callGasLimit: toHex(body.call_gas_limit),
-          verificationGasLimit: toHex(body.verification_gas_limit),
-          preVerificationGas: toHex(body.pre_verification_gas),
-          maxFeePerGas: toHex(body.max_fee_per_gas),
-          maxPriorityFeePerGas: toHex(body.max_priority_fee_per_gas),
+          sender: userOperation.sender,
+          nonce: toHex(userOperation.nonce),
+          initCode: userOperation.init_code,
+          callData: userOperation.call_data,
+          paymasterAndData: userOperation.paymaster_and_data,
+          callGasLimit: toHex(userOperation.call_gas_limit),
+          verificationGasLimit: toHex(userOperation.verification_gas_limit),
+          preVerificationGas: toHex(userOperation.pre_verification_gas),
+          maxFeePerGas: toHex(userOperation.max_fee_per_gas),
+          maxPriorityFeePerGas: toHex(userOperation.max_priority_fee_per_gas),
           signature: userOperationSignature,
         },
         // Hardcoded to use the latest version of the wallet factory
@@ -129,7 +119,7 @@ export const useMutationUserOperationSend = (
           const newData =
             old && old.length > 0
               ? old.map(d => {
-                  if (d.hash === data.hash) {
+                  if (d.hash === data.userOperation.hash) {
                     return { ...d, status: "PENDING" };
                   }
                   return d;

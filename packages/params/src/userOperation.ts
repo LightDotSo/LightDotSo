@@ -78,4 +78,7 @@ export type UserOperationCreateBatchBodyParams = {
 
 export type UserOperationUpdateBodyParams = Partial<UserOperation>;
 
-export type UserOperationSendBodyParams = UserOperationData;
+export type UserOperationSendBodyParams = {
+  userOperation: UserOperationData;
+  userOperationSignature: Hex;
+};

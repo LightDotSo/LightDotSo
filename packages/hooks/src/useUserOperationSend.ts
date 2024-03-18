@@ -21,6 +21,7 @@ import {
   useQueryPaymasterOperation,
   useQueryUserOperation,
   useQueryUserOperationReceipt,
+  useQueryUserOperationSignature,
 } from "@lightdotso/query";
 import { useFormRef } from "@lightdotso/stores";
 import {
@@ -137,6 +138,11 @@ export const useUserOperationSend = ({
     address: address as Address,
     image_hash: imageHash,
     checkpoint: !imageHash ? 0 : undefined,
+  });
+
+  const { userOperationSignature } = useQueryUserOperationSignature({
+    hash: hash,
+    configuration_id: configuration?.id,
   });
 
   const { paymasterOperation } = useQueryPaymasterOperation({
@@ -306,6 +312,12 @@ export const useUserOperationSend = ({
       return;
     }
 
+    if (!userOperationSignature) {
+      console.warn("User operation signature not found");
+      console.warn("userOperationSignature", userOperationSignature);
+      return;
+    }
+
     console.info("isUserOperationReceiptError", isUserOperationReceiptError);
     console.info("isUserOperationSendPending", isUserOperationSendPending);
     console.info("userOperationReceipt", userOperationReceipt);
@@ -313,7 +325,10 @@ export const useUserOperationSend = ({
     // If the user operation receipt is an error, send the user operation
     if (isUserOperationReceiptError) {
       // Send the user operation if the user operation hasn't been sent yet
-      userOperationSend(userOperation);
+      userOperationSend({
+        userOperation: userOperation,
+        userOperationSignature: userOperationSignature as Hex,
+      });
       // Then, refetch the user operation
       refetchUserOperation();
       // Finally, return
@@ -331,6 +346,7 @@ export const useUserOperationSend = ({
   }, [
     userOperation,
     userOperationReceipt,
+    userOperationSignature,
     isUserOperationReceiptError,
     isUserOperationSendPending,
     userOperationSend,
