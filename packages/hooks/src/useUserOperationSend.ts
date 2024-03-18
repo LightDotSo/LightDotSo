@@ -71,9 +71,10 @@ export const useUserOperationSend = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const { queueUserOperation } = useMutationQueueUserOperation({
-    address: hash,
-  });
+  const { queueUserOperation, isLoadingQueueUserOperation } =
+    useMutationQueueUserOperation({
+      address: hash,
+    });
 
   const { userOperation, isUserOperationFetching, refetchUserOperation } =
     useQueryUserOperation({
@@ -267,8 +268,8 @@ export const useUserOperationSend = ({
   );
 
   const isUserOperationSendLoading = useMemo(
-    () => isMutationUserOperationSendLoading,
-    [isMutationUserOperationSendLoading],
+    () => isLoadingQueueUserOperation || isMutationUserOperationSendLoading,
+    [isLoadingQueueUserOperation, isMutationUserOperationSendLoading],
   );
 
   const isUserOperationSendDisabled = useMemo(
