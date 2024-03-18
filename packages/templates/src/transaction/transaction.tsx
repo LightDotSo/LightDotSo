@@ -334,7 +334,12 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
                               value={`value-${index}`}
                             >
                               <AccordionTrigger className="px-1 py-0 text-xl font-medium md:text-2xl">
-                                Transaction on {chain.name}
+                                <div className="flex items-center">
+                                  <span className="mr-2.5">
+                                    Transaction on {chain.name}
+                                  </span>
+                                  <ChainLogo chainId={chain.id} />
+                                </div>
                               </AccordionTrigger>
                               <AccordionContent className="px-1 pt-4">
                                 {details.map((item, itemIndex) => (
@@ -537,7 +542,12 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
                               value={`value-${index}`}
                             >
                               <AccordionTrigger className="px-1 py-0 text-xl font-medium md:text-2xl">
-                                Transaction on {chain.name}
+                                <div className="flex items-center">
+                                  <span className="mr-2.5">
+                                    Transaction on {chain.name}
+                                  </span>
+                                  <ChainLogo chainId={chain.id} />
+                                </div>
                               </AccordionTrigger>
                               <AccordionContent className="px-1 pt-4">
                                 {details.map((item, itemIndex) => (
