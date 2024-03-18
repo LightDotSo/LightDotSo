@@ -196,6 +196,10 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     checkpoint: 0,
   });
 
+  const { wallet } = useQueryWallet({
+    address: address,
+  });
+
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
@@ -206,16 +210,18 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     UserOperation,
     "hash" | "paymasterAndData" | "signature"
   > = useMemo(() => {
-    // Get the user operation at the index, fallback to the initial user operation
-    const partialUserOperation = initialUserOperation;
-
     // Get the minimum nonce from the user operation nonce and the partial user operation
     const updatedMinimumNonce =
       userOperationNonce && !isUserOperationNonceLoading
-        ? userOperationNonce?.nonce > partialUserOperation?.nonce!
+        ? // If the initial user operation is empty,
+          // Or the initial user operation nonce is smaller than the user operation nonce for the chain
+          // Then, use the user operation nonce
+          !initialUserOperation.nonce ||
+          (initialUserOperation.nonce &&
+            userOperationNonce?.nonce > initialUserOperation?.nonce)
           ? BigInt(userOperationNonce?.nonce)
-          : partialUserOperation.nonce
-        : partialUserOperation.nonce;
+          : initialUserOperation.nonce
+        : initialUserOperation.nonce;
 
     // Get the init code from the executed user operations or the partial user operation
     const updatedInitCode =
@@ -226,25 +232,27 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
             genesisConfiguration?.image_hash as Hex,
             wallet?.salt as Hex,
           )
-        : partialUserOperation.initCode;
+        : initialUserOperation.initCode;
 
     // Return the user operation
     return {
-      sender: partialUserOperation?.sender ?? address,
-      chainId: partialUserOperation?.chainId ?? BigInt(0),
+      sender: initialUserOperation?.sender ?? address,
+      chainId: initialUserOperation?.chainId ?? BigInt(0),
       initCode: updatedInitCode ?? "0x",
       nonce: updatedMinimumNonce ?? BigInt(0),
-      callData: partialUserOperation?.callData ?? "0x",
-      callGasLimit: partialUserOperation?.callGasLimit ?? BigInt(0),
+      callData: initialUserOperation?.callData ?? "0x",
+      callGasLimit: initialUserOperation?.callGasLimit ?? BigInt(0),
       verificationGasLimit:
-        partialUserOperation?.verificationGasLimit ?? BigInt(0),
-      preVerificationGas: partialUserOperation?.preVerificationGas ?? BigInt(0),
-      maxFeePerGas: partialUserOperation?.maxFeePerGas ?? BigInt(0),
+        initialUserOperation?.verificationGasLimit ?? BigInt(0),
+      preVerificationGas: initialUserOperation?.preVerificationGas ?? BigInt(0),
+      maxFeePerGas: initialUserOperation?.maxFeePerGas ?? BigInt(0),
       maxPriorityFeePerGas:
-        partialUserOperation?.maxPriorityFeePerGas ?? BigInt(0),
+        initialUserOperation?.maxPriorityFeePerGas ?? BigInt(0),
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
+    // The wallet is required to compute the init code
+    wallet,
     // The genesis configuration is static
     genesisConfiguration,
     // Should recompute if the executed user operations change, for init code
@@ -257,10 +265,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
-
-  const { wallet } = useQueryWallet({
-    address: address,
-  });
 
   // Gets the simulation for the user operation
   const { simulation } = useQuerySimulation({
