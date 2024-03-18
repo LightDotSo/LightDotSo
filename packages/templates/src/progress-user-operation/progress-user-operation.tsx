@@ -78,7 +78,7 @@ export const ProgressUserOperationOp: FC<PendingUserOperationOpProps> = ({
     if (userOperation && userOperation.status === "EXECUTED") {
       toast.dismiss(hash);
 
-      toast.success("User operation executed", {
+      toast.success("Transaction executed!", {
         position: "top-right",
       });
 
