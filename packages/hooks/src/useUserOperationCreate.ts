@@ -79,6 +79,10 @@ export const useUserOperationCreate = ({
 
   const [merkleTree, setMerkleTree] = useState<MerkleTree | undefined>();
   const [signedData, setSignedData] = useState<Hex>();
+  const [isCustomSignLoading, setIsCustomSignLoading] =
+    useState<boolean>(false);
+  const [isCustomCreateSuccess, setIsCustomCreateSuccess] =
+    useState<boolean>(false);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -271,6 +275,8 @@ export const useUserOperationCreate = ({
 
   // Sign the userOperation
   const signUserOperation = useCallback(() => {
+    setIsCustomSignLoading(true);
+
     console.info(subdigest);
 
     if (!subdigest) {
@@ -311,7 +317,11 @@ export const useUserOperationCreate = ({
       return;
     }
 
+    // Set the signed data
     setSignedData(data);
+
+    // As a side effect, set the custom sign loading state to false
+    setIsCustomSignLoading(false);
   }, [data]);
 
   // Create the userOperation (single or batch)
@@ -448,11 +458,13 @@ export const useUserOperationCreate = ({
   // Check if the userOperation is loading
   const isUserOperationCreateLoading = useMemo(() => {
     return (
+      isCustomSignLoading ||
       isSignLoading ||
       isUserOperactionCreateLoading ||
       isUserOperactionCreateBatchLoading
     );
   }, [
+    isCustomSignLoading,
     isSignLoading,
     isUserOperactionCreateLoading,
     isUserOperactionCreateBatchLoading,
