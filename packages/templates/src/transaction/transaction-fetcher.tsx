@@ -97,12 +97,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   console.info("userOperationWithHash", userOperationWithHash);
 
   // ---------------------------------------------------------------------------
-  // Query State Hooks
-  // ---------------------------------------------------------------------------
-
-  // const [userOperations] = useUserOperationsQueryState();
-
-  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
@@ -189,6 +183,15 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   const formValues = form.watch();
 
   // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { configuration: genesisConfiguration } = useQueryConfiguration({
+    address: address,
+    checkpoint: 0,
+  });
+
+  // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
@@ -197,67 +200,58 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   const targetUserOperation: Omit<
     UserOperation,
     "hash" | "paymasterAndData" | "signature"
-  > = useMemo(
-    () => {
-      // Get the user operation at the index, fallback to the initial user operation
-      const partialUserOperation = initialUserOperation;
+  > = useMemo(() => {
+    // Get the user operation at the index, fallback to the initial user operation
+    const partialUserOperation = initialUserOperation;
 
-      // Get the minimum nonce from the user operation nonce and the partial user operation
-      const updatedMinimumNonce =
-        userOperationNonce && !isUserOperationNonceLoading
-          ? userOperationNonce?.nonce > partialUserOperation?.nonce!
-            ? BigInt(userOperationNonce?.nonce)
-            : partialUserOperation.nonce
-          : partialUserOperation.nonce;
+    // Get the minimum nonce from the user operation nonce and the partial user operation
+    const updatedMinimumNonce =
+      userOperationNonce && !isUserOperationNonceLoading
+        ? userOperationNonce?.nonce > partialUserOperation?.nonce!
+          ? BigInt(userOperationNonce?.nonce)
+          : partialUserOperation.nonce
+        : partialUserOperation.nonce;
 
-      // Get the init code from the executed user operations or the partial user operation
-      const updatedInitCode =
-        executedUserOperations && executedUserOperations?.length < 1
-          ? calculateInitCode(
-              wallet?.factory_address as Address,
-              // Compute w/ the genesis configuration image hash
-              genesisConfiguration?.image_hash as Hex,
-              wallet?.salt as Hex,
-            )
-          : partialUserOperation.initCode;
+    // Get the init code from the executed user operations or the partial user operation
+    const updatedInitCode =
+      executedUserOperations && executedUserOperations?.length < 1
+        ? calculateInitCode(
+            wallet?.factory_address as Address,
+            // Compute w/ the genesis configuration image hash
+            genesisConfiguration?.image_hash as Hex,
+            wallet?.salt as Hex,
+          )
+        : partialUserOperation.initCode;
 
-      // Return the user operation
-      return {
-        sender: partialUserOperation?.sender ?? address,
-        chainId: partialUserOperation?.chainId ?? BigInt(0),
-        initCode: updatedInitCode ?? "0x",
-        nonce: updatedMinimumNonce ?? BigInt(0),
-        callData: partialUserOperation?.callData ?? "0x",
-        callGasLimit: partialUserOperation?.callGasLimit ?? BigInt(0),
-        verificationGasLimit:
-          partialUserOperation?.verificationGasLimit ?? BigInt(0),
-        preVerificationGas:
-          partialUserOperation?.preVerificationGas ?? BigInt(0),
-        maxFeePerGas: partialUserOperation?.maxFeePerGas ?? BigInt(0),
-        maxPriorityFeePerGas:
-          partialUserOperation?.maxPriorityFeePerGas ?? BigInt(0),
-      };
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    },
-    [
-      // The genesis configuration is static
-      // genesisConfiguration,
-      // Should recompute if the executed user operations change, for init code
-      // executedUserOperations,
-      // Should recompute if the user operation nonce changes
-      // userOperationNonce,
-    ],
-  );
+    // Return the user operation
+    return {
+      sender: partialUserOperation?.sender ?? address,
+      chainId: partialUserOperation?.chainId ?? BigInt(0),
+      initCode: updatedInitCode ?? "0x",
+      nonce: updatedMinimumNonce ?? BigInt(0),
+      callData: partialUserOperation?.callData ?? "0x",
+      callGasLimit: partialUserOperation?.callGasLimit ?? BigInt(0),
+      verificationGasLimit:
+        partialUserOperation?.verificationGasLimit ?? BigInt(0),
+      preVerificationGas: partialUserOperation?.preVerificationGas ?? BigInt(0),
+      maxFeePerGas: partialUserOperation?.maxFeePerGas ?? BigInt(0),
+      maxPriorityFeePerGas:
+        partialUserOperation?.maxPriorityFeePerGas ?? BigInt(0),
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    // The genesis configuration is static
+    genesisConfiguration,
+    // Should recompute if the executed user operations change, for init code
+    executedUserOperations,
+    // Should recompute if the user operation nonce changes
+    userOperationNonce,
+  ]);
   console.info("targetUserOperation", targetUserOperation);
 
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
-
-  const { configuration: genesisConfiguration } = useQueryConfiguration({
-    address: address,
-    checkpoint: 0,
-  });
 
   const { wallet } = useQueryWallet({
     address: address,

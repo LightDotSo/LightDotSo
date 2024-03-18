@@ -1936,9 +1936,6 @@ importers:
       '@lightdotso/data':
         specifier: workspace:*
         version: link:../data
-      '@lightdotso/nuqs':
-        specifier: workspace:*
-        version: link:../nuqs
       '@lightdotso/params':
         specifier: workspace:*
         version: link:../params
@@ -37105,7 +37102,6 @@ packages:
     resolution: {tarball: https://codeload.github.com/OpenZeppelin/merkle-tree/tar.gz/5d8941e4cdafabeb2d3691e08bc3ff2f8d99528f}
     name: '@openzeppelin/merkle-tree'
     version: 1.0.6
-    prepare: true
     requiresBuild: true
     dependencies:
       '@ethersproject/abi': 5.7.0
