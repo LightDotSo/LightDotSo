@@ -324,6 +324,10 @@ export const useUserOperationSend = ({
 
     // If the user operation receipt is an error, send the user operation
     if (isUserOperationReceiptError) {
+      console.info("Sending user operation...");
+      console.info("userOperation", userOperation);
+      console.info("userOperationSignature", userOperationSignature);
+
       // Send the user operation if the user operation hasn't been sent yet
       userOperationSend({
         userOperation: userOperation,
