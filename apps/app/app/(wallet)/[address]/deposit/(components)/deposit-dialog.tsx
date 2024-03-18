@@ -54,7 +54,7 @@ import {
 import { getChainById } from "@lightdotso/utils";
 import {
   useAccount,
-  useChainId,
+  // useChainId,
   useModal,
   useReadContract,
   useSendTransaction,
