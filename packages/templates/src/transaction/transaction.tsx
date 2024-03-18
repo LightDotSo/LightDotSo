@@ -76,8 +76,6 @@ type TransactionFormValues = z.infer<typeof transactionFormSchema>;
 // -----------------------------------------------------------------------------
 
 export const Transaction: FC<TransactionProps> = ({ address }) => {
-  console.info("Transaction rendered!");
-
   // ---------------------------------------------------------------------------
   // Next Hooks
   // ---------------------------------------------------------------------------
@@ -145,13 +143,6 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   } = useUserOperationCreate({
     address: address,
   });
-  console.info("isUserOperationMerkleEqual", isUserOperationMerkleEqual);
-  console.info("isUserOperationCreateSuccess", isUserOperationCreateSuccess);
-  console.info("isUserOperationCreateLoading", isUserOperationCreateLoading);
-  console.info(
-    "isUserOperationCreateSubmittable",
-    isUserOperationCreateSubmittable,
-  );
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -189,7 +180,6 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
     // Otherwise, the transaction loading state is set from the individual transaction fetcher
     return false;
   }, [isUserOperationCreateSuccess, isUserOperationCreateLoading]);
-  console.info("isTransactionLoading", isTransactionLoading);
 
   // Set the transaction disabled state
   const isTransactionDisabled = useMemo(() => {
@@ -215,7 +205,6 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
     isUserOperationCreateable,
     isUserOperationMerkleEqual,
   ]);
-  console.info("isTransactionDisabled", isTransactionDisabled);
 
   // ---------------------------------------------------------------------------
   // Effect Hooks

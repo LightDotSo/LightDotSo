@@ -71,16 +71,16 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
 
   return (
     <div>
-      {address}
-      {hash}
       {isUserOperationSendLoading && "Loading..."}
-      {isUserOperationSendSuccess && "Success!"}
-      {isUserOperationSendSuccess && userOperation?.chain_id && (
-        <Button asChild>
+      {isUserOperationSendSuccess && "Sent!"}
+      {userOperation?.transaction?.hash && (
+        <Button asChild variant="link">
           <a
+            target="_blank"
+            rel="noopener noreferrer"
             href={`${getEtherscanUrl(
               getChainById(userOperation?.chain_id),
-            )}/tx/${userOperation.hash}`}
+            )}/tx/${userOperation?.transaction?.hash}`}
           >
             {userOperation?.transaction?.hash}
           </a>

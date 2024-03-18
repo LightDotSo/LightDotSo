@@ -80,7 +80,6 @@ export const useUserOperationSend = ({
   const { userOperation, isUserOperationFetching } = useQueryUserOperation({
     hash: hash,
   });
-  console.info("userOperation", userOperation);
 
   // ---------------------------------------------------------------------------
   // Wagmi
@@ -158,8 +157,6 @@ export const useUserOperationSend = ({
       chainId: userOperation?.chain_id!,
       hash: hash,
     });
-  console.info("userOperationReceipt", userOperationReceipt);
-  console.info("isUserOperationReceiptError", isUserOperationReceiptError);
 
   const {
     userOperationSend,
@@ -171,18 +168,6 @@ export const useUserOperationSend = ({
     configuration: configuration,
     hash: userOperation?.hash as Hex,
   });
-  console.info(
-    "isMutationUserOperationSendIdle",
-    isMutationUserOperationSendIdle,
-  );
-  console.info(
-    "isMutationUserOperationSendSuccess",
-    isMutationUserOperationSendSuccess,
-  );
-  console.info(
-    "isMutationUserOperationSendLoading",
-    isMutationUserOperationSendLoading,
-  );
 
   // ---------------------------------------------------------------------------
   // Hooks
@@ -307,7 +292,6 @@ export const useUserOperationSend = ({
       isUserOperationSendValid,
     [userOperation, userOperationSignature, isUserOperationSendValid],
   );
-  console.info("isUserOperationSendReady", isUserOperationSendReady);
 
   // ---------------------------------------------------------------------------
   // Callback Hooks
@@ -316,26 +300,16 @@ export const useUserOperationSend = ({
   const handleSubmit = useCallback(() => {
     if (!userOperation) {
       console.warn("User operation not found");
-      console.warn("userOperation", userOperation);
       return;
     }
 
     if (!userOperationSignature) {
       console.warn("User operation signature not found");
-      console.warn("userOperationSignature", userOperationSignature);
       return;
     }
 
-    console.info("isUserOperationReceiptError", isUserOperationReceiptError);
-    console.info("isUserOperationSendPending", isUserOperationSendPending);
-    console.info("userOperationReceipt", userOperationReceipt);
-
     // If the user operation receipt is an error, send the user operation
     if (isUserOperationReceiptError) {
-      console.info("Sending user operation...");
-      console.info("userOperation", userOperation);
-      console.info("userOperationSignature", userOperationSignature);
-
       // Send the user operation if the user operation hasn't been sent yet
       userOperationSend({
         userOperation: userOperation,

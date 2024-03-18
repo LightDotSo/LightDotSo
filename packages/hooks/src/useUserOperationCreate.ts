@@ -176,7 +176,6 @@ export const useUserOperationCreate = ({
     // Solely dependent on internalUserOperations for the subdigest
     internalUserOperations,
   ]);
-  console.info("subdigest", subdigest);
 
   // ---------------------------------------------------------------------------
   // Wagmi
@@ -184,7 +183,6 @@ export const useUserOperationCreate = ({
 
   // Sign the message of the subdigest
   const { data, signMessage, isPending: isSignLoading } = useSignMessage();
-  console.info("isSignLoading", isSignLoading);
 
   // const { data: paymasterNonce } = useReadLightVerifyingPaymasterSenderNonce({
   //   address: userOperation.paymasterAndData.slice(0, 42) as Address,
@@ -280,7 +278,8 @@ export const useUserOperationCreate = ({
     }
 
     signMessage({ message: { raw: toBytes(subdigest) } });
-  }, [subdigest, signMessage]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [subdigest]);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -293,8 +292,6 @@ export const useUserOperationCreate = ({
   } = useMutationUserOperationCreate({
     address: address,
   });
-  console.info("isUserOperactionCreateSuccess", isUserOperactionCreateSuccess);
-  console.info("isUserOperactionCreateLoading", isUserOperactionCreateLoading);
 
   const {
     userOperationCreateBatch,
@@ -303,14 +300,6 @@ export const useUserOperationCreate = ({
   } = useMutationUserOperationCreateBatch({
     address: address,
   });
-  console.info(
-    "isUserOperactionCreateBatchSuccess",
-    isUserOperactionCreateBatchSuccess,
-  );
-  console.info(
-    "isUserOperactionCreateBatchLoading",
-    isUserOperactionCreateBatchLoading,
-  );
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -333,7 +322,7 @@ export const useUserOperationCreate = ({
         return;
       }
 
-      console.info("sign");
+      console.info("sign...");
       console.info(signedData);
 
       userOperationCreate({
@@ -353,7 +342,7 @@ export const useUserOperationCreate = ({
         return;
       }
 
-      console.info("signBatch");
+      console.info("signBatch...");
       console.info(merkleTree);
       console.info(`0x${merkleTree.getRoot().toString("hex")}` as Hex);
 
