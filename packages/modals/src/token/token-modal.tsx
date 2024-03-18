@@ -156,10 +156,9 @@ export const TokenModal: FC = () => {
                 All Chains
               </Button>
               {chains.map(chain => (
-                <Tooltip>
+                <Tooltip key={chain.id}>
                   <TooltipTrigger asChild>
                     <ButtonIcon
-                      key={chain.id}
                       size="default"
                       className={cn(
                         "shrink-0",
