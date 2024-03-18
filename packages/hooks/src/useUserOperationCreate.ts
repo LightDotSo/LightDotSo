@@ -280,7 +280,8 @@ export const useUserOperationCreate = ({
     }
 
     signMessage({ message: { raw: toBytes(subdigest) } });
-  }, [subdigest, signMessage]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [subdigest]);
 
   // ---------------------------------------------------------------------------
   // Query
