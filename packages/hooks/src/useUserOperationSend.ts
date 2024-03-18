@@ -80,6 +80,7 @@ export const useUserOperationSend = ({
     useQueryUserOperation({
       hash: hash,
     });
+  console.info("userOperation", userOperation);
 
   // ---------------------------------------------------------------------------
   // Wagmi
@@ -165,6 +166,18 @@ export const useUserOperationSend = ({
     configuration: configuration,
     hash: userOperation?.hash as Hex,
   });
+  console.info(
+    "isMutationUserOperationSendIdle",
+    isMutationUserOperationSendIdle,
+  );
+  console.info(
+    "isMutationUserOperationSendSuccess",
+    isMutationUserOperationSendSuccess,
+  );
+  console.info(
+    "isMutationUserOperationSendLoading",
+    isMutationUserOperationSendLoading,
+  );
 
   // ---------------------------------------------------------------------------
   // Hooks
@@ -288,6 +301,8 @@ export const useUserOperationSend = ({
 
   const handleSubmit = useCallback(() => {
     if (!userOperation) {
+      console.warn("User operation not found");
+      console.warn("userOperation", userOperation);
       return;
     }
 

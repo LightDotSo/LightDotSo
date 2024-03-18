@@ -13,10 +13,7 @@
 // limitations under the License.
 
 import { sendUserOperation } from "@lightdotso/client";
-import {
-  TRANSACTION_ROW_COUNT,
-  WALLET_FACTORY_ENTRYPOINT_MAPPING,
-} from "@lightdotso/const";
+import { CONTRACT_ADDRESSES, TRANSACTION_ROW_COUNT } from "@lightdotso/const";
 import type { UserOperationData } from "@lightdotso/data";
 import type {
   UserOperationSendParams,
@@ -24,12 +21,10 @@ import type {
 } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { toast } from "@lightdotso/ui";
-import { findContractAddressByAddress } from "@lightdotso/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { toHex } from "viem";
 import { useQueryUserOperationSignature } from "./useQueryUserOperationSignature";
-import { useQueryWallet } from "./useQueryWallet";
 
 // -----------------------------------------------------------------------------
 // Query Mutation
@@ -43,10 +38,6 @@ export const useMutationUserOperationSend = (
   // ---------------------------------------------------------------------------
 
   const queryClient = useQueryClient();
-
-  const { wallet } = useQueryWallet({
-    address: params.address as Address,
-  });
 
   const { userOperationSignature } = useQueryUserOperationSignature({
     hash: params.hash,
@@ -66,8 +57,10 @@ export const useMutationUserOperationSend = (
   } = useMutation({
     retry: 10,
     mutationFn: async (body: UserOperationSendBodyParams) => {
-      if (!wallet || !userOperationSignature) {
-        return;
+      if (!userOperationSignature) {
+        console.warn("userOperationSignature not found.");
+        console.warn("userOperationSignature:", userOperationSignature);
+        throw new Error("userOperationSignature not found.");
       }
 
       const loadingToast = toast.loading("Submitting the transaction...");
@@ -87,9 +80,8 @@ export const useMutationUserOperationSend = (
           maxPriorityFeePerGas: toHex(body.max_priority_fee_per_gas),
           signature: userOperationSignature,
         },
-        WALLET_FACTORY_ENTRYPOINT_MAPPING[
-          findContractAddressByAddress(wallet.factory_address as Address)!
-        ],
+        // Hardcoded to use the latest version of the wallet factory
+        CONTRACT_ADDRESSES["v0.6.0 Entrypoint"],
       ]);
 
       toast.dismiss(loadingToast);

@@ -78,6 +78,4 @@ export type UserOperationCreateBatchBodyParams = {
 
 export type UserOperationUpdateBodyParams = Partial<UserOperation>;
 
-export type UserOperationSendBodyParams = UserOperationData & {
-  configuration_id?: string | null | undefined;
-};
+export type UserOperationSendBodyParams = UserOperationData;
