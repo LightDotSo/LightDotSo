@@ -49,10 +49,3 @@ export default async function Page({ params, searchParams }: PageProps) {
     </ModalInterception>
   );
 }
-
-// -----------------------------------------------------------------------------
-// Config
-// -----------------------------------------------------------------------------
-
-export const dynamic = "force-dynamic";
-// export const runtime = "edge";
