@@ -34,7 +34,6 @@
     "@lightdotso/schemas": "workspace:*",
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/ui": "workspace:*",
-    "@lightdotso/utils": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
     "@tanstack/react-query": "^5.28.4",
     "exponential-backoff": "^3.1.1",

@@ -67,9 +67,3 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   return <CreateDialog address={params.address as Address} />;
 }
-
-// -----------------------------------------------------------------------------
-// Config
-// -----------------------------------------------------------------------------
-
-export const dynamic = "force-dynamic";

@@ -27,7 +27,10 @@ import { TITLES } from "@/const";
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: TITLES.Wallets.title,
+  title: {
+    template: `${TITLES.Wallets.title} | %s`,
+    default: TITLES.Wallets.title,
+  },
   description: TITLES.Wallets.description,
 };
 

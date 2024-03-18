@@ -129,8 +129,6 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const {
-    // isUserOperationLoading,
-    // isUserOperationCreatable,
     isValidUserOperations,
     isUserOperationMerkleEqual,
     isUserOperationCreateable,
@@ -195,6 +193,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
 
   // Set the transaction disabled state
   const isTransactionDisabled = useMemo(() => {
+    // A combination of conditions that would disable the transaction
     return !(
       // If the subdigest is not undefined
       (
@@ -204,7 +203,9 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
         // Nor if the user operations are not valid
         !isValidUserOperations ||
         // Nor if the user operations are not createable
-        !isUserOperationCreateable
+        !isUserOperationCreateable ||
+        // Nor if the merkle root is not equal
+        !isUserOperationMerkleEqual
       )
     );
   }, [
@@ -212,6 +213,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
     userOperations,
     isValidUserOperations,
     isUserOperationCreateable,
+    isUserOperationMerkleEqual,
   ]);
   console.info("isTransactionDisabled", isTransactionDisabled);
 

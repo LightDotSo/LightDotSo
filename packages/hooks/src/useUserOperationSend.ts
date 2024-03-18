@@ -21,6 +21,7 @@ import {
   useQueryPaymasterOperation,
   useQueryUserOperation,
   useQueryUserOperationReceipt,
+  useQueryUserOperationSignature,
 } from "@lightdotso/query";
 import { useFormRef } from "@lightdotso/stores";
 import {
@@ -73,13 +74,13 @@ export const useUserOperationSend = ({
 
   const { queueUserOperation, isLoadingQueueUserOperation } =
     useMutationQueueUserOperation({
-      address: hash,
+      address: address,
     });
 
-  const { userOperation, isUserOperationFetching, refetchUserOperation } =
-    useQueryUserOperation({
-      hash: hash,
-    });
+  const { userOperation, isUserOperationFetching } = useQueryUserOperation({
+    hash: hash,
+  });
+  console.info("userOperation", userOperation);
 
   // ---------------------------------------------------------------------------
   // Wagmi
@@ -138,6 +139,11 @@ export const useUserOperationSend = ({
     checkpoint: !imageHash ? 0 : undefined,
   });
 
+  const { userOperationSignature } = useQueryUserOperationSignature({
+    hash: hash,
+    configuration_id: configuration?.id,
+  });
+
   const { paymasterOperation } = useQueryPaymasterOperation({
     address: userOperation?.paymaster_and_data.slice(0, 42) as Address,
     chain_id: userOperation?.chain_id!,
@@ -165,6 +171,18 @@ export const useUserOperationSend = ({
     configuration: configuration,
     hash: userOperation?.hash as Hex,
   });
+  console.info(
+    "isMutationUserOperationSendIdle",
+    isMutationUserOperationSendIdle,
+  );
+  console.info(
+    "isMutationUserOperationSendSuccess",
+    isMutationUserOperationSendSuccess,
+  );
+  console.info(
+    "isMutationUserOperationSendLoading",
+    isMutationUserOperationSendLoading,
+  );
 
   // ---------------------------------------------------------------------------
   // Hooks
@@ -282,12 +300,29 @@ export const useUserOperationSend = ({
 
   const isUserOperationSendSuccess = isUserOperationSendDisabled;
 
+  const isUserOperationSendReady = useMemo(
+    () =>
+      typeof userOperation !== "undefined" &&
+      typeof userOperationSignature !== "undefined" &&
+      isUserOperationSendValid,
+    [userOperation, userOperationSignature, isUserOperationSendValid],
+  );
+  console.info("isUserOperationSendReady", isUserOperationSendReady);
+
   // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
 
   const handleSubmit = useCallback(() => {
     if (!userOperation) {
+      console.warn("User operation not found");
+      console.warn("userOperation", userOperation);
+      return;
+    }
+
+    if (!userOperationSignature) {
+      console.warn("User operation signature not found");
+      console.warn("userOperationSignature", userOperationSignature);
       return;
     }
 
@@ -297,10 +332,15 @@ export const useUserOperationSend = ({
 
     // If the user operation receipt is an error, send the user operation
     if (isUserOperationReceiptError) {
+      console.info("Sending user operation...");
+      console.info("userOperation", userOperation);
+      console.info("userOperationSignature", userOperationSignature);
+
       // Send the user operation if the user operation hasn't been sent yet
-      userOperationSend(userOperation);
-      // Then, refetch the user operation
-      refetchUserOperation();
+      userOperationSend({
+        userOperation: userOperation,
+        userOperationSignature: userOperationSignature as Hex,
+      });
       // Finally, return
       return;
     }
@@ -316,11 +356,11 @@ export const useUserOperationSend = ({
   }, [
     userOperation,
     userOperationReceipt,
+    userOperationSignature,
     isUserOperationReceiptError,
     isUserOperationSendPending,
     userOperationSend,
     queueUserOperation,
-    refetchUserOperation,
     hash,
   ]);
 
@@ -330,18 +370,18 @@ export const useUserOperationSend = ({
 
   return {
     handleSubmit,
-    refetchUserOperation,
     userOperation,
     paymasterNonce,
     paymasterOperation,
     paymasterSignedMsg,
     recoveredAddress,
     isUserOperationSendValid,
-    isUserOperationReloading: isUserOperationReloading,
-    isUserOperationSendIdle: isUserOperationSendIdle,
-    isUserOperationSendPending: isUserOperationSendPending,
-    isUserOperationSendDisabled: isUserOperationSendDisabled,
-    isUserOperationSendLoading: isUserOperationSendLoading,
-    isUserOperationSendSuccess: isUserOperationSendSuccess,
+    isUserOperationSendReady,
+    isUserOperationReloading,
+    isUserOperationSendIdle,
+    isUserOperationSendPending,
+    isUserOperationSendDisabled,
+    isUserOperationSendLoading,
+    isUserOperationSendSuccess,
   };
 };

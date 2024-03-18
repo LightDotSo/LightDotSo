@@ -12,7 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
+
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
+export const metadata: Metadata = {
+  title: {
+    template: "Light | %s",
+    default: "Light",
+  },
+};
 
 // -----------------------------------------------------------------------------
 // Props

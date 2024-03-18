@@ -55,7 +55,7 @@ export const ProgressUserOperationOp: FC<PendingUserOperationOpProps> = ({
 
   const { handleSubmit } = useUserOperationSend({
     address: userOperation?.sender as Address,
-    hash: userOperation?.hash as Hex,
+    hash: hash,
   });
 
   // ---------------------------------------------------------------------------
@@ -78,7 +78,7 @@ export const ProgressUserOperationOp: FC<PendingUserOperationOpProps> = ({
     if (userOperation && userOperation.status === "EXECUTED") {
       toast.dismiss(hash);
 
-      toast.success("User operation executed", {
+      toast.success("Transaction executed!", {
         position: "top-right",
       });
 

@@ -13,10 +13,7 @@
 // limitations under the License.
 
 import { sendUserOperation } from "@lightdotso/client";
-import {
-  TRANSACTION_ROW_COUNT,
-  WALLET_FACTORY_ENTRYPOINT_MAPPING,
-} from "@lightdotso/const";
+import { CONTRACT_ADDRESSES, TRANSACTION_ROW_COUNT } from "@lightdotso/const";
 import type { UserOperationData } from "@lightdotso/data";
 import type {
   UserOperationSendParams,
@@ -24,12 +21,9 @@ import type {
 } from "@lightdotso/params";
 import { queryKeys } from "@lightdotso/query-keys";
 import { toast } from "@lightdotso/ui";
-import { findContractAddressByAddress } from "@lightdotso/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { toHex } from "viem";
-import { useQueryUserOperationSignature } from "./useQueryUserOperationSignature";
-import { useQueryWallet } from "./useQueryWallet";
 
 // -----------------------------------------------------------------------------
 // Query Mutation
@@ -44,15 +38,6 @@ export const useMutationUserOperationSend = (
 
   const queryClient = useQueryClient();
 
-  const { wallet } = useQueryWallet({
-    address: params.address as Address,
-  });
-
-  const { userOperationSignature } = useQueryUserOperationSignature({
-    hash: params.hash,
-    configuration_id: params.configuration?.id,
-  });
-
   // ---------------------------------------------------------------------------
   // Query Mutation
   // ---------------------------------------------------------------------------
@@ -66,30 +51,27 @@ export const useMutationUserOperationSend = (
   } = useMutation({
     retry: 10,
     mutationFn: async (body: UserOperationSendBodyParams) => {
-      if (!wallet || !userOperationSignature) {
-        return;
-      }
-
       const loadingToast = toast.loading("Submitting the transaction...");
 
+      const { userOperation, userOperationSignature } = body;
+
       // Sned the user operation
-      const res = await sendUserOperation(body.chain_id, [
+      const res = await sendUserOperation(userOperation.chain_id, [
         {
-          sender: body.sender,
-          nonce: toHex(body.nonce),
-          initCode: body.init_code,
-          callData: body.call_data,
-          paymasterAndData: body.paymaster_and_data,
-          callGasLimit: toHex(body.call_gas_limit),
-          verificationGasLimit: toHex(body.verification_gas_limit),
-          preVerificationGas: toHex(body.pre_verification_gas),
-          maxFeePerGas: toHex(body.max_fee_per_gas),
-          maxPriorityFeePerGas: toHex(body.max_priority_fee_per_gas),
+          sender: userOperation.sender,
+          nonce: toHex(userOperation.nonce),
+          initCode: userOperation.init_code,
+          callData: userOperation.call_data,
+          paymasterAndData: userOperation.paymaster_and_data,
+          callGasLimit: toHex(userOperation.call_gas_limit),
+          verificationGasLimit: toHex(userOperation.verification_gas_limit),
+          preVerificationGas: toHex(userOperation.pre_verification_gas),
+          maxFeePerGas: toHex(userOperation.max_fee_per_gas),
+          maxPriorityFeePerGas: toHex(userOperation.max_priority_fee_per_gas),
           signature: userOperationSignature,
         },
-        WALLET_FACTORY_ENTRYPOINT_MAPPING[
-          findContractAddressByAddress(wallet.factory_address as Address)!
-        ],
+        // Hardcoded to use the latest version of the wallet factory
+        CONTRACT_ADDRESSES["v0.6.0 Entrypoint"],
       ]);
 
       toast.dismiss(loadingToast);
@@ -137,7 +119,7 @@ export const useMutationUserOperationSend = (
           const newData =
             old && old.length > 0
               ? old.map(d => {
-                  if (d.hash === data.hash) {
+                  if (d.hash === data.userOperation.hash) {
                     return { ...d, status: "PENDING" };
                   }
                   return d;
