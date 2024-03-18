@@ -55,7 +55,7 @@ export const ProgressUserOperationOp: FC<PendingUserOperationOpProps> = ({
 
   const { handleSubmit } = useUserOperationSend({
     address: userOperation?.sender as Address,
-    hash: userOperation?.hash as Hex,
+    hash: hash,
   });
 
   // ---------------------------------------------------------------------------
