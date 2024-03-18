@@ -12,11 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {
-  configurationGetData,
-  walletGetData,
-  userOperationCreateData,
-} from "@lightdotso/demo";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Transaction } from "./transaction";
 
@@ -53,13 +48,7 @@ if (typeof window !== "undefined") {
 
 export const Base: Story = {
   render: args => (
-    <Transaction
-      address="0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F"
-      wallet={walletGetData}
-      genesisConfiguration={configurationGetData}
-      initialUserOperations={[userOperationCreateData]}
-      isDev={true}
-    />
+    <Transaction address="0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F" />
   ),
   args: {},
 };

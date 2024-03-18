@@ -14,7 +14,6 @@
 
 "use client";
 
-import { useInternalUserOperationsQueryState } from "@lightdotso/nuqs";
 import {
   useMutationUserOperationCreate,
   useMutationUserOperationCreateBatch,
@@ -93,7 +92,7 @@ export const useUserOperationCreate = ({
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
-  const [, setInternalUserOperations] = useInternalUserOperationsQueryState();
+  // const [, setInternalUserOperations] = useInternalUserOperationsQueryState();
 
   // ---------------------------------------------------------------------------
   // Hooks
@@ -114,9 +113,9 @@ export const useUserOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   // Set the internalUserOperations state
-  useEffect(() => {
-    setInternalUserOperations(debouncedInternalUserOperations);
-  }, [debouncedInternalUserOperations, setInternalUserOperations]);
+  // useEffect(() => {
+  //   setInternalUserOperations(debouncedInternalUserOperations);
+  // }, [debouncedInternalUserOperations, setInternalUserOperations]);
 
   // ---------------------------------------------------------------------------
   // Local Variables
