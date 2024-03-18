@@ -35,7 +35,10 @@ import {
 import { userOperation, type UserOperation } from "@lightdotso/schemas";
 import { calculateInitCode } from "@lightdotso/sequence";
 import { useFormRef, useUserOperations } from "@lightdotso/stores";
-import type { UserOperationDetailsItem } from "@lightdotso/stores";
+import type {
+  UserOperationDetailsItem,
+  UserOperationDevInfo,
+} from "@lightdotso/stores";
 import {
   findContractAddressByAddress,
   getChainById,
@@ -85,7 +88,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   initialUserOperation,
   userOperationIndex = 0,
 }) => {
-  console.log("TransactionFetcher rendered!");
+  console.info(`TransactionFetcher ${initialUserOperation.chainId} rendered!`);
 
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -152,6 +155,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       address: address,
       chain_id: Number(initialUserOperation.chainId),
     });
+  console.info("userOperationNonce", userOperationNonce);
 
   // Gets the history of user operations
   const {
@@ -166,6 +170,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     is_testnet: true,
     chain_id: Number(initialUserOperation.chainId) as number,
   });
+  console.info("executedUserOperations", executedUserOperations);
 
   // ---------------------------------------------------------------------------
   // Form
@@ -637,123 +642,127 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     maxPriorityFeePerGas,
   ]);
 
-  // const userOperationDevInfo: UserOperationDevInfo[] = [
-  //   { title: "targetUserOperation", data: targetUserOperation },
-  //   { title: "updatedUserOperation", data: updatedUserOperation },
-  //   { title: "userOperationWithHash", data: userOperationWithHash },
-  //   {
-  //     title: "estimateUserOperationGasData",
-  //     data: estimateUserOperationGasData,
-  //   },
-  //   {
-  //     title: "feesPerGas",
-  //     data: feesPerGas,
-  //   },
-  //   {
-  //     title: "estimateGas",
-  //     data: estimateGas,
-  //   },
-  //   {
-  //     title: "maxPriorityFeePerGas",
-  //     data: maxPriorityFeePerGas,
-  //   },
-  //   {
-  //     title: "estimateGasError",
-  //     data: estimateGasError,
-  //   },
-  //   {
-  //     title: "estimateFeesPerGasError",
-  //     data: estimateFeesPerGasError,
-  //   },
-  //   {
-  //     title: "estimateMaxPriorityFeePerGasError",
-  //     data: estimateMaxPriorityFeePerGasError,
-  //   },
-  //   {
-  //     title: "estimateUserOperationGasDataError",
-  //     data: estimateUserOperationGasDataError,
-  //   },
-  //   {
-  //     title: "paymasterAndDataError",
-  //     data: paymasterAndDataError,
-  //   },
-  //   {
-  //     title: "configuration",
-  //     data: configuration,
-  //   },
-  //   {
-  //     title: "genesisConfiguration",
-  //     data: genesisConfiguration,
-  //   },
-  //   {
-  //     title: "configuration",
-  //     data: configuration,
-  //   },
-  //   // {
-  //   //   title: "decodedInitCode",
-  //   //   data: decodedInitCode,
-  //   // },
-  //   // {
-  //   //   title: "decodedCallData",
-  //   //   data: decodedCallData,
-  //   // },
-  //   // {
-  //   //   title: "subdigest",
-  //   //   data: subdigest,
-  //   // },
-  //   {
-  //     title: "paymasterAndData",
-  //     data: paymasterAndData,
-  //   },
-  //   {
-  //     title: "simulation",
-  //     data: simulation,
-  //   },
-  //   {
-  //     title: "userOperationNonce",
-  //     data: userOperationNonce,
-  //   },
-  //   {
-  //     title: "executedUserOperations",
-  //     data: executedUserOperations,
-  //   },
-  //   {
-  //     title: "walletBilling",
-  //     data: walletBilling,
-  //   },
-  //   {
-  //     title: "owners",
-  //     data: configuration?.owners,
-  //   },
-  //   {
-  //     title: "isEstimateUserOperationGasDataLoading",
-  //     data: isEstimateUserOperationGasDataLoading,
-  //   },
-  //   {
-  //     title: "isUserOperationNonceLoading",
-  //     data: isUserOperationNonceLoading,
-  //   },
-  //   {
-  //     title: "isExecutedUserOperationsLoading",
-  //     data: isExecutedUserOperationsLoading,
-  //   },
-  //   {
-  //     title: "isPaymasterAndDataLoading",
-  //     data: isPaymasterAndDataLoading,
-  //   },
-  //   {
-  //     title: "isTransactionFetcherLoading",
-  //     data: isTransactionFetcherLoading,
-  //   },
-  //   // {
-  //   //   title: "isValidUserOperations",
-  //   //   data: isValidUserOperations,
-  //   // },
-  //   {
-  //     title: "isWalletBillingLoading",
-  //     data: isWalletBillingLoading,
-  //   },
-  // ];
+  const userOperationDevInfo: UserOperationDevInfo[] = useMemo(
+    () => [
+      { title: "targetUserOperation", data: targetUserOperation },
+      { title: "updatedUserOperation", data: updatedUserOperation },
+      { title: "userOperationWithHash", data: userOperationWithHash },
+      {
+        title: "estimateUserOperationGasData",
+        data: estimateUserOperationGasData,
+      },
+      {
+        title: "feesPerGas",
+        data: feesPerGas,
+      },
+      {
+        title: "estimateGas",
+        data: estimateGas,
+      },
+      {
+        title: "maxPriorityFeePerGas",
+        data: maxPriorityFeePerGas,
+      },
+      {
+        title: "estimateGasError",
+        data: estimateGasError,
+      },
+      {
+        title: "estimateFeesPerGasError",
+        data: estimateFeesPerGasError,
+      },
+      {
+        title: "estimateMaxPriorityFeePerGasError",
+        data: estimateMaxPriorityFeePerGasError,
+      },
+      {
+        title: "estimateUserOperationGasDataError",
+        data: estimateUserOperationGasDataError,
+      },
+      {
+        title: "paymasterAndDataError",
+        data: paymasterAndDataError,
+      },
+      {
+        title: "configuration",
+        data: configuration,
+      },
+      {
+        title: "genesisConfiguration",
+        data: genesisConfiguration,
+      },
+      {
+        title: "configuration",
+        data: configuration,
+      },
+      // {
+      //   title: "decodedInitCode",
+      //   data: decodedInitCode,
+      // },
+      // {
+      //   title: "decodedCallData",
+      //   data: decodedCallData,
+      // },
+      // {
+      //   title: "subdigest",
+      //   data: subdigest,
+      // },
+      {
+        title: "paymasterAndData",
+        data: paymasterAndData,
+      },
+      {
+        title: "simulation",
+        data: simulation,
+      },
+      {
+        title: "userOperationNonce",
+        data: userOperationNonce,
+      },
+      {
+        title: "executedUserOperations",
+        data: executedUserOperations,
+      },
+      {
+        title: "walletBilling",
+        data: walletBilling,
+      },
+      {
+        title: "owners",
+        data: configuration?.owners,
+      },
+      {
+        title: "isEstimateUserOperationGasDataLoading",
+        data: isEstimateUserOperationGasDataLoading,
+      },
+      {
+        title: "isUserOperationNonceLoading",
+        data: isUserOperationNonceLoading,
+      },
+      {
+        title: "isExecutedUserOperationsLoading",
+        data: isExecutedUserOperationsLoading,
+      },
+      {
+        title: "isPaymasterAndDataLoading",
+        data: isPaymasterAndDataLoading,
+      },
+      {
+        title: "isTransactionFetcherLoading",
+        data: isTransactionFetcherLoading,
+      },
+      // {
+      //   title: "isValidUserOperations",
+      //   data: isValidUserOperations,
+      // },
+      {
+        title: "isWalletBillingLoading",
+        data: isWalletBillingLoading,
+      },
+    ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [userOperationDetails],
+  );
 
   // ---------------------------------------------------------------------------
   // Debounced Hooks
@@ -764,10 +773,10 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     3000,
   );
 
-  // const debouncedUserOperationDevInfo = useDebouncedValue(
-  //   userOperationDevInfo,
-  //   3000,
-  // );
+  const debouncedUserOperationDevInfo = useDebouncedValue(
+    userOperationDevInfo,
+    3000,
+  );
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -787,17 +796,17 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   }, [debouncedUserOperationDetails]);
 
   // Sync the user operation dev info
-  // useEffect(() => {
-  //   if (isDisabled) {
-  //     return;
-  //   }
+  useEffect(() => {
+    if (isDisabled) {
+      return;
+    }
 
-  //   setUserOperationDevInfo(
-  //     Number(targetUserOperation.chainId),
-  //     debouncedUserOperationDevInfo,
-  //   );
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [debouncedUserOperationDevInfo]);
+    setUserOperationDevInfo(
+      Number(targetUserOperation.chainId),
+      debouncedUserOperationDevInfo,
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedUserOperationDevInfo]);
 
   // Sync the user operation simulation
   useEffect(() => {

@@ -76,7 +76,7 @@ type TransactionFormValues = z.infer<typeof transactionFormSchema>;
 // -----------------------------------------------------------------------------
 
 export const Transaction: FC<TransactionProps> = ({ address }) => {
-  console.log("Transaction rendered!");
+  console.info("Transaction rendered!");
 
   // ---------------------------------------------------------------------------
   // Next Hooks
