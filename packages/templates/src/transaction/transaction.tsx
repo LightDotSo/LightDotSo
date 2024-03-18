@@ -17,6 +17,7 @@
 import { TokenImage } from "@lightdotso/elements";
 import { useUserOperationCreate } from "@lightdotso/hooks";
 import { useUserOperationsQueryState } from "@lightdotso/nuqs";
+import { useQueryTokens } from "@lightdotso/query";
 import { transactionFormSchema } from "@lightdotso/schemas";
 import {
   useDev,
@@ -25,6 +26,7 @@ import {
   useModals,
   useUserOperations,
 } from "@lightdotso/stores";
+import { ChainLogo } from "@lightdotso/svg";
 import {
   Accordion,
   AccordionItem,
@@ -60,8 +62,6 @@ import { TransactionDetailInfo } from "./transaction-details-info";
 import { TransactionDevInfo } from "./transaction-dev-info";
 import { TransactionFetcher } from "./transaction-fetcher";
 import { TransactionSender } from "./transaction-sender";
-import { useQueryTokens } from "@lightdotso/query";
-import { ChainLogo } from "@lightdotso/svg";
 
 // -----------------------------------------------------------------------------
 // Props
