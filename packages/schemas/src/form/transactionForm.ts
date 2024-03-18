@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { z } from "zod";
+import { transfer } from "../web3";
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -20,6 +21,7 @@ import { z } from "zod";
 
 export const transactionFormSchema = z.object({
   isDirectSubmit: z.boolean(),
+  gas: transfer.optional(),
 });
 
 // -----------------------------------------------------------------------------

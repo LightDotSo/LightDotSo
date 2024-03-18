@@ -88,8 +88,6 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   initialUserOperation,
   userOperationIndex = 0,
 }) => {
-  console.info(`TransactionFetcher ${initialUserOperation.chainId} rendered!`);
-
   // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
