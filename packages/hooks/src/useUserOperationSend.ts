@@ -77,10 +77,9 @@ export const useUserOperationSend = ({
       address: address,
     });
 
-  const { userOperation, isUserOperationFetching, refetchUserOperation } =
-    useQueryUserOperation({
-      hash: hash,
-    });
+  const { userOperation, isUserOperationFetching } = useQueryUserOperation({
+    hash: hash,
+  });
   console.info("userOperation", userOperation);
 
   // ---------------------------------------------------------------------------
@@ -301,6 +300,15 @@ export const useUserOperationSend = ({
 
   const isUserOperationSendSuccess = isUserOperationSendDisabled;
 
+  const isUserOperationSendReady = useMemo(
+    () =>
+      typeof userOperation !== "undefined" &&
+      typeof userOperationSignature !== "undefined" &&
+      isUserOperationSendValid,
+    [userOperation, userOperationSignature, isUserOperationSendValid],
+  );
+  console.info("isUserOperationSendReady", isUserOperationSendReady);
+
   // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
@@ -333,8 +341,6 @@ export const useUserOperationSend = ({
         userOperation: userOperation,
         userOperationSignature: userOperationSignature as Hex,
       });
-      // Then, refetch the user operation
-      refetchUserOperation();
       // Finally, return
       return;
     }
@@ -355,7 +361,6 @@ export const useUserOperationSend = ({
     isUserOperationSendPending,
     userOperationSend,
     queueUserOperation,
-    refetchUserOperation,
     hash,
   ]);
 
@@ -365,18 +370,18 @@ export const useUserOperationSend = ({
 
   return {
     handleSubmit,
-    refetchUserOperation,
     userOperation,
     paymasterNonce,
     paymasterOperation,
     paymasterSignedMsg,
     recoveredAddress,
     isUserOperationSendValid,
-    isUserOperationReloading: isUserOperationReloading,
-    isUserOperationSendIdle: isUserOperationSendIdle,
-    isUserOperationSendPending: isUserOperationSendPending,
-    isUserOperationSendDisabled: isUserOperationSendDisabled,
-    isUserOperationSendLoading: isUserOperationSendLoading,
-    isUserOperationSendSuccess: isUserOperationSendSuccess,
+    isUserOperationSendReady,
+    isUserOperationReloading,
+    isUserOperationSendIdle,
+    isUserOperationSendPending,
+    isUserOperationSendDisabled,
+    isUserOperationSendLoading,
+    isUserOperationSendSuccess,
   };
 };
