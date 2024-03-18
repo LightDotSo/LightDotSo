@@ -51,6 +51,8 @@
     "**/sentry.properties",
     "**/next-env.d.ts",
     "**/vite-env.d.ts",
+    "**/opengraph-image.alt.txt",
+    "**/twitter-image.alt.txt",
     "gradle*",
     "pnpm*",
     "tmp*",
