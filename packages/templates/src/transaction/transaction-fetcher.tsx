@@ -18,12 +18,10 @@ import {
   CONTRACT_ADDRESSES,
   WALLET_FACTORY_ENTRYPOINT_MAPPING,
 } from "@lightdotso/const";
-import type { ConfigurationData, WalletData } from "@lightdotso/data";
 import {
   useDebouncedValue,
   useProxyImplementationAddress,
 } from "@lightdotso/hooks";
-import { useUserOperationsQueryState } from "@lightdotso/nuqs";
 import {
   useQueryConfiguration,
   useQueryEstimateUserOperationGas,
@@ -31,15 +29,13 @@ import {
   useQuerySimulation,
   useQueryUserOperationNonce,
   useQueryUserOperations,
+  useQueryWallet,
   useQueryWalletBilling,
 } from "@lightdotso/query";
 import { userOperation, type UserOperation } from "@lightdotso/schemas";
 import { calculateInitCode } from "@lightdotso/sequence";
 import { useFormRef, useUserOperations } from "@lightdotso/stores";
-import type {
-  UserOperationDevInfo,
-  UserOperationDetailsItem,
-} from "@lightdotso/stores";
+import type { UserOperationDetailsItem } from "@lightdotso/stores";
 import {
   findContractAddressByAddress,
   getChainById,
@@ -76,19 +72,7 @@ type UserOperationFormValues = UserOperation;
 
 type TransactionFetcherProps = {
   address: Address;
-  wallet: WalletData;
-  genesisConfiguration: ConfigurationData;
-  initialUserOperation: Omit<
-    UserOperation,
-    | "hash"
-    | "signature"
-    | "paymasterAndData"
-    | "maxFeePerGas"
-    | "maxPriorityFeePerGas"
-    | "callGasLimit"
-    | "preVerificationGas"
-    | "verificationGasLimit"
-  >;
+  initialUserOperation: Partial<UserOperation>;
   userOperationIndex: number;
 };
 
@@ -98,11 +82,11 @@ type TransactionFetcherProps = {
 
 export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   address,
-  wallet,
-  genesisConfiguration,
   initialUserOperation,
   userOperationIndex = 0,
 }) => {
+  console.log("TransactionFetcher rendered!");
+
   // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
@@ -116,7 +100,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
-  const [userOperations] = useUserOperationsQueryState();
+  // const [userOperations] = useUserOperationsQueryState();
 
   // ---------------------------------------------------------------------------
   // Stores
@@ -216,15 +200,12 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   > = useMemo(
     () => {
       // Get the user operation at the index, fallback to the initial user operation
-      const partialUserOperation =
-        userOperations.length > 0
-          ? { ...userOperations[userOperationIndex], ...initialUserOperation }
-          : { ...initialUserOperation };
+      const partialUserOperation = initialUserOperation;
 
       // Get the minimum nonce from the user operation nonce and the partial user operation
       const updatedMinimumNonce =
         userOperationNonce && !isUserOperationNonceLoading
-          ? userOperationNonce?.nonce > partialUserOperation.nonce
+          ? userOperationNonce?.nonce > partialUserOperation?.nonce!
             ? BigInt(userOperationNonce?.nonce)
             : partialUserOperation.nonce
           : partialUserOperation.nonce;
@@ -233,10 +214,10 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       const updatedInitCode =
         executedUserOperations && executedUserOperations?.length < 1
           ? calculateInitCode(
-              wallet.factory_address as Address,
+              wallet?.factory_address as Address,
               // Compute w/ the genesis configuration image hash
-              genesisConfiguration.image_hash as Hex,
-              wallet.salt as Hex,
+              genesisConfiguration?.image_hash as Hex,
+              wallet?.salt as Hex,
             )
           : partialUserOperation.initCode;
 
@@ -273,6 +254,15 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
+  const { configuration: genesisConfiguration } = useQueryConfiguration({
+    address: address,
+    checkpoint: 0,
+  });
+
+  const { wallet } = useQueryWallet({
+    address: address,
+  });
+
   // Gets the simulation for the user operation
   const { simulation } = useQuerySimulation({
     sender: address as Address,
@@ -305,7 +295,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     account: address as Address,
     data: targetUserOperation.callData as Hex,
     to: WALLET_FACTORY_ENTRYPOINT_MAPPING[
-      findContractAddressByAddress(wallet.factory_address as Address)!
+      findContractAddressByAddress(wallet?.factory_address as Address)!
     ],
   });
 
@@ -482,7 +472,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         userOperation: userOperation as PermissionlessUserOperation<"v0.6">,
         chainId: Number(updatedUserOperation.chainId) as number,
         entryPoint: WALLET_FACTORY_ENTRYPOINT_MAPPING[
-          findContractAddressByAddress(wallet.factory_address as Address)!
+          findContractAddressByAddress(wallet?.factory_address as Address)!
         ] as typeof ENTRYPOINT_ADDRESS_V06,
       });
 

@@ -14,12 +14,12 @@
 
 "use client";
 
-import type { ConfigurationData, WalletData } from "@lightdotso/data";
 import { AssetChange } from "@lightdotso/elements";
 import { useUserOperationCreate } from "@lightdotso/hooks";
 import { useUserOperationsQueryState } from "@lightdotso/nuqs";
-import { type UserOperation, transactionFormSchema } from "@lightdotso/schemas";
+import { transactionFormSchema } from "@lightdotso/schemas";
 import {
+  useDev,
   useFormRef,
   useModalSwiper,
   useUserOperations,
@@ -63,22 +63,6 @@ import { TransactionSender } from "./transaction-sender";
 
 type TransactionProps = {
   address: Address;
-  wallet: WalletData;
-  genesisConfiguration: ConfigurationData;
-  initialUserOperations: Array<
-    Omit<
-      UserOperation,
-      | "hash"
-      | "signature"
-      | "paymasterAndData"
-      | "maxFeePerGas"
-      | "maxPriorityFeePerGas"
-      | "callGasLimit"
-      | "preVerificationGas"
-      | "verificationGasLimit"
-    >
-  >;
-  isDev?: boolean;
 };
 
 // -----------------------------------------------------------------------------
@@ -91,13 +75,9 @@ type TransactionFormValues = z.infer<typeof transactionFormSchema>;
 // Component
 // -----------------------------------------------------------------------------
 
-export const Transaction: FC<TransactionProps> = ({
-  address,
-  wallet,
-  genesisConfiguration,
-  initialUserOperations,
-  isDev = false,
-}) => {
+export const Transaction: FC<TransactionProps> = ({ address }) => {
+  console.log("Transaction rendered!");
+
   // ---------------------------------------------------------------------------
   // Next Hooks
   // ---------------------------------------------------------------------------
@@ -121,6 +101,7 @@ export const Transaction: FC<TransactionProps> = ({
     isFormDisabled,
     setIsFormDisabled,
   } = useFormRef();
+  const { isDev } = useDev();
 
   // ---------------------------------------------------------------------------
   // Query State Hooks
@@ -133,6 +114,15 @@ export const Transaction: FC<TransactionProps> = ({
   // ---------------------------------------------------------------------------
 
   const isInsideModal = useIsInsideModal();
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const initialUserOperations = useMemo(() => {
+    return userOperations;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // ---------------------------------------------------------------------------
   // Hooks
@@ -451,14 +441,15 @@ export const Transaction: FC<TransactionProps> = ({
       </div>
       {initialUserOperations &&
         initialUserOperations.length > 0 &&
-        initialUserOperations.map((userOperation, index) => {
+        initialUserOperations.map((initialUserOperation, index) => {
+          if (!initialUserOperation) {
+            return;
+          }
           return (
             <TransactionFetcher
-              key={userOperation.chainId || index}
+              key={initialUserOperation.chainId || index}
               address={address}
-              wallet={wallet}
-              genesisConfiguration={genesisConfiguration}
-              initialUserOperation={userOperation}
+              initialUserOperation={initialUserOperation}
               userOperationIndex={index}
             />
           );

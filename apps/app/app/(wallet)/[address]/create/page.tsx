@@ -45,7 +45,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { configuration, userOperations } = await handler(params, searchParams);
+  const { configuration } = await handler(params, searchParams);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -65,12 +65,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <CreateDialog
-      address={params.address as Address}
-      userOperations={userOperations}
-    />
-  );
+  return <CreateDialog address={params.address as Address} />;
 }
 
 // -----------------------------------------------------------------------------
