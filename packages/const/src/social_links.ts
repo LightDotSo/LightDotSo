@@ -43,7 +43,6 @@ export const SOCIAL_LINKS: {
   [Social.TELEGRAM_SUPPORT]: "https://t.me/LightDotSoSupport",
   [Social.TWITTER]: "https://twitter.com/LightDotSo",
   [Social.TWITTER_SHUN]: "https://twitter.com/shunkakinoki",
-  [Social.WAITLIST]:
-    "https://app.deform.cc/form/83448095-5052-473f-80bd-d055534408b8",
+  [Social.WAITLIST]: "https:/waitlist.light.so",
   [Social.WEBSITE]: "https://light.so",
 };
