@@ -46,9 +46,9 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
   const isMounted = useIsMounted();
   const {
     userOperation,
-    isUserOperationSendLoading,
+    // isUserOperationSendLoading,
     isUserOperationSendReady,
-    isUserOperationSendSuccess,
+    // isUserOperationSendSuccess,
     handleSubmit,
   } = useUserOperationSend({
     address: address,
@@ -71,8 +71,6 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
 
   return (
     <div>
-      {isUserOperationSendLoading && "Loading..."}
-      {isUserOperationSendSuccess && "Sent!"}
       {userOperation?.transaction?.hash && (
         <Button asChild variant="link">
           <a

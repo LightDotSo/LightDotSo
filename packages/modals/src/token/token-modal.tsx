@@ -22,7 +22,14 @@ import { useQuerySocketBalances, useQueryTokens } from "@lightdotso/query";
 import { useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import { Modal } from "@lightdotso/templates";
-import { Button, ButtonIcon } from "@lightdotso/ui";
+import {
+  Button,
+  ButtonIcon,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@lightdotso/ui";
 import { cn, refineNumberFormat } from "@lightdotso/utils";
 import { type FC, useMemo, useState } from "react";
 
@@ -137,30 +144,38 @@ export const TokenModal: FC = () => {
         className="p-2"
         bannerContent={
           <div className="flex flex-row space-x-2 p-2">
-            <Button
-              className={cn(
-                "w-28 shrink-0",
-                chainId === 0 && "ring-2 ring-border-primary",
-              )}
-              variant="shadow"
-              onClick={() => setChainId(0)}
-            >
-              All Chains
-            </Button>
-            {chains.map(chain => (
-              <ButtonIcon
-                key={chain.id}
-                size="default"
+            <TooltipProvider delayDuration={300}>
+              <Button
                 className={cn(
-                  "shrink-0",
-                  chainId === chain.id && "ring-2 ring-border-primary",
+                  "w-28 shrink-0",
+                  chainId === 0 && "ring-2 ring-border-primary",
                 )}
                 variant="shadow"
-                onClick={() => setChainId(chain.id)}
+                onClick={() => setChainId(0)}
               >
-                <ChainLogo chainId={chain.id} />
-              </ButtonIcon>
-            ))}
+                All Chains
+              </Button>
+              {chains.map(chain => (
+                <Tooltip key={chain.id}>
+                  <TooltipTrigger asChild>
+                    <ButtonIcon
+                      size="default"
+                      className={cn(
+                        "shrink-0",
+                        chainId === chain.id && "ring-2 ring-border-primary",
+                      )}
+                      variant="shadow"
+                      onClick={() => setChainId(chain.id)}
+                    >
+                      <ChainLogo chainId={chain.id} />
+                    </ButtonIcon>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{chain.name}</p>
+                  </TooltipContent>
+                </Tooltip>
+              ))}
+            </TooltipProvider>
           </div>
         }
         onClose={onClose}

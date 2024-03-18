@@ -40,7 +40,7 @@ export const TransactionDetailInfo: FC<TransactionDetailInfoProps> = ({
 
   return (
     <div className="my-1 flex items-center justify-between">
-      <div>
+      <div className="flex items-center">
         <div className="text-text-weak">{title}</div>
       </div>
       <div className="group flex items-center space-x-1.5 text-text">

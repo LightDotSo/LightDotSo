@@ -54,7 +54,7 @@ import {
 import { getChainById } from "@lightdotso/utils";
 import {
   useAccount,
-  useChainId,
+  // useChainId,
   useModal,
   useReadContract,
   useSendTransaction,
@@ -120,7 +120,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
   // ---------------------------------------------------------------------------
 
   const { address } = useAuth();
-  const globalChainId = useChainId();
+  // const globalChainId = useChainId();
   const { switchChainAsync, isPending: isSwitchChainPending } =
     useSwitchChain();
   const {
@@ -194,6 +194,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
   // Wagmi
   // ---------------------------------------------------------------------------
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data } = useReadContract({
     abi: erc20Abi,
     account: form.getValues("asset.address") as Address,

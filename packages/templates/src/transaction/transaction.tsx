@@ -14,16 +14,19 @@
 
 "use client";
 
-import { AssetChange } from "@lightdotso/elements";
+import { TokenImage } from "@lightdotso/elements";
 import { useUserOperationCreate } from "@lightdotso/hooks";
 import { useUserOperationsQueryState } from "@lightdotso/nuqs";
+import { useQueryTokens } from "@lightdotso/query";
 import { transactionFormSchema } from "@lightdotso/schemas";
 import {
   useDev,
   useFormRef,
   useModalSwiper,
+  useModals,
   useUserOperations,
 } from "@lightdotso/stores";
+import { ChainLogo } from "@lightdotso/svg";
 import {
   Accordion,
   AccordionItem,
@@ -40,6 +43,9 @@ import {
   FormControl,
   Checkbox,
   FormLabel,
+  Label,
+  toast,
+  Button,
 } from "@lightdotso/ui";
 import { cn, getChainById } from "@lightdotso/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -90,7 +96,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   const {
     userOperationDetails,
     userOperationDevInfo,
-    userOperationSimulations,
+    // userOperationSimulations,
     resetAll,
   } = useUserOperations();
   const {
@@ -100,6 +106,25 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
     setIsFormDisabled,
   } = useFormRef();
   const { isDev } = useDev();
+  const {
+    setTokenModalProps,
+    showTokenModal,
+    hideTokenModal,
+    setCreateBackgroundModal,
+  } = useModals();
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { tokens } = useQueryTokens({
+    address,
+    is_testnet: false,
+    offset: 0,
+    limit: Number.MAX_SAFE_INTEGER,
+    group: false,
+    chain_ids: null,
+  });
 
   // ---------------------------------------------------------------------------
   // Query State Hooks
@@ -172,6 +197,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   // Set the transaction loading state
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isTransactionLoading = useMemo(() => {
     // Only set the loading state if the user operation is not yet created
     if (isUserOperationCreateSuccess) {
@@ -281,7 +307,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
                 </TabsList>
                 <TabsContent value="transaction">
                   <div className="space-y-3 pt-3">
-                    {Object.values(userOperationSimulations).map(simulation => {
+                    {/* {Object.values(userOperationSimulations).map(simulation => {
                       return simulation.interpretation.asset_changes.map(
                         (assetChange, index) => {
                           return (
@@ -292,9 +318,172 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
                           );
                         },
                       );
-                    })}
+                    })} */}
+                    {Object.entries(userOperationDetails).map(
+                      ([chainId, details], index) => {
+                        const chain = getChainById(Number(chainId));
+                        return (
+                          <Accordion
+                            key={index}
+                            collapsible
+                            defaultValue="value-0"
+                            className="rounded-md border border-border bg-background-weak p-4"
+                            type="single"
+                          >
+                            <AccordionItem
+                              className="border-0"
+                              value={`value-${index}`}
+                            >
+                              <AccordionTrigger className="px-1 py-0 text-xl font-medium md:text-2xl">
+                                <div className="flex items-center">
+                                  <span className="mr-2.5">
+                                    Transaction on {chain.name}
+                                  </span>
+                                  <ChainLogo chainId={chain.id} />
+                                </div>
+                              </AccordionTrigger>
+                              <AccordionContent className="px-1 pt-4">
+                                {details.map((item, itemIndex) => (
+                                  <TransactionDetailInfo
+                                    key={`${index}-${itemIndex}`}
+                                    title={item.title}
+                                    value={item.value}
+                                  />
+                                ))}
+                              </AccordionContent>
+                            </AccordionItem>
+                          </Accordion>
+                        );
+                      },
+                    )}
                     <Form {...form}>
                       <form className="space-y-4">
+                        <FormField
+                          control={form.control}
+                          name="gas.asset.quantity"
+                          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                          render={({ field: _field }) => {
+                            // Get the matching token
+                            const token =
+                              tokens &&
+                              tokens?.find(
+                                token =>
+                                  token.address ===
+                                    (form.getValues("gas.asset.address") ||
+                                      "") &&
+                                  token.chain_id ===
+                                    form.getValues("gas.chainId"),
+                              );
+
+                            return (
+                              <FormControl>
+                                <div className="flex flex-col space-y-3">
+                                  <div className="w-full space-y-2">
+                                    <Label htmlFor="weight">Gas Token</Label>
+                                    <Button
+                                      size="lg"
+                                      type="button"
+                                      variant="outline"
+                                      className="flex w-full items-center justify-between px-4 text-sm"
+                                      onClick={() => {
+                                        if (!address) {
+                                          toast.error(
+                                            "Please connect your wallet to proceed!",
+                                          );
+                                          return;
+                                        }
+
+                                        setTokenModalProps({
+                                          address: address,
+                                          type: "native",
+                                          isTestnet: false,
+                                          onClose: () => {
+                                            hideTokenModal();
+                                            setCreateBackgroundModal(false);
+                                          },
+                                          onTokenSelect: token => {
+                                            form.setValue(
+                                              "gas.chainId",
+                                              token.chain_id,
+                                            );
+                                            form.setValue(
+                                              "gas.asset.address",
+                                              token.address,
+                                            );
+                                            form.setValue(
+                                              "gas.asset.decimals",
+                                              token.decimals,
+                                            );
+                                            form.setValue(
+                                              "gas.assetType",
+                                              "erc20",
+                                            );
+
+                                            if (
+                                              !form.getValues(
+                                                "gas.asset.quantity",
+                                              )
+                                            ) {
+                                              form.setValue(
+                                                "gas.asset.quantity",
+                                                0,
+                                              );
+                                            }
+
+                                            form.trigger();
+
+                                            hideTokenModal();
+                                            if (isInsideModal) {
+                                              setCreateBackgroundModal(false);
+                                            }
+
+                                            // const quantity =
+                                            //   form.getValues(
+                                            //     "gas.asset.quantity",
+                                            //   );
+                                            // if (quantity) {
+                                            //   validateTokenQuantity(quantity);
+                                            // }
+                                          },
+                                        });
+
+                                        setCreateBackgroundModal(true);
+                                        showTokenModal();
+                                      }}
+                                    >
+                                      {token ? (
+                                        <>
+                                          <TokenImage
+                                            size="xs"
+                                            className="mr-2"
+                                            token={{
+                                              ...token,
+                                              balance_usd: 0,
+                                              id: "",
+                                              chain_id: token.chain_id,
+                                            }}
+                                          />
+                                          {token?.symbol}
+                                          &nbsp;
+                                          <span className="text-text-weak">
+                                            on{" "}
+                                            {getChainById(token.chain_id)?.name}
+                                          </span>
+                                          &nbsp;
+                                          <ChainLogo chainId={token.chain_id} />
+                                        </>
+                                      ) : (
+                                        "Select Token"
+                                      )}
+                                      <div className="grow" />
+                                      {/* <ChevronDown className="size-4 opacity-50" /> */}
+                                    </Button>
+                                  </div>
+                                </div>
+                              </FormControl>
+                            );
+                          }}
+                        />
                         <FormField
                           control={form.control}
                           name="isDirectSubmit"
@@ -354,7 +543,12 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
                               value={`value-${index}`}
                             >
                               <AccordionTrigger className="px-1 py-0 text-xl font-medium md:text-2xl">
-                                Transaction on {chain.name}
+                                <div className="flex items-center">
+                                  <span className="mr-2.5">
+                                    Transaction on {chain.name}
+                                  </span>
+                                  <ChainLogo chainId={chain.id} />
+                                </div>
                               </AccordionTrigger>
                               <AccordionContent className="px-1 pt-4">
                                 {details.map((item, itemIndex) => (
