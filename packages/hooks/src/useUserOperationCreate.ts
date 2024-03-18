@@ -182,7 +182,7 @@ export const useUserOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   // Sign the message of the subdigest
-  const { data, signMessageAsync, isPending: isSignLoading } = useSignMessage();
+  const { data, signMessage, isPending: isSignLoading } = useSignMessage();
 
   // const { data: paymasterNonce } = useReadLightVerifyingPaymasterSenderNonce({
   //   address: userOperation.paymasterAndData.slice(0, 42) as Address,
@@ -270,14 +270,14 @@ export const useUserOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   // Sign the userOperation
-  const signUserOperation = useCallback(async () => {
+  const signUserOperation = useCallback(() => {
     if (!subdigest) {
       return;
     }
 
-    await signMessageAsync({ message: { raw: toBytes(subdigest) } });
+    signMessage({ message: { raw: toBytes(subdigest) } });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [subdigest]);
+  }, []);
 
   // ---------------------------------------------------------------------------
   // Query
