@@ -213,56 +213,60 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   const targetUserOperation: Omit<
     UserOperation,
     "hash" | "paymasterAndData" | "signature"
-  > = useMemo(() => {
-    // Get the user operation at the index, fallback to the initial user operation
-    const partialUserOperation =
-      userOperations.length > 0
-        ? { ...userOperations[userOperationIndex], ...initialUserOperation }
-        : { ...initialUserOperation };
+  > = useMemo(
+    () => {
+      // Get the user operation at the index, fallback to the initial user operation
+      const partialUserOperation =
+        userOperations.length > 0
+          ? { ...userOperations[userOperationIndex], ...initialUserOperation }
+          : { ...initialUserOperation };
 
-    // Get the minimum nonce from the user operation nonce and the partial user operation
-    const updatedMinimumNonce =
-      userOperationNonce && !isUserOperationNonceLoading
-        ? userOperationNonce?.nonce > partialUserOperation.nonce
-          ? BigInt(userOperationNonce?.nonce)
-          : partialUserOperation.nonce
-        : partialUserOperation.nonce;
+      // Get the minimum nonce from the user operation nonce and the partial user operation
+      const updatedMinimumNonce =
+        userOperationNonce && !isUserOperationNonceLoading
+          ? userOperationNonce?.nonce > partialUserOperation.nonce
+            ? BigInt(userOperationNonce?.nonce)
+            : partialUserOperation.nonce
+          : partialUserOperation.nonce;
 
-    // Get the init code from the executed user operations or the partial user operation
-    const updatedInitCode =
-      executedUserOperations && executedUserOperations?.length < 1
-        ? calculateInitCode(
-            wallet.factory_address as Address,
-            // Compute w/ the genesis configuration image hash
-            genesisConfiguration.image_hash as Hex,
-            wallet.salt as Hex,
-          )
-        : partialUserOperation.initCode;
+      // Get the init code from the executed user operations or the partial user operation
+      const updatedInitCode =
+        executedUserOperations && executedUserOperations?.length < 1
+          ? calculateInitCode(
+              wallet.factory_address as Address,
+              // Compute w/ the genesis configuration image hash
+              genesisConfiguration.image_hash as Hex,
+              wallet.salt as Hex,
+            )
+          : partialUserOperation.initCode;
 
-    // Return the user operation
-    return {
-      sender: partialUserOperation?.sender ?? address,
-      chainId: partialUserOperation?.chainId ?? BigInt(0),
-      initCode: updatedInitCode ?? "0x",
-      nonce: updatedMinimumNonce ?? BigInt(0),
-      callData: partialUserOperation?.callData ?? "0x",
-      callGasLimit: partialUserOperation?.callGasLimit ?? BigInt(0),
-      verificationGasLimit:
-        partialUserOperation?.verificationGasLimit ?? BigInt(0),
-      preVerificationGas: partialUserOperation?.preVerificationGas ?? BigInt(0),
-      maxFeePerGas: partialUserOperation?.maxFeePerGas ?? BigInt(0),
-      maxPriorityFeePerGas:
-        partialUserOperation?.maxPriorityFeePerGas ?? BigInt(0),
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    // The genesis configuration is static
-    genesisConfiguration,
-    // Should recompute if the executed user operations change, for init code
-    executedUserOperations,
-    // Should recompute if the user operation nonce changes
-    userOperationNonce,
-  ]);
+      // Return the user operation
+      return {
+        sender: partialUserOperation?.sender ?? address,
+        chainId: partialUserOperation?.chainId ?? BigInt(0),
+        initCode: updatedInitCode ?? "0x",
+        nonce: updatedMinimumNonce ?? BigInt(0),
+        callData: partialUserOperation?.callData ?? "0x",
+        callGasLimit: partialUserOperation?.callGasLimit ?? BigInt(0),
+        verificationGasLimit:
+          partialUserOperation?.verificationGasLimit ?? BigInt(0),
+        preVerificationGas:
+          partialUserOperation?.preVerificationGas ?? BigInt(0),
+        maxFeePerGas: partialUserOperation?.maxFeePerGas ?? BigInt(0),
+        maxPriorityFeePerGas:
+          partialUserOperation?.maxPriorityFeePerGas ?? BigInt(0),
+      };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    [
+      // The genesis configuration is static
+      // genesisConfiguration,
+      // Should recompute if the executed user operations change, for init code
+      // executedUserOperations,
+      // Should recompute if the user operation nonce changes
+      // userOperationNonce,
+    ],
+  );
   console.info("targetUserOperation", targetUserOperation);
 
   // ---------------------------------------------------------------------------
@@ -649,127 +653,123 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     maxPriorityFeePerGas,
   ]);
 
-  // ---------------------------------------------------------------------------
-  // Local Variables
-  // ---------------------------------------------------------------------------
-
-  const userOperationDevInfo: UserOperationDevInfo[] = [
-    { title: "targetUserOperation", data: targetUserOperation },
-    { title: "updatedUserOperation", data: updatedUserOperation },
-    { title: "userOperationWithHash", data: userOperationWithHash },
-    {
-      title: "estimateUserOperationGasData",
-      data: estimateUserOperationGasData,
-    },
-    {
-      title: "feesPerGas",
-      data: feesPerGas,
-    },
-    {
-      title: "estimateGas",
-      data: estimateGas,
-    },
-    {
-      title: "maxPriorityFeePerGas",
-      data: maxPriorityFeePerGas,
-    },
-    {
-      title: "estimateGasError",
-      data: estimateGasError,
-    },
-    {
-      title: "estimateFeesPerGasError",
-      data: estimateFeesPerGasError,
-    },
-    {
-      title: "estimateMaxPriorityFeePerGasError",
-      data: estimateMaxPriorityFeePerGasError,
-    },
-    {
-      title: "estimateUserOperationGasDataError",
-      data: estimateUserOperationGasDataError,
-    },
-    {
-      title: "paymasterAndDataError",
-      data: paymasterAndDataError,
-    },
-    {
-      title: "configuration",
-      data: configuration,
-    },
-    {
-      title: "genesisConfiguration",
-      data: genesisConfiguration,
-    },
-    {
-      title: "configuration",
-      data: configuration,
-    },
-    // {
-    //   title: "decodedInitCode",
-    //   data: decodedInitCode,
-    // },
-    // {
-    //   title: "decodedCallData",
-    //   data: decodedCallData,
-    // },
-    // {
-    //   title: "subdigest",
-    //   data: subdigest,
-    // },
-    {
-      title: "paymasterAndData",
-      data: paymasterAndData,
-    },
-    {
-      title: "simulation",
-      data: simulation,
-    },
-    {
-      title: "userOperationNonce",
-      data: userOperationNonce,
-    },
-    {
-      title: "executedUserOperations",
-      data: executedUserOperations,
-    },
-    {
-      title: "walletBilling",
-      data: walletBilling,
-    },
-    {
-      title: "owners",
-      data: configuration?.owners,
-    },
-    {
-      title: "isEstimateUserOperationGasDataLoading",
-      data: isEstimateUserOperationGasDataLoading,
-    },
-    {
-      title: "isUserOperationNonceLoading",
-      data: isUserOperationNonceLoading,
-    },
-    {
-      title: "isExecutedUserOperationsLoading",
-      data: isExecutedUserOperationsLoading,
-    },
-    {
-      title: "isPaymasterAndDataLoading",
-      data: isPaymasterAndDataLoading,
-    },
-    {
-      title: "isTransactionFetcherLoading",
-      data: isTransactionFetcherLoading,
-    },
-    // {
-    //   title: "isValidUserOperations",
-    //   data: isValidUserOperations,
-    // },
-    {
-      title: "isWalletBillingLoading",
-      data: isWalletBillingLoading,
-    },
-  ];
+  // const userOperationDevInfo: UserOperationDevInfo[] = [
+  //   { title: "targetUserOperation", data: targetUserOperation },
+  //   { title: "updatedUserOperation", data: updatedUserOperation },
+  //   { title: "userOperationWithHash", data: userOperationWithHash },
+  //   {
+  //     title: "estimateUserOperationGasData",
+  //     data: estimateUserOperationGasData,
+  //   },
+  //   {
+  //     title: "feesPerGas",
+  //     data: feesPerGas,
+  //   },
+  //   {
+  //     title: "estimateGas",
+  //     data: estimateGas,
+  //   },
+  //   {
+  //     title: "maxPriorityFeePerGas",
+  //     data: maxPriorityFeePerGas,
+  //   },
+  //   {
+  //     title: "estimateGasError",
+  //     data: estimateGasError,
+  //   },
+  //   {
+  //     title: "estimateFeesPerGasError",
+  //     data: estimateFeesPerGasError,
+  //   },
+  //   {
+  //     title: "estimateMaxPriorityFeePerGasError",
+  //     data: estimateMaxPriorityFeePerGasError,
+  //   },
+  //   {
+  //     title: "estimateUserOperationGasDataError",
+  //     data: estimateUserOperationGasDataError,
+  //   },
+  //   {
+  //     title: "paymasterAndDataError",
+  //     data: paymasterAndDataError,
+  //   },
+  //   {
+  //     title: "configuration",
+  //     data: configuration,
+  //   },
+  //   {
+  //     title: "genesisConfiguration",
+  //     data: genesisConfiguration,
+  //   },
+  //   {
+  //     title: "configuration",
+  //     data: configuration,
+  //   },
+  //   // {
+  //   //   title: "decodedInitCode",
+  //   //   data: decodedInitCode,
+  //   // },
+  //   // {
+  //   //   title: "decodedCallData",
+  //   //   data: decodedCallData,
+  //   // },
+  //   // {
+  //   //   title: "subdigest",
+  //   //   data: subdigest,
+  //   // },
+  //   {
+  //     title: "paymasterAndData",
+  //     data: paymasterAndData,
+  //   },
+  //   {
+  //     title: "simulation",
+  //     data: simulation,
+  //   },
+  //   {
+  //     title: "userOperationNonce",
+  //     data: userOperationNonce,
+  //   },
+  //   {
+  //     title: "executedUserOperations",
+  //     data: executedUserOperations,
+  //   },
+  //   {
+  //     title: "walletBilling",
+  //     data: walletBilling,
+  //   },
+  //   {
+  //     title: "owners",
+  //     data: configuration?.owners,
+  //   },
+  //   {
+  //     title: "isEstimateUserOperationGasDataLoading",
+  //     data: isEstimateUserOperationGasDataLoading,
+  //   },
+  //   {
+  //     title: "isUserOperationNonceLoading",
+  //     data: isUserOperationNonceLoading,
+  //   },
+  //   {
+  //     title: "isExecutedUserOperationsLoading",
+  //     data: isExecutedUserOperationsLoading,
+  //   },
+  //   {
+  //     title: "isPaymasterAndDataLoading",
+  //     data: isPaymasterAndDataLoading,
+  //   },
+  //   {
+  //     title: "isTransactionFetcherLoading",
+  //     data: isTransactionFetcherLoading,
+  //   },
+  //   // {
+  //   //   title: "isValidUserOperations",
+  //   //   data: isValidUserOperations,
+  //   // },
+  //   {
+  //     title: "isWalletBillingLoading",
+  //     data: isWalletBillingLoading,
+  //   },
+  // ];
 
   // ---------------------------------------------------------------------------
   // Debounced Hooks
@@ -780,10 +780,10 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     3000,
   );
 
-  const debouncedUserOperationDevInfo = useDebouncedValue(
-    userOperationDevInfo,
-    3000,
-  );
+  // const debouncedUserOperationDevInfo = useDebouncedValue(
+  //   userOperationDevInfo,
+  //   3000,
+  // );
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -803,17 +803,17 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   }, [debouncedUserOperationDetails]);
 
   // Sync the user operation dev info
-  useEffect(() => {
-    if (isDisabled) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (isDisabled) {
+  //     return;
+  //   }
 
-    setUserOperationDevInfo(
-      Number(targetUserOperation.chainId),
-      debouncedUserOperationDevInfo,
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedUserOperationDevInfo]);
+  //   setUserOperationDevInfo(
+  //     Number(targetUserOperation.chainId),
+  //     debouncedUserOperationDevInfo,
+  //   );
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [debouncedUserOperationDevInfo]);
 
   // Sync the user operation simulation
   useEffect(() => {
