@@ -14,6 +14,18 @@
 
 import type { ReactNode } from "react";
 import { MSWState } from "@/components/msw/msw-state";
+import type { Metadata } from "next";
+
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
+export const metadata: Metadata = {
+  title: {
+    template: "Light Demo | %s",
+    default: "Light Demo",
+  },
+};
 
 // -----------------------------------------------------------------------------
 // Props

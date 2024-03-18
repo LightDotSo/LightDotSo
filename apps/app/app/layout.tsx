@@ -14,7 +14,40 @@
 
 import "@lightdotso/styles/global.css";
 import type { ReactNode } from "react";
+import type { Metadata } from "next";
 import { Root } from "@/components/root/root";
+
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
+export const metadata: Metadata = {
+  title: "Light",
+  description:
+    "Light is a new type of smart wallet designed to help you explore Ethereum, and multiple EVM networks as easy as possible.",
+  metadataBase: new URL("https://light.so"),
+  openGraph: {
+    title: "Light",
+    description: "Use Ethereum as One.",
+    url: "/",
+    siteName: "Light",
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 675,
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Light",
+    description: "Use Ethereum as One.",
+    creator: "@LightDotSo",
+  },
+};
 
 // -----------------------------------------------------------------------------
 // Props
