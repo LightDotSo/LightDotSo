@@ -1,5 +1,13 @@
 # @lightdotso/tsconfig
 
+## 3.1.1
+
+### Patch Changes
+
+- [#1828](https://github.com/LightDotSo/LightDotSo/pull/1828) [`1f49b93`](https://github.com/LightDotSo/LightDotSo/commit/1f49b939979776205ad1644a4b1ae6e2501a4ed2) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add tg + readme ogp
+
+- [#1651](https://github.com/LightDotSo/LightDotSo/pull/1651) [`238e346`](https://github.com/LightDotSo/LightDotSo/commit/238e34694988a0af454efb049acafc4a40575f56) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Ini license
+
 ## 3.1.0
 
 ### Minor Changes

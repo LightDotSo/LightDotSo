@@ -1,5 +1,17 @@
 # @lightdotso/fastlane
 
+## 3.0.3
+
+### Patch Changes
+
+- [#1828](https://github.com/LightDotSo/LightDotSo/pull/1828) [`1f49b93`](https://github.com/LightDotSo/LightDotSo/commit/1f49b939979776205ad1644a4b1ae6e2501a4ed2) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add tg + readme ogp
+
+- [#1651](https://github.com/LightDotSo/LightDotSo/pull/1651) [`238e346`](https://github.com/LightDotSo/LightDotSo/commit/238e34694988a0af454efb049acafc4a40575f56) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Ini license
+
+- Updated dependencies [[`1f49b93`](https://github.com/LightDotSo/LightDotSo/commit/1f49b939979776205ad1644a4b1ae6e2501a4ed2), [`c716d7d`](https://github.com/LightDotSo/LightDotSo/commit/c716d7dff699c3ed1578d679d3dea530286f0f21), [`238e346`](https://github.com/LightDotSo/LightDotSo/commit/238e34694988a0af454efb049acafc4a40575f56)]:
+  - @lightdotso/android@3.0.3
+  - @lightdotso/ios@3.0.3
+
 ## 3.0.2
 
 ### Patch Changes
