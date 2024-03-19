@@ -1,5 +1,33 @@
 # @lightdotso/contracts
 
+## 3.1.2
+
+### Patch Changes
+
+- [#1815](https://github.com/LightDotSo/LightDotSo/pull/1815) [`c7f7016`](https://github.com/LightDotSo/LightDotSo/commit/c7f7016afc9c4eaa13f080f7200ba497369875fc) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add create wallet
+
+- [#1828](https://github.com/LightDotSo/LightDotSo/pull/1828) [`1f49b93`](https://github.com/LightDotSo/LightDotSo/commit/1f49b939979776205ad1644a4b1ae6e2501a4ed2) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add tg + readme ogp
+
+- [#1818](https://github.com/LightDotSo/LightDotSo/pull/1818) [`d47e114`](https://github.com/LightDotSo/LightDotSo/commit/d47e114c7cb842c7782631c180a134db5f03ae10) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add docs mp
+
+- [#1816](https://github.com/LightDotSo/LightDotSo/pull/1816) [`9b877d5`](https://github.com/LightDotSo/LightDotSo/commit/9b877d5d4a82e8d546b78e850d9687ce833610e2) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add const crates
+
+- [#1747](https://github.com/LightDotSo/LightDotSo/pull/1747) [`7b18d92`](https://github.com/LightDotSo/LightDotSo/commit/7b18d9203f33067561969f5bc92548dd3bef1a9b) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add ownerId for configuration operation signature
+
+- [#1814](https://github.com/LightDotSo/LightDotSo/pull/1814) [`9c31c8a`](https://github.com/LightDotSo/LightDotSo/commit/9c31c8ad3c73ba30f7e22d2a6e52e5be486f70f1) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add encoding dialog
+
+- [#1651](https://github.com/LightDotSo/LightDotSo/pull/1651) [`238e346`](https://github.com/LightDotSo/LightDotSo/commit/238e34694988a0af454efb049acafc4a40575f56) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Ini license
+
+- [#1688](https://github.com/LightDotSo/LightDotSo/pull/1688) [`3360f73`](https://github.com/LightDotSo/LightDotSo/commit/3360f732cfa26e333ecb196b35af086e7e38fb0a) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add blast sepolia
+
+- [#1722](https://github.com/LightDotSo/LightDotSo/pull/1722) [`2e625e4`](https://github.com/LightDotSo/LightDotSo/commit/2e625e4226f34faa826e912fbfeca71499143425) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix schemas
+
+- [#1712](https://github.com/LightDotSo/LightDotSo/pull/1712) [`62da2de`](https://github.com/LightDotSo/LightDotSo/commit/62da2deabe8e3c17112791dd7c030a8bca0e3adc) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add ownership transfer
+
+- Updated dependencies [[`cd76576`](https://github.com/LightDotSo/LightDotSo/commit/cd765766ac828c75dd8ad1a068a07b859009c085), [`3634af8`](https://github.com/LightDotSo/LightDotSo/commit/3634af8ccae4ed7c5957ff22959e48d69b75f774), [`1f49b93`](https://github.com/LightDotSo/LightDotSo/commit/1f49b939979776205ad1644a4b1ae6e2501a4ed2), [`7b18d92`](https://github.com/LightDotSo/LightDotSo/commit/7b18d9203f33067561969f5bc92548dd3bef1a9b), [`66ec54c`](https://github.com/LightDotSo/LightDotSo/commit/66ec54cf719720468891d7944bfebf5857829504), [`1a8e0e0`](https://github.com/LightDotSo/LightDotSo/commit/1a8e0e0b75ea56dd409b410867ecb095d18a2256), [`549c17d`](https://github.com/LightDotSo/LightDotSo/commit/549c17d6db7f3eed9b20fe449823d786fe5d7cb5), [`26f0653`](https://github.com/LightDotSo/LightDotSo/commit/26f06531a111fd8746fcb25d1a73211a418289cd), [`3c20aa9`](https://github.com/LightDotSo/LightDotSo/commit/3c20aa9ca4252e738b41a393d2a21791e8fe720e), [`238e346`](https://github.com/LightDotSo/LightDotSo/commit/238e34694988a0af454efb049acafc4a40575f56), [`ec0fb13`](https://github.com/LightDotSo/LightDotSo/commit/ec0fb131eb9bf0907e3f53e75f0e20115eb1b692), [`cd046ff`](https://github.com/LightDotSo/LightDotSo/commit/cd046ffd92d97cf47354ed99435d00d0291668e8)]:
+  - @lightdotso/sequence@0.0.1
+  - @lightdotso/wagmi@3.1.2
+
 ## 3.1.1
 
 ### Patch Changes

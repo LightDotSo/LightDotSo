@@ -1,5 +1,80 @@
 # @lightdotso/crates
 
+## 3.1.2
+
+### Patch Changes
+
+- [#1616](https://github.com/LightDotSo/LightDotSo/pull/1616) [`5b518e3`](https://github.com/LightDotSo/LightDotSo/commit/5b518e3310b4d62c7684aea970e46f207c7f8a7b) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add bundler
+
+- [#1815](https://github.com/LightDotSo/LightDotSo/pull/1815) [`c7f7016`](https://github.com/LightDotSo/LightDotSo/commit/c7f7016afc9c4eaa13f080f7200ba497369875fc) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add create wallet
+
+- [#1765](https://github.com/LightDotSo/LightDotSo/pull/1765) [`9afe32c`](https://github.com/LightDotSo/LightDotSo/commit/9afe32ccd628327f18d7e8ea8e11cb504c68b032) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add merkle
+
+- [#1728](https://github.com/LightDotSo/LightDotSo/pull/1728) [`baeb2a5`](https://github.com/LightDotSo/LightDotSo/commit/baeb2a54d9e454b15c6bde3ff1e282bc5cba35ab) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix image hash bytes
+
+- [#1745](https://github.com/LightDotSo/LightDotSo/pull/1745) [`7d94b83`](https://github.com/LightDotSo/LightDotSo/commit/7d94b83e786bd3306196a023f47f79b2b61b5027) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add config
+
+- [#1581](https://github.com/LightDotSo/LightDotSo/pull/1581) [`f06090a`](https://github.com/LightDotSo/LightDotSo/commit/f06090a67a8e115b01b0cb47cbaddfb70b8e248b) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix the relation set issues alltogether
+
+- [#1811](https://github.com/LightDotSo/LightDotSo/pull/1811) [`f77eb5b`](https://github.com/LightDotSo/LightDotSo/commit/f77eb5bdcc7465b504b5b11fc18018a7d6947823) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add temprary batch
+
+- [#1769](https://github.com/LightDotSo/LightDotSo/pull/1769) [`91a15cc`](https://github.com/LightDotSo/LightDotSo/commit/91a15cc50f4adbbf3f463b4b571f533ede803454) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add batch create endpoint
+
+- [#1585](https://github.com/LightDotSo/LightDotSo/pull/1585) [`767fb1a`](https://github.com/LightDotSo/LightDotSo/commit/767fb1afe55505e195d44539d689b3c604419d46) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update api comments
+
+- [#1733](https://github.com/LightDotSo/LightDotSo/pull/1733) [`53da5c9`](https://github.com/LightDotSo/LightDotSo/commit/53da5c96f0a858500bbdc89bd6327a7eb5089e6c) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add query form
+
+- [#1766](https://github.com/LightDotSo/LightDotSo/pull/1766) [`a29934b`](https://github.com/LightDotSo/LightDotSo/commit/a29934bd4d8b5bbf8c832e7a0a9930b9d5acd0a5) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add api typings
+
+- [#1828](https://github.com/LightDotSo/LightDotSo/pull/1828) [`1f49b93`](https://github.com/LightDotSo/LightDotSo/commit/1f49b939979776205ad1644a4b1ae6e2501a4ed2) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add tg + readme ogp
+
+- [#1683](https://github.com/LightDotSo/LightDotSo/pull/1683) [`14b9660`](https://github.com/LightDotSo/LightDotSo/commit/14b96605ebdb25a1617502e039511d65e3c81f88) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Ini bop iteration
+
+- [#1592](https://github.com/LightDotSo/LightDotSo/pull/1592) [`e8d6764`](https://github.com/LightDotSo/LightDotSo/commit/e8d67647b5e87dcecc8427dba300a50df0b964df) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add prisma crate
+
+- [#1774](https://github.com/LightDotSo/LightDotSo/pull/1774) [`363e67a`](https://github.com/LightDotSo/LightDotSo/commit/363e67aad45765e4731172846a1d3619df6794de) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add merkle rendering
+
+- [#1816](https://github.com/LightDotSo/LightDotSo/pull/1816) [`9b877d5`](https://github.com/LightDotSo/LightDotSo/commit/9b877d5d4a82e8d546b78e850d9687ce833610e2) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add const crates
+
+- [#1583](https://github.com/LightDotSo/LightDotSo/pull/1583) [`e9266a7`](https://github.com/LightDotSo/LightDotSo/commit/e9266a758d51db1531b87c641ca20701e205eb91) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add billing params
+
+- [#1747](https://github.com/LightDotSo/LightDotSo/pull/1747) [`7b18d92`](https://github.com/LightDotSo/LightDotSo/commit/7b18d9203f33067561969f5bc92548dd3bef1a9b) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add ownerId for configuration operation signature
+
+- [#1716](https://github.com/LightDotSo/LightDotSo/pull/1716) [`7b2374d`](https://github.com/LightDotSo/LightDotSo/commit/7b2374d0c1bc97711fe57cc0996cf8e72bf617a7) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add configuration schema
+
+- [#1571](https://github.com/LightDotSo/LightDotSo/pull/1571) [`c0fd327`](https://github.com/LightDotSo/LightDotSo/commit/c0fd327aad0502a5035b1acf366890022f63ac75) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add chain id unique id set
+
+- [#1667](https://github.com/LightDotSo/LightDotSo/pull/1667) [`719b591`](https://github.com/LightDotSo/LightDotSo/commit/719b5913983af666ef68302290b72671f8cb96f6) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add routescan consumer
+
+- [#1654](https://github.com/LightDotSo/LightDotSo/pull/1654) [`92c37a1`](https://github.com/LightDotSo/LightDotSo/commit/92c37a1de7e71978da1f2a3795a556eea18f3d36) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add notification popover
+
+- [#1584](https://github.com/LightDotSo/LightDotSo/pull/1584) [`3d59535`](https://github.com/LightDotSo/LightDotSo/commit/3d5953584a1e944f01d79e793a0c5769407aa73b) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Complete refactor API
+
+- [#1690](https://github.com/LightDotSo/LightDotSo/pull/1690) [`03eba42`](https://github.com/LightDotSo/LightDotSo/commit/03eba4269f3920647f1c11155cbd7693d8b5231e) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add bop api
+
+- [#1591](https://github.com/LightDotSo/LightDotSo/pull/1591) [`d10a99b`](https://github.com/LightDotSo/LightDotSo/commit/d10a99bc0c1b056d057e5d2d596d8e26f713a4ca) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add notification settings
+
+- [#1814](https://github.com/LightDotSo/LightDotSo/pull/1814) [`9c31c8a`](https://github.com/LightDotSo/LightDotSo/commit/9c31c8ad3c73ba30f7e22d2a6e52e5be486f70f1) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add encoding dialog
+
+- [#1720](https://github.com/LightDotSo/LightDotSo/pull/1720) [`300f821`](https://github.com/LightDotSo/LightDotSo/commit/300f821d1fcf8a9d3d5cac922b8cabf7d975f903) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add chained sig
+
+- [#1767](https://github.com/LightDotSo/LightDotSo/pull/1767) [`152c5b9`](https://github.com/LightDotSo/LightDotSo/commit/152c5b97495c0619db477f1ad88c20f4d62fdbfb) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add merkle root
+
+- [#1651](https://github.com/LightDotSo/LightDotSo/pull/1651) [`238e346`](https://github.com/LightDotSo/LightDotSo/commit/238e34694988a0af454efb049acafc4a40575f56) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Ini license
+
+- [#1576](https://github.com/LightDotSo/LightDotSo/pull/1576) [`8650525`](https://github.com/LightDotSo/LightDotSo/commit/8650525153f57354ed1cc8759784097c55e76c45) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add uop kafka
+
+- [#1608](https://github.com/LightDotSo/LightDotSo/pull/1608) [`85dc417`](https://github.com/LightDotSo/LightDotSo/commit/85dc417dd68262fff0df83024eb3e1a8b0ab8cfa) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add gas fallback fly
+
+- [#1645](https://github.com/LightDotSo/LightDotSo/pull/1645) [`84e70ed`](https://github.com/LightDotSo/LightDotSo/commit/84e70edeb53a43b769b0500806f7ad71966a68d5) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add misc changes
+
+- [#1637](https://github.com/LightDotSo/LightDotSo/pull/1637) [`276a3b2`](https://github.com/LightDotSo/LightDotSo/commit/276a3b22a302be326799b1bee3c3ca2b8c56a4bd) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Ini uop queue
+
+- [#1746](https://github.com/LightDotSo/LightDotSo/pull/1746) [`470299e`](https://github.com/LightDotSo/LightDotSo/commit/470299e19097596b892043034fdd075479054244) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add sig op
+
+- Updated dependencies [[`9afe32c`](https://github.com/LightDotSo/LightDotSo/commit/9afe32ccd628327f18d7e8ea8e11cb504c68b032), [`cd76576`](https://github.com/LightDotSo/LightDotSo/commit/cd765766ac828c75dd8ad1a068a07b859009c085), [`1f49b93`](https://github.com/LightDotSo/LightDotSo/commit/1f49b939979776205ad1644a4b1ae6e2501a4ed2), [`14b9660`](https://github.com/LightDotSo/LightDotSo/commit/14b96605ebdb25a1617502e039511d65e3c81f88), [`7b18d92`](https://github.com/LightDotSo/LightDotSo/commit/7b18d9203f33067561969f5bc92548dd3bef1a9b), [`7b2374d`](https://github.com/LightDotSo/LightDotSo/commit/7b2374d0c1bc97711fe57cc0996cf8e72bf617a7), [`ee0e024`](https://github.com/LightDotSo/LightDotSo/commit/ee0e0249569b733bf81115a91b695a8255d062dd), [`549c17d`](https://github.com/LightDotSo/LightDotSo/commit/549c17d6db7f3eed9b20fe449823d786fe5d7cb5), [`26f0653`](https://github.com/LightDotSo/LightDotSo/commit/26f06531a111fd8746fcb25d1a73211a418289cd), [`152c5b9`](https://github.com/LightDotSo/LightDotSo/commit/152c5b97495c0619db477f1ad88c20f4d62fdbfb), [`238e346`](https://github.com/LightDotSo/LightDotSo/commit/238e34694988a0af454efb049acafc4a40575f56), [`48dcde9`](https://github.com/LightDotSo/LightDotSo/commit/48dcde90ce719e1236fa49ba3e9b88a21ed8253b), [`ec0fb13`](https://github.com/LightDotSo/LightDotSo/commit/ec0fb131eb9bf0907e3f53e75f0e20115eb1b692), [`2ec769f`](https://github.com/LightDotSo/LightDotSo/commit/2ec769f0449b2986df898d69599d794589ff2037), [`bfcfec0`](https://github.com/LightDotSo/LightDotSo/commit/bfcfec0cf75c5cbbe6c3abba5753505ebf095a3d), [`76189a1`](https://github.com/LightDotSo/LightDotSo/commit/76189a15b6f3826b6ccd724d907a8d1368a0bc3f)]:
+  - @lightdotso/prisma@3.1.2
+
 ## 3.1.1
 
 ### Patch Changes

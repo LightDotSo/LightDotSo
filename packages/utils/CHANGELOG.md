@@ -1,5 +1,30 @@
 # @lightdotso/utils
 
+## 3.1.2
+
+### Patch Changes
+
+- [#1775](https://github.com/LightDotSo/LightDotSo/pull/1775) [`cd76576`](https://github.com/LightDotSo/LightDotSo/commit/cd765766ac828c75dd8ad1a068a07b859009c085) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add ncu upgrade
+
+- [#1828](https://github.com/LightDotSo/LightDotSo/pull/1828) [`1f49b93`](https://github.com/LightDotSo/LightDotSo/commit/1f49b939979776205ad1644a4b1ae6e2501a4ed2) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add tg + readme ogp
+
+- [#1780](https://github.com/LightDotSo/LightDotSo/pull/1780) [`66ec54c`](https://github.com/LightDotSo/LightDotSo/commit/66ec54cf719720468891d7944bfebf5857829504) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add storybook upgrades
+
+- [#1760](https://github.com/LightDotSo/LightDotSo/pull/1760) [`549c17d`](https://github.com/LightDotSo/LightDotSo/commit/549c17d6db7f3eed9b20fe449823d786fe5d7cb5) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add ncu upgrade
+
+- [#1652](https://github.com/LightDotSo/LightDotSo/pull/1652) [`26f0653`](https://github.com/LightDotSo/LightDotSo/commit/26f06531a111fd8746fcb25d1a73211a418289cd) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add acknowledgements and references
+
+- [#1810](https://github.com/LightDotSo/LightDotSo/pull/1810) [`3c3824f`](https://github.com/LightDotSo/LightDotSo/commit/3c3824f90c790785ea81aa525dd8691257505567) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add ini feat deps
+
+- [#1651](https://github.com/LightDotSo/LightDotSo/pull/1651) [`238e346`](https://github.com/LightDotSo/LightDotSo/commit/238e34694988a0af454efb049acafc4a40575f56) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Ini license
+
+- [#1715](https://github.com/LightDotSo/LightDotSo/pull/1715) [`ec0fb13`](https://github.com/LightDotSo/LightDotSo/commit/ec0fb131eb9bf0907e3f53e75f0e20115eb1b692) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update ncu version
+
+- [#1763](https://github.com/LightDotSo/LightDotSo/pull/1763) [`cd046ff`](https://github.com/LightDotSo/LightDotSo/commit/cd046ffd92d97cf47354ed99435d00d0291668e8) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add package addrs
+
+- Updated dependencies [[`cd76576`](https://github.com/LightDotSo/LightDotSo/commit/cd765766ac828c75dd8ad1a068a07b859009c085), [`1f49b93`](https://github.com/LightDotSo/LightDotSo/commit/1f49b939979776205ad1644a4b1ae6e2501a4ed2), [`5b6407f`](https://github.com/LightDotSo/LightDotSo/commit/5b6407f21716f7118c0518139207b94ba7f6f794), [`66ec54c`](https://github.com/LightDotSo/LightDotSo/commit/66ec54cf719720468891d7944bfebf5857829504), [`549c17d`](https://github.com/LightDotSo/LightDotSo/commit/549c17d6db7f3eed9b20fe449823d786fe5d7cb5), [`26f0653`](https://github.com/LightDotSo/LightDotSo/commit/26f06531a111fd8746fcb25d1a73211a418289cd), [`3c20aa9`](https://github.com/LightDotSo/LightDotSo/commit/3c20aa9ca4252e738b41a393d2a21791e8fe720e), [`ff9bb27`](https://github.com/LightDotSo/LightDotSo/commit/ff9bb272b8bec12d33639fdec39e3222b5318f9d), [`2f5781c`](https://github.com/LightDotSo/LightDotSo/commit/2f5781cc87aaa678ed6d53e254e4d867b21ffa4f), [`3c3824f`](https://github.com/LightDotSo/LightDotSo/commit/3c3824f90c790785ea81aa525dd8691257505567), [`238e346`](https://github.com/LightDotSo/LightDotSo/commit/238e34694988a0af454efb049acafc4a40575f56), [`ec0fb13`](https://github.com/LightDotSo/LightDotSo/commit/ec0fb131eb9bf0907e3f53e75f0e20115eb1b692), [`2ec769f`](https://github.com/LightDotSo/LightDotSo/commit/2ec769f0449b2986df898d69599d794589ff2037), [`cd046ff`](https://github.com/LightDotSo/LightDotSo/commit/cd046ffd92d97cf47354ed99435d00d0291668e8)]:
+  - @lightdotso/const@3.1.2
+
 ## 3.1.1
 
 ### Patch Changes
