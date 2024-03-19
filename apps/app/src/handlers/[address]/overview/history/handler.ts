@@ -85,7 +85,14 @@ export const handler = async (
       };
     },
     () => {
-      return notFound();
+      return {
+        paginationState: paginationState,
+        walletSettings: walletSettings,
+        transactions: [],
+        transactionsCount: {
+          count: 0,
+        },
+      };
     },
   );
 };
