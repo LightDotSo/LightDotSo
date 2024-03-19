@@ -1,12 +1,17 @@
 # LightDotSo
 
-A 100% open-source, cross-chain multi-sig.
+[![Telegram Chat][tg-badge]][tg-url]
 
-Same address, one wallet, all chains.
+[tg-badge]: https://img.shields.io/endpoint?color=neon&logo=telegram&label=chat&style=flat-square&url=https%3A%2F%2Ftg.sumanjay.workers.dev%2FLightDotSoSupport
+[tg-url]: https://t.me/LightDotSoSupport
 
-Use any supported EVM chain under the same wallet configuration without ever worrying about having to bridge or refuel gas.
+## A friendly, 100% open-source, cross-chain smart wallet.
 
-Out aim is to reduce fragmentation and abstract away the complexity of interacting with multiple EVM chains for the end user so that it is easy and intuitive as possible.
+![](./assets/github.png)
+
+- Same address, one wallet, all chains.
+- Use any supported EVM chain under the same wallet configuration without ever worrying about having to bridge or refuel gas.
+- Our aim is to reduce fragmentation and abstract away the complexity of interacting with multiple EVM chains for the end user so that it is easy and intuitive as possible.
 
 ## Acknowledgements
 
