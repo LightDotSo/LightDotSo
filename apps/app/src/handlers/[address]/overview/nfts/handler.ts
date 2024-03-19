@@ -87,7 +87,23 @@ export const handler = async (
       };
     },
     () => {
-      return notFound();
+      return {
+        cursorState: cursorState,
+        paginationState: paginationState,
+        walletSettings: walletSettings,
+        nfts: {
+          // @ts-ignore
+          nfts: [{}],
+        },
+        nftValuation: {
+          wallets: [
+            {
+              address: params.address,
+              usd_value: 0,
+            },
+          ],
+        },
+      };
     },
   );
 };
