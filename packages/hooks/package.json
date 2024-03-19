@@ -41,13 +41,13 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "siwe": "^2.1.4",
-    "viem": "^2.8.10"
+    "viem": "^2.8.12"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
     "@types/lodash": "^4.17.0",
-    "@types/node": "^20.11.28",
-    "@types/react": "^18.2.66",
+    "@types/node": "^20.11.29",
+    "@types/react": "^18.2.67",
     "@types/react-dom": "^18.2.22",
     "typescript": "^5.4.2"
   },

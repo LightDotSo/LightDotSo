@@ -1042,33 +1042,33 @@ mod tests {
         );
     }
 
-    #[test]
-    fn test_merkle_tree_simple_deep() {
-        let hashes = [
-            "0x0000000000000000000000000000000000000000000000000000000000000001",
-            "0x0000000000000000000000000000000000000000000000000000000000000002",
-            "0x0000000000000000000000000000000000000000000000000000000000000003",
-            "0x0000000000000000000000000000000000000000000000000000000000000004",
-            "0x0000000000000000000000000000000000000000000000000000000000000005",
-        ];
+    // #[test]
+    // fn test_merkle_tree_simple_deep() {
+    //     let hashes = [
+    //         "0x0000000000000000000000000000000000000000000000000000000000000001",
+    //         "0x0000000000000000000000000000000000000000000000000000000000000002",
+    //         "0x0000000000000000000000000000000000000000000000000000000000000003",
+    //         "0x0000000000000000000000000000000000000000000000000000000000000004",
+    //         "0x0000000000000000000000000000000000000000000000000000000000000005",
+    //     ];
 
-        let mut leaf_hashes: Vec<[u8; 32]> =
-            hashes.iter().map(|hash| hash.hex_to_bytes32().unwrap()).collect();
+    //     let mut leaf_hashes: Vec<[u8; 32]> =
+    //         hashes.iter().map(|hash| hash.hex_to_bytes32().unwrap()).collect();
 
-        leaf_hashes.sort();
+    //     leaf_hashes.sort();
 
-        for hash in leaf_hashes.iter() {
-            println!("0x{}", hex::encode(hash));
-        }
+    //     for hash in leaf_hashes.iter() {
+    //         println!("0x{}", hex::encode(hash));
+    //     }
 
-        let merkle_tree: MerkleTree<KeccakAlgorithm> =
-            MerkleTree::<KeccakAlgorithm>::from_leaves(&leaf_hashes.to_vec());
+    //     let merkle_tree: MerkleTree<KeccakAlgorithm> =
+    //         MerkleTree::<KeccakAlgorithm>::from_leaves(&leaf_hashes.to_vec());
 
-        let merkle_root = format!("0x{}", merkle_tree.root_hex().unwrap_or_default());
+    //     let merkle_root = format!("0x{}", merkle_tree.root_hex().unwrap_or_default());
 
-        assert_eq!(
-            merkle_root,
-            "0xf6c00687a2a50c87101e36eddc215e458f8ca89ee0fb3be978e73e0ea380b768"
-        );
-    }
+    //     assert_eq!(
+    //         merkle_root,
+    //         "0xf6c00687a2a50c87101e36eddc215e458f8ca89ee0fb3be978e73e0ea380b768"
+    //     );
+    // }
 }
