@@ -139,15 +139,6 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   const isInsideModal = useIsInsideModal();
 
   // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
-
-  const initialUserOperations = useMemo(() => {
-    return userOperations;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
 
@@ -624,17 +615,17 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
           {pageIndex === 2 && <TransactionSender address={address} />}
         </ModalSwiper>
       </div>
-      {initialUserOperations &&
-        initialUserOperations.length > 0 &&
-        initialUserOperations.map((initialUserOperation, index) => {
-          if (!initialUserOperation) {
+      {userOperations &&
+        userOperations.length > 0 &&
+        userOperations.map((userOperation, index) => {
+          if (!userOperation) {
             return;
           }
           return (
             <TransactionFetcher
-              key={initialUserOperation.chainId || index}
+              key={userOperation.chainId || index}
               address={address}
-              initialUserOperation={initialUserOperation}
+              initialUserOperation={userOperation}
               userOperationIndex={index}
             />
           );

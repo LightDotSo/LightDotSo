@@ -48,7 +48,6 @@
 | SimpleAccountFactory         | 3.206     | 21.37       |
 | SimpleAccountV2              | 8.945     | 15.631      |
 | SimpleAccountV2Factory       | 3.206     | 21.37       |
-| StdStyle                     | 0.086     | 24.49       |
 | StorageSlot                  | 0.086     | 24.49       |
 | Strings                      | 0.086     | 24.49       |
 | TempKernel                   | 9.111     | 15.465      |
@@ -57,11 +56,3 @@
 | UserOperationLib             | 0.086     | 24.49       |
 | ValidateSigOffchain          | 0.063     | 24.513      |
 | VerifyingPaymaster           | 5.533     | 19.043      |
-| console                      | 0.086     | 24.49       |
-| console2                     | 0.086     | 24.49       |
-| safeconsole                  | 0.086     | 24.49       |
-| stdError                     | 0.713     | 23.863      |
-| stdJson                      | 0.086     | 24.49       |
-| stdMath                      | 0.086     | 24.49       |
-| stdStorage                   | 0.086     | 24.49       |
-| stdStorageSafe               | 0.086     | 24.49       |
