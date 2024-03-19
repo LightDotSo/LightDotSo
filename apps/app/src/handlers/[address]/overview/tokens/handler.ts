@@ -92,7 +92,20 @@ export const handler = async (
       };
     },
     () => {
-      return notFound();
+      return {
+        paginationState: paginationState,
+        walletSettings: walletSettings,
+        tokens: [],
+        tokensCount: {
+          count: 0,
+        },
+        portfolio: {
+          balance: 0,
+          balance_change_24h: 0,
+          balance_change_24h_percentage: 0,
+          balances: [],
+        },
+      };
     },
   );
 };
