@@ -220,7 +220,11 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
     // Get the init code from the executed user operations or the partial user operation
     const updatedInitCode =
-      executedUserOperations && executedUserOperations?.length < 1
+      executedUserOperations &&
+      executedUserOperations?.length < 1 &&
+      wallet?.factory_address &&
+      genesisConfiguration?.image_hash &&
+      wallet?.salt
         ? calculateInitCode(
             wallet?.factory_address as Address,
             // Compute w/ the genesis configuration image hash
