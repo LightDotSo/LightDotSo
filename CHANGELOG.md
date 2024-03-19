@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.7](https://github.com/LightDotSo/LightDotSo/compare/v0.1.6...v0.1.7) (2024-03-19)
+
+
+### Bug Fixes
+
+* ini ogp txs ([#1829](https://github.com/LightDotSo/LightDotSo/issues/1829)) ([7a222df](https://github.com/LightDotSo/LightDotSo/commit/7a222dfaf7d68c187e89220e335c33799cbc4749))
+
 ## [0.1.6](https://github.com/LightDotSo/LightDotSo/compare/v0.1.5...v0.1.6) (2024-03-19)
 
 ### Features
