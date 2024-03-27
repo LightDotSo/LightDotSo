@@ -1,5 +1,15 @@
 # @lightdotso/extension
 
+## 3.1.3
+
+### Patch Changes
+
+- Updated dependencies [[`ed9af92`](https://github.com/LightDotSo/LightDotSo/commit/ed9af920be0b94d81cf3c7abe753e1fc8144e3fc)]:
+  - @lightdotso/background@3.1.3
+  - @lightdotso/content@3.1.3
+  - @lightdotso/inpage@3.1.3
+  - @lightdotso/popup@3.1.3
+
 ## 3.1.2
 
 ### Patch Changes

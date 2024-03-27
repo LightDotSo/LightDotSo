@@ -1,5 +1,22 @@
 # @lightdotso/query
 
+## 0.1.3
+
+### Patch Changes
+
+- [#1832](https://github.com/LightDotSo/LightDotSo/pull/1832) [`ed9af92`](https://github.com/LightDotSo/LightDotSo/commit/ed9af920be0b94d81cf3c7abe753e1fc8144e3fc) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - chore: update
+
+- Updated dependencies [[`ed9af92`](https://github.com/LightDotSo/LightDotSo/commit/ed9af920be0b94d81cf3c7abe753e1fc8144e3fc)]:
+  - @lightdotso/query-keys@0.1.3
+  - @lightdotso/schemas@3.1.3
+  - @lightdotso/client@3.1.3
+  - @lightdotso/params@0.1.3
+  - @lightdotso/stores@0.1.3
+  - @lightdotso/const@3.1.3
+  - @lightdotso/wagmi@3.1.3
+  - @lightdotso/data@0.1.3
+  - @lightdotso/ui@3.1.3
+
 ## 0.1.2
 
 ### Patch Changes
