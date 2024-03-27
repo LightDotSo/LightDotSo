@@ -1,7 +1,7 @@
 import { defineConfig } from "vocs";
 
 export default defineConfig({
-  title: "Docs",
+  title: "Light Whitepaper",
   sidebar: [
     {
       text: "Getting Started",
