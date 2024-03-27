@@ -1,5 +1,12 @@
 # @lightdotso/bin
 
+## 3.1.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @lightdotso/crates@3.1.3
+
 ## 3.1.2
 
 ### Patch Changes

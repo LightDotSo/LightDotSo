@@ -1,5 +1,11 @@
 # @lightdotso/changelog
 
+## 3.1.3
+
+### Patch Changes
+
+- [#1832](https://github.com/LightDotSo/LightDotSo/pull/1832) [`ed9af92`](https://github.com/LightDotSo/LightDotSo/commit/ed9af920be0b94d81cf3c7abe753e1fc8144e3fc) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - chore: update
+
 ## 3.1.2
 
 ### Patch Changes
