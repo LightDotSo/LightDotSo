@@ -1,7 +1,7 @@
 packages:
   - "android"
   - "apps/*"
-  - "!apps/whitepaper"
+  - "!apps/paper"
   - "bin"
   - "configurations/*"
   - "contracts"
