@@ -2,7 +2,7 @@ import { defineConfig } from "vocs";
 
 export default defineConfig({
   title: "Lightpaper",
-  logoUrl: "/logo.svg",
+  // logoUrl: "/logo-dark.svg",
   sidebar: [
     {
       text: "Introduction",
@@ -23,22 +23,16 @@ export default defineConfig({
       ],
     },
     {
+      text: "Goals",
+      link: "/goals",
+    },
+    {
       text: "Concepts",
       collapsed: false,
       items: [
         {
           text: "Comparison",
           link: "/concepts/comparison",
-        },
-      ],
-    },
-    {
-      text: "Goals",
-      collapsed: false,
-      items: [
-        {
-          text: "Endgame",
-          link: "/goals/endgame",
         },
       ],
     },
