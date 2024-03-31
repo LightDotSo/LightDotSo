@@ -109,15 +109,15 @@ export default defineConfig({
       collapsed: false,
       items: [
         {
-          text: "Cross-chain Transaction Initiation in Light",
+          text: "Cross-chain Transaction Initiation",
           link: "/concepts/transaction-initiation",
         },
         {
-          text: "Gas Abstraction in Light",
+          text: "Gas Abstraction",
           link: "/concepts/gas-abstraction",
         },
         {
-          text: "Batch Execution in Light",
+          text: "Batch Execution",
           link: "/concepts/batch-execution",
         },
       ],
