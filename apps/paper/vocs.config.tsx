@@ -25,6 +25,7 @@ export default defineConfig({
   titleTemplate: "%s | Lightpaper",
   head() {
     return (
+      // eslint-disable-nextline react/jsx-no-useless-fragment
       <>
         <link
           rel="icon"
