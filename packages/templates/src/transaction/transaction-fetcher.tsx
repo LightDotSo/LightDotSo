@@ -575,6 +575,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       { title: "Sender", value: shortenAddress(targetUserOperation.sender) },
       {
         title: "Threshold",
+        // eslint-disable-next-line no-unsafe-optional-chaining, @typescript-eslint/no-non-null-asserted-optional-chain
         value: configuration?.threshold!,
       },
       { title: "Chain", value: chain?.name },
