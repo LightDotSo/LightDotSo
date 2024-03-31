@@ -93,6 +93,10 @@ export default defineConfig({
           text: "Products",
           link: "/introduction/products",
         },
+        {
+          text: "Comparison",
+          link: "/introduction/comparison",
+        },
       ],
     },
     {
@@ -104,8 +108,8 @@ export default defineConfig({
       collapsed: false,
       items: [
         {
-          text: "Comparison",
-          link: "/concepts/comparison",
+          text: "Gas Abstraction in Light",
+          link: "/concepts/gas-abstraction",
         },
       ],
     },
