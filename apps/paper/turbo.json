@@ -5,7 +5,7 @@
     "build": {
       "dependsOn": ["^build"],
       "env": ["VERCEL_ENV"],
-      "inputs": ["pages/**", "next.config.js"],
+      "inputs": ["pages/**", "vocs.config.tsx"],
       "outputs": []
     },
     "clean": {

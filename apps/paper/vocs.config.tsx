@@ -15,13 +15,13 @@
 import { defineConfig } from "vocs";
 
 export default defineConfig({
-  baseUrl: "https://paper.light.so",
+  // baseUrl: "https://paper.light.so",
   description: "Technical specifications for Light.",
   title: "Lightpaper",
   titleTemplate: "%s | Lightpaper",
   editLink: {
     pattern:
-      "https://github.com/LightDotSo/LightDotSo/edit/apps/paper/pages/:path",
+      "https://github.com/LightDotSo/LightDotSo/edit/main/apps/paper/pages/:path",
     text: "Suggest changes to this page.",
   },
   iconUrl: {
