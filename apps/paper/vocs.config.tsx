@@ -106,7 +106,13 @@ export default defineConfig({
     },
     {
       text: "Goals",
-      link: "/goals",
+      // collapsed: false,
+      items: [
+        {
+          text: "Goals for Light",
+          link: "/goals",
+        },
+      ],
     },
     {
       text: "Concepts",
@@ -146,7 +152,13 @@ export default defineConfig({
     },
     {
       text: "References",
-      link: "/references",
+      collapsed: true,
+      items: [
+        {
+          text: "Sources",
+          link: "/references/sources",
+        },
+      ],
     },
   ],
   topNav: [
