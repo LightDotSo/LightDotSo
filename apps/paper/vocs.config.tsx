@@ -28,12 +28,12 @@ export default defineConfig({
     text: "Suggest changes to this page.",
   },
   iconUrl: {
-    light: "/light-icon-light.svg",
-    dark: "/light-icon-dark.svg",
+    light: "https://paper.light.so/light-icon-light.svg",
+    dark: "https://paper.light.so/light-icon-dark.svg",
   },
   logoUrl: {
-    light: "/light-logo-light.svg",
-    dark: "/light-logo-dark.svg",
+    light: "https://paper.light.so/light-logo-light.svg",
+    dark: "https://paper.light.so/light-logo-dark.svg",
   },
   rootDir: ".",
   ogImageUrl: {
