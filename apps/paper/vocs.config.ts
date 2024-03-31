@@ -2,6 +2,7 @@ import { defineConfig } from "vocs";
 
 export default defineConfig({
   title: "Lightpaper",
+  // logoUrl: "/logo-dark.svg",
   sidebar: [
     {
       text: "Introduction",
@@ -9,7 +10,7 @@ export default defineConfig({
       items: [
         {
           text: "What is Light",
-          link: "/introduction/what-is-light",
+          link: "/introduction/why-light",
         },
         {
           text: "Chain Abstraction",
@@ -22,6 +23,10 @@ export default defineConfig({
       ],
     },
     {
+      text: "Goals",
+      link: "/goals",
+    },
+    {
       text: "Concepts",
       collapsed: false,
       items: [
@@ -30,24 +35,6 @@ export default defineConfig({
           link: "/concepts/comparison",
         },
       ],
-    },
-    {
-      text: "Goals",
-      collapsed: false,
-      items: [
-        {
-          text: "Endgame",
-          link: "/goals/endgame",
-        },
-      ],
-    },
-    {
-      text: "Getting Started",
-      link: "/getting-started",
-    },
-    {
-      text: "Example",
-      link: "/example",
     },
   ],
 });
