@@ -155,8 +155,16 @@ export default defineConfig({
       collapsed: false,
       items: [
         {
+          text: "Acknowledgements",
+          link: "/references/acknowledgements",
+        },
+        {
           text: "Sources",
           link: "/references/sources",
+        },
+        {
+          text: "Thinking",
+          link: "/references/thinking",
         },
       ],
     },
