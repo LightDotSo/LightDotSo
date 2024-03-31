@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { defineConfig } from "vocs";
+import pkg from "./package.json";
 
 export default defineConfig({
   // baseUrl:
@@ -22,18 +23,30 @@ export default defineConfig({
   description: "Technical specifications for Light.",
   title: "Lightpaper",
   titleTemplate: "%s | Lightpaper",
+  head() {
+    return (
+      <>
+        <link
+          rel="icon"
+          href="https://light.so/favicon.ico"
+          type="image/x-icon"
+          sizes="255x256"
+        />
+      </>
+    );
+  },
   editLink: {
     pattern:
       "https://github.com/LightDotSo/LightDotSo/edit/main/apps/paper/pages/:path",
     text: "Suggest changes to this page.",
   },
-  iconUrl: {
-    light: "https://paper.light.so/light-icon-light.svg",
-    dark: "https://paper.light.so/light-icon-dark.svg",
-  },
+  // iconUrl: {
+  //   light: "https://paper.light.so/light-icon-light.svg",
+  //   dark: "https://paper.light.so/light-icon-dark.svg",
+  // },
   logoUrl: {
-    light: "https://paper.light.so/light-logo-light.svg",
-    dark: "https://paper.light.so/light-logo-dark.svg",
+    light: "/light-logo-light.svg",
+    dark: "/light-logo-dark.svg",
   },
   rootDir: ".",
   ogImageUrl: {
@@ -94,6 +107,30 @@ export default defineConfig({
           text: "Comparison",
           link: "/concepts/comparison",
         },
+      ],
+    },
+  ],
+  topNav: [
+    // { text: "Docs", link: "/docs/getting-started", match: "/docs" },
+    {
+      text: "Demo",
+      link: "https://light.so/demo",
+    },
+    {
+      text: pkg.version,
+      items: [
+        {
+          text: pkg.version,
+          link: `https://github.com/LightDotSo/LightDotSo/commit/${process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA}`,
+        },
+        {
+          text: "Changelog",
+          link: "https://github.com/LightDotSo/LightDotSo/blob/main/CHANGELOG.md",
+        },
+        // {
+        //   text: "Contributing",
+        //   link: "https://github.com/LightDotSo/LightDotSo/blob/main/CONTRIBUTING.md",
+        // },
       ],
     },
   ],
