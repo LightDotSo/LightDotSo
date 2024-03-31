@@ -113,6 +113,10 @@ export default defineConfig({
         },
       ],
     },
+    {
+      text: "References",
+      link: "/references",
+    },
   ],
   topNav: [
     // { text: "Docs", link: "/docs/getting-started", match: "/docs" },
