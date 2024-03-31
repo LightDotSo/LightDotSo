@@ -152,7 +152,7 @@ export default defineConfig({
     },
     {
       text: "References",
-      collapsed: true,
+      collapsed: false,
       items: [
         {
           text: "Sources",
