@@ -113,16 +113,16 @@ export default defineConfig({
       collapsed: false,
       items: [
         {
-          text: "Gas Abstraction",
-          link: "/concepts/gas-abstraction",
-        },
-        {
           text: "Batch Execution",
           link: "/concepts/batch-execution",
         },
         {
           text: "Cross-chain Smart Account",
           link: "/concepts/cross-chain-smart-account",
+        },
+        {
+          text: "Gas Abstraction",
+          link: "/concepts/gas-abstraction",
         },
         {
           text: "Keystore Management",
