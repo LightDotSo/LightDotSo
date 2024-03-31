@@ -109,16 +109,24 @@ export default defineConfig({
       collapsed: false,
       items: [
         {
-          text: "Cross-chain Transaction Initiation",
-          link: "/concepts/transaction-initiation",
-        },
-        {
           text: "Gas Abstraction",
           link: "/concepts/gas-abstraction",
         },
         {
           text: "Batch Execution",
           link: "/concepts/batch-execution",
+        },
+        {
+          text: "Cross-chain Smart Account",
+          link: "/concepts/cross-chain-smart-account",
+        },
+        {
+          text: "Keystore",
+          link: "/concepts/keystore",
+        },
+        {
+          text: "Transaction Initiation",
+          link: "/concepts/transaction-initiation",
         },
       ],
     },
