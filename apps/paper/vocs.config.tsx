@@ -98,6 +98,10 @@ export default defineConfig({
           text: "Comparison",
           link: "/introduction/comparison",
         },
+        {
+          text: "FAQ",
+          link: "/introduction/faq",
+        },
       ],
     },
     {
@@ -127,6 +131,16 @@ export default defineConfig({
         {
           text: "Transaction Initiation",
           link: "/concepts/transaction-initiation",
+        },
+      ],
+    },
+    {
+      text: "Glossary",
+      collapsed: false,
+      items: [
+        {
+          text: "Terms",
+          link: "/glossary/terms",
         },
       ],
     },
