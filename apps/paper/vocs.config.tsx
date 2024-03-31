@@ -121,8 +121,8 @@ export default defineConfig({
           link: "/concepts/cross-chain-smart-account",
         },
         {
-          text: "Keystore",
-          link: "/concepts/keystore",
+          text: "Keystore Management",
+          link: "/concepts/keystore-management",
         },
         {
           text: "Transaction Initiation",
