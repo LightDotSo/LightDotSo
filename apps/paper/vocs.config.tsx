@@ -47,8 +47,16 @@ export default defineConfig({
   },
   socials: [
     {
+      icon: "discord",
+      link: "https://discord.gg/Vgfxg2Rcy8",
+    },
+    {
       icon: "github",
       link: "https://github.com/LightDotSo/LightDotSo",
+    },
+    {
+      icon: "warpcast",
+      link: "https://warpcast.com/~/channel/lightdotso",
     },
     {
       icon: "x",
