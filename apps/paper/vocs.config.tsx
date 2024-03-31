@@ -15,10 +15,10 @@
 import { defineConfig } from "vocs";
 
 export default defineConfig({
-  baseUrl:
-    process.env.VERCEL_ENV === "production"
-      ? "https://paper.light.so"
-      : undefined,
+  // baseUrl:
+  //   process.env.VERCEL_ENV === "production"
+  //     ? "https://paper.light.so"
+  //     : undefined,
   description: "Technical specifications for Light.",
   title: "Lightpaper",
   titleTemplate: "%s | Lightpaper",
@@ -39,8 +39,8 @@ export default defineConfig({
   ogImageUrl: {
     "/":
       process.env.VERCEL_ENV === "production"
-        ? "/og-image.png"
-        : "/preview-og-image.png",
+        ? "https://paper.light.so/og-image.png"
+        : "https://paper.light.so/preview-og-image.png",
     // Thank you `wevm` team for providing the OG image service!
     "/docs":
       "https://vocs.dev/api/og?logo=%logo&title=%title&description=%description",
@@ -54,10 +54,10 @@ export default defineConfig({
       icon: "github",
       link: "https://github.com/LightDotSo/LightDotSo",
     },
-    {
-      icon: "warpcast",
-      link: "https://warpcast.com/~/channel/lightdotso",
-    },
+    // {
+    //   icon: "warpcast",
+    //   link: "https://warpcast.com/~/channel/lightdotso",
+    // },
     {
       icon: "x",
       link: "https://x.com/LightDotSo",
