@@ -84,7 +84,7 @@ export default defineConfig({
       items: [
         {
           text: "What is Light",
-          link: "/introduction/why-light",
+          link: "/introduction",
         },
         {
           text: "Chain Abstraction",
