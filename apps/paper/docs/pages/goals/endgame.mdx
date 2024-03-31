@@ -1,3 +1,47 @@
-# The goals of chain abstraction.
+# Goals
 
-What's the goal of chain abstraction?
+## What's the goal of chain abstraction?
+
+The goal for Light to enable interacting across different EVM chains with little to no friction as possible,
+while still posing no restrictions or counterparty risk for the user.
+
+Users should only know that they are using Ethereum, and not have to bear the burden from the complexities of interacting with multiple chains.
+
+Use Ethereum as One.
+
+## How does Light achieve this?
+
+Light achieves this through a combination of smart contracts, relayers, and programmatic cross-chain execution.
+{/* See [Light Architecture](./architecture) and [Products](./products) for more details. */}
+
+The main flow for users interacting with Light is as follows:
+
+1. Users submits an intent/transaction to Light's offchain relayer
+
+2. The relayer bids for the right to subsidize the transaction on the target chain(s)
+
+3. Users signs one signature to authorize the transaction on the target chain(s)
+
+4. The corresponding transactions are relayed to the target chain(s) and executed concurrently through the bundler from a smart account
+
+5. If a specific intent/preferences is set, the transactions are submitted to the target chain(s) at the specified order
+
+Through Light, users can authorize a batch of transactions with one signature, and the transactions are executed concurrently on the target chain(s) through a smart account.
+
+To put it simply, Light makes it possible for users to interact with all EVM chains at once.
+
+## Main metrics we're aiming for
+
+What are some targets to meet for a user to feel like they are interacting with a single chain?
+
+- Minimize the number of clicks + signatues
+
+Users should not have to sign multiple transactions to interact across multiple chains.
+
+- One time interaction
+
+Users should not have to wait for confirmations on multiple chains to interact across chains, rather sign a batch of transaction once and have them executed programatically in the specified intent.
+
+- No counterparty risk
+
+Users should not have to delegate trust and bear risks to third party entities to interact across chains, such as approving a third party bridge contract for token allowances.
