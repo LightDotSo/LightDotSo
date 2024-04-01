@@ -1,5 +1,13 @@
 # @lightdotso/background
 
+## 3.1.3
+
+### Patch Changes
+
+- [#1854](https://github.com/LightDotSo/LightDotSo/pull/1854) [`36705c9`](https://github.com/LightDotSo/LightDotSo/commit/36705c90dc5fbbb8180221eb7c08f1c844714bff) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add intro
+
+- [#1832](https://github.com/LightDotSo/LightDotSo/pull/1832) [`ed9af92`](https://github.com/LightDotSo/LightDotSo/commit/ed9af920be0b94d81cf3c7abe753e1fc8144e3fc) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - chore: update
+
 ## 3.1.2
 
 ### Patch Changes
