@@ -112,6 +112,10 @@ export default defineConfig({
           text: "Goals for Light",
           link: "/goals",
         },
+        {
+          text: "Endgame",
+          link: "/goals/endgame",
+        },
       ],
     },
     {
@@ -168,9 +172,26 @@ export default defineConfig({
         },
       ],
     },
+    {
+      text: "Use Cases",
+      collapsed: false,
+      items: [
+        {
+          text: "List of Use Cases",
+          link: "/use-cases/list",
+        },
+        {
+          text: "Zora's Example",
+          link: "/use-cases/zora",
+        },
+      ],
+    },
   ],
   topNav: [
-    // { text: "Docs", link: "/docs/getting-started", match: "/docs" },
+    {
+      text: "Home",
+      link: "https://light.so/home",
+    },
     {
       text: "Demo",
       link: "https://light.so/demo",
