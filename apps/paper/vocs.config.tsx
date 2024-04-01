@@ -95,6 +95,10 @@ export default defineConfig({
           link: "/introduction/products",
         },
         {
+          text: "User Flow",
+          link: "/introduction/user-flow",
+        },
+        {
           text: "Comparison",
           link: "/introduction/comparison",
         },
