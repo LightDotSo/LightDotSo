@@ -123,10 +123,6 @@ export default defineConfig({
       collapsed: false,
       items: [
         {
-          text: "Batch Execution",
-          link: "/concepts/batch-execution",
-        },
-        {
           text: "Cross-chain Smart Account",
           link: "/concepts/cross-chain-smart-account",
         },
@@ -137,6 +133,10 @@ export default defineConfig({
         {
           text: "Keystore Management",
           link: "/concepts/keystore-management",
+        },
+        {
+          text: "Signature Aggregation",
+          link: "/concepts/signature-aggregation",
         },
         {
           text: "Transaction Initiation",
@@ -176,6 +176,10 @@ export default defineConfig({
       text: "Use Cases",
       collapsed: false,
       items: [
+        {
+          text: "Limitations",
+          link: "/use-cases/limitations",
+        },
         {
           text: "List of Use Cases",
           link: "/use-cases/list",
