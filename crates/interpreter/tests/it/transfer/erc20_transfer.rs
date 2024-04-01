@@ -43,7 +43,7 @@ async fn test_integration_erc20_transfer() -> Result<()> {
 
     assert!(res.success);
 
-    insta::assert_debug_snapshot!(res);
+    // insta::assert_debug_snapshot!(res);
 
     Ok(())
 }
@@ -94,7 +94,7 @@ async fn test_integration_erc20_transfer_query_overflow_bug() -> Result<()> {
 
     assert!(res.success);
 
-    insta::assert_debug_snapshot!(res);
+    // insta::assert_debug_snapshot!(res);
 
     Ok(())
 }

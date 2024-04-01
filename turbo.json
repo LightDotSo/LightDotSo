@@ -51,7 +51,7 @@
     },
     "build": {
       "dependsOn": ["^build"],
-      "env": ["VERCEL_ENV"],
+      "env": ["VERCEL_ENV", "VERCEL_GIT_COMMIT_SHA"],
       "inputs": ["!package.json", "!pnpm-lock.yaml"]
     },
     "dev": {

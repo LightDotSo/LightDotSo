@@ -25,6 +25,7 @@ export default defineConfig({
   titleTemplate: "%s | Lightpaper",
   head() {
     return (
+      // eslint-disable-nextline react/jsx-no-useless-fragment
       <>
         <link
           rel="icon"
@@ -83,7 +84,7 @@ export default defineConfig({
       items: [
         {
           text: "What is Light",
-          link: "/introduction/why-light",
+          link: "/introduction",
         },
         {
           text: "Chain Abstraction",
@@ -93,19 +94,77 @@ export default defineConfig({
           text: "Products",
           link: "/introduction/products",
         },
+        {
+          text: "Comparison",
+          link: "/introduction/comparison",
+        },
+        {
+          text: "FAQ",
+          link: "/introduction/faq",
+        },
       ],
     },
     {
       text: "Goals",
-      link: "/goals",
+      // collapsed: false,
+      items: [
+        {
+          text: "Goals for Light",
+          link: "/goals",
+        },
+      ],
     },
     {
       text: "Concepts",
       collapsed: false,
       items: [
         {
-          text: "Comparison",
-          link: "/concepts/comparison",
+          text: "Batch Execution",
+          link: "/concepts/batch-execution",
+        },
+        {
+          text: "Cross-chain Smart Account",
+          link: "/concepts/cross-chain-smart-account",
+        },
+        {
+          text: "Gas Abstraction",
+          link: "/concepts/gas-abstraction",
+        },
+        {
+          text: "Keystore Management",
+          link: "/concepts/keystore-management",
+        },
+        {
+          text: "Transaction Initiation",
+          link: "/concepts/transaction-initiation",
+        },
+      ],
+    },
+    {
+      text: "Glossary",
+      collapsed: false,
+      items: [
+        {
+          text: "Terms",
+          link: "/glossary/terms",
+        },
+      ],
+    },
+    {
+      text: "References",
+      collapsed: false,
+      items: [
+        {
+          text: "Acknowledgements",
+          link: "/references/acknowledgements",
+        },
+        {
+          text: "Sources",
+          link: "/references/sources",
+        },
+        {
+          text: "Thinking",
+          link: "/references/thinking",
         },
       ],
     },
@@ -121,7 +180,7 @@ export default defineConfig({
       items: [
         {
           text: pkg.version,
-          link: `https://github.com/LightDotSo/LightDotSo/commit/${process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA}`,
+          link: `https://github.com/LightDotSo/LightDotSo/commit/${process.env.VERCEL_GIT_COMMIT_SHA}`,
         },
         {
           text: "Changelog",
