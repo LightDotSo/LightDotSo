@@ -112,6 +112,10 @@ export default defineConfig({
           text: "Goals for Light",
           link: "/goals",
         },
+        {
+          text: "Endgame",
+          link: "/goals/endgame",
+        },
       ],
     },
     {
@@ -170,7 +174,10 @@ export default defineConfig({
     },
   ],
   topNav: [
-    // { text: "Docs", link: "/docs/getting-started", match: "/docs" },
+    {
+      text: "Home",
+      link: "https://light.so/home",
+    },
     {
       text: "Demo",
       link: "https://light.so/demo",
