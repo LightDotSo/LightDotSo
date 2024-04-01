@@ -172,6 +172,20 @@ export default defineConfig({
         },
       ],
     },
+    {
+      text: "Use Cases",
+      collapsed: false,
+      items: [
+        {
+          text: "List of Use Cases",
+          link: "/use-cases/list",
+        },
+        {
+          text: "Zora's Example",
+          link: "/use-cases/zora",
+        },
+      ],
+    },
   ],
   topNav: [
     {
