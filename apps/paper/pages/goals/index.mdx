@@ -12,28 +12,14 @@ Use Ethereum as One.
 ## How does Light achieve this?
 
 Light achieves this through a combination of smart contracts, relayers, and a specific middleware to enable programmatic cross-chain execution.
-See [our products](/introduction/products) for how Light achieves this.
+See [our products](/introduction/products) and [user flow](/introduction/user-flow) for how Light achieves this.
 {/* See [Light Architecture](./architecture) and [Products](./products) for more details. */}
-
-The main flow for users interacting with Light is as follows:
-
-1. Users submits an intent/transaction to Light's offchain relayer
-
-2. The relayer bids for the right to subsidize the transaction on the target chain(s)
-
-3a. Users signs one signature to authorize the transaction on the target chain(s)
-
-3b. (Optionally) User can set specific intent/preferences for the transaction to be executed on the target chain(s)
-
-4. The corresponding transactions are relayed to the target chain(s) and executed concurrently through the bundler from a smart account
-
-5. If a specific intent/preferences is set, the transactions are submitted to the target chain(s) at the specified order
 
 Through Light, users can authorize a batch of transactions with one signature, and the transactions are executed concurrently on the target chain(s) through a smart account.
 
 To put it simply, Light makes it possible for users to interact with all EVM chains at once.
 
-## Main metrics we're aiming for
+## Main goals we're targeting
 
 What are some of the main metrics we're aiming for with Light?
 
@@ -44,6 +30,10 @@ Users should not have to sign multiple transactions to interact across multiple 
 - One time interaction
 
 Users should not have to wait for confirmations on multiple chains to interact across chains, rather sign a batch of transaction once and have them executed programatically in the specified intent.
+
+- No restrictions
+
+Users should not have the restrictions of limitations with cross-chain interaction, it should be as as interacting with one.
 
 - No counterparty risk
 

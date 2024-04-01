@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { defineConfig } from "vocs";
-import pkg from "./package.json";
+import pkg from "../../package.json";
 
 export default defineConfig({
   // baseUrl:
@@ -83,7 +83,7 @@ export default defineConfig({
       collapsed: false,
       items: [
         {
-          text: "What is Light",
+          text: "Why Light",
           link: "/introduction",
         },
         {
@@ -93,6 +93,10 @@ export default defineConfig({
         {
           text: "Products",
           link: "/introduction/products",
+        },
+        {
+          text: "User Flow",
+          link: "/introduction/user-flow",
         },
         {
           text: "Comparison",
@@ -113,7 +117,7 @@ export default defineConfig({
           link: "/goals",
         },
         {
-          text: "Endgame",
+          text: "The Endgame",
           link: "/goals/endgame",
         },
       ],
@@ -122,10 +126,6 @@ export default defineConfig({
       text: "Concepts",
       collapsed: false,
       items: [
-        {
-          text: "Batch Execution",
-          link: "/concepts/batch-execution",
-        },
         {
           text: "Cross-chain Smart Account",
           link: "/concepts/cross-chain-smart-account",
@@ -139,6 +139,10 @@ export default defineConfig({
           link: "/concepts/keystore-management",
         },
         {
+          text: "Signature Aggregation",
+          link: "/concepts/signature-aggregation",
+        },
+        {
           text: "Transaction Initiation",
           link: "/concepts/transaction-initiation",
         },
@@ -148,6 +152,14 @@ export default defineConfig({
       text: "Glossary",
       collapsed: false,
       items: [
+        {
+          text: "Known Limitations",
+          link: "/glossary/limitations",
+        },
+        {
+          text: "Problems",
+          link: "/glossary/problems",
+        },
         {
           text: "Terms",
           link: "/glossary/terms",
@@ -176,6 +188,10 @@ export default defineConfig({
       text: "Use Cases",
       collapsed: false,
       items: [
+        {
+          text: "Comparison",
+          link: "/use-cases/comparison",
+        },
         {
           text: "List of Use Cases",
           link: "/use-cases/list",
