@@ -153,6 +153,10 @@ export default defineConfig({
           link: "/glossary/limitations",
         },
         {
+          text: "Problems",
+          link: "/glossary/problems",
+        },
+        {
           text: "Terms",
           link: "/glossary/terms",
         },
@@ -180,6 +184,10 @@ export default defineConfig({
       text: "Use Cases",
       collapsed: false,
       items: [
+        {
+          text: "Comparison",
+          link: "/use-cases/comparison",
+        },
         {
           text: "List of Use Cases",
           link: "/use-cases/list",
