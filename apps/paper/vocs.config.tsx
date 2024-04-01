@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { defineConfig } from "vocs";
-import pkg from "./package.json";
+import pkg from "../../package.json";
 
 export default defineConfig({
   // baseUrl:
@@ -83,7 +83,7 @@ export default defineConfig({
       collapsed: false,
       items: [
         {
-          text: "What is Light",
+          text: "Why Light",
           link: "/introduction",
         },
         {
@@ -113,7 +113,7 @@ export default defineConfig({
           link: "/goals",
         },
         {
-          text: "Endgame",
+          text: "The Endgame",
           link: "/goals/endgame",
         },
       ],
@@ -149,6 +149,10 @@ export default defineConfig({
       collapsed: false,
       items: [
         {
+          text: "Known Limitations",
+          link: "/glossary/limitations",
+        },
+        {
           text: "Terms",
           link: "/glossary/terms",
         },
@@ -176,10 +180,6 @@ export default defineConfig({
       text: "Use Cases",
       collapsed: false,
       items: [
-        {
-          text: "Limitations",
-          link: "/use-cases/limitations",
-        },
         {
           text: "List of Use Cases",
           link: "/use-cases/list",
