@@ -1,3 +1,14 @@
 # Known Limitations
 
 These are some known limitations of underlying protocols that have affected the design of the system:
+
+## EVM Related
+
+- Only EOAs have the ability to initiate transactions
+- Account abstraction is not baked into the EVM protocol
+
+## 4337 Related
+
+- Smart wallets not being able to act as signers for other smart wallets
+- Gas is assumed to be priced real-time, bundlers will not accept lower prices in the mempool
+- Hard to tell the contents of the transaction in `eth_sign` if the digest is a user operation hash

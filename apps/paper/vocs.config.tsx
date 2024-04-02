@@ -80,7 +80,6 @@ export default defineConfig({
   sidebar: [
     {
       text: "Introduction",
-      collapsed: false,
       items: [
         {
           text: "Why Light",
@@ -103,8 +102,8 @@ export default defineConfig({
           link: "/introduction/comparison",
         },
         {
-          text: "FAQ",
-          link: "/introduction/faq",
+          text: "Philosophy",
+          link: "/introduction/philosophy",
         },
       ],
     },
@@ -135,6 +134,10 @@ export default defineConfig({
           link: "/concepts/gas-abstraction",
         },
         {
+          text: "Programmeable Execution",
+          link: "/concepts/programmeable-execution",
+        },
+        {
           text: "Keystore Management",
           link: "/concepts/keystore-management",
         },
@@ -149,9 +152,52 @@ export default defineConfig({
       ],
     },
     {
-      text: "Glossary",
+      text: "Products",
+      items: [
+        {
+          text: "Light Smart Wallet",
+          link: "/smart-wallet",
+        },
+        {
+          text: "Light Gas Abstraction",
+          link: "/gas-abstraction",
+        },
+        {
+          text: "Light Programmable Execution",
+          link: "/chain",
+        },
+      ],
+    },
+    {
+      text: "Resources",
       collapsed: false,
       items: [
+        {
+          text: "API",
+          link: "/resources/api",
+        },
+        {
+          text: "Actors",
+          link: "/resources/actors",
+        },
+        {
+          text: "Contracts",
+          link: "/resources/contracts",
+        },
+        {
+          text: "Fees",
+          link: "/resources/fees",
+        },
+      ],
+    },
+    {
+      text: "Glossary",
+      collapsed: true,
+      items: [
+        {
+          text: "FAQ",
+          link: "/glossary/faq",
+        },
         {
           text: "Known Limitations",
           link: "/glossary/limitations",
@@ -168,7 +214,7 @@ export default defineConfig({
     },
     {
       text: "References",
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           text: "Acknowledgements",
@@ -186,7 +232,7 @@ export default defineConfig({
     },
     {
       text: "Use Cases",
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           text: "Comparison",
