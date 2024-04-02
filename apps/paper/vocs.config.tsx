@@ -106,6 +106,10 @@ export default defineConfig({
           text: "FAQ",
           link: "/introduction/faq",
         },
+        {
+          text: "Philosophy",
+          link: "/introduction/philosophy",
+        },
       ],
     },
     {
