@@ -80,7 +80,6 @@ export default defineConfig({
   sidebar: [
     {
       text: "Introduction",
-      collapsed: false,
       items: [
         {
           text: "Why Light",
