@@ -176,6 +176,18 @@ export default defineConfig({
           text: "API",
           link: "/resources/api",
         },
+        {
+          text: "Actors",
+          link: "/resources/actors",
+        },
+        {
+          text: "Contracts",
+          link: "/resources/contracts",
+        },
+        {
+          text: "Fees",
+          link: "/resources/fees",
+        },
       ],
     },
     {
