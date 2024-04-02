@@ -159,7 +159,7 @@ export default defineConfig({
           link: "/gas-abstraction",
         },
         {
-          text: "Light Programmable Chain",
+          text: "Light Programmable Execution",
           link: "/chain",
         },
       ],
