@@ -165,6 +165,15 @@ export default defineConfig({
       ],
     },
     {
+      text: "Resources",
+      items: [
+        {
+          text: "API",
+          link: "/resources/api",
+        },
+      ],
+    },
+    {
       text: "Glossary",
       collapsed: true,
       items: [
