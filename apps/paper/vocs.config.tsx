@@ -151,34 +151,16 @@ export default defineConfig({
       text: "Products",
       items: [
         {
-          text: "Light Wallet",
+          text: "Light Smart Wallet",
           link: "/smart-wallet",
-          items: [
-            {
-              text: "Introduction",
-              link: "/smart-wallet",
-            },
-          ],
         },
         {
           text: "Light Gas Abstraction",
           link: "/gas-abstraction",
-          items: [
-            {
-              text: "Introduction",
-              link: "/gas-abstraction",
-            },
-          ],
         },
         {
           text: "Light Programmable Chain",
           link: "/chain",
-          items: [
-            {
-              text: "Introduction",
-              link: "/chain",
-            },
-          ],
         },
       ],
     },
