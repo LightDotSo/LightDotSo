@@ -173,10 +173,6 @@ export default defineConfig({
       collapsed: false,
       items: [
         {
-          text: "API",
-          link: "/resources/api",
-        },
-        {
           text: "Actors",
           link: "/resources/actors",
         },
