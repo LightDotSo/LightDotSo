@@ -154,7 +154,7 @@ export default defineConfig({
     },
     {
       text: "Glossary",
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           text: "Known Limitations",
@@ -172,7 +172,7 @@ export default defineConfig({
     },
     {
       text: "References",
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           text: "Acknowledgements",
@@ -190,7 +190,7 @@ export default defineConfig({
     },
     {
       text: "Use Cases",
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           text: "Comparison",
