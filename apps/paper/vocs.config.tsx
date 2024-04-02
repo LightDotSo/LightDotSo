@@ -134,6 +134,10 @@ export default defineConfig({
           link: "/concepts/gas-abstraction",
         },
         {
+          text: "Programmeable Execution",
+          link: "/concepts/programmeable-execution",
+        },
+        {
           text: "Keystore Management",
           link: "/concepts/keystore-management",
         },
@@ -166,6 +170,7 @@ export default defineConfig({
     },
     {
       text: "Resources",
+      collapsed: false,
       items: [
         {
           text: "API",
