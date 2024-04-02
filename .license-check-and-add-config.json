@@ -3,6 +3,7 @@
   "ignore": [
     "**/CHANGELOG.md",
     "**/README.md",
+    "**/SETUP.md",
     "**/.DS_STORE",
     "**/bun.lockb",
     "**/generated.ts",
