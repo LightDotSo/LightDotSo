@@ -102,10 +102,6 @@ export default defineConfig({
           link: "/introduction/comparison",
         },
         {
-          text: "FAQ",
-          link: "/introduction/faq",
-        },
-        {
           text: "Philosophy",
           link: "/introduction/philosophy",
         },
@@ -190,6 +186,10 @@ export default defineConfig({
       text: "Glossary",
       collapsed: true,
       items: [
+        {
+          text: "FAQ",
+          link: "/glossary/faq",
+        },
         {
           text: "Known Limitations",
           link: "/glossary/limitations",
