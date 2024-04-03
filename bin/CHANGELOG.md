@@ -1,5 +1,14 @@
 # @lightdotso/bin
 
+## 3.1.3
+
+### Patch Changes
+
+- [#1854](https://github.com/LightDotSo/LightDotSo/pull/1854) [`36705c9`](https://github.com/LightDotSo/LightDotSo/commit/36705c90dc5fbbb8180221eb7c08f1c844714bff) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add intro
+
+- Updated dependencies [[`36705c9`](https://github.com/LightDotSo/LightDotSo/commit/36705c90dc5fbbb8180221eb7c08f1c844714bff)]:
+  - @lightdotso/crates@3.1.3
+
 ## 3.1.2
 
 ### Patch Changes

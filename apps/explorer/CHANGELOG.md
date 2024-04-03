@@ -1,5 +1,35 @@
 # @lightdotso/web
 
+## 3.2.3
+
+### Patch Changes
+
+- [#1854](https://github.com/LightDotSo/LightDotSo/pull/1854) [`36705c9`](https://github.com/LightDotSo/LightDotSo/commit/36705c90dc5fbbb8180221eb7c08f1c844714bff) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add intro
+
+- [#1832](https://github.com/LightDotSo/LightDotSo/pull/1832) [`ed9af92`](https://github.com/LightDotSo/LightDotSo/commit/ed9af920be0b94d81cf3c7abe753e1fc8144e3fc) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - chore: update
+
+- Updated dependencies [[`7a222df`](https://github.com/LightDotSo/LightDotSo/commit/7a222dfaf7d68c187e89220e335c33799cbc4749), [`36705c9`](https://github.com/LightDotSo/LightDotSo/commit/36705c90dc5fbbb8180221eb7c08f1c844714bff), [`584c5ec`](https://github.com/LightDotSo/LightDotSo/commit/584c5ec03bac1198519408b8e9c08f321b326a68), [`ed9af92`](https://github.com/LightDotSo/LightDotSo/commit/ed9af920be0b94d81cf3c7abe753e1fc8144e3fc)]:
+  - @lightdotso/templates@0.0.3
+  - @lightdotso/kysely@3.1.3
+  - @lightdotso/prisma@3.1.3
+  - @lightdotso/styles@3.0.2
+  - @lightdotso/client@3.1.3
+  - @lightdotso/data@0.1.3
+  - @lightdotso/hooks@0.0.4
+  - @lightdotso/nuqs@0.0.3
+  - @lightdotso/params@0.1.3
+  - @lightdotso/query@0.1.3
+  - @lightdotso/query-keys@0.1.3
+  - @lightdotso/services@0.0.4
+  - @lightdotso/states@0.0.3
+  - @lightdotso/stores@0.1.3
+  - @lightdotso/svg@0.0.4
+  - @lightdotso/tables@0.1.3
+  - @lightdotso/types@0.0.3
+  - @lightdotso/ui@3.1.3
+  - @lightdotso/utils@3.1.3
+  - @lightdotso/validators@0.0.2
+
 ## 3.2.2
 
 ### Patch Changes

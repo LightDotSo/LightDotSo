@@ -145,6 +145,7 @@ export const useUserOperationSend = ({
 
   const { paymasterOperation } = useQueryPaymasterOperation({
     address: userOperation?.paymaster_and_data.slice(0, 42) as Address,
+    // eslint-disable-next-line no-unsafe-optional-chaining, @typescript-eslint/no-non-null-asserted-optional-chain
     chain_id: userOperation?.chain_id!,
     valid_after: fromHex(
       `0x${userOperation?.paymaster_and_data ? userOperation?.paymaster_and_data.slice(162, 170) : 0}`,
@@ -154,6 +155,7 @@ export const useUserOperationSend = ({
 
   const { userOperationReceipt, isUserOperationReceiptError } =
     useQueryUserOperationReceipt({
+      // eslint-disable-next-line no-unsafe-optional-chaining, @typescript-eslint/no-non-null-asserted-optional-chain
       chainId: userOperation?.chain_id!,
       hash: hash,
     });
