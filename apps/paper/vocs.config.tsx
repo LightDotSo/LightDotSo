@@ -173,10 +173,6 @@ export default defineConfig({
       collapsed: false,
       items: [
         {
-          text: "API",
-          link: "/resources/api",
-        },
-        {
           text: "Actors",
           link: "/resources/actors",
         },
@@ -201,6 +197,16 @@ export default defineConfig({
         {
           text: "Known Limitations",
           link: "/glossary/limitations",
+          items: [
+            {
+              text: "EVM",
+              link: "/glossary/limitations/evm",
+            },
+            {
+              text: "4337",
+              link: "/glossary/limitations/4337",
+            },
+          ],
         },
         {
           text: "Problems",
