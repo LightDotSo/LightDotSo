@@ -19,10 +19,10 @@
     "preview": "vocs preview"
   },
   "dependencies": {
-    "@types/react": "^18.2.67",
+    "@types/react": "^18.2.74",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "typescript": "^5.4.2",
-    "vocs": "^1.0.0-alpha.46"
+    "typescript": "^5.4.3",
+    "vocs": "1.0.0-alpha.46"
   }
 }
