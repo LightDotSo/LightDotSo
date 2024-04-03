@@ -23,6 +23,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^5.4.2",
-    "vocs": "^1.0.0-alpha.43"
+    "vocs": "^1.0.0-alpha.46"
   }
 }
