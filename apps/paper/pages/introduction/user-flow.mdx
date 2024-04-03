@@ -1,0 +1,34 @@
+# User Flow
+
+The main flow for users interacting with Light is as follows:
+
+:::info
+Light's goal is to enable cross-chain interactions with minimal number of steps and complexity for users.
+See our [goals](/goals) for more information.
+:::
+
+::::steps
+
+### Step 1
+
+Users submits an intent/transaction to Light's offchain [gas network](/gas-abstraction)
+
+### Step 2
+
+The relayer bids for the right to subsidize the transaction on the target chain(s)
+
+### Step 3
+
+a. Users signs one signature to authorize the transaction(s) on the corresponding target chains with Light's [cross-chain smart account](/smart-wallet)
+
+b. (Optionally) User can set specific intent/preferences for the transaction to be executed on through [programmable intents](/programmable-intents)
+
+### Step 4
+
+The corresponding transactions are relayed to the target chain(s) and executed concurrently through the bundler from a smart account
+
+### Step 5
+
+If a specific intent/preferences is set, the transactions are submitted to the target chain(s) at the specified order
+
+::::

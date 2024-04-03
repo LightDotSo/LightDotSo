@@ -1,0 +1,20 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "env": ["VERCEL_ENV"],
+      "inputs": ["pages/**", "vocs.config.tsx"],
+      "outputs": []
+    },
+    "clean": {
+      "cache": false
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {}
+  }
+}

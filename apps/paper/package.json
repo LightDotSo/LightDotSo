@@ -1,0 +1,28 @@
+{
+  "name": "@lightdotso/paper",
+  "version": "0.0.0",
+  "private": false,
+  "homepage": "https://github.com/LightDotSo/LightDotSo",
+  "bugs": {
+    "url": "https://github.com/LightDotSo/LightDotSo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LightDotSo/LightDotSo.git"
+  },
+  "license": "Apache-2.0",
+  "author": "Light, Inc.",
+  "type": "module",
+  "scripts": {
+    "build": "vocs build",
+    "dev": "vocs dev",
+    "preview": "vocs preview"
+  },
+  "dependencies": {
+    "@types/react": "^18.2.74",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^5.4.3",
+    "vocs": "1.0.0-alpha.46"
+  }
+}
