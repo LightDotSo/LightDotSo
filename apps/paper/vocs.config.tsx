@@ -117,7 +117,7 @@ export default defineConfig({
         },
         {
           text: "The Endgame",
-          link: "/goals/endgame",
+          link: "/goals/end-game",
         },
       ],
     },
