@@ -70,7 +70,6 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     hideNotificationsModal,
     hideOpModal,
     hideSendModal,
-    hideAllModals,
     hideAllModalsBackground,
   } = useModals();
 
