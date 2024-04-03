@@ -121,36 +121,36 @@ export default defineConfig({
         },
       ],
     },
-    {
-      text: "Concepts",
-      collapsed: false,
-      items: [
-        {
-          text: "Cross-chain Smart Account",
-          link: "/concepts/cross-chain-smart-account",
-        },
-        {
-          text: "Gas Abstraction",
-          link: "/concepts/gas-abstraction",
-        },
-        {
-          text: "Programmable Execution",
-          link: "/concepts/programmable-execution",
-        },
-        {
-          text: "Keystore Management",
-          link: "/concepts/keystore-management",
-        },
-        {
-          text: "Signature Aggregation",
-          link: "/concepts/signature-aggregation",
-        },
-        {
-          text: "Transaction Initiation",
-          link: "/concepts/transaction-initiation",
-        },
-      ],
-    },
+    // {
+    //   text: "Concepts",
+    //   collapsed: false,
+    //   items: [
+    //     {
+    //       text: "Cross-chain Smart Account",
+    //       link: "/concepts/cross-chain-smart-account",
+    //     },
+    //     {
+    //       text: "Gas Abstraction",
+    //       link: "/concepts/gas-abstraction",
+    //     },
+    //     {
+    //       text: "Programmable Execution",
+    //       link: "/concepts/programmable-execution",
+    //     },
+    //     {
+    //       text: "Keystore Management",
+    //       link: "/concepts/keystore-management",
+    //     },
+    //     {
+    //       text: "Signature Aggregation",
+    //       link: "/concepts/signature-aggregation",
+    //     },
+    //     {
+    //       text: "Transaction Initiation",
+    //       link: "/concepts/transaction-initiation",
+    //     },
+    //   ],
+    // },
     {
       text: "Products",
       items: [
