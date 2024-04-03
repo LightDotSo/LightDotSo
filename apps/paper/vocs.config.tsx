@@ -163,8 +163,8 @@ export default defineConfig({
           link: "/gas-abstraction",
         },
         {
-          text: "Light Programmable Intent",
-          link: "/programmable-intent",
+          text: "Light Programmable Intents",
+          link: "/programmable-intents",
         },
       ],
     },
