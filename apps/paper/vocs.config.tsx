@@ -134,8 +134,8 @@ export default defineConfig({
           link: "/concepts/gas-abstraction",
         },
         {
-          text: "Programmeable Execution",
-          link: "/concepts/programmeable-execution",
+          text: "Programmable Execution",
+          link: "/concepts/programmable-execution",
         },
         {
           text: "Keystore Management",
@@ -163,8 +163,8 @@ export default defineConfig({
           link: "/gas-abstraction",
         },
         {
-          text: "Light Programmable Execution",
-          link: "/chain",
+          text: "Light Programmable Intent",
+          link: "/programmable-intent",
         },
       ],
     },
