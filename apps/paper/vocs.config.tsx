@@ -165,6 +165,12 @@ export default defineConfig({
         {
           text: "Light Programmable Intents",
           link: "/programmable-intents",
+          items: [
+            {
+              text: "Operators",
+              link: "/programmable-intents/operators",
+            },
+          ],
         },
       ],
     },
