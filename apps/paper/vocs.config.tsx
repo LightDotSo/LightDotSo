@@ -168,8 +168,8 @@ export default defineConfig({
           link: "/concepts/signature-aggregation",
         },
         {
-          text: "Transaction Initiation",
-          link: "/concepts/transaction-initiation",
+          text: "Transaction Batching",
+          link: "/concepts/transaction-batching",
         },
       ],
     },
