@@ -145,6 +145,7 @@ export default defineConfig({
     },
     {
       text: "Concepts",
+      link: "/concepts",
       collapsed: false,
       items: [
         {
