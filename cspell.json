@@ -1,0 +1,9 @@
+{
+  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+  "version": "0.2",
+  "dictionaryDefinitions": [],
+  "dictionaries": ["project-words"],
+  "ignorePaths": ["node_modules", "/project-words.txt"],
+  "enableFiletypes": ["mdx"],
+  "words": ["Ankit", "vocs", "Zora's"]
+}
