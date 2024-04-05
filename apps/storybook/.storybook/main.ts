@@ -48,18 +48,18 @@ const config: StorybookConfig = {
   managerHead: head => `
     ${head}
     <meta name="description" content="Storybook of Light">
-    <meta name="image" content="/storybook.png">
+    <meta name="image" content="https://storybook.light.so/storybook.png">
     <meta name="url" content="https://storybook.light.so">
     <meta property="og:title" content="Light">
     <meta property="og:description" content="Storybook of Light">
-    <meta property="og:image" content="/storybook.png">
+    <meta property="og:image" content="https://storybook.light.so/storybook.png">
     <meta property="og:url" content="https://storybook.light.so">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@LightDotSo">
     <meta name="twitter:title" content="Light">
     <meta name="twitter:description" content="Storybook of Light">
-    <meta name="twitter:image" content="/storybook.png">
+    <meta name="twitter:image" content="https://storybook.light.so/storybook.png">
   `,
   env: config => ({
     LOCAL_ENV: "dev",
