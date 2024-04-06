@@ -3,11 +3,11 @@
 The Light Layer (LL) is a dynamic blockchain infrastructure that is maintained and secured by two distinct types of operators: Validators and Auctioneers. These operators are crucial for the robust operation of the LL, ensuring not only the security of the network but also the efficiency and reliability of cross-chain transactions on behalf of users. Such transactions necessitate explicit authorization from users, which is typically obtained through specific signature permissions at the initiation phase of cross-chain transactions. The operational architecture of the LL is delineated as follows:
 
 - A total of \(k\) blockchain chains,
-- \(N\) validators,
+- \(N\) guardian,
 - \(W\) auctioneers,
 - A constant factor, \(c = 3\), serving as the default parameter but adjustable based on the network's evolving requirements for security and the management of capital flows.
 
-## Validators
+## Guardian
 
 Validators are instrumental in upholding the integrity and security of the LL. Their responsibilities extend beyond mere transaction validation; they are tasked with maintaining a synchronized global state across all Ethereum Virtual Machines (EVMs), thereby ensuring the seamless interoperability and functionality of the network at all times. In fulfilling these duties, validators are subject to a set of stringent criteria within the Light protocol, namely:
 
@@ -20,3 +20,13 @@ Validators are instrumental in upholding the integrity and security of the LL. T
 In the realm of cross-chain transactions, the LL introduces an innovative and efficient routing mechanism through the integration of an auction system, complementing the traditional bridge-based routing solutions. Users are empowered to define a maximum fee threshold for the transaction services rendered by auctioneers. This setup initiates a competitive bidding process, known as an English Auction, wherein auctioneers vie to offer the most cost-effective and efficient transaction routing options within the specified fee limit. The auction is strategically timed to commence and conclude within the duration of a single blockchain block, thus ensuring that transaction processing is not only competitive in terms of pricing but also expedited for user convenience.
 
 Should the final transaction cost fall below the user-specified maximum fee, the LL guarantees the reimbursement of the residual amount to the user. This approach not only fosters a competitive environment for transaction routing but also ensures transparency and fairness in transaction costs, ultimately benefiting the end users by providing them with cost-effective and timely transaction services. Through these meticulously designed operational roles and mechanisms, the LL exemplifies a forward-thinking approach to blockchain infrastructure management, emphasizing security, efficiency, and user-centricity.
+
+## Secured Private Storage (Trusted Execution Environments —  Intel SGX)
+
+Light Layer ensures that input data — order flow of transactions — confidentiality even from nodes verifying blockchain transactions. This foundation enables data transmitted can be private from adversarial attacks such as MEV on a large scale. At the core of Light Layer's privacy features is the encryption of sensitive data, which is then securely distributed across nodes. These nodes perform computations on the encrypted data without exposing it, leveraging specialized hardware that operates within a Trusted Execution Environment (TEE). This secure enclave within the processor guarantees that data processed remains private, inaccessible even to device administrators.
+
+## Intel's SGX and Key Management
+
+Employing Intel's Software Guard Extensions (SGX), Light Layer establishes a secure area in Intel CPUs for data computation, ensuring confidentiality and integrity with strong cryptographic guarantees. The protocol uses asymmetric encryption to safeguard data before it is logged on the blockchain, ensuring that only the intended recipient can decrypt it. Validator nodes, equipped with Intel SGX CPUs, securely process every transaction, maintaining the utmost data confidentiality.
+
+This environment also facilitates a robust key management system where enclaves generate their private signing and attestation keys, ensuring secure network communication and data integrity. The consensus encryption seed, pivotal for network security, is securely stored within each validator's TEE, further solidifying Light Layer's commitment to privacy and security.
