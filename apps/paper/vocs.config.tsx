@@ -115,6 +115,10 @@ export default defineConfig({
           link: "/goals",
         },
         {
+          text: "Target Metrics",
+          link: "/goals/metrics",
+        },
+        {
           text: "The Endgame",
           link: "/goals/end-game",
         },
