@@ -168,7 +168,7 @@ export default defineConfig({
               link: "/light-programmable-intents/actors",
             },
             {
-              text: "Intents for Execution",
+              text: "Cross-chain Intents",
               link: "/light-programmable-intents/intents",
             },
           ],
