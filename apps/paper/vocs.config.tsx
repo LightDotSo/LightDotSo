@@ -130,18 +130,46 @@ export default defineConfig({
         {
           text: "Light Smart Wallet",
           link: "/light-smart-wallet",
+          items: [
+            {
+              text: "Core Functionality",
+              link: "/light-smart-wallet",
+            },
+            {
+              text: "Keystore Management",
+              link: "/light-smart-wallet/keystore",
+            },
+          ],
         },
         {
           text: "Light Gas Abstraction",
           link: "/light-gas-abstraction",
+          items: [
+            {
+              text: "How it Works",
+              link: "/light-gas-abstraction",
+            },
+            {
+              text: "Contract Functions",
+              link: "/light-gas-abstraction/contract-functions",
+            },
+          ],
         },
         {
           text: "Light Programmable Intents",
           link: "/light-programmable-intents",
           items: [
             {
-              text: "Operators",
-              link: "/light-programmable-intents/operators",
+              text: "Programmable Execution",
+              link: "/light-programmable-intents",
+            },
+            {
+              text: "Actors in the System",
+              link: "/light-programmable-intents/actors",
+            },
+            {
+              text: "Intents for Execution",
+              link: "/light-programmable-intents/intents",
             },
           ],
         },
@@ -209,12 +237,16 @@ export default defineConfig({
           link: "/glossary/limitations",
           items: [
             {
+              text: "4337",
+              link: "/glossary/limitations/4337",
+            },
+            {
               text: "EVM",
               link: "/glossary/limitations/evm",
             },
             {
-              text: "4337",
-              link: "/glossary/limitations/4337",
+              text: "MPC",
+              link: "/glossary/limitations/mpc",
             },
           ],
         },
