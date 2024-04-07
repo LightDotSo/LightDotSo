@@ -130,18 +130,38 @@ export default defineConfig({
         {
           text: "Light Smart Wallet",
           link: "/light-smart-wallet",
+          items: [
+            {
+              text: "Core Functionality",
+              link: "/light-smart-wallet/core",
+            },
+            {
+              text: "Keystore Management",
+              link: "/light-smart-wallet/keystore",
+            },
+          ],
         },
         {
           text: "Light Gas Abstraction",
           link: "/light-gas-abstraction",
+          items: [
+            {
+              text: "How it Works",
+              link: "/light-gas-abstraction/how-it-works",
+            },
+          ],
         },
         {
           text: "Light Programmable Intents",
           link: "/light-programmable-intents",
           items: [
             {
-              text: "Operators",
-              link: "/light-programmable-intents/operators",
+              text: "Actors in the System",
+              link: "/light-programmable-intents/actors",
+            },
+            {
+              text: "Programmable Execution through Intents",
+              link: "/light-programmable-intents/intents",
             },
           ],
         },
