@@ -209,12 +209,16 @@ export default defineConfig({
           link: "/glossary/limitations",
           items: [
             {
+              text: "4337",
+              link: "/glossary/limitations/4337",
+            },
+            {
               text: "EVM",
               link: "/glossary/limitations/evm",
             },
             {
-              text: "4337",
-              link: "/glossary/limitations/4337",
+              text: "MPC",
+              link: "/glossary/limitations/mpc",
             },
           ],
         },
