@@ -133,7 +133,7 @@ export default defineConfig({
           items: [
             {
               text: "Core Functionality",
-              link: "/light-smart-wallet/core",
+              link: "/light-smart-wallet",
             },
             {
               text: "Keystore Management",
@@ -147,7 +147,11 @@ export default defineConfig({
           items: [
             {
               text: "How it Works",
-              link: "/light-gas-abstraction/how-it-works",
+              link: "/light-gas-abstraction",
+            },
+            {
+              text: "Contract Functions",
+              link: "/light-gas-abstraction/contract-functions",
             },
           ],
         },
@@ -156,11 +160,15 @@ export default defineConfig({
           link: "/light-programmable-intents",
           items: [
             {
+              text: "Programmable Execution",
+              link: "/light-programmable-intents",
+            },
+            {
               text: "Actors in the System",
               link: "/light-programmable-intents/actors",
             },
             {
-              text: "Programmable Execution through Intents",
+              text: "Intents for Execution",
               link: "/light-programmable-intents/intents",
             },
           ],
