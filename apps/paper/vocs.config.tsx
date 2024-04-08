@@ -136,8 +136,8 @@ export default defineConfig({
               link: "/light-smart-wallet",
             },
             {
-              text: "Keystore Management",
-              link: "/light-smart-wallet/keystore",
+              text: "Ecosystem Support",
+              link: "/light-smart-wallet/ecosystem",
             },
           ],
         },
