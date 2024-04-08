@@ -153,6 +153,10 @@ export default defineConfig({
               text: "Contract Functions",
               link: "/light-gas-abstraction/contract-functions",
             },
+            {
+              text: "RPC Calls",
+              link: "/light-gas-abstraction/rpc-calls",
+            },
           ],
         },
         {

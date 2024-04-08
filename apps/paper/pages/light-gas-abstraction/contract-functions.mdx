@@ -1,1 +1,24 @@
 # Contract Functions
+
+## Paymaster Functions
+
+All valid paymaster signatures, as represented in `paymasterAndData` are expected to be encoded in the following format:
+
+```solidity
+
+```
+
+## Entrypoint Functions
+
+The paymaster in Entrypoint is expected to emit the following events for a successful paymaster sponsorship for reimbursement of gas fees to the end user.
+
+```solidity
+event SponsorshipCreated(
+    address indexed paymaster,
+    address indexed sponsor,
+    uint256 amount,
+    uint256 chainId,
+    address contractAddress,
+    uint256 tokenId // this is optional
+);
+```
