@@ -5,8 +5,30 @@
 All valid paymaster signatures, as represented in `paymasterAndData` are expected to be encoded in the following format:
 
 ```solidity
-
+ struct Sponsorship {
+    address paymaster;
+    address sponsor;
+    uint256 amount;
+    uint256 chainId;
+    address contractAddress;
+    uint256 tokenId;
+}
 ```
+
+The individual sponsorships are expected to be encoded in the following format:
+
+```solidity
+bytes memory sponsorships = Sponsorship[](n);
+bytes memory encodedSponsorships = abi.encode(sponsorships)
+```
+
+In which represents the `paymasterAndData` as:
+
+```solidity
+abi.encodePacked(originalPaymasterAndData)
+```
+
+This enables the frontend interface to decode the `paymasterAndData` and extract the individual sponsorships for the paymaster, presenting the user the list of assets in which they are approving the gas fees for.
 
 ## Entrypoint Functions
 

@@ -132,7 +132,7 @@ export default defineConfig({
           link: "/light-smart-wallet",
           items: [
             {
-              text: "Core Functionality",
+              text: "What it Enables",
               link: "/light-smart-wallet",
             },
             {
