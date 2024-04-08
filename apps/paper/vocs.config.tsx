@@ -132,12 +132,12 @@ export default defineConfig({
           link: "/light-smart-wallet",
           items: [
             {
-              text: "Core Functionality",
+              text: "What it Enables",
               link: "/light-smart-wallet",
             },
             {
-              text: "Keystore Management",
-              link: "/light-smart-wallet/keystore",
+              text: "Ecosystem Support",
+              link: "/light-smart-wallet/ecosystem",
             },
           ],
         },
@@ -152,6 +152,10 @@ export default defineConfig({
             {
               text: "Contract Functions",
               link: "/light-gas-abstraction/contract-functions",
+            },
+            {
+              text: "RPC Calls",
+              link: "/light-gas-abstraction/rpc-calls",
             },
           ],
         },
