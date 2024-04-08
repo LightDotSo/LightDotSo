@@ -66,6 +66,8 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - name: Install Foundry
