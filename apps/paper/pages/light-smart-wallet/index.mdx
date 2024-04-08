@@ -1,6 +1,6 @@
 # Light Smart Wallet
 
-Light Smart Wallet is a 4337 compatible cross-chain smart contract wallet that achieves state sync & signature aggregation.
+Light Smart Wallet is a 4337 compatible [cross-chain smart contract wallet](/concepts/cross-chain-smart-account) that supports state sync & signature aggregation.
 
 :::warning
 There is a trust assumption in the current approach of Light's proprietary server storing the keystore configuration of the wallet.
@@ -8,3 +8,8 @@ The goal is to remove this trust assumption in the future through the use of a k
 :::
 
 ![light-smart-wallet](/light-smart-wallet.png)
+
+## Enabling Cross-Chain Interactions
+
+Two key features of Light Smart Wallet are [state sync](/concepts/keystore-management) and [signature aggregation](/concepts/signature-aggregation).
+These features enable cross-chain transactions by allowing the wallet to interact with multiple chains, with a single valid signature.
