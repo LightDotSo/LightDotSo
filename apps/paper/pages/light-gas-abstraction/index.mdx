@@ -11,5 +11,11 @@ Initially, the solver network will be gated by a whitelist of approved solvers. 
 ## Architecture
 
 Similar to intent-based architecture pioneered by [Across](https://across.to), Light Gas Abstraction is designed for the gas relayers to bear the capital risk associated w/ the gas abstraction.
-Since the paymaster competes to subsidize the gas for an intended fee, the user benefits.
-Combined with the [Light Smart Wallet](/light-smart-wallet/), users now have the ability to pay for gas in any asset across any EVM network, without having to hold the native asset of the network they are transacting on.
+Since the paymaster competes to propose sponsorship of the gas subsidization for a proposed fee, the user benefits with lower fees while having more optionality of which asset to pay gas in.
+Combined with the [Light Smart Wallet](/light-smart-wallet), users now have the ability to pay for gas in any asset across any EVM network, improving the user experience and reducing the friction of using multiple EVM networks.
+
+## Sponsorship Scenarios
+
+There are three main sponsorship scenarios in which user could get sponsored for gas payment in a given EVM network.
+
+### 1. Gas Sponsorship through Escrow

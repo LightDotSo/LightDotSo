@@ -136,6 +136,10 @@ export default defineConfig({
               link: "/light-smart-wallet",
             },
             {
+              text: "Key Features",
+              link: "/light-smart-wallet/key-features",
+            },
+            {
               text: "Ecosystem Support",
               link: "/light-smart-wallet/ecosystem",
             },
@@ -239,6 +243,7 @@ export default defineConfig({
         {
           text: "Known Limitations",
           link: "/glossary/limitations",
+          collapsed: true,
           items: [
             {
               text: "4337",
