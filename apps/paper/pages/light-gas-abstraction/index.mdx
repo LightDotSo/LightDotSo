@@ -19,3 +19,16 @@ Combined with the [Light Smart Wallet](/light-smart-wallet), users now have the 
 There are three main sponsorship scenarios in which user could get sponsored for gas payment in a given EVM network.
 
 ### 1. Gas Sponsorship through Escrow
+
+Users can approve funds to be escrowed by the paymaster, which will be used to pay for gas fees on their behalf.
+The paymaster will then pay the gas fees on behalf of the user and repaid the sponsored gas fees from the escrowed funds.
+
+### 2. Gas Sponsorship through Operation Modification
+
+Paymasters can choose to modify the operation of the transaction to pay for the gas fees on behalf of the user.
+This can enable the paymaster to directly receive the sponsored gas fees from the user, leading to a more seamless user experience.
+
+### 3. Gas Sponsorship through Custom Logic
+
+Paymasters can choose to offer custom logic to sponsor gas fees on behalf of the user.
+Dapps, chains, and other entities can propose to sponsor gas fees for users in a customized way that benefits both the user and the sponsor.

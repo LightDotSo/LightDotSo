@@ -201,8 +201,8 @@ export default defineConfig({
           link: "/concepts/programmable-execution",
         },
         {
-          text: "Keystore Management",
-          link: "/concepts/keystore-management",
+          text: "Keystore Sync",
+          link: "/concepts/keystore-sync",
         },
         {
           text: "Signature Aggregation",
