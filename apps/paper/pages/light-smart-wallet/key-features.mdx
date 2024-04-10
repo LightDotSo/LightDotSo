@@ -1,0 +1,17 @@
+# Key Features
+
+## Design Decisions
+
+Light Smart Wallet is designed to have maximum compatibility and flexibility for the purposes for chain abstraction and better compatibility with cross-chain intents through [Light Programmable Intents](/light-programmable-intents).
+Here are some things that we can do:
+
+## Nonce Programmability
+
+In the traditional EOA wallets, nonce is sequential and cannot be programmatically defined.
+However, with compatibility with 4337 standard, we can define the nonce programmatically, leading to better compatibility with cross-chain intents.
+
+## Intents Compatibility
+
+In the traditional EOA wallets, signature aggregation is not possible, as each transaction has to be signed individually per network.
+With Light Smart Wallet, we can aggregate signatures across multiple networks within a single signature.
+This enables better compatibility with cross-chain intents, as users can sign multiple intents that can programmatically be executed across multiple networks.

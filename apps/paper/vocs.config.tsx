@@ -109,11 +109,14 @@ export default defineConfig({
     },
     {
       text: "Goals",
-      // collapsed: false,
       items: [
         {
           text: "Goals for Light",
           link: "/goals",
+        },
+        {
+          text: "Target Metrics",
+          link: "/goals/metrics",
         },
         {
           text: "The Endgame",
@@ -121,56 +124,93 @@ export default defineConfig({
         },
       ],
     },
-    // {
-    //   text: "Concepts",
-    //   collapsed: false,
-    //   items: [
-    //     {
-    //       text: "Cross-chain Smart Account",
-    //       link: "/concepts/cross-chain-smart-account",
-    //     },
-    //     {
-    //       text: "Gas Abstraction",
-    //       link: "/concepts/gas-abstraction",
-    //     },
-    //     {
-    //       text: "Programmable Execution",
-    //       link: "/concepts/programmable-execution",
-    //     },
-    //     {
-    //       text: "Keystore Management",
-    //       link: "/concepts/keystore-management",
-    //     },
-    //     {
-    //       text: "Signature Aggregation",
-    //       link: "/concepts/signature-aggregation",
-    //     },
-    //     {
-    //       text: "Transaction Initiation",
-    //       link: "/concepts/transaction-initiation",
-    //     },
-    //   ],
-    // },
     {
       text: "Products",
       items: [
         {
           text: "Light Smart Wallet",
-          link: "/smart-wallet",
+          link: "/light-smart-wallet",
+          items: [
+            {
+              text: "What it Enables",
+              link: "/light-smart-wallet",
+            },
+            {
+              text: "Key Features",
+              link: "/light-smart-wallet/key-features",
+            },
+            {
+              text: "Ecosystem Support",
+              link: "/light-smart-wallet/ecosystem",
+            },
+          ],
         },
         {
           text: "Light Gas Abstraction",
-          link: "/gas-abstraction",
+          link: "/light-gas-abstraction",
+          items: [
+            {
+              text: "How it Works",
+              link: "/light-gas-abstraction",
+            },
+            {
+              text: "Contract Functions",
+              link: "/light-gas-abstraction/contract-functions",
+            },
+            {
+              text: "RPC Calls",
+              link: "/light-gas-abstraction/rpc-calls",
+            },
+          ],
         },
         {
           text: "Light Programmable Intents",
-          link: "/programmable-intents",
+          link: "/light-programmable-intents",
           items: [
             {
-              text: "Operators",
-              link: "/programmable-intents/operators",
+              text: "Programmable Execution",
+              link: "/light-programmable-intents",
+            },
+            {
+              text: "Actors in the System",
+              link: "/light-programmable-intents/actors",
+            },
+            {
+              text: "Cross-chain Intents",
+              link: "/light-programmable-intents/intents",
             },
           ],
+        },
+      ],
+    },
+    {
+      text: "Concepts",
+      link: "/concepts",
+      collapsed: false,
+      items: [
+        {
+          text: "Cross-chain Smart Account",
+          link: "/concepts/cross-chain-smart-account",
+        },
+        {
+          text: "Gas Abstraction",
+          link: "/concepts/gas-abstraction",
+        },
+        {
+          text: "Programmable Execution",
+          link: "/concepts/programmable-execution",
+        },
+        {
+          text: "Keystore Sync",
+          link: "/concepts/keystore-sync",
+        },
+        {
+          text: "Signature Aggregation",
+          link: "/concepts/signature-aggregation",
+        },
+        {
+          text: "Transaction Batching",
+          link: "/concepts/transaction-batching",
         },
       ],
     },
@@ -203,14 +243,19 @@ export default defineConfig({
         {
           text: "Known Limitations",
           link: "/glossary/limitations",
+          collapsed: true,
           items: [
+            {
+              text: "4337",
+              link: "/glossary/limitations/4337",
+            },
             {
               text: "EVM",
               link: "/glossary/limitations/evm",
             },
             {
-              text: "4337",
-              link: "/glossary/limitations/4337",
+              text: "MPC",
+              link: "/glossary/limitations/mpc",
             },
           ],
         },

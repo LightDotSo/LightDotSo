@@ -2,14 +2,23 @@
 
 ## What is Chain Abstraction?
 
-The concept of chain abstraction is to provider users a way to interact with multiple networks without complexity any friction.
-The end goal is for users to not recognize that they are under the hood interacting with a blockchain(s).
+The concept of chain abstraction is to provide users a way to interact with multiple networks without complexity and less friction as possible.
+The end goal is for users to seamlessly interact with multiple chains under the hood without having to worry about the underlying network.
+
+## What does it enable?
+
+Chain Abstraction enables dApps to implement logic across multiple chains.
+This innovation eliminates the necessity for users to toggle between networks, authenticate transactions on various chains, or incur gas fees on alternate chains.
+Users can now effortlessly engage with your dApp across any supported chain, utilizing any token, all while staying within your user interface.
 
 ## EVM Chain Abstraction
 
 EVM Chain Abstraction is a subset of Chain Abstraction that focuses on the Ethereum Virtual Machine (EVM) based networks.
+This means that the networks that are supported are those that are EVM compatible, not limited to Ethereum itself.
+However, this means that non-EVM networks are not supported like Bitcoin, Solana, etc.
 
 ## Light's Approach
 
-We believe that as of right now, the best way to approach Chain Abstraction is through a VM based approach.
-This means that we will solely be focusing on the EVM networks. See the [comparison](/introduction/comparison) for more information.
+We believe that as of right now, the best way to approach Chain Abstraction is through a VM based approach due to some [known limitations](/glossary/limitations).
+This means that we will solely be focusing on chain abstraction across EVM networks ([EVM Chain Abstraction](/introduction/chain-abstraction#evm-chain-abstraction)).
+See the [comparison](/introduction/comparison) for more information.
