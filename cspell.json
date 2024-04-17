@@ -5,5 +5,5 @@
   "dictionaries": ["project-words"],
   "ignorePaths": ["node_modules", "/project-words.txt"],
   "enableFiletypes": ["mdx"],
-  "words": ["Ankit", "vocs", "Zora's"]
+  "words": ["Ankit", "Tarun's", "vocs", "Zora's"]
 }

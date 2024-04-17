@@ -176,8 +176,8 @@ export default defineConfig({
               link: "/light-programmable-intents/actors",
             },
             {
-              text: "Cross-chain Intents",
-              link: "/light-programmable-intents/intents",
+              text: "Intent Engine",
+              link: "/light-programmable-intents/engine",
             },
           ],
         },
@@ -243,7 +243,7 @@ export default defineConfig({
         {
           text: "Known Limitations",
           link: "/glossary/limitations",
-          collapsed: true,
+          collapsed: false,
           items: [
             {
               text: "4337",
@@ -289,19 +289,20 @@ export default defineConfig({
     },
     {
       text: "Use Cases",
+      link: "/use-cases/list",
       collapsed: true,
       items: [
-        {
-          text: "Comparison",
-          link: "/use-cases/comparison",
-        },
         {
           text: "List of Use Cases",
           link: "/use-cases/list",
         },
         {
-          text: "Zora's Example",
-          link: "/use-cases/zora",
+          text: "Batch Send",
+          link: "/use-cases/batch-send",
+        },
+        {
+          text: "USDC Example",
+          link: "/use-cases/usdc-selection",
         },
       ],
     },
