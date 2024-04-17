@@ -243,7 +243,7 @@ export default defineConfig({
         {
           text: "Known Limitations",
           link: "/glossary/limitations",
-          collapsed: true,
+          collapsed: false,
           items: [
             {
               text: "4337",
@@ -295,6 +295,10 @@ export default defineConfig({
         {
           text: "List of Use Cases",
           link: "/use-cases/list",
+        },
+        {
+          text: "Batch Send",
+          link: "/use-cases/batch-send",
         },
         {
           text: "USDC Example",
