@@ -5,7 +5,7 @@
 [tg-badge]: https://img.shields.io/endpoint?color=neon&logo=telegram&label=chat&style=flat-square&url=https%3A%2F%2Ftg.sumanjay.workers.dev%2FLightDotSoSupport
 [tg-url]: https://t.me/LightDotSoSupport
 
-## A friendly, 100% open-source, cross-chain smart wallet.
+## EVM Chain Abstraction Protocol unifying all chains as one
 
 ![](./assets/github.png)
 
