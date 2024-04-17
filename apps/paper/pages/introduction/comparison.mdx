@@ -1,9 +1,55 @@
 # Comparison
 
-|                       | [Light](https://light.so) | [NEAR](https://near.org) | [Particle Network](https://particle.network) |
-| --------------------- | :------------------------ | :----------------------- | :------------------------------------------- |
-| Signature Aggregation | ✅                        | 🛑                       | 🛑                                           |
-| EIP-4337 Support      | ✅                        | 🔴                       | ✅                                           |
-| Keystore Sync         | ✅                        | 🔶                       | 🔶                                           |
-| No Trust Assumption   | ✅                        | 🔶                       | 🔶                                           |
-| Multi VMs             | 🛑                        | ✅                       | ✅                                           |
+There are several solutions that provide a unified interface to interact with multiple blockchains.
+This page compares Light with other solutions like NEAR and Particle Network.
+
+:::tip
+We are obviously biased towards Light, but we will try to be as objective as possible.
+
+If you have any feedback or suggestions, please let us know.
+::::
+
+## Overview with other chain abstraction solutions
+
+|                        | [Light](https://light.so) | [NEAR](https://near.org) | [Particle Network](https://particle.network) |
+| ---------------------- | :------------------------ | :----------------------- | :------------------------------------------- |
+| Signature Aggregation  | ✅                        | 🛑                       | 🛑                                           |
+| EIP-4337 Support       | ✅                        | 🔴                       | ✅                                           |
+| Keystore Sync          | ✅                        | 🔶                       | 🔶                                           |
+| No Trust Assumption    | ✅                        | 🔶                       | 🔶                                           |
+| Programmatic Execution | ✅                        | 🛑                       | 🛑                                           |
+| Alt VMs                | 🛑                        | ✅                       | ✅                                           |
+
+::::warning
+:::details[Comparison Keys]
+
+1. Signature Aggregation
+
+- Supports batch authorizing multiple transactions with one signature ✅
+- Not supported 🔴
+
+2. EIP-4337 Support
+
+- Fully compatible with EIP-4337 ✅
+- Not compatible with EIP-4337 🔴
+
+2. Keystore Sync
+
+- Supports the ability to sync the keystore configuration across all chains ✅
+- Not limited to smart contract accounts. 🔶
+
+3. No Trust Assumption
+
+- The security of the keys cannot be compromised ✅
+- If total amount of assets exceed the total security, nodes can collude to steal funds 🔶
+
+5. Programmatic Execution
+
+- Fully supported through [Light Programmable Intents](/light-programmable-intents) ✅
+- Not supported 🔴
+
+6. Alt VMs
+
+- Supports multiple VMs, enabling usage of networks like Bitcoin, Solana, etc. ✅
+- Not supported 🛑
+  ::::

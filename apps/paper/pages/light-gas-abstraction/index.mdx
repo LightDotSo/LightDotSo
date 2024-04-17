@@ -1,0 +1,34 @@
+# Light Gas Abstraction
+
+Light Gas Abstraction is a permissionless, solver based gas relayer network that provides universal gas abstraction for users of any compatible EVM network.
+
+:::info
+Initially, the solver network will be gated by a whitelist of approved solvers. Over time, the network will transition to a fully permissionless model.
+:::
+
+![light-gas-abstraction](/light-gas-abstraction.png)
+
+## Architecture
+
+Similar to intent-based architecture pioneered by [Across](https://across.to), Light Gas Abstraction is designed for the gas relayers to bear the capital risk associated w/ the gas abstraction.
+Since the paymaster competes to propose sponsorship of the gas subsidization for a proposed fee, the user benefits with lower fees while having more optionality of which asset to pay gas in.
+Combined with the [Light Smart Wallet](/light-smart-wallet), users now have the ability to pay for gas in any asset across any EVM network, improving the user experience and reducing the friction of using multiple EVM networks.
+
+## Sponsorship Scenarios
+
+There are three main sponsorship scenarios in which user could get sponsored for gas payment in a given EVM network.
+
+### 1. Gas Sponsorship through Escrow
+
+Users can approve funds to be escrowed by the paymaster, which will be used to pay for gas fees on their behalf.
+The paymaster will then pay the gas fees on behalf of the user and repaid the sponsored gas fees from the escrowed funds.
+
+### 2. Gas Sponsorship through Operation Modification
+
+Paymasters can choose to modify the operation of the transaction to pay for the gas fees on behalf of the user.
+This can enable the paymaster to directly receive the sponsored gas fees from the user, leading to a more seamless user experience.
+
+### 3. Gas Sponsorship through Custom Logic
+
+Paymasters can choose to offer custom logic to sponsor gas fees on behalf of the user.
+Dapps, chains, and other entities can propose to sponsor gas fees for users in a customized way that benefits both the user and the sponsor.

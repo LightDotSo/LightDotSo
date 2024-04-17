@@ -1,3 +1,5 @@
+# Actors in the System
+
 # Operators
 
 The Light Layer (LL) is a dynamic blockchain infrastructure that is maintained and secured by types of operators: Solvers, Guardians, Auctioneers, and Bundler. These operators are crucial for the robust operation of the LL, ensuring not only the security of the network but also the efficiency and reliability of cross-chain transactions on behalf of users. Such transactions necessitate explicit authorization from users, which is typically obtained through specific signature permissions at the initiation phase of cross-chain transactions. The operational architecture of the LL is delineated as follows:
@@ -20,7 +22,8 @@ Guardian are instrumental in upholding the integrity and security of the LL. The
 
 If a majority vote of > 2/3 of the guardian sign the same message, it can then be considered as valid on the LL network. Once signed, the solver will initiate the following transactions outlined by the intent of the user.
 
-The Guardian Network is the core component of the Light ecosystem. This network is pivotalfor Light Layer functionality, which aims to be a top interoperability platform by emphasizing five key features: 
+The Guardian Network is the core component of the Light ecosystem. This network is pivotalfor Light Layer functionality, which aims to be a top interoperability platform by emphasizing five key features:
+
 - Decentralization: ensuring network control is widely distributed
 - Modularity, allowing for independent design and updates of various ecosystem parts
 - Chain Agnosticism, supporting a wide range of blockchain platforms without relying on any single one
@@ -32,25 +35,3 @@ The Guardian Network is the core component of the Light ecosystem. This network 
 In the realm of cross-chain transactions, the LL introduces an innovative and efficient routing mechanism through the integration of an auction system, complementing the traditional bridge-based routing solutions. Users are empowered to define a maximum fee threshold for the transaction services rendered by auctioneers. This setup initiates a competitive bidding process, known as an English Auction, wherein auctioneers vie to offer the most cost-effective and efficient transaction routing options within the specified fee limit. The auction is strategically timed to commence and conclude within the duration of a single blockchain block, thus ensuring that transaction processing is not only competitive in terms of pricing but also expedited for user convenience.
 
 Should the final transaction cost fall below the user-specified maximum fee, the LL guarantees the reimbursement of the residual amount to the user. This approach not only fosters a competitive environment for transaction routing but also ensures transparency and fairness in transaction costs, ultimately benefiting the end users by providing them with cost-effective and timely transaction services. Through these meticulously designed operational roles and mechanisms, the LL exemplifies a forward-thinking approach to blockchain infrastructure management, emphasizing security, efficiency, and user-centricity.
-
-### Cross-Chain Trilemma
-
-![Cross-Chain Trilemma](/cross-chain-trilemma.png)
-
-> Cross-Chain Trilemma Diagram
->
-> <cite>(Credit: https://frontier.tech/)</cite>
-
-The concept of the cross-chain trilemma highlights a challenge in cross-chain infrastructure design, where only two out of three desirable attributes—execution guarantee, low fees, and fast execution—can be achieved simultaneously. This dilemma arises due to design decisions that influence the trade-offs between these attributes. In-protocol paths enable cheaper transfers by using predefined routes across chains, sacrificing speed to mitigate reorganization risks without needing extra validators or incurring liquidity costs. Solver aggregation aims to find the most cost-effective and swift transaction path by comparing multiple solvers, but issues like adverse selection and front-running can compromise execution reliability. Execution competition, where solvers vie to fulfill transactions either through direct competition or exclusive selection, tends to drive up user fees as the focus shifts from reducing costs to winning execution rights.
-
-Light Layer approaches the trilemma not as a challenge but as an opportunity, offering customizable options that empower users to select their preferred two out of three transaction properties, ensuring a tailored and professional experience.
-
-## Secured Private Storage (Trusted Execution Environments —  Intel SGX)
-
-To prevent various MEV attack from the order flow, Light Layer ensures that input data — order flow of transactions — confidentiality even from nodes verifying blockchain transactions. This foundation enables data transmitted can be private from adversarial attacks such as MEV on a large scale. At the core of Light Layer's privacy features is the encryption of sensitive data, which is then securely distributed across nodes. These nodes perform computations on the encrypted data without exposing it, leveraging specialized hardware that operates within a Trusted Execution Environment (TEE). This secure enclave within the processor guarantees that data processed remains private, inaccessible even to device administrators.
-
-### Intel's SGX and Key Management
-
-Employing Intel's Software Guard Extensions (SGX), Light Layer establishes a secure area in Intel CPUs for data computation, ensuring confidentiality and integrity with strong cryptographic guarantees. The protocol uses asymmetric encryption to safeguard data before it is logged on the blockchain, ensuring that only the intended recipient can decrypt it. Validator nodes, equipped with Intel SGX CPUs, securely process every transaction, maintaining the utmost data confidentiality.
-
-This environment also facilitates a robust key management system where enclaves generate their private signing and attestation keys, ensuring secure network communication and data integrity. The consensus encryption seed, pivotal for network security, is securely stored within each validator's TEE, further solidifying Light Layer's commitment to privacy and security.

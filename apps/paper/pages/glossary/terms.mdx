@@ -1,1 +1,35 @@
 # Terms
+
+## Account Abstraction
+
+Account abstraction on Ethereum aims to enhance user interactions with the platform, addressing limitations posed by the current reliance on externally owned accounts (EOAs) for initiating transactions and executing smart contracts.
+This dependence on EOAs restricts user experiences and security, necessitating a balance of ETH for transaction fees (gas) and complicating operations like batch transactions.
+The proposed solution, account abstraction, intends to integrate more flexibility and security into user accounts through enhancements.
+
+These could include upgrading EOAs to be managed by smart contracts or enabling smart contracts to initiate transactions directly, requiring amendments to the Ethereum protocol.
+An alternative approach involves introducing a parallel transaction system. The result would be the facilitation of smart contract wallets, directly supported by the protocol or via an additional transaction network, offering benefits like custom security rules, account recovery, shared security, third-party gas payments, and batched transactions, thereby fostering innovation in dApps and wallets. Current security mechanisms rely on private keys derived from seed phrases, which pose risks of loss and theft.
+Account abstraction addresses these vulnerabilities by allowing smart contracts to manage assets and transactions, incorporating features like backup keys, multisig authorization, account freezing and recovery, transaction limits, and whitelists to enhance security and user control.
+
+Moreover, account abstraction promises to improve the overall user experience and operational efficiency. It enables transaction bundling for speed, allows gas fees to be paid in tokens other than ETH, and supports innovative user experiences like trusted sessions for gaming and simplified purchasing processes. This flexibility will allow for the seamless integration of web2-like experiences into web3 without compromising self-custody, encouraging creative development in user interactions.
+The implementation of account abstraction involves enabling smart contracts to directly initiate transactions, which simplifies smart contract wallets' design and usage.
+This change would not only make Ethereum more user-friendly but also enhance its decentralization by eliminating the need for off-chain "relayers" to process transactions, thereby aligning with the platform's goals of increasing accessibility, security, and innovation.
+
+## Transaction Initiation
+
+The ability for an account to authorize a transaction on behalf of the user.
+In the EVM, this is currently limited to EOA(Externally Owned Accounts), and not possible with smart accounts.
+
+## Secured Private Storage (Trusted Execution Environments - Intel SGX)
+
+To prevent various MEV attack from the order flow, Light Layer ensures that input data — order flow of transactions — confidentiality even from nodes verifying blockchain transactions.
+This foundation enables data transmitted can be private from adversarial attacks such as MEV on a large scale. At the core of Light Layer's privacy features is the encryption of sensitive data, which is then securely distributed across nodes.
+These nodes perform computations on the encrypted data without exposing it, leveraging specialized hardware that operates within a Trusted Execution Environment (TEE). This secure enclave within the processor guarantees that data processed remains private, inaccessible even to device administrators.
+
+### Intel's SGX and Key Management
+
+Employing Intel's Software Guard Extensions (SGX), Light Layer establishes a secure area in Intel CPUs for data computation, ensuring confidentiality and integrity with strong cryptographic guarantees.
+The protocol uses asymmetric encryption to safeguard data before it is logged on the blockchain, ensuring that only the intended recipient can decrypt it.
+Validator nodes, equipped with Intel SGX CPUs, securely process every transaction, maintaining the utmost data confidentiality.
+
+This environment also facilitates a robust key management system where enclaves generate their private signing and attestation keys, ensuring secure network communication and data integrity.
+The consensus encryption seed, pivotal for network security, is securely stored within each validator's TEE, further solidifying Light Layer's commitment to privacy and security.
