@@ -168,12 +168,16 @@ export default defineConfig({
           link: "/light-programmable-intents",
           items: [
             {
-              text: "Programmable Execution",
+              text: "Underlying Architecture",
               link: "/light-programmable-intents",
             },
             {
               text: "Actors in the System",
               link: "/light-programmable-intents/actors",
+            },
+            {
+              text: "Design Decisions",
+              link: "/light-programmable-intents/design",
             },
             {
               text: "Intent Engine",

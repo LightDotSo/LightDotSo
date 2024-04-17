@@ -13,17 +13,3 @@ Our focus is strictly on transaction initiation across all EVM chains, through u
 :::info
 We bring asynchronous cross-chain interoperability and automation through the power of programmable intents.
 :::
-
-### Cross-Chain Trilemma
-
-![cross-chain-trilemma](/cross-chain-trilemma.png)
-
-> Cross-Chain Trilemma Diagram
->
-> <cite>(Credit: https://frontier.tech/)</cite>
-
-The concept of the cross-chain trilemma highlights a challenge in cross-chain infrastructure design, where only two out of three desirable attributes—execution guarantee, low fees, and fast execution—can be achieved simultaneously.
-
-This dilemma arises due to design decisions that influence the trade-offs between these attributes. In-protocol paths enable cheaper transfers by using predefined routes across chains, sacrificing speed to mitigate reorganization risks without needing extra validators or incurring liquidity costs.
-Solver aggregation aims to find the most cost-effective and swift transaction path by comparing multiple solvers, but issues like adverse selection and front-running can compromise execution reliability. Execution competition, where solvers vie to fulfill transactions either through direct competition or exclusive selection, tends to drive up user fees as the focus shifts from reducing costs to winning execution rights.
-Light Layer approaches the trilemma not as a challenge but as an opportunity, offering customizable options that empower users to select their preferred two out of three transaction properties, ensuring a tailored and professional experience.
