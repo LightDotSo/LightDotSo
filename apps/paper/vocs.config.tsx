@@ -176,41 +176,45 @@ export default defineConfig({
               link: "/light-programmable-intents/actors",
             },
             {
-              text: "Intent Engine",
-              link: "/light-programmable-intents/engine",
+              text: "Types of Intents",
+              link: "/light-programmable-intents/intents",
             },
           ],
         },
       ],
     },
     {
-      text: "Concepts",
-      link: "/concepts",
+      text: "Features",
+      link: "/features",
       collapsed: false,
       items: [
         {
           text: "Cross-chain Smart Account",
-          link: "/concepts/cross-chain-smart-account",
+          link: "/features/cross-chain-smart-account",
         },
         {
           text: "Gas Abstraction",
-          link: "/concepts/gas-abstraction",
+          link: "/features/gas-abstraction",
         },
         {
           text: "Programmable Execution",
-          link: "/concepts/programmable-execution",
+          link: "/features/programmable-execution",
         },
         {
           text: "Keystore Sync",
-          link: "/concepts/keystore-sync",
+          link: "/features/keystore-sync",
         },
         {
           text: "Signature Aggregation",
-          link: "/concepts/signature-aggregation",
+          link: "/features/signature-aggregation",
         },
         {
           text: "Transaction Batching",
-          link: "/concepts/transaction-batching",
+          link: "/features/transaction-batching",
+        },
+        {
+          text: "Intent Engine",
+          link: "/features/intent-engine",
         },
       ],
     },
