@@ -176,10 +176,6 @@ export default defineConfig({
               link: "/light-programmable-intents/actors",
             },
             {
-              text: "Design Decisions",
-              link: "/light-programmable-intents/design",
-            },
-            {
               text: "Intent Engine",
               link: "/light-programmable-intents/engine",
             },

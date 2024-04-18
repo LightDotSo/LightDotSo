@@ -1,7 +1,12 @@
 # Light Programmable Intents
 
 Light Programmable Intents enables users to specify intents, or preferences to enable programmatic asynchronous execution of cross-chain transactions.
-Support will initially be for EIP-4337 transactions only, and the transactions will be executed inside a trusted execution environment.
+
+Cross-chain transactions are inherently asynchronous and require a dedicated mechanism to ensure that the desired outcome is achieved.
+Rather than trying to achieve interoperability through enshrined oracles, sequencers, or other forms of architecture that enables synchronous atomicity between a subset of chains, [Light Programmable Intents](/light-programmable-intents) aims to achieve "programmable atomicity", through user-defined preferences or intents across all EVM chains.
+This enables users to authorize transactions where off-chain actors fulfill execution, and any form of arbitrary function call on the underlying chains can be executed with regards to user's preferences, and the desired outcome can be achieved with minimal friction as possible.
+
+"Programmable atomicity" is a concept that enables users to define their own [Programmatic Security Mechanism](/light-programmable-intents#programmatic-security-mechanism).
 
 :::success
 Initially, it will be implemented as a centralized service, but the goal is to decentralize it over time as an EVM compatible L2 that settles on Ethereum.
@@ -13,3 +18,13 @@ Our focus is strictly on transaction initiation across all EVM chains, through u
 :::info
 We bring asynchronous cross-chain interoperability and automation through the power of programmable intents.
 :::
+
+## Programmatic
+
+## Programmatic Settlement
+
+## Programmatic Security Mechanism
+
+Different types of transactions require different types of settlement mechanisms, as the economic stake on the line varies.
+As inspired by the [Hyperlane's Modular Security Mechanism](https://docs.hyperlane.xyz/docs/protocol/ISM/modular-security), Light Programmable Intents does not enforce a single settlement mechanism, but rather allows users to opt in their own security mechanism based on their preferences.
+Users can opt-in for Multi-Sig, Guardians, or any other form of security mechanism that they prefer, enabling them to have far more control over their transactions.
