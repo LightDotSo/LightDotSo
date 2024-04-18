@@ -1,1 +1,37 @@
 # Actors in the System
+
+# Operators
+
+The Light Layer (LL) is a dynamic blockchain infrastructure that is maintained and secured by types of operators: Solvers, Guardians, Auctioneers, and Bundler. These operators are crucial for the robust operation of the LL, ensuring not only the security of the network but also the efficiency and reliability of cross-chain transactions on behalf of users. Such transactions necessitate explicit authorization from users, which is typically obtained through specific signature permissions at the initiation phase of cross-chain transactions. The operational architecture of the LL is delineated as follows:
+
+To enhance the security of the network, all operators will be mandated to stake the native Light Layer token to participate in the activities outlined below. Should any operator engage in adversarial actions, they will face penalties, including being slashed and blacklisted.
+
+## Solver
+
+It is evident that spamming/DDoS attacks are prevalent in traditional network systems, including blockchains. Therefore, it is mission-critical to design a system in which the validation of the current global state of the Virtual Machines (VMs) occurs only when necessary (i.e., when transactions are being conducted). Consequently, the responsibility for initiating such a task will be assigned to the solver, which will have an economic incentive to initiate a validation. This incentive ensures that the guardian is prompted to conduct a verification process of the current state of VM nodes.
+
+## Guardian
+
+Guardian are instrumental in upholding the integrity and security of the LL. Their responsibilities extend beyond mere transaction validation; they are tasked with maintaining a synchronized global state across all Ethereum Virtual Machines (EVMs), thereby ensuring the seamless interoperability and functionality of the network at all times. In fulfilling these duties, guardians are subject to a set of stringent criteria within the Light protocol, namely:
+
+1. Each guardians is required to operate nodes across more than a third of the total number of chains, ensuring a broad and distributed coverage for enhanced security and resilience.
+2. It is imperative that at least a third of guardians are actively managing their full node setups across all k chains, thus guaranteeing the availability and reliability of the network infrastructure.
+3. Upon satisfying the aforementioned conditions, guardians are afforded the flexibility to select additional chains of their preference for further engagement, allowing for adaptive and strategic distribution of network resources.
+
+### Guardian Consensus
+
+If a majority vote of > 2/3 of the guardian sign the same message, it can then be considered as valid on the LL network. Once signed, the solver will initiate the following transactions outlined by the intent of the user.
+
+The Guardian Network is the core component of the Light ecosystem. This network is pivotalfor Light Layer functionality, which aims to be a top interoperability platform by emphasizing five key features:
+
+- Decentralization: ensuring network control is widely distributed
+- Modularity, allowing for independent design and updates of various ecosystem parts
+- Chain Agnosticism, supporting a wide range of blockchain platforms without relying on any single one
+- Scalability, capable of managing large values and transaction volumes
+- Upgradeability, facilitating updates in response to the evolving decentralized computing landscape.
+
+## Auctioneers
+
+In the realm of cross-chain transactions, the LL introduces an innovative and efficient routing mechanism through the integration of an auction system, complementing the traditional bridge-based routing solutions. Users are empowered to define a maximum fee threshold for the transaction services rendered by auctioneers. This setup initiates a competitive bidding process, known as an English Auction, wherein auctioneers vie to offer the most cost-effective and efficient transaction routing options within the specified fee limit. The auction is strategically timed to commence and conclude within the duration of a single blockchain block, thus ensuring that transaction processing is not only competitive in terms of pricing but also expedited for user convenience.
+
+Should the final transaction cost fall below the user-specified maximum fee, the LL guarantees the reimbursement of the residual amount to the user. This approach not only fosters a competitive environment for transaction routing but also ensures transparency and fairness in transaction costs, ultimately benefiting the end users by providing them with cost-effective and timely transaction services. Through these meticulously designed operational roles and mechanisms, the LL exemplifies a forward-thinking approach to blockchain infrastructure management, emphasizing security, efficiency, and user-centricity.
