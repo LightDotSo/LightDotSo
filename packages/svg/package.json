@@ -33,11 +33,11 @@
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@storybook/react": "^8.0.1",
-    "@types/node": "^20.11.29",
-    "@types/react": "^18.2.67",
-    "@types/react-dom": "^18.2.22",
-    "typescript": "^5.4.2"
+    "@storybook/react": "^8.0.8",
+    "@types/node": "^20.12.7",
+    "@types/react": "^18.2.79",
+    "@types/react-dom": "^18.2.25",
+    "typescript": "^5.4.5"
   },
   "publishConfig": {
     "access": "public"

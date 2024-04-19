@@ -39,13 +39,13 @@
     "graphql-request": "^6.1.0",
     "neverthrow": "^6.1.0",
     "openapi-fetch": "^0.9.3",
-    "zod": "^3.22.4"
+    "zod": "^3.22.5"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.11.29",
+    "@types/node": "^20.12.7",
     "openapi-typescript": "^6.7.5",
-    "typescript": "^5.4.2"
+    "typescript": "^5.4.5"
   },
   "publishConfig": {
     "access": "public"

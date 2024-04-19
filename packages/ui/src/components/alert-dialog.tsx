@@ -35,6 +35,7 @@ const AlertDialog = AlertDialogPrimitive.Root;
 const AlertDialogTrigger = AlertDialogPrimitive.Trigger;
 
 const AlertDialogPortal = ({
+  // @ts-ignore
   className,
   ...props
 }: AlertDialogPrimitive.AlertDialogPortalProps) => (

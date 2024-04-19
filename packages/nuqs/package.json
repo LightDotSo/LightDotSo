@@ -28,14 +28,14 @@
   "dependencies": {
     "@lightdotso/const": "workspace:*",
     "@lightdotso/schemas": "workspace:*",
-    "@tanstack/react-table": "^8.13.2",
+    "@tanstack/react-table": "^8.16.0",
     "nuqs": "^1.17.1",
-    "viem": "^2.8.12"
+    "viem": "^2.9.22"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.11.29",
-    "typescript": "^5.4.2"
+    "@types/node": "^20.12.7",
+    "typescript": "^5.4.5"
   },
   "publishConfig": {
     "access": "public"

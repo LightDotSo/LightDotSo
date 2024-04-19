@@ -70,7 +70,6 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     hideNotificationsModal,
     hideOpModal,
     hideSendModal,
-    hideAllModals,
     hideAllModalsBackground,
   } = useModals();
 
@@ -179,13 +178,6 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
 
   // Show the modal when the path matches the modal type
   useEffect(() => {
-    // Temporary fix for the interception modal bug
-    if (pathname.includes("create")) {
-      hideAllModals();
-      hideAllModalsBackground();
-      return;
-    }
-
     if (isOpen) {
       return;
     }
