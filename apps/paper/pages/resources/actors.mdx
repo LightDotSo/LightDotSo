@@ -3,3 +3,12 @@
 ## Escrow
 
 The Escrow contract is responsible for reimbursing gas relayers (paymasters) for their gas costs, and requires users to approve assets to be used for gas reimbursement.
+
+## Gas Relayers
+
+Gas relayers are responsible for subsidizing gas based on the user's request. As they take on the capital risk of paying for the gas,
+they are incentivize to only pay for gas that is likely to be reimbursed by the user, or involves other motives like boosting usage of their own platform.
+
+## Paymasters
+
+Paymasters are handled by the gas relayer that is the smart contract compatible w/ [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) standard.
