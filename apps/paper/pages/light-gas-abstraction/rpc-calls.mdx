@@ -1,0 +1,33 @@
+# RPC Calls
+
+## Paymaster RPC Call
+
+The intended use of this call is to obtain a list of user operations w/ the associated gas limit, paymaster, and fee.
+Since the result of this call will result in multiple user operations, the client will need to present the user with a list of sponsorships w/ the approved assets and fees.
+
+`pm_sponsorUserOperations`
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "pm_sponsorUserOperations",
+  "params": [
+    {
+      "chainId": "0x1",
+      "sender": "0x0000000000000000000000000000",
+      "nonce": "0x",
+      "initCode": "0x",
+      "callData": "0x",
+      "callGasLimit": "0x",
+      "verificationGasLimit": "0x",
+      "preVerificationGas": "0x",
+      "maxFeePerGas": "0x",
+      "maxPriorityFeePerGas": "0x",
+      "paymasterAndData": "0x",
+      "signature": "0x"
+    },
+    "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
+  ],
+  "id": 1
+}
+```

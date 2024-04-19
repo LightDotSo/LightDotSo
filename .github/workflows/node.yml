@@ -42,8 +42,6 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.BOT_TOKEN }}
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - name: Node Lint
