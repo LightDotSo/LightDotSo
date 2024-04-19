@@ -20,7 +20,6 @@ import {
 import { HttpResponse, http } from "msw";
 
 export const getRpcHandler = (url: string) =>
-  // @ts-expect-error
   http.post(url, async ({ request }) => {
     const body = await request.json();
 

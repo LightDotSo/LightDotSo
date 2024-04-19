@@ -154,7 +154,7 @@ export const Modal: FC<ModalProps> = ({
             isHidden && "hidden",
           )}
         >
-          <DialogHeader className={cn(headerContent && "justify-between")}>
+          <DialogHeader className={cn(headerContent ? "justify-between" : "")}>
             {headerContent && headerContent}
             <ButtonIcon
               className="ml-4"
