@@ -29,22 +29,22 @@
     "@lightdotso/client": "workspace:*",
     "@lightdotso/data": "workspace:*",
     "@lightdotso/schemas": "workspace:*",
-    "@tanstack/react-table": "^8.15.3",
+    "@tanstack/react-table": "^8.16.0",
     "@types/lodash": "^4.17.0",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.51.2",
-    "viem": "^2.9.8",
-    "zod": "^3.22.4",
+    "react-hook-form": "^7.51.3",
+    "viem": "^2.9.22",
+    "zod": "^3.22.5",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.12.3",
-    "@types/react": "^18.2.74",
-    "@types/react-dom": "^18.2.23",
-    "typescript": "^5.4.3"
+    "@types/node": "^20.12.7",
+    "@types/react": "^18.2.79",
+    "@types/react-dom": "^18.2.25",
+    "typescript": "^5.4.5"
   },
   "publishConfig": {
     "access": "public"

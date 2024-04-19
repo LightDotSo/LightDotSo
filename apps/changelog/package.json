@@ -20,31 +20,31 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@babel/core": "^7.24.3",
-    "@sentry/integrations": "^7.109.0",
-    "@sentry/nextjs": "^7.109.0",
-    "@types/node": "^20.12.3",
-    "@types/react": "^18.2.74",
-    "@types/react-dom": "^18.2.23",
+    "@babel/core": "^7.24.4",
+    "@sentry/integrations": "^7.111.0",
+    "@sentry/nextjs": "^7.111.0",
+    "@types/node": "^20.12.7",
+    "@types/react": "^18.2.79",
+    "@types/react-dom": "^18.2.25",
     "autoprefixer": "^10.4.19",
     "motion": "^10.17.0",
-    "next": "^14.1.4",
+    "next": "^14.2.2",
     "next-themes": "^0.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwindcss": "^3.4.3",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.5"
   },
   "devDependencies": {
     "@lightdotso/eslint-config": "workspace:*",
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.12.3",
-    "@types/react": "^18.2.74",
-    "@types/react-dom": "^18.2.23",
+    "@types/node": "^20.12.7",
+    "@types/react": "^18.2.79",
+    "@types/react-dom": "^18.2.25",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.3",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.5"
   }
 }
