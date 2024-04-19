@@ -216,6 +216,10 @@ export default defineConfig({
           text: "Intent Engine",
           link: "/features/intent-engine",
         },
+        {
+          text: "Light Layer",
+          link: "/features/light-layer",
+        },
       ],
     },
     {
