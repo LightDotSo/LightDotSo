@@ -39,6 +39,7 @@ const AlertDialogPortal = ({
   className,
   ...props
 }: AlertDialogPrimitive.AlertDialogPortalProps) => (
+  // @ts-ignore
   <AlertDialogPrimitive.Portal className={cn(className)} {...props} />
 );
 AlertDialogPortal.displayName = AlertDialogPrimitive.Portal.displayName;

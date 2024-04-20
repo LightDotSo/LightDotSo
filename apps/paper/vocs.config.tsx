@@ -176,7 +176,7 @@ export default defineConfig({
               link: "/light-programmable-intents/actors",
             },
             {
-              text: "Types of Intents",
+              text: "What are Programmable Intents",
               link: "/light-programmable-intents/intents",
             },
           ],
