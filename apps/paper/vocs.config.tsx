@@ -176,7 +176,7 @@ export default defineConfig({
               link: "/light-programmable-intents/actors",
             },
             {
-              text: "What are Programmable Intents",
+              text: "Programmable Intents",
               link: "/light-programmable-intents/intents",
             },
           ],
@@ -266,10 +266,6 @@ export default defineConfig({
               link: "/glossary/limitations/mpc",
             },
           ],
-        },
-        {
-          text: "Problems",
-          link: "/glossary/problems",
         },
         {
           text: "Terms",
