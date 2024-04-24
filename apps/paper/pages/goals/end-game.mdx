@@ -8,10 +8,19 @@ Where the contents of the transaction(s) is not financially valuable, the user s
 
 ## No Design Constraints
 
-- Intent Graphs
+### Intent Graphs
 
-- Parallel Transactions
+Users are able to define complex intent graphs, where the outcome of one intent triggers another intent, and so on, until the desired outcome is achieved.
+This can be conflicting intents, where the user sets a preference for the transaction to be routed across a network that gets the best pricing, and another preference for the transaction to be routed across a network that is most secure withing the underlying ecosystem.
 
-- Private Conditional Orders
+### Parallel Transactions
+
+Users are able to set preferences for parallel transactions, where the user sets a preference for the transaction to be routed across multiple networks at the same time.
+Since the transactions are independent of each other, achieving execution on one network does not affect the execution on another network.
+
+### Private Conditional Orders
+
+Users are able to set conditional orders that are private, and only executed when certain conditions are met.
+This can be used for trading, where the user sets a preference for the trade to be executed when the price of an asset reaches a certain level, or when the price of an asset reaches a certain level on another network.
 
 ## Use Ethereum as One.

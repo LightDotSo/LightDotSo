@@ -12,7 +12,9 @@ Rather than trying to achieve interoperability through enshrined oracles, sequen
 This enables users to authorize transactions where off-chain actors fulfill execution, and any form of arbitrary function call on the underlying chains can be executed with regards to user's preferences, and the desired outcome can be achieved with minimal friction as possible.
 
 :::info
-We bring asynchronous cross-chain interoperability and automation through the power of programmable intents.
+Through "Programmable Atomicity", we aim to provide a more holistic approach to cross-chain transactions, where users can define their own preferences, conditions, and execution mechanisms based on their desired outcome.
+Since cross-chain transactions are inherently asynchronous, we aim to provide a mechanism that enables users to achieve the desired outcome, while ensuring the best execution within the specific preference.
+We bring asynchronous cross-chain interoperability and automation through the power of programmable intents, to overcome the limitations of cross-chain interoperability.
 :::
 
 "Programmable atomicity" is a concept that enables users to define their own [execution](/light-programmable-intents/intents#programmatic-execution), [security](/light-programmable-intents/intents#programmatic-modular-security), and [settlement](/light-programmable-intents/intents#programmatic-settlement) mechanisms based on their preferences, and the desired outcome can be achieved within the confines of the preferences.
@@ -35,3 +37,11 @@ There are three main types of intents:
 
 At Light, our [Intent Engine](/features/intent-engine) is responsible for processing the intents, and generates the [Programmable Intents](/light-programmable-intents) responses for the end user to ensure that the desired outcome is achieved, while ensuring fair pricing and outcome.
 See [Actors in the System](/light-programmable-intents/actors) for more information on the actors in the system, and how execution is conducted.
+
+## Layers in the System
+
+There are three main layers in the system:
+
+- [Intent Engine](/features/intent-engine): Responsible for processing the intents and generating the responses to fulfill the user's request.
+- [OFA Solvers](/light-programmable-intents/actors): Responsible for executing the transactions based on the user's preferences.
+- [Light Layer](/features/light-layer): Responsible for settling the cross-chain intent on behalf of the user.
