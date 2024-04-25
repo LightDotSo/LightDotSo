@@ -20,3 +20,7 @@ ignores:
   - "@lightdotso/eslint-config"
   - "@lightdotso/styles"
   - "@next/bundle-analyzer"
+  - "@coinbase/onchainkit"
+  - "@lightdotso/services"
+  - "@vercel/og"
+  - viem

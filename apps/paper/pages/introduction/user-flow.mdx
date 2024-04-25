@@ -8,31 +8,40 @@ The main flow that we're envisioning for users interacting with Light is as foll
 
 :::info
 Light's goal is to enable cross-chain interactions with minimal number of steps and complexity for users, while having support for all tx formats and chains.
+Users should be able to specify their intent, authorize the transaction in one click, and the underlying complexity of cross-chain transactions should be abstracted away.
 See our [goals](/goals) for more information.
 :::
 
 ::::steps
 
-### Step 1
+### 1. Intent Submission
 
-Users submits an intent/transaction to Light's offchain [gas network](/light-gas-abstraction)
+Users submits an intent/transaction to Light's [Intent Engine](/light-intent-engine) with the following information:
 
-### Step 2
+- Desired outcome
+- Source chain (if applicable)
+- Destination chain (if applicable)
 
-The relayer bids for the right to subsidize the transaction on the target chain(s)
+User can also be prompted set specific intent/preferences for the transaction to be executed on through [programmable intents](/light-programmable-intents)
 
-### Step 3
+### 2. Gas Abstraction
 
-a. Users signs one signature to authorize the transaction(s) on the corresponding target chains with Light's [cross-chain smart account](/light-smart-wallet)
+Gas sponsorship is routed to Light's offchain [gas network](/light-gas-abstraction) for subsidizing the transactions on the target chain(s).
+The relayer bids for the right to subsidize the transactions, so that the user gets the best gas price for their transactions.
 
-b. (Optionally) User can set specific intent/preferences for the transaction to be executed on through [programmable intents](/light-programmable-intents)
+### 3. Transaction Authorization
 
-### Step 4
+Users signs one signature to authorize the transaction(s) on the corresponding target chains with Light's [cross-chain smart account](/light-smart-wallet), or other types of transaction format through conventional EOAs.
 
-The corresponding transactions are relayed to the target chain(s) and executed concurrently through the bundler from a smart account
+### 4. Programmable Intent Execution
 
-### Step 5
+The corresponding transactions are relayed to the target chain(s) along with the programmable intent preferences to the [Light Layer](/features/light-layer).
+Off-chain actors bid for the right to execute the transactions, and the winning bidder executes the transactions.
+Users benefit from the best execution of their transactions, while getting assured some extent of privacy and security, and also "programmatic atomicity" of their transactions.
 
-If a specific intent/preferences is set, the transactions are submitted to the target chain(s) at the specified order
+### 5. Settlement and Confirmation
+
+The transactions are settled on the target chain(s) and the user is notified of the outcome.
+Since cross-chain transactions are inherently asynchronous, the user can track the status of their transactions through our proprietary explorer or other blockchain explorers.
 
 ::::
