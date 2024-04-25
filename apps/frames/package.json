@@ -21,17 +21,17 @@
   },
   "dependencies": {
     "@babel/core": "^7.24.4",
-    "@coinbase/onchainkit": "^0.13.0",
+    "@coinbase/onchainkit": "^0.13.1",
     "@lightdotso/services": "workspace:*",
-    "@next/bundle-analyzer": "^14.2.2",
-    "@sentry/integrations": "^7.111.0",
-    "@sentry/nextjs": "^7.111.0",
+    "@next/bundle-analyzer": "^14.2.3",
+    "@sentry/integrations": "^7.112.2",
+    "@sentry/nextjs": "^7.112.2",
     "@vercel/og": "^0.6.2",
     "critters": "^0.0.22",
-    "next": "^14.2.2",
+    "next": "^14.2.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "viem": "^2.9.22"
+    "viem": "^2.9.26"
   },
   "devDependencies": {
     "@lightdotso/eslint-config": "workspace:*",

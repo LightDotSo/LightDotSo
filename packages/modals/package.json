@@ -40,12 +40,12 @@
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
-    "@storybook/react": "^8.0.8",
+    "@storybook/react": "^8.0.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.3",
-    "viem": "^2.9.22",
-    "zod": "^3.22.5"
+    "viem": "^2.9.26",
+    "zod": "^3.23.4"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",

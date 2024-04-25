@@ -66,8 +66,8 @@
     "test": "./test.sh"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "^0.70.0",
-    "@graphprotocol/graph-ts": "^0.35.0"
+    "@graphprotocol/graph-cli": "^0.71.0",
+    "@graphprotocol/graph-ts": "^0.35.1"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",

@@ -43,15 +43,15 @@
     "@types/lodash": "^4.17.0",
     "abitype": "^1.0.2",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.371.0",
+    "lucide-react": "^0.373.0",
     "react": "^18.2.0",
     "react-hook-form": "^7.51.3",
-    "viem": "^2.9.22",
-    "zod": "^3.22.5"
+    "viem": "^2.9.26",
+    "zod": "^3.23.4"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@storybook/react": "^8.0.8",
+    "@storybook/react": "^8.0.9",
     "@types/node": "^20.12.7",
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",

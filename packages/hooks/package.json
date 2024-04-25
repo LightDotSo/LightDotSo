@@ -37,11 +37,11 @@
     "copy-to-clipboard": "^3.3.3",
     "lodash": "^4.17.21",
     "merkletreejs": "^0.3.11",
-    "next": "^14.2.2",
+    "next": "^14.2.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "siwe": "^2.3.2",
-    "viem": "^2.9.22"
+    "viem": "^2.9.26"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",

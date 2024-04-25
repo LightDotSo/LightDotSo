@@ -1,6 +1,8 @@
 # Light Gas Abstraction
 
 Light Gas Abstraction is a permissionless, solver based gas relayer network that provides universal gas abstraction for users of any compatible EVM network.
+With Light Gas Abstraction, users can pay for gas in any asset across any EVM network, improving the user experience and reducing the friction of using multiple EVM networks.
+In addition, the network is designed to be permissionless, allowing any solver to participate in the network and compete to sponsor gas fees for users.
 
 :::info
 Initially, the solver network will be gated by a whitelist of approved solvers. Over time, the network will transition to a fully permissionless model.
@@ -15,6 +17,12 @@ Since the paymaster competes to propose sponsorship of the gas subsidization for
 Combined with the [Light Smart Wallet](/light-smart-wallet), users now have the ability to pay for gas in any asset across any EVM network, improving the user experience and reducing the friction of using multiple EVM networks.
 
 ## Compatibility
+
+We take a more holistic approach supporting any kind of orderflow + transaction format, so that the user can have the best experience possible:
+
+- all of 4337 paymaster + 3074 + meta tx can be supported for gas subsidization
+- the user's orderflow can be fully sponsored to generate traction for the underlying dapp
+- off-chain actors bid to sponsor through OFA, so the gas fee and routing is optimal and low cost
 
 ## Sponsorship Scenarios
 

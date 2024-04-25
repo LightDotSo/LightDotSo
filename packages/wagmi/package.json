@@ -29,7 +29,7 @@
   "dependencies": {
     "@lightdotso/const": "workspace:*",
     "connectkit": "^1.7.3",
-    "viem": "^2.9.22",
+    "viem": "^2.9.26",
     "wagmi": "^2.5.20"
   },
   "devDependencies": {
