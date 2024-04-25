@@ -34,6 +34,7 @@ const DialogClose = DialogPrimitive.Close;
 const DialogTrigger = DialogPrimitive.Trigger;
 
 const DialogPortal = ({
+  // @ts-ignore
   className,
   ...props
 }: DialogPrimitive.DialogPortalProps) => (
