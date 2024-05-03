@@ -3,20 +3,18 @@
 Light Smart Wallet is a 4337 compatible [cross-chain smart contract wallet](/features/cross-chain-smart-account) that supports state sync & signature aggregation.
 
 :::warning
-There is a trust assumption in the current approach of Light's proprietary server storing the keystore configuration of the wallet.
-The goal is to remove this trust assumption in the future through the use of a keystore rollup or other decentralized storage solutions.
+In its current iteration, Light's approach relies on a proprietary server for storing the wallet's keystore configuration, introducing a trust assumption.
+We are actively working towards a future where this reliance is eradicated, favoring keystore rollups or alternative decentralized storage solutions to uphold our commitment to security and autonomy.
 :::
 
 ![light-smart-wallet](/light-smart-wallet.png)
 
-## Chain Abstracted Smart Wallet
+## Facilitating Chain Abstraction
 
-Two features required for chain abstraction that we support out of the box are [state sync](/features/keystore-sync) and [signature aggregation](/features/signature-aggregation).
-These features enable cross-chain transactions by allowing the wallet to interact with multiple chains, with a single valid signature.
-Users can now initiate multi-chain transactions with a single signature, reducing the complexity of cross-chain interactions and improving the user experience.
+Our wallet inherently supports [state sync](/features/keystore-sync) and [signature aggregation](/features/signature-aggregation) - key features that streamline the user's ability to engage in cross-chain transactions.
+With just one valid signature, users can effortlessly initiate actions across multiple EVM-compatible chains, simplifying what has traditionally been a complex process.
 
 ## One Address, Multiple Chains
 
-Unlike traditional smart contract wallets, Light Smart Wallet enables using a single address across multiple chains under the same keystore configuration.
-This is achieved by utilizing [Light State Sync](https://sequence.xyz/blog/sequence-wallet-light-state-sync-full-merkle-wallets)
-With a lazy sync approach, our wallet is enable to have support for all EVM compatible chains with little to no additional integration efforts.
+Breaking away from the limitations of traditional smart contract wallets, Light Smart Wallet empowers users with a single address that operates across multiple chains.
+This capability is achieved through our [Light State Sync](https://sequence.xyz/blog/sequence-wallet-light-state-sync-full-merkle-wallets), employing a lazy sync strategy that extends support to all EVM-compatible chains, thereby reducing the need for extensive integration efforts.

@@ -119,8 +119,8 @@ export default defineConfig({
           link: "/goals/metrics",
         },
         {
-          text: "The Endgame",
-          link: "/goals/end-game",
+          text: "The Future",
+          link: "/goals/future",
         },
       ],
     },
