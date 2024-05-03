@@ -1,44 +1,40 @@
 # Light Gas Abstraction
 
-Light Gas Abstraction is a permissionless, solver based gas relayer network that provides universal gas abstraction for users of any compatible EVM network.
-With Light Gas Abstraction, users can pay for gas in any asset across any EVM network, improving the user experience and reducing the friction of using multiple EVM networks.
-In addition, the network is designed to be permissionless, allowing any solver to participate in the network and compete to sponsor gas fees for users.
+Light Gas Abstraction is a solver-based, permissionless gas relayer network that significantly improves the user experience by enabling payment for gas with any asset across compatible EVM networks, minimizing multi-chain transaction friction.
+Additionally, any solver may participate permissionlessly, competing to sponsor gas fees for users.
 
 :::info
-Initially, the solver network will be gated by a whitelist of approved solvers. Over time, the network will transition to a fully permissionless model.
+Initially operating with a whitelisted set of solvers, the network will evolve towards a fully permissionless model.
 :::
 
 ![light-gas-abstraction](/light-gas-abstraction.png)
 
-## Architecture
+## Architecture Overview
 
-Similar to intent-based architecture pioneered by [Across](https://across.to), Light Gas Abstraction is designed for the gas relayers to bear the capital risk associated w/ the gas abstraction.
-Since the paymaster competes to propose sponsorship of the gas subsidization for a proposed fee, the user benefits with lower fees while having more optionality of which asset to pay gas in.
-Combined with the [Light Smart Wallet](/light-smart-wallet), users now have the ability to pay for gas in any asset across any EVM network, improving the user experience and reducing the friction of using multiple EVM networks.
+Drawing inspiration from intent-based models like [Across](https://across.to), Light Gas Abstraction delegates the capital risk of gas abstraction to gas relayers.
+These paymasters compete to sponsor users' gas fees, leading to more competitive rates and a broader choice of assets for gas payment.
+When integrated with [Light Smart Wallet](/light-smart-wallet), this architecture further simplifies cross-EVM network operations for users.
 
-## Compatibility
+## Wide-Ranging Compatibility
 
-We take a more holistic approach supporting any kind of orderflow + transaction format, so that the user can have the best experience possible:
+Our comprehensive approach supports varied transaction types and order flows, optimizing user experience:
 
-- all of 4337 paymaster + 3074 + meta tx can be supported for gas subsidization
-- the user's orderflow can be fully sponsored to generate traction for the underlying dapp
-- off-chain actors bid to sponsor through OFA, so the gas fee and routing is optimal and low cost
+- Compatible with EIP-4337 paymasters, EIP-3074, and meta-transactions for gas subsidization
+- Complete sponsorship of user order flows is available to drive engagement with dApps
+- Off-chain actors bid to sponsor transactions, ensuring optimal and cost-effective gas fee routing
 
 ## Sponsorship Scenarios
 
-There are three main sponsorship scenarios in which user could get sponsored for gas payment in a given EVM network.
+Light Gas Abstraction caters to several sponsorship scenarios, enabling users to have their gas fees sponsored within EVM networks:
 
-### 1. Gas Sponsorship through Escrow
+### 1. Escrow Gas Sponsorship
 
-Users can approve funds to be escrowed by the paymaster, which will be used to pay for gas fees on their behalf.
-The paymaster will then pay the gas fees on behalf of the user and repaid the sponsored gas fees from the escrowed funds.
+Users can have funds escrowed by a paymaster, which are then utilized to cover gas fees, with the paymaster being reimbursed from these escrowed funds.
 
-### 2. Gas Sponsorship through Operation Modification
+### 2. Operation Modification for Gas Sponsorship
 
-Paymasters can choose to modify the operation of the transaction to pay for the gas fees on behalf of the user.
-This can enable the paymaster to directly receive the sponsored gas fees from the user, leading to a more seamless user experience.
+Paymasters may modify transaction operations to sponsor gas fees, streamlining the process for users by allowing paymasters to directly receive repayment.
 
-### 3. Gas Sponsorship through Custom Logic
+### 3. Custom Logic Gas Sponsorship
 
-Paymasters can choose to offer custom logic to sponsor gas fees on behalf of the user.
-Dapps, chains, and other entities can propose to sponsor gas fees for users in a customized way that benefits both the user and the sponsor.
+Custom sponsorship logic allows for tailored gas fee sponsorship, with dApps, chains, or other entities sponsoring gas fees in ways that benefit both users and sponsors.

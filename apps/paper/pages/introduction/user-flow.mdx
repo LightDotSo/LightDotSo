@@ -1,18 +1,12 @@
 # User Flow
 
-## Ideal User Flow
+## Optimal User Experience
+
+Our aim is to facilitate cross-chain interactions that are straightforward and efficient for users, providing comprehensive support for all transaction formats and chains.
+Users are expected to express their transactional intent in a streamlined process: a single authorization should initiate the transaction, while the complex workings of cross-chain transactions remain transparent.
+For further information, refer to our [goals](/goals).
 
 ![user-flow](/user-flow.png)
-
-The main flow that we're envisioning for users interacting with Light is as follows:
-
-:::info
-Light's goal is to enable cross-chain interactions with minimal number of steps and complexity for users, while having support for all tx formats and chains.
-Users should be able to specify their intent, authorize the transaction in one click, and the underlying complexity of cross-chain transactions should be abstracted away.
-See our [goals](/goals) for more information.
-:::
-
-::::steps
 
 ### 1. Intent Submission
 
@@ -22,26 +16,23 @@ Users submits an intent/transaction to Light's [Intent Engine](/features/intent-
 - Source chain (if applicable)
 - Destination chain (if applicable)
 
-User can also be prompted set specific intent/preferences for the transaction to be executed on through [programmable intents](/light-programmable-intents)
+Users may also set detailed preferences for the transaction via [programmable intents](/light-programmable-intents)
 
 ### 2. Gas Abstraction
 
-Gas sponsorship is routed to Light's offchain [gas network](/light-gas-abstraction) for subsidizing the transactions on the target chain(s).
-The relayer bids for the right to subsidize the transactions, so that the user gets the best gas price for their transactions.
+The transaction's gas fees are managed through Light's off-chain [gas network](/light-gas-abstraction), which subsidizes the cost on the target chain(s).
+Relayers compete to offer the best gas price, ensuring the user's transaction is as cost-effective as possible.
 
 ### 3. Transaction Authorization
 
-Users signs one signature to authorize the transaction(s) on the corresponding target chains with Light's [cross-chain smart account](/light-smart-wallet), or other types of transaction format through conventional EOAs.
+Users authorize their transaction with a single signature using Light's [cross-chain smart account](/light-smart-wallet) or via standard External Owned Accounts (EOAs).
 
 ### 4. Programmable Intent Execution
 
-The corresponding transactions are relayed to the target chain(s) along with the programmable intent preferences to the [Light Layer](/features/light-layer).
-Off-chain actors bid for the right to execute the transactions, and the winning bidder executes the transactions.
-Users benefit from the best execution of their transactions, while getting assured some extent of privacy and security, and also "programmatic atomicity" of their transactions.
+Transactions are then relayed to the target chains, and the user's programmable intent preferences are processed through the [Light Layer](/features/light-layer).
+Off-chain actors bid to execute these transactions, ensuring the user experiences optimal execution along with enhanced privacy, security, and "programmatic atomicity".
 
 ### 5. Settlement and Confirmation
 
-The transactions are settled on the target chain(s) and the user is notified of the outcome.
-Since cross-chain transactions are inherently asynchronous, the user can track the status of their transactions through our proprietary explorer or other blockchain explorers.
-
-::::
+Finally, transactions are concluded on the target chain(s), and users are promptly informed of the result.
+As cross-chain transactions are inherently asynchronous, users can follow the progress of their transactions via our custom explorer or other blockchain explorers.
