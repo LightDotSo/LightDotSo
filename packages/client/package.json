@@ -38,12 +38,12 @@
     "dotenv": "^16.4.5",
     "graphql-request": "^6.1.0",
     "neverthrow": "^6.2.1",
-    "openapi-fetch": "^0.9.4",
-    "zod": "^3.23.4"
+    "openapi-fetch": "^0.9.5",
+    "zod": "^3.23.6"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.12.7",
+    "@types/node": "^20.12.8",
     "openapi-typescript": "^6.7.5",
     "typescript": "^5.4.5"
   },

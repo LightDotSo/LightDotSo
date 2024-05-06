@@ -38,17 +38,17 @@
     "lodash": "^4.17.21",
     "merkletreejs": "^0.3.11",
     "next": "^14.2.3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "siwe": "^2.3.2",
-    "viem": "^2.9.26"
+    "viem": "^2.9.32"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/lodash": "^4.17.0",
-    "@types/node": "^20.12.7",
-    "@types/react": "^18.2.79",
-    "@types/react-dom": "^18.2.25",
+    "@types/lodash": "^4.17.1",
+    "@types/node": "^20.12.8",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
     "typescript": "^5.4.5"
   },
   "publishConfig": {
