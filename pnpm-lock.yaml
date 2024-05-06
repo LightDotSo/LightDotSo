@@ -408,21 +408,6 @@ importers:
       '@next/bundle-analyzer':
         specifier: ^14.2.3
         version: 14.2.3(bufferutil@4.0.8)(utf-8-validate@6.0.3)
-      '@opentelemetry/exporter-trace-otlp-http':
-        specifier: ^0.51.0
-        version: 0.51.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/resources':
-        specifier: ^1.24.0
-        version: 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/sdk-node':
-        specifier: ^0.51.0
-        version: 0.51.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/sdk-trace-node':
-        specifier: ^1.24.0
-        version: 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/semantic-conventions':
-        specifier: ^1.24.0
-        version: 1.24.0
       '@prisma/client':
         specifier: ^5.13.0
         version: 5.13.0(prisma@5.13.0)
@@ -3165,13 +3150,13 @@ importers:
         version: link:../const
       connectkit:
         specifier: ^1.7.3
-        version: 1.7.3(@babel/core@7.24.5)(@tanstack/react-query@5.34.2(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react-is@18.2.0)(react@18.3.1)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(wagmi@2.8.1(@planetscale/database@1.11.0)(@react-native-async-storage/async-storage@1.21.0(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3)))(@tanstack/query-core@5.32.0)(@tanstack/react-query@5.34.2(react@18.3.1))(@types/react@18.3.1)(@upstash/redis@1.30.0)(bufferutil@4.0.8)(encoding@0.1.13)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react-i18next@13.5.0(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1)(rollup@4.14.3)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(zod@3.23.6))
+        version: 1.7.3(@babel/core@7.24.5)(@tanstack/react-query@5.34.2(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react-is@18.2.0)(react@18.3.1)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(wagmi@2.8.1(@planetscale/database@1.11.0)(@react-native-async-storage/async-storage@1.21.0(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3)))(@tanstack/query-core@5.34.2)(@tanstack/react-query@5.34.2(react@18.3.1))(@types/react@18.3.1)(@upstash/redis@1.30.0)(bufferutil@4.0.8)(encoding@0.1.13)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react-i18next@13.5.0(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1)(rollup@4.14.3)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(zod@3.23.6))
       viem:
         specifier: ^2.9.32
         version: 2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6)
       wagmi:
         specifier: ^2.8.1
-        version: 2.8.1(@planetscale/database@1.11.0)(@react-native-async-storage/async-storage@1.21.0(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3)))(@tanstack/query-core@5.32.0)(@tanstack/react-query@5.34.2(react@18.3.1))(@types/react@18.3.1)(@upstash/redis@1.30.0)(bufferutil@4.0.8)(encoding@0.1.13)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react-i18next@13.5.0(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1)(rollup@4.14.3)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(zod@3.23.6)
+        version: 2.8.1(@planetscale/database@1.11.0)(@react-native-async-storage/async-storage@1.21.0(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3)))(@tanstack/query-core@5.34.2)(@tanstack/react-query@5.34.2(react@18.3.1))(@types/react@18.3.1)(@upstash/redis@1.30.0)(bufferutil@4.0.8)(encoding@0.1.13)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react-i18next@13.5.0(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1)(rollup@4.14.3)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(zod@3.23.6)
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
@@ -5230,15 +5215,6 @@ packages:
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
 
-  '@grpc/grpc-js@1.9.0':
-    resolution: {integrity: sha512-H8+iZh+kCE6VR/Krj6W28Y/ZlxoZ1fOzsNt77nrdE3knkbSelW1Uus192xOFCxHyeszLj8i4APQkSIXjAoOxXg==}
-    engines: {node: ^8.13.0 || >=10.10.0}
-
-  '@grpc/proto-loader@0.7.8':
-    resolution: {integrity: sha512-GU12e2c8dmdXb7XUlOgYWZ2o2i+z9/VeACkxTA/zzAe2IjclC5PnVL0lpgjhrqfpDYHzM8B1TF6pqWegMYAzlA==}
-    engines: {node: '>=6'}
-    hasBin: true
-
   '@hapi/hoek@9.3.0':
     resolution: {integrity: sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ==}
 
@@ -6198,132 +6174,9 @@ packages:
   '@open-draft/until@2.1.0':
     resolution: {integrity: sha512-U69T3ItWHvLwGg5eJ0n3I62nWuE6ilHlmz7zM0npLBRvPRd7e6NYmg54vvRtP5mZG7kZqZCFVdsTWo7BPtBujg==}
 
-  '@opentelemetry/api-logs@0.51.0':
-    resolution: {integrity: sha512-m/jtfBPEIXS1asltl8fPQtO3Sb1qMpuL61unQajUmM8zIxeMF1AlqzWXM3QedcYgTTFiJCew5uJjyhpmqhc0+g==}
-    engines: {node: '>=14'}
-
   '@opentelemetry/api@1.4.1':
     resolution: {integrity: sha512-O2yRJce1GOc6PAy3QxFM4NzFiWzvScDC1/5ihYBL6BUEVdq0XMWN01sppE+H6bBXbaFYipjwFLEWLg5PaSOThA==}
     engines: {node: '>=8.0.0'}
-
-  '@opentelemetry/context-async-hooks@1.24.0':
-    resolution: {integrity: sha512-s7xaQ9ifDpJvwbWRLkZD/J5hY35w+MECm4TQUkg6szRcny9lf6oVhWij4w3JJFQgvHQMXU7oXOpX8Z05HxV/8g==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      '@opentelemetry/api': '>=1.0.0 <1.9.0'
-
-  '@opentelemetry/core@1.24.0':
-    resolution: {integrity: sha512-FP2oN7mVPqcdxJDTTnKExj4mi91EH+DNuArKfHTjPuJWe2K1JfMIVXNfahw1h3onJxQnxS8K0stKkogX05s+Aw==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      '@opentelemetry/api': '>=1.0.0 <1.9.0'
-
-  '@opentelemetry/exporter-trace-otlp-grpc@0.51.0':
-    resolution: {integrity: sha512-xQpxKzS8ZnxYCa1v+3EKWhwMrSK3+RezpJ+AEKaP2pf2QbLfHt7kKfSn7niR2u3A1Tbe2aC7Ptt9+MafhThOOQ==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      '@opentelemetry/api': ^1.0.0
-
-  '@opentelemetry/exporter-trace-otlp-http@0.51.0':
-    resolution: {integrity: sha512-zODqnLZmPOxj9CarFv0TrVlx9mgj0TfCMCiUiTdNi9iA2rgdKVo+bjJjpYF6LCTJOQCR5TScAUCKyzwkgDI+iA==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      '@opentelemetry/api': ^1.0.0
-
-  '@opentelemetry/exporter-trace-otlp-proto@0.51.0':
-    resolution: {integrity: sha512-Fi7r0iMqGoFCQQ+WY0pYOWp395vdinZJIkYKnNbnreHxAN/kVDBl2FxbV3DeOKuRxEY08Gyb9ggPf+Zrqp7l/w==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      '@opentelemetry/api': ^1.0.0
-
-  '@opentelemetry/exporter-zipkin@1.24.0':
-    resolution: {integrity: sha512-QeGv0PHONswmu567pf9QliJ6s6DgCu5+ziF+soNS1LTcr1VRRVLViYLmGxmzDFUC48sjNTu7sumcKT0nJXsGBw==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      '@opentelemetry/api': ^1.0.0
-
-  '@opentelemetry/instrumentation@0.51.0':
-    resolution: {integrity: sha512-Eg/+Od5bEvzpvZQGhvMyKIkrzB9S7jW+6z9LHEI2VXhl/GrqQ3oBqlzJt4tA6pGtxRmqQWKWGM1wAbwDdW/gUA==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      '@opentelemetry/api': ^1.3.0
-
-  '@opentelemetry/otlp-exporter-base@0.51.0':
-    resolution: {integrity: sha512-hR4c9vWVz1QgzCBSyy9zSDkvfTgaK96E6/tfVP6O4dzdZW9HqWimA3lXV/KXadEGqShvM4GToz9EHp2A5RU5bQ==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      '@opentelemetry/api': ^1.0.0
-
-  '@opentelemetry/otlp-grpc-exporter-base@0.51.0':
-    resolution: {integrity: sha512-oTRtDvvB0bTRTBVrvKA/oM1gIAqQ6DVQS07pvqiL1cZS8wBrGgpw+2iTd0nV661Y/MhDn/kNWp8lRhMEIKN9bw==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      '@opentelemetry/api': ^1.0.0
-
-  '@opentelemetry/otlp-proto-exporter-base@0.51.0':
-    resolution: {integrity: sha512-WDANDLSUh11Gu5o6iCzmjZraIv5bK8z1L/t6lxQ2NeEKiKUPo5pVOBBQQC/yAQU2yeqkiO1GRCieH+XahZf60A==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      '@opentelemetry/api': ^1.0.0
-
-  '@opentelemetry/otlp-transformer@0.51.0':
-    resolution: {integrity: sha512-ylLgx2xumVoSefDHP9GMAU/LG+TU3+8eacVDXV5o1RqWxsdVOaQmCTY0XyDgeRTn6hIOVAq/HHQbRq3iWOrt2A==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      '@opentelemetry/api': '>=1.3.0 <1.9.0'
-
-  '@opentelemetry/propagator-b3@1.24.0':
-    resolution: {integrity: sha512-7TMIDE4+NO5vnkor+zned42wqca+hmhW5gWKhmYjUHC5B5uojo1PvtmBrd7kigFu96XvL4ZUWVzibWRWIQ/++Q==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      '@opentelemetry/api': '>=1.0.0 <1.9.0'
-
-  '@opentelemetry/propagator-jaeger@1.24.0':
-    resolution: {integrity: sha512-r3MX3AmJiUeiWTXSDOdwBeaO+ahvWcFCpuKxmhhsH8Q8LqDnjhNd3krqBh4Qsq9wa0WhWtiQaDs/NOCWoMOlOw==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      '@opentelemetry/api': '>=1.0.0 <1.9.0'
-
-  '@opentelemetry/resources@1.24.0':
-    resolution: {integrity: sha512-mxC7E7ocUS1tLzepnA7O9/G8G6ZTdjCH2pXme1DDDuCuk6n2/53GADX+GWBuyX0dfIxeMInIbJAdjlfN9GNr6A==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      '@opentelemetry/api': '>=1.0.0 <1.9.0'
-
-  '@opentelemetry/sdk-logs@0.51.0':
-    resolution: {integrity: sha512-K4fMBRFD8hQ6khk0rvYFuo6L9ymeGgByir6BcuFIgQuQ00OhYwBi9AruZz5V733Ejq7P8ObR3YyubkOUIbeVAw==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      '@opentelemetry/api': '>=1.4.0 <1.9.0'
-      '@opentelemetry/api-logs': '>=0.39.1'
-
-  '@opentelemetry/sdk-metrics@1.24.0':
-    resolution: {integrity: sha512-4tJ+E6N019OZVB/nUW/LoK9xHxfeh88TCoaTqHeLBE9wLYfi6irWW6J9cphMav7J8Qk0D5b7/RM4VEY4dArWOA==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      '@opentelemetry/api': '>=1.3.0 <1.9.0'
-
-  '@opentelemetry/sdk-node@0.51.0':
-    resolution: {integrity: sha512-MrPXDQsTAj3lcY8YUCjb7dvSXVZ5jG6wmjD2LB68V1rsLBdP8j70jsI9GaKijY7QB6psbLq6apO1vYeim5U7aw==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      '@opentelemetry/api': '>=1.3.0 <1.9.0'
-
-  '@opentelemetry/sdk-trace-base@1.24.0':
-    resolution: {integrity: sha512-H9sLETZ4jw9UJ3totV8oM5R0m4CW0ZIOLfp4NV3g0CM8HD5zGZcaW88xqzWDgiYRpctFxd+WmHtGX/Upoa2vRg==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      '@opentelemetry/api': '>=1.0.0 <1.9.0'
-
-  '@opentelemetry/sdk-trace-node@1.24.0':
-    resolution: {integrity: sha512-QgByHmM9uloTpcYEEyW9YJEIMKHFSIM677RH9pJPWWwtM2NQFbEp/8HIJw80Ymtaz6cAxg1Kay1ByqIVzq3t5g==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      '@opentelemetry/api': '>=1.0.0 <1.9.0'
-
-  '@opentelemetry/semantic-conventions@1.24.0':
-    resolution: {integrity: sha512-yL0jI6Ltuz8R+Opj7jClGrul6pOoYrdfVmzQS4SITXRPH7I5IRZbrwe/6/v8v4WYMa6MYZG480S1+uc/IGfqsA==}
-    engines: {node: '>=14'}
 
   '@openzeppelin/contracts@5.0.2':
     resolution: {integrity: sha512-ytPc6eLGcHHnapAZ9S+5qsdomhjo6QBHTDRRBFfTxXIpsicMhVPouPgmUPebZZZGX7vt9USA+Z+0M0dSVtSUEA==}
@@ -8408,9 +8261,6 @@ packages:
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders'
 
-  '@tanstack/query-core@5.32.0':
-    resolution: {integrity: sha512-Z3flEgCat55DRXU5UMwYU1U+DgFZKA3iufyOKs+II7iRAo0uXkeU7PH5e6sOH1CGEag0IpKmZxlUFpCg6roSKw==}
-
   '@tanstack/query-core@5.34.2':
     resolution: {integrity: sha512-FM1UXldYcoMiWmVbpewV14EVpnr/ETBbdF84tmCktx29e2bXBFhGtAfyDHUD4X1FehaV5tC9GkXZUMZRQV3lcA==}
 
@@ -9029,9 +8879,6 @@ packages:
 
   '@types/serve-static@1.15.2':
     resolution: {integrity: sha512-J2LqtvFYCzaj8pVYKw8klQXrLLk7TBZmQ4ShlcdkELFKGwGMfevMLneMMRkMgZxotOD9wg497LpC7O8PcvAmfw==}
-
-  '@types/shimmer@1.0.2':
-    resolution: {integrity: sha512-dKkr1bTxbEsFlh2ARpKzcaAmsYixqt9UyCdoEZk8rHyE4iQYcDCyvSjDSf7JUWJHlJiTtbIoQjxKh6ViywqDAg==}
 
   '@types/stack-utils@2.0.1':
     resolution: {integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==}
@@ -13859,9 +13706,6 @@ packages:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
     engines: {node: '>=6'}
 
-  import-in-the-middle@1.7.1:
-    resolution: {integrity: sha512-1LrZPDtW+atAxH42S6288qyDFNQ2YCty+2mxEPRtfazH6Z5QwkaBSTS2ods7hnVJioF6rkRfNoA6A/MstpFXLg==}
-
   import-lazy@4.0.0:
     resolution: {integrity: sha512-rKtvo6a868b5Hu3heneU+L4yEQ4jYKLtjpnPeUdK7h0yzXGmyBTypknlkCvHFBqfX9YlorEiMM6Dnq/5atfHkw==}
     engines: {node: '>=8'}
@@ -15694,9 +15538,6 @@ packages:
     resolution: {integrity: sha512-O9CIypScywTVpNaRrCAgoUnJgozpIofjKUYmJhiCIJMiuYnLI6otcb1/kpW9/n/tJODHGZ7i8aLQoDVsMtOKQQ==}
     engines: {node: '>= 8.10.0'}
     hasBin: true
-
-  module-details-from-path@1.0.3:
-    resolution: {integrity: sha512-ySViT69/76t8VhE1xXHK6Ch4NcDd26gx0MzKXLO+F7NOtnqH68d9zF94nT8ZWSxXh8ELOERsnJO/sWt1xZYw5A==}
 
   moment@2.29.4:
     resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==}
@@ -17788,10 +17629,6 @@ packages:
     resolution: {integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==}
     engines: {node: '>=0.10.0'}
 
-  require-in-the-middle@7.2.0:
-    resolution: {integrity: sha512-3TLx5TGyAY6AOqLBoXmHkNql0HIf2RGbuMgCDT2WO/uGVAPJs6h7Kl+bN6TIZGd9bWhWPwnDnTHGtW8Iu77sdw==}
-    engines: {node: '>=8.6.0'}
-
   require-main-filename@2.0.0:
     resolution: {integrity: sha512-NKN5kMDylKuldxYLSUfrbo5Tuzh4hd+2E8NPPX02mZtn1VuREQToYe/ZdlJy+J3uCpfaiGF05e7B8W0iXbQHmg==}
 
@@ -18240,9 +18077,6 @@ packages:
 
   shiki@0.14.7:
     resolution: {integrity: sha512-dNPAPrxSc87ua2sKJ3H5dQ/6ZaY8RNnaAqK+t0eG7p0Soi2ydiqbGOTaZCqaYvA/uZYfS1LJnemt3Q+mSfcPCg==}
-
-  shimmer@1.2.1:
-    resolution: {integrity: sha512-sQTKC1Re/rM6XyFM6fIAGHRPVGvyXfgzIDvzoq608vM+jeyVD0Tu1E6Np0Kc2zAIFWIj963V2800iF/9LPieQw==}
 
   side-channel@1.0.4:
     resolution: {integrity: sha512-q5XPytqFEIKHkGdiMIrY10mvLRvnQh42/+GoBlFW3b2LXLE2xxJpZFdm94we0BaoV3RwJyGqg5wS7epxTv0Zvw==}
@@ -22697,19 +22531,6 @@ snapshots:
     dependencies:
       graphql: 16.8.1
 
-  '@grpc/grpc-js@1.9.0':
-    dependencies:
-      '@grpc/proto-loader': 0.7.8
-      '@types/node': 20.12.8
-
-  '@grpc/proto-loader@0.7.8':
-    dependencies:
-      '@types/long': 4.0.2
-      lodash.camelcase: 4.3.0
-      long: 4.0.0
-      protobufjs: 7.2.4
-      yargs: 17.7.2
-
   '@hapi/hoek@9.3.0': {}
 
   '@hapi/topo@5.1.0':
@@ -23985,167 +23806,7 @@ snapshots:
 
   '@open-draft/until@2.1.0': {}
 
-  '@opentelemetry/api-logs@0.51.0':
-    dependencies:
-      '@opentelemetry/api': 1.4.1
-
   '@opentelemetry/api@1.4.1': {}
-
-  '@opentelemetry/context-async-hooks@1.24.0(@opentelemetry/api@1.4.1)':
-    dependencies:
-      '@opentelemetry/api': 1.4.1
-
-  '@opentelemetry/core@1.24.0(@opentelemetry/api@1.4.1)':
-    dependencies:
-      '@opentelemetry/api': 1.4.1
-      '@opentelemetry/semantic-conventions': 1.24.0
-
-  '@opentelemetry/exporter-trace-otlp-grpc@0.51.0(@opentelemetry/api@1.4.1)':
-    dependencies:
-      '@grpc/grpc-js': 1.9.0
-      '@opentelemetry/api': 1.4.1
-      '@opentelemetry/core': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/otlp-grpc-exporter-base': 0.51.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/otlp-transformer': 0.51.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/resources': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/sdk-trace-base': 1.24.0(@opentelemetry/api@1.4.1)
-
-  '@opentelemetry/exporter-trace-otlp-http@0.51.0(@opentelemetry/api@1.4.1)':
-    dependencies:
-      '@opentelemetry/api': 1.4.1
-      '@opentelemetry/core': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/otlp-exporter-base': 0.51.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/otlp-transformer': 0.51.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/resources': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/sdk-trace-base': 1.24.0(@opentelemetry/api@1.4.1)
-
-  '@opentelemetry/exporter-trace-otlp-proto@0.51.0(@opentelemetry/api@1.4.1)':
-    dependencies:
-      '@opentelemetry/api': 1.4.1
-      '@opentelemetry/core': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/otlp-exporter-base': 0.51.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/otlp-proto-exporter-base': 0.51.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/otlp-transformer': 0.51.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/resources': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/sdk-trace-base': 1.24.0(@opentelemetry/api@1.4.1)
-
-  '@opentelemetry/exporter-zipkin@1.24.0(@opentelemetry/api@1.4.1)':
-    dependencies:
-      '@opentelemetry/api': 1.4.1
-      '@opentelemetry/core': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/resources': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/sdk-trace-base': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/semantic-conventions': 1.24.0
-
-  '@opentelemetry/instrumentation@0.51.0(@opentelemetry/api@1.4.1)':
-    dependencies:
-      '@opentelemetry/api': 1.4.1
-      '@opentelemetry/api-logs': 0.51.0
-      '@types/shimmer': 1.0.2
-      import-in-the-middle: 1.7.1
-      require-in-the-middle: 7.2.0
-      semver: 7.6.0
-      shimmer: 1.2.1
-    transitivePeerDependencies:
-      - supports-color
-
-  '@opentelemetry/otlp-exporter-base@0.51.0(@opentelemetry/api@1.4.1)':
-    dependencies:
-      '@opentelemetry/api': 1.4.1
-      '@opentelemetry/core': 1.24.0(@opentelemetry/api@1.4.1)
-
-  '@opentelemetry/otlp-grpc-exporter-base@0.51.0(@opentelemetry/api@1.4.1)':
-    dependencies:
-      '@grpc/grpc-js': 1.9.0
-      '@opentelemetry/api': 1.4.1
-      '@opentelemetry/core': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/otlp-exporter-base': 0.51.0(@opentelemetry/api@1.4.1)
-      protobufjs: 7.2.4
-
-  '@opentelemetry/otlp-proto-exporter-base@0.51.0(@opentelemetry/api@1.4.1)':
-    dependencies:
-      '@opentelemetry/api': 1.4.1
-      '@opentelemetry/core': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/otlp-exporter-base': 0.51.0(@opentelemetry/api@1.4.1)
-      protobufjs: 7.2.4
-
-  '@opentelemetry/otlp-transformer@0.51.0(@opentelemetry/api@1.4.1)':
-    dependencies:
-      '@opentelemetry/api': 1.4.1
-      '@opentelemetry/api-logs': 0.51.0
-      '@opentelemetry/core': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/resources': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/sdk-logs': 0.51.0(@opentelemetry/api-logs@0.51.0)(@opentelemetry/api@1.4.1)
-      '@opentelemetry/sdk-metrics': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/sdk-trace-base': 1.24.0(@opentelemetry/api@1.4.1)
-
-  '@opentelemetry/propagator-b3@1.24.0(@opentelemetry/api@1.4.1)':
-    dependencies:
-      '@opentelemetry/api': 1.4.1
-      '@opentelemetry/core': 1.24.0(@opentelemetry/api@1.4.1)
-
-  '@opentelemetry/propagator-jaeger@1.24.0(@opentelemetry/api@1.4.1)':
-    dependencies:
-      '@opentelemetry/api': 1.4.1
-      '@opentelemetry/core': 1.24.0(@opentelemetry/api@1.4.1)
-
-  '@opentelemetry/resources@1.24.0(@opentelemetry/api@1.4.1)':
-    dependencies:
-      '@opentelemetry/api': 1.4.1
-      '@opentelemetry/core': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/semantic-conventions': 1.24.0
-
-  '@opentelemetry/sdk-logs@0.51.0(@opentelemetry/api-logs@0.51.0)(@opentelemetry/api@1.4.1)':
-    dependencies:
-      '@opentelemetry/api': 1.4.1
-      '@opentelemetry/api-logs': 0.51.0
-      '@opentelemetry/core': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/resources': 1.24.0(@opentelemetry/api@1.4.1)
-
-  '@opentelemetry/sdk-metrics@1.24.0(@opentelemetry/api@1.4.1)':
-    dependencies:
-      '@opentelemetry/api': 1.4.1
-      '@opentelemetry/core': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/resources': 1.24.0(@opentelemetry/api@1.4.1)
-      lodash.merge: 4.6.2
-
-  '@opentelemetry/sdk-node@0.51.0(@opentelemetry/api@1.4.1)':
-    dependencies:
-      '@opentelemetry/api': 1.4.1
-      '@opentelemetry/api-logs': 0.51.0
-      '@opentelemetry/core': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/exporter-trace-otlp-grpc': 0.51.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/exporter-trace-otlp-http': 0.51.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/exporter-trace-otlp-proto': 0.51.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/exporter-zipkin': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/instrumentation': 0.51.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/resources': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/sdk-logs': 0.51.0(@opentelemetry/api-logs@0.51.0)(@opentelemetry/api@1.4.1)
-      '@opentelemetry/sdk-metrics': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/sdk-trace-base': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/sdk-trace-node': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/semantic-conventions': 1.24.0
-    transitivePeerDependencies:
-      - supports-color
-
-  '@opentelemetry/sdk-trace-base@1.24.0(@opentelemetry/api@1.4.1)':
-    dependencies:
-      '@opentelemetry/api': 1.4.1
-      '@opentelemetry/core': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/resources': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/semantic-conventions': 1.24.0
-
-  '@opentelemetry/sdk-trace-node@1.24.0(@opentelemetry/api@1.4.1)':
-    dependencies:
-      '@opentelemetry/api': 1.4.1
-      '@opentelemetry/context-async-hooks': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/core': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/propagator-b3': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/propagator-jaeger': 1.24.0(@opentelemetry/api@1.4.1)
-      '@opentelemetry/sdk-trace-base': 1.24.0(@opentelemetry/api@1.4.1)
-      semver: 7.6.0
-
-  '@opentelemetry/semantic-conventions@1.24.0': {}
 
   '@openzeppelin/contracts@5.0.2': {}
 
@@ -25615,7 +25276,7 @@ snapshots:
 
   '@react-native/codegen@0.73.2(@babel/preset-env@7.23.3(@babel/core@7.24.5))':
     dependencies:
-      '@babel/parser': 7.24.4
+      '@babel/parser': 7.24.5
       '@babel/preset-env': 7.23.3(@babel/core@7.24.5)
       flow-parser: 0.206.0
       glob: 7.2.3
@@ -27454,9 +27115,6 @@ snapshots:
       postcss-selector-parser: 6.0.10
       tailwindcss: 3.4.3(ts-node@10.9.2(@swc/core@1.5.0(@swc/helpers@0.5.5))(@types/node@20.12.8)(typescript@5.4.5))
 
-  '@tanstack/query-core@5.32.0':
-    optional: true
-
   '@tanstack/query-core@5.34.2': {}
 
   '@tanstack/query-devtools@5.32.1': {}
@@ -28082,8 +27740,6 @@ snapshots:
       '@types/mime': 3.0.1
       '@types/node': 20.12.8
 
-  '@types/shimmer@1.0.2': {}
-
   '@types/stack-utils@2.0.1': {}
 
   '@types/statuses@2.0.4': {}
@@ -28634,13 +28290,13 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  ? '@wagmi/connectors@4.3.3(@planetscale/database@1.11.0)(@react-native-async-storage/async-storage@1.21.0(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3)))(@types/react@18.3.1)(@upstash/redis@1.30.0)(@wagmi/core@2.9.1(@tanstack/query-core@5.32.0)(@types/react@18.3.1)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(zod@3.23.6))(bufferutil@4.0.8)(encoding@0.1.13)(react-dom@18.3.1(react@18.3.1))(react-i18next@13.5.0(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1)(rollup@4.14.3)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(zod@3.23.6)'
+  ? '@wagmi/connectors@4.3.3(@planetscale/database@1.11.0)(@react-native-async-storage/async-storage@1.21.0(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3)))(@types/react@18.3.1)(@upstash/redis@1.30.0)(@wagmi/core@2.9.1(@tanstack/query-core@5.34.2)(@types/react@18.3.1)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(zod@3.23.6))(bufferutil@4.0.8)(encoding@0.1.13)(react-dom@18.3.1(react@18.3.1))(react-i18next@13.5.0(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1)(rollup@4.14.3)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(zod@3.23.6)'
   : dependencies:
       '@coinbase/wallet-sdk': 3.9.1
       '@metamask/sdk': 0.18.6(@react-native-async-storage/async-storage@1.21.0(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3)))(bufferutil@4.0.8)(encoding@0.1.13)(react-dom@18.3.1(react@18.3.1))(react-i18next@13.5.0(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1)(rollup@4.14.3)(utf-8-validate@6.0.3)
       '@safe-global/safe-apps-provider': 0.18.1(bufferutil@4.0.8)(encoding@0.1.13)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6)
       '@safe-global/safe-apps-sdk': 8.1.0(bufferutil@4.0.8)(encoding@0.1.13)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6)
-      '@wagmi/core': 2.9.1(@tanstack/query-core@5.32.0)(@types/react@18.3.1)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(zod@3.23.6)
+      '@wagmi/core': 2.9.1(@tanstack/query-core@5.34.2)(@types/react@18.3.1)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(zod@3.23.6)
       '@walletconnect/ethereum-provider': 2.11.2(@planetscale/database@1.11.0)(@react-native-async-storage/async-storage@1.21.0(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3)))(@types/react@18.3.1)(@upstash/redis@1.30.0)(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3)
       '@walletconnect/modal': 2.6.2(@types/react@18.3.1)(react@18.3.1)
       viem: 2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6)
@@ -28671,14 +28327,14 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@wagmi/core@2.9.1(@tanstack/query-core@5.32.0)(@types/react@18.3.1)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(zod@3.23.6)':
+  '@wagmi/core@2.9.1(@tanstack/query-core@5.34.2)(@types/react@18.3.1)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(zod@3.23.6)':
     dependencies:
       eventemitter3: 5.0.1
       mipd: 0.0.5(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6)
       viem: 2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6)
       zustand: 4.4.1(@types/react@18.3.1)(immer@10.1.1)(react@18.3.1)
     optionalDependencies:
-      '@tanstack/query-core': 5.32.0
+      '@tanstack/query-core': 5.34.2
       typescript: 5.4.5
     transitivePeerDependencies:
       - '@types/react'
@@ -30815,7 +30471,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ? connectkit@1.7.3(@babel/core@7.24.5)(@tanstack/react-query@5.34.2(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react-is@18.2.0)(react@18.3.1)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(wagmi@2.8.1(@planetscale/database@1.11.0)(@react-native-async-storage/async-storage@1.21.0(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3)))(@tanstack/query-core@5.32.0)(@tanstack/react-query@5.34.2(react@18.3.1))(@types/react@18.3.1)(@upstash/redis@1.30.0)(bufferutil@4.0.8)(encoding@0.1.13)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react-i18next@13.5.0(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1)(rollup@4.14.3)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(zod@3.23.6))
+  ? connectkit@1.7.3(@babel/core@7.24.5)(@tanstack/react-query@5.34.2(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react-is@18.2.0)(react@18.3.1)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(wagmi@2.8.1(@planetscale/database@1.11.0)(@react-native-async-storage/async-storage@1.21.0(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3)))(@tanstack/query-core@5.34.2)(@tanstack/react-query@5.34.2(react@18.3.1))(@types/react@18.3.1)(@upstash/redis@1.30.0)(bufferutil@4.0.8)(encoding@0.1.13)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react-i18next@13.5.0(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1)(rollup@4.14.3)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(zod@3.23.6))
   : dependencies:
       '@tanstack/react-query': 5.34.2(react@18.3.1)
       buffer: 6.0.3
@@ -30829,7 +30485,7 @@ snapshots:
       resize-observer-polyfill: 1.5.1
       styled-components: 5.3.11(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react-is@18.2.0)(react@18.3.1)
       viem: 2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6)
-      wagmi: 2.8.1(@planetscale/database@1.11.0)(@react-native-async-storage/async-storage@1.21.0(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3)))(@tanstack/query-core@5.32.0)(@tanstack/react-query@5.34.2(react@18.3.1))(@types/react@18.3.1)(@upstash/redis@1.30.0)(bufferutil@4.0.8)(encoding@0.1.13)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react-i18next@13.5.0(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1)(rollup@4.14.3)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(zod@3.23.6)
+      wagmi: 2.8.1(@planetscale/database@1.11.0)(@react-native-async-storage/async-storage@1.21.0(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3)))(@tanstack/query-core@5.34.2)(@tanstack/react-query@5.34.2(react@18.3.1))(@types/react@18.3.1)(@upstash/redis@1.30.0)(bufferutil@4.0.8)(encoding@0.1.13)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react-i18next@13.5.0(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1)(rollup@4.14.3)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(zod@3.23.6)
     transitivePeerDependencies:
       - '@babel/core'
       - react-is
@@ -34677,13 +34333,6 @@ snapshots:
       parent-module: 1.0.1
       resolve-from: 4.0.0
 
-  import-in-the-middle@1.7.1:
-    dependencies:
-      acorn: 8.11.3
-      acorn-import-assertions: 1.9.0(acorn@8.11.3)
-      cjs-module-lexer: 1.2.3
-      module-details-from-path: 1.0.3
-
   import-lazy@4.0.0: {}
 
   import-meta-resolve@4.0.0: {}
@@ -35398,7 +35047,7 @@ snapshots:
   jscodeshift@0.14.0(@babel/preset-env@7.23.3(@babel/core@7.24.5)):
     dependencies:
       '@babel/core': 7.24.5
-      '@babel/parser': 7.24.4
+      '@babel/parser': 7.24.5
       '@babel/plugin-proposal-class-properties': 7.18.6(@babel/core@7.24.5)
       '@babel/plugin-proposal-nullish-coalescing-operator': 7.18.6(@babel/core@7.24.5)
       '@babel/plugin-proposal-optional-chaining': 7.21.0(@babel/core@7.24.5)
@@ -36468,8 +36117,8 @@ snapshots:
 
   metro-source-map@0.80.4:
     dependencies:
-      '@babel/traverse': 7.24.1(supports-color@5.5.0)
-      '@babel/types': 7.24.0
+      '@babel/traverse': 7.24.5
+      '@babel/types': 7.24.5
       invariant: 2.2.4
       metro-symbolicate: 0.80.4
       nullthrows: 1.1.1
@@ -36493,9 +36142,9 @@ snapshots:
   metro-transform-plugins@0.80.4:
     dependencies:
       '@babel/core': 7.24.5
-      '@babel/generator': 7.24.4
+      '@babel/generator': 7.24.5
       '@babel/template': 7.24.0
-      '@babel/traverse': 7.24.1(supports-color@5.5.0)
+      '@babel/traverse': 7.24.5
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - supports-color
@@ -36503,9 +36152,9 @@ snapshots:
   metro-transform-worker@0.80.4(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@6.0.3):
     dependencies:
       '@babel/core': 7.24.5
-      '@babel/generator': 7.24.4
-      '@babel/parser': 7.24.4
-      '@babel/types': 7.24.0
+      '@babel/generator': 7.24.5
+      '@babel/parser': 7.24.5
+      '@babel/types': 7.24.5
       metro: 0.80.4(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@6.0.3)
       metro-babel-transformer: 0.80.4
       metro-cache: 0.80.4
@@ -36523,11 +36172,11 @@ snapshots:
     dependencies:
       '@babel/code-frame': 7.24.2
       '@babel/core': 7.24.5
-      '@babel/generator': 7.24.4
-      '@babel/parser': 7.24.4
+      '@babel/generator': 7.24.5
+      '@babel/parser': 7.24.5
       '@babel/template': 7.24.0
-      '@babel/traverse': 7.24.1(supports-color@5.5.0)
-      '@babel/types': 7.24.0
+      '@babel/traverse': 7.24.5
+      '@babel/types': 7.24.5
       accepts: 1.3.8
       chalk: 4.1.2
       ci-info: 2.0.0
@@ -37117,8 +36766,6 @@ snapshots:
       yargs: 13.3.2
       yargs-parser: 13.1.2
       yargs-unparser: 1.6.0
-
-  module-details-from-path@1.0.3: {}
 
   moment@2.29.4:
     optional: true
@@ -39555,14 +39202,6 @@ snapshots:
 
   require-from-string@2.0.2: {}
 
-  require-in-the-middle@7.2.0:
-    dependencies:
-      debug: 4.3.4(supports-color@5.5.0)
-      module-details-from-path: 1.0.3
-      resolve: 1.22.8
-    transitivePeerDependencies:
-      - supports-color
-
   require-main-filename@2.0.0: {}
 
   require-package-name@2.0.1: {}
@@ -40104,8 +39743,6 @@ snapshots:
       jsonc-parser: 3.2.0
       vscode-oniguruma: 1.7.0
       vscode-textmate: 8.0.0
-
-  shimmer@1.2.1: {}
 
   side-channel@1.0.4:
     dependencies:
@@ -42095,11 +41732,11 @@ snapshots:
 
   wabt@1.0.32: {}
 
-  wagmi@2.8.1(@planetscale/database@1.11.0)(@react-native-async-storage/async-storage@1.21.0(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3)))(@tanstack/query-core@5.32.0)(@tanstack/react-query@5.34.2(react@18.3.1))(@types/react@18.3.1)(@upstash/redis@1.30.0)(bufferutil@4.0.8)(encoding@0.1.13)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react-i18next@13.5.0(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1)(rollup@4.14.3)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(zod@3.23.6):
+  wagmi@2.8.1(@planetscale/database@1.11.0)(@react-native-async-storage/async-storage@1.21.0(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3)))(@tanstack/query-core@5.34.2)(@tanstack/react-query@5.34.2(react@18.3.1))(@types/react@18.3.1)(@upstash/redis@1.30.0)(bufferutil@4.0.8)(encoding@0.1.13)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react-i18next@13.5.0(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1)(rollup@4.14.3)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(zod@3.23.6):
     dependencies:
       '@tanstack/react-query': 5.34.2(react@18.3.1)
-      '@wagmi/connectors': 4.3.3(@planetscale/database@1.11.0)(@react-native-async-storage/async-storage@1.21.0(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3)))(@types/react@18.3.1)(@upstash/redis@1.30.0)(@wagmi/core@2.9.1(@tanstack/query-core@5.32.0)(@types/react@18.3.1)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(zod@3.23.6))(bufferutil@4.0.8)(encoding@0.1.13)(react-dom@18.3.1(react@18.3.1))(react-i18next@13.5.0(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1)(rollup@4.14.3)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(zod@3.23.6)
-      '@wagmi/core': 2.9.1(@tanstack/query-core@5.32.0)(@types/react@18.3.1)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(zod@3.23.6)
+      '@wagmi/connectors': 4.3.3(@planetscale/database@1.11.0)(@react-native-async-storage/async-storage@1.21.0(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3)))(@types/react@18.3.1)(@upstash/redis@1.30.0)(@wagmi/core@2.9.1(@tanstack/query-core@5.34.2)(@types/react@18.3.1)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(zod@3.23.6))(bufferutil@4.0.8)(encoding@0.1.13)(react-dom@18.3.1(react@18.3.1))(react-i18next@13.5.0(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1))(react-native@0.73.2(@babel/core@7.24.5)(@babel/preset-env@7.23.3(@babel/core@7.24.5))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1)(rollup@4.14.3)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(zod@3.23.6)
+      '@wagmi/core': 2.9.1(@tanstack/query-core@5.34.2)(@types/react@18.3.1)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6))(zod@3.23.6)
       react: 18.3.1
       use-sync-external-store: 1.2.0(react@18.3.1)
       viem: 2.9.32(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.23.6)
