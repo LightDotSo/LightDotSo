@@ -115,6 +115,7 @@ jobs:
       - if: matrix.workspace
         name: Set up Docker
         uses: douglascamata/setup-docker-macos-action@main
+        continue-on-error: true
       - if: matrix.workspace
         name: Docker Compose Up
         run: |
