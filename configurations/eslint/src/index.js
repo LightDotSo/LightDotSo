@@ -33,6 +33,8 @@ module.exports = {
     "**/__next/**",
     "**/_next/**",
     "**/generated/**",
+    "**/lib/**",
+    "**/notebooks/**",
     "generated.ts",
     "apps/extension/*/**.js",
     "packages/client/src/types/**/*.d.ts",

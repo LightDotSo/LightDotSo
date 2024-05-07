@@ -40,21 +40,21 @@
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
-    "@types/lodash": "^4.17.0",
+    "@types/lodash": "^4.17.1",
     "abitype": "^1.0.2",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.373.0",
-    "react": "^18.2.0",
-    "react-hook-form": "^7.51.3",
-    "viem": "^2.9.26",
-    "zod": "^3.23.4"
+    "lucide-react": "^0.378.0",
+    "react": "^18.3.1",
+    "react-hook-form": "^7.51.4",
+    "viem": "^2.9.32",
+    "zod": "^3.23.6"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@storybook/react": "^8.0.9",
-    "@types/node": "^20.12.7",
-    "@types/react": "^18.2.79",
-    "@types/react-dom": "^18.2.25",
+    "@storybook/react": "^8.0.10",
+    "@types/node": "^20.12.8",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
     "typescript": "^5.4.5"
   },
   "publishConfig": {
