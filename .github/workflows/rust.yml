@@ -95,6 +95,8 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
         with:
           name: ${{ matrix.name }}
+      - name: Install Rust Toolchain
+        uses: mkroening/rust-toolchain-toml@main
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - name: Install sccache-cache
