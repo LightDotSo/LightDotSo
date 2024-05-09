@@ -1,11 +1,17 @@
 # LightDotSo
 
+[![Apache-2.0 License][apache-badge]][apache-url]
+[![MIT License][mit-badge]][mit-url]
 [![Telegram Chat][tg-badge]][tg-url]
 
+[mit-badge]: https://img.shields.io/badge/license-MIT-blue.svg
+[apache-badge]: https://img.shields.io/badge/license-Apache--2.0-blue.svg
+[apache-url]: LICENSE.md
+[mit-url]: LICENSE-MIT.md
 [tg-badge]: https://img.shields.io/endpoint?color=neon&logo=telegram&label=chat&style=flat-square&url=https%3A%2F%2Ftg.sumanjay.workers.dev%2FLightDotSoSupport
 [tg-url]: https://t.me/LightDotSoSupport
 
-## EVM chain abstraction Protocol unifying all chains as one.
+## EVM chain abstraction protocol unifying all chains as one.
 
 ![](./assets/github.png)
 
