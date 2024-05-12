@@ -5,3 +5,5 @@ ignores:
   - "@lightdotso/tsconfig"
   - tsup
   - vitest
+  - graphql
+  - type-fest

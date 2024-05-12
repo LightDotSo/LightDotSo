@@ -1326,7 +1326,7 @@ importers:
         version: 7.6.17
       '@storybook/nextjs':
         specifier: ^8.0.10
-        version: 8.0.10(@swc/core@1.5.5(@swc/helpers@0.5.5))(encoding@0.1.13)(esbuild@0.17.19)(next@14.2.3(@babel/core@7.24.5)(@opentelemetry/api@1.4.1)(@playwright/test@1.44.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.9.0)(typescript@5.4.5)(webpack-hot-middleware@2.25.4)(webpack@5.88.2(@swc/core@1.5.5(@swc/helpers@0.5.5))(esbuild@0.17.19))
+        version: 8.0.10(@swc/core@1.5.5(@swc/helpers@0.5.5))(encoding@0.1.13)(esbuild@0.17.19)(next@14.2.3(@babel/core@7.24.5)(@opentelemetry/api@1.4.1)(@playwright/test@1.44.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.18.2)(typescript@5.4.5)(webpack-hot-middleware@2.25.4)(webpack@5.88.2(@swc/core@1.5.5(@swc/helpers@0.5.5))(esbuild@0.17.19))
       '@storybook/preview-api':
         specifier: ^8.0.10
         version: 8.0.10
@@ -1654,15 +1654,21 @@ importers:
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
+      graphql:
+        specifier: ^16.8.1
+        version: 16.8.1
       graphql-request:
-        specifier: ^7.0.1
-        version: 7.0.1(graphql@16.8.1)
+        specifier: ^6.1.0
+        version: 6.1.0(encoding@0.1.13)(graphql@16.8.1)
       neverthrow:
         specifier: ^6.2.1
         version: 6.2.1
       openapi-fetch:
         specifier: ^0.9.5
         version: 0.9.5
+      type-fest:
+        specifier: ^4.18.2
+        version: 4.18.2
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -13433,6 +13439,11 @@ packages:
     peerDependencies:
       graphql: '*'
 
+  graphql-request@6.1.0:
+    resolution: {integrity: sha512-p+XPfS4q7aIpKVcgmnZKhMNqhltk20hfXtkaIkTfjjmiKMJ5xrt5c743cL03y/K7y1rg3WrIC49xGiEQ4mxdNw==}
+    peerDependencies:
+      graphql: 14 - 16
+
   graphql-request@7.0.1:
     resolution: {integrity: sha512-hfGBZF6o6lC3C0th+aTMOFP6p8Ev+ydXn4PUlT8rvqPDUFCbaynXszjBCyu0saZIP3VGbJ67GpxW8UGK+tphSw==}
     hasBin: true
@@ -19438,8 +19449,8 @@ packages:
     resolution: {integrity: sha512-tLq3bSNx+xSpwvAJnzrK0Ep5CLNWjvFTOp71URMaAEWBfRb9nnJiBoUe0tF8bI4ZFO3omgBR6NvnbzVUT3Ly4g==}
     engines: {node: '>=14.16'}
 
-  type-fest@4.7.1:
-    resolution: {integrity: sha512-iWr8RUmzAJRfhZugX9O7nZE6pCxDU8CZ3QxsLuTnGcBLJpCaP2ll3s4eMTBoFnU/CeXY/5rfQSuAEsTGJO4y8A==}
+  type-fest@4.18.2:
+    resolution: {integrity: sha512-+suCYpfJLAe4OXS6+PPXjW3urOS4IoP9waSiLuXfLgqZODKw/aWwASvzqE886wA0kQgGy0mIWyhd87VpqIy6Xg==}
     engines: {node: '>=16'}
 
   type-fest@4.9.0:
@@ -23448,7 +23459,7 @@ snapshots:
       string-length: 6.0.0
       strip-ansi: 7.1.0
       ts-toolbelt: 9.6.0
-      type-fest: 4.9.0
+      type-fest: 4.18.2
       zod: 3.23.8
 
   '@molt/types@0.2.0':
@@ -24285,7 +24296,7 @@ snapshots:
     dependencies:
       playwright: 1.44.0
 
-  '@pmmmwh/react-refresh-webpack-plugin@0.5.11(react-refresh@0.14.0)(type-fest@4.9.0)(webpack-hot-middleware@2.25.4)(webpack@5.88.2(@swc/core@1.5.5(@swc/helpers@0.5.5))(esbuild@0.17.19))':
+  '@pmmmwh/react-refresh-webpack-plugin@0.5.11(react-refresh@0.14.0)(type-fest@4.18.2)(webpack-hot-middleware@2.25.4)(webpack@5.88.2(@swc/core@1.5.5(@swc/helpers@0.5.5))(esbuild@0.17.19))':
     dependencies:
       ansi-html-community: 0.0.8
       common-path-prefix: 3.0.0
@@ -24299,7 +24310,7 @@ snapshots:
       source-map: 0.7.4
       webpack: 5.88.2(@swc/core@1.5.5(@swc/helpers@0.5.5))(esbuild@0.17.19)
     optionalDependencies:
-      type-fest: 4.9.0
+      type-fest: 4.18.2
       webpack-hot-middleware: 2.25.4
 
   '@pnpm/config.env-replace@1.1.0': {}
@@ -27009,7 +27020,7 @@ snapshots:
 
   '@storybook/manager@8.0.10': {}
 
-  '@storybook/nextjs@8.0.10(@swc/core@1.5.5(@swc/helpers@0.5.5))(encoding@0.1.13)(esbuild@0.17.19)(next@14.2.3(@babel/core@7.24.5)(@opentelemetry/api@1.4.1)(@playwright/test@1.44.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.9.0)(typescript@5.4.5)(webpack-hot-middleware@2.25.4)(webpack@5.88.2(@swc/core@1.5.5(@swc/helpers@0.5.5))(esbuild@0.17.19))':
+  '@storybook/nextjs@8.0.10(@swc/core@1.5.5(@swc/helpers@0.5.5))(encoding@0.1.13)(esbuild@0.17.19)(next@14.2.3(@babel/core@7.24.5)(@opentelemetry/api@1.4.1)(@playwright/test@1.44.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(type-fest@4.18.2)(typescript@5.4.5)(webpack-hot-middleware@2.25.4)(webpack@5.88.2(@swc/core@1.5.5(@swc/helpers@0.5.5))(esbuild@0.17.19))':
     dependencies:
       '@babel/core': 7.24.5
       '@babel/plugin-syntax-bigint': 7.8.3(@babel/core@7.24.5)
@@ -27024,7 +27035,7 @@ snapshots:
       '@babel/preset-react': 7.23.3(@babel/core@7.24.5)
       '@babel/preset-typescript': 7.23.3(@babel/core@7.24.5)
       '@babel/runtime': 7.24.4
-      '@pmmmwh/react-refresh-webpack-plugin': 0.5.11(react-refresh@0.14.0)(type-fest@4.9.0)(webpack-hot-middleware@2.25.4)(webpack@5.88.2(@swc/core@1.5.5(@swc/helpers@0.5.5))(esbuild@0.17.19))
+      '@pmmmwh/react-refresh-webpack-plugin': 0.5.11(react-refresh@0.14.0)(type-fest@4.18.2)(webpack-hot-middleware@2.25.4)(webpack@5.88.2(@swc/core@1.5.5(@swc/helpers@0.5.5))(esbuild@0.17.19))
       '@storybook/addon-actions': 8.0.10
       '@storybook/builder-webpack5': 8.0.10(@swc/core@1.5.5(@swc/helpers@0.5.5))(encoding@0.1.13)(esbuild@0.17.19)(typescript@5.4.5)
       '@storybook/core-common': 8.0.10(encoding@0.1.13)
@@ -34117,6 +34128,14 @@ snapshots:
     dependencies:
       graphql: 16.8.1
 
+  graphql-request@6.1.0(encoding@0.1.13)(graphql@16.8.1):
+    dependencies:
+      '@graphql-typed-document-node/core': 3.2.0(graphql@16.8.1)
+      cross-fetch: 3.1.8(encoding@0.1.13)
+      graphql: 16.8.1
+    transitivePeerDependencies:
+      - encoding
+
   graphql-request@7.0.1(graphql@16.8.1):
     dependencies:
       '@dprint/formatter': 0.3.0
@@ -37755,7 +37774,7 @@ snapshots:
       semver: 7.5.4
       slash: 3.0.0
       strip-json-comments: 3.1.1
-      type-fest: 4.7.1
+      type-fest: 4.18.2
       validate-npm-package-name: 5.0.0
     transitivePeerDependencies:
       - supports-color
@@ -41481,7 +41500,7 @@ snapshots:
 
   type-fest@3.13.1: {}
 
-  type-fest@4.7.1: {}
+  type-fest@4.18.2: {}
 
   type-fest@4.9.0: {}
 
