@@ -19,15 +19,15 @@
     "tauri": "tauri"
   },
   "dependencies": {
-    "@tauri-apps/api": "^1.5.4",
+    "@tauri-apps/api": "^1.5.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@lightdotso/tailwindcss": "workspace:*",
     "@tauri-apps/cli": "^1.5.13",
-    "@types/node": "^20.12.10",
-    "@types/react": "^18.3.1",
+    "@types/node": "^20.12.11",
+    "@types/react": "^18.3.2",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.19",
