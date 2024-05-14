@@ -90,7 +90,7 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
   // ---------------------------------------------------------------------------
 
   const betaKind = useMemo(
-    () => (kind === "beta" && isNotOwner ? "beta" : "betaWarning"),
+    () => (kind === "beta" ? (isNotOwner ? "betaWarning" : "beta") : undefined),
     [kind, isNotOwner],
   );
 
@@ -103,7 +103,13 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
   }
 
   return (
-    <div className={cn(bannerVariants({ intent: kind }))}>
+    <div
+      className={cn(
+        bannerVariants({
+          intent: betaKind === "betaWarning" ? "warning" : kind,
+        }),
+      )}
+    >
       {betaKind === "beta" && (
         <BoltIcon className="size-4" aria-hidden="true" />
       )}
@@ -157,8 +163,7 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
       )}
       {betaKind === "betaWarning" && (
         <p className="text-sm leading-6">
-          You are not the owner of this account. You will not be able to access
-          funds to this wallet address.
+          You are not the owner of this account.
         </p>
       )}
       {kind === "demo" && (
