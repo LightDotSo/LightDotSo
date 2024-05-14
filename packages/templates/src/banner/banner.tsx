@@ -90,7 +90,7 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
   // ---------------------------------------------------------------------------
 
   const betaKind = useMemo(
-    () => (kind === "beta" && isNotOwner ? "beta" : "warning"),
+    () => (kind === "beta" && isNotOwner ? "beta" : "betaWarning"),
     [kind, isNotOwner],
   );
 
@@ -107,12 +107,16 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
       {betaKind === "beta" && (
         <BoltIcon className="size-4" aria-hidden="true" />
       )}
+      {betaKind === "betaWarning" && (
+        <AlertTriangleIcon className="size-4" aria-hidden="true" />
+      )}
       {kind === "demo" && <GamepadIcon className="size-6" aria-hidden="true" />}
       {kind === "outage" && (
         <AlertTriangleIcon className="size-4" aria-hidden="true" />
       )}
       <p className="text-sm leading-6">
         {betaKind === "beta" && "Private Beta"}
+        {betaKind === "betaWarning" && "Private Beta (Not Owner)"}
         {kind === "demo" && "Demo Mode"}
         {kind === "outage" && "Outage Alert"}
       </p>
@@ -151,6 +155,12 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
           </ButtonIcon>
         </div>
       )}
+      {betaKind === "betaWarning" && (
+        <p className="text-sm leading-6">
+          You are not the owner of this account. You will not be able to access
+          funds to this wallet address.
+        </p>
+      )}
       {kind === "demo" && (
         <Link
           className="inline-flex items-center text-sm hover:underline"
@@ -171,7 +181,9 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
           <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50" />
         </a>
       )}
-      {(betaKind === "beta" || kind === "demo") && (
+      {(betaKind === "beta" ||
+        betaKind === "betaWarning" ||
+        kind === "demo") && (
         <>
           <span className="hidden md:inline-flex">&middot;</span>{" "}
           <a
@@ -186,7 +198,7 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
         </>
       )}
       <div className="flex flex-1 justify-end">
-        {betaKind === "beta" && (
+        {kind === "beta" && (
           <ButtonIcon
             size="xs"
             variant="link"
