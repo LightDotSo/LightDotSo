@@ -21,7 +21,7 @@ import {
   useQueryWalletFeatures,
   useQueryWalletSettings,
 } from "@lightdotso/query";
-import { useAuth } from "@lightdotso/stores";
+import { useAuth, useBanners } from "@lightdotso/stores";
 import type { Tab } from "@lightdotso/types";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useMemo } from "react";
@@ -67,6 +67,12 @@ export function useTabs() {
     }
     return DEFAULT_TABS;
   }, [pathType]);
+
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { toggleIsNotOwner } = useBanners();
 
   // ---------------------------------------------------------------------------
   // Local Variables
@@ -135,8 +141,24 @@ export function useTabs() {
   });
 
   // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  // Get the owners addresses
+  const ownersAddresses = useMemo(() => {
+    return configuration?.owners?.map(owner => owner.address) || [];
+  }, [configuration?.owners]);
+
+  // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
+
+  // If the user is not an owner, show the banner
+  useEffect(() => {
+    if (walletAddress && !ownersAddresses.includes(walletAddress)) {
+      toggleIsNotOwner();
+    }
+  }, [ownersAddresses, toggleIsNotOwner, walletAddress]);
 
   // Refetch the wallet features when the wallet address changes
   useEffect(() => {

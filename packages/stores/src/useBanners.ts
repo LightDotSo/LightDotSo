@@ -21,7 +21,9 @@ import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
 type BannersStore = {
   isBetaClosed: boolean;
+  isNotOwner: boolean;
   toggleIsBetaClosed: () => void;
+  toggleIsNotOwner: () => void;
 };
 
 // -----------------------------------------------------------------------------
@@ -33,8 +35,11 @@ export const useBanners = create(
     persist<BannersStore>(
       set => ({
         isBetaClosed: false,
+        isNotOwner: false,
         toggleIsBetaClosed: () =>
           set(state => ({ isBetaClosed: !state.isBetaClosed })),
+        toggleIsNotOwner: () =>
+          set(state => ({ isNotOwner: !state.isNotOwner })),
       }),
       {
         name: "banners-state-v1",

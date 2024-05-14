@@ -30,7 +30,7 @@ import {
   Undo2Icon,
 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, type FC } from "react";
+import { useEffect, useMemo, type FC } from "react";
 import { PiTelegramLogoDuotone } from "react-icons/pi";
 
 // -----------------------------------------------------------------------------
@@ -45,6 +45,8 @@ const bannerVariants = cva(
         demo: "border-border-purple-weaker bg-background-purple-weakest text-text-purple [&>svg]:text-text-purple",
         beta: "border-border-info-weak bg-background-info-weakest text-text-info [&>svg]:text-text-info",
         outage:
+          "border-border-warning-weaker bg-background-warning-weakest text-text-warning [&>svg]:text-text-warning",
+        warning:
           "border-border-warning-weaker bg-background-warning-weakest text-text-warning [&>svg]:text-text-warning",
       },
     },
@@ -71,7 +73,7 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { isBetaClosed, toggleIsBetaClosed } = useBanners();
+  const { isBetaClosed, isNotOwner, toggleIsBetaClosed } = useBanners();
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -84,6 +86,15 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
   }, []);
 
   // ---------------------------------------------------------------------------
+  // Memo Hooks
+  // ---------------------------------------------------------------------------
+
+  const betaKind = useMemo(
+    () => (kind === "beta" && isNotOwner ? "beta" : "warning"),
+    [kind, isNotOwner],
+  );
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -93,18 +104,20 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
 
   return (
     <div className={cn(bannerVariants({ intent: kind }))}>
-      {kind === "beta" && <BoltIcon className="size-4" aria-hidden="true" />}
+      {betaKind === "beta" && (
+        <BoltIcon className="size-4" aria-hidden="true" />
+      )}
       {kind === "demo" && <GamepadIcon className="size-6" aria-hidden="true" />}
       {kind === "outage" && (
         <AlertTriangleIcon className="size-4" aria-hidden="true" />
       )}
       <p className="text-sm leading-6">
+        {betaKind === "beta" && "Private Beta"}
         {kind === "demo" && "Demo Mode"}
-        {kind === "beta" && "Private Beta"}
         {kind === "outage" && "Outage Alert"}
       </p>
       <span className="hidden md:inline-flex">&middot;</span>{" "}
-      {kind === "beta" && (
+      {betaKind === "beta" && (
         <div className="flex items-center text-sm">
           <p className="hidden leading-6 sm:block">
             Please report any issues to{" "}
@@ -158,7 +171,7 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
           <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50" />
         </a>
       )}
-      {(kind === "beta" || kind === "demo") && (
+      {(betaKind === "beta" || kind === "demo") && (
         <>
           <span className="hidden md:inline-flex">&middot;</span>{" "}
           <a
@@ -173,7 +186,7 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
         </>
       )}
       <div className="flex flex-1 justify-end">
-        {kind === "beta" && (
+        {betaKind === "beta" && (
           <ButtonIcon
             size="xs"
             variant="link"
