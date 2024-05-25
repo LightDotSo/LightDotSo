@@ -39,11 +39,11 @@ export const sentryMiddleware = new InngestMiddleware({
         });
 
         // Start a transaction for this run
-        const transaction = Sentry.startTransaction({
-          name: "Inngest Function Run",
-          op: "run",
-          data: ctx.event,
-        });
+        // const transaction = Sentry.startTransaction({
+        //   name: "Inngest Function Run",
+        //   op: "run",
+        //   data: ctx.event,
+        // });
 
         let memoSpan: Sentry.Span;
         let execSpan: Sentry.Span;
@@ -60,16 +60,16 @@ export const sentryMiddleware = new InngestMiddleware({
           },
           beforeMemoization() {
             // Track different spans for memoization and execution
-            memoSpan = transaction.startChild({ op: "memoization" });
+            // memoSpan = transaction.startChild({ op: "memoization" });
           },
           afterMemoization() {
-            memoSpan.finish();
+            // memoSpan.finish();
           },
           beforeExecution() {
-            execSpan = transaction.startChild({ op: "execution" });
+            // execSpan = transaction.startChild({ op: "execution" });
           },
           afterExecution() {
-            execSpan.finish();
+            // execSpan.finish();
           },
           transformOutput({ result, step }) {
             // Capture step output and log errors
@@ -87,7 +87,7 @@ export const sentryMiddleware = new InngestMiddleware({
           async beforeResponse() {
             // Finish the transaction and flush data to Sentry before the
             // request closes
-            transaction.finish();
+            // transaction.finish();
             await Sentry.flush();
           },
         };
