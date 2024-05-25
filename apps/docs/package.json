@@ -20,10 +20,10 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@babel/core": "^7.24.5",
+    "@babel/core": "^7.24.6",
     "@next/bundle-analyzer": "^14.2.3",
     "@sentry/integrations": "^7.114.0",
-    "@sentry/nextjs": "^7.114.0",
+    "@sentry/nextjs": "^8.4.0",
     "next": "^14.2.3",
     "nextra": "^2.13.4",
     "nextra-theme-docs": "^2.13.4",
@@ -35,8 +35,8 @@
     "@lightdotso/styles": "workspace:*",
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.12.11",
-    "@types/react": "^18.3.2",
+    "@types/node": "^20.12.12",
+    "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",

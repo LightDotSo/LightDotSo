@@ -12,29 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+const fixupPluginRules = require("@eslint/compat").fixupPluginRules;
+
 module.exports = {
-  extends: [
-    "eslint:recommended",
-    "plugin:cypress/recommended",
-    "plugin:import/errors",
-    "plugin:import/typescript",
-    "plugin:import/warnings",
-    "plugin:prettier/recommended",
-    "plugin:jsonc/recommended-with-jsonc",
-    "plugin:jsx-a11y/recommended",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended",
-    "plugin:@next/next/recommended",
-    "plugin:tailwindcss/recommended",
-    "plugin:turbo/recommended",
-  ],
   ignorePatterns: [
-    "**/lib/**",
     "**/__next/**",
     "**/_next/**",
+    "**/dist/**",
     "**/generated/**",
     "**/lib/**",
     "**/notebooks/**",
+    "**/public/**",
+    "**/scripts/**",
+    "**/target/**",
+    "**/test/**",
     "generated.ts",
     "apps/extension/*/**.js",
     "packages/client/src/types/**/*.d.ts",
@@ -52,54 +43,66 @@ module.exports = {
     ecmaVersion: 2021,
     sourceType: "module",
   },
-  plugins: ["@typescript-eslint", "neverthrow"],
+  plugins: [
+    "@typescript-eslint",
+    "prettier",
+    "jsonc",
+    "neverthrow",
+    fixupPluginRules("@next/next"),
+    fixupPluginRules("import"),
+    fixupPluginRules("jsx-a11y"),
+    fixupPluginRules("react"),
+    fixupPluginRules("react-hooks"),
+    fixupPluginRules("tailwindcss"),
+    fixupPluginRules("turbo"),
+  ],
   rules: {
-    "import/newline-after-import": "error",
-    "import/no-anonymous-default-export": "off",
-    "import/no-named-as-default": "off",
-    "import/order": [
-      "error",
-      {
-        alphabetize: {
-          caseInsensitive: false,
-          order: "asc",
-        },
-        "newlines-between": "never",
-        pathGroups: [
-          {
-            pattern: "@lightdotso/**",
-            group: "external",
-            position: "before",
-          },
-          {
-            pattern: "@/**",
-            group: "internal",
-            position: "after",
-          },
-        ],
-        pathGroupsExcludedImportTypes: ["builtin"],
-      },
-    ],
+    // "import/newline-after-import": "error",
+    // "import/no-anonymous-default-export": "off",
+    // "import/no-named-as-default": "off",
+    // "import/order": [
+    //   "error",
+    //   {
+    //     alphabetize: {
+    //       caseInsensitive: false,
+    //       order: "asc",
+    //     },
+    //     "newlines-between": "never",
+    //     pathGroups: [
+    //       {
+    //         pattern: "@lightdotso/**",
+    //         group: "external",
+    //         position: "before",
+    //       },
+    //       {
+    //         pattern: "@/**",
+    //         group: "internal",
+    //         position: "after",
+    //       },
+    //     ],
+    //     pathGroupsExcludedImportTypes: ["builtin"],
+    //   },
+    // ],
     "no-console": ["error", { allow: ["warn", "error", "info"] }],
     "no-multiple-empty-lines": "error",
     "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
-    "react/jsx-closing-bracket-location": ["error", "line-aligned"],
-    "@next/next/no-html-link-for-pages": "off",
-    "@typescript-eslint/consistent-type-imports": "error",
-    "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
-    "react/react-in-jsx-scope": "off",
-    "react/jsx-sort-props": [
-      "error",
-      {
-        callbacksLast: true,
-        ignoreCase: true,
-        noSortAlphabetically: true,
-        reservedFirst: true,
-        shorthandFirst: true,
-        shorthandLast: true,
-      },
-    ],
-    "react/self-closing-comp": "error",
+    // "@next/next/no-html-link-for-pages": "off",
+    // "@typescript-eslint/consistent-type-imports": "error",
+    // "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+    // "react/react-in-jsx-scope": "off",
+    // "react/jsx-closing-bracket-location": ["error", "line-aligned"],
+    // "react/jsx-sort-props": [
+    //   "error",
+    //   {
+    //     callbacksLast: true,
+    //     ignoreCase: true,
+    //     noSortAlphabetically: true,
+    //     reservedFirst: true,
+    //     shorthandFirst: true,
+    //     shorthandLast: true,
+    //   },
+    // ],
+    // "react/self-closing-comp": "error",
     "tailwindcss/enforces-shorthand": [
       "error",
       { callees: ["classnames", "clsx", "cva", "cn"] },

@@ -17,11 +17,11 @@
     "dev": "wrangler pages dev . functions --r2=ASSETS"
   },
   "dependencies": {
-    "@cloudflare/workers-types": "^4.20240502.0"
+    "@cloudflare/workers-types": "^4.20240512.0"
   },
   "devDependencies": {
     "typescript": "^5.4.5",
-    "wrangler": "^3.55.0"
+    "wrangler": "^3.57.1"
   },
   "publishConfig": {
     "access": "public"
