@@ -21,10 +21,10 @@
   },
   "dependencies": {
     "@babel/core": "^7.24.6",
-    "@next/bundle-analyzer": "^14.2.3",
+    "@next/bundle-analyzer": "^15.0.0-rc.0",
     "@sentry/integrations": "^7.114.0",
     "@sentry/nextjs": "^8.4.0",
-    "next": "^14.2.3",
+    "next": "^15.0.0-rc.0",
     "nextra": "^2.13.4",
     "nextra-theme-docs": "^2.13.4",
     "react": "^18.3.1",

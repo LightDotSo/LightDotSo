@@ -44,7 +44,7 @@
     "@tanstack/react-table": "^8.17.3",
     "@tremor/react": "^3.17.2",
     "lucide-react": "^0.379.0",
-    "next": "^14.2.3",
+    "next": "^15.0.0-rc.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "viem": "^2.12.1"

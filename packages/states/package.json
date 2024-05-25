@@ -32,7 +32,7 @@
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
     "@tanstack/react-query": "^5.37.1",
-    "next": "^14.2.3",
+    "next": "^15.0.0-rc.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "viem": "^2.12.1"
