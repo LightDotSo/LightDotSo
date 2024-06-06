@@ -60,7 +60,7 @@ export const Support: FC = () => {
           </ButtonIcon>
           <ButtonIcon asChild variant="shadow">
             <a
-              href={SOCIAL_LINKS["Telegram Support"]}
+              href={SOCIAL_LINKS["Telegram"]}
               target="_blank"
               rel="noopener noreferrer"
             >
