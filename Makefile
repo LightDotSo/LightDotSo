@@ -50,7 +50,7 @@ cargo-setup: ## Install Cargo dependencies.
 ci-setup: solc-setup ## Install CI dependencies.
 
 .PHONY: docker-setup
-docker-setup: solc-setup ## Install docker dependencies.
+docker-setup: cargo-setup solc-setup ## Install docker dependencies.
 
 .PHONY: ios-setup
 ios-setup: ## Install iOS dependencies.
