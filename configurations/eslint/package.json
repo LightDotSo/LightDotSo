@@ -35,7 +35,7 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-simple-import-sort": "^12.1.0",
     "eslint-plugin-tailwindcss": "^3.17.3",
-    "next": "15.0.0-canary.20"
+    "next": "^14.2.3"
   },
   "publishConfig": {
     "access": "public"
