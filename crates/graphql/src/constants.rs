@@ -61,6 +61,7 @@ lazy_static! {
         m.insert(137, "H98VV34hGhSWe1r5h8jewtcdSrGu2SXPqpbSgCrhEUyp".to_string());
         m.insert(250, "Aoj7Jg6BAXvF1feoeAcSXDFtTB6zTNXC7miogiMBsae2".to_string());
         m.insert(8453, "SNKw3Howbu7rXJGV98mN1wF3tGZohPKScH7KF1ekY7".to_string());
+        m.insert(23888, "BQXJQ6uayGPof1WAaBeb4zQ4m7dbJ2x1D7Xugj1rz59r".to_string());
         m.insert(42161, "hzVvM8faCQn6Cu8cPw46rqVVBNDdnGgHjSgrU3LMuv8".to_string());
         m.insert(42220, "GV1MA7YQ238T7bokx2gx7E5cZUjBN8RTNLP85sKSvuzu".to_string());
         m.insert(534352, "A9MoQEHNnQEHUvnS731H2q59opW5mWBkyJ7BDX5ytmMz".to_string());
