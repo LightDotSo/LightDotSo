@@ -8,7 +8,6 @@ overrides:
   '@headlessui/react': 0.0.0-insiders.03c22b4
   next: 15.0.0-canary.20
   solc: 0.8.18
-  yaml: 2.3.4
 
 importers:
 
@@ -23,9 +22,6 @@ importers:
       solc:
         specifier: 0.8.18
         version: 0.8.18(debug@4.3.5)
-      yaml:
-        specifier: 2.3.4
-        version: 2.3.4
     devDependencies:
       '@changesets/changelog-github':
         specifier: ^0.5.0
@@ -1227,6 +1223,9 @@ importers:
       vocs:
         specifier: 1.0.0-alpha.52
         version: 1.0.0-alpha.52(@types/node@20.14.2)(@types/react-dom@18.3.0)(@types/react@18.3.3)(babel-plugin-macros@3.1.0)(less@4.2.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(rollup@4.18.0)(terser@5.31.1)(ts-node@10.9.2(@swc/core@1.5.25(@swc/helpers@0.5.11))(@types/node@20.14.2)(typescript@5.4.5))(typescript@5.4.5)
+      yaml:
+        specifier: 2.3.4
+        version: 2.3.4
 
   apps/storybook:
     dependencies:
@@ -1423,6 +1422,9 @@ importers:
       '@graphprotocol/graph-ts':
         specifier: ^0.35.1
         version: 0.35.1
+      yaml:
+        specifier: ^2.4.5
+        version: 2.4.5
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
@@ -21018,9 +21020,18 @@ packages:
   yallist@4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
 
+  yaml@1.10.2:
+    resolution: {integrity: sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==}
+    engines: {node: '>= 6'}
+
   yaml@2.3.4:
     resolution: {integrity: sha512-8aAvwVUSHpfEqTQ4w/KMlf3HcRdt50E5ODIQJBw1fQ5RL34xabzxtUlzTXVqc4rkZsPbvrXKWnABCD7kWSmocA==}
     engines: {node: '>= 14'}
+
+  yaml@2.4.5:
+    resolution: {integrity: sha512-aBx2bnqDzVOyNKfsysjA2ms5ZlnjSAW2eG3/L5G/CSujfjLJTJsEw1bGw8kCf04KodQWk1pxlGnZ56CRxiawmg==}
+    engines: {node: '>= 14'}
+    hasBin: true
 
   yargs-parser@13.1.2:
     resolution: {integrity: sha512-3lbsNRf/j+A4QuSZfDRA7HRSfWrzO0YjqTJd5kjAq37Zep1CEgaYmrH9Q3GwPiB9cHyd1Y1UwggGhJGoxipbzg==}
@@ -23698,7 +23709,7 @@ snapshots:
       tmp-promise: 3.0.3
       web3-eth-abi: 1.7.0
       which: 2.0.2
-      yaml: 2.3.4
+      yaml: 1.10.2
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
@@ -26718,7 +26729,7 @@ snapshots:
       semver: 7.6.2
       strip-ansi: 5.2.0
       wcwidth: 1.0.1
-      yaml: 2.3.4
+      yaml: 2.4.5
     transitivePeerDependencies:
       - encoding
 
@@ -32541,7 +32552,7 @@ snapshots:
       import-fresh: 3.3.0
       parse-json: 5.2.0
       path-type: 4.0.0
-      yaml: 2.3.4
+      yaml: 1.10.2
 
   cosmiconfig@7.1.0:
     dependencies:
@@ -32549,7 +32560,7 @@ snapshots:
       import-fresh: 3.3.0
       parse-json: 5.2.0
       path-type: 4.0.0
-      yaml: 2.3.4
+      yaml: 1.10.2
 
   cosmiconfig@8.3.6(typescript@5.4.5):
     dependencies:
@@ -33293,7 +33304,7 @@ snapshots:
 
   docker-compose@0.23.19:
     dependencies:
-      yaml: 2.3.4
+      yaml: 1.10.2
 
   docker-modem@1.0.9:
     dependencies:
@@ -37501,7 +37512,7 @@ snapshots:
       micromatch: 4.0.7
       pidtree: 0.6.0
       string-argv: 0.3.2
-      yaml: 2.3.4
+      yaml: 2.4.5
     transitivePeerDependencies:
       - supports-color
 
@@ -40729,7 +40740,7 @@ snapshots:
   postcss-load-config@4.0.2(postcss@8.4.38)(ts-node@10.9.2(@swc/core@1.5.25(@swc/helpers@0.5.11))(@types/node@20.14.2)(typescript@5.4.5)):
     dependencies:
       lilconfig: 3.1.1
-      yaml: 2.3.4
+      yaml: 2.4.5
     optionalDependencies:
       postcss: 8.4.38
       ts-node: 10.9.2(@swc/core@1.5.25(@swc/helpers@0.5.11))(@types/node@20.14.2)(typescript@5.4.5)
@@ -41822,7 +41833,7 @@ snapshots:
       estree-util-value-to-estree: 3.1.1
       toml: 3.0.0
       unified: 11.0.4
-      yaml: 2.3.4
+      yaml: 2.4.5
 
   remark-mdx@2.3.0:
     dependencies:
@@ -45040,7 +45051,11 @@ snapshots:
 
   yallist@4.0.0: {}
 
+  yaml@1.10.2: {}
+
   yaml@2.3.4: {}
+
+  yaml@2.4.5: {}
 
   yargs-parser@13.1.2:
     dependencies:

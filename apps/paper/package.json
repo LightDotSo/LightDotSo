@@ -22,6 +22,7 @@
     "react": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
     "typescript": "^5.4.5",
-    "vocs": "1.0.0-alpha.52"
+    "vocs": "1.0.0-alpha.52",
+    "yaml": "2.3.4"
   }
 }
