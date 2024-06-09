@@ -1404,7 +1404,7 @@ importers:
         specifier: ^20.14.2
         version: 20.14.2
       assemblyscript:
-        specifier: ^0.19.23
+        specifier: ^0.19.20
         version: 0.19.23
       matchstick-as:
         specifier: ^0.6.0
@@ -30919,7 +30919,7 @@ snapshots:
   buffer@4.9.2:
     dependencies:
       base64-js: 1.5.1
-      ieee754: 1.1.13
+      ieee754: 1.2.1
       isarray: 1.0.0
     optional: true
 
@@ -36316,7 +36316,7 @@ snapshots:
       '@babel/register': 7.24.6(@babel/core@7.24.7)
       babel-core: 7.0.0-bridge.0(@babel/core@7.24.7)
       chalk: 4.1.2
-      flow-parser: 0.206.0
+      flow-parser: 0.237.2
       graceful-fs: 4.2.11
       micromatch: 4.0.7
       neo-async: 2.6.2
@@ -38475,7 +38475,7 @@ snapshots:
 
   nopt@3.0.6:
     dependencies:
-      abbrev: 1.0.9
+      abbrev: 1.1.1
 
   nopt@5.0.0:
     dependencies:
@@ -43485,7 +43485,7 @@ snapshots:
 
   xml2js@0.6.2:
     dependencies:
-      sax: 1.2.1
+      sax: 1.4.1
       xmlbuilder: 11.0.1
     optional: true
 
