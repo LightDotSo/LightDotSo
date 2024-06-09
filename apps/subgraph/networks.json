@@ -35,6 +35,12 @@
       "startBlock": 1128910
     }
   },
+  "blast-mainnet": {
+    "EntryPointv0.6.0": {
+      "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+      "startBlock": 159054
+    }
+  },
   "blast-testnet": {
     "EntryPointv0.6.0": {
       "address": "0x5Ff137D4B0FDCD49DcA30c7CF57E578A026d2789",
@@ -77,6 +83,18 @@
       "startBlock": 27364185
     }
   },
+  "linea": {
+    "EntryPointv0.6.0": {
+      "address": "0x5Ff137D4B0FDCD49DcA30c7CF57E578A026d2789",
+      "startBlock": 915
+    }
+  },
+  "linea-sepolia": {
+    "EntryPointv0.6.0": {
+      "address": "0x5Ff137D4B0FDCD49DcA30c7CF57E578A026d2789",
+      "startBlock": 434322
+    }
+  },
   "matic": {
     "EntryPointv0.6.0": {
       "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
@@ -87,6 +105,12 @@
     "EntryPointv0.6.0": {
       "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
       "startBlock": 34166156
+    }
+  },
+  "polygon-amoy": {
+    "EntryPointv0.6.0": {
+      "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+      "startBlock": 3133871
     }
   },
   "polygon-zkevm": {
@@ -123,6 +147,12 @@
     "EntryPointv0.6.0": {
       "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
       "startBlock": 3257815
+    }
+  },
+  "zora": {
+    "EntryPointv0.6.0": {
+      "address": "0x5Ff137D4B0FDCD49DcA30c7CF57E578A026d2789",
+      "startBlock": 5223236
     }
   }
 }

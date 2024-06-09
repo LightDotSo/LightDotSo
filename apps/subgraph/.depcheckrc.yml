@@ -5,3 +5,4 @@ ignores:
   - "typescript"
   - "wabt"
   - "yaml"
+  - "@goldskycom/cli"

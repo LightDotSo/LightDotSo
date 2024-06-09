@@ -15,14 +15,14 @@
 #![allow(clippy::unwrap_used)]
 
 use crate::{
-    constants::{GRAPH, SATSUMA, STUDIO},
+    constants::{SATSUMA, STUDIO},
     polling::Polling,
 };
 use clap::Parser;
 use eyre::Result;
 use lightdotso_graphql::constants::{
-    CHAIN_SLEEP_SECONDS, SATSUMA_BASE_URL, SATSUMA_LIVE_IDS, THE_GRAPH_HOSTED_SERVICE_URLS,
-    THE_GRAPH_STUDIO_BASE_URL, THE_GRAPH_STUDIO_SERVICE_IDS,
+    CHAIN_SLEEP_SECONDS, SATSUMA_BASE_URL, SATSUMA_LIVE_IDS, THE_GRAPH_STUDIO_BASE_URL,
+    THE_GRAPH_STUDIO_SERVICE_IDS,
 };
 use lightdotso_tracing::tracing::{error, info};
 use std::collections::HashMap;
@@ -43,7 +43,11 @@ pub struct PollingArgs {
     /// The satsuma API key
     #[clap(long, env = "SATSUMA_API_KEY")]
     pub satsuma_api_key: Option<String>,
-    /// The flag of whether polling is live.
+    /// The flag of whether polling is live for the graph studio.
+    #[arg(long, short, default_value_t = false)]
+    #[clap(long, env = "THE_GRAPH_STUDIO_ENABLED")]
+    pub the_graph_studio_enabled: bool,
+    /// The flag of whether polling is live for satsuma.
     #[arg(long, short, default_value_t = false)]
     #[clap(long, env = "SATSUMA_ENABLED")]
     pub satsuma_enabled: bool,
@@ -57,6 +61,7 @@ impl PollingArgs {
         // Create a mapping for chain id to polling URLs.
         let chain_mapping = create_chain_mapping(
             self.the_graph_studio_api_key.clone(),
+            self.the_graph_studio_enabled,
             self.satsuma_api_key.clone(),
             self.satsuma_enabled,
         );
@@ -75,6 +80,7 @@ impl PollingArgs {
         // Create a mapping for chain id to polling URLs.
         let chain_mapping = create_chain_mapping(
             self.the_graph_studio_api_key.clone(),
+            self.the_graph_studio_enabled,
             self.satsuma_api_key.clone(),
             self.satsuma_enabled,
         );
@@ -170,23 +176,18 @@ pub fn create_sleep_seconds_mapping() -> HashMap<u64, u64> {
 /// Create a mapping for chain id to polling URLs.
 pub fn create_chain_mapping(
     the_graph_studio_api_key: Option<String>,
+    the_graph_studio_enabled: bool,
     satsuma_api_key: Option<String>,
     satsuma_enabled: bool,
 ) -> HashMap<u64, HashMap<String, String>> {
     let mut chain_id_to_urls = HashMap::new();
 
-    for (chain_id, url) in THE_GRAPH_HOSTED_SERVICE_URLS.clone().into_iter() {
-        let mut child_map: HashMap<String, String> = HashMap::new();
-        child_map.insert((*GRAPH).to_string(), url);
-        chain_id_to_urls.insert(chain_id, child_map);
-    }
-
-    if let Some(the_graph_studio_api_key) = the_graph_studio_api_key {
+    if the_graph_studio_api_key.is_some() && the_graph_studio_enabled {
         for (chain_id, id) in THE_GRAPH_STUDIO_SERVICE_IDS.clone().into_iter() {
             let url = format!(
                 "{}/{}/{}/{}",
                 THE_GRAPH_STUDIO_BASE_URL.clone(),
-                the_graph_studio_api_key.clone(),
+                the_graph_studio_api_key.clone().unwrap(),
                 "subgraphs/id",
                 id
             );

@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: EntryPointv0.6.0
-    network: sepolia
+    network: zora
     source:
       abi: EntryPoint
-      address: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
-      startBlock: 3257815
+      address: "0x5Ff137D4B0FDCD49DcA30c7CF57E578A026d2789"
+      startBlock: 5223236
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7

@@ -53,7 +53,25 @@ lazy_static! {
     pub static ref THE_GRAPH_STUDIO_SERVICE_IDS: HashMap<u64, String> = {
         let mut m = HashMap::new();
 
+        // Mainnet
+        m.insert(1, "9iWg3Nzvimnagdm65aL6UL8Gv59AyoSeMh4Gwiwpidw6".to_string());
+        m.insert(10, "87R7u7dPBhMe6DuDGnsaeWGBc21GDBHn9n5Sjx273J61".to_string());
+        m.insert(56, "G2zMCyPk23YTk4YVHooDtxL65yqdy8MnGzgJ6y9k1XPA".to_string());
+        m.insert(100, "2hq8t3KKfy3MTK8th1fgH64nCeV9MCqVczg8WPogVwVk".to_string());
+        m.insert(137, "H98VV34hGhSWe1r5h8jewtcdSrGu2SXPqpbSgCrhEUyp".to_string());
+        m.insert(250, "Aoj7Jg6BAXvF1feoeAcSXDFtTB6zTNXC7miogiMBsae2".to_string());
+        m.insert(8453, "SNKw3Howbu7rXJGV98mN1wF3tGZohPKScH7KF1ekY7".to_string());
+        m.insert(23888, "BQXJQ6uayGPof1WAaBeb4zQ4m7dbJ2x1D7Xugj1rz59r".to_string());
+        m.insert(42161, "hzVvM8faCQn6Cu8cPw46rqVVBNDdnGgHjSgrU3LMuv8".to_string());
+        m.insert(42220, "GV1MA7YQ238T7bokx2gx7E5cZUjBN8RTNLP85sKSvuzu".to_string());
+        m.insert(534352, "A9MoQEHNnQEHUvnS731H2q59opW5mWBkyJ7BDX5ytmMz".to_string());
+
         // Testnet
+        m.insert(84532, "Boh3TKkEnog6okw4SwA7M8t3w3skwwCF6xquCb7A1NEi".to_string());
+        m.insert(421614, "9ybbbw8vpkBTjZY1PkXtUifnQrMRU3ckiveK866fYyTx".to_string());
+        m.insert(534351, "Ephn28SPv84xQkZphZidQBy2g4f6T8PveTwjBgz1MyGF".to_string());
+        m.insert(11155111, "Aoj7Jg6BAXvF1feoeAcSXDFtTB6zTNXC7miogiMBsae2".to_string());
+        m.insert(11155420, "7TbcDYmidDKUN8pif43jVcAritz1kNecFJhabz3wG7FW".to_string());
         m.insert(168587773, "GSV9eeURHDAoAVPacXKqTKKdDwE4cuUzTesWCvqQMJzU".to_string());
 
         m
@@ -79,6 +97,7 @@ lazy_static! {
 
         // Testnet
         m.insert(80001, "lightdotso/mumbai/api".to_string());
+        m.insert(80002, "lightdotso/polygon-amoy/api".to_string());
         m.insert(84532, "lightdotso/base-sepolia/api".to_string());
         m.insert(421614, "lightdotso/arbitrum-sepolia/api".to_string());
         m.insert(11155111, "lightdotso/sepolia/api".to_string());
