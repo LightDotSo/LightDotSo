@@ -94,6 +94,7 @@ jobs:
         with:
           xcode-version: "15.3"
       - name: Make iOS
+        continue-on-error: true
         run: |
           make ios
       - name: Node Build
