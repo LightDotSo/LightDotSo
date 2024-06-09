@@ -4,3 +4,4 @@ ignores:
   - "assemblyscript"
   - "typescript"
   - "wabt"
+  - "yaml"
