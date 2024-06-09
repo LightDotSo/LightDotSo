@@ -26,6 +26,7 @@ import {
 // import { findContractAddressByAddress } from "@lightdotso/utils";
 import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
+import { unstable_noStore } from "next/cache";
 import { notFound } from "next/navigation";
 import type {
   Address,
@@ -60,6 +61,12 @@ export const handler = async (
   // ---------------------------------------------------------------------------
 
   await addressHandler(params);
+
+  // ---------------------------------------------------------------------------
+  // Cache
+  // ---------------------------------------------------------------------------
+
+  unstable_noStore();
 
   // ---------------------------------------------------------------------------
   // Validators

@@ -16,6 +16,7 @@ import { cursorParser, paginationParser } from "@lightdotso/nuqs";
 import { getNftValuation, getNfts } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
+import { unstable_noStore } from "next/cache";
 import { notFound } from "next/navigation";
 import type { Address } from "viem";
 import { handler as addressHandler } from "@/handlers/[address]/handler";
@@ -38,6 +39,12 @@ export const handler = async (
   if (!validateAddress(params.address)) {
     return notFound();
   }
+
+  // ---------------------------------------------------------------------------
+  // Cache
+  // ---------------------------------------------------------------------------
+
+  unstable_noStore();
 
   // ---------------------------------------------------------------------------
   // Parsers

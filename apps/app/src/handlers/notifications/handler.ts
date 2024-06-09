@@ -18,6 +18,7 @@ import {
   getNotificationsCount,
   getUser,
 } from "@lightdotso/services";
+import { unstable_noStore } from "next/cache";
 import { Result } from "neverthrow";
 import { verifyUserId } from "@/auth";
 
@@ -34,6 +35,12 @@ export const handler = async (searchParams: {
   // ---------------------------------------------------------------------------
 
   const userId = await verifyUserId();
+
+  // ---------------------------------------------------------------------------
+  // Cache
+  // ---------------------------------------------------------------------------
+
+  unstable_noStore();
 
   // ---------------------------------------------------------------------------
   // Parsers
