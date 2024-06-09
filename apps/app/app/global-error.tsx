@@ -37,14 +37,6 @@ export interface GlobalErrorProps {
 export default function GlobalError({ error, reset }: GlobalErrorProps) {
   const { reset: resetQuery } = useQueryErrorResetBoundary();
 
-  // useEffect(() => {
-  //   const client = getCurrentHub().getClient<BrowserClient>();
-  //   const feedback = client?.getIntegration(Feedback);
-  //   if (feedback) {
-  //     feedback.openDialog();
-  //   }
-  // }, []);
-
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------

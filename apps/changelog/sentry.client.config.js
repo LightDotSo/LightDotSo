@@ -1,9 +1,3 @@
-import {
-  ReportingObserver as ReportingObserverIntegration,
-  ExtraErrorData as ExtraErrorDataIntegration,
-  Debug as DebugIntegration,
-  CaptureConsole as CaptureConsoleIntegration,
-} from "@sentry/integrations";
 import * as Sentry from "@sentry/nextjs";
 
 const version = require("./package.json").version;
@@ -16,12 +10,4 @@ Sentry.init({
   autoSessionTracking: true,
   tracesSampleRate: 1.0,
   release: `lightdotso@${version}`,
-  integrations: [
-    new CaptureConsoleIntegration({
-      levels: ["error"],
-    }),
-    new DebugIntegration(),
-    new ExtraErrorDataIntegration(),
-    new ReportingObserverIntegration(),
-  ],
 });

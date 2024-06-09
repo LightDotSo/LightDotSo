@@ -1,11 +1,4 @@
-import {
-  ReportingObserver as ReportingObserverIntegration,
-  ExtraErrorData as ExtraErrorDataIntegration,
-  Debug as DebugIntegration,
-  CaptureConsole as CaptureConsoleIntegration,
-} from "@sentry/integrations";
 import * as Sentry from "@sentry/nextjs";
-import { Feedback } from "@sentry-internal/feedback";
 
 const version = require("./package.json").version;
 
@@ -18,15 +11,4 @@ Sentry.init({
   tracesSampleRate: 1.0,
   release: `lightdotso@${version}`,
   ignoreErrors: ["ResizeObserver loop limit exceeded"],
-  integrations: [
-    new CaptureConsoleIntegration({
-      levels: ["error"],
-    }),
-    new DebugIntegration(),
-    new ExtraErrorDataIntegration(),
-    new ReportingObserverIntegration(),
-    new Feedback({
-      autoInject: false,
-    }),
-  ],
 });
