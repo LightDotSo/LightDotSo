@@ -13,7 +13,6 @@
   "license": "Apache-2.0",
   "author": "Light, Inc.",
   "scripts": {
-    "build:turbo": "dotenv -- turbo run build",
     "cargo:fmt:cmd": "make cargo-fmt",
     "changeset": "changeset",
     "changeset:publish": "changeset publish",
@@ -40,7 +39,6 @@
     "license:fix": "license-check-and-add -f .license-check-and-add-config.json add",
     "license:lint": "license-check-and-add -f .license-check-and-add-config.json check",
     "lint": "concurrently \"pnpm:*:lint\"",
-    "lint:turbo": "dotenv -- turbo run lint",
     "ncu:check": "ncu--packageFile '{apps,configurations,packages}/**/package.json'",
     "ncu:monorepo": "ncu --packageFile '{apps,configurations,packages}/**/package.json' -u",
     "ncu:root": "ncu --packageFile package.json -u",
@@ -55,7 +53,6 @@
     "prettier:fix": "prettier --write .",
     "prettier:lint": "prettier --check .",
     "prisma": "make prisma",
-    "prisma:turbo": "dotenv -- turbo run prisma",
     "ruff:fmt:cmd": "make ruff-fmt",
     "ruff:lint:cmd": "make ruff-lint",
     "solhint:cmd": "solhint \"contracts/**/*.sol\" --noPrompt",
@@ -70,8 +67,6 @@
     "test:typecheck": "vitest typecheck",
     "test:ui": "vitest dev --ui",
     "tsc": "tsc --noEmit",
-    "tsc:lint": "pnpm run tsc:turbo",
-    "tsc:turbo": "dotenv -- turbo run tsc",
     "wagmi:generate": "wagmi generate"
   },
   "dependencies": {

@@ -33,7 +33,7 @@ jobs:
           version: nightly
       - name: Node Build
         run: |
-          pnpm run build:turbo
+          pnpm turbo run build
   node-lint:
     runs-on: ubuntu-latest
     timeout-minutes: 90
@@ -76,7 +76,7 @@ jobs:
           version: nightly
       - name: Node Test
         run: |
-          pnpm run test:compile
+          pnpm turbo run test:compile
           pnpm turbo run test:coverage
       - name: Codecov
         uses: codecov/codecov-action@v3

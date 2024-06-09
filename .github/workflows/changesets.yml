@@ -47,7 +47,7 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - name: Node Build
         run: |
-          pnpm run build:turbo
+          pnpm turbo run build
       - name: Changesets Release
         uses: changesets/action@v1
         with:

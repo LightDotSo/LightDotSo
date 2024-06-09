@@ -35,7 +35,7 @@ jobs:
       #   uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       # - name: Node Build
       #   run: |
-      #     pnpm run build:turbo
+      #     pnpm turbo run build
       # - name: Release
       #   run: |
       #     pnpm run release:root

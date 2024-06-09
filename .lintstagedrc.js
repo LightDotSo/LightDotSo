@@ -5,7 +5,7 @@ module.exports = {
     "pnpm run oxlint:cmd --fix",
     "pnpm run prettier:cmd --write",
   ],
-  "*.{ts,tsx}": ["sh -c 'pnpm run tsc:turbo && echo \"\"'"],
+  "*.{ts,tsx}": ["sh -c 'pnpm turbo run tsc && echo \"\"'"],
   "*.{md,json,yml}": ["pnpm run prettier:cmd --write"],
   "*.rs": [
     "sh -c 'pnpm run clippy:cmd && echo \"\"'",
