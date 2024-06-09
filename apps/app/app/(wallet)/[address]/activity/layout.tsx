@@ -96,4 +96,5 @@ export default async function ActivityLayout({
 // Data
 // -----------------------------------------------------------------------------
 
+export const experimental_ppr = false;
 export const revalidate = 300;
