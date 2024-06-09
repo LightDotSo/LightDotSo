@@ -17,7 +17,7 @@
 import { useQueryPortfolio } from "@lightdotso/query";
 import { Number } from "@lightdotso/ui";
 import { cn, refineNumberFormat } from "@lightdotso/utils";
-import { SparkAreaChart } from "@tremor/react";
+import { AreaChart } from "@tremor/react";
 import type { FC } from "react";
 import type { Address } from "viem";
 
@@ -81,8 +81,7 @@ export const WalletOverviewBannerSparkline: FC<
               : ""}
           </span>
         </span>
-        <SparkAreaChart
-          // @ts-expect-error
+        <AreaChart
           showAnimation
           data={[...portfolio.balances].reverse()}
           categories={["balance"]}
@@ -92,7 +91,7 @@ export const WalletOverviewBannerSparkline: FC<
               ? "emerald"
               : "red",
           ]}
-          className="lg;w-full h-8 w-32"
+          className="lg:w-full h-8 w-32"
         />
       </div>
     </div>

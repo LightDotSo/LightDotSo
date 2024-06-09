@@ -33,7 +33,7 @@ export const SOCIAL_LINKS: {
 } = {
   [Social.CAL]: "https://cal.com/lightdotso",
   [Social.CAL_SHUN]: "https://cal.com/shunkakinoki/support",
-  [Social.DISCORD]: "https://discord.gg/Vgfxg2Rcy8",
+  [Social.DISCORD]: "https://discord.gg/LightDotSo",
   [Social.GITHUB]: "https://github.com/LightDotSo/LightDotSo",
   [Social.MIRROR]: "https://mirror.xyz/lightdotso.eth",
   [Social.NOTION]: "https://lightdotso.notion.site",

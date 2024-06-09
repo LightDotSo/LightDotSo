@@ -1,0 +1,5 @@
+ignores:
+  - "@lightdotso/tsconfig"
+  - "@types/node"
+  - "typescript"
+  - "yaml"

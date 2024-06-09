@@ -44,7 +44,7 @@ export function useTabs() {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { wallet: walletAddress } = useAuth();
+  const { wallet: walletAddress, address: connectedAddress } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Operation Hooks
@@ -153,12 +153,18 @@ export function useTabs() {
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
-  // If the user is not an owner, show the banner
   useEffect(() => {
-    if (walletAddress && !ownersAddresses.includes(walletAddress)) {
+    // If the user is not an owner, show the banner
+    if (connectedAddress && !ownersAddresses.includes(connectedAddress)) {
+      toggleIsNotOwner();
+      return;
+    }
+
+    // If the user hasn't connected their wallet, show the banner
+    if (walletAddress && !connectedAddress) {
       toggleIsNotOwner();
     }
-  }, [ownersAddresses, toggleIsNotOwner, walletAddress]);
+  }, [ownersAddresses, toggleIsNotOwner, walletAddress, connectedAddress]);
 
   // Refetch the wallet features when the wallet address changes
   useEffect(() => {
