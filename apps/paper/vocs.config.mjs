@@ -23,19 +23,19 @@ export default defineConfig({
   description: "Technical specifications for Light.",
   title: "Lightpaper",
   titleTemplate: "%s | Lightpaper",
-  head() {
-    return (
-      // eslint-disable-nextline react/jsx-no-useless-fragment
-      <>
-        <link
-          rel="icon"
-          href="https://light.so/favicon.ico"
-          type="image/x-icon"
-          sizes="255x256"
-        />
-      </>
-    );
-  },
+  // head() {
+  //   return (
+  //     // eslint-disable-nextline react/jsx-no-useless-fragment
+  //     <>
+  //       <link
+  //         rel="icon"
+  //         href="https://light.so/favicon.ico"
+  //         type="image/x-icon"
+  //         sizes="255x256"
+  //       />
+  //     </>
+  //   );
+  // },
   editLink: {
     pattern:
       "https://github.com/LightDotSo/LightDotSo/edit/main/apps/paper/pages/:path",
