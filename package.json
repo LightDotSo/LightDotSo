@@ -77,7 +77,7 @@
     "wagmi:generate": "wagmi generate"
   },
   "dependencies": {
-    "next": "14.2.3",
+    "next": "15.0.0-canary.20",
     "solc": "0.8.18"
   },
   "devDependencies": {
@@ -128,7 +128,7 @@
     "dotenv-cli": "^7.4.2",
     "esbuild": "^0.21.4",
     "eslint": "^9.4.0",
-    "eslint-config-next": "^15.0.0-canary.20",
+    "eslint-config-next": "15.0.0-canary.20",
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-turbo": "^2.0.3",
     "eslint-import-resolver-typescript": "^3.6.1",
@@ -155,11 +155,11 @@
     "oxlint": "^0.4.3",
     "postcss": "^8.4.38",
     "prettier": "^3.3.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "19.0.0-rc-cc1ec60d0d-20240607",
+    "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
     "rimraf": "^5.0.7",
     "solhint": "^5.0.1",
-    "solidity-docgen": "^0.6.0-beta.36",
+    "solidity-docgen": "0.6.0-beta.36",
     "sort-package-json": "^2.10.0",
     "tailwindcss": "^3.4.4",
     "ts-node": "^10.9.2",
