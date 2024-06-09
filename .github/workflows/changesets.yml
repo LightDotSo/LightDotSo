@@ -51,8 +51,8 @@ jobs:
       - name: Changesets Release
         uses: changesets/action@v1
         with:
-          commit: "chore: changesets version package"
-          title: "chore: changesets pr"
+          commit: "chore: changesets version [skip deploy]"
+          title: "chore: changesets version"
           version: pnpm run changeset:version
           publish: pnpm run changeset:publish
         env:
