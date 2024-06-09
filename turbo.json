@@ -1,5 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "remoteCache": { "signature": true },
   "tasks": {
     "//#build": {
       "inputs": [
@@ -74,6 +75,5 @@
     "tsc": {
       "dependsOn": ["^build", "^tsc"]
     }
-  },
-  "remoteCache": { "signature": true }
+  }
 }
