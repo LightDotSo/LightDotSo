@@ -16,6 +16,7 @@ import { paginationParser } from "@lightdotso/nuqs";
 import { getActivities, getActivitiesCount } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
 import { Result } from "neverthrow";
+import { unstable_noStore } from "next/cache";
 import { notFound } from "next/navigation";
 import type { Address } from "viem";
 import { verifyUserId } from "@/auth";
@@ -35,6 +36,12 @@ export const handler = async (
   // ---------------------------------------------------------------------------
 
   const userId = await verifyUserId();
+
+  // ---------------------------------------------------------------------------
+  // Cache
+  // ---------------------------------------------------------------------------
+
+  unstable_noStore();
 
   // ---------------------------------------------------------------------------
   // Validators
