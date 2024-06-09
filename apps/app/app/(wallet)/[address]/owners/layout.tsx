@@ -72,4 +72,5 @@ export default function OwnersLayout({ children }: OwnersLayoutProps) {
 // Data
 // -----------------------------------------------------------------------------
 
+export const experimental_ppr = false;
 export const revalidate = 300;
