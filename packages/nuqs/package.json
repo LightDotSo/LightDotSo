@@ -30,11 +30,11 @@
     "@lightdotso/schemas": "workspace:*",
     "@tanstack/react-table": "^8.17.3",
     "nuqs": "^1.17.4",
-    "viem": "^2.12.1"
+    "viem": "^2.13.7"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.12.12",
+    "@types/node": "^20.14.2",
     "typescript": "^5.4.5"
   },
   "publishConfig": {

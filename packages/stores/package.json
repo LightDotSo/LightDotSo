@@ -30,18 +30,18 @@
     "@lightdotso/data": "workspace:*",
     "@lightdotso/schemas": "workspace:*",
     "@tanstack/react-table": "^8.17.3",
-    "@types/lodash": "^4.17.4",
+    "@types/lodash": "^4.17.5",
     "lodash": "^4.17.21",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.51.5",
-    "viem": "^2.12.1",
+    "viem": "^2.13.7",
     "zod": "^3.23.8",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.12.12",
+    "@types/node": "^20.14.2",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.4.5"
