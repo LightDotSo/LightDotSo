@@ -39,7 +39,7 @@ export const NftImage: FC<NftImageProps> = ({
   nft: {
     contract_address,
     image_url,
-    collection: { description },
+    collection,
     previews: { blurhash, image_large_url },
     extra_metadata,
   },
@@ -78,7 +78,7 @@ export const NftImage: FC<NftImageProps> = ({
           // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
           image_url ?? image_large_url ?? extra_metadata?.image_original_url!
         }
-        alt={description ?? contract_address!}
+        alt={collection?.description ?? contract_address!}
         onLoad={() => setIsImageLoaded(true)}
       />
     </div>

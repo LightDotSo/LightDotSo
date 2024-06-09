@@ -50,7 +50,7 @@ export const getNftsByOwner = async (
 
   return ResultAsync.fromPromise(
     zodFetch(
-      `${getSimplehashClient()}/v0/nfts/owners_v2?spam_score__lte=${spamScore}&chains=${chains}&wallet_addresses=${address}&limit=${limit}${
+      `${getSimplehashClient()}/v0/nfts/owners_v2?filters=spam_score__lte=${spamScore}&chains=${chains}&wallet_addresses=${address}&limit=${limit}${
         cursor ? `&cursor=${cursor}` : ""
       }`,
       nftsByOwnerSchema,

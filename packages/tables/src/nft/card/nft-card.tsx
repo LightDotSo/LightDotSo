@@ -102,9 +102,9 @@ export const NftCard: FC<NftCardProps> = ({
           <Link
             href={`/${!isDemo ? wallet : "demo"}/send?transfers=0:_:_:${getChainIdBySimplehashChainName(
               nft.chain!,
-            )}:${nft.contract.type?.toLowerCase()}:${nft.contract_address}|${
+            )}:${nft.contract?.type?.toLowerCase()}:${nft.contract_address}|${
               nft.token_id
-            }|${nft.contract.type?.toLowerCase() === "erc721" ? 1 : 0}`}
+            }|${nft.contract?.type?.toLowerCase() === "erc721" ? 1 : 0}`}
           >
             Send
           </Link>

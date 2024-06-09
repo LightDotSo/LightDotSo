@@ -897,7 +897,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                                     }
 
                                     const assetType =
-                                      nft.contract.type?.toLowerCase();
+                                      nft.contract?.type?.toLowerCase();
                                     form.setValue("assetType", assetType);
 
                                     if (assetType === "erc721") {
@@ -948,7 +948,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                                     <Input
                                       disabled={
                                         nft
-                                          ? nft.contract.type === "erc721"
+                                          ? nft.contract?.type === "erc721"
                                           : false
                                       }
                                       {...field}
