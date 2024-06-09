@@ -32,7 +32,7 @@ type ToasterProps = ComponentProps<typeof SonnerToaster>;
 // -----------------------------------------------------------------------------
 
 const toastVariants = cva(
-  "pointer-events-auto relative flex w-full items-center space-x-4 overflow-hidden rounded-md p-4 shadow-xl transition-all",
+  "flex w-full items-center space-x-4 overflow-hidden rounded-md p-4 shadow-xl",
   {
     variants: {
       intent: {
@@ -91,9 +91,9 @@ const Toaster = () => {
           description: "text-sm opacity-90 text-ellipsis overflow-hidden",
           loader: "text-text",
           actionButton:
-            "group-[.toast]:ring-1 group-[.toast]:ring-border-inverse-strongest group-[.toast]:text-text-inverse",
+            "text-xs px-1.5 py-1 rounded-md group-[.toast]:bg-text-inverse group-[.toast]:ring-1 group-[.toast]:ring-border-inverse-strongest group-[.toast]:text-text-primary",
           cancelButton:
-            "group-[.toast]:border group-[.toast]:text-text-inverse",
+            "text-xs px-1.5 py-1 rounded-md group-[.toast]:bg-background-overlay group-[.toast]:border group-[.toast]:text-text-inverse",
           closeButton: "!hidden",
           success: toastVariants({ intent: "success" }),
           error: toastVariants({ intent: "destructive" }),
