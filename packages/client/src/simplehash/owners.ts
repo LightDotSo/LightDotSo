@@ -28,11 +28,13 @@ export const getNftsByOwner = async (
     limit = 10,
     cursor,
     isTestnet,
+    spamScore = 90,
   }: {
     address: string;
     limit: number | null;
     cursor: string | null;
     isTestnet: boolean | null;
+    spamScore?: number | null;
   },
   clientType?: ClientType,
 ) => {
@@ -48,7 +50,7 @@ export const getNftsByOwner = async (
 
   return ResultAsync.fromPromise(
     zodFetch(
-      `${getSimplehashClient()}/v0/nfts/owners?chains=${chains}&wallet_addresses=${address}&limit=${limit}${
+      `${getSimplehashClient()}/v0/nfts/owners_v2?spam_score__lte=${spamScore}&chains=${chains}&wallet_addresses=${address}&limit=${limit}${
         cursor ? `&cursor=${cursor}` : ""
       }`,
       nftsByOwnerSchema,

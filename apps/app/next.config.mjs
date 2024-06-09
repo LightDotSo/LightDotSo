@@ -42,7 +42,6 @@ const nextConfig = {
   },
   experimental: {
     ppr: "incremental",
-    instrumentationHook: true,
     // esmExternals: "loose",
     outputFileTracingExcludes: {
       "*": [
