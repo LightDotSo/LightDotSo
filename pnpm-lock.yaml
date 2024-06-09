@@ -1447,6 +1447,9 @@ importers:
 
   apps/subgraph:
     dependencies:
+      '@goldskycom/cli':
+        specifier: ^8.10.0
+        version: 8.10.0
       '@graphprotocol/graph-cli':
         specifier: ^0.73.0
         version: 0.73.0(@swc/core@1.5.25(@swc/helpers@0.5.11))(@types/node@20.14.2)(bufferutil@4.0.8)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.4.5)
@@ -5416,6 +5419,10 @@ packages:
 
   '@gar/promisify@1.1.3':
     resolution: {integrity: sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==}
+
+  '@goldskycom/cli@8.10.0':
+    resolution: {integrity: sha512-ACe2I14aic22j0lcIWkA5OBbdCjl2PPyspgRFOdom4EEQKiWcKAmXiowrqRjjyf6PXJY85TNZC4S6vYgIfvBMA==}
+    hasBin: true
 
   '@graphprotocol/graph-cli@0.73.0':
     resolution: {integrity: sha512-g+EapDRvxhRjMccnUJE8gBRGDIF6mXqtv8g0tzzixVClw/BezBni8QXtXMHs4Gg0G2UnerJJLp5ZQgZqtHWnmg==}
@@ -11482,6 +11489,10 @@ packages:
   csv@5.5.3:
     resolution: {integrity: sha512-QTaY0XjjhTQOdguARF0lGKm5/mEq9PD9/VhZZegHDIBq2tQwgNpHc3dneD4mGo2iJs+fTKv5Bp0fZ+BRuY3Z0g==}
     engines: {node: '>= 0.1.90'}
+
+  cuid@2.1.8:
+    resolution: {integrity: sha512-xiEMER6E7TlTPnDxrM4eRiC6TRgjNX9xzEZ5U/Se2YJKr7Mq4pJn/2XEHjl3STcSh96GmkHPcBXLES8M29wyyg==}
+    deprecated: Cuid and other k-sortable and non-cryptographic ids (Ulid, ObjectId, KSUID, all UUIDs) are all insecure. Use @paralleldrive/cuid2 instead.
 
   cytoscape-cose-bilkent@4.1.0:
     resolution: {integrity: sha512-wgQlVIUJF13Quxiv5e1gstZ08rnZj2XaLHGoFMYXz7SkNfCDOOteKBE6SYRfA9WxxI/iBc3ajfDoc6hb/MRAHQ==}
@@ -18053,6 +18064,10 @@ packages:
   reading-time@1.5.0:
     resolution: {integrity: sha512-onYyVhBNr4CmAxFsKS7bz+uTLRakypIe4R+5A824vBSkQy/hB3fZepoVEf8OVAxzLvK+H/jm9TzpI3ETSm64Kg==}
 
+  readline-sync@1.4.10:
+    resolution: {integrity: sha512-gNva8/6UAe8QYepIQH/jQ2qn91Qj0B9sYjMBBs3QOB8F2CXcKgLxQaJRP76sWVRQt+QU+8fAkCbCvjjMFu7Ycw==}
+    engines: {node: '>= 0.8.0'}
+
   readline@1.3.0:
     resolution: {integrity: sha512-k2d6ACCkiNYz222Fs/iNze30rRJ1iIicW7JuX/7/cozvih6YCkFZH+J6mAFDVgv0dRBaAyr4jDqC95R2y4IADg==}
 
@@ -19470,6 +19485,9 @@ packages:
   time-span@4.0.0:
     resolution: {integrity: sha512-MyqZCTGLDZ77u4k+jqg4UlrzPTPZ49NDlaekU6uuFaJLzPIN1woaRXCbGeqOfxwc3Y37ZROGAJ614Rdv7Olt+g==}
     engines: {node: '>=10'}
+
+  timeago.js@4.0.2:
+    resolution: {integrity: sha512-a7wPxPdVlQL7lqvitHGGRsofhdwtkoSXPGATFuSOA2i1ZNQEPLrGnj68vOp2sOJTCFAQVXPeNMX/GctBaO9L2w==}
 
   timeout-abort-controller@2.0.0:
     resolution: {integrity: sha512-2FAPXfzTPYEgw27bQGTHc0SzrbmnU2eso4qo172zMLZzaGqeu09PFa5B2FCUHM1tflgRqPgn5KQgp6+Vex4uNA==}
@@ -23402,6 +23420,13 @@ snapshots:
   '@fluent/syntax@0.19.0': {}
 
   '@gar/promisify@1.1.3': {}
+
+  '@goldskycom/cli@8.10.0':
+    dependencies:
+      cuid: 2.1.8
+      parse-duration: 1.1.0
+      readline-sync: 1.4.10
+      timeago.js: 4.0.2
 
   '@graphprotocol/graph-cli@0.73.0(@swc/core@1.5.25(@swc/helpers@0.5.11))(@types/node@20.14.2)(bufferutil@4.0.8)(encoding@0.1.13)(node-fetch@2.7.0(encoding@0.1.13))(typescript@5.4.5)':
     dependencies:
@@ -32158,6 +32183,8 @@ snapshots:
       csv-stringify: 5.6.5
       stream-transform: 2.1.3
 
+  cuid@2.1.8: {}
+
   cytoscape-cose-bilkent@4.1.0(cytoscape@3.29.2):
     dependencies:
       cose-base: 1.0.3
@@ -40734,6 +40761,8 @@ snapshots:
 
   reading-time@1.5.0: {}
 
+  readline-sync@1.4.10: {}
+
   readline@1.3.0: {}
 
   real-require@0.1.0: {}
@@ -42532,6 +42561,8 @@ snapshots:
   time-span@4.0.0:
     dependencies:
       convert-hrtime: 3.0.0
+
+  timeago.js@4.0.2: {}
 
   timeout-abort-controller@2.0.0:
     dependencies:
