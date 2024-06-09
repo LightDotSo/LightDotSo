@@ -15,7 +15,6 @@
   "scripts": {
     "analyze": "cross-env ANALYZE=true next build || true",
     "build": "next build || true",
-    "build:turbo": "dotenv -- turbo run build --concurrency 8 --token ${TURBO_API_TOKEN}",
     "dev": "concurrently \"pnpm:dev:*\"",
     "dev:inngest": "inngest dev -u http://localhost:3005/api/inngest --port 8288",
     "dev:next": "next dev --port 3005",

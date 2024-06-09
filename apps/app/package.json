@@ -15,7 +15,6 @@
   "scripts": {
     "analyze": "cross-env ANALYZE=true next build || true",
     "build": "next build || true",
-    "build:turbo": "dotenv -- turbo run build --concurrency 8 --token ${TURBO_API_TOKEN}",
     "dev": "next dev --port 3001",
     "lint": "next lint || true",
     "msw:init": "msw init public",

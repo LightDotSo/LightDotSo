@@ -56,7 +56,6 @@ pub async fn covalent_consumer(
             None,
         )
         .await?;
-        info!(?balances);
 
         // Replace the addresses of `0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee` with
         // `0x0000000000000000000000000000000000000000` This is because Covalent uses the
@@ -64,6 +63,7 @@ pub async fn covalent_consumer(
         for item in &mut balances.data.items {
             if item.contract_address ==
                 Some("0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee".to_string()) ||
+                // Polygon uses `0x0000000000000000000000000000000000001010` for MATIC
                 item.contract_address ==
                     Some("0x0000000000000000000000000000000000001010".to_string())
             {
@@ -80,6 +80,7 @@ pub async fn covalent_consumer(
             .into_iter()
             .filter(|item| item.contract_address.is_some() && item.contract_decimals.is_some())
             .collect::<Vec<_>>();
+        info!("balances: {:?}", balances);
 
         // Create the tokens
         let res = db
@@ -142,14 +143,17 @@ pub async fn covalent_consumer(
 
         // Flatten results and return early if there were any errors
         let token_data: Result<Vec<_>, _> = token_data_results.into_iter().collect();
-
         // If there was any error during creating token data, return early
         let token_data = token_data?;
+        // Print the token data
+        for data in &token_data {
+            info!("data: {:?}", data.1);
+        }
 
         // Create a token price for each token
         db.token_price().create_many(token_data).exec().await?;
 
-        let _: Result<()> = db
+        let res: Result<i64> = db
             ._transaction()
             .run(|client| async move {
                 client
@@ -167,7 +171,7 @@ pub async fn covalent_consumer(
                     .exec()
                     .await?;
 
-                client
+                let latest_balances = client
                     .wallet_balance()
                     .create_many(
                         balances
@@ -217,9 +221,10 @@ pub async fn covalent_consumer(
                     .exec()
                     .await?;
 
-                Ok(())
+                Ok(latest_balances)
             })
             .await;
+        info!("res: {:?}", res?)
     }
 
     Ok(())
