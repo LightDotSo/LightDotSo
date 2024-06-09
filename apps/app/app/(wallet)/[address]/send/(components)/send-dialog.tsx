@@ -1014,7 +1014,7 @@ export const SendDialog: FC<SendDialogProps> = ({
         form.setValue(`transfers.${index}.asset.quantity`, 0);
         // If the token is an erc721 token meaning the quantity must be 1
       } else if (
-        nft.contract.type?.toLowerCase() === "erc721" &&
+        nft.contract?.type?.toLowerCase() === "erc721" &&
         quantity !== 1
       ) {
         // Show an error on the message
@@ -1024,7 +1024,7 @@ export const SendDialog: FC<SendDialogProps> = ({
         });
         // If the token is an erc1155 token meaning the quantity must be less than or equal to the token count
       } else if (
-        nft.contract.type?.toLowerCase() === "erc1155" &&
+        nft.contract?.type?.toLowerCase() === "erc1155" &&
         // Get the owner quantity from the owners array
         (nft.owners?.find(owner => owner.owner_address === address)?.quantity ??
           1) < quantity
@@ -1581,7 +1581,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                 if (nft) {
                                                   // Get the token quantity of the owner
                                                   const nftQuantity =
-                                                    nft.contract.type?.toLowerCase() ===
+                                                    nft.contract?.type?.toLowerCase() ===
                                                     "erc1155"
                                                       ? // Get the quantity from the owner array
                                                         nft.owners?.find(
@@ -1690,7 +1690,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                   }
                                                   form.setValue(
                                                     `transfers.${index}.assetType`,
-                                                    nft.contract.type?.toLowerCase() ===
+                                                    nft.contract?.type?.toLowerCase() ===
                                                       "erc721"
                                                       ? "erc721"
                                                       : "erc1155",
