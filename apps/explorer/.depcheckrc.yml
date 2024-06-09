@@ -35,3 +35,6 @@ ignores:
   - "@lightdotso/params"
   - "@next/bundle-analyzer"
   - "@lightdotso/states"
+  - "@sentry-internal/feedback"
+  - "@sentry/react"
+  - "@sentry/integrations"

@@ -152,7 +152,7 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
           </ButtonIcon>
           <ButtonIcon asChild size="xs" variant="link" intent="info">
             <a
-              href={SOCIAL_LINKS["Telegram Support"]}
+              href={SOCIAL_LINKS["Telegram"]}
               target="_blank"
               rel="noopener noreferrer"
             >

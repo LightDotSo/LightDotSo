@@ -47,3 +47,6 @@ ignores:
   - "@upstash/ratelimit"
   - "@upstash/redis"
   - "pusher-js"
+  - "@sentry-internal/feedback"
+  - "@sentry/react"
+  - "@sentry/integrations"

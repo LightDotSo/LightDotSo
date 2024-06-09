@@ -9,7 +9,7 @@
 [apache-url]: LICENSE.md
 [mit-url]: LICENSE-MIT.md
 [tg-badge]: https://img.shields.io/endpoint?color=neon&logo=telegram&label=chat&style=flat-square&url=https%3A%2F%2Ftg.sumanjay.workers.dev%2FLightDotSoSupport
-[tg-url]: https://t.me/LightDotSoSupport
+[tg-url]: https://t.me/LightDotSo
 
 ## EVM chain abstraction protocol unifying all chains as one.
 

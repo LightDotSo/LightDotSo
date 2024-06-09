@@ -50,7 +50,7 @@ cargo-setup: ## Install Cargo dependencies.
 ci-setup: solc-setup ## Install CI dependencies.
 
 .PHONY: docker-setup
-docker-setup: solc-setup ## Install docker dependencies.
+docker-setup: cargo-setup solc-setup ## Install docker dependencies.
 
 .PHONY: ios-setup
 ios-setup: ## Install iOS dependencies.
@@ -155,7 +155,7 @@ cargo-clean: cargo-setup ## Clean cargo.
 
 .PHONY: cargo-fix
 cargo-fmt: cargo-setup ## Fix cargo.
-	cargo +nightly fmt --all
+	cargo +nightly fmt --all || true
 
 ##@ Contracts
 contracts: contracts-size contracts-storage contracts-wagmi ## Runs all the contract generation scripts
@@ -223,7 +223,7 @@ docker-compose-restart: ## Restart the docker-compose.
 cargo-generate:
 	cargo generate
 	cargo fix --lib --allow-no-vcs -p lightdotso-prisma
-	cargo +nightly fmt
+	cargo +nightly fmt || true
 
 .PHONY: prisma
 prisma: cargo-generate ## Add clippy ignore.

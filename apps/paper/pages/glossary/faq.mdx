@@ -21,3 +21,22 @@ The Light Layer enables several powerful functionalities:
   It supports complex transactions like conditional or recurring transactions and other arbitrary function calls on the underlying chains.
 - **Programmable Atomicity**:
   Users can tailor their own execution, security, and settlement mechanisms to fit their preferences, achieving the desired outcomes within the specified framework.
+
+### What are the fundamental differences between Light Layer and other intent-based solutions?
+
+We are strictly focused on orchestration and verification of cross-chain states based on user-defined intents.
+Our modular approach that allows users to define their own execution logic, security mechanisms, and settlement preferences.
+This flexibility allows us to move faster and adapt to the rapidly evolving blockchain landscape, ensuring that users can achieve their desired outcomes with minimal friction.
+
+### How does verification work in the Light Layer?
+
+There needs to be a mechanism to verify the preconditions of the escrow contract to have a consistent state across all chains.
+Unlike DSNs in Layer Zero which verifies the destination chain's state, the Light Layer verifies the preconditions of chains requested by the user to maintain a single source of truth.
+e.g. Global balance of the user across all chains can be showin in the interface, but should not be considered as the source of truth.
+
+### Why do you need a Light Layer for expressing preferences?
+
+It's necessary because the input conditions in which assets are pulled from the user and the secutity mechanisms should be coupled with the user's preferences.
+Again, Intents are declarative that specifies the OUTCOME of the transaction, not the process of how it gets there. (Transactions are imperative, meaning you have to specify the HOW)
+Preferences are the conditions that the user wants to be met before the transaction is executed, the WHEN requirements.
+Since these two are tightly coupled, it's necessary to have a layer that can handle both and trustlessly execute the transaction based on the user's preferences.

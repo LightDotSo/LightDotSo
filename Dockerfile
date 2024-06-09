@@ -30,7 +30,7 @@ RUN apt-get update && \
   rm -rf /var/lib/apt/lists/*
 
   # Build the prisma dep.
-RUN npm install -g turbo@1.10.11 pnpm@8.6.9 yarn@1.22.19
+RUN npm install -g turbo@2.0.3 pnpm@9.1.0 yarn@1.22.19
 
 # Install sccache dependencies.
 ENV SCCACHE_VERSION=0.5.4
