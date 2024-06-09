@@ -96,6 +96,7 @@ lazy_static! {
 
         // Testnet
         m.insert(80001, "lightdotso/mumbai/api".to_string());
+        m.insert(80002, "lightdotso/polygon-amoy/api".to_string());
         m.insert(84532, "lightdotso/base-sepolia/api".to_string());
         m.insert(421614, "lightdotso/arbitrum-sepolia/api".to_string());
         m.insert(11155111, "lightdotso/sepolia/api".to_string());
