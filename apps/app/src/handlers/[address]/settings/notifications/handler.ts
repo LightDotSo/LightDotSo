@@ -50,7 +50,7 @@ export const handler = async (params: { address: string }) => {
     user_id: userId,
   });
 
-  // eslint-disable-next-line no-single-promise-in-promise-methods
+  // eslint-disable-next-line unicorn/no-single-promise-in-promise-methods
   const [walletNotifications] = await Promise.all([walletNotificationsPromise]);
 
   // ---------------------------------------------------------------------------

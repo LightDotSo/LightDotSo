@@ -55,6 +55,7 @@ module.exports = {
     fixupPluginRules("react-hooks"),
     fixupPluginRules("tailwindcss"),
     fixupPluginRules("turbo"),
+    fixupPluginRules("unicorn"),
   ],
   rules: {
     // "import/newline-after-import": "error",
