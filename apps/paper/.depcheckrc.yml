@@ -3,3 +3,4 @@ ignores:
   - "@types/node"
   - "typescript"
   - "yaml"
+  - "@types/react"
