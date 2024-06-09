@@ -42,11 +42,11 @@
       "outputs": ["crates/prisma/src/lib.rs"]
     },
     "//#test": {
-      "dependsOn": ["build:test"],
+      "dependsOn": ["^build"],
       "env": ["ETH_RPC_MAINNET", "VITEST_POOL_ID"]
     },
     "//#test:coverage": {
-      "dependsOn": ["build:test"],
+      "dependsOn": ["^build"],
       "env": ["ETH_RPC_MAINNET", "VITEST_POOL_ID"],
       "outputs": ["coverage/**"]
     },
