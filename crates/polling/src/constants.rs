@@ -15,9 +15,9 @@
 use lazy_static::lazy_static;
 
 // The graph namesapce
-lazy_static! {
-    pub static ref GRAPH: String = "graph".to_string();
-}
+// lazy_static! {
+//     pub static ref GRAPH: String = "graph".to_string();
+// }
 
 // The satsuma namesapce
 lazy_static! {
