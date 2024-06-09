@@ -44,7 +44,6 @@ install: $(INSTALL_PARAMS) ## Install all dependencies.
 .PHONY: cargo-setup
 cargo-setup: ## Install Cargo dependencies.
 	rustup toolchain install nightly
-	rustup install nightly-x86_64-unknown-linux-gnu
 	rustup component add rustfmt --toolchain nightly
 
 .PHONY: ci-setup
@@ -156,7 +155,7 @@ cargo-clean: cargo-setup ## Clean cargo.
 
 .PHONY: cargo-fix
 cargo-fmt: cargo-setup ## Fix cargo.
-	cargo +nightly fmt --all
+	cargo +nightly fmt --all || true
 
 ##@ Contracts
 contracts: contracts-size contracts-storage contracts-wagmi ## Runs all the contract generation scripts
