@@ -44,9 +44,11 @@
     "@tanstack/react-table": "^8.17.3",
     "@tremor/react": "^3.17.2",
     "lucide-react": "^0.390.0",
-    "next": "^15.0.0-canary.20",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "next": "15.0.0-canary.20",
+    "react": "19.0.0-rc-cc1ec60d0d-20240607",
+    "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
+    "react-is": "19.0.0-rc-cc1ec60d0d-20240607",
+    "recharts": "2.13.0-alpha.4",
     "viem": "^2.13.7"
   },
   "devDependencies": {

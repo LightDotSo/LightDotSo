@@ -42,6 +42,7 @@ export const handler = async (params: { address: string }) => {
     address: params.address as Address,
   });
 
+  // eslint-disable-next-line unicorn/no-single-promise-in-promise-methods
   const [walletBilling] = await Promise.all([walletBillingPromise]);
 
   // ---------------------------------------------------------------------------

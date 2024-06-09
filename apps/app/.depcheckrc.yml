@@ -50,3 +50,5 @@ ignores:
   - "@sentry-internal/feedback"
   - "@sentry/react"
   - "@sentry/integrations"
+  - react-is
+  - recharts

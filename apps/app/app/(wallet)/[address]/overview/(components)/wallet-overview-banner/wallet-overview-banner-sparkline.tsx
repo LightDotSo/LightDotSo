@@ -92,7 +92,7 @@ export const WalletOverviewBannerSparkline: FC<
               ? "emerald"
               : "red",
           ]}
-          className="lg;w-full h-8 w-32"
+          className="h-8 w-32 lg:w-full"
         />
       </div>
     </div>

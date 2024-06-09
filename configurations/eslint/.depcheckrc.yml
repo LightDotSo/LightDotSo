@@ -16,3 +16,4 @@ ignores:
   - eslint-plugin-simple-import-sort
   - eslint-plugin-tailwindcss
   - eslint-plugin-neverthrow
+  - eslint-plugin-unicorn

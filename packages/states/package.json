@@ -32,9 +32,9 @@
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
     "@tanstack/react-query": "^5.40.1",
-    "next": "^15.0.0-canary.20",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "next": "15.0.0-canary.20",
+    "react": "19.0.0-rc-cc1ec60d0d-20240607",
+    "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
     "viem": "^2.13.7"
   },
   "devDependencies": {

@@ -27,7 +27,7 @@
     "@babel/core": "^7.24.7",
     "@lightdotso/prisma": "workspace:*",
     "@lightdotso/redis": "workspace:*",
-    "@next/bundle-analyzer": "^15.0.0-canary.20",
+    "@next/bundle-analyzer": "15.0.0-canary.20",
     "@prisma/nextjs-monorepo-workaround-plugin": "^5.15.0",
     "@sentry-internal/feedback": "^8.8.0",
     "@sentry/integrations": "^7.114.0",
@@ -40,9 +40,9 @@
     "@upstash/redis": "^1.31.3",
     "critters": "^0.0.22",
     "inngest": "^3.19.12",
-    "next": "^15.0.0-canary.20",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "next": "15.0.0-canary.20",
+    "react": "19.0.0-rc-cc1ec60d0d-20240607",
+    "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
     "zod": "^3.23.8"
   },
   "devDependencies": {

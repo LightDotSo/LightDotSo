@@ -23,19 +23,19 @@ export default defineConfig({
   description: "Technical specifications for Light.",
   title: "Lightpaper",
   titleTemplate: "%s | Lightpaper",
-  head() {
-    return (
-      // eslint-disable-nextline react/jsx-no-useless-fragment
-      <>
-        <link
-          rel="icon"
-          href="https://light.so/favicon.ico"
-          type="image/x-icon"
-          sizes="255x256"
-        />
-      </>
-    );
-  },
+  // head() {
+  //   return (
+  //     // eslint-disable-nextline react/jsx-no-useless-fragment
+  //     <>
+  //       <link
+  //         rel="icon"
+  //         href="https://light.so/favicon.ico"
+  //         type="image/x-icon"
+  //         sizes="255x256"
+  //       />
+  //     </>
+  //   );
+  // },
   editLink: {
     pattern:
       "https://github.com/LightDotSo/LightDotSo/edit/main/apps/paper/pages/:path",
@@ -62,7 +62,7 @@ export default defineConfig({
   socials: [
     {
       icon: "discord",
-      link: "https://discord.gg/Vgfxg2Rcy8",
+      link: "https://discord.gg/LightDotSo",
     },
     {
       icon: "github",
@@ -72,6 +72,10 @@ export default defineConfig({
     //   icon: "warpcast",
     //   link: "https://warpcast.com/~/channel/lightdotso",
     // },
+    {
+      icon: "telegram",
+      link: "https://t.me/LightDotSo",
+    },
     {
       icon: "x",
       link: "https://x.com/LightDotSo",
