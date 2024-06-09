@@ -64,3 +64,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
     </BannerSection>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Config
+// -----------------------------------------------------------------------------
+
+export const experimental_ppr = true;
+export const revalidate = 300;

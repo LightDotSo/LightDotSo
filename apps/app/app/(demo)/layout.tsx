@@ -53,3 +53,10 @@ export default function RootLayout({ children, op }: RootLayoutProps) {
     </>
   );
 }
+
+// -----------------------------------------------------------------------------
+// Config
+// -----------------------------------------------------------------------------
+
+export const experimental_ppr = true;
+export const revalidate = 300;

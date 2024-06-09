@@ -41,7 +41,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   experimental: {
-    ppr: true,
+    ppr: "incremental",
     instrumentationHook: true,
     // esmExternals: "loose",
     outputFileTracingExcludes: {
