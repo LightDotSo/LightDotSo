@@ -17,7 +17,7 @@
 import { useQueryPortfolio } from "@lightdotso/query";
 import { Number } from "@lightdotso/ui";
 import { cn, refineNumberFormat } from "@lightdotso/utils";
-import { AreaChart } from "@tremor/react";
+import { SparkAreaChart } from "@tremor/react";
 import type { FC } from "react";
 import type { Address } from "viem";
 
@@ -81,7 +81,8 @@ export const WalletOverviewBannerSparkline: FC<
               : ""}
           </span>
         </span>
-        <AreaChart
+        <SparkAreaChart
+          // @ts-expect-error
           showAnimation
           data={[...portfolio.balances].reverse()}
           categories={["balance"]}

@@ -62,3 +62,5 @@ ignores:
   - msw-storybook-addon
   - "@lightdotso/msw"
   - "@lightdotso/forms"
+  - react-is
+  - recharts
