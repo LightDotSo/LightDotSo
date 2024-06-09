@@ -19,3 +19,4 @@ ignores:
   - tailwindcss
   - typescript
   - "@next/bundle-analyzer"
+  - "@sentry/integrations"

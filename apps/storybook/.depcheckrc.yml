@@ -62,3 +62,4 @@ ignores:
   - msw-storybook-addon
   - "@lightdotso/msw"
   - "@lightdotso/forms"
+  - "@sentry/integrations"

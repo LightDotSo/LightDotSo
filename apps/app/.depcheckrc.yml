@@ -49,3 +49,4 @@ ignores:
   - "pusher-js"
   - "@sentry-internal/feedback"
   - "@sentry/react"
+  - "@sentry/integrations"

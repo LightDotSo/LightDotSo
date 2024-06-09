@@ -20,3 +20,4 @@ ignores:
   - "@lightdotso/eslint-config"
   - "@lightdotso/styles"
   - "@next/bundle-analyzer"
+  - "@sentry/integrations"

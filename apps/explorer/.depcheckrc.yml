@@ -37,3 +37,4 @@ ignores:
   - "@lightdotso/states"
   - "@sentry-internal/feedback"
   - "@sentry/react"
+  - "@sentry/integrations"

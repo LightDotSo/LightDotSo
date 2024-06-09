@@ -18,3 +18,4 @@ ignores:
   - typescript
   - motion
   - next-themes
+  - "@sentry/integrations"

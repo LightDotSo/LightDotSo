@@ -26,3 +26,4 @@ ignores:
   - "@upstash/kafka"
   - "@upstash/ratelimit"
   - "@upstash/redis"
+  - "@sentry/integrations"
