@@ -1,7 +1,7 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "extends": ["//"],
-  "pipeline": {
+  "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "env": ["NODE_ENV", "UPSTASH_REDIS_REST_URL", "UPSTASH_REST_API_TOKEN"],

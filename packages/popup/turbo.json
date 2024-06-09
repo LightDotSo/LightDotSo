@@ -1,7 +1,7 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "extends": ["//"],
-  "pipeline": {
+  "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "env": ["CI", "JITSU_JS_KEY", "NODE_ENV", "VERCEL"],
