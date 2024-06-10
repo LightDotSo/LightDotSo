@@ -56,6 +56,7 @@ export const NotificationComboDialog: FC = () => {
     limit: 10,
     offset: 0,
   });
+
   const { notificationsCount } = useQueryNotificationsCount({
     address: wallet,
   });

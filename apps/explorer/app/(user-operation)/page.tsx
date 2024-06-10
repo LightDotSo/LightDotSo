@@ -70,6 +70,7 @@ export default async function Page({ searchParams }: PageProps) {
     }).queryKey,
     userOperations,
   );
+
   queryClient.setQueryData(
     queryKeys.user_operation.listCount({
       address: null,

@@ -73,6 +73,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     }).queryKey,
     activities,
   );
+
   queryClient.setQueryData(
     queryKeys.activity.listCount({
       address: params.address as Address,

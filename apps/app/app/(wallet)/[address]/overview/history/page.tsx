@@ -67,6 +67,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     queryKeys.wallet.settings({ address: params.address as Address }).queryKey,
     walletSettings,
   );
+
   queryClient.setQueryData(
     queryKeys.transaction.list({
       address: params.address as Address,
@@ -76,6 +77,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     }).queryKey,
     transactions,
   );
+
   queryClient.setQueryData(
     queryKeys.transaction.listCount({
       address: params.address as Address,
