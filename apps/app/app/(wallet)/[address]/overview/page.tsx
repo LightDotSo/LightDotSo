@@ -16,6 +16,7 @@ import { OVERVIEW_ROW_COUNT, SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { unstable_noStore } from "next/cache";
 import type { Address } from "viem";
 import { OverviewList } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-list";
 import { handler } from "@/handlers/[address]/overview/handler";
@@ -34,6 +35,12 @@ interface PageProps {
 // -----------------------------------------------------------------------------
 
 export default async function Page({ params }: PageProps) {
+  // ---------------------------------------------------------------------------
+  // Cache
+  // ---------------------------------------------------------------------------
+
+  unstable_noStore();
+
   // ---------------------------------------------------------------------------
   // Preloaders
   // ---------------------------------------------------------------------------

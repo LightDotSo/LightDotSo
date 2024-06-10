@@ -14,6 +14,7 @@
 
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
+import { unstable_noStore } from "next/cache";
 import type { Address } from "viem";
 import { CreateDialog } from "@/app/(wallet)/[address]/create/(components)/create-dialog";
 import { handler } from "@/handlers/[address]/create/handler";
@@ -35,6 +36,12 @@ type PageProps = {
 // -----------------------------------------------------------------------------
 
 export default async function Page({ params, searchParams }: PageProps) {
+  // ---------------------------------------------------------------------------
+  // Cache
+  // ---------------------------------------------------------------------------
+
+  unstable_noStore();
+
   // ---------------------------------------------------------------------------
   // Preloaders
   // ---------------------------------------------------------------------------
