@@ -13,12 +13,12 @@
   "license": "Apache-2.0",
   "author": "Light, Inc.",
   "scripts": {
-    "analyze": "cross-env ANALYZE=true next build || true",
-    "build": "next build || true",
+    "analyze": "cross-env ANALYZE=true next build || exit 0",
+    "build": "next build || exit 0",
     "dev": "concurrently \"pnpm:dev:*\"",
     "dev:inngest": "inngest dev -u http://localhost:3005/api/inngest --port 8288",
     "dev:next": "next dev --port 3005",
-    "lint": "next lint || true",
+    "lint": "next lint || exit 0",
     "start": "next start",
     "tsc": "tsc --noEmit"
   },

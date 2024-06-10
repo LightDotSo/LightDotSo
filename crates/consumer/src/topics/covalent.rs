@@ -145,10 +145,6 @@ pub async fn covalent_consumer(
         let token_data: Result<Vec<_>, _> = token_data_results.into_iter().collect();
         // If there was any error during creating token data, return early
         let token_data = token_data?;
-        // Print the token data
-        for data in &token_data {
-            info!("data: {:?}", data.1);
-        }
 
         // Create a token price for each token
         db.token_price().create_many(token_data).exec().await?;
@@ -187,6 +183,7 @@ pub async fn covalent_consumer(
                                             item.contract_address.clone().unwrap()
                                     })
                                     .unwrap();
+                                info!("token: {:?}", token);
 
                                 (
                                     item.quote.unwrap_or(0.0),

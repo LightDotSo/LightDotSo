@@ -14,20 +14,29 @@
 
 import {
   mainnet,
-  base,
-  polygon,
   optimism,
-  sepolia,
-  polygonMumbai,
-  arbitrum,
-  gnosis,
   bsc,
+  gnosis,
+  fuse,
+  polygon,
+  fantom,
+  base,
+  blast,
+  mode,
+  arbitrum,
   avalanche,
+  celo,
+  linea,
+  scroll,
+  zora,
+  sepolia,
+  polygonAmoy,
   baseSepolia,
   optimismSepolia,
   arbitrumSepolia,
-  celo,
+  scrollSepolia,
   blastSepolia,
+  lineaSepolia,
 } from "viem/chains";
 import type { Chain } from "viem/chains";
 
@@ -40,11 +49,18 @@ export const MAINNET_CHAINS = [
   optimism,
   bsc,
   gnosis,
+  fuse,
   polygon,
+  fantom,
   base,
+  blast,
+  mode,
   arbitrum,
-  celo,
   avalanche,
+  celo,
+  linea,
+  scroll,
+  zora,
 ] as readonly [Chain, ...Chain[]];
 
 // -----------------------------------------------------------------------------
@@ -52,9 +68,11 @@ export const MAINNET_CHAINS = [
 // -----------------------------------------------------------------------------
 
 export const TESTNET_CHAINS = [
-  polygonMumbai,
+  lineaSepolia,
+  polygonAmoy,
   baseSepolia,
   arbitrumSepolia,
+  scrollSepolia,
   sepolia,
   optimismSepolia,
   blastSepolia,

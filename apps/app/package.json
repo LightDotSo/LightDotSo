@@ -13,10 +13,10 @@
   "license": "Apache-2.0",
   "author": "Light, Inc.",
   "scripts": {
-    "analyze": "cross-env ANALYZE=true next build || true",
-    "build": "next build || true",
+    "analyze": "cross-env ANALYZE=true next build || exit 0",
+    "build": "next build || exit 0",
     "dev": "next dev --port 3001",
-    "lint": "next lint || true",
+    "lint": "next lint || exit 0",
     "msw:init": "msw init public",
     "start": "next start",
     "tsc": "tsc --noEmit"

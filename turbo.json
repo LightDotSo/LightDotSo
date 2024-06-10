@@ -45,11 +45,6 @@
       "dependsOn": ["^build"],
       "env": ["ETH_RPC_MAINNET", "VITEST_POOL_ID"]
     },
-    "//#test:coverage": {
-      "dependsOn": ["^build"],
-      "env": ["ETH_RPC_MAINNET", "VITEST_POOL_ID"],
-      "outputs": ["coverage/**"]
-    },
     "build": {
       "dependsOn": ["^build"],
       "env": ["VERCEL_ENV", "VERCEL_GIT_COMMIT_SHA"],

@@ -13,9 +13,9 @@
   "license": "Apache-2.0",
   "author": "Light, Inc.",
   "scripts": {
-    "build": "next build || true",
+    "build": "next build || exit 0",
     "dev": "next dev --port 3003",
-    "lint": "next lint || true",
+    "lint": "next lint || exit 0",
     "start": "next start",
     "tsc": "tsc --noEmit"
   },

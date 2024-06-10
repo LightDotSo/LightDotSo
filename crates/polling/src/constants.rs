@@ -19,6 +19,11 @@ use lazy_static::lazy_static;
 //     pub static ref GRAPH: String = "graph".to_string();
 // }
 
+// The goldsky namesapce
+lazy_static! {
+    pub static ref GOLDSKY: String = "goldsky".to_string();
+}
+
 // The satsuma namesapce
 lazy_static! {
     pub static ref SATSUMA: String = "satsuma".to_string();
