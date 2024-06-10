@@ -36,6 +36,8 @@ import { LineaLogo } from "./linea";
 import { ModeLogo } from "./mode";
 import { OptimismLogo } from "./optimism";
 import { PolygonLogo } from "./polygon";
+import { ScrollLogo } from "./scroll";
+import { ZoraLogo } from "./zora";
 
 // -----------------------------------------------------------------------------
 // Styles
@@ -142,8 +144,6 @@ export const ChainLogo: FC<ChainLogoProps> = ({
       return <FantomLogo className={variantClassName} {...props} />;
     case 8453:
       return <BaseLogo className={variantClassName} {...props} />;
-    case 23888:
-      return <BlastLogo className={variantClassName} {...props} />;
     case 34443:
       return <ModeLogo className={variantClassName} {...props} />;
     case 43114:
@@ -154,8 +154,12 @@ export const ChainLogo: FC<ChainLogoProps> = ({
       return <CeloLogo className={variantClassName} {...props} />;
     case 59144:
       return <LineaLogo className={variantClassName} {...props} />;
+    case 81457:
+      return <BlastLogo className={variantClassName} {...props} />;
     case 534352:
-      return <LineaLogo className={variantClassName} {...props} />;
+      return <ScrollLogo className={variantClassName} {...props} />;
+    case 7777777:
+      return <ZoraLogo className={variantClassName} {...props} />;
 
     // -------------------------------------------------------------------------
     // Testnet

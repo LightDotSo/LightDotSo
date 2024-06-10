@@ -26,6 +26,7 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
+  ScrollArea,
 } from "@lightdotso/ui";
 import { getEtherscanUrl } from "@lightdotso/utils";
 import { ArrowUpRight, Globe } from "lucide-react";
@@ -111,23 +112,25 @@ export const ChainComboDialog: FC = () => {
         <CommandInput placeholder="Search chain..." />
         <CommandEmpty>No chain found.</CommandEmpty>
         <CommandGroup>
-          {chains.map(chain => (
-            <a
-              key={chain.id}
-              target="_blank"
-              rel="noreferrer"
-              href={`${getEtherscanUrl(chain)}/address/${pathType === "demo" ? DEMO_WALLET_ADDRESS : wallet}`}
-            >
-              <CommandItem
-                className="flex items-center space-x-2"
-                value={chain.name.toString()}
+          <ScrollArea className="h-96">
+            {chains.map(chain => (
+              <a
+                key={chain.id}
+                target="_blank"
+                rel="noreferrer"
+                href={`${getEtherscanUrl(chain)}/address/${pathType === "demo" ? DEMO_WALLET_ADDRESS : wallet}`}
               >
-                <ChainLogo chainId={chain.id} className="size-5" size="sm" />
-                <span>{chain.name}</span>
-                <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50" />
-              </CommandItem>
-            </a>
-          ))}
+                <CommandItem
+                  className="flex items-center space-x-2"
+                  value={chain.name.toString()}
+                >
+                  <ChainLogo chainId={chain.id} className="size-5" size="sm" />
+                  <span>{chain.name}</span>
+                  <ArrowUpRight className="ml-2 size-4 shrink-0 opacity-50" />
+                </CommandItem>
+              </a>
+            ))}
+          </ScrollArea>
         </CommandGroup>
       </Command>
     </ComboDialog>

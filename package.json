@@ -62,11 +62,11 @@
     "taplo:cmd": "taplo format *.toml crates/**/Cargo.toml fly/**/fly.toml",
     "taplo:fix": "taplo format *.toml crates/**/Cargo.toml fly/**/fly.toml",
     "taplo:lint": "taplo lint *.toml crates/**/Cargo.toml fly/**/fly.toml",
-    "test": "vitest",
-    "test:coverage": "vitest --coverage",
-    "test:typecheck": "vitest typecheck",
-    "test:ui": "vitest dev --ui",
     "tsc": "tsc --noEmit",
+    "vitest": "vitest --coverage",
+    "vitest:coverage": "vitest --coverage",
+    "vitest:typecheck": "vitest typecheck",
+    "vitest:ui": "vitest dev --ui",
     "wagmi:generate": "wagmi generate"
   },
   "dependencies": {
