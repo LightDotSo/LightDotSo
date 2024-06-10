@@ -42,7 +42,7 @@
       "outputs": ["crates/prisma/src/lib.rs"]
     },
     "//#vitest": {
-      "dependsOn": ["^build"],
+      "dependsOn": [],
       "env": ["ETH_RPC_MAINNET", "VITEST_POOL_ID"]
     },
     "build": {
