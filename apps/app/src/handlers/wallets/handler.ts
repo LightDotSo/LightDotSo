@@ -15,7 +15,6 @@
 import { paginationParser } from "@lightdotso/nuqs";
 import { getUser, getWallets, getWalletsCount } from "@lightdotso/services";
 import { Result } from "neverthrow";
-import { unstable_noStore } from "next/cache";
 import { verifyUserId } from "@/auth";
 
 // -----------------------------------------------------------------------------
@@ -23,12 +22,6 @@ import { verifyUserId } from "@/auth";
 // -----------------------------------------------------------------------------
 
 export const handler = async (searchParams: { pagination?: string }) => {
-  // ---------------------------------------------------------------------------
-  // Cache
-  // ---------------------------------------------------------------------------
-
-  unstable_noStore();
-
   // ---------------------------------------------------------------------------
   // Auth
   // ---------------------------------------------------------------------------

@@ -15,7 +15,6 @@
 import { transferParser } from "@lightdotso/nuqs";
 import { getNfts, getSocketBalances } from "@lightdotso/services";
 import { validateAddress } from "@lightdotso/validators";
-import { unstable_noStore } from "next/cache";
 import { notFound } from "next/navigation";
 import type { Address } from "viem";
 import { handler as addressHandler } from "@/handlers/[address]/handler";
@@ -30,12 +29,6 @@ export const handler = async (
     transfer?: string;
   },
 ) => {
-  // ---------------------------------------------------------------------------
-  // Cache
-  // ---------------------------------------------------------------------------
-
-  unstable_noStore();
-
   // ---------------------------------------------------------------------------
   // Validators
   // ---------------------------------------------------------------------------
