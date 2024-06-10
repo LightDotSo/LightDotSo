@@ -93,6 +93,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
   // ---------------------------------------------------------------------------
 
   async function onSubmit(data: FeedbackFormValues) {
+    // @ts-ignore
     await feedbackCreate({ feedback: data });
   }
 

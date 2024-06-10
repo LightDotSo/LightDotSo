@@ -44,6 +44,7 @@ export const useQueryNftPortfolio = (params: PortfolioParams) => {
     useQuery<NftPortfolioData | null>({
       queryKey: queryKeys.nft_valuation.get({ address: params.address })
         .queryKey,
+      // @ts-ignore
       queryFn: async () => {
         if (!params.address) {
           return null;

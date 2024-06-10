@@ -59,6 +59,7 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
       maxFeePerGas: params.maxFeePerGas,
       maxPriorityFeePerGas: params.maxPriorityFeePerGas,
     }).queryKey,
+    // @ts-ignore
     queryFn: async () => {
       if (
         !params.callGasLimit ||

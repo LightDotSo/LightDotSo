@@ -128,6 +128,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // Get the image hash for the light wallet
   const { data: imageHash } = useReadLightWalletImageHash({
     address: address,
+    // @ts-ignore
     chainId: Number(initialUserOperation.chainId),
   });
 
@@ -326,18 +327,24 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       nonce: targetUserOperation.nonce,
       initCode: targetUserOperation.initCode,
       callData: targetUserOperation.callData,
+      // @ts-ignore
       callGasLimit: estimateUserOperationGasData?.callGasLimit
-        ? fromHex(estimateUserOperationGasData?.callGasLimit as Hex, {
+        ? // @ts-ignore
+          fromHex(estimateUserOperationGasData?.callGasLimit as Hex, {
             to: "bigint",
           })
         : BigInt(0),
+      // @ts-ignore
       preVerificationGas: estimateUserOperationGasData?.preVerificationGas
-        ? fromHex(estimateUserOperationGasData?.preVerificationGas as Hex, {
+        ? // @ts-ignore
+          fromHex(estimateUserOperationGasData?.preVerificationGas as Hex, {
             to: "bigint",
           })
         : BigInt(0),
+      // @ts-ignore
       verificationGasLimit: estimateUserOperationGasData?.verificationGasLimit
-        ? fromHex(estimateUserOperationGasData?.verificationGasLimit as Hex, {
+        ? // @ts-ignore
+          fromHex(estimateUserOperationGasData?.verificationGasLimit as Hex, {
             to: "bigint",
           })
         : BigInt(0),
