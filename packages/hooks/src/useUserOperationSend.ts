@@ -87,7 +87,6 @@ export const useUserOperationSend = ({
 
   const { data: paymasterHash } = useReadLightVerifyingPaymasterGetHash({
     address: userOperation?.paymaster_and_data.slice(0, 42) as Address,
-    // @ts-ignore
     chainId: userOperation?.chain_id,
     args: [
       {
@@ -120,14 +119,12 @@ export const useUserOperationSend = ({
 
   const { data: paymasterNonce } = useReadLightVerifyingPaymasterSenderNonce({
     address: userOperation?.paymaster_and_data.slice(0, 42) as Address,
-    // @ts-ignore
     chainId: Number(userOperation?.chain_id),
     args: [userOperation?.sender as Address],
   });
 
   const { data: imageHash } = useReadLightWalletImageHash({
     address: userOperation?.sender as Address,
-    // @ts-ignore
     chainId: userOperation?.chain_id ?? undefined,
   });
 

@@ -30,7 +30,7 @@ export const FooterVersion: FC = () => {
         Version:{" "}
         <a
           className="text-text-weak hover:underline"
-          href={`${SOCIAL_LINKS["Github Repo"]}/releases/tag/${process.env.NEXT_PUBLIC_APP_VERSION}`}
+          href={`${SOCIAL_LINKS.Github}/releases/tag/${process.env.NEXT_PUBLIC_APP_VERSION}`}
           target="_blank"
           rel="noreferrer"
         >
@@ -43,7 +43,7 @@ export const FooterVersion: FC = () => {
             className="hover:underline"
             target="_blank"
             rel="noreferrer"
-            href={`${SOCIAL_LINKS["Github Repo"]}/commit/${process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA}`}
+            href={`${SOCIAL_LINKS.Github}/commit/${process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA}`}
           >
             ({process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA.slice(0, 7)})
           </a>

@@ -162,7 +162,6 @@ export const useUserOperationSign = ({
   // ---------------------------------------------------------------------------
 
   const signUserOperation = useCallback(() => {
-    // @ts-ignore
     signMessage({ message: { raw: toBytes(subdigest) } });
   }, [subdigest, signMessage]);
 

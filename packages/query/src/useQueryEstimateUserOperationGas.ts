@@ -64,7 +64,6 @@ export const useQueryEstimateUserOperationGas = (
       sender: params.sender,
       callData: params.callData,
     }).queryKey,
-    // @ts-ignore
     queryFn: async () => {
       const res = await estimateUserOperationGas(
         Number(params.chainId) as number,

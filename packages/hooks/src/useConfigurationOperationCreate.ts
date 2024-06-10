@@ -143,7 +143,6 @@ export const useConfigurationOperationCreate = ({
       return;
     }
 
-    // @ts-ignore
     signMessage({ message: { raw: toBytes(subdigest) } });
   }, [subdigest, signMessage]);
 

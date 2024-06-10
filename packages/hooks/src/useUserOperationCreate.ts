@@ -273,7 +273,6 @@ export const useUserOperationCreate = ({
       return;
     }
 
-    // @ts-ignore
     signMessage({ message: { raw: toBytes(subdigest) } });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subdigest]);

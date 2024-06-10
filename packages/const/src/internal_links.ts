@@ -17,7 +17,6 @@ export enum Internal {
   DOCS = "Docs",
   EXPLORER = "Explorer",
   OPEN = "Open",
-  PAPER = "Paper",
   HOME = "Home",
   STATUS = "Status",
 }
@@ -30,7 +29,6 @@ export const INTERNAL_LINKS: {
   [Internal.DOCS]: "https://docs.light.so",
   [Internal.EXPLORER]: "https://explorer.light.so",
   [Internal.OPEN]: "https://open.light.so",
-  [Internal.PAPER]: "https://paper.light.so",
   [Internal.HOME]: "https://light.so/home",
   [Internal.STATUS]: "https://lightdotso.instatus.com",
 };

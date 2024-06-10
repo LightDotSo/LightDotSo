@@ -72,7 +72,6 @@ export const useSignInWithSiwe = () => {
         });
         const messageToSign = message.prepareMessage();
 
-        // @ts-ignore
         signMessageAsync({
           message: message.prepareMessage(),
         }).then(signature => {
