@@ -37,6 +37,7 @@ import { ModeLogo } from "./mode";
 import { OptimismLogo } from "./optimism";
 import { PolygonLogo } from "./polygon";
 import { ScrollLogo } from "./scroll";
+import { ZoraLogo } from "./zora";
 
 // -----------------------------------------------------------------------------
 // Styles
@@ -157,6 +158,8 @@ export const ChainLogo: FC<ChainLogoProps> = ({
       return <BlastLogo className={variantClassName} {...props} />;
     case 534352:
       return <ScrollLogo className={variantClassName} {...props} />;
+    case 7777777:
+      return <ZoraLogo className={variantClassName} {...props} />;
 
     // -------------------------------------------------------------------------
     // Testnet
