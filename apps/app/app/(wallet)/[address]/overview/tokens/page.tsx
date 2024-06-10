@@ -69,10 +69,12 @@ export default async function Page({ params, searchParams }: PageProps) {
     queryKeys.wallet.settings({ address: params.address as Address }).queryKey,
     walletSettings,
   );
+
   queryClient.setQueryData(
     queryKeys.portfolio.get({ address: params.address as Address }).queryKey,
     portfolio,
   );
+
   queryClient.setQueryData(
     queryKeys.token.list({
       address: params.address as Address,
@@ -84,6 +86,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     }).queryKey,
     tokens,
   );
+
   queryClient.setQueryData(
     queryKeys.token.listCount({
       address: params.address as Address,

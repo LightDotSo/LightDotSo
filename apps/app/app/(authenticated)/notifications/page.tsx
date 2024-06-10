@@ -71,6 +71,7 @@ export default async function Page({ searchParams }: PageProps) {
     }).queryKey,
     notifications,
   );
+
   queryClient.setQueryData(
     queryKeys.notification.listCount({
       address: user.id === "" ? null : (addressState as Address),

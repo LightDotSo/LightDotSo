@@ -70,10 +70,12 @@ export default async function Page({ params }: PageProps) {
     queryKeys.wallet.settings({ address: params.address as Address }).queryKey,
     walletSettings,
   );
+
   queryClient.setQueryData(
     queryKeys.portfolio.get({ address: params.address as Address }).queryKey,
     portfolio,
   );
+
   queryClient.setQueryData(
     queryKeys.token.list({
       address: params.address as Address,
@@ -85,11 +87,13 @@ export default async function Page({ params }: PageProps) {
     }).queryKey,
     tokens,
   );
+
   queryClient.setQueryData(
     queryKeys.nft_valuation.get({ address: params.address as Address })
       .queryKey,
     nftValuation,
   );
+
   queryClient.setQueryData(
     queryKeys.nft.list({
       address: params.address as Address,
@@ -99,6 +103,7 @@ export default async function Page({ params }: PageProps) {
     }).queryKey,
     nfts,
   );
+
   queryClient.setQueryData(
     queryKeys.transaction.list({
       address: params.address as Address,

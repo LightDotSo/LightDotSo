@@ -15,13 +15,17 @@
 "use client";
 
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
+import {
+  QueryClient,
+  QueryClientProvider,
+  defaultShouldDehydrateQuery,
+} from "@tanstack/react-query";
+// import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import dynamic from "next/dynamic";
 import type { FC, ReactNode } from "react";
 import { useState, useEffect } from "react";
-import superjson from "superjson";
+// import superjson from "superjson";
 
 // -----------------------------------------------------------------------------
 // Dynamic
@@ -68,6 +72,11 @@ const ReactQueryProvider: FC<ReactQueryProviderProps> = ({
           gcTime: Infinity,
           staleTime: 5 * 1000,
         },
+        dehydrate: {
+          shouldDehydrateQuery: query =>
+            defaultShouldDehydrateQuery(query) ||
+            query.state.status === "pending",
+        },
       },
     });
 
@@ -92,11 +101,15 @@ const ReactQueryProvider: FC<ReactQueryProviderProps> = ({
     return null;
   }
 
+  // From: https://tanstack.com/query/latest/docs/framework/react/guides/advanced-ssr#streaming-with-server-components
+  // Opt-in for non-blocking way to prefetch data, rather than a complex waterfall strategy w/ streaming
+  // Ideally, `useQuery` should be coupled with `useSuspenseQuery` to allow for prefetch `use`, but okay for now
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryStreamedHydration transformer={superjson}>
+      {children}
+      {/* <ReactQueryStreamedHydration transformer={superjson}>
         {children}
-      </ReactQueryStreamedHydration>
+      </ReactQueryStreamedHydration> */}
       {showDevTools && process.env.NEXT_PUBLIC_VERCEL_ENV !== "production" && (
         <div className="hidden lg:block">
           <ReactQueryDevtoolsProduction />

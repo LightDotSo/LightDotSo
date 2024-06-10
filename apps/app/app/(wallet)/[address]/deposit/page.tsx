@@ -62,12 +62,14 @@ export default async function Page({ params, searchParams }: PageProps) {
     queryKeys.wallet.settings({ address: params.address as Address }).queryKey,
     walletSettings,
   );
+
   queryClient.setQueryData(
     queryKeys.socket.balance({
       address: params.address as Address,
     }).queryKey,
     balances,
   );
+
   queryClient.setQueryData(
     queryKeys.nft.list({
       address: params.address as Address,

@@ -63,6 +63,7 @@ export default async function Page({ params }: PageProps) {
     queryKeys.wallet.settings({ address: params.address as Address }).queryKey,
     walletSettings,
   );
+
   queryClient.setQueryData(
     queryKeys.user_operation.listCount({
       address: params.address as Address,
@@ -71,6 +72,7 @@ export default async function Page({ params }: PageProps) {
     }).queryKey,
     userOperationsCount,
   );
+
   queryClient.setQueryData(
     queryKeys.user_operation.list({
       address: params.address as Address,
@@ -82,6 +84,7 @@ export default async function Page({ params }: PageProps) {
     }).queryKey,
     queuedUserOperations,
   );
+
   queryClient.setQueryData(
     queryKeys.user_operation.listCount({
       address: params.address as Address,
@@ -90,6 +93,7 @@ export default async function Page({ params }: PageProps) {
     }).queryKey,
     queuedUserOperationsCount,
   );
+
   queryClient.setQueryData(
     queryKeys.user_operation.list({
       address: params.address as Address,
@@ -101,6 +105,7 @@ export default async function Page({ params }: PageProps) {
     }).queryKey,
     historyUserOperations,
   );
+
   queryClient.setQueryData(
     queryKeys.user_operation.listCount({
       address: params.address as Address,

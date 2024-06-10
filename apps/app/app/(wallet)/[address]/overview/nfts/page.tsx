@@ -71,11 +71,13 @@ export default async function Page({ params, searchParams }: PageProps) {
     queryKeys.wallet.settings({ address: params.address as Address }).queryKey,
     walletSettings,
   );
+
   queryClient.setQueryData(
     queryKeys.nft_valuation.get({ address: params.address as Address })
       .queryKey,
     nftValuation,
   );
+
   queryClient.setQueryData(
     queryKeys.nft.list({
       address: params.address as Address,

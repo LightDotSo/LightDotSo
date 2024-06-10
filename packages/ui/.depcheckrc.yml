@@ -30,3 +30,5 @@ ignores:
   - react-icons
   - viem
   - "@hookform/devtools"
+  - "@tanstack/react-query-next-experimental"
+  - superjson

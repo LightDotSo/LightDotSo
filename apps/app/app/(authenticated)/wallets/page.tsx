@@ -66,6 +66,7 @@ export default async function Page({ searchParams }: PageProps) {
     }).queryKey,
     wallets,
   );
+
   queryClient.setQueryData(
     queryKeys.wallet.listCount({
       address: user.id === "" ? null : (user.address as Address),

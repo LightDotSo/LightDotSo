@@ -64,6 +64,7 @@ export default async function Page({ searchParams }: PageProps) {
     }).queryKey,
     transactions,
   );
+
   queryClient.setQueryData(
     queryKeys.transaction.listCount({
       address: null,
