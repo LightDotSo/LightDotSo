@@ -730,6 +730,15 @@ importers:
       '@babel/core':
         specifier: ^7.24.7
         version: 7.24.7
+      '@lightdotso/hooks':
+        specifier: workspace:*
+        version: link:../../packages/hooks
+      '@lightdotso/svg':
+        specifier: workspace:*
+        version: link:../../packages/svg
+      '@lightdotso/templates':
+        specifier: workspace:*
+        version: link:../../packages/templates
       '@next/bundle-analyzer':
         specifier: 15.0.0-canary.20
         version: 15.0.0-canary.20(bufferutil@4.0.8)
@@ -742,6 +751,9 @@ importers:
       next:
         specifier: 15.0.0-canary.20
         version: 15.0.0-canary.20(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.44.1)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
+      next-themes:
+        specifier: ^0.3.0
+        version: 0.3.0(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       nextra:
         specifier: ^2.13.4
         version: 2.13.4(next@15.0.0-canary.20(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.44.1)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)

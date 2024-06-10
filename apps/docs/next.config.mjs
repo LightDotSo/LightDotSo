@@ -26,7 +26,17 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  experimental: {
+    esmExternals: "loose",
+  },
   pageExtensions: ["js", "jsx", "ts", "tsx", "mdx"],
+  transpilePackages: [
+    "@lightdotso/hooks",
+    "@lightdotso/query",
+    "@lightdotso/svg",
+    "@lightdotso/templates",
+    "@lightdotso/ui",
+  ],
 };
 
 // -----------------------------------------------------------------------------
