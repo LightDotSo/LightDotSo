@@ -15,6 +15,7 @@
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { unstable_noStore } from "next/cache";
 import type { Address } from "viem";
 import { ActivityDataTable } from "@/app/(wallet)/[address]/activity/(components)/activity-data-table";
 import { ActivityDataTablePagination } from "@/app/(wallet)/[address]/activity/(components)/activity-data-table-pagination";
@@ -37,6 +38,12 @@ interface PageProps {
 // -----------------------------------------------------------------------------
 
 export default async function Page({ params, searchParams }: PageProps) {
+  // ---------------------------------------------------------------------------
+  // Cache
+  // ---------------------------------------------------------------------------
+
+  unstable_noStore();
+
   // ---------------------------------------------------------------------------
   // Preloaders
   // ---------------------------------------------------------------------------

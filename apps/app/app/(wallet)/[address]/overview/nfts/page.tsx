@@ -16,6 +16,7 @@ import { SIMPLEHASH_MAX_COUNT } from "@lightdotso/const";
 import { queryKeys } from "@lightdotso/query-keys";
 import { getQueryClient } from "@lightdotso/services";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { unstable_noStore } from "next/cache";
 import type { Address } from "viem";
 import { NftsDataTable } from "@/app/(wallet)/[address]/overview/nfts/(components)/nfts-data-table";
 import { NftsDataTablePagination } from "@/app/(wallet)/[address]/overview/nfts/(components)/nfts-data-table-pagination";
@@ -41,6 +42,12 @@ interface PageProps {
 // -----------------------------------------------------------------------------
 
 export default async function Page({ params, searchParams }: PageProps) {
+  // ---------------------------------------------------------------------------
+  // Cache
+  // ---------------------------------------------------------------------------
+
+  unstable_noStore();
+
   // ---------------------------------------------------------------------------
   // Preloaders
   // ---------------------------------------------------------------------------
