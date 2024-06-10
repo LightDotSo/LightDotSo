@@ -15,7 +15,7 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "lint": "next lint || true",
+    "lint": "next lint || exit 0",
     "start": "next start",
     "tsc": "tsc --noEmit"
   },

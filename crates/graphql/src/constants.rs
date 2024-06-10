@@ -79,6 +79,22 @@ lazy_static! {
 }
 
 lazy_static! {
+    pub static ref GOLDSKY_BASE_URL: String = "https://api.goldsky.com".to_string();
+}
+
+// The goldsky rpc urls
+lazy_static! {
+    pub static ref GOLDSKY_LIVE_IDS: HashMap<u64, String> = {
+        let mut m = HashMap::new();
+
+        // Mainnet
+        m.insert(7777777, "lightdotso-zora".to_string());
+
+        m
+    };
+}
+
+lazy_static! {
     pub static ref SATSUMA_BASE_URL: String = "https://subgraph.satsuma-prod.com".to_string();
 }
 

@@ -16,7 +16,7 @@
     "analyze": "cross-env ANALYZE=true next build",
     "build": "next build",
     "dev": "next dev -p 3003",
-    "lint": "next lint || true",
+    "lint": "next lint || exit 0",
     "start": "next start",
     "tsc": "tsc --noEmit"
   },
