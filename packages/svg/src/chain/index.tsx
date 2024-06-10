@@ -29,7 +29,11 @@ import { BlastLogo } from "./blast";
 import { BscLogo } from "./bsc";
 import { CeloLogo } from "./celo";
 import { EthereumLogo } from "./ethereum";
+import { FantomLogo } from "./fantom";
+import { FuseLogo } from "./fuse";
 import { GnosisLogo } from "./gnosis";
+import { LineaLogo } from "./linea";
+import { ModeLogo } from "./mode";
 import { OptimismLogo } from "./optimism";
 import { PolygonLogo } from "./polygon";
 
@@ -130,16 +134,28 @@ export const ChainLogo: FC<ChainLogoProps> = ({
       return <BscLogo className={variantClassName} {...props} />;
     case 100:
       return <GnosisLogo className={variantClassName} {...props} />;
+    case 122:
+      return <FuseLogo className={variantClassName} {...props} />;
     case 137:
       return <PolygonLogo className={variantClassName} {...props} />;
+    case 250:
+      return <FantomLogo className={variantClassName} {...props} />;
     case 8453:
       return <BaseLogo className={variantClassName} {...props} />;
+    case 23888:
+      return <BlastLogo className={variantClassName} {...props} />;
+    case 34443:
+      return <ModeLogo className={variantClassName} {...props} />;
     case 43114:
       return <AvalancheLogo className={variantClassName} {...props} />;
     case 42161:
       return <ArbitrumLogo className={variantClassName} {...props} />;
     case 42220:
       return <CeloLogo className={variantClassName} {...props} />;
+    case 59144:
+      return <LineaLogo className={variantClassName} {...props} />;
+    case 534352:
+      return <LineaLogo className={variantClassName} {...props} />;
 
     // -------------------------------------------------------------------------
     // Testnet
@@ -155,7 +171,17 @@ export const ChainLogo: FC<ChainLogoProps> = ({
           {...props}
         />
       );
-    case 80001:
+    case 59141:
+      return (
+        <TestnetChainLogoWrapper
+          className={variantClassName}
+          logo={LineaLogo}
+          chainId={chainId}
+          size={size}
+          {...props}
+        />
+      );
+    case 80002:
       return (
         <TestnetChainLogoWrapper
           className={variantClassName}
@@ -180,6 +206,16 @@ export const ChainLogo: FC<ChainLogoProps> = ({
         <TestnetChainLogoWrapper
           className={variantClassName}
           logo={ArbitrumLogo}
+          chainId={chainId}
+          size={size}
+          {...props}
+        />
+      );
+    case 534351:
+      return (
+        <TestnetChainLogoWrapper
+          className={variantClassName}
+          logo={LineaLogo}
           chainId={chainId}
           size={size}
           {...props}

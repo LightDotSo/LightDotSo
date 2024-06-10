@@ -22,11 +22,13 @@ import {
   fantom,
   base,
   blast,
+  mode,
   arbitrum,
   avalanche,
   celo,
   linea,
   scroll,
+  zora,
   sepolia,
   polygonAmoy,
   baseSepolia,
@@ -52,11 +54,13 @@ export const MAINNET_CHAINS = [
   fantom,
   base,
   blast,
+  mode,
   arbitrum,
   avalanche,
   celo,
   linea,
   scroll,
+  zora,
 ] as readonly [Chain, ...Chain[]];
 
 // -----------------------------------------------------------------------------
