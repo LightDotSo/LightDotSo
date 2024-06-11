@@ -1,5 +1,23 @@
 # @lightdotso/assets
 
+## 3.1.3
+
+### Patch Changes
+
+- [#1898](https://github.com/LightDotSo/LightDotSo/pull/1898) [`bbe28af`](https://github.com/LightDotSo/LightDotSo/commit/bbe28af571881afbe20a84a81db2ab1f7746b11f) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add package
+
+- [#1916](https://github.com/LightDotSo/LightDotSo/pull/1916) [`fda0823`](https://github.com/LightDotSo/LightDotSo/commit/fda08234433e19a5573dacca2f6fcb40caf0a458) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add changeset update
+
+- [#1944](https://github.com/LightDotSo/LightDotSo/pull/1944) [`8310c89`](https://github.com/LightDotSo/LightDotSo/commit/8310c89d2593b00c759cffb096bd73b8bf1e7a43) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - update
+
+- [#1909](https://github.com/LightDotSo/LightDotSo/pull/1909) [`8cce9b1`](https://github.com/LightDotSo/LightDotSo/commit/8cce9b10f27e1005b7c2ab2c725e7af3972a2bfc) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update ncu upgrade
+
+- [#1892](https://github.com/LightDotSo/LightDotSo/pull/1892) [`7e77bd8`](https://github.com/LightDotSo/LightDotSo/commit/7e77bd82e4656d514bdb00d6b160d7f0fdc5952d) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Finalize intent layer
+
+- [#1919](https://github.com/LightDotSo/LightDotSo/pull/1919) [`54a9220`](https://github.com/LightDotSo/LightDotSo/commit/54a9220b468f7cc6707591c0fdc487bb41e878ec) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add configuration change
+
+- [#1937](https://github.com/LightDotSo/LightDotSo/pull/1937) [`eb0460e`](https://github.com/LightDotSo/LightDotSo/commit/eb0460e762e5dd9a43cb7d528795aa19df4fdf2c) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add test turbo
+
 ## 3.1.2
 
 ### Patch Changes
