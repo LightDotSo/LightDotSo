@@ -1,5 +1,75 @@
 # @lightdotso/app
 
+## 3.2.3
+
+### Patch Changes
+
+- [#1898](https://github.com/LightDotSo/LightDotSo/pull/1898) [`bbe28af`](https://github.com/LightDotSo/LightDotSo/commit/bbe28af571881afbe20a84a81db2ab1f7746b11f) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add package
+
+- [#1916](https://github.com/LightDotSo/LightDotSo/pull/1916) [`fda0823`](https://github.com/LightDotSo/LightDotSo/commit/fda08234433e19a5573dacca2f6fcb40caf0a458) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add changeset update
+
+- [#1944](https://github.com/LightDotSo/LightDotSo/pull/1944) [`8310c89`](https://github.com/LightDotSo/LightDotSo/commit/8310c89d2593b00c759cffb096bd73b8bf1e7a43) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - update
+
+- [#1909](https://github.com/LightDotSo/LightDotSo/pull/1909) [`8cce9b1`](https://github.com/LightDotSo/LightDotSo/commit/8cce9b10f27e1005b7c2ab2c725e7af3972a2bfc) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update ncu upgrade
+
+- [#1892](https://github.com/LightDotSo/LightDotSo/pull/1892) [`7e77bd8`](https://github.com/LightDotSo/LightDotSo/commit/7e77bd82e4656d514bdb00d6b160d7f0fdc5952d) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Finalize intent layer
+
+- [#1941](https://github.com/LightDotSo/LightDotSo/pull/1941) [`1f6ade5`](https://github.com/LightDotSo/LightDotSo/commit/1f6ade5e8562de488b22b9e4aef6356dab008c8e) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add cache handler
+
+- [#1938](https://github.com/LightDotSo/LightDotSo/pull/1938) [`edae1a3`](https://github.com/LightDotSo/LightDotSo/commit/edae1a32260ed964ac22ea49cac9912d08a929b2) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - fix test running
+
+- [#1919](https://github.com/LightDotSo/LightDotSo/pull/1919) [`54a9220`](https://github.com/LightDotSo/LightDotSo/commit/54a9220b468f7cc6707591c0fdc487bb41e878ec) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add configuration change
+
+- [#1933](https://github.com/LightDotSo/LightDotSo/pull/1933) [`515b7a4`](https://github.com/LightDotSo/LightDotSo/commit/515b7a4280b8bd4525a9efb847a2323cdd2aeebf) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - ppr opt out
+
+- [#1837](https://github.com/LightDotSo/LightDotSo/pull/1837) [`df6cb1b`](https://github.com/LightDotSo/LightDotSo/commit/df6cb1be87419e7ab8ca02627b54eaf21957387c) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add page interception back
+
+- [#1910](https://github.com/LightDotSo/LightDotSo/pull/1910) [`e97a8da`](https://github.com/LightDotSo/LightDotSo/commit/e97a8da7fa0e903047c9c74b6e8342ea3d2b9ea8) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add package json
+
+- [#1932](https://github.com/LightDotSo/LightDotSo/pull/1932) [`6157510`](https://github.com/LightDotSo/LightDotSo/commit/615751041137814400568831454381762f13a62f) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add pr ignore
+
+- [#1937](https://github.com/LightDotSo/LightDotSo/pull/1937) [`eb0460e`](https://github.com/LightDotSo/LightDotSo/commit/eb0460e762e5dd9a43cb7d528795aa19df4fdf2c) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add test turbo
+
+- [#1939](https://github.com/LightDotSo/LightDotSo/pull/1939) [`d8295ee`](https://github.com/LightDotSo/LightDotSo/commit/d8295ee3583ff749140c2a65923e047e62dddd81) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Correctly cache out
+
+- [#1928](https://github.com/LightDotSo/LightDotSo/pull/1928) [`632cb00`](https://github.com/LightDotSo/LightDotSo/commit/632cb00bccfa26ef6910af3f0ad9a3a9c831043b) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add nft value
+
+- [#1927](https://github.com/LightDotSo/LightDotSo/pull/1927) [`27866e6`](https://github.com/LightDotSo/LightDotSo/commit/27866e6433a4469e2559f7517a3f50383c564d7f) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add ppr config
+
+- [#1940](https://github.com/LightDotSo/LightDotSo/pull/1940) [`1ae857b`](https://github.com/LightDotSo/LightDotSo/commit/1ae857b775bb8bc16c978a3da9444f2a84f02b08) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix cache handler
+
+- Updated dependencies [[`bbe28af`](https://github.com/LightDotSo/LightDotSo/commit/bbe28af571881afbe20a84a81db2ab1f7746b11f), [`fda0823`](https://github.com/LightDotSo/LightDotSo/commit/fda08234433e19a5573dacca2f6fcb40caf0a458), [`8310c89`](https://github.com/LightDotSo/LightDotSo/commit/8310c89d2593b00c759cffb096bd73b8bf1e7a43), [`8cce9b1`](https://github.com/LightDotSo/LightDotSo/commit/8cce9b10f27e1005b7c2ab2c725e7af3972a2bfc), [`7e77bd8`](https://github.com/LightDotSo/LightDotSo/commit/7e77bd82e4656d514bdb00d6b160d7f0fdc5952d), [`1f6ade5`](https://github.com/LightDotSo/LightDotSo/commit/1f6ade5e8562de488b22b9e4aef6356dab008c8e), [`edae1a3`](https://github.com/LightDotSo/LightDotSo/commit/edae1a32260ed964ac22ea49cac9912d08a929b2), [`54a9220`](https://github.com/LightDotSo/LightDotSo/commit/54a9220b468f7cc6707591c0fdc487bb41e878ec), [`3c74f59`](https://github.com/LightDotSo/LightDotSo/commit/3c74f5968479f85f840c33266dff3f84cb4496f7), [`e97a8da`](https://github.com/LightDotSo/LightDotSo/commit/e97a8da7fa0e903047c9c74b6e8342ea3d2b9ea8), [`6157510`](https://github.com/LightDotSo/LightDotSo/commit/615751041137814400568831454381762f13a62f), [`81bb804`](https://github.com/LightDotSo/LightDotSo/commit/81bb8043aa151160af9d32f9c5df912348ea5d6e), [`eb0460e`](https://github.com/LightDotSo/LightDotSo/commit/eb0460e762e5dd9a43cb7d528795aa19df4fdf2c), [`632cb00`](https://github.com/LightDotSo/LightDotSo/commit/632cb00bccfa26ef6910af3f0ad9a3a9c831043b), [`27866e6`](https://github.com/LightDotSo/LightDotSo/commit/27866e6433a4469e2559f7517a3f50383c564d7f)]:
+  - @lightdotso/prisma@3.1.4
+  - @lightdotso/query-keys@0.1.4
+  - @lightdotso/validators@0.0.3
+  - @lightdotso/templates@0.0.4
+  - @lightdotso/elements@0.0.4
+  - @lightdotso/sequence@0.0.3
+  - @lightdotso/services@0.0.5
+  - @lightdotso/schemas@3.1.4
+  - @lightdotso/client@3.1.4
+  - @lightdotso/modals@0.0.4
+  - @lightdotso/params@0.1.4
+  - @lightdotso/states@0.0.4
+  - @lightdotso/stores@0.1.4
+  - @lightdotso/tables@0.1.4
+  - @lightdotso/const@3.1.4
+  - @lightdotso/forms@0.0.4
+  - @lightdotso/hooks@0.0.5
+  - @lightdotso/query@0.1.4
+  - @lightdotso/redis@0.0.3
+  - @lightdotso/utils@3.1.4
+  - @lightdotso/wagmi@3.1.4
+  - @lightdotso/nuqs@0.0.4
+  - @lightdotso/svg@0.0.5
+  - @lightdotso/ui@3.1.4
+  - @lightdotso/kysely@3.1.4
+  - @lightdotso/pusher@0.0.3
+  - @lightdotso/types@0.0.4
+  - @lightdotso/data@0.1.4
+  - @lightdotso/msw@0.0.4
+  - @lightdotso/styles@3.0.3
+
 ## 3.2.2
 
 ### Patch Changes

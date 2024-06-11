@@ -1,5 +1,16 @@
 # @lightdotso/android
 
+## 3.0.5
+
+### Patch Changes
+
+- [#1892](https://github.com/LightDotSo/LightDotSo/pull/1892) [`7e77bd8`](https://github.com/LightDotSo/LightDotSo/commit/7e77bd82e4656d514bdb00d6b160d7f0fdc5952d) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Finalize intent layer
+
+- [#1937](https://github.com/LightDotSo/LightDotSo/pull/1937) [`eb0460e`](https://github.com/LightDotSo/LightDotSo/commit/eb0460e762e5dd9a43cb7d528795aa19df4fdf2c) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add test turbo
+
+- Updated dependencies [[`7e77bd8`](https://github.com/LightDotSo/LightDotSo/commit/7e77bd82e4656d514bdb00d6b160d7f0fdc5952d), [`edae1a3`](https://github.com/LightDotSo/LightDotSo/commit/edae1a32260ed964ac22ea49cac9912d08a929b2), [`eb9537b`](https://github.com/LightDotSo/LightDotSo/commit/eb9537b41a599bb7653f18896fd02cd456659f04), [`7028835`](https://github.com/LightDotSo/LightDotSo/commit/7028835ec908cfef4aa11e02c76d34768bb6c245), [`eb0460e`](https://github.com/LightDotSo/LightDotSo/commit/eb0460e762e5dd9a43cb7d528795aa19df4fdf2c)]:
+  - @lightdotso/crates@3.1.4
+
 ## 3.0.4
 
 ### Patch Changes

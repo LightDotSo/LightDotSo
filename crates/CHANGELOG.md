@@ -1,5 +1,22 @@
 # @lightdotso/crates
 
+## 3.1.4
+
+### Patch Changes
+
+- [#1892](https://github.com/LightDotSo/LightDotSo/pull/1892) [`7e77bd8`](https://github.com/LightDotSo/LightDotSo/commit/7e77bd82e4656d514bdb00d6b160d7f0fdc5952d) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Finalize intent layer
+
+- [#1938](https://github.com/LightDotSo/LightDotSo/pull/1938) [`edae1a3`](https://github.com/LightDotSo/LightDotSo/commit/edae1a32260ed964ac22ea49cac9912d08a929b2) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - fix test running
+
+- [#1934](https://github.com/LightDotSo/LightDotSo/pull/1934) [`eb9537b`](https://github.com/LightDotSo/LightDotSo/commit/eb9537b41a599bb7653f18896fd02cd456659f04) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add crates path
+
+- [#1936](https://github.com/LightDotSo/LightDotSo/pull/1936) [`7028835`](https://github.com/LightDotSo/LightDotSo/commit/7028835ec908cfef4aa11e02c76d34768bb6c245) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add polling subgraphs
+
+- [#1937](https://github.com/LightDotSo/LightDotSo/pull/1937) [`eb0460e`](https://github.com/LightDotSo/LightDotSo/commit/eb0460e762e5dd9a43cb7d528795aa19df4fdf2c) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add test turbo
+
+- Updated dependencies [[`bbe28af`](https://github.com/LightDotSo/LightDotSo/commit/bbe28af571881afbe20a84a81db2ab1f7746b11f), [`fda0823`](https://github.com/LightDotSo/LightDotSo/commit/fda08234433e19a5573dacca2f6fcb40caf0a458), [`8cce9b1`](https://github.com/LightDotSo/LightDotSo/commit/8cce9b10f27e1005b7c2ab2c725e7af3972a2bfc), [`7e77bd8`](https://github.com/LightDotSo/LightDotSo/commit/7e77bd82e4656d514bdb00d6b160d7f0fdc5952d), [`54a9220`](https://github.com/LightDotSo/LightDotSo/commit/54a9220b468f7cc6707591c0fdc487bb41e878ec), [`e97a8da`](https://github.com/LightDotSo/LightDotSo/commit/e97a8da7fa0e903047c9c74b6e8342ea3d2b9ea8), [`eb0460e`](https://github.com/LightDotSo/LightDotSo/commit/eb0460e762e5dd9a43cb7d528795aa19df4fdf2c)]:
+  - @lightdotso/prisma@3.1.4
+
 ## 3.1.3
 
 ### Patch Changes
