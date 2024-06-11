@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@lightdotso/regexs": "workspace:*",
-    "viem": "^2.13.7"
+    "viem": "^2.13.8"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
