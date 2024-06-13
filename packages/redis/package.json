@@ -27,8 +27,8 @@
   },
   "dependencies": {
     "@upstash/edge-flags": "^0.1.1",
-    "@upstash/ratelimit": "^1.2.0",
-    "@upstash/redis": "^1.31.3",
+    "@upstash/ratelimit": "^1.2.1",
+    "@upstash/redis": "^1.31.5",
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.5"
   },
