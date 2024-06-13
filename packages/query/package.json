@@ -35,10 +35,10 @@
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
-    "@tanstack/react-query": "^5.40.1",
+    "@tanstack/react-query": "^5.45.0",
     "exponential-backoff": "^3.1.1",
     "neverthrow": "^6.2.2",
-    "viem": "^2.13.8"
+    "viem": "^2.13.10"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
