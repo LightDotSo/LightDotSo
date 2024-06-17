@@ -1,5 +1,14 @@
 # @lightdotso/wagmi
 
+## 3.1.5
+
+### Patch Changes
+
+- [#1950](https://github.com/LightDotSo/LightDotSo/pull/1950) [`7929240`](https://github.com/LightDotSo/LightDotSo/commit/79292406cad549b546bddfb37e77e85689201212) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Do changeset update
+
+- Updated dependencies [[`7929240`](https://github.com/LightDotSo/LightDotSo/commit/79292406cad549b546bddfb37e77e85689201212)]:
+  - @lightdotso/const@3.1.5
+
 ## 3.1.4
 
 ### Patch Changes

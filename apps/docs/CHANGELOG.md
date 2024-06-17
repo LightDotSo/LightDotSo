@@ -1,5 +1,13 @@
 # @lightdotso/docs
 
+## 3.1.5
+
+### Patch Changes
+
+- Updated dependencies [[`7929240`](https://github.com/LightDotSo/LightDotSo/commit/79292406cad549b546bddfb37e77e85689201212)]:
+  - @lightdotso/templates@0.0.5
+  - @lightdotso/svg@0.0.6
+
 ## 3.1.4
 
 ### Patch Changes
