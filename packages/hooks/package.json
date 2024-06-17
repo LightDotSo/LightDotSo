@@ -37,7 +37,7 @@
     "copy-to-clipboard": "^3.3.3",
     "lodash": "^4.17.21",
     "merkletreejs": "^0.3.11",
-    "next": "15.0.0-canary.28",
+    "next": "15.0.0-canary.35",
     "react": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
     "siwe": "^2.3.2",
@@ -46,7 +46,7 @@
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
     "@types/lodash": "^4.17.5",
-    "@types/node": "^20.14.2",
+    "@types/node": "^20.14.3",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.4.5"
