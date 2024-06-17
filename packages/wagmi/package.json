@@ -28,8 +28,8 @@
   },
   "dependencies": {
     "@lightdotso/const": "workspace:*",
-    "connectkit": "^1.8.0",
-    "viem": "^2.13.10",
+    "connectkit": "^1.8.1",
+    "viem": "^2.14.2",
     "wagmi": "^2.10.2"
   },
   "devDependencies": {

@@ -20,9 +20,9 @@
     "@eslint/compat": "^1.1.0",
     "@typescript-eslint/eslint-plugin": "^7.13.0",
     "@typescript-eslint/parser": "^7.13.0",
-    "eslint": "^9.4.0",
+    "eslint": "^9.5.0",
     "eslint-config-next": "15.0.0-canary.28",
-    "eslint-config-turbo": "^2.0.3",
+    "eslint-config-turbo": "^2.0.4",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-cypress": "^3.3.0",
     "eslint-plugin-editorconfig": "^4.0.3",
@@ -35,7 +35,7 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-simple-import-sort": "^12.1.0",
     "eslint-plugin-tailwindcss": "^3.17.3",
-    "eslint-plugin-unicorn": "^53.0.0",
+    "eslint-plugin-unicorn": "^54.0.0",
     "next": "15.0.0-canary.28"
   },
   "publishConfig": {
