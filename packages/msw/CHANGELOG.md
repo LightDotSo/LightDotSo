@@ -1,5 +1,13 @@
 # @lightdotso/msw
 
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies [[`7929240`](https://github.com/LightDotSo/LightDotSo/commit/79292406cad549b546bddfb37e77e85689201212)]:
+  - @lightdotso/const@3.1.5
+  - @lightdotso/demo@0.0.6
+
 ## 0.0.4
 
 ### Patch Changes

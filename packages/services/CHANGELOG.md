@@ -1,5 +1,15 @@
 # @lightdotso/services
 
+## 0.0.6
+
+### Patch Changes
+
+- [#1950](https://github.com/LightDotSo/LightDotSo/pull/1950) [`7929240`](https://github.com/LightDotSo/LightDotSo/commit/79292406cad549b546bddfb37e77e85689201212) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Do changeset update
+
+- Updated dependencies [[`7929240`](https://github.com/LightDotSo/LightDotSo/commit/79292406cad549b546bddfb37e77e85689201212)]:
+  - @lightdotso/client@3.1.5
+  - @lightdotso/params@0.1.5
+
 ## 0.0.5
 
 ### Patch Changes

@@ -1,5 +1,25 @@
 # @lightdotso/modals
 
+## 0.0.5
+
+### Patch Changes
+
+- [#1950](https://github.com/LightDotSo/LightDotSo/pull/1950) [`7929240`](https://github.com/LightDotSo/LightDotSo/commit/79292406cad549b546bddfb37e77e85689201212) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Do changeset update
+
+- Updated dependencies [[`7929240`](https://github.com/LightDotSo/LightDotSo/commit/79292406cad549b546bddfb37e77e85689201212)]:
+  - @lightdotso/templates@0.0.5
+  - @lightdotso/elements@0.0.5
+  - @lightdotso/schemas@3.1.5
+  - @lightdotso/stores@0.1.5
+  - @lightdotso/const@3.1.5
+  - @lightdotso/forms@0.0.5
+  - @lightdotso/hooks@0.0.6
+  - @lightdotso/query@0.1.5
+  - @lightdotso/utils@3.1.5
+  - @lightdotso/wagmi@3.1.5
+  - @lightdotso/svg@0.0.6
+  - @lightdotso/ui@3.1.5
+
 ## 0.0.4
 
 ### Patch Changes
