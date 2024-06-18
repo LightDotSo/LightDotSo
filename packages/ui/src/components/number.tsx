@@ -107,9 +107,12 @@ const Number = forwardRef<HTMLSpanElement, NumberProps>(
       damping: 10,
     });
 
-    let displayWhole = useTransform(spring, current =>
-      Math.max(0, Math.floor(current)).toLocaleString(),
-    );
+    let displayWhole = useTransform(spring, current => {
+      if (current === undefined || current === null || isNaN(current)) {
+        return "0";
+      }
+      return Math.max(0, Math.floor(current)).toLocaleString();
+    });
 
     let displayFraction = useTransform(spring, current =>
       current % 1 > 0 ? (current % 1).toFixed(2).substring(2) : "00",
