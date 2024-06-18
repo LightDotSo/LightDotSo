@@ -2,7 +2,12 @@
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
   "bootstrap-sha": "356126ba3b8dc33e4a906def65af811726e38c11",
   "last-release-sha": "356126ba3b8dc33e4a906def65af811726e38c11",
-  "plugins": [],
+  "plugins": [
+    {
+      "type": "cargo-workspace",
+      "merge": true
+    }
+  ],
   "release-type": "simple",
   "bump-minor-pre-major": true,
   "bump-patch-for-minor-pre-major": true,

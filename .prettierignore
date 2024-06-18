@@ -1,5 +1,7 @@
 generated.ts
 
+/CHANGELOG.md
+
 apps/app/public/mockServiceWorker.js
 apps/docs/src/pages/posts/**/*.mdx
 apps/subgraph/generated/**/*.ts

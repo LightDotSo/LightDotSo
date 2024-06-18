@@ -187,6 +187,9 @@ impl Polling {
         };
 
         if let Some(url) = maybe_url {
+            // Log the operation along with the chain id.
+            info!("run_uop, chain_id: {}", chain_id);
+
             // Get the user operation by the given hash.
             let user_operation = self.poll_uop(url.to_string(), hash).await;
 
@@ -198,7 +201,13 @@ impl Polling {
                 );
 
                 let _ = self.index_uop(chain_id, &op).await;
+
+                // Return early if the user operation is found.
+                return Ok(());
             }
+        } else {
+            // Warn if the url is not found.
+            warn!("No url found for chain_id: {}", chain_id);
         }
 
         Ok(())
