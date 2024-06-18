@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.2.3](https://github.com/LightDotSo/LightDotSo/compare/v0.2.2...v0.2.3) (2024-06-18)
+
+
+### Features
+
+* ini package polling ([#1961](https://github.com/LightDotSo/LightDotSo/issues/1961)) ([1ab8e66](https://github.com/LightDotSo/LightDotSo/commit/1ab8e662bb5ee7cb25c434f72548a8e7701b8d3a))
+* ini upgrade package ([#1954](https://github.com/LightDotSo/LightDotSo/issues/1954)) ([d476189](https://github.com/LightDotSo/LightDotSo/commit/d476189c03f9bdf0f6b1ca5560c61ef8c6355d91))
+
+
+### Bug Fixes
+
+* chain id ([#1960](https://github.com/LightDotSo/LightDotSo/issues/1960)) ([0a23451](https://github.com/LightDotSo/LightDotSo/commit/0a23451abd720aeae15f9ace7343a03863cb9541))
+* ini inverse ([#1949](https://github.com/LightDotSo/LightDotSo/issues/1949)) ([076a8d2](https://github.com/LightDotSo/LightDotSo/commit/076a8d260a3070be51a8c84409171666055c3884))
+* nan number ([#1957](https://github.com/LightDotSo/LightDotSo/issues/1957)) ([3164f02](https://github.com/LightDotSo/LightDotSo/commit/3164f022c6b3b9f7b3b3ad74b2c2db86284924f0))
+* number format ([#1959](https://github.com/LightDotSo/LightDotSo/issues/1959)) ([a38e69c](https://github.com/LightDotSo/LightDotSo/commit/a38e69cb6693d9f74171942f10ebae356255ceb1))
+* update changelog ([#1947](https://github.com/LightDotSo/LightDotSo/issues/1947)) ([66366f6](https://github.com/LightDotSo/LightDotSo/commit/66366f6d5ca0627e180c1888e9fe29b657236bdd))
+* vercel ignore v5 ([#1953](https://github.com/LightDotSo/LightDotSo/issues/1953)) ([9f674b1](https://github.com/LightDotSo/LightDotSo/commit/9f674b1d303298fce8deaade86363e6d7f736caf))
+* vercel sh ([#1952](https://github.com/LightDotSo/LightDotSo/issues/1952)) ([12037e8](https://github.com/LightDotSo/LightDotSo/commit/12037e88bc750f962e327cca8cf8db7c07402c03))
+* wallets find ([#1963](https://github.com/LightDotSo/LightDotSo/issues/1963)) ([d8f8578](https://github.com/LightDotSo/LightDotSo/commit/d8f8578a09c3cc91c36995b192b69b545cdb8d2d))
+* workflow collab ([#1962](https://github.com/LightDotSo/LightDotSo/issues/1962)) ([643c71d](https://github.com/LightDotSo/LightDotSo/commit/643c71df9f078ebd1aae5af71484f2baeb85dc44))
+
 ## [0.2.2](https://github.com/LightDotSo/LightDotSo/compare/v0.2.1...v0.2.2) (2024-06-13)
 
 ### Features
