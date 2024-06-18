@@ -72,7 +72,7 @@ export function useTabs() {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { setIsNotOwner, isNotOwner } = useBanners();
+  const { setIsNotOwner } = useBanners();
 
   // ---------------------------------------------------------------------------
   // Local Variables
@@ -161,9 +161,7 @@ export function useTabs() {
         setIsNotOwner(true);
       } else {
         // If the connected address is in the owners addresses, hide the not owner banner
-        if (isNotOwner) {
-          setIsNotOwner(false);
-        }
+        setIsNotOwner(false);
       }
       return;
     }
