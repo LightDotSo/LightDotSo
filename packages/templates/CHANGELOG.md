@@ -1,5 +1,27 @@
 # @lightdotso/templates
 
+## 0.0.6
+
+### Patch Changes
+
+- [#1961](https://github.com/LightDotSo/LightDotSo/pull/1961) [`1ab8e66`](https://github.com/LightDotSo/LightDotSo/commit/1ab8e662bb5ee7cb25c434f72548a8e7701b8d3a) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add pnpm upgrade
+
+- Updated dependencies [[`1ab8e66`](https://github.com/LightDotSo/LightDotSo/commit/1ab8e662bb5ee7cb25c434f72548a8e7701b8d3a)]:
+  - @lightdotso/elements@0.0.6
+  - @lightdotso/sequence@0.0.5
+  - @lightdotso/schemas@3.1.6
+  - @lightdotso/stores@0.1.6
+  - @lightdotso/const@3.1.6
+  - @lightdotso/hooks@0.0.7
+  - @lightdotso/query@0.1.6
+  - @lightdotso/types@0.0.5
+  - @lightdotso/utils@3.1.6
+  - @lightdotso/wagmi@3.1.6
+  - @lightdotso/nuqs@0.0.6
+  - @lightdotso/msw@0.0.6
+  - @lightdotso/svg@0.0.7
+  - @lightdotso/ui@3.1.6
+
 ## 0.0.5
 
 ### Patch Changes

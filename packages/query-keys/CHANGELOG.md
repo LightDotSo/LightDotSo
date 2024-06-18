@@ -1,5 +1,15 @@
 # @lightdotso/query-keys
 
+## 0.1.6
+
+### Patch Changes
+
+- [#1961](https://github.com/LightDotSo/LightDotSo/pull/1961) [`1ab8e66`](https://github.com/LightDotSo/LightDotSo/commit/1ab8e662bb5ee7cb25c434f72548a8e7701b8d3a) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add pnpm upgrade
+
+- Updated dependencies [[`1ab8e66`](https://github.com/LightDotSo/LightDotSo/commit/1ab8e662bb5ee7cb25c434f72548a8e7701b8d3a)]:
+  - @lightdotso/schemas@3.1.6
+  - @lightdotso/params@0.1.6
+
 ## 0.1.5
 
 ### Patch Changes
