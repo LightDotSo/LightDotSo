@@ -122,7 +122,7 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
       )}
       <p className="text-sm leading-6">
         {betaKind === "beta" && "Private Beta"}
-        {betaKind === "betaWarning" && "Private Beta (Not Owner)"}
+        {betaKind === "betaWarning" && "Private Beta"}
         {kind === "demo" && "Demo Mode"}
         {kind === "outage" && "Outage Alert"}
       </p>
@@ -207,7 +207,7 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
           <ButtonIcon
             size="xs"
             variant="link"
-            intent="info"
+            intent={betaKind === "beta" ? "info" : "warning"}
             onClick={toggleIsBetaClosed}
           >
             <>

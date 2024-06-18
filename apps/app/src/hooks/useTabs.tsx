@@ -202,7 +202,7 @@ export function useTabs() {
           tab.number = configuration.owners.length;
         }
       } else if (tab.id === "transactions") {
-        if (userOperationsCount?.count && userOperationsCount?.count !== 0) {
+        if (userOperationsCount?.count) {
           tab.number = userOperationsCount?.count;
         }
       }
