@@ -70,19 +70,21 @@ export const useQueryEnsDomains = (params: EnsListParams) => {
   });
 
   return {
-    ensDomains: ensPage?.domains
-      .filter(
-        domain =>
-          domain.resolver &&
-          domain.resolver.addr &&
-          domain.resolver.addr.id !== null &&
-          domain.name !== null,
-      )
-      .map(domain => ({
-        name: domain.name,
-        id: domain.resolver.addr.id,
-      })),
-
-    isEnsDomainsLoading,
+    ensDomains:
+      ensPage && ensPage?.domains && ensPage?.domains.length > 0
+        ? ensPage?.domains
+            .filter(
+              domain =>
+                domain.resolver &&
+                domain.resolver.addr &&
+                domain.resolver.addr.id !== null &&
+                domain.name !== null,
+            )
+            .map(domain => ({
+              name: domain.name,
+              id: domain.resolver.addr.id,
+            }))
+        : [],
+    isEnsDomainsLoading: isEnsDomainsLoading,
   };
 };

@@ -117,7 +117,7 @@ export const SettingsDevCard: FC<SettingsDevCardProps> = ({ address }) => {
     mode: "all",
     reValidateMode: "onBlur",
     resolver: zodResolver(walletDevFormSchema),
-    defaultValues,
+    defaultValues: defaultValues,
   });
 
   const formValues = form.watch();

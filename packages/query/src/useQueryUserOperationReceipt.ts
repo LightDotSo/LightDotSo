@@ -59,9 +59,9 @@ export const useQueryUserOperationReceipt = (
   });
 
   return {
-    userOperationReceipt,
-    isUserOperationReceiptLoading,
-    isUserOperationReceiptError,
-    userOperationReceiptError,
+    userOperationReceipt: userOperationReceipt,
+    isUserOperationReceiptLoading: isUserOperationReceiptLoading,
+    isUserOperationReceiptError: isUserOperationReceiptError,
+    userOperationReceiptError: userOperationReceiptError,
   };
 };

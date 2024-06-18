@@ -21,7 +21,7 @@ import { createParser, useQueryState } from "nuqs";
 // -----------------------------------------------------------------------------
 
 export const paginationParser = createParser({
-  parse(value: string): PaginationState | null {
+  parse: function (value: string): PaginationState | null {
     if (!value) {
       return null;
     }
@@ -33,9 +33,9 @@ export const paginationParser = createParser({
     }
 
     const finalPageSize = PAGINATION_SIZES.includes(pageSize) ? pageSize : 10;
-    return { pageIndex, pageSize: finalPageSize };
+    return { pageIndex: pageIndex, pageSize: finalPageSize };
   },
-  serialize(value: PaginationState): string {
+  serialize: function (value: PaginationState): string {
     return `${value.pageIndex},${value.pageSize}`;
   },
 })

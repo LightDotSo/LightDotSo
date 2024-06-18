@@ -25,10 +25,10 @@ import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
 export const notification = createQueryKeys("notification", {
   list: (params: NotificationListParams) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
   listCount: (params: NotificationListCountParams) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
 });
 

@@ -188,7 +188,7 @@ export const OwnerForm: FC = () => {
         });
       }),
     ),
-    defaultValues,
+    defaultValues: defaultValues,
   });
 
   const { fields, append, remove } = useFieldArray({

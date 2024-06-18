@@ -58,7 +58,7 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const { walletSettings } = useQueryWalletSettings({
-    address,
+    address: address,
   });
 
   const { transactions, isTransactionsLoading } = useQueryTransactions({

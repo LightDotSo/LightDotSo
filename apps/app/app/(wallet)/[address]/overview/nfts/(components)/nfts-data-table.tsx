@@ -47,7 +47,7 @@ export const NftsDataTable: FC<NftsDataTableProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const { walletSettings } = useQueryWalletSettings({
-    address,
+    address: address,
   });
 
   const { nftPage, isNftsLoading } = useQueryNfts({

@@ -34,7 +34,7 @@ export const getWalletSettings = async (
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/settings/get", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -67,8 +67,8 @@ export const updateWalletSettings = async (
 
   return ResultAsync.fromPromise(
     client.PUT("/wallet/settings/update", {
-      params,
-      body,
+      params: params,
+      body: body,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

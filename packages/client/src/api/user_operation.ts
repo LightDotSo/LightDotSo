@@ -34,7 +34,7 @@ export const getUserOperation = async (
 
   return ResultAsync.fromPromise(
     client.GET("/user_operation/get", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -56,7 +56,7 @@ export const getUserOperationNonce = async (
 
   return ResultAsync.fromPromise(
     client.GET("/user_operation/nonce", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -81,7 +81,7 @@ export const getUserOperationSignature = async (
 
   return ResultAsync.fromPromise(
     client.GET("/user_operation/signature", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -122,7 +122,7 @@ export const getUserOperations = async (
 
   return ResultAsync.fromPromise(
     client.GET("/user_operation/list", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -159,7 +159,7 @@ export const getUserOperationsCount = async (
 
   return ResultAsync.fromPromise(
     client.GET("/user_operation/list/count", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -214,8 +214,8 @@ export const createUserOperation = async (
 
   return ResultAsync.fromPromise(
     client.POST("/user_operation/create", {
-      params,
-      body,
+      params: params,
+      body: body,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -263,8 +263,8 @@ export const createBatchUserOperation = async (
 
   return ResultAsync.fromPromise(
     client.POST("/user_operation/create/batch", {
-      params,
-      body,
+      params: params,
+      body: body,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -290,7 +290,7 @@ export const updateUserOperation = async (
 
   return ResultAsync.fromPromise(
     client.PUT("/user_operation/update", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

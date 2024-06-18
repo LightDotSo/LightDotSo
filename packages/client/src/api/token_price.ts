@@ -34,7 +34,7 @@ export const getTokenPrice = async (
 
   return ResultAsync.fromPromise(
     client.GET("/token_price/get", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

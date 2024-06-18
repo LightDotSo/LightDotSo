@@ -49,7 +49,9 @@ const Tabs = forwardRef<
     VariantProps<typeof tabsVariants>
 >(({ variant, children, ...props }, ref) => (
   <TabsPrimitive.Root ref={ref} {...props}>
-    <TabsContext.Provider value={{ variant }}>{children}</TabsContext.Provider>
+    <TabsContext.Provider value={{ variant: variant }}>
+      {children}
+    </TabsContext.Provider>
   </TabsPrimitive.Root>
 ));
 Tabs.displayName = TabsPrimitive.Root.displayName;

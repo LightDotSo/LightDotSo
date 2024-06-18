@@ -34,7 +34,7 @@ export const getWallet = async (
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/get", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -63,7 +63,7 @@ export const getWallets = async (
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/list", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -92,7 +92,7 @@ export const getWalletsCount = async (
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/list/count", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -129,8 +129,8 @@ export const createWallet = async (
 
   return ResultAsync.fromPromise(
     client.POST("/wallet/create", {
-      params,
-      body,
+      params: params,
+      body: body,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -160,8 +160,8 @@ export const updateWallet = async (
 
   return ResultAsync.fromPromise(
     client.PUT("/wallet/update", {
-      params,
-      body,
+      params: params,
+      body: body,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

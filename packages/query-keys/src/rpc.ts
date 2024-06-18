@@ -34,17 +34,17 @@ export const rpc = createQueryKeys("rpc", {
       | "maxPriorityFeePerGas"
     >,
   ) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
   get_paymaster_gas_and_paymaster_and_data: (
     params: Omit<UserOperation, "hash" | "paymasterAndData" | "signature">,
   ) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
   get_user_operation_receipt: (
     params: Pick<UserOperation, "hash"> & { chainId: number },
   ) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
 });
 

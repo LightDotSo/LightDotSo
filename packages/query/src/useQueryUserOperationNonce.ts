@@ -87,7 +87,7 @@ export const useQueryUserOperationNonce = (
   });
 
   return {
-    userOperationNonce,
-    isUserOperationNonceLoading,
+    userOperationNonce: userOperationNonce,
+    isUserOperationNonceLoading: isUserOperationNonceLoading,
   };
 };

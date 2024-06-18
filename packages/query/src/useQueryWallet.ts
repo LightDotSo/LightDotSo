@@ -73,6 +73,6 @@ export const useQueryWallet = (params: WalletParams) => {
   });
 
   return {
-    wallet,
+    wallet: wallet,
   };
 };

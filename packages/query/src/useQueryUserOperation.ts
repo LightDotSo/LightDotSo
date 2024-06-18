@@ -83,9 +83,9 @@ export const useQueryUserOperation = (params: UserOperationGetParams) => {
   });
 
   return {
-    userOperation,
-    isUserOperationFetching,
-    isUserOperationLoading,
-    refetchUserOperation,
+    userOperation: userOperation,
+    isUserOperationFetching: isUserOperationFetching,
+    isUserOperationLoading: isUserOperationLoading,
+    refetchUserOperation: refetchUserOperation,
   };
 };

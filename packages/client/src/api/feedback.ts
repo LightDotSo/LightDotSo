@@ -41,8 +41,8 @@ export const createFeedback = async (
 
   return ResultAsync.fromPromise(
     client.POST("/feedback/create", {
-      params,
-      body,
+      params: params,
+      body: body,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

@@ -20,7 +20,7 @@ import { createParser, useQueryState } from "nuqs";
 // -----------------------------------------------------------------------------
 
 export const userOperationsParser = createParser({
-  parse(value) {
+  parse: function (value) {
     const operations = value.split(";");
     return operations?.map<Partial<UserOperation>>(operation => {
       const [
@@ -98,7 +98,7 @@ export const userOperationsParser = createParser({
       return parsedOp;
     });
   },
-  serialize(value: Array<Partial<UserOperation>>) {
+  serialize: function (value: Array<Partial<UserOperation>>) {
     return value
       ?.map(
         (operation, i) =>

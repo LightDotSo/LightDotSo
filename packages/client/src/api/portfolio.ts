@@ -34,7 +34,7 @@ export const getPortfolio = async (
 
   return ResultAsync.fromPromise(
     client.GET("/portfolio/get", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

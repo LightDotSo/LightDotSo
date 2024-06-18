@@ -34,7 +34,7 @@ export const createQueuePortfolio = async (
 
   return ResultAsync.fromPromise(
     client.POST("/queue/portfolio", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -56,7 +56,7 @@ export const createQueueToken = async (
 
   return ResultAsync.fromPromise(
     client.POST("/queue/token", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -81,7 +81,7 @@ export const createQueueInterpretation = async (
 
   return ResultAsync.fromPromise(
     client.POST("/queue/interpretation", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -106,7 +106,7 @@ export const createQueueTransaction = async (
 
   return ResultAsync.fromPromise(
     client.POST("/queue/transaction", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -130,7 +130,7 @@ export const createQueueUserOperation = async (
 
   return ResultAsync.fromPromise(
     client.POST("/queue/user_operation", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

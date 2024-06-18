@@ -22,7 +22,7 @@ import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
 export const user = createQueryKeys("user", {
   get: (params: UserParams) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
 });
 

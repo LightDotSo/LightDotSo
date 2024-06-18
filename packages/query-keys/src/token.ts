@@ -22,10 +22,10 @@ import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
 export const token = createQueryKeys("token", {
   list: (params: TokenListParams) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
   listCount: (params: TokenListCountParams) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
 });
 

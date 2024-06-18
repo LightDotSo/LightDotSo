@@ -25,10 +25,10 @@ import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
 export const activity = createQueryKeys("activity", {
   list: (params: ActivityListParams) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
   listCount: (params: ActivityListCountParams) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
 });
 

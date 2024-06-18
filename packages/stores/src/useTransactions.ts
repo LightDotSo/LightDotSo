@@ -63,7 +63,7 @@ export const useTransactions = create(
               throw new Error("This transaction hash is not present.");
             const pendingTransactions = { ...state.pendingTransactions };
             delete pendingTransactions[hash];
-            return { pendingTransactions };
+            return { pendingTransactions: pendingTransactions };
           }),
       }),
       {

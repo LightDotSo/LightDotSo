@@ -74,6 +74,6 @@ export const useQueryWalletSettings = (params: WalletSettingsParams) => {
     });
 
   return {
-    walletSettings,
+    walletSettings: walletSettings,
   };
 };

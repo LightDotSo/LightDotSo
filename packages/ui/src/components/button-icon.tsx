@@ -67,12 +67,12 @@ const ButtonIcon = forwardRef<HTMLButtonElement, ButtonIconProps>(
         ref={ref}
         className={cn(
           buttonVariants({
-            variant,
-            intent,
-            size,
-            className,
+            variant: variant,
+            intent: intent,
+            size: size,
+            className: className,
           }),
-          buttonIconVariants({ size }),
+          buttonIconVariants({ size: size }),
         )}
         data-variant={variant ?? "default"}
         {...props}

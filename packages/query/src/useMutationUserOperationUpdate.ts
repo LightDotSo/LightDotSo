@@ -80,7 +80,7 @@ export const useMutationUserOperationUpdate = (params: UserOperationParams) => {
   });
 
   return {
-    isLoadingUserOperationUpdate,
-    userOperationUpdate,
+    isLoadingUserOperationUpdate: isLoadingUserOperationUpdate,
+    userOperationUpdate: userOperationUpdate,
   };
 };

@@ -34,7 +34,7 @@ export const getToken = async (
 
   return ResultAsync.fromPromise(
     client.GET("/token/get", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -63,7 +63,7 @@ export const getTokens = async (
 
   return ResultAsync.fromPromise(
     client.GET("/token/list", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -91,7 +91,7 @@ export const getTokensCount = async (
 
   return ResultAsync.fromPromise(
     client.GET("/token/list/count", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

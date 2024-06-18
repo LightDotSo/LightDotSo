@@ -100,7 +100,7 @@ export const TokenImage: FC<TokenImageProps> = ({
     return (
       <div className={cn("relative inline-block", className)}>
         <TokenImageBase
-          className={cn(tokenImageBaseVariants({ size }), className)}
+          className={cn(tokenImageBaseVariants({ size: size }), className)}
           isLoading={isLoading}
           token={token}
           size={size}
@@ -114,7 +114,7 @@ export const TokenImage: FC<TokenImageProps> = ({
 
   return (
     <TokenImageBase
-      className={cn(tokenImageBaseVariants({ size }), className)}
+      className={cn(tokenImageBaseVariants({ size: size }), className)}
       isLoading={isLoading}
       token={token}
       size={size}
@@ -178,7 +178,7 @@ export const TokenImageBase: FC<TokenImageBaseProps> = ({
         as="span"
         className={cn(
           "items-center justify-center border border-border-primary-weak",
-          tokenImageBaseVariants({ size }),
+          tokenImageBaseVariants({ size: size }),
           className,
         )}
       >
@@ -190,7 +190,7 @@ export const TokenImageBase: FC<TokenImageBaseProps> = ({
   if (isImageLoaded && !isImageError) {
     return (
       <img
-        className={cn(tokenImageBaseVariants({ size }), className)}
+        className={cn(tokenImageBaseVariants({ size: size }), className)}
         src={currentUrl}
         alt={token.name ?? token.symbol}
         onLoad={() => setIsImageLoaded(true)}
@@ -203,7 +203,7 @@ export const TokenImageBase: FC<TokenImageBaseProps> = ({
     <span
       className={cn(
         "items-center justify-center text-ellipsis border border-border-primary-weak bg-background-stronger text-xs leading-none text-text-weak",
-        tokenImageBaseVariants({ size }),
+        tokenImageBaseVariants({ size: size }),
         className,
       )}
     >

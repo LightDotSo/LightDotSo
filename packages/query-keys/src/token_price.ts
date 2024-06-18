@@ -22,7 +22,7 @@ import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
 export const token_price = createQueryKeys("token_price", {
   get: (params: TokenPriceParams) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
 });
 

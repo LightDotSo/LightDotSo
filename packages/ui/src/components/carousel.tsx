@@ -156,15 +156,15 @@ const Carousel = forwardRef<
     return (
       <CarouselContext.Provider
         value={{
-          carouselRef,
+          carouselRef: carouselRef,
           api: api,
-          opts,
+          opts: opts,
           orientation:
             orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
-          scrollPrev,
-          scrollNext,
-          canScrollPrev,
-          canScrollNext,
+          scrollPrev: scrollPrev,
+          scrollNext: scrollNext,
+          canScrollPrev: canScrollPrev,
+          canScrollNext: canScrollNext,
         }}
       >
         <div

@@ -98,8 +98,8 @@ export const useQueryPaymasterGasAndPaymasterAndData = (
   });
 
   return {
-    paymasterAndData,
-    isPaymasterAndDataLoading,
-    paymasterAndDataError,
+    paymasterAndData: paymasterAndData,
+    isPaymasterAndDataLoading: isPaymasterAndDataLoading,
+    paymasterAndDataError: paymasterAndDataError,
   };
 };

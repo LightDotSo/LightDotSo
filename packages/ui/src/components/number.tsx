@@ -128,12 +128,22 @@ const Number = forwardRef<HTMLSpanElement, NumberProps>(
     return (
       <motion.span
         ref={ref}
-        className={cn(numberVariantsWhole({ size, variant, className }))}
+        className={cn(
+          numberVariantsWhole({
+            size: size,
+            variant: variant,
+            className: className,
+          }),
+        )}
         {...props}
       >
         {prefix && prefix}
         <NumberValue display={displayWhole} />
-        <span className={cn(numberVariantsFraction({ size, variant }))}>
+        <span
+          className={cn(
+            numberVariantsFraction({ size: size, variant: variant }),
+          )}
+        >
           .
           <NumberValue display={displayFraction} />
         </span>

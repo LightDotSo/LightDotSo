@@ -38,17 +38,17 @@ export const decodeSignature = (signature: Uint8Array) => {
   switch (type) {
     case SignatureType.Legacy:
       return {
-        type,
+        type: type,
         body: decodeSignatureBody(signature),
       };
     case SignatureType.Dynamic:
       return {
-        type,
+        type: type,
         body: decodeSignatureBody(signature.slice(1)),
       };
     case SignatureType.NoChainIdDynamic:
       return {
-        type,
+        type: type,
         body: decodeSignatureBody(signature.slice(1)),
       };
     case SignatureType.Chained:

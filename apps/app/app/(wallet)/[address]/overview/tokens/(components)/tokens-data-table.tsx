@@ -58,7 +58,7 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const { walletSettings } = useQueryWalletSettings({
-    address,
+    address: address,
   });
 
   const { tokens, isTokensLoading } = useQueryTokens({

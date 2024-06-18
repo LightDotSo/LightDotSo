@@ -49,8 +49,8 @@ export const createConfigurationOperation = async (
 
   return ResultAsync.fromPromise(
     client.POST("/configuration_operation/create", {
-      params,
-      body,
+      params: params,
+      body: body,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

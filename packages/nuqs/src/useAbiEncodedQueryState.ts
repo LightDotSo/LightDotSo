@@ -21,7 +21,7 @@ import { isHex } from "viem";
 // ----------------------------------------------------------------------------
 
 export const abiEncodedParser = createParser({
-  parse(value) {
+  parse: function (value) {
     if (value === "") {
       return null;
     }
@@ -46,7 +46,7 @@ export const abiEncodedParser = createParser({
     return null;
   },
 
-  serialize(value: AbiEncoded) {
+  serialize: function (value: AbiEncoded) {
     if (!value) {
       return "";
     }

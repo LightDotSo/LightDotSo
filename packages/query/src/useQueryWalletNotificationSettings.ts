@@ -80,6 +80,6 @@ export const useQueryWalletNotificationSettings = (
     });
 
   return {
-    walletNotificationSettings,
+    walletNotificationSettings: walletNotificationSettings,
   };
 };

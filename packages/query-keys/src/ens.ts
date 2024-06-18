@@ -22,7 +22,7 @@ import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
 export const ens = createQueryKeys("ens", {
   list: (params: EnsListParams) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
 });
 

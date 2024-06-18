@@ -38,7 +38,7 @@ export const getConfiguration = async (
 
   return ResultAsync.fromPromise(
     client.GET("/configuration/get", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

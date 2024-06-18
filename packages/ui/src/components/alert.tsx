@@ -58,7 +58,10 @@ const Alert = forwardRef<
   <div
     ref={ref}
     role="alert"
-    className={cn(alertVariants({ variant, intent }), className)}
+    className={cn(
+      alertVariants({ variant: variant, intent: intent }),
+      className,
+    )}
     data-variant={variant ?? "default"}
     {...props}
   />

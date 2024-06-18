@@ -88,7 +88,7 @@ export const useMutationQueueUserOperation = (params: QueueParams) => {
   });
 
   return {
-    queueUserOperation,
-    isLoadingQueueUserOperation,
+    queueUserOperation: queueUserOperation,
+    isLoadingQueueUserOperation: isLoadingQueueUserOperation,
   };
 };

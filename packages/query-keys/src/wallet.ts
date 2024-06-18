@@ -26,28 +26,28 @@ import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
 export const wallet = createQueryKeys("wallet", {
   get: (params: WalletParams) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
   list: (params: WalletListParams) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
   listCount: (params: WalletListCountParams) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
   billing: (params: WalletParams) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
   features: (params: WalletParams) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
   notificationSettings: (params: WalletParams) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
   settings: (params: WalletParams) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
   simulation: (params: WalletParams) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
 });
 

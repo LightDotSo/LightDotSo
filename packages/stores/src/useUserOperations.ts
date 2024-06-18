@@ -93,7 +93,7 @@ export const useUserOperations = create<UserOperationsStore>(set => ({
         internalUserOperations.push(operation);
       }
 
-      return { internalUserOperations };
+      return { internalUserOperations: internalUserOperations };
     }),
   pendingSubmitUserOperationHashes: [],
   addPendingSubmitUserOperationHash: hash =>
@@ -130,7 +130,7 @@ export const useUserOperations = create<UserOperationsStore>(set => ({
       const userOperationDetails = { ...state.userOperationDetails };
       delete userOperationDetails[chainId];
 
-      return { userOperationDetails };
+      return { userOperationDetails: userOperationDetails };
     }),
   resetUserOperationDetails: () =>
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -155,7 +155,7 @@ export const useUserOperations = create<UserOperationsStore>(set => ({
       const userOperationDevInfo = { ...state.userOperationDevInfo };
       delete userOperationDevInfo[chainId];
 
-      return { userOperationDevInfo };
+      return { userOperationDevInfo: userOperationDevInfo };
     }),
   resetUserOperationDevInfo: () =>
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -182,7 +182,7 @@ export const useUserOperations = create<UserOperationsStore>(set => ({
       };
       delete userOperationSimulations[chainId];
 
-      return { userOperationSimulations };
+      return { userOperationSimulations: userOperationSimulations };
     }),
   resetUserOperationSimulation: () =>
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

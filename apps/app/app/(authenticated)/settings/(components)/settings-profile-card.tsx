@@ -100,7 +100,7 @@ export const SettingsProfileCard: FC = () => {
     mode: "all",
     reValidateMode: "onBlur",
     resolver: zodResolver(profileFormSchema),
-    defaultValues,
+    defaultValues: defaultValues,
   });
 
   const { fields, append } = useFieldArray({

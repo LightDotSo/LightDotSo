@@ -345,19 +345,19 @@ export const useUserOperationSend = ({
   // ---------------------------------------------------------------------------
 
   return {
-    handleSubmit,
-    userOperation,
-    paymasterNonce,
-    paymasterOperation,
-    paymasterSignedMsg,
-    recoveredAddress,
-    isUserOperationSendValid,
-    isUserOperationSendReady,
-    isUserOperationReloading,
-    isUserOperationSendIdle,
-    isUserOperationSendPending,
-    isUserOperationSendDisabled,
-    isUserOperationSendLoading,
-    isUserOperationSendSuccess,
+    handleSubmit: handleSubmit,
+    userOperation: userOperation,
+    paymasterNonce: paymasterNonce,
+    paymasterOperation: paymasterOperation,
+    paymasterSignedMsg: paymasterSignedMsg,
+    recoveredAddress: recoveredAddress,
+    isUserOperationSendValid: isUserOperationSendValid,
+    isUserOperationSendReady: isUserOperationSendReady,
+    isUserOperationReloading: isUserOperationReloading,
+    isUserOperationSendIdle: isUserOperationSendIdle,
+    isUserOperationSendPending: isUserOperationSendPending,
+    isUserOperationSendDisabled: isUserOperationSendDisabled,
+    isUserOperationSendLoading: isUserOperationSendLoading,
+    isUserOperationSendSuccess: isUserOperationSendSuccess,
   };
 };

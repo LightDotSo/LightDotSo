@@ -94,8 +94,9 @@ export const useQueryEstimateUserOperationGas = (
   });
 
   return {
-    estimateUserOperationGasData,
-    isEstimateUserOperationGasDataLoading,
-    estimateUserOperationGasDataError,
+    estimateUserOperationGasData: estimateUserOperationGasData,
+    isEstimateUserOperationGasDataLoading:
+      isEstimateUserOperationGasDataLoading,
+    estimateUserOperationGasDataError: estimateUserOperationGasDataError,
   };
 };

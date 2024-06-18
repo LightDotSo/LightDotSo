@@ -22,7 +22,7 @@ import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
 export const paymaster_operation = createQueryKeys("paymaster_operation", {
   get: (params: PaymasterOperationGetParams) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
 });
 

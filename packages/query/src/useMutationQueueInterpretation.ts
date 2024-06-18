@@ -73,6 +73,6 @@ export const useMutationQueueInterpretation = () => {
   });
 
   return {
-    queueInterpretation,
+    queueInterpretation: queueInterpretation,
   };
 };

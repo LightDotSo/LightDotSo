@@ -81,6 +81,6 @@ export const useMutationQueuePortfolio = (params: QueueParams) => {
   });
 
   return {
-    queuePortfolio,
+    queuePortfolio: queuePortfolio,
   };
 };

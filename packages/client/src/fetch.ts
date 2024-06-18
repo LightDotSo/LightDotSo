@@ -40,11 +40,15 @@ export const fromResponse = <T>(response: Response) =>
           code: response.status,
           url: response.url,
           message: `Could not fetch data from API (status ${response.status})`,
-          error,
+          error: error,
         });
       }
     })
-    .map((data: T) => ({ data, status: response.status, url: response.url }));
+    .map((data: T) => ({
+      data: data,
+      status: response.status,
+      url: response.url,
+    }));
 
 // From: https://github.com/radixdlt/babylon-alphanet/blob/5c73dab8e04163250c7e4dcc17fc85d37b89b778/alphanet-walletextension-sdk/sandbox/core-api/core-api.ts#L80C9-L80C16
 // License: Apache-2.0

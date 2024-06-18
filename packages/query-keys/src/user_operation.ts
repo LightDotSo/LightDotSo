@@ -28,19 +28,19 @@ import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
 export const user_operation = createQueryKeys("user_operation", {
   get: (params: UserOperationGetParams) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
   list: (params: UserOperationListParams) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
   listCount: (params: UserOperationListCountParams) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
   nonce: (params: UserOperationNonceParams) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
   signature: (params: UserOperationSignatureGetParams) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
 });
 

@@ -22,7 +22,7 @@ import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
 export const nft_valuation = createQueryKeys("nft_valuation", {
   get: (params: NftValuationParams) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
 });
 

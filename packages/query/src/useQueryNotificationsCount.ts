@@ -84,7 +84,7 @@ export const useQueryNotificationsCount = (
   });
 
   return {
-    notificationsCount,
-    isNotificationsCountLoading,
+    notificationsCount: notificationsCount,
+    isNotificationsCountLoading: isNotificationsCountLoading,
   };
 };

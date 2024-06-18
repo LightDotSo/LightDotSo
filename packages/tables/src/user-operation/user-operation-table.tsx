@@ -169,7 +169,7 @@ export const UserOperationTable: FC<UserOperationTableProps> = ({
 
   const items = table
     .getRowModel()
-    .rows.map(row => ({ original: row.original, row }));
+    .rows.map(row => ({ original: row.original, row: row }));
 
   const groupedItems = groupByDate(items);
 

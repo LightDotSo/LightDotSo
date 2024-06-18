@@ -158,6 +158,6 @@ export const useMutationConfigurationOperationCreate = (
   });
 
   return {
-    configurationOperationCreate,
+    configurationOperationCreate: configurationOperationCreate,
   };
 };

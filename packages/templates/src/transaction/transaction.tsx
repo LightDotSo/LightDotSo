@@ -118,7 +118,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const { tokens } = useQueryTokens({
-    address,
+    address: address,
     is_testnet: false,
     offset: 0,
     limit: Number.MAX_SAFE_INTEGER,

@@ -52,7 +52,7 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
   // ---------------------------------------------------------------------------
 
   const { walletSettings } = useQueryWalletSettings({
-    address,
+    address: address,
   });
 
   const { tokens } = useQueryTokens({

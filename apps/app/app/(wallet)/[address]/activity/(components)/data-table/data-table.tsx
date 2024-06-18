@@ -68,8 +68,8 @@ export function DataTable({
   // ---------------------------------------------------------------------------
 
   const tableOptions = {
-    data,
-    columns,
+    data: data,
+    columns: columns,
     state: {
       sorting: activitySorting,
       columnVisibility: activityColumnVisibility,

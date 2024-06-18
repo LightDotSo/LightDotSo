@@ -98,11 +98,16 @@ export const EmptyState: FC<EmptyStateProps> = ({ entity, size }) => {
         <Wallet
           className={cn(
             "mx-auto text-lg text-border",
-            emptyStateVariants({ size }),
+            emptyStateVariants({ size: size }),
           )}
         />
       </span>
-      <div className={cn("text-text-weaker", emptyStateTextVariants({ size }))}>
+      <div
+        className={cn(
+          "text-text-weaker",
+          emptyStateTextVariants({ size: size }),
+        )}
+      >
         No {entityStateDescription[entity]} in wallet.
       </div>
     </div>

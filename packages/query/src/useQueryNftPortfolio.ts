@@ -66,6 +66,6 @@ export const useQueryNftPortfolio = (params: PortfolioParams) => {
     });
 
   return {
-    nftPortfolio,
+    nftPortfolio: nftPortfolio,
   };
 };

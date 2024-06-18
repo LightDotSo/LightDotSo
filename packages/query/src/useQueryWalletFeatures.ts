@@ -77,7 +77,7 @@ export const useQueryWalletFeatures = (params: WalletFeaturesParams) => {
   });
 
   return {
-    walletFeatures,
-    refetchWalletFeatures,
+    walletFeatures: walletFeatures,
+    refetchWalletFeatures: refetchWalletFeatures,
   };
 };

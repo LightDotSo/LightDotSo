@@ -87,7 +87,7 @@ export const decodeSignatureTree = (bytes: Uint8Array): RecoveryTopology => {
 
           // Append to the pointer.
           pointer = append(pointer, {
-            address,
+            address: address,
             weight: BigInt(weight),
           });
         }
@@ -128,7 +128,7 @@ export const decodeSignatureTree = (bytes: Uint8Array): RecoveryTopology => {
 
           // Append to the pointer.
           pointer = append(pointer, {
-            address,
+            address: address,
             signature: bytesToHex(signature),
             weight: BigInt(weight),
           });
@@ -186,7 +186,7 @@ export const decodeSignatureTree = (bytes: Uint8Array): RecoveryTopology => {
           pointer = append(pointer, {
             weight: BigInt(weight),
             threshold: BigInt(threshold),
-            tree,
+            tree: tree,
           });
         }
         break;

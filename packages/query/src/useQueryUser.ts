@@ -73,6 +73,6 @@ export const useQueryUser = (params: UserParams) => {
   });
 
   return {
-    user,
+    user: user,
   };
 };

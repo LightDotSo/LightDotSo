@@ -83,7 +83,7 @@ const useFormField = () => {
   const { id } = itemContext;
 
   return {
-    id,
+    id: id,
     name: fieldContext.name,
     formItemId: `${id}-form-item`,
     formDescriptionId: `${id}-form-item-description`,
@@ -117,7 +117,7 @@ const FormItem = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
     const id = useId();
 
     return (
-      <FormItemContext.Provider value={{ id }}>
+      <FormItemContext.Provider value={{ id: id }}>
         <div ref={ref} className={cn("space-y-2", className)} {...props} />
       </FormItemContext.Provider>
     );

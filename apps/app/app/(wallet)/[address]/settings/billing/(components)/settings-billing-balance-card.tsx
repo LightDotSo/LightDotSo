@@ -42,7 +42,7 @@ export const SettingsBillingBalanceCard: FC<
   // ---------------------------------------------------------------------------
 
   const { walletBilling } = useQueryWalletBilling({
-    address,
+    address: address,
   });
 
   // ---------------------------------------------------------------------------

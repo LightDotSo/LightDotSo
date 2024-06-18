@@ -90,8 +90,10 @@ export const useQueryConfigurationOperationSimulation = (
   });
 
   return {
-    configurationOperationSimulation,
-    refetchConfigurationOperationSimulation,
-    isConfigurationOperationSimulationLoading,
+    configurationOperationSimulation: configurationOperationSimulation,
+    refetchConfigurationOperationSimulation:
+      refetchConfigurationOperationSimulation,
+    isConfigurationOperationSimulationLoading:
+      isConfigurationOperationSimulationLoading,
   };
 };

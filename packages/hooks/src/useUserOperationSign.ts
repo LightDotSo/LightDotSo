@@ -170,11 +170,11 @@ export const useUserOperationSign = ({
   // ---------------------------------------------------------------------------
 
   return {
-    isLoading,
-    isOwner,
-    isSigned,
-    isSignable,
-    signedMessage,
-    signUserOperation,
+    isLoading: isLoading,
+    isOwner: isOwner,
+    isSigned: isSigned,
+    isSignable: isSignable,
+    signedMessage: signedMessage,
+    signUserOperation: signUserOperation,
   };
 };
