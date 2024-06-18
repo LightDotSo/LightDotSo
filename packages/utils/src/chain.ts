@@ -21,9 +21,24 @@ import {
 } from "@lightdotso/const";
 import type { Chain } from "viem";
 import { extractChain } from "viem";
+import { mainnet } from "viem/chains";
 
 export function getChainById(chainId: number): Chain {
-  return extractChain({ chains: CHAINS, id: chainId });
+  // Extract chain from CHAINS
+  const maybeChain = extractChain({ chains: CHAINS, id: chainId });
+  // Return chain if found
+  if (maybeChain) {
+    return maybeChain;
+  }
+  // Return mainnet chain if chainId is not found
+  return {
+    id: 0,
+    name: "Unknown",
+    nativeCurrency: mainnet.nativeCurrency,
+    rpcUrls: {
+      default: mainnet.rpcUrls.default,
+    },
+  };
 }
 
 export function getChainNameById(chainId: number): string {
