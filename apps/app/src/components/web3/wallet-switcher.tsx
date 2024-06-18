@@ -147,9 +147,10 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
       }
 
       // Find the wallet from the slug
-      const wallet = wallets.find(
-        wallet => wallet.address === getAddress(slug),
-      );
+      const wallet =
+        wallets && typeof wallets !== "undefined" && wallets?.length > 0
+          ? wallets.find(wallet => wallet.address === getAddress(slug))
+          : undefined;
 
       // If there is no wallet, set the first wallet as the selected wallet
       if (!wallet) {
