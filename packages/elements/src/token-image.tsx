@@ -145,6 +145,7 @@ export const TokenImageBase: FC<TokenImageBaseProps> = ({
     `https://logos.covalenthq.com/tokens/${tokenChainId}/${tokenAddress}.png`,
     `https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/${getChainLabelById(token.chain_id)}/assets/${token.address.toLowerCase()}/logo.png`,
     `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${getChainLabelById(token.chain_id)}/assets/${token.address.toLowerCase()}/logo.png`,
+    `https://raw.githubusercontent.com/0xa3k5/token-icons/main/packages/core/src/raw-svgs/tokens/branded/${token.symbol.toUpperCase()}.svg`,
   ];
   const currentUrl = urls[currentUrlIndex];
 

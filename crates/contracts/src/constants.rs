@@ -104,9 +104,12 @@ lazy_static! {
         m.insert(10, "Optimism Mainnet");
         m.insert(56, "Binance Smart Chain Mainnet");
         m.insert(100, "Gnosis Mainnet");
+        m.insert(122, "Fuse Mainnet");
         m.insert(137, "Polygon Mainnet");
+        m.insert(250, "Fantom Mainnet");
         m.insert(1101, "Polygon zkEVM Mainnet");
         m.insert(8453, "Base Mainnet");
+        m.insert(34443, "Mode Mainnet");
         m.insert(42161, "Arbitrum One Mainnet");
         m.insert(42170, "Arbitrum Nova Mainnet");
         m.insert(42220, "Celo Mainnet");
@@ -125,7 +128,8 @@ lazy_static! {
     pub static ref TESTNET_CHAIN_IDS: HashMap<u64, &'static str> = {
         let mut m = HashMap::new();
 
-        m.insert(80001, "Mumbai Testnet");
+        m.insert(59141, "Linea Sepolia Testnet");
+        m.insert(80002, "Polygon Amoy Testnet");
         m.insert(84532, "Base Sepolia Testnet");
         m.insert(421614, "Arbitrum Sepolia Testnet");
         m.insert(11155111, "Sepolia Testnet");

@@ -26,7 +26,7 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@heroicons/react": "^2.1.3",
+    "@heroicons/react": "^2.1.4",
     "@hookform/resolvers": "^3.6.0",
     "@lightdotso/const": "workspace:*",
     "@lightdotso/elements": "workspace:*",
@@ -55,13 +55,13 @@
     "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-hook-form": "^7.52.0",
     "react-icons": "^5.2.1",
-    "viem": "^2.14.2",
+    "viem": "^2.15.1",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
     "@storybook/react": "^8.1.10",
-    "@types/node": "^20.14.3",
+    "@types/node": "^20.14.4",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.4.5"
