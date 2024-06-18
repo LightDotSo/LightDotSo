@@ -469,6 +469,32 @@
     "tests": []
   },
   {
+    "_id": "ff876ad4-cbdd-4b14-9b50-307b4caabf97",
+    "colId": "history",
+    "containerId": "",
+    "name": "eth_getUserOperationReceipt",
+    "url": "https://rpc.light.so/43114",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-09-19T18:08:43.417Z",
+    "modified": "2024-06-18T00:13:09.100Z",
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_getUserOperationReceipt\",\n  \"params\": [\n    \"0x95280f51ca7d474c863459c9aa351496b6c5a085702ada9470fee4e4e5ed7390\"\n  ]\n}",
+      "form": []
+    }
+  },
+  {
     "_id": "e6cbeb96-d648-4812-b828-d8878378703d",
     "colId": "history",
     "containerId": "",
