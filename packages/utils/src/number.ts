@@ -13,6 +13,14 @@
 // limitations under the License.
 
 export const refineNumberFormat = (number: number) => {
+  if (
+    number === undefined ||
+    number === null ||
+    isNaN(number) ||
+    typeof number !== "number"
+  ) {
+    return "0";
+  }
   if (number === 0) {
     return number.toLocaleString("en-US", {
       style: "decimal",
