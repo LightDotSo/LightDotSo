@@ -25,6 +25,7 @@
   hyper-rustls = { workspace = true }
   lazy_static = { workspace = true }
   lightdotso-common = { workspace = true }
+  lightdotso-constants = { workspace = true }
   lightdotso-contracts = { workspace = true }
   lightdotso-db = { workspace = true }
   lightdotso-indexer = { workspace = true }

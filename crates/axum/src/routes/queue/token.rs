@@ -20,7 +20,7 @@ use axum::{
     Json,
 };
 use ethers_main::{types::H160, utils::to_checksum};
-use lightdotso_contracts::constants::{ALL_CHAIN_IDS, MAINNET_CHAIN_IDS, ROUTESCAN_CHAIN_IDS};
+use lightdotso_constants::chains::{ALL_CHAIN_IDS, MAINNET_CHAIN_IDS, ROUTESCAN_CHAIN_IDS};
 use lightdotso_kafka::{
     topics::{covalent::produce_covalent_message, routescan::produce_routescan_message},
     types::{covalent::CovalentMessage, routescan::RoutescanMessage},

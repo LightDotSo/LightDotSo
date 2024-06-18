@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::constants::{MAINNET_CHAIN_IDS, TESTNET_CHAIN_IDS};
+use lightdotso_constants::chains::{MAINNET_CHAIN_IDS, TESTNET_CHAIN_IDS};
 
 /// Returns `true` if the chain ID is a testnet chain ID.
 /// Falls back to `true` if the chain ID is not a mainnet chain ID.

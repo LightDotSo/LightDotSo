@@ -18,14 +18,18 @@ import {
   CHAIN_ID_LABELS,
   TESTNET_CHAINS,
   MAINNET_CHAINS,
+  DEPRECATED_CHAINS,
 } from "@lightdotso/const";
 import type { Chain } from "viem";
 import { extractChain } from "viem";
 import { mainnet } from "viem/chains";
 
 export function getChainById(chainId: number): Chain {
-  // Extract chain from CHAINS
-  const maybeChain = extractChain({ chains: CHAINS, id: chainId });
+  // Extract chain from CHAINS and DEPRECATED_CHAINS
+  const maybeChain = extractChain({
+    chains: [...CHAINS, ...DEPRECATED_CHAINS],
+    id: chainId,
+  });
   // Return chain if found
   if (maybeChain) {
     return maybeChain;

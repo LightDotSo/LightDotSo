@@ -16,7 +16,6 @@
 
 use ethers::types::Address;
 use lazy_static::lazy_static;
-use std::collections::HashMap;
 
 // The paymaster addresses
 lazy_static! {
@@ -93,73 +92,6 @@ lazy_static! {
     pub static ref ENTRYPOINT_V060_ADDRESS: Address =
       // v0.6.0
       "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789".parse().unwrap();
-}
-
-// The mainnet chain ids
-lazy_static! {
-    pub static ref MAINNET_CHAIN_IDS: HashMap<u64, &'static str> = {
-        let mut m = HashMap::new();
-
-        m.insert(1, "Ethereum Mainnet");
-        m.insert(10, "Optimism Mainnet");
-        m.insert(56, "Binance Smart Chain Mainnet");
-        m.insert(100, "Gnosis Mainnet");
-        m.insert(122, "Fuse Mainnet");
-        m.insert(137, "Polygon Mainnet");
-        m.insert(250, "Fantom Mainnet");
-        m.insert(1101, "Polygon zkEVM Mainnet");
-        m.insert(8453, "Base Mainnet");
-        m.insert(34443, "Mode Mainnet");
-        m.insert(42161, "Arbitrum One Mainnet");
-        m.insert(42170, "Arbitrum Nova Mainnet");
-        m.insert(42220, "Celo Mainnet");
-        m.insert(43114, "Avalanche Mainnet");
-        m.insert(59144, "Linea Mainnet");
-        m.insert(81457, "Blast Mainnet");
-        m.insert(534352, "Scroll Mainnet");
-        m.insert(7777777, "Zora Mainnet");
-
-        m
-    };
-}
-
-// The testnet chain ids
-lazy_static! {
-    pub static ref TESTNET_CHAIN_IDS: HashMap<u64, &'static str> = {
-        let mut m = HashMap::new();
-
-        m.insert(59141, "Linea Sepolia Testnet");
-        m.insert(80002, "Polygon Amoy Testnet");
-        m.insert(84532, "Base Sepolia Testnet");
-        m.insert(421614, "Arbitrum Sepolia Testnet");
-        m.insert(11155111, "Sepolia Testnet");
-        m.insert(11155420, "Optimism Sepolia Testnet");
-        m.insert(168587773, "Blast Sepolia Testnet");
-
-        m
-    };
-}
-
-// All chain ids
-lazy_static! {
-    pub static ref ALL_CHAIN_IDS: HashMap<u64, &'static str> = {
-        let mut m = MAINNET_CHAIN_IDS.clone();
-        for (k, v) in TESTNET_CHAIN_IDS.iter() {
-            m.insert(*k, *v);
-        }
-        m
-    };
-}
-
-// Routescan chain ids
-lazy_static! {
-    pub static ref ROUTESCAN_CHAIN_IDS: HashMap<u64, &'static str> = {
-        let mut m = HashMap::new();
-
-        m.insert(168587773, "Blast Sepolia Testnet");
-
-        m
-    };
 }
 
 #[cfg(test)]

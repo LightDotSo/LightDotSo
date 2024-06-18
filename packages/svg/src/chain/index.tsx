@@ -188,6 +188,7 @@ export const ChainLogo: FC<ChainLogoProps> = ({
           {...props}
         />
       );
+    case 80001:
     case 80002:
       return (
         <TestnetChainLogoWrapper
