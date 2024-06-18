@@ -273,6 +273,8 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
               </CommandItem>
             )}
             {wallets &&
+              typeof wallets !== "undefined" &&
+              wallets?.length > 0 &&
               // Filter out the selected wallet
               wallets
                 .filter(wallet => wallet.address !== selectedWallet?.address)

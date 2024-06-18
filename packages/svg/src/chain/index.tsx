@@ -142,14 +142,17 @@ export const ChainLogo: FC<ChainLogoProps> = ({
       return <PolygonLogo className={variantClassName} {...props} />;
     case 250:
       return <FantomLogo className={variantClassName} {...props} />;
+    case 1101:
+      return <PolygonLogo className={variantClassName} {...props} />;
     case 8453:
       return <BaseLogo className={variantClassName} {...props} />;
     case 34443:
       return <ModeLogo className={variantClassName} {...props} />;
+    case 42161:
+    case 42170:
+      return <ArbitrumLogo className={variantClassName} {...props} />;
     case 43114:
       return <AvalancheLogo className={variantClassName} {...props} />;
-    case 42161:
-      return <ArbitrumLogo className={variantClassName} {...props} />;
     case 42220:
       return <CeloLogo className={variantClassName} {...props} />;
     case 59144:
