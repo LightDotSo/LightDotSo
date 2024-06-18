@@ -86,7 +86,7 @@ export const useQueryNfts = (params: NftListParams) => {
   });
 
   return {
-    nftPage,
-    isNftsLoading,
+    nftPage: nftPage,
+    isNftsLoading: isNftsLoading,
   };
 };

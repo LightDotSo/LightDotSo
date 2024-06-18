@@ -403,10 +403,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           ref={ref}
           className={cn(
             buttonVariants({
-              variant,
-              intent,
-              size,
-              className,
+              variant: variant,
+              intent: intent,
+              size: size,
+              className: className,
             }),
           )}
           data-variant={variant ?? "default"}
@@ -425,10 +425,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         className={cn(
           buttonVariants({
-            variant,
-            intent,
-            size,
-            className,
+            variant: variant,
+            intent: intent,
+            size: size,
+            className: className,
           }),
         )}
         data-variant={variant ?? "default"}

@@ -34,7 +34,7 @@ export const getWalletBilling = async (
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/billing/get", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

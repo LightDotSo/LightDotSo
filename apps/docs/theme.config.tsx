@@ -39,7 +39,7 @@ const config: DocsThemeConfig = {
   footer: { component: <Footer /> },
   logo: <LightHorizontalLogo />,
   logoLink: "/",
-  useNextSeoProps() {
+  useNextSeoProps: function () {
     const { frontMatter } = useConfig();
     return {
       title: frontMatter.title || "Light",

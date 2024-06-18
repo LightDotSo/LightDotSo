@@ -21,7 +21,7 @@ import { isAddress } from "viem";
 // -----------------------------------------------------------------------------
 
 export const transfersParser = createParser({
-  parse(value) {
+  parse: function (value) {
     if (value === "") {
       return null;
     }
@@ -57,7 +57,7 @@ export const transfersParser = createParser({
               decimals: parsedDecimals,
               quantity: parsedQuantity,
             },
-            assetType,
+            assetType: assetType,
           };
         }
       }
@@ -88,7 +88,7 @@ export const transfersParser = createParser({
               tokenId: parsedTokenId,
               quantity: parsedQuantity,
             },
-            assetType,
+            assetType: assetType,
           };
         }
       }
@@ -96,7 +96,7 @@ export const transfersParser = createParser({
       return acc;
     }, []);
   },
-  serialize(value: Array<Transfer>) {
+  serialize: function (value: Array<Transfer>) {
     const entry = Object.entries(value)
       .filter(([, transfer]) => transfer !== undefined)
       ?.map(([id, transfer]) => {

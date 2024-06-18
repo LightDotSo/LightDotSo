@@ -85,7 +85,7 @@ export const useMutationQueueTransaction = (params: QueueMinimalParams) => {
   });
 
   return {
-    queueTransaction,
-    isLoadingQueueTransaction,
+    queueTransaction: queueTransaction,
+    isLoadingQueueTransaction: isLoadingQueueTransaction,
   };
 };

@@ -85,6 +85,6 @@ export const useQueryTokenPrice = (params: TokenPriceParams) => {
   });
 
   return {
-    token_price,
+    token_price: token_price,
   };
 };

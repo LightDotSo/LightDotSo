@@ -98,16 +98,16 @@ export const NewWalletForm: FC = () => {
   // ---------------------------------------------------------------------------
 
   const defaultValues: Partial<NewFormValues> = {
-    name,
-    type,
-    inviteCode,
+    name: name,
+    type: type,
+    inviteCode: inviteCode,
   };
 
   const form = useForm<NewFormValues>({
     mode: "all",
     reValidateMode: "onBlur",
     resolver: zodResolver(newFormSchema),
-    defaultValues,
+    defaultValues: defaultValues,
   });
 
   useEffect(() => {

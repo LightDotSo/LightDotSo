@@ -85,7 +85,7 @@ export const useMutationQueueToken = (params: QueueParams) => {
   });
 
   return {
-    queueToken,
-    isLoadingQueueToken,
+    queueToken: queueToken,
+    isLoadingQueueToken: isLoadingQueueToken,
   };
 };

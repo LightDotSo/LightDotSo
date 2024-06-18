@@ -91,9 +91,9 @@ export async function zodJsonRpcFetch<
     },
     body: JSON.stringify({
       jsonrpc: "2.0",
-      method,
-      params,
-      id,
+      method: method,
+      params: params,
+      id: id,
     }),
   });
 

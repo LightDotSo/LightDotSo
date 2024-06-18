@@ -44,6 +44,6 @@ export const handler = async (params: { address: string }) => {
   }
 
   return {
-    walletSettings,
+    walletSettings: walletSettings,
   };
 };

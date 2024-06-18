@@ -41,7 +41,7 @@ export const getActivities = async (
 
   return ResultAsync.fromPromise(
     client.GET("/activity/list", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -68,7 +68,7 @@ export const getActivitiesCount = async (
 
   return ResultAsync.fromPromise(
     client.GET("/activity/list/count", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

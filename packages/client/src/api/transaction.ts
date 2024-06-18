@@ -41,7 +41,7 @@ export const getTransactions = async (
 
   return ResultAsync.fromPromise(
     client.GET("/transaction/list", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -70,7 +70,7 @@ export const getTransactionsCount = async (
 
   return ResultAsync.fromPromise(
     client.GET("/transaction/list/count", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

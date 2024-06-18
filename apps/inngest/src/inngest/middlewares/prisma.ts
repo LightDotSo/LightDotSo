@@ -21,15 +21,15 @@ import { InngestMiddleware } from "inngest";
 
 export const prismaMiddleware = new InngestMiddleware({
   name: "Prisma Middleware",
-  init() {
+  init: function () {
     return {
-      onFunctionRun(_ctx) {
+      onFunctionRun: function (_ctx) {
         return {
-          transformInput(_ctx) {
+          transformInput: function (_ctx) {
             return {
               // Anything passed via `ctx` will be merged with the function's arguments
               ctx: {
-                prisma,
+                prisma: prisma,
               },
             };
           },

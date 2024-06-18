@@ -93,7 +93,7 @@ export const OTP = ({
       const newEvent = {
         target: {
           value: formattedValue,
-          id,
+          id: id,
         },
       };
 

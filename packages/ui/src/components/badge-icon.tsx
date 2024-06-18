@@ -73,12 +73,12 @@ const BadgeIcon = forwardRef<HTMLDivElement, BadgeIconProps>(
         ref={ref}
         className={cn(
           badgeVariants({
-            variant,
-            intent,
-            size,
-            className,
+            variant: variant,
+            intent: intent,
+            size: size,
+            className: className,
           }),
-          badgeIconVariants({ size, shape }),
+          badgeIconVariants({ size: size, shape: shape }),
           className,
         )}
         data-variant={variant ?? "default"}

@@ -159,18 +159,18 @@ export const SendDialog: FC<SendDialogProps> = ({
   // ---------------------------------------------------------------------------
 
   const { walletSettings } = useQueryWalletSettings({
-    address,
+    address: address,
   });
 
   const { nftPage } = useQueryNfts({
-    address,
+    address: address,
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
     limit: Number.MAX_SAFE_INTEGER,
     cursor: null,
   });
 
   const { tokens } = useQueryTokens({
-    address,
+    address: address,
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
     offset: 0,
     limit: Number.MAX_SAFE_INTEGER,
@@ -364,7 +364,7 @@ export const SendDialog: FC<SendDialogProps> = ({
         });
       }),
     ),
-    defaultValues,
+    defaultValues: defaultValues,
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -778,7 +778,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                 address: transfers[0].address,
                 addressOrEns: transfers[0].addressOrEns,
                 asset: {
-                  address,
+                  address: address,
                   quantities: transfers.map(
                     // @ts-expect-error
                     // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain

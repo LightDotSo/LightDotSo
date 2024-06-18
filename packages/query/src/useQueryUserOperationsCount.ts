@@ -91,7 +91,7 @@ export const useQueryUserOperationsCount = (
   });
 
   return {
-    userOperationsCount,
-    isUserOperationsCountLoading,
+    userOperationsCount: userOperationsCount,
+    isUserOperationsCountLoading: isUserOperationsCountLoading,
   };
 };

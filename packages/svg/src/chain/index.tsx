@@ -92,7 +92,7 @@ export const TestnetChainLogoWrapper: FC<TestnetChainLogoWrapperProps> = ({
     <span
       className={cn(
         "absolute bottom-0 right-0 inline-flex items-center justify-center rounded-full border border-border-primary-weak bg-background-stronger",
-        testnetChainLogoVariants({ size }),
+        testnetChainLogoVariants({ size: size }),
       )}
     >
       {shortenName(getChainById(chainId).name)}
@@ -121,7 +121,7 @@ export const ChainLogo: FC<ChainLogoProps> = ({
   size,
   ...props
 }) => {
-  const variantClassName = cn(className, chainLogoVariants({ size }));
+  const variantClassName = cn(className, chainLogoVariants({ size: size }));
 
   switch (chainId) {
     // -------------------------------------------------------------------------

@@ -34,7 +34,7 @@ export const getInviteCode = async (
 
   return ResultAsync.fromPromise(
     client.GET("/invite_code/get", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -60,7 +60,7 @@ export const getInviteCodes = async (
 
   return ResultAsync.fromPromise(
     client.GET("/invite_code/list", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -85,7 +85,7 @@ export const getInviteCodesCount = async (
 
   return ResultAsync.fromPromise(
     client.GET("/invite_code/list/count", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

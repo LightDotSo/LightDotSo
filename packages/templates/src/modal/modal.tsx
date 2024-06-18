@@ -150,7 +150,7 @@ export const Modal: FC<ModalProps> = ({
         <DialogContent
           className={cn(
             "w-full",
-            modalDialogVariants({ size }),
+            modalDialogVariants({ size: size }),
             isHidden && "hidden",
           )}
         >

@@ -87,6 +87,7 @@ module.exports = {
     "no-console": ["error", { allow: ["warn", "error", "info"] }],
     "no-multiple-empty-lines": "error",
     "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+    "object-shorthand": ["error", "never"],
     // "@next/next/no-html-link-for-pages": "off",
     // "@typescript-eslint/consistent-type-imports": "error",
     // "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],

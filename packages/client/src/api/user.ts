@@ -37,7 +37,7 @@ export const getUser = async (
 
   return ResultAsync.fromPromise(
     client.GET("/user/get", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

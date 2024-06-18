@@ -96,7 +96,7 @@ export const useQueryTokens = (params: TokenListParams) => {
   });
 
   return {
-    tokens,
-    isTokensLoading,
+    tokens: tokens,
+    isTokensLoading: isTokensLoading,
   };
 };

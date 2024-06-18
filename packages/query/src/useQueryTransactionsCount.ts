@@ -86,7 +86,7 @@ export const useQueryTransactionsCount = (
   });
 
   return {
-    transactionsCount,
-    isTransactionsCountLoading,
+    transactionsCount: transactionsCount,
+    isTransactionsCountLoading: isTransactionsCountLoading,
   };
 };

@@ -63,7 +63,7 @@ export const useSignInWithSiwe = () => {
       _ => {
         const message = new SiweMessage({
           domain: window.location.host,
-          address,
+          address: address,
           statement: "Sign in with Ethereum to light.so",
           uri: window.location.origin,
           version: "1",
@@ -97,8 +97,8 @@ export const useSignInWithSiwe = () => {
   // ---------------------------------------------------------------------------
 
   return {
-    handleSignIn,
-    isPending,
-    isSuccess,
+    handleSignIn: handleSignIn,
+    isPending: isPending,
+    isSuccess: isSuccess,
   };
 };

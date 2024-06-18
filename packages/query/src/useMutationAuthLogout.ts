@@ -62,6 +62,6 @@ export const useMutationAuthLogout = () => {
   });
 
   return {
-    logout,
+    logout: logout,
   };
 };

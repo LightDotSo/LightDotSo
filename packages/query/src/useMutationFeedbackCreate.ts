@@ -87,8 +87,8 @@ export const useMutationFeedbackCreate = (params: FeedbackParams) => {
   });
 
   return {
-    feedbackCreate,
-    isFeedbackCreateSuccess,
-    isFeedbackCreateLoading,
+    feedbackCreate: feedbackCreate,
+    isFeedbackCreateSuccess: isFeedbackCreateSuccess,
+    isFeedbackCreateLoading: isFeedbackCreateLoading,
   };
 };

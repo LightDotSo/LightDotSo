@@ -41,7 +41,7 @@ export const getNotifications = async (
 
   return ResultAsync.fromPromise(
     client.GET("/notification/list", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -70,7 +70,7 @@ export const getNotificationsCount = async (
 
   return ResultAsync.fromPromise(
     client.GET("/notification/list/count", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -100,8 +100,8 @@ export const readNotification = async (
 
   return ResultAsync.fromPromise(
     client.POST("/notification/read", {
-      params,
-      body,
+      params: params,
+      body: body,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

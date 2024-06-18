@@ -59,12 +59,12 @@ export const TransactionsList: FC<TransactionsListProps> = ({
   // ---------------------------------------------------------------------------
 
   const { walletSettings } = useQueryWalletSettings({
-    address,
+    address: address,
   });
 
   const { transactions } = useQueryTransactions({
-    address,
-    limit,
+    address: address,
+    limit: limit,
     offset: 0,
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
   });

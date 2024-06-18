@@ -82,7 +82,7 @@ export const useQueryWalletsCount = (params: WalletListCountParams) => {
   });
 
   return {
-    walletsCount,
-    isWalletsCountLoading,
+    walletsCount: walletsCount,
+    isWalletsCountLoading: isWalletsCountLoading,
   };
 };

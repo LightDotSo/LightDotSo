@@ -77,7 +77,7 @@ export const useQueryAuthSession = (params: AuthParams) => {
   });
 
   return {
-    authSession,
-    refetchAuthSession,
+    authSession: authSession,
+    refetchAuthSession: refetchAuthSession,
   };
 };

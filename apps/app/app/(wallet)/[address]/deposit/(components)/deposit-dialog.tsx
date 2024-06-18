@@ -146,18 +146,18 @@ export const DepositDialog: FC<DepositDialogProps> = ({
   // ---------------------------------------------------------------------------
 
   const { walletSettings } = useQueryWalletSettings({
-    address,
+    address: address,
   });
 
   const { nftPage } = useQueryNfts({
-    address,
+    address: address,
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
     limit: Number.MAX_SAFE_INTEGER,
     cursor: null,
   });
 
   const { balances } = useQuerySocketBalances({
-    address,
+    address: address,
   });
 
   // ---------------------------------------------------------------------------

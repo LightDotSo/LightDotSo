@@ -22,10 +22,10 @@ import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 
 export const auth = createQueryKeys("auth", {
   nonce: (params: AuthParams) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
   session: (params: AuthParams) => ({
-    queryKey: [{ params }],
+    queryKey: [{ params: params }],
   }),
 });
 

@@ -90,7 +90,7 @@ export const useMutationAuthVerify = (params: AuthParams) => {
   });
 
   return {
-    verify,
-    isVerifySuccess,
+    verify: verify,
+    isVerifySuccess: isVerifySuccess,
   };
 };

@@ -66,7 +66,7 @@ export function useRefinement<T>(
     abort(): void;
   }>;
 
-  ctxRef.current = { callback, debounce };
+  ctxRef.current = { callback: callback, debounce: debounce };
 
   if (refinementRef.current == null) {
     refinementRef.current = createRefinement(ctxRef);
@@ -136,5 +136,5 @@ function createRefinement<T>(ctxRef: MutableRefObject<RefinementContext<T>>) {
     result = null;
   };
 
-  return { refine, abort };
+  return { refine: refine, abort: abort };
 }

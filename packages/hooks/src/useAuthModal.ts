@@ -81,5 +81,9 @@ export const useAuthModal = (isOpenModal = true) => {
   // Return
   // ---------------------------------------------------------------------------
 
-  return { isAuthValid, isAuthLoading, handleAuthModal };
+  return {
+    isAuthValid: isAuthValid,
+    isAuthLoading: isAuthLoading,
+    handleAuthModal: handleAuthModal,
+  };
 };

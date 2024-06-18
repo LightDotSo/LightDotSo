@@ -67,6 +67,6 @@ export const useMutationNotificationRead = () => {
   });
 
   return {
-    notificationsRead,
+    notificationsRead: notificationsRead,
   };
 };

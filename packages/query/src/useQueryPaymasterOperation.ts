@@ -87,6 +87,6 @@ export const useQueryPaymasterOperation = (
     });
 
   return {
-    paymasterOperation,
+    paymasterOperation: paymasterOperation,
   };
 };

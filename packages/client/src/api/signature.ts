@@ -45,8 +45,8 @@ export const createSignature = async (
 
   return ResultAsync.fromPromise(
     client.POST("/signature/create", {
-      params,
-      body,
+      params: params,
+      body: body,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

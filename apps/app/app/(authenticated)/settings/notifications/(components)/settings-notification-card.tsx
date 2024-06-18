@@ -84,7 +84,7 @@ export const SettingsNotificationCard: FC = () => {
     mode: "all",
     reValidateMode: "onBlur",
     resolver: zodResolver(SettingsNotificationCardSchema),
-    defaultValues,
+    defaultValues: defaultValues,
   });
 
   // ---------------------------------------------------------------------------

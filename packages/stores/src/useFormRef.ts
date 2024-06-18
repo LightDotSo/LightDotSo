@@ -45,18 +45,20 @@ export const useFormRef = create(
     set => ({
       formControl: undefined,
       setFormControl: (formControl: Control<any, any> | undefined) =>
-        set({ formControl }),
+        set({ formControl: formControl }),
       formRef: undefined,
       setFormRef: (
         formRef: MutableRefObject<HTMLFormElement | null> | undefined,
-      ) => set({ formRef }),
+      ) => set({ formRef: formRef }),
       isFormDisabled: true,
-      setIsFormDisabled: (isFormDisabled: boolean) => set({ isFormDisabled }),
+      setIsFormDisabled: (isFormDisabled: boolean) =>
+        set({ isFormDisabled: isFormDisabled }),
       isFormLoading: false,
-      setIsFormLoading: (isFormLoading: boolean) => set({ isFormLoading }),
+      setIsFormLoading: (isFormLoading: boolean) =>
+        set({ isFormLoading: isFormLoading }),
       customFormSuccessText: undefined,
       setCustomFormSuccessText: (customFormSuccessText: string) =>
-        set({ customFormSuccessText }),
+        set({ customFormSuccessText: customFormSuccessText }),
     }),
     {
       anonymousActionType: "useFormRef",

@@ -31,7 +31,7 @@ export type Owners = Owner[];
 // -----------------------------------------------------------------------------
 
 export const ownerParser = createParser({
-  parse(value) {
+  parse: function (value) {
     const keys = value.split(";");
     return keys.reduce<Owners>((acc, key) => {
       const [id, address, addressOrEns, weight] = key.split(":");
@@ -57,7 +57,7 @@ export const ownerParser = createParser({
       return acc;
     }, []);
   },
-  serialize(value: Owners) {
+  serialize: function (value: Owners) {
     const entry = Object.entries(value)
       // Filter out undefined values
       .filter(([, owner]) => owner !== undefined)

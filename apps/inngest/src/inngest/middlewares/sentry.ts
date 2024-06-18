@@ -21,7 +21,7 @@ import { InngestMiddleware } from "inngest";
 
 export const sentryMiddleware = new InngestMiddleware({
   name: "Sentry Middleware",
-  init({ client }) {
+  init: function ({ client }) {
     // Initialize Sentry as soon as possible, creating a hub
     Sentry.init({ dsn: "..." });
 
@@ -29,7 +29,7 @@ export const sentryMiddleware = new InngestMiddleware({
     Sentry.setTag("inngest.client.id", client.id);
 
     return {
-      onFunctionRun({ ctx, fn }) {
+      onFunctionRun: function ({ ctx, fn }) {
         // Add specific context for the given function run
         Sentry.setTags({
           "inngest.function.id": fn.id(client.id),
@@ -49,7 +49,7 @@ export const sentryMiddleware = new InngestMiddleware({
         let execSpan: Sentry.Span;
 
         return {
-          transformInput() {
+          transformInput: function () {
             return {
               ctx: {
                 // Add the Sentry client to the input arg so our
@@ -58,20 +58,20 @@ export const sentryMiddleware = new InngestMiddleware({
               },
             };
           },
-          beforeMemoization() {
+          beforeMemoization: function () {
             // Track different spans for memoization and execution
             // memoSpan = transaction.startChild({ op: "memoization" });
           },
-          afterMemoization() {
+          afterMemoization: function () {
             // memoSpan.finish();
           },
-          beforeExecution() {
+          beforeExecution: function () {
             // execSpan = transaction.startChild({ op: "execution" });
           },
-          afterExecution() {
+          afterExecution: function () {
             // execSpan.finish();
           },
-          transformOutput({ result, step }) {
+          transformOutput: function ({ result, step }) {
             // Capture step output and log errors
             if (step) {
               Sentry.setTags({
@@ -84,7 +84,7 @@ export const sentryMiddleware = new InngestMiddleware({
               }
             }
           },
-          async beforeResponse() {
+          beforeResponse: async function () {
             // Finish the transaction and flush data to Sentry before the
             // request closes
             // transaction.finish();

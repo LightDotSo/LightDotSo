@@ -78,7 +78,7 @@ export const useQueryActivitiesCount = (params: ActivityListCountParams) => {
   });
 
   return {
-    activitiesCount,
-    isActivitiesCountLoading,
+    activitiesCount: activitiesCount,
+    isActivitiesCountLoading: isActivitiesCountLoading,
   };
 };

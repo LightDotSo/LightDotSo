@@ -75,6 +75,6 @@ export const useQueryPortfolio = (params: PortfolioParams) => {
   );
 
   return {
-    portfolio,
+    portfolio: portfolio,
   };
 };

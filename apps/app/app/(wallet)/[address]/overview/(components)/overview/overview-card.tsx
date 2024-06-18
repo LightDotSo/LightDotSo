@@ -60,7 +60,7 @@ export const OverviewCard = ({
       className="space-y-3 rounded-md border border-border bg-background p-4"
       value={value}
       id={value}
-      style={{ boxShadow, y }}
+      style={{ boxShadow: boxShadow, y: y }}
       dragListener={false}
       dragControls={dragControls}
     >

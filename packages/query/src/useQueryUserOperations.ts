@@ -100,8 +100,8 @@ export const useQueryUserOperations = (params: UserOperationListParams) => {
   });
 
   return {
-    userOperations,
-    isUserOperationsLoading,
-    refetchUserOperations,
+    userOperations: userOperations,
+    isUserOperationsLoading: isUserOperationsLoading,
+    refetchUserOperations: refetchUserOperations,
   };
 };

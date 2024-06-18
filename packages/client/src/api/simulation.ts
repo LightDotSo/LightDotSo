@@ -39,7 +39,7 @@ export const createSimulation = async (
   return ResultAsync.fromPromise(
     client.POST("/simulation/create", {
       params: {},
-      body,
+      body: body,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

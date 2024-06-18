@@ -34,7 +34,7 @@ export const getWalletNotificationSettings = async (
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/notification/settings/get", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -66,8 +66,8 @@ export const updateWalletNotificationSettings = async (
 
   return ResultAsync.fromPromise(
     client.PUT("/wallet/notification/settings/update", {
-      params,
-      body,
+      params: params,
+      body: body,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

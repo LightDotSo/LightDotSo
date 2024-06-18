@@ -81,7 +81,7 @@ export const useQuerySocketBalances = (params: SocketBalanceParams) => {
   });
 
   return {
-    balances,
-    isBalancesLoading,
+    balances: balances,
+    isBalancesLoading: isBalancesLoading,
   };
 };

@@ -31,7 +31,7 @@ interface PageProps {
 
 export default async function Page({ params, searchParams }: PageProps) {
   return OriginalPage({
-    params,
-    searchParams,
+    params: params,
+    searchParams: searchParams,
   });
 }

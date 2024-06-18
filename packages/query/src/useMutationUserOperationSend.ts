@@ -132,7 +132,7 @@ export const useMutationUserOperationSend = (
       // Add 3 second delay for buffer
       await new Promise(resolve => setTimeout(resolve, 3000));
 
-      return { previousData };
+      return { previousData: previousData };
     },
     onSettled: () => {
       queryClient.invalidateQueries({
@@ -166,9 +166,9 @@ export const useMutationUserOperationSend = (
   });
 
   return {
-    isUserOperationSendPending,
-    isUserOperationSendIdle,
-    isUserOperationSendSuccess,
-    userOperationSend,
+    isUserOperationSendPending: isUserOperationSendPending,
+    isUserOperationSendIdle: isUserOperationSendIdle,
+    isUserOperationSendSuccess: isUserOperationSendSuccess,
+    userOperationSend: userOperationSend,
   };
 };

@@ -80,6 +80,6 @@ export const useQueryWalletSimulation = (params: WalletCreateBodyParams) => {
   });
 
   return {
-    walletSimulation,
+    walletSimulation: walletSimulation,
   };
 };

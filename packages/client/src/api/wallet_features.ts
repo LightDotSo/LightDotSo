@@ -34,7 +34,7 @@ export const getWalletFeatures = async (
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/features/get", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -66,8 +66,8 @@ export const updateWalletFeatures = async (
 
   return ResultAsync.fromPromise(
     client.PUT("/wallet/features/update", {
-      params,
-      body,
+      params: params,
+      body: body,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

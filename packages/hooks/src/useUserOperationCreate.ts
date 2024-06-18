@@ -537,19 +537,19 @@ export const useUserOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   return {
-    isUserOperationCreateable,
-    isUserOperationMerkleEqual,
-    isUserOperationCreateLoading,
-    isUserOperationCreateSubmittable,
-    isUserOperationCreateSuccess,
-    isValidUserOperations,
+    isUserOperationCreateable: isUserOperationCreateable,
+    isUserOperationMerkleEqual: isUserOperationMerkleEqual,
+    isUserOperationCreateLoading: isUserOperationCreateLoading,
+    isUserOperationCreateSubmittable: isUserOperationCreateSubmittable,
+    isUserOperationCreateSuccess: isUserOperationCreateSuccess,
+    isValidUserOperations: isValidUserOperations,
     // decodedCallData,
     // decodedInitCode,
     // paymasterHash,
     // paymasterNonce,
-    signUserOperation,
-    subdigest,
-    owner,
+    signUserOperation: signUserOperation,
+    subdigest: subdigest,
+    owner: owner,
     threshold: configuration?.threshold,
   };
 };

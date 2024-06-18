@@ -87,7 +87,7 @@ export const useQueryActivities = (params: ActivityListParams) => {
   });
 
   return {
-    activities,
-    isActivitiesLoading,
+    activities: activities,
+    isActivitiesLoading: isActivitiesLoading,
   };
 };

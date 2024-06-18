@@ -137,7 +137,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   // Also, get the wallet billing
   const { walletBilling, isWalletBillingLoading } = useQueryWalletBilling({
-    address,
+    address: address,
   });
 
   // Gets the configuration for the chain w/ the image hash
@@ -498,7 +498,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       // Update the user operation hash state for computation
       setUserOperationWithHash({
         ...userOperation,
-        hash,
+        hash: hash,
       });
     };
 

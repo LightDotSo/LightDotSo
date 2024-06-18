@@ -34,7 +34,7 @@ export const getPaymasterOperation = async (
 
   return ResultAsync.fromPromise(
     client.GET("/paymaster_operation/get", {
-      params,
+      params: params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

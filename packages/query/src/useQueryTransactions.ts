@@ -90,7 +90,7 @@ export const useQueryTransactions = (params: TransactionListParams) => {
   });
 
   return {
-    transactions,
-    isTransactionsLoading,
+    transactions: transactions,
+    isTransactionsLoading: isTransactionsLoading,
   };
 };

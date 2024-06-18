@@ -20,6 +20,6 @@ import type { DB } from "./src/db/types";
 export const db = new Kysely<DB>({
   dialect: new PlanetScaleDialect({
     url: process.env.DATABASE_URL,
-    fetch,
+    fetch: fetch,
   }),
 });

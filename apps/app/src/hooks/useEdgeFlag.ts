@@ -52,5 +52,5 @@ export function useEdgeFlag(flagName: string) {
   // Return
   // ---------------------------------------------------------------------------
 
-  return { isEnabled, isLoading, error };
+  return { isEnabled: isEnabled, isLoading: isLoading, error: error };
 }

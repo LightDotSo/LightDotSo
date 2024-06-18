@@ -64,6 +64,6 @@ export const useMutationSimulationCreate = () => {
   });
 
   return {
-    logout,
+    logout: logout,
   };
 };

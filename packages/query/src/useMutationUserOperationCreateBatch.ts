@@ -222,8 +222,8 @@ export const useMutationUserOperationCreateBatch = (
   });
 
   return {
-    userOperationCreateBatch,
-    isUserOperactionCreateBatchLoading,
-    isUserOperactionCreateBatchSuccess,
+    userOperationCreateBatch: userOperationCreateBatch,
+    isUserOperactionCreateBatchLoading: isUserOperactionCreateBatchLoading,
+    isUserOperactionCreateBatchSuccess: isUserOperactionCreateBatchSuccess,
   };
 };

@@ -169,7 +169,15 @@ function Badge({
 }: BadgeProps) {
   return (
     <div
-      className={cn(badgeVariants({ variant, intent, size, type }), className)}
+      className={cn(
+        badgeVariants({
+          variant: variant,
+          intent: intent,
+          size: size,
+          type: type,
+        }),
+        className,
+      )}
       data-number-single={
         children?.toString().length === 1 && type === "number"
       }

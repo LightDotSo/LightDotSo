@@ -65,7 +65,7 @@ const TimelinePoint: FC<TimelnePointProps> = ({
       <span
         className={cn(
           "absolute z-20 flex items-center justify-center rounded-full",
-          timelinePointVariants({ size }),
+          timelinePointVariants({ size: size }),
         )}
       >
         {children}
@@ -128,7 +128,10 @@ const TimelineTitle: FC<TimelineTitleProps> = ({
   ...props
 }) => {
   return (
-    <h1 className={cn(timelineTitleVariants({ size }), className)} {...props}>
+    <h1
+      className={cn(timelineTitleVariants({ size: size }), className)}
+      {...props}
+    >
       {children}
     </h1>
   );
@@ -155,7 +158,10 @@ const TimelineBody: FC<TimelineBodyProps> = ({
   ...props
 }) => {
   return (
-    <div className={cn(timelineBodyVariants({ size }), className)} {...props}>
+    <div
+      className={cn(timelineBodyVariants({ size: size }), className)}
+      {...props}
+    >
       {children}
     </div>
   );

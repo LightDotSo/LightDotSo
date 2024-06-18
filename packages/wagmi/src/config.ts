@@ -52,9 +52,9 @@ export const wagmiConfig = createConfig({
   //     ]),
   //   });
   // },
-  client({ chain }) {
+  client: function ({ chain }) {
     return createClient({
-      chain,
+      chain: chain,
       transport: http(),
       // transport: fallback([http(), unstable_connector(injected)]),
     });
@@ -65,7 +65,9 @@ export const wagmiConfig = createConfig({
       headlessMode: true,
       overrideIsMetaMask: false,
     }),
-    ...(projectId ? [walletConnect({ projectId, showQrModal: false })] : []),
+    ...(projectId
+      ? [walletConnect({ projectId: projectId, showQrModal: false })]
+      : []),
     safe(),
     injected({ shimDisconnect: true }),
   ],

@@ -64,7 +64,12 @@ export function BaseLayerWrapper({
         className,
       )}
     >
-      <div className={cn("mx-auto flex-1", baseLayerWrapperVariants({ size }))}>
+      <div
+        className={cn(
+          "mx-auto flex-1",
+          baseLayerWrapperVariants({ size: size }),
+        )}
+      >
         {children}
       </div>
     </div>

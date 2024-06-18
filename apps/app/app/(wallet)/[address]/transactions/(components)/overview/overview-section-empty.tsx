@@ -42,11 +42,11 @@ export const OverviewSectionEmpty = ({
   // ---------------------------------------------------------------------------
 
   const { walletSettings } = useQueryWalletSettings({
-    address,
+    address: address,
   });
 
   const { userOperationsCount } = useQueryUserOperationsCount({
-    address,
+    address: address,
     status: null,
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
   });

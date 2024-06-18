@@ -245,7 +245,7 @@ export function useTabs() {
       tabProps: {
         tabs: HOME_TABS,
         selectedTabIndex: undefined,
-        setSelectedTabIndex,
+        setSelectedTabIndex: setSelectedTabIndex,
       },
       selectedTab: null,
       contentProps: {
@@ -258,13 +258,13 @@ export function useTabs() {
   return {
     tabProps: {
       tabs: transformedTabs,
-      selectedTabIndex,
-      setSelectedTabIndex,
+      selectedTabIndex: selectedTabIndex,
+      setSelectedTabIndex: setSelectedTabIndex,
     },
     selectedTab: selectedTabIndex !== undefined ? tabs[selectedTabIndex] : null,
     contentProps: {
       order: 0,
-      selectedTabIndex,
+      selectedTabIndex: selectedTabIndex,
     },
   };
 }

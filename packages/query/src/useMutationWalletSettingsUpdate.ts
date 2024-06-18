@@ -105,12 +105,12 @@ export const useMutationWalletSettingsUpdate = (
       queryClient.setQueryData(
         queryKeys.wallet.settings({ address: params.address }).queryKey,
         (old: WalletSettingsData) => {
-          return { ...old, data };
+          return { ...old, data: data };
         },
       );
 
       // Return a context object with the snapshotted value
-      return { previousSettings };
+      return { previousSettings: previousSettings };
     },
     // If the mutation fails, use the context we returned above
     onError: (err, _newWalletSettings, context) => {
@@ -142,9 +142,9 @@ export const useMutationWalletSettingsUpdate = (
   });
 
   return {
-    mutate,
-    isWalletSettingsUpdateSuccess,
-    isWalletSettingsUpdateError,
-    isWalletSettingsUpdatePending,
+    mutate: mutate,
+    isWalletSettingsUpdateSuccess: isWalletSettingsUpdateSuccess,
+    isWalletSettingsUpdateError: isWalletSettingsUpdateError,
+    isWalletSettingsUpdatePending: isWalletSettingsUpdatePending,
   };
 };

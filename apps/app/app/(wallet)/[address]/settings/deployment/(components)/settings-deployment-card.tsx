@@ -72,15 +72,15 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // ---------------------------------------------------------------------------
 
   const { wallet } = useQueryWallet({
-    address,
+    address: address,
   });
 
   const { walletSettings } = useQueryWalletSettings({
-    address,
+    address: address,
   });
 
   const { userOperations } = useQueryUserOperations({
-    address,
+    address: address,
     status: "history",
     order: "asc",
     offset: 0,

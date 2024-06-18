@@ -46,17 +46,17 @@ export const useAuth = create(
     persist<AuthState>(
       set => ({
         address: undefined,
-        setAddress: (address: Address | undefined) => set({ address }),
+        setAddress: (address: Address | undefined) => set({ address: address }),
         clientType: undefined,
         setClientType: (clientType: ClientType | undefined) =>
-          set({ clientType }),
+          set({ clientType: clientType }),
         ens: undefined,
-        setEns: (ens: string | undefined) => set({ ens }),
+        setEns: (ens: string | undefined) => set({ ens: ens }),
         userId: undefined,
-        setUserId: (userId: string | undefined) => set({ userId }),
+        setUserId: (userId: string | undefined) => set({ userId: userId }),
         sessionId: undefined,
         setSessionId: (sessionId: string | undefined) => {
-          set({ sessionId });
+          set({ sessionId: sessionId });
           if (sessionId) {
             set({ clientType: "authenticated" });
           } else {
@@ -64,7 +64,7 @@ export const useAuth = create(
           }
         },
         wallet: undefined,
-        setWallet: (wallet: Address | undefined) => set({ wallet }),
+        setWallet: (wallet: Address | undefined) => set({ wallet: wallet }),
         logout: () =>
           set({ address: undefined, wallet: undefined, userId: undefined }),
       }),

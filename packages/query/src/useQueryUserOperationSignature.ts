@@ -83,7 +83,7 @@ export const useQueryUserOperationSignature = (
   });
 
   return {
-    userOperationSignature,
-    isUserOperationSignatureLoading,
+    userOperationSignature: userOperationSignature,
+    isUserOperationSignatureLoading: isUserOperationSignatureLoading,
   };
 };

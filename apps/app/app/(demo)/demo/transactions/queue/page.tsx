@@ -32,6 +32,6 @@ interface PageProps {
 export default async function Page({ searchParams }: PageProps) {
   return OriginalPage({
     params: { address: DEMO_WALLET_ADDRESS },
-    searchParams,
+    searchParams: searchParams,
   });
 }

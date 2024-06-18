@@ -77,7 +77,7 @@ export const SettingsAppearanceCard: FC = () => {
     mode: "all",
     reValidateMode: "onBlur",
     resolver: zodResolver(appearanceFormSchema),
-    defaultValues,
+    defaultValues: defaultValues,
   });
 
   // ---------------------------------------------------------------------------

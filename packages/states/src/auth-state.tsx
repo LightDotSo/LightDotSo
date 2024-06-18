@@ -35,7 +35,7 @@ export const AuthState: FC = () => {
   // ---------------------------------------------------------------------------
 
   const { address } = useAccount();
-  const { data: ens } = useEnsName({ address, chainId: 1 });
+  const { data: ens } = useEnsName({ address: address, chainId: 1 });
 
   // ---------------------------------------------------------------------------
   // Next Hooks
