@@ -1,5 +1,14 @@
 # @lightdotso/parsers
 
+## 0.0.4
+
+### Patch Changes
+
+- [#1961](https://github.com/LightDotSo/LightDotSo/pull/1961) [`1ab8e66`](https://github.com/LightDotSo/LightDotSo/commit/1ab8e662bb5ee7cb25c434f72548a8e7701b8d3a) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add pnpm upgrade
+
+- Updated dependencies [[`1ab8e66`](https://github.com/LightDotSo/LightDotSo/commit/1ab8e662bb5ee7cb25c434f72548a8e7701b8d3a)]:
+  - @lightdotso/regexs@0.0.4
+
 ## 0.0.3
 
 ### Patch Changes

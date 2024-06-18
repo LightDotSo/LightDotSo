@@ -1,5 +1,32 @@
 # @lightdotso/web
 
+## 3.2.6
+
+### Patch Changes
+
+- [#1961](https://github.com/LightDotSo/LightDotSo/pull/1961) [`1ab8e66`](https://github.com/LightDotSo/LightDotSo/commit/1ab8e662bb5ee7cb25c434f72548a8e7701b8d3a) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add pnpm upgrade
+
+- Updated dependencies [[`4e9a11a`](https://github.com/LightDotSo/LightDotSo/commit/4e9a11a2c69380a2b49ab34e29ece0382dc4848f), [`1ab8e66`](https://github.com/LightDotSo/LightDotSo/commit/1ab8e662bb5ee7cb25c434f72548a8e7701b8d3a)]:
+  - @lightdotso/tables@0.1.6
+  - @lightdotso/kysely@3.1.5
+  - @lightdotso/prisma@3.1.5
+  - @lightdotso/query-keys@0.1.6
+  - @lightdotso/validators@0.0.5
+  - @lightdotso/templates@0.0.6
+  - @lightdotso/services@0.0.7
+  - @lightdotso/client@3.1.6
+  - @lightdotso/params@0.1.6
+  - @lightdotso/states@0.0.6
+  - @lightdotso/stores@0.1.6
+  - @lightdotso/hooks@0.0.7
+  - @lightdotso/query@0.1.6
+  - @lightdotso/types@0.0.5
+  - @lightdotso/utils@3.1.6
+  - @lightdotso/data@0.1.5
+  - @lightdotso/nuqs@0.0.6
+  - @lightdotso/svg@0.0.7
+  - @lightdotso/ui@3.1.6
+
 ## 3.2.5
 
 ### Patch Changes

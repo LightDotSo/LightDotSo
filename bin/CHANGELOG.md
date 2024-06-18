@@ -1,5 +1,12 @@
 # @lightdotso/bin
 
+## 3.1.5
+
+### Patch Changes
+
+- Updated dependencies [[`1ab8e66`](https://github.com/LightDotSo/LightDotSo/commit/1ab8e662bb5ee7cb25c434f72548a8e7701b8d3a)]:
+  - @lightdotso/crates@3.1.5
+
 ## 3.1.4
 
 ### Patch Changes

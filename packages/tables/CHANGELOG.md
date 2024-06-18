@@ -1,5 +1,28 @@
 # @lightdotso/tables
 
+## 0.1.6
+
+### Patch Changes
+
+- [#1955](https://github.com/LightDotSo/LightDotSo/pull/1955) [`4e9a11a`](https://github.com/LightDotSo/LightDotSo/commit/4e9a11a2c69380a2b49ab34e29ece0382dc4848f) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add token prices
+
+- [#1961](https://github.com/LightDotSo/LightDotSo/pull/1961) [`1ab8e66`](https://github.com/LightDotSo/LightDotSo/commit/1ab8e662bb5ee7cb25c434f72548a8e7701b8d3a) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add pnpm upgrade
+
+- Updated dependencies [[`1ab8e66`](https://github.com/LightDotSo/LightDotSo/commit/1ab8e662bb5ee7cb25c434f72548a8e7701b8d3a)]:
+  - @lightdotso/templates@0.0.6
+  - @lightdotso/elements@0.0.6
+  - @lightdotso/stores@0.1.6
+  - @lightdotso/const@3.1.6
+  - @lightdotso/hooks@0.0.7
+  - @lightdotso/query@0.1.6
+  - @lightdotso/utils@3.1.6
+  - @lightdotso/wagmi@3.1.6
+  - @lightdotso/data@0.1.5
+  - @lightdotso/demo@0.0.7
+  - @lightdotso/msw@0.0.6
+  - @lightdotso/svg@0.0.7
+  - @lightdotso/ui@3.1.6
+
 ## 0.1.5
 
 ### Patch Changes
