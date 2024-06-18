@@ -126,7 +126,7 @@ export function useTabs() {
     address: walletAddress as Address,
   });
 
-  const { configuration } = useQueryConfiguration({
+  const { configuration, isConfigurationLoading } = useQueryConfiguration({
     address: walletAddress as Address,
   });
 
@@ -154,6 +154,11 @@ export function useTabs() {
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
+    // If the configuration is loading, return
+    if (isConfigurationLoading) {
+      return;
+    }
+
     // If the user has connected their wallet
     if (connectedAddress) {
       // If the connected address is not in the owners addresses, show the not owner banner
@@ -170,7 +175,13 @@ export function useTabs() {
     if (walletAddress && !connectedAddress) {
       setIsNotOwner(true);
     }
-  }, [ownersAddresses, setIsNotOwner, walletAddress, connectedAddress]);
+  }, [
+    ownersAddresses,
+    setIsNotOwner,
+    walletAddress,
+    connectedAddress,
+    isConfigurationLoading,
+  ]);
 
   // Refetch the wallet features when the wallet address changes
   useEffect(() => {

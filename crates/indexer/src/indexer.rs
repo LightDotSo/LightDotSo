@@ -33,7 +33,7 @@ use ethers::{
 };
 use ethers_providers::StreamExt;
 use eyre::eyre;
-use lightdotso_constants::{RUNNER_CHAIN_IDS, SLEEP_CHAIN_IDS};
+use lightdotso_constants::chains::{RUNNER_CHAIN_IDS, SLEEP_CHAIN_IDS};
 use lightdotso_contracts::{constants::LIGHT_WALLET_FACTORY_ADDRESSES, provider::get_provider};
 use lightdotso_db::{error::DbError, models::transaction::upsert_transaction_with_log_receipt};
 use lightdotso_kafka::{

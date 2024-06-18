@@ -5984,6 +5984,7 @@ dependencies = [
  "hyper-rustls 0.24.1",
  "lazy_static",
  "lightdotso-common",
+ "lightdotso-constants",
  "lightdotso-contracts",
  "lightdotso-db",
  "lightdotso-indexer",
@@ -6157,6 +6158,7 @@ dependencies = [
  "ethers 2.0.8",
  "eyre",
  "lazy_static",
+ "lightdotso-constants",
  "tokio",
 ]
 

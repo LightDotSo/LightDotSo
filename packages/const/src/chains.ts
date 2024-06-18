@@ -39,6 +39,7 @@ import {
   scrollSepolia,
   blastSepolia,
   lineaSepolia,
+  polygonMumbai,
 } from "viem/chains";
 import type { Chain } from "viem/chains";
 
@@ -81,6 +82,15 @@ export const TESTNET_CHAINS = [
   optimismSepolia,
   blastSepolia,
 ] as readonly [Chain, ...Chain[]];
+
+// -----------------------------------------------------------------------------
+// Deprecated
+// -----------------------------------------------------------------------------
+
+export const DEPRECATED_CHAINS = [polygonMumbai] as readonly [
+  Chain,
+  ...Chain[],
+];
 
 // -----------------------------------------------------------------------------
 // All

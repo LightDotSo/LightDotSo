@@ -23,7 +23,12 @@ export {
   BASE_RPC_URL,
 } from "./api_urls";
 export { CHAIN_IDS, CHAIN_ID_LABELS } from "./chain_ids";
-export { CHAINS, MAINNET_CHAINS, TESTNET_CHAINS } from "./chains";
+export {
+  CHAINS,
+  MAINNET_CHAINS,
+  TESTNET_CHAINS,
+  DEPRECATED_CHAINS,
+} from "./chains";
 export {
   CONFIGURATION_MAX_WEIGHT,
   CONFIGURATION_MAX_THRESHOLD,
