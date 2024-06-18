@@ -72,7 +72,7 @@ export function useTabs() {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { toggleIsNotOwner } = useBanners();
+  const { setIsNotOwner, isNotOwner } = useBanners();
 
   // ---------------------------------------------------------------------------
   // Local Variables
@@ -154,17 +154,25 @@ export function useTabs() {
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    // If the user is not an owner, show the banner
-    if (connectedAddress && !ownersAddresses.includes(connectedAddress)) {
-      toggleIsNotOwner();
+    // If the user has connected their wallet
+    if (connectedAddress) {
+      // If the connected address is not in the owners addresses, show the not owner banner
+      if (!ownersAddresses.includes(connectedAddress)) {
+        setIsNotOwner(true);
+      } else {
+        // If the connected address is in the owners addresses, hide the not owner banner
+        if (isNotOwner) {
+          setIsNotOwner(false);
+        }
+      }
       return;
     }
 
     // If the user hasn't connected their wallet, show the banner
     if (walletAddress && !connectedAddress) {
-      toggleIsNotOwner();
+      setIsNotOwner(true);
     }
-  }, [ownersAddresses, toggleIsNotOwner, walletAddress, connectedAddress]);
+  }, [ownersAddresses, setIsNotOwner, walletAddress, connectedAddress]);
 
   // Refetch the wallet features when the wallet address changes
   useEffect(() => {

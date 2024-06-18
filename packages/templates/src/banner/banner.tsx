@@ -73,7 +73,7 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { isBetaClosed, isNotOwner, toggleIsBetaClosed } = useBanners();
+  const { isBetaClosed, isNotOwner, setIsBetaClosed } = useBanners();
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -208,7 +208,7 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
             size="xs"
             variant="link"
             intent={betaKind === "beta" ? "info" : "warning"}
-            onClick={toggleIsBetaClosed}
+            onClick={() => setIsBetaClosed(true)}
           >
             <>
               <XMarkIcon className="size-4" />

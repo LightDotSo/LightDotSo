@@ -82,6 +82,7 @@ export const ProgressUserOperationOp: FC<PendingUserOperationOpProps> = ({
         position: "top-right",
       });
 
+      // Refetch all pending user operations upon execution
       onExecuted();
     }
   }, [hash, userOperation, onExecuted]);
@@ -89,6 +90,7 @@ export const ProgressUserOperationOp: FC<PendingUserOperationOpProps> = ({
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
+
   return null;
 };
 
@@ -164,6 +166,10 @@ export const ProgressUserOperation: FC = () => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
+
+  if (!pendingUserOperations || isPendingUserOperationsLoading) {
+    return null;
+  }
 
   return pendingUserOperations?.map(pendingUserOperation => (
     <ProgressUserOperationOp
