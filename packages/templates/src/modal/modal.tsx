@@ -57,13 +57,14 @@ const modalDialogVariants = cva(["flex max-h-[80%] flex-col"], {
 // Props
 // -----------------------------------------------------------------------------
 
-interface ModalProps extends VariantProps<typeof modalDialogVariants> {
+export interface ModalProps extends VariantProps<typeof modalDialogVariants> {
   children: ReactNode;
   className?: string;
   isHidden?: boolean;
   headerContent?: ReactNode;
   bannerContent?: ReactNode;
   footerContent?: ReactNode;
+  isOverflowHidden?: boolean;
   isHeightFixed?: boolean;
   open?: boolean;
   onClose?: () => void;
@@ -93,6 +94,7 @@ export const Modal: FC<ModalProps> = ({
   isHidden,
   open,
   size,
+  isOverflowHidden,
   isHeightFixed,
   headerContent,
   bannerContent,
@@ -172,7 +174,8 @@ export const Modal: FC<ModalProps> = ({
           )}
           <DialogBody
             className={cn(
-              "overflow-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+              !isOverflowHidden &&
+                "overflow-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
               isHeightFixed ? "h-96" : "max-h-full",
               className,
             )}

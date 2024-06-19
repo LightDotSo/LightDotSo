@@ -70,7 +70,7 @@ export const ModalSwiper: FC<ModalSwiperProps> = ({ children }) => {
   return (
     <motion.div
       key={pageIndex}
-      className="w-full"
+      className="relative w-full"
       variants={variants}
       initial={!hasAnimated ? "center" : "enter"}
       animate="center"

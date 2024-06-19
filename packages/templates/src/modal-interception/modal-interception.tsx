@@ -18,19 +18,23 @@ import { useModals } from "@lightdotso/stores";
 import { useRouter, usePathname } from "next/navigation";
 import { useCallback, useEffect, useMemo } from "react";
 import type { FC, ReactNode } from "react";
-import { Modal } from "../modal";
+import { Modal, ModalProps } from "../modal";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface ModalInterceptionProps {
+type ModalInterceptionProps = {
   children: ReactNode;
   type: "create" | "op" | "notifications" | "send" | "deposit";
-  isHeightFixed?: boolean;
-  bannerContent?: ReactNode;
-  footerContent?: ReactNode;
-}
+} & Pick<
+  ModalProps,
+  | "children"
+  | "isOverflowHidden"
+  | "isHeightFixed"
+  | "bannerContent"
+  | "footerContent"
+>;
 
 // -----------------------------------------------------------------------------
 // Component
@@ -38,6 +42,7 @@ interface ModalInterceptionProps {
 
 export const ModalInterception: FC<ModalInterceptionProps> = ({
   children,
+  isOverflowHidden = false,
   isHeightFixed = false,
   bannerContent,
   footerContent,
@@ -239,6 +244,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
 
   return (
     <Modal
+      isOverflowHidden={isOverflowHidden}
       isHeightFixed={isHeightFixed}
       isHidden={isBackground}
       bannerContent={bannerContent}
