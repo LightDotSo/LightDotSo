@@ -16,6 +16,7 @@
 
 import { TokenImage } from "@lightdotso/elements";
 import { useUserOperationsCreate } from "@lightdotso/hooks";
+import { useUserOperationsQueryState } from "@lightdotso/nuqs";
 import { useQueryTokens } from "@lightdotso/query";
 import { transactionFormSchema } from "@lightdotso/schemas";
 import {
@@ -61,7 +62,6 @@ import { TransactionDetailInfo } from "./transaction-details-info";
 import { TransactionDevInfo } from "./transaction-dev-info";
 import { TransactionFetcher } from "./transaction-fetcher";
 import { TransactionSender } from "./transaction-sender";
-import { useUserOperationsQueryState } from "@lightdotso/nuqs";
 
 // -----------------------------------------------------------------------------
 // Props
