@@ -70,8 +70,11 @@ export const useUserOperationCreate = ({
 
   const { address: userAddress } = useAuth();
   const { setCustomFormSuccessText, setIsFormLoading } = useFormRef();
-  const { internalUserOperations, addPendingSubmitUserOperationHash } =
-    useUserOperations();
+  const {
+    internalUserOperations,
+    addPendingSubmitUserOperationHash,
+    resetInternalUserOperations,
+  } = useUserOperations();
 
   // ---------------------------------------------------------------------------
   // State Hooks
@@ -264,6 +267,13 @@ export const useUserOperationCreate = ({
   // ---------------------------------------------------------------------------
   // Callback Hooks
   // ---------------------------------------------------------------------------
+
+  // Reset the signed data, merkle tree, and internalUserOperations
+  const resetUserOperationCreate = useCallback(() => {
+    setSignedData(undefined);
+    setMerkleTree(undefined);
+    resetInternalUserOperations();
+  }, []);
 
   // Sign the userOperation
   const signUserOperation = useCallback(() => {
@@ -547,6 +557,7 @@ export const useUserOperationCreate = ({
     // decodedInitCode,
     // paymasterHash,
     // paymasterNonce,
+    resetUserOperationCreate: resetUserOperationCreate,
     signUserOperation: signUserOperation,
     subdigest: subdigest,
     owner: owner,
