@@ -16,7 +16,6 @@
 
 import { TokenImage } from "@lightdotso/elements";
 import { useUserOperationsCreate } from "@lightdotso/hooks";
-import { useUserOperationsQueryState } from "@lightdotso/nuqs";
 import { useQueryTokens } from "@lightdotso/query";
 import { transactionFormSchema } from "@lightdotso/schemas";
 import {
