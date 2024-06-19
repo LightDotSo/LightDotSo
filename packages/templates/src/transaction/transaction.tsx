@@ -15,7 +15,7 @@
 "use client";
 
 import { TokenImage } from "@lightdotso/elements";
-import { useUserOperationCreate } from "@lightdotso/hooks";
+import { useUserOperationsCreate } from "@lightdotso/hooks";
 import { useUserOperationsQueryState } from "@lightdotso/nuqs";
 import { useQueryTokens } from "@lightdotso/query";
 import { transactionFormSchema } from "@lightdotso/schemas";
@@ -94,6 +94,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
 
   const { pageIndex, setPageIndex } = useModalSwiper();
   const {
+    internalUserOperations,
     userOperationDetails,
     userOperationDevInfo,
     // userOperationSimulations,
@@ -143,21 +144,13 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const {
-    isValidUserOperations,
-    isUserOperationMerkleEqual,
-    isUserOperationCreateable,
-    isUserOperationCreateLoading,
-    isUserOperationCreateSuccess,
-    isUserOperationCreateSubmittable,
-    resetUserOperationCreate,
-    signUserOperation,
-    // decodedCallData,
-    // decodedInitCode,
-    // paymasterHash,
-    // paymasterNonce,
-    // owner,
-    subdigest,
-  } = useUserOperationCreate({
+    isUserOperationsCreateLoading,
+    isUserOperationsCreateSuccess,
+    isUserOperationsCreateSubmittable,
+    isUserOperationsDisabled,
+    resetUserOperationsCreate,
+    signUserOperations,
+  } = useUserOperationsCreate({
     address: address as Address,
   });
 
@@ -167,9 +160,9 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
 
   const defaultValues: TransactionFormValues = useMemo(() => {
     return {
-      isDirectSubmit: isUserOperationCreateSubmittable,
+      isDirectSubmit: isUserOperationsCreateSubmittable,
     };
-  }, [isUserOperationCreateSubmittable]);
+  }, [isUserOperationsCreateSubmittable]);
 
   // ---------------------------------------------------------------------------
   // Form
@@ -185,81 +178,41 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   const watchIsDirectSubmit = form.watch("isDirectSubmit");
 
   // ---------------------------------------------------------------------------
-  // Memoized Hooks
-  // ---------------------------------------------------------------------------
-
-  // Set the transaction loading state
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const isTransactionLoading = useMemo(() => {
-    // Only set the loading state if the user operation is not yet created
-    if (isUserOperationCreateSuccess) {
-      return isUserOperationCreateLoading;
-    }
-    // Otherwise, the transaction loading state is set from the individual transaction fetcher
-    return false;
-  }, [isUserOperationCreateSuccess, isUserOperationCreateLoading]);
-
-  // Set the transaction disabled state
-  const isTransactionDisabled = useMemo(() => {
-    // A combination of conditions that would disable the transaction
-    return !(
-      // If the subdigest is not undefined
-      (
-        typeof subdigest === "undefined" ||
-        // Nor if the user operations all have a hash
-        !userOperations.every(userOperation => userOperation.hash) ||
-        // Nor if the user operations are not valid
-        !isValidUserOperations ||
-        // Nor if the user operations are not createable
-        !isUserOperationCreateable ||
-        // Nor if the merkle root is not equal
-        !isUserOperationMerkleEqual
-      )
-    );
-  }, [
-    subdigest,
-    userOperations,
-    isValidUserOperations,
-    isUserOperationCreateable,
-    isUserOperationMerkleEqual,
-  ]);
-
-  // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
   // Change the page index depending on the sign loading state
   useEffect(() => {
-    if (isUserOperationCreateLoading) {
+    if (isUserOperationsCreateLoading) {
       setPageIndex(1);
     } else {
       setPageIndex(0);
     }
-  }, [isUserOperationCreateLoading, setPageIndex]);
+  }, [isUserOperationsCreateLoading, setPageIndex]);
 
   // Change the page index depending on the sign success state
   useEffect(() => {
-    if (isUserOperationCreateSuccess && watchIsDirectSubmit) {
+    if (isUserOperationsCreateSuccess && watchIsDirectSubmit) {
       setPageIndex(2);
     }
-  }, [isUserOperationCreateSuccess, watchIsDirectSubmit, setPageIndex]);
+  }, [isUserOperationsCreateSuccess, watchIsDirectSubmit, setPageIndex]);
 
   // On pathname change, reset all user operations
   useEffect(() => {
-    resetUserOperationCreate();
+    resetUserOperationsCreate();
     resetAll();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname, resetUserOperationCreate, resetAll]);
+  }, [pathname, resetUserOperationsCreate, resetAll]);
 
   // If the transaction is disabled, set the form disabled to true
   useEffect(() => {
-    setIsFormDisabled(isTransactionDisabled);
-  }, [isTransactionDisabled, setIsFormDisabled]);
+    setIsFormDisabled(isUserOperationsDisabled);
+  }, [isUserOperationsDisabled, setIsFormDisabled]);
 
   // Sync the `isDirectSubmit` field with the `isUserOperationCreateSubmittable` value
   useEffect(() => {
-    form.setValue("isDirectSubmit", isUserOperationCreateSubmittable);
-  }, [form, isUserOperationCreateSubmittable]);
+    form.setValue("isDirectSubmit", isUserOperationsCreateSubmittable);
+  }, [form, isUserOperationsCreateSubmittable]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -516,7 +469,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
                         isLoading={isFormLoading}
                         disabled={isFormLoading || isFormDisabled}
                         customSuccessText={customFormSuccessText}
-                        onClick={signUserOperation}
+                        onClick={signUserOperations}
                       />
                     )}
                   </div>
@@ -570,37 +523,39 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
                   value="data"
                 >
                   <div className="space-y-3 pt-3">
-                    {userOperations &&
-                      userOperations.length > 0 &&
-                      userOperations.map((userOperation, index) => {
-                        return (
-                          <Accordion
-                            key={index}
-                            collapsible
-                            defaultValue="value-0"
-                            className="rounded-md border border-border bg-background-weak p-4"
-                            type="single"
-                          >
-                            <AccordionItem
-                              className="border-0"
-                              value={`value-${index}`}
+                    {internalUserOperations &&
+                      internalUserOperations.length > 0 &&
+                      internalUserOperations.map(
+                        (internalUserOperation, index) => {
+                          return (
+                            <Accordion
+                              key={index}
+                              collapsible
+                              defaultValue="value-0"
+                              className="rounded-md border border-border bg-background-weak p-4"
+                              type="single"
                             >
-                              <AccordionTrigger className="px-1 py-0 text-xl font-medium md:text-2xl">
-                                Calldata #{index + 1}
-                              </AccordionTrigger>
-                              <AccordionContent className="px-1 pt-4">
-                                <pre className="text-sm italic">
-                                  <Textarea
-                                    readOnly
-                                    className="h-auto w-full"
-                                    value={userOperation.callData}
-                                  />
-                                </pre>
-                              </AccordionContent>
-                            </AccordionItem>
-                          </Accordion>
-                        );
-                      })}
+                              <AccordionItem
+                                className="border-0"
+                                value={`value-${index}`}
+                              >
+                                <AccordionTrigger className="px-1 py-0 text-xl font-medium md:text-2xl">
+                                  Calldata #{index + 1}
+                                </AccordionTrigger>
+                                <AccordionContent className="px-1 pt-4">
+                                  <pre className="text-sm italic">
+                                    <Textarea
+                                      readOnly
+                                      className="h-auto w-full"
+                                      value={internalUserOperation.callData}
+                                    />
+                                  </pre>
+                                </AccordionContent>
+                              </AccordionItem>
+                            </Accordion>
+                          );
+                        },
+                      )}
                   </div>
                 </TabsContent>
                 <TabsContent

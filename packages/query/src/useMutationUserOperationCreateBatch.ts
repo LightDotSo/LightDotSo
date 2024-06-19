@@ -58,8 +58,8 @@ export const useMutationUserOperationCreateBatch = (
 
   const {
     mutate: userOperationCreateBatch,
-    isPending: isUserOperactionCreateBatchLoading,
-    isSuccess: isUserOperactionCreateBatchSuccess,
+    isPending: isUserOperationCreateBatchLoading,
+    isSuccess: isUserOperationCreateBatchSuccess,
     failureCount,
   } = useMutation({
     mutationFn: async (body: UserOperationCreateBatchBodyParams) => {
@@ -223,7 +223,7 @@ export const useMutationUserOperationCreateBatch = (
 
   return {
     userOperationCreateBatch: userOperationCreateBatch,
-    isUserOperactionCreateBatchLoading: isUserOperactionCreateBatchLoading,
-    isUserOperactionCreateBatchSuccess: isUserOperactionCreateBatchSuccess,
+    isUserOperationCreateBatchLoading: isUserOperationCreateBatchLoading,
+    isUserOperationCreateBatchSuccess: isUserOperationCreateBatchSuccess,
   };
 };

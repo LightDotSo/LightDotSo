@@ -26,6 +26,6 @@ export { useProxyImplementationAddress } from "./useProxyImplementationAddress";
 export { useRefinement } from "./useRefinement";
 export type { RefinementCallback, Refinement } from "./useRefinement";
 export { useSignInWithSiwe } from "./useSignInWithSiwe";
-export { useUserOperationCreate } from "./useUserOperationCreate";
+export { useUserOperationsCreate } from "./useUserOperationsCreate";
 export { useUserOperationSend } from "./useUserOperationSend";
 export { useUserOperationSign } from "./useUserOperationSign";
