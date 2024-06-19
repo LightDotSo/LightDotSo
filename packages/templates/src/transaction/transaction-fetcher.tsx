@@ -343,8 +343,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       verificationGasLimit: estimateUserOperationGasData?.verificationGasLimit
         ? fromHex(estimateUserOperationGasData?.verificationGasLimit as Hex, {
             to: "bigint",
-            // Multiple by the threshold of the most recent configuration
-          }) * BigInt(currentConfiguration?.threshold ?? 1)
+          })
         : BigInt(0),
       maxFeePerGas:
         feesPerGas?.maxFeePerGas ?? targetUserOperation.maxFeePerGas,
@@ -387,7 +386,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         verificationGasLimit: paymasterAndData?.verificationGasLimit
           ? fromHex(paymasterAndData.verificationGasLimit as Hex, {
               to: "bigint",
-            })
+              // Multiple by the threshold of the most recent configuration
+            }) * BigInt(currentConfiguration?.threshold ?? 1)
           : BigInt(0),
         preVerificationGas: paymasterAndData?.preVerificationGas
           ? fromHex(paymasterAndData.preVerificationGas as Hex, {
@@ -403,6 +403,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       // targetUserOperation,
       // Paymaster and data is required to compute the gas limits and paymaster
       paymasterAndData,
+      // The current configuration is required to compute the verification gas limit
+      currentConfiguration,
     ]);
 
   // ---------------------------------------------------------------------------
