@@ -33,7 +33,7 @@ const config: PlaywrightTestConfig = {
     baseURL: baseUrl,
     headless: opts.headless,
   },
-  webServer,
+  webServer: webServer,
 };
 
 export default config;
