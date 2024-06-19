@@ -2810,6 +2810,9 @@ importers:
       '@lightdotso/msw':
         specifier: workspace:*
         version: link:../msw
+      '@lightdotso/nuqs':
+        specifier: workspace:*
+        version: link:../nuqs
       '@lightdotso/query':
         specifier: workspace:*
         version: link:../query

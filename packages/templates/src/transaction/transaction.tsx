@@ -61,6 +61,7 @@ import { TransactionDetailInfo } from "./transaction-details-info";
 import { TransactionDevInfo } from "./transaction-dev-info";
 import { TransactionFetcher } from "./transaction-fetcher";
 import { TransactionSender } from "./transaction-sender";
+import { useUserOperationsQueryState } from "@lightdotso/nuqs";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -125,6 +126,12 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
     group: false,
     chain_ids: null,
   });
+
+  // ---------------------------------------------------------------------------
+  // Query State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [userOperations] = useUserOperationsQueryState();
 
   // ---------------------------------------------------------------------------
   // Local Hooks
@@ -577,17 +584,17 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
           {pageIndex === 2 && <TransactionSender address={address} />}
         </ModalSwiper>
       </div>
-      {internalUserOperations &&
-        internalUserOperations.length > 0 &&
-        internalUserOperations.map((internalUserOperation, index) => {
-          if (!internalUserOperation) {
+      {userOperations &&
+        userOperations.length > 0 &&
+        userOperations.map((userOperation, index) => {
+          if (!userOperation) {
             return;
           }
           return (
             <TransactionFetcher
-              key={internalUserOperation.chainId || index}
+              key={userOperation.chainId || index}
               address={address}
-              initialUserOperation={internalUserOperation}
+              initialUserOperation={userOperation}
               userOperationIndex={index}
             />
           );
