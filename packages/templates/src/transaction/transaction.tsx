@@ -100,12 +100,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
     // userOperationSimulations,
     resetAll,
   } = useUserOperations();
-  const {
-    customFormSuccessText,
-    isFormLoading,
-    isFormDisabled,
-    setIsFormDisabled,
-  } = useFormRef();
+  const { customFormSuccessText, isFormLoading, isFormDisabled } = useFormRef();
   const { isDev } = useDev();
   const {
     setTokenModalProps,
@@ -147,7 +142,6 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
     isUserOperationsCreateLoading,
     isUserOperationsCreateSuccess,
     isUserOperationsCreateSubmittable,
-    isUserOperationsDisabled,
     resetUserOperationsCreate,
     signUserOperations,
   } = useUserOperationsCreate({
@@ -203,11 +197,6 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
     resetAll();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, resetUserOperationsCreate, resetAll]);
-
-  // If the transaction is disabled, set the form disabled to true
-  useEffect(() => {
-    setIsFormDisabled(isUserOperationsDisabled);
-  }, [isUserOperationsDisabled, setIsFormDisabled]);
 
   // Sync the `isDirectSubmit` field with the `isUserOperationCreateSubmittable` value
   useEffect(() => {

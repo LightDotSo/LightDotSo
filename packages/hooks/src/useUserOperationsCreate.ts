@@ -69,7 +69,11 @@ export const useUserOperationsCreate = ({
   // ---------------------------------------------------------------------------
 
   const { address: userAddress } = useAuth();
-  const { setCustomFormSuccessText, setIsFormLoading } = useFormRef();
+  const {
+    setCustomFormSuccessText,
+    setIsFormLoading,
+    // setIsFormDisabled
+  } = useFormRef();
   const {
     internalUserOperations,
     addPendingSubmitUserOperationHash,
@@ -581,6 +585,11 @@ export const useUserOperationsCreate = ({
     isUserOperationCreateLoading,
     setIsFormLoading,
   ]);
+
+  // If the transaction is disabled, set the form disabled to true
+  // useEffect(() => {
+  //   setIsFormDisabled(isUserOperationsDisabled);
+  // }, [isUserOperationsDisabled, setIsFormDisabled]);
 
   // ---------------------------------------------------------------------------
   // Render
