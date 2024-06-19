@@ -471,6 +471,46 @@ export const useUserOperationsCreate = ({
   }, [isUserOperationCreateSuccess, isUserOperationCreateBatchSuccess]);
 
   // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  // Set the transaction loading state
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const isUserOperationsTransactionLoading = useMemo(() => {
+    // Only set the loading state if the user operation is not yet created
+    if (isUserOperationsCreateSuccess) {
+      return isUserOperationsCreateLoading;
+    }
+    // Otherwise, the transaction loading state is set from the individual transaction fetcher
+    return false;
+  }, [isUserOperationsCreateSuccess, isUserOperationsCreateLoading]);
+
+  // Set the transaction disabled state
+  const isUserOperationsDisabled = useMemo(() => {
+    // A combination of conditions that would disable the transaction
+    return !(
+      // If the subdigest is not undefined
+      (
+        typeof subdigest === "undefined" ||
+        // Nor if the user operations all have a hash
+        !internalUserOperations.every(userOperation => userOperation.hash) ||
+        // Nor if the user operations are not valid
+        !isValidUserOperations ||
+        // Nor if the user operations are not createable
+        !isUserOperationsCreateable ||
+        // Nor if the merkle root is not equal
+        !isUserOperationsMerkleEqual
+      )
+    );
+  }, [
+    subdigest,
+    internalUserOperations,
+    isValidUserOperations,
+    isUserOperationsCreateable,
+    isUserOperationsMerkleEqual,
+  ]);
+
+  // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
 
@@ -553,6 +593,8 @@ export const useUserOperationsCreate = ({
     isUserOperationsCreateSubmittable: isUserOperationsCreateSubmittable,
     isUserOperationsCreateSuccess: isUserOperationsCreateSuccess,
     isUserOperationsCreateLoading: isUserOperationsCreateLoading,
+    isUserOperationsTransactionLoading: isUserOperationsTransactionLoading,
+    isUserOperationsDisabled: isUserOperationsDisabled,
     isValidUserOperations: isValidUserOperations,
     // decodedCallData,
     // decodedInitCode,
