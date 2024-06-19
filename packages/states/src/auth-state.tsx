@@ -23,6 +23,7 @@ import { useQueryClient, QueryObserver } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import type { FC } from "react";
+import type { Address } from "viem";
 import { isAddress } from "viem";
 
 // -----------------------------------------------------------------------------
@@ -35,7 +36,7 @@ export const AuthState: FC = () => {
   // ---------------------------------------------------------------------------
 
   const { address } = useAccount();
-  const { data: ens } = useEnsName({ address: address, chainId: 1 });
+  const { data: ens } = useEnsName({ address: address as Address, chainId: 1 });
 
   // ---------------------------------------------------------------------------
   // Next Hooks
@@ -57,11 +58,11 @@ export const AuthState: FC = () => {
   const queryClient = useQueryClient();
 
   const { user } = useQueryUser({
-    address: address,
+    address: address as Address,
   });
 
   const { authSession } = useQueryAuthSession({
-    address: address,
+    address: address as Address,
   });
 
   // ---------------------------------------------------------------------------

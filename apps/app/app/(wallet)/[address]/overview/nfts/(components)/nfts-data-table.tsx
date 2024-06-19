@@ -47,11 +47,11 @@ export const NftsDataTable: FC<NftsDataTableProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const { walletSettings } = useQueryWalletSettings({
-    address: address,
+    address: address as Address,
   });
 
   const { nftPage, isNftsLoading } = useQueryNfts({
-    address: address,
+    address: address as Address,
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
     limit: SIMPLEHASH_MAX_COUNT,
     cursor: paginationState.pageIndex === 0 ? null : cursorState,

@@ -39,7 +39,7 @@ export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const { configuration, isConfigurationLoading } = useQueryConfiguration({
-    address: address,
+    address: address as Address,
   });
 
   // ---------------------------------------------------------------------------

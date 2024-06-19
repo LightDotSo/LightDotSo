@@ -53,7 +53,7 @@ export const UserOperationCardTransactionExecuteButton: FC<
     isUserOperationSendSuccess,
     handleSubmit,
   } = useUserOperationSend({
-    address: address,
+    address: address as Address,
     hash: userOperation.hash as Hex,
   });
 

@@ -85,7 +85,7 @@ export const useUserOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   const { configuration } = useQueryConfiguration({
-    address: address,
+    address: address as Address,
   });
 
   // ---------------------------------------------------------------------------
@@ -286,7 +286,7 @@ export const useUserOperationCreate = ({
     isUserOperactionCreateLoading,
     isUserOperactionCreateSuccess,
   } = useMutationUserOperationCreate({
-    address: address,
+    address: address as Address,
   });
 
   const {
@@ -294,7 +294,7 @@ export const useUserOperationCreate = ({
     isUserOperactionCreateBatchLoading,
     isUserOperactionCreateBatchSuccess,
   } = useMutationUserOperationCreateBatch({
-    address: address,
+    address: address as Address,
   });
 
   // ---------------------------------------------------------------------------

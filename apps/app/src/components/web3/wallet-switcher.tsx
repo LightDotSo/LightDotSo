@@ -47,6 +47,7 @@ import { HomeIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { Suspense, useCallback, useEffect, useState } from "react";
 import type { UIEvent, FC, ComponentPropsWithoutRef } from "react";
+import type { Address } from "viem";
 import { getAddress, isAddress } from "viem";
 
 // -----------------------------------------------------------------------------
@@ -120,7 +121,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   // ---------------------------------------------------------------------------
 
   const { wallets, isWalletsLoading } = useQueryWallets({
-    address: address,
+    address: address as Address,
     limit: Number.MAX_SAFE_INTEGER,
     offset: 0,
   });

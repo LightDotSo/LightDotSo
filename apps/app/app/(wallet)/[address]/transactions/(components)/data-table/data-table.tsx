@@ -96,7 +96,7 @@ export function DataTable({
   // ---------------------------------------------------------------------------
 
   const { configuration } = useQueryConfiguration({
-    address: address,
+    address: address as Address,
   });
 
   // ---------------------------------------------------------------------------

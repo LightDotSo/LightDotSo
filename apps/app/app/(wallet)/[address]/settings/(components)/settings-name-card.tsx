@@ -104,7 +104,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
     isWalletUpdateError,
     isWalletUpdatePending,
   } = useMutationWalletUpdate({
-    address: address,
+    address: address as Address,
   });
 
   // ---------------------------------------------------------------------------

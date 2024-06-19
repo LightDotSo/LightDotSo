@@ -19,6 +19,7 @@ import { useMediaQuery } from "@lightdotso/hooks";
 import { useQueryNfts } from "@lightdotso/query";
 import { useModals } from "@lightdotso/stores";
 import { Modal } from "@lightdotso/templates";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -45,7 +46,7 @@ export function NftModal() {
   // ---------------------------------------------------------------------------
 
   const { nftPage } = useQueryNfts({
-    address: address,
+    address: address as Address,
     limit: Number.MAX_SAFE_INTEGER,
     is_testnet: isTestnet ?? false,
     cursor: null,

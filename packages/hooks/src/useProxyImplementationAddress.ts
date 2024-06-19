@@ -41,7 +41,7 @@ export const useProxyImplementationAddress = ({
 
   const { data: implAddressBytes32, isSuccess: isImplAddressBytes32Success } =
     useStorageAt({
-      address: address,
+      address: address as Address,
       chainId: chainId,
       // The logic address as defined in the 1967 EIP
       // From: https://eips.ethereum.org/EIPS/eip-1967

@@ -66,7 +66,7 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
   // ---------------------------------------------------------------------------
 
   const { signUserOperation } = useUserOperationCreate({
-    address: address,
+    address: address as Address,
   });
 
   // ---------------------------------------------------------------------------

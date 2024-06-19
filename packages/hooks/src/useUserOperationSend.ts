@@ -74,7 +74,7 @@ export const useUserOperationSend = ({
 
   const { queueUserOperation, isLoadingQueueUserOperation } =
     useMutationQueueUserOperation({
-      address: address,
+      address: address as Address,
     });
 
   const { userOperation, isUserOperationFetching } = useQueryUserOperation({

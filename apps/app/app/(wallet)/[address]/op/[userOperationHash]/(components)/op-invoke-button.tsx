@@ -41,7 +41,7 @@ export const OpInvokeButton: FC<OpInvokeButtonProps> = ({
   // ---------------------------------------------------------------------------
 
   const { handleSubmit, isUserOperationSendLoading } = useUserOperationSend({
-    address: address,
+    address: address as Address,
     hash: userOperationHash,
   });
 

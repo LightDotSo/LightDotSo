@@ -54,6 +54,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { FC } from "react";
 import { useForm } from "react-hook-form";
+import type { Address } from "viem";
 import { isAddress } from "viem";
 import { normalize } from "viem/ens";
 import type * as z from "zod";
@@ -144,7 +145,7 @@ export const ConfirmForm: FC = () => {
   // ---------------------------------------------------------------------------
 
   const { mutate, isWalletCreateError } = useMutationWalletCreate({
-    address: address,
+    address: address as Address,
   });
 
   // ---------------------------------------------------------------------------
@@ -164,7 +165,7 @@ export const ConfirmForm: FC = () => {
 
       // Set the form values
       await mutate({
-        address: address,
+        address: address as Address,
         simulate: false,
         name: form.getValues("name"),
         threshold: form.getValues("threshold"),

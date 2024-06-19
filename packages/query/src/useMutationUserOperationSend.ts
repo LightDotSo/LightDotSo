@@ -134,6 +134,15 @@ export const useMutationUserOperationSend = (
 
       return { previousData: previousData };
     },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.user_operation.listCount({
+          address: params.address as Address,
+          status: "queued",
+          is_testnet: params.is_testnet ?? false,
+        }).queryKey,
+      });
+    },
     onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.user_operation.list({
@@ -152,13 +161,6 @@ export const useMutationUserOperationSend = (
           order: "asc",
           limit: TRANSACTION_ROW_COUNT,
           offset: 0,
-          is_testnet: params.is_testnet ?? false,
-        }).queryKey,
-      });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.user_operation.listCount({
-          address: params.address as Address,
-          status: "queued",
           is_testnet: params.is_testnet ?? false,
         }).queryKey,
       });

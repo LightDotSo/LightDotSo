@@ -52,11 +52,11 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
   // ---------------------------------------------------------------------------
 
   const { walletSettings } = useQueryWalletSettings({
-    address: address,
+    address: address as Address,
   });
 
   const { tokens } = useQueryTokens({
-    address: address,
+    address: address as Address,
     limit: limit,
     offset: 0,
     is_testnet: walletSettings?.is_enabled_testnet ?? false,

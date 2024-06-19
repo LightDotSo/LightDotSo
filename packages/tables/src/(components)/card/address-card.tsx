@@ -42,7 +42,7 @@ export const AddressCard: FC<ChainCardProps> = ({ address, className }) => {
   // Wagmi
   // ---------------------------------------------------------------------------
 
-  const { data: ens } = useEnsName({ address: address, chainId: 1 });
+  const { data: ens } = useEnsName({ address: address as Address, chainId: 1 });
 
   // ---------------------------------------------------------------------------
   // Render

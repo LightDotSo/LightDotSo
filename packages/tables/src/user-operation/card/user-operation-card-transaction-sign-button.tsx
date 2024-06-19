@@ -49,7 +49,7 @@ export const UserOperationCardTransactionSignButton: FC<
 
   const { isLoading, isSigned, isSignable, signUserOperation } =
     useUserOperationSign({
-      address: address,
+      address: address as Address,
       configuration: configuration,
       userOperation: userOperation,
     });

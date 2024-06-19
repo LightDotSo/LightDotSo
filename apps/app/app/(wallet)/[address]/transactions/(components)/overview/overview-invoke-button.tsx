@@ -40,7 +40,7 @@ export const OverviewInvokeButton: FC<InvokeUserOperationProps> = ({
 
   const { userOperationUpdate, isLoadingUserOperationUpdate } =
     useMutationUserOperationUpdate({
-      address: address,
+      address: address as Address,
     });
 
   // ---------------------------------------------------------------------------
