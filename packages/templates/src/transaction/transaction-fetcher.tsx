@@ -343,6 +343,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       verificationGasLimit: estimateUserOperationGasData?.verificationGasLimit
         ? fromHex(estimateUserOperationGasData?.verificationGasLimit as Hex, {
             to: "bigint",
+            // Multiple by the threshold of the most recent configuration
           }) * BigInt(currentConfiguration?.threshold ?? 1)
         : BigInt(0),
       maxFeePerGas:
