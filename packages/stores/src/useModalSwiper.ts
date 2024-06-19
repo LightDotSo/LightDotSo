@@ -19,7 +19,7 @@ import { devtools } from "zustand/middleware";
 // State
 // -----------------------------------------------------------------------------
 
-type DevStore = {
+type ModalSwiperStore = {
   pageIndex: number;
   setPageIndex: (index: number) => void;
 };
@@ -29,14 +29,14 @@ type DevStore = {
 // -----------------------------------------------------------------------------
 
 export const useModalSwiper = create(
-  devtools<DevStore>(
+  devtools<ModalSwiperStore>(
     set => ({
       pageIndex: 0,
       setPageIndex: (index: number) => set({ pageIndex: index }),
     }),
     {
       anonymousActionType: "useModalSwiper",
-      name: "DevStore",
+      name: "ModalSwiperStore",
       serialize: { options: true },
     },
   ),
