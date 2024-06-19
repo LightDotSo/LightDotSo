@@ -34,7 +34,7 @@ import {
   shortenAddress,
   shortenBytes32,
 } from "@lightdotso/utils";
-import { lightWalletAbi } from "@lightdotso/wagmi";
+import { lightWalletAbi, useReadLightWalletImageHash } from "@lightdotso/wagmi";
 import { Globe } from "lucide-react";
 import Link from "next/link";
 import { useMemo, type FC } from "react";
@@ -97,6 +97,15 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   const implAddress = useProxyImplementationAddress({
     address: address as Address,
     chainId: chain.id,
+  });
+
+  // ---------------------------------------------------------------------------
+  // Wagmi
+  // ---------------------------------------------------------------------------
+
+  const { data: imageHash } = useReadLightWalletImageHash({
+    address: address as Address,
+    chainId: Number(chain.id),
   });
 
   // ---------------------------------------------------------------------------
@@ -222,7 +231,15 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
         <div className="flex items-center gap-2">
           Version: {implVersion}
           <span className="text-sm text-text-weak">
-            ({shortenAddress(implAddress)})
+            {shortenAddress(implAddress)}
+          </span>
+        </div>
+      )}
+      {deployed_op && imageHash && (
+        <div className="flex items-center gap-2">
+          Hash:
+          <span className="text-sm text-text-weak">
+            {shortenBytes32(imageHash)}
           </span>
         </div>
       )}
