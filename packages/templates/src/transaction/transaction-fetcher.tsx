@@ -191,6 +191,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     checkpoint: 0,
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { configuration: currentConfiguration } = useQueryConfiguration({
     address: address as Address,
   });
@@ -387,7 +388,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
           ? fromHex(paymasterAndData.verificationGasLimit as Hex, {
               to: "bigint",
               // Multiple by the threshold of the most recent configuration
-            }) * BigInt(currentConfiguration?.threshold ?? 1)
+              // }) * BigInt(currentConfiguration?.threshold ?? 1)
+            })
           : BigInt(0),
         preVerificationGas: paymasterAndData?.preVerificationGas
           ? fromHex(paymasterAndData.preVerificationGas as Hex, {
@@ -404,7 +406,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       // Paymaster and data is required to compute the gas limits and paymaster
       paymasterAndData,
       // The current configuration is required to compute the verification gas limit
-      currentConfiguration,
+      // currentConfiguration,
     ]);
 
   // ---------------------------------------------------------------------------
