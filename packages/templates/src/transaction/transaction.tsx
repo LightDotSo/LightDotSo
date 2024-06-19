@@ -15,7 +15,7 @@
 "use client";
 
 import { TokenImage } from "@lightdotso/elements";
-import { useUserOperationCreate } from "@lightdotso/hooks";
+import { useUserOperationsCreate } from "@lightdotso/hooks";
 import { useUserOperationsQueryState } from "@lightdotso/nuqs";
 import { useQueryTokens } from "@lightdotso/query";
 import { transactionFormSchema } from "@lightdotso/schemas";
@@ -144,20 +144,20 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
 
   const {
     isValidUserOperations,
-    isUserOperationMerkleEqual,
-    isUserOperationCreateable,
-    isUserOperationCreateLoading,
-    isUserOperationCreateSuccess,
-    isUserOperationCreateSubmittable,
-    resetUserOperationCreate,
-    signUserOperation,
+    isUserOperationsMerkleEqual,
+    isUserOperationsCreateable,
+    isUserOperationsCreateLoading,
+    isUserOperationsCreateSuccess,
+    isUserOperationsCreateSubmittable,
+    resetUserOperationsCreate,
+    signUserOperations,
     // decodedCallData,
     // decodedInitCode,
     // paymasterHash,
     // paymasterNonce,
     // owner,
     subdigest,
-  } = useUserOperationCreate({
+  } = useUserOperationsCreate({
     address: address as Address,
   });
 
@@ -167,9 +167,9 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
 
   const defaultValues: TransactionFormValues = useMemo(() => {
     return {
-      isDirectSubmit: isUserOperationCreateSubmittable,
+      isDirectSubmit: isUserOperationsCreateSubmittable,
     };
-  }, [isUserOperationCreateSubmittable]);
+  }, [isUserOperationsCreateSubmittable]);
 
   // ---------------------------------------------------------------------------
   // Form
@@ -192,12 +192,12 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isTransactionLoading = useMemo(() => {
     // Only set the loading state if the user operation is not yet created
-    if (isUserOperationCreateSuccess) {
-      return isUserOperationCreateLoading;
+    if (isUserOperationsCreateSuccess) {
+      return isUserOperationsCreateLoading;
     }
     // Otherwise, the transaction loading state is set from the individual transaction fetcher
     return false;
-  }, [isUserOperationCreateSuccess, isUserOperationCreateLoading]);
+  }, [isUserOperationsCreateSuccess, isUserOperationsCreateLoading]);
 
   // Set the transaction disabled state
   const isTransactionDisabled = useMemo(() => {
@@ -211,17 +211,17 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
         // Nor if the user operations are not valid
         !isValidUserOperations ||
         // Nor if the user operations are not createable
-        !isUserOperationCreateable ||
+        !isUserOperationsCreateable ||
         // Nor if the merkle root is not equal
-        !isUserOperationMerkleEqual
+        !isUserOperationsMerkleEqual
       )
     );
   }, [
     subdigest,
     userOperations,
     isValidUserOperations,
-    isUserOperationCreateable,
-    isUserOperationMerkleEqual,
+    isUserOperationsCreateable,
+    isUserOperationsMerkleEqual,
   ]);
 
   // ---------------------------------------------------------------------------
@@ -230,26 +230,26 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
 
   // Change the page index depending on the sign loading state
   useEffect(() => {
-    if (isUserOperationCreateLoading) {
+    if (isUserOperationsCreateLoading) {
       setPageIndex(1);
     } else {
       setPageIndex(0);
     }
-  }, [isUserOperationCreateLoading, setPageIndex]);
+  }, [isUserOperationsCreateLoading, setPageIndex]);
 
   // Change the page index depending on the sign success state
   useEffect(() => {
-    if (isUserOperationCreateSuccess && watchIsDirectSubmit) {
+    if (isUserOperationsCreateSuccess && watchIsDirectSubmit) {
       setPageIndex(2);
     }
-  }, [isUserOperationCreateSuccess, watchIsDirectSubmit, setPageIndex]);
+  }, [isUserOperationsCreateSuccess, watchIsDirectSubmit, setPageIndex]);
 
   // On pathname change, reset all user operations
   useEffect(() => {
-    resetUserOperationCreate();
+    resetUserOperationsCreate();
     resetAll();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname, resetUserOperationCreate, resetAll]);
+  }, [pathname, resetUserOperationsCreate, resetAll]);
 
   // If the transaction is disabled, set the form disabled to true
   useEffect(() => {
@@ -258,8 +258,8 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
 
   // Sync the `isDirectSubmit` field with the `isUserOperationCreateSubmittable` value
   useEffect(() => {
-    form.setValue("isDirectSubmit", isUserOperationCreateSubmittable);
-  }, [form, isUserOperationCreateSubmittable]);
+    form.setValue("isDirectSubmit", isUserOperationsCreateSubmittable);
+  }, [form, isUserOperationsCreateSubmittable]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -516,7 +516,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
                         isLoading={isFormLoading}
                         disabled={isFormLoading || isFormDisabled}
                         customSuccessText={customFormSuccessText}
-                        onClick={signUserOperation}
+                        onClick={signUserOperations}
                       />
                     )}
                   </div>

@@ -47,7 +47,7 @@ import { useDelayedValue } from "./useDelayedValue";
 // Props
 // -----------------------------------------------------------------------------
 
-type UserOperationCreateProps = {
+type UserOperationsCreateProps = {
   address: Address;
 };
 
@@ -55,9 +55,9 @@ type UserOperationCreateProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const useUserOperationCreate = ({
+export const useUserOperationsCreate = ({
   address,
-}: UserOperationCreateProps) => {
+}: UserOperationsCreateProps) => {
   // ---------------------------------------------------------------------------
   // Wagmi
   // ---------------------------------------------------------------------------
@@ -269,7 +269,7 @@ export const useUserOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   // Reset the signed data, merkle tree, and internalUserOperations
-  const resetUserOperationCreate = useCallback(() => {
+  const resetUserOperationsCreate = useCallback(() => {
     setSignedData(undefined);
     setMerkleTree(undefined);
     resetInternalUserOperations();
@@ -277,7 +277,7 @@ export const useUserOperationCreate = ({
   }, []);
 
   // Sign the userOperation
-  const signUserOperation = useCallback(() => {
+  const signUserOperations = useCallback(() => {
     console.info(subdigest);
 
     if (!subdigest) {
@@ -294,16 +294,16 @@ export const useUserOperationCreate = ({
 
   const {
     userOperationCreate,
-    isUserOperactionCreateLoading,
-    isUserOperactionCreateSuccess,
+    isUserOperationCreateLoading,
+    isUserOperationCreateSuccess,
   } = useMutationUserOperationCreate({
     address: address as Address,
   });
 
   const {
     userOperationCreateBatch,
-    isUserOperactionCreateBatchLoading,
-    isUserOperactionCreateBatchSuccess,
+    isUserOperationCreateBatchLoading,
+    isUserOperationCreateBatchSuccess,
   } = useMutationUserOperationCreateBatch({
     address: address as Address,
   });
@@ -426,7 +426,7 @@ export const useUserOperationCreate = ({
   }, [owner, internalUserOperations]);
 
   // Check if the current subdigest is equal to the merkle tree root if the internalUserOperations length is greater than 1
-  const isUserOperationMerkleEqual = useMemo(() => {
+  const isUserOperationsMerkleEqual = useMemo(() => {
     if (internalUserOperations.length > 1) {
       return (
         typeof merkleTree !== "undefined" &&
@@ -439,7 +439,7 @@ export const useUserOperationCreate = ({
 
   // Check if the userOperation is submittable under the current owner signature
   // The configuration threshold should be defined and the owner weight should be greater than or equal to the threshold
-  const isUserOperationCreateSubmittable = useMemo(() => {
+  const isUserOperationsCreateSubmittable = useMemo(() => {
     return (
       typeof configuration?.threshold !== "undefined" &&
       typeof owner !== "undefined" &&
@@ -448,27 +448,27 @@ export const useUserOperationCreate = ({
   }, [owner, configuration?.threshold]);
 
   // Check if the userOperation is createable
-  const isUserOperationCreateable = useMemo(() => {
+  const isUserOperationsCreateable = useMemo(() => {
     return typeof owner !== "undefined" && typeof subdigest !== "undefined";
   }, [owner, subdigest]);
 
   // Check if the userOperation is loading
-  const isUserOperationCreateLoading = useMemo(() => {
+  const isUserOperationsCreateLoading = useMemo(() => {
     return (
       isSignLoading ||
-      isUserOperactionCreateLoading ||
-      isUserOperactionCreateBatchLoading
+      isUserOperationCreateLoading ||
+      isUserOperationCreateBatchLoading
     );
   }, [
     isSignLoading,
-    isUserOperactionCreateLoading,
-    isUserOperactionCreateBatchLoading,
+    isUserOperationCreateLoading,
+    isUserOperationCreateBatchLoading,
   ]);
 
   // Check if the userOperation is success
-  const isUserOperationCreateSuccess = useMemo(() => {
-    return isUserOperactionCreateSuccess || isUserOperactionCreateBatchSuccess;
-  }, [isUserOperactionCreateSuccess, isUserOperactionCreateBatchSuccess]);
+  const isUserOperationsCreateSuccess = useMemo(() => {
+    return isUserOperationCreateSuccess || isUserOperationCreateBatchSuccess;
+  }, [isUserOperationCreateSuccess, isUserOperationCreateBatchSuccess]);
 
   // ---------------------------------------------------------------------------
   // Hooks
@@ -498,11 +498,11 @@ export const useUserOperationCreate = ({
       return "Signing...";
     }
 
-    if (isUserOperactionCreateLoading) {
+    if (isUserOperationCreateLoading) {
       return "Creating transaction...";
     }
 
-    if (isUserOperactionCreateBatchLoading) {
+    if (isUserOperationCreateBatchLoading) {
       return "Creating transactions...";
     }
 
@@ -515,8 +515,8 @@ export const useUserOperationCreate = ({
     address,
     isConnecting,
     isSignLoading,
-    isUserOperactionCreateLoading,
-    isUserOperactionCreateBatchLoading,
+    isUserOperationCreateLoading,
+    isUserOperationCreateBatchLoading,
     delayedIsSuccess,
   ]);
 
@@ -535,11 +535,11 @@ export const useUserOperationCreate = ({
   // Set the form loading state to true if the status is success
   useEffect(() => {
     if (isUserOperationCreateSuccess) {
-      setIsFormLoading(isUserOperactionCreateLoading);
+      setIsFormLoading(isUserOperationCreateLoading);
     }
   }, [
     isUserOperationCreateSuccess,
-    isUserOperactionCreateLoading,
+    isUserOperationCreateLoading,
     setIsFormLoading,
   ]);
 
@@ -548,18 +548,18 @@ export const useUserOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   return {
-    isUserOperationCreateable: isUserOperationCreateable,
-    isUserOperationMerkleEqual: isUserOperationMerkleEqual,
-    isUserOperationCreateLoading: isUserOperationCreateLoading,
-    isUserOperationCreateSubmittable: isUserOperationCreateSubmittable,
-    isUserOperationCreateSuccess: isUserOperationCreateSuccess,
+    isUserOperationsCreateable: isUserOperationsCreateable,
+    isUserOperationsMerkleEqual: isUserOperationsMerkleEqual,
+    isUserOperationsCreateSubmittable: isUserOperationsCreateSubmittable,
+    isUserOperationsCreateSuccess: isUserOperationsCreateSuccess,
+    isUserOperationsCreateLoading: isUserOperationsCreateLoading,
     isValidUserOperations: isValidUserOperations,
     // decodedCallData,
     // decodedInitCode,
     // paymasterHash,
     // paymasterNonce,
-    resetUserOperationCreate: resetUserOperationCreate,
-    signUserOperation: signUserOperation,
+    resetUserOperationsCreate: resetUserOperationsCreate,
+    signUserOperations: signUserOperations,
     subdigest: subdigest,
     owner: owner,
     threshold: configuration?.threshold,

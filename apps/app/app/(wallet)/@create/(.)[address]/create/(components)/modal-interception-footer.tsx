@@ -14,7 +14,7 @@
 
 "use client";
 
-import { useUserOperationCreate } from "@lightdotso/hooks";
+import { useUserOperationsCreate } from "@lightdotso/hooks";
 import { useFormRef, useModals, useUserOperations } from "@lightdotso/stores";
 import { FooterButton } from "@lightdotso/templates";
 import { useRouter } from "next/navigation";
@@ -65,7 +65,7 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const { signUserOperation } = useUserOperationCreate({
+  const { signUserOperations } = useUserOperationsCreate({
     address: address as Address,
   });
 
@@ -87,7 +87,7 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
       disabled={isFormLoading || isFormDisabled}
       isLoading={isFormLoading}
       cancelClick={onDismiss}
-      onClick={signUserOperation}
+      onClick={signUserOperations}
     />
   );
 };
