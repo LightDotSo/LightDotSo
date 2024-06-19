@@ -39,6 +39,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   return (
     <ModalInterception
+      isOverflowHidden
       isHeightFixed
       footerContent={
         <ModalInterceptionFooter address={params.address as Address} />

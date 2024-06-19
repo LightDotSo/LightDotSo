@@ -60,7 +60,6 @@ import type {
 import { type FC, useMemo, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { type Hex, type Address, fromHex } from "viem";
-import { user } from "../../../query-keys/src/user";
 
 // -----------------------------------------------------------------------------
 // Schema

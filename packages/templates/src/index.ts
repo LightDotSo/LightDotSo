@@ -27,6 +27,7 @@ export { FooterButton } from "./footer-button";
 export { MobileAppDrawer } from "./mobile-app-drawer";
 export { Loading } from "./loading";
 export { Login } from "./login";
+export type { ModalProps } from "./modal";
 export { Modal, useIsInsideModal } from "./modal";
 export { ModalInterception } from "./modal-interception";
 export { ModalSwiper } from "./modal-swiper";
