@@ -298,7 +298,10 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
                     </TabsTrigger>
                   )}
                 </TabsList>
-                <TabsContent value="transaction">
+                <TabsContent
+                  className={cn(isInsideModal && "h-72 overflow-y-auto")}
+                  value="transaction"
+                >
                   <div className="space-y-3 pt-3">
                     {/* {Object.values(userOperationSimulations).map(simulation => {
                       return simulation.interpretation.asset_changes.map(
@@ -518,7 +521,10 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
                     )}
                   </div>
                 </TabsContent>
-                <TabsContent value="details">
+                <TabsContent
+                  className={cn(isInsideModal && "h-72 overflow-y-auto")}
+                  value="details"
+                >
                   <div className="space-y-3 pt-3">
                     {Object.entries(userOperationDetails).map(
                       ([chainId, details], index) => {
@@ -559,7 +565,10 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
                     )}
                   </div>
                 </TabsContent>
-                <TabsContent value="data">
+                <TabsContent
+                  className={cn(isInsideModal && "h-72 overflow-y-auto")}
+                  value="data"
+                >
                   <div className="space-y-3 pt-3">
                     {userOperations &&
                       userOperations.length > 0 &&
@@ -594,7 +603,10 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
                       })}
                   </div>
                 </TabsContent>
-                <TabsContent value="dev">
+                <TabsContent
+                  className={cn(isInsideModal && "h-72 overflow-y-auto")}
+                  value="dev"
+                >
                   <div className="pt-3">
                     {Object.values(userOperationDevInfo).map((info, index) => {
                       return info.map((item, itemIndex) => {
