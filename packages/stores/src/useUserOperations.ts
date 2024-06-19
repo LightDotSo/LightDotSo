@@ -39,6 +39,7 @@ export interface UserOperationDevInfo {
 
 type UserOperationsStore = {
   internalUserOperations: UserOperation[];
+  resetInternalUserOperations: () => void;
   setInternalUserOperationByChainId: (
     chainId: number,
     operation: UserOperation,
@@ -76,6 +77,10 @@ type UserOperationsStore = {
 
 export const useUserOperations = create<UserOperationsStore>(set => ({
   internalUserOperations: [],
+  resetInternalUserOperations: () =>
+    set(() => {
+      return { internalUserOperations: [] };
+    }),
   setInternalUserOperationByChainId: (chainId, operation) =>
     set(state => {
       // Gets the current internalUserOperations

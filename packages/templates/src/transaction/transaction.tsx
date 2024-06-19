@@ -149,6 +149,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
     isUserOperationCreateLoading,
     isUserOperationCreateSuccess,
     isUserOperationCreateSubmittable,
+    resetUserOperationCreate,
     signUserOperation,
     // decodedCallData,
     // decodedInitCode,
@@ -245,9 +246,10 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
 
   // On pathname change, reset all user operations
   useEffect(() => {
+    resetUserOperationCreate();
     resetAll();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname, resetAll]);
+  }, [pathname, resetUserOperationCreate, resetAll]);
 
   // If the transaction is disabled, set the form disabled to true
   useEffect(() => {
