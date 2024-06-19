@@ -340,7 +340,10 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
                         <div>{/* tokenPrice could come here */}</div>
                         <div>
                           &nbsp;
-                          {balance && balance.data
+                          {balance &&
+                          balance.data &&
+                          balance.data?.decimals &&
+                          typeof balance.data?.decimals === "number"
                             ? `${balance.data?.value / BigInt(Math.pow(10, balance.data?.decimals))} ${balance.data?.symbol} available`
                             : ""}
                         </div>

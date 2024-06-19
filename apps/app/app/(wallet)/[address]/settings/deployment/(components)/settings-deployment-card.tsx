@@ -31,9 +31,11 @@ import { Button } from "@lightdotso/ui";
 import {
   findContractAddressByAddress,
   getEtherscanUrl,
+  shortenAddress,
   shortenBytes32,
 } from "@lightdotso/utils";
 import { lightWalletAbi } from "@lightdotso/wagmi";
+import { Globe } from "lucide-react";
 import Link from "next/link";
 import { useMemo, type FC } from "react";
 import { encodeFunctionData, type Address, type Chain, type Hex } from "viem";
@@ -213,28 +215,30 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
         TITLES.WalletSettings.subcategories["Deployment"].subcategories["Chain"]
           .description
       }
+      chainId={chain.id}
       footerContent={<SettingsDeploymentCardSubmitButton />}
     >
       {deployed_op && implAddress && (
-        <div className="flex flex-row items-center">
-          {implVersion}
-          <span className="ml-2 text-sm text-text-weak">({implAddress})</span>
+        <div className="flex items-center gap-2">
+          Version: {implVersion}
+          <span className="text-sm text-text-weak">
+            ({shortenAddress(implAddress)})
+          </span>
         </div>
       )}
       <div className="flex flex-row items-center">
         {deployed_op && deployed_op.transaction?.hash && (
-          <>
+          <div className="flex items-center gap-2">
             Tx:{" "}
-            <Button asChild size="sm" variant="link">
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href={`${getEtherscanUrl(chain)}/tx/${deployed_op.transaction?.hash}`}
-              >
-                {shortenBytes32(deployed_op.transaction?.hash)}
-              </a>
-            </Button>
-          </>
+            <a
+              className="text-sm text-text-weak hover:underline"
+              target="_blank"
+              rel="noreferrer"
+              href={`${getEtherscanUrl(chain)}/tx/${deployed_op.transaction?.hash}`}
+            >
+              {shortenBytes32(deployed_op.transaction?.hash)}
+            </a>
+          </div>
         )}
         {!deployed_op && (
           <p className="text-sm text-text-weak">

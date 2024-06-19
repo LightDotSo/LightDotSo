@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { ChainLogo } from "@lightdotso/svg";
 import {
   Card,
   CardContent,
@@ -31,6 +32,7 @@ type SettingsCardProps = {
   title: string;
   subtitle: string;
   children: ReactNode;
+  chainId?: number;
   footerContent?: ReactNode;
 };
 
@@ -42,6 +44,7 @@ export const SettingsCard: FC<SettingsCardProps> = ({
   title,
   subtitle,
   children,
+  chainId,
   footerContent,
 }) => {
   // ---------------------------------------------------------------------------
@@ -51,7 +54,16 @@ export const SettingsCard: FC<SettingsCardProps> = ({
   return (
     <Card>
       <CardHeader className="p-4">
-        <CardTitle>{title}</CardTitle>
+        <CardTitle>
+          {chainId ? (
+            <div className="flex items-center gap-1.5">
+              <ChainLogo chainId={chainId} />
+              {title}
+            </div>
+          ) : (
+            title
+          )}
+        </CardTitle>
         <CardDescription>{subtitle}</CardDescription>
       </CardHeader>
       <CardContent className="p-4 pt-0">{children}</CardContent>

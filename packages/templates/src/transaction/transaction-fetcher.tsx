@@ -388,8 +388,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
           ? fromHex(paymasterAndData.verificationGasLimit as Hex, {
               to: "bigint",
               // Multiple by the threshold of the most recent configuration
-              // }) * BigInt(currentConfiguration?.threshold ?? 1)
-            })
+            }) * BigInt(currentConfiguration?.threshold ?? 1)
           : BigInt(0),
         preVerificationGas: paymasterAndData?.preVerificationGas
           ? fromHex(paymasterAndData.preVerificationGas as Hex, {
@@ -580,8 +579,11 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const userOperationDetails = useMemo(() => {
     const items: UserOperationDetailsItem[] = [
-      { title: "Nonce", value: Number(targetUserOperation.nonce) },
-      { title: "Sender", value: shortenAddress(targetUserOperation.sender) },
+      { title: "Nonce", value: Number(updatedUserOperation.nonce) },
+      {
+        title: "Sender",
+        value: shortenAddress(updatedUserOperation.sender),
+      },
       {
         title: "Threshold",
         // eslint-disable-next-line no-unsafe-optional-chaining, @typescript-eslint/no-non-null-asserted-optional-chain
@@ -590,45 +592,38 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       { title: "Chain", value: chain?.name },
     ];
 
-    if (estimateUserOperationGasData?.callGasLimit) {
+    if (updatedUserOperation?.callGasLimit) {
       items.push({
         title: "Call Gas Limit",
-        value: fromHex(estimateUserOperationGasData.callGasLimit as Hex, {
-          to: "bigint",
-        }).toLocaleString(),
+        value: updatedUserOperation.toLocaleString(),
       });
     }
 
-    if (estimateUserOperationGasData?.preVerificationGas) {
+    if (updatedUserOperation?.preVerificationGas) {
       items.push({
         title: "Pre-Verification Gas",
-        value: fromHex(estimateUserOperationGasData.preVerificationGas as Hex, {
-          to: "bigint",
-        }).toLocaleString(),
+        value: updatedUserOperation.toLocaleString(),
       });
     }
 
-    if (estimateUserOperationGasData?.verificationGasLimit) {
+    if (updatedUserOperation?.verificationGasLimit) {
       items.push({
         title: "Verification Gas Limit",
-        value: fromHex(
-          estimateUserOperationGasData.verificationGasLimit as Hex,
-          { to: "bigint" },
-        ).toLocaleString(),
+        value: updatedUserOperation.verificationGasLimit.toLocaleString(),
       });
     }
 
-    if (feesPerGas?.maxFeePerGas) {
+    if (updatedUserOperation?.maxFeePerGas) {
       items.push({
         title: "Max Fee Per Gas",
-        value: feesPerGas.maxFeePerGas.toLocaleString(),
+        value: updatedUserOperation.maxFeePerGas.toLocaleString(),
       });
     }
 
-    if (maxPriorityFeePerGas) {
+    if (updatedUserOperation.maxPriorityFeePerGas) {
       items.push({
         title: "Max Priority Fee Per Gas",
-        value: maxPriorityFeePerGas.toLocaleString(),
+        value: updatedUserOperation.maxPriorityFeePerGas.toLocaleString(),
       });
     }
 
@@ -643,14 +638,14 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   }, [
     chain,
     configuration?.threshold,
-    targetUserOperation.nonce,
-    targetUserOperation.sender,
+    updatedUserOperation.nonce,
+    updatedUserOperation.sender,
+    updatedUserOperation?.callGasLimit,
+    updatedUserOperation?.preVerificationGas,
+    updatedUserOperation?.verificationGasLimit,
+    updatedUserOperation?.maxFeePerGas,
+    updatedUserOperation?.maxPriorityFeePerGas,
     userOperationWithHash?.hash,
-    estimateUserOperationGasData?.callGasLimit,
-    estimateUserOperationGasData?.preVerificationGas,
-    estimateUserOperationGasData?.verificationGasLimit,
-    feesPerGas?.maxFeePerGas,
-    maxPriorityFeePerGas,
   ]);
 
   const userOperationDevInfo: UserOperationDevInfo[] = useMemo(
