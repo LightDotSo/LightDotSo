@@ -69,7 +69,11 @@ export const useUserOperationsCreate = ({
   // ---------------------------------------------------------------------------
 
   const { address: userAddress } = useAuth();
-  const { setCustomFormSuccessText, setIsFormLoading } = useFormRef();
+  const {
+    setCustomFormSuccessText,
+    setIsFormLoading,
+    // setIsFormDisabled
+  } = useFormRef();
   const {
     internalUserOperations,
     addPendingSubmitUserOperationHash,
@@ -475,7 +479,6 @@ export const useUserOperationsCreate = ({
   // ---------------------------------------------------------------------------
 
   // Set the transaction loading state
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isUserOperationsTransactionLoading = useMemo(() => {
     // Only set the loading state if the user operation is not yet created
     if (isUserOperationsCreateSuccess) {
@@ -493,7 +496,7 @@ export const useUserOperationsCreate = ({
       (
         typeof subdigest === "undefined" ||
         // Nor if the user operations all have a hash
-        !internalUserOperations.every(userOperation => userOperation.hash) ||
+        // !internalUserOperations.every(userOperation => userOperation.hash) ||
         // Nor if the user operations are not valid
         !isValidUserOperations ||
         // Nor if the user operations are not createable
@@ -504,7 +507,7 @@ export const useUserOperationsCreate = ({
     );
   }, [
     subdigest,
-    internalUserOperations,
+    // internalUserOperations,
     isValidUserOperations,
     isUserOperationsCreateable,
     isUserOperationsMerkleEqual,
@@ -582,6 +585,11 @@ export const useUserOperationsCreate = ({
     isUserOperationCreateLoading,
     setIsFormLoading,
   ]);
+
+  // If the transaction is disabled, set the form disabled to true
+  // useEffect(() => {
+  //   setIsFormDisabled(isUserOperationsDisabled);
+  // }, [isUserOperationsDisabled, setIsFormDisabled]);
 
   // ---------------------------------------------------------------------------
   // Render
