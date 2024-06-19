@@ -273,7 +273,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
             // eslint-disable-next-line react/jsx-no-useless-fragment
             <>
               <Tabs className="w-full" defaultValue="transaction">
-                <TabsList className="w-full sticky">
+                <TabsList className="sticky w-full">
                   <TabsTrigger
                     className={cn(!isDev ? "w-1/3" : "w-1/4")}
                     value="transaction"
