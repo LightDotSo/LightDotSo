@@ -273,6 +273,7 @@ export const useUserOperationCreate = ({
     setSignedData(undefined);
     setMerkleTree(undefined);
     resetInternalUserOperations();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Sign the userOperation

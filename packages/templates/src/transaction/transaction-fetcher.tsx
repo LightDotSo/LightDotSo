@@ -60,6 +60,7 @@ import type {
 import { type FC, useMemo, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { type Hex, type Address, fromHex } from "viem";
+import { user } from "../../../query-keys/src/user";
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -595,14 +596,14 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
     if (updatedUserOperation?.callGasLimit) {
       items.push({
         title: "Call Gas Limit",
-        value: updatedUserOperation.toLocaleString(),
+        value: updatedUserOperation.callGasLimit.toLocaleString(),
       });
     }
 
     if (updatedUserOperation?.preVerificationGas) {
       items.push({
         title: "Pre-Verification Gas",
-        value: updatedUserOperation.toLocaleString(),
+        value: updatedUserOperation.preVerificationGas.toLocaleString(),
       });
     }
 
@@ -787,6 +788,19 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
+
+  // On mount, set the user operation details
+  useEffect(() => {
+    setUserOperationDetails(
+      Number(targetUserOperation.chainId),
+      userOperationDetails,
+    );
+    setUserOperationDevInfo(
+      Number(targetUserOperation.chainId),
+      userOperationDevInfo,
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Sync the user operation details
   useEffect(() => {
