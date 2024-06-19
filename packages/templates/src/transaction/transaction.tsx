@@ -143,12 +143,6 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
     isUserOperationsDisabled,
     resetUserOperationsCreate,
     signUserOperations,
-    // decodedCallData,
-    // decodedInitCode,
-    // paymasterHash,
-    // paymasterNonce,
-    // owner,
-    subdigest,
   } = useUserOperationsCreate({
     address: address as Address,
   });
