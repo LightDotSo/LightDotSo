@@ -63,14 +63,14 @@ export const ActivityDataTable: FC<ActivityDataTableProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const { activities, isActivitiesLoading } = useQueryActivities({
-    address: address,
+    address: address as Address,
     limit: paginationState.pageSize,
     offset: offsetCount,
   });
 
   const { activitiesCount, isActivitiesCountLoading } = useQueryActivitiesCount(
     {
-      address: address,
+      address: address as Address,
     },
   );
 

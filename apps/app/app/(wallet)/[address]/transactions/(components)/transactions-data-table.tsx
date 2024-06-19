@@ -61,11 +61,11 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   // ---------------------------------------------------------------------------
 
   const { walletSettings } = useQueryWalletSettings({
-    address: address,
+    address: address as Address,
   });
 
   const { userOperations, isUserOperationsLoading } = useQueryUserOperations({
-    address: address,
+    address: address as Address,
     status: status,
     order: status === "queued" ? "asc" : "desc",
     limit: paginationState.pageSize,
@@ -75,7 +75,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
 
   const { userOperationsCount, isUserOperationsCountLoading } =
     useQueryUserOperationsCount({
-      address: address,
+      address: address as Address,
       status: status,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
     });

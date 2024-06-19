@@ -77,7 +77,7 @@ export const WalletOverviewBannerAddress: FC<
   // ---------------------------------------------------------------------------
 
   const { data: ens } = useEnsName({
-    address: address,
+    address: address as Address,
   });
 
   // ---------------------------------------------------------------------------

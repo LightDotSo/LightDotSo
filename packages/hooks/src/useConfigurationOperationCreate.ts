@@ -55,7 +55,7 @@ export const useConfigurationOperationCreate = ({
   // ---------------------------------------------------------------------------
 
   const { configuration } = useQueryConfiguration({
-    address: address,
+    address: address as Address,
   });
 
   const {
@@ -63,7 +63,7 @@ export const useConfigurationOperationCreate = ({
     isConfigurationOperationSimulationLoading,
     refetchConfigurationOperationSimulation,
   } = useQueryConfigurationOperationSimulation({
-    address: address,
+    address: address as Address,
     threshold: params.threshold,
     ownerId: params.ownerId,
     owners: params.owners,
@@ -71,7 +71,7 @@ export const useConfigurationOperationCreate = ({
 
   const { configurationOperationCreate } =
     useMutationConfigurationOperationCreate({
-      address: address,
+      address: address as Address,
       simulate: false,
     });
 

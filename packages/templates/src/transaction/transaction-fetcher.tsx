@@ -117,7 +117,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   // Get the implementation address
   const implAddress = useProxyImplementationAddress({
-    address: address,
+    address: address as Address,
     chainId: Number(initialUserOperation.chainId),
   });
 
@@ -127,7 +127,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   // Get the image hash for the light wallet
   const { data: imageHash } = useReadLightWalletImageHash({
-    address: address,
+    address: address as Address,
     chainId: Number(initialUserOperation.chainId),
   });
 
@@ -137,19 +137,19 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   // Also, get the wallet billing
   const { walletBilling, isWalletBillingLoading } = useQueryWalletBilling({
-    address: address,
+    address: address as Address,
   });
 
   // Gets the configuration for the chain w/ the image hash
   const { configuration } = useQueryConfiguration({
-    address: address,
+    address: address as Address,
     image_hash: imageHash,
   });
 
   // Gets the user operation nonce
   const { userOperationNonce, isUserOperationNonceLoading } =
     useQueryUserOperationNonce({
-      address: address,
+      address: address as Address,
       chain_id: Number(initialUserOperation.chainId),
     });
 
@@ -187,12 +187,16 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
 
   const { configuration: genesisConfiguration } = useQueryConfiguration({
-    address: address,
+    address: address as Address,
     checkpoint: 0,
   });
 
+  const { configuration: currentConfiguration } = useQueryConfiguration({
+    address: address as Address,
+  });
+
   const { wallet } = useQueryWallet({
-    address: address,
+    address: address as Address,
   });
 
   // ---------------------------------------------------------------------------
@@ -339,7 +343,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
       verificationGasLimit: estimateUserOperationGasData?.verificationGasLimit
         ? fromHex(estimateUserOperationGasData?.verificationGasLimit as Hex, {
             to: "bigint",
-          })
+          }) * BigInt(currentConfiguration?.threshold ?? 1)
         : BigInt(0),
       maxFeePerGas:
         feesPerGas?.maxFeePerGas ?? targetUserOperation.maxFeePerGas,

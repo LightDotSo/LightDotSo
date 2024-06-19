@@ -32,6 +32,7 @@ import {
 } from "@lightdotso/ui";
 import { cn, refineNumberFormat } from "@lightdotso/utils";
 import { type FC, useMemo, useState } from "react";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -58,7 +59,7 @@ export const TokenModal: FC = () => {
   // ---------------------------------------------------------------------------
 
   const { tokens } = useQueryTokens({
-    address: address,
+    address: address as Address,
     is_testnet: isTestnet ?? false,
     limit: Number.MAX_SAFE_INTEGER,
     offset: 0,
@@ -67,7 +68,7 @@ export const TokenModal: FC = () => {
   });
 
   const { balances } = useQuerySocketBalances({
-    address: address,
+    address: address as Address,
   });
 
   // ---------------------------------------------------------------------------

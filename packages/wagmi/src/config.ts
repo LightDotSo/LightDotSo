@@ -75,5 +75,5 @@ export const wagmiConfig = createConfig({
   storage: createStorage({
     storage: cookieStorage,
   }),
-  syncConnectedChain: true,
+  syncConnectedChain: false,
 });

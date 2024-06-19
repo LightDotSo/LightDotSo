@@ -112,7 +112,7 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const balance = useBalance({
-    address: address,
+    address: address as Address,
     chainId: formChainId,
   });
 

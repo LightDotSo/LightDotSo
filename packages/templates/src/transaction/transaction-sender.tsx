@@ -51,7 +51,7 @@ export const TransactionSenderOp: FC<TransactionSenderOpProps> = ({
     // isUserOperationSendSuccess,
     handleSubmit,
   } = useUserOperationSend({
-    address: address,
+    address: address as Address,
     hash: hash,
   });
 

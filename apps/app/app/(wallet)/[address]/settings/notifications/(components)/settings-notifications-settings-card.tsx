@@ -42,7 +42,7 @@ export const SettingsNotificationsSettingsCard: FC<
   // ---------------------------------------------------------------------------
 
   const { walletNotificationSettings } = useQueryWalletNotificationSettings({
-    address: address,
+    address: address as Address,
   });
 
   // ---------------------------------------------------------------------------

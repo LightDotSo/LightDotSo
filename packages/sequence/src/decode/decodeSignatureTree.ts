@@ -30,6 +30,7 @@
 // From: https://github.com/0xsequence/sequence.js/blob/3fa8067a5df6332784501794a90af583254e5b88/packages/core/src/v2/signature.ts#L67-L195
 // License: Apache 2.0
 
+import type { Address } from "viem";
 import { bytesToString, bytesToHex } from "viem";
 import { SignaturePartType } from "../typings";
 import type { RecoveryNode, RecoveryTopology } from "../typings";
@@ -87,7 +88,7 @@ export const decodeSignatureTree = (bytes: Uint8Array): RecoveryTopology => {
 
           // Append to the pointer.
           pointer = append(pointer, {
-            address: address,
+            address: address as Address,
             weight: BigInt(weight),
           });
         }
@@ -128,7 +129,7 @@ export const decodeSignatureTree = (bytes: Uint8Array): RecoveryTopology => {
 
           // Append to the pointer.
           pointer = append(pointer, {
-            address: address,
+            address: address as Address,
             signature: bytesToHex(signature),
             weight: BigInt(weight),
           });

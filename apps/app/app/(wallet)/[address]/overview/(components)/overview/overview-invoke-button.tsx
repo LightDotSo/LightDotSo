@@ -40,7 +40,7 @@ export const OverviewInvokeButton: FC<OverviewInvokeButtonProps> = ({
   // ---------------------------------------------------------------------------
 
   const { queueToken, isLoadingQueueToken } = useMutationQueueToken({
-    address: address,
+    address: address as Address,
   });
 
   // ---------------------------------------------------------------------------

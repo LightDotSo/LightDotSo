@@ -83,7 +83,7 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   // ---------------------------------------------------------------------------
 
   const { walletSettings } = useQueryWalletSettings({
-    address: address,
+    address: address as Address,
   });
 
   // ---------------------------------------------------------------------------
@@ -96,7 +96,7 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
     isWalletSettingsUpdateError,
     isWalletSettingsUpdatePending,
   } = useMutationWalletSettingsUpdate({
-    address: address,
+    address: address as Address,
   });
 
   // ---------------------------------------------------------------------------

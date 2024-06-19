@@ -58,11 +58,11 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const { walletSettings } = useQueryWalletSettings({
-    address: address,
+    address: address as Address,
   });
 
   const { tokens, isTokensLoading } = useQueryTokens({
-    address: address,
+    address: address as Address,
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
     limit: paginationState.pageSize,
     offset: offsetCount,
@@ -71,7 +71,7 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
   });
 
   const { tokensCount, isTokensCountLoading } = useQueryTokensCount({
-    address: address,
+    address: address as Address,
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
     chain_ids: null,
   });

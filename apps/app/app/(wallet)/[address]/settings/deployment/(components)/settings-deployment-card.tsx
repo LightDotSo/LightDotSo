@@ -72,15 +72,15 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // ---------------------------------------------------------------------------
 
   const { wallet } = useQueryWallet({
-    address: address,
+    address: address as Address,
   });
 
   const { walletSettings } = useQueryWalletSettings({
-    address: address,
+    address: address as Address,
   });
 
   const { userOperations } = useQueryUserOperations({
-    address: address,
+    address: address as Address,
     status: "history",
     order: "asc",
     offset: 0,
@@ -93,7 +93,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // ---------------------------------------------------------------------------
 
   const implAddress = useProxyImplementationAddress({
-    address: address,
+    address: address as Address,
     chainId: chain.id,
   });
 

@@ -58,11 +58,11 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const { walletSettings } = useQueryWalletSettings({
-    address: address,
+    address: address as Address,
   });
 
   const { transactions, isTransactionsLoading } = useQueryTransactions({
-    address: address,
+    address: address as Address,
     limit: paginationState.pageSize,
     offset: offsetCount,
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
@@ -70,7 +70,7 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
 
   const { transactionsCount, isTransactionsCountLoading } =
     useQueryTransactionsCount({
-      address: address,
+      address: address as Address,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
     });
 

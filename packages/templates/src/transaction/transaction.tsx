@@ -118,7 +118,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const { tokens } = useQueryTokens({
-    address: address,
+    address: address as Address,
     is_testnet: false,
     offset: 0,
     limit: Number.MAX_SAFE_INTEGER,
@@ -157,7 +157,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
     // owner,
     subdigest,
   } = useUserOperationCreate({
-    address: address,
+    address: address as Address,
   });
 
   // ---------------------------------------------------------------------------
@@ -385,7 +385,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
                                         }
 
                                         setTokenModalProps({
-                                          address: address,
+                                          address: address as Address,
                                           type: "native",
                                           isTestnet: false,
                                           onClose: () => {

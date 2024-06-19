@@ -146,18 +146,18 @@ export const DepositDialog: FC<DepositDialogProps> = ({
   // ---------------------------------------------------------------------------
 
   const { walletSettings } = useQueryWalletSettings({
-    address: address,
+    address: address as Address,
   });
 
   const { nftPage } = useQueryNfts({
-    address: address,
+    address: address as Address,
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
     limit: Number.MAX_SAFE_INTEGER,
     cursor: null,
   });
 
   const { balances } = useQuerySocketBalances({
-    address: address,
+    address: address as Address,
   });
 
   // ---------------------------------------------------------------------------
@@ -636,7 +636,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                                 }
 
                                 setTokenModalProps({
-                                  address: address,
+                                  address: address as Address,
                                   type: "socket",
                                   isTestnet:
                                     walletSettings?.is_enabled_testnet ?? false,
@@ -865,7 +865,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                                 }
 
                                 setNftModalProps({
-                                  address: address,
+                                  address: address as Address,
                                   onClose: () => {
                                     hideNftModal();
                                     if (isInsideModal) {

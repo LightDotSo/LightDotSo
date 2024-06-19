@@ -52,11 +52,11 @@ export const OverviewSection = ({
   // ---------------------------------------------------------------------------
 
   const { walletSettings } = useQueryWalletSettings({
-    address: address,
+    address: address as Address,
   });
 
   const { userOperations } = useQueryUserOperations({
-    address: address,
+    address: address as Address,
     status: status,
     order: status === "queued" ? "asc" : "desc",
     limit: 10,

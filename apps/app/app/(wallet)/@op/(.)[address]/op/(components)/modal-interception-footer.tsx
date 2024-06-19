@@ -52,7 +52,7 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
     isUserOperationSendLoading,
     isUserOperationSendDisabled,
   } = useUserOperationSend({
-    address: address,
+    address: address as Address,
     hash: userOperationHash,
   });
 

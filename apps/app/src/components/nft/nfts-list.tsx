@@ -47,11 +47,11 @@ export const NftsList: FC<NftsListProps> = ({ address, limit }) => {
   // ---------------------------------------------------------------------------
 
   const { walletSettings } = useQueryWalletSettings({
-    address: address,
+    address: address as Address,
   });
 
   const { nftPage } = useQueryNfts({
-    address: address,
+    address: address as Address,
     limit: Number.MAX_SAFE_INTEGER,
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
     cursor: null,

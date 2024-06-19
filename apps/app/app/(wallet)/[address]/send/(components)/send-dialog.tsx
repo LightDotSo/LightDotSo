@@ -159,18 +159,18 @@ export const SendDialog: FC<SendDialogProps> = ({
   // ---------------------------------------------------------------------------
 
   const { walletSettings } = useQueryWalletSettings({
-    address: address,
+    address: address as Address,
   });
 
   const { nftPage } = useQueryNfts({
-    address: address,
+    address: address as Address,
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
     limit: Number.MAX_SAFE_INTEGER,
     cursor: null,
   });
 
   const { tokens } = useQueryTokens({
-    address: address,
+    address: address as Address,
     is_testnet: walletSettings?.is_enabled_testnet ?? false,
     offset: 0,
     limit: Number.MAX_SAFE_INTEGER,
@@ -778,7 +778,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                 address: transfers[0].address,
                 addressOrEns: transfers[0].addressOrEns,
                 asset: {
-                  address: address,
+                  address: address as Address,
                   quantities: transfers.map(
                     // @ts-expect-error
                     // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
@@ -1411,7 +1411,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                             className="flex w-full items-center justify-between px-4 text-sm"
                                             onClick={() => {
                                               setTokenModalProps({
-                                                address: address,
+                                                address: address as Address,
                                                 type: "native",
                                                 isTestnet:
                                                   walletSettings?.is_enabled_testnet ??
@@ -1654,7 +1654,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                             className="flex w-full items-center justify-between px-4 text-sm"
                                             onClick={() => {
                                               setNftModalProps({
-                                                address: address,
+                                                address: address as Address,
                                                 onClose: () => {
                                                   hideNftModal();
                                                   if (isInsideModal) {

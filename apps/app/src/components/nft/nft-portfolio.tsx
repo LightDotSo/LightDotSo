@@ -43,7 +43,7 @@ export const NftPortfolio: FC<NftPortfolioProps> = ({
   // ---------------------------------------------------------------------------
 
   const { nftPortfolio } = useQueryNftPortfolio({
-    address: address,
+    address: address as Address,
   });
 
   // ---------------------------------------------------------------------------
