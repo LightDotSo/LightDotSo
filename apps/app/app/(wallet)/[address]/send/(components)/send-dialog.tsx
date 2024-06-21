@@ -1217,7 +1217,8 @@ export const SendDialog: FC<SendDialogProps> = ({
                             // Default to token if the asset type is not defined
                             transfers[index]
                               ? "token"
-                              : transfers[index]?.assetType !== "erc20"
+                              : // @ts-ignore
+                                transfers[index]?.assetType !== "erc20"
                                 ? "nft"
                                 : "token"
                           }

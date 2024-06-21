@@ -167,15 +167,23 @@ export const ProgressUserOperation: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!pendingUserOperations || isPendingUserOperationsLoading) {
+  if (
+    !pendingUserOperations ||
+    !Array.isArray(pendingUserOperations) ||
+    isPendingUserOperationsLoading
+  ) {
     return null;
   }
 
-  return pendingUserOperations?.map(pendingUserOperation => (
-    <ProgressUserOperationOp
-      key={pendingUserOperation.hash}
-      hash={pendingUserOperation.hash as Hex}
-      onExecuted={refetchPendingUserOperations}
-    />
-  ));
+  return (
+    pendingUserOperations &&
+    pendingUserOperations?.length > 0 &&
+    pendingUserOperations?.map(pendingUserOperation => (
+      <ProgressUserOperationOp
+        key={pendingUserOperation.hash}
+        hash={pendingUserOperation.hash as Hex}
+        onExecuted={refetchPendingUserOperations}
+      />
+    ))
+  );
 };
