@@ -37,7 +37,7 @@ importers:
         version: 2.13.0-alpha.4(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       solc:
         specifier: 0.8.18
-        version: 0.8.18(debug@4.3.5)
+        version: 0.8.18
     devDependencies:
       '@changesets/changelog-github':
         specifier: ^0.5.0
@@ -1742,8 +1742,8 @@ importers:
         specifier: ^6.2.2
         version: 6.2.2
       openapi-fetch:
-        specifier: ^0.10.0
-        version: 0.10.0
+        specifier: ^0.9.7
+        version: 0.9.7
       type-fest:
         specifier: ^4.20.1
         version: 4.20.1
@@ -16633,11 +16633,6 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
-  nanoid@5.0.7:
-    resolution: {integrity: sha512-oLxFY2gd2IqnjcYyOXD8XGCftpGtZP2AbHbOkthDkvRywH5ayNtPVy9YlOPcHckXzbLTCHpkb7FB+yuxKV13pQ==}
-    engines: {node: ^18 || >=20}
-    hasBin: true
-
   native-abort-controller@1.0.4:
     resolution: {integrity: sha512-zp8yev7nxczDJMoP6pDxyD20IU0T22eX8VwN2ztDccKvSZhRaV33yP1BGwKSZfXuqWUzsXopVFjBdau9OOAwMQ==}
     peerDependencies:
@@ -17206,11 +17201,11 @@ packages:
     resolution: {integrity: sha512-OS+QTnw1/4vrf+9hh1jc1jnYjzSG4ttTBB8UxOwAnInG3Uo4ssetzC1ihqaIHjLJnA5GGlRl6QlZXOTQhRBUvg==}
     engines: {node: '>=14.16'}
 
-  openapi-fetch@0.10.0:
-    resolution: {integrity: sha512-yYfbfQegNEk9787FYWHp/BT5mHgB4K6K9vTqFw0DgGzY4L1NKMkGSF6YniGcM+iuoumKrQt22T3x73yqZey8iQ==}
+  openapi-fetch@0.9.7:
+    resolution: {integrity: sha512-NMp/GEmWSGO0b2d731IdGXcMP2PF85Rk1q+oy2Mx/DYMdP3pgTZTRamKxgZpkHhM4iOVsyD1iP5HKL9Fr6CH2Q==}
 
-  openapi-typescript-helpers@0.0.9:
-    resolution: {integrity: sha512-BO2TvIDAO/FPVKz1Nj2gy+pUOHfaoENdK5UP3H0Jbh0VXBf3dwYMs58ZwOjiezrbHA2LamdquoyQgahTPvIxGA==}
+  openapi-typescript-helpers@0.0.8:
+    resolution: {integrity: sha512-1eNjQtbfNi5Z/kFhagDIaIRj6qqDzhjNJKz8cmMW0CVdGwT6e1GLbAfgI0d28VTJa1A8jz82jm/4dG8qNoNS8g==}
 
   openapi-typescript@7.0.0:
     resolution: {integrity: sha512-5NobO3pavTUVmErRVjnfiIIqCNjCrZeva4ElOA3nNKcSo4Jm5G7zv4WLcw6S+jDVnGGRkchxnJ2yIJBp9ULUAg==}
@@ -23690,7 +23685,7 @@ snapshots:
       '@types/resolve': 1.20.6
       glob: 10.4.1
       resolve: 1.22.8
-      solc: 0.8.18(debug@4.3.5)
+      solc: 0.8.18
       solidity-ast: 0.4.56
       unplugin: 1.10.1
     transitivePeerDependencies:
@@ -23710,7 +23705,7 @@ snapshots:
       '@types/resolve': 1.20.6
       glob: 10.4.1
       resolve: 1.22.8
-      solc: 0.8.18(debug@4.3.5)
+      solc: 0.8.18
       solidity-ast: 0.4.56
       unplugin: 1.10.1
     transitivePeerDependencies:
@@ -23726,7 +23721,7 @@ snapshots:
       '@types/node': 20.14.7
       bundle-require: 4.2.1(esbuild@0.19.2)
       jsonc-parser: 3.2.1
-      solc: 0.8.18(debug@4.3.5)
+      solc: 0.8.18
       viem: 1.21.4(bufferutil@4.0.8)(typescript@5.5.2)(zod@3.23.8)
     transitivePeerDependencies:
       - bufferutil
@@ -23740,7 +23735,7 @@ snapshots:
       '@types/node': 20.14.7
       bundle-require: 4.2.1(esbuild@0.21.5)
       jsonc-parser: 3.2.1
-      solc: 0.8.18(debug@4.3.5)
+      solc: 0.8.18
       viem: 1.21.4(bufferutil@4.0.8)(typescript@5.5.2)(zod@3.23.8)
     transitivePeerDependencies:
       - bufferutil
@@ -23758,7 +23753,7 @@ snapshots:
       '@evmts/bundler': 0.11.2(bufferutil@4.0.8)(esbuild@0.19.2)(solc@0.8.18)(typescript@5.5.2)(viem@2.16.0(bufferutil@4.0.8)(typescript@5.5.2)(zod@3.23.8))(zod@3.23.8)
       esbuild: 0.19.2
       glob: 10.4.1
-      solc: 0.8.18(debug@4.3.5)
+      solc: 0.8.18
       solidity-ast: 0.4.56
       typescript: 5.5.2
       zod: 3.23.8
@@ -31516,7 +31511,7 @@ snapshots:
 
   axios@1.6.2:
     dependencies:
-      follow-redirects: 1.15.6(debug@4.3.5)
+      follow-redirects: 1.15.6(debug@4.3.4)
       form-data: 4.0.0
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -31524,7 +31519,7 @@ snapshots:
 
   axios@1.7.2:
     dependencies:
-      follow-redirects: 1.15.6(debug@4.3.5)
+      follow-redirects: 1.15.6(debug@4.3.4)
       form-data: 4.0.0
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -36392,7 +36387,7 @@ snapshots:
   http-proxy@1.18.1:
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.6(debug@4.3.5)
+      follow-redirects: 1.15.6(debug@4.3.4)
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -39563,8 +39558,6 @@ snapshots:
 
   nanoid@3.3.7: {}
 
-  nanoid@5.0.7: {}
-
   native-abort-controller@1.0.4(abort-controller@3.0.0):
     dependencies:
       abort-controller: 3.0.0
@@ -40196,12 +40189,11 @@ snapshots:
       is-inside-container: 1.0.0
       is-wsl: 2.2.0
 
-  openapi-fetch@0.10.0:
+  openapi-fetch@0.9.7:
     dependencies:
-      nanoid: 5.0.7
-      openapi-typescript-helpers: 0.0.9
+      openapi-typescript-helpers: 0.0.8
 
-  openapi-typescript-helpers@0.0.9: {}
+  openapi-typescript-helpers@0.0.8: {}
 
   openapi-typescript@7.0.0(encoding@0.1.13)(typescript@5.5.2):
     dependencies:
@@ -42588,6 +42580,18 @@ snapshots:
     dependencies:
       ip-address: 9.0.5
       smart-buffer: 4.2.0
+
+  solc@0.8.18:
+    dependencies:
+      command-exists: 1.2.9
+      commander: 8.3.0
+      follow-redirects: 1.15.6(debug@4.3.4)
+      js-sha3: 0.8.0
+      memorystream: 0.3.1
+      semver: 5.7.2
+      tmp: 0.0.33
+    transitivePeerDependencies:
+      - debug
 
   solc@0.8.18(debug@4.3.5):
     dependencies:

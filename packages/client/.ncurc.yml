@@ -1,3 +1,4 @@
 upgrade: true
 reject:
   - "graphql-request"
+  - "openapi-fetch"
