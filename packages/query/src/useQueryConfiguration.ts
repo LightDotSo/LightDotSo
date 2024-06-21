@@ -47,6 +47,7 @@ export const useQueryConfiguration = (params: ConfigurationParams) => {
   const {
     data: configuration,
     isLoading: isConfigurationLoading,
+    refetch: refetchConfiguration,
     failureCount,
   } = useQuery<ConfigurationData | null>({
     queryKey: queryKeys.configuration.get({
@@ -89,5 +90,6 @@ export const useQueryConfiguration = (params: ConfigurationParams) => {
   return {
     configuration: configuration,
     isConfigurationLoading: isConfigurationLoading,
+    refetchConfiguration: refetchConfiguration,
   };
 };

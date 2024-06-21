@@ -51,6 +51,7 @@ export const useQueryUserOperationsCount = (
   const {
     data: userOperationsCount,
     isLoading: isUserOperationsCountLoading,
+    refetch: refetchUserOperationsCount,
     failureCount,
   } = useQuery<UserOperationCountData | null>({
     queryKey: queryKeys.user_operation.listCount({
@@ -58,6 +59,8 @@ export const useQueryUserOperationsCount = (
       status: params.status,
       is_testnet: params.is_testnet,
     }).queryKey,
+    refetchInterval: 30000,
+    refetchIntervalInBackground: true,
     queryFn: async () => {
       if (typeof params.address === "undefined") {
         return null;
@@ -93,5 +96,6 @@ export const useQueryUserOperationsCount = (
   return {
     userOperationsCount: userOperationsCount,
     isUserOperationsCountLoading: isUserOperationsCountLoading,
+    refetchUserOperationsCount: refetchUserOperationsCount,
   };
 };

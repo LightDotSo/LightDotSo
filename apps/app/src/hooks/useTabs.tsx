@@ -126,19 +126,21 @@ export function useTabs() {
     address: walletAddress as Address,
   });
 
-  const { configuration, isConfigurationLoading } = useQueryConfiguration({
-    address: walletAddress as Address,
-  });
+  const { configuration, isConfigurationLoading, refetchConfiguration } =
+    useQueryConfiguration({
+      address: walletAddress as Address,
+    });
 
   const { walletFeatures, refetchWalletFeatures } = useQueryWalletFeatures({
     address: walletAddress as Address,
   });
 
-  const { userOperationsCount } = useQueryUserOperationsCount({
-    address: walletAddress as Address,
-    status: "queued",
-    is_testnet: walletSettings?.is_enabled_testnet ?? false,
-  });
+  const { userOperationsCount, refetchUserOperationsCount } =
+    useQueryUserOperationsCount({
+      address: walletAddress as Address,
+      status: "queued",
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    });
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -183,10 +185,17 @@ export function useTabs() {
     isConfigurationLoading,
   ]);
 
-  // Refetch the wallet features when the wallet address changes
+  // Refetch the queries when the wallet address changes
   useEffect(() => {
     refetchWalletFeatures();
-  }, [refetchWalletFeatures, walletAddress]);
+    refetchConfiguration();
+    refetchUserOperationsCount();
+  }, [
+    walletAddress,
+    refetchWalletFeatures,
+    refetchConfiguration,
+    refetchUserOperationsCount,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
