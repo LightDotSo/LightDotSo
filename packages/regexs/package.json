@@ -27,8 +27,8 @@
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.14.4",
-    "typescript": "^5.4.5"
+    "@types/node": "^20.14.7",
+    "typescript": "^5.5.2"
   },
   "publishConfig": {
     "access": "public"
