@@ -25,8 +25,8 @@ import {
 } from "@lightdotso/query";
 import { useFormRef } from "@lightdotso/stores";
 import {
-  useReadLightPaymasterGetHash,
-  useReadLightPaymasterSenderNonce,
+  useReadLightVerifyingPaymasterGetHash,
+  useReadLightVerifyingPaymasterSenderNonce,
   useReadLightWalletImageHash,
 } from "@lightdotso/wagmi";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -85,7 +85,7 @@ export const useUserOperationSend = ({
   // Wagmi
   // ---------------------------------------------------------------------------
 
-  const { data: paymasterHash } = useReadLightPaymasterGetHash({
+  const { data: paymasterHash } = useReadLightVerifyingPaymasterGetHash({
     address: userOperation?.paymaster_and_data.slice(0, 42) as Address,
     chainId: userOperation?.chain_id,
     args: [
@@ -117,7 +117,7 @@ export const useUserOperationSend = ({
     ],
   });
 
-  const { data: paymasterNonce } = useReadLightPaymasterSenderNonce({
+  const { data: paymasterNonce } = useReadLightVerifyingPaymasterSenderNonce({
     address: userOperation?.paymaster_and_data.slice(0, 42) as Address,
     chainId: Number(userOperation?.chain_id),
     args: [userOperation?.sender as Address],

@@ -26,6 +26,14 @@ export {
   useReadLightPaymasterParsePaymasterAndData,
   useReadLightPaymasterSenderNonce,
   useReadLightPaymasterVerifyingSigner,
+  useReadLightVerifyingPaymaster,
+  useReadLightVerifyingPaymasterEntryPoint,
+  useReadLightVerifyingPaymasterGetDeposit,
+  useReadLightVerifyingPaymasterGetHash,
+  useReadLightVerifyingPaymasterOwner,
+  useReadLightVerifyingPaymasterParsePaymasterAndData,
+  useReadLightVerifyingPaymasterSenderNonce,
+  useReadLightVerifyingPaymasterVerifyingSigner,
 } from "./generated";
 
 export { ConnectKitButton, ConnectKitProvider, useModal } from "connectkit";

@@ -27,3 +27,11 @@ DIRECTORIES="LightWallet.sol LightWalletFactory.sol LightPaymaster.sol"
 for DIR in $DIRECTORIES; do
     cp -r "$SOURCE_DIR/$DIR" "$DESTINATION_DIR"
 done
+
+# Specify the archive directories to copy (separated by spaces)
+ARCHIVE_DIRECTORIES="LightVerifyingPaymaster.sol"
+
+# Iterate over the specified archive directories and copy them
+for DIR in $ARCHIVE_DIRECTORIES; do
+    cp -r "$SOURCE_DIR/$DIR" "$DESTINATION_DIR"
+done

@@ -256,6 +256,256 @@ export const lightPaymasterAbi = [
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// LightVerifyingPaymaster
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const lightVerifyingPaymasterAbi = [
+  {
+    type: 'constructor',
+    inputs: [
+      {
+        name: 'entryPoint',
+        internalType: 'contract IEntryPoint',
+        type: 'address',
+      },
+      { name: 'verifyingSigner', internalType: 'address', type: 'address' },
+    ],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'unstakeDelaySec', internalType: 'uint32', type: 'uint32' },
+    ],
+    name: 'addStake',
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'deposit',
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'entryPoint',
+    outputs: [
+      { name: '', internalType: 'contract IEntryPoint', type: 'address' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'getDeposit',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'userOp',
+        internalType: 'struct UserOperation',
+        type: 'tuple',
+        components: [
+          { name: 'sender', internalType: 'address', type: 'address' },
+          { name: 'nonce', internalType: 'uint256', type: 'uint256' },
+          { name: 'initCode', internalType: 'bytes', type: 'bytes' },
+          { name: 'callData', internalType: 'bytes', type: 'bytes' },
+          { name: 'callGasLimit', internalType: 'uint256', type: 'uint256' },
+          {
+            name: 'verificationGasLimit',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          {
+            name: 'preVerificationGas',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          { name: 'maxFeePerGas', internalType: 'uint256', type: 'uint256' },
+          {
+            name: 'maxPriorityFeePerGas',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          { name: 'paymasterAndData', internalType: 'bytes', type: 'bytes' },
+          { name: 'signature', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+      { name: 'validUntil', internalType: 'uint48', type: 'uint48' },
+      { name: 'validAfter', internalType: 'uint48', type: 'uint48' },
+    ],
+    name: 'getHash',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'owner',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'paymasterAndData', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'parsePaymasterAndData',
+    outputs: [
+      { name: 'validUntil', internalType: 'uint48', type: 'uint48' },
+      { name: 'validAfter', internalType: 'uint48', type: 'uint48' },
+      { name: 'signature', internalType: 'bytes', type: 'bytes' },
+    ],
+    stateMutability: 'pure',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'mode',
+        internalType: 'enum IPaymaster.PostOpMode',
+        type: 'uint8',
+      },
+      { name: 'context', internalType: 'bytes', type: 'bytes' },
+      { name: 'actualGasCost', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'postOp',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'renounceOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '', internalType: 'address', type: 'address' }],
+    name: 'senderNonce',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'newOwner', internalType: 'address', type: 'address' }],
+    name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'unlockStake',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'userOp',
+        internalType: 'struct UserOperation',
+        type: 'tuple',
+        components: [
+          { name: 'sender', internalType: 'address', type: 'address' },
+          { name: 'nonce', internalType: 'uint256', type: 'uint256' },
+          { name: 'initCode', internalType: 'bytes', type: 'bytes' },
+          { name: 'callData', internalType: 'bytes', type: 'bytes' },
+          { name: 'callGasLimit', internalType: 'uint256', type: 'uint256' },
+          {
+            name: 'verificationGasLimit',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          {
+            name: 'preVerificationGas',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          { name: 'maxFeePerGas', internalType: 'uint256', type: 'uint256' },
+          {
+            name: 'maxPriorityFeePerGas',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          { name: 'paymasterAndData', internalType: 'bytes', type: 'bytes' },
+          { name: 'signature', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+      { name: 'userOpHash', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'maxCost', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'validatePaymasterUserOp',
+    outputs: [
+      { name: 'context', internalType: 'bytes', type: 'bytes' },
+      { name: 'validationData', internalType: 'uint256', type: 'uint256' },
+    ],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'verifyingSigner',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'withdrawAddress',
+        internalType: 'address payable',
+        type: 'address',
+      },
+    ],
+    name: 'withdrawStake',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'withdrawAddress',
+        internalType: 'address payable',
+        type: 'address',
+      },
+      { name: 'amount', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'withdrawTo',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'previousOwner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'newOwner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'OwnershipTransferred',
+  },
+] as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // LightWallet
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1008,6 +1258,264 @@ export const useWatchLightPaymasterEvent =
 export const useWatchLightPaymasterOwnershipTransferredEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: lightPaymasterAbi,
+    eventName: 'OwnershipTransferred',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__
+ */
+export const useReadLightVerifyingPaymaster =
+  /*#__PURE__*/ createUseReadContract({ abi: lightVerifyingPaymasterAbi })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"entryPoint"`
+ */
+export const useReadLightVerifyingPaymasterEntryPoint =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: 'entryPoint',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"getDeposit"`
+ */
+export const useReadLightVerifyingPaymasterGetDeposit =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: 'getDeposit',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"getHash"`
+ */
+export const useReadLightVerifyingPaymasterGetHash =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: 'getHash',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"owner"`
+ */
+export const useReadLightVerifyingPaymasterOwner =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: 'owner',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"parsePaymasterAndData"`
+ */
+export const useReadLightVerifyingPaymasterParsePaymasterAndData =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: 'parsePaymasterAndData',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"senderNonce"`
+ */
+export const useReadLightVerifyingPaymasterSenderNonce =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: 'senderNonce',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"verifyingSigner"`
+ */
+export const useReadLightVerifyingPaymasterVerifyingSigner =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: 'verifyingSigner',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__
+ */
+export const useWriteLightVerifyingPaymaster =
+  /*#__PURE__*/ createUseWriteContract({ abi: lightVerifyingPaymasterAbi })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"addStake"`
+ */
+export const useWriteLightVerifyingPaymasterAddStake =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: 'addStake',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"deposit"`
+ */
+export const useWriteLightVerifyingPaymasterDeposit =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: 'deposit',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"postOp"`
+ */
+export const useWriteLightVerifyingPaymasterPostOp =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: 'postOp',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"renounceOwnership"`
+ */
+export const useWriteLightVerifyingPaymasterRenounceOwnership =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: 'renounceOwnership',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"transferOwnership"`
+ */
+export const useWriteLightVerifyingPaymasterTransferOwnership =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: 'transferOwnership',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"unlockStake"`
+ */
+export const useWriteLightVerifyingPaymasterUnlockStake =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: 'unlockStake',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"validatePaymasterUserOp"`
+ */
+export const useWriteLightVerifyingPaymasterValidatePaymasterUserOp =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: 'validatePaymasterUserOp',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"withdrawStake"`
+ */
+export const useWriteLightVerifyingPaymasterWithdrawStake =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: 'withdrawStake',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"withdrawTo"`
+ */
+export const useWriteLightVerifyingPaymasterWithdrawTo =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: 'withdrawTo',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__
+ */
+export const useSimulateLightVerifyingPaymaster =
+  /*#__PURE__*/ createUseSimulateContract({ abi: lightVerifyingPaymasterAbi })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"addStake"`
+ */
+export const useSimulateLightVerifyingPaymasterAddStake =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: 'addStake',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"deposit"`
+ */
+export const useSimulateLightVerifyingPaymasterDeposit =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: 'deposit',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"postOp"`
+ */
+export const useSimulateLightVerifyingPaymasterPostOp =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: 'postOp',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"renounceOwnership"`
+ */
+export const useSimulateLightVerifyingPaymasterRenounceOwnership =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: 'renounceOwnership',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"transferOwnership"`
+ */
+export const useSimulateLightVerifyingPaymasterTransferOwnership =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: 'transferOwnership',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"unlockStake"`
+ */
+export const useSimulateLightVerifyingPaymasterUnlockStake =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: 'unlockStake',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"validatePaymasterUserOp"`
+ */
+export const useSimulateLightVerifyingPaymasterValidatePaymasterUserOp =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: 'validatePaymasterUserOp',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"withdrawStake"`
+ */
+export const useSimulateLightVerifyingPaymasterWithdrawStake =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: 'withdrawStake',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"withdrawTo"`
+ */
+export const useSimulateLightVerifyingPaymasterWithdrawTo =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightVerifyingPaymasterAbi,
+    functionName: 'withdrawTo',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__
+ */
+export const useWatchLightVerifyingPaymasterEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({ abi: lightVerifyingPaymasterAbi })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `eventName` set to `"OwnershipTransferred"`
+ */
+export const useWatchLightVerifyingPaymasterOwnershipTransferredEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: lightVerifyingPaymasterAbi,
     eventName: 'OwnershipTransferred',
   })
 
