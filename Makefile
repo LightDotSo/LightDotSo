@@ -171,6 +171,7 @@ contracts-storage: ## Omits the current storage layout from the current contract
 .PHONY: contracts-wagmi
 contracts-wagmi: ## Copies over certain directory for wagmi generation
 	./contracts/wagmi.sh
+	pnpm run wagmi:generate
 
 .PHONY: contracts-snapshot
 contracts-snapshot: ## Runs the snapshot generation script

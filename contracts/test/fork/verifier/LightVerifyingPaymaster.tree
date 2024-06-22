@@ -1,2 +1,2 @@
-LightVerifyingPaymaster.t.sol
+LightPaymaster.t.sol
 └── It should deploy a new LightWallet with the correct hash

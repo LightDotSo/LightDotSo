@@ -17,7 +17,7 @@
 pragma solidity ^0.8.18;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightVerifyingPaymaster} from "@/contracts/LightVerifyingPaymaster.sol";
+import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {SimpleAccountFactory} from "@/contracts/samples/SimpleAccountFactory.sol";
@@ -69,7 +69,7 @@ abstract contract BaseTest is Test {
     // v0.01: address internal constant LIGHT_FACTORY_ADDRESS = address(0x0000000000756D3E6464f5efe7e413a0Af1C7474);
     address internal constant LIGHT_FACTORY_ADDRESS = address(0x00000000001269b052C004FFB71B47AB22C898B0);
 
-    // LightVerifyingPaymaster address
+    // LightPaymaster address
     // v1: address internal constant LIGHT_PAYMASTER_ADDRESS = address(0x000000000018d32DF916ff115A25fbeFC70bAf8b);
     // v2: address internal constant LIGHT_PAYMASTER_ADDRESS = address(0x000000000003193FAcb32D1C120719892B7AE977);
     // v3: address internal constant LIGHT_PAYMASTER_ADDRESS = address(0x000000000054230BA02ADD2d96fA4362A8606F97);
@@ -99,8 +99,8 @@ abstract contract BaseTest is Test {
     LightWallet internal account;
     // LightWalletFactory core contract
     LightWalletFactory internal factory;
-    // LightVerifyingPaymaster core contract
-    LightVerifyingPaymaster internal paymaster;
+    // LightPaymaster core contract
+    LightPaymaster internal paymaster;
     // LightWallet for deployed account
     LightWallet internal wallet;
 

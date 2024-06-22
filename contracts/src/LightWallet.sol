@@ -73,7 +73,7 @@ contract LightWallet is
     string public constant NAME = "LightWallet";
 
     /// @notice The version for this contract
-    string public constant VERSION = "0.2.0";
+    string public constant VERSION = "0.3.0";
 
     // -------------------------------------------------------------------------
     // Immutable Storage

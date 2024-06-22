@@ -2,136 +2,136 @@
 👁️ STORAGE LAYOUT SNAPSHOT 👁️
 ============================
 =======================
- ➡ LightVerifyingPaymaster
-| Name        | Type                        | Slot | Offset | Bytes | Contract                                                          |
+➡ LightPaymaster
+| Name | Type | Slot | Offset | Bytes | Contract |
 |-------------|-----------------------------|------|--------|-------|-------------------------------------------------------------------|
-| _owner      | address                     | 0    | 0      | 20    | contracts/src/LightVerifyingPaymaster.sol:LightVerifyingPaymaster |
-| senderNonce | mapping(address => uint256) | 1    | 0      | 32    | contracts/src/LightVerifyingPaymaster.sol:LightVerifyingPaymaster |
+| \_owner | address | 0 | 0 | 20 | contracts/src/LightPaymaster.sol:LightPaymaster |
+| senderNonce | mapping(address => uint256) | 1 | 0 | 32 | contracts/src/LightPaymaster.sol:LightPaymaster |
 =======================
- ➡ LightWallet
-| Name          | Type  | Slot | Offset | Bytes | Contract                                  |
+➡ LightWallet
+| Name | Type | Slot | Offset | Bytes | Contract |
 |---------------|-------|------|--------|-------|-------------------------------------------|
-| _initialized  | uint8 | 0    | 0      | 1     | contracts/src/LightWallet.sol:LightWallet |
-| _initializing | bool  | 0    | 1      | 1     | contracts/src/LightWallet.sol:LightWallet |
+| \_initialized | uint8 | 0 | 0 | 1 | contracts/src/LightWallet.sol:LightWallet |
+| \_initializing | bool | 0 | 1 | 1 | contracts/src/LightWallet.sol:LightWallet |
 =======================
- ➡ LightWalletFactory
+➡ LightWalletFactory
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
 =======================
- ➡ EntryPoint
-| Name                | Type                                                 | Slot | Offset | Bytes | Contract                                                         |
+➡ EntryPoint
+| Name | Type | Slot | Offset | Bytes | Contract |
 |---------------------|------------------------------------------------------|------|--------|-------|------------------------------------------------------------------|
-| deposits            | mapping(address => struct IStakeManager.DepositInfo) | 0    | 0      | 32    | lib/account-abstraction/contracts/core/EntryPoint.sol:EntryPoint |
-| nonceSequenceNumber | mapping(address => mapping(uint192 => uint256))      | 1    | 0      | 32    | lib/account-abstraction/contracts/core/EntryPoint.sol:EntryPoint |
-| _status             | uint256                                              | 2    | 0      | 32    | lib/account-abstraction/contracts/core/EntryPoint.sol:EntryPoint |
+| deposits | mapping(address => struct IStakeManager.DepositInfo) | 0 | 0 | 32 | lib/account-abstraction/contracts/core/EntryPoint.sol:EntryPoint |
+| nonceSequenceNumber | mapping(address => mapping(uint192 => uint256)) | 1 | 0 | 32 | lib/account-abstraction/contracts/core/EntryPoint.sol:EntryPoint |
+| \_status | uint256 | 2 | 0 | 32 | lib/account-abstraction/contracts/core/EntryPoint.sol:EntryPoint |
 =======================
- ➡ VerifyingPaymaster
-| Name        | Type                        | Slot | Offset | Bytes | Contract                                                                            |
+➡ VerifyingPaymaster
+| Name | Type | Slot | Offset | Bytes | Contract |
 |-------------|-----------------------------|------|--------|-------|-------------------------------------------------------------------------------------|
-| _owner      | address                     | 0    | 0      | 20    | lib/account-abstraction/contracts/samples/VerifyingPaymaster.sol:VerifyingPaymaster |
-| senderNonce | mapping(address => uint256) | 1    | 0      | 32    | lib/account-abstraction/contracts/samples/VerifyingPaymaster.sol:VerifyingPaymaster |
+| \_owner | address | 0 | 0 | 20 | lib/account-abstraction/contracts/samples/VerifyingPaymaster.sol:VerifyingPaymaster |
+| senderNonce | mapping(address => uint256) | 1 | 0 | 32 | lib/account-abstraction/contracts/samples/VerifyingPaymaster.sol:VerifyingPaymaster |
 =======================
- ➡ IERC1271
+➡ IERC1271
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
 =======================
- ➡ ILightWallet
+➡ ILightWallet
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
 =======================
- ➡ ILightWalletFactory
+➡ ILightWalletFactory
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
 =======================
- ➡ ImmutableProxy
+➡ ImmutableProxy
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
 =======================
- ➡ Kernel
-| Name             | Type   | Slot | Offset | Bytes | Contract                         |
+➡ Kernel
+| Name | Type | Slot | Offset | Bytes | Contract |
 |------------------|--------|------|--------|-------|----------------------------------|
-| _nameFallback    | string | 0    | 0      | 32    | lib/kernel/src/Kernel.sol:Kernel |
-| _versionFallback | string | 1    | 0      | 32    | lib/kernel/src/Kernel.sol:Kernel |
+| \_nameFallback | string | 0 | 0 | 32 | lib/kernel/src/Kernel.sol:Kernel |
+| \_versionFallback | string | 1 | 0 | 32 | lib/kernel/src/Kernel.sol:Kernel |
 =======================
- ➡ KernelECDSAFactory
+➡ KernelECDSAFactory
 =======================
- ➡ KernelECDSAValidator
+➡ KernelECDSAValidator
 =======================
- ➡ KernelFactory
+➡ KernelFactory
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
 =======================
- ➡ KernelProxy
+➡ KernelProxy
 =======================
- ➡ Safe
-| Name                       | Type                                            | Slot | Offset | Bytes | Contract                                   |
+➡ Safe
+| Name | Type | Slot | Offset | Bytes | Contract |
 |----------------------------|-------------------------------------------------|------|--------|-------|--------------------------------------------|
-| singleton                  | address                                         | 0    | 0      | 20    | lib/safe-contracts/contracts/Safe.sol:Safe |
-| modules                    | mapping(address => address)                     | 1    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
-| owners                     | mapping(address => address)                     | 2    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
-| ownerCount                 | uint256                                         | 3    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
-| threshold                  | uint256                                         | 4    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
-| nonce                      | uint256                                         | 5    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
-| _deprecatedDomainSeparator | bytes32                                         | 6    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
-| signedMessages             | mapping(bytes32 => uint256)                     | 7    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
-| approvedHashes             | mapping(address => mapping(bytes32 => uint256)) | 8    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
+| singleton | address | 0 | 0 | 20 | lib/safe-contracts/contracts/Safe.sol:Safe |
+| modules | mapping(address => address) | 1 | 0 | 32 | lib/safe-contracts/contracts/Safe.sol:Safe |
+| owners | mapping(address => address) | 2 | 0 | 32 | lib/safe-contracts/contracts/Safe.sol:Safe |
+| ownerCount | uint256 | 3 | 0 | 32 | lib/safe-contracts/contracts/Safe.sol:Safe |
+| threshold | uint256 | 4 | 0 | 32 | lib/safe-contracts/contracts/Safe.sol:Safe |
+| nonce | uint256 | 5 | 0 | 32 | lib/safe-contracts/contracts/Safe.sol:Safe |
+| \_deprecatedDomainSeparator | bytes32 | 6 | 0 | 32 | lib/safe-contracts/contracts/Safe.sol:Safe |
+| signedMessages | mapping(bytes32 => uint256) | 7 | 0 | 32 | lib/safe-contracts/contracts/Safe.sol:Safe |
+| approvedHashes | mapping(address => mapping(bytes32 => uint256)) | 8 | 0 | 32 | lib/safe-contracts/contracts/Safe.sol:Safe |
 =======================
- ➡ SafeL2
-| Name                       | Type                                            | Slot | Offset | Bytes | Contract                                       |
+➡ SafeL2
+| Name | Type | Slot | Offset | Bytes | Contract |
 |----------------------------|-------------------------------------------------|------|--------|-------|------------------------------------------------|
-| singleton                  | address                                         | 0    | 0      | 20    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
-| modules                    | mapping(address => address)                     | 1    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
-| owners                     | mapping(address => address)                     | 2    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
-| ownerCount                 | uint256                                         | 3    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
-| threshold                  | uint256                                         | 4    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
-| nonce                      | uint256                                         | 5    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
-| _deprecatedDomainSeparator | bytes32                                         | 6    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
-| signedMessages             | mapping(bytes32 => uint256)                     | 7    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
-| approvedHashes             | mapping(address => mapping(bytes32 => uint256)) | 8    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
+| singleton | address | 0 | 0 | 20 | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
+| modules | mapping(address => address) | 1 | 0 | 32 | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
+| owners | mapping(address => address) | 2 | 0 | 32 | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
+| ownerCount | uint256 | 3 | 0 | 32 | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
+| threshold | uint256 | 4 | 0 | 32 | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
+| nonce | uint256 | 5 | 0 | 32 | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
+| \_deprecatedDomainSeparator | bytes32 | 6 | 0 | 32 | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
+| signedMessages | mapping(bytes32 => uint256) | 7 | 0 | 32 | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
+| approvedHashes | mapping(address => mapping(bytes32 => uint256)) | 8 | 0 | 32 | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
 =======================
- ➡ SafeProxy
-| Name      | Type    | Slot | Offset | Bytes | Contract                                                     |
+➡ SafeProxy
+| Name | Type | Slot | Offset | Bytes | Contract |
 |-----------|---------|------|--------|-------|--------------------------------------------------------------|
-| singleton | address | 0    | 0      | 20    | lib/safe-contracts/contracts/proxies/SafeProxy.sol:SafeProxy |
+| singleton | address | 0 | 0 | 20 | lib/safe-contracts/contracts/proxies/SafeProxy.sol:SafeProxy |
 =======================
- ➡ SafeProxyFactory
+➡ SafeProxyFactory
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
 =======================
- ➡ SimpleAccount
-| Name          | Type    | Slot | Offset | Bytes | Contract                                                                  |
+➡ SimpleAccount
+| Name | Type | Slot | Offset | Bytes | Contract |
 |---------------|---------|------|--------|-------|---------------------------------------------------------------------------|
-| _initialized  | uint8   | 0    | 0      | 1     | lib/account-abstraction/contracts/samples/SimpleAccount.sol:SimpleAccount |
-| _initializing | bool    | 0    | 1      | 1     | lib/account-abstraction/contracts/samples/SimpleAccount.sol:SimpleAccount |
-| owner         | address | 0    | 2      | 20    | lib/account-abstraction/contracts/samples/SimpleAccount.sol:SimpleAccount |
+| \_initialized | uint8 | 0 | 0 | 1 | lib/account-abstraction/contracts/samples/SimpleAccount.sol:SimpleAccount |
+| \_initializing | bool | 0 | 1 | 1 | lib/account-abstraction/contracts/samples/SimpleAccount.sol:SimpleAccount |
+| owner | address | 0 | 2 | 20 | lib/account-abstraction/contracts/samples/SimpleAccount.sol:SimpleAccount |
 =======================
- ➡ SimpleAccountFactory
+➡ SimpleAccountFactory
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
 =======================
- ➡ SimpleAccountV2
-| Name          | Type    | Slot | Offset | Bytes | Contract                                                  |
+➡ SimpleAccountV2
+| Name | Type | Slot | Offset | Bytes | Contract |
 |---------------|---------|------|--------|-------|-----------------------------------------------------------|
-| _initialized  | uint8   | 0    | 0      | 1     | contracts/src/samples/SimpleAccountV2.sol:SimpleAccountV2 |
-| _initializing | bool    | 0    | 1      | 1     | contracts/src/samples/SimpleAccountV2.sol:SimpleAccountV2 |
-| owner         | address | 0    | 2      | 20    | contracts/src/samples/SimpleAccountV2.sol:SimpleAccountV2 |
+| \_initialized | uint8 | 0 | 0 | 1 | contracts/src/samples/SimpleAccountV2.sol:SimpleAccountV2 |
+| \_initializing | bool | 0 | 1 | 1 | contracts/src/samples/SimpleAccountV2.sol:SimpleAccountV2 |
+| owner | address | 0 | 2 | 20 | contracts/src/samples/SimpleAccountV2.sol:SimpleAccountV2 |
 =======================
- ➡ SimpleAccountV2Factory
+➡ SimpleAccountV2Factory
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
 =======================
- ➡ SmartAccount
+➡ SmartAccount
 =======================
- ➡ SmartAccountFactory
+➡ SmartAccountFactory
 =======================
- ➡ SoulWallet
+➡ SoulWallet
 =======================
- ➡ SoulWalletFactory
+➡ SoulWalletFactory
 =======================
- ➡ Wallet
+➡ Wallet
 =======================
- ➡ WalletFactory
+➡ WalletFactory
 =======================
- ➡ UniversalSigValidator
+➡ UniversalSigValidator
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|

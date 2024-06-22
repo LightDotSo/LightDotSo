@@ -18,8 +18,8 @@ pragma solidity ^0.8.18;
 
 import {IEntryPoint, VerifyingPaymaster} from "@/contracts/core/VerifyingPaymaster.sol";
 
-// LightVerifyingPaymaster -- VerifyingPaymaster for Light
-contract LightVerifyingPaymaster is VerifyingPaymaster {
+// LightPaymaster -- VerifyingPaymaster for Light
+contract LightPaymaster is VerifyingPaymaster {
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------

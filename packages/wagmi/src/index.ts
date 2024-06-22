@@ -18,14 +18,14 @@ export {
   lightWalletAbi,
   lightWalletFactoryAbi,
   useReadLightWalletImageHash,
-  useReadLightVerifyingPaymaster,
-  useReadLightVerifyingPaymasterEntryPoint,
-  useReadLightVerifyingPaymasterGetDeposit,
-  useReadLightVerifyingPaymasterGetHash,
-  useReadLightVerifyingPaymasterOwner,
-  useReadLightVerifyingPaymasterParsePaymasterAndData,
-  useReadLightVerifyingPaymasterSenderNonce,
-  useReadLightVerifyingPaymasterVerifyingSigner,
+  useReadLightPaymaster,
+  useReadLightPaymasterEntryPoint,
+  useReadLightPaymasterGetDeposit,
+  useReadLightPaymasterGetHash,
+  useReadLightPaymasterOwner,
+  useReadLightPaymasterParsePaymasterAndData,
+  useReadLightPaymasterSenderNonce,
+  useReadLightPaymasterVerifyingSigner,
 } from "./generated";
 
 export { ConnectKitButton, ConnectKitProvider, useModal } from "connectkit";

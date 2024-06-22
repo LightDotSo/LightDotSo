@@ -22,17 +22,17 @@ use std::convert::TryInto;
 
 use crate::provider::get_provider;
 
-abigen!(LightVerifyingPaymaster, "abi/LightVerifyingPaymaster.json",);
+abigen!(LightPaymaster, "abi/LightPaymaster.json",);
 
 pub async fn get_paymaster(
     chain_id: u64,
     verifying_paymaster_address: Address,
-) -> Result<LightVerifyingPaymaster<Provider<Http>>> {
+) -> Result<LightPaymaster<Provider<Http>>> {
     // Get the provider.
     let provider = get_provider(chain_id).await?;
 
     // Get the contract.
-    let contract = LightVerifyingPaymaster::new(verifying_paymaster_address, provider.into());
+    let contract = LightPaymaster::new(verifying_paymaster_address, provider.into());
 
     // Return the contract.
     Ok(contract)

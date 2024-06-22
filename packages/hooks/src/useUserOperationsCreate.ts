@@ -26,8 +26,8 @@ import {
   useSignMessage,
   // lightWalletAbi,
   // lightWalletFactoryAbi,
-  // useReadLightVerifyingPaymasterGetHash,
-  // useReadLightVerifyingPaymasterSenderNonce,
+  // useReadLightPaymasterGetHash,
+  // useReadLightPaymasterSenderNonce,
 } from "@lightdotso/wagmi";
 import { MerkleTree } from "merkletreejs";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -187,13 +187,13 @@ export const useUserOperationsCreate = ({
   // Sign the message of the subdigest
   const { data, signMessage, isPending: isSignLoading } = useSignMessage();
 
-  // const { data: paymasterNonce } = useReadLightVerifyingPaymasterSenderNonce({
+  // const { data: paymasterNonce } = useReadLightPaymasterSenderNonce({
   //   address: userOperation.paymasterAndData.slice(0, 42) as Address,
   //   chainId: Number(userOperation.chainId),
   //   args: [userOperation.sender as Address],
   // });
 
-  // const { data: paymasterHash } = useReadLightVerifyingPaymasterGetHash({
+  // const { data: paymasterHash } = useReadLightPaymasterGetHash({
   //   address: userOperation.paymasterAndData.slice(0, 42) as Address,
   //   chainId: Number(userOperation.chainId),
   //   args: [
