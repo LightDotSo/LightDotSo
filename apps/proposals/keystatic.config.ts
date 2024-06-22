@@ -3,6 +3,7 @@ import { config, fields, collection } from "@keystatic/core";
 export default config({
   storage: {
     kind: "cloud",
+    pathPrefix: "apps/proposals",
   },
   cloud: {
     project: "lightdotso/proposals",
