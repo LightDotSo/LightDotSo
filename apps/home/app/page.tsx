@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Spiral } from "@/components/spiral";
+
 // -----------------------------------------------------------------------------
 // Page
 // -----------------------------------------------------------------------------
@@ -19,17 +21,15 @@
 export default async function Page() {
   return (
     <div>
-      <div className="absolute inset-x-0 -top-[48rem] z-0 block overflow-hidden">
-        <img
-          className="size-full animate-spin-slow object-cover select-none pointer-events-none"
-          src="/spiral.svg"
-          alt="Spiral"
-        />
-      </div>
+      <Spiral />
       <div className="relative z-10 flex flex-col items-center h-screen justify-center">
-        <div className="text-center p-4">
-          <h1 className="text-4xl lg:text-5xl font-extrabold tracking-tight">
-            EVM chain abstraction protocol unifying all chains as one.
+        <div className="p-4">
+          <h1 className="max-w-2xl text-4xl lg:text-6xl font-extrabold">
+            EVM chain abstraction
+            <br />
+            protocol unifying all
+            <br />
+            chains as one.
           </h1>
         </div>
       </div>

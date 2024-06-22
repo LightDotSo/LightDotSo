@@ -1161,6 +1161,9 @@ importers:
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@lightdotso/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
       '@next/bundle-analyzer':
         specifier: 15.0.0-canary.39
         version: 15.0.0-canary.39(bufferutil@4.0.8)
