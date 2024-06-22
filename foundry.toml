@@ -3,6 +3,8 @@
   evm_version = "london"
   libs = [
     "lib/account-abstraction",
+    "lib/account-abstraction-v0.6",
+    "lib/account-abstraction-v0.7",
     "lib/ds-test",
     "lib/forge-std",
     # "lib/kernel",
