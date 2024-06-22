@@ -18,52 +18,20 @@
 
 export default async function Page() {
   return (
-    <div className="relative">
-      <div className="absolute inset-x-0 -top-[48rem] z-10 block">
+    <div>
+      <div className="absolute inset-x-0 -top-[48rem] z-0 block overflow-hidden">
         <img
-          className="size-full animate-spin-slow object-cover"
+          className="size-full animate-spin-slow object-cover select-none pointer-events-none"
           src="/spiral.svg"
           alt="Spiral"
         />
       </div>
-      <div className="flex w-full flex-col items-center justify-center text-3xl">
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
-        <h1> Welcome to Light Explorer! </h1>
+      <div className="relative z-10 flex flex-col items-center h-screen justify-center">
+        <div className="text-center p-4">
+          <h1 className="text-4xl lg:text-5xl font-extrabold tracking-tight">
+            EVM chain abstraction protocol unifying all chains as one.
+          </h1>
+        </div>
       </div>
     </div>
   );
