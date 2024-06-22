@@ -6,12 +6,11 @@ import {
 } from 'wagmi/codegen'
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// LightVerifyingPaymaster
+// LightPaymaster
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const lightVerifyingPaymasterAbi = [
+export const lightPaymasterAbi = [
   {
-    stateMutability: 'nonpayable',
     type: 'constructor',
     inputs: [
       {
@@ -21,60 +20,41 @@ export const lightVerifyingPaymasterAbi = [
       },
       { name: 'verifyingSigner', internalType: 'address', type: 'address' },
     ],
+    stateMutability: 'nonpayable',
   },
   {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'previousOwner',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-      {
-        name: 'newOwner',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-    ],
-    name: 'OwnershipTransferred',
-  },
-  {
-    stateMutability: 'payable',
     type: 'function',
     inputs: [
       { name: 'unstakeDelaySec', internalType: 'uint32', type: 'uint32' },
     ],
     name: 'addStake',
     outputs: [],
+    stateMutability: 'payable',
   },
   {
-    stateMutability: 'payable',
     type: 'function',
     inputs: [],
     name: 'deposit',
     outputs: [],
+    stateMutability: 'payable',
   },
   {
-    stateMutability: 'view',
     type: 'function',
     inputs: [],
     name: 'entryPoint',
     outputs: [
       { name: '', internalType: 'contract IEntryPoint', type: 'address' },
     ],
+    stateMutability: 'view',
   },
   {
-    stateMutability: 'view',
     type: 'function',
     inputs: [],
     name: 'getDeposit',
     outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
   },
   {
-    stateMutability: 'view',
     type: 'function',
     inputs: [
       {
@@ -112,16 +92,16 @@ export const lightVerifyingPaymasterAbi = [
     ],
     name: 'getHash',
     outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'view',
   },
   {
-    stateMutability: 'view',
     type: 'function',
     inputs: [],
     name: 'owner',
     outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
   },
   {
-    stateMutability: 'pure',
     type: 'function',
     inputs: [
       { name: 'paymasterAndData', internalType: 'bytes', type: 'bytes' },
@@ -132,9 +112,9 @@ export const lightVerifyingPaymasterAbi = [
       { name: 'validAfter', internalType: 'uint48', type: 'uint48' },
       { name: 'signature', internalType: 'bytes', type: 'bytes' },
     ],
+    stateMutability: 'pure',
   },
   {
-    stateMutability: 'nonpayable',
     type: 'function',
     inputs: [
       {
@@ -147,37 +127,37 @@ export const lightVerifyingPaymasterAbi = [
     ],
     name: 'postOp',
     outputs: [],
+    stateMutability: 'nonpayable',
   },
   {
-    stateMutability: 'nonpayable',
     type: 'function',
     inputs: [],
     name: 'renounceOwnership',
     outputs: [],
+    stateMutability: 'nonpayable',
   },
   {
-    stateMutability: 'view',
     type: 'function',
     inputs: [{ name: '', internalType: 'address', type: 'address' }],
     name: 'senderNonce',
     outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
   },
   {
-    stateMutability: 'nonpayable',
     type: 'function',
     inputs: [{ name: 'newOwner', internalType: 'address', type: 'address' }],
     name: 'transferOwnership',
     outputs: [],
+    stateMutability: 'nonpayable',
   },
   {
-    stateMutability: 'nonpayable',
     type: 'function',
     inputs: [],
     name: 'unlockStake',
     outputs: [],
+    stateMutability: 'nonpayable',
   },
   {
-    stateMutability: 'nonpayable',
     type: 'function',
     inputs: [
       {
@@ -218,16 +198,16 @@ export const lightVerifyingPaymasterAbi = [
       { name: 'context', internalType: 'bytes', type: 'bytes' },
       { name: 'validationData', internalType: 'uint256', type: 'uint256' },
     ],
+    stateMutability: 'nonpayable',
   },
   {
-    stateMutability: 'view',
     type: 'function',
     inputs: [],
     name: 'verifyingSigner',
     outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
   },
   {
-    stateMutability: 'nonpayable',
     type: 'function',
     inputs: [
       {
@@ -238,9 +218,9 @@ export const lightVerifyingPaymasterAbi = [
     ],
     name: 'withdrawStake',
     outputs: [],
+    stateMutability: 'nonpayable',
   },
   {
-    stateMutability: 'nonpayable',
     type: 'function',
     inputs: [
       {
@@ -252,6 +232,276 @@ export const lightVerifyingPaymasterAbi = [
     ],
     name: 'withdrawTo',
     outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'previousOwner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'newOwner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'OwnershipTransferred',
+  },
+] as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// LightVerifyingPaymaster
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const lightVerifyingPaymasterAbi = [
+  {
+    type: 'constructor',
+    inputs: [
+      {
+        name: 'entryPoint',
+        internalType: 'contract IEntryPoint',
+        type: 'address',
+      },
+      { name: 'verifyingSigner', internalType: 'address', type: 'address' },
+    ],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'unstakeDelaySec', internalType: 'uint32', type: 'uint32' },
+    ],
+    name: 'addStake',
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'deposit',
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'entryPoint',
+    outputs: [
+      { name: '', internalType: 'contract IEntryPoint', type: 'address' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'getDeposit',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'userOp',
+        internalType: 'struct UserOperation',
+        type: 'tuple',
+        components: [
+          { name: 'sender', internalType: 'address', type: 'address' },
+          { name: 'nonce', internalType: 'uint256', type: 'uint256' },
+          { name: 'initCode', internalType: 'bytes', type: 'bytes' },
+          { name: 'callData', internalType: 'bytes', type: 'bytes' },
+          { name: 'callGasLimit', internalType: 'uint256', type: 'uint256' },
+          {
+            name: 'verificationGasLimit',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          {
+            name: 'preVerificationGas',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          { name: 'maxFeePerGas', internalType: 'uint256', type: 'uint256' },
+          {
+            name: 'maxPriorityFeePerGas',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          { name: 'paymasterAndData', internalType: 'bytes', type: 'bytes' },
+          { name: 'signature', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+      { name: 'validUntil', internalType: 'uint48', type: 'uint48' },
+      { name: 'validAfter', internalType: 'uint48', type: 'uint48' },
+    ],
+    name: 'getHash',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'owner',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'paymasterAndData', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'parsePaymasterAndData',
+    outputs: [
+      { name: 'validUntil', internalType: 'uint48', type: 'uint48' },
+      { name: 'validAfter', internalType: 'uint48', type: 'uint48' },
+      { name: 'signature', internalType: 'bytes', type: 'bytes' },
+    ],
+    stateMutability: 'pure',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'mode',
+        internalType: 'enum IPaymaster.PostOpMode',
+        type: 'uint8',
+      },
+      { name: 'context', internalType: 'bytes', type: 'bytes' },
+      { name: 'actualGasCost', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'postOp',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'renounceOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '', internalType: 'address', type: 'address' }],
+    name: 'senderNonce',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'newOwner', internalType: 'address', type: 'address' }],
+    name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'unlockStake',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'userOp',
+        internalType: 'struct UserOperation',
+        type: 'tuple',
+        components: [
+          { name: 'sender', internalType: 'address', type: 'address' },
+          { name: 'nonce', internalType: 'uint256', type: 'uint256' },
+          { name: 'initCode', internalType: 'bytes', type: 'bytes' },
+          { name: 'callData', internalType: 'bytes', type: 'bytes' },
+          { name: 'callGasLimit', internalType: 'uint256', type: 'uint256' },
+          {
+            name: 'verificationGasLimit',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          {
+            name: 'preVerificationGas',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          { name: 'maxFeePerGas', internalType: 'uint256', type: 'uint256' },
+          {
+            name: 'maxPriorityFeePerGas',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          { name: 'paymasterAndData', internalType: 'bytes', type: 'bytes' },
+          { name: 'signature', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+      { name: 'userOpHash', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'maxCost', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'validatePaymasterUserOp',
+    outputs: [
+      { name: 'context', internalType: 'bytes', type: 'bytes' },
+      { name: 'validationData', internalType: 'uint256', type: 'uint256' },
+    ],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'verifyingSigner',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'withdrawAddress',
+        internalType: 'address payable',
+        type: 'address',
+      },
+    ],
+    name: 'withdrawStake',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'withdrawAddress',
+        internalType: 'address payable',
+        type: 'address',
+      },
+      { name: 'amount', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'withdrawTo',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'previousOwner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'newOwner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'OwnershipTransferred',
   },
 ] as const
 
@@ -261,7 +511,6 @@ export const lightVerifyingPaymasterAbi = [
 
 export const lightWalletAbi = [
   {
-    stateMutability: 'nonpayable',
     type: 'constructor',
     inputs: [
       {
@@ -270,87 +519,251 @@ export const lightWalletAbi = [
         type: 'address',
       },
     ],
+    stateMutability: 'nonpayable',
   },
-  { type: 'error', inputs: [], name: 'EmptySignature' },
-  { type: 'error', inputs: [], name: 'ImageHashIsZero' },
+  { type: 'receive', stateMutability: 'payable' },
   {
-    type: 'error',
+    type: 'function',
+    inputs: [],
+    name: 'NAME',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'SET_IMAGE_HASH_TYPE_HASH',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'VERSION',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'entryPoint',
+    outputs: [
+      { name: '', internalType: 'contract IEntryPoint', type: 'address' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     inputs: [
-      { name: '_hash', internalType: 'bytes32', type: 'bytes32' },
-      { name: '_addr', internalType: 'address', type: 'address' },
+      { name: 'dest', internalType: 'address', type: 'address' },
+      { name: 'value', internalType: 'uint256', type: 'uint256' },
+      { name: 'func', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'execute',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'dest', internalType: 'address[]', type: 'address[]' },
+      { name: 'value', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: 'func', internalType: 'bytes[]', type: 'bytes[]' },
+    ],
+    name: 'executeBatch',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'getNonce',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'imageHash',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'imageHash', internalType: 'bytes32', type: 'bytes32' }],
+    name: 'initialize',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'hash', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'signatures', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'isValidSignature',
+    outputs: [{ name: '', internalType: 'bytes4', type: 'bytes4' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_data', internalType: 'bytes', type: 'bytes' },
+      { name: '_signatures', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'isValidSignature',
+    outputs: [{ name: '', internalType: 'bytes4', type: 'bytes4' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '', internalType: 'address', type: 'address' },
+      { name: '', internalType: 'address', type: 'address' },
+      { name: '', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: '', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: '', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'onERC1155BatchReceived',
+    outputs: [{ name: '', internalType: 'bytes4', type: 'bytes4' }],
+    stateMutability: 'pure',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '', internalType: 'address', type: 'address' },
+      { name: '', internalType: 'address', type: 'address' },
+      { name: '', internalType: 'uint256', type: 'uint256' },
+      { name: '', internalType: 'uint256', type: 'uint256' },
+      { name: '', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'onERC1155Received',
+    outputs: [{ name: '', internalType: 'bytes4', type: 'bytes4' }],
+    stateMutability: 'pure',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '', internalType: 'address', type: 'address' },
+      { name: '', internalType: 'address', type: 'address' },
+      { name: '', internalType: 'uint256', type: 'uint256' },
+      { name: '', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'onERC721Received',
+    outputs: [{ name: '', internalType: 'bytes4', type: 'bytes4' }],
+    stateMutability: 'pure',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'proxiableUUID',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_digest', internalType: 'bytes32', type: 'bytes32' },
       { name: '_signature', internalType: 'bytes', type: 'bytes' },
     ],
-    name: 'InvalidNestedSignature',
-  },
-  {
-    type: 'error',
-    inputs: [
-      { name: '_signature', internalType: 'bytes', type: 'bytes' },
-      { name: '_s', internalType: 'bytes32', type: 'bytes32' },
-    ],
-    name: 'InvalidSValue',
-  },
-  {
-    type: 'error',
-    inputs: [{ name: '_flag', internalType: 'uint256', type: 'uint256' }],
-    name: 'InvalidSignatureFlag',
-  },
-  {
-    type: 'error',
-    inputs: [{ name: '_signature', internalType: 'bytes', type: 'bytes' }],
-    name: 'InvalidSignatureLength',
-  },
-  {
-    type: 'error',
-    inputs: [{ name: '_type', internalType: 'bytes1', type: 'bytes1' }],
-    name: 'InvalidSignatureType',
-  },
-  {
-    type: 'error',
-    inputs: [
-      { name: '_signature', internalType: 'bytes', type: 'bytes' },
-      { name: '_v', internalType: 'uint256', type: 'uint256' },
-    ],
-    name: 'InvalidVValue',
-  },
-  {
-    type: 'error',
-    inputs: [
-      { name: '_signature', internalType: 'bytes', type: 'bytes' },
+    name: 'signatureRecovery',
+    outputs: [
       { name: 'threshold', internalType: 'uint256', type: 'uint256' },
-      { name: '_weight', internalType: 'uint256', type: 'uint256' },
+      { name: 'weight', internalType: 'uint256', type: 'uint256' },
+      { name: 'imageHash', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'subdigest', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'checkpoint', internalType: 'uint256', type: 'uint256' },
     ],
-    name: 'LowWeightChainedSignature',
+    stateMutability: 'view',
   },
   {
-    type: 'error',
+    type: 'function',
+    inputs: [{ name: 'interfaceId', internalType: 'bytes4', type: 'bytes4' }],
+    name: 'supportsInterface',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'pure',
+  },
+  {
+    type: 'function',
     inputs: [
-      { name: '_sender', internalType: 'address', type: 'address' },
-      { name: '_self', internalType: 'address', type: 'address' },
+      { name: '', internalType: 'address', type: 'address' },
+      { name: '', internalType: 'address', type: 'address' },
+      { name: '', internalType: 'address', type: 'address' },
+      { name: '', internalType: 'uint256', type: 'uint256' },
+      { name: '', internalType: 'bytes', type: 'bytes' },
+      { name: '', internalType: 'bytes', type: 'bytes' },
     ],
-    name: 'OnlySelfAuth',
+    name: 'tokensReceived',
+    outputs: [],
+    stateMutability: 'pure',
   },
   {
-    type: 'error',
-    inputs: [{ name: '_signature', internalType: 'bytes', type: 'bytes' }],
-    name: 'SignerIsAddress0',
+    type: 'function',
+    inputs: [{ name: '_imageHash', internalType: 'bytes32', type: 'bytes32' }],
+    name: 'updateImageHash',
+    outputs: [],
+    stateMutability: 'nonpayable',
   },
   {
-    type: 'error',
+    type: 'function',
     inputs: [
-      { name: '_signature', internalType: 'bytes', type: 'bytes' },
-      { name: '_type', internalType: 'uint256', type: 'uint256' },
-      { name: '_recoverMode', internalType: 'bool', type: 'bool' },
+      { name: 'newImplementation', internalType: 'address', type: 'address' },
     ],
-    name: 'UnsupportedSignatureType',
+    name: 'upgradeTo',
+    outputs: [],
+    stateMutability: 'nonpayable',
   },
   {
-    type: 'error',
+    type: 'function',
     inputs: [
-      { name: '_current', internalType: 'uint256', type: 'uint256' },
-      { name: '_prev', internalType: 'uint256', type: 'uint256' },
+      { name: 'newImplementation', internalType: 'address', type: 'address' },
+      { name: 'data', internalType: 'bytes', type: 'bytes' },
     ],
-    name: 'WrongChainedCheckpointOrder',
+    name: 'upgradeToAndCall',
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'userOp',
+        internalType: 'struct UserOperation',
+        type: 'tuple',
+        components: [
+          { name: 'sender', internalType: 'address', type: 'address' },
+          { name: 'nonce', internalType: 'uint256', type: 'uint256' },
+          { name: 'initCode', internalType: 'bytes', type: 'bytes' },
+          { name: 'callData', internalType: 'bytes', type: 'bytes' },
+          { name: 'callGasLimit', internalType: 'uint256', type: 'uint256' },
+          {
+            name: 'verificationGasLimit',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          {
+            name: 'preVerificationGas',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          { name: 'maxFeePerGas', internalType: 'uint256', type: 'uint256' },
+          {
+            name: 'maxPriorityFeePerGas',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          { name: 'paymasterAndData', internalType: 'bytes', type: 'bytes' },
+          { name: 'signature', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+      { name: 'userOpHash', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'missingAccountFunds', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'validateUserOp',
+    outputs: [
+      { name: 'validationData', internalType: 'uint256', type: 'uint256' },
+    ],
+    stateMutability: 'nonpayable',
   },
   {
     type: 'event',
@@ -432,250 +845,95 @@ export const lightWalletAbi = [
     ],
     name: 'Upgraded',
   },
+  { type: 'error', inputs: [], name: 'EmptySignature' },
+  { type: 'error', inputs: [], name: 'ImageHashIsZero' },
   {
-    stateMutability: 'view',
-    type: 'function',
-    inputs: [],
-    name: 'NAME',
-    outputs: [{ name: '', internalType: 'string', type: 'string' }],
-  },
-  {
-    stateMutability: 'view',
-    type: 'function',
-    inputs: [],
-    name: 'SET_IMAGE_HASH_TYPE_HASH',
-    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
-  },
-  {
-    stateMutability: 'view',
-    type: 'function',
-    inputs: [],
-    name: 'VERSION',
-    outputs: [{ name: '', internalType: 'string', type: 'string' }],
-  },
-  {
-    stateMutability: 'view',
-    type: 'function',
-    inputs: [],
-    name: 'entryPoint',
-    outputs: [
-      { name: '', internalType: 'contract IEntryPoint', type: 'address' },
-    ],
-  },
-  {
-    stateMutability: 'nonpayable',
-    type: 'function',
+    type: 'error',
     inputs: [
-      { name: 'dest', internalType: 'address', type: 'address' },
-      { name: 'value', internalType: 'uint256', type: 'uint256' },
-      { name: 'func', internalType: 'bytes', type: 'bytes' },
+      { name: 'root', internalType: 'bytes32', type: 'bytes32' },
+      { name: 'leaf', internalType: 'bytes32', type: 'bytes32' },
     ],
-    name: 'execute',
-    outputs: [],
+    name: 'InvalidMerkleProof',
   },
   {
-    stateMutability: 'nonpayable',
-    type: 'function',
+    type: 'error',
     inputs: [
-      { name: 'dest', internalType: 'address[]', type: 'address[]' },
-      { name: 'value', internalType: 'uint256[]', type: 'uint256[]' },
-      { name: 'func', internalType: 'bytes[]', type: 'bytes[]' },
-    ],
-    name: 'executeBatch',
-    outputs: [],
-  },
-  {
-    stateMutability: 'view',
-    type: 'function',
-    inputs: [],
-    name: 'getNonce',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-  },
-  {
-    stateMutability: 'view',
-    type: 'function',
-    inputs: [],
-    name: 'imageHash',
-    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
-  },
-  {
-    stateMutability: 'nonpayable',
-    type: 'function',
-    inputs: [{ name: 'imageHash', internalType: 'bytes32', type: 'bytes32' }],
-    name: 'initialize',
-    outputs: [],
-  },
-  {
-    stateMutability: 'view',
-    type: 'function',
-    inputs: [
-      { name: 'hash', internalType: 'bytes32', type: 'bytes32' },
-      { name: 'signatures', internalType: 'bytes', type: 'bytes' },
-    ],
-    name: 'isValidSignature',
-    outputs: [{ name: '', internalType: 'bytes4', type: 'bytes4' }],
-  },
-  {
-    stateMutability: 'view',
-    type: 'function',
-    inputs: [
-      { name: '_data', internalType: 'bytes', type: 'bytes' },
-      { name: '_signatures', internalType: 'bytes', type: 'bytes' },
-    ],
-    name: 'isValidSignature',
-    outputs: [{ name: '', internalType: 'bytes4', type: 'bytes4' }],
-  },
-  {
-    stateMutability: 'pure',
-    type: 'function',
-    inputs: [
-      { name: '', internalType: 'address', type: 'address' },
-      { name: '', internalType: 'address', type: 'address' },
-      { name: '', internalType: 'uint256[]', type: 'uint256[]' },
-      { name: '', internalType: 'uint256[]', type: 'uint256[]' },
-      { name: '', internalType: 'bytes', type: 'bytes' },
-    ],
-    name: 'onERC1155BatchReceived',
-    outputs: [{ name: '', internalType: 'bytes4', type: 'bytes4' }],
-  },
-  {
-    stateMutability: 'pure',
-    type: 'function',
-    inputs: [
-      { name: '', internalType: 'address', type: 'address' },
-      { name: '', internalType: 'address', type: 'address' },
-      { name: '', internalType: 'uint256', type: 'uint256' },
-      { name: '', internalType: 'uint256', type: 'uint256' },
-      { name: '', internalType: 'bytes', type: 'bytes' },
-    ],
-    name: 'onERC1155Received',
-    outputs: [{ name: '', internalType: 'bytes4', type: 'bytes4' }],
-  },
-  {
-    stateMutability: 'pure',
-    type: 'function',
-    inputs: [
-      { name: '', internalType: 'address', type: 'address' },
-      { name: '', internalType: 'address', type: 'address' },
-      { name: '', internalType: 'uint256', type: 'uint256' },
-      { name: '', internalType: 'bytes', type: 'bytes' },
-    ],
-    name: 'onERC721Received',
-    outputs: [{ name: '', internalType: 'bytes4', type: 'bytes4' }],
-  },
-  {
-    stateMutability: 'view',
-    type: 'function',
-    inputs: [],
-    name: 'proxiableUUID',
-    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
-  },
-  {
-    stateMutability: 'view',
-    type: 'function',
-    inputs: [
-      { name: '_digest', internalType: 'bytes32', type: 'bytes32' },
+      { name: '_hash', internalType: 'bytes32', type: 'bytes32' },
+      { name: '_addr', internalType: 'address', type: 'address' },
       { name: '_signature', internalType: 'bytes', type: 'bytes' },
     ],
-    name: 'signatureRecovery',
-    outputs: [
+    name: 'InvalidNestedSignature',
+  },
+  {
+    type: 'error',
+    inputs: [
+      { name: '_signature', internalType: 'bytes', type: 'bytes' },
+      { name: '_s', internalType: 'bytes32', type: 'bytes32' },
+    ],
+    name: 'InvalidSValue',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: '_flag', internalType: 'uint256', type: 'uint256' }],
+    name: 'InvalidSignatureFlag',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: '_signature', internalType: 'bytes', type: 'bytes' }],
+    name: 'InvalidSignatureLength',
+  },
+  {
+    type: 'error',
+    inputs: [{ name: '_type', internalType: 'bytes1', type: 'bytes1' }],
+    name: 'InvalidSignatureType',
+  },
+  {
+    type: 'error',
+    inputs: [
+      { name: '_signature', internalType: 'bytes', type: 'bytes' },
+      { name: '_v', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'InvalidVValue',
+  },
+  {
+    type: 'error',
+    inputs: [
+      { name: '_signature', internalType: 'bytes', type: 'bytes' },
       { name: 'threshold', internalType: 'uint256', type: 'uint256' },
-      { name: 'weight', internalType: 'uint256', type: 'uint256' },
-      { name: 'imageHash', internalType: 'bytes32', type: 'bytes32' },
-      { name: 'subdigest', internalType: 'bytes32', type: 'bytes32' },
-      { name: 'checkpoint', internalType: 'uint256', type: 'uint256' },
+      { name: '_weight', internalType: 'uint256', type: 'uint256' },
     ],
+    name: 'LowWeightChainedSignature',
   },
   {
-    stateMutability: 'pure',
-    type: 'function',
-    inputs: [{ name: 'interfaceId', internalType: 'bytes4', type: 'bytes4' }],
-    name: 'supportsInterface',
-    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
-  },
-  {
-    stateMutability: 'pure',
-    type: 'function',
+    type: 'error',
     inputs: [
-      { name: '', internalType: 'address', type: 'address' },
-      { name: '', internalType: 'address', type: 'address' },
-      { name: '', internalType: 'address', type: 'address' },
-      { name: '', internalType: 'uint256', type: 'uint256' },
-      { name: '', internalType: 'bytes', type: 'bytes' },
-      { name: '', internalType: 'bytes', type: 'bytes' },
+      { name: '_sender', internalType: 'address', type: 'address' },
+      { name: '_self', internalType: 'address', type: 'address' },
     ],
-    name: 'tokensReceived',
-    outputs: [],
+    name: 'OnlySelfAuth',
   },
   {
-    stateMutability: 'nonpayable',
-    type: 'function',
-    inputs: [{ name: '_imageHash', internalType: 'bytes32', type: 'bytes32' }],
-    name: 'updateImageHash',
-    outputs: [],
+    type: 'error',
+    inputs: [{ name: '_signature', internalType: 'bytes', type: 'bytes' }],
+    name: 'SignerIsAddress0',
   },
   {
-    stateMutability: 'nonpayable',
-    type: 'function',
+    type: 'error',
     inputs: [
-      { name: 'newImplementation', internalType: 'address', type: 'address' },
+      { name: '_signature', internalType: 'bytes', type: 'bytes' },
+      { name: '_type', internalType: 'uint256', type: 'uint256' },
+      { name: '_recoverMode', internalType: 'bool', type: 'bool' },
     ],
-    name: 'upgradeTo',
-    outputs: [],
+    name: 'UnsupportedSignatureType',
   },
   {
-    stateMutability: 'payable',
-    type: 'function',
+    type: 'error',
     inputs: [
-      { name: 'newImplementation', internalType: 'address', type: 'address' },
-      { name: 'data', internalType: 'bytes', type: 'bytes' },
+      { name: '_current', internalType: 'uint256', type: 'uint256' },
+      { name: '_prev', internalType: 'uint256', type: 'uint256' },
     ],
-    name: 'upgradeToAndCall',
-    outputs: [],
+    name: 'WrongChainedCheckpointOrder',
   },
-  {
-    stateMutability: 'nonpayable',
-    type: 'function',
-    inputs: [
-      {
-        name: 'userOp',
-        internalType: 'struct UserOperation',
-        type: 'tuple',
-        components: [
-          { name: 'sender', internalType: 'address', type: 'address' },
-          { name: 'nonce', internalType: 'uint256', type: 'uint256' },
-          { name: 'initCode', internalType: 'bytes', type: 'bytes' },
-          { name: 'callData', internalType: 'bytes', type: 'bytes' },
-          { name: 'callGasLimit', internalType: 'uint256', type: 'uint256' },
-          {
-            name: 'verificationGasLimit',
-            internalType: 'uint256',
-            type: 'uint256',
-          },
-          {
-            name: 'preVerificationGas',
-            internalType: 'uint256',
-            type: 'uint256',
-          },
-          { name: 'maxFeePerGas', internalType: 'uint256', type: 'uint256' },
-          {
-            name: 'maxPriorityFeePerGas',
-            internalType: 'uint256',
-            type: 'uint256',
-          },
-          { name: 'paymasterAndData', internalType: 'bytes', type: 'bytes' },
-          { name: 'signature', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
-      { name: 'userOpHash', internalType: 'bytes32', type: 'bytes32' },
-      { name: 'missingAccountFunds', internalType: 'uint256', type: 'uint256' },
-    ],
-    name: 'validateUserOp',
-    outputs: [
-      { name: 'validationData', internalType: 'uint256', type: 'uint256' },
-    ],
-  },
-  { stateMutability: 'payable', type: 'receive' },
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -684,7 +942,6 @@ export const lightWalletAbi = [
 
 export const lightWalletFactoryAbi = [
   {
-    stateMutability: 'nonpayable',
     type: 'constructor',
     inputs: [
       {
@@ -693,33 +950,32 @@ export const lightWalletFactoryAbi = [
         type: 'address',
       },
     ],
+    stateMutability: 'nonpayable',
   },
-  { type: 'error', inputs: [], name: 'EntrypointAddressZero' },
   {
-    stateMutability: 'view',
     type: 'function',
     inputs: [],
     name: 'NAME',
     outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
   },
   {
-    stateMutability: 'view',
     type: 'function',
     inputs: [],
     name: 'VERSION',
     outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
   },
   {
-    stateMutability: 'view',
     type: 'function',
     inputs: [],
     name: 'accountImplementation',
     outputs: [
       { name: '', internalType: 'contract LightWallet', type: 'address' },
     ],
+    stateMutability: 'view',
   },
   {
-    stateMutability: 'nonpayable',
     type: 'function',
     inputs: [
       { name: 'hash', internalType: 'bytes32', type: 'bytes32' },
@@ -729,9 +985,9 @@ export const lightWalletFactoryAbi = [
     outputs: [
       { name: 'ret', internalType: 'contract LightWallet', type: 'address' },
     ],
+    stateMutability: 'nonpayable',
   },
   {
-    stateMutability: 'view',
     type: 'function',
     inputs: [
       { name: 'hash', internalType: 'bytes32', type: 'bytes32' },
@@ -739,12 +995,271 @@ export const lightWalletFactoryAbi = [
     ],
     name: 'getAddress',
     outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
   },
+  { type: 'error', inputs: [], name: 'EntrypointAddressZero' },
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // React
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightPaymasterAbi}__
+ */
+export const useReadLightPaymaster = /*#__PURE__*/ createUseReadContract({
+  abi: lightPaymasterAbi,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"entryPoint"`
+ */
+export const useReadLightPaymasterEntryPoint =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightPaymasterAbi,
+    functionName: 'entryPoint',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"getDeposit"`
+ */
+export const useReadLightPaymasterGetDeposit =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightPaymasterAbi,
+    functionName: 'getDeposit',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"getHash"`
+ */
+export const useReadLightPaymasterGetHash = /*#__PURE__*/ createUseReadContract(
+  { abi: lightPaymasterAbi, functionName: 'getHash' },
+)
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"owner"`
+ */
+export const useReadLightPaymasterOwner = /*#__PURE__*/ createUseReadContract({
+  abi: lightPaymasterAbi,
+  functionName: 'owner',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"parsePaymasterAndData"`
+ */
+export const useReadLightPaymasterParsePaymasterAndData =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightPaymasterAbi,
+    functionName: 'parsePaymasterAndData',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"senderNonce"`
+ */
+export const useReadLightPaymasterSenderNonce =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightPaymasterAbi,
+    functionName: 'senderNonce',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"verifyingSigner"`
+ */
+export const useReadLightPaymasterVerifyingSigner =
+  /*#__PURE__*/ createUseReadContract({
+    abi: lightPaymasterAbi,
+    functionName: 'verifyingSigner',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightPaymasterAbi}__
+ */
+export const useWriteLightPaymaster = /*#__PURE__*/ createUseWriteContract({
+  abi: lightPaymasterAbi,
+})
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"addStake"`
+ */
+export const useWriteLightPaymasterAddStake =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightPaymasterAbi,
+    functionName: 'addStake',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"deposit"`
+ */
+export const useWriteLightPaymasterDeposit =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightPaymasterAbi,
+    functionName: 'deposit',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"postOp"`
+ */
+export const useWriteLightPaymasterPostOp =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightPaymasterAbi,
+    functionName: 'postOp',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"renounceOwnership"`
+ */
+export const useWriteLightPaymasterRenounceOwnership =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightPaymasterAbi,
+    functionName: 'renounceOwnership',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"transferOwnership"`
+ */
+export const useWriteLightPaymasterTransferOwnership =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightPaymasterAbi,
+    functionName: 'transferOwnership',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"unlockStake"`
+ */
+export const useWriteLightPaymasterUnlockStake =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightPaymasterAbi,
+    functionName: 'unlockStake',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"validatePaymasterUserOp"`
+ */
+export const useWriteLightPaymasterValidatePaymasterUserOp =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightPaymasterAbi,
+    functionName: 'validatePaymasterUserOp',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"withdrawStake"`
+ */
+export const useWriteLightPaymasterWithdrawStake =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightPaymasterAbi,
+    functionName: 'withdrawStake',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"withdrawTo"`
+ */
+export const useWriteLightPaymasterWithdrawTo =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: lightPaymasterAbi,
+    functionName: 'withdrawTo',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightPaymasterAbi}__
+ */
+export const useSimulateLightPaymaster =
+  /*#__PURE__*/ createUseSimulateContract({ abi: lightPaymasterAbi })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"addStake"`
+ */
+export const useSimulateLightPaymasterAddStake =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightPaymasterAbi,
+    functionName: 'addStake',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"deposit"`
+ */
+export const useSimulateLightPaymasterDeposit =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightPaymasterAbi,
+    functionName: 'deposit',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"postOp"`
+ */
+export const useSimulateLightPaymasterPostOp =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightPaymasterAbi,
+    functionName: 'postOp',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"renounceOwnership"`
+ */
+export const useSimulateLightPaymasterRenounceOwnership =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightPaymasterAbi,
+    functionName: 'renounceOwnership',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"transferOwnership"`
+ */
+export const useSimulateLightPaymasterTransferOwnership =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightPaymasterAbi,
+    functionName: 'transferOwnership',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"unlockStake"`
+ */
+export const useSimulateLightPaymasterUnlockStake =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightPaymasterAbi,
+    functionName: 'unlockStake',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"validatePaymasterUserOp"`
+ */
+export const useSimulateLightPaymasterValidatePaymasterUserOp =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightPaymasterAbi,
+    functionName: 'validatePaymasterUserOp',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"withdrawStake"`
+ */
+export const useSimulateLightPaymasterWithdrawStake =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightPaymasterAbi,
+    functionName: 'withdrawStake',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"withdrawTo"`
+ */
+export const useSimulateLightPaymasterWithdrawTo =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: lightPaymasterAbi,
+    functionName: 'withdrawTo',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightPaymasterAbi}__
+ */
+export const useWatchLightPaymasterEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({ abi: lightPaymasterAbi })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightPaymasterAbi}__ and `eventName` set to `"OwnershipTransferred"`
+ */
+export const useWatchLightPaymasterOwnershipTransferredEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: lightPaymasterAbi,
+    eventName: 'OwnershipTransferred',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__

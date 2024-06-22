@@ -17,7 +17,7 @@
 pragma solidity ^0.8.18;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightVerifyingPaymaster} from "@/contracts/LightVerifyingPaymaster.sol";
+import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 
@@ -43,8 +43,8 @@ abstract contract BaseForkTest is BaseIntegrationTest {
         entryPoint = EntryPoint(ENTRY_POINT_ADDRESS);
         // LightWalletFactory core contract
         factory = LightWalletFactory(LIGHT_FACTORY_ADDRESS);
-        // LightVerifyingPaymaster core contract
-        paymaster = LightVerifyingPaymaster(LIGHT_PAYMASTER_ADDRESS);
+        // LightPaymaster core contract
+        paymaster = LightPaymaster(LIGHT_PAYMASTER_ADDRESS);
 
         // Get network name
         string memory defaultName = "mainnet";

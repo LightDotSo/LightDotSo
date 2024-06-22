@@ -19,11 +19,11 @@ pragma solidity ^0.8.18;
 import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfaces/IEntryPoint.sol";
 import {BaseTest} from "@/test/base/BaseTest.t.sol";
 import {UserOperation} from "@/contracts/LightWallet.sol";
-import {LightVerifyingPaymaster} from "@/contracts/LightVerifyingPaymaster.sol";
+import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
 
-/// @notice Unit tests for `LightVerifyingPaymaster` for getting base hash
+/// @notice Unit tests for `LightPaymaster` for getting base hash
 contract PaymasterGetHash is BaseTest {
     // -------------------------------------------------------------------------
     // Tests
@@ -60,7 +60,7 @@ contract PaymasterGetHash is BaseTest {
             signature
         );
 
-        LightVerifyingPaymaster paymaster = new LightVerifyingPaymaster(IEntryPoint(address(0)), address(1));
+        LightPaymaster paymaster = new LightPaymaster(IEntryPoint(address(0)), address(1));
 
         // Log the paymaster address
         // solhint-disable-next-line no-console
@@ -103,7 +103,7 @@ contract PaymasterGetHash is BaseTest {
             signature
         );
 
-        LightVerifyingPaymaster paymaster = new LightVerifyingPaymaster(IEntryPoint(address(0)), address(1));
+        LightPaymaster paymaster = new LightPaymaster(IEntryPoint(address(0)), address(1));
 
         // Log the paymaster address
         // solhint-disable-next-line no-console
@@ -146,7 +146,7 @@ contract PaymasterGetHash is BaseTest {
             signature
         );
 
-        LightVerifyingPaymaster paymaster = new LightVerifyingPaymaster(IEntryPoint(address(0)), address(1));
+        LightPaymaster paymaster = new LightPaymaster(IEntryPoint(address(0)), address(1));
 
         // Log the paymaster address
         // solhint-disable-next-line no-console
@@ -188,7 +188,7 @@ contract PaymasterGetHash is BaseTest {
             signature
         );
 
-        LightVerifyingPaymaster paymaster = new LightVerifyingPaymaster(IEntryPoint(address(0)), address(1));
+        LightPaymaster paymaster = new LightPaymaster(IEntryPoint(address(0)), address(1));
 
         // Log the paymaster address
         // solhint-disable-next-line no-console
@@ -232,7 +232,7 @@ contract PaymasterGetHash is BaseTest {
             signature
         );
 
-        LightVerifyingPaymaster paymaster = new LightVerifyingPaymaster(IEntryPoint(address(0)), address(1));
+        LightPaymaster paymaster = new LightPaymaster(IEntryPoint(address(0)), address(1));
 
         // Log the paymaster address
         // solhint-disable-next-line no-console
@@ -276,7 +276,7 @@ contract PaymasterGetHash is BaseTest {
             signature
         );
 
-        LightVerifyingPaymaster paymaster = new LightVerifyingPaymaster(IEntryPoint(address(0)), address(1));
+        LightPaymaster paymaster = new LightPaymaster(IEntryPoint(address(0)), address(1));
 
         // Log the paymaster address
         // solhint-disable-next-line no-console

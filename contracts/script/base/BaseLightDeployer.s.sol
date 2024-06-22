@@ -17,7 +17,7 @@
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {UserOperation, LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
-import {LightVerifyingPaymaster} from "@/contracts/LightVerifyingPaymaster.sol";
+import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
 import {BaseTest} from "@/test/base/BaseTest.t.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";

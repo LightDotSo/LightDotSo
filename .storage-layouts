@@ -2,11 +2,11 @@
 👁️ STORAGE LAYOUT SNAPSHOT 👁️
 ============================
 =======================
- ➡ LightVerifyingPaymaster
-| Name        | Type                        | Slot | Offset | Bytes | Contract                                                          |
-|-------------|-----------------------------|------|--------|-------|-------------------------------------------------------------------|
-| _owner      | address                     | 0    | 0      | 20    | contracts/src/LightVerifyingPaymaster.sol:LightVerifyingPaymaster |
-| senderNonce | mapping(address => uint256) | 1    | 0      | 32    | contracts/src/LightVerifyingPaymaster.sol:LightVerifyingPaymaster |
+ ➡ LightPaymaster
+| Name        | Type                        | Slot | Offset | Bytes | Contract                                        |
+|-------------|-----------------------------|------|--------|-------|-------------------------------------------------|
+| _owner      | address                     | 0    | 0      | 20    | contracts/src/LightPaymaster.sol:LightPaymaster |
+| senderNonce | mapping(address => uint256) | 1    | 0      | 32    | contracts/src/LightPaymaster.sol:LightPaymaster |
 =======================
  ➡ LightWallet
 | Name          | Type  | Slot | Offset | Bytes | Contract                                  |

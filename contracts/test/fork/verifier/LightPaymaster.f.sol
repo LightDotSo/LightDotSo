@@ -19,7 +19,7 @@ pragma solidity ^0.8.18;
 import {UserOperation} from "@eth-infinitism/account-abstraction/contracts/interfaces/UserOperation.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
-import {LightVerifyingPaymaster} from "@/contracts/LightVerifyingPaymaster.sol";
+import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
 import {BaseForkTest} from "@/test/base/BaseForkTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 // solhint-disable-next-line no-console
@@ -28,7 +28,7 @@ import {console} from "forge-std/console.sol";
 using ERC4337Utils for EntryPoint;
 
 /// @notice Unit tests for `LightWallet` upgradeability
-contract LightVerifyingPaymasterForkTest is BaseForkTest {
+contract LightPaymasterForkTest is BaseForkTest {
     // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------

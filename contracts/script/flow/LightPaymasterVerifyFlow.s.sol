@@ -23,8 +23,8 @@ import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
 
-// LightVerifyingPaymasterVerify -- Test Deployment
-contract LightVerifyingPaymasterVerifyFlowScript is BaseLightDeployerFlow {
+// LightPaymasterVerify -- Test Deployment
+contract LightPaymasterVerifyFlowScript is BaseLightDeployerFlow {
     // -------------------------------------------------------------------------
     // Run
     // -------------------------------------------------------------------------
