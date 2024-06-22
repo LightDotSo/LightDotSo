@@ -62,3 +62,7 @@
 [submodule "lib/solidity-bytes-utils"]
 	path = lib/solidity-bytes-utils
 	url = https://github.com/GNSPS/solidity-bytes-utils
+[submodule "lib/account-abstraction-v0.7"]
+	path = lib/account-abstraction-v0.7
+	url = https://github.com/eth-infinitism/account-abstraction
+	branch = releases/v0.7
