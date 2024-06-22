@@ -12,22 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import "@lightdotso/styles/global.css";
-import type { ReactNode } from "react";
-import { Root } from "@/components/root/root";
+import { LightLogo } from "@lightdotso/svg";
+import Link from "next/link";
+import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
-// Props
+// Component
 // -----------------------------------------------------------------------------
 
-interface RootLayoutProps {
-  children: ReactNode;
-}
+export const RootLogo: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
-// -----------------------------------------------------------------------------
-// Layout
-// -----------------------------------------------------------------------------
-
-export default function RootLayout({ children }: RootLayoutProps) {
-  return <Root>{children}</Root>;
-}
+  return (
+    <Link href="/" className="hover:rounded-md hover:bg-background-stronger">
+      <LightLogo className="m-2.5 size-8 fill-text" />
+    </Link>
+  );
+};
