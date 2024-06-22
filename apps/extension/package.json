@@ -32,7 +32,7 @@
     "@lightdotso/tsconfig": "workspace:*",
     "crx": "^5.0.1",
     "typescript": "^5.5.2",
-    "web-ext": "^8.1.0"
+    "web-ext": "^8.2.0"
   },
   "publishConfig": {
     "access": "public"

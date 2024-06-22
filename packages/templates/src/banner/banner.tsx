@@ -143,7 +143,7 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
           </ButtonIcon>
           <ButtonIcon asChild size="xs" variant="link" intent="info">
             <a
-              href={SOCIAL_LINKS["Discord"]}
+              href={SOCIAL_LINKS.Discord}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -152,7 +152,7 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
           </ButtonIcon>
           <ButtonIcon asChild size="xs" variant="link" intent="info">
             <a
-              href={SOCIAL_LINKS["Telegram"]}
+              href={SOCIAL_LINKS.Telegram}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -178,7 +178,7 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
       {kind === "outage" && (
         <a
           className="inline-flex items-center text-sm hover:underline"
-          href={INTERNAL_LINKS["Status"]}
+          href={INTERNAL_LINKS.Status}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -193,7 +193,7 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
           <span className="hidden md:inline-flex">&middot;</span>{" "}
           <a
             className="inline-flex items-center text-sm hover:underline"
-            href={SOCIAL_LINKS["Waitlist"]}
+            href={INTERNAL_LINKS.Waitlist}
             target="_blank"
             rel="noopener noreferrer"
           >

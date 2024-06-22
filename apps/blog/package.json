@@ -1,0 +1,53 @@
+{
+  "name": "@lightdotso/blog",
+  "version": "0.0.0",
+  "private": false,
+  "homepage": "https://github.com/LightDotSo/LightDotSo",
+  "bugs": {
+    "url": "https://github.com/LightDotSo/LightDotSo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LightDotSo/LightDotSo.git"
+  },
+  "license": "Apache-2.0",
+  "author": "Light, Inc.",
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev",
+    "lint": "next lint || exit 0",
+    "start": "next start",
+    "tsc": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@babel/core": "^7.24.7",
+    "@keystatic/core": "^0.5.22",
+    "@keystatic/next": "^5.0.1",
+    "@markdoc/markdoc": "^0.4.0",
+    "@sentry/integrations": "^7.114.0",
+    "@sentry/nextjs": "^8.11.0",
+    "@types/node": "^20.14.7",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.19",
+    "motion": "^10.18.0",
+    "next": "15.0.0-canary.39",
+    "next-themes": "^0.3.0",
+    "react": "19.0.0-rc-cc1ec60d0d-20240607",
+    "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
+    "tailwindcss": "^3.4.4",
+    "typescript": "^5.5.2"
+  },
+  "devDependencies": {
+    "@lightdotso/eslint-config": "workspace:*",
+    "@lightdotso/tailwindcss": "workspace:*",
+    "@lightdotso/tsconfig": "workspace:*",
+    "@types/node": "^20.14.7",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.4",
+    "typescript": "^5.5.2"
+  }
+}

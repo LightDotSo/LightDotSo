@@ -13,22 +13,31 @@
 // limitations under the License.
 
 export enum Internal {
+  BLOG = "Blog",
   CHANGELOG = "Changelog",
   DOCS = "Docs",
   EXPLORER = "Explorer",
+  GOVERNANCE = "Governance",
   OPEN = "Open",
+  PAPER = "Paper",
+  PROPOSALS = "Proposals",
   HOME = "Home",
   STATUS = "Status",
+  WAITLIST = "Waitlist",
 }
 
 export const INTERNAL_LINKS: {
   readonly [key in Internal]: string;
 } = {
-  [Internal.CHANGELOG]:
-    "https://lightdotso.notion.site/40f7d597317e4f29b06656b03cb32de0",
+  [Internal.BLOG]: "https://blog.light.so",
+  [Internal.CHANGELOG]: "https://changelog.light.so",
   [Internal.DOCS]: "https://docs.light.so",
   [Internal.EXPLORER]: "https://explorer.light.so",
+  [Internal.GOVERNANCE]: "https://gov.light.so",
+  [Internal.PAPER]: "https://paper.light.so",
   [Internal.OPEN]: "https://open.light.so",
+  [Internal.PROPOSALS]: "https://proposals.light.so",
   [Internal.HOME]: "https://light.so/home",
   [Internal.STATUS]: "https://lightdotso.instatus.com",
+  [Internal.WAITLIST]: "https://waitlist.light.so",
 };

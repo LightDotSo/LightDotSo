@@ -35,7 +35,7 @@
     "react": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-hook-form": "^7.52.0",
-    "viem": "^2.16.0",
+    "viem": "^2.16.1",
     "zod": "^3.23.8",
     "zustand": "^4.5.2"
   },

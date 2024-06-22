@@ -12,12 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import "@lightdotso/styles/global.css";
 import type { ReactNode } from "react";
+import { Root } from "@/components/root/root";
 
-export default function RootLayout({ children }: { children: ReactNode }) {
-  return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
-  );
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+interface RootLayoutProps {
+  children: ReactNode;
+}
+
+// -----------------------------------------------------------------------------
+// Layout
+// -----------------------------------------------------------------------------
+
+export default function RootLayout({ children }: RootLayoutProps) {
+  return <Root>{children}</Root>;
 }

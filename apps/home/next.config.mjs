@@ -40,7 +40,11 @@ const nextConfig = {
     },
   },
   outputFileTracing: true,
-  transpilePackages: ["@lightdotso/ui"],
+  transpilePackages: [
+    "@lightdotso/svg",
+    "@lightdotso/templates",
+    "@lightdotso/ui",
+  ],
   webpack: config => {
     config.externals.push("async_hooks", "pino-pretty", "lokijs", "encoding");
     config.resolve.fallback = { fs: false, net: false, tls: false };
