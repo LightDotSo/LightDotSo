@@ -621,6 +621,73 @@ importers:
         specifier: ^3.61.0
         version: 3.61.0(@cloudflare/workers-types@4.20240620.0)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
+  apps/blog:
+    dependencies:
+      '@babel/core':
+        specifier: ^7.24.7
+        version: 7.24.7
+      '@keystatic/core':
+        specifier: ^0.5.22
+        version: 0.5.22(next@15.0.0-canary.39(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.44.1)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
+      '@keystatic/next':
+        specifier: ^5.0.1
+        version: 5.0.1(@keystatic/core@0.5.22(next@15.0.0-canary.39(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.44.1)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(next@15.0.0-canary.39(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.44.1)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
+      '@markdoc/markdoc':
+        specifier: ^0.4.0
+        version: 0.4.0(@types/react@18.3.3)(react@19.0.0-rc-cc1ec60d0d-20240607)
+      '@sentry/integrations':
+        specifier: ^7.114.0
+        version: 7.114.0
+      '@sentry/nextjs':
+        specifier: ^8.11.0
+        version: 8.11.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.25.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.52.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.25.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.25.0)(encoding@0.1.13)(next@15.0.0-canary.39(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.44.1)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)(webpack@5.91.0(@swc/core@1.6.5(@swc/helpers@0.5.11))(esbuild@0.21.5))
+      '@types/node':
+        specifier: ^20.14.7
+        version: 20.14.7
+      '@types/react':
+        specifier: ^18.3.3
+        version: 18.3.3
+      '@types/react-dom':
+        specifier: ^18.3.0
+        version: 18.3.0
+      autoprefixer:
+        specifier: ^10.4.19
+        version: 10.4.19(postcss@8.4.38)
+      motion:
+        specifier: ^10.18.0
+        version: 10.18.0
+      next:
+        specifier: 15.0.0-canary.39
+        version: 15.0.0-canary.39(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.44.1)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
+      next-themes:
+        specifier: ^0.3.0
+        version: 0.3.0(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
+      react:
+        specifier: 19.0.0-rc-cc1ec60d0d-20240607
+        version: 19.0.0-rc-cc1ec60d0d-20240607
+      react-dom:
+        specifier: 19.0.0-rc-cc1ec60d0d-20240607
+        version: 19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607)
+      tailwindcss:
+        specifier: ^3.4.4
+        version: 3.4.4(ts-node@10.9.2(@swc/core@1.6.5(@swc/helpers@0.5.11))(@types/node@20.14.7)(typescript@5.5.2))
+      typescript:
+        specifier: ^5.5.2
+        version: 5.5.2
+    devDependencies:
+      '@lightdotso/eslint-config':
+        specifier: workspace:*
+        version: link:../../configurations/eslint
+      '@lightdotso/tailwindcss':
+        specifier: workspace:*
+        version: link:../../configurations/tailwindcss
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../../configurations/tsconfig
+      postcss:
+        specifier: ^8.4.38
+        version: 8.4.38
+
   apps/changelog:
     dependencies:
       '@babel/core':

@@ -1,0 +1,22 @@
+ignores:
+  - "@babel/core"
+  - "@lightdotso/tsconfig"
+  - "@types/react"
+  - "@types/react-dom"
+  - "@types/node"
+  - typescript
+  - eslint-config-prettier
+  - eslint-import-resolver-typescript
+  - jsonc-eslint-parser
+  - "@next/eslint-plugin-next"
+  - eslint-plugin-turbo
+  - "@babel/core"
+  - "@types/node"
+  - autoprefixer
+  - postcss
+  - tailwindcss
+  - typescript
+  - motion
+  - next-themes
+  - "@sentry/integrations"
+  - "~"
