@@ -19,10 +19,7 @@
 export default async function Page() {
   return (
     <div className="relative">
-      <div
-        className="block absolute inset-x-0 -top-[48rem] z-10"
-        // style={{ top: "-48rem" }}
-      >
+      <div className="block absolute inset-x-0 -top-[48rem] z-10">
         <img
           className="animate-spin-slow h-full w-full object-cover"
           src="/spiral.svg"
