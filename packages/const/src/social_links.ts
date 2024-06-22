@@ -17,14 +17,12 @@ export enum Social {
   CAL = "Cal",
   CAL_SHUN = "Cal Shun",
   DISCORD = "Discord",
-  OPENSEA = "Opensea",
   GITHUB = "Github",
   MIRROR = "Mirror",
   NOTION = "Notion",
   TELEGRAM = "Telegram",
   TWITTER = "Twitter",
   TWITTER_SHUN = "Twitter Shun",
-  WAITLIST = "Waitlist",
   WEBSITE = "Website",
 }
 
@@ -37,10 +35,8 @@ export const SOCIAL_LINKS: {
   [Social.GITHUB]: "https://github.com/LightDotSo/LightDotSo",
   [Social.MIRROR]: "https://mirror.xyz/lightdotso.eth",
   [Social.NOTION]: "https://lightdotso.notion.site",
-  [Social.OPENSEA]: "https://opensea.io",
   [Social.TELEGRAM]: "https://t.me/LightDotSo",
   [Social.TWITTER]: "https://twitter.com/LightDotSo",
   [Social.TWITTER_SHUN]: "https://twitter.com/shunkakinoki",
-  [Social.WAITLIST]: "https://waitlist.light.so",
   [Social.WEBSITE]: "https://light.so",
 };

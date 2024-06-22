@@ -51,7 +51,7 @@ export const Support: FC = () => {
           </ButtonIcon>
           <ButtonIcon asChild variant="shadow">
             <a
-              href={SOCIAL_LINKS["Discord"]}
+              href={SOCIAL_LINKS.Discord}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -60,7 +60,7 @@ export const Support: FC = () => {
           </ButtonIcon>
           <ButtonIcon asChild variant="shadow">
             <a
-              href={SOCIAL_LINKS["Telegram"]}
+              href={SOCIAL_LINKS.Telegram}
               target="_blank"
               rel="noopener noreferrer"
             >
