@@ -14,7 +14,7 @@
 
 "use client";
 
-import { SOCIAL_LINKS } from "@lightdotso/const";
+import { INTERNAL_LINKS } from "@lightdotso/const";
 import { useNewForm } from "@lightdotso/stores";
 import {
   Accordion,
@@ -177,7 +177,7 @@ export const RootContext: FC = () => {
                     if you don&apos;t have an invite code yet.&nbsp;
                     <a
                       className="underline hover:text-text-weaker"
-                      href={SOCIAL_LINKS["Waitlist"]}
+                      href={INTERNAL_LINKS.Waitlist}
                       target="_blank"
                       rel="noreferrer"
                     >

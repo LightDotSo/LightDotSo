@@ -16,9 +16,12 @@ export enum Internal {
   CHANGELOG = "Changelog",
   DOCS = "Docs",
   EXPLORER = "Explorer",
+  GOVERNANCE = "Governance",
   OPEN = "Open",
+  PROPOSALS = "Proposals",
   HOME = "Home",
   STATUS = "Status",
+  WAITLIST = "Waitlist",
 }
 
 export const INTERNAL_LINKS: {
@@ -28,7 +31,10 @@ export const INTERNAL_LINKS: {
     "https://lightdotso.notion.site/40f7d597317e4f29b06656b03cb32de0",
   [Internal.DOCS]: "https://docs.light.so",
   [Internal.EXPLORER]: "https://explorer.light.so",
+  [Internal.GOVERNANCE]: "https://gov.light.so",
   [Internal.OPEN]: "https://open.light.so",
+  [Internal.PROPOSALS]: "https://proposals.light.so",
   [Internal.HOME]: "https://light.so/home",
   [Internal.STATUS]: "https://lightdotso.instatus.com",
+  [Internal.WAITLIST]: "https://waitlist.light.so",
 };
