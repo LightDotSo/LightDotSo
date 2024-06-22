@@ -43,7 +43,7 @@ export default async function Page() {
         </div>
       </div>
       <div className="relative z-10 flex flex-col items-center h-screen justify-center">
-        <div className="max-w-xl text-2xl font-bold m-auto">
+        <div className="max-w-2xl text-2xl font-bold m-auto">
           Light enables using Ethereum, and EVM chains as seamless as possible.
           Designed from the ground up for the rollup/multi-chain world that we
           live in, Light enables you to use Ethereum like it is one. Say goodbye
