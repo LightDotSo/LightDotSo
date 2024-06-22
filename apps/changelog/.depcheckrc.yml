@@ -19,3 +19,4 @@ ignores:
   - motion
   - next-themes
   - "@sentry/integrations"
+  - "~"
