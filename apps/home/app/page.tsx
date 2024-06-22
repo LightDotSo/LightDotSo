@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { LightHorizontalLogo } from "@lightdotso/svg";
+import { Button } from "@lightdotso/ui";
 import { Spiral } from "@/components/spiral";
 
 // -----------------------------------------------------------------------------
@@ -24,6 +26,7 @@ export default async function Page() {
       <Spiral />
       <div className="relative z-10 flex flex-col items-center h-screen justify-center">
         <div className="p-4">
+          <LightHorizontalLogo className="w-32 h-32" />
           <h1 className="max-w-2xl text-4xl lg:text-6xl font-extrabold">
             EVM chain abstraction
             <br />
@@ -31,6 +34,25 @@ export default async function Page() {
             <br />
             chains as one.
           </h1>
+          <div className="py-8">
+            <Button size="lg">Explore Now</Button>
+            <Button size="lg" variant="outline" className="ml-4">
+              Learn More
+            </Button>
+          </div>
+        </div>
+      </div>
+      <div className="relative z-10 flex flex-col items-center h-screen justify-center">
+        <div className="max-w-xl text-2xl font-bold m-auto">
+          Light enables using Ethereum, and EVM chains as seamless as possible.
+          Designed from the ground up for the rollup/multi-chain world that we
+          live in, Light enables you to use Ethereum like it is one. Say goodbye
+          to mundane bridging, gas deposits and refueling gas, or having
+          multiple smart contract wallets for each chain. With Light, users are
+          able to use a single smart account across chains allowing for maximum
+          composability and usability. Light aims to help realize the vision of
+          Ethereum making abstracting the complexities of fragmentation while
+          aligning w/ the core ethos as an 100% open source project.
         </div>
       </div>
     </div>

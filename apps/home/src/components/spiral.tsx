@@ -52,7 +52,7 @@ export const Spiral: FC = () => {
   return (
     <div
       className={cn(
-        "absolute inset-x-0 -top-[64rem] z-0 block overflow-hidden transition-opacity duration-300 ease-in-out",
+        "fixed inset-x-0 md:-top-[20rem] lg:-top-[40rem] xl:-top-[48rem] 2xl:-top-[64rem] z-0 block overflow-hidden transition-opacity duration-300 animate-slow-spin",
         applyOpacity ? "opacity-70" : "opacity-100",
       )}
     >
