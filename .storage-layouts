@@ -3,135 +3,45 @@
 ============================
 =======================
  ➡ LightPaymaster
-| Name        | Type                        | Slot | Offset | Bytes | Contract                                        |
-|-------------|-----------------------------|------|--------|-------|-------------------------------------------------|
-| _owner      | address                     | 0    | 0      | 20    | contracts/src/LightPaymaster.sol:LightPaymaster |
-| senderNonce | mapping(address => uint256) | 1    | 0      | 32    | contracts/src/LightPaymaster.sol:LightPaymaster |
+[2m2024-06-22T11:10:17.210065Z[0m [31mERROR[0m [2mfoundry_compilers::artifacts[0m[2m:[0m [3merror[0m[2m=[0m"/Users/shunkakinoki/ghq/github.com/LightDotSo/LightDotSo/lib/account-abstraction/contracts/interfaces/UserOperation.sol": No such file or directory (os error 2)
 =======================
  ➡ LightWallet
-| Name          | Type  | Slot | Offset | Bytes | Contract                                  |
-|---------------|-------|------|--------|-------|-------------------------------------------|
-| _initialized  | uint8 | 0    | 0      | 1     | contracts/src/LightWallet.sol:LightWallet |
-| _initializing | bool  | 0    | 1      | 1     | contracts/src/LightWallet.sol:LightWallet |
+[2m2024-06-22T11:10:17.265598Z[0m [31mERROR[0m [2mfoundry_compilers::artifacts[0m[2m:[0m [3merror[0m[2m=[0m"/Users/shunkakinoki/ghq/github.com/LightDotSo/LightDotSo/lib/account-abstraction/contracts/interfaces/UserOperation.sol": No such file or directory (os error 2)
 =======================
  ➡ LightWalletFactory
-| Name | Type | Slot | Offset | Bytes | Contract |
-|------|------|------|--------|-------|----------|
+[2m2024-06-22T11:10:17.320577Z[0m [31mERROR[0m [2mfoundry_compilers::artifacts[0m[2m:[0m [3merror[0m[2m=[0m"/Users/shunkakinoki/ghq/github.com/LightDotSo/LightDotSo/lib/account-abstraction/contracts/interfaces/UserOperation.sol": No such file or directory (os error 2)
+=======================
+ ➡ LightVerifyingPaymaster
+[2m2024-06-22T11:10:17.374790Z[0m [31mERROR[0m [2mfoundry_compilers::artifacts[0m[2m:[0m [3merror[0m[2m=[0m"/Users/shunkakinoki/ghq/github.com/LightDotSo/LightDotSo/lib/account-abstraction/contracts/interfaces/UserOperation.sol": No such file or directory (os error 2)
 =======================
  ➡ EntryPoint
-| Name                | Type                                                 | Slot | Offset | Bytes | Contract                                                         |
-|---------------------|------------------------------------------------------|------|--------|-------|------------------------------------------------------------------|
-| deposits            | mapping(address => struct IStakeManager.DepositInfo) | 0    | 0      | 32    | lib/account-abstraction/contracts/core/EntryPoint.sol:EntryPoint |
-| nonceSequenceNumber | mapping(address => mapping(uint192 => uint256))      | 1    | 0      | 32    | lib/account-abstraction/contracts/core/EntryPoint.sol:EntryPoint |
-| _status             | uint256                                              | 2    | 0      | 32    | lib/account-abstraction/contracts/core/EntryPoint.sol:EntryPoint |
+[2m2024-06-22T11:10:17.430869Z[0m [31mERROR[0m [2mfoundry_compilers::artifacts[0m[2m:[0m [3merror[0m[2m=[0m"/Users/shunkakinoki/ghq/github.com/LightDotSo/LightDotSo/lib/account-abstraction/contracts/interfaces/UserOperation.sol": No such file or directory (os error 2)
 =======================
  ➡ VerifyingPaymaster
-| Name        | Type                        | Slot | Offset | Bytes | Contract                                                                            |
-|-------------|-----------------------------|------|--------|-------|-------------------------------------------------------------------------------------|
-| _owner      | address                     | 0    | 0      | 20    | lib/account-abstraction/contracts/samples/VerifyingPaymaster.sol:VerifyingPaymaster |
-| senderNonce | mapping(address => uint256) | 1    | 0      | 32    | lib/account-abstraction/contracts/samples/VerifyingPaymaster.sol:VerifyingPaymaster |
+[2m2024-06-22T11:10:17.486912Z[0m [31mERROR[0m [2mfoundry_compilers::artifacts[0m[2m:[0m [3merror[0m[2m=[0m"/Users/shunkakinoki/ghq/github.com/LightDotSo/LightDotSo/lib/account-abstraction/contracts/interfaces/UserOperation.sol": No such file or directory (os error 2)
 =======================
  ➡ IERC1271
-| Name | Type | Slot | Offset | Bytes | Contract |
-|------|------|------|--------|-------|----------|
+[2m2024-06-22T11:10:17.541967Z[0m [31mERROR[0m [2mfoundry_compilers::artifacts[0m[2m:[0m [3merror[0m[2m=[0m"/Users/shunkakinoki/ghq/github.com/LightDotSo/LightDotSo/lib/account-abstraction/contracts/interfaces/UserOperation.sol": No such file or directory (os error 2)
 =======================
  ➡ ILightWallet
-| Name | Type | Slot | Offset | Bytes | Contract |
-|------|------|------|--------|-------|----------|
+[2m2024-06-22T11:10:17.595907Z[0m [31mERROR[0m [2mfoundry_compilers::artifacts[0m[2m:[0m [3merror[0m[2m=[0m"/Users/shunkakinoki/ghq/github.com/LightDotSo/LightDotSo/lib/account-abstraction/contracts/interfaces/UserOperation.sol": No such file or directory (os error 2)
 =======================
  ➡ ILightWalletFactory
-| Name | Type | Slot | Offset | Bytes | Contract |
-|------|------|------|--------|-------|----------|
+[2m2024-06-22T11:10:17.650816Z[0m [31mERROR[0m [2mfoundry_compilers::artifacts[0m[2m:[0m [3merror[0m[2m=[0m"/Users/shunkakinoki/ghq/github.com/LightDotSo/LightDotSo/lib/account-abstraction/contracts/interfaces/UserOperation.sol": No such file or directory (os error 2)
 =======================
  ➡ ImmutableProxy
-| Name | Type | Slot | Offset | Bytes | Contract |
-|------|------|------|--------|-------|----------|
+[2m2024-06-22T11:10:17.705618Z[0m [31mERROR[0m [2mfoundry_compilers::artifacts[0m[2m:[0m [3merror[0m[2m=[0m"/Users/shunkakinoki/ghq/github.com/LightDotSo/LightDotSo/lib/account-abstraction/contracts/interfaces/UserOperation.sol": No such file or directory (os error 2)
 =======================
  ➡ Kernel
-| Name             | Type   | Slot | Offset | Bytes | Contract                         |
-|------------------|--------|------|--------|-------|----------------------------------|
-| _nameFallback    | string | 0    | 0      | 32    | lib/kernel/src/Kernel.sol:Kernel |
-| _versionFallback | string | 1    | 0      | 32    | lib/kernel/src/Kernel.sol:Kernel |
+[2m2024-06-22T11:10:17.760036Z[0m [31mERROR[0m [2mfoundry_compilers::artifacts[0m[2m:[0m [3merror[0m[2m=[0m"/Users/shunkakinoki/ghq/github.com/LightDotSo/LightDotSo/lib/account-abstraction/contracts/interfaces/UserOperation.sol": No such file or directory (os error 2)
 =======================
  ➡ KernelECDSAFactory
+[2m2024-06-22T11:10:17.814755Z[0m [31mERROR[0m [2mfoundry_compilers::artifacts[0m[2m:[0m [3merror[0m[2m=[0m"/Users/shunkakinoki/ghq/github.com/LightDotSo/LightDotSo/lib/account-abstraction/contracts/interfaces/UserOperation.sol": No such file or directory (os error 2)
 =======================
  ➡ KernelECDSAValidator
+[2m2024-06-22T11:10:17.870508Z[0m [31mERROR[0m [2mfoundry_compilers::artifacts[0m[2m:[0m [3merror[0m[2m=[0m"/Users/shunkakinoki/ghq/github.com/LightDotSo/LightDotSo/lib/account-abstraction/contracts/interfaces/UserOperation.sol": No such file or directory (os error 2)
 =======================
  ➡ KernelFactory
-| Name | Type | Slot | Offset | Bytes | Contract |
-|------|------|------|--------|-------|----------|
+[2m2024-06-22T11:10:17.924789Z[0m [31mERROR[0m [2mfoundry_compilers::artifacts[0m[2m:[0m [3merror[0m[2m=[0m"/Users/shunkakinoki/ghq/github.com/LightDotSo/LightDotSo/lib/account-abstraction/contracts/interfaces/UserOperation.sol": No such file or directory (os error 2)
 =======================
  ➡ KernelProxy
-=======================
- ➡ Safe
-| Name                       | Type                                            | Slot | Offset | Bytes | Contract                                   |
-|----------------------------|-------------------------------------------------|------|--------|-------|--------------------------------------------|
-| singleton                  | address                                         | 0    | 0      | 20    | lib/safe-contracts/contracts/Safe.sol:Safe |
-| modules                    | mapping(address => address)                     | 1    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
-| owners                     | mapping(address => address)                     | 2    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
-| ownerCount                 | uint256                                         | 3    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
-| threshold                  | uint256                                         | 4    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
-| nonce                      | uint256                                         | 5    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
-| _deprecatedDomainSeparator | bytes32                                         | 6    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
-| signedMessages             | mapping(bytes32 => uint256)                     | 7    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
-| approvedHashes             | mapping(address => mapping(bytes32 => uint256)) | 8    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
-=======================
- ➡ SafeL2
-| Name                       | Type                                            | Slot | Offset | Bytes | Contract                                       |
-|----------------------------|-------------------------------------------------|------|--------|-------|------------------------------------------------|
-| singleton                  | address                                         | 0    | 0      | 20    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
-| modules                    | mapping(address => address)                     | 1    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
-| owners                     | mapping(address => address)                     | 2    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
-| ownerCount                 | uint256                                         | 3    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
-| threshold                  | uint256                                         | 4    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
-| nonce                      | uint256                                         | 5    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
-| _deprecatedDomainSeparator | bytes32                                         | 6    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
-| signedMessages             | mapping(bytes32 => uint256)                     | 7    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
-| approvedHashes             | mapping(address => mapping(bytes32 => uint256)) | 8    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
-=======================
- ➡ SafeProxy
-| Name      | Type    | Slot | Offset | Bytes | Contract                                                     |
-|-----------|---------|------|--------|-------|--------------------------------------------------------------|
-| singleton | address | 0    | 0      | 20    | lib/safe-contracts/contracts/proxies/SafeProxy.sol:SafeProxy |
-=======================
- ➡ SafeProxyFactory
-| Name | Type | Slot | Offset | Bytes | Contract |
-|------|------|------|--------|-------|----------|
-=======================
- ➡ SimpleAccount
-| Name          | Type    | Slot | Offset | Bytes | Contract                                                                  |
-|---------------|---------|------|--------|-------|---------------------------------------------------------------------------|
-| _initialized  | uint8   | 0    | 0      | 1     | lib/account-abstraction/contracts/samples/SimpleAccount.sol:SimpleAccount |
-| _initializing | bool    | 0    | 1      | 1     | lib/account-abstraction/contracts/samples/SimpleAccount.sol:SimpleAccount |
-| owner         | address | 0    | 2      | 20    | lib/account-abstraction/contracts/samples/SimpleAccount.sol:SimpleAccount |
-=======================
- ➡ SimpleAccountFactory
-| Name | Type | Slot | Offset | Bytes | Contract |
-|------|------|------|--------|-------|----------|
-=======================
- ➡ SimpleAccountV2
-| Name          | Type    | Slot | Offset | Bytes | Contract                                                  |
-|---------------|---------|------|--------|-------|-----------------------------------------------------------|
-| _initialized  | uint8   | 0    | 0      | 1     | contracts/src/samples/SimpleAccountV2.sol:SimpleAccountV2 |
-| _initializing | bool    | 0    | 1      | 1     | contracts/src/samples/SimpleAccountV2.sol:SimpleAccountV2 |
-| owner         | address | 0    | 2      | 20    | contracts/src/samples/SimpleAccountV2.sol:SimpleAccountV2 |
-=======================
- ➡ SimpleAccountV2Factory
-| Name | Type | Slot | Offset | Bytes | Contract |
-|------|------|------|--------|-------|----------|
-=======================
- ➡ SmartAccount
-=======================
- ➡ SmartAccountFactory
-=======================
- ➡ SoulWallet
-=======================
- ➡ SoulWalletFactory
-=======================
- ➡ Wallet
-=======================
- ➡ WalletFactory
-=======================
- ➡ UniversalSigValidator
-| Name | Type | Slot | Offset | Bytes | Contract |
-|------|------|------|--------|-------|----------|
