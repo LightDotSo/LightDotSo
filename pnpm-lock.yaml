@@ -1152,9 +1152,6 @@ importers:
       '@babel/core':
         specifier: ^7.24.7
         version: 7.24.7
-      '@lightdotso/query':
-        specifier: workspace:*
-        version: link:../../packages/query
       '@lightdotso/svg':
         specifier: workspace:*
         version: link:../../packages/svg

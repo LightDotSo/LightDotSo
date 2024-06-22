@@ -41,7 +41,6 @@ const nextConfig = {
   },
   outputFileTracing: true,
   transpilePackages: [
-    "@lightdotso/query",
     "@lightdotso/svg",
     "@lightdotso/templates",
     "@lightdotso/ui",

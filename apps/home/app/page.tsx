@@ -19,14 +19,14 @@
 export default async function Page() {
   return (
     <div className="relative">
-      <div className="block absolute inset-x-0 -top-[48rem] z-10">
+      <div className="absolute inset-x-0 -top-[48rem] z-10 block">
         <img
-          className="animate-spin-slow h-full w-full object-cover"
+          className="size-full animate-spin-slow object-cover"
           src="/spiral.svg"
           alt="Spiral"
         />
       </div>
-      <div className="w-full flex flex-col items-center justify-center text-3xl">
+      <div className="flex w-full flex-col items-center justify-center text-3xl">
         <h1> Welcome to Light Explorer! </h1>
         <h1> Welcome to Light Explorer! </h1>
         <h1> Welcome to Light Explorer! </h1>
