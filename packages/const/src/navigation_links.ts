@@ -20,8 +20,11 @@ export const NAVIGATION_LINKS = {
   resources: [
     { name: "Changelog", href: INTERNAL_LINKS.Changelog },
     { name: "Docs", href: INTERNAL_LINKS.Docs },
+    { name: "Paper", href: INTERNAL_LINKS.Paper },
     { name: "Explorer", href: INTERNAL_LINKS.Explorer },
     { name: "FAQ", href: NOTION_LINKS.Faq },
+    { name: "Governance", href: INTERNAL_LINKS.Governance },
+    { name: "Proposals", href: INTERNAL_LINKS.Proposals },
     { name: "Support", href: SOCIAL_LINKS.Discord },
   ],
   company: [

@@ -43,13 +43,13 @@
     "@storybook/react": "^8.1.10",
     "@tanstack/react-table": "^8.17.3",
     "@tremor/react": "^3.17.3",
-    "lucide-react": "^0.395.0",
+    "lucide-react": "^0.396.0",
     "next": "15.0.0-canary.39",
     "react": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-is": "19.0.0-rc-cc1ec60d0d-20240607",
     "recharts": "2.13.0-alpha.4",
-    "viem": "^2.16.0"
+    "viem": "^2.16.1"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
