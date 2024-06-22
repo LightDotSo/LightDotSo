@@ -18,12 +18,13 @@ import { SOCIAL_LINKS } from "./social_links";
 
 export const NAVIGATION_LINKS = {
   resources: [
+    { name: "Blog", href: INTERNAL_LINKS.Blog },
     { name: "Changelog", href: INTERNAL_LINKS.Changelog },
     { name: "Docs", href: INTERNAL_LINKS.Docs },
-    { name: "Paper", href: INTERNAL_LINKS.Paper },
     { name: "Explorer", href: INTERNAL_LINKS.Explorer },
     { name: "FAQ", href: NOTION_LINKS.Faq },
     { name: "Governance", href: INTERNAL_LINKS.Governance },
+    { name: "Paper", href: INTERNAL_LINKS.Paper },
     { name: "Proposals", href: INTERNAL_LINKS.Proposals },
     { name: "Support", href: SOCIAL_LINKS.Discord },
   ],

@@ -1152,6 +1152,18 @@ importers:
       '@babel/core':
         specifier: ^7.24.7
         version: 7.24.7
+      '@lightdotso/query':
+        specifier: workspace:*
+        version: link:../../packages/query
+      '@lightdotso/svg':
+        specifier: workspace:*
+        version: link:../../packages/svg
+      '@lightdotso/templates':
+        specifier: workspace:*
+        version: link:../../packages/templates
+      '@lightdotso/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       '@next/bundle-analyzer':
         specifier: 15.0.0-canary.39
         version: 15.0.0-canary.39(bufferutil@4.0.8)

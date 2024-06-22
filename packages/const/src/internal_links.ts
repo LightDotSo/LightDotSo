@@ -13,6 +13,7 @@
 // limitations under the License.
 
 export enum Internal {
+  BLOG = "Blog",
   CHANGELOG = "Changelog",
   DOCS = "Docs",
   EXPLORER = "Explorer",
@@ -28,8 +29,8 @@ export enum Internal {
 export const INTERNAL_LINKS: {
   readonly [key in Internal]: string;
 } = {
-  [Internal.CHANGELOG]:
-    "https://lightdotso.notion.site/40f7d597317e4f29b06656b03cb32de0",
+  [Internal.BLOG]: "https://blog.light.so",
+  [Internal.CHANGELOG]: "https://changelog.light.so",
   [Internal.DOCS]: "https://docs.light.so",
   [Internal.EXPLORER]: "https://explorer.light.so",
   [Internal.GOVERNANCE]: "https://gov.light.so",

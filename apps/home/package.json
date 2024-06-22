@@ -21,6 +21,10 @@
   },
   "dependencies": {
     "@babel/core": "^7.24.7",
+    "@lightdotso/query": "workspace:*",
+    "@lightdotso/svg": "workspace:*",
+    "@lightdotso/templates": "workspace:*",
+    "@lightdotso/ui": "workspace:*",
     "@next/bundle-analyzer": "15.0.0-canary.39",
     "@sentry/integrations": "^7.114.0",
     "@sentry/nextjs": "^8.11.0",
