@@ -11,7 +11,6 @@
 [submodule "lib/account-abstraction"]
 	path = lib/account-abstraction
 	url = https://github.com/eth-infinitism/account-abstraction
-	update = none
 [submodule "lib/account-abstraction-v0.6"]
 	path = lib/account-abstraction-v0.6
 	url = https://github.com/eth-infinitism/account-abstraction
