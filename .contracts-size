@@ -20,6 +20,7 @@
 | LibBytesPointer              |       86 |     24,490 |
 | LibOptim                     |       86 |     24,490 |
 | LightPaymaster               |    5,533 |     19,043 |
+| LightVerifyingPaymaster      |    5,533 |     19,043 |
 | LightWallet                  |   13,265 |     11,311 |
 | LightWalletFactory           |    3,340 |     21,236 |
 | LightWalletUtils             |       86 |     24,490 |
