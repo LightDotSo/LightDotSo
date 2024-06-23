@@ -18,6 +18,12 @@
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
 =======================
+ ➡ LightVerifyingPaymaster
+| Name        | Type                        | Slot | Offset | Bytes | Contract                                                                   |
+|-------------|-----------------------------|------|--------|-------|----------------------------------------------------------------------------|
+| _owner      | address                     | 0    | 0      | 20    | contracts/src/archives/LightVerifyingPaymaster.sol:LightVerifyingPaymaster |
+| senderNonce | mapping(address => uint256) | 1    | 0      | 32    | contracts/src/archives/LightVerifyingPaymaster.sol:LightVerifyingPaymaster |
+=======================
  ➡ EntryPoint
 | Name                | Type                                                 | Slot | Offset | Bytes | Contract                                                         |
 |---------------------|------------------------------------------------------|------|--------|-------|------------------------------------------------------------------|
