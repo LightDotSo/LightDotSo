@@ -33,8 +33,6 @@
 | ModuleSelfAuth               |       63 |     24,513 |
 | ModuleStorage                |       86 |     24,490 |
 | NonceManager                 |      657 |     23,919 |
-| Safe                         |   14,670 |      9,906 |
-| SafeL2                       |   15,137 |      9,439 |
 | SafeMath                     |       86 |     24,490 |
 | SafeProxy                    |      161 |     24,415 |
 | SafeProxyFactory             |    2,393 |     22,183 |

@@ -39,7 +39,7 @@
     "react": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-blurhash": "^0.3.0",
     "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
-    "viem": "^2.16.1"
+    "viem": "^2.16.2"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",

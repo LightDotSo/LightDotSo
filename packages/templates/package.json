@@ -55,7 +55,7 @@
     "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-hook-form": "^7.52.0",
     "react-icons": "^5.2.1",
-    "viem": "^2.16.1",
+    "viem": "^2.16.2",
     "zod": "^3.23.8"
   },
   "devDependencies": {
