@@ -138,26 +138,33 @@ export const ProgressUserOperation: FC = () => {
       return;
     }
 
-    for (const pendingUserOperation of pendingUserOperations) {
-      if (!hashedToasts.has(pendingUserOperation.hash)) {
-        toast.info("Processing user operation...", {
-          id: pendingUserOperation.hash,
-          duration: Infinity,
-          action: {
-            label: "View",
-            onClick: () => {
-              window.open(
-                `https://explorer.light.so/op/${pendingUserOperation.hash}`,
-                "_blank",
-              );
+    if (
+      pendingUserOperations &&
+      typeof pendingUserOperations !== "undefined" &&
+      pendingUserOperations?.length > 0 &&
+      !isPendingUserOperationsLoading
+    ) {
+      for (const pendingUserOperation of pendingUserOperations) {
+        if (!hashedToasts.has(pendingUserOperation.hash)) {
+          toast.info("Processing user operation...", {
+            id: pendingUserOperation.hash,
+            duration: Infinity,
+            action: {
+              label: "View",
+              onClick: () => {
+                window.open(
+                  `https://explorer.light.so/op/${pendingUserOperation.hash}`,
+                  "_blank",
+                );
+              },
             },
-          },
-          position: "top-right",
-        });
+            position: "top-right",
+          });
 
-        setHashedToasts(
-          prevHashes => new Set(prevHashes.add(pendingUserOperation.hash)),
-        );
+          setHashedToasts(
+            prevHashes => new Set(prevHashes.add(pendingUserOperation.hash)),
+          );
+        }
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
