@@ -31,15 +31,15 @@
     "@lightdotso/query-keys": "workspace:*",
     "@lightdotso/stores": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
-    "@tanstack/react-query": "^5.45.1",
+    "@tanstack/react-query": "^5.48.0",
     "next": "15.0.0-canary.39",
     "react": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
-    "viem": "^2.16.2"
+    "viem": "^2.16.3"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.14.8",
+    "@types/node": "^20.14.9",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.5.2"

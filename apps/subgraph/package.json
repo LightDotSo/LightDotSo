@@ -67,14 +67,14 @@
     "test": "./test.sh"
   },
   "dependencies": {
-    "@goldskycom/cli": "^9.0.0",
-    "@graphprotocol/graph-cli": "^0.76.0",
+    "@goldskycom/cli": "^9.1.1",
+    "@graphprotocol/graph-cli": "^0.77.0",
     "@graphprotocol/graph-ts": "^0.35.1",
     "yaml": "^2.4.5"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.14.8",
+    "@types/node": "^20.14.9",
     "assemblyscript": "^0.19.20",
     "matchstick-as": "^0.6.0",
     "typescript": "^5.5.2",
