@@ -161,6 +161,11 @@ export function useTabs() {
       return;
     }
 
+    // If the `pathType` is not `wallet`, do nothing
+    if (pathType !== "wallet") {
+      return;
+    }
+
     // If the user has connected their wallet
     if (connectedAddress) {
       // If the connected address is not in the owners addresses, show the not owner banner
@@ -180,6 +185,7 @@ export function useTabs() {
   }, [
     ownersAddresses,
     setIsNotOwner,
+    pathType,
     walletAddress,
     connectedAddress,
     isConfigurationLoading,
