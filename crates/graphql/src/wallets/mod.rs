@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,11 +26,11 @@ pub struct MyQueryVariables {
 #[cynic(graphql_type = "Query", variables = "MyQueryVariables")]
 pub struct MyQuery {
     #[arguments(first: $n)]
-    pub light_wallets: Vec<LightWallet>,
+    pub light_wallets: Vec<Lightallet>,
 }
 
 #[derive(cynic::QueryFragment, Debug)]
-pub struct LightWallet {
+pub struct Lightallet {
     pub id: Bytes,
 }
 

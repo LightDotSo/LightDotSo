@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,9 +23,9 @@ export const GITHUB_LINKS: {
   readonly [key in Github]: string;
 } = {
   [Github.ACKNOWLEDGEMENTS]:
-    "https://github.com/LightDotSo/LightDotSo/blob/main/ACKNOWLEDGEMENTS.md",
-  [Github.AUDIT]: "https://github.com/LightDotSo/LightDotSo/blob/main/audits",
-  [Github.REPO]: "https://github.com/LightDotSo/LightDotSo",
+    "https://github.com/LightotSo/LightotSo/blob/main/ACKNOWLEDGEMENTS.md",
+  [Github.AUDIT]: "https://github.com/LightotSo/LightotSo/blob/main/audits",
+  [Github.REPO]: "https://github.com/LightotSo/LightotSo",
   [Github.LICENSE]:
-    "https://github.com/LightDotSo/LightDotSo/blob/main/LICENSE.md",
+    "https://github.com/LightotSo/LightotSo/blob/main/LICENSE.md",
 };

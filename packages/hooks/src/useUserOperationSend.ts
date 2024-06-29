@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,9 +25,9 @@ import {
 } from "@lightdotso/query";
 import { useFormRef } from "@lightdotso/stores";
 import {
-  useReadLightVerifyingPaymasterGetHash,
-  useReadLightVerifyingPaymasterSenderNonce,
-  useReadLightWalletImageHash,
+  useReadLighterifyingPaymasterGetHash,
+  useReadLighterifyingPaymasterSenderNonce,
+  useReadLightalletImageHash,
 } from "@lightdotso/wagmi";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
@@ -85,7 +85,7 @@ export const useUserOperationSend = ({
   // Wagmi
   // ---------------------------------------------------------------------------
 
-  const { data: paymasterHash } = useReadLightVerifyingPaymasterGetHash({
+  const { data: paymasterHash } = useReadLighterifyingPaymasterGetHash({
     address: userOperation?.paymaster_and_data.slice(0, 42) as Address,
     chainId: userOperation?.chain_id,
     args: [
@@ -117,13 +117,13 @@ export const useUserOperationSend = ({
     ],
   });
 
-  const { data: paymasterNonce } = useReadLightVerifyingPaymasterSenderNonce({
+  const { data: paymasterNonce } = useReadLighterifyingPaymasterSenderNonce({
     address: userOperation?.paymaster_and_data.slice(0, 42) as Address,
     chainId: Number(userOperation?.chain_id),
     args: [userOperation?.sender as Address],
   });
 
-  const { data: imageHash } = useReadLightWalletImageHash({
+  const { data: imageHash } = useReadLightalletImageHash({
     address: userOperation?.sender as Address,
     chainId: userOperation?.chain_id ?? undefined,
   });

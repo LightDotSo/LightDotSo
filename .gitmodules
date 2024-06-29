@@ -51,7 +51,7 @@
 	url = https://github.com/bcnmy/scw-contracts
 [submodule "wiki"]
 	path = wiki
-	url = https://github.com/LightDotSo/LightDotSo.wiki.git
+	url = https://github.com/LightotSo/LightotSo.wiki.git
 [submodule "lib/halmos-cheatcodes"]
 	path = lib/halmos-cheatcodes
 	url = https://github.com/a16z/halmos-cheatcodes

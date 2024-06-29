@@ -54,7 +54,7 @@ android.applicationVariants.all { variant ->
     def t = tasks.register("generate${variant.name.capitalize()}UniFFIBindings", Exec) {
         workingDir "${project.projectDir}"
         // Runs the bindings generation, note that you must have uniffi-bindgen installed and in your PATH environment variable
-        commandLine 'cargo', 'uniffi-bindgen', 'generate', "${workingDir}/../crates/core/src/LightWalletCore.udl", '--language', 'kotlin', '--out-dir', uniffiPath
+        commandLine 'cargo', 'uniffi-bindgen', 'generate', "${workingDir}/../crates/core/src/LightalletCore.udl", '--language', 'kotlin', '--out-dir', uniffiPath
     }
     variant.javaCompileProvider.get().dependsOn(t)
     def sourceSet = variant.sourceSets.find { it.name == variant.name }

@@ -2,16 +2,16 @@
   "name": "@lightdotso/demo",
   "version": "0.0.7",
   "private": true,
-  "homepage": "https://github.com/LightDotSo/LightDotSo",
+  "homepage": "https://github.com/LightotSo/LightotSo",
   "bugs": {
-    "url": "https://github.com/LightDotSo/LightDotSo/issues"
+    "url": "https://github.com/LightotSo/LightotSo/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/LightDotSo/LightDotSo.git"
+    "url": "https://github.com/LightotSo/LightotSo.git"
   },
   "license": "Apache-2.0",
-  "author": "Light, Inc.",
+  "author": "Light,
   "sideEffects": false,
   "main": "./src/index.ts",
   "files": [

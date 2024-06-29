@@ -6,7 +6,7 @@ import {
 } from 'wagmi/codegen'
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// LightPaymaster
+// Lightaymaster
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export const lightPaymasterAbi = [
@@ -256,7 +256,7 @@ export const lightPaymasterAbi = [
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// LightVerifyingPaymaster
+// LighterifyingPaymaster
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export const lightVerifyingPaymasterAbi = [
@@ -506,7 +506,7 @@ export const lightVerifyingPaymasterAbi = [
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// LightWallet
+// Lightallet
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export const lightWalletAbi = [
@@ -830,7 +830,7 @@ export const lightWalletAbi = [
       },
       { name: 'hash', internalType: 'bytes32', type: 'bytes32', indexed: true },
     ],
-    name: 'LightWalletInitialized',
+    name: 'LightalletInitialized',
   },
   {
     type: 'event',
@@ -937,7 +937,7 @@ export const lightWalletAbi = [
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// LightWalletFactory
+// LightalletFactory
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export const lightWalletFactoryAbi = [
@@ -971,7 +971,7 @@ export const lightWalletFactoryAbi = [
     inputs: [],
     name: 'accountImplementation',
     outputs: [
-      { name: '', internalType: 'contract LightWallet', type: 'address' },
+      { name: '', internalType: 'contract Lightallet', type: 'address' },
     ],
     stateMutability: 'view',
   },
@@ -983,7 +983,7 @@ export const lightWalletFactoryAbi = [
     ],
     name: 'createAccount',
     outputs: [
-      { name: 'ret', internalType: 'contract LightWallet', type: 'address' },
+      { name: 'ret', internalType: 'contract Lightallet', type: 'address' },
     ],
     stateMutability: 'nonpayable',
   },
@@ -1007,14 +1007,14 @@ export const lightWalletFactoryAbi = [
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightPaymasterAbi}__
  */
-export const useReadLightPaymaster = /*#__PURE__*/ createUseReadContract({
+export const useReadLightaymaster = /*#__PURE__*/ createUseReadContract({
   abi: lightPaymasterAbi,
 })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"entryPoint"`
  */
-export const useReadLightPaymasterEntryPoint =
+export const useReadLightaymasterEntryPoint =
   /*#__PURE__*/ createUseReadContract({
     abi: lightPaymasterAbi,
     functionName: 'entryPoint',
@@ -1023,7 +1023,7 @@ export const useReadLightPaymasterEntryPoint =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"getDeposit"`
  */
-export const useReadLightPaymasterGetDeposit =
+export const useReadLightaymasterGetDeposit =
   /*#__PURE__*/ createUseReadContract({
     abi: lightPaymasterAbi,
     functionName: 'getDeposit',
@@ -1032,14 +1032,14 @@ export const useReadLightPaymasterGetDeposit =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"getHash"`
  */
-export const useReadLightPaymasterGetHash = /*#__PURE__*/ createUseReadContract(
+export const useReadLightaymasterGetHash = /*#__PURE__*/ createUseReadContract(
   { abi: lightPaymasterAbi, functionName: 'getHash' },
 )
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"owner"`
  */
-export const useReadLightPaymasterOwner = /*#__PURE__*/ createUseReadContract({
+export const useReadLightaymasterOwner = /*#__PURE__*/ createUseReadContract({
   abi: lightPaymasterAbi,
   functionName: 'owner',
 })
@@ -1047,7 +1047,7 @@ export const useReadLightPaymasterOwner = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"parsePaymasterAndData"`
  */
-export const useReadLightPaymasterParsePaymasterAndData =
+export const useReadLightaymasterParsePaymasterAndData =
   /*#__PURE__*/ createUseReadContract({
     abi: lightPaymasterAbi,
     functionName: 'parsePaymasterAndData',
@@ -1056,7 +1056,7 @@ export const useReadLightPaymasterParsePaymasterAndData =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"senderNonce"`
  */
-export const useReadLightPaymasterSenderNonce =
+export const useReadLightaymasterSenderNonce =
   /*#__PURE__*/ createUseReadContract({
     abi: lightPaymasterAbi,
     functionName: 'senderNonce',
@@ -1065,7 +1065,7 @@ export const useReadLightPaymasterSenderNonce =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"verifyingSigner"`
  */
-export const useReadLightPaymasterVerifyingSigner =
+export const useReadLightaymasterVerifyingSigner =
   /*#__PURE__*/ createUseReadContract({
     abi: lightPaymasterAbi,
     functionName: 'verifyingSigner',
@@ -1074,14 +1074,14 @@ export const useReadLightPaymasterVerifyingSigner =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightPaymasterAbi}__
  */
-export const useWriteLightPaymaster = /*#__PURE__*/ createUseWriteContract({
+export const useWriteLightaymaster = /*#__PURE__*/ createUseWriteContract({
   abi: lightPaymasterAbi,
 })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"addStake"`
  */
-export const useWriteLightPaymasterAddStake =
+export const useWriteLightaymasterAddStake =
   /*#__PURE__*/ createUseWriteContract({
     abi: lightPaymasterAbi,
     functionName: 'addStake',
@@ -1090,7 +1090,7 @@ export const useWriteLightPaymasterAddStake =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"deposit"`
  */
-export const useWriteLightPaymasterDeposit =
+export const useWriteLightaymasterDeposit =
   /*#__PURE__*/ createUseWriteContract({
     abi: lightPaymasterAbi,
     functionName: 'deposit',
@@ -1099,7 +1099,7 @@ export const useWriteLightPaymasterDeposit =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"postOp"`
  */
-export const useWriteLightPaymasterPostOp =
+export const useWriteLightaymasterPostOp =
   /*#__PURE__*/ createUseWriteContract({
     abi: lightPaymasterAbi,
     functionName: 'postOp',
@@ -1108,7 +1108,7 @@ export const useWriteLightPaymasterPostOp =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"renounceOwnership"`
  */
-export const useWriteLightPaymasterRenounceOwnership =
+export const useWriteLightaymasterRenounceOwnership =
   /*#__PURE__*/ createUseWriteContract({
     abi: lightPaymasterAbi,
     functionName: 'renounceOwnership',
@@ -1117,7 +1117,7 @@ export const useWriteLightPaymasterRenounceOwnership =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"transferOwnership"`
  */
-export const useWriteLightPaymasterTransferOwnership =
+export const useWriteLightaymasterTransferOwnership =
   /*#__PURE__*/ createUseWriteContract({
     abi: lightPaymasterAbi,
     functionName: 'transferOwnership',
@@ -1126,7 +1126,7 @@ export const useWriteLightPaymasterTransferOwnership =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"unlockStake"`
  */
-export const useWriteLightPaymasterUnlockStake =
+export const useWriteLightaymasterUnlockStake =
   /*#__PURE__*/ createUseWriteContract({
     abi: lightPaymasterAbi,
     functionName: 'unlockStake',
@@ -1135,7 +1135,7 @@ export const useWriteLightPaymasterUnlockStake =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"validatePaymasterUserOp"`
  */
-export const useWriteLightPaymasterValidatePaymasterUserOp =
+export const useWriteLightaymasterValidatePaymasterUserOp =
   /*#__PURE__*/ createUseWriteContract({
     abi: lightPaymasterAbi,
     functionName: 'validatePaymasterUserOp',
@@ -1144,7 +1144,7 @@ export const useWriteLightPaymasterValidatePaymasterUserOp =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"withdrawStake"`
  */
-export const useWriteLightPaymasterWithdrawStake =
+export const useWriteLightaymasterWithdrawStake =
   /*#__PURE__*/ createUseWriteContract({
     abi: lightPaymasterAbi,
     functionName: 'withdrawStake',
@@ -1153,7 +1153,7 @@ export const useWriteLightPaymasterWithdrawStake =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"withdrawTo"`
  */
-export const useWriteLightPaymasterWithdrawTo =
+export const useWriteLightaymasterWithdrawTo =
   /*#__PURE__*/ createUseWriteContract({
     abi: lightPaymasterAbi,
     functionName: 'withdrawTo',
@@ -1162,13 +1162,13 @@ export const useWriteLightPaymasterWithdrawTo =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightPaymasterAbi}__
  */
-export const useSimulateLightPaymaster =
+export const useSimulateLightaymaster =
   /*#__PURE__*/ createUseSimulateContract({ abi: lightPaymasterAbi })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"addStake"`
  */
-export const useSimulateLightPaymasterAddStake =
+export const useSimulateLightaymasterAddStake =
   /*#__PURE__*/ createUseSimulateContract({
     abi: lightPaymasterAbi,
     functionName: 'addStake',
@@ -1177,7 +1177,7 @@ export const useSimulateLightPaymasterAddStake =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"deposit"`
  */
-export const useSimulateLightPaymasterDeposit =
+export const useSimulateLightaymasterDeposit =
   /*#__PURE__*/ createUseSimulateContract({
     abi: lightPaymasterAbi,
     functionName: 'deposit',
@@ -1186,7 +1186,7 @@ export const useSimulateLightPaymasterDeposit =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"postOp"`
  */
-export const useSimulateLightPaymasterPostOp =
+export const useSimulateLightaymasterPostOp =
   /*#__PURE__*/ createUseSimulateContract({
     abi: lightPaymasterAbi,
     functionName: 'postOp',
@@ -1195,7 +1195,7 @@ export const useSimulateLightPaymasterPostOp =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"renounceOwnership"`
  */
-export const useSimulateLightPaymasterRenounceOwnership =
+export const useSimulateLightaymasterRenounceOwnership =
   /*#__PURE__*/ createUseSimulateContract({
     abi: lightPaymasterAbi,
     functionName: 'renounceOwnership',
@@ -1204,7 +1204,7 @@ export const useSimulateLightPaymasterRenounceOwnership =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"transferOwnership"`
  */
-export const useSimulateLightPaymasterTransferOwnership =
+export const useSimulateLightaymasterTransferOwnership =
   /*#__PURE__*/ createUseSimulateContract({
     abi: lightPaymasterAbi,
     functionName: 'transferOwnership',
@@ -1213,7 +1213,7 @@ export const useSimulateLightPaymasterTransferOwnership =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"unlockStake"`
  */
-export const useSimulateLightPaymasterUnlockStake =
+export const useSimulateLightaymasterUnlockStake =
   /*#__PURE__*/ createUseSimulateContract({
     abi: lightPaymasterAbi,
     functionName: 'unlockStake',
@@ -1222,7 +1222,7 @@ export const useSimulateLightPaymasterUnlockStake =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"validatePaymasterUserOp"`
  */
-export const useSimulateLightPaymasterValidatePaymasterUserOp =
+export const useSimulateLightaymasterValidatePaymasterUserOp =
   /*#__PURE__*/ createUseSimulateContract({
     abi: lightPaymasterAbi,
     functionName: 'validatePaymasterUserOp',
@@ -1231,7 +1231,7 @@ export const useSimulateLightPaymasterValidatePaymasterUserOp =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"withdrawStake"`
  */
-export const useSimulateLightPaymasterWithdrawStake =
+export const useSimulateLightaymasterWithdrawStake =
   /*#__PURE__*/ createUseSimulateContract({
     abi: lightPaymasterAbi,
     functionName: 'withdrawStake',
@@ -1240,7 +1240,7 @@ export const useSimulateLightPaymasterWithdrawStake =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightPaymasterAbi}__ and `functionName` set to `"withdrawTo"`
  */
-export const useSimulateLightPaymasterWithdrawTo =
+export const useSimulateLightaymasterWithdrawTo =
   /*#__PURE__*/ createUseSimulateContract({
     abi: lightPaymasterAbi,
     functionName: 'withdrawTo',
@@ -1249,13 +1249,13 @@ export const useSimulateLightPaymasterWithdrawTo =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightPaymasterAbi}__
  */
-export const useWatchLightPaymasterEvent =
+export const useWatchLightaymasterEvent =
   /*#__PURE__*/ createUseWatchContractEvent({ abi: lightPaymasterAbi })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightPaymasterAbi}__ and `eventName` set to `"OwnershipTransferred"`
  */
-export const useWatchLightPaymasterOwnershipTransferredEvent =
+export const useWatchLightaymasterOwnershipTransferredEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: lightPaymasterAbi,
     eventName: 'OwnershipTransferred',
@@ -1264,13 +1264,13 @@ export const useWatchLightPaymasterOwnershipTransferredEvent =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__
  */
-export const useReadLightVerifyingPaymaster =
+export const useReadLighterifyingPaymaster =
   /*#__PURE__*/ createUseReadContract({ abi: lightVerifyingPaymasterAbi })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"entryPoint"`
  */
-export const useReadLightVerifyingPaymasterEntryPoint =
+export const useReadLighterifyingPaymasterEntryPoint =
   /*#__PURE__*/ createUseReadContract({
     abi: lightVerifyingPaymasterAbi,
     functionName: 'entryPoint',
@@ -1279,7 +1279,7 @@ export const useReadLightVerifyingPaymasterEntryPoint =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"getDeposit"`
  */
-export const useReadLightVerifyingPaymasterGetDeposit =
+export const useReadLighterifyingPaymasterGetDeposit =
   /*#__PURE__*/ createUseReadContract({
     abi: lightVerifyingPaymasterAbi,
     functionName: 'getDeposit',
@@ -1288,7 +1288,7 @@ export const useReadLightVerifyingPaymasterGetDeposit =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"getHash"`
  */
-export const useReadLightVerifyingPaymasterGetHash =
+export const useReadLighterifyingPaymasterGetHash =
   /*#__PURE__*/ createUseReadContract({
     abi: lightVerifyingPaymasterAbi,
     functionName: 'getHash',
@@ -1297,7 +1297,7 @@ export const useReadLightVerifyingPaymasterGetHash =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"owner"`
  */
-export const useReadLightVerifyingPaymasterOwner =
+export const useReadLighterifyingPaymasterOwner =
   /*#__PURE__*/ createUseReadContract({
     abi: lightVerifyingPaymasterAbi,
     functionName: 'owner',
@@ -1306,7 +1306,7 @@ export const useReadLightVerifyingPaymasterOwner =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"parsePaymasterAndData"`
  */
-export const useReadLightVerifyingPaymasterParsePaymasterAndData =
+export const useReadLighterifyingPaymasterParsePaymasterAndData =
   /*#__PURE__*/ createUseReadContract({
     abi: lightVerifyingPaymasterAbi,
     functionName: 'parsePaymasterAndData',
@@ -1315,7 +1315,7 @@ export const useReadLightVerifyingPaymasterParsePaymasterAndData =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"senderNonce"`
  */
-export const useReadLightVerifyingPaymasterSenderNonce =
+export const useReadLighterifyingPaymasterSenderNonce =
   /*#__PURE__*/ createUseReadContract({
     abi: lightVerifyingPaymasterAbi,
     functionName: 'senderNonce',
@@ -1324,7 +1324,7 @@ export const useReadLightVerifyingPaymasterSenderNonce =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"verifyingSigner"`
  */
-export const useReadLightVerifyingPaymasterVerifyingSigner =
+export const useReadLighterifyingPaymasterVerifyingSigner =
   /*#__PURE__*/ createUseReadContract({
     abi: lightVerifyingPaymasterAbi,
     functionName: 'verifyingSigner',
@@ -1333,13 +1333,13 @@ export const useReadLightVerifyingPaymasterVerifyingSigner =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__
  */
-export const useWriteLightVerifyingPaymaster =
+export const useWriteLighterifyingPaymaster =
   /*#__PURE__*/ createUseWriteContract({ abi: lightVerifyingPaymasterAbi })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"addStake"`
  */
-export const useWriteLightVerifyingPaymasterAddStake =
+export const useWriteLighterifyingPaymasterAddStake =
   /*#__PURE__*/ createUseWriteContract({
     abi: lightVerifyingPaymasterAbi,
     functionName: 'addStake',
@@ -1348,7 +1348,7 @@ export const useWriteLightVerifyingPaymasterAddStake =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"deposit"`
  */
-export const useWriteLightVerifyingPaymasterDeposit =
+export const useWriteLighterifyingPaymasterDeposit =
   /*#__PURE__*/ createUseWriteContract({
     abi: lightVerifyingPaymasterAbi,
     functionName: 'deposit',
@@ -1357,7 +1357,7 @@ export const useWriteLightVerifyingPaymasterDeposit =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"postOp"`
  */
-export const useWriteLightVerifyingPaymasterPostOp =
+export const useWriteLighterifyingPaymasterPostOp =
   /*#__PURE__*/ createUseWriteContract({
     abi: lightVerifyingPaymasterAbi,
     functionName: 'postOp',
@@ -1366,7 +1366,7 @@ export const useWriteLightVerifyingPaymasterPostOp =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"renounceOwnership"`
  */
-export const useWriteLightVerifyingPaymasterRenounceOwnership =
+export const useWriteLighterifyingPaymasterRenounceOwnership =
   /*#__PURE__*/ createUseWriteContract({
     abi: lightVerifyingPaymasterAbi,
     functionName: 'renounceOwnership',
@@ -1375,7 +1375,7 @@ export const useWriteLightVerifyingPaymasterRenounceOwnership =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"transferOwnership"`
  */
-export const useWriteLightVerifyingPaymasterTransferOwnership =
+export const useWriteLighterifyingPaymasterTransferOwnership =
   /*#__PURE__*/ createUseWriteContract({
     abi: lightVerifyingPaymasterAbi,
     functionName: 'transferOwnership',
@@ -1384,7 +1384,7 @@ export const useWriteLightVerifyingPaymasterTransferOwnership =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"unlockStake"`
  */
-export const useWriteLightVerifyingPaymasterUnlockStake =
+export const useWriteLighterifyingPaymasterUnlockStake =
   /*#__PURE__*/ createUseWriteContract({
     abi: lightVerifyingPaymasterAbi,
     functionName: 'unlockStake',
@@ -1393,7 +1393,7 @@ export const useWriteLightVerifyingPaymasterUnlockStake =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"validatePaymasterUserOp"`
  */
-export const useWriteLightVerifyingPaymasterValidatePaymasterUserOp =
+export const useWriteLighterifyingPaymasterValidatePaymasterUserOp =
   /*#__PURE__*/ createUseWriteContract({
     abi: lightVerifyingPaymasterAbi,
     functionName: 'validatePaymasterUserOp',
@@ -1402,7 +1402,7 @@ export const useWriteLightVerifyingPaymasterValidatePaymasterUserOp =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"withdrawStake"`
  */
-export const useWriteLightVerifyingPaymasterWithdrawStake =
+export const useWriteLighterifyingPaymasterWithdrawStake =
   /*#__PURE__*/ createUseWriteContract({
     abi: lightVerifyingPaymasterAbi,
     functionName: 'withdrawStake',
@@ -1411,7 +1411,7 @@ export const useWriteLightVerifyingPaymasterWithdrawStake =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"withdrawTo"`
  */
-export const useWriteLightVerifyingPaymasterWithdrawTo =
+export const useWriteLighterifyingPaymasterWithdrawTo =
   /*#__PURE__*/ createUseWriteContract({
     abi: lightVerifyingPaymasterAbi,
     functionName: 'withdrawTo',
@@ -1420,13 +1420,13 @@ export const useWriteLightVerifyingPaymasterWithdrawTo =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__
  */
-export const useSimulateLightVerifyingPaymaster =
+export const useSimulateLighterifyingPaymaster =
   /*#__PURE__*/ createUseSimulateContract({ abi: lightVerifyingPaymasterAbi })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"addStake"`
  */
-export const useSimulateLightVerifyingPaymasterAddStake =
+export const useSimulateLighterifyingPaymasterAddStake =
   /*#__PURE__*/ createUseSimulateContract({
     abi: lightVerifyingPaymasterAbi,
     functionName: 'addStake',
@@ -1435,7 +1435,7 @@ export const useSimulateLightVerifyingPaymasterAddStake =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"deposit"`
  */
-export const useSimulateLightVerifyingPaymasterDeposit =
+export const useSimulateLighterifyingPaymasterDeposit =
   /*#__PURE__*/ createUseSimulateContract({
     abi: lightVerifyingPaymasterAbi,
     functionName: 'deposit',
@@ -1444,7 +1444,7 @@ export const useSimulateLightVerifyingPaymasterDeposit =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"postOp"`
  */
-export const useSimulateLightVerifyingPaymasterPostOp =
+export const useSimulateLighterifyingPaymasterPostOp =
   /*#__PURE__*/ createUseSimulateContract({
     abi: lightVerifyingPaymasterAbi,
     functionName: 'postOp',
@@ -1453,7 +1453,7 @@ export const useSimulateLightVerifyingPaymasterPostOp =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"renounceOwnership"`
  */
-export const useSimulateLightVerifyingPaymasterRenounceOwnership =
+export const useSimulateLighterifyingPaymasterRenounceOwnership =
   /*#__PURE__*/ createUseSimulateContract({
     abi: lightVerifyingPaymasterAbi,
     functionName: 'renounceOwnership',
@@ -1462,7 +1462,7 @@ export const useSimulateLightVerifyingPaymasterRenounceOwnership =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"transferOwnership"`
  */
-export const useSimulateLightVerifyingPaymasterTransferOwnership =
+export const useSimulateLighterifyingPaymasterTransferOwnership =
   /*#__PURE__*/ createUseSimulateContract({
     abi: lightVerifyingPaymasterAbi,
     functionName: 'transferOwnership',
@@ -1471,7 +1471,7 @@ export const useSimulateLightVerifyingPaymasterTransferOwnership =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"unlockStake"`
  */
-export const useSimulateLightVerifyingPaymasterUnlockStake =
+export const useSimulateLighterifyingPaymasterUnlockStake =
   /*#__PURE__*/ createUseSimulateContract({
     abi: lightVerifyingPaymasterAbi,
     functionName: 'unlockStake',
@@ -1480,7 +1480,7 @@ export const useSimulateLightVerifyingPaymasterUnlockStake =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"validatePaymasterUserOp"`
  */
-export const useSimulateLightVerifyingPaymasterValidatePaymasterUserOp =
+export const useSimulateLighterifyingPaymasterValidatePaymasterUserOp =
   /*#__PURE__*/ createUseSimulateContract({
     abi: lightVerifyingPaymasterAbi,
     functionName: 'validatePaymasterUserOp',
@@ -1489,7 +1489,7 @@ export const useSimulateLightVerifyingPaymasterValidatePaymasterUserOp =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"withdrawStake"`
  */
-export const useSimulateLightVerifyingPaymasterWithdrawStake =
+export const useSimulateLighterifyingPaymasterWithdrawStake =
   /*#__PURE__*/ createUseSimulateContract({
     abi: lightVerifyingPaymasterAbi,
     functionName: 'withdrawStake',
@@ -1498,7 +1498,7 @@ export const useSimulateLightVerifyingPaymasterWithdrawStake =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `functionName` set to `"withdrawTo"`
  */
-export const useSimulateLightVerifyingPaymasterWithdrawTo =
+export const useSimulateLighterifyingPaymasterWithdrawTo =
   /*#__PURE__*/ createUseSimulateContract({
     abi: lightVerifyingPaymasterAbi,
     functionName: 'withdrawTo',
@@ -1507,13 +1507,13 @@ export const useSimulateLightVerifyingPaymasterWithdrawTo =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__
  */
-export const useWatchLightVerifyingPaymasterEvent =
+export const useWatchLighterifyingPaymasterEvent =
   /*#__PURE__*/ createUseWatchContractEvent({ abi: lightVerifyingPaymasterAbi })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightVerifyingPaymasterAbi}__ and `eventName` set to `"OwnershipTransferred"`
  */
-export const useWatchLightVerifyingPaymasterOwnershipTransferredEvent =
+export const useWatchLighterifyingPaymasterOwnershipTransferredEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: lightVerifyingPaymasterAbi,
     eventName: 'OwnershipTransferred',
@@ -1522,14 +1522,14 @@ export const useWatchLightVerifyingPaymasterOwnershipTransferredEvent =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__
  */
-export const useReadLightWallet = /*#__PURE__*/ createUseReadContract({
+export const useReadLightallet = /*#__PURE__*/ createUseReadContract({
   abi: lightWalletAbi,
 })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"NAME"`
  */
-export const useReadLightWalletName = /*#__PURE__*/ createUseReadContract({
+export const useReadLightalletName = /*#__PURE__*/ createUseReadContract({
   abi: lightWalletAbi,
   functionName: 'NAME',
 })
@@ -1537,7 +1537,7 @@ export const useReadLightWalletName = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"SET_IMAGE_HASH_TYPE_HASH"`
  */
-export const useReadLightWalletSetImageHashTypeHash =
+export const useReadLightalletSetImageHashTypeHash =
   /*#__PURE__*/ createUseReadContract({
     abi: lightWalletAbi,
     functionName: 'SET_IMAGE_HASH_TYPE_HASH',
@@ -1546,7 +1546,7 @@ export const useReadLightWalletSetImageHashTypeHash =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"VERSION"`
  */
-export const useReadLightWalletVersion = /*#__PURE__*/ createUseReadContract({
+export const useReadLightalletVersion = /*#__PURE__*/ createUseReadContract({
   abi: lightWalletAbi,
   functionName: 'VERSION',
 })
@@ -1554,14 +1554,14 @@ export const useReadLightWalletVersion = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"entryPoint"`
  */
-export const useReadLightWalletEntryPoint = /*#__PURE__*/ createUseReadContract(
+export const useReadLightalletEntryPoint = /*#__PURE__*/ createUseReadContract(
   { abi: lightWalletAbi, functionName: 'entryPoint' },
 )
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"getNonce"`
  */
-export const useReadLightWalletGetNonce = /*#__PURE__*/ createUseReadContract({
+export const useReadLightalletGetNonce = /*#__PURE__*/ createUseReadContract({
   abi: lightWalletAbi,
   functionName: 'getNonce',
 })
@@ -1569,7 +1569,7 @@ export const useReadLightWalletGetNonce = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"imageHash"`
  */
-export const useReadLightWalletImageHash = /*#__PURE__*/ createUseReadContract({
+export const useReadLightalletImageHash = /*#__PURE__*/ createUseReadContract({
   abi: lightWalletAbi,
   functionName: 'imageHash',
 })
@@ -1577,7 +1577,7 @@ export const useReadLightWalletImageHash = /*#__PURE__*/ createUseReadContract({
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"isValidSignature"`
  */
-export const useReadLightWalletIsValidSignature =
+export const useReadLightalletIsValidSignature =
   /*#__PURE__*/ createUseReadContract({
     abi: lightWalletAbi,
     functionName: 'isValidSignature',
@@ -1586,7 +1586,7 @@ export const useReadLightWalletIsValidSignature =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"onERC1155BatchReceived"`
  */
-export const useReadLightWalletOnErc1155BatchReceived =
+export const useReadLightalletOnErc1155BatchReceived =
   /*#__PURE__*/ createUseReadContract({
     abi: lightWalletAbi,
     functionName: 'onERC1155BatchReceived',
@@ -1595,7 +1595,7 @@ export const useReadLightWalletOnErc1155BatchReceived =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"onERC1155Received"`
  */
-export const useReadLightWalletOnErc1155Received =
+export const useReadLightalletOnErc1155Received =
   /*#__PURE__*/ createUseReadContract({
     abi: lightWalletAbi,
     functionName: 'onERC1155Received',
@@ -1604,7 +1604,7 @@ export const useReadLightWalletOnErc1155Received =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"onERC721Received"`
  */
-export const useReadLightWalletOnErc721Received =
+export const useReadLightalletOnErc721Received =
   /*#__PURE__*/ createUseReadContract({
     abi: lightWalletAbi,
     functionName: 'onERC721Received',
@@ -1613,7 +1613,7 @@ export const useReadLightWalletOnErc721Received =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"proxiableUUID"`
  */
-export const useReadLightWalletProxiableUuid =
+export const useReadLightalletProxiableUuid =
   /*#__PURE__*/ createUseReadContract({
     abi: lightWalletAbi,
     functionName: 'proxiableUUID',
@@ -1622,7 +1622,7 @@ export const useReadLightWalletProxiableUuid =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"signatureRecovery"`
  */
-export const useReadLightWalletSignatureRecovery =
+export const useReadLightalletSignatureRecovery =
   /*#__PURE__*/ createUseReadContract({
     abi: lightWalletAbi,
     functionName: 'signatureRecovery',
@@ -1631,7 +1631,7 @@ export const useReadLightWalletSignatureRecovery =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"supportsInterface"`
  */
-export const useReadLightWalletSupportsInterface =
+export const useReadLightalletSupportsInterface =
   /*#__PURE__*/ createUseReadContract({
     abi: lightWalletAbi,
     functionName: 'supportsInterface',
@@ -1640,7 +1640,7 @@ export const useReadLightWalletSupportsInterface =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"tokensReceived"`
  */
-export const useReadLightWalletTokensReceived =
+export const useReadLightalletTokensReceived =
   /*#__PURE__*/ createUseReadContract({
     abi: lightWalletAbi,
     functionName: 'tokensReceived',
@@ -1649,14 +1649,14 @@ export const useReadLightWalletTokensReceived =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightWalletAbi}__
  */
-export const useWriteLightWallet = /*#__PURE__*/ createUseWriteContract({
+export const useWriteLightallet = /*#__PURE__*/ createUseWriteContract({
   abi: lightWalletAbi,
 })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"execute"`
  */
-export const useWriteLightWalletExecute = /*#__PURE__*/ createUseWriteContract({
+export const useWriteLightalletExecute = /*#__PURE__*/ createUseWriteContract({
   abi: lightWalletAbi,
   functionName: 'execute',
 })
@@ -1664,7 +1664,7 @@ export const useWriteLightWalletExecute = /*#__PURE__*/ createUseWriteContract({
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"executeBatch"`
  */
-export const useWriteLightWalletExecuteBatch =
+export const useWriteLightalletExecuteBatch =
   /*#__PURE__*/ createUseWriteContract({
     abi: lightWalletAbi,
     functionName: 'executeBatch',
@@ -1673,7 +1673,7 @@ export const useWriteLightWalletExecuteBatch =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"initialize"`
  */
-export const useWriteLightWalletInitialize =
+export const useWriteLightalletInitialize =
   /*#__PURE__*/ createUseWriteContract({
     abi: lightWalletAbi,
     functionName: 'initialize',
@@ -1682,7 +1682,7 @@ export const useWriteLightWalletInitialize =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"updateImageHash"`
  */
-export const useWriteLightWalletUpdateImageHash =
+export const useWriteLightalletUpdateImageHash =
   /*#__PURE__*/ createUseWriteContract({
     abi: lightWalletAbi,
     functionName: 'updateImageHash',
@@ -1691,7 +1691,7 @@ export const useWriteLightWalletUpdateImageHash =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"upgradeTo"`
  */
-export const useWriteLightWalletUpgradeTo =
+export const useWriteLightalletUpgradeTo =
   /*#__PURE__*/ createUseWriteContract({
     abi: lightWalletAbi,
     functionName: 'upgradeTo',
@@ -1700,7 +1700,7 @@ export const useWriteLightWalletUpgradeTo =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"upgradeToAndCall"`
  */
-export const useWriteLightWalletUpgradeToAndCall =
+export const useWriteLightalletUpgradeToAndCall =
   /*#__PURE__*/ createUseWriteContract({
     abi: lightWalletAbi,
     functionName: 'upgradeToAndCall',
@@ -1709,7 +1709,7 @@ export const useWriteLightWalletUpgradeToAndCall =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"validateUserOp"`
  */
-export const useWriteLightWalletValidateUserOp =
+export const useWriteLightalletValidateUserOp =
   /*#__PURE__*/ createUseWriteContract({
     abi: lightWalletAbi,
     functionName: 'validateUserOp',
@@ -1718,14 +1718,14 @@ export const useWriteLightWalletValidateUserOp =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightWalletAbi}__
  */
-export const useSimulateLightWallet = /*#__PURE__*/ createUseSimulateContract({
+export const useSimulateLightallet = /*#__PURE__*/ createUseSimulateContract({
   abi: lightWalletAbi,
 })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"execute"`
  */
-export const useSimulateLightWalletExecute =
+export const useSimulateLightalletExecute =
   /*#__PURE__*/ createUseSimulateContract({
     abi: lightWalletAbi,
     functionName: 'execute',
@@ -1734,7 +1734,7 @@ export const useSimulateLightWalletExecute =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"executeBatch"`
  */
-export const useSimulateLightWalletExecuteBatch =
+export const useSimulateLightalletExecuteBatch =
   /*#__PURE__*/ createUseSimulateContract({
     abi: lightWalletAbi,
     functionName: 'executeBatch',
@@ -1743,7 +1743,7 @@ export const useSimulateLightWalletExecuteBatch =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"initialize"`
  */
-export const useSimulateLightWalletInitialize =
+export const useSimulateLightalletInitialize =
   /*#__PURE__*/ createUseSimulateContract({
     abi: lightWalletAbi,
     functionName: 'initialize',
@@ -1752,7 +1752,7 @@ export const useSimulateLightWalletInitialize =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"updateImageHash"`
  */
-export const useSimulateLightWalletUpdateImageHash =
+export const useSimulateLightalletUpdateImageHash =
   /*#__PURE__*/ createUseSimulateContract({
     abi: lightWalletAbi,
     functionName: 'updateImageHash',
@@ -1761,7 +1761,7 @@ export const useSimulateLightWalletUpdateImageHash =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"upgradeTo"`
  */
-export const useSimulateLightWalletUpgradeTo =
+export const useSimulateLightalletUpgradeTo =
   /*#__PURE__*/ createUseSimulateContract({
     abi: lightWalletAbi,
     functionName: 'upgradeTo',
@@ -1770,7 +1770,7 @@ export const useSimulateLightWalletUpgradeTo =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"upgradeToAndCall"`
  */
-export const useSimulateLightWalletUpgradeToAndCall =
+export const useSimulateLightalletUpgradeToAndCall =
   /*#__PURE__*/ createUseSimulateContract({
     abi: lightWalletAbi,
     functionName: 'upgradeToAndCall',
@@ -1779,7 +1779,7 @@ export const useSimulateLightWalletUpgradeToAndCall =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightWalletAbi}__ and `functionName` set to `"validateUserOp"`
  */
-export const useSimulateLightWalletValidateUserOp =
+export const useSimulateLightalletValidateUserOp =
   /*#__PURE__*/ createUseSimulateContract({
     abi: lightWalletAbi,
     functionName: 'validateUserOp',
@@ -1788,13 +1788,13 @@ export const useSimulateLightWalletValidateUserOp =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightWalletAbi}__
  */
-export const useWatchLightWalletEvent =
+export const useWatchLightalletEvent =
   /*#__PURE__*/ createUseWatchContractEvent({ abi: lightWalletAbi })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightWalletAbi}__ and `eventName` set to `"AdminChanged"`
  */
-export const useWatchLightWalletAdminChangedEvent =
+export const useWatchLightalletAdminChangedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: lightWalletAbi,
     eventName: 'AdminChanged',
@@ -1803,7 +1803,7 @@ export const useWatchLightWalletAdminChangedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightWalletAbi}__ and `eventName` set to `"BeaconUpgraded"`
  */
-export const useWatchLightWalletBeaconUpgradedEvent =
+export const useWatchLightalletBeaconUpgradedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: lightWalletAbi,
     eventName: 'BeaconUpgraded',
@@ -1812,7 +1812,7 @@ export const useWatchLightWalletBeaconUpgradedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightWalletAbi}__ and `eventName` set to `"ImageHashUpdated"`
  */
-export const useWatchLightWalletImageHashUpdatedEvent =
+export const useWatchLightalletImageHashUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: lightWalletAbi,
     eventName: 'ImageHashUpdated',
@@ -1821,25 +1821,25 @@ export const useWatchLightWalletImageHashUpdatedEvent =
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightWalletAbi}__ and `eventName` set to `"Initialized"`
  */
-export const useWatchLightWalletInitializedEvent =
+export const useWatchLightalletInitializedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: lightWalletAbi,
     eventName: 'Initialized',
   })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightWalletAbi}__ and `eventName` set to `"LightWalletInitialized"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightWalletAbi}__ and `eventName` set to `"LightalletInitialized"`
  */
-export const useWatchLightWalletLightWalletInitializedEvent =
+export const useWatchLightalletLightalletInitializedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: lightWalletAbi,
-    eventName: 'LightWalletInitialized',
+    eventName: 'LightalletInitialized',
   })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link lightWalletAbi}__ and `eventName` set to `"Upgraded"`
  */
-export const useWatchLightWalletUpgradedEvent =
+export const useWatchLightalletUpgradedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: lightWalletAbi,
     eventName: 'Upgraded',
@@ -1848,14 +1848,14 @@ export const useWatchLightWalletUpgradedEvent =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletFactoryAbi}__
  */
-export const useReadLightWalletFactory = /*#__PURE__*/ createUseReadContract({
+export const useReadLightalletFactory = /*#__PURE__*/ createUseReadContract({
   abi: lightWalletFactoryAbi,
 })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletFactoryAbi}__ and `functionName` set to `"NAME"`
  */
-export const useReadLightWalletFactoryName =
+export const useReadLightalletFactoryName =
   /*#__PURE__*/ createUseReadContract({
     abi: lightWalletFactoryAbi,
     functionName: 'NAME',
@@ -1864,7 +1864,7 @@ export const useReadLightWalletFactoryName =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletFactoryAbi}__ and `functionName` set to `"VERSION"`
  */
-export const useReadLightWalletFactoryVersion =
+export const useReadLightalletFactoryVersion =
   /*#__PURE__*/ createUseReadContract({
     abi: lightWalletFactoryAbi,
     functionName: 'VERSION',
@@ -1873,7 +1873,7 @@ export const useReadLightWalletFactoryVersion =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletFactoryAbi}__ and `functionName` set to `"accountImplementation"`
  */
-export const useReadLightWalletFactoryAccountImplementation =
+export const useReadLightalletFactoryAccountImplementation =
   /*#__PURE__*/ createUseReadContract({
     abi: lightWalletFactoryAbi,
     functionName: 'accountImplementation',
@@ -1882,7 +1882,7 @@ export const useReadLightWalletFactoryAccountImplementation =
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link lightWalletFactoryAbi}__ and `functionName` set to `"getAddress"`
  */
-export const useReadLightWalletFactoryGetAddress =
+export const useReadLightalletFactoryGetAddress =
   /*#__PURE__*/ createUseReadContract({
     abi: lightWalletFactoryAbi,
     functionName: 'getAddress',
@@ -1891,14 +1891,14 @@ export const useReadLightWalletFactoryGetAddress =
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightWalletFactoryAbi}__
  */
-export const useWriteLightWalletFactory = /*#__PURE__*/ createUseWriteContract({
+export const useWriteLightalletFactory = /*#__PURE__*/ createUseWriteContract({
   abi: lightWalletFactoryAbi,
 })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link lightWalletFactoryAbi}__ and `functionName` set to `"createAccount"`
  */
-export const useWriteLightWalletFactoryCreateAccount =
+export const useWriteLightalletFactoryCreateAccount =
   /*#__PURE__*/ createUseWriteContract({
     abi: lightWalletFactoryAbi,
     functionName: 'createAccount',
@@ -1907,13 +1907,13 @@ export const useWriteLightWalletFactoryCreateAccount =
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightWalletFactoryAbi}__
  */
-export const useSimulateLightWalletFactory =
+export const useSimulateLightalletFactory =
   /*#__PURE__*/ createUseSimulateContract({ abi: lightWalletFactoryAbi })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link lightWalletFactoryAbi}__ and `functionName` set to `"createAccount"`
  */
-export const useSimulateLightWalletFactoryCreateAccount =
+export const useSimulateLightalletFactoryCreateAccount =
   /*#__PURE__*/ createUseSimulateContract({
     abi: lightWalletFactoryAbi,
     functionName: 'createAccount',

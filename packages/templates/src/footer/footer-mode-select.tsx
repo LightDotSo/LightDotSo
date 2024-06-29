@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import {
 } from "@lightdotso/ui";
 import { useTheme } from "next-themes";
 import type { FC, SVGProps } from "react";
-import { FaMoon, FaSun, FaRegLightbulb } from "react-icons/fa";
+import { FaMoon, FaSun, FaRegLightulb } from "react-icons/fa";
 
 // -----------------------------------------------------------------------------
 // Const
@@ -38,7 +38,7 @@ const themes = [
     },
   },
   {
-    name: "Light",
+    name: "Light,
     value: "light",
     icon: (props: SVGProps<SVGSVGElement>) => {
       return <FaSun className="text-contrast-medium" {...props} />;
@@ -48,7 +48,7 @@ const themes = [
     name: "System",
     value: "system",
     icon: (props: SVGProps<SVGSVGElement>) => {
-      return <FaRegLightbulb className="text-contrast-medium" {...props} />;
+      return <FaRegLightulb className="text-contrast-medium" {...props} />;
     },
   },
 ];

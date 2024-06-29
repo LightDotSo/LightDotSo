@@ -11,14 +11,14 @@
         "../Brewfile",
         "../Brewfile.lock.json",
         "../Makefile",
-        "LightWallet/**",
-        "LightWallet.xcodeproj/**",
-        "LightWallet.xcworkspace/**",
-        "LightWalletBuildTools/**",
-        "LightWalletCore/**",
-        "LightWalletSafariExtension/**",
-        "LightWalletTests/**",
-        "LightWalletUITests/**"
+        "Lightallet/**",
+        "Lightallet.xcodeproj/**",
+        "Lightallet.xcworkspace/**",
+        "LightalletBuildTools/**",
+        "LightalletCore/**",
+        "LightalletSafariExtension/**",
+        "LightalletTests/**",
+        "LightalletUITests/**"
       ],
       "outputs": []
     }

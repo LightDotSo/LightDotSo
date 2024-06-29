@@ -1,4 +1,4 @@
-# Heavily inspired by Lighthouse: https://github.com/sigp/lighthouse/blob/693886b94176faa4cb450f024696cb69cda2fe58/Makefile
+# Heavily inspired by Lightouse: https://github.com/sigp/lighthouse/blob/693886b94176faa4cb450f024696cb69cda2fe58/Makefile
 # Also from Reth: https://github.com/paradigmxyz/reth/blob/7da36e042125397af89b9b477f9292dc676e69f8/Makefile
 # And from: https://github.com/Terrahop/react-native-rust-demo/blob/30a70fe16148c33ded2f3789b303a52ad5dd6b72/rust/Makefile
 # Some: https://github.com/xmtp/libxmtp/blob/1491ccb6d3f9ae6ff7671435f0df81545044bb44/bindings_swift/Makefile
@@ -110,38 +110,38 @@ bindgen-swift: ## Generate the Swift bindings.
 	mkdir -p $(TARGET_DIR)/Generated
 	cp -r $(CRATES_DIR)/src $(TARGET_DIR)/Generated/
 	find $(TARGET_DIR)/Generated -type f -name "*.swift" -delete
-	cargo uniffi-bindgen generate $(CRATES_DIR)/src/LightWalletCore.udl --language swift
-	sed -i '' 's/module\ LightWalletCoreFFI/framework\ module\ LightWalletCoreFFI/' $(CRATES_DIR)/src/LightWalletCoreFFI.modulemap
+	cargo uniffi-bindgen generate $(CRATES_DIR)/src/LightalletCore.udl --language swift
+	sed -i '' 's/module\ LightalletCoreFFI/framework\ module\ LightalletCoreFFI/' $(CRATES_DIR)/src/LightalletCoreFFI.modulemap
 
 .PHONY: xcframework
 xcframework: ## Build the xcframework for iOS and macOS.
-	rm -rf $(TARGET_DIR)/LightWalletCoreFFI.framework || echo "Skip removing framework"
+	rm -rf $(TARGET_DIR)/LightalletCoreFFI.framework || echo "Skip removing framework"
 	xcodebuild -create-xcframework \
 		-library ./$(TARGET_DIR)/lipo_macos/$(STATIC_LIB_NAME) \
 		-headers ./$(TARGET_DIR)/Generated/ \
 		-library ./$(TARGET_DIR)/lipo_ios_simulator/$(STATIC_LIB_NAME) \
 		-headers ./$(TARGET_DIR)/Generated/ \
-		-output $(TARGET_DIR)/LightWalletCoreFFI.xcframework
+		-output $(TARGET_DIR)/LightalletCoreFFI.xcframework
 
 .PHONY: cp-xcframework-source
 cp-xcframework-source: ## Copy the xcframework to the iOS project.
-	cp -r $(TARGET_DIR)/LightWalletCoreFFI.xcframework ios
-	cp $(CRATES_DIR)/src/LightWalletCore.swift ios/LightWalletCore/Sources/Generated
+	cp -r $(TARGET_DIR)/LightalletCoreFFI.xcframework ios
+	cp $(CRATES_DIR)/src/LightalletCore.swift ios/LightalletCore/Sources/Generated
 
 ##@ Old Overrides
 
 .PHONY: assemble-frameworks
 assemble-frameworks: # Temporary override for old build system
-	find . -type d -name LightWalletCoreFFI.framework -exec rm -rf {} \; || echo "rm failed"
-	cd target/x86_64-apple-ios/release && mkdir -p LightWalletCoreFFI.framework && cd LightWalletCoreFFI.framework && mkdir Headers Modules && cp ../../../../crates/core/src/LightWalletCoreFFI.modulemap ./Modules/module.modulemap && cp ../../../../crates/core/src/LightWalletCoreFFI.h ./Headers/LightWalletCoreFFI.h && cp ../$(STATIC_LIB_NAME) ./LightWalletCoreFFI
-	cd target/aarch64-apple-ios-sim/release && mkdir -p LightWalletCoreFFI.framework && cd LightWalletCoreFFI.framework && mkdir Headers Modules && cp ../../../../crates/core/src/LightWalletCoreFFI.modulemap ./Modules/module.modulemap && cp ../../../../crates/core/src/LightWalletCoreFFI.h ./Headers/LightWalletCoreFFI.h && cp ../$(STATIC_LIB_NAME) ./LightWalletCoreFFI
-	cd target/aarch64-apple-ios/release && mkdir -p LightWalletCoreFFI.framework && cd LightWalletCoreFFI.framework && mkdir Headers Modules && cp ../../../../crates/core/src/LightWalletCoreFFI.modulemap ./Modules/module.modulemap && cp ../../../../crates/core/src/LightWalletCoreFFI.h ./Headers/LightWalletCoreFFI.h && cp ../$(STATIC_LIB_NAME) ./LightWalletCoreFFI
+	find . -type d -name LightalletCoreFFI.framework -exec rm -rf {} \; || echo "rm failed"
+	cd target/x86_64-apple-ios/release && mkdir -p LightalletCoreFFI.framework && cd LightalletCoreFFI.framework && mkdir Headers Modules && cp ../../../../crates/core/src/LightalletCoreFFI.modulemap ./Modules/module.modulemap && cp ../../../../crates/core/src/LightalletCoreFFI.h ./Headers/LightalletCoreFFI.h && cp ../$(STATIC_LIB_NAME) ./LightalletCoreFFI
+	cd target/aarch64-apple-ios-sim/release && mkdir -p LightalletCoreFFI.framework && cd LightalletCoreFFI.framework && mkdir Headers Modules && cp ../../../../crates/core/src/LightalletCoreFFI.modulemap ./Modules/module.modulemap && cp ../../../../crates/core/src/LightalletCoreFFI.h ./Headers/LightalletCoreFFI.h && cp ../$(STATIC_LIB_NAME) ./LightalletCoreFFI
+	cd target/aarch64-apple-ios/release && mkdir -p LightalletCoreFFI.framework && cd LightalletCoreFFI.framework && mkdir Headers Modules && cp ../../../../crates/core/src/LightalletCoreFFI.modulemap ./Modules/module.modulemap && cp ../../../../crates/core/src/LightalletCoreFFI.h ./Headers/LightalletCoreFFI.h && cp ../$(STATIC_LIB_NAME) ./LightalletCoreFFI
 
 .PHONY: xcframework
 xcframework:  # Temporary override for old build system
-	lipo -create target/x86_64-apple-ios/release/LightWalletCoreFFI.framework/LightWalletCoreFFI target/aarch64-apple-ios-sim/release/LightWalletCoreFFI.framework/LightWalletCoreFFI -output target/aarch64-apple-ios-sim/release/LightWalletCoreFFI.framework/LightWalletCoreFFI
-	rm -rf target/LightWalletCoreFFI.xcframework || echo "skip removing"
-	xcodebuild -create-xcframework -framework target/aarch64-apple-ios/release/LightWalletCoreFFI.framework -framework target/aarch64-apple-ios-sim/release/LightWalletCoreFFI.framework -output target/LightWalletCoreFFI.xcframework
+	lipo -create target/x86_64-apple-ios/release/LightalletCoreFFI.framework/LightalletCoreFFI target/aarch64-apple-ios-sim/release/LightalletCoreFFI.framework/LightalletCoreFFI -output target/aarch64-apple-ios-sim/release/LightalletCoreFFI.framework/LightalletCoreFFI
+	rm -rf target/LightalletCoreFFI.xcframework || echo "skip removing"
+	xcodebuild -create-xcframework -framework target/aarch64-apple-ios/release/LightalletCoreFFI.framework -framework target/aarch64-apple-ios-sim/release/LightalletCoreFFI.framework -output target/LightalletCoreFFI.xcframework
 
 ##@ Cargo
 
@@ -265,7 +265,7 @@ anvil: ## Run anvil
 
 .PHONY: local-wallet-deploy
 local-wallet-deploy: ## Deploy the contracts to local node
-	forge script contracts/script/LightWalletDeployer.s.sol -f http://localhost:8545 --broadcast
+	forge script contracts/script/LightalletDeployer.s.sol -f http://localhost:8545 --broadcast
 
 .PHONY: local-token-deploy
 local-token-deploy: ## Deploy the mock token to local node

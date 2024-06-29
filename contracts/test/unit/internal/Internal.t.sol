@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,9 +17,9 @@
 pragma solidity ^0.8.18;
 
 import {BaseTest} from "@/test/base/BaseTest.t.sol";
-import {LightWallet} from "@/contracts/LightWallet.sol";
+import {Lightallet} from "@/contracts/Lightallet.sol";
 
-/// @notice Unit tests for `LightWallet` for compatibility w/ ERC-165
+/// @notice Unit tests for `Lightallet` for compatibility w/ ERC-165
 contract InternalUnitTest is BaseTest {
     // -------------------------------------------------------------------------
     // Variables
@@ -68,7 +68,7 @@ contract InternalUnitTest is BaseTest {
         vm.prank(address(entryPoint));
         vm.expectRevert(bytes("wrong array lengths"));
         (bool success,) = address(account).call(
-            abi.encodeWithSelector(LightWallet.executeBatch.selector, callAddresses, callValues, callDatas)
+            abi.encodeWithSelector(Lightallet.executeBatch.selector, callAddresses, callValues, callDatas)
         );
         assertEq(success, true);
     }

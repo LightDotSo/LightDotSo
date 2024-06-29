@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,13 +17,13 @@
 pragma solidity ^0.8.18;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
+import {Lightallet, UserOperation} from "@/contracts/Lightallet.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
 using ERC4337Utils for EntryPoint;
 
-/// @notice Unit tests for `LightWallet` upgradeability
+/// @notice Unit tests for `Lightallet` upgradeability
 /// @notice See `ERC1271FuzzTest` for fuzz tests
 contract ImageHashUpgradabliityIntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
@@ -40,7 +40,7 @@ contract ImageHashUpgradabliityIntegrationTest is BaseIntegrationTest {
             vm,
             address(account),
             abi.encodeWithSelector(
-                LightWallet.execute.selector,
+                Lightallet.execute.selector,
                 address(account),
                 0,
                 abi.encodeWithSignature("updateImageHash(bytes32)", hash)
@@ -70,7 +70,7 @@ contract ImageHashUpgradabliityIntegrationTest is BaseIntegrationTest {
         vm.expectRevert(bytes("ImageHashIsZero"));
         (bool success,) = address(account).call(
             abi.encodeWithSelector(
-                LightWallet.execute.selector,
+                Lightallet.execute.selector,
                 address(account),
                 0,
                 abi.encodeWithSignature("updateImageHash(bytes32)", hash)
@@ -95,7 +95,7 @@ contract ImageHashUpgradabliityIntegrationTest is BaseIntegrationTest {
             vm,
             address(account),
             abi.encodeWithSelector(
-                LightWallet.execute.selector,
+                Lightallet.execute.selector,
                 address(account),
                 0,
                 abi.encodeWithSignature("updateImageHash(bytes32)", hash)

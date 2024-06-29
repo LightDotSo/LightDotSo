@@ -1,4 +1,4 @@
-LightWalletFactory.t.sol
+LightalletFactory.t.sol
 ├── If the entrypoint address is zero
 │  ├── It should revert
 │  └── It should revert on a {EntrypointAddressZero} error
@@ -10,8 +10,8 @@ LightWalletFactory.t.sol
       ├── When the address already exists
       │  └── It should return the existing address
       └── When the address does not exist
-         ├── It should deploy a new LightWallet
-         ├── It should deploy a new LightWallet with the correct hash
+         ├── It should deploy a new Lightallet
+         ├── It should deploy a new Lightallet with the correct hash
          ├── It should equal the {getAddress} function
          ├── It should not have a proxy admin
          └── It should not be able to initialize twice

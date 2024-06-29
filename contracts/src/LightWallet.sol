@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@
 
 pragma solidity ^0.8.18;
 
-// LightWallet.sol -- LightWallet initial implementation
+// Lightallet.sol -- Lightallet initial implementation
 
 // Core is heavily based by the work of @0xsequence (especially @Agusx1211)
 // Link: https://github.com/0xsequence/wallet-contracts/blob/46838284e90baf27cf93b944b056c0b4a64c9733/contracts/modules/MainModuleUpgradable.sol
@@ -52,13 +52,13 @@ import {TokenCallbackHandler} from
     "@eth-infinitism/account-abstraction/contracts/samples/callback/TokenCallbackHandler.sol";
 import {ModuleAuth} from "@0xsequence/wallet-contracts/contracts/modules/commons/ModuleAuth.sol";
 import {ModuleAuthUpgradable} from "@0xsequence/wallet-contracts/contracts/modules/commons/ModuleAuthUpgradable.sol";
-import {ILightWallet} from "@/contracts/interfaces/ILightWallet.sol";
+import {ILightallet} from "@/contracts/interfaces/ILightallet.sol";
 
-/// @title LightWallet
+/// @title Lightallet
 /// @author @shunkakinoki
-/// @notice LightWallet is an account abstraction contract
-contract LightWallet is
-    ILightWallet,
+/// @notice Lightallet is an account abstraction contract
+contract Lightallet is
+    ILightallet,
     ModuleAuthUpgradable,
     BaseAccount,
     TokenCallbackHandler,
@@ -70,7 +70,7 @@ contract LightWallet is
     // -------------------------------------------------------------------------
 
     /// @notice The name for this contract
-    string public constant NAME = "LightWallet";
+    string public constant NAME = "Lightallet";
 
     /// @notice The version for this contract
     string public constant VERSION = "0.3.0";
@@ -87,7 +87,7 @@ contract LightWallet is
     // -------------------------------------------------------------------------
 
     /// @inheritdoc BaseAccount
-    function entryPoint() public view virtual override(BaseAccount, ILightWallet) returns (IEntryPoint) {
+    function entryPoint() public view virtual override(BaseAccount, ILightallet) returns (IEntryPoint) {
         return _entryPoint;
     }
 
@@ -134,7 +134,7 @@ contract LightWallet is
     function isValidSignature(bytes32 hash, bytes calldata signatures)
         public
         view
-        override(ILightWallet, ModuleAuth)
+        override(ILightallet, ModuleAuth)
         returns (bytes4)
     {
         return super.isValidSignature(hash, signatures);
@@ -156,7 +156,7 @@ contract LightWallet is
     /// @notice Emits an event for the initialization of the contract
     function _initialize(bytes32 imageHash) internal virtual {
         _updateImageHash(imageHash);
-        emit LightWalletInitialized(_entryPoint, imageHash);
+        emit LightalletInitialized(_entryPoint, imageHash);
     }
 
     /// @inheritdoc BaseAccount
@@ -249,7 +249,7 @@ contract LightWallet is
     function supportsInterface(bytes4 interfaceId)
         public
         pure
-        override(ILightWallet, TokenCallbackHandler, ModuleAuthUpgradable)
+        override(ILightallet, TokenCallbackHandler, ModuleAuthUpgradable)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);

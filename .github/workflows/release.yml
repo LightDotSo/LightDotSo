@@ -29,7 +29,7 @@ jobs:
           token: ${{ secrets.BOT_TOKEN }}
       # - name: Git Config
       #   run: |
-      #     git config user.name "LightDotSoBot"
+      #     git config user.name "LightotSoBot"
       #     git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
       # - name: Node Install
       #   uses: wallet-rs/wallet-rs/.github/actions/node-install@main

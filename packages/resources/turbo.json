@@ -7,8 +7,8 @@
       "env": ["NODE_ENV"],
       "inputs": ["_locales", "images"],
       "outputs": [
-        "../../ios/LightWalletSafariExtension/Resources/_locales/**",
-        "../../ios/LightWalletSafariExtension/Resources/images/**",
+        "../../ios/LightalletSafariExtension/Resources/_locales/**",
+        "../../ios/LightalletSafariExtension/Resources/images/**",
         "../../apps/extension/chrome/_locales/**",
         "../../apps/extension/chrome/images/**",
         "../../apps/extension/firefox/_locales/**",

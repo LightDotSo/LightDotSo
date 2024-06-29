@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { LightHorizontalLogo } from "@lightdotso/svg";
+import { LightorizontalLogo } from "@lightdotso/svg";
 import { Footer } from "@lightdotso/templates";
 import { useTheme } from "next-themes";
 import { useConfig } from "nextra-theme-docs";
@@ -20,16 +20,16 @@ import type { DocsThemeConfig } from "nextra-theme-docs";
 
 const config: DocsThemeConfig = {
   chat: {
-    link: "https://discord.gg/LightDotSo",
+    link: "https://discord.gg/LightotSo",
   },
   docsRepositoryBase:
-    "https://github.com/LightDotSo/LightDotSo/blob/main/apps/docs",
+    "https://github.com/LightotSo/LightotSo/blob/main/apps/docs",
   editLink: {
     text: "Edit this page on GitHub",
   },
   faviconGlyph: "✦",
   project: {
-    link: "https://github.com/LightDotSo/LightDotSo",
+    link: "https://github.com/LightotSo/LightotSo",
   },
   sidebar: {
     autoCollapse: true,
@@ -37,18 +37,18 @@ const config: DocsThemeConfig = {
     toggleButton: true,
   },
   footer: { component: <Footer /> },
-  logo: <LightHorizontalLogo />,
+  logo: <LightorizontalLogo />,
   logoLink: "/",
   useNextSeoProps: function () {
     const { frontMatter } = useConfig();
     return {
-      title: frontMatter.title || "Light",
+      title: frontMatter.title || "Light,
       description:
-        frontMatter.description || "Light: EVM Chain Abstraction Protocol",
+        frontMatter.description || "Light EVM Chain Abstraction Protocol",
       openGraph: {
         images: [{ url: frontMatter.image || "https://docs.light.so/og.png" }],
       },
-      titleTemplate: "%s - Light",
+      titleTemplate: "%s - Light,
       twitter: {
         cardType: "summary_large_image",
         site: "https://docs.light.so",

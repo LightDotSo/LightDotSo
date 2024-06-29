@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 pragma solidity ^0.8.18;
 
-import {LightWallet} from "../LightWallet.sol";
+import {Lightallet} from "../Lightallet.sol";
 
-interface ILightWalletFactory {
+interface ILightalletFactory {
     // -------------------------------------------------------------------------
     // Errors
     // -------------------------------------------------------------------------
@@ -30,10 +30,10 @@ interface ILightWalletFactory {
     // -------------------------------------------------------------------------
 
     /// @notice Gets the address of the account implementation contract
-    function accountImplementation() external view returns (LightWallet);
+    function accountImplementation() external view returns (Lightallet);
 
     /// @notice Creates an account and returns its address
-    function createAccount(bytes32 hash, bytes32 salt) external returns (LightWallet);
+    function createAccount(bytes32 hash, bytes32 salt) external returns (Lightallet);
 
     /// @notice Calculates the counterfactual address of an account
     function getAddress(bytes32 hash, bytes32 salt) external view returns (address);

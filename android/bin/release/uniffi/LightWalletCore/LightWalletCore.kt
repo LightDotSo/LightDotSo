@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 
 @file:Suppress("NAME_SHADOWING")
 
-package uniffi.LightWalletCore
+package uniffi.LightalletCore
 
 // Common helper code.
 //
@@ -56,7 +56,7 @@ open class RustBuffer : Structure() {
 
   companion object {
     internal fun alloc(size: Int = 0) = rustCall() { status ->
-      _UniFFILib.INSTANCE.ffi_LightWalletCore_b5ee_rustbuffer_alloc(size, status).also {
+      _UniFFILib.INSTANCE.ffi_LightalletCore_b5ee_rustbuffer_alloc(size, status).also {
         if (it.data == null) {
           throw RuntimeException("RustBuffer.alloc() returned null data pointer (size=$size)")
         }
@@ -64,7 +64,7 @@ open class RustBuffer : Structure() {
     }
 
     internal fun free(buf: RustBuffer.ByValue) = rustCall() { status ->
-      _UniFFILib.INSTANCE.ffi_LightWalletCore_b5ee_rustbuffer_free(buf, status)
+      _UniFFILib.INSTANCE.ffi_LightalletCore_b5ee_rustbuffer_free(buf, status)
     }
   }
 
@@ -257,7 +257,7 @@ private fun findLibraryName(componentName: String): String {
   if (libOverride != null) {
     return libOverride
   }
-  return "uniffi_LightWalletCore"
+  return "uniffi_LightalletCore"
 }
 
 private inline fun <reified Lib : Library> loadIndirect(
@@ -272,39 +272,39 @@ private inline fun <reified Lib : Library> loadIndirect(
 internal interface _UniFFILib : Library {
   companion object {
     internal val INSTANCE: _UniFFILib by lazy {
-      loadIndirect<_UniFFILib>(componentName = "LightWalletCore")
+      loadIndirect<_UniFFILib>(componentName = "LightalletCore")
     }
   }
 
-  fun LightWalletCore_b5ee_rust_greeting(
+  fun LightalletCore_b5ee_rust_greeting(
     `name`: RustBuffer.ByValue,
     _uniffi_out_err: RustCallStatus,
   ): RustBuffer.ByValue
 
-  fun LightWalletCore_b5ee_rust_hello_world(
+  fun LightalletCore_b5ee_rust_hello_world(
     _uniffi_out_err: RustCallStatus,
   ): RustBuffer.ByValue
 
-  fun LightWalletCore_b5ee_keychain_hello_world(
+  fun LightalletCore_b5ee_keychain_hello_world(
     _uniffi_out_err: RustCallStatus,
   ): RustBuffer.ByValue
 
-  fun ffi_LightWalletCore_b5ee_rustbuffer_alloc(
+  fun ffi_LightalletCore_b5ee_rustbuffer_alloc(
     `size`: Int,
     _uniffi_out_err: RustCallStatus,
   ): RustBuffer.ByValue
 
-  fun ffi_LightWalletCore_b5ee_rustbuffer_from_bytes(
+  fun ffi_LightalletCore_b5ee_rustbuffer_from_bytes(
     `bytes`: ForeignBytes.ByValue,
     _uniffi_out_err: RustCallStatus,
   ): RustBuffer.ByValue
 
-  fun ffi_LightWalletCore_b5ee_rustbuffer_free(
+  fun ffi_LightalletCore_b5ee_rustbuffer_free(
     `buf`: RustBuffer.ByValue,
     _uniffi_out_err: RustCallStatus,
   ): Unit
 
-  fun ffi_LightWalletCore_b5ee_rustbuffer_reserve(
+  fun ffi_LightalletCore_b5ee_rustbuffer_reserve(
     `buf`: RustBuffer.ByValue,
     `additional`: Int,
     _uniffi_out_err: RustCallStatus,
@@ -362,7 +362,7 @@ public object FfiConverterString : FfiConverter<String, RustBuffer.ByValue> {
 fun `rustGreeting`(`name`: String): String {
   return FfiConverterString.lift(
     rustCall() { _status ->
-      _UniFFILib.INSTANCE.LightWalletCore_b5ee_rust_greeting(FfiConverterString.lower(`name`), _status)
+      _UniFFILib.INSTANCE.LightalletCore_b5ee_rust_greeting(FfiConverterString.lower(`name`), _status)
     },
   )
 }
@@ -370,7 +370,7 @@ fun `rustGreeting`(`name`: String): String {
 fun `rustHelloWorld`(): String {
   return FfiConverterString.lift(
     rustCall() { _status ->
-      _UniFFILib.INSTANCE.LightWalletCore_b5ee_rust_hello_world(_status)
+      _UniFFILib.INSTANCE.LightalletCore_b5ee_rust_hello_world(_status)
     },
   )
 }
@@ -378,7 +378,7 @@ fun `rustHelloWorld`(): String {
 fun `keychainHelloWorld`(): String {
   return FfiConverterString.lift(
     rustCall() { _status ->
-      _UniFFILib.INSTANCE.LightWalletCore_b5ee_keychain_hello_world(_status)
+      _UniFFILib.INSTANCE.LightalletCore_b5ee_keychain_hello_world(_status)
     },
   )
 }

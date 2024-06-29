@@ -615,7 +615,7 @@
   },
   {
     "type": "event",
-    "name": "LightWalletInitialized",
+    "name": "LightalletInitialized",
     "inputs": [
       {
         "name": "entryPoint",

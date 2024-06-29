@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ export const RootContext: FC = () => {
     if (pathname === "/new") {
       return [
         {
-          title: "Welcome to Light!",
+          title: "Welcome to Light",
           message:
             "You're about to create a new smart wallet that will work on the same address across all compatible EVM networks! This means you can use the same wallet on Ethereum, Optimism, and more!",
         },
@@ -171,7 +171,7 @@ export const RootContext: FC = () => {
             <div className="flex-col space-y-3 p-4">
               {pathname === "/new" && (
                 <div>
-                  Thank you for using Light!
+                  Thank you for using Light
                   <div className="mt-1.5 text-sm text-text-weak">
                     We&apos;re currently in private beta. Get on waitlist here
                     if you don&apos;t have an invite code yet.&nbsp;

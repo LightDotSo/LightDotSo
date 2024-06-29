@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,15 +19,15 @@ pragma solidity ^0.8.18;
 import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfaces/IEntryPoint.sol";
 import {IStakeManager} from "@eth-infinitism/account-abstraction/contracts/interfaces/IStakeManager.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
-import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {Lightallet, UserOperation} from "@/contracts/Lightallet.sol";
+import {LightalletFactory} from "@/contracts/LightalletFactory.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
 using ERC4337Utils for EntryPoint;
 
-/// @notice Unit tests for `LightWallet` upgradeability
-contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
+/// @notice Unit tests for `Lightallet` upgradeability
+contract LightalletFactoryIntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------
@@ -40,7 +40,7 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         nonce = bytes32(uint256(20));
 
         // The to-be-deployed account at expected Hash, nonce
-        wallet = LightWallet(payable(factory.getAddress(expectedImageHash, nonce)));
+        wallet = Lightallet(payable(factory.getAddress(expectedImageHash, nonce)));
 
         // Deposit 1e30 ETH into the account
         vm.deal(address(wallet), 1e30);
@@ -58,7 +58,7 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         nonce = bytes32(uint256(300));
 
         // The to-be-deployed account at expected Hash, nonce
-        LightWallet newWallet = LightWallet(payable(factory.getAddress(expectedImageHash, nonce)));
+        Lightallet newWallet = Lightallet(payable(factory.getAddress(expectedImageHash, nonce)));
 
         // Deposit 1e30 ETH into the account
         vm.deal(address(newWallet), 1e30);
@@ -66,7 +66,7 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         // Set the initCode to create an account with the expected image hash and nonce
         bytes memory initCode = abi.encodePacked(
             address(factory),
-            abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, nonce)
+            abi.encodeWithSelector(LightalletFactory.createAccount.selector, expectedImageHash, nonce)
         );
         // Example UserOperation to create the account
         UserOperation[] memory ops =
@@ -93,12 +93,12 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         bytes32 nonce = bytes32(uint256(123));
 
         // The to-be-deployed account at expected Hash, nonce
-        LightWallet newWallet = LightWallet(payable(factory.getAddress(expectedImageHash, nonce)));
+        Lightallet newWallet = Lightallet(payable(factory.getAddress(expectedImageHash, nonce)));
 
         // Set the initCode to create an account with the expected image hash and nonce
         bytes memory initCode = abi.encodePacked(
             address(factory),
-            abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, nonce)
+            abi.encodeWithSelector(LightalletFactory.createAccount.selector, expectedImageHash, nonce)
         );
 
         UserOperation[] memory ops =

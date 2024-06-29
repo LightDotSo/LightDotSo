@@ -1,6 +1,6 @@
-# Light Programmable Intents
+# LightProgrammable Intents
 
-Light Programmable Intents enables users to specify intents on [Light Layer](/features/light-layer), or preferences to enable programmatic asynchronous execution of cross-chain transactions.
+LightProgrammable Intents enables users to specify intents on [LightLayer](/features/light-layer), or preferences to enable programmatic asynchronous execution of cross-chain transactions.
 
 :::success
 Initially, it will be implemented as a centralized service, but the goal is to decentralize it over time as an EVM compatible L2 that settles on Ethereum.
@@ -8,7 +8,7 @@ Our focus is strictly on transaction initiation across all EVM chains, through u
 :::
 
 Cross-chain transactions are inherently asynchronous and require a dedicated mechanism to ensure that the desired outcome is achieved.
-Rather than trying to achieve interoperability through enshrined oracles, sequencers, or other forms of architecture that enables synchronous atomicity between a subset of chains, [Light Programmable Intents](/light-programmable-intents) aims to achieve "Programmable Atomicity", through user-defined preferences or intents across all EVM chains.
+Rather than trying to achieve interoperability through enshrined oracles, sequencers, or other forms of architecture that enables synchronous atomicity between a subset of chains, [LightProgrammable Intents](/light-programmable-intents) aims to achieve "Programmable Atomicity", through user-defined preferences or intents across all EVM chains.
 This enables users to authorize transactions where off-chain actors fulfill execution, and any form of arbitrary function call on the underlying chains can be executed with regards to user's preferences, and the desired outcome can be achieved with minimal friction as possible.
 
 :::info
@@ -35,7 +35,7 @@ There are three main types of intents:
   This intent is used to request conditional transactions, recurring transactions, or any other form of arbitrary function call on the underlying chains.
   Since cross-chain transactions are inherently asynchronous, this intent is used to ensure that the desired outcome is achieved for the end user.
 
-At Light, our [Intent Engine](/features/intent-engine) is responsible for processing the intents, and generates the [Programmable Intents](/light-programmable-intents) responses for the end user to ensure that the desired outcome is achieved, while ensuring fair pricing and outcome.
+At Light our [Intent Engine](/features/intent-engine) is responsible for processing the intents, and generates the [Programmable Intents](/light-programmable-intents) responses for the end user to ensure that the desired outcome is achieved, while ensuring fair pricing and outcome.
 See [Actors in the System](/light-programmable-intents/actors) for more information on the actors in the system, and how execution is conducted.
 
 ## Layers in the System
@@ -44,6 +44,6 @@ There are three main layers in the system:
 
 - [Intent Engine](/features/intent-engine): Responsible for processing the intents and generating the responses to fulfill the user's request.
 - [OFA Solvers](/light-programmable-intents/actors): Responsible for executing the transactions based on the user's preferences.
-- [Light Layer](/features/light-layer): Responsible for settling the cross-chain intent on behalf of the user.
+- [LightLayer](/features/light-layer): Responsible for settling the cross-chain intent on behalf of the user.
 
 ![layer-flow](layer-flow.png)

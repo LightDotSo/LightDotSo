@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,13 +19,13 @@ pragma solidity ^0.8.18;
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {MockERC20} from "solmate/test/utils/mocks/MockERC20.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
+import {Lightallet, UserOperation} from "@/contracts/Lightallet.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
 using ERC4337Utils for EntryPoint;
 
-/// @notice Integration tests for `LightWallet` batch sending ERC20
+/// @notice Integration tests for `Lightallet` batch sending ERC20
 contract BatchSendERC20IntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
     // Variables
@@ -72,7 +72,7 @@ contract BatchSendERC20IntegrationTest is BaseIntegrationTest {
         callDatas[2] = abi.encodeWithSelector(IERC20.transfer.selector, address(3), 3);
 
         // Set the operational callData
-        callData = abi.encodeWithSelector(LightWallet.executeBatch.selector, callAddresses, callValues, callDatas);
+        callData = abi.encodeWithSelector(Lightallet.executeBatch.selector, callAddresses, callValues, callDatas);
     }
 
     // -------------------------------------------------------------------------

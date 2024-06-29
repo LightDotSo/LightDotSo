@@ -2161,8 +2161,8 @@ export class UserOperation extends Entity {
     }
   }
 
-  get lightWallet(): LightWalletLoader {
-    return new LightWalletLoader(
+  get lightWallet(): LightalletLoader {
+    return new LightalletLoader(
       "UserOperation",
       this.get("id")!
         .toBytes()
@@ -2215,7 +2215,7 @@ export class UserOperation extends Entity {
   }
 }
 
-export class LightWallet extends Entity {
+export class Lightallet extends Entity {
   constructor(id: Bytes) {
     super();
     this.set("id", Value.fromBytes(id));
@@ -2223,25 +2223,25 @@ export class LightWallet extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save LightWallet entity without an ID");
+    assert(id != null, "Cannot save Lightallet entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.BYTES,
-        `Entities of type LightWallet must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        `Entities of type Lightallet must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
-      store.set("LightWallet", id.toBytes().toHexString(), this);
+      store.set("Lightallet", id.toBytes().toHexString(), this);
     }
   }
 
-  static loadInBlock(id: Bytes): LightWallet | null {
-    return changetype<LightWallet | null>(
-      store.get_in_block("LightWallet", id.toHexString())
+  static loadInBlock(id: Bytes): Lightallet | null {
+    return changetype<Lightallet | null>(
+      store.get_in_block("Lightallet", id.toHexString())
     );
   }
 
-  static load(id: Bytes): LightWallet | null {
-    return changetype<LightWallet | null>(
-      store.get("LightWallet", id.toHexString())
+  static load(id: Bytes): Lightallet | null {
+    return changetype<Lightallet | null>(
+      store.get("Lightallet", id.toHexString())
     );
   }
 
@@ -2552,7 +2552,7 @@ export class UserOperationLoader extends Entity {
   }
 }
 
-export class LightWalletLoader extends Entity {
+export class LightalletLoader extends Entity {
   _entity: string;
   _field: string;
   _id: string;
@@ -2564,9 +2564,9 @@ export class LightWalletLoader extends Entity {
     this._field = field;
   }
 
-  load(): LightWallet[] {
+  load(): Lightallet[] {
     let value = store.loadRelated(this._entity, this._id, this._field);
-    return changetype<LightWallet[]>(value);
+    return changetype<Lightallet[]>(value);
   }
 }
 

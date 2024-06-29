@@ -82,7 +82,7 @@
     "fly/graph/nginx/**",
     "packages/client/src/**/*.d.ts",
     "patches/**",
-    "ios/LightWalletSafariExtension/Resources/**/*.js",
+    "ios/LightalletSafariExtension/Resources/**/*.js",
     "**/__snapshots__/**",
     "**/*.app/**",
     "**/.cargo/**",

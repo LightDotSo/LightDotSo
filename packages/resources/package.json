@@ -2,16 +2,16 @@
   "name": "@lightdotso/resources",
   "version": "3.0.3",
   "private": true,
-  "homepage": "https://github.com/LightDotSo/LightDotSo",
+  "homepage": "https://github.com/LightotSo/LightotSo",
   "bugs": {
-    "url": "https://github.com/LightDotSo/LightDotSo/issues"
+    "url": "https://github.com/LightotSo/LightotSo/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/LightDotSo/LightDotSo.git"
+    "url": "https://github.com/LightotSo/LightotSo.git"
   },
   "license": "Apache-2.0",
-  "author": "Light, Inc.",
+  "author": "Light,
   "scripts": {
     "build": "pnpm run build:locales && pnpm run build:images",
     "build:images": "pnpm run cp:images:ios && pnpm run cp:images:chrome && pnpm run cp:images:firefox",
@@ -20,17 +20,17 @@
     "clean:images": "pnpm run clean:images:ios && pnpm run clean:images:chrome && pnpm run clean:images:firefox",
     "clean:images:chrome": "rimraf ../../apps/extension/chrome/images",
     "clean:images:firefox": "rimraf ../../apps/extension/firefox/images",
-    "clean:images:ios": "rimraf ../../ios/LightWalletSafariExtension/Resources/images",
+    "clean:images:ios": "rimraf ../../ios/LightalletSafariExtension/Resources/images",
     "clean:locales": "pnpm run clean:locales:ios && pnpm run clean:locales:chrome && pnpm run clean:locales:firefox",
     "clean:locales:chrome": "rimraf ../../apps/extension/chrome/_locales",
     "clean:locales:firefox": "rimraf ../../apps/extension/firefox/_locales",
-    "clean:locales:ios": "rimraf ../../ios/LightWalletSafariExtension/Resources/_locales",
+    "clean:locales:ios": "rimraf ../../ios/LightalletSafariExtension/Resources/_locales",
     "cp:images:chrome": "cp -r ./images ../../apps/extension/chrome",
     "cp:images:firefox": "cp -r ./images ../../apps/extension/firefox",
-    "cp:images:ios": "cp -r ./images ../../ios/LightWalletSafariExtension/Resources",
+    "cp:images:ios": "cp -r ./images ../../ios/LightalletSafariExtension/Resources",
     "cp:locales:chrome": "cp -r ./_locales ../../apps/extension/chrome",
     "cp:locales:firefox": "cp -r ./_locales ../../apps/extension/firefox",
-    "cp:locales:ios": "cp -r ./_locales ../../ios/LightWalletSafariExtension/Resources"
+    "cp:locales:ios": "cp -r ./_locales ../../ios/LightalletSafariExtension/Resources"
   },
   "publishConfig": {
     "access": "public"

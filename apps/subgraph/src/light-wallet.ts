@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@ import {
   UserOperationEvent as UserOperationEventEvent,
   UserOperationRevertReason as UserOperationRevertReasonEvent,
 } from "../generated/EntryPointv0.6.0/EntryPoint";
-import { LightWallet as LightWaletInterface } from "../generated/EntryPointv0.6.0/LightWallet";
+import { Lightallet as LightaletInterface } from "../generated/EntryPointv0.6.0/Lightallet";
 import {
-  LightWallet,
+  Lightallet,
   UserOperation,
   UserOperationEvent,
   UserOperationRevertReason,
@@ -40,16 +40,16 @@ import { handleUserOperationLogs } from "./log";
 import { handleUserOperationTransaction } from "./transaction";
 import { handleUserOperationFromCalldata } from "./user-operation";
 
-export function handleLightWalletDeployed(event: AccountDeployedEvent): void {
-  // If the event is emitted by one of the factories, then we know that the account is a LightWallet
+export function handleLightalletDeployed(event: AccountDeployedEvent): void {
+  // If the event is emitted by one of the factories, then we know that the account is a Lightallet
   // If it is one of the factories, the index will be greater than -1
   // If it is not one of the factories, the index will be -1
   if (lightWalletFactories.indexOf(event.params.factory) > -1) {
     // Increment the wallet count
     incrementWalletCount();
 
-    // Create a new LightWallet entity
-    let lightWallet = new LightWallet(event.params.sender);
+    // Create a new Lightallet entity
+    let lightWallet = new Lightallet(event.params.sender);
     lightWallet.index = getWalletCount();
     lightWallet.address = event.params.sender;
 
@@ -63,8 +63,8 @@ export function handleLightWalletDeployed(event: AccountDeployedEvent): void {
     lightWallet.transactionHash = event.transaction.hash;
     lightWallet.userOperations = [];
 
-    // Get the image hash of the LightWallet
-    let wallet = LightWaletInterface.bind(event.params.sender);
+    // Get the image hash of the Lightallet
+    let wallet = LightaletInterface.bind(event.params.sender);
     let try_imageHash = wallet.try_imageHash();
     lightWallet.imageHash = try_imageHash.reverted
       ? new Bytes(0)
@@ -74,11 +74,11 @@ export function handleLightWalletDeployed(event: AccountDeployedEvent): void {
   }
 }
 
-export function handleLightWalletUserOperationEvent(
+export function handleLightalletUserOperationEvent(
   event: UserOperationEventEvent,
 ): void {
-  // Get the LightWallet entity
-  let lightWallet = LightWallet.load(event.params.sender);
+  // Get the Lightallet entity
+  let lightWallet = Lightallet.load(event.params.sender);
 
   // Handle if the account exists
   if (lightWallet != null) {
@@ -140,7 +140,7 @@ export function handleLightWalletUserOperationEvent(
 
     op.save();
 
-    // Add the user operation to the LightWallet
+    // Add the user operation to the Lightallet
     lightWallet.userOperations = lightWallet.userOperations.concat([
       event.params.userOpHash,
     ]);
@@ -175,11 +175,11 @@ export function handleLightWalletUserOperationEvent(
   }
 }
 
-export function handleLightWalletUserOperationRevertReason(
+export function handleLightalletUserOperationRevertReason(
   event: UserOperationRevertReasonEvent,
 ): void {
-  // Get the LightWallet entity
-  let lightWallet = LightWallet.load(event.params.sender);
+  // Get the Lightallet entity
+  let lightWallet = Lightallet.load(event.params.sender);
 
   // Handle if the account exists
   if (lightWallet != null) {
@@ -241,7 +241,7 @@ export function handleLightWalletUserOperationRevertReason(
 
     op.save();
 
-    // Add the user operation to the LightWallet
+    // Add the user operation to the Lightallet
     lightWallet.userOperations = lightWallet.userOperations.concat([
       event.params.userOpHash,
     ]);

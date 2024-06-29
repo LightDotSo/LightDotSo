@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@ pragma solidity ^0.8.18;
 
 import {IEntryPoint, VerifyingPaymaster} from "@/contracts/core/VerifyingPaymaster.sol";
 
-// LightPaymaster -- VerifyingPaymaster for Light
-contract LightPaymaster is VerifyingPaymaster {
+// Lightaymaster -- VerifyingPaymaster for Light
+contract Lightaymaster is VerifyingPaymaster {
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 # Test
 
-This is the test suite for LightDotSo.
+This is the test suite for LightotSo.
 
 Heavily influenced for the test suite for [Sablier](https://github.com/sablier-labs/v2-core)
 

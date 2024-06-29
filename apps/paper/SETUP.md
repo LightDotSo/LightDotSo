@@ -8,16 +8,16 @@
 curl -fsSL https://bun.sh/install | bash
 ```
 
-2. Install LightDotSo Monorepo
+2. Install LightotSo Monorepo
 
 ```
-git clone https://github.com/LightDotSo/LightDotSo
+git clone https://github.com/LightotSo/LightotSo
 ```
 
 3. Install Node.js dependencies
 
 ```bash
-cd LightDotSo/apps/paper
+cd LightotSo/apps/paper
 bun install
 ```
 

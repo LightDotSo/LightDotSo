@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,10 +19,10 @@ pragma solidity ^0.8.18;
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {Test, Vm} from "forge-std/Test.sol";
 
-/// @title LightWalletUtils
+/// @title LightalletUtils
 /// @author shunkakinoki
-/// @notice LightWalletUtils is a utility library for the wallet
-library LightWalletUtils {
+/// @notice LightalletUtils is a utility library for the wallet
+library LightalletUtils {
     function getExpectedImageHash(address user, uint8 weight, uint16 threshold, uint32 checkpoint)
         internal
         pure

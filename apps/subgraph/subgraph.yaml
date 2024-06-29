@@ -29,10 +29,10 @@ dataSources:
       abis:
         - name: EntryPoint
           file: ./abis/EntryPoint.json
-        - name: LightWallet
-          file: ./abis/LightWallet.json
-        - name: LightWalletFactory
-          file: ./abis/LightWalletFactory.json
+        - name: Lightallet
+          file: ./abis/Lightallet.json
+        - name: LightalletFactory
+          file: ./abis/LightalletFactory.json
       eventHandlers:
         - event: AccountDeployed(indexed bytes32,indexed address,address,address)
           handler: handleAccountDeployed

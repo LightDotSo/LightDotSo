@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A6D4004329CF7B5900000CB7"
-               BuildableName = "LightWalletDev.app"
-               BlueprintName = "LightWalletDev"
-               ReferencedContainer = "container:LightWallet.xcodeproj">
+               BuildableName = "LightalletDev.app"
+               BlueprintName = "LightalletDev"
+               ReferencedContainer = "container:Lightallet.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A6D4004329CF7B5900000CB7"
-            BuildableName = "LightWalletDev.app"
-            BlueprintName = "LightWalletDev"
-            ReferencedContainer = "container:LightWallet.xcodeproj">
+            BuildableName = "LightalletDev.app"
+            BlueprintName = "LightalletDev"
+            ReferencedContainer = "container:Lightallet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A6D4004329CF7B5900000CB7"
-            BuildableName = "LightWalletDev.app"
-            BlueprintName = "LightWalletDev"
-            ReferencedContainer = "container:LightWallet.xcodeproj">
+            BuildableName = "LightalletDev.app"
+            BlueprintName = "LightalletDev"
+            ReferencedContainer = "container:Lightallet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

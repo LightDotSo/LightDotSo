@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -551,12 +551,12 @@ pub fn get_pack(user_operation: UserOperationConstruct) -> Token {
         (user_operation.call_data.len() + 31) / 32
     };
 
-    // https://github.com/LightDotSo/LightDotSo/blob/abff2aca61a8f0934e533d0d352978055fddbd96/contracts/samples/VerifyingPaymaster.sol#L44
+    // https://github.com/LightotSo/LightotSo/blob/abff2aca61a8f0934e533d0d352978055fddbd96/contracts/samples/VerifyingPaymaster.sol#L44
     // Get the offset.
     // 0x1a0 = 416
     let offset = 416 + (init_code_base + call_data_base) * 32;
 
-    // https://github.com/LightDotSo/LightDotSo/blob/abff2aca61a8f0934e533d0d352978055fddbd96/contracts/samples/VerifyingPaymaster.sol#L45
+    // https://github.com/LightotSo/LightotSo/blob/abff2aca61a8f0934e533d0d352978055fddbd96/contracts/samples/VerifyingPaymaster.sol#L45
     // Get the length.
     // 0x260 = 608
     let length = 608 + (init_code_base + call_data_base) * 32;

@@ -3,7 +3,7 @@
     {
       "hash": "0x397c6b4dc6febfd6849d76bfdb70998b217461c46090319c9092bc145eab7026",
       "transactionType": "CREATE",
-      "contractName": "LightVerifyingPaymaster",
+      "contractName": "LighterifyingPaymaster",
       "contractAddress": "0x73D010a92e83495cb596Debc9BDE74f95A458feB",
       "function": null,
       "arguments": [

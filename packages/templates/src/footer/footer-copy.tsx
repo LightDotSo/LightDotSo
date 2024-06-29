@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ export const FooterCopy: FC = () => {
   return (
     <p className="text-xs text-text-weak/60 xl:text-center">
       &copy; {new Date().getFullYear()}
-      <span className="hidden md:inline-flex">&nbsp;Light, Inc. - </span>{" "}
+      <span className="hidden md:inline-flex">&nbsp;Light- </span>{" "}
       <a
         className="hidden text-text-weak hover:underline md:inline-flex"
         href={GITHUB_LINKS["Repo"]}

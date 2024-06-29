@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 pragma solidity ^0.8.18;
 
 import {SimpleAccountFactory} from "@/contracts/samples/SimpleAccountFactory.sol";
-import {BaseLightDeployerFlow} from "@/script/base/BaseLightDeployerFlow.s.sol";
+import {BaseLighteployerFlow} from "@/script/base/BaseLighteployerFlow.s.sol";
 import {MockERC20} from "solmate/test/utils/mocks/MockERC20.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
 
 // SimpleAccountDeploy -- Test Deployment
-contract SimpleAccountDeployFlowScript is BaseLightDeployerFlow {
+contract SimpleAccountDeployFlowScript is BaseLighteployerFlow {
     // -------------------------------------------------------------------------
     // Storages
     // -------------------------------------------------------------------------

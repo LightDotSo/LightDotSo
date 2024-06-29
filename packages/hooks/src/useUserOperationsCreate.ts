@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,8 +26,8 @@ import {
   useSignMessage,
   // lightWalletAbi,
   // lightWalletFactoryAbi,
-  // useReadLightVerifyingPaymasterGetHash,
-  // useReadLightVerifyingPaymasterSenderNonce,
+  // useReadLighterifyingPaymasterGetHash,
+  // useReadLighterifyingPaymasterSenderNonce,
 } from "@lightdotso/wagmi";
 import { MerkleTree } from "merkletreejs";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -187,13 +187,13 @@ export const useUserOperationsCreate = ({
   // Sign the message of the subdigest
   const { data, signMessage, isPending: isSignLoading } = useSignMessage();
 
-  // const { data: paymasterNonce } = useReadLightVerifyingPaymasterSenderNonce({
+  // const { data: paymasterNonce } = useReadLighterifyingPaymasterSenderNonce({
   //   address: userOperation.paymasterAndData.slice(0, 42) as Address,
   //   chainId: Number(userOperation.chainId),
   //   args: [userOperation.sender as Address],
   // });
 
-  // const { data: paymasterHash } = useReadLightVerifyingPaymasterGetHash({
+  // const { data: paymasterHash } = useReadLighterifyingPaymasterGetHash({
   //   address: userOperation.paymasterAndData.slice(0, 42) as Address,
   //   chainId: Number(userOperation.chainId),
   //   args: [

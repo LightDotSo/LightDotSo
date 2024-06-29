@@ -14,15 +14,15 @@ Through integration with smart accounts, the user can authorize a transaction to
 
 ## Secured Private Storage (Trusted Execution Environments - Intel SGX)
 
-To prevent various MEV attack from the order flow, Light Layer ensures that input data — order flow of transactions — confidentiality even from nodes verifying blockchain transactions.
-This foundation enables data transmitted can be private from adversarial attacks such as MEV on a large scale. At the core of Light Layer's privacy features is the encryption of sensitive data, which is then securely distributed across nodes.
+To prevent various MEV attack from the order flow, LightLayer ensures that input data — order flow of transactions — confidentiality even from nodes verifying blockchain transactions.
+This foundation enables data transmitted can be private from adversarial attacks such as MEV on a large scale. At the core of LightLayer's privacy features is the encryption of sensitive data, which is then securely distributed across nodes.
 These nodes perform computations on the encrypted data without exposing it, leveraging specialized hardware that operates within a Trusted Execution Environment (TEE). This secure enclave within the processor guarantees that data processed remains private, inaccessible even to device administrators.
 
 ### Intel's SGX and Key Management
 
-Employing Intel's Software Guard Extensions (SGX), Light Layer establishes a secure area in Intel CPUs for data computation, ensuring confidentiality and integrity with strong cryptographic guarantees.
+Employing Intel's Software Guard Extensions (SGX), LightLayer establishes a secure area in Intel CPUs for data computation, ensuring confidentiality and integrity with strong cryptographic guarantees.
 The protocol uses asymmetric encryption to safeguard data before it is logged on the blockchain, ensuring that only the intended recipient can decrypt it.
 Validator nodes, equipped with Intel SGX CPUs, securely process every transaction, maintaining the utmost data confidentiality.
 
 This environment also facilitates a robust key management system where enclaves generate their private signing and attestation keys, ensuring secure network communication and data integrity.
-The consensus encryption seed, pivotal for network security, is securely stored within each validator's TEE, further solidifying Light Layer's commitment to privacy and security.
+The consensus encryption seed, pivotal for network security, is securely stored within each validator's TEE, further solidifying LightLayer's commitment to privacy and security.

@@ -53,8 +53,8 @@
     edition = "2021"
     rust-version = "1.76"
     license = "Apache-2.0"
-    homepage = "https://github.com/LightDotSo/LightDotSo"
-    repository = "https://github.com/LightDotSo/LightDotSo"
+    homepage = "https://github.com/LightotSo/LightotSo"
+    repository = "https://github.com/LightotSo/LightotSo"
 
 # Ref: https://www.uffizzi.com/blog/optimizing-rust-builds-for-faster-github-actions-pipelines
 [profile.dev]

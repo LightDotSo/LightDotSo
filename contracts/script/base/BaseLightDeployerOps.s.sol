@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,29 +16,29 @@
 
 pragma solidity ^0.8.18;
 
-import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
-import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
-import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
+import {LightalletFactory} from "@/contracts/LightalletFactory.sol";
+import {Lightaymaster} from "@/contracts/Lightaymaster.sol";
+import {BaseLighteployer} from "@/script/base/BaseLighteployer.s.sol";
 import {Script} from "forge-std/Script.sol";
 import {Test} from "forge-std/Test.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
 
 /// @notice Base deployer test for scripts
-abstract contract BaseLightDeployerOps is BaseLightDeployer, Script {
+abstract contract BaseLighteployerOps is BaseLighteployer, Script {
     // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------
 
-    /// @dev BaseLightDeployerOps setup
+    /// @dev BaseLighteployerOps setup
     function setUp() public virtual override {
-        // setUp from BaseLightDeployer
-        BaseLightDeployer.setUp();
+        // setUp from BaseLighteployer
+        BaseLighteployer.setUp();
 
-        // LightWalletFactory core contract
-        factory = LightWalletFactory(LIGHT_FACTORY_ADDRESS);
+        // LightalletFactory core contract
+        factory = LightalletFactory(LIGHT_FACTORY_ADDRESS);
 
-        // LightPaymaster core contract
-        paymaster = LightPaymaster(LIGHT_PAYMASTER_ADDRESS);
+        // Lightaymaster core contract
+        paymaster = Lightaymaster(LIGHT_PAYMASTER_ADDRESS);
     }
 }

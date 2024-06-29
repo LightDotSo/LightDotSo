@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -37,9 +37,9 @@ import {
 // Withdrawn,
 // "../generated/schema";
 import {
-  handleLightWalletDeployed,
-  handleLightWalletUserOperationEvent,
-  handleLightWalletUserOperationRevertReason,
+  handleLightalletDeployed,
+  handleLightalletUserOperationEvent,
+  handleLightalletUserOperationRevertReason,
 } from "./light-wallet";
 
 export function handleAccountDeployed(event: AccountDeployedEvent): void {
@@ -57,8 +57,8 @@ export function handleAccountDeployed(event: AccountDeployedEvent): void {
 
   // entity.save();
 
-  // Handle if the account is LightWallet
-  handleLightWalletDeployed(event);
+  // Handle if the account is Lightallet
+  handleLightalletDeployed(event);
 }
 
 // export function handleBeforeExecution(event: BeforeExecutionEvent): void {
@@ -164,8 +164,8 @@ export function handleUserOperationEvent(event: UserOperationEventEvent): void {
 
   // entity.save();
 
-  // Handle if the account is LightWallet
-  handleLightWalletUserOperationEvent(event);
+  // Handle if the account is Lightallet
+  handleLightalletUserOperationEvent(event);
 }
 
 export function handleUserOperationRevertReason(
@@ -185,8 +185,8 @@ export function handleUserOperationRevertReason(
 
   // entity.save();
 
-  // Handle if the account is LightWallet
-  handleLightWalletUserOperationRevertReason(event);
+  // Handle if the account is Lightallet
+  handleLightalletUserOperationRevertReason(event);
 }
 
 // export function handleWithdrawn(event: WithdrawnEvent): void {

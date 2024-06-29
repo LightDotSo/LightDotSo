@@ -10,7 +10,7 @@
         "localContracts": {
           "contracts": [
             {
-              "name": "LightWalletFactory",
+              "name": "LightalletFactory",
               "addresses": {
                 "31337": "0x63CBfA247a2c1043892c7cEB4C21d1d8BC71Ffab"
               }

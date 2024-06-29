@@ -19,11 +19,11 @@
 | LibBytes                     |       86 |     24,490 |
 | LibBytesPointer              |       86 |     24,490 |
 | LibOptim                     |       86 |     24,490 |
-| LightPaymaster               |    5,533 |     19,043 |
-| LightVerifyingPaymaster      |    5,533 |     19,043 |
-| LightWallet                  |   13,265 |     11,311 |
-| LightWalletFactory           |    3,340 |     21,236 |
-| LightWalletUtils             |       86 |     24,490 |
+| Lightaymaster               |    5,533 |     19,043 |
+| LighterifyingPaymaster      |    5,533 |     19,043 |
+| Lightallet                  |   13,265 |     11,311 |
+| LightalletFactory           |    3,340 |     21,236 |
+| LightalletUtils             |       86 |     24,490 |
 | Math                         |       86 |     24,490 |
 | Merkle                       |    2,522 |     22,054 |
 | MerkleProof                  |       86 |     24,490 |

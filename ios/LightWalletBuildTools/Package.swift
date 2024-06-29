@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-  name: "LightWalletBuildTools",
+  name: "LightalletBuildTools",
   dependencies: [
     .package(url: "https://github.com/realm/SwiftLint", from: "0.51.0")
   ]

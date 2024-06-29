@@ -1,2 +1,2 @@
-LightWalletFactory.t.sol
-└── It should deploy a new LightWallet with the correct hash
+LightalletFactory.t.sol
+└── It should deploy a new Lightallet with the correct hash

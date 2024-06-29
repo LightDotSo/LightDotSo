@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,13 +17,13 @@
 pragma solidity ^0.8.18;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
-import {LightWallet} from "@/contracts/LightWallet.sol";
-import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {Lightaymaster} from "@/contracts/Lightaymaster.sol";
+import {Lightallet} from "@/contracts/Lightallet.sol";
+import {LightalletFactory} from "@/contracts/LightalletFactory.sol";
 import {SimpleAccountFactory} from "@/contracts/samples/SimpleAccountFactory.sol";
 import {UniversalSigValidator} from "@/contracts/utils/UniversalSigValidator.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
-import {LightWalletUtils} from "@/test/utils/LightWalletUtils.sol";
+import {LightalletUtils} from "@/test/utils/LightalletUtils.sol";
 import {Test} from "forge-std/Test.sol";
 
 // The structure of the base test is influenced by sabilier - https://github.com/sablier-labs/v2-core/blob/3df030516c7e9044742313c7cf17f15fdc1e9b05/test/Base.t.sol
@@ -37,8 +37,8 @@ abstract contract BaseTest is Test {
     // Events
     // -------------------------------------------------------------------------
 
-    // Initialized Event from `LightWallet.sol`
-    event LightWalletInitialized(address entrypoint, bytes32 imageHash);
+    // Initialized Event from `Lightallet.sol`
+    event LightalletInitialized(address entrypoint, bytes32 imageHash);
 
     // Initialzed Event from `Initializable.sol` https://github.com/OpenZeppelin/openzeppelin-contracts/blob/e50c24f5839db17f46991478384bfda14acfb830/contracts/proxy/utils/Initializable.sol#L73
     event Initialized(uint8 version);
@@ -65,17 +65,17 @@ abstract contract BaseTest is Test {
     // EntryPoint address
     address payable internal constant ENTRY_POINT_ADDRESS = payable(address(0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789));
 
-    // LightWalletFactory address
+    // LightalletFactory address
     // v0.01: address internal constant LIGHT_FACTORY_ADDRESS = address(0x0000000000756D3E6464f5efe7e413a0Af1C7474);
     address internal constant LIGHT_FACTORY_ADDRESS = address(0x00000000001269b052C004FFB71B47AB22C898B0);
 
-    // LightPaymaster address
+    // Lightaymaster address
     // v1: address internal constant LIGHT_PAYMASTER_ADDRESS = address(0x000000000018d32DF916ff115A25fbeFC70bAf8b);
     // v2: address internal constant LIGHT_PAYMASTER_ADDRESS = address(0x000000000003193FAcb32D1C120719892B7AE977);
     // v3: address internal constant LIGHT_PAYMASTER_ADDRESS = address(0x000000000054230BA02ADD2d96fA4362A8606F97);
     address internal constant LIGHT_PAYMASTER_ADDRESS = address(0x000000000003193FAcb32D1C120719892B7AE977);
 
-    // Light Master Wallet address
+    // LightMaster Wallet address
     address internal constant LIGHT_MASTER_WALLET_ADDRESS = address(0x2b4813aDA463bAcE516160E25A65dD211c8E9135);
 
     // SimpleAccountFactory address
@@ -95,14 +95,14 @@ abstract contract BaseTest is Test {
 
     // EntryPoint from eth-inifinitism
     EntryPoint internal entryPoint;
-    // LightWallet core contract
-    LightWallet internal account;
-    // LightWalletFactory core contract
-    LightWalletFactory internal factory;
-    // LightPaymaster core contract
-    LightPaymaster internal paymaster;
-    // LightWallet for deployed account
-    LightWallet internal wallet;
+    // Lightallet core contract
+    Lightallet internal account;
+    // LightalletFactory core contract
+    LightalletFactory internal factory;
+    // Lightaymaster core contract
+    Lightaymaster internal paymaster;
+    // Lightallet for deployed account
+    Lightallet internal wallet;
 
     // SimpleAccountFactory core contract
     SimpleAccountFactory internal simpleAccountFactory;
@@ -134,8 +134,8 @@ abstract contract BaseTest is Test {
     function setUp() public virtual {
         // Deploy the EntryPoint
         entryPoint = new EntryPoint();
-        // Deploy the LightWalletFactory w/ EntryPoint
-        factory = new LightWalletFactory(entryPoint);
+        // Deploy the LightalletFactory w/ EntryPoint
+        factory = new LightalletFactory(entryPoint);
 
         // Deploy the UniversalSigValidator
         validator = new UniversalSigValidator();

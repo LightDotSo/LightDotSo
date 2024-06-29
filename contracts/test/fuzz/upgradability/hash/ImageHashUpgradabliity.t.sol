@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,13 +17,13 @@
 pragma solidity ^0.8.18;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
+import {Lightallet, UserOperation} from "@/contracts/Lightallet.sol";
 import {BaseFuzzTest} from "@/test/base/BaseFuzzTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
 using ERC4337Utils for EntryPoint;
 
-/// @notice Unit tests for `LightWallet` upgradeability
+/// @notice Unit tests for `Lightallet` upgradeability
 contract ImageHashUpgradabliityFuzzTest is BaseFuzzTest {
     // -------------------------------------------------------------------------
     // Tests
@@ -39,7 +39,7 @@ contract ImageHashUpgradabliityFuzzTest is BaseFuzzTest {
             vm,
             address(account),
             abi.encodeWithSelector(
-                LightWallet.execute.selector,
+                Lightallet.execute.selector,
                 address(account),
                 0,
                 abi.encodeWithSignature("updateImageHash(bytes32)", hash)

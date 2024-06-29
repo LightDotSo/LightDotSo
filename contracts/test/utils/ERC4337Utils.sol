@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,9 +23,9 @@ pragma solidity ^0.8.18;
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {Vm} from "forge-std/Test.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {UserOperation} from "@/contracts/LightWallet.sol";
+import {UserOperation} from "@/contracts/Lightallet.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
-import {LightWalletUtils} from "@/test/utils/LightWalletUtils.sol";
+import {LightalletUtils} from "@/test/utils/LightalletUtils.sol";
 
 using ERC4337Utils for EntryPoint;
 
@@ -88,10 +88,10 @@ library ERC4337Utils {
         uint32 _checkpoint
     ) internal view returns (bytes memory op) {
         // Sign the hash
-        bytes memory sig = LightWalletUtils.signDigest(_vm, _root, _account, _key, false);
+        bytes memory sig = LightalletUtils.signDigest(_vm, _root, _account, _key, false);
 
         // Pack the signature
-        bytes memory signature = LightWalletUtils.packLegacySignature(sig, _weight, _threshold, _checkpoint);
+        bytes memory signature = LightalletUtils.packLegacySignature(sig, _weight, _threshold, _checkpoint);
 
         return signature;
     }
@@ -128,10 +128,10 @@ library ERC4337Utils {
         bytes32 userOphash = _entryPoint.getUserOpHash(op);
 
         // Sign the hash
-        bytes memory sig = LightWalletUtils.signDigest(_vm, userOphash, _account, _key, false);
+        bytes memory sig = LightalletUtils.signDigest(_vm, userOphash, _account, _key, false);
 
         // Pack the signature
-        bytes memory signature = LightWalletUtils.packLegacySignature(sig, _weight, _threshold, _checkpoint);
+        bytes memory signature = LightalletUtils.packLegacySignature(sig, _weight, _threshold, _checkpoint);
         op.signature = signature;
     }
 

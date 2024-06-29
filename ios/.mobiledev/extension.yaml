@@ -13,7 +13,7 @@ appId: io.magic.light.dev
 - tapOn:
     point: "10%,90%"
 - tapOn:
-    text: "Light Wallet"
+    text: "LightWallet"
 - tapOn:
     above:
       text: "Cancel"

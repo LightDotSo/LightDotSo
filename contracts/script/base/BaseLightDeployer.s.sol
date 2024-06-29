@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {UserOperation, LightWallet} from "@/contracts/LightWallet.sol";
-import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
-import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
+import {UserOperation, Lightallet} from "@/contracts/Lightallet.sol";
+import {LightalletFactory} from "@/contracts/LightalletFactory.sol";
+import {Lightaymaster} from "@/contracts/Lightaymaster.sol";
 import {BaseTest} from "@/test/base/BaseTest.t.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
@@ -34,8 +34,8 @@ interface ImmutableCreate2Factory {
         returns (address deploymentAddress);
 }
 
-// BaseLightDeployer - Create abstract contract of just immutable storages
-abstract contract BaseLightDeployer is BaseTest {
+// BaseLighteployer - Create abstract contract of just immutable storages
+abstract contract BaseLighteployer is BaseTest {
     using Surl for *;
     using stdJson for string;
 
@@ -91,7 +91,7 @@ abstract contract BaseLightDeployer is BaseTest {
         uint256 _nonce,
         bytes memory _initCode,
         bytes memory _callData,
-        bool _isLightWallet
+        bool _isLightallet
     )
         internal
         returns (
@@ -118,7 +118,7 @@ abstract contract BaseLightDeployer is BaseTest {
                 bytesToHexString(_initCode),
                 '","callData":"',
                 bytesToHexString(_callData),
-                _isLightWallet
+                _isLightallet
                     ?
                     '","signature":"0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c","paymasterAndData":"0x","callGasLimit":"0x44E1C0","verificationGasLimit":"0x1C4B40","preVerificationGas":"0x1C4B40","maxFeePerGas":"0xD320B3B35","maxPriorityFeePerGas":"0xB323DBB31"}]}'
                     :

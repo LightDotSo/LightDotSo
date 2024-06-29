@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,16 +15,16 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.18;
 
-import {UserOperation} from "@/contracts/LightWallet.sol";
-import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {UserOperation} from "@/contracts/Lightallet.sol";
+import {LightalletFactory} from "@/contracts/LightalletFactory.sol";
 import {SimpleAccountFactory} from "@/contracts/samples/SimpleAccountFactory.sol";
-import {BaseLightDeployerFlow} from "@/script/base/BaseLightDeployerFlow.s.sol";
+import {BaseLighteployerFlow} from "@/script/base/BaseLighteployerFlow.s.sol";
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
 
-// LightPaymasterVerify -- Test Deployment
-contract LightPaymasterVerifyFlowScript is BaseLightDeployerFlow {
+// LightaymasterVerify -- Test Deployment
+contract LightaymasterVerifyFlowScript is BaseLighteployerFlow {
     // -------------------------------------------------------------------------
     // Run
     // -------------------------------------------------------------------------
@@ -65,10 +65,10 @@ contract LightPaymasterVerifyFlowScript is BaseLightDeployerFlow {
         address expectedAddress = simpleAccountFactory.getAddress(deployer, nonce);
 
         // Sent ETH to the account w/ the expected address
-        // bytes memory callData = abi.encodeWithSelector(LightWallet.execute.selector, address(1), 1, bytes(""));
+        // bytes memory callData = abi.encodeWithSelector(Lightallet.execute.selector, address(1), 1, bytes(""));
         bytes memory callData = "";
 
-        // Deploy a new LightWallet
+        // Deploy a new Lightallet
         // UserOperation to create the account
         op = constructUserOperation(expectedAddress, 0, initCode, callData, false);
 

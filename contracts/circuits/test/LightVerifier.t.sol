@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,15 +21,15 @@
 pragma solidity ^0.8.18;
 
 import {UltraVerifier} from "@/circuits/contract/plonk_vk.sol";
-import {LightVerifier} from "@/circuits/contract/LightVerifier.sol";
+import {Lighterifier} from "@/circuits/contract/Lighterifier.sol";
 import {Test} from "forge-std/Test.sol";
 
-/// @notice Unit tests for `LightVerifier`, organized by functions.
-contract LightVerifierTest is Test {
+/// @notice Unit tests for `Lighterifier`, organized by functions.
+contract LighterifierTest is Test {
     // UltraVerifier from noir
     UltraVerifier public ultraVerifier;
-    // LightVerifier core contract
-    LightVerifier public lightVerifier;
+    // Lighterifier core contract
+    Lighterifier public lightVerifier;
 
     bytes32[] public correct = new bytes32[](1);
     bytes32[] public wrong = new bytes32[](1);
@@ -37,8 +37,8 @@ contract LightVerifierTest is Test {
     function setUp() public {
         // Deploy the UltraVerifier
         ultraVerifier = new UltraVerifier();
-        // Deploy the LightVerifier w/ UltraVerifier
-        lightVerifier = new LightVerifier(ultraVerifier);
+        // Deploy the Lighterifier w/ UltraVerifier
+        lightVerifier = new Lighterifier(ultraVerifier);
 
         // Set the correct and wrong values
         correct[0] = bytes32(0x0000000000000000000000000000000000000000000000000000000000000001);

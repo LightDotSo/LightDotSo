@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,17 +22,17 @@ use std::convert::TryInto;
 
 use crate::provider::get_provider;
 
-abigen!(LightPaymaster, "abi/LightPaymaster.json",);
+abigen!(Lightaymaster, "abi/Lightaymaster.json",);
 
 pub async fn get_paymaster(
     chain_id: u64,
     verifying_paymaster_address: Address,
-) -> Result<LightPaymaster<Provider<Http>>> {
+) -> Result<Lightaymaster<Provider<Http>>> {
     // Get the provider.
     let provider = get_provider(chain_id).await?;
 
     // Get the contract.
-    let contract = LightPaymaster::new(verifying_paymaster_address, provider.into());
+    let contract = Lightaymaster::new(verifying_paymaster_address, provider.into());
 
     // Return the contract.
     Ok(contract)

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright 2023-2024 Light, Inc.
+# Copyright 2023-2024 Light
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ SOURCE_DIR="out"
 DESTINATION_DIR="out-wagmi"
 
 # Specify the directories to copy (separated by spaces)
-DIRECTORIES="LightWallet.sol LightWalletFactory.sol LightPaymaster.sol"
+DIRECTORIES="Lightallet.sol LightalletFactory.sol Lightaymaster.sol"
 
 # Iterate over the specified directories and copy them
 for DIR in $DIRECTORIES; do
@@ -29,7 +29,7 @@ for DIR in $DIRECTORIES; do
 done
 
 # Specify the archive directories to copy (separated by spaces)
-ARCHIVE_DIRECTORIES="LightVerifyingPaymaster.sol"
+ARCHIVE_DIRECTORIES="LighterifyingPaymaster.sol"
 
 # Iterate over the specified archive directories and copy them
 for DIR in $ARCHIVE_DIRECTORIES; do

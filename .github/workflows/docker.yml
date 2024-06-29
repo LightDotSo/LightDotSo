@@ -50,11 +50,11 @@ jobs:
         id: meta
         with:
           images: |
-            ghcr.io/LightDotSo/LightDotSo
+            ghcr.io/LightotSo/LightotSo
           labels: |
-            org.opencontainers.image.title=LightDotSo
-            org.opencontainers.image.description=LightDotSo/LightDotSo
-            org.opencontainers.image.source=https://github.com/LightDotSo/LightDotSo
+            org.opencontainers.image.title=LightotSo
+            org.opencontainers.image.description=LightotSo/LightotSo
+            org.opencontainers.image.source=https://github.com/LightotSo/LightotSo
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
             type=ref,event=branch

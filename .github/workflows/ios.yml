@@ -100,24 +100,24 @@ jobs:
         continue-on-error: true
         with:
           path: |
-            fastlane/test_output/LightWalletTests.xcresult
-            fastlane/test_output/LightWalletUITests.xcresult
+            fastlane/test_output/LightalletTests.xcresult
+            fastlane/test_output/LightalletUITests.xcresult
           show-passed-tests: false
       - name: Convert Xcresult
         continue-on-error: true
         run: |
           xcresultparser \
             --output-format cobertura \
-            fastlane/test_output/LightWalletTests.xcresult > LightWalletTests.xml
+            fastlane/test_output/LightalletTests.xcresult > LightalletTests.xml
           xcresultparser \
             --output-format cobertura \
-            fastlane/test_output/LightWalletUITests.xcresult > LightWalletUITests.xml
+            fastlane/test_output/LightalletUITests.xcresult > LightalletUITests.xml
       - name: Codecov
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: false
-          files: LightWalletTests.xml,LightWalletUITests.xml
+          files: LightalletTests.xml,LightalletUITests.xml
           flags: ios
       - if: github.event_name == 'pull_request'
         uses: mobile-dev-inc/action-maestro-cloud@main
@@ -125,7 +125,7 @@ jobs:
         with:
           api-key: ${{ secrets.MAESTRO_CLOUD_API_KEY }}
           name: ${{ github.sha }}
-          app-file: ios/LightWalletDev.xcarchive/Products/Applications/LightWalletDev.app
+          app-file: ios/LightalletDev.xcarchive/Products/Applications/LightalletDev.app
           workspace: ios/.mobiledev
   ios-check:
     if: always()

@@ -8,4 +8,4 @@ FOUNDRY_PROFILE="deploy" forge verify-contract \
     --etherscan-api-key $ETHERSCAN_API_KEY \
     --compiler-version v0.8.18 \
     0x00000000008a9c880B53dE6F83c894eb1CE42530 \
-    contracts/src/LightWalletFactory.sol:LightWalletFactory
+    contracts/src/LightalletFactory.sol:LightalletFactory

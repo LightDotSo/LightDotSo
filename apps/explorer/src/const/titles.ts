@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,13 +29,13 @@ export enum Category {
 
 export const TITLES: Record<Category, CategoryObject> = {
   [Category.UserOperations]: {
-    title: "Light Explorer",
-    description: "See all Light transactions executed on our platform.",
+    title: "LightExplorer",
+    description: "See all Lighttransactions executed on our platform.",
     subcategories: {},
   },
   [Category.Transactions]: {
     title: "Transactions",
-    description: "See all transactions to and from Light accounts.",
+    description: "See all transactions to and from Lightaccounts.",
     subcategories: {},
   },
 };

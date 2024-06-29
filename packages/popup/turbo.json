@@ -8,8 +8,8 @@
       "inputs": ["src/**"],
       "outputs": [
         ".next/**",
-        "../../ios/LightWalletSafariExtension/Resources/popup/**",
-        "../../ios/LightWalletSafariExtension/Resources/popup.html"
+        "../../ios/LightalletSafariExtension/Resources/popup/**",
+        "../../ios/LightalletSafariExtension/Resources/popup.html"
       ]
     },
     "clean": {

@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,10 +17,10 @@
 pragma solidity ^0.8.18;
 
 import {BaseFuzzTest} from "@/test/base/BaseFuzzTest.t.sol";
-import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
-import {LightWalletUtils} from "@/test/utils/LightWalletUtils.sol";
+import {LightalletFactory} from "@/contracts/LightalletFactory.sol";
+import {LightalletUtils} from "@/test/utils/LightalletUtils.sol";
 
-/// @notice Fuzz tests for `LightWallet` for compatibility w/ ERC-1271
+/// @notice Fuzz tests for `Lightallet` for compatibility w/ ERC-1271
 contract ERC1271FuzzTest is BaseFuzzTest {
     // -------------------------------------------------------------------------
     // Tests
@@ -32,10 +32,10 @@ contract ERC1271FuzzTest is BaseFuzzTest {
         bytes32 hashed = keccak256(message);
 
         // Sign the hash
-        bytes memory sig = LightWalletUtils.signDigest(vm, hashed, address(account), userKey, false);
+        bytes memory sig = LightalletUtils.signDigest(vm, hashed, address(account), userKey, false);
 
         // Pack the signature
-        bytes memory signature = LightWalletUtils.packLegacySignature(sig, weight, threshold, checkpoint);
+        bytes memory signature = LightalletUtils.packLegacySignature(sig, weight, threshold, checkpoint);
 
         // Test the signature w/ EIP-1271
         assertEq(account.isValidSignature(hashed, signature), bytes4(0x1626ba7e));
@@ -52,10 +52,10 @@ contract ERC1271FuzzTest is BaseFuzzTest {
         bytes32 hashed = keccak256(message);
 
         // Sign the hash
-        bytes memory sig = LightWalletUtils.signDigest(vm, hashed, address(account), userKey, false);
+        bytes memory sig = LightalletUtils.signDigest(vm, hashed, address(account), userKey, false);
 
         // Pack the signature
-        bytes memory signature = LightWalletUtils.packLegacySignature(sig, weight, threshold, checkpoint);
+        bytes memory signature = LightalletUtils.packLegacySignature(sig, weight, threshold, checkpoint);
 
         // Concat the signature w/ the EIP-6492 detection suffix because of the predeployed contract
         // concat(abi.encode((create2Factory, factoryCalldata, originalERC1271Signature), (address, bytes, bytes)), magicBytes)
@@ -63,7 +63,7 @@ contract ERC1271FuzzTest is BaseFuzzTest {
             abi.encode(
                 // Nonce is 1 (does not exist)
                 address(factory),
-                abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, nonce),
+                abi.encodeWithSelector(LightalletFactory.createAccount.selector, expectedImageHash, nonce),
                 signature
             ),
             ERC6492_DETECTION_SUFFIX

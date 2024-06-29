@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,16 +19,16 @@ pragma solidity ^0.8.18;
 import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {Test} from "forge-std/Test.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {UserOperation} from "@/contracts/LightWallet.sol";
-import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {UserOperation} from "@/contracts/Lightallet.sol";
+import {LightalletFactory} from "@/contracts/LightalletFactory.sol";
 import {ImmutableProxy} from "@/contracts/proxies/ImmutableProxy.sol";
 import {BaseTest} from "@/test/base/BaseTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
-import {LightWalletUtils} from "@/test/utils/LightWalletUtils.sol";
+import {LightalletUtils} from "@/test/utils/LightalletUtils.sol";
 
 using ERC4337Utils for EntryPoint;
 
-/// @notice Base integration test for `LightWallet`
+/// @notice Base integration test for `Lightallet`
 abstract contract BaseIntegrationTest is BaseTest {
     // -------------------------------------------------------------------------
     // Storages
@@ -65,7 +65,7 @@ abstract contract BaseIntegrationTest is BaseTest {
         // Set the beneficiary
         beneficiary = payable(address(makeAddr("beneficiary")));
         // Get the expected image hash
-        expectedImageHash = LightWalletUtils.getExpectedImageHash(user, weight, threshold, checkpoint);
+        expectedImageHash = LightalletUtils.getExpectedImageHash(user, weight, threshold, checkpoint);
         // Create the account using the factory w/ nonce and hash
         account = factory.createAccount(expectedImageHash, nonce);
 
@@ -129,7 +129,7 @@ abstract contract BaseIntegrationTest is BaseTest {
         // Set the initCode to create an account with the expected image hash and nonce
         bytes memory initCode = abi.encodePacked(
             address(factory),
-            abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, nonce)
+            abi.encodeWithSelector(LightalletFactory.createAccount.selector, expectedImageHash, nonce)
         );
 
         // Example UserOperation to create the account

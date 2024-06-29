@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ use lazy_static::lazy_static;
 
 // The WalletUpdated namesapce
 lazy_static! {
-    pub static ref LIGHT_WALLET_INITIALIZED: String = "LightWalletInitialized".to_string();
+    pub static ref LIGHT_WALLET_INITIALIZED: String = "LightalletInitialized".to_string();
 }
 
 // The ImageHashUpdated namesapce

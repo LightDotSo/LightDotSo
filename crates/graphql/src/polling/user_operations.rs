@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -78,7 +78,7 @@ pub struct UserOperation {
     pub paymaster: Option<Bytes>,
     pub user_operation_event: Option<UserOperationEvent>,
     pub user_operation_revert_reason: Option<UserOperationRevertReason>,
-    pub light_wallet: LightWallet,
+    pub light_wallet: Lightallet,
     pub transaction: Transaction,
     pub logs: Option<Vec<Log>>,
 }
@@ -147,7 +147,7 @@ pub struct Log {
 }
 
 #[derive(cynic::QueryFragment, Clone, Debug)]
-pub struct LightWallet {
+pub struct Lightallet {
     pub id: Bytes,
     pub index: BigInt,
     pub address: Bytes,
@@ -201,29 +201,29 @@ pub enum UserOperationOrderBy {
     #[cynic(rename = "paymaster")]
     Paymaster,
     #[cynic(rename = "lightWallet")]
-    LightWallet,
+    Lightallet,
     #[cynic(rename = "lightWallet__id")]
-    LightWalletId,
+    LightalletId,
     #[cynic(rename = "lightWallet__index")]
-    LightWalletIndex,
+    LightalletIndex,
     #[cynic(rename = "lightWallet__address")]
-    LightWalletAddress,
+    LightalletAddress,
     #[cynic(rename = "lightWallet__imageHash")]
-    LightWalletImageHash,
+    LightalletImageHash,
     #[cynic(rename = "lightWallet__userOpHash")]
-    LightWalletUserOpHash,
+    LightalletUserOpHash,
     #[cynic(rename = "lightWallet__sender")]
-    LightWalletSender,
+    LightalletSender,
     #[cynic(rename = "lightWallet__factory")]
-    LightWalletFactory,
+    LightalletFactory,
     #[cynic(rename = "lightWallet__paymaster")]
-    LightWalletPaymaster,
+    LightalletPaymaster,
     #[cynic(rename = "lightWallet__blockNumber")]
-    LightWalletBlockNumber,
+    LightalletBlockNumber,
     #[cynic(rename = "lightWallet__blockTimestamp")]
-    LightWalletBlockTimestamp,
+    LightalletBlockTimestamp,
     #[cynic(rename = "lightWallet__transactionHash")]
-    LightWalletTransactionHash,
+    LightalletTransactionHash,
     #[cynic(rename = "logs")]
     Logs,
     #[cynic(rename = "transaction")]

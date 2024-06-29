@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -113,7 +113,7 @@ export const SettingsAppearanceCard: FC = () => {
     );
   };
 
-  const LightModeCard: FC = () => {
+  const LightodeCard: FC = () => {
     return (
       <div className="hover:border-accent items-center rounded-md border-2 border-border p-1">
         <div className="space-y-2 rounded-sm bg-[#ecedef] p-2">
@@ -165,7 +165,7 @@ export const SettingsAppearanceCard: FC = () => {
                       <FormControl>
                         <RadioGroupItem value="light" className="sr-only" />
                       </FormControl>
-                      <LightModeCard />
+                      <LightodeCard />
                       <span className="block w-full p-2 text-center font-normal">
                         Light
                       </span>

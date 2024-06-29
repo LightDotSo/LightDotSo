@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 use eyre::{eyre, Result};
 
 fn main() -> Result<()> {
-    let res = uniffi_build::generate_scaffolding("./src/LightWalletCore.udl");
+    let res = uniffi_build::generate_scaffolding("./src/LightalletCore.udl");
 
     match res {
         Ok(_) => Ok(()),

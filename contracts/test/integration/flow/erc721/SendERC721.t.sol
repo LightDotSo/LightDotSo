@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,13 +19,13 @@ pragma solidity ^0.8.18;
 import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import {MockERC721} from "solmate/test/utils/mocks/MockERC721.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
+import {Lightallet, UserOperation} from "@/contracts/Lightallet.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
 using ERC4337Utils for EntryPoint;
 
-/// @notice Integration tests for `LightWallet` sending ERC721
+/// @notice Integration tests for `Lightallet` sending ERC721
 contract SendERC721IntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
     // Variables
@@ -53,7 +53,7 @@ contract SendERC721IntegrationTest is BaseIntegrationTest {
 
         // Set the callData to transfer 1 ERC721 to the address one
         callData = abi.encodeWithSelector(
-            LightWallet.execute.selector,
+            Lightallet.execute.selector,
             address(nft),
             0,
             abi.encodeWithSelector(IERC721.transferFrom.selector, address(account), address(1), 1)

@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,15 +18,15 @@ import { describe, it, expect, test } from "vitest";
 // import { publicClient, walletClient } from "@/contracts/test/spec/utils";
 // import { accounts } from "@/contracts/test/spec/utils/constants";
 //@ts-expect-error
-import { LightWallet } from "@/contracts/LightWallet.sol";
+import { Lightallet } from "@/contracts/Lightallet.sol";
 
-// describe("LightWallet", function () {
+// describe("Lightallet", function () {
 //   it("Should return run correct function parameters on hardhat", async function () {
 //     console.warn(await publicClient.getBlockNumber());
 //     const account = accounts[0].address;
 //     const hash = await walletClient.deployContract({
-//       abi: LightWallet.abi,
-//       bytecode: LightWallet.bytecode as `0x${string}`,
+//       abi: Lightallet.abi,
+//       bytecode: Lightallet.bytecode as `0x${string}`,
 //       account: account,
 //       args: [account],
 //       chain: undefined,
@@ -34,7 +34,7 @@ import { LightWallet } from "@/contracts/LightWallet.sol";
 //     const receipt = await publicClient.waitForTransactionReceipt({ hash });
 //     const data = await publicClient.readContract({
 //       address: receipt.contractAddress as `0x${string}`,
-//       abi: LightWallet.abi,
+//       abi: Lightallet.abi,
 //       functionName: "proxiableUUID",
 //     });
 //     expect(data).to.equal(
@@ -43,8 +43,8 @@ import { LightWallet } from "@/contracts/LightWallet.sol";
 //   });
 // });
 
-test("LightWallet: Correct humanReadableAbi", () => {
-  expect(Object.values(LightWallet.humanReadableAbi)).toMatchInlineSnapshot(`
+test("Lightallet: Correct humanReadableAbi", () => {
+  expect(Object.values(Lightallet.humanReadableAbi)).toMatchInlineSnapshot(`
     [
       "constructor(address anEntryPoint)",
       "error EmptySignature()",
@@ -65,7 +65,7 @@ test("LightWallet: Correct humanReadableAbi", () => {
       "event BeaconUpgraded(address indexed beacon)",
       "event ImageHashUpdated(bytes32 newImageHash)",
       "event Initialized(uint8 version)",
-      "event LightWalletInitialized(address indexed entryPoint, bytes32 indexed hash)",
+      "event LightalletInitialized(address indexed entryPoint, bytes32 indexed hash)",
       "event Upgraded(address indexed implementation)",
       "function NAME() view returns (string)",
       "function SET_IMAGE_HASH_TYPE_HASH() view returns (bytes32)",

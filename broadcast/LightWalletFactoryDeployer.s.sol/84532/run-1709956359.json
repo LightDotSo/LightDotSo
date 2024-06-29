@@ -3,7 +3,7 @@
     {
       "hash": "0xb4bdcffe6485ae6b970fe9d473076780456260ba8bab5313b479e5ce461e395c",
       "transactionType": "CREATE",
-      "contractName": "LightWalletFactory",
+      "contractName": "LightalletFactory",
       "contractAddress": "0x2A98BbbF54e2aB4930D3c02cCc60127AAa9B2b7b",
       "function": null,
       "arguments": ["0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"],

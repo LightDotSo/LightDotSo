@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,15 +17,15 @@
 pragma solidity ^0.8.18;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
-import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {Lightallet, UserOperation} from "@/contracts/Lightallet.sol";
+import {LightalletFactory} from "@/contracts/LightalletFactory.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
 using ERC4337Utils for EntryPoint;
 
-/// @notice Unit tests for `LightWallet` upgradeability
-contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
+/// @notice Unit tests for `Lightallet` upgradeability
+contract LightalletFactoryIntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------
@@ -44,7 +44,7 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         // Revert for a zero address
         vm.expectRevert(abi.encodeWithSignature("EntrypointAddressZero()"));
         // Deploy the factory w/ address 0
-        new LightWalletFactory(EntryPoint(payable(address(0))));
+        new LightalletFactory(EntryPoint(payable(address(0))));
     }
 
     /// Tests that the factory revert when creating an account with a hash that is 0
@@ -74,7 +74,7 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         vm.expectEmit(true, true, true, true);
         emit Initialized(1);
         // vm.expectEmit(true, true, true, true);
-        // emit LightWalletInitialized(address(entryPoint), hash);
+        // emit LightalletInitialized(address(entryPoint), hash);
         factory.createAccount(hash, 0);
     }
 
@@ -89,8 +89,8 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         // Assert that the predicted address matches the created account
         assertEq(predicted, address(account));
         // Get the immutable implementation in the factory
-        LightWallet implementation = factory.accountImplementation();
-        // Assert that the implementation of the created account is the LightWallet
+        Lightallet implementation = factory.accountImplementation();
+        // Assert that the implementation of the created account is the Lightallet
         assertEq(getProxyImplementation(address(account)), address(implementation));
     }
 

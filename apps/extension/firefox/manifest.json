@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "default_locale": "en",
 
-  "name": "Light",
+  "name": "Light,
   "description": "__MSG_extension_description__",
   "version": "1.0",
 

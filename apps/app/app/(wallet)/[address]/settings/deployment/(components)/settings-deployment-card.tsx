@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ import {
   shortenAddress,
   shortenBytes32,
 } from "@lightdotso/utils";
-import { lightWalletAbi, useReadLightWalletImageHash } from "@lightdotso/wagmi";
+import { lightWalletAbi, useReadLightalletImageHash } from "@lightdotso/wagmi";
 import { Globe } from "lucide-react";
 import Link from "next/link";
 import { useMemo, type FC } from "react";
@@ -103,7 +103,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // Wagmi
   // ---------------------------------------------------------------------------
 
-  const { data: imageHash } = useReadLightWalletImageHash({
+  const { data: imageHash } = useReadLightalletImageHash({
     address: address as Address,
     chainId: Number(chain.id),
   });

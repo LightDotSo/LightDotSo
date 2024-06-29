@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ import {
   useEstimateFeesPerGas,
   useEstimateGas,
   useEstimateMaxPriorityFeePerGas,
-  useReadLightWalletImageHash,
+  useReadLightalletImageHash,
 } from "@lightdotso/wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getUserOperationHash } from "permissionless";
@@ -126,7 +126,7 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
   // ---------------------------------------------------------------------------
 
   // Get the image hash for the light wallet
-  const { data: imageHash } = useReadLightWalletImageHash({
+  const { data: imageHash } = useReadLightalletImageHash({
     address: address as Address,
     chainId: Number(initialUserOperation.chainId),
   });

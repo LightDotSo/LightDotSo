@@ -2,9 +2,9 @@
   name = "desktop"
   version = "0.0.0"
   description = "A Tauri App"
-  authors = ["Light, Inc."]
+  authors = ["Light]
   license = "Apache-2.0"
-  repository = "https://github.com/LightDotSo/LightDotSo"
+  repository = "https://github.com/LightotSo/LightotSo"
   edition = "2021"
 
   # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

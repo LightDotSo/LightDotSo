@@ -2,27 +2,27 @@
 👁️ STORAGE LAYOUT SNAPSHOT 👁️
 ============================
 =======================
- ➡ LightPaymaster
+ ➡ Lightaymaster
 | Name        | Type                        | Slot | Offset | Bytes | Contract                                        |
 |-------------|-----------------------------|------|--------|-------|-------------------------------------------------|
-| _owner      | address                     | 0    | 0      | 20    | contracts/src/LightPaymaster.sol:LightPaymaster |
-| senderNonce | mapping(address => uint256) | 1    | 0      | 32    | contracts/src/LightPaymaster.sol:LightPaymaster |
+| _owner      | address                     | 0    | 0      | 20    | contracts/src/Lightaymaster.sol:Lightaymaster |
+| senderNonce | mapping(address => uint256) | 1    | 0      | 32    | contracts/src/Lightaymaster.sol:Lightaymaster |
 =======================
- ➡ LightWallet
+ ➡ Lightallet
 | Name          | Type  | Slot | Offset | Bytes | Contract                                  |
 |---------------|-------|------|--------|-------|-------------------------------------------|
-| _initialized  | uint8 | 0    | 0      | 1     | contracts/src/LightWallet.sol:LightWallet |
-| _initializing | bool  | 0    | 1      | 1     | contracts/src/LightWallet.sol:LightWallet |
+| _initialized  | uint8 | 0    | 0      | 1     | contracts/src/Lightallet.sol:Lightallet |
+| _initializing | bool  | 0    | 1      | 1     | contracts/src/Lightallet.sol:Lightallet |
 =======================
- ➡ LightWalletFactory
+ ➡ LightalletFactory
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
 =======================
- ➡ LightVerifyingPaymaster
+ ➡ LighterifyingPaymaster
 | Name        | Type                        | Slot | Offset | Bytes | Contract                                                                   |
 |-------------|-----------------------------|------|--------|-------|----------------------------------------------------------------------------|
-| _owner      | address                     | 0    | 0      | 20    | contracts/src/archives/LightVerifyingPaymaster.sol:LightVerifyingPaymaster |
-| senderNonce | mapping(address => uint256) | 1    | 0      | 32    | contracts/src/archives/LightVerifyingPaymaster.sol:LightVerifyingPaymaster |
+| _owner      | address                     | 0    | 0      | 20    | contracts/src/archives/LighterifyingPaymaster.sol:LighterifyingPaymaster |
+| senderNonce | mapping(address => uint256) | 1    | 0      | 32    | contracts/src/archives/LighterifyingPaymaster.sol:LighterifyingPaymaster |
 =======================
  ➡ EntryPoint
 | Name                | Type                                                 | Slot | Offset | Bytes | Contract                                                         |
@@ -41,11 +41,11 @@
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
 =======================
- ➡ ILightWallet
+ ➡ ILightallet
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
 =======================
- ➡ ILightWalletFactory
+ ➡ ILightalletFactory
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
 =======================

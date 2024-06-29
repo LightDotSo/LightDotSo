@@ -1,4 +1,4 @@
-# Copyright 2023-2024 Light, Inc.
+# Copyright 2023-2024 Light
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -200,14 +200,14 @@ type UserOperation @entity {
   entryPoint: Bytes! # address
   paymaster: Bytes # address
 
-  lightWallet: LightWallet! @derivedFrom(field: "userOperations")
+  lightWallet: Lightallet! @derivedFrom(field: "userOperations")
   logs: [Log!] @derivedFrom(field: "userOperation")
   transaction: Transaction!
   userOperationEvent: UserOperationEvent @derivedFrom(field: "userOperation")
   userOperationRevertReason: UserOperationRevertReason @derivedFrom(field: "userOperation")
 }
 
-type LightWallet @entity {
+type Lightallet @entity {
   id: Bytes! # address of the wallet
   index: BigInt!
   address: Bytes! # address

@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ pub async fn notify(webhook: &str, content: Value) -> Result<()> {
 
     webhook
         .execute(&http, false, |w| {
-            w.content(content).username("LightDotSo").avatar_url("https://assets.light.so/icon.png")
+            w.content(content).username("LightotSo").avatar_url("https://assets.light.so/icon.png")
         })
         .await?;
 

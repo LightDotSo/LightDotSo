@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@ import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
   title: {
-    template: "Light | %s",
-    default: "Light",
+    template: "Light| %s",
+    default: "Light,
   },
 };
 

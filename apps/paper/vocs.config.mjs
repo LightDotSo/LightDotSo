@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,9 +20,9 @@ export default defineConfig({
   //   process.env.VERCEL_ENV === "production"
   //     ? "https://paper.light.so"
   //     : undefined,
-  description: "Technical specifications for Light.",
-  title: "Lightpaper",
-  titleTemplate: "%s | Lightpaper",
+  description: "Technical specifications for Light",
+  title: "Lightaper",
+  titleTemplate: "%s | Lightaper",
   // head() {
   //   return (
   //     // eslint-disable-nextline react/jsx-no-useless-fragment
@@ -38,7 +38,7 @@ export default defineConfig({
   // },
   editLink: {
     pattern:
-      "https://github.com/LightDotSo/LightDotSo/edit/main/apps/paper/pages/:path",
+      "https://github.com/LightotSo/LightotSo/edit/main/apps/paper/pages/:path",
     text: "Suggest changes to this page.",
   },
   // iconUrl: {
@@ -62,11 +62,11 @@ export default defineConfig({
   socials: [
     {
       icon: "discord",
-      link: "https://discord.gg/LightDotSo",
+      link: "https://discord.gg/LightotSo",
     },
     {
       icon: "github",
-      link: "https://github.com/LightDotSo/LightDotSo",
+      link: "https://github.com/LightotSo/LightotSo",
     },
     // {
     //   icon: "warpcast",
@@ -74,11 +74,11 @@ export default defineConfig({
     // },
     {
       icon: "telegram",
-      link: "https://t.me/LightDotSo",
+      link: "https://t.me/LightotSo",
     },
     {
       icon: "x",
-      link: "https://x.com/LightDotSo",
+      link: "https://x.com/LightotSo",
     },
   ],
   sidebar: [
@@ -86,7 +86,7 @@ export default defineConfig({
       text: "Introduction",
       items: [
         {
-          text: "Why Light",
+          text: "Why Light,
           link: "/introduction",
         },
         {
@@ -115,7 +115,7 @@ export default defineConfig({
       text: "Goals",
       items: [
         {
-          text: "Goals for Light",
+          text: "Goals for Light,
           link: "/goals",
         },
         {
@@ -132,7 +132,7 @@ export default defineConfig({
       text: "Products",
       items: [
         {
-          text: "Light Smart Wallet",
+          text: "LightSmart Wallet",
           link: "/light-smart-wallet",
           items: [
             {
@@ -150,7 +150,7 @@ export default defineConfig({
           ],
         },
         {
-          text: "Light Gas Abstraction",
+          text: "LightGas Abstraction",
           link: "/light-gas-abstraction",
           items: [
             {
@@ -168,7 +168,7 @@ export default defineConfig({
           ],
         },
         {
-          text: "Light Programmable Intents",
+          text: "LightProgrammable Intents",
           link: "/light-programmable-intents",
           items: [
             {
@@ -221,7 +221,7 @@ export default defineConfig({
           link: "/features/intent-engine",
         },
         {
-          text: "Light Layer",
+          text: "LightLayer",
           link: "/features/light-layer",
         },
       ],
@@ -329,15 +329,15 @@ export default defineConfig({
       items: [
         {
           text: pkg.version,
-          link: `https://github.com/LightDotSo/LightDotSo/commit/${process.env.VERCEL_GIT_COMMIT_SHA}`,
+          link: `https://github.com/LightotSo/LightotSo/commit/${process.env.VERCEL_GIT_COMMIT_SHA}`,
         },
         {
           text: "Changelog",
-          link: "https://github.com/LightDotSo/LightDotSo/blob/main/CHANGELOG.md",
+          link: "https://github.com/LightotSo/LightotSo/blob/main/CHANGELOG.md",
         },
         // {
         //   text: "Contributing",
-        //   link: "https://github.com/LightDotSo/LightDotSo/blob/main/CONTRIBUTING.md",
+        //   link: "https://github.com/LightotSo/LightotSo/blob/main/CONTRIBUTING.md",
         // },
       ],
     },

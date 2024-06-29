@@ -1,4 +1,4 @@
-# LightDotSo
+# LightotSo
 
 [![Apache-2.0 License][apache-badge]][apache-url]
 [![MIT License][mit-badge]][mit-url]
@@ -8,8 +8,8 @@
 [apache-badge]: https://img.shields.io/badge/license-Apache--2.0-blue.svg
 [apache-url]: LICENSE.md
 [mit-url]: LICENSE-MIT.md
-[tg-badge]: https://img.shields.io/endpoint?color=neon&logo=telegram&label=chat&style=flat-square&url=https%3A%2F%2Ftg.sumanjay.workers.dev%2FLightDotSo
-[tg-url]: https://t.me/LightDotSo
+[tg-badge]: https://img.shields.io/endpoint?color=neon&logo=telegram&label=chat&style=flat-square&url=https%3A%2F%2Ftg.sumanjay.workers.dev%2FLightotSo
+[tg-url]: https://t.me/LightotSo
 
 ## EVM chain abstraction protocol unifying all chains as one.
 
@@ -23,7 +23,7 @@
 
 We would like to acknowledge the projects below whose work has been instrumental in making this product a reality, as none of this would be possible without the work done by these projects.
 
-- [0xsequence](https://github.com/0xsequence/wallet-contracts): The core signature smart contracts, signature implementation as described in [Light State Sync](https://sequence.xyz/blog/sequence-wallet-light-state-sync-full-merkle-wallets) are all based on the work done by 0xsequence.
+- [0xsequence](https://github.com/0xsequence/wallet-contracts): The core signature smart contracts, signature implementation as described in [LightState Sync](https://sequence.xyz/blog/sequence-wallet-light-state-sync-full-merkle-wallets) are all based on the work done by 0xsequence.
 - [4337](https://github.com/eth-infinitism/account-abstraction): The account abstraction standard set by 4337 has been instrumental in making this project a reality, and all infrastructure providers whose work has been possible for smart contract wallets to thrive.
 - [@shadcn/ui](https://github.com/shadcn/ui): The web UI is all based on the work done by @shadcn, and we are grateful for the work that he has done to provide a beautiful and functional UI foundation for us to build upon.
 

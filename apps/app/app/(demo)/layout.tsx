@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ import { MSWState } from "@/components/msw/msw-state";
 
 export const metadata: Metadata = {
   title: {
-    template: "Light Demo | %s",
-    default: "Light Demo",
+    template: "LightDemo | %s",
+    default: "LightDemo",
   },
 };
 

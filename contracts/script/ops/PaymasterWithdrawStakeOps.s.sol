@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.18;
 
-import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
-import {BaseLightDeployerOps} from "@/script/base/BaseLightDeployerOps.s.sol";
+import {LightalletFactory} from "@/contracts/LightalletFactory.sol";
+import {BaseLighteployerOps} from "@/script/base/BaseLighteployerOps.s.sol";
 import {MockERC20} from "solmate/test/utils/mocks/MockERC20.sol";
 
 // PaymasterWithdrawStake -- Test Deployment
-contract PaymasterWithdrawStakeOpsScript is BaseLightDeployerOps {
+contract PaymasterWithdrawStakeOpsScript is BaseLighteployerOps {
     // -------------------------------------------------------------------------
     // Run
     // -------------------------------------------------------------------------

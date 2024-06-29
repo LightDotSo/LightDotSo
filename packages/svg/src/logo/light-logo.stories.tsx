@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,15 +13,15 @@
 // limitations under the License.
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { LightLogo } from "./light-logo";
+import { Lightogo } from "./light-logo";
 
 // -----------------------------------------------------------------------------
 // Meta
 // -----------------------------------------------------------------------------
 
-const meta: Meta<typeof LightLogo> = {
-  title: "svg/LightLogo",
-  component: LightLogo,
+const meta: Meta<typeof Lightogo> = {
+  title: "svg/Lightogo",
+  component: Lightogo,
   tags: ["autodocs"],
   argTypes: {},
 };
@@ -31,13 +31,13 @@ export default meta;
 // Types
 // -----------------------------------------------------------------------------
 
-type Story = StoryObj<typeof LightLogo>;
+type Story = StoryObj<typeof Lightogo>;
 
 // -----------------------------------------------------------------------------
 // Story
 // -----------------------------------------------------------------------------
 
 export const Base: Story = {
-  render: args => <LightLogo {...args} />,
+  render: args => <Lightogo {...args} />,
   args: {},
 };

@@ -44,7 +44,7 @@ end
 
 def update_dev_xcconfig(name, new_value)
   update_xcconfig_value(
-    path: "./LightWallet/Configuration/Light.Development.xcconfig",
+    path: "./Lightallet/Configuration/LightDevelopment.xcconfig",
     name: name,
     value: new_value
   )
@@ -52,7 +52,7 @@ end
 
 def update_prod_xcconfig(name, new_value)
   update_xcconfig_value(
-    path: "./LightWallet/Configuration/Light.Production.xcconfig",
+    path: "./Lightallet/Configuration/LightProduction.xcconfig",
     name: name,
     value: new_value
   )
@@ -82,7 +82,7 @@ def prepare_ios_environment(name, api_key, live)
   )
   increment_build_number(
     build_number: number + 1,
-    xcodeproj: "./ios/LightWallet.xcodeproj"
+    xcodeproj: "./ios/Lightallet.xcodeproj"
   )
 end
 
@@ -96,8 +96,8 @@ end
 
 before_all do |lane, options|
   # Dotenv.overload("./.env")
-  # XCODE_PROJECT_PATH = "./ios/LightWallet.xcodeproj"
-  # XCODE_WORKSPACE_PATH = "./ios/LightWallet.xcworkspace"
+  # XCODE_PROJECT_PATH = "./ios/Lightallet.xcodeproj"
+  # XCODE_WORKSPACE_PATH = "./ios/Lightallet.xcworkspace"
 end
 
 platform :android do
@@ -184,7 +184,7 @@ platform :ios do
         keychain_password: KEYCHAIN_PASSWORD,
         git_branch: "main",
         type: "appstore",
-        app_identifier: "io.magic.light.Light-Safari-Extension",
+        app_identifier: "io.magic.light.LightSafari-Extension",
         git_basic_authorization: Base64.strict_encode64(GIT_AUTHORIZATION),
         readonly: false,
         api_key: api_key
@@ -193,8 +193,8 @@ platform :ios do
 
     gym(
       configuration: "Release",
-      workspace: "./ios/LightWallet.xcworkspace",
-      scheme: "LightWallet",
+      workspace: "./ios/Lightallet.xcworkspace",
+      scheme: "Lightallet",
       export_method: "app-store",
       export_options: {
         provisioningProfiles: {
@@ -211,14 +211,14 @@ platform :ios do
 
     increment_version_number_in_xcodeproj(
       version_number: GH_NUMBER,
-      xcodeproj: "./ios/LightWallet.xcodeproj",
-      target: "LightWalletDev"
+      xcodeproj: "./ios/Lightallet.xcodeproj",
+      target: "LightalletDev"
     )
 
     increment_version_number_in_xcodeproj(
       version_number: GH_NUMBER,
-      xcodeproj: "./ios/LightWallet.xcodeproj",
-      target: "LightWalletDevSafariExtension"
+      xcodeproj: "./ios/Lightallet.xcodeproj",
+      target: "LightalletDevSafariExtension"
     )
 
     prepare_ios_environment("io.magic.light.dev", api_key, false)
@@ -239,7 +239,7 @@ platform :ios do
       keychain_password: KEYCHAIN_PASSWORD,
       git_branch: "main",
       type: "appstore",
-      app_identifier: "io.magic.light.dev.Light-Safari-Extension",
+      app_identifier: "io.magic.light.dev.LightSafari-Extension",
       git_basic_authorization: Base64.strict_encode64(GIT_AUTHORIZATION),
       readonly: false,
       api_key: api_key
@@ -247,8 +247,8 @@ platform :ios do
 
     gym(
       configuration: "Release",
-      workspace: "./ios/LightWallet.xcworkspace",
-      scheme: "LightWalletDev",
+      workspace: "./ios/Lightallet.xcworkspace",
+      scheme: "LightalletDev",
       export_method: "app-store",
       export_options: {
         provisioningProfiles: {
@@ -292,7 +292,7 @@ platform :ios do
       keychain_password: KEYCHAIN_PASSWORD,
       git_branch: "main",
       type: "appstore",
-      app_identifier: "io.magic.light.Light-Safari-Extension",
+      app_identifier: "io.magic.light.LightSafari-Extension",
       git_basic_authorization: Base64.strict_encode64(GIT_AUTHORIZATION),
       readonly: false,
       api_key: api_key
@@ -300,8 +300,8 @@ platform :ios do
 
     gym(
       configuration: "Release",
-      workspace: "./ios/LightWallet.xcworkspace",
-      scheme: "LightWallet",
+      workspace: "./ios/Lightallet.xcworkspace",
+      scheme: "Lightallet",
       export_method: "app-store",
       export_options: {
         provisioningProfiles: {
@@ -327,7 +327,7 @@ platform :ios do
     appicon(
       appicon_image_file: "Resources/AppIconDev.png",
       appicon_devices: [:iphone, :ios_marketing],
-      appicon_path: "./ios/LightWallet/Resources/Assets.xcassets",
+      appicon_path: "./ios/Lightallet/Resources/Assets.xcassets",
       appicon_name: "AppIcon-Prod.appiconset"
     )
   end
@@ -335,13 +335,13 @@ platform :ios do
   lane :bump do
     increment_version_number_in_xcodeproj(
       version_number: "1.0",
-      xcodeproj: "./ios/LightWallet.xcodeproj",
-      target: "LightWallet"
+      xcodeproj: "./ios/Lightallet.xcodeproj",
+      target: "Lightallet"
     )
     increment_version_number_in_xcodeproj(
       version_number: "1.0",
-      xcodeproj: "./ios/LightWallet.xcodeproj",
-      target: "LightWalletSafariExtension"
+      xcodeproj: "./ios/Lightallet.xcodeproj",
+      target: "LightalletSafariExtension"
     )
   end
 
@@ -366,7 +366,7 @@ platform :ios do
         keychain_password: KEYCHAIN_PASSWORD,
         git_branch: "main",
         type: "development",
-        app_identifier: "io.magic.light.dev.Light-Safari-Extension",
+        app_identifier: "io.magic.light.dev.LightSafari-Extension",
         git_basic_authorization: Base64.strict_encode64(GIT_AUTHORIZATION),
         readonly: false,
         api_key: api_key
@@ -374,14 +374,14 @@ platform :ios do
     end
 
     gym(
-      workspace: "./ios/LightWallet.xcworkspace",
-      scheme: "LightWalletDev",
+      workspace: "./ios/Lightallet.xcworkspace",
+      scheme: "LightalletDev",
       skip_archive: false,
       skip_package_ipa: true,
       destination: "platform=iOS Simulator,name=iPhone 8",
       configuration: "Debug",
       build_path: ".",
-      archive_path: "LightWalletDev.xcarchive",
+      archive_path: "LightalletDev.xcarchive",
       export_method: "ad-hoc",
       export_options: {
         provisioningProfiles: {
@@ -391,8 +391,8 @@ platform :ios do
     )
 
     scan(
-      workspace: "./ios/LightWallet.xcworkspace",
-      scheme: "LightWalletTests",
+      workspace: "./ios/Lightallet.xcworkspace",
+      scheme: "LightalletTests",
       destination: "platform=iOS Simulator,name=iPhone 8",
       result_bundle: true,
       code_coverage: true,
@@ -400,8 +400,8 @@ platform :ios do
     )
 
     scan(
-      workspace: "./ios/LightWallet.xcworkspace",
-      scheme: "LightWalletUITests",
+      workspace: "./ios/Lightallet.xcworkspace",
+      scheme: "LightalletUITests",
       destination: "platform=iOS Simulator,name=iPhone 8",
       result_bundle: true,
       code_coverage: true,
@@ -421,21 +421,21 @@ platform :ios do
 
   lane :match_development do
     app_store_api_key
-    match(git_branch: "main", app_identifier: ["io.magic.light", "io.magic.light.Light-Safari-Extension"], type: "development", readonly: is_ci)
+    match(git_branch: "main", app_identifier: ["io.magic.light", "io.magic.light.LightSafari-Extension"], type: "development", readonly: is_ci)
   end
 
   lane :match_dev_development do
     app_store_api_key
-    match(git_branch: "main", app_identifier: ["io.magic.light.dev", "io.magic.light.dev.Light-Safari-Extension"], type: "development", readonly: is_ci)
+    match(git_branch: "main", app_identifier: ["io.magic.light.dev", "io.magic.light.dev.LightSafari-Extension"], type: "development", readonly: is_ci)
   end
 
   lane :match_appstore do
     app_store_api_key
-    match(git_branch: "main", app_identifier: ["io.magic.light", "io.magic.light.Light-Safari-Extension"], type: "appstore", readonly: is_ci)
+    match(git_branch: "main", app_identifier: ["io.magic.light", "io.magic.light.LightSafari-Extension"], type: "appstore", readonly: is_ci)
   end
 
   lane :match_dev_appstore do
     app_store_api_key
-    match(git_branch: "main", app_identifier: ["io.magic.light.dev", "io.magic.light.dev.Light-Safari-Extension"], type: "appstore", readonly: is_ci)
+    match(git_branch: "main", app_identifier: ["io.magic.light.dev", "io.magic.light.dev.LightSafari-Extension"], type: "appstore", readonly: is_ci)
   end
 end

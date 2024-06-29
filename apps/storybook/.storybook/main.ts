@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -47,18 +47,18 @@ const config: StorybookConfig = {
   },
   managerHead: head => `
     ${head}
-    <meta name="description" content="Storybook of Light">
+    <meta name="description" content="Storybook of Light>
     <meta name="image" content="https://storybook.light.so/storybook.png">
     <meta name="url" content="https://storybook.light.so">
-    <meta property="og:title" content="Light">
-    <meta property="og:description" content="Storybook of Light">
+    <meta property="og:title" content="Light>
+    <meta property="og:description" content="Storybook of Light>
     <meta property="og:image" content="https://storybook.light.so/storybook.png">
     <meta property="og:url" content="https://storybook.light.so">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@LightDotSo">
-    <meta name="twitter:title" content="Light">
-    <meta name="twitter:description" content="Storybook of Light">
+    <meta name="twitter:site" content="@LightotSo">
+    <meta name="twitter:title" content="Light>
+    <meta name="twitter:description" content="Storybook of Light>
     <meta name="twitter:image" content="https://storybook.light.so/storybook.png">
   `,
   env: config => ({

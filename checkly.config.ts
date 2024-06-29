@@ -11,7 +11,7 @@ const config = defineConfig({
    */
   logicalId: "lightdotso",
   /* An optional URL to your Git repo */
-  repoUrl: "https://github.com/LightDotSo/LightDotSo",
+  repoUrl: "https://github.com/LightotSo/LightotSo",
   /* Sets default values for Checks */
   checks: {
     /* A default for how often your Check should run in minutes */

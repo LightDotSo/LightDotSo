@@ -1,4 +1,4 @@
-LightWalletProxy.t.sol
+LightalletProxy.t.sol
 ├── When the proxy is initialized
 │  ├── It should revert for initialize
 │  └── It should revert on a {Initializable} error

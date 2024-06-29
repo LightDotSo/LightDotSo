@@ -46,7 +46,7 @@
     "name": "accountImplementation",
     "outputs": [
       {
-        "internalType": "contract LightWallet",
+        "internalType": "contract Lightallet",
         "name": "",
         "type": "address"
       }
@@ -70,7 +70,7 @@
     "name": "createAccount",
     "outputs": [
       {
-        "internalType": "contract LightWallet",
+        "internalType": "contract Lightallet",
         "name": "ret",
         "type": "address"
       }

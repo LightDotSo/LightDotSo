@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,15 +22,15 @@ import { Root } from "@/components/root/root";
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: "Light",
+  title: "Light,
   description:
-    "Light is a new type of smart wallet designed to help you explore Ethereum, and multiple EVM networks as easy as possible.",
+    "Lightis a new type of smart wallet designed to help you explore Ethereum, and multiple EVM networks as easy as possible.",
   metadataBase: new URL("https://light.so"),
   openGraph: {
-    title: "Light",
+    title: "Light,
     description: "Use Ethereum as One.",
     url: "/",
-    siteName: "Light",
+    siteName: "Light,
     images: [
       {
         url: "/og.png",
@@ -43,9 +43,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Light",
+    title: "Light,
     description: "Use Ethereum as One.",
-    creator: "@LightDotSo",
+    creator: "@LightotSo",
   },
 };
 

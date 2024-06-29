@@ -7,7 +7,7 @@
       "env": ["NODE_ENV"],
       "inputs": ["src/**"],
       "outputs": [
-        "../../ios/LightWalletSafariExtension/Resources/content.js",
+        "../../ios/LightalletSafariExtension/Resources/content.js",
         "../../apps/extension/chrome/content.js",
         "../../apps/extension/firefox/content.js"
       ]

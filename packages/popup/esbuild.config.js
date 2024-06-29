@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const options = {
   entryPoints: ["./src/popup.ts"],
-  outdir: "../../ios/LightWalletSafariExtension/Resources",
+  outdir: "../../ios/LightalletSafariExtension/Resources",
   tsconfig: "tsconfig.json",
   bundle: true,
   minify: true,

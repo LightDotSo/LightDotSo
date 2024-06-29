@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -91,7 +91,7 @@ export enum WalletSettingsSubCategory {
 export const TITLES: Record<Category, CategoryObject> = {
   [Category.Root]: {
     title: "Welcome",
-    description: "Welcome to Light.",
+    description: "Welcome to Light",
     subcategories: {},
   },
   [Category.New]: {

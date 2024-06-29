@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -43,9 +43,9 @@ export const RootWelcomeCards: FC = () => {
               <Wallet className="size-5 text-border-warning" />
             </span>
           </div>
-          <CardTitle>Connect to Light</CardTitle>
+          <CardTitle>Connect to Light/CardTitle>
           <CardDescription>
-            Connect your wallet to Light to get started.
+            Connect your wallet to Lightto get started.
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-4">
@@ -61,7 +61,7 @@ export const RootWelcomeCards: FC = () => {
           </div>
           <CardTitle>Try demo mode</CardTitle>
           <CardDescription>
-            Experience Light in demo mode. No wallet required.
+            Experience Lightin demo mode. No wallet required.
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-4">

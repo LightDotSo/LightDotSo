@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,13 +18,13 @@ import type { FC, SVGProps } from "react";
 // Props
 // -----------------------------------------------------------------------------
 
-type LightLogoProps = SVGProps<SVGSVGElement>;
+type LightogoProps = SVGProps<SVGSVGElement>;
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const LightLogo: FC<LightLogoProps> = ({ className, ...props }) => {
+export const Lightogo: FC<LightogoProps> = ({ className, ...props }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------

@@ -2,16 +2,16 @@
   "name": "@lightdotso/tailwindcss",
   "version": "3.1.5",
   "private": false,
-  "homepage": "https://github.com/LightDotSo/LightDotSo",
+  "homepage": "https://github.com/LightotSo/LightotSo",
   "bugs": {
-    "url": "https://github.com/LightDotSo/LightDotSo/issues"
+    "url": "https://github.com/LightotSo/LightotSo/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/LightDotSo/LightDotSo.git"
+    "url": "https://github.com/LightotSo/LightotSo.git"
   },
   "license": "Apache-2.0",
-  "author": "Light, Inc.",
+  "author": "Light,
   "main": "src/index.mjs",
   "files": [
     "src/index.mjs"

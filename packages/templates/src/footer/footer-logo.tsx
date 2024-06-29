@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { LightHorizontalLogo } from "@lightdotso/svg";
+import { LightorizontalLogo } from "@lightdotso/svg";
 import type { FC } from "react";
 import { FooterCopy } from "./footer-copy";
 
@@ -27,7 +27,7 @@ export const FooterLogo: FC = () => {
 
   return (
     <div className="flex shrink-0 items-center space-x-1">
-      <LightHorizontalLogo className="block h-8" />
+      <LightorizontalLogo className="block h-8" />
       <span className="md:hidden">
         <FooterCopy />
       </span>

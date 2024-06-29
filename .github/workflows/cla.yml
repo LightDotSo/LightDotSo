@@ -27,14 +27,14 @@ jobs:
           PERSONAL_ACCESS_TOKEN: ${{ secrets.BOT_TOKEN }}
         with:
           path-to-signatures: "signatures/version1/cla.json"
-          url-to-cladocument: "https://github.com/LightDotSo/CLA/blob/main/CLA.md" # e.g. a CLA or a DCO document
+          url-to-cladocument: "https://github.com/LightotSo/CLA/blob/main/CLA.md" # e.g. a CLA or a DCO document
           branch: main
-          whitelist: LightDotSoBot,dependabot[bot]
+          whitelist: LightotSoBot,dependabot[bot]
           use-remote-repo: true
-          remote-repo-name: LightDotSo/CLA
+          remote-repo-name: LightotSo/CLA
           remote-repo-pat: ${{ secrets.BOT_TOKEN }}
           # the followings are the optional inputs - If the optional inputs are not given, then default values will be taken
-          # remote-organization-name: LightDotSo
+          # remote-organization-name: LightotSo
           #remote-organization-name: enter the remote organization name where the signatures should be stored (Default is storing the signatures in the same repository)
           #remote-repository-name: enter the  remote repository name where the signatures should be stored (Default is storing the signatures in the same repository)
           #create-file-commit-message: 'For example: Creating file for storing CLA Signatures'

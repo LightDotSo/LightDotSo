@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,14 +17,14 @@
 pragma solidity ^0.8.18;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWallet} from "@/contracts/LightWallet.sol";
-import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
-import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
-import {UserOperation} from "@/contracts/LightWallet.sol";
-import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
+import {Lightallet} from "@/contracts/Lightallet.sol";
+import {LightalletFactory} from "@/contracts/LightalletFactory.sol";
+import {Lightaymaster} from "@/contracts/Lightaymaster.sol";
+import {UserOperation} from "@/contracts/Lightallet.sol";
+import {BaseLighteployer} from "@/script/base/BaseLighteployer.s.sol";
 import {SimpleAccount} from "@/contracts/samples/SimpleAccount.sol";
 import {SimpleAccountFactory} from "@/contracts/samples/SimpleAccountFactory.sol";
-import {LightWalletUtils} from "@/test/utils/LightWalletUtils.sol";
+import {LightalletUtils} from "@/test/utils/LightalletUtils.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 import {Script} from "forge-std/Script.sol";
 import {Test} from "forge-std/Test.sol";
@@ -34,7 +34,7 @@ import {console} from "forge-std/console.sol";
 using ERC4337Utils for EntryPoint;
 
 /// @notice Base deployer test for scripts
-abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
+abstract contract BaseLighteployerFlow is BaseLighteployer, Script {
     // -------------------------------------------------------------------------
     // Storages
     // -------------------------------------------------------------------------
@@ -50,19 +50,19 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
     // Setup
     // -------------------------------------------------------------------------
 
-    /// @dev BaseLightDeployerFlow setup
+    /// @dev BaseLighteployerFlow setup
     function setUp() public virtual override {
-        // setUp from BaseLightDeployer
-        BaseLightDeployer.setUp();
+        // setUp from BaseLighteployer
+        BaseLighteployer.setUp();
 
         // Specify the entryPoint
         entryPoint = EntryPoint(payable(address(ENTRY_POINT_ADDRESS)));
 
-        // LightWalletFactory core contract
-        factory = LightWalletFactory(LIGHT_FACTORY_ADDRESS);
+        // LightalletFactory core contract
+        factory = LightalletFactory(LIGHT_FACTORY_ADDRESS);
 
-        // LightPaymaster core contract
-        paymaster = LightPaymaster(LIGHT_PAYMASTER_ADDRESS);
+        // Lightaymaster core contract
+        paymaster = Lightaymaster(LIGHT_PAYMASTER_ADDRESS);
 
         // SimpleAccountFactory core contract
         simpleAccountFactory = SimpleAccountFactory(SIMPLE_ACCOUNT_FACTORY_ADDRESS);
@@ -81,7 +81,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         uint256 nonce,
         bytes memory initCode,
         bytes memory callData,
-        bool isLightWallet
+        bool isLightallet
     ) internal returns (UserOperation memory op) {
         // Get the paymaster request gas and paymaster and data
         (
@@ -91,7 +91,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
             bytes memory paymasterAndData,
             uint256 maxFeePerGas,
             uint256 maxPriorityFeePerGas
-        ) = getPaymasterRequestGasAndPaymasterAndData(expectedAddress, nonce, initCode, callData, isLightWallet);
+        ) = getPaymasterRequestGasAndPaymasterAndData(expectedAddress, nonce, initCode, callData, isLightallet);
 
         // Get the gas estimation
         // (uint256 preVerificationGas, uint256 verificationGasLimit, uint256 callGasLimit) =
@@ -151,7 +151,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         address expectedAddress = simpleAccountFactory.getAddress(deployer, nonce);
 
         // Sent ETH to the account w/ the expected address
-        // bytes memory callData = abi.encodeWithSelector(LightWallet.execute.selector, address(1), 1, bytes(""));
+        // bytes memory callData = abi.encodeWithSelector(Lightallet.execute.selector, address(1), 1, bytes(""));
         bytes memory callData = "";
 
         // UserOperation to create the account
@@ -183,8 +183,8 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         sendUserOperation(op);
     }
 
-    /// @dev Deploy the LightWallet contract
-    function deployLightWallet() internal returns (LightWallet) {
+    /// @dev Deploy the Lightallet contract
+    function deployLightallet() internal returns (Lightallet) {
         // Set the nonce
         nonce = randomNonce();
 
@@ -192,7 +192,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         (address deployer, uint256 deployerKey) = makeAddrAndKey("user");
 
         // Get the expected image hash
-        expectedImageHash = LightWalletUtils.getExpectedImageHash(deployer, weight, threshold, checkpoint);
+        expectedImageHash = LightalletUtils.getExpectedImageHash(deployer, weight, threshold, checkpoint);
 
         // Get the expected address
         address expectedAddress = factory.getAddress(expectedImageHash, nonce);
@@ -203,14 +203,14 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         // Set the initCode to create an account with the expected image hash and random nonce
         bytes memory initCode = abi.encodePacked(
             LIGHT_FACTORY_ADDRESS,
-            abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, nonce)
+            abi.encodeWithSelector(LightalletFactory.createAccount.selector, expectedImageHash, nonce)
         );
 
         // solhint-disable-next-line no-console
         console.logBytes(initCode);
 
         // Sent ETH to the account w/ the expected address
-        // bytes memory callData = abi.encodeWithSelector(LightWallet.execute.selector, address(1), 1, bytes(""));
+        // bytes memory callData = abi.encodeWithSelector(Lightallet.execute.selector, address(1), 1, bytes(""));
         bytes memory callData = "";
 
         // UserOperation to create the account
@@ -218,10 +218,10 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
 
         // Sign the UserOperation
         bytes memory sig =
-            LightWalletUtils.signDigest(vm, entryPoint.getUserOpHash(op), expectedAddress, deployerKey, false);
+            LightalletUtils.signDigest(vm, entryPoint.getUserOpHash(op), expectedAddress, deployerKey, false);
 
         // Construct the UserOperation
-        op.signature = LightWalletUtils.packLegacySignature(sig, weight, threshold, checkpoint);
+        op.signature = LightalletUtils.packLegacySignature(sig, weight, threshold, checkpoint);
 
         // Write the json
         writeUserOperationJson(op);
@@ -234,7 +234,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         sendUserOperation(op);
 
         // solhint-disable-next-line no-console
-        console.log("LightWallet to be deployed at address: %s", address(expectedAddress));
+        console.log("Lightallet to be deployed at address: %s", address(expectedAddress));
         // assert(address(expectedAddress).code.length > 0);
 
         return wallet;

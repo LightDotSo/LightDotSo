@@ -2,22 +2,22 @@
   "name": "@lightdotso/popup",
   "version": "3.1.5",
   "private": true,
-  "homepage": "https://github.com/LightDotSo/LightDotSo",
+  "homepage": "https://github.com/LightotSo/LightotSo",
   "bugs": {
-    "url": "https://github.com/LightDotSo/LightDotSo/issues"
+    "url": "https://github.com/LightotSo/LightotSo/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/LightDotSo/LightDotSo.git"
+    "url": "https://github.com/LightotSo/LightotSo.git"
   },
   "license": "Apache-2.0",
-  "author": "Light, Inc.",
+  "author": "Light,
   "scripts": {
     "build": "cross-env NODE_ENV=production next build && pnpm run cp:ios",
     "build:dev": "cross-env NODE_ENV=development next build && pnpm run cp:ios",
     "cp:ios": "pnpm run cp:ios:popup && pnpm run cp:ios:index",
-    "cp:ios:index": "cp \"../../ios/LightWalletSafariExtension/Resources/popup/index.html\" \"../../ios/LightWalletSafariExtension/Resources/popup.html\"",
-    "cp:ios:popup": "cp -r \"out\" \"../../ios/LightWalletSafariExtension/Resources/popup\"",
+    "cp:ios:index": "cp \"../../ios/LightalletSafariExtension/Resources/popup/index.html\" \"../../ios/LightalletSafariExtension/Resources/popup.html\"",
+    "cp:ios:popup": "cp -r \"out\" \"../../ios/LightalletSafariExtension/Resources/popup\"",
     "dev": "next dev",
     "start": "next start",
     "tsc": "tsc --noEmit"

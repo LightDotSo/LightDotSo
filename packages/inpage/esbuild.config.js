@@ -13,7 +13,7 @@ const commonOptions = {
 
 const options = [
   {
-    outdir: "../../ios/LightWalletSafariExtension/Resources",
+    outdir: "../../ios/LightalletSafariExtension/Resources",
   },
   {
     outdir: "../../apps/extension/chrome",

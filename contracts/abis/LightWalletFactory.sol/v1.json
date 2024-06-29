@@ -44,7 +44,7 @@
       {
         "name": "",
         "type": "address",
-        "internalType": "contract LightWallet"
+        "internalType": "contract Lightallet"
       }
     ],
     "stateMutability": "view"
@@ -68,7 +68,7 @@
       {
         "name": "ret",
         "type": "address",
-        "internalType": "contract LightWallet"
+        "internalType": "contract Lightallet"
       }
     ],
     "stateMutability": "nonpayable"

@@ -2,7 +2,7 @@
 
 ## 0xSequence
 
-First and firstmost this project woudln't have been possible without 0xSequence's [wallet-contracts](https://github.com/0xsequence/wallet-contracts) and the invention of the [Light State Sync](https://sequence.xyz/blog/sequence-wallet-light-state-sync-full-merkle-wallets) technology. Our multi-sig 4337 wallet contract implementation is entirely based on it.
+First and firstmost this project woudln't have been possible without 0xSequence's [wallet-contracts](https://github.com/0xsequence/wallet-contracts) and the invention of the [LightState Sync](https://sequence.xyz/blog/sequence-wallet-light-state-sync-full-merkle-wallets) technology. Our multi-sig 4337 wallet contract implementation is entirely based on it.
 
 Thank you for your hard work and dedication to the Ethereum community!
 

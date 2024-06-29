@@ -16,7 +16,7 @@
     # "lib/soul-wallet-contract",
     # "lib/v3-periphery",
   ]
-  gas_reports = ["LightWallet", "LightWalletFactory"]
+  gas_reports = ["Lightallet", "LightalletFactory"]
   optimizer = true
   optimizer_runs = 10_000
   solc = "0.8.18"
@@ -70,19 +70,19 @@
     timeout = 300_000
 
     [profile.smt.model_checker.contracts]
-      "contracts/src/LightWallet.sol" = ["LightWallet"]
-      "contracts/src/LightWalletFactory.sol" = ["LightWalletFactory"]
+      "contracts/src/Lightallet.sol" = ["Lightallet"]
+      "contracts/src/LightalletFactory.sol" = ["LightalletFactory"]
 
 [fmt]
   ignore = [
-    "contracts/src/LightWallet.sol",
-    "contracts/src/LightWalletFactory.sol",
+    "contracts/src/Lightallet.sol",
+    "contracts/src/LightalletFactory.sol",
   ]
 
 [doc]
   ignore = ["**/*.t.sol"]
   out = "docs"
-  repository = "https://github.com/LightDotSo/LightDotSo"
+  repository = "https://github.com/LightotSo/LightotSo"
 
 [rpc_endpoints]
   localhost = "http://localhost:8545"

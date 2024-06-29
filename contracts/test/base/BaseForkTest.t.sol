@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@
 pragma solidity ^0.8.18;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightPaymaster} from "@/contracts/LightPaymaster.sol";
-import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {Lightaymaster} from "@/contracts/Lightaymaster.sol";
+import {LightalletFactory} from "@/contracts/LightalletFactory.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 
-/// @notice Base fork fuzz test for `LightWallet`
+/// @notice Base fork fuzz test for `Lightallet`
 abstract contract BaseForkTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
     // Constants
@@ -41,10 +41,10 @@ abstract contract BaseForkTest is BaseIntegrationTest {
 
         // EntryPoint from eth-inifinitism
         entryPoint = EntryPoint(ENTRY_POINT_ADDRESS);
-        // LightWalletFactory core contract
-        factory = LightWalletFactory(LIGHT_FACTORY_ADDRESS);
-        // LightPaymaster core contract
-        paymaster = LightPaymaster(LIGHT_PAYMASTER_ADDRESS);
+        // LightalletFactory core contract
+        factory = LightalletFactory(LIGHT_FACTORY_ADDRESS);
+        // Lightaymaster core contract
+        paymaster = Lightaymaster(LIGHT_PAYMASTER_ADDRESS);
 
         // Get network name
         string memory defaultName = "mainnet";

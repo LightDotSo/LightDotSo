@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,4 +22,4 @@ pub fn rust_hello_world() -> String {
 
 pub use lightdotso_keychain::keychain_hello_world;
 
-uniffi_macros::include_scaffolding!("LightWalletCore");
+uniffi_macros::include_scaffolding!("LightalletCore");

@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ pragma solidity ^0.8.18;
 import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfaces/IEntryPoint.sol";
 import {IERC1271} from "@/contracts/interfaces/IERC1271.sol";
 
-interface ILightWallet is IERC1271 {
+interface ILightallet is IERC1271 {
     // -------------------------------------------------------------------------
     // Errors
     // -------------------------------------------------------------------------
@@ -34,7 +34,7 @@ interface ILightWallet is IERC1271 {
     // Events
     // -------------------------------------------------------------------------
 
-    event LightWalletInitialized(IEntryPoint indexed entryPoint, bytes32 indexed hash);
+    event LightalletInitialized(IEntryPoint indexed entryPoint, bytes32 indexed hash);
 
     // -------------------------------------------------------------------------
     // Actions

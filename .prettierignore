@@ -9,8 +9,8 @@ apps/extension/**
 configurations/prisma/src/zod/**
 crates/sequence/tests/samples/**
 packages/client/src/types/**/*.d.ts
-ios/LightWallet
-ios/LightWalletSafariExtension/Resources/**
+ios/Lightallet
+ios/LightalletSafariExtension/Resources/**
 
 *.graphql
 *.html

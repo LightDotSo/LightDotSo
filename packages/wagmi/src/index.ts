@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,23 +17,23 @@ export { projectId, wagmiConfig } from "./config";
 export {
   lightWalletAbi,
   lightWalletFactoryAbi,
-  useReadLightWalletImageHash,
-  useReadLightPaymaster,
-  useReadLightPaymasterEntryPoint,
-  useReadLightPaymasterGetDeposit,
-  useReadLightPaymasterGetHash,
-  useReadLightPaymasterOwner,
-  useReadLightPaymasterParsePaymasterAndData,
-  useReadLightPaymasterSenderNonce,
-  useReadLightPaymasterVerifyingSigner,
-  useReadLightVerifyingPaymaster,
-  useReadLightVerifyingPaymasterEntryPoint,
-  useReadLightVerifyingPaymasterGetDeposit,
-  useReadLightVerifyingPaymasterGetHash,
-  useReadLightVerifyingPaymasterOwner,
-  useReadLightVerifyingPaymasterParsePaymasterAndData,
-  useReadLightVerifyingPaymasterSenderNonce,
-  useReadLightVerifyingPaymasterVerifyingSigner,
+  useReadLightalletImageHash,
+  useReadLightaymaster,
+  useReadLightaymasterEntryPoint,
+  useReadLightaymasterGetDeposit,
+  useReadLightaymasterGetHash,
+  useReadLightaymasterOwner,
+  useReadLightaymasterParsePaymasterAndData,
+  useReadLightaymasterSenderNonce,
+  useReadLightaymasterVerifyingSigner,
+  useReadLighterifyingPaymaster,
+  useReadLighterifyingPaymasterEntryPoint,
+  useReadLighterifyingPaymasterGetDeposit,
+  useReadLighterifyingPaymasterGetHash,
+  useReadLighterifyingPaymasterOwner,
+  useReadLighterifyingPaymasterParsePaymasterAndData,
+  useReadLighterifyingPaymasterSenderNonce,
+  useReadLighterifyingPaymasterVerifyingSigner,
 } from "./generated";
 
 export { ConnectKitButton, ConnectKitProvider, useModal } from "connectkit";

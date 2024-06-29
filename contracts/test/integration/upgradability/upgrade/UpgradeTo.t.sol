@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,13 +17,13 @@
 pragma solidity ^0.8.18;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
+import {Lightallet, UserOperation} from "@/contracts/Lightallet.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
 using ERC4337Utils for EntryPoint;
 
-/// @notice Unit tests for `LightWallet` upgradeability
+/// @notice Unit tests for `Lightallet` upgradeability
 contract UpgradeToIntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
     // Setup
@@ -40,25 +40,25 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
 
     /// Tests that the factory reverts when trying to upgrade from outside address
     function test_revertWhenNotSelf_upgradeTo() public {
-        // Deploy new version of LightWallet
-        LightWallet accountV2 = new LightWallet(entryPoint);
+        // Deploy new version of Lightallet
+        Lightallet accountV2 = new Lightallet(entryPoint);
         // Revert for conventional upgrades w/o signature
         vm.expectRevert(abi.encodeWithSignature("OnlySelfAuth(address,address)", address(this), address(account)));
         // Check that the account is the new implementation
         _upgradeTo(address(account), address(accountV2));
     }
 
-    /// Tests that the account can upgrade to a v2 version of LightWallet
+    /// Tests that the account can upgrade to a v2 version of Lightallet
     function test_upgradeToV2() public {
-        // Deploy new version of LightWallet to test upgrade to
-        LightWallet accountV2 = new LightWallet(entryPoint);
+        // Deploy new version of Lightallet to test upgrade to
+        Lightallet accountV2 = new Lightallet(entryPoint);
 
         // Example UserOperation to update the account to immutable address one
         UserOperation[] memory ops = entryPoint.signPackUserOps(
             vm,
             address(account),
             abi.encodeWithSelector(
-                LightWallet.execute.selector,
+                Lightallet.execute.selector,
                 address(account),
                 0,
                 abi.encodeWithSignature("upgradeTo(address)", address(accountV2))
@@ -82,7 +82,7 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
             vm,
             address(account),
             abi.encodeWithSelector(
-                LightWallet.execute.selector,
+                Lightallet.execute.selector,
                 address(account),
                 0,
                 abi.encodeWithSignature("upgradeTo(address)", address(immutableProxy))
@@ -94,8 +94,8 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
             checkpoint
         );
         entryPoint.handleOps(ops, beneficiary);
-        // Deploy new version of LightWallet to test upgrade to
-        LightWallet accountV2 = new LightWallet(entryPoint);
+        // Deploy new version of Lightallet to test upgrade to
+        Lightallet accountV2 = new Lightallet(entryPoint);
 
         // Example UserOperation to update the account to immutable address one
         UserOperation[] memory opsv2 = entryPoint.signPackUserOps(

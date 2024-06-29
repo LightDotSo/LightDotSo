@@ -1,9 +1,9 @@
-!LightPaymasterDeployer.s.sol
-!LightWalletDeployer.s.sol
-!LightWalletFactoryDeployer.s.sol
+!LightaymasterDeployer.s.sol
+!LightalletDeployer.s.sol
+!LightalletFactoryDeployer.s.sol
 
 ERC20Transfer.s.sol
 ERC20TransferFlow.s.sol
-LightWalletDeployFlow.s.sol
+LightalletDeployFlow.s.sol
 
 31337

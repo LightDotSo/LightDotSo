@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ const eventsMap = {
 
 // Create a client to send and receive events
 export const inngest = new Inngest({
-  id: "Light",
+  id: "Light,
   middleware: [
     prismaMiddleware,
     ...(process.env.NODE_ENV !== "development" ? [sentryMiddleware] : []),

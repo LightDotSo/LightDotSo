@@ -1,12 +1,12 @@
 included:
-  - ios/LightWallet
-  - ios/LightWalletCore/Sources
-  - ios/LightWalletCore/Tests
-  - ios/LightWalletSafariExtension/SafariWebExtensionHandler.swift
+  - ios/Lightallet
+  - ios/LightalletCore/Sources
+  - ios/LightalletCore/Tests
+  - ios/LightalletSafariExtension/SafariWebExtensionHandler.swift
 excluded:
-  - crates/core/src/LightWalletCore.swift
-  - ios/LightWallet/.build
-  - ios/LightWalletCore/Sources/Generated
+  - crates/core/src/LightalletCore.swift
+  - ios/Lightallet/.build
+  - ios/LightalletCore/Sources/Generated
 disabled_rules:
   - unused_optional_binding
   - closure_parameter_position

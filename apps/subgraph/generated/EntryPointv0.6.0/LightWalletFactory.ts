@@ -10,9 +10,9 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
-export class LightWalletFactory extends ethereum.SmartContract {
-  static bind(address: Address): LightWalletFactory {
-    return new LightWalletFactory("LightWalletFactory", address);
+export class LightalletFactory extends ethereum.SmartContract {
+  static bind(address: Address): LightalletFactory {
+    return new LightalletFactory("LightalletFactory", address);
   }
 
   NAME(): string {

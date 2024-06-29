@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.18;
 
-import {BaseLightDeployerFlow} from "@/script/base/BaseLightDeployerFlow.s.sol";
+import {BaseLighteployerFlow} from "@/script/base/BaseLighteployerFlow.s.sol";
 import {ERC20TransferFlowScript} from "@/script/flow/ERC20TransferFlow.s.sol";
 
 // ERC20Transfer -- Test ERC20 transfer
-contract ERC20TransferFlowScriptTest is BaseLightDeployerFlow {
+contract ERC20TransferFlowScriptTest is BaseLighteployerFlow {
     ERC20TransferFlowScript script;
 
     function setUp() public override {

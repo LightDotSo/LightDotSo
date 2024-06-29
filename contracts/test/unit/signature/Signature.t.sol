@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProo
 import {Merkle} from "murky/Merkle.sol";
 import "solidity-bytes-utils/BytesLib.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
+import {Lightallet, UserOperation} from "@/contracts/Lightallet.sol";
 import {BaseTest} from "@/test/base/BaseTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 // solhint-disable-next-line no-console
@@ -29,7 +29,7 @@ import {console} from "forge-std/console.sol";
 using BytesLib for bytes;
 using ERC4337Utils for EntryPoint;
 
-/// @notice Unit tests for `LightWallet` Signature
+/// @notice Unit tests for `Lightallet` Signature
 contract StorageUnitTest is BaseTest {
     // -------------------------------------------------------------------------
     // Variables

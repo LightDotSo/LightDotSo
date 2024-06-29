@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -227,7 +227,7 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                 // Determistic Option Default
                 other: OtherFields::default(),
             },
-            // The address of the Light Wallet
+            // The address of the LightWallet
             light_wallet: op.user_operation.light_wallet.address.0.parse().unwrap(),
             // The address of the paymaster
             paymaster: op
@@ -244,7 +244,7 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
 #[cfg(test)]
 mod tests {
     use crate::polling::user_operations::{
-        BigInt, Bytes, LightWallet, Log, Receipt, Transaction, UserOperation, UserOperationEvent,
+        BigInt, Bytes, Lightallet, Log, Receipt, Transaction, UserOperation, UserOperationEvent,
     };
 
     #[test]
@@ -279,7 +279,7 @@ mod tests {
             }),
           user_operation_revert_reason: None,
           light_wallet:
-            LightWallet {
+            Lightallet {
               id: Bytes("0x10dbbe70128929723c1b982e53c51653232e4ff2".to_string()),
               index: BigInt("1".to_string()),
               address: Bytes("0x10dbbe70128929723c1b982e53c51653232e4ff2".to_string()),

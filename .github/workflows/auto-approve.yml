@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Auto Approve
-        if: (github.actor == 'shunkakinoki' || github.actor == 'dependabot[bot]') && github.actor != 'LightDotSoBot'
+        if: (github.actor == 'shunkakinoki' || github.actor == 'dependabot[bot]') && github.actor != 'LightotSoBot'
         uses: hmarr/auto-approve-action@v3
         continue-on-error: true
         with:

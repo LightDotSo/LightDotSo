@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { LightLogo } from "@lightdotso/svg";
+import { Lightogo } from "@lightdotso/svg";
 import Link from "next/link";
 import type { FC } from "react";
 
@@ -27,7 +27,7 @@ export const RootLogo: FC = () => {
 
   return (
     <Link href="/" className="hover:rounded-md hover:bg-background-stronger">
-      <LightLogo className="m-2.5 size-8 fill-text" />
+      <Lightogo className="m-2.5 size-8 fill-text" />
     </Link>
   );
 };

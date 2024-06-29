@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -114,9 +114,9 @@ impl WalletConfig {
     /// signature bytes
     pub fn encode(&self) -> Result<Vec<u8>> {
         // If the signature type is 0, the signature type is not encoded
-        // https://github.com/LightDotSo/LightDotSo/blob/3b0ea33499477d7f9d9f2544368bcbbe54a87ca2/contracts/modules/commons/ModuleAuth.sol#L61
+        // https://github.com/LightotSo/LightotSo/blob/3b0ea33499477d7f9d9f2544368bcbbe54a87ca2/contracts/modules/commons/ModuleAuth.sol#L61
         // as opposed to:
-        // https://github.com/LightDotSo/LightDotSo/blob/3b0ea33499477d7f9d9f2544368bcbbe54a87ca2/contracts/modules/commons/submodules/auth/SequenceDynamicSig.sol#L29
+        // https://github.com/LightotSo/LightotSo/blob/3b0ea33499477d7f9d9f2544368bcbbe54a87ca2/contracts/modules/commons/submodules/auth/SequenceDynamicSig.sol#L29
         // where the signature type is encoded in the signature
         if self.signature_type == 0 {
             return Ok([
@@ -221,7 +221,7 @@ mod tests {
             signature: [0u8; 65].into(),
         };
 
-        // From: contracts/src/test/utils/LightWalletUtils.sol
+        // From: contracts/src/test/utils/LightalletUtils.sol
         let wc = WalletConfig {
             signature_type: 1,
             checkpoint: 1,

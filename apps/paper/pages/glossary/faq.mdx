@@ -1,19 +1,19 @@
 # FAQ
 
-## What is the Light Layer in it's simplest form?
+## What is the LightLayer in it's simplest form?
 
-The Light Layer is a "thin" layer designed to programmatically facilitate cross-chain transactions based on user intents.
+The LightLayer is a "thin" layer designed to programmatically facilitate cross-chain transactions based on user intents.
 Users can specify the conditions and execution requirements for their transactions, taking advantage of the inherently asynchronous nature of cross-chain interactions.
 Essentially, it acts as a foundational layer where users submit transaction data with preferences, while off-chain entities execute these transactions, abstracting away the complexities of cross-chain interactions across all EVM chains.
 
-## What is the difference between existing interoperability solutions and the Light Layer?
+## What is the difference between existing interoperability solutions and the LightLayer?
 
 Current interoperability solutions often face challenges, such as the high liquidity demands of intent-based bridges like Across, the cost and delays associated with message-based bridges, and the nascent stage of shared sequencing layers not yet in production.
-Light Layer distinguishes itself by operating beneath these protocols as a "thin layer," enhancing user experience by seamlessly facilitating cross-chain transactions to achieve desired outcomes without being bound to a single solution.
+LightLayer distinguishes itself by operating beneath these protocols as a "thin layer," enhancing user experience by seamlessly facilitating cross-chain transactions to achieve desired outcomes without being bound to a single solution.
 
-## What can fundamentally be achieved with Light Layer?
+## What can fundamentally be achieved with LightLayer?
 
-The Light Layer enables several powerful functionalities:
+The LightLayer enables several powerful functionalities:
 
 - **Force Inclusion**:
   It ensures the inclusion of transactions on underlying chains by adhering to specified conditions and preferences.
@@ -22,19 +22,19 @@ The Light Layer enables several powerful functionalities:
 - **Programmable Atomicity**:
   Users can tailor their own execution, security, and settlement mechanisms to fit their preferences, achieving the desired outcomes within the specified framework.
 
-### What are the fundamental differences between Light Layer and other intent-based solutions?
+### What are the fundamental differences between LightLayer and other intent-based solutions?
 
 We are strictly focused on orchestration and verification of cross-chain states based on user-defined intents.
 Our modular approach that allows users to define their own execution logic, security mechanisms, and settlement preferences.
 This flexibility allows us to move faster and adapt to the rapidly evolving blockchain landscape, ensuring that users can achieve their desired outcomes with minimal friction.
 
-### How does verification work in the Light Layer?
+### How does verification work in the LightLayer?
 
 There needs to be a mechanism to verify the preconditions of the escrow contract to have a consistent state across all chains.
-Unlike DSNs in Layer Zero which verifies the destination chain's state, the Light Layer verifies the preconditions of chains requested by the user to maintain a single source of truth.
+Unlike DSNs in Layer Zero which verifies the destination chain's state, the LightLayer verifies the preconditions of chains requested by the user to maintain a single source of truth.
 e.g. Global balance of the user across all chains can be showin in the interface, but should not be considered as the source of truth.
 
-### Why do you need a Light Layer for expressing preferences?
+### Why do you need a LightLayer for expressing preferences?
 
 It's necessary because the input conditions in which assets are pulled from the user and the secutity mechanisms should be coupled with the user's preferences.
 Again, Intents are declarative that specifies the OUTCOME of the transaction, not the process of how it gets there. (Transactions are imperative, meaning you have to specify the HOW)

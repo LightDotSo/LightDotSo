@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,14 +24,14 @@ use revm::interpreter::InstructionResult;
 use serde::{Deserialize, Serialize};
 
 abigen!(
-    LightWalletFactory,
+    LightalletFactory,
     r#"[
         createAccount(bytes32 hash, bytes32 salt)
     ]"#,
 );
 
 abigen!(
-    LightWallet,
+    Lightallet,
     r#"[
         execute(address dest, uint256 value, bytes calldata func)
         executeBatch(address[] calldata dest, uint256[] calldata value, bytes[] calldata func)

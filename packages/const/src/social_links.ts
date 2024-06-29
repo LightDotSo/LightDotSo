@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,12 +31,12 @@ export const SOCIAL_LINKS: {
 } = {
   [Social.CAL]: "https://cal.com/lightdotso",
   [Social.CAL_SHUN]: "https://cal.com/shunkakinoki/support",
-  [Social.DISCORD]: "https://discord.gg/LightDotSo",
-  [Social.GITHUB]: "https://github.com/LightDotSo/LightDotSo",
+  [Social.DISCORD]: "https://discord.gg/LightotSo",
+  [Social.GITHUB]: "https://github.com/LightotSo/LightotSo",
   [Social.MIRROR]: "https://mirror.xyz/lightdotso.eth",
   [Social.NOTION]: "https://lightdotso.notion.site",
-  [Social.TELEGRAM]: "https://t.me/LightDotSo",
-  [Social.TWITTER]: "https://twitter.com/LightDotSo",
+  [Social.TELEGRAM]: "https://t.me/LightotSo",
+  [Social.TWITTER]: "https://twitter.com/LightotSo",
   [Social.TWITTER_SHUN]: "https://twitter.com/shunkakinoki",
   [Social.WEBSITE]: "https://light.so",
 };

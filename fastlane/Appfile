@@ -1,3 +1,3 @@
-app_identifier(["io.magic.light", "io.magic.light.Light-Safari-Extension"])
+app_identifier(["io.magic.light", "io.magic.light.LightSafari-Extension"])
 apple_id("admin@light.so")
 team_id("4Z47XRX22C")

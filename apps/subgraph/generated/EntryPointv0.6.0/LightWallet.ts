@@ -86,16 +86,16 @@ export class Initialized__Params {
   }
 }
 
-export class LightWalletInitialized extends ethereum.Event {
-  get params(): LightWalletInitialized__Params {
-    return new LightWalletInitialized__Params(this);
+export class LightalletInitialized extends ethereum.Event {
+  get params(): LightalletInitialized__Params {
+    return new LightalletInitialized__Params(this);
   }
 }
 
-export class LightWalletInitialized__Params {
-  _event: LightWalletInitialized;
+export class LightalletInitialized__Params {
+  _event: LightalletInitialized;
 
-  constructor(event: LightWalletInitialized) {
+  constructor(event: LightalletInitialized) {
     this._event = event;
   }
 
@@ -126,7 +126,7 @@ export class Upgraded__Params {
   }
 }
 
-export class LightWallet__signatureRecoveryResult {
+export class Lightallet__signatureRecoveryResult {
   value0: BigInt;
   value1: BigInt;
   value2: Bytes;
@@ -178,7 +178,7 @@ export class LightWallet__signatureRecoveryResult {
   }
 }
 
-export class LightWallet__validateUserOpInputUserOpStruct extends ethereum.Tuple {
+export class Lightallet__validateUserOpInputUserOpStruct extends ethereum.Tuple {
   get sender(): Address {
     return this[0].toAddress();
   }
@@ -224,9 +224,9 @@ export class LightWallet__validateUserOpInputUserOpStruct extends ethereum.Tuple
   }
 }
 
-export class LightWallet extends ethereum.SmartContract {
-  static bind(address: Address): LightWallet {
-    return new LightWallet("LightWallet", address);
+export class Lightallet extends ethereum.SmartContract {
+  static bind(address: Address): Lightallet {
+    return new Lightallet("Lightallet", address);
   }
 
   NAME(): string {
@@ -544,7 +544,7 @@ export class LightWallet extends ethereum.SmartContract {
   signatureRecovery(
     _digest: Bytes,
     _signature: Bytes
-  ): LightWallet__signatureRecoveryResult {
+  ): Lightallet__signatureRecoveryResult {
     let result = super.call(
       "signatureRecovery",
       "signatureRecovery(bytes32,bytes):(uint256,uint256,bytes32,bytes32,uint256)",
@@ -554,7 +554,7 @@ export class LightWallet extends ethereum.SmartContract {
       ]
     );
 
-    return new LightWallet__signatureRecoveryResult(
+    return new Lightallet__signatureRecoveryResult(
       result[0].toBigInt(),
       result[1].toBigInt(),
       result[2].toBytes(),
@@ -566,7 +566,7 @@ export class LightWallet extends ethereum.SmartContract {
   try_signatureRecovery(
     _digest: Bytes,
     _signature: Bytes
-  ): ethereum.CallResult<LightWallet__signatureRecoveryResult> {
+  ): ethereum.CallResult<Lightallet__signatureRecoveryResult> {
     let result = super.tryCall(
       "signatureRecovery",
       "signatureRecovery(bytes32,bytes):(uint256,uint256,bytes32,bytes32,uint256)",
@@ -580,7 +580,7 @@ export class LightWallet extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      new LightWallet__signatureRecoveryResult(
+      new Lightallet__signatureRecoveryResult(
         value[0].toBigInt(),
         value[1].toBigInt(),
         value[2].toBytes(),
@@ -614,7 +614,7 @@ export class LightWallet extends ethereum.SmartContract {
   }
 
   validateUserOp(
-    userOp: LightWallet__validateUserOpInputUserOpStruct,
+    userOp: Lightallet__validateUserOpInputUserOpStruct,
     userOpHash: Bytes,
     missingAccountFunds: BigInt
   ): BigInt {
@@ -632,7 +632,7 @@ export class LightWallet extends ethereum.SmartContract {
   }
 
   try_validateUserOp(
-    userOp: LightWallet__validateUserOpInputUserOpStruct,
+    userOp: Lightallet__validateUserOpInputUserOpStruct,
     userOpHash: Bytes,
     missingAccountFunds: BigInt
   ): ethereum.CallResult<BigInt> {
