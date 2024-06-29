@@ -11,7 +11,7 @@
     "url": "https://github.com/LightDotSo/LightDotSo.git"
   },
   "license": "Apache-2.0",
-  "author": "Light, Inc.",
+  "author": "Light.",
   "scripts": {
     "build": "cross-env NODE_ENV=production node ./esbuild.config.js",
     "build:dev": "cross-env NODE_ENV=development node ./esbuild.config.js"

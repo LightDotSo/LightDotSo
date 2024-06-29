@@ -1,5 +1,5 @@
 Licensing Information
-Copyright 2023-2024 Light, Inc.
+Copyright 2023-2024 Light.
 
 Copyrights in this project are retained by contributors. No copyright assignment is required to contribute to this project.
 

@@ -1,4 +1,4 @@
-// Copyright 2023-2024 Light, Inc.
+// Copyright 2023-2024 Light.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// // Copyright (C) 2023 Light, Inc.
+// // Copyright (C) 2023 Light.
 // //
 // // This program is free software: you can redistribute it and/or modify
 // // it under the terms of the GNU Affero General Public License as published by
