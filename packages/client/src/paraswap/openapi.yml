@@ -1,0 +1,1133 @@
+# Copyright 2023-2024 Light, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+openapi: 3.0.3
+info:
+  title: ParaSwap API v5
+  contact:
+    email: contact@paraswap.io
+  license:
+    name: Apache 2.0
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+  version: "1.0"
+
+externalDocs:
+  description: Paraswap Website
+  url: "http://paraswap.io"
+
+servers:
+  - url: "https://apiv5.paraswap.io"
+
+tags:
+  - name: tokens
+    description: Return tokens list from Paraswap
+  - name: prices
+    description: Get swap path and pricing.
+  - name: transactions
+    description: Build parameters for a transaction
+
+paths:
+  /tokens:
+    get:
+      description: alias for /tokens/1
+      tags:
+        - tokens
+      responses:
+        "200":
+          $ref: "#/components/responses/TokensResponse"
+
+  "/tokens/{network}":
+    get:
+      tags:
+        - tokens
+      parameters:
+        - $ref: "#/components/parameters/Network"
+      responses:
+        "200":
+          $ref: "#/components/responses/TokensResponse"
+
+  /prices:
+    get:
+      tags:
+        - prices
+      summary: Request prices.
+      parameters:
+        - name: srcToken
+          description: Source Token Address or Token Symbol (for tokens from /tokens).
+          in: query
+          required: true
+          schema:
+            type: string
+          example: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+
+        - name: srcDecimals
+          description: >-
+            Source Token Decimals; can be omitted if Symbol is provided for
+            `srcToken`.
+          in: query
+          required: false
+          schema:
+            $ref: "#/components/schemas/TokenDecimals"
+          example: 18
+
+        - name: destToken
+          description: Destination Token Address or Token Symbol (for tokens from /tokens).
+          in: query
+          required: true
+          schema:
+            type: string
+          example: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+
+        - name: destDecimals
+          description: >-
+            Destination Token Decimals; can be omitted if Symbol is provided for
+            `destToken`.
+          in: query
+          required: false
+          schema:
+            $ref: "#/components/schemas/TokenDecimals"
+          example: 6
+
+        - name: amount
+          description: Amount in the Denomination of Source Token
+          example: "1000000000000000000"
+          in: query
+          required: true
+          schema:
+            type: string
+            pattern: ^\d+$
+
+        - name: side
+          in: query
+          description: Side of the swap.
+          required: true
+          schema:
+            $ref: "#/components/schemas/SwapSide"
+
+        - name: network
+          in: query
+          description: ID of the blockchain network.
+          required: false
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/Network"
+              - default: 1
+
+        - name: otherExchangePrices
+          in: query
+          description: >-
+            _If provided_, **others** object is filled in the response with
+            price quotes from other exchanges (if available for comparison).
+          required: false
+          schema:
+            type: boolean
+
+        - name: includeDEXS
+          in: query
+          description: Comma Separated List of DEXs to include without spaces.
+          required: false
+          explode: false
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/DEXs"
+
+        - name: excludeDEXS
+          in: query
+          description: Comma Separated List of DEXs to exclude without spaces.
+          required: false
+          explode: false
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/DEXs"
+
+        - name: includeContractMethods
+          in: query
+          description: Comma Separated List of Contract Methods to include without spaces.
+          required: false
+          explode: false
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/ContractMethod"
+
+        - name: excludeContractMethods
+          in: query
+          description: Comma Separated List of Contract Methods to exclude without spaces.
+          required: false
+          explode: false
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/ContractMethod"
+
+        - name: userAddress
+          in: query
+          description: User Wallet Address.
+          required: false
+          schema:
+            type: string
+
+        - name: route
+          in: query
+          description: >-
+            Dash (-) separated list of tokens (addresses or symbols from
+            /tokens) to comprise the price route. Max 4 tokens
+          required: false
+          schema:
+            type: string
+          examples:
+            "":
+              value: null
+            ETH-USDC:
+              value: >-
+                0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE-0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
+
+        - name: partner
+          in: query
+          description: partner string
+          required: false
+          schema:
+            type: string
+
+      responses:
+        "200":
+          $ref: "#/components/responses/PricesSuccessResponse"
+        "400":
+          $ref: "#/components/responses/PricesErrorResponse"
+
+  "/transactions/{network}":
+    post:
+      tags:
+        - transactions
+      summary: Build Transaction to be sent to the blockchain.
+      requestBody:
+        $ref: "#/components/requestBodies/TransactionsRequestBody"
+      parameters:
+        - $ref: "#/components/parameters/Network"
+
+        - name: gasPrice
+          in: query
+          description: The set gas-price for the transaction in wei.
+          required: false
+          schema:
+            type: string
+          examples:
+            "":
+              value: null
+            fast:
+              value: "50000000000"
+
+        - name: ignoreChecks
+          description: >
+            Allows the API to skip performing onchain checks such as balances,
+            allowances, as well as transaction simulations.
+
+            <b>Note:</b> The response does not contain <b><u>gas</u></b>
+            parameter when <i>ignoreChecks</i> is set to `true`.
+          in: query
+          required: false
+          schema:
+            type: boolean
+
+        - name: ignoreGasEstimate
+          description: >-
+            Allows the API to skip gas checks <b>Note:</b> The response does not
+            contain <b><u>gas</u></b> parameter when <i>ignoreGasEstimate</i> is
+            set to `true`.
+          in: query
+          required: false
+          schema:
+            type: boolean
+
+        - name: onlyParams
+          description: Allows the API to return the contract parameters only.
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          $ref: "#/components/responses/TransactionsBuildSuccessResponse"
+        "400":
+          $ref: "#/components/responses/TransactionsBuildErrorResponse"
+
+components:
+  responses:
+    TokensResponse:
+      description: List of available tokens
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TokensList"
+          example:
+            tokens:
+              - symbol: ETH
+                address: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+                decimals: 18
+                img: "https://img.paraswap.network/ETH.png"
+                network: 1
+              - symbol: USDT
+                address: "0xdac17f958d2ee523a2206206994597c13d831ec7"
+                decimals: 6
+                img: "https://img.paraswap.network/USDT.png"
+                network: 1
+
+    PricesSuccessResponse:
+      description: Successful prices response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              priceRoute:
+                $ref: "#/components/schemas/PriceRoute"
+
+    PricesErrorResponse:
+      description: Price Error
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: "#/components/schemas/PriceError"
+              - $ref: "#/components/schemas/PriceRouteWithError"
+          examples:
+            PriceError:
+              value:
+                error: computePrice Error
+            PriceRoute with Error:
+              $ref: "#/components/examples/PriceRouteWithErrorExample"
+
+    TransactionsBuildSuccessResponse:
+      description: >
+        Ethereum transaction request object.<br/>
+
+        `gas` is included only if neither of `ignoreChecks` and
+        `ignoreGasEstimate` are true<br/>
+
+        When `onlyParams=true` `schemas/RouterParametersExample` is returned
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: "#/components/schemas/TransactionsBuildResponse"
+              - $ref: "#/components/schemas/RouterParameters"
+          examples:
+            TransactionResponse:
+              $ref: "#/components/examples/TransactionResponseExample"
+            RouterParameters:
+              $ref: "#/components/examples/RouterParametersExample"
+
+    TransactionsBuildErrorResponse:
+      description: Transaction Building Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TransactionsError"
+
+  requestBodies:
+    TransactionsRequestBody:
+      description: >-
+        Checkout `schemas/TransactionsRequestPayload` to infer what parameters
+        are required to be parsed in the responseBody. (<b>Note</b>: The
+        priceRoute object should be directly parsed without any change.)
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TransactionsRequestPayload"
+          examples:
+            body:
+              $ref: "#/components/examples/TransactionsRequestBodyExample"
+
+  parameters:
+    Network:
+      name: network
+      in: path
+      description: "ID of the network. (Mainnet - 1, Ropsten - 3, Polygon - 56, BSC - 137)."
+      required: true
+      schema:
+        allOf:
+          - $ref: "#/components/schemas/Network"
+          - default: 1
+
+  schemas:
+    SwapSide:
+      type: string
+      enum:
+        - SELL
+        - BUY
+
+    DEXs:
+      type: string
+      description: Supported DEXs. The list may change
+      enum:
+        - Uniswap
+        - Kyber
+        - Bancor
+        - Oasis
+        - Compound
+        - Fulcrum
+        - 0x
+        - MakerDAO
+        - Chai
+        - ParaSwapPool
+        - Aave
+        - Aave2
+        - MultiPath
+        - MegaPath
+        - Curve
+        - Curve3
+        - Saddle
+        - IronV2
+        - BDai
+        - idle
+        - Weth
+        - Beth
+        - UniswapV2
+        - Balancer
+        - 0xRFQt
+        - ParaSwapPool2
+        - ParaSwapPool3
+        - ParaSwapPool4
+        - ParaSwapPool5
+        - ParaSwapPool6
+        - SushiSwap
+        - LINKSWAP
+        - Synthetix
+        - DefiSwap
+        - Swerve
+        - CoFiX
+        - Shell
+        - DODOV1
+        - DODOV2
+        - OnChainPricing
+        - PancakeSwap
+        - PancakeSwapV2
+        - ApeSwap
+        - Wbnb
+        - acryptos
+        - streetswap
+        - bakeryswap
+        - julswap
+        - vswap
+        - vpegswap
+        - beltfi
+        - ellipsis
+        - QuickSwap
+        - COMETH
+        - Wmatic
+        - Nerve
+        - Dfyn
+        - UniswapV3
+        - Smoothy
+        - PantherSwap
+        - OMM1
+        - OneInchLP
+        - CurveV2
+        - mStable
+        - WaultFinance
+        - MDEX
+        - ShibaSwap
+        - CoinSwap
+        - SakeSwap
+        - JetSwap
+        - Biswap
+        - BProtocol
+      example: SushiSwap
+
+    ContractMethod:
+      type: string
+      enum:
+        - swapOnUniswap
+        - buyOnUniswap
+        - swapOnUniswapFork
+        - buyOnUniswapFork
+        - swapOnUniswapV2Fork
+        - buyOnUniswapV2Fork
+        - simpleBuy
+        - simpleSwap
+        - multiSwap
+        - megaSwap
+        - protectedMultiSwap
+        - protectedMegaSwap
+        - protectedSimpleSwap
+        - protectedSimpleBuy
+        - swapOnZeroXv2
+        - swapOnZeroXv4
+        - buy
+
+    Network:
+      type: number
+      enum:
+        - 1
+        - 3
+        - 56
+        - 137
+
+    Token:
+      type: object
+      required:
+        - symbol
+        - address
+        - decimals
+        - img
+        - network
+        - newToken
+        - connectors
+        - tokenType
+      properties:
+        symbol:
+          type: string
+        address:
+          type: string
+        name:
+          type: string
+        decimals:
+          $ref: "#/components/schemas/TokenDecimals"
+        img:
+          type: string
+        network:
+          $ref: "#/components/schemas/Network"
+        newToken:
+          type: boolean
+          default: false
+        connectors:
+          type: array
+          items:
+            type: string
+        tokenType:
+          type: string
+          enum:
+            - ETH
+            - ERC20
+            - SYNTH
+            - cToken
+            - iToken
+            - aToken
+            - aToken2
+            - idleToken
+            - Chai
+            - bDAI
+
+    TokenDecimals:
+      type: integer
+      minimum: 0
+
+    TokensList:
+      type: object
+      properties:
+        tokens:
+          type: array
+          items:
+            $ref: "#/components/schemas/Token"
+
+    PriceRoute:
+      description: Response Body returned from `/prices` endpoint.
+      type: object
+      required:
+        - blockNumber
+        - network
+        - srcToken
+        - srcDecimals
+        - srcAmount
+        - destToken
+        - destDecimals
+        - destAmount
+        - bestRoute
+        - gasCost
+        - gasCostUSD
+        - side
+        - tokenTransferProxy
+        - contractAddress
+        - contractMethod
+        - srcUSD
+        - destUSD
+        - partner
+        - partnerFee
+        - maxImpactReached
+        - hmac
+      properties:
+        blockNumber:
+          type: integer
+          minimum: 0
+          example: 13015909
+        network:
+          $ref: "#/components/schemas/Network"
+        srcToken:
+          description: Source Token Address
+          type: string
+          example: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+        srcDecimals:
+          $ref: "#/components/schemas/TokenDecimals"
+        srcAmount:
+          type: string
+          example: "1000000000000000000"
+        destToken:
+          description: Destination Token Address
+          type: string
+          example: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        destDecimals:
+          $ref: "#/components/schemas/TokenDecimals"
+        destAmount:
+          type: string
+          example: "1000000000000000000"
+        bestRoute:
+          $ref: "#/components/schemas/OptimalRoute"
+        others:
+          allOf:
+            - description: >-
+                Available if `/prices` endpoint was called with
+                `otherExchangePrices=true` in query
+            - $ref: "#/components/schemas/OptionalRate"
+        gasCostUSD:
+          type: string
+          example: "11.947163"
+        gasCost:
+          type: string
+          example: "111435"
+        side:
+          $ref: "#/components/schemas/SwapSide"
+        tokenTransferProxy:
+          type: string
+          example: "0x3e7d31751347BAacf35945074a4a4A41581B2271"
+        contractAddress:
+          type: string
+          example: "0x485D2446711E141D2C8a94bC24BeaA5d5A110D74"
+        contractMethod:
+          type: string
+          example: swapOnUniswap
+        srcUSD:
+          type: string
+          example: "3230.3000000000"
+        destUSD:
+          type: string
+          example: "3218.9300566052"
+        partner:
+          type: string
+          example: paraswap.io
+        partnerFee:
+          type: integer
+          minimum: 0
+          example: 0
+        maxImpactReached:
+          type: boolean
+          example: false
+        hmac:
+          type: string
+          example: 319c5cf83098a07aeebb11bed6310db51311201f
+
+    PriceErrorMessage:
+      type: string
+      enum:
+        - Invalid tokens
+        - "Invalid route, from token should be the first token of the route"
+        - "Invalid route, to token should be the last token of the route"
+        - Token not found
+        - Price Timeout
+        - computePrice Error
+        - Bad USD price
+        - ERROR_GETTING_PRICES
+        - "An error has occurred, please try again later or contact our support"
+
+    PriceError:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          $ref: "#/components/schemas/PriceErrorMessage"
+      example:
+        error: computePrice Error
+
+    PriceRouteWithError:
+      type: object
+      required:
+        - error
+        - value
+        - priceRoute
+      properties:
+        error:
+          type: string
+          enum:
+            - ESTIMATED_LOSS_GREATER_THAN_MAX_IMPACT
+        value:
+          description: price impact %
+          type: string
+          pattern: ^\d+(\.\d+)?%$
+          example: 99%
+        priceRoute:
+          $ref: "#/components/schemas/PriceRoute"
+
+    OptimalSwap:
+      type: object
+      required:
+        - srcToken
+        - srcDecimals
+        - destToken
+        - destDecimals
+        - swapExchanges
+      properties:
+        srcToken:
+          type: string
+          example: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+        srcDecimals:
+          $ref: "#/components/schemas/TokenDecimals"
+        destToken:
+          type: string
+          example: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        destDecimals:
+          $ref: "#/components/schemas/TokenDecimals"
+        swapExchanges:
+          type: array
+          items:
+            $ref: "#/components/schemas/OptimalSwapExchange"
+
+    OptimalRoute:
+      type: object
+      required:
+        - percent
+        - swaps
+      properties:
+        percent:
+          type: number
+          example: 100
+        swaps:
+          type: array
+          items:
+            $ref: "#/components/schemas/OptimalSwap"
+
+    OptimalSwapExchange:
+      type: object
+      required:
+        - exchange
+        - srcAmount
+        - destAmount
+        - percent
+      properties:
+        exchange:
+          type: string
+          example: UniswapV2
+        srcAmount:
+          type: string
+          example: "1000000000000000000"
+        destAmount:
+          type: string
+          example: "1000000000000000000"
+        percent:
+          type: number
+          example: 100
+        data:
+          type: object
+          example:
+            $ref: "#/components/examples/ExchangeDataExample/value"
+
+    OptionalRate:
+      type: object
+      required:
+        - exchange
+        - srcAmount
+        - destAmount
+      properties:
+        exchange:
+          type: string
+          example: UniswapV2
+        srcAmount:
+          type: string
+          example: "1000000000000000000"
+        destAmount:
+          type: string
+          example: "3255989380"
+        unit:
+          type: string
+          example: "3255989380"
+        data:
+          type: object
+          example:
+            $ref: "#/components/examples/ExchangeDataExample/value"
+
+    TransactionsRequestPayload:
+      type: object
+      required:
+        - srcToken
+        - destToken
+        - userAddress
+        - priceRoute
+      properties:
+        srcToken:
+          description: >-
+            Source Token Address. Only Token Symbol could be speciﬁed for tokens
+            from `/tokens`.
+          type: string
+          example: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+        srcDecimals:
+          description: >-
+            Source Token Decimals; can be omitted if Symbol is provided for
+            `srcToken`.
+          type: integer
+          example: 18
+        destToken:
+          description: >-
+            Destination Token Address. Only Token Symbol could be speciﬁed for
+            tokens from `/tokens`.
+          type: string
+          example: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        destDecimals:
+          description: >-
+            Destination Token Decimals; can be omitted if Symbol is provided for
+            `destToken`.
+          type: integer
+          example: 6
+        srcAmount:
+          description: >-
+            Amount in the Denomination of `srcToken` as returned from the
+            `/prices` end-point. Required if `side=SELL`. Could only be ommitted
+            if slippage & destAmount is provided when `side=BUY`
+          type: integer
+          example: 1000000000000000000
+        destAmount:
+          description: >-
+            Amount in the Denomination of `destToken`  as returned from the
+            `/prices` end-point.Required if `side=SELL`. Could only be ommitted
+            if slippage & srcAmount is provided when `side=SELL`
+          type: integer
+          example: 1000000000000000000
+        slippage:
+          description: >-
+            Slippage percentage (represented in basis points). Eg: for 2.5%
+            slippage, set the value to 0.025 * 10000 = 250; for 10% = 1000.
+            <b>slippage</b> could be passed instead of `destAmount` when
+            `side=SELL` or `srcAmount` when `side=BUY`
+          type: integer
+          minimum: 0
+          maximum: 10000
+        userAddress:
+          description: Address of the Signer
+          type: string
+          example: "0xF7B2F3cD946052f8b397F801299b80F053515AF9"
+        txOrigin:
+          description: >-
+            Whenever msg.sender (userAddress) is different than the address
+            calling the paraswap contract, `txOrigin` must be passed along with
+            `userAddress`.
+          type: string
+        receiver:
+          description: Address of the Receiver.
+          type: string
+        partnerAddress:
+          description: Partner Address. If provided takes precedence over `partner`
+          type: string
+        partnerFeePercent:
+          description: >-
+            Used together with `partner` if provided. Should be parsed in Basis
+            Points. Look at `slippage` parameter description to understand
+            better.
+          type: integer
+          minimum: 0
+          maximum: 10000
+        partner:
+          description: >-
+            Partner string. If `partnerAddress` not provided, partnerFeePercent
+            is matched against known partners
+          type: string
+          example: metamask
+        permit:
+          description: >-
+            Permit-hash (hex-string) to omit approving the user before swap.
+            Helps in saving gas.
+          type: string
+        deadline:
+          description: >-
+            Timestamp (10 digit/seconds precision) till when the given
+            transaction is valid. Eg: 1629214486. For a 5 minute, `deadline` could be calculated as
+            `Date.now()/1000 + 300.`
+          type: integer
+        priceRoute:
+          $ref: "#/components/schemas/PriceRoute"
+      example:
+        $ref: "#/components/examples/TransactionsRequestBodyExample/value"
+
+    TransactionsBuildResponse:
+      type: object
+      properties:
+        from:
+          type: string
+          example: "0xbe0eb53f46cd790cd13851d5eff43d12404d33e8"
+        to:
+          type: string
+          example: "0xDEF171Fe48CF0115B1d80b88dc8eAB59176FEe57"
+        value:
+          type: string
+          example: "10000000000000000"
+        data:
+          type: string
+          example: >-
+            0xf566103400000000000000000000000075e48c954594d64ef9613aeef97ad85370f13807b2b53dca60cae1d1f93f64d80703b888689f28b63c483459183f2f4271fa0308000000000000000000000000000000000000000000000000002386f26fc100000000000000000000000000000000000000000000000000000000000001c2354900000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000002000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee000000000000000000000000dac17f958d2ee523a2206206994597c13d831ec7
+        gasPrice:
+          type: string
+          example: "42452400000"
+        chainId:
+          $ref: "#/components/schemas/Network"
+        gas:
+          description: >-
+            `gas` is included only if neither of `ignoreChecks` and
+            `ignoreGasEstimate` are true
+          type: string
+          example: "197142"
+
+    TransactionsErrorMessage:
+      type: string
+      enum:
+        - Unable to check price impact
+        - "It seems like the rate has changed, please re-query the latest Price"
+        - "The rate has changed, please re-query the latest Price"
+        - >-
+          It seems like your wallet doesn't contain enough ETH to cover the gas
+          fees.
+        - >-
+          It seems like your wallet doesn't contain enough BNB to cover the gas
+          fees.
+        - >-
+          It seems like your wallet doesn't contain enough MATIC to cover the
+          gas fees.
+        - Not enough <TOKEN_ADDRESS or TOKEN_SYMBOL> balance
+        - >-
+          Not enough <TOKEN_ADDRESS or TOKEN_SYMBOL> allowance given to
+          TokenTransferProxy(<CONTRACT_ADDRESS>)
+        - Network Mismatch
+        - Missing srcAmount
+        - Missing destAmount
+        - Cannot specify both slippage and srcAmount
+        - Cannot specify both slippage and destAmount
+        - Missing slippage or srcAmount
+        - Missing slippage or destAmount
+        - Source Amount Mismatch
+        - Destination Amount Mismatch
+        - Source Token Mismatch
+        - Destination Token Mismatch
+        - Error Parsing params
+        - priceRoute must be unmodified as sent by the price endpoint
+        - Unable to process the transaction
+        - ERROR_BUILDING_TRANSACTION
+        - "An error has occurred, please try again later or contact our support"
+
+    TransactionsError:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          $ref: "#/components/schemas/TransactionsErrorMessage"
+      example:
+        error: Unable to process the transaction
+
+    RouterParameters:
+      description: returned when `/tarnsactions` is called with `onlyParams=true`
+      type: array
+      items:
+        oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+      example:
+        $ref: "#/components/examples/RouterParametersExample/value"
+
+  examples:
+    ExchangeDataExample:
+      summary: Example of Exchange data
+      value:
+        router: "0x0000000000000000000000000000000000000000"
+        path:
+          - "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+          - "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+        factory: "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f"
+        initCode: "0x96e8ac4277198ff8b6f785478aa9a39f403cb768dd02cbee326c3e7da348845f"
+        feeFactor: 10000
+        pools:
+          - address: "0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc"
+            fee: 30
+            direction: false
+        gasUSD: "13.227195"
+
+    PriceRouteWithErrorExample:
+      value:
+        error: ESTIMATED_LOSS_GREATER_THAN_MAX_IMPACT
+        value: 99.85%
+        priceRoute:
+          blockNumber: 13042705
+          network: 1
+          srcToken: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+          srcDecimals: 18
+          srcAmount: "1000000000000000000"
+          destToken: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+          destDecimals: 6
+          destAmount: "3273085640"
+          bestRoute:
+            - percent: 100
+              swaps:
+                - srcToken: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+                  srcDecimals: 18
+                  destToken: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+                  destDecimals: 6
+                  swapExchanges:
+                    - exchange: UniswapV2
+                      srcAmount: "1000000000000000000"
+                      destAmount: "3273085640"
+                      percent: 100
+                      data:
+                        router: "0x0000000000000000000000000000000000000000"
+                        path:
+                          - "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+                          - "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+                        factory: "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f"
+                        initCode: >-
+                          0x96e8ac4277198ff8b6f785478aa9a39f403cb768dd02cbee326c3e7da348845f
+                        feeFactor: 10000
+                        pools:
+                          - address: "0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc"
+                            fee: 30
+                            direction: false
+                        gasUSD: "11.730851"
+          gasCostUSD: "16.340342"
+          gasCost: "111435"
+          others:
+            - exchange: UniswapV2
+              srcAmount: "1000000000000000000"
+              destAmount: "3273085640"
+              unit: "3273085640"
+              data:
+                router: "0x0000000000000000000000000000000000000000"
+                path:
+                  - "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+                  - "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+                factory: "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f"
+                initCode: >-
+                  0x96e8ac4277198ff8b6f785478aa9a39f403cb768dd02cbee326c3e7da348845f
+                feeFactor: 10000
+                pools:
+                  - address: "0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc"
+                    fee: 30
+                    direction: false
+                gasUSD: "11.730851"
+            - exchange: Bancor
+              srcAmount: "1000000000000000000"
+              destAmount: "3270223905"
+              unit: "3270223905"
+              data:
+                path:
+                  - "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+                  - "0xb1CD6e4153B2a390Cf00A6556b0fC1458C4A5533"
+                  - "0x1F573D6Fb3F13d689FF844B4cE37794d79a7FF1C"
+                  - "0x874d8dE5b26c9D9f6aA8d7bab283F9A9c6f777f4"
+                  - "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+                gasUSD: "29.327128"
+            - exchange: Kyber
+              srcAmount: "1000000000000000000"
+              destAmount: "3275792116"
+              unit: "3275792116"
+              data:
+                exchange: "0x9AAb3f75489902f3a48495025729a0AF77d4b11e"
+                gasUSD: "41.057979"
+          side: SELL
+          tokenTransferProxy: "0x0000000000000000000000000000000000000000"
+          contractAddress: "0x0000000000000000000000000000000000000000"
+          contractMethod: swapOnUniswap
+          partnerFee: 0
+          srcUSD: "3276.8800000000"
+          destUSD: "3269.3903263124"
+          partner: paraswap.io
+          maxImpactReached: false
+          hmac: 69e1761ab652327e16470d2be0b77b3c66f35004
+
+    TransactionsRequestBodyExample:
+      summary: Example of request.body sent to /transactions
+      value:
+        srcToken: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+        destToken: "0xdac17f958d2ee523a2206206994597c13d831ec7"
+        srcAmount: "10000000000000000"
+        destAmount: "29504841"
+        priceRoute:
+          blockNumber: 13056637
+          network: 1
+          srcToken: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+          srcDecimals: 18
+          srcAmount: "10000000000000000"
+          destToken: "0xdac17f958d2ee523a2206206994597c13d831ec7"
+          destDecimals: 6
+          destAmount: "30708775"
+          bestRoute:
+            - percent: 100
+              swaps:
+                - srcToken: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+                  srcDecimals: 18
+                  destToken: "0xdac17f958d2ee523a2206206994597c13d831ec7"
+                  destDecimals: 6
+                  swapExchanges:
+                    - exchange: SakeSwap
+                      srcAmount: "10000000000000000"
+                      destAmount: "30708775"
+                      percent: 100
+                      data:
+                        router: "0xF9234CB08edb93c0d4a4d4c70cC3FfD070e78e07"
+                        path:
+                          - "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+                          - "0xdac17f958d2ee523a2206206994597c13d831ec7"
+                        factory: "0x75e48C954594d64ef9613AeEF97Ad85370F13807"
+                        initCode: >-
+                          0xb2b53dca60cae1d1f93f64d80703b888689f28b63c483459183f2f4271fa0308
+                        feeFactor: 10000
+                        pools:
+                          - address: "0xE2E5Aca8E483a4C057892EE1f03BEBc9BfA1F9C2"
+                            fee: 30
+                            direction: true
+                        gasUSD: "16.005884"
+          gasCostUSD: "17.836157"
+          gasCost: "111435"
+          side: SELL
+          tokenTransferProxy: "0x216b4b4ba9f3e719726886d34a177484278bfcae"
+          contractAddress: "0xDEF171Fe48CF0115B1d80b88dc8eAB59176FEe57"
+          contractMethod: swapOnUniswapFork
+          partnerFee: 0
+          srcUSD: "30.7085000000"
+          destUSD: "30.7087750000"
+          partner: paraswap.io
+          maxImpactReached: false
+          hmac: 1ea308b9bcd027b4c89cebc260b550e812873191
+        userAddress: "0xbe0eb53f46cd790cd13851d5eff43d12404d33e8"
+        partner: paraswap.io
+        srcDecimals: 18
+        destDecimals: 6
+
+    TransactionResponseExample:
+      summary: TransactionRequest to sign and send to the blockchain
+      value:
+        from: "0xbe0eb53f46cd790cd13851d5eff43d12404d33e8"
+        to: "0xDEF171Fe48CF0115B1d80b88dc8eAB59176FEe57"
+        value: "10000000000000000"
+        data: >-
+          0xf566103400000000000000000000000075e48c954594d64ef9613aeef97ad85370f13807b2b53dca60cae1d1f93f64d80703b888689f28b63c483459183f2f4271fa0308000000000000000000000000000000000000000000000000002386f26fc100000000000000000000000000000000000000000000000000000000000001c2354900000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000002000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee000000000000000000000000dac17f958d2ee523a2206206994597c13d831ec7
+        gasPrice: "47490307239"
+        gas: "197142"
+        chainId: 1
+
+    RouterParametersExample:
+      value:
+        - "0x115934131916C8b277DD010Ee02de363c09d037c"
+        - "0x65d1a3b1e46c6e4f1be1ad5f99ef14dc488ae0549dc97db9b30afe2241ce1c7a"
+        - "10000000000000000"
+        - "29504841"
+        - - "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+          - "0xdac17f958d2ee523a2206206994597c13d831ec7"
