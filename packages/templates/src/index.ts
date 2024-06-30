@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+export { BadgeCountButton } from "./badge-count-button";
 export { Banner } from "./banner";
 export { ComboDialog } from "./combo-dialog";
 export { ConnectButton } from "./connect-button";

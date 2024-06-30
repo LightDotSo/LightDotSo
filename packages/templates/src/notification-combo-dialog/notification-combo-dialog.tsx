@@ -27,12 +27,12 @@ import {
   TabsList,
   TabsTrigger,
 } from "@lightdotso/ui";
-import { Settings2 } from "lucide-react";
+import { BellIcon, Settings2 } from "lucide-react";
 import Link from "next/link";
 import type { FC } from "react";
+import { BadgeCountButton } from "../badge-count-button";
 import { ComboDialog } from "../combo-dialog";
 import { Login } from "../login";
-import { NotificationComboDialogIcon } from "./notification-combo-dialog-icon";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -69,9 +69,9 @@ export const NotificationComboDialog: FC = () => {
     <ComboDialog
       className="w-96 p-0"
       buttonTrigger={
-        <NotificationComboDialogIcon
-          notificationsCount={notificationsCount?.count}
-        />
+        <BadgeCountButton count={notificationsCount?.count}>
+          <BellIcon className="size-4" />
+        </BadgeCountButton>
       }
       isOpen={isNotificationComboDialogOpen}
       onOpenChange={toggleIsNotificationComboDialogOpen}
