@@ -56,20 +56,11 @@ export async function middleware(req: NextRequest) {
 
       switch (appGroup) {
         case "home":
-          return NextResponse.redirect(new URL("/home", req.url)).cookies.set(
-            COOKIES.APP_GROUP_COOKIE_ID,
-            "home" as AppGroup,
-          );
+          return NextResponse.redirect(new URL("/home", req.url));
         case "swap":
-          return NextResponse.redirect(new URL("/swap", req.url)).cookies.set(
-            COOKIES.APP_GROUP_COOKIE_ID,
-            "swap" as AppGroup,
-          );
+          return NextResponse.redirect(new URL("/swap", req.url));
         case "demo":
-          return NextResponse.redirect(new URL("/demo", req.url)).cookies.set(
-            COOKIES.APP_GROUP_COOKIE_ID,
-            "demo" as AppGroup,
-          );
+          return NextResponse.redirect(new URL("/demo", req.url));
         default:
           return;
       }
@@ -78,15 +69,10 @@ export async function middleware(req: NextRequest) {
     if (isAddress(wallet)) {
       // If the address is `DEMO_WALLET_ADDRESS`, redirect to the demo page
       if (wallet === DEMO_WALLET_ADDRESS) {
-        return NextResponse.redirect(new URL("/demo", req.url)).cookies.set(
-          COOKIES.APP_GROUP_COOKIE_ID,
-          "demo" as AppGroup,
-        );
+        return NextResponse.redirect(new URL("/demo", req.url));
       }
 
-      return NextResponse.redirect(
-        new URL(`/${wallet}/overview`, req.url),
-      ).cookies.set(COOKIES.APP_GROUP_COOKIE_ID, "wallet" as AppGroup);
+      return NextResponse.redirect(new URL(`/${wallet}/overview`, req.url));
     }
   }
 
@@ -104,10 +90,7 @@ export async function middleware(req: NextRequest) {
   ) {
     req.cookies.set(COOKIES.APP_GROUP_COOKIE_ID, "home" as AppGroup);
 
-    return NextResponse.redirect(new URL("/home", req.url)).cookies.set(
-      COOKIES.APP_GROUP_COOKIE_ID,
-      "home" as AppGroup,
-    );
+    return NextResponse.redirect(new URL("/home", req.url));
   }
 
   // -----------------------------------------------------------------------------
