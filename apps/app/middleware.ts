@@ -14,7 +14,7 @@
 
 import { COOKIES } from "@lightdotso/const";
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextRequest } from "next/server";
 import { isAddress } from "viem";
 import { DEMO_WALLET_ADDRESS } from "@/const";
 import { getAppGroup } from "@/utils";
@@ -36,19 +36,6 @@ export async function middleware(req: NextRequest) {
   // Get the app group cookie
   const app_group_cookie = req.cookies.get(COOKIES.APP_GROUP_COOKIE_ID);
 
-  // Get the app group of the path, and set the app group cookie accordingly
-  const appGroup = getAppGroup(req.nextUrl.pathname);
-  switch (appGroup) {
-    case "swap":
-      req.cookies.set(COOKIES.APP_GROUP_COOKIE_ID, "swap" as AppGroup);
-      break;
-    case "demo":
-      req.cookies.set(COOKIES.APP_GROUP_COOKIE_ID, "demo" as AppGroup);
-      break;
-    default:
-      break;
-  }
-
   // -----------------------------------------------------------------------------
   // Middleware Redirects
   // -----------------------------------------------------------------------------
@@ -69,11 +56,20 @@ export async function middleware(req: NextRequest) {
 
       switch (appGroup) {
         case "home":
-          return NextResponse.redirect(new URL("/home", req.url));
+          return NextResponse.redirect(new URL("/home", req.url)).cookies.set(
+            COOKIES.APP_GROUP_COOKIE_ID,
+            "home" as AppGroup,
+          );
         case "swap":
-          return NextResponse.redirect(new URL("/swap", req.url));
+          return NextResponse.redirect(new URL("/swap", req.url)).cookies.set(
+            COOKIES.APP_GROUP_COOKIE_ID,
+            "swap" as AppGroup,
+          );
         case "demo":
-          return NextResponse.redirect(new URL("/demo", req.url));
+          return NextResponse.redirect(new URL("/demo", req.url)).cookies.set(
+            COOKIES.APP_GROUP_COOKIE_ID,
+            "demo" as AppGroup,
+          );
         default:
           return;
       }
@@ -82,10 +78,15 @@ export async function middleware(req: NextRequest) {
     if (isAddress(wallet)) {
       // If the address is `DEMO_WALLET_ADDRESS`, redirect to the demo page
       if (wallet === DEMO_WALLET_ADDRESS) {
-        return NextResponse.redirect(new URL("/demo", req.url));
+        return NextResponse.redirect(new URL("/demo", req.url)).cookies.set(
+          COOKIES.APP_GROUP_COOKIE_ID,
+          "demo" as AppGroup,
+        );
       }
 
-      return NextResponse.redirect(new URL(`/${wallet}/overview`, req.url));
+      return NextResponse.redirect(
+        new URL(`/${wallet}/overview`, req.url),
+      ).cookies.set(COOKIES.APP_GROUP_COOKIE_ID, "wallet" as AppGroup);
     }
   }
 
@@ -103,14 +104,32 @@ export async function middleware(req: NextRequest) {
   ) {
     req.cookies.set(COOKIES.APP_GROUP_COOKIE_ID, "home" as AppGroup);
 
-    return NextResponse.redirect(new URL("/home", req.url));
+    return NextResponse.redirect(new URL("/home", req.url)).cookies.set(
+      COOKIES.APP_GROUP_COOKIE_ID,
+      "home" as AppGroup,
+    );
   }
 
   // -----------------------------------------------------------------------------
   // Next Response
   // -----------------------------------------------------------------------------
 
-  return NextResponse.next();
+  const response = NextResponse.next();
+
+  // Get the app group of the path, and set the app group cookie accordingly
+  const appGroup = getAppGroup(req.nextUrl.pathname);
+  switch (appGroup) {
+    case "swap":
+      response.cookies.set(COOKIES.APP_GROUP_COOKIE_ID, "swap" as AppGroup);
+      break;
+    case "demo":
+      response.cookies.set(COOKIES.APP_GROUP_COOKIE_ID, "demo" as AppGroup);
+      break;
+    default:
+      break;
+  }
+
+  return response;
 }
 
 // -----------------------------------------------------------------------------
