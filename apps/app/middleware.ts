@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { SESSION_COOKIE_ID, WALLETS_COOKIE_ID } from "@lightdotso/const";
+import { COOKIES } from "@lightdotso/const";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { isAddress } from "viem";
@@ -23,9 +23,9 @@ import { isAddress } from "viem";
 
 export async function middleware(req: NextRequest) {
   // Get the session cookie
-  const session_cookie = req.cookies.get(SESSION_COOKIE_ID);
+  const session_cookie = req.cookies.get(COOKIES.SESSION_COOKIE_ID);
   // Get the wallet cookie
-  const wallet_cookie = req.cookies.get(WALLETS_COOKIE_ID);
+  const wallet_cookie = req.cookies.get(COOKIES.WALLETS_COOKIE_ID);
 
   // Paths to redirect to if the user is logged in
   let pathArray = ["/"];

@@ -13,15 +13,7 @@
 // limitations under the License.
 
 export { Action, ACTION_LABELS } from "./actions";
-export {
-  BASE_API_ADMIN_URL,
-  BASE_API_AUTHENTICATED_URL,
-  BASE_API_URL,
-  BASE_LOCAL_API_ADMIN_URL,
-  BASE_LOCAL_API_AUTHENTICATED_URL,
-  BASE_LOCAL_API_URL,
-  BASE_RPC_URL,
-} from "./api_urls";
+export { BASE_API_URLS } from "./api_urls";
 export { CHAIN_IDS, CHAIN_ID_LABELS } from "./chain_ids";
 export {
   CHAINS,
@@ -41,11 +33,7 @@ export {
   WALLET_FACTORY_IMPLEMENTATION_MAPPING,
   LATEST_IMPLEMENTATION_ADDRESS,
 } from "./contract_addresses";
-export {
-  SESSION_COOKIE_ID,
-  USER_COOKIE_ID,
-  WALLETS_COOKIE_ID,
-} from "./cookies";
+export { COOKIES } from "./cookies";
 export { GITHUB_LINKS } from "./github_links";
 export { INTERNAL_LINKS } from "./internal_links";
 export { REDIRECT_PREFIXES } from "./redirect_prefixes";

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { BASE_RPC_URL } from "@lightdotso/const";
+import { BASE_API_URLS } from "@lightdotso/const";
 import {
   getEstimateUserOperationGas,
   getPaymasterAndData,
@@ -77,6 +77,6 @@ export const getInternalRpcHandler = (url: string) =>
   });
 
 export const rpcHandlers = [
-  getInternalRpcHandler(BASE_RPC_URL),
+  getInternalRpcHandler(BASE_API_URLS.BASE_RPC_URL),
   getRpcHandler("https://mainnet.base.org/"),
 ];

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { USER_COOKIE_ID } from "@lightdotso/const";
+import { COOKIES } from "@lightdotso/const";
 import { cookies } from "next/headers";
 import { getSession } from "@/auth/getSession";
 
@@ -22,7 +22,7 @@ import { getSession } from "@/auth/getSession";
 
 export const getUserIdCookie = () => {
   const cookieStore = cookies();
-  return cookieStore.get(USER_COOKIE_ID)?.value;
+  return cookieStore.get(COOKIES.USER_COOKIE_ID)?.value;
 };
 
 // -----------------------------------------------------------------------------

@@ -12,17 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export const BASE_LOCAL_API_ADMIN_URL = "http://localhost:3000/admin";
-
-export const BASE_LOCAL_API_AUTHENTICATED_URL =
-  "http://localhost:3000/authenticated";
-
-export const BASE_LOCAL_API_URL = "http://localhost:3000";
-
-export const BASE_API_ADMIN_URL = "https://api.light.so/admin";
-
-export const BASE_API_AUTHENTICATED_URL = "https://api.light.so/authenticated";
-
-export const BASE_API_URL = "https://api.light.so";
-
-export const BASE_RPC_URL = "https://rpc.light.so";
+export enum BASE_API_URLS {
+  BASE_LOCAL_API_ADMIN_URL = "http://localhost:3000/admin",
+  BASE_LOCAL_API_AUTHENTICATED_URL = "http://localhost:3000/authenticated",
+  BASE_LOCAL_API_URL = "http://localhost:3000",
+  BASE_API_ADMIN_URL = "https://api.light.so/admin",
+  BASE_API_AUTHENTICATED_URL = "https://api.light.so/authenticated",
+  BASE_API_URL = "https://api.light.so",
+  BASE_RPC_URL = "https://rpc.light.so",
+}

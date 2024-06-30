@@ -12,10 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export const SESSION_COOKIE_ID = "lightdotso.sid";
-
-export const WALLETS_COOKIE_ID = "lightdotso.wallet";
-
-export const USER_COOKIE_ID = "lightdotso.user";
-
-export const APP_GROUP_COOKIE_ID = "lightdotso.appGroup";
+export enum COOKIES {
+  SESSION_COOKIE_ID = "lightdotso.sid",
+  WALLETS_COOKIE_ID = "lightdotso.wallet",
+  USER_COOKIE_ID = "lightdotso.user",
+  APP_GROUP_COOKIE_ID = "lightdotso.appGroup",
+}

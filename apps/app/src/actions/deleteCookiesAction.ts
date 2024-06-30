@@ -14,11 +14,7 @@
 
 "use server";
 
-import {
-  SESSION_COOKIE_ID,
-  USER_COOKIE_ID,
-  WALLETS_COOKIE_ID,
-} from "@lightdotso/const";
+import { COOKIES } from "@lightdotso/const";
 import { cookies } from "next/headers";
 
 // -----------------------------------------------------------------------------
@@ -28,7 +24,7 @@ import { cookies } from "next/headers";
 export default async function action() {
   const cookieStore = cookies();
 
-  cookieStore.delete(USER_COOKIE_ID);
-  cookieStore.delete(WALLETS_COOKIE_ID);
-  cookieStore.delete(SESSION_COOKIE_ID);
+  cookieStore.delete(COOKIES.USER_COOKIE_ID);
+  cookieStore.delete(COOKIES.WALLETS_COOKIE_ID);
+  cookieStore.delete(COOKIES.SESSION_COOKIE_ID);
 }

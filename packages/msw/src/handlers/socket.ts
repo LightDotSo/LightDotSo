@@ -12,12 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {
-  BASE_API_AUTHENTICATED_URL,
-  BASE_API_URL,
-  BASE_LOCAL_API_URL,
-  BASE_LOCAL_API_ADMIN_URL,
-} from "@lightdotso/const";
+import { BASE_API_URLS } from "@lightdotso/const";
 import { socketBalancesListData } from "@lightdotso/demo";
 import { HttpResponse, http } from "msw";
 
@@ -27,8 +22,8 @@ export const getSocketBalances = (url: string) =>
   });
 
 export const socketHandlers = [
-  getSocketBalances(BASE_LOCAL_API_URL),
-  getSocketBalances(BASE_LOCAL_API_ADMIN_URL),
-  getSocketBalances(BASE_API_AUTHENTICATED_URL),
-  getSocketBalances(BASE_API_URL),
+  getSocketBalances(BASE_API_URLS.BASE_LOCAL_API_URL),
+  getSocketBalances(BASE_API_URLS.BASE_LOCAL_API_ADMIN_URL),
+  getSocketBalances(BASE_API_URLS.BASE_API_AUTHENTICATED_URL),
+  getSocketBalances(BASE_API_URLS.BASE_API_URL),
 ];
