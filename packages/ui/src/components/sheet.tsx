@@ -101,7 +101,6 @@ const SheetContent = forwardRef<
       className={cn(sheetVariants({ side: side }), className)}
       {...props}
     >
-      <div className="mx-auto mt-4 h-2 w-[100px] rounded-full bg-background-stronger" />
       {children}
     </DrawerPrimitive.Content>
   </SheetPortal>

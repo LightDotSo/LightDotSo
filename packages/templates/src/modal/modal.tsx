@@ -127,7 +127,11 @@ export const Modal: FC<ModalProps> = ({
         shouldScaleBackground
         open={open}
         onClose={onClose}
-        onOpenChange={onClose}
+        onOpenChange={change => {
+          if (!change && onClose) {
+            onClose();
+          }
+        }}
       >
         <DrawerContent className={isHidden ? "hidden" : ""}>
           {headerContent && <DialogHeader>{headerContent}</DialogHeader>}
@@ -161,7 +165,11 @@ export const Modal: FC<ModalProps> = ({
         shouldScaleBackground
         open={open}
         onClose={onClose}
-        onOpenChange={onClose}
+        onOpenChange={change => {
+          if (!change && onClose) {
+            onClose();
+          }
+        }}
       >
         <SheetContent className={isHidden ? "hidden" : ""}>
           {headerContent && <SheetHeader>{headerContent}</SheetHeader>}
