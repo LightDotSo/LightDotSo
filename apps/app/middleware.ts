@@ -88,8 +88,6 @@ export async function middleware(req: NextRequest) {
     !req.nextUrl.search &&
     !session_cookie
   ) {
-    req.cookies.set(COOKIES.APP_GROUP_COOKIE_ID, "home" as AppGroup);
-
     return NextResponse.redirect(new URL("/home", req.url));
   }
 
@@ -108,8 +106,11 @@ export async function middleware(req: NextRequest) {
     case "demo":
       response.cookies.set(COOKIES.APP_GROUP_COOKIE_ID, "demo" as AppGroup);
       break;
-    default:
+    case "wallet":
+      response.cookies.set(COOKIES.APP_GROUP_COOKIE_ID, "wallet" as AppGroup);
       break;
+    default:
+      response.cookies.delete(COOKIES.APP_GROUP_COOKIE_ID);
   }
 
   return response;

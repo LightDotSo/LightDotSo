@@ -60,6 +60,13 @@ export const basicProxy = (
         case API_URLS.LIFI_API_URL:
           c.req.raw.headers.set("x-lifi-api-key", c.env.LIFI_API_KEY);
           break;
+        case API_URLS.SIMPLEHASH_API_URL_V0:
+          c.req.raw.headers.set("X-API-KEY", c.env.SIMPLEHASH_API_KEY);
+          break;
+        case API_URLS.SOCKET_API_URL:
+          c.req.raw.headers.set("API-KEY", c.env.SOCKET_API_KEY);
+        default:
+          break;
       }
 
       for (const [key, value] of Object.entries(options.headers)) {
