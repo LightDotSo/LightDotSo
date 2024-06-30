@@ -12,18 +12,4 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// -----------------------------------------------------------------------------
-// Types
-// -----------------------------------------------------------------------------
-
-export type AppGroup =
-  // App group for `home` page
-  | "home"
-  // App group for `app` pages
-  | "authenticated"
-  | "demo"
-  | "unauthenticated"
-  | "wallet"
-  | "swap"
-  // Interception app group
-  | "interception";
+export { getAppGroup } from "./getAppGroup";

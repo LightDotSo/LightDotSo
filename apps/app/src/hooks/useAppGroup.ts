@@ -13,23 +13,17 @@
 // limitations under the License.
 
 import { INTERCEPTION_PATHS } from "@/const";
-import { getAppGroup } from "@/utils/getAppGroup";
+import { getAppGroup } from "@/utils";
 import { useAuth } from "@lightdotso/stores";
 import type { AppGroup } from "@lightdotso/types";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 
 // -----------------------------------------------------------------------------
-// Types
-// -----------------------------------------------------------------------------
-
-export type RootType = AppGroup | "interception";
-
-// -----------------------------------------------------------------------------
 // Hook
 // -----------------------------------------------------------------------------
 
-export const useAppGroup = (): RootType => {
+export const useAppGroup = (): AppGroup => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
