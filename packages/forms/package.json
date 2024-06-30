@@ -41,12 +41,12 @@
     "@lightdotso/utils": "workspace:*",
     "@lightdotso/wagmi": "workspace:*",
     "@types/lodash": "^4.17.6",
-    "abitype": "^1.0.4",
+    "abitype": "^1.0.5",
     "lodash": "^4.17.21",
     "lucide-react": "^0.399.0",
     "react": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-hook-form": "^7.52.0",
-    "viem": "^2.16.3",
+    "viem": "^2.16.4",
     "zod": "^3.23.8"
   },
   "devDependencies": {
