@@ -1,0 +1,21 @@
+name = "router"
+main = "src/index.tsx"
+compatibility_date = "2023-12-01"
+workers_dev = false
+
+# The rate limiting API is in open beta.
+[[unsafe.bindings]]
+  name = "RATE_LIMITER"
+  type = "ratelimit"
+  # An identifier you define, that is unique to your Cloudflare account.
+  # Must be an integer.
+  namespace_id = "1001"
+
+  # Limit: the number of tokens allowed within a given period in a single
+  # Cloudflare location
+  # Period: the duration of the period, in seconds. Must be either 10 or 60
+  simple = { limit = 10, period = 60 }
+
+[[kv_namespaces]]
+  binding = "ROUTER_RATE_LIMIT"
+  id = "88b10a58e9b540a59f2228e47fd16d5e"

@@ -1269,7 +1269,7 @@ importers:
         version: 0.0.24
       inngest:
         specifier: ^3.19.18
-        version: 3.19.18(@vercel/node@3.2.0(@swc/core@1.6.6(@swc/helpers@0.5.11))(encoding@0.1.13))(encoding@0.1.13)(express@4.19.2)(h3@1.11.1)(koa@2.15.3)(next@15.0.0-canary.39(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.45.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(typescript@5.5.2)
+        version: 3.19.18(@vercel/node@3.2.0(@swc/core@1.6.6(@swc/helpers@0.5.11))(encoding@0.1.13))(encoding@0.1.13)(express@4.19.2)(h3@1.11.1)(hono@4.4.10)(koa@2.15.3)(next@15.0.0-canary.39(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.45.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(typescript@5.5.2)
       next:
         specifier: 15.0.0-canary.39
         version: 15.0.0-canary.39(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.45.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
@@ -1415,6 +1415,49 @@ importers:
       postcss:
         specifier: ^8.4.39
         version: 8.4.39
+
+  apps/router:
+    dependencies:
+      '@cloudflare/workers-types':
+        specifier: ^4.20240620.0
+        version: 4.20240620.0
+      '@hono-rate-limiter/cloudflare':
+        specifier: ^0.1.1
+        version: 0.1.1(hono@4.4.10)
+      hono:
+        specifier: ^4.4.10
+        version: 4.4.10
+      hono-rate-limiter:
+        specifier: ^0.4.0
+        version: 0.4.0(hono@4.4.10)
+      react:
+        specifier: 19.0.0-rc-cc1ec60d0d-20240607
+        version: 19.0.0-rc-cc1ec60d0d-20240607
+      react-dom:
+        specifier: 19.0.0-rc-cc1ec60d0d-20240607
+        version: 19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607)
+      react-is:
+        specifier: 19.0.0-rc-cc1ec60d0d-20240607
+        version: 19.0.0-rc-cc1ec60d0d-20240607
+    devDependencies:
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../../configurations/tsconfig
+      '@types/node':
+        specifier: ^20.14.9
+        version: 20.14.9
+      '@types/react':
+        specifier: ^18.3.3
+        version: 18.3.3
+      '@types/react-dom':
+        specifier: ^18.3.0
+        version: 18.3.0
+      typescript:
+        specifier: ^5.5.2
+        version: 5.5.2
+      wrangler:
+        specifier: ^3.62.0
+        version: 3.62.0(@cloudflare/workers-types@4.20240620.0)(bufferutil@4.0.8)(utf-8-validate@6.0.4)
 
   apps/storybook:
     dependencies:
@@ -5697,6 +5740,11 @@ packages:
     resolution: {integrity: sha512-ju0wj0wwrUTMQ2Yceyrma7TKuI3BpSjp+qKqV81K9KGcUHdvTMdiwfRc2cwXBp3uXtKuDZkh0v03nWOQnJFv2Q==}
     peerDependencies:
       react: 19.0.0-rc-cc1ec60d0d-20240607
+
+  '@hono-rate-limiter/cloudflare@0.1.1':
+    resolution: {integrity: sha512-JVNxrry/H9o0DncmXQINNMHXF5uFtMkqOr7k4QdJGOaqwyCiWL1A4pE9EFoOP9SQajueoho/5Hc7S4/B8ascvg==}
+    peerDependencies:
+      hono: ^4.4.8
 
   '@hono/node-server@1.11.2':
     resolution: {integrity: sha512-JhX0nUC66GeDxpIdMKWDRMEwtQBa64CY907iAF1sYqb4m2p2PdSU7zkbnNhAZLg/6IjSlTuj6CF307JlBXVvpg==}
@@ -15086,8 +15134,17 @@ packages:
     resolution: {integrity: sha512-eSmmWE5bZTK2Nou4g0AI3zZ9rswp7GRKoKXS1BLUkvPviOqs4YTN1djQIqrXy9k5gEtdLPy86JjRwsNM9tnDcA==}
     engines: {node: '>=0.10.0'}
 
+  hono-rate-limiter@0.4.0:
+    resolution: {integrity: sha512-7RWU2HZvxPtfBrvjXKDiQ3F6ZH8k49JhxVkHquUz5UZKjauj5PrP29MvISykThtfpy4mGG6kqxFBHW1ed9wwnA==}
+    peerDependencies:
+      hono: ^4.1.1
+
   hono@3.12.12:
     resolution: {integrity: sha512-5IAMJOXfpA5nT+K0MNjClchzz0IhBHs2Szl7WFAhrFOsbtQsYmNynFyJRg/a3IPsmCfxcrf8txUGiNShXpK5Rg==}
+    engines: {node: '>=16.0.0'}
+
+  hono@4.4.10:
+    resolution: {integrity: sha512-z6918u9rXRU5CCisMHd2uUVoQXcNyUrUMmYY7VH10v4HJG7+hqgMK/G8YNTd13C6s4rBfzF09iz8VpOip9qG3A==}
     engines: {node: '>=16.0.0'}
 
   hosted-git-info@2.8.9:
@@ -24910,6 +24967,10 @@ snapshots:
   '@heroicons/react@2.1.4(react@19.0.0-rc-cc1ec60d0d-20240607)':
     dependencies:
       react: 19.0.0-rc-cc1ec60d0d-20240607
+
+  '@hono-rate-limiter/cloudflare@0.1.1(hono@4.4.10)':
+    dependencies:
+      hono: 4.4.10
 
   '@hono/node-server@1.11.2': {}
 
@@ -38408,7 +38469,13 @@ snapshots:
     dependencies:
       parse-passwd: 1.0.0
 
+  hono-rate-limiter@0.4.0(hono@4.4.10):
+    dependencies:
+      hono: 4.4.10
+
   hono@3.12.12: {}
+
+  hono@4.4.10: {}
 
   hosted-git-info@2.8.9: {}
 
@@ -38751,7 +38818,7 @@ snapshots:
       - encoding
       - supports-color
 
-  inngest@3.19.18(@vercel/node@3.2.0(@swc/core@1.6.6(@swc/helpers@0.5.11))(encoding@0.1.13))(encoding@0.1.13)(express@4.19.2)(h3@1.11.1)(koa@2.15.3)(next@15.0.0-canary.39(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.45.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(typescript@5.5.2):
+  inngest@3.19.18(@vercel/node@3.2.0(@swc/core@1.6.6(@swc/helpers@0.5.11))(encoding@0.1.13))(encoding@0.1.13)(express@4.19.2)(h3@1.11.1)(hono@4.4.10)(koa@2.15.3)(next@15.0.0-canary.39(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.45.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607))(typescript@5.5.2):
     dependencies:
       '@types/debug': 4.1.12
       canonicalize: 1.0.8
@@ -38768,6 +38835,7 @@ snapshots:
       '@vercel/node': 3.2.0(@swc/core@1.6.6(@swc/helpers@0.5.11))(encoding@0.1.13)
       express: 4.19.2
       h3: 1.11.1
+      hono: 4.4.10
       koa: 2.15.3
       next: 15.0.0-canary.39(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.45.0)(react-dom@19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607))(react@19.0.0-rc-cc1ec60d0d-20240607)
       typescript: 5.5.2
