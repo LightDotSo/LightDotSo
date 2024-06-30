@@ -62,7 +62,7 @@ export async function middleware(req: NextRequest) {
         case "demo":
           return NextResponse.redirect(new URL("/demo", req.url));
         default:
-          return;
+          break;
       }
     }
 

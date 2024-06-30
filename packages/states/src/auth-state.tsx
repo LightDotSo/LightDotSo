@@ -154,20 +154,6 @@ export const AuthState: FC = () => {
     return () => unsubscribe();
   }, [queryClient, address, setSessionId]);
 
-  useEffect(() => {
-    // If on the home page and selected paths, and the user is logged in, redirect to `/wallets`
-    // This is to prevent the user from seeing the home page when they are logged in
-    if (
-      address &&
-      (pathname === "/" ||
-        pathname.startsWith("/overview") ||
-        pathname === "/transactions" ||
-        pathname === "/owners")
-    ) {
-      router.push("/wallets");
-    }
-  }, [address, pathname, router]);
-
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
