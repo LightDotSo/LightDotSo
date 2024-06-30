@@ -14,12 +14,9 @@
 
 import {
   type RateLimitBinding,
-  WorkersKVStore,
   cloudflareRateLimiter,
 } from "@hono-rate-limiter/cloudflare";
-import { Context, Hono, Next } from "hono";
-import { rateLimiter } from "hono-rate-limiter";
-import { Page } from "./Page";
+import { Hono } from "hono";
 
 type AppType = {
   Variables: {
@@ -39,17 +36,7 @@ const app = new Hono<AppType>().get(
       keyGenerator: c => c.req.header("cf-connecting-ip") ?? "",
       handler: (_, next) => next(),
     })(c, next),
-  c => c.html(<Page isSuccessful={c.get("rateLimit")} />),
-);
-
-app.use((c: Context, next: Next) =>
-  rateLimiter({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    limit: 1, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
-    standardHeaders: "draft-6", // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
-    keyGenerator: c => c.req.header("cf-connecting-ip") ?? "", // Method to generate custom identifiers for clients.
-    store: new WorkersKVStore({ namespace: c.env.ROUTER_RATE_LIMIT }), // Here CACHE is your WorkersKV Binding.
-  })(c, next),
+  c => c.json({ message: `Hello, World! rateLimit: ${c.get("rateLimit")}` }),
 );
 
 export default app;
