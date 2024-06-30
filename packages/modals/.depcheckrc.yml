@@ -7,3 +7,4 @@ ignores:
   - react-dom
   - "@types/react-dom"
   - "@types/react"
+  - react-is

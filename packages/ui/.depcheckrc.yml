@@ -32,3 +32,4 @@ ignores:
   - "@hookform/devtools"
   - "@tanstack/react-query-next-experimental"
   - superjson
+  - react-is

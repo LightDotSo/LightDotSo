@@ -134,7 +134,7 @@ export const Banner: FC<BannerProps> = ({ kind }) => {
           </p>
           <ButtonIcon asChild size="xs" variant="link" intent="info">
             <a
-              href={SOCIAL_LINKS["Twitter Shun"]}
+              href={SOCIAL_LINKS.Twitter}
               target="_blank"
               rel="noopener noreferrer"
             >

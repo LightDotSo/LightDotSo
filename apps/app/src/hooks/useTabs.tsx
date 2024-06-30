@@ -68,6 +68,17 @@ export function useTabs() {
     return DEFAULT_TABS;
   }, [pathType]);
 
+  const isTabsNavigationVisible = useMemo(() => {
+    if (
+      pathType === "unauthenticated" ||
+      pathType === "authenticated" ||
+      pathType === "swap"
+    ) {
+      return false;
+    }
+    return true;
+  }, [pathType]);
+
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -271,6 +282,7 @@ export function useTabs() {
   }
 
   return {
+    isTabsNavigationVisible: isTabsNavigationVisible,
     tabProps: {
       tabs: transformedTabs,
       selectedTabIndex: selectedTabIndex,

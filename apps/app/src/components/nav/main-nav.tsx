@@ -45,7 +45,7 @@ export const MainNav: FC<MainNavProps> = ({ children }) => {
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const { tabProps } = useTabs();
+  const { isTabsNavigationVisible, tabProps } = useTabs();
 
   // ---------------------------------------------------------------------------
   // Component
@@ -71,14 +71,16 @@ export const MainNav: FC<MainNavProps> = ({ children }) => {
             </div>
             <AppNav mobile={<ConnectButton />} tabs={tabProps.tabs} />
           </div>
-          <div
-            className={cn(
-              "flex h-10 items-center space-x-4 lg:space-x-6",
-              baseWidthWrapper,
-            )}
-          >
-            {TabsNavComponent}
-          </div>
+          {isTabsNavigationVisible && (
+            <div
+              className={cn(
+                "flex h-10 items-center space-x-4 lg:space-x-6",
+                baseWidthWrapper,
+              )}
+            >
+              {TabsNavComponent}
+            </div>
+          )}
         </div>
         {children}
       </div>

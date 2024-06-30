@@ -37,6 +37,7 @@ export enum Category {
   Send = "Send",
   Create = "Create",
   Support = "Support",
+  Swap = "Swap",
 }
 
 // -----------------------------------------------------------------------------
@@ -102,6 +103,11 @@ export const TITLES: Record<Category, CategoryObject> = {
   [Category.Notifications]: {
     title: "Notifications",
     description: "View your notifications.",
+    subcategories: {},
+  },
+  [Category.Swap]: {
+    title: "Swap",
+    description: "Swap assets.",
     subcategories: {},
   },
   [Category.Wallets]: {

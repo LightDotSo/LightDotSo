@@ -12,13 +12,4 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// -----------------------------------------------------------------------------
-// Types
-// -----------------------------------------------------------------------------
-
-export type Group =
-  | "authenticated"
-  | "demo"
-  | "unauthenticated"
-  | "wallet"
-  | "swap";
+export { Cal } from "./cal";

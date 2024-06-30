@@ -42,7 +42,7 @@ export const Support: FC = () => {
         <div className="flex gap-2">
           <ButtonIcon asChild variant="shadow">
             <a
-              href={SOCIAL_LINKS["Twitter Shun"]}
+              href={SOCIAL_LINKS.Twitter}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -72,7 +72,7 @@ export const Support: FC = () => {
           <p className="text-xs text-text-weak">
             Or book a time here to chat with us{" "}
             <a
-              href={SOCIAL_LINKS["Cal Shun"]}
+              href={SOCIAL_LINKS.Cal}
               target="_blank"
               rel="noopener noreferrer"
               className="underline hover:font-semibold"

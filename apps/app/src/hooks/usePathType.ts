@@ -45,6 +45,7 @@ const demoPaths = [
   "/demo/overview",
   "/demo/transactions",
 ];
+const swapPaths = ["/swap"];
 
 // -----------------------------------------------------------------------------
 // Types
@@ -91,6 +92,10 @@ export const usePathType = (): RootType => {
 
     if (demoPaths.some(path => pathname.startsWith(path))) {
       return "demo";
+    }
+
+    if (swapPaths.some(path => pathname.startsWith(path))) {
+      return "swap";
     }
 
     return "wallet";

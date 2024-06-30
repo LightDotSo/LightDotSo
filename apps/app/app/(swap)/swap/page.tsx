@@ -12,13 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { RootWelcomeCards } from "@/app/(unauthenticated)/(components)/root-welcome-cards";
+
 // -----------------------------------------------------------------------------
-// Types
+// Page
 // -----------------------------------------------------------------------------
 
-export type Group =
-  | "authenticated"
-  | "demo"
-  | "unauthenticated"
-  | "wallet"
-  | "swap";
+export default async function Page() {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  return <RootWelcomeCards />;
+}

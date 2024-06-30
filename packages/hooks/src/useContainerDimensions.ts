@@ -12,13 +12,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+"use client";
+
+import { type RefObject, useEffect, useState } from "react";
+
 // -----------------------------------------------------------------------------
-// Types
+// Hook
 // -----------------------------------------------------------------------------
 
-export type Group =
-  | "authenticated"
-  | "demo"
-  | "unauthenticated"
-  | "wallet"
-  | "swap";
+export const useContainerDimensions = (ref: RefObject<HTMLElement>) => {
+  const [dimensions, setDimensions] = useState<{
+    width: number;
+    height: number;
+  }>({ width: 0, height: 0 });
+
+  useEffect(() => {
+    const updateSize = () => {
+      if (ref.current) {
+        setDimensions({
+          width: ref.current.offsetWidth,
+          height: ref.current.offsetHeight,
+        });
+      }
+    };
+
+    updateSize();
+
+    window.addEventListener("resize", updateSize);
+
+    return () => window.removeEventListener("resize", updateSize);
+  }, [ref]);
+
+  return dimensions;
+};

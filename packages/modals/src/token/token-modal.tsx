@@ -17,7 +17,7 @@
 import { CHAINS, MAINNET_CHAINS } from "@lightdotso/const";
 import type { TokenData } from "@lightdotso/data";
 import { EmptyState, TokenImage } from "@lightdotso/elements";
-import { useMediaQuery } from "@lightdotso/hooks";
+import { useContainerDimensions, useMediaQuery } from "@lightdotso/hooks";
 import { useQuerySocketBalances, useQueryTokens } from "@lightdotso/query";
 import { useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
@@ -31,7 +31,7 @@ import {
   TooltipTrigger,
 } from "@lightdotso/ui";
 import { cn, refineNumberFormat } from "@lightdotso/utils";
-import { type FC, useMemo, useState } from "react";
+import { type FC, useMemo, useRef, useState } from "react";
 import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
@@ -49,10 +49,17 @@ export const TokenModal: FC = () => {
   } = useModals();
 
   // ---------------------------------------------------------------------------
+  // Ref Hooks
+  // ---------------------------------------------------------------------------
+
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
 
   const isDesktop = useMediaQuery("md");
+  const dimensions = useContainerDimensions(containerRef);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -88,6 +95,16 @@ export const TokenModal: FC = () => {
 
     return MAINNET_CHAINS;
   }, [isTestnet]);
+
+  const renderedChains = useMemo(() => {
+    // Get the available width for the chains, adjusting for the two buttons `px-20` and the padding `px-4`
+    const availableWidth = dimensions?.width - 240;
+
+    // Calculate the number of chains that can fit in the available width
+    const availableChains = availableWidth / (36 + 4);
+
+    return chains.slice(0, availableChains);
+  }, [dimensions]);
 
   const renderedTokens: TokenData[] = useMemo(() => {
     // Light index tokens
@@ -144,26 +161,29 @@ export const TokenModal: FC = () => {
         isHeightFixed
         className="p-2"
         bannerContent={
-          <div className="flex flex-row space-x-2 p-2">
-            <TooltipProvider delayDuration={300}>
+          <TooltipProvider delayDuration={300}>
+            <div
+              ref={containerRef}
+              className="flex w-full flex-row space-x-2 p-2"
+            >
               <Button
                 className={cn(
                   "w-28 shrink-0",
-                  chainId === 0 && "ring-2 ring-border-primary",
+                  chainId === 0 && "ring-2 ring-border-strong",
                 )}
                 variant="shadow"
                 onClick={() => setChainId(0)}
               >
                 All Chains
               </Button>
-              {chains.map(chain => (
+              {renderedChains.map(chain => (
                 <Tooltip key={chain.id}>
                   <TooltipTrigger asChild>
                     <ButtonIcon
                       size="default"
                       className={cn(
                         "shrink-0",
-                        chainId === chain.id && "ring-2 ring-border-primary",
+                        chainId === chain.id && "ring-2 ring-border-strong",
                       )}
                       variant="shadow"
                       onClick={() => setChainId(chain.id)}
@@ -176,8 +196,11 @@ export const TokenModal: FC = () => {
                   </TooltipContent>
                 </Tooltip>
               ))}
-            </TooltipProvider>
-          </div>
+              <Button className="grow" variant="outline">
+                More
+              </Button>
+            </div>
+          </TooltipProvider>
         }
         onClose={onClose}
       >

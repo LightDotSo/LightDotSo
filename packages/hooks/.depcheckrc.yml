@@ -5,3 +5,4 @@ ignores:
   - "@lightdotso/tsconfig"
   - tsup
   - "@types/react-dom"
+  - react-is

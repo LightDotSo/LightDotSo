@@ -12,13 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import type { Meta, StoryObj } from "@storybook/react";
+import { Cal } from "./cal";
+
+// -----------------------------------------------------------------------------
+// Meta
+// -----------------------------------------------------------------------------
+
+const meta: Meta<typeof Cal> = {
+  title: "template/Cal",
+  component: Cal,
+  tags: ["autodocs"],
+  argTypes: {},
+};
+export default meta;
+
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
 
-export type Group =
-  | "authenticated"
-  | "demo"
-  | "unauthenticated"
-  | "wallet"
-  | "swap";
+type Story = StoryObj<typeof Cal>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Base: Story = {
+  render: args => <Cal />,
+  args: {},
+};

@@ -12,13 +12,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+"use client";
+
+import { type RefObject, useLayoutEffect, useState } from "react";
+
 // -----------------------------------------------------------------------------
-// Types
+// Hook
 // -----------------------------------------------------------------------------
 
-export type Group =
-  | "authenticated"
-  | "demo"
-  | "unauthenticated"
-  | "wallet"
-  | "swap";
+export const useIsHorizontalOverflow = (
+  ref: RefObject<HTMLElement>,
+): boolean => {
+  const [isOverflow, setIsOverflow] = useState(false);
+
+  useLayoutEffect(() => {
+    const { current } = ref;
+
+    const trigger = () => {
+      if (!current) {
+        return;
+      }
+
+      const hasOverflow = current?.scrollWidth > current?.clientWidth || false;
+
+      setIsOverflow(hasOverflow);
+    };
+
+    if (current) {
+      trigger();
+    }
+  }, [ref]);
+
+  return isOverflow;
+};
