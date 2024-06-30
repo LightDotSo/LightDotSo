@@ -60,6 +60,7 @@ export function ChainModal() {
               className="p-2"
               headerContent={
                 <CommandInput
+                  className="my-0"
                   wrapperClassName="flex grow border-b-0"
                   placeholder="Type a chain or search..."
                 />

@@ -22,6 +22,7 @@ import type {
   RefAttributes,
   SVGProps,
 } from "react";
+import { ArbitrumNovaLogo } from "./arbitrum-nova";
 import { ArbitrumLogo } from "./arbitrum";
 import { AvalancheLogo } from "./avalanche";
 import { BaseLogo } from "./base";
@@ -35,6 +36,7 @@ import { GnosisLogo } from "./gnosis";
 import { LineaLogo } from "./linea";
 import { ModeLogo } from "./mode";
 import { OptimismLogo } from "./optimism";
+import { PolygonZkEvmLogo } from "./polygon-zkevm";
 import { PolygonLogo } from "./polygon";
 import { ScrollLogo } from "./scroll";
 import { ZoraLogo } from "./zora";
@@ -143,14 +145,15 @@ export const ChainLogo: FC<ChainLogoProps> = ({
     case 250:
       return <FantomLogo className={variantClassName} {...props} />;
     case 1101:
-      return <PolygonLogo className={variantClassName} {...props} />;
+      return <PolygonZkEvmLogo className={variantClassName} {...props} />;
     case 8453:
       return <BaseLogo className={variantClassName} {...props} />;
     case 34443:
       return <ModeLogo className={variantClassName} {...props} />;
     case 42161:
-    case 42170:
       return <ArbitrumLogo className={variantClassName} {...props} />;
+    case 42170:
+      return <ArbitrumNovaLogo className={variantClassName} {...props} />;
     case 43114:
       return <AvalancheLogo className={variantClassName} {...props} />;
     case 42220:
