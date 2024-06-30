@@ -33,18 +33,14 @@ export function ConnectModal() {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (isConnectModalVisible) {
-    return (
-      <Modal open size="sm" onClose={hideConnectModal}>
-        <DialogTitle>Connect</DialogTitle>
-        <DialogDescription>
-          <ConnectButton />
-        </DialogDescription>
-      </Modal>
-    );
-  }
-
-  return null;
+  return (
+    <Modal open={isConnectModalVisible} size="sm" onClose={hideConnectModal}>
+      <DialogTitle>Connect</DialogTitle>
+      <DialogDescription>
+        <ConnectButton />
+      </DialogDescription>
+    </Modal>
+  );
 }
 
 // -----------------------------------------------------------------------------

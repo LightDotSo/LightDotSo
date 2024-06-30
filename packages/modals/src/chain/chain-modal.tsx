@@ -48,77 +48,72 @@ export function ChainModal() {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (isChainModalVisible) {
-    return (
-      // eslint-disable-next-line react/jsx-no-useless-fragment
-      <Command className="bg-transparent">
-        <CommandList className="max-h-full">
-          <Tabs className="w-full" defaultValue="mainnet">
-            <Modal
-              isHeightFixed
-              open
-              className="p-2"
-              headerContent={
-                <CommandInput
-                  className="my-0"
-                  wrapperClassName="flex grow border-b-0"
-                  placeholder="Type a chain or search..."
-                />
-              }
-              bannerContent={
-                <TabsList className="w-full">
-                  <TabsTrigger className="w-full" value="mainnet">
-                    Mainnet
-                  </TabsTrigger>
-                  <TabsTrigger className="w-full" value="testnet">
-                    Testnet
-                  </TabsTrigger>
-                </TabsList>
-              }
-              onClose={hideChainModal}
-            >
-              <TabsContent value="mainnet">
-                {MAINNET_CHAINS.map(chain => (
-                  <CommandItem
-                    key={chain.id}
-                    value={chain.name}
-                    onSelect={() => {
-                      onChainSelect(chain.id);
-                      hideChainModal();
-                    }}
-                  >
-                    <>
-                      <ChainLogo chainId={chain.id} />
-                      <span className="ml-2">{chain.name}</span>
-                    </>
-                  </CommandItem>
-                ))}
-              </TabsContent>
-              <TabsContent value="testnet">
-                {TESTNET_CHAINS.map(chain => (
-                  <CommandItem
-                    key={chain.id}
-                    value={chain.name}
-                    onSelect={() => {
-                      onChainSelect(chain.id);
-                      hideChainModal();
-                    }}
-                  >
-                    <div className="flex items-center space-x-2">
-                      <ChainLogo chainId={chain.id} />
-                      <span className="ml-2">{chain.name}</span>
-                    </div>
-                  </CommandItem>
-                ))}
-              </TabsContent>
-            </Modal>
-          </Tabs>
-        </CommandList>
-      </Command>
-    );
-  }
-
-  return null;
+  return (
+    <Command className="bg-transparent">
+      <CommandList className="max-h-full">
+        <Tabs className="w-full" defaultValue="mainnet">
+          <Modal
+            isHeightFixed
+            open={isChainModalVisible}
+            className="p-2"
+            headerContent={
+              <CommandInput
+                className="my-0"
+                wrapperClassName="flex grow border-b-0"
+                placeholder="Type a chain or search..."
+              />
+            }
+            bannerContent={
+              <TabsList className="w-full">
+                <TabsTrigger className="w-full" value="mainnet">
+                  Mainnet
+                </TabsTrigger>
+                <TabsTrigger className="w-full" value="testnet">
+                  Testnet
+                </TabsTrigger>
+              </TabsList>
+            }
+            onClose={hideChainModal}
+          >
+            <TabsContent value="mainnet">
+              {MAINNET_CHAINS.map(chain => (
+                <CommandItem
+                  key={chain.id}
+                  value={chain.name}
+                  onSelect={() => {
+                    onChainSelect(chain.id);
+                    hideChainModal();
+                  }}
+                >
+                  <>
+                    <ChainLogo chainId={chain.id} />
+                    <span className="ml-2">{chain.name}</span>
+                  </>
+                </CommandItem>
+              ))}
+            </TabsContent>
+            <TabsContent value="testnet">
+              {TESTNET_CHAINS.map(chain => (
+                <CommandItem
+                  key={chain.id}
+                  value={chain.name}
+                  onSelect={() => {
+                    onChainSelect(chain.id);
+                    hideChainModal();
+                  }}
+                >
+                  <div className="flex items-center space-x-2">
+                    <ChainLogo chainId={chain.id} />
+                    <span className="ml-2">{chain.name}</span>
+                  </div>
+                </CommandItem>
+              ))}
+            </TabsContent>
+          </Modal>
+        </Tabs>
+      </CommandList>
+    </Command>
+  );
 }
 
 // -----------------------------------------------------------------------------

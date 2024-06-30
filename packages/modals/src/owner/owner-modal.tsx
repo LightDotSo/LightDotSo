@@ -38,33 +38,28 @@ export function OwnerModal() {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (isOwnerModalVisible) {
-    return (
-      // eslint-disable-next-line react/jsx-no-useless-fragment
-      <Modal
-        isHeightFixed
-        open
-        size="lg"
-        className="h-[36rem] p-2"
-        footerContent={
-          <FooterButton
-            className="pt-0"
-            disabled={isFormDisabled || isFormLoading}
-            form="owner-form"
-            customSuccessText="Upgrade"
-            cancelClick={hideOwnerModal}
-          />
-        }
-        onClose={hideOwnerModal}
-      >
-        <div className="p-4">
-          <OwnerForm />
-        </div>
-      </Modal>
-    );
-  }
-
-  return null;
+  return (
+    <Modal
+      isHeightFixed
+      open={isOwnerModalVisible}
+      size="lg"
+      className="h-[36rem] p-2"
+      footerContent={
+        <FooterButton
+          className="pt-0"
+          disabled={isFormDisabled || isFormLoading}
+          form="owner-form"
+          customSuccessText="Upgrade"
+          cancelClick={hideOwnerModal}
+        />
+      }
+      onClose={hideOwnerModal}
+    >
+      <div className="p-4">
+        <OwnerForm />
+      </div>
+    </Modal>
+  );
 }
 
 // -----------------------------------------------------------------------------

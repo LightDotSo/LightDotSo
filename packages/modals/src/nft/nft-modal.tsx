@@ -56,39 +56,40 @@ export function NftModal() {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (isNftModalVisible) {
-    return (
-      <Modal isHeightFixed open className="p-2" onClose={onClose}>
-        {nftPage && nftPage.nfts.length > 0 ? (
-          <div className="grid grid-cols-3 gap-2">
-            {nftPage.nfts
-              .filter(
-                nft =>
-                  nft?.collection?.spam_score !== undefined &&
-                  nft?.collection?.spam_score !== null &&
-                  nft?.collection?.spam_score < 60,
-              )
-              .map(nft => (
-                // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-                <div
-                  key={nft.nft_id}
-                  className="col-span-1 cursor-pointer flex-row items-center rounded-md ring-border-primary hover:ring-2"
-                  onClick={() => onNftSelect(nft)}
-                >
-                  <NftImage nft={nft} className="rounded-t-md" />
-                </div>
-              ))}
-          </div>
-        ) : (
-          <div className="flex size-full items-center justify-center text-center">
-            <EmptyState entity="nft" size={isDesktop ? "xl" : "default"} />
-          </div>
-        )}
-      </Modal>
-    );
-  }
-
-  return null;
+  return (
+    <Modal
+      isHeightFixed
+      open={isNftModalVisible}
+      className="p-2"
+      onClose={onClose}
+    >
+      {nftPage && nftPage.nfts.length > 0 ? (
+        <div className="grid grid-cols-3 gap-2">
+          {nftPage.nfts
+            .filter(
+              nft =>
+                nft?.collection?.spam_score !== undefined &&
+                nft?.collection?.spam_score !== null &&
+                nft?.collection?.spam_score < 60,
+            )
+            .map(nft => (
+              // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+              <div
+                key={nft.nft_id}
+                className="col-span-1 cursor-pointer flex-row items-center rounded-md ring-border-primary hover:ring-2"
+                onClick={() => onNftSelect(nft)}
+              >
+                <NftImage nft={nft} className="rounded-t-md" />
+              </div>
+            ))}
+        </div>
+      ) : (
+        <div className="flex size-full items-center justify-center text-center">
+          <EmptyState entity="nft" size={isDesktop ? "xl" : "default"} />
+        </div>
+      )}
+    </Modal>
+  );
 }
 
 // -----------------------------------------------------------------------------
