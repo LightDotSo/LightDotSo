@@ -31,6 +31,8 @@ type AppType = {
   Bindings: {
     // Secrets
     LIFI_API_KEY: string;
+    SIMPLEHASH_API_KEY: string;
+    SOCKET_API_KEY: string;
     // Rate Limiters
     RATE_LIMITER: RateLimitBinding;
     ROUTER_RATE_LIMIT: KVNamespace;
@@ -59,6 +61,8 @@ app.get(
 );
 
 app.all("/lifi/*", basicProxy(API_URLS.LIFI_API_URL));
+app.all("/simplehash/v0/*", basicProxy(API_URLS.SIMPLEHASH_API_URL_V0));
+app.all("/socket/*", basicProxy(API_URLS.SOCKET_API_URL));
 
 // -----------------------------------------------------------------------------
 // Export
