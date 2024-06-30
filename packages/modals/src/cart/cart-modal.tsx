@@ -33,16 +33,12 @@ import {
 // Component
 // -----------------------------------------------------------------------------
 
-export function ChainModal() {
+export function CartModal() {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
-  const {
-    isChainModalVisible,
-    hideChainModal,
-    chainModalProps: { onChainSelect },
-  } = useModals();
+  const { isCartModalVisible, hideCartModal } = useModals();
 
   // ---------------------------------------------------------------------------
   // Render
@@ -53,8 +49,8 @@ export function ChainModal() {
       <CommandList className="max-h-full">
         <Tabs className="w-full" defaultValue="mainnet">
           <Modal
-            isHeightFixed
-            open={isChainModalVisible}
+            isSheet
+            open={isCartModalVisible}
             className="p-2"
             headerContent={
               <CommandInput
@@ -73,7 +69,7 @@ export function ChainModal() {
                 </TabsTrigger>
               </TabsList>
             }
-            onClose={hideChainModal}
+            onClose={hideCartModal}
           >
             <TabsContent value="mainnet">
               {MAINNET_CHAINS.map(chain => (
@@ -81,8 +77,7 @@ export function ChainModal() {
                   key={chain.id}
                   value={chain.name}
                   onSelect={() => {
-                    onChainSelect(chain.id);
-                    hideChainModal();
+                    hideCartModal();
                   }}
                 >
                   <>
@@ -98,8 +93,7 @@ export function ChainModal() {
                   key={chain.id}
                   value={chain.name}
                   onSelect={() => {
-                    onChainSelect(chain.id);
-                    hideChainModal();
+                    hideCartModal();
                   }}
                 >
                   <div className="flex items-center space-x-2">
@@ -120,4 +114,4 @@ export function ChainModal() {
 // Export
 // -----------------------------------------------------------------------------
 
-export default ChainModal;
+export default CartModal;

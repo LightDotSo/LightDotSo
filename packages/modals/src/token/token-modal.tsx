@@ -154,89 +154,85 @@ export const TokenModal: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (isTokenModalVisible) {
-    return (
-      <Modal
-        open
-        isHeightFixed
-        className="p-2"
-        bannerContent={
-          <TooltipProvider delayDuration={300}>
-            <div
-              ref={containerRef}
-              className="flex w-full flex-row space-x-2 p-2"
+  return (
+    <Modal
+      isHeightFixed
+      open={isTokenModalVisible}
+      className="p-2"
+      bannerContent={
+        <TooltipProvider delayDuration={300}>
+          <div
+            ref={containerRef}
+            className="flex w-full flex-row space-x-2 p-2"
+          >
+            <Button
+              className={cn(
+                "w-28 shrink-0",
+                chainId === 0 && "ring-2 ring-border-strong",
+              )}
+              variant="shadow"
+              onClick={() => setChainId(0)}
             >
-              <Button
-                className={cn(
-                  "w-28 shrink-0",
-                  chainId === 0 && "ring-2 ring-border-strong",
-                )}
-                variant="shadow"
-                onClick={() => setChainId(0)}
-              >
-                All Chains
-              </Button>
-              {renderedChains.map(chain => (
-                <Tooltip key={chain.id}>
-                  <TooltipTrigger asChild>
-                    <ButtonIcon
-                      size="default"
-                      className={cn(
-                        "shrink-0",
-                        chainId === chain.id && "ring-2 ring-border-strong",
-                      )}
-                      variant="shadow"
-                      onClick={() => setChainId(chain.id)}
-                    >
-                      <ChainLogo chainId={chain.id} />
-                    </ButtonIcon>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{chain.name}</p>
-                  </TooltipContent>
-                </Tooltip>
-              ))}
-              <Button className="grow" variant="outline">
-                More
-              </Button>
-            </div>
-          </TooltipProvider>
-        }
-        onClose={onClose}
-      >
-        {renderedTokens && renderedTokens.length > 0 ? (
-          <div className="">
-            {renderedTokens.map(token => (
-              // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-              <div
-                key={`${token.address}-${token.chain_id}`}
-                className="flex cursor-pointer flex-row items-center rounded-md p-2 hover:bg-background-stronger"
-                onClick={() => onTokenSelect(token)}
-              >
-                <TokenImage withChainLogo token={token} />
-                <div className="flex grow flex-col pl-4">
-                  <div className="text-text">{token.name}</div>
-                  <div className="text-sm font-light text-text-weak">
-                    {token.symbol}
-                  </div>
-                </div>
-                <div className="flex-none text-sm text-text-weak">
-                  {refineNumberFormat(token.amount)}
-                  {` ${token.symbol}`}
+              All Chains
+            </Button>
+            {renderedChains.map(chain => (
+              <Tooltip key={chain.id}>
+                <TooltipTrigger asChild>
+                  <ButtonIcon
+                    size="default"
+                    className={cn(
+                      "shrink-0",
+                      chainId === chain.id && "ring-2 ring-border-strong",
+                    )}
+                    variant="shadow"
+                    onClick={() => setChainId(chain.id)}
+                  >
+                    <ChainLogo chainId={chain.id} />
+                  </ButtonIcon>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{chain.name}</p>
+                </TooltipContent>
+              </Tooltip>
+            ))}
+            <Button className="grow" variant="outline">
+              More
+            </Button>
+          </div>
+        </TooltipProvider>
+      }
+      onClose={onClose}
+    >
+      {renderedTokens && renderedTokens.length > 0 ? (
+        <div className="">
+          {renderedTokens.map(token => (
+            // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+            <div
+              key={`${token.address}-${token.chain_id}`}
+              className="flex cursor-pointer flex-row items-center rounded-md p-2 hover:bg-background-stronger"
+              onClick={() => onTokenSelect(token)}
+            >
+              <TokenImage withChainLogo token={token} />
+              <div className="flex grow flex-col pl-4">
+                <div className="text-text">{token.name}</div>
+                <div className="text-sm font-light text-text-weak">
+                  {token.symbol}
                 </div>
               </div>
-            ))}
-          </div>
-        ) : (
-          <div className="flex size-full items-center justify-center text-center">
-            <EmptyState entity="token" size={isDesktop ? "xl" : "default"} />
-          </div>
-        )}
-      </Modal>
-    );
-  }
-
-  return null;
+              <div className="flex-none text-sm text-text-weak">
+                {refineNumberFormat(token.amount)}
+                {` ${token.symbol}`}
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="flex size-full items-center justify-center text-center">
+          <EmptyState entity="token" size={isDesktop ? "xl" : "default"} />
+        </div>
+      )}
+    </Modal>
+  );
 };
 
 // -----------------------------------------------------------------------------

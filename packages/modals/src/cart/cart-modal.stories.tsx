@@ -12,39 +12,46 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-"use client";
+/* eslint-disable react-hooks/rules-of-hooks */
 
 import { useModals } from "@lightdotso/stores";
-import { ConnectButton, Modal } from "@lightdotso/templates";
-import { DialogDescription, DialogTitle } from "@lightdotso/ui";
+import type { Meta, StoryObj } from "@storybook/react";
+import { useEffect } from "react";
+import { CartModal } from "./cart-modal";
 
 // -----------------------------------------------------------------------------
-// Component
+// Meta
 // -----------------------------------------------------------------------------
 
-export function ConnectModal() {
-  // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
+const meta: Meta<typeof CartModal> = {
+  title: "modal/CartModal",
+  component: CartModal,
+  tags: ["autodocs"],
+  argTypes: {},
+};
 
-  const { isConnectModalVisible, hideConnectModal } = useModals();
-
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <Modal open={isConnectModalVisible} size="sm" onClose={hideConnectModal}>
-      <DialogTitle>Connect</DialogTitle>
-      <DialogDescription>
-        <ConnectButton />
-      </DialogDescription>
-    </Modal>
-  );
-}
+export default meta;
 
 // -----------------------------------------------------------------------------
-// Export
+// Types
 // -----------------------------------------------------------------------------
 
-export default ConnectModal;
+type Story = StoryObj<typeof CartModal>;
+
+// -----------------------------------------------------------------------------
+// Story
+// -----------------------------------------------------------------------------
+
+export const Base: Story = {
+  render: () => {
+    const { showCartModal } = useModals();
+
+    useEffect(() => {
+      showCartModal();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    return <CartModal />;
+  },
+  args: {},
+};

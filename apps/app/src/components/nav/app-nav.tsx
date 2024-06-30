@@ -23,6 +23,7 @@ import {
 } from "@lightdotso/templates";
 import type { Tab } from "@lightdotso/types";
 import type { FC, ReactNode } from "react";
+import { CartBadgeCountButton } from "@/components/cart/cart-badge-count-button";
 import { ChainComboDialog } from "@/components/chain/chain-combo-dialog";
 import { UserNav } from "@/components/nav/user-nav";
 
@@ -72,6 +73,7 @@ export const AppNav: FC<AppNavProps> = ({ mobile, tabs }) => {
           <ChainComboDialog />
           <FeedbackComboDialog />
           <NotificationComboDialog />
+          <CartBadgeCountButton />
         </>
       )}
       <UserNav />

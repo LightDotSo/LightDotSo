@@ -237,20 +237,15 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // Render
   // ---------------------------------------------------------------------------
 
-  // If the modal is not open, return null
-  if (!isOpen) {
-    return null;
-  }
-
   return (
     <Modal
+      open={isOpen}
       isOverflowHidden={isOverflowHidden}
       isHeightFixed={isHeightFixed}
       isHidden={isBackground}
       bannerContent={bannerContent}
       footerContent={footerContent}
       size={type === "op" ? "lg" : "default"}
-      open={isOpen}
       onClose={onDismiss}
     >
       {children}

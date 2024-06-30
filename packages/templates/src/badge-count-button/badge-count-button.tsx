@@ -12,46 +12,46 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { BadgeIcon, ButtonIcon } from "@lightdotso/ui";
-import { BellIcon } from "lucide-react";
-import type { FC } from "react";
+import { BadgeIcon, ButtonIcon, type ButtonIconProps } from "@lightdotso/ui";
+import type { FC, ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-export interface NotificationComboDialogIconProps {
-  notificationsCount: number | null | undefined;
+export interface BadgeCountButtonProps extends ButtonIconProps {
+  count: number | null | undefined;
 }
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const NotificationComboDialogIcon: FC<
-  NotificationComboDialogIconProps
-> = ({ notificationsCount }) => {
+export const BadgeCountButton: FC<BadgeCountButtonProps> = ({
+  children,
+  count,
+  ...props
+}) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
     <div className="relative">
-      <ButtonIcon variant="outline">
-        <BellIcon className="size-4" />
-        <span className="sr-only">Open notificaitons</span>
+      <ButtonIcon variant="outline" {...props}>
+        {children}
+        <span className="sr-only">Open</span>
       </ButtonIcon>
-      {(notificationsCount || notificationsCount === 0) &&
-        notificationsCount !== 0 && (
-          <BadgeIcon
-            intent="info"
-            className="absolute -bottom-1.5 -right-1.5 size-1 p-2"
-            size="unsized"
-            type="number"
-          >
-            {notificationsCount > 99 ? "99+" : notificationsCount}
-          </BadgeIcon>
-        )}
+      {(count || count === 0) && count !== 0 && (
+        <BadgeIcon
+          intent="info"
+          className="absolute -bottom-1.5 -right-1.5 size-1 p-2"
+          size="unsized"
+          type="number"
+        >
+          {count > 99 ? "99+" : count}
+        </BadgeIcon>
+      )}
     </div>
   );
 };

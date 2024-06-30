@@ -184,131 +184,126 @@ export function AddressModal() {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (isAddressModalVisible) {
-    return (
-      // eslint-disable-next-line react/jsx-no-useless-fragment
-      <Form {...methods}>
-        <Modal
-          isHeightFixed
-          open
-          className="p-2"
-          headerContent={
-            <AddressFormField
-              name="addressOrEns"
-              onKeyDown={validEns.invalidate}
-            />
-          }
-          footerContent={
-            <FooterButton
-              className="pt-0"
-              disabled={!methods.formState.isValid}
-              customSuccessText="Select Address"
-              onClick={() => {
-                onAddressSelect({
-                  address: watchAddress,
-                  addressOrEns: watchName,
-                });
-              }}
-            />
-          }
-          onClose={onDismiss}
-        >
-          <Command className="bg-transparent">
-            <CommandList className="max-h-full">
-              {(methods.getValues("addressOrEns") === "" ||
-                methods.getFieldState("addressOrEns").invalid) && (
-                <CommandEmpty>No results found.</CommandEmpty>
-              )}
-              {watchName && watchName.length > 0 && (
-                <CommandGroup heading="Current Input">
-                  <CommandItem
-                    className={cn(
-                      methods.formState.isValid
-                        ? "text-text-primary"
-                        : "cursor-not-allowed text-text-weak",
-                    )}
-                    disabled={!methods.formState.isValid}
-                    onSelect={() => {
-                      methods.setValue("addressOrEns", watchName);
-                      methods.trigger("addressOrEns");
+  return (
+    <Form {...methods}>
+      <Modal
+        isHeightFixed
+        open={isAddressModalVisible}
+        className="p-2"
+        headerContent={
+          <AddressFormField
+            name="addressOrEns"
+            onKeyDown={validEns.invalidate}
+          />
+        }
+        footerContent={
+          <FooterButton
+            className="pt-0"
+            disabled={!methods.formState.isValid}
+            customSuccessText="Select Address"
+            onClick={() => {
+              onAddressSelect({
+                address: watchAddress,
+                addressOrEns: watchName,
+              });
+            }}
+          />
+        }
+        onClose={onDismiss}
+      >
+        <Command className="bg-transparent">
+          <CommandList className="max-h-full">
+            {(methods.getValues("addressOrEns") === "" ||
+              methods.getFieldState("addressOrEns").invalid) && (
+              <CommandEmpty>No results found.</CommandEmpty>
+            )}
+            {watchName && watchName.length > 0 && (
+              <CommandGroup heading="Current Input">
+                <CommandItem
+                  className={cn(
+                    methods.formState.isValid
+                      ? "text-text-primary"
+                      : "cursor-not-allowed text-text-weak",
+                  )}
+                  disabled={!methods.formState.isValid}
+                  onSelect={() => {
+                    methods.setValue("addressOrEns", watchName);
+                    methods.trigger("addressOrEns");
 
-                      if (methods.formState.isValid) {
-                        onAddressSelect({
-                          address: watchAddress,
-                          addressOrEns: watchName,
-                        });
-                      }
-                    }}
-                  >
-                    <div className="flex items-center space-x-3">
-                      {watchName}
-                      <span className="ml-4 text-xs text-text-weak">
-                        (Select to enter)
-                      </span>
-                    </div>
-                  </CommandItem>
-                </CommandGroup>
-              )}
-              {ensDomains && ensDomains.length > 0 && (
-                <CommandGroup heading="ENS Suggestions">
-                  {!isEnsDomainsLoading &&
-                    ensDomains &&
-                    ensDomains
-                      .filter(ensDomain => ensDomain.name !== watchName)
-                      .map(ensDomain => (
-                        <CommandItem
-                          key={ensDomain.id}
-                          value={ensDomain.name ?? undefined}
-                          onSelect={() => {
-                            methods.setValue(
-                              "addressOrEns",
-                              ensDomain.name ?? "",
-                            );
-                            methods.trigger("addressOrEns");
-                            validEns.invalidate();
-                          }}
-                        >
-                          <div className="flex items-center space-x-3">
-                            {ensDomain.name}
-                            <span className="ml-4 text-xs text-text-weak">
-                              ({ensDomain.id})
-                            </span>
-                          </div>
-                        </CommandItem>
-                      ))}
-                </CommandGroup>
-              )}
-              {!isWalletsLoading && wallets && wallets.length > 0 && (
-                <CommandGroup heading="Owned Wallets">
-                  {wallets &&
-                    wallets.map(wallet => (
+                    if (methods.formState.isValid) {
+                      onAddressSelect({
+                        address: watchAddress,
+                        addressOrEns: watchName,
+                      });
+                    }
+                  }}
+                >
+                  <div className="flex items-center space-x-3">
+                    {watchName}
+                    <span className="ml-4 text-xs text-text-weak">
+                      (Select to enter)
+                    </span>
+                  </div>
+                </CommandItem>
+              </CommandGroup>
+            )}
+            {ensDomains && ensDomains.length > 0 && (
+              <CommandGroup heading="ENS Suggestions">
+                {!isEnsDomainsLoading &&
+                  ensDomains &&
+                  ensDomains
+                    .filter(ensDomain => ensDomain.name !== watchName)
+                    .map(ensDomain => (
                       <CommandItem
-                        key={wallet.address}
-                        value={wallet.address}
+                        key={ensDomain.id}
+                        value={ensDomain.name ?? undefined}
                         onSelect={() => {
-                          methods.setValue("addressOrEns", wallet.address);
+                          methods.setValue(
+                            "addressOrEns",
+                            ensDomain.name ?? "",
+                          );
                           methods.trigger("addressOrEns");
                           validEns.invalidate();
                         }}
                       >
                         <div className="flex items-center space-x-3">
-                          {wallet.name}
+                          {ensDomain.name}
                           <span className="ml-4 text-xs text-text-weak">
-                            ({wallet.address})
+                            ({ensDomain.id})
                           </span>
                         </div>
                       </CommandItem>
                     ))}
-                </CommandGroup>
-              )}
-            </CommandList>
-          </Command>
-        </Modal>
-      </Form>
-    );
-  }
-
-  return null;
+              </CommandGroup>
+            )}
+            {!isWalletsLoading && wallets && wallets.length > 0 && (
+              <CommandGroup heading="Owned Wallets">
+                {wallets &&
+                  wallets.map(wallet => (
+                    <CommandItem
+                      key={wallet.address}
+                      value={wallet.address}
+                      onSelect={() => {
+                        methods.setValue("addressOrEns", wallet.address);
+                        methods.trigger("addressOrEns");
+                        validEns.invalidate();
+                      }}
+                    >
+                      <div className="flex items-center space-x-3">
+                        {wallet.name}
+                        <span className="ml-4 text-xs text-text-weak">
+                          ({wallet.address})
+                        </span>
+                      </div>
+                    </CommandItem>
+                  ))}
+              </CommandGroup>
+            )}
+          </CommandList>
+        </Command>
+      </Modal>
+    </Form>
+  );
 }
 
 // -----------------------------------------------------------------------------

@@ -14,15 +14,16 @@
 
 import { Popover, PopoverTrigger } from "@lightdotso/ui";
 import type { Meta, StoryObj } from "@storybook/react";
-import { NotificationComboDialogIcon } from "./notification-combo-dialog-icon";
+import { BellIcon } from "lucide-react";
+import { BadgeCountButton } from "./badge-count-button";
 
 // -----------------------------------------------------------------------------
 // Meta
 // -----------------------------------------------------------------------------
 
-const meta: Meta<typeof NotificationComboDialogIcon> = {
-  title: "template/NotificationComboDialog/NotificationComboDialogIcon",
-  component: NotificationComboDialogIcon,
+const meta: Meta<typeof BadgeCountButton> = {
+  title: "template/BadgeCountButton",
+  component: BadgeCountButton,
   tags: ["autodocs"],
   argTypes: {},
 };
@@ -32,7 +33,7 @@ export default meta;
 // Types
 // -----------------------------------------------------------------------------
 
-type Story = StoryObj<typeof NotificationComboDialogIcon>;
+type Story = StoryObj<typeof BadgeCountButton>;
 
 // -----------------------------------------------------------------------------
 // Story
@@ -42,7 +43,9 @@ export const Base: Story = {
   render: args => (
     <Popover>
       <PopoverTrigger>
-        <NotificationComboDialogIcon notificationsCount={0} />
+        <BadgeCountButton count={0}>
+          <BellIcon className="size-4" />
+        </BadgeCountButton>
       </PopoverTrigger>
     </Popover>
   ),
@@ -52,9 +55,13 @@ export const WithNotifications: Story = {
   render: args => (
     <Popover>
       <PopoverTrigger>
-        <NotificationComboDialogIcon notificationsCount={1} />
+        <BadgeCountButton count={args.count}>
+          <BellIcon className="size-4" />
+        </BadgeCountButton>
       </PopoverTrigger>
     </Popover>
   ),
-  args: {},
+  args: {
+    count: 1,
+  },
 };

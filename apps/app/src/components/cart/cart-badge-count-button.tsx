@@ -14,37 +14,42 @@
 
 "use client";
 
-import { useModals } from "@lightdotso/stores";
-import { ConnectButton, Modal } from "@lightdotso/templates";
-import { DialogDescription, DialogTitle } from "@lightdotso/ui";
+import { useAuth, useModals } from "@lightdotso/stores";
+import { BadgeCountButton } from "@lightdotso/templates";
+import { ShoppingCartIcon } from "lucide-react";
+import type { FC } from "react";
+import { useAppGroup } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export function ConnectModal() {
+export const CartBadgeCountButton: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const appGroup = useAppGroup();
+  const { showCartModal } = useModals();
+
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { isConnectModalVisible, hideConnectModal } = useModals();
+  const { wallet } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
+  // If the address is empty, and the path type is not "demo", return null.
+  if (!wallet && appGroup !== "demo") {
+    return null;
+  }
+
   return (
-    <Modal open={isConnectModalVisible} size="sm" onClose={hideConnectModal}>
-      <DialogTitle>Connect</DialogTitle>
-      <DialogDescription>
-        <ConnectButton />
-      </DialogDescription>
-    </Modal>
+    <BadgeCountButton onClick={showCartModal} count={0}>
+      <ShoppingCartIcon className="size-4" />
+    </BadgeCountButton>
   );
-}
-
-// -----------------------------------------------------------------------------
-// Export
-// -----------------------------------------------------------------------------
-
-export default ConnectModal;
+};

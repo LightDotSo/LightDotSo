@@ -52,37 +52,33 @@ export function AuthModal() {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (isAuthModalVisible) {
-    return (
-      <Modal
-        open
-        size="sm"
-        footerContent={
-          <div className="flex justify-end">
-            <Button
-              disabled={isPending}
-              isLoading={isPending}
-              type="submit"
-              size="sm"
-              className="w-full md:w-auto"
-              onClick={handleSignIn}
-            >
-              <span className="sr-only">Login</span>
-              Login
-            </Button>
-          </div>
-        }
-        onClose={hideAuthModal}
-      >
-        <DialogTitle>Login</DialogTitle>
-        <DialogDescription>
-          Login with your wallet to access your account.
-        </DialogDescription>
-      </Modal>
-    );
-  }
-
-  return null;
+  return (
+    <Modal
+      open={isAuthModalVisible}
+      size="sm"
+      footerContent={
+        <div className="flex justify-end">
+          <Button
+            disabled={isPending}
+            isLoading={isPending}
+            type="submit"
+            size="sm"
+            className="w-full md:w-auto"
+            onClick={handleSignIn}
+          >
+            <span className="sr-only">Login</span>
+            Login
+          </Button>
+        </div>
+      }
+      onClose={hideAuthModal}
+    >
+      <DialogTitle>Login</DialogTitle>
+      <DialogDescription>
+        Login with your wallet to access your account.
+      </DialogDescription>
+    </Modal>
+  );
 }
 
 // -----------------------------------------------------------------------------

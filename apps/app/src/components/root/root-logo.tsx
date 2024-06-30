@@ -51,12 +51,12 @@ export const RootLogo: FC = () => {
   return (
     <Link
       href={
-        typeof address === "undefined"
+        typeof address === "undefined" || appGroup === "authenticated"
           ? "/"
           : appGroup === "unauthenticated" || appGroup === "demo"
             ? "/"
-            : appGroup === "authenticated"
-              ? "/wallets"
+            : appGroup === "swap"
+              ? "/swap"
               : // Get the wallet address from the path
                 // Address is the first part of the path
                 // e.g. /0x1234
