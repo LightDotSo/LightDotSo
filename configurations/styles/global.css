@@ -350,7 +350,7 @@ main {
 }
 
 * {
-  @apply selection:bg-background-pink selection:text-text-pink;
+  @apply selection:bg-background-info selection:text-text-inverse;
   box-sizing: border-box;
 }
 
