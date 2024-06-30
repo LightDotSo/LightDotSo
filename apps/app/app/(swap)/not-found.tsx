@@ -13,12 +13,7 @@
 // limitations under the License.
 
 // -----------------------------------------------------------------------------
-// Types
+// NotFound
 // -----------------------------------------------------------------------------
 
-export type Group =
-  | "authenticated"
-  | "demo"
-  | "unauthenticated"
-  | "wallet"
-  | "swap";
+export default async function NotFound() {}

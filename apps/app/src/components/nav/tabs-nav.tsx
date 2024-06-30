@@ -23,7 +23,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import type { FC } from "react";
-import { usePathType } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Const
@@ -77,12 +76,6 @@ export const TabsNav: FC<TabNavProps> = ({
   const isDesktop = useMediaQuery("md");
 
   // ---------------------------------------------------------------------------
-  // Operation Hooks
-  // ---------------------------------------------------------------------------
-
-  const pathType = usePathType();
-
-  // ---------------------------------------------------------------------------
   // State Hooks
   // ---------------------------------------------------------------------------
 
@@ -126,10 +119,6 @@ export const TabsNav: FC<TabNavProps> = ({
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
-
-  if (pathType === "unauthenticated" || pathType === "authenticated") {
-    return null;
-  }
 
   return (
     <nav
