@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+export enum API_URLS {
+  LIFI_API_URL = "https://li.quest/v1",
+}
+
 export enum BASE_API_URLS {
   BASE_LOCAL_API_ADMIN_URL = "http://localhost:3000/admin",
   BASE_LOCAL_API_AUTHENTICATED_URL = "http://localhost:3000/authenticated",
