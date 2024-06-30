@@ -5,3 +5,4 @@ ignores:
   - hono-rate-limiter
   - "@lightdotso/tsconfig"
   - "@types/node"
+  - "@lightdotso/client"

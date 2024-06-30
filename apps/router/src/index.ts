@@ -12,23 +12,42 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { API_URLS } from "@lightdotso/const";
 import {
   type RateLimitBinding,
   cloudflareRateLimiter,
 } from "@hono-rate-limiter/cloudflare";
 import { Hono } from "hono";
+import { basicProxy } from "./proxy";
+
+// -----------------------------------------------------------------------------
+// Hono App Types
+// -----------------------------------------------------------------------------
 
 type AppType = {
   Variables: {
     rateLimit: boolean;
   };
   Bindings: {
+    // Secrets
+    LIFI_API_KEY: string;
+    // Rate Limiters
     RATE_LIMITER: RateLimitBinding;
     ROUTER_RATE_LIMIT: KVNamespace;
   };
 };
 
-const app = new Hono<AppType>().get(
+// -----------------------------------------------------------------------------
+// App
+// -----------------------------------------------------------------------------
+
+const app = new Hono<AppType>();
+
+// -----------------------------------------------------------------------------
+// Routes
+// -----------------------------------------------------------------------------
+
+app.get(
   "/",
   (c, next) =>
     cloudflareRateLimiter<AppType>({
@@ -36,7 +55,13 @@ const app = new Hono<AppType>().get(
       keyGenerator: c => c.req.header("cf-connecting-ip") ?? "",
       handler: (_, next) => next(),
     })(c, next),
-  c => c.json({ message: `Hello, World! rateLimit: ${c.get("rateLimit")}` }),
+  c => c.json({ message: `lightrouter.net rateLimit: ${c.get("rateLimit")}` }),
 );
+
+app.all("/lifi/*", basicProxy(API_URLS.LIFI_API_URL));
+
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
 
 export default app;

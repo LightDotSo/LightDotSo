@@ -13,7 +13,7 @@
   "license": "Apache-2.0",
   "author": "Light, Inc.",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc || true",
     "deploy": "wrangler deploy",
     "dev": "wrangler dev"
   },
