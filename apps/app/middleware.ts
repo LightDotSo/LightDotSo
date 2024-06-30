@@ -25,12 +25,33 @@ import { AppGroup } from "@lightdotso/types";
 // -----------------------------------------------------------------------------
 
 export async function middleware(req: NextRequest) {
+  // -----------------------------------------------------------------------------
+  // Cookies
+  // -----------------------------------------------------------------------------
+
   // Get the session cookie
   const session_cookie = req.cookies.get(COOKIES.SESSION_COOKIE_ID);
   // Get the wallet cookie
   const wallet_cookie = req.cookies.get(COOKIES.WALLETS_COOKIE_ID);
   // Get the app group cookie
   const app_group_cookie = req.cookies.get(COOKIES.APP_GROUP_COOKIE_ID);
+
+  // Get the app group of the path, and set the app group cookie accordingly
+  const appGroup = getAppGroup(req.nextUrl.pathname);
+  switch (appGroup) {
+    case "swap":
+      req.cookies.set(COOKIES.APP_GROUP_COOKIE_ID, "swap" as AppGroup);
+      break;
+    case "demo":
+      req.cookies.set(COOKIES.APP_GROUP_COOKIE_ID, "demo" as AppGroup);
+      break;
+    default:
+      break;
+  }
+
+  // -----------------------------------------------------------------------------
+  // Middleware Redirects
+  // -----------------------------------------------------------------------------
 
   // Paths to redirect to if the user is logged in
   const MIDDLEWARE_REDIRECT_PATHS = ["/"];
@@ -68,6 +89,10 @@ export async function middleware(req: NextRequest) {
     }
   }
 
+  // -----------------------------------------------------------------------------
+  // Root Redirect
+  // -----------------------------------------------------------------------------
+
   // If the root route and doesn't have a search query, redirect to the home page
   // if the user doesn't have a session cookie
   if (
@@ -81,18 +106,9 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/home", req.url));
   }
 
-  // Get the app group of the path
-  const appGroup = getAppGroup(req.nextUrl.pathname);
-  switch (appGroup) {
-    case "swap":
-      req.cookies.set(COOKIES.APP_GROUP_COOKIE_ID, "swap" as AppGroup);
-      break;
-    case "demo":
-      req.cookies.set(COOKIES.APP_GROUP_COOKIE_ID, "demo" as AppGroup);
-      break;
-    default:
-      break;
-  }
+  // -----------------------------------------------------------------------------
+  // Next Response
+  // -----------------------------------------------------------------------------
 
   return NextResponse.next();
 }
