@@ -158,7 +158,7 @@ export const Modal: FC<ModalProps> = ({
   if (isSheet) {
     return (
       <Sheet open={open} defaultOpen={open} onOpenChange={onClose}>
-        <SheetContent className={isHidden ? "hidden" : ""}>
+        <SheetContent side="right" className={isHidden ? "hidden" : ""}>
           {headerContent && <SheetHeader>{headerContent}</SheetHeader>}
           {bannerContent && (
             <SheetHeader className="w-full justify-start space-x-0 overflow-x-scroll [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
