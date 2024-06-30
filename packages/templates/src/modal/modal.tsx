@@ -29,6 +29,9 @@ import {
   ButtonIcon,
   DrawerBody,
   DrawerFooter,
+  Sheet,
+  SheetContent,
+  SheetHeader,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { cva, type VariantProps } from "class-variance-authority";
@@ -61,6 +64,7 @@ export interface ModalProps extends VariantProps<typeof modalDialogVariants> {
   children: ReactNode;
   className?: string;
   isHidden?: boolean;
+  isSheet?: boolean;
   headerContent?: ReactNode;
   bannerContent?: ReactNode;
   footerContent?: ReactNode;
@@ -92,6 +96,7 @@ export const Modal: FC<ModalProps> = ({
   children,
   className,
   isHidden,
+  isSheet = false,
   open,
   size,
   isOverflowHidden,
@@ -118,7 +123,12 @@ export const Modal: FC<ModalProps> = ({
 
   if (!isDesktop) {
     return (
-      <Drawer shouldScaleBackground open={open} onClose={onClose}>
+      <Drawer
+        shouldScaleBackground
+        open={open}
+        onClose={onClose}
+        onOpenChange={onClose}
+      >
         <DrawerContent className={isHidden ? "hidden" : ""}>
           {headerContent && <DialogHeader>{headerContent}</DialogHeader>}
           {bannerContent && (
@@ -142,6 +152,23 @@ export const Modal: FC<ModalProps> = ({
           {footerContent && <DrawerFooter>{footerContent}</DrawerFooter>}
         </DrawerContent>
       </Drawer>
+    );
+  }
+
+  if (isSheet) {
+    return (
+      <Sheet open={open} defaultOpen={open} onOpenChange={onClose}>
+        <SheetContent className={isHidden ? "hidden" : ""}>
+          {headerContent && <SheetHeader>{headerContent}</SheetHeader>}
+          {bannerContent && (
+            <SheetHeader className="w-full justify-start space-x-0 overflow-x-scroll [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {bannerContent}
+            </SheetHeader>
+          )}
+          <ModalContext.Provider value={true}>{children}</ModalContext.Provider>
+        </SheetContent>
+        {footerContent && <DrawerFooter>{footerContent}</DrawerFooter>}
+      </Sheet>
     );
   }
 

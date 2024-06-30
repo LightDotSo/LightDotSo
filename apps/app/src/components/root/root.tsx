@@ -59,6 +59,13 @@ const AuthModal = dynamic(
   },
 );
 
+const CartModal = dynamic(
+  () => import("@lightdotso/modals/src/cart/cart-modal"),
+  {
+    ssr: false,
+  },
+);
+
 const ChainModal = dynamic(
   () => import("@lightdotso/modals/src/chain/chain-modal"),
   {
@@ -144,6 +151,7 @@ export const Root: FC<RootProps> = ({ children }) => {
               {/* Modals */}
               <AddressModal />
               <AuthModal />
+              <CartModal />
               <ChainModal />
               <ConnectModal />
               <OwnerModal />

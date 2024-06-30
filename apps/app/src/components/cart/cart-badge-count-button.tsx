@@ -30,7 +30,7 @@ export const CartBadgeCountButton: FC = () => {
   // ---------------------------------------------------------------------------
 
   const appGroup = useAppGroup();
-  const { showDepositModal } = useModals();
+  const { showCartModal } = useModals();
 
   // ---------------------------------------------------------------------------
   // Stores
@@ -48,7 +48,7 @@ export const CartBadgeCountButton: FC = () => {
   }
 
   return (
-    <BadgeCountButton onClick={showDepositModal} count={0}>
+    <BadgeCountButton onClick={showCartModal} count={0}>
       <ShoppingCartIcon className="size-4" />
     </BadgeCountButton>
   );

@@ -44,6 +44,10 @@ export type AddressModalProps = {
   }) => void;
 };
 
+export type CartModalProps = {
+  onClose?: () => void;
+};
+
 export type ChainModalProps = {
   onClose?: () => void;
   onChainSelect: (chainId: number) => void;
@@ -78,6 +82,8 @@ export type TokenModalProps = {
 type ModalsStore = {
   addressModalProps: AddressModalProps;
   setAddressModalProps: (props: AddressModalProps) => void;
+  cartModalProps: CartModalProps;
+  setCartModalProps: (props: CartModalProps) => void;
   chainModalProps: ChainModalProps;
   setChainModalProps: (props: ChainModalProps) => void;
   ownerModalProps: OwnerModalProps;
@@ -88,6 +94,7 @@ type ModalsStore = {
   setTokenModalProps: (props: TokenModalProps) => void;
   isAddressModalBackground: boolean;
   isAuthModalBackground: boolean;
+  isCartModalBackground: boolean;
   isChainModalBackground: boolean;
   isConnectModalBackground: boolean;
   isCreateModalBackground: boolean;
@@ -100,6 +107,7 @@ type ModalsStore = {
   isTokenModalBackground: boolean;
   isAddressModalVisible: boolean;
   isAuthModalVisible: boolean;
+  isCartModalVisible: boolean;
   isChainModalVisible: boolean;
   isConnectModalVisible: boolean;
   isCreateModalVisible: boolean;
@@ -116,6 +124,9 @@ type ModalsStore = {
   showAuthModal: () => void;
   hideAuthModal: () => void;
   setAuthBackgroundModal: (isBackground: boolean) => void;
+  showCartModal: () => void;
+  hideCartModal: () => void;
+  setCartBackgroundModal: (isBackground: boolean) => void;
   showChainModal: () => void;
   hideChainModal: () => void;
   setChainBackgroundModal: (isBackground: boolean) => void;
@@ -164,6 +175,11 @@ export const useModals = create(
       },
       setAddressModalProps: (props: AddressModalProps) =>
         set({ addressModalProps: props }),
+      cartModalProps: {
+        onClose: () => {},
+      },
+      setCartModalProps: (props: CartModalProps) =>
+        set({ cartModalProps: props }),
       chainModalProps: {
         chainId: "",
         isChainModalVisible: false,
@@ -230,6 +246,11 @@ export const useModals = create(
       hideAuthModal: () => set({ isAuthModalVisible: false }),
       setAuthBackgroundModal: (isBackground: boolean) =>
         set({ isAuthModalBackground: isBackground }),
+      showCartModal: () =>
+        set({
+          isCartModalVisible: true,
+        }),
+      hideCartModal: () => set({ isCartModalVisible: false }),
       showChainModal: () =>
         set({
           isChainModalVisible: true,
