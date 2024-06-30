@@ -34,7 +34,7 @@ import { useMemo } from "react";
 import type { FC } from "react";
 import type { Address } from "viem";
 import { DEMO_WALLET_ADDRESS } from "@/const";
-import { usePathType } from "@/hooks";
+import { useAppGroup } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -45,7 +45,7 @@ export const ChainComboDialog: FC = () => {
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const pathType = usePathType();
+  const appGroup = useAppGroup();
 
   // ---------------------------------------------------------------------------
   // Stores
@@ -76,7 +76,7 @@ export const ChainComboDialog: FC = () => {
   // ---------------------------------------------------------------------------
 
   // If the address is empty, and the path type is not "demo", return null.
-  if (!wallet && pathType !== "demo") {
+  if (!wallet && appGroup !== "demo") {
     return null;
   }
 
@@ -118,7 +118,7 @@ export const ChainComboDialog: FC = () => {
                 key={chain.id}
                 target="_blank"
                 rel="noreferrer"
-                href={`${getEtherscanUrl(chain)}/address/${pathType === "demo" ? DEMO_WALLET_ADDRESS : wallet}`}
+                href={`${getEtherscanUrl(chain)}/address/${appGroup === "demo" ? DEMO_WALLET_ADDRESS : wallet}`}
               >
                 <CommandItem
                   className="flex items-center space-x-2"

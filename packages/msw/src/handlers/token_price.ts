@@ -12,11 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {
-  BASE_API_AUTHENTICATED_URL,
-  BASE_API_URL,
-  BASE_LOCAL_API_ADMIN_URL,
-} from "@lightdotso/const";
+import { BASE_API_URLS } from "@lightdotso/const";
 import { tokenPriceGetData } from "@lightdotso/demo";
 import { HttpResponse, http } from "msw";
 
@@ -29,7 +25,7 @@ export const getTokenPrice = (url: string) =>
   );
 
 export const tokenPriceHandlers = [
-  getTokenPrice(BASE_LOCAL_API_ADMIN_URL),
-  getTokenPrice(BASE_API_AUTHENTICATED_URL),
-  getTokenPrice(BASE_API_URL),
+  getTokenPrice(BASE_API_URLS.BASE_LOCAL_API_ADMIN_URL),
+  getTokenPrice(BASE_API_URLS.BASE_API_AUTHENTICATED_URL),
+  getTokenPrice(BASE_API_URLS.BASE_API_URL),
 ];

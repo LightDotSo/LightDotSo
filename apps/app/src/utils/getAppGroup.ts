@@ -12,19 +12,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-"use server";
-
-import { COOKIES } from "@lightdotso/const";
-import { cookies } from "next/headers";
+import type { AppGroup } from "@lightdotso/types";
+import {
+  AUTHENTICATED_PATHS,
+  DEMO_PATHS,
+  SWAP_PATHS,
+  UNAUTHENTICATED_PATHS,
+} from "@/const";
 
 // -----------------------------------------------------------------------------
-// Action
+// Utils
 // -----------------------------------------------------------------------------
 
-export default async function action() {
-  const cookieStore = cookies();
+export const getAppGroup = (pathname: string): AppGroup => {
+  if (
+    UNAUTHENTICATED_PATHS.some(path => pathname.startsWith(path)) ||
+    pathname === "/"
+  ) {
+    return "unauthenticated";
+  }
 
-  cookieStore.delete(COOKIES.USER_COOKIE_ID);
-  cookieStore.delete(COOKIES.WALLETS_COOKIE_ID);
-  cookieStore.delete(COOKIES.SESSION_COOKIE_ID);
-}
+  if (AUTHENTICATED_PATHS.some(path => pathname.startsWith(path))) {
+    return "authenticated";
+  }
+
+  if (DEMO_PATHS.some(path => pathname.startsWith(path))) {
+    return "demo";
+  }
+
+  if (SWAP_PATHS.some(path => pathname.startsWith(path))) {
+    return "swap";
+  }
+
+  return "wallet";
+};

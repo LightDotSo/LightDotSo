@@ -16,14 +16,14 @@
 
 import type { SetupWorker } from "msw/lib/browser";
 import { useEffect, useState } from "react";
-import { usePathType } from "@/hooks";
+import { useAppGroup } from "@/hooks";
 
 export const MSWState = () => {
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const type = usePathType();
+  const type = useAppGroup();
 
   // ---------------------------------------------------------------------------
   // State Hooks

@@ -12,12 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {
-  BASE_API_AUTHENTICATED_URL,
-  BASE_API_URL,
-  BASE_LOCAL_API_URL,
-  BASE_LOCAL_API_ADMIN_URL,
-} from "@lightdotso/const";
+import { BASE_API_URLS } from "@lightdotso/const";
 import { simulationCreateData } from "@lightdotso/demo";
 import { HttpResponse, http } from "msw";
 
@@ -27,8 +22,8 @@ export const postSimulation = (url: string) =>
   });
 
 export const simulationHandlers = [
-  postSimulation(BASE_LOCAL_API_URL),
-  postSimulation(BASE_LOCAL_API_ADMIN_URL),
-  postSimulation(BASE_API_AUTHENTICATED_URL),
-  postSimulation(BASE_API_URL),
+  postSimulation(BASE_API_URLS.BASE_LOCAL_API_URL),
+  postSimulation(BASE_API_URLS.BASE_LOCAL_API_ADMIN_URL),
+  postSimulation(BASE_API_URLS.BASE_API_AUTHENTICATED_URL),
+  postSimulation(BASE_API_URLS.BASE_API_URL),
 ];

@@ -19,7 +19,7 @@ import { LightLogo } from "@lightdotso/svg";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { FC } from "react";
-import { usePathType } from "@/hooks";
+import { useAppGroup } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -36,7 +36,7 @@ export const RootLogo: FC = () => {
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const pathType = usePathType();
+  const appGroup = useAppGroup();
 
   // ---------------------------------------------------------------------------
   // Next Hooks
@@ -53,9 +53,9 @@ export const RootLogo: FC = () => {
       href={
         typeof address === "undefined"
           ? "/"
-          : pathType === "unauthenticated" || pathType === "demo"
+          : appGroup === "unauthenticated" || appGroup === "demo"
             ? "/"
-            : pathType === "authenticated"
+            : appGroup === "authenticated"
               ? "/wallets"
               : // Get the wallet address from the path
                 // Address is the first part of the path

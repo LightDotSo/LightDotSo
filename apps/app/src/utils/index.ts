@@ -12,18 +12,4 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { BASE_API_URLS } from "@lightdotso/const";
-import { socketBalancesListData } from "@lightdotso/demo";
-import { HttpResponse, http } from "msw";
-
-export const getSocketBalances = (url: string) =>
-  http.post(`${url}/socket/v2/balances`, () => {
-    return HttpResponse.json(socketBalancesListData);
-  });
-
-export const socketHandlers = [
-  getSocketBalances(BASE_API_URLS.BASE_LOCAL_API_URL),
-  getSocketBalances(BASE_API_URLS.BASE_LOCAL_API_ADMIN_URL),
-  getSocketBalances(BASE_API_URLS.BASE_API_AUTHENTICATED_URL),
-  getSocketBalances(BASE_API_URLS.BASE_API_URL),
-];
+export { getAppGroup } from "./getAppGroup";

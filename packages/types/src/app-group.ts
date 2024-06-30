@@ -16,9 +16,14 @@
 // Types
 // -----------------------------------------------------------------------------
 
-export type Group =
+export type AppGroup =
+  // App group for `home` page
+  | "home"
+  // App group for `app` pages
   | "authenticated"
   | "demo"
   | "unauthenticated"
   | "wallet"
-  | "swap";
+  | "swap"
+  // Interception app group
+  | "interception";
