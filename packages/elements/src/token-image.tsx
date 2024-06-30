@@ -22,7 +22,7 @@ import { Skeleton } from "@lightdotso/ui";
 import { cn, shortenName } from "@lightdotso/utils";
 import { getChainLabelById } from "@lightdotso/utils/src/chain";
 import { cva, type VariantProps } from "class-variance-authority";
-import { useState, type FC, useEffect } from "react";
+import { useState, type FC, useEffect, memo } from "react";
 
 // -----------------------------------------------------------------------------
 // Const
@@ -85,7 +85,7 @@ type TokenImageBaseProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const TokenImage: FC<TokenImageProps> = ({
+export const BaseTokenImage: FC<TokenImageProps> = ({
   className,
   isLoading,
   token,
@@ -211,3 +211,9 @@ export const TokenImageBase: FC<TokenImageBaseProps> = ({
     </span>
   );
 };
+
+// -----------------------------------------------------------------------------
+// Memo
+// -----------------------------------------------------------------------------
+
+export const TokenImage = memo(BaseTokenImage);
