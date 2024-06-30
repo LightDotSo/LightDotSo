@@ -48,7 +48,6 @@ export const basicProxy = (
     );
 
     let url = proxy_url ? proxy_url + path : c.req.url;
-    console.log(url);
 
     // Add params
     if (c.req.query()) {
@@ -68,23 +67,23 @@ export const basicProxy = (
       }
     }
 
-    // request
-    const rep = await fetch(url, {
+    // Return request
+    const response = await fetch(url, {
       method: c.req.method,
       headers: c.req.raw.headers,
       body: c.req.raw.body,
     });
 
-    if (rep.status == 101) {
-      return rep;
+    // Return response
+    if (response.status == 101) {
+      return response;
     }
-    // return rep
 
     // or Use Hono provided Response class
     return c.newResponse(
-      rep.body,
-      rep.status as StatusCode,
-      Object.fromEntries(rep.headers),
+      response.body,
+      response.status as StatusCode,
+      Object.fromEntries(response.headers),
     );
   };
 };
