@@ -50,25 +50,20 @@ export async function middleware(req: NextRequest) {
   ) {
     const wallet = wallet_cookie.value;
 
+    const appGroup = app_group_cookie?.value;
     // If the user has a path group cookie, redirect to the appropriate path
-    if (app_group_cookie) {
-      const appGroup = app_group_cookie.value;
-
-      switch (appGroup) {
-        case "home":
-          return NextResponse.redirect(new URL("/home", req.url));
-        case "swap":
-          return NextResponse.redirect(new URL("/swap", req.url));
-        case "demo":
-          return NextResponse.redirect(new URL("/demo", req.url));
-        default:
-          break;
-      }
+    switch (appGroup) {
+      case "home":
+        return NextResponse.redirect(new URL("/home", req.url));
+      case "swap":
+        return NextResponse.redirect(new URL("/swap", req.url));
+      default:
+        break;
     }
 
     if (isAddress(wallet)) {
       // If the address is `DEMO_WALLET_ADDRESS`, redirect to the demo page
-      if (wallet === DEMO_WALLET_ADDRESS) {
+      if (wallet === DEMO_WALLET_ADDRESS || appGroup === "demo") {
         return NextResponse.redirect(new URL("/demo", req.url));
       }
 
@@ -105,9 +100,6 @@ export async function middleware(req: NextRequest) {
       break;
     case "demo":
       response.cookies.set(COOKIES.APP_GROUP_COOKIE_ID, "demo" as AppGroup);
-      break;
-    case "wallet":
-      response.cookies.set(COOKIES.APP_GROUP_COOKIE_ID, "wallet" as AppGroup);
       break;
     default:
       response.cookies.delete(COOKIES.APP_GROUP_COOKIE_ID);
