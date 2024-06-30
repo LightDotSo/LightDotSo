@@ -342,6 +342,13 @@
 /* From: @fiveoutofnine's `global.css` at https: //github.com/fiveoutofnine/www/blob/4b9b47e63a47c06b1b925d318bc666c0b3739a79/app/globals.css#L5-L26 */
 /* License: MIT */
 
+@layer base {
+  body {
+    @apply bg-background;
+    @apply text-text;
+  }
+}
+
 html,
 body,
 main {
