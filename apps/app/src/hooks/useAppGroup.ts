@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { useAuth } from "@lightdotso/stores";
-import type { Group } from "@lightdotso/types";
+import type { AppGroup } from "@lightdotso/types";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 
@@ -51,13 +51,13 @@ const swapPaths = ["/swap"];
 // Types
 // -----------------------------------------------------------------------------
 
-export type RootType = Group | "interception";
+export type RootType = AppGroup | "interception";
 
 // -----------------------------------------------------------------------------
 // Hook
 // -----------------------------------------------------------------------------
 
-export const usePathType = (): RootType => {
+export const useAppGroup = (): RootType => {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------

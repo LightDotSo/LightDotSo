@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+export type { AppGroup } from "./app-group";
 export type { Banner } from "./banner";
-export type { Group } from "./group";
 export type { SubCategory, CategoryObject } from "./category";
 export type { Tab } from "./tab";

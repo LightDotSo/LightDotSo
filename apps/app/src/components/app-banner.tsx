@@ -16,7 +16,7 @@
 
 import { Banner } from "@lightdotso/templates";
 import type { FC } from "react";
-import { usePathType } from "@/hooks";
+import { useAppGroup } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -27,7 +27,7 @@ export const AppBanner: FC = () => {
   // Hooks
   // ---------------------------------------------------------------------------
 
-  const pathType = usePathType();
+  const appGroup = useAppGroup();
 
   // ---------------------------------------------------------------------------
   // Render
@@ -35,11 +35,12 @@ export const AppBanner: FC = () => {
 
   return (
     <>
-      {(pathType === "wallet" ||
-        pathType === "authenticated" ||
-        pathType === "unauthenticated" ||
-        pathType === "interception") && <Banner kind="beta" />}
-      {pathType === "demo" && <Banner kind="demo" />}
+      {(appGroup === "wallet" ||
+        appGroup === "authenticated" ||
+        appGroup === "unauthenticated" ||
+        appGroup === "interception" ||
+        appGroup === "swap") && <Banner kind="beta" />}
+      {appGroup === "demo" && <Banner kind="demo" />}
     </>
   );
 };

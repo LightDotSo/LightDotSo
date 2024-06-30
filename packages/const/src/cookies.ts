@@ -17,3 +17,5 @@ export const SESSION_COOKIE_ID = "lightdotso.sid";
 export const WALLETS_COOKIE_ID = "lightdotso.wallet";
 
 export const USER_COOKIE_ID = "lightdotso.user";
+
+export const APP_GROUP_COOKIE_ID = "lightdotso.appGroup";

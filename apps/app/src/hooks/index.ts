@@ -13,5 +13,5 @@
 // limitations under the License.
 
 export { useEdgeFlag } from "./useEdgeFlag";
-export { usePathType } from "./usePathType";
+export { useAppGroup } from "./useAppGroup";
 export { useTabs } from "./useTabs";

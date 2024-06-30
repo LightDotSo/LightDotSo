@@ -27,7 +27,7 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect, useMemo } from "react";
 import type { Address } from "viem";
 import { AI_TAB, DEV_TAB, DEFAULT_TABS, HOME_TABS } from "@/const";
-import { usePathType } from "@/hooks";
+import { useAppGroup } from "@/hooks";
 
 // -----------------------------------------------------------------------------
 // Hook
@@ -50,14 +50,14 @@ export function useTabs() {
   // Operation Hooks
   // ---------------------------------------------------------------------------
 
-  const pathType = usePathType();
+  const appGroup = useAppGroup();
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
 
   const tabs = useMemo(() => {
-    if (pathType === "demo") {
+    if (appGroup === "demo") {
       return DEFAULT_TABS.filter(tab => {
         // Don't return `settings` and `support` and `activity` tabs
         return (
@@ -66,18 +66,18 @@ export function useTabs() {
       });
     }
     return DEFAULT_TABS;
-  }, [pathType]);
+  }, [appGroup]);
 
   const isTabsNavigationVisible = useMemo(() => {
     if (
-      pathType === "unauthenticated" ||
-      pathType === "authenticated" ||
-      pathType === "swap"
+      appGroup === "unauthenticated" ||
+      appGroup === "authenticated" ||
+      appGroup === "swap"
     ) {
       return false;
     }
     return true;
-  }, [pathType]);
+  }, [appGroup]);
 
   // ---------------------------------------------------------------------------
   // Stores
@@ -172,8 +172,8 @@ export function useTabs() {
       return;
     }
 
-    // If the `pathType` is not `wallet`, do nothing
-    if (pathType !== "wallet") {
+    // If the `appGroup` is not `wallet`, do nothing
+    if (appGroup !== "wallet") {
       return;
     }
 
@@ -196,7 +196,7 @@ export function useTabs() {
   }, [
     ownersAddresses,
     setIsNotOwner,
-    pathType,
+    appGroup,
     walletAddress,
     connectedAddress,
     isConfigurationLoading,
@@ -266,7 +266,7 @@ export function useTabs() {
   // Return
   // ---------------------------------------------------------------------------
 
-  if (pathType === "unauthenticated" || pathType === "authenticated") {
+  if (appGroup === "unauthenticated" || appGroup === "authenticated") {
     return {
       tabProps: {
         tabs: HOME_TABS,

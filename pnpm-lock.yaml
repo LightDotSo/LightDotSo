@@ -1424,21 +1424,15 @@ importers:
       '@hono-rate-limiter/cloudflare':
         specifier: ^0.1.1
         version: 0.1.1(hono@4.4.10)
+      '@lightdotso/client':
+        specifier: workspace:*
+        version: link:../../packages/client
       hono:
         specifier: ^4.4.10
         version: 4.4.10
       hono-rate-limiter:
         specifier: ^0.4.0
         version: 0.4.0(hono@4.4.10)
-      react:
-        specifier: 19.0.0-rc-cc1ec60d0d-20240607
-        version: 19.0.0-rc-cc1ec60d0d-20240607
-      react-dom:
-        specifier: 19.0.0-rc-cc1ec60d0d-20240607
-        version: 19.0.0-rc-cc1ec60d0d-20240607(react@19.0.0-rc-cc1ec60d0d-20240607)
-      react-is:
-        specifier: 19.0.0-rc-cc1ec60d0d-20240607
-        version: 19.0.0-rc-cc1ec60d0d-20240607
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
@@ -1446,12 +1440,6 @@ importers:
       '@types/node':
         specifier: ^20.14.9
         version: 20.14.9
-      '@types/react':
-        specifier: ^18.3.3
-        version: 18.3.3
-      '@types/react-dom':
-        specifier: ^18.3.0
-        version: 18.3.0
       typescript:
         specifier: ^5.5.2
         version: 5.5.2

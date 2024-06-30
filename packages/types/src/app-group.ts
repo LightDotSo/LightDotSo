@@ -16,7 +16,7 @@
 // Types
 // -----------------------------------------------------------------------------
 
-export type Group =
+export type AppGroup =
   | "authenticated"
   | "demo"
   | "unauthenticated"
