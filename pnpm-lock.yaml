@@ -1427,6 +1427,9 @@ importers:
       '@lightdotso/client':
         specifier: workspace:*
         version: link:../../packages/client
+      '@lightdotso/const':
+        specifier: workspace:*
+        version: link:../../packages/const
       hono:
         specifier: ^4.4.10
         version: 4.4.10
