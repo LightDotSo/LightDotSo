@@ -65,7 +65,7 @@ const buttonVariants = cva(
           ["data-[variant=shadow]:bg-background-stronger"],
           ["data-[variant=shadow]:text-text-primary"],
           ["data-[variant=shadow]:hover:bg-background-strongest"],
-          ["data-[variant=shadow]:active:ring-border-primary"],
+          ["data-[variant=shadow]:active:ring-border-primary-weaker"],
           // Outline
           ["data-[variant=outline]:border-border-primary-weak"],
           ["data-[variant=outline]:text-text"],
