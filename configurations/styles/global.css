@@ -339,9 +339,27 @@
   }
 }
 
-@layer base {
-  body {
-    @apply bg-background;
-    @apply text-text;
-  }
+/* From: @fiveoutofnine's `global.css` at https: //github.com/fiveoutofnine/www/blob/4b9b47e63a47c06b1b925d318bc666c0b3739a79/app/globals.css#L5-L26 */
+/* License: MIT */
+
+html,
+body,
+main {
+  @apply bg-background text-text;
+  font-weight: 300;
+}
+
+* {
+  @apply selection:bg-background-pink selection:text-text-pink;
+  box-sizing: border-box;
+}
+
+a {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-indigo;
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-indigo;
 }
