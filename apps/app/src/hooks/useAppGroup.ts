@@ -12,40 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { INTERCEPTION_PATHS } from "@/const";
+import { getAppGroup } from "@/utils/getAppGroup";
 import { useAuth } from "@lightdotso/stores";
 import type { AppGroup } from "@lightdotso/types";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
-
-// ---------------------------------------------------------------------------
-// Constants
-// ---------------------------------------------------------------------------
-
-const unauthenticatedPaths = ["/activity", "/owners", "/transactions"];
-const interceptionPaths = ["/notifications"];
-const authenticatedPaths = [
-  "/new",
-  "/new/configuration",
-  "/new/confirm",
-  "/notifications",
-  "/wallet",
-  "/settings",
-  "/settings",
-  "/settings/account",
-  "/settings/appearance",
-  "/settings/display",
-  "/settings/notifications",
-  "/support",
-  "/wallets",
-];
-const demoPaths = [
-  "/demo",
-  "/demo/activity",
-  "/demo/owners",
-  "/demo/overview",
-  "/demo/transactions",
-];
-const swapPaths = ["/swap"];
 
 // -----------------------------------------------------------------------------
 // Types
@@ -74,31 +46,12 @@ export const useAppGroup = (): RootType => {
   // Return
   // ---------------------------------------------------------------------------
 
-  const pathType = useMemo(() => {
-    if (interceptionPaths.some(path => pathname.startsWith(path)) && wallet) {
+  const appGroup = useMemo(() => {
+    if (INTERCEPTION_PATHS.some(path => pathname.startsWith(path)) && wallet) {
       return "interception";
     }
 
-    if (
-      unauthenticatedPaths.some(path => pathname.startsWith(path)) ||
-      pathname === "/"
-    ) {
-      return "unauthenticated";
-    }
-
-    if (authenticatedPaths.some(path => pathname.startsWith(path))) {
-      return "authenticated";
-    }
-
-    if (demoPaths.some(path => pathname.startsWith(path))) {
-      return "demo";
-    }
-
-    if (swapPaths.some(path => pathname.startsWith(path))) {
-      return "swap";
-    }
-
-    return "wallet";
+    return getAppGroup(pathname);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
@@ -106,5 +59,5 @@ export const useAppGroup = (): RootType => {
   // Return
   // ---------------------------------------------------------------------------
 
-  return pathType;
+  return appGroup;
 };

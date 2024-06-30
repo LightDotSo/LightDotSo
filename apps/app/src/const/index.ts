@@ -23,3 +23,10 @@ export {
   TITLES,
 } from "./titles";
 export { DEFAULT_TABS, AI_TAB, DEV_TAB, HOME_TABS } from "./tabs";
+export {
+  UNAUTHENTICATED_PATHS,
+  AUTHENTICATED_PATHS,
+  INTERCEPTION_PATHS,
+  DEMO_PATHS,
+  SWAP_PATHS,
+} from "./paths";
