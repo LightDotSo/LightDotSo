@@ -29,7 +29,7 @@ export enum Social {
 export const SOCIAL_LINKS: {
   readonly [key in Social]: string;
 } = {
-  [Social.CAL]: "https://cal.com/lightdotso",
+  [Social.CAL]: "https://cal.com/lightdotso/support",
   [Social.CAL_SHUN]: "https://cal.com/shunkakinoki/support",
   [Social.DISCORD]: "https://discord.gg/LightDotSo",
   [Social.GITHUB]: "https://github.com/LightDotSo/LightDotSo",

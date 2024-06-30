@@ -72,7 +72,7 @@ export const Support: FC = () => {
           <p className="text-xs text-text-weak">
             Or book a time here to chat with us{" "}
             <a
-              href={SOCIAL_LINKS["Cal Shun"]}
+              href={SOCIAL_LINKS.Cal}
               target="_blank"
               rel="noopener noreferrer"
               className="underline hover:font-semibold"
