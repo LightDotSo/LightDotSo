@@ -157,15 +157,31 @@ export const Modal: FC<ModalProps> = ({
 
   if (isSheet) {
     return (
-      <Sheet open={open} defaultOpen={open} onOpenChange={onClose}>
-        <SheetContent side="right" className={isHidden ? "hidden" : ""}>
+      <Sheet
+        shouldScaleBackground
+        open={open}
+        onClose={onClose}
+        onOpenChange={onClose}
+      >
+        <SheetContent className={isHidden ? "hidden" : ""}>
           {headerContent && <SheetHeader>{headerContent}</SheetHeader>}
           {bannerContent && (
             <SheetHeader className="w-full justify-start space-x-0 overflow-x-scroll [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {bannerContent}
             </SheetHeader>
           )}
-          <ModalContext.Provider value={true}>{children}</ModalContext.Provider>
+          <DrawerBody
+            className={cn(
+              "overflow-scroll [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+              className,
+            )}
+          >
+            <ModalContext.Provider value={true}>
+              <Suspense fallback={<Skeleton className="h-64 w-full" />}>
+                {children}
+              </Suspense>
+            </ModalContext.Provider>
+          </DrawerBody>
         </SheetContent>
         {footerContent && <DrawerFooter>{footerContent}</DrawerFooter>}
       </Sheet>

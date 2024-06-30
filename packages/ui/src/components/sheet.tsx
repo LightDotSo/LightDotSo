@@ -15,14 +15,14 @@
 "use client";
 
 import { cn } from "@lightdotso/utils";
-import * as SheetPrimitive from "@radix-ui/react-dialog";
 import { cva, type VariantProps } from "class-variance-authority";
-import { X } from "lucide-react";
 import type {
+  ComponentProps,
   ComponentPropsWithoutRef,
   ElementRef,
   HTMLAttributes,
 } from "react";
+import { Drawer as DrawerPrimitive } from "vaul";
 import { forwardRef } from "react";
 
 // -----------------------------------------------------------------------------
@@ -52,27 +52,30 @@ const sheetVariants = cva(
 // Components
 // -----------------------------------------------------------------------------
 
-const Sheet = SheetPrimitive.Root;
-
-const SheetTrigger = SheetPrimitive.Trigger;
-
-const SheetClose = SheetPrimitive.Close;
-
-const SheetPortal = ({
-  // @ts-ignore
-  className,
+const Sheet = ({
+  shouldScaleBackground = true,
   ...props
-}: SheetPrimitive.DialogPortalProps) => (
-  // @ts-ignore
-  <SheetPrimitive.Portal className={cn(className)} {...props} />
+}: ComponentProps<typeof DrawerPrimitive.Root>) => (
+  <DrawerPrimitive.Root
+    direction="right"
+    handleOnly={false}
+    shouldScaleBackground={shouldScaleBackground}
+    {...props}
+  />
 );
-SheetPortal.displayName = SheetPrimitive.Portal.displayName;
+Sheet.displayName = "Sheet";
+
+const SheetTrigger = DrawerPrimitive.Trigger;
+
+const SheetClose = DrawerPrimitive.Close;
+
+const SheetPortal = DrawerPrimitive.Portal;
 
 const SheetOverlay = forwardRef<
-  ElementRef<typeof SheetPrimitive.Overlay>,
-  ComponentPropsWithoutRef<typeof SheetPrimitive.Overlay>
+  ElementRef<typeof DrawerPrimitive.Overlay>,
+  ComponentPropsWithoutRef<typeof DrawerPrimitive.Overlay>
 >(({ className, ...props }, ref) => (
-  <SheetPrimitive.Overlay
+  <DrawerPrimitive.Overlay
     className={cn(
       "fixed inset-0 z-50 bg-background-overlay backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       className,
@@ -81,28 +84,29 @@ const SheetOverlay = forwardRef<
     ref={ref}
   />
 ));
-SheetOverlay.displayName = SheetPrimitive.Overlay.displayName;
+SheetOverlay.displayName = DrawerPrimitive.Overlay.displayName;
 
 interface SheetContentProps
-  extends ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
+  extends ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>,
     VariantProps<typeof sheetVariants> {}
 
 const SheetContent = forwardRef<
-  ElementRef<typeof SheetPrimitive.Content>,
+  ElementRef<typeof DrawerPrimitive.Content>,
   SheetContentProps
 >(({ side = "right", className, children, ...props }, ref) => (
   <SheetPortal>
     <SheetOverlay />
-    <SheetPrimitive.Content
+    <DrawerPrimitive.Content
       ref={ref}
       className={cn(sheetVariants({ side: side }), className)}
       {...props}
     >
+      <div className="mx-auto mt-4 h-2 w-[100px] rounded-full bg-background-stronger" />
       {children}
-    </SheetPrimitive.Content>
+    </DrawerPrimitive.Content>
   </SheetPortal>
 ));
-SheetContent.displayName = SheetPrimitive.Content.displayName;
+SheetContent.displayName = DrawerPrimitive.Content.displayName;
 
 const SheetHeader = ({
   className,
@@ -133,28 +137,28 @@ const SheetFooter = ({
 SheetFooter.displayName = "SheetFooter";
 
 const SheetTitle = forwardRef<
-  ElementRef<typeof SheetPrimitive.Title>,
-  ComponentPropsWithoutRef<typeof SheetPrimitive.Title>
+  ElementRef<typeof DrawerPrimitive.Title>,
+  ComponentPropsWithoutRef<typeof DrawerPrimitive.Title>
 >(({ className, ...props }, ref) => (
-  <SheetPrimitive.Title
+  <DrawerPrimitive.Title
     ref={ref}
     className={cn("text-lg font-semibold text-text", className)}
     {...props}
   />
 ));
-SheetTitle.displayName = SheetPrimitive.Title.displayName;
+SheetTitle.displayName = DrawerPrimitive.Title.displayName;
 
 const SheetDescription = forwardRef<
-  ElementRef<typeof SheetPrimitive.Description>,
-  ComponentPropsWithoutRef<typeof SheetPrimitive.Description>
+  ElementRef<typeof DrawerPrimitive.Description>,
+  ComponentPropsWithoutRef<typeof DrawerPrimitive.Description>
 >(({ className, ...props }, ref) => (
-  <SheetPrimitive.Description
+  <DrawerPrimitive.Description
     ref={ref}
     className={cn("text-sm text-text-weak", className)}
     {...props}
   />
 ));
-SheetDescription.displayName = SheetPrimitive.Description.displayName;
+SheetDescription.displayName = DrawerPrimitive.Description.displayName;
 
 // -----------------------------------------------------------------------------
 // Exports

@@ -46,13 +46,11 @@ export function CartModal() {
 
   if (isCartModalVisible) {
     return (
-      // eslint-disable-next-line react/jsx-no-useless-fragment
       <Command className="bg-transparent">
         <CommandList className="max-h-full">
           <Tabs className="w-full" defaultValue="mainnet">
             <Modal
               isSheet
-              isHeightFixed
               open
               className="p-2"
               headerContent={
