@@ -42,7 +42,7 @@ export const Support: FC = () => {
         <div className="flex gap-2">
           <ButtonIcon asChild variant="shadow">
             <a
-              href={SOCIAL_LINKS["Twitter Shun"]}
+              href={SOCIAL_LINKS.Twitter}
               target="_blank"
               rel="noopener noreferrer"
             >
