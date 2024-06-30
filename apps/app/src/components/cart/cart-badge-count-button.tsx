@@ -14,10 +14,9 @@
 
 "use client";
 
-import { useAuth } from "@lightdotso/stores";
-import { LightLogo } from "@lightdotso/svg";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useAuth, useModals } from "@lightdotso/stores";
+import { BadgeCountButton } from "@lightdotso/templates";
+import { ShoppingCartIcon } from "lucide-react";
 import type { FC } from "react";
 import { useAppGroup } from "@/hooks";
 
@@ -25,46 +24,32 @@ import { useAppGroup } from "@/hooks";
 // Component
 // -----------------------------------------------------------------------------
 
-export const RootLogo: FC = () => {
-  // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
-  const { address } = useAuth();
-
+export const CartBadgeCountButton: FC = () => {
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
 
   const appGroup = useAppGroup();
+  const { showDepositModal } = useModals();
 
   // ---------------------------------------------------------------------------
-  // Next Hooks
+  // Stores
   // ---------------------------------------------------------------------------
 
-  const pathname = usePathname();
+  const { wallet } = useAuth();
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
+  // If the address is empty, and the path type is not "demo", return null.
+  if (!wallet && appGroup !== "demo") {
+    return null;
+  }
+
   return (
-    <Link
-      href={
-        typeof address === "undefined" || appGroup === "authenticated"
-          ? "/"
-          : appGroup === "unauthenticated" || appGroup === "demo"
-            ? "/"
-            : appGroup === "swap"
-              ? "/swap"
-              : // Get the wallet address from the path
-                // Address is the first part of the path
-                // e.g. /0x1234
-                `/${pathname.split("/")[1]}/overview`
-      }
-      className="hover:rounded-md hover:bg-background-stronger"
-    >
-      <LightLogo className="m-2.5 size-8 fill-text" />
-    </Link>
+    <BadgeCountButton onClick={showDepositModal} count={0}>
+      <ShoppingCartIcon className="size-4" />
+    </BadgeCountButton>
   );
 };

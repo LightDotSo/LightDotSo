@@ -12,15 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { BadgeIcon, ButtonIcon } from "@lightdotso/ui";
+import { BadgeIcon, ButtonIcon, type ButtonIconProps } from "@lightdotso/ui";
 import type { FC, ReactNode } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-export interface BadgeCountButtonProps {
-  children: ReactNode;
+export interface BadgeCountButtonProps extends ButtonIconProps {
   count: number | null | undefined;
 }
 
@@ -31,6 +30,7 @@ export interface BadgeCountButtonProps {
 export const BadgeCountButton: FC<BadgeCountButtonProps> = ({
   children,
   count,
+  ...props
 }) => {
   // ---------------------------------------------------------------------------
   // Render
@@ -38,7 +38,7 @@ export const BadgeCountButton: FC<BadgeCountButtonProps> = ({
 
   return (
     <div className="relative">
-      <ButtonIcon variant="outline">
+      <ButtonIcon variant="outline" {...props}>
         {children}
         <span className="sr-only">Open</span>
       </ButtonIcon>
