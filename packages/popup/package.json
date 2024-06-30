@@ -33,7 +33,8 @@
     "isutf8": "^4.0.0",
     "next": "15.0.0-canary.39",
     "react": "19.0.0-rc-cc1ec60d0d-20240607",
-    "react-dom": "19.0.0-rc-cc1ec60d0d-20240607"
+    "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
+    "react-is": "19.0.0-rc-cc1ec60d0d-20240607"
   },
   "devDependencies": {
     "@types/node": "^20.14.9",

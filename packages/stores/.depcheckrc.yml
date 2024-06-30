@@ -6,3 +6,4 @@ ignores:
   - tsup
   - react-dom
   - "@types/react-dom"
+  - react-is

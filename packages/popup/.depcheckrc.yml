@@ -13,3 +13,4 @@ ignores:
   - postcss
   - tailwindcss
   - typescript
+  - react-is
