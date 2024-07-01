@@ -40,6 +40,8 @@ import {
   blastSepolia,
   lineaSepolia,
   polygonMumbai,
+  sei,
+  seiDevnet,
 } from "viem/chains";
 import type { Chain } from "viem/chains";
 
@@ -56,6 +58,7 @@ export const MAINNET_CHAINS = [
   polygon,
   fantom,
   polygonZkEvm,
+  sei,
   base,
   mode,
   arbitrum,
@@ -74,6 +77,7 @@ export const MAINNET_CHAINS = [
 
 export const TESTNET_CHAINS = [
   lineaSepolia,
+  seiDevnet,
   polygonAmoy,
   baseSepolia,
   arbitrumSepolia,
