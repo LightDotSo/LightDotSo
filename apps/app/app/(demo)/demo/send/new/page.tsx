@@ -12,24 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import OriginalPage from "@/app/(wallet)/[address]/send/new/page";
+import { DEMO_WALLET_ADDRESS } from "@/const";
+
 // -----------------------------------------------------------------------------
-// Const
+// Props
 // -----------------------------------------------------------------------------
 
-export const ACTION_NAV_ITEMS = [
-  {
-    title: "Swap",
-    href: "/swap/new",
-    id: "swap",
-  },
-  {
-    title: "Send",
-    href: "/send/new",
-    id: "send",
-  },
-  {
-    title: "Deposit",
-    href: "/deposit/new",
-    id: "deposit",
-  },
-];
+interface PageProps {
+  searchParams: {
+    transfers?: string;
+  };
+}
+
+// -----------------------------------------------------------------------------
+// Original Page
+// -----------------------------------------------------------------------------
+
+export default async function Page({ searchParams }: PageProps) {
+  return OriginalPage({
+    params: { address: DEMO_WALLET_ADDRESS },
+    searchParams: searchParams,
+  });
+}

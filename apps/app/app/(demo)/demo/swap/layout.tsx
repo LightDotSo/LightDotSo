@@ -12,73 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import "@lightdotso/styles/global.css";
 import type { Metadata } from "next";
-import type { ReactNode } from "react";
-import { Root } from "@/components/root/root";
+import OriginalLayout from "@/app/(wallet)/[address]/swap/layout";
+import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Metadata
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: "Light",
-  description:
-    "Light is a new type of smart wallet designed to help you explore Ethereum, and multiple EVM networks as easy as possible.",
-  metadataBase: new URL("https://light.so"),
-  openGraph: {
-    title: "Light",
-    description: "Use Ethereum as One.",
-    url: "/",
-    siteName: "Light",
-    images: [
-      {
-        url: "/og.png",
-        width: 1200,
-        height: 675,
-      },
-    ],
-    locale: "en_US",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Light",
-    description: "Use Ethereum as One.",
-    creator: "@LightDotSo",
-  },
+  title: TITLES.Demo.subcategories.Swap.title,
+  description: TITLES.Demo.subcategories.Swap.description,
 };
 
 // -----------------------------------------------------------------------------
-// Props
+// Original Layout
 // -----------------------------------------------------------------------------
 
-interface RootLayoutProps {
-  children: ReactNode;
-  notifications: ReactNode;
-  create: ReactNode;
-  send: ReactNode;
-  swap: ReactNode;
-}
+export default OriginalLayout;
 
 // -----------------------------------------------------------------------------
-// Layout
+// Data
 // -----------------------------------------------------------------------------
 
-export default function RootLayout({
-  children,
-  notifications,
-  create,
-  send,
-  swap,
-}: RootLayoutProps) {
-  return (
-    <Root>
-      {children}
-      {notifications}
-      {create}
-      {send}
-      {swap}
-    </Root>
-  );
-}
+export const revalidate = 300;

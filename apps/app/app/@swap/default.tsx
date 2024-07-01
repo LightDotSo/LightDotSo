@@ -12,24 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import OriginalDefault from "@/app/(wallet)/@swap/default";
+
 // -----------------------------------------------------------------------------
-// Const
+// Original Default
 // -----------------------------------------------------------------------------
 
-export const ACTION_NAV_ITEMS = [
-  {
-    title: "Swap",
-    href: "/swap/new",
-    id: "swap",
-  },
-  {
-    title: "Send",
-    href: "/send/new",
-    id: "send",
-  },
-  {
-    title: "Deposit",
-    href: "/deposit/new",
-    id: "deposit",
-  },
-];
+export default OriginalDefault;

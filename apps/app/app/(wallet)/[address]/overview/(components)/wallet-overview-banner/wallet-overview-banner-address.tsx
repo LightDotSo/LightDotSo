@@ -40,6 +40,7 @@ import {
   Copy,
   Navigation,
   PlusCircle,
+  Shuffle,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, type FC } from "react";
@@ -97,6 +98,10 @@ export const WalletOverviewBannerAddress: FC<
     router.push(`/${address}/send/new`);
   }, [address, router]);
 
+  const handleSwapClick = useCallback(() => {
+    router.push(`/${address}/swap/new`);
+  }, [address, router]);
+
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -145,6 +150,13 @@ export const WalletOverviewBannerAddress: FC<
                   <Navigation className="mr-1.5 size-4" />
                   <span>Send</span>
                   <DropdownMenuShortcut>⇧⌘S</DropdownMenuShortcut>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuGroup>
+                <DropdownMenuItem onClick={handleSwapClick}>
+                  <Shuffle className="mr-1.5 size-4" />
+                  <span>Swap</span>
+                  <DropdownMenuShortcut>⇧⌘W</DropdownMenuShortcut>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>

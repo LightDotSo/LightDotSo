@@ -46,10 +46,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { transfers, tokens, nfts, walletSettings } = await handler(
-    params,
-    searchParams,
-  );
+  const { tokens, nfts, walletSettings } = await handler(params, searchParams);
 
   // ---------------------------------------------------------------------------
   // Query

@@ -24,6 +24,7 @@ import {
   DesktopIcon,
 } from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
+import { PlayCircleIcon } from "lucide-react";
 import type { RefAttributes } from "react";
 
 // -----------------------------------------------------------------------------
@@ -54,6 +55,14 @@ export const DEFAULT_TABS: Tab[] = [
     icon: (
       props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
     ) => <PersonIcon {...props} />,
+  },
+  {
+    label: "Actions",
+    id: "actions",
+    href: "/swap/new",
+    icon: (
+      props: JSX.IntrinsicAttributes & IconProps & RefAttributes<SVGSVGElement>,
+    ) => <PlayCircleIcon {...props} />,
   },
   {
     label: "Activity",
