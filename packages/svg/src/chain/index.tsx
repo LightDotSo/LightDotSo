@@ -38,6 +38,7 @@ import { ModeLogo } from "./mode";
 import { OptimismLogo } from "./optimism";
 import { PolygonZkEvmLogo } from "./polygon-zkevm";
 import { PolygonLogo } from "./polygon";
+import { SeiLogo } from "./sei";
 import { ScrollLogo } from "./scroll";
 import { ZoraLogo } from "./zora";
 
@@ -146,6 +147,8 @@ export const ChainLogo: FC<ChainLogoProps> = ({
       return <FantomLogo className={variantClassName} {...props} />;
     case 1101:
       return <PolygonZkEvmLogo className={variantClassName} {...props} />;
+    case 1329:
+      return <SeiLogo className={variantClassName} {...props} />;
     case 8453:
       return <BaseLogo className={variantClassName} {...props} />;
     case 34443:
@@ -227,6 +230,16 @@ export const ChainLogo: FC<ChainLogoProps> = ({
         <TestnetChainLogoWrapper
           className={variantClassName}
           logo={LineaLogo}
+          chainId={chainId}
+          size={size}
+          {...props}
+        />
+      );
+    case 713715:
+      return (
+        <TestnetChainLogoWrapper
+          className={variantClassName}
+          logo={SeiLogo}
           chainId={chainId}
           size={size}
           {...props}
