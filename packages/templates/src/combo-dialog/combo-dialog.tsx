@@ -54,6 +54,7 @@ const comboDialogVariants = cva(["max-h-[80%]"], {
 interface ComboDialogProps extends VariantProps<typeof comboDialogVariants> {
   children: ReactNode;
   className?: string;
+  contentClassName?: string;
   isOpen?: boolean;
   onOpenChange?: (isOpen: boolean) => void;
   buttonTrigger: ReactNode;
@@ -71,6 +72,7 @@ export const ComboDialog: FC<ComboDialogProps> = ({
   children,
   size,
   className,
+  contentClassName,
   isOpen,
   onOpenChange,
   isHeightFixed,
@@ -114,7 +116,9 @@ export const ComboDialog: FC<ComboDialogProps> = ({
     <Popover open={isOpen} onOpenChange={onOpenChange}>
       <PopoverTrigger>{buttonTrigger}</PopoverTrigger>
       <PopoverContent className={className}>
-        <div className={cn(comboDialogVariants({ size: size }))}>
+        <div
+          className={cn(comboDialogVariants({ size: size }), contentClassName)}
+        >
           {bannerContent && (
             <div className="sticky top-0 block w-full justify-start space-x-0">
               {bannerContent}

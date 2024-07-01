@@ -123,7 +123,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
           control={form.control}
           name="text"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="px-4">
               <FormLabel>Feedback</FormLabel>
               <div className="w-full">
                 <FormControl>
@@ -142,7 +142,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
           control={form.control}
           name="emoji"
           render={({ field }) => (
-            <FormItem className="space-y-1">
+            <FormItem className="space-y-1 px-4">
               <RadioGroup
                 defaultValue={field.value}
                 className="grid max-w-md grid-cols-5 gap-4 pt-2"
@@ -192,7 +192,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
             </FormItem>
           )}
         />
-        <div className="flex justify-end">
+        <div className="flex justify-end px-4">
           <Button
             isLoading={isFeedbackCreateLoading}
             disabled={isFeedbackCreateLoading}

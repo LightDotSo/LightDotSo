@@ -14,12 +14,10 @@
 
 "use client";
 
-import { SOCIAL_LINKS } from "@lightdotso/const";
-import { ButtonIcon, StateInfoSection } from "@lightdotso/ui";
-import { DiscordLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
+import { StateInfoSection } from "@lightdotso/ui";
 import { UserIcon } from "lucide-react";
 import { type FC } from "react";
-import { PiTelegramLogoDuotone } from "react-icons/pi";
+import { Cal } from "../cal";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -38,51 +36,7 @@ export const Support: FC = () => {
       title="Support"
       description="Please reach out to us if you need any help."
     >
-      <div className="jusfity-center flex w-full flex-col items-center">
-        <div className="flex gap-2">
-          <ButtonIcon asChild variant="shadow">
-            <a
-              href={SOCIAL_LINKS.Twitter}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <TwitterLogoIcon className="size-4" />
-            </a>
-          </ButtonIcon>
-          <ButtonIcon asChild variant="shadow">
-            <a
-              href={SOCIAL_LINKS.Discord}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <DiscordLogoIcon className="size-4" />
-            </a>
-          </ButtonIcon>
-          <ButtonIcon asChild variant="shadow">
-            <a
-              href={SOCIAL_LINKS.Telegram}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <PiTelegramLogoDuotone className="size-4" />
-            </a>
-          </ButtonIcon>
-        </div>
-        <div className="mt-2">
-          <p className="text-xs text-text-weak">
-            Or book a time here to chat with us{" "}
-            <a
-              href={SOCIAL_LINKS.Cal}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:font-semibold"
-            >
-              here
-            </a>{" "}
-            if it&apos;s an urgent matter.
-          </p>
-        </div>
-      </div>
+      <Cal />
     </StateInfoSection>
   );
 };
