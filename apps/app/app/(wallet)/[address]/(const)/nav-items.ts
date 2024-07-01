@@ -20,16 +20,16 @@ export const ACTION_NAV_ITEMS = [
   {
     title: "Swap",
     href: "/swap/new",
-    id: "swap-new",
+    id: "swap",
   },
   {
     title: "Send",
     href: "/send/new",
-    id: "send-new",
+    id: "send",
   },
   {
     title: "Deposit",
     href: "/deposit/new",
-    id: "deposit-new",
+    id: "deposit",
   },
 ];

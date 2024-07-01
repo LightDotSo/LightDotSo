@@ -72,11 +72,23 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
   // Ex) /wallets/0x1234567890abcdef/deposit/new -> deposit/new
   // Ex) /wallets/0x1234567890abcdef/send/new -> send/new
 
-  // If some of the ids contain the `-` character, do not split the path
-  const id = items.find(item => item.id.includes("-"))
-    ? // Get the last two parts of the path
-      pathname.split("/").slice(-2).join("-")
-    : pathname.split("/").pop();
+  // If all of the item href ends with the same string, we need to omit the last
+  // part of the path
+
+  // Get the last part of the href of all the items
+  const itemHrefs = items.map(item => item.href.split("/").pop());
+
+  // If all the item hrefs are the same, get the same last part of the path
+  const itemSegment = itemHrefs.every((val, i, arr) => val === arr[0])
+    ? itemHrefs[0]
+    : null;
+
+  // If itemSegment is not null, and the current path ends with the itemSegment,
+  // get the second last part of the path
+  const id =
+    itemSegment && pathname.endsWith(itemSegment)
+      ? pathname.split("/").slice(-2, -1)[0]
+      : pathname.split("/").pop();
 
   // Get the wallet address from the path
   // Address is the first part of the path
