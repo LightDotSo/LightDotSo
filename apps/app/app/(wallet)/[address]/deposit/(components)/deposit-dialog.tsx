@@ -156,7 +156,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
     cursor: null,
   });
 
-  const { balances } = useQuerySocketBalances({
+  const { socketBalances } = useQuerySocketBalances({
     address: address as Address,
   });
 
@@ -487,10 +487,10 @@ export const DepositDialog: FC<DepositDialogProps> = ({
     if (quantity) {
       // If the quantity is valid, get the token balance
       const token =
-        (balances &&
+        (socketBalances &&
           chainId &&
-          balances?.length > 0 &&
-          balances?.find(
+          socketBalances?.length > 0 &&
+          socketBalances?.find(
             token =>
               token.address === transfer.asset?.address &&
               token.chainId === transfer.chainId,
@@ -607,10 +607,10 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                   render={({ field: _field }) => {
                     // Get the matching token
                     const token =
-                      (balances &&
+                      (socketBalances &&
                         chainId &&
-                        balances?.length > 0 &&
-                        balances?.find(
+                        socketBalances?.length > 0 &&
+                        socketBalances?.find(
                           token =>
                             token.address === transfer.asset?.address &&
                             token.chainId === transfer.chainId,
