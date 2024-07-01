@@ -66,7 +66,8 @@ export function AddressModal() {
   const {
     isAddressModalVisible,
     hideAddressModal,
-    setSendBackgroundModal,
+    showSendModal,
+    hideSendModal,
     addressModalProps: { onAddressSelect },
   } = useModals();
 
@@ -116,9 +117,9 @@ export function AddressModal() {
   // ---------------------------------------------------------------------------
 
   const onDismiss = useCallback(() => {
-    setSendBackgroundModal(false);
+    showSendModal();
     hideAddressModal();
-  }, [setSendBackgroundModal, hideAddressModal]);
+  }, [showSendModal, hideAddressModal]);
 
   // ---------------------------------------------------------------------------
   // Debounced Hooks

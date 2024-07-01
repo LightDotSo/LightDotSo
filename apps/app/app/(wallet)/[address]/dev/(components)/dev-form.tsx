@@ -91,7 +91,8 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
     setChainModalProps,
     hideChainModal,
     showChainModal,
-    setSendBackgroundModal,
+    showSendModal,
+    hideSendModal,
   } = useModals();
 
   // ---------------------------------------------------------------------------
@@ -254,7 +255,7 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
                             setChainModalProps({
                               onClose: () => {
                                 hideChainModal();
-                                setSendBackgroundModal(false);
+                                showSendModal();
                               },
                               onChainSelect: chainId => {
                                 field.onChange(chainId);
@@ -262,7 +263,7 @@ export const DevForm: FC<DevFormProps> = ({ address }) => {
 
                                 hideChainModal();
                                 if (isInsideModal) {
-                                  setSendBackgroundModal(false);
+                                  showSendModal();
                                 }
                               },
                             });

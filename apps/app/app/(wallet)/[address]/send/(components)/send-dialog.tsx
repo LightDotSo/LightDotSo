@@ -116,7 +116,8 @@ export const SendDialog: FC<SendDialogProps> = ({
 
   const { setIsFormDisabled, setFormControl } = useFormRef();
   const {
-    setSendBackgroundModal,
+    showSendModal,
+    hideSendModal,
     setNftModalProps,
     showNftModal,
     hideNftModal,
@@ -1097,7 +1098,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                           false,
                                         onClose: () => {
                                           hideAddressModal();
-                                          setSendBackgroundModal(false);
+                                          showSendModal();
                                         },
                                         onAddressSelect: ({
                                           address,
@@ -1115,11 +1116,11 @@ export const SendDialog: FC<SendDialogProps> = ({
 
                                           hideAddressModal();
                                           if (isInsideModal) {
-                                            setSendBackgroundModal(false);
+                                            showSendModal();
                                           }
                                         },
                                       });
-                                      setSendBackgroundModal(true);
+                                      hideSendModal();
                                       showAddressModal();
                                     }}
                                   >
@@ -1419,7 +1420,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                   false,
                                                 onClose: () => {
                                                   hideTokenModal();
-                                                  setSendBackgroundModal(false);
+                                                  showSendModal();
                                                 },
                                                 onTokenSelect: token => {
                                                   form.setValue(
@@ -1439,13 +1440,11 @@ export const SendDialog: FC<SendDialogProps> = ({
 
                                                   hideTokenModal();
                                                   if (isInsideModal) {
-                                                    setSendBackgroundModal(
-                                                      false,
-                                                    );
+                                                    showSendModal();
                                                   }
                                                 },
                                               });
-                                              setSendBackgroundModal(true);
+                                              hideSendModal();
                                               showTokenModal();
                                             }}
                                           >
@@ -1659,9 +1658,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                 onClose: () => {
                                                   hideNftModal();
                                                   if (isInsideModal) {
-                                                    setSendBackgroundModal(
-                                                      false,
-                                                    );
+                                                    showSendModal();
                                                   }
                                                 },
                                                 onNftSelect: nft => {
@@ -1701,13 +1698,12 @@ export const SendDialog: FC<SendDialogProps> = ({
 
                                                   hideNftModal();
                                                   if (isInsideModal) {
-                                                    setSendBackgroundModal(
-                                                      false,
-                                                    );
+                                                    showSendModal();
                                                   }
                                                 },
                                               });
-                                              setSendBackgroundModal(true);
+
+                                              hideSendModal();
                                               showNftModal();
                                             }}
                                           >

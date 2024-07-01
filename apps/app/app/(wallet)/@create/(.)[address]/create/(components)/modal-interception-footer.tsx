@@ -40,7 +40,7 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
   // Stores
   // ---------------------------------------------------------------------------
 
-  const { hideCreateModal, setSendBackgroundModal } = useModals();
+  const { hideCreateModal } = useModals();
   const { resetAll } = useUserOperations();
 
   // ---------------------------------------------------------------------------
@@ -54,7 +54,6 @@ export const ModalInterceptionFooter: FC<ModalInterceptionFooterProps> = ({
   // ---------------------------------------------------------------------------
 
   const onDismiss = useCallback(() => {
-    setSendBackgroundModal(false);
     hideCreateModal();
     resetAll();
     router.back();

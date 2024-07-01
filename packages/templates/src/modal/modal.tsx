@@ -63,7 +63,6 @@ const modalDialogVariants = cva(["flex max-h-[80%] flex-col"], {
 export interface ModalProps extends VariantProps<typeof modalDialogVariants> {
   children: ReactNode;
   className?: string;
-  isHidden?: boolean;
   isSheet?: boolean;
   headerContent?: ReactNode;
   bannerContent?: ReactNode;
@@ -95,7 +94,6 @@ export function useIsInsideModal() {
 export const Modal: FC<ModalProps> = ({
   children,
   className,
-  isHidden,
   isSheet = false,
   open,
   size,
@@ -133,7 +131,7 @@ export const Modal: FC<ModalProps> = ({
           }
         }}
       >
-        <DrawerContent className={isHidden ? "hidden" : ""}>
+        <DrawerContent>
           {headerContent && <DialogHeader>{headerContent}</DialogHeader>}
           {bannerContent && (
             <DialogHeader className="w-full justify-start space-x-0 overflow-x-scroll [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -171,7 +169,7 @@ export const Modal: FC<ModalProps> = ({
           }
         }}
       >
-        <SheetContent className={isHidden ? "hidden" : ""}>
+        <SheetContent>
           {headerContent && <SheetHeader>{headerContent}</SheetHeader>}
           {bannerContent && (
             <SheetHeader className="w-full justify-start space-x-0 overflow-x-scroll [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -201,11 +199,7 @@ export const Modal: FC<ModalProps> = ({
       <DialogPortal>
         <DialogOverlay />
         <DialogContent
-          className={cn(
-            "w-full",
-            modalDialogVariants({ size: size }),
-            isHidden && "hidden",
-          )}
+          className={cn("w-full", modalDialogVariants({ size: size }))}
         >
           <DialogHeader className={cn(headerContent ? "justify-between" : "")}>
             {headerContent && headerContent}

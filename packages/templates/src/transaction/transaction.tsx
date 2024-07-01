@@ -106,7 +106,8 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
     setTokenModalProps,
     showTokenModal,
     hideTokenModal,
-    setCreateBackgroundModal,
+    showCreateModal,
+    hideCreateModal,
   } = useModals();
 
   // ---------------------------------------------------------------------------
@@ -337,7 +338,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
                                           isTestnet: false,
                                           onClose: () => {
                                             hideTokenModal();
-                                            setCreateBackgroundModal(false);
+                                            showCreateModal();
                                           },
                                           onTokenSelect: token => {
                                             form.setValue(
@@ -372,7 +373,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
 
                                             hideTokenModal();
                                             if (isInsideModal) {
-                                              setCreateBackgroundModal(false);
+                                              showCreateModal();
                                             }
 
                                             // const quantity =
@@ -385,7 +386,7 @@ export const Transaction: FC<TransactionProps> = ({ address }) => {
                                           },
                                         });
 
-                                        setCreateBackgroundModal(true);
+                                        hideCreateModal();
                                         showTokenModal();
                                       }}
                                     >

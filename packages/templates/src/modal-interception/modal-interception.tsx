@@ -53,19 +53,12 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // ---------------------------------------------------------------------------
 
   const {
-    isCreateModalBackground,
-    isDepositModalBackground,
-    isNotificationsModalBackground,
-    isOpModalBackground,
-    isSendModalBackground,
     isCreateModalVisible,
     isDepositModalVisible,
     isNotificationsModalVisible,
     isOpModalVisible,
     isSendModalVisible,
-    setSendBackgroundModal,
     showCreateModal,
-    setDepositBackgroundModal,
     showDepositModal,
     showNotificationsModal,
     showOpModal,
@@ -75,7 +68,6 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     hideNotificationsModal,
     hideOpModal,
     hideSendModal,
-    hideAllModalsBackground,
   } = useModals();
 
   // ---------------------------------------------------------------------------
@@ -88,29 +80,6 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
   // ---------------------------------------------------------------------------
   // Memoized Hooks
   // ---------------------------------------------------------------------------
-
-  // Determine if the modal is a background modal
-  const isBackground = useMemo(() => {
-    switch (type) {
-      case "create":
-        return isCreateModalBackground;
-      case "deposit":
-        return isDepositModalBackground;
-      case "op":
-        return isOpModalBackground;
-      case "notifications":
-        return isNotificationsModalBackground;
-      case "send":
-        return isSendModalBackground;
-    }
-  }, [
-    isCreateModalBackground,
-    isDepositModalBackground,
-    isNotificationsModalBackground,
-    isOpModalBackground,
-    isSendModalBackground,
-    type,
-  ]);
 
   // Determine if the modal is open
   const isOpen = useMemo(() => {
@@ -145,7 +114,8 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
       // Only the create modal can be nested opened from the send modal
       // Hence, we need to set the send modal to visible when the create modal is dismissed
       case "create":
-        setSendBackgroundModal(false);
+        // hideSendModal();
+        // setSendBackgroundModal(false);
         hideCreateModal();
         router.back();
         break;
@@ -172,7 +142,6 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     hideNotificationsModal,
     hideOpModal,
     hideSendModal,
-    setSendBackgroundModal,
     router,
     type,
   ]);
@@ -191,13 +160,12 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
       case "create":
         // Open the create modal and set the send modal to background
         if (pathname.includes("create")) {
-          setSendBackgroundModal(true);
+          hideSendModal();
           showCreateModal();
         }
         break;
       case "deposit":
         if (pathname.includes("deposit")) {
-          setDepositBackgroundModal(false);
           showDepositModal();
         }
         break;
@@ -213,25 +181,12 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
         break;
       case "send":
         if (pathname.includes("send")) {
-          setSendBackgroundModal(false);
           showSendModal();
         }
         break;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, type]);
-
-  // Disable hide all modals background when the interception modal is opened
-  // This is to prevent the modal sent to background and not being visible when the modal is opened
-  // Except for the create modal, which can be nested opened from the send modal
-  useEffect(() => {
-    if (type === "create") {
-      return;
-    }
-
-    hideAllModalsBackground();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -242,7 +197,6 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
       open={isOpen}
       isOverflowHidden={isOverflowHidden}
       isHeightFixed={isHeightFixed}
-      isHidden={isBackground}
       bannerContent={bannerContent}
       footerContent={footerContent}
       size={type === "op" ? "lg" : "default"}

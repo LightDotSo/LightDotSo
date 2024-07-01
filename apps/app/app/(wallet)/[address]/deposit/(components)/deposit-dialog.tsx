@@ -131,7 +131,8 @@ export const DepositDialog: FC<DepositDialogProps> = ({
     setCustomFormSuccessText,
   } = useFormRef();
   const {
-    setDepositBackgroundModal,
+    showDepositModal,
+    hideDepositModal,
     setTokenModalProps,
     showTokenModal,
     hideTokenModal,
@@ -642,7 +643,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                                     walletSettings?.is_enabled_testnet ?? false,
                                   onClose: () => {
                                     hideTokenModal();
-                                    setDepositBackgroundModal(false);
+                                    showDepositModal();
                                   },
                                   onTokenSelect: token => {
                                     form.setValue("chainId", token.chain_id);
@@ -664,7 +665,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
 
                                     hideTokenModal();
                                     if (isInsideModal) {
-                                      setDepositBackgroundModal(false);
+                                      showDepositModal();
                                     }
 
                                     const quantity =
@@ -675,7 +676,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                                   },
                                 });
 
-                                setDepositBackgroundModal(true);
+                                hideDepositModal();
                                 showTokenModal();
                               }}
                             >
@@ -869,7 +870,7 @@ export const DepositDialog: FC<DepositDialogProps> = ({
                                   onClose: () => {
                                     hideNftModal();
                                     if (isInsideModal) {
-                                      setDepositBackgroundModal(false);
+                                      showDepositModal();
                                     }
                                   },
                                   onNftSelect: nft => {
@@ -912,11 +913,11 @@ export const DepositDialog: FC<DepositDialogProps> = ({
 
                                     hideNftModal();
                                     if (isInsideModal) {
-                                      setDepositBackgroundModal(false);
+                                      showDepositModal();
                                     }
                                   },
                                 });
-                                setDepositBackgroundModal(true);
+                                hideDepositModal();
                                 showNftModal();
                               }}
                             >
