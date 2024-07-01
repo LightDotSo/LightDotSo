@@ -104,6 +104,7 @@ type ModalsStore = {
   isOpModalBackground: boolean;
   isOwnerModalBackground: boolean;
   isSendModalBackground: boolean;
+  isSwapModalBackground: boolean;
   isTokenModalBackground: boolean;
   isAddressModalVisible: boolean;
   isAuthModalVisible: boolean;
@@ -117,6 +118,7 @@ type ModalsStore = {
   isOpModalVisible: boolean;
   isOwnerModalVisible: boolean;
   isSendModalVisible: boolean;
+  isSwapModalVisible: boolean;
   isTokenModalVisible: boolean;
   showAddressModal: () => void;
   hideAddressModal: () => void;
@@ -154,6 +156,9 @@ type ModalsStore = {
   showSendModal: () => void;
   hideSendModal: () => void;
   setSendBackgroundModal: (isBackground: boolean) => void;
+  showSwapModal: () => void;
+  hideSwapModal: () => void;
+  setSwapBackgroundModal: (isBackground: boolean) => void;
   showTokenModal: () => void;
   hideTokenModal: () => void;
   setTokenBackgroundModal: (isBackground: boolean) => void;
@@ -318,6 +323,13 @@ export const useModals = create(
         set({
           isTokenModalVisible: true,
         }),
+      showSwapModal: () =>
+        set({
+          isSwapModalVisible: true,
+        }),
+      hideSwapModal: () => set({ isSwapModalVisible: false }),
+      setSwapBackgroundModal: (isBackground: boolean) =>
+        set({ isSwapModalBackground: isBackground }),
       hideTokenModal: () => set({ isTokenModalVisible: false }),
       setTokenBackgroundModal: (isBackground: boolean) =>
         set({ isTokenModalBackground: isBackground }),

@@ -12,58 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { Metadata } from "next";
-import type { ReactNode } from "react";
-
-// -----------------------------------------------------------------------------
-// Metadata
-// -----------------------------------------------------------------------------
-
-export const metadata: Metadata = {
-  title: {
-    template: "Light | %s",
-    default: "Light",
-  },
-};
+import { ModalInterception } from "@lightdotso/templates";
+import { ModalInterceptionFooter } from "@/app/(wallet)/@swap/(.)[address]/swap/(components)/modal-interception-footer";
+import OriginalPage from "@/app/(wallet)/[address]/swap/page";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type RootLayoutProps = {
-  children: ReactNode;
-  create: ReactNode;
-  deposit: ReactNode;
-  op: ReactNode;
-  send: ReactNode;
-  swap: ReactNode;
+type PageProps = {
+  params: { address: string };
+  searchParams: {
+    transfers?: string;
+  };
 };
 
 // -----------------------------------------------------------------------------
-// Layout
+// Page
 // -----------------------------------------------------------------------------
 
-export default function RootLayout({
-  children,
-  create,
-  deposit,
-  op,
-  send,
-  swap,
-}: RootLayoutProps) {
+export default async function Page({ params, searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <>
-      {children}
-      {create}
-      {deposit}
-      {op}
-      {send}
-      {swap}
-    </>
+    <ModalInterception footerContent={<ModalInterceptionFooter />} type="swap">
+      <OriginalPage params={params} searchParams={searchParams} />
+    </ModalInterception>
   );
 }
 
@@ -71,5 +47,4 @@ export default function RootLayout({
 // Config
 // -----------------------------------------------------------------------------
 
-export const experimental_ppr = true;
-export const revalidate = 300;
+// export const runtime = "edge";

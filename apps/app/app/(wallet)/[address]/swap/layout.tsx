@@ -12,64 +12,67 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import {
+  BaseLayerWrapper,
+  MiddleLayerWrapper,
+  BasicPageWrapper,
+  BannerSection,
+  DialogSectionWrapper,
+} from "@lightdotso/ui";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { ACTION_NAV_ITEMS } from "@/app/(wallet)/[address]/(const)/nav-items";
+import { LinkButtonGroup } from "@/components/section/link-button-group";
+import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
 // Metadata
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: {
-    template: "Light | %s",
-    default: "Light",
-  },
+  title: TITLES.Swap.title,
+  description: TITLES.Swap.description,
 };
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type RootLayoutProps = {
+interface SwapLayoutProps {
   children: ReactNode;
-  create: ReactNode;
-  deposit: ReactNode;
-  op: ReactNode;
-  send: ReactNode;
-  swap: ReactNode;
-};
+}
 
 // -----------------------------------------------------------------------------
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function RootLayout({
-  children,
-  create,
-  deposit,
-  op,
-  send,
-  swap,
-}: RootLayoutProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
+export default function SwapLayout({ children }: SwapLayoutProps) {
   return (
+    // -------------------------------------------------------------------------
+    // Render
+    // -------------------------------------------------------------------------
+
     <>
-      {children}
-      {create}
-      {deposit}
-      {op}
-      {send}
-      {swap}
+      <BannerSection
+        title={TITLES.Swap.title}
+        description={TITLES.Swap.description}
+        size="xs"
+      >
+        <MiddleLayerWrapper size="xs">
+          <LinkButtonGroup items={ACTION_NAV_ITEMS} />
+        </MiddleLayerWrapper>
+      </BannerSection>
+      <BaseLayerWrapper size="xs">
+        <BasicPageWrapper>
+          <DialogSectionWrapper>{children}</DialogSectionWrapper>
+        </BasicPageWrapper>
+      </BaseLayerWrapper>
     </>
   );
 }
 
 // -----------------------------------------------------------------------------
-// Config
+// Data
 // -----------------------------------------------------------------------------
 
-export const experimental_ppr = true;
 export const revalidate = 300;
