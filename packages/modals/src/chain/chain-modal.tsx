@@ -15,6 +15,7 @@
 "use client";
 
 import { MAINNET_CHAINS, TESTNET_CHAINS } from "@lightdotso/const";
+import { useChainQueryState } from "@lightdotso/nuqs";
 import { useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import { Modal } from "@lightdotso/templates";
@@ -34,6 +35,12 @@ import {
 // -----------------------------------------------------------------------------
 
 export function ChainModal() {
+  // ---------------------------------------------------------------------------
+  // Query State Hooks
+  // ---------------------------------------------------------------------------
+
+  const [, setChainState] = useChainQueryState();
+
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -82,6 +89,7 @@ export function ChainModal() {
                   value={chain.name}
                   onSelect={() => {
                     onChainSelect(chain.id);
+                    setChainState(chain);
                     hideChainModal();
                   }}
                 >
@@ -99,6 +107,7 @@ export function ChainModal() {
                   value={chain.name}
                   onSelect={() => {
                     onChainSelect(chain.id);
+                    setChainState(chain);
                     hideChainModal();
                   }}
                 >

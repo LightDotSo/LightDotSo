@@ -20,6 +20,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { useEffect } from "react";
 import type { Address } from "viem";
 import { TokenModal } from "./token-modal";
+import ChainModal from "../chain/chain-modal";
 
 // -----------------------------------------------------------------------------
 // Meta
@@ -66,7 +67,12 @@ export const Base: Story = {
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return <TokenModal />;
+    return (
+      <>
+        <TokenModal />
+        <ChainModal />
+      </>
+    );
   },
   args: {},
 };
@@ -80,7 +86,12 @@ export const Socket: Story = {
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return <TokenModal />;
+    return (
+      <>
+        <TokenModal />
+        <ChainModal />
+      </>
+    );
   },
   args: {},
 };
@@ -97,7 +108,12 @@ export const Empty: Story = {
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return <TokenModal />;
+    return (
+      <>
+        <TokenModal />
+        <ChainModal />
+      </>
+    );
   },
   args: {},
 };

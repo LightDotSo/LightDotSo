@@ -17,6 +17,7 @@ export {
   useAbiEncodedQueryState,
 } from "./useAbiEncodedQueryState";
 export { addressParser, useAddressQueryState } from "./useAddressQueryState";
+export { chainParser, useChainQueryState } from "./useChainQueryState";
 export { cursorParser, useCursorQueryState } from "./useCursorQueryState";
 export {
   inviteCodeParser,

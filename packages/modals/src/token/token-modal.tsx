@@ -18,6 +18,7 @@ import { CHAINS, MAINNET_CHAINS } from "@lightdotso/const";
 import type { TokenData } from "@lightdotso/data";
 import { EmptyState, TokenImage } from "@lightdotso/elements";
 import { useContainerDimensions, useMediaQuery } from "@lightdotso/hooks";
+import { useChainQueryState } from "@lightdotso/nuqs";
 import { useQuerySocketBalances, useQueryTokens } from "@lightdotso/query";
 import { useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
@@ -44,6 +45,7 @@ export const TokenModal: FC = () => {
   // ---------------------------------------------------------------------------
 
   const {
+    showChainModal,
     tokenModalProps: { address, isTestnet, onClose, onTokenSelect, type },
     isTokenModalVisible,
   } = useModals();
@@ -79,10 +81,10 @@ export const TokenModal: FC = () => {
   });
 
   // ---------------------------------------------------------------------------
-  // State Hooks
+  // Query State Hooks
   // ---------------------------------------------------------------------------
 
-  const [chainId, setChainId] = useState<number>(0);
+  const [chainState, setChainState] = useChainQueryState();
 
   // ---------------------------------------------------------------------------
   // Memoized Hooks
@@ -103,15 +105,31 @@ export const TokenModal: FC = () => {
     // Calculate the number of chains that can fit in the available width
     const availableChains = availableWidth / (36 + 4);
 
+    // If chainState is null, return all chains
+    if (chainState === null) {
+      return chains.slice(0, availableChains);
+    }
+
+    // Check if the chainState is in the available chains
+    const availableChainState = chains
+      .slice(0, availableChains)
+      .find(chain => chain.id === chainState.id);
+
+    // If the chainState is not in the available chains, add the chainState chain to the front and remove the last chain
+    if (!availableChainState) {
+      return [chainState, ...chains.slice(0, availableChains - 1)];
+    }
+
+    // Return the available chains
     return chains.slice(0, availableChains);
-  }, [dimensions]);
+  }, [dimensions, chainState]);
 
   const renderedTokens: TokenData[] = useMemo(() => {
     // Light index tokens
-    if (type === "native") {
+    if (type === "native" && chainState) {
       const filtered_tokens =
-        tokens && chainId > 0
-          ? tokens.filter(token => token.chain_id === chainId)
+        tokens && chainState?.id > 0
+          ? tokens.filter(token => token.chain_id === chainState.id)
           : tokens;
 
       return filtered_tokens
@@ -132,7 +150,7 @@ export const TokenModal: FC = () => {
               return chain !== undefined;
             })
             .filter(balance => {
-              return chainId === 0 || balance.chainId === chainId;
+              return chainState === null || balance.chainId === chainState.id;
             })
         : [];
 
@@ -148,7 +166,7 @@ export const TokenModal: FC = () => {
       name: balance.name,
       symbol: balance.symbol,
     }));
-  }, [balances, chainId, tokens, type, chains]);
+  }, [balances, chainState, tokens, type, chains]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -168,10 +186,10 @@ export const TokenModal: FC = () => {
             <Button
               className={cn(
                 "w-28 shrink-0",
-                chainId === 0 && "ring-2 ring-border-strong",
+                chainState === null && "ring-2 ring-border-strong",
               )}
               variant="shadow"
-              onClick={() => setChainId(0)}
+              onClick={() => setChainState(null)}
             >
               All Chains
             </Button>
@@ -182,10 +200,12 @@ export const TokenModal: FC = () => {
                     size="default"
                     className={cn(
                       "shrink-0",
-                      chainId === chain.id && "ring-2 ring-border-strong",
+                      chainState &&
+                        chainState.id === chain.id &&
+                        "ring-2 ring-border-strong",
                     )}
                     variant="shadow"
-                    onClick={() => setChainId(chain.id)}
+                    onClick={() => setChainState(chain)}
                   >
                     <ChainLogo chainId={chain.id} />
                   </ButtonIcon>
@@ -195,7 +215,7 @@ export const TokenModal: FC = () => {
                 </TooltipContent>
               </Tooltip>
             ))}
-            <Button className="grow" variant="outline">
+            <Button onClick={showChainModal} className="grow" variant="outline">
               More
             </Button>
           </div>
