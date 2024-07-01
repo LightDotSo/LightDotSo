@@ -51,6 +51,7 @@ export enum DemoSubCategory {
   Activity = Category.Activity,
   Create = Category.Create,
   Owners = Category.Owners,
+  Deposit = Category.Deposit,
   Send = Category.Send,
   Swap = Category.Swap,
 }
@@ -370,6 +371,11 @@ export const TITLES: Record<Category, CategoryObject> = {
       [DemoSubCategory.Create]: {
         title: "Demo Create",
         description: "[Demo] Create a new transaction.",
+        subcategories: {},
+      },
+      [DemoSubCategory.Deposit]: {
+        title: "Demo Deposit",
+        description: "[Demo] Deposit assets into your wallet.",
         subcategories: {},
       },
       [DemoSubCategory.Send]: {
