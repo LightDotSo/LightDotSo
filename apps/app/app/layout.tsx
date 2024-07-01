@@ -58,6 +58,7 @@ interface RootLayoutProps {
   notifications: ReactNode;
   create: ReactNode;
   send: ReactNode;
+  swap: ReactNode;
 }
 
 // -----------------------------------------------------------------------------
@@ -69,6 +70,7 @@ export default function RootLayout({
   notifications,
   create,
   send,
+  swap,
 }: RootLayoutProps) {
   return (
     <Root>
@@ -76,6 +78,7 @@ export default function RootLayout({
       {notifications}
       {create}
       {send}
+      {swap}
     </Root>
   );
 }
