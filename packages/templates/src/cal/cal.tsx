@@ -19,6 +19,16 @@ import { useTheme } from "next-themes";
 import { FC, useEffect } from "react";
 
 // -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+declare global {
+  interface Window {
+    Cal: any;
+  }
+}
+
+// -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
@@ -98,21 +108,21 @@ export const Cal: FC = () => {
   };
 
   useEffect(() => {
+    // Load the Cal.com script
     loadCalScript();
+  }, []);
 
-    // @ts-expect-error
+  useEffect(() => {
     window.Cal("init", { origin: "https://cal.com" });
 
-    // @ts-expect-error
     window.Cal("inline", {
       elementOrSelector: "#my-cal-inline",
       calLink: "lightdotso/support",
       layout: "month_view",
     });
 
-    // @ts-expect-error
     window.Cal("ui", {
-      theme: theme.theme === "dark" ? "dark" : "light",
+      theme: theme.resolvedTheme === "dark" ? "dark" : "light",
       styles: {
         branding: {
           // brandColor: "#000000",
@@ -122,10 +132,8 @@ export const Cal: FC = () => {
       layout: "month_view",
     });
 
-    return () => {
-      // Cleanup logic when component unmounts if necessary
-    };
-  }, [theme.theme]);
+    return () => {};
+  }, [theme.resolvedTheme]);
 
   return (
     <div
