@@ -137,7 +137,13 @@ pub async fn covalent_consumer(
                 let token_result = token.ok_or(eyre::eyre!("Item not found for token: {:?}", ite));
 
                 // If valid item found, build data, else propagate error
-                token_result.map(|token| (ite.quote_rate.unwrap_or(0.0), token.clone().id, vec![]))
+                token_result.map(|token| {
+                    (
+                        ite.quote_rate.unwrap_or(ite.quote_rate_24h.unwrap_or(0.0)),
+                        token.clone().id,
+                        vec![],
+                    )
+                })
             })
             .collect::<Vec<_>>();
 
