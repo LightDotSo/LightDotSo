@@ -126,9 +126,9 @@ export const TokenModal: FC = () => {
 
   const renderedTokens: TokenData[] = useMemo(() => {
     // Light index tokens
-    if (type === "native" && chainState) {
+    if (type === "native") {
       const filtered_tokens =
-        tokens && tokens?.length > 0 && chainState?.id > 0
+        tokens && tokens?.length > 0 && chainState
           ? tokens.filter(token => token.chain_id === chainState.id)
           : tokens;
 
