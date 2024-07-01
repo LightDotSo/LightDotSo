@@ -13,7 +13,7 @@
   dotenvy = { workspace = true }
   eyre = { workspace = true }
   lazy_static = { workspace = true }
-  metrics = "0.21.1"
+  metrics = "0.23.0"
   opentelemetry = { workspace = true }
   opentelemetry-otlp = { workspace = true }
   opentelemetry-prometheus = { workspace = true }
@@ -23,10 +23,10 @@
   tokio = { workspace = true }
   tonic = { workspace = true }
   tracing = "0.1.37"
-  tracing-appender = "0.2.2"
+  tracing-appender = "0.2.3"
   tracing-futures = "0.2.5"
   tracing-loki = { version = "0.2.2", features = ["rustls", "native-tls"] }
-  tracing-opentelemetry = "0.20.0"
+  tracing-opentelemetry = "0.24.0"
   tracing-subscriber = { version = "0.3.17", features = [
     "ansi",
     "env-filter",

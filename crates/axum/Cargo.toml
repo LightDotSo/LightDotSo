@@ -12,13 +12,13 @@
   async-trait = { workspace = true }
   autometrics = { workspace = true }
   axum = { workspace = true }
-  axum-tracing-opentelemetry = "0.13.1"
+  axum-tracing-opentelemetry = "0.19.0"
   clap = { workspace = true }
   const-hex = { workspace = true }
   ethers = { workspace = true }
   ethers-main = { workspace = true }
   eyre = { workspace = true }
-  governor = "0.5.1"
+  governor = "0.6.0"
   http = { workspace = true }
   http-body = { workspace = true }
   hyper = { workspace = true }
@@ -49,7 +49,7 @@
   serde = { workspace = true, features = ["derive"] }
   serde_json = { workspace = true }
   sha3 = "0.10"
-  siwe = { version = "0.6.0", features = ["serde"] }
+  siwe = { version = "0.6.1", features = ["serde"] }
   thiserror = { workspace = true }
   time = { workspace = true }
   tokio = { workspace = true }
@@ -65,7 +65,7 @@
   tower-sessions = { workspace = true }
   tower-sessions-core = { workspace = true }
   tower_governor = { workspace = true }
-  utoipa = { version = "4.0.0", features = ["axum_extras"] }
-  utoipa-rapidoc = { version = "1.0.0", features = ["axum"] }
-  utoipa-redoc = { version = "1.0.0", features = ["axum"] }
-  utoipa-swagger-ui = { version = "4.0.0", features = ["axum"] }
+  utoipa = { version = "4.2.3", features = ["axum_extras"] }
+  utoipa-rapidoc = { version = "4.0.0", features = ["axum"] }
+  utoipa-redoc = { version = "4.0.0", features = ["axum"] }
+  utoipa-swagger-ui = { version = "6.0.0", features = ["axum"] }
