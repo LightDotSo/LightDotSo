@@ -76,7 +76,7 @@ export const TokenModal: FC = () => {
     chain_ids: null,
   });
 
-  const { balances } = useQuerySocketBalances({
+  const { socketBalances } = useQuerySocketBalances({
     address: address as Address,
   });
 
@@ -128,7 +128,7 @@ export const TokenModal: FC = () => {
     // Light index tokens
     if (type === "native" && chainState) {
       const filtered_tokens =
-        tokens && chainState?.id > 0
+        tokens && tokens?.length > 0 && chainState?.id > 0
           ? tokens.filter(token => token.chain_id === chainState.id)
           : tokens;
 
@@ -143,8 +143,8 @@ export const TokenModal: FC = () => {
     // Socket balances
     const filtered_balances =
       // Filter the balances by chain that is in the `MAINNET_CHAINS` array
-      balances
-        ? balances
+      socketBalances && socketBalances?.length > 0
+        ? socketBalances
             .filter(balance => {
               const chain = chains.find(chain => chain.id === balance.chainId);
               return chain !== undefined;
@@ -166,7 +166,7 @@ export const TokenModal: FC = () => {
       name: balance.name,
       symbol: balance.symbol,
     }));
-  }, [balances, chainState, tokens, type, chains]);
+  }, [socketBalances, chainState, tokens, type, chains]);
 
   // ---------------------------------------------------------------------------
   // Render

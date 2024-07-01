@@ -43,8 +43,8 @@ export const useQuerySocketBalances = (params: SocketBalanceParams) => {
   );
 
   const {
-    data: balances,
-    isLoading: isBalancesLoading,
+    data: socketBalances,
+    isLoading: isSocketBalancesLoading,
     failureCount,
   } = useQuery<SocketBalanceData[] | null>({
     queryKey: queryKeys.socket.balance({
@@ -81,7 +81,7 @@ export const useQuerySocketBalances = (params: SocketBalanceParams) => {
   });
 
   return {
-    balances: balances,
-    isBalancesLoading: isBalancesLoading,
+    socketBalances: socketBalances,
+    isSocketBalancesLoading: isSocketBalancesLoading,
   };
 };
