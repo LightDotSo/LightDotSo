@@ -107,7 +107,7 @@ export const TITLES: Record<Category, CategoryObject> = {
   },
   [Category.Swap]: {
     title: "Swap",
-    description: "Swap assets.",
+    description: "Swap assets to another across chains.",
     subcategories: {},
   },
   [Category.Wallets]: {
@@ -292,7 +292,7 @@ export const TITLES: Record<Category, CategoryObject> = {
   },
   [Category.Send]: {
     title: "Send",
-    description: "Send assets to another wallet.",
+    description: "Send assets to another wallet across all chains.",
     subcategories: {},
   },
   [Category.Dev]: {
