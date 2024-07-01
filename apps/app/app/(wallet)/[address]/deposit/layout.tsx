@@ -14,13 +14,15 @@
 
 import {
   BaseLayerWrapper,
+  MiddleLayerWrapper,
   BasicPageWrapper,
-  HStackFull,
   BannerSection,
   DialogSectionWrapper,
 } from "@lightdotso/ui";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { ACTION_NAV_ITEMS } from "@/app/(wallet)/[address]/(const)/nav-items";
+import { LinkButtonGroup } from "@/components/section/link-button-group";
 import { TITLES } from "@/const";
 
 // -----------------------------------------------------------------------------
@@ -44,25 +46,28 @@ interface DepositLayoutProps {
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function DepositLayout({ children }: DepositLayoutProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
+export default function DepositsLayout({ children }: DepositLayoutProps) {
   return (
-    <BannerSection
-      title={TITLES.Deposit.title}
-      description={TITLES.Deposit.description}
-      size="sm"
-    >
-      <HStackFull>
-        <BaseLayerWrapper size="sm">
-          <BasicPageWrapper>
-            <DialogSectionWrapper>{children}</DialogSectionWrapper>
-          </BasicPageWrapper>
-        </BaseLayerWrapper>
-      </HStackFull>
-    </BannerSection>
+    // -------------------------------------------------------------------------
+    // Render
+    // -------------------------------------------------------------------------
+
+    <>
+      <BannerSection
+        title={TITLES.Deposit.title}
+        description={TITLES.Deposit.description}
+        size="xs"
+      >
+        <MiddleLayerWrapper size="xs">
+          <LinkButtonGroup items={ACTION_NAV_ITEMS} />
+        </MiddleLayerWrapper>
+      </BannerSection>
+      <BaseLayerWrapper size="xs">
+        <BasicPageWrapper>
+          <DialogSectionWrapper>{children}</DialogSectionWrapper>
+        </BasicPageWrapper>
+      </BaseLayerWrapper>
+    </>
   );
 }
 

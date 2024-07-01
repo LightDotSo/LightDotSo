@@ -67,7 +67,16 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
   // Ex) /wallets/0x1234567890abcdef/transactions -> transactions
   // Ex) /wallets/0x1234567890abcdef/transactions/queue -> queue
 
-  const id = pathname.split("/").pop();
+  // However, if some of the ids will end with same string, so in that case we
+  // need to get the last two parts of the path
+  // Ex) /wallets/0x1234567890abcdef/deposit/new -> deposit/new
+  // Ex) /wallets/0x1234567890abcdef/send/new -> send/new
+
+  // If some of the ids contain the `-` character, do not split the path
+  const id = items.find(item => item.id.includes("-"))
+    ? // Get the last two parts of the path
+      pathname.split("/").slice(-2).join("-")
+    : pathname.split("/").pop();
 
   // Get the wallet address from the path
   // Address is the first part of the path
@@ -101,7 +110,9 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
             // Get the item from the items
             const item = items.find(item => item.id === value);
             // If the item is not found, return
-            if (!item) return;
+            if (!item) {
+              return;
+            }
             // Navigate to the item
             router.push(`/${address}${item.href}`);
           }}

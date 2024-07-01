@@ -26,7 +26,7 @@ import { Modal, ModalProps } from "../modal";
 
 type ModalInterceptionProps = {
   children: ReactNode;
-  type: "create" | "op" | "notifications" | "send" | "deposit";
+  type: "create" | "op" | "notifications" | "swap" | "send" | "deposit";
 } & Pick<
   ModalProps,
   | "children"
@@ -58,11 +58,13 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     isNotificationsModalBackground,
     isOpModalBackground,
     isSendModalBackground,
+    isSwapModalBackground,
     isCreateModalVisible,
     isDepositModalVisible,
     isNotificationsModalVisible,
     isOpModalVisible,
     isSendModalVisible,
+    isSwapModalVisible,
     setSendBackgroundModal,
     showCreateModal,
     setDepositBackgroundModal,
@@ -70,11 +72,13 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     showNotificationsModal,
     showOpModal,
     showSendModal,
+    showSwapModal,
     hideCreateModal,
     hideDepositModal,
     hideNotificationsModal,
     hideOpModal,
     hideSendModal,
+    hideSwapModal,
     hideAllModalsBackground,
   } = useModals();
 
@@ -102,6 +106,8 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
         return isNotificationsModalBackground;
       case "send":
         return isSendModalBackground;
+      case "swap":
+        return isSwapModalBackground;
     }
   }, [
     isCreateModalBackground,
@@ -109,6 +115,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     isNotificationsModalBackground,
     isOpModalBackground,
     isSendModalBackground,
+    isSwapModalBackground,
     type,
   ]);
 
@@ -125,6 +132,8 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
         return isNotificationsModalVisible;
       case "send":
         return isSendModalVisible;
+      case "swap":
+        return isSwapModalVisible;
     }
   }, [
     isCreateModalVisible,
@@ -132,6 +141,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     isNotificationsModalVisible,
     isOpModalVisible,
     isSendModalVisible,
+    isSwapModalVisible,
     type,
   ]);
 
@@ -165,6 +175,10 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
         hideSendModal();
         router.back();
         break;
+      case "swap":
+        hideSwapModal();
+        router.back();
+        break;
     }
   }, [
     hideCreateModal,
@@ -172,6 +186,7 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
     hideNotificationsModal,
     hideOpModal,
     hideSendModal,
+    hideCreateModal,
     setSendBackgroundModal,
     router,
     type,
@@ -215,6 +230,11 @@ export const ModalInterception: FC<ModalInterceptionProps> = ({
         if (pathname.includes("send")) {
           setSendBackgroundModal(false);
           showSendModal();
+        }
+        break;
+      case "swap":
+        if (pathname.includes("swap")) {
+          showSwapModal();
         }
         break;
     }
