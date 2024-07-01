@@ -60,6 +60,7 @@ export function ChainModal() {
       <CommandList className="max-h-full">
         <Tabs className="w-full" defaultValue="mainnet">
           <Modal
+            isSheet
             isHeightFixed
             open={isChainModalVisible}
             className="p-2"
