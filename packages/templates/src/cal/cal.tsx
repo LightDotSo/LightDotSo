@@ -110,7 +110,9 @@ export const Cal: FC = () => {
   useEffect(() => {
     // Load the Cal.com script
     loadCalScript();
+  }, []);
 
+  useEffect(() => {
     window.Cal("init", { origin: "https://cal.com" });
 
     window.Cal("inline", {
@@ -131,7 +133,7 @@ export const Cal: FC = () => {
     });
 
     return () => {};
-  }, [theme.theme]);
+  }, [theme.resolvedTheme]);
 
   return (
     <div
