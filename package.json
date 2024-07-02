@@ -122,6 +122,7 @@
     "commitlint": "^19.3.0",
     "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
+    "cspell": "^8.9.1",
     "depcheck": "^1.4.7",
     "dotenv": "^16.4.5",
     "dotenv-cli": "^7.4.2",
