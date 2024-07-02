@@ -313,11 +313,30 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
 
   // Get the max priority fee per gas, fallbacks to mainnet
   const {
-    data: maxPriorityFeePerGas,
+    data: estimatedMaxPriorityFeePerGas,
     error: estimateMaxPriorityFeePerGasError,
   } = useEstimateMaxPriorityFeePerGas({
     chainId: Number(targetUserOperation.chainId ?? 1),
   });
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const maxFeePerGas = useMemo(() => {
+    return feesPerGas?.maxFeePerGas ?? targetUserOperation.maxFeePerGas;
+  }, [feesPerGas, targetUserOperation.maxFeePerGas]);
+
+  const maxPriorityFeePerGas = useMemo(() => {
+    // If the chain is Celo, `maxFeePerGas` is the same as `maxPriorityFeePerGas`
+    return targetUserOperation.chainId === BigInt(42220)
+      ? feesPerGas?.maxFeePerGas ?? targetUserOperation.maxFeePerGas
+      : // Fallback to 1 if the maxPriorityFeePerGas is 0 from the RPC
+        estimatedMaxPriorityFeePerGas === BigInt(0)
+        ? BigInt(1)
+        : estimatedMaxPriorityFeePerGas ??
+          targetUserOperation.maxPriorityFeePerGas;
+  }, [targetUserOperation.chainId, feesPerGas, estimatedMaxPriorityFeePerGas]);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -346,16 +365,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
             to: "bigint",
           })
         : BigInt(0),
-      maxFeePerGas:
-        feesPerGas?.maxFeePerGas ?? targetUserOperation.maxFeePerGas,
-      maxPriorityFeePerGas:
-        // If the chain is Celo, `maxFeePerGas` is the same as `maxPriorityFeePerGas`
-        targetUserOperation.chainId === BigInt(42220)
-          ? feesPerGas?.maxFeePerGas ?? targetUserOperation.maxFeePerGas
-          : // Fallback to 1 if the maxPriorityFeePerGas is 0 from the RPC
-            maxPriorityFeePerGas === BigInt(0)
-            ? BigInt(1)
-            : maxPriorityFeePerGas ?? targetUserOperation.maxPriorityFeePerGas,
+      maxFeePerGas: maxFeePerGas,
+      maxPriorityFeePerGas: maxPriorityFeePerGas,
     });
 
   // ---------------------------------------------------------------------------
@@ -373,14 +384,8 @@ export const TransactionFetcher: FC<TransactionFetcherProps> = ({
         nonce: targetUserOperation.nonce,
         callData: targetUserOperation.callData,
         // The target values to fill in
-        maxFeePerGas: paymasterAndData?.maxFeePerGas
-          ? fromHex(paymasterAndData.maxFeePerGas as Hex, { to: "bigint" })
-          : BigInt(0),
-        maxPriorityFeePerGas: paymasterAndData?.maxPriorityFeePerGas
-          ? fromHex(paymasterAndData.maxPriorityFeePerGas as Hex, {
-              to: "bigint",
-            })
-          : BigInt(0),
+        maxFeePerGas: maxFeePerGas,
+        maxPriorityFeePerGas: maxPriorityFeePerGas,
         callGasLimit: paymasterAndData?.callGasLimit
           ? fromHex(paymasterAndData.callGasLimit as Hex, { to: "bigint" })
           : BigInt(0),
