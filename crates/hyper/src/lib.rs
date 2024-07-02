@@ -15,4 +15,4 @@
 use hyper::{client::HttpConnector, Body, Client};
 use hyper_rustls::HttpsConnector;
 
-pub type Hyper = Client<HttpsConnector<HttpConnector>, Body>;
+pub type HyperClient = Client<HttpsConnector<HttpConnector>, Body>;

@@ -38,3 +38,29 @@ lazy_static! {
             .collect()
     };
 }
+
+// The pimlico sponsorship policy settings
+lazy_static! {
+    #[derive(Debug)]
+    pub static ref PIMLICO_SPONSORSHIP_POLICIES: Vec<String> = {
+        vec![
+            "sp_natural_sandman".to_string(),
+        ]
+    };
+}
+
+// The pimlico base url
+lazy_static! {
+    #[derive(Debug)]
+    pub static ref PIMLICO_BASE_URL: String = {
+        "https://api.pimlico.io/v2".to_string()
+    };
+}
+
+// The particle network paymaster base url
+lazy_static! {
+    #[derive(Debug)]
+    pub static ref PARTICLE_NETWORK_PAYMASTER_BASE_URL: String = {
+        "https://paymaster.particle.network".to_string()
+    };
+}

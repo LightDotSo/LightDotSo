@@ -13,4 +13,6 @@
   eyre = { workspace = true }
   lazy_static = { workspace = true }
   lightdotso-constants = { workspace = true }
+  serde = { workspace = true }
+  serde_json = { workspace = true }
   tokio = { workspace = true }

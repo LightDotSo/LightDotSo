@@ -13,11 +13,9 @@
 // limitations under the License.
 
 use clap::Parser;
-use ethers::types::Address;
 use eyre::{eyre, Result};
 use lightdotso_jsonrpsee::rpc::{JsonRpcServer, JsonRpcServerType};
 use lightdotso_tracing::tracing::{error, info};
-use lightdotso_utils::parse_address;
 use std::{
     future::pending,
     net::{IpAddr, Ipv6Addr},
@@ -27,21 +25,15 @@ use crate::{paymaster::PaymasterApi, paymaster_api::PaymasterApiServer};
 
 #[derive(Debug, Clone, Parser)]
 pub struct PaymasterArgs {
-    #[clap(long, env = "PAYMASTER_ADDRESS", hide = true,default_value = "", value_parser=parse_address)]
-    pub paymaster: Address,
-    /// The private key of the paymaster
-    #[clap(long, env = "PAYMASTER_PRIVATE_KEY", hide = true)]
-    pub paymaster_private_key: String,
-    /// The AWS access key id
-    #[clap(long, env = "AWS_ACCESS_KEY_ID", hide = true)]
-    pub aws_access_key_id: String,
-    /// The AWS secret access key
-    #[clap(long, env = "AWS_SECRET_ACCESS_KEY", hide = true)]
-    pub aws_secret_key_id: String,
-    /// The AWS KMS key ids
-    #[arg(long, short, num_args = 1.., value_delimiter = ',')]
-    #[clap(long, env = "AWS_KMS_KEY_IDS", hide = true)]
-    pub aws_kms_key_ids: Vec<String>,
+    /// The pilmico API key
+    #[clap(long, env = "PIMLICO_API_KEY")]
+    pub pimlico_api_key: String,
+    /// The particle network project id
+    #[clap(long, env = "PARTICLE_NETWORK_PROJECT_ID")]
+    pub particle_network_project_id: String,
+    /// The particle network paymaster project key
+    #[clap(long, env = "PARTICLE_NETWORK_PROJECT_KEY")]
+    pub particle_network_project_key: String,
 }
 
 impl PaymasterArgs {

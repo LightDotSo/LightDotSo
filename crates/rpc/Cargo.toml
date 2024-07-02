@@ -19,9 +19,9 @@
   hyper-rustls = { workspace = true }
   lazy_static = { workspace = true }
   lightdotso-contracts = { workspace = true }
+  lightdotso-hyper = { workspace = true }
   lightdotso-jsonrpsee = { workspace = true }
   lightdotso-kafka = { workspace = true }
-  lightdotso-paymaster = { workspace = true }
   lightdotso-tracing = { workspace = true }
   rand = { workspace = true }
   serde = { workspace = true }

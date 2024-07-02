@@ -30,7 +30,6 @@ pub mod routes;
 pub mod rpc;
 pub mod sessions;
 pub mod state;
-pub mod types;
 
 // Handle errors
 // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L308
