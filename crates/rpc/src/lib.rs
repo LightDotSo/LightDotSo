@@ -16,8 +16,8 @@
 #![allow(clippy::expect_used)]
 
 pub mod config;
-mod constants;
-mod utils;
+pub mod constants;
+pub mod utils;
 
 use crate::{
     constants::{

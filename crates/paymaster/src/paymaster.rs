@@ -36,6 +36,7 @@ use lightdotso_jsonrpsee::{
     types::{Request, Response},
 };
 use lightdotso_prisma::paymaster_operation;
+use lightdotso_rpc::constants::PIMLICO_RPC_URLS;
 use lightdotso_tracing::tracing::{info, warn};
 use serde_json::{json, Value};
 
@@ -54,24 +55,27 @@ pub async fn fetch_user_operation_sponsorship(
     let pimlico_api_key =
         std::env::var("PIMLICO_API_KEY").map_err(|_| eyre::eyre!("PIMLICO_API_KEY not set"))?;
 
-    // For each paymaster policy, attempt to fetch the user operation sponsorship.
-    for policy in PIMLICO_SPONSORSHIP_POLICIES.iter() {
-        info!("pimlico policy: {:?}", policy);
+    // Check if the `chain_id` is one of the key of `PIMLICO_RPC_URLS`.
+    if (*PIMLICO_RPC_URLS).contains_key(&chain_id) {
+        // For each paymaster policy, attempt to fetch the user operation sponsorship.
+        for policy in PIMLICO_SPONSORSHIP_POLICIES.iter() {
+            info!("pimlico policy: {:?}", policy);
 
-        let sponsorship = get_user_operation_sponsorship(
-            format!("{}/{}/rpc?apiKey={}", *PIMLICO_BASE_URL, chain_id, pimlico_api_key),
-            entry_point,
-            &user_operation,
-            json!({
-                "sponsorshipPolicy": policy
-            }),
-        )
-        .await
-        .map_err(JsonRpcError::from);
+            let sponsorship = get_user_operation_sponsorship(
+                format!("{}/{}/rpc?apiKey={}", *PIMLICO_BASE_URL, chain_id, pimlico_api_key),
+                entry_point,
+                &user_operation,
+                json!({
+                    "sponsorshipPolicy": policy
+                }),
+            )
+            .await
+            .map_err(JsonRpcError::from);
 
-        // If the sponsorship is successful, return the result.
-        if let Ok(sponsorship_data) = sponsorship {
-            return Ok(sponsorship_data.result);
+            // If the sponsorship is successful, return the result.
+            if let Ok(sponsorship_data) = sponsorship {
+                return Ok(sponsorship_data.result);
+            }
         }
     }
 
