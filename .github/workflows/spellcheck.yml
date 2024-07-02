@@ -19,3 +19,5 @@ jobs:
         uses: streetsidesoftware/cspell-action@v6
         with:
           config: "./cspell.json"
+          root: "."
+          use_cspell_files: true
