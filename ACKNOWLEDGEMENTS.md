@@ -2,7 +2,7 @@
 
 ## 0xSequence
 
-First and firstmost this project woudln't have been possible without 0xSequence's [wallet-contracts](https://github.com/0xsequence/wallet-contracts) and the invention of the [Light State Sync](https://sequence.xyz/blog/sequence-wallet-light-state-sync-full-merkle-wallets) technology. Our multi-sig 4337 wallet contract implementation is entirely based on it.
+First and firstmost this project wouldn't have been possible without 0xSequence's [wallet-contracts](https://github.com/0xsequence/wallet-contracts) and the invention of the [Light State Sync](https://sequence.xyz/blog/sequence-wallet-light-state-sync-full-merkle-wallets) technology. Our multi-sig 4337 wallet contract implementation is entirely based on it.
 
 Thank you for your hard work and dedication to the Ethereum community!
 
@@ -18,7 +18,7 @@ Some of the code is referenced and annotated from their respective repositories.
 
 ## @shadcn/ui
 
-Thank you to [shacdn/ui](https://ui.shadcn.com/) for providing the beautiful UI components that were used for the base implementation of the frontend.
+Thank you to [shadcn/ui](https://ui.shadcn.com/) for providing the beautiful UI components that were used for the base implementation of the frontend.
 
 All of our up-to-date UI components are available in the [storybook](https://storybook.light.so) located [here](./packages/ui/).
 

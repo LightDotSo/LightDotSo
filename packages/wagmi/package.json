@@ -29,13 +29,13 @@
   "dependencies": {
     "@lightdotso/const": "workspace:*",
     "connectkit": "^1.8.2",
-    "viem": "^2.16.4",
-    "wagmi": "^2.10.8"
+    "viem": "^2.16.5",
+    "wagmi": "^2.10.9"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^20.14.9",
-    "typescript": "^5.5.2"
+    "typescript": "^5.5.3"
   },
   "publishConfig": {
     "access": "public"
