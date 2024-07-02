@@ -1,5 +1,19 @@
 # @lightdotso/contracts
 
+## 3.1.7
+
+### Patch Changes
+
+- [#1988](https://github.com/LightDotSo/LightDotSo/pull/1988) [`c3094da`](https://github.com/LightDotSo/LightDotSo/commit/c3094da987c25900b16e0e860aff8cc8f08b1e73) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update lib deps
+
+- [#1980](https://github.com/LightDotSo/LightDotSo/pull/1980) [`0935b49`](https://github.com/LightDotSo/LightDotSo/commit/0935b49abac5bdf546044a178d177f7d89728869) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add paymaster
+
+- [#1969](https://github.com/LightDotSo/LightDotSo/pull/1969) [`d40e1b2`](https://github.com/LightDotSo/LightDotSo/commit/d40e1b2eb12acd18b0d6e7b506b16a6df7cd501c) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix eslint changes
+
+- Updated dependencies [[`40b459c`](https://github.com/LightDotSo/LightDotSo/commit/40b459c57d643f7c8f635df5b85c51c52980352d), [`6829ec0`](https://github.com/LightDotSo/LightDotSo/commit/6829ec0e80c1ddb3034619cc87de7099f6ccb4b9), [`24befb5`](https://github.com/LightDotSo/LightDotSo/commit/24befb505a0d45813b6fa3e2189deaabec3a60a3), [`9e7ad20`](https://github.com/LightDotSo/LightDotSo/commit/9e7ad2005150b7412f5fd1e26bad9b420d1cbce8), [`7842870`](https://github.com/LightDotSo/LightDotSo/commit/7842870559da2a1419bd35ffd31b64c739d1fc95), [`0935b49`](https://github.com/LightDotSo/LightDotSo/commit/0935b49abac5bdf546044a178d177f7d89728869), [`48249c1`](https://github.com/LightDotSo/LightDotSo/commit/48249c1cbc8bfd84939970e77b2be7a5b30f47d5), [`d40e1b2`](https://github.com/LightDotSo/LightDotSo/commit/d40e1b2eb12acd18b0d6e7b506b16a6df7cd501c), [`c17391d`](https://github.com/LightDotSo/LightDotSo/commit/c17391d7404267fa744f850c4e4a297537cf9244), [`c17391d`](https://github.com/LightDotSo/LightDotSo/commit/c17391d7404267fa744f850c4e4a297537cf9244)]:
+  - @lightdotso/sequence@0.0.6
+  - @lightdotso/wagmi@3.1.7
+
 ## 3.1.6
 
 ### Patch Changes

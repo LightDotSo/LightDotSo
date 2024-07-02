@@ -1,5 +1,11 @@
 # @lightdotso/prettier
 
+## 3.1.4
+
+### Patch Changes
+
+- [#1969](https://github.com/LightDotSo/LightDotSo/pull/1969) [`d40e1b2`](https://github.com/LightDotSo/LightDotSo/commit/d40e1b2eb12acd18b0d6e7b506b16a6df7cd501c) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix eslint changes
+
 ## 3.1.3
 
 ### Patch Changes

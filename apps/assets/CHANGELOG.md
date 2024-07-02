@@ -1,5 +1,17 @@
 # @lightdotso/assets
 
+## 3.1.5
+
+### Patch Changes
+
+- [#2024](https://github.com/LightDotSo/LightDotSo/pull/2024) [`40b459c`](https://github.com/LightDotSo/LightDotSo/commit/40b459c57d643f7c8f635df5b85c51c52980352d) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add pnpm json
+
+- [#1969](https://github.com/LightDotSo/LightDotSo/pull/1969) [`d40e1b2`](https://github.com/LightDotSo/LightDotSo/commit/d40e1b2eb12acd18b0d6e7b506b16a6df7cd501c) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix eslint changes
+
+- [#1977](https://github.com/LightDotSo/LightDotSo/pull/1977) [`c17391d`](https://github.com/LightDotSo/LightDotSo/commit/c17391d7404267fa744f850c4e4a297537cf9244) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add ini chore update
+
+- [#1977](https://github.com/LightDotSo/LightDotSo/pull/1977) [`c17391d`](https://github.com/LightDotSo/LightDotSo/commit/c17391d7404267fa744f850c4e4a297537cf9244) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add changeset update
+
 ## 3.1.4
 
 ### Patch Changes

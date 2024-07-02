@@ -1,5 +1,13 @@
 # @lightdotso/styles
 
+## 3.0.4
+
+### Patch Changes
+
+- [#1969](https://github.com/LightDotSo/LightDotSo/pull/1969) [`d40e1b2`](https://github.com/LightDotSo/LightDotSo/commit/d40e1b2eb12acd18b0d6e7b506b16a6df7cd501c) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix eslint changes
+
+- [#2005](https://github.com/LightDotSo/LightDotSo/pull/2005) [`2cc456c`](https://github.com/LightDotSo/LightDotSo/commit/2cc456c1a05467eb4dae6ae21d2a6a32b56bc4dc) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix issues
+
 ## 3.0.3
 
 ### Patch Changes

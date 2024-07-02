@@ -1,5 +1,15 @@
 # @lightdotso/tailwindcss
 
+## 3.1.6
+
+### Patch Changes
+
+- [#1987](https://github.com/LightDotSo/LightDotSo/pull/1987) [`d71662a`](https://github.com/LightDotSo/LightDotSo/commit/d71662aab537df50ed28b34f4c6220293052c73a) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add home app
+
+- [#1990](https://github.com/LightDotSo/LightDotSo/pull/1990) [`24befb5`](https://github.com/LightDotSo/LightDotSo/commit/24befb505a0d45813b6fa3e2189deaabec3a60a3) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update pnpm
+
+- [#1969](https://github.com/LightDotSo/LightDotSo/pull/1969) [`d40e1b2`](https://github.com/LightDotSo/LightDotSo/commit/d40e1b2eb12acd18b0d6e7b506b16a6df7cd501c) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix eslint changes
+
 ## 3.1.5
 
 ### Patch Changes

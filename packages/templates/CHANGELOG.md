@@ -1,5 +1,59 @@
 # @lightdotso/templates
 
+## 0.0.7
+
+### Patch Changes
+
+- [#2024](https://github.com/LightDotSo/LightDotSo/pull/2024) [`40b459c`](https://github.com/LightDotSo/LightDotSo/commit/40b459c57d643f7c8f635df5b85c51c52980352d) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add pnpm json
+
+- [#1970](https://github.com/LightDotSo/LightDotSo/pull/1970) [`6829ec0`](https://github.com/LightDotSo/LightDotSo/commit/6829ec0e80c1ddb3034619cc87de7099f6ccb4b9) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add address types
+
+- [#1990](https://github.com/LightDotSo/LightDotSo/pull/1990) [`24befb5`](https://github.com/LightDotSo/LightDotSo/commit/24befb505a0d45813b6fa3e2189deaabec3a60a3) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update pnpm
+
+- [#1986](https://github.com/LightDotSo/LightDotSo/pull/1986) [`9e7ad20`](https://github.com/LightDotSo/LightDotSo/commit/9e7ad2005150b7412f5fd1e26bad9b420d1cbce8) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - UPdate packages
+
+- [#1989](https://github.com/LightDotSo/LightDotSo/pull/1989) [`7842870`](https://github.com/LightDotSo/LightDotSo/commit/7842870559da2a1419bd35ffd31b64c739d1fc95) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add packages
+
+- [#1973](https://github.com/LightDotSo/LightDotSo/pull/1973) [`bc5fc9e`](https://github.com/LightDotSo/LightDotSo/commit/bc5fc9e49e9fe543bd21987bbb5d42c5256a3813) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add feature settings chain
+
+- [#1966](https://github.com/LightDotSo/LightDotSo/pull/1966) [`70b538f`](https://github.com/LightDotSo/LightDotSo/commit/70b538fa919e48ba068d24801520d7290c033d61) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix const chains
+
+- [#2019](https://github.com/LightDotSo/LightDotSo/pull/2019) [`cdfbe75`](https://github.com/LightDotSo/LightDotSo/commit/cdfbe7596aa113c62a82af14c6d4dde54f06a389) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add swap page
+
+- [#1997](https://github.com/LightDotSo/LightDotSo/pull/1997) [`48249c1`](https://github.com/LightDotSo/LightDotSo/commit/48249c1cbc8bfd84939970e77b2be7a5b30f47d5) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update token modal
+
+- [#1975](https://github.com/LightDotSo/LightDotSo/pull/1975) [`dd1e0d9`](https://github.com/LightDotSo/LightDotSo/commit/dd1e0d916415f079a62ea73c3294ea8e82a53905) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix useroperations submit bug
+
+- [#1969](https://github.com/LightDotSo/LightDotSo/pull/1969) [`d40e1b2`](https://github.com/LightDotSo/LightDotSo/commit/d40e1b2eb12acd18b0d6e7b506b16a6df7cd501c) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix eslint changes
+
+- [#1974](https://github.com/LightDotSo/LightDotSo/pull/1974) [`9ec1eec`](https://github.com/LightDotSo/LightDotSo/commit/9ec1eecbcfc08657fd9046364ece111e0a0a4cb1) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add sticky modal
+
+- [#2005](https://github.com/LightDotSo/LightDotSo/pull/2005) [`2cc456c`](https://github.com/LightDotSo/LightDotSo/commit/2cc456c1a05467eb4dae6ae21d2a6a32b56bc4dc) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix issues
+
+- [#1977](https://github.com/LightDotSo/LightDotSo/pull/1977) [`c17391d`](https://github.com/LightDotSo/LightDotSo/commit/c17391d7404267fa744f850c4e4a297537cf9244) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add ini chore update
+
+- [#2026](https://github.com/LightDotSo/LightDotSo/pull/2026) [`ed7b500`](https://github.com/LightDotSo/LightDotSo/commit/ed7b500c58c782380516ca5e0eab1f8fb9fe6967) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix pm fetcher
+
+- [#2004](https://github.com/LightDotSo/LightDotSo/pull/2004) [`0ed6621`](https://github.com/LightDotSo/LightDotSo/commit/0ed6621fe6014dfd7eb57f4c96b9c78b9905faef) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add proper open animations
+
+- [#1977](https://github.com/LightDotSo/LightDotSo/pull/1977) [`c17391d`](https://github.com/LightDotSo/LightDotSo/commit/c17391d7404267fa744f850c4e4a297537cf9244) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add changeset update
+
+- Updated dependencies [[`d71662a`](https://github.com/LightDotSo/LightDotSo/commit/d71662aab537df50ed28b34f4c6220293052c73a), [`db146ef`](https://github.com/LightDotSo/LightDotSo/commit/db146efbd074a478c63a01704b42447b7ccad0c4), [`40b459c`](https://github.com/LightDotSo/LightDotSo/commit/40b459c57d643f7c8f635df5b85c51c52980352d), [`6829ec0`](https://github.com/LightDotSo/LightDotSo/commit/6829ec0e80c1ddb3034619cc87de7099f6ccb4b9), [`24befb5`](https://github.com/LightDotSo/LightDotSo/commit/24befb505a0d45813b6fa3e2189deaabec3a60a3), [`9e7ad20`](https://github.com/LightDotSo/LightDotSo/commit/9e7ad2005150b7412f5fd1e26bad9b420d1cbce8), [`7842870`](https://github.com/LightDotSo/LightDotSo/commit/7842870559da2a1419bd35ffd31b64c739d1fc95), [`0935b49`](https://github.com/LightDotSo/LightDotSo/commit/0935b49abac5bdf546044a178d177f7d89728869), [`70b538f`](https://github.com/LightDotSo/LightDotSo/commit/70b538fa919e48ba068d24801520d7290c033d61), [`cdfbe75`](https://github.com/LightDotSo/LightDotSo/commit/cdfbe7596aa113c62a82af14c6d4dde54f06a389), [`48249c1`](https://github.com/LightDotSo/LightDotSo/commit/48249c1cbc8bfd84939970e77b2be7a5b30f47d5), [`dd1e0d9`](https://github.com/LightDotSo/LightDotSo/commit/dd1e0d916415f079a62ea73c3294ea8e82a53905), [`d40e1b2`](https://github.com/LightDotSo/LightDotSo/commit/d40e1b2eb12acd18b0d6e7b506b16a6df7cd501c), [`2cc456c`](https://github.com/LightDotSo/LightDotSo/commit/2cc456c1a05467eb4dae6ae21d2a6a32b56bc4dc), [`ecdb2ce`](https://github.com/LightDotSo/LightDotSo/commit/ecdb2ce51f2463dfe648460a821a1d2b76cd80bc), [`c17391d`](https://github.com/LightDotSo/LightDotSo/commit/c17391d7404267fa744f850c4e4a297537cf9244), [`3cd5b93`](https://github.com/LightDotSo/LightDotSo/commit/3cd5b93e4355b8408e1a18ef9840a663f49cd63b), [`0ed6621`](https://github.com/LightDotSo/LightDotSo/commit/0ed6621fe6014dfd7eb57f4c96b9c78b9905faef), [`c17391d`](https://github.com/LightDotSo/LightDotSo/commit/c17391d7404267fa744f850c4e4a297537cf9244)]:
+  - @lightdotso/const@3.1.7
+  - @lightdotso/stores@0.1.7
+  - @lightdotso/elements@0.0.7
+  - @lightdotso/sequence@0.0.6
+  - @lightdotso/schemas@3.1.7
+  - @lightdotso/hooks@0.0.8
+  - @lightdotso/query@0.1.7
+  - @lightdotso/types@0.0.6
+  - @lightdotso/utils@3.1.7
+  - @lightdotso/wagmi@3.1.7
+  - @lightdotso/nuqs@0.0.7
+  - @lightdotso/msw@0.0.7
+  - @lightdotso/svg@0.0.8
+  - @lightdotso/ui@3.1.7
+
 ## 0.0.6
 
 ### Patch Changes
