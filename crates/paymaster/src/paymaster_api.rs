@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::types::{GasAndPaymasterAndData, PaymasterAndData, UserOperationRequest};
 use ethers::types::Address;
 use jsonrpsee::{core::RpcResult, proc_macros::rpc};
+use lightdotso_contracts::types::{GasAndPaymasterAndData, PaymasterAndData, UserOperationRequest};
 
 #[rpc(client, server, namespace = "paymaster")]
 #[cfg_attr(test, automock)]

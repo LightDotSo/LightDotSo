@@ -5987,6 +5987,7 @@ dependencies = [
  "lightdotso-constants",
  "lightdotso-contracts",
  "lightdotso-db",
+ "lightdotso-hyper",
  "lightdotso-indexer",
  "lightdotso-interpreter",
  "lightdotso-kafka",
@@ -6159,6 +6160,8 @@ dependencies = [
  "eyre",
  "lazy_static",
  "lightdotso-constants",
+ "serde",
+ "serde_json",
  "tokio",
 ]
 
@@ -6242,6 +6245,14 @@ dependencies = [
  "lightdotso-tracing",
  "reqwest",
  "tokio",
+]
+
+[[package]]
+name = "lightdotso-hyper"
+version = "0.1.0"
+dependencies = [
+ "hyper",
+ "hyper-rustls 0.24.1",
 ]
 
 [[package]]
@@ -6380,18 +6391,23 @@ name = "lightdotso-paymaster"
 version = "0.1.0"
 dependencies = [
  "async-trait",
+ "axum 0.6.20",
  "backon",
  "clap 4.4.0",
  "ethers 2.0.8",
  "eyre",
+ "hyper",
+ "hyper-rustls 0.24.1",
  "jsonrpsee",
  "lazy_static",
  "lightdotso-common",
  "lightdotso-contracts",
  "lightdotso-db",
  "lightdotso-gas",
+ "lightdotso-hyper",
  "lightdotso-jsonrpsee",
  "lightdotso-prisma",
+ "lightdotso-rpc",
  "lightdotso-signer",
  "lightdotso-tracing",
  "lightdotso-utils",
@@ -6503,9 +6519,9 @@ dependencies = [
  "hyper-rustls 0.24.1",
  "lazy_static",
  "lightdotso-contracts",
+ "lightdotso-hyper",
  "lightdotso-jsonrpsee",
  "lightdotso-kafka",
- "lightdotso-paymaster",
  "lightdotso-tracing",
  "rand 0.8.5",
  "serde",

@@ -10,18 +10,23 @@
 
 [dependencies]
   async-trait = { workspace = true }
+  axum = { workspace = true }
   backon = { workspace = true }
   clap = { workspace = true }
   ethers = { workspace = true }
   eyre = { workspace = true }
+  hyper = { workspace = true }
+  hyper-rustls = { workspace = true }
   jsonrpsee = { workspace = true }
   lazy_static = { workspace = true }
   lightdotso-common = { workspace = true }
   lightdotso-contracts = { workspace = true }
   lightdotso-db = { workspace = true }
   lightdotso-gas = { workspace = true }
+  lightdotso-hyper = { workspace = true }
   lightdotso-jsonrpsee = { workspace = true }
   lightdotso-prisma = { workspace = true }
+  lightdotso-rpc = { workspace = true }
   lightdotso-signer = { workspace = true }
   lightdotso-tracing = { workspace = true }
   lightdotso-utils = { workspace = true }

@@ -12,15 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use crate::{paymaster::PaymasterApi, paymaster_api::PaymasterApiServer};
 use async_trait::async_trait;
 use ethers::types::Address;
 use jsonrpsee::core::RpcResult;
-
-use crate::{
-    paymaster::PaymasterApi,
-    paymaster_api::PaymasterApiServer,
-    types::{GasAndPaymasterAndData, PaymasterAndData, UserOperationRequest},
-};
+use lightdotso_contracts::types::{GasAndPaymasterAndData, PaymasterAndData, UserOperationRequest};
 
 #[async_trait]
 impl PaymasterApiServer for PaymasterApi {

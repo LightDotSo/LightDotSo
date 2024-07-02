@@ -34,21 +34,18 @@ use axum::{
     http::{Request, Response},
 };
 use ethers::types::H256;
-use hyper::{body, client::HttpConnector};
-use hyper_rustls::HttpsConnector;
-use lightdotso_contracts::constants::ENTRYPOINT_V060_ADDRESS;
+use hyper::body;
+use lightdotso_contracts::{constants::ENTRYPOINT_V060_ADDRESS, types::UserOperationRequest};
+use lightdotso_hyper::HyperClient;
 use lightdotso_jsonrpsee::types::Request as JSONRPCRequest;
 use lightdotso_kafka::{
     rdkafka::producer::FutureProducer, topics::user_operation::produce_user_operation_message,
     types::user_operation::UserOperationMessage,
 };
-use lightdotso_paymaster::types::UserOperationRequest;
 use lightdotso_tracing::tracing::{error, info, trace, warn};
 use serde::ser::Error;
 use serde_json::{json, Error as SerdeError, Value};
 use std::{collections::HashMap, sync::Arc};
-
-pub type Client = hyper::client::Client<HttpsConnector<HttpConnector>, Body>;
 
 /// Get the method from the body of the JSON RPC request
 pub async fn get_method(body: Body) -> Result<String, SerdeError> {
@@ -70,7 +67,11 @@ pub async fn get_method(body: Body) -> Result<String, SerdeError> {
 }
 
 /// Get the result from the client
-async fn get_client_result(uri: String, client: Client, body: Body) -> Option<Response<Body>> {
+pub async fn get_client_result(
+    uri: String,
+    client: HyperClient,
+    body: Body,
+) -> Option<Response<Body>> {
     info!("uri: {}", uri);
 
     // Create a new request with the same method and body
@@ -169,7 +170,7 @@ async fn get_client_result(uri: String, client: Client, body: Body) -> Option<Re
 
 /// The public rpc handler for the RPC server
 pub async fn public_rpc_handler(
-    state: State<(Client, Arc<FutureProducer>)>,
+    state: State<(HyperClient, Arc<FutureProducer>)>,
     chain_id: Path<String>,
     req: Request<Body>,
 ) -> Response<Body> {
@@ -178,7 +179,7 @@ pub async fn public_rpc_handler(
 
 /// The protected rpc handler for the RPC server
 pub async fn protected_rpc_handler(
-    state: State<(Client, Arc<FutureProducer>)>,
+    state: State<(HyperClient, Arc<FutureProducer>)>,
     Path((key, chain_id)): Path<(String, String)>,
     req: Request<Body>,
 ) -> Response<Body> {
@@ -196,7 +197,7 @@ pub async fn protected_rpc_handler(
 
 /// The internal rpc handler for the RPC server
 pub async fn internal_rpc_handler(
-    state: State<(Client, Arc<FutureProducer>)>,
+    state: State<(HyperClient, Arc<FutureProducer>)>,
     chain_id: Path<String>,
     req: Request<Body>,
 ) -> Response<Body> {
@@ -213,7 +214,7 @@ async fn try_rpc_with_url(
     rpc_urls: &HashMap<u64, String>,
     api_key: Option<String>,
     chain_id: &u64,
-    client: &Client,
+    client: &HyperClient,
     body: Body,
 ) -> Option<Response<Body>> {
     if let Some(rpc_url) = rpc_urls.get(chain_id) {
@@ -240,7 +241,7 @@ async fn try_rpc_with_url(
 
 /// The rpc proxy handler for the RPC server
 pub async fn rpc_proxy_handler(
-    State(state): State<(Client, Arc<FutureProducer>)>,
+    State(state): State<(HyperClient, Arc<FutureProducer>)>,
     Path(chain_id): Path<String>,
     mut req: Request<Body>,
     debug: bool,

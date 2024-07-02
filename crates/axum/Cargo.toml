@@ -28,6 +28,7 @@
   lightdotso-constants = { workspace = true }
   lightdotso-contracts = { workspace = true }
   lightdotso-db = { workspace = true }
+  lightdotso-hyper = { workspace = true }
   lightdotso-indexer = { workspace = true }
   lightdotso-interpreter = { workspace = true }
   lightdotso-kafka = { workspace = true }

@@ -1,0 +1,13 @@
+[package]
+  name = "lightdotso-hyper"
+
+  version.workspace = true
+  edition.workspace = true
+  rust-version.workspace = true
+  license.workspace = true
+  homepage.workspace = true
+  repository.workspace = true
+
+[dependencies]
+  hyper = { workspace = true }
+  hyper-rustls = { workspace = true }

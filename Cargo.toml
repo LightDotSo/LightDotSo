@@ -19,9 +19,10 @@
     "crates/discord",
     "crates/gas",
     "crates/graphql",
-    "crates/jsonrpsee",
+    "crates/hyper",
     "crates/indexer",
     "crates/interpreter",
+    "crates/jsonrpsee",
     "crates/kafka",
     "crates/keychain",
     "crates/notifier",
@@ -120,6 +121,7 @@
     lightdotso-db = { path = "./crates/db" }
     lightdotso-gas = { path = "./crates/gas" }
     lightdotso-graphql = { path = "./crates/graphql" }
+    lightdotso-hyper = { path = "./crates/hyper" }
     lightdotso-indexer = { path = "./crates/indexer" }
     lightdotso-interpreter = { path = "./crates/interpreter" }
     lightdotso-jsonrpsee = { path = "./crates/jsonrpsee" }
