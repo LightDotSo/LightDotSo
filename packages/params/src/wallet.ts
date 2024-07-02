@@ -49,4 +49,6 @@ export type WalletCreateBodyParams = {
   salt: string;
 };
 
-export type WalletUpdateBodyParams = Partial<WalletData>;
+export type WalletUpdateBodyParams = Omit<Partial<WalletData>, "name"> & {
+  name: string;
+};

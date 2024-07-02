@@ -16,7 +16,8 @@
 
 import { MAINNET_CHAINS, TESTNET_CHAINS } from "@lightdotso/const";
 import { useChainQueryState } from "@lightdotso/nuqs";
-import { useModals } from "@lightdotso/stores";
+import { useQueryWalletSettings } from "@lightdotso/query";
+import { useAuth, useModals } from "@lightdotso/stores";
 import { ChainLogo } from "@lightdotso/svg";
 import { Modal } from "@lightdotso/templates";
 import {
@@ -29,6 +30,8 @@ import {
   Tabs,
   TabsContent,
 } from "@lightdotso/ui";
+import { useMemo } from "react";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -45,11 +48,29 @@ export function ChainModal() {
   // Stores
   // ---------------------------------------------------------------------------
 
+  const { wallet } = useAuth();
   const {
     isChainModalVisible,
     hideChainModal,
     chainModalProps: { onChainSelect },
   } = useModals();
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { walletSettings } = useQueryWalletSettings({
+    address: wallet as Address,
+  });
+
+  // ---------------------------------------------------------------------------
+  // Memoized Hooks
+  // ---------------------------------------------------------------------------
+
+  const isTestnet = useMemo(
+    () => walletSettings?.is_enabled_testnet ?? false,
+    [walletSettings],
+  );
 
   // ---------------------------------------------------------------------------
   // Render
@@ -72,53 +93,78 @@ export function ChainModal() {
               />
             }
             bannerContent={
-              <TabsList className="w-full">
-                <TabsTrigger className="w-full" value="mainnet">
-                  Mainnet
-                </TabsTrigger>
-                <TabsTrigger className="w-full" value="testnet">
-                  Testnet
-                </TabsTrigger>
-              </TabsList>
+              isTestnet ? (
+                <TabsList className="w-full">
+                  <TabsTrigger className="w-full" value="mainnet">
+                    Mainnet
+                  </TabsTrigger>
+                  <TabsTrigger className="w-full" value="testnet">
+                    Testnet
+                  </TabsTrigger>
+                </TabsList>
+              ) : undefined
             }
             onClose={hideChainModal}
           >
-            <TabsContent value="mainnet">
-              {MAINNET_CHAINS.map(chain => (
-                <CommandItem
-                  key={chain.id}
-                  value={chain.name}
-                  onSelect={() => {
-                    onChainSelect(chain.id);
-                    setChainState(chain);
-                    hideChainModal();
-                  }}
-                >
-                  <>
-                    <ChainLogo chainId={chain.id} />
-                    <span className="ml-2">{chain.name}</span>
-                  </>
-                </CommandItem>
-              ))}
-            </TabsContent>
-            <TabsContent value="testnet">
-              {TESTNET_CHAINS.map(chain => (
-                <CommandItem
-                  key={chain.id}
-                  value={chain.name}
-                  onSelect={() => {
-                    onChainSelect(chain.id);
-                    setChainState(chain);
-                    hideChainModal();
-                  }}
-                >
-                  <div className="flex items-center space-x-2">
-                    <ChainLogo chainId={chain.id} />
-                    <span className="ml-2">{chain.name}</span>
-                  </div>
-                </CommandItem>
-              ))}
-            </TabsContent>
+            {isTestnet ? (
+              <>
+                <TabsContent value="mainnet">
+                  {MAINNET_CHAINS.map(chain => (
+                    <CommandItem
+                      key={chain.id}
+                      value={chain.name}
+                      onSelect={() => {
+                        onChainSelect(chain.id);
+                        setChainState(chain);
+                        hideChainModal();
+                      }}
+                    >
+                      <>
+                        <ChainLogo chainId={chain.id} />
+                        <span className="ml-2">{chain.name}</span>
+                      </>
+                    </CommandItem>
+                  ))}
+                </TabsContent>
+                <TabsContent value="testnet">
+                  {TESTNET_CHAINS.map(chain => (
+                    <CommandItem
+                      key={chain.id}
+                      value={chain.name}
+                      onSelect={() => {
+                        onChainSelect(chain.id);
+                        setChainState(chain);
+                        hideChainModal();
+                      }}
+                    >
+                      <div className="flex items-center space-x-2">
+                        <ChainLogo chainId={chain.id} />
+                        <span className="ml-2">{chain.name}</span>
+                      </div>
+                    </CommandItem>
+                  ))}
+                </TabsContent>
+              </>
+            ) : (
+              <div className="mt-2">
+                {MAINNET_CHAINS.map(chain => (
+                  <CommandItem
+                    key={chain.id}
+                    value={chain.name}
+                    onSelect={() => {
+                      onChainSelect(chain.id);
+                      setChainState(chain);
+                      hideChainModal();
+                    }}
+                  >
+                    <>
+                      <ChainLogo chainId={chain.id} />
+                      <span className="ml-2">{chain.name}</span>
+                    </>
+                  </CommandItem>
+                ))}
+              </div>
+            )}
           </Modal>
         </Tabs>
       </CommandList>

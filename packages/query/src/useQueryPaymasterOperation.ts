@@ -43,6 +43,7 @@ export const useQueryPaymasterOperation = (
       queryKeys.paymaster_operation.get({
         address: params.address,
         chain_id: params.chain_id,
+        valid_until: params.valid_until,
         valid_after: params.valid_after,
       }).queryKey,
     );
@@ -52,6 +53,7 @@ export const useQueryPaymasterOperation = (
       queryKey: queryKeys.paymaster_operation.get({
         address: params.address,
         chain_id: params.chain_id,
+        valid_until: params.valid_until,
         valid_after: params.valid_after,
       }).queryKey,
       queryFn: async () => {
@@ -65,6 +67,7 @@ export const useQueryPaymasterOperation = (
               query: {
                 address: params.address ?? undefined,
                 chain_id: params.chain_id,
+                valid_until: params.valid_until,
                 valid_after: params.valid_after,
               },
             },

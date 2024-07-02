@@ -151,7 +151,7 @@ export const updateWallet = async (
       query: { address: string };
     };
     body: {
-      name?: string | null | undefined;
+      name: string;
     };
   },
   clientType?: ClientType,

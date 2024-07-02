@@ -22,12 +22,8 @@ import { getClient } from "../client";
 
 export const createFeedback = async (
   {
-    params,
     body,
   }: {
-    params: {
-      query: { user_id: string };
-    };
     body: {
       feedback: {
         emoji: string;
@@ -41,7 +37,6 @@ export const createFeedback = async (
 
   return ResultAsync.fromPromise(
     client.POST("/feedback/create", {
-      params: params,
       body: body,
     }),
     () => new Error("Database error"),

@@ -86,7 +86,7 @@ pub async fn upsert_user_operation(
         info!("Upserting paymaster operation");
 
         // Parse the paymaster and data
-        let (paymaster_address, _valid_until, valid_after, _sig) =
+        let (paymaster_address, valid_until, valid_after, _sig) =
             decode_paymaster_and_data(paymaster_and_data.to_vec())?;
 
         // Upsert the paymaster if matches one of ours
@@ -115,7 +115,12 @@ pub async fn upsert_user_operation(
             let _ = db
                 .paymaster_operation()
                 .update(
-                    paymaster_operation::valid_after_paymaster_id(
+                    paymaster_operation::valid_until_valid_after_paymaster_id(
+                        DateTime::<Utc>::from_utc(
+                            NaiveDateTime::from_timestamp_opt(valid_until as i64, 0).unwrap(),
+                            Utc,
+                        )
+                        .into(),
                         DateTime::<Utc>::from_utc(
                             NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
                             Utc,

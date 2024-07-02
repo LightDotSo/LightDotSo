@@ -25,7 +25,12 @@ export const getPaymasterOperation = async (
     params,
   }: {
     params: {
-      query: { address: string; chain_id: number; valid_after: number };
+      query: {
+        address: string;
+        chain_id: number;
+        valid_until: number;
+        valid_after: number;
+      };
     };
   },
   clientType?: ClientType,

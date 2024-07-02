@@ -19,6 +19,7 @@ use ethers::types::{Address, Bytes};
 use eyre::Result;
 use jsonrpsee::core::RpcResult;
 use lightdotso_contracts::{
+    paymaster::{decode_paymaster_and_data, get_paymaster},
     types::{
         EstimateResult, GasAndPaymasterAndData, PaymasterAndData, UserOperationConstruct,
         UserOperationRequest,
@@ -121,6 +122,39 @@ pub async fn fetch_user_operation_sponsorship(
     Err(eyre::eyre!("Failed to fetch user operation sponsorship"))
 }
 
+// Write the paymaster operation to the database.
+pub async fn write_paymaster_operation_to_db(
+    chain_id: u64,
+    user_operation: UserOperationRequest,
+    sponsorship: GasAndPaymasterAndData,
+) -> Result<()> {
+    // Get the paymasterAndData.
+    let (verifying_paymaster_address, valid_until, valid_after, _signature) =
+        decode_paymaster_and_data(sponsorship.paymaster_and_data.to_vec())?;
+
+    // Get the paymaster contract.
+    let paymaster_contract = get_paymaster(chain_id, verifying_paymaster_address).await?;
+
+    // Call the paymaster contract to get the nonce.
+    let paymaster_nonce = paymaster_contract.sender_nonce(user_operation.sender).await?;
+
+    // Finally, create the paymaster operation.
+    let op = db_create_paymaster_operation(
+        chain_id,
+        verifying_paymaster_address,
+        user_operation.sender,
+        paymaster_nonce.as_u64(),
+        valid_until,
+        valid_after,
+    )
+    .await?;
+
+    // Before exit, create the billing operation.
+    db_create_billing_operation(user_operation.sender, op.id.clone()).await?;
+
+    Ok(())
+}
+
 impl PaymasterApi {
     pub(crate) async fn request_paymaster_and_data(
         &self,
@@ -130,9 +164,14 @@ impl PaymasterApi {
     ) -> RpcResult<PaymasterAndData> {
         // Get the paymaster operation sponsor.
         let uop_sponsorship =
-            fetch_user_operation_sponsorship(user_operation, entry_point, chain_id)
+            fetch_user_operation_sponsorship(user_operation.clone(), entry_point, chain_id)
                 .await
                 .map_err(JsonRpcError::from)?;
+
+        // Write the paymaster operation to the database.
+        write_paymaster_operation_to_db(chain_id, user_operation, uop_sponsorship.clone())
+            .await
+            .map_err(JsonRpcError::from)?;
 
         Ok(uop_sponsorship.paymaster_and_data)
     }
@@ -167,26 +206,14 @@ impl PaymasterApi {
 
         // Get the paymaster operation sponsor.
         let uop_sponsorship =
-            fetch_user_operation_sponsorship(user_operation, entry_point, chain_id)
+            fetch_user_operation_sponsorship(user_operation.clone(), entry_point, chain_id)
                 .await
                 .map_err(JsonRpcError::from)?;
 
-        // // Finally, create the paymaster operation.
-        // let op = db_create_paymaster_operation(
-        //     chain_id,
-        //     uop_sponsorship.result.paymaster_address,
-        //     construct.sender,
-        //     paymaster_nonce,
-        //     valid_until,
-        //     valid_after,
-        // )
-        // .await
-        // .map_err(JsonRpcError::from)?;
-
-        // // Before exit, create the billing operation.
-        // db_create_billing_operation(construct.sender, op.id.clone())
-        //     .await
-        //     .map_err(JsonRpcError::from)?;
+        // Write the paymaster operation to the database.
+        write_paymaster_operation_to_db(chain_id, user_operation, uop_sponsorship.clone())
+            .await
+            .map_err(JsonRpcError::from)?;
 
         Ok(uop_sponsorship)
     }
