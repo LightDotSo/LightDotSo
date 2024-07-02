@@ -33,7 +33,7 @@ pub struct PaymasterArgs {
     pub particle_network_project_id: String,
     /// The particle network paymaster project key
     #[clap(long, env = "PARTICLE_NETWORK_PROJECT_KEY")]
-    pub particle_network_paymaster_project_key: String,
+    pub particle_network_project_key: String,
 }
 
 impl PaymasterArgs {

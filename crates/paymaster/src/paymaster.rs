@@ -52,7 +52,7 @@ pub(crate) struct PaymasterApi {}
 
 // Retryable sponsorship fetch function.
 pub async fn fetch_user_operation_sponsorship(
-    user_operation: UserOperationConstruct,
+    user_operation: UserOperationRequest,
     entry_point: Address,
     chain_id: u64,
 ) -> Result<GasAndPaymasterAndData> {
@@ -124,12 +124,17 @@ pub async fn fetch_user_operation_sponsorship(
 impl PaymasterApi {
     pub(crate) async fn request_paymaster_and_data(
         &self,
-        _user_operation: UserOperationRequest,
-        _entry_point: Address,
-        _chain_id: u64,
+        user_operation: UserOperationRequest,
+        entry_point: Address,
+        chain_id: u64,
     ) -> RpcResult<PaymasterAndData> {
-        // Return the default.
-        Ok(PaymasterAndData::default())
+        // Get the paymaster operation sponsor.
+        let uop_sponsorship =
+            fetch_user_operation_sponsorship(user_operation, entry_point, chain_id)
+                .await
+                .map_err(JsonRpcError::from)?;
+
+        Ok(uop_sponsorship.paymaster_and_data)
     }
 
     pub(crate) async fn request_gas_and_paymaster_and_data(
@@ -139,16 +144,32 @@ impl PaymasterApi {
         chain_id: u64,
     ) -> RpcResult<GasAndPaymasterAndData> {
         // Construct the user operation w/ rpc.
-        let construct = construct_user_operation(chain_id, user_operation, entry_point)
-            .await
-            .map_err(JsonRpcError::from)?;
+        let user_operation_construct =
+            construct_user_operation(chain_id, user_operation, entry_point)
+                .await
+                .map_err(JsonRpcError::from)?;
         // Log the construct in hex.
-        info!("construct: {:?}", construct);
+        info!("construct: {:?}", user_operation_construct);
+
+        let user_operation = UserOperationRequest {
+            call_data: user_operation_construct.call_data.clone(),
+            init_code: user_operation_construct.init_code.clone(),
+            signature: user_operation_construct.signature.clone(),
+            nonce: user_operation_construct.nonce,
+            sender: user_operation_construct.sender,
+            pre_verification_gas: Some(user_operation_construct.pre_verification_gas),
+            verification_gas_limit: Some(user_operation_construct.verification_gas_limit),
+            call_gas_limit: Some(user_operation_construct.call_gas_limit),
+            max_fee_per_gas: Some(user_operation_construct.max_fee_per_gas),
+            max_priority_fee_per_gas: Some(user_operation_construct.max_priority_fee_per_gas),
+            paymaster_and_data: Some(Bytes::default()),
+        };
 
         // Get the paymaster operation sponsor.
-        let uop_sponsorship = fetch_user_operation_sponsorship(construct, entry_point, chain_id)
-            .await
-            .map_err(JsonRpcError::from)?;
+        let uop_sponsorship =
+            fetch_user_operation_sponsorship(user_operation, entry_point, chain_id)
+                .await
+                .map_err(JsonRpcError::from)?;
 
         // // Finally, create the paymaster operation.
         // let op = db_create_paymaster_operation(
@@ -327,23 +348,9 @@ pub async fn estimate_user_operation_gas(
 pub async fn get_user_operation_sponsorship(
     rpc_url: String,
     entry_point: Address,
-    user_operation_construct: &UserOperationConstruct,
+    user_operation: &UserOperationRequest,
     sponsorship_policy: Option<Value>,
 ) -> Result<Response<GasAndPaymasterAndData>> {
-    let user_operation = UserOperationRequest {
-        call_data: user_operation_construct.call_data.clone(),
-        init_code: user_operation_construct.init_code.clone(),
-        signature: user_operation_construct.signature.clone(),
-        nonce: user_operation_construct.nonce,
-        sender: user_operation_construct.sender,
-        pre_verification_gas: Some(user_operation_construct.pre_verification_gas),
-        verification_gas_limit: Some(user_operation_construct.verification_gas_limit),
-        call_gas_limit: Some(user_operation_construct.call_gas_limit),
-        max_fee_per_gas: Some(user_operation_construct.max_fee_per_gas),
-        max_priority_fee_per_gas: Some(user_operation_construct.max_priority_fee_per_gas),
-        paymaster_and_data: Some(Bytes::default()),
-    };
-
     let params = if let Some(policy) = sponsorship_policy {
         vec![json!(user_operation), json!(entry_point), policy]
     } else {
