@@ -31,12 +31,12 @@
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "tailwind-merge": "^2.3.0",
-    "viem": "^2.16.4"
+    "viem": "^2.16.5"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^20.14.9",
-    "typescript": "^5.5.2"
+    "typescript": "^5.5.3"
   },
   "publishConfig": {
     "access": "public"

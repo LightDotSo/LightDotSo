@@ -28,7 +28,7 @@
   "dependencies": {
     "@lightdotso/client": "workspace:*",
     "@lightdotso/params": "workspace:*",
-    "@tanstack/react-query": "^5.49.0",
+    "@tanstack/react-query": "^5.49.2",
     "react": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-is": "19.0.0-rc-cc1ec60d0d-20240607",
@@ -39,7 +39,7 @@
     "@types/node": "^20.14.9",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "typescript": "^5.5.2"
+    "typescript": "^5.5.3"
   },
   "publishConfig": {
     "access": "public"
